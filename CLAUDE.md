@@ -205,6 +205,12 @@ High risk, destructive, or external:
 
 **When in doubt, ASK.** David prefers occasional interruption over accidental damage.
 
+### MULTI-CHOICE PROMPT BUG WORKAROUND
+
+Claude Code has a known bug where option 2 sometimes references `/Downloads` or other wrong directories instead of the current repo.
+
+**Rule**: When option 2 mentions a path OTHER than `/Users/davidusa/REPOS/Article_Eater_v20_8_0`, NEVER choose it. Choose option 1 instead.
+
 ## Communication Style
 
 David prefers:
