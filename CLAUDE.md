@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Article Eater v20.8.0 → V21.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Currently integrating Quinean Web of Belief coherentist epistemology.
+Article Eater V21.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Currently integrating Quinean Web of Belief coherentist epistemology.
 
 **Owner**: Professor David Kirsh, UCSD Cognitive Science (since 1989), former MIT AI Lab
 
