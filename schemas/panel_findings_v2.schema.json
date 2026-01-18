@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "finding_id": {
+            "type": "string"
+          },
+          "finding_text": {
+            "type": "string"
+          },
+          "indicator_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "page_span": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "quote": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "raw_abstract": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statistics": {
+            "additionalProperties": false,
+            "properties": {
+              "ci_lower": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ci_upper": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "effect_size": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "effect_size_type": {
+                "enum": [
+                  "d",
+                  "r",
+                  "beta",
+                  "OR",
+                  "RR",
+                  "other",
+                  null
+                ],
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "p_value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "sample_size": {
+                "type": [
+                  "integer",
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "task_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "finding_id",
+          "finding_text"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "type": {
+      "const": "panel_findings"
+    }
+  },
+  "required": [
+    "type",
+    "paper_id",
+    "items"
+  ],
+  "title": "PanelFindingsV2",
+  "type": "object"
+}

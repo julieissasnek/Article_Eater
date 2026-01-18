@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SevenPanelArray",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["finding_text","statistics","quote","page_span"],
+    "properties": {
+      "finding_text": {"type":"string"},
+      "statistics": {
+        "type":"object",
+        "properties": {
+          "p_value": {"type":["number","null"]},
+          "effect_size": {"type":["number","null"]},
+          "effect_size_type": {"type":["string","null"]},
+          "sample_size": {"type":["integer","null"]},
+          "ci_lower": {"type":["number","null"]},
+          "ci_upper": {"type":["number","null"]}
+        },
+        "additionalProperties": false
+      },
+      "quote": {"type":"string"},
+      "page_span": {"type":"string"},
+      "raw_abstract": {"type":["string","null"]}
+    },
+    "additionalProperties": false
+  }
+}

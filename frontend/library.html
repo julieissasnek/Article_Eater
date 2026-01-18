@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link active">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Library</h1>
+          <p class="text-gray-600">
+            <span id="total-papers">--</span> papers • 
+            <span id="total-findings">--</span> findings extracted
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadLibrary()">
+            <span>🔄</span> Refresh
+          </button>
+          <a href="search.html" class="btn btn-primary">
+            <span>➕</span> Add Papers
+          </a>
+        </div>
+      </header>
+
+      <!-- Filters and Search -->
+      <div class="card">
+        <div class="card-content">
+          <div style="display: grid; grid-template-columns: 1fr auto auto auto; gap: 1rem; align-items: end;">
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Search Library</label>
+              <input 
+                type="text" 
+                id="search-input"
+                class="form-input" 
+                NOTE="Search by title, author, DOI, or keywords..."
+                oninput="DataUtils.debounce(searchLibrary, 300)()"
+              >
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Filter by Topic</label>
+              <select class="form-select" id="topic-filter" onchange="filterByTopic()">
+                <option value="all">All Topics</option>
+                <option value="lighting">Lighting</option>
+                <option value="biophilic">Biophilic Design</option>
+                <option value="spatial">Spatial Layout</option>
+                <option value="color">Color</option>
+                <option value="acoustics">Acoustics</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Sort By</label>
+              <select class="form-select" id="sort-select" onchange="sortLibrary()">
+                <option value="recent">Recently Added</option>
+                <option value="year">Publication Year</option>
+                <option value="citations">Citation Count</option>
+                <option value="title">Title (A-Z)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">View</label>
+              <select class="form-select" id="view-select" onchange="changeView()">
+                <option value="detailed">Detailed</option>
+                <option value="compact">Compact</option>
+                <option value="table">Table</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Summary -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Papers</div>
+          <div class="stat-value" id="stat-papers">--</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">Open Access</div>
+          <div class="stat-value" id="stat-open-access">--</div>
+        </div>
+        <div class="stat-card info">
+          <div class="stat-label">With Findings</div>
+          <div class="stat-value" id="stat-with-findings">--</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-label">Starred</div>
+          <div class="stat-value" id="stat-starred">--</div>
+        </div>
+      </div>
+
+      <!-- Library Content -->
+      <div id="library-content">
+        <div class="text-center" style="padding: 60px;">
+          <div class="spinner"></div>
+          <p class="text-gray-600 mt-md">Loading library...</p>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="card" style="display: none;">
+        <div class="card-content">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="text-sm text-gray-600">
+              Showing <span id="showing-start">1</span>-<span id="showing-end">50</span> 
+              of <span id="showing-total">100</span> papers
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-sm btn-secondary" onclick="previousPage()" id="prev-btn">
+                ← Previous
+              </button>
+              <button class="btn btn-sm btn-secondary" onclick="nextPage()" id="next-btn">
+                Next →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Paper Detail Modal -->
+  <div id="paper-modal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Paper Details</h2>
+        <button class="modal-close" onclick="UI.hideModal('paper-modal')">×</button>
+      </div>
+      <div id="modal-content">
+        <div class="text-center" style="padding: 40px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let library = [];
+    let filteredLibrary = [];
+    let currentPage = 1;
+    const itemsPerPage = 20;
+
+    // Load library on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadLibrary();
+    });
+
+    // Load library from API
+    async function loadLibrary() {
+      try {
+        // In production, call actual API
+        // const articles = await api.listArticles(1000, 0);
+        
+        // For demo, generate NOTE data
+        library = generateMockLibrary();
+        filteredLibrary = [...library];
+        
+        updateStats();
+        displayLibrary();
+        
+      } catch (error) {
+        console.error('Library load error:', error);
+        document.getElementById('library-content').innerHTML = `
+          <div class="alert alert-error">
+            Failed to load library: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // Generate NOTE library data
+    function generateMockLibrary() {
+      const papers = [];
+      const topics = ['lighting', 'biophilic', 'spatial', 'color', 'acoustics'];
+      const authors = [
+        ['Boubekri, M.', 'Hull, R.B.', 'Scott, K.'],
+        ['Aries, M.', 'Veitch, J.', 'Newsham, G.'],
+        ['Kaplan, R.', 'Kaplan, S.'],
+        ['Ulrich, R.S.', 'Zimring, C.'],
+        ['Evans, G.W.', 'Cohen, S.']
+      ];
+      const venues = [
+        'Journal of Environmental Psychology',
+        'Building and Environment',
+        'Architectural Science Review',
+        'Environment and Behavior',
+        'Health & Place'
+      ];
+
+      for (let i = 0; i < 50; i++) {
+        const topic = topics[i % topics.length];
+        const authorList = authors[i % authors.length];
+        const year = 2015 + (i % 10);
+        const findingsCount = Math.floor(Math.random() * 5) + 1;
+        
+        papers.push({
+          id: `paper-${i}`,
+          doi: `10.${1000 + i}/example.${year}.${i}`,
+          title: `Study ${i + 1}: Effects of ${topic} design on human wellbeing in built environments`,
+          authors: authorList,
+          year: year,
+          venue: venues[i % venues.length],
+          abstract: `This study investigates the impact of ${topic} on occupant wellbeing. Method: Experimental study with n=${50 + i * 5} participants. Results: Significant positive effects observed (p<0.05, d=0.${30 + i % 40}). Conclusion: ${topic.charAt(0).toUpperCase() + topic.slice(1)} design should be prioritized in architectural practice.`,
+          citationCount: Math.floor(Math.random() * 300) + 20,
+          isOpenAccess: i % 2 === 0,
+          isStarred: i % 7 === 0,
+          findingsCount: i % 3 === 0 ? findingsCount : 0,
+          topic: topic,
+          addedDate: new Date(2025, 10 - (i % 12), 14).toISOString(),
+          tags: [topic, 'wellbeing', year > 2020 ? 'recent' : 'classic']
+        });
+      }
+      
+      return papers;
+    }
+
+    // Update stats
+    function updateStats() {
+      const total = library.length;
+      const openAccess = library.filter(p => p.isOpenAccess).length;
+      const withFindings = library.filter(p => p.findingsCount > 0).length;
+      const starred = library.filter(p => p.isStarred).length;
+
+      document.getElementById('total-papers').textContent = total;
+      document.getElementById('total-findings').textContent = library.reduce((sum, p) => sum + p.findingsCount, 0);
+      
+      document.getElementById('stat-papers').textContent = total;
+      document.getElementById('stat-open-access').textContent = openAccess;
+      document.getElementById('stat-with-findings').textContent = withFindings;
+      document.getElementById('stat-starred').textContent = starred;
+    }
+
+    // Display library
+    function displayLibrary() {
+      const view = document.getElementById('view-select').value;
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = filteredLibrary.slice(start, end);
+
+      const container = document.getElementById('library-content');
+
+      if (filteredLibrary.length === 0) {
+        container.innerHTML = `
+          <div class="text-center" style="padding: 60px;">
+            <p class="text-xl text-gray-600">No papers found</p>
+            <p class="text-sm text-gray-500 mt-md">Try adjusting your filters or search query</p>
+          </div>
+        `;
+        document.getElementById('pagination').style.display = 'none';
+        return;
+      }
+
+      if (view === 'table') {
+        container.innerHTML = `
+          <div class="card">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>⭐</th>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Year</th>
+                    <th>Citations</th>
+                    <th>Findings</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${pageItems.map(paper => `
+                    <tr>
+                      <td>
+                        <button onclick="toggleStar('${paper.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.25rem;">
+                          ${paper.isStarred ? '⭐' : '☆'}
+                        </button>
+                      </td>
+                      <td>
+                        <strong>${DataUtils.truncate(paper.title, 60)}</strong>
+                        ${paper.isOpenAccess ? '<span class="badge badge-success badge-sm">🔓</span>' : ''}
+                      </td>
+                      <td class="text-sm">${paper.authors[0]}</td>
+                      <td>${paper.year}</td>
+                      <td>${paper.citationCount}</td>
+                      <td>
+                        ${paper.findingsCount > 0 ? 
+                          `<span class="badge badge-success">${paper.findingsCount}</span>` : 
+                          '<span class="badge badge-gray">0</span>'}
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-primary" onclick="viewPaper('${paper.id}')">View</button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      } else if (view === 'compact') {
+        container.innerHTML = pageItems.map(paper => `
+          <div class="card" style="padding: 1rem; margin-bottom: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div style="flex: 1;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <button onclick="toggleStar('${paper.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.25rem;">
+                    ${paper.isStarred ? '⭐' : '☆'}
+                  </button>
+                  <strong style="font-size: 0.875rem;">${paper.title}</strong>
+                </div>
+                <div class="text-xs text-gray-600" style="margin-top: 0.25rem; margin-left: 2rem;">
+                  ${paper.authors.join(', ')} • ${paper.year} • ${paper.venue}
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                ${paper.findingsCount > 0 ? `<span class="badge badge-success">${paper.findingsCount} findings</span>` : ''}
+                <button class="btn btn-sm btn-secondary" onclick="viewPaper('${paper.id}')">View</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        // Detailed view
+        container.innerHTML = pageItems.map(paper => `
+          <div class="paper-card">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button onclick="toggleStar('${paper.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.5rem;">
+                  ${paper.isStarred ? '⭐' : '☆'}
+                </button>
+                <h3 class="paper-title" style="margin: 0;">${paper.title}</h3>
+              </div>
+            </div>
+            
+            <div class="paper-meta">
+              <span>${paper.authors.join(', ')}</span>
+              <span>•</span>
+              <span>${paper.year}</span>
+              <span>•</span>
+              <span>${paper.venue}</span>
+            </div>
+            
+            <p class="text-sm text-gray-600" style="margin: 0.75rem 0;">
+              ${DataUtils.truncate(paper.abstract, 250)}
+            </p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+              <div class="paper-tags">
+                <span class="badge badge-gray">📊 ${paper.citationCount} citations</span>
+                ${paper.isOpenAccess ? '<span class="badge badge-success">🔓 Open Access</span>' : '<span class="badge badge-gray">🔒 Subscription</span>'}
+                ${paper.findingsCount > 0 ? `<span class="badge badge-info">${paper.findingsCount} findings extracted</span>` : ''}
+                ${paper.tags.map(tag => `<span class="badge badge-gray">${tag}</span>`).join('')}
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-sm btn-secondary" onclick="viewPaper('${paper.id}')">View Details</button>
+                ${paper.findingsCount > 0 ? `<button class="btn btn-sm btn-primary" onclick="viewFindings('${paper.id}')">See Findings</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      updatePagination();
+    }
+
+    // Update pagination
+    function updatePagination() {
+      const total = filteredLibrary.length;
+      const start = (currentPage - 1) * itemsPerPage + 1;
+      const end = Math.min(start + itemsPerPage - 1, total);
+
+      document.getElementById('showing-start').textContent = start;
+      document.getElementById('showing-end').textContent = end;
+      document.getElementById('showing-total').textContent = total;
+
+      document.getElementById('prev-btn').disabled = currentPage === 1;
+      document.getElementById('next-btn').disabled = end >= total;
+
+      document.getElementById('pagination').style.display = total > itemsPerPage ? 'block' : 'none';
+    }
+
+    // Search library
+    function searchLibrary() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      
+      if (!query) {
+        filteredLibrary = [...library];
+      } else {
+        filteredLibrary = library.filter(paper => 
+          paper.title.toLowerCase().includes(query) ||
+          paper.authors.some(a => a.toLowerCase().includes(query)) ||
+          paper.doi.toLowerCase().includes(query) ||
+          paper.abstract.toLowerCase().includes(query)
+        );
+      }
+      
+      currentPage = 1;
+      displayLibrary();
+    }
+
+    // Filter by topic
+    function filterByTopic() {
+      const topic = document.getElementById('topic-filter').value;
+      
+      if (topic === 'all') {
+        filteredLibrary = [...library];
+      } else {
+        filteredLibrary = library.filter(paper => paper.topic === topic);
+      }
+      
+      currentPage = 1;
+      displayLibrary();
+    }
+
+    // Sort library
+    function sortLibrary() {
+      const sortBy = document.getElementById('sort-select').value;
+      
+      switch(sortBy) {
+        case 'year':
+          filteredLibrary.sort((a, b) => b.year - a.year);
+          break;
+        case 'citations':
+          filteredLibrary.sort((a, b) => b.citationCount - a.citationCount);
+          break;
+        case 'title':
+          filteredLibrary.sort((a, b) => a.title.localeCompare(b.title));
+          break;
+        case 'recent':
+        default:
+          filteredLibrary.sort((a, b) => new Date(b.addedDate) - new Date(a.addedDate));
+      }
+      
+      displayLibrary();
+    }
+
+    // Change view
+    function changeView() {
+      displayLibrary();
+    }
+
+    // Toggle star
+    function toggleStar(paperId) {
+      const paper = library.find(p => p.id === paperId);
+      if (paper) {
+        paper.isStarred = !paper.isStarred;
+        updateStats();
+        displayLibrary();
+      }
+    }
+
+    // View paper details
+    function viewPaper(paperId) {
+      const paper = library.find(p => p.id === paperId);
+      if (!paper) return;
+
+      document.getElementById('modal-title').textContent = paper.title;
+      document.getElementById('modal-content').innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+            <div>
+              <p class="text-sm text-gray-600">
+                ${paper.authors.join(', ')}
+              </p>
+              <p class="text-sm text-gray-600">
+                ${paper.venue} (${paper.year})
+              </p>
+              <p class="text-sm text-gray-600">
+                DOI: ${paper.doi}
+              </p>
+            </div>
+            <div style="text-align: right;">
+              <div class="badge badge-gray">📊 ${paper.citationCount} citations</div>
+              ${paper.isOpenAccess ? '<div class="badge badge-success mt-sm">🔓 Open Access</div>' : ''}
+            </div>
+          </div>
+
+          <div style="margin: 1.5rem 0;">
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Abstract</h3>
+            <p class="text-sm text-gray-700">${paper.abstract}</p>
+          </div>
+
+          ${paper.findingsCount > 0 ? `
+            <div class="alert alert-success">
+              <strong>${paper.findingsCount} findings extracted</strong> from this paper
+            </div>
+          ` : `
+            <div class="alert alert-info">
+              No findings extracted yet. Add this paper to a processing job to extract findings.
+            </div>
+          `}
+
+          <div class="paper-tags mt-md">
+            ${paper.tags.map(tag => `<span class="badge badge-gray">${tag}</span>`).join('')}
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button class="btn btn-secondary" onclick="UI.hideModal('paper-modal')">Close</button>
+          ${paper.findingsCount > 0 ? `<button class="btn btn-primary" onclick="viewFindings('${paper.id}')">View Findings</button>` : ''}
+          <button class="btn btn-primary" onclick="window.open('https://doi.org/${paper.doi}', '_blank')">
+            Open Paper ↗
+          </button>
+        </div>
+      `;
+
+      UI.showModal('paper-modal');
+    }
+
+    // View findings
+    function viewFindings(paperId) {
+      UI.hideModal('paper-modal');
+      window.location.href = `findings.html?paper=${paperId}`;
+    }
+
+    // Pagination controls
+    function previousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        displayLibrary();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function nextPage() {
+      const maxPage = Math.ceil(filteredLibrary.length / itemsPerPage);
+      if (currentPage < maxPage) {
+        currentPage++;
+        displayLibrary();
+        window.scrollTo(0, 0);
+      }
+    }
+  </script>
+</body>
+</html>

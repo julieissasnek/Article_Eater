@@ -1,0 +1,11 @@
+# Codex exec policy template
+
+prefix_rule(pattern=["./bin/prod_smoke.sh"], decision="allow")
+prefix_rule(pattern=["./install.sh"], decision="allow")
+prefix_rule(pattern=["./bin/tc"], decision="allow")
+prefix_rule(pattern=["docker","compose"], decision="allow")
+prefix_rule(pattern=["curl"], decision="prompt")
+
+prefix_rule(pattern=["rm"], decision="forbidden")
+prefix_rule(pattern=["git","reset"], decision="forbidden")
+prefix_rule(pattern=["git","clean"], decision="forbidden")

@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "global_notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "activity_type": {
+            "enum": [
+              "passive_viewing",
+              "active_navigation",
+              "cognitive_task",
+              "social_interaction",
+              "other",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "duration_min": {
+            "type": [
+              "integer",
+              "number",
+              "null"
+            ]
+          },
+          "environment_type": {
+            "enum": [
+              "office",
+              "hospital",
+              "home",
+              "school",
+              "urban_outdoor",
+              "natural_outdoor",
+              "other",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "relevance_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "setting": {
+            "enum": [
+              "lab",
+              "VR",
+              "field",
+              "online",
+              "other",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "task_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "type": {
+      "const": "panel_context"
+    }
+  },
+  "required": [
+    "type",
+    "paper_id",
+    "tasks"
+  ],
+  "title": "PanelContext",
+  "type": "object"
+}

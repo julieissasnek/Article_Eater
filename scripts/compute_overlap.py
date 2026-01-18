@@ -1,0 +1,1 @@
+# Simple abstract similarity (NOTE); replace with TF‑IDF or S2 embeddings.

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage HUD - Article Eater</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  <style>
+    /* Compact HUD-specific styles */
+    body {
+      background: var(--gray-50);
+    }
+    
+    .hud-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-6);
+    }
+    
+    .hud-header {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, #0F1B2E 100%);
+      color: white;
+      padding: var(--space-5);
+      border-radius: var(--radius-xl);
+      margin-bottom: var(--space-6);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .hud-nav {
+      display: flex;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+    
+    .hud-nav a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-base);
+      font-size: var(--text-sm);
+    }
+    
+    .hud-nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .compact-table {
+      font-size: var(--text-sm);
+    }
+    
+    .compact-table th {
+      background: var(--gray-100);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .total-row {
+      background: var(--gray-100);
+      font-weight: var(--font-semibold);
+    }
+    
+    .cost-cell {
+      font-family: var(--font-mono);
+      color: var(--ucsd-gold);
+      font-weight: var(--font-semibold);
+    }
+  </style>
+</head>
+<body>
+  <div class="hud-container">
+    <!-- Compact Header -->
+    <div class="hud-header">
+      <div class="hud-nav">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="usage.html">💰 Full Usage</a>
+        <a href="interactions.html">🔄 Interactions</a>
+      </div>
+      
+      <h1 style="font-size: var(--text-3xl); margin-bottom: var(--space-2);">
+        📈 API Usage HUD
+      </h1>
+      <p style="opacity: 0.9; font-size: var(--text-base);">
+        Quick glance at your current usage
+      </p>
+    </div>
+
+    <!-- User Selection -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div class="card-body">
+        <div style="display: flex; gap: var(--space-4); align-items: end; flex-wrap: wrap;">
+          <div class="form-group" style="margin: 0; flex: 1; min-width: 200px;">
+            <label class="form-label">
+              <span class="form-label-icon">👤</span>
+              User ID
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="uid" 
+              value="anon"
+              placeholder="Enter user ID"
+            >
+          </div>
+          
+          <button class="btn btn-primary" onclick="load()">
+            <span class="btn-icon">🔄</span>
+            Refresh Data
+          </button>
+          
+          <button class="btn btn-secondary" onclick="exportCSV()">
+            <span class="btn-icon">📥</span>
+            Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid" style="margin-bottom: var(--space-6);">
+      <div class="stat-card stat-card-info">
+        <div class="stat-icon">🔢</div>
+        <div class="stat-content">
+          <div class="stat-label">Total Calls</div>
+          <div class="stat-value" id="stat-calls">--</div>
+          <div class="stat-change">
+            API requests
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-primary">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <div class="stat-label">Total Tokens</div>
+          <div class="stat-value" id="stat-tokens">--</div>
+          <div class="stat-change">
+            In + Out
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-warning">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <div class="stat-label">Total Cost</div>
+          <div class="stat-value" id="stat-cost">--</div>
+          <div class="stat-change">
+            USD
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <span class="card-icon">📋</span>
+          Recent API Calls
+        </h3>
+      </div>
+      
+      <div class="table-container">
+        <table class="table compact-table" id="tbl">
+          <thead class="table-header">
+            <tr>
+              <th class="table-th">Timestamp</th>
+              <th class="table-th">Provider</th>
+              <th class="table-th">Model</th>
+              <th class="table-th" style="text-align: right;">Tokens In</th>
+              <th class="table-th" style="text-align: right;">Tokens Out</th>
+              <th class="table-th" style="text-align: right;">Cost ($)</th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="3" style="text-align: right; padding: var(--space-4);">
+                <strong>TOTAL:</strong>
+              </td>
+              <td class="table-cell" style="text-align: right;" id="total-in">0</td>
+              <td class="table-cell" style="text-align: right;" id="total-out">0</td>
+              <td class="table-cell cost-cell" style="text-align: right;" id="total-cost">$0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      
+      <!-- No Data State -->
+      <div id="no-data" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-title">No usage data yet</div>
+        <div class="empty-state-message">
+          Start using the API to see your usage here!
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="card" style="margin-top: var(--space-6);">
+      <div class="card-header">
+        <h3 class="card-title">
+          <span class="card-icon">💡</span>
+          Cost Optimization Tips
+        </h3>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-4);">
+          <div>
+            <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+              📚 Use Caching
+            </div>
+            <p style="font-size: var(--text-sm); color: var(--gray-600);">
+              Enable caching to avoid re-processing the same papers
+            </p>
+          </div>
+          
+          <div>
+            <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+              🎯 Filter Smart
+            </div>
+            <p style="font-size: var(--text-sm); color: var(--gray-600);">
+              Use specific queries to reduce unnecessary API calls
+            </p>
+          </div>
+          
+          <div>
+            <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+              ⏰ Batch Jobs
+            </div>
+            <p style="font-size: var(--text-sm); color: var(--gray-600);">
+              Process multiple papers together for better efficiency
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: var(--space-8); padding: var(--space-4); color: var(--gray-600); font-size: var(--text-sm);">
+      <p>💡 For detailed analytics, visit the <a href="usage.html" style="color: var(--ucsd-gold); font-weight: var(--font-semibold);">full Usage & Costs page</a></p>
+    </div>
+  </div>
+
+  <script>
+    let eventsData = [];
+
+    // Load usage data
+    async function load() {
+      const uid = document.getElementById('uid').value || 'anon';
+      
+      try {
+        // Show loading state
+        document.getElementById('no-data').style.display = 'none';
+        
+        // In production, fetch from API:
+        // const res = await fetch(`/usage/me?user_id=${encodeURIComponent(uid)}`);
+        // const data = await res.json();
+        // eventsData = data.events || [];
+        
+        // For now, use mock data
+        eventsData = generateMockData();
+        
+        updateTable();
+        updateStats();
+        
+      } catch (error) {
+        console.error('Error loading usage data:', error);
+        alert('Failed to load usage data. Please try again.');
+      }
+    }
+
+    // Update table
+    function updateTable() {
+      const tbody = document.querySelector("#tbl tbody");
+      tbody.innerHTML = "";
+      
+      if (eventsData.length === 0) {
+        document.getElementById('no-data').style.display = 'block';
+        return;
+      }
+      
+      document.getElementById('no-data').style.display = 'none';
+      
+      let totalIn = 0;
+      let totalOut = 0;
+      let totalCost = 0;
+      
+      eventsData.forEach(e => {
+        const tr = document.createElement("tr");
+        tr.className = "table-row";
+        
+        const tokensIn = parseInt(e.in || 0);
+        const tokensOut = parseInt(e.out || 0);
+        const cost = parseFloat(e.cost || 0);
+        
+        totalIn += tokensIn;
+        totalOut += tokensOut;
+        totalCost += cost;
+        
+        tr.innerHTML = `
+          <td class="table-cell">${formatTimestamp(e.ts || "")}</td>
+          <td class="table-cell">${e.provider || "unknown"}</td>
+          <td class="table-cell"><code style="font-size: var(--text-xs);">${e.model || "unknown"}</code></td>
+          <td class="table-cell" style="text-align: right;">${tokensIn.toLocaleString()}</td>
+          <td class="table-cell" style="text-align: right;">${tokensOut.toLocaleString()}</td>
+          <td class="table-cell cost-cell" style="text-align: right;">$${cost.toFixed(4)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      // Update totals
+      document.getElementById('total-in').textContent = totalIn.toLocaleString();
+      document.getElementById('total-out').textContent = totalOut.toLocaleString();
+      document.getElementById('total-cost').textContent = '$' + totalCost.toFixed(4);
+    }
+
+    // Update stats cards
+    function updateStats() {
+      const totalCalls = eventsData.length;
+      const totalTokens = eventsData.reduce((sum, e) => sum + (parseInt(e.in || 0) + parseInt(e.out || 0)), 0);
+      const totalCost = eventsData.reduce((sum, e) => sum + parseFloat(e.cost || 0), 0);
+      
+      document.getElementById('stat-calls').textContent = totalCalls.toLocaleString();
+      document.getElementById('stat-tokens').textContent = (totalTokens / 1000).toFixed(1) + 'K';
+      document.getElementById('stat-cost').textContent = '$' + totalCost.toFixed(2);
+    }
+
+    // Format timestamp
+    function formatTimestamp(ts) {
+      if (!ts) return 'Unknown';
+      try {
+        const date = new Date(ts);
+        return date.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch {
+        return ts;
+      }
+    }
+
+    // Export to CSV
+    function exportCSV() {
+      if (eventsData.length === 0) {
+        alert('No data to export!');
+        return;
+      }
+      
+      const headers = ['Timestamp', 'Provider', 'Model', 'Tokens In', 'Tokens Out', 'Cost'];
+      const rows = eventsData.map(e => [
+        e.ts || '',
+        e.provider || '',
+        e.model || '',
+        e.in || 0,
+        e.out || 0,
+        (e.cost || 0).toFixed(4)
+      ]);
+      
+      const csv = [
+        headers.join(','),
+        ...rows.map(row => row.join(','))
+      ].join('\n');
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `usage_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+      alert('✅ CSV exported successfully!');
+    }
+
+    // Generate mock data for demonstration
+    function generateMockData() {
+      const providers = ['openai', 'anthropic'];
+      const models = ['gpt-4', 'gpt-3.5-turbo', 'claude-3-sonnet', 'claude-3-opus'];
+      const data = [];
+      
+      for (let i = 0; i < 25; i++) {
+        const provider = providers[Math.floor(Math.random() * providers.length)];
+        const model = models[Math.floor(Math.random() * models.length)];
+        const tokensIn = Math.floor(Math.random() * 8000) + 1000;
+        const tokensOut = Math.floor(Math.random() * 2000) + 500;
+        const cost = (tokensIn * 0.00001 + tokensOut * 0.00003);
+        
+        const date = new Date();
+        date.setHours(date.getHours() - i);
+        
+        data.push({
+          ts: date.toISOString(),
+          provider: provider,
+          model: model,
+          in: tokensIn,
+          out: tokensOut,
+          cost: cost
+        });
+      }
+      
+      return data;
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', load);
+  </script>
+</body>
+</html>

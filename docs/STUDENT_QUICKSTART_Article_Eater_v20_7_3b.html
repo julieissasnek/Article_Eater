@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Article Eater v20.7.3b – Student Quickstart</title>
+</head>
+<body>
+<pre>
+# Article Eater v20.7.3b – Student Quickstart
+
+This document explains how to get a **local, testable copy of Article Eater** running, and how to verify that the core engine is healthy before you touch anything.
+
+The goal is **not** to make you a sysadmin. The goal is to give you a repeatable path from “fresh clone” to “I can run tests and a small demo GUI”.
+
+---
+
+## 1. Prerequisites
+
+- Python **3.10 or newer** installed.
+- A terminal (macOS Terminal, iTerm2, or similar).
+- Basic familiarity with:
+  - `cd` to change directories
+  - running `python some_script.py`
+
+You do **not** need Docker or Neo4j for this quickstart.
+
+---
+
+## 2. Set up a virtual environment
+
+From the repo root (folder that contains `requirements.txt` and `src/`):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+You should now see `(.venv)` at the start of your terminal prompt.
+
+---
+
+## 3. Install Python dependencies
+
+From the same repo root:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+This installs the core backend, agent, and governance dependencies.
+
+If you later want to run the **user rules GUI** (a small Flask app for editing rules), also run:
+
+```bash
+pip install -r apps/user_rules_gui/requirements.txt
+```
+
+---
+
+## 4. Run the built-in health checks
+
+Before you do anything else, confirm that the repo is internally coherent.
+
+From the repo root:
+
+```bash
+python scripts/sanity_check.py
+```
+
+You should see:
+
+- `[sanity_check] OK`
+- optionally, a **warning** about `apps.user_rules_gui.app` if you have not installed Flask/SQLAlchemy.
+
+Then run the offline pipeline smoke test:
+
+```bash
+python scripts/offline_pipeline_smoke.py
+```
+
+You should see output like:
+
+```text
+[offline_pipeline_smoke] OK
+ - events in graph.jsonl: 4
+ - calibration files: 1
+```
+
+This means:
+
+- `Agent_Finder`, `Agent_Aggregator`, and `Agent_Linker` are wired correctly.
+- The fallback JSONL graph store is working.
+- The confidence calibrator is producing per-finding JSON artefacts in `data/calibration/`.
+
+---
+
+## 5. Minimal “from paper to engine” experiment
+
+At this stage, you **do not** need to edit any code. The point is to see the pipeline move data.
+
+1. Open `data/graph.jsonl` in a text editor.
+   - You should see several JSON objects, one per line, with types like `"finding"`, `"aggregation"`, `"links"`.
+
+2. Open the newest file in `data/calibration/`.
+   - This is the per-finding confidence summary created by the smoke test.
+
+3. Re-run the smoke test if you like:
+
+   ```bash
+   python scripts/offline_pipeline_smoke.py
+   ```
+
+   Each run will reset `graph.jsonl` and the calibration directory and regenerate fresh artefacts.
+
+---
+
+## 6. Optional: run the User Rules GUI
+
+The **User Rules GUI** is a small Flask app for editing rules in a SQLite database. It does not drive the entire Article Eater system, but it is a useful, self-contained UI surface.
+
+1. Make sure you have installed its dependencies:
+
+   ```bash
+   pip install -r apps/user_rules_gui/requirements.txt
+   ```
+
+2. From the repo root, run:
+
+   ```bash
+   python apps/user_rules_gui/app.py
+   ```
+
+3. Open your browser and go to:
+
+   - http://localhost:5051/
+
+You should see a simple table of rules with options to add, edit, and delete entries. The data are stored in `user_rules.db` in the repo root.
+
+---
+
+## 7. What **not** to worry about yet
+
+- External graph databases (e.g., Neo4j).
+- Full BN integration.
+- Deploying Article Eater on a server.
+- Connecting to real LLM providers (Gemini, OpenAI, etc.).
+
+Those are advanced topics. The quickstart only aims to:
+
+- Get your Python environment working.
+- Confirm the engine is healthy via the two scripts:
+  - `scripts/sanity_check.py`
+  - `scripts/offline_pipeline_smoke.py`
+- Let you explore one small GUI surface (User Rules GUI) if you want.
+
+---
+
+## 8. If something fails
+
+If either script fails:
+
+- Copy the **full error output** and
+- Note exactly which command you ran, from which directory.
+
+This information is essential when asking for help or opening a ticket.
+
+</pre>
+</body>
+</html>

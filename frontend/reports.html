@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports Generator - Article Eater</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">
+        <span class="nav-logo-emoji">📚</span>
+        Article Eater
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="findings.html" class="nav-link">
+            <span class="nav-icon">🔬</span>
+            Findings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="interactions.html" class="nav-link">
+            <span class="nav-icon">🔄</span>
+            Interactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link active">
+            <span class="nav-icon">📄</span>
+            Reports
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="help.html" class="nav-link">
+            <span class="nav-icon">❓</span>
+            Help
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">
+            <span class="header-icon">📄</span>
+            <h1>Reports Generator</h1>
+          </div>
+          <p class="header-description">
+            Generate comprehensive research reports from your synthesized data
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadDraft()">
+            <span class="btn-icon">📝</span>
+            Load Draft
+          </button>
+          <button class="btn btn-primary" onclick="showNewReportDialog()">
+            <span class="btn-icon">✨</span>
+            New Report
+          </button>
+        </div>
+      </header>
+
+      <!-- Quick Stats -->
+      <div class="stats-grid" style="margin-bottom: var(--space-8);">
+        <div class="stat-card stat-card-info">
+          <div class="stat-icon">📄</div>
+          <div class="stat-content">
+            <div class="stat-label">Generated Reports</div>
+            <div class="stat-value">12</div>
+            <div class="stat-change">
+              All time
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-success">
+          <div class="stat-icon">💾</div>
+          <div class="stat-content">
+            <div class="stat-label">Draft Reports</div>
+            <div class="stat-value">3</div>
+            <div class="stat-change">
+              In progress
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-warning">
+          <div class="stat-icon">⏰</div>
+          <div class="stat-content">
+            <div class="stat-label">Last Generated</div>
+            <div class="stat-value">2d</div>
+            <div class="stat-change">
+              ago
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Templates -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">📋</span>
+            Choose a Template
+          </h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4);">
+            <!-- Literature Review Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base);" onclick="selectTemplate('literature-review')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">📚</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Literature Review
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Comprehensive synthesis of all papers with thematic organization and key findings
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Introduction & methods<br>
+                  ✓ Thematic analysis<br>
+                  ✓ Synthesized conclusions<br>
+                  ✓ APA citations
+                </div>
+              </div>
+            </div>
+
+            <!-- Evidence Summary Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base);" onclick="selectTemplate('evidence-summary')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">📊</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Evidence Summary
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Concise summary of findings with statistical details and confidence ratings
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Key findings table<br>
+                  ✓ Effect sizes & p-values<br>
+                  ✓ Evidence quality ratings<br>
+                  ✓ Quick reference format
+                </div>
+              </div>
+            </div>
+
+            <!-- Design Recommendations Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base);" onclick="selectTemplate('design-recommendations')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">🎯</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Design Recommendations
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Actionable design guidelines based on synthesized research rules
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Practical guidelines<br>
+                  ✓ Evidence-based rationale<br>
+                  ✓ Implementation tips<br>
+                  ✓ Case examples
+                </div>
+              </div>
+            </div>
+
+            <!-- Meta-Analysis Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base);" onclick="selectTemplate('meta-analysis')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">🔬</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Meta-Analysis
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Statistical synthesis combining effect sizes across multiple studies
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Pooled effect sizes<br>
+                  ✓ Heterogeneity analysis<br>
+                  ✓ Forest plots<br>
+                  ✓ Publication bias tests
+                </div>
+              </div>
+            </div>
+
+            <!-- Executive Summary Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base);" onclick="selectTemplate('executive-summary')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">⚡</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Executive Summary
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Brief, high-level overview for decision-makers and stakeholders
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Key takeaways<br>
+                  ✓ Main conclusions<br>
+                  ✓ Recommendations<br>
+                  ✓ 2-4 pages max
+                </div>
+              </div>
+            </div>
+
+            <!-- Custom Template -->
+            <div class="card" style="cursor: pointer; transition: all var(--transition-base); border: 2px dashed var(--gray-300);" onclick="selectTemplate('custom')">
+              <div class="card-body">
+                <div style="font-size: 2.5rem; margin-bottom: var(--space-3);">✏️</div>
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                  Custom Report
+                </h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Build your own report structure with customizable sections
+                </p>
+                <div style="font-size: var(--text-xs); color: var(--gray-500);">
+                  ✓ Flexible structure<br>
+                  ✓ Choose sections<br>
+                  ✓ Custom formatting<br>
+                  ✓ Save as template
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Reports -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">📁</span>
+            Recent Reports
+          </h3>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead class="table-header">
+              <tr>
+                <th class="table-th">Report Name</th>
+                <th class="table-th">Template</th>
+                <th class="table-th">Created</th>
+                <th class="table-th">Papers</th>
+                <th class="table-th">Format</th>
+                <th class="table-th">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr class="table-row">
+                <td class="table-cell">
+                  <strong>Biophilic Design Literature Review</strong>
+                </td>
+                <td class="table-cell">
+                  <span class="badge badge-info">Literature Review</span>
+                </td>
+                <td class="table-cell">Nov 13, 2025</td>
+                <td class="table-cell">42 papers</td>
+                <td class="table-cell">PDF, DOCX</td>
+                <td class="table-cell">
+                  <div style="display: flex; gap: var(--space-2);">
+                    <button class="btn btn-secondary" onclick="viewReport('report-001')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      👁️ View
+                    </button>
+                    <button class="btn btn-primary" onclick="downloadReport('report-001', 'pdf')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      📥 PDF
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              
+              <tr class="table-row">
+                <td class="table-cell">
+                  <strong>Natural Light Effects Summary</strong>
+                </td>
+                <td class="table-cell">
+                  <span class="badge badge-success">Evidence Summary</span>
+                </td>
+                <td class="table-cell">Nov 10, 2025</td>
+                <td class="table-cell">18 papers</td>
+                <td class="table-cell">PDF, XLSX</td>
+                <td class="table-cell">
+                  <div style="display: flex; gap: var(--space-2);">
+                    <button class="btn btn-secondary" onclick="viewReport('report-002')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      👁️ View
+                    </button>
+                    <button class="btn btn-primary" onclick="downloadReport('report-002', 'pdf')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      📥 PDF
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              
+              <tr class="table-row">
+                <td class="table-cell">
+                  <strong>Office Design Guidelines v2</strong>
+                  <span class="badge badge-warning" style="margin-left: var(--space-2);">Draft</span>
+                </td>
+                <td class="table-cell">
+                  <span class="badge badge-warning">Design Recommendations</span>
+                </td>
+                <td class="table-cell">Nov 8, 2025</td>
+                <td class="table-cell">31 papers</td>
+                <td class="table-cell">DOCX</td>
+                <td class="table-cell">
+                  <div style="display: flex; gap: var(--space-2);">
+                    <button class="btn btn-secondary" onclick="editReport('report-003')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      ✏️ Edit
+                    </button>
+                    <button class="btn btn-primary" onclick="finalizeReport('report-003')" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);">
+                      ✅ Finalize
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div class="card" style="margin-top: var(--space-6);">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">💡</span>
+            Report Generation Tips
+          </h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-4);">
+            <div>
+              <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+                📚 Include Context
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--gray-600);">
+                Add background info about your research question and methodology to make reports more complete
+              </p>
+            </div>
+            
+            <div>
+              <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+                🎯 Filter Strategically
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--gray-600);">
+                Use filters to include only high-quality findings (p < 0.05, large effect sizes)
+              </p>
+            </div>
+            
+            <div>
+              <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+                ✏️ Customize Structure
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--gray-600);">
+                Modify templates to match your specific needs or save your own custom templates
+              </p>
+            </div>
+            
+            <div>
+              <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+                📊 Add Visualizations
+              </div>
+              <p style="font-size: var(--text-sm); color: var(--gray-600);">
+                Include charts and graphs to make statistical findings easier to understand
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    function selectTemplate(templateId) {
+      const templates = {
+        'literature-review': 'Literature Review',
+        'evidence-summary': 'Evidence Summary',
+        'design-recommendations': 'Design Recommendations',
+        'meta-analysis': 'Meta-Analysis',
+        'executive-summary': 'Executive Summary',
+        'custom': 'Custom Report'
+      };
+      
+      const templateName = templates[templateId];
+      
+      if (confirm(`Generate a ${templateName}?\n\nThis will:\n• Analyze all papers in your library\n• Extract relevant findings\n• Apply the ${templateName} template\n• Generate formatted output\n\nEstimated time: 2-5 minutes`)) {
+        alert(`✨ Generating ${templateName}...\n\nYour report will appear in the queue and you'll be notified when it's ready!`);
+        // In production, this would call the report generation API
+      }
+    }
+
+    function showNewReportDialog() {
+      alert('📄 New Report Wizard\n\nThis would open a dialog to:\n• Choose template\n• Select papers/findings\n• Configure options\n• Set output format');
+    }
+
+    function loadDraft() {
+      alert('📝 Load Draft\n\nThis would show a list of draft reports you can continue editing.');
+    }
+
+    function viewReport(reportId) {
+      alert(`👁️ Viewing report: ${reportId}\n\nThis would open the report in a preview window.`);
+    }
+
+    function downloadReport(reportId, format) {
+      alert(`📥 Downloading report: ${reportId}\n\nFormat: ${format.toUpperCase()}\n\n✅ Your download will begin shortly!`);
+    }
+
+    function editReport(reportId) {
+      alert(`✏️ Editing report: ${reportId}\n\nThis would open the report editor.`);
+    }
+
+    function finalizeReport(reportId) {
+      if (confirm('✅ Finalize this report?\n\nThis will:\n• Lock the content\n• Generate final PDFs\n• Add to completed reports')) {
+        alert('🎉 Report finalized!\n\nYour report is now complete and ready to download.');
+      }
+    }
+  </script>
+</body>
+</html>

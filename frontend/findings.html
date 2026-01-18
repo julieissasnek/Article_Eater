@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Findings Browser - Article Eater</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">
+        <span class="nav-logo-emoji">📚</span>
+        Article Eater
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="findings.html" class="nav-link active">
+            <span class="nav-icon">🔬</span>
+            Findings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="interactions.html" class="nav-link">
+            <span class="nav-icon">🔄</span>
+            Interactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">📄</span>
+            Reports
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="help.html" class="nav-link">
+            <span class="nav-icon">❓</span>
+            Help
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">
+            <span class="header-icon">🔬</span>
+            <h1>Findings Browser</h1>
+          </div>
+          <p class="header-description">
+            Explore individual research findings with statistical details and evidence
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="exportFindings()">
+            <span class="btn-icon">📥</span>
+            Export CSV
+          </button>
+          <button class="btn btn-primary" onclick="refreshFindings()">
+            <span class="btn-icon">🔄</span>
+            Refresh
+          </button>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid" style="margin-bottom: var(--space-8);">
+        <div class="stat-card stat-card-success">
+          <div class="stat-icon">🔬</div>
+          <div class="stat-content">
+            <div class="stat-label">Total Findings</div>
+            <div class="stat-value" id="stat-total">--</div>
+            <div class="stat-change">
+              Extracted from papers
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-info">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-content">
+            <div class="stat-label">High Confidence</div>
+            <div class="stat-value" id="stat-high-conf">--</div>
+            <div class="stat-change">
+              p < 0.01
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-primary">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <div class="stat-label">Large Effects</div>
+            <div class="stat-value" id="stat-large-effect">--</div>
+            <div class="stat-change">
+              d > 0.5
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-warning">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-label">Avg Sample Size</div>
+            <div class="stat-value" id="stat-avg-n">--</div>
+            <div class="stat-change">
+              participants
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter & Search Bar -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-body">
+          <div style="display: flex; gap: var(--space-4); align-items: end; flex-wrap: wrap;">
+            <div class="form-group" style="margin: 0; flex: 1; min-width: 250px;">
+              <label class="form-label">
+                <span class="form-label-icon">🔍</span>
+                Search findings
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="search-query"
+                placeholder="e.g., natural light, plants, productivity"
+                onkeyup="filterFindings()"
+              >
+            </div>
+            
+            <div class="form-group" style="margin: 0; min-width: 150px;">
+              <label class="form-label">Variable Type</label>
+              <select class="form-select" id="filter-var-type" onchange="filterFindings()">
+                <option value="all">All Types</option>
+                <option value="antecedent">Antecedent (IV)</option>
+                <option value="consequent">Consequent (DV)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin: 0; min-width: 150px;">
+              <label class="form-label">Effect Size</label>
+              <select class="form-select" id="filter-effect" onchange="filterFindings()">
+                <option value="all">All Sizes</option>
+                <option value="large">Large (d > 0.5)</option>
+                <option value="medium">Medium (0.3-0.5)</option>
+                <option value="small">Small (< 0.3)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin: 0; min-width: 150px;">
+              <label class="form-label">Significance</label>
+              <select class="form-select" id="filter-sig" onchange="filterFindings()">
+                <option value="all">All Findings</option>
+                <option value="high">p < 0.01</option>
+                <option value="medium">p < 0.05</option>
+                <option value="low">p < 0.10</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Findings List -->
+      <div id="findings-list">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">🔍</div>
+        <div class="empty-state-title">No findings match your filters</div>
+        <div class="empty-state-message">
+          Try adjusting your search criteria or clearing filters
+        </div>
+        <button class="btn btn-primary" onclick="clearFilters()" style="margin-top: var(--space-4);">
+          <span class="btn-icon">🔄</span>
+          Clear Filters
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading findings... 🔬</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let allFindings = [];
+
+    // Initialize
+    async function init() {
+      await loadFindings();
+      updateStats();
+    }
+
+    // Load findings
+    async function loadFindings() {
+      try {
+        document.getElementById('loading-state').style.display = 'block';
+        document.getElementById('findings-list').style.display = 'none';
+        
+        // Mock data - replace with API call
+        allFindings = generateMockFindings();
+        
+        filterFindings();
+      } catch (error) {
+        console.error('Error loading findings:', error);
+        alert('Failed to load findings. Please try again.');
+      } finally {
+        document.getElementById('loading-state').style.display = 'none';
+      }
+    }
+
+    // Filter findings
+    function filterFindings() {
+      const searchQuery = document.getElementById('search-query').value.toLowerCase();
+      const varType = document.getElementById('filter-var-type').value;
+      const effectSize = document.getElementById('filter-effect').value;
+      const significance = document.getElementById('filter-sig').value;
+
+      let filtered = allFindings.filter(f => {
+        const matchesSearch = !searchQuery || 
+          f.antecedent.toLowerCase().includes(searchQuery) ||
+          f.consequent.toLowerCase().includes(searchQuery) ||
+          f.paper_title.toLowerCase().includes(searchQuery);
+        
+        const matchesVarType = varType === 'all' || 
+          (varType === 'antecedent' && f.var_type === 'antecedent') ||
+          (varType === 'consequent' && f.var_type === 'consequent');
+        
+        const matchesEffect = effectSize === 'all' ||
+          (effectSize === 'large' && Math.abs(f.effect_size) > 0.5) ||
+          (effectSize === 'medium' && Math.abs(f.effect_size) >= 0.3 && Math.abs(f.effect_size) <= 0.5) ||
+          (effectSize === 'small' && Math.abs(f.effect_size) < 0.3);
+        
+        const matchesSig = significance === 'all' ||
+          (significance === 'high' && f.p_value < 0.01) ||
+          (significance === 'medium' && f.p_value < 0.05) ||
+          (significance === 'low' && f.p_value < 0.10);
+        
+        return matchesSearch && matchesVarType && matchesEffect && matchesSig;
+      });
+
+      displayFindings(filtered);
+    }
+
+    // Display findings
+    function displayFindings(findings) {
+      const container = document.getElementById('findings-list');
+      
+      if (findings.length === 0) {
+        container.style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+        return;
+      }
+
+      container.style.display = 'block';
+      document.getElementById('empty-state').style.display = 'none';
+
+      container.innerHTML = findings.map(f => `
+        <div class="card" style="margin-bottom: var(--space-5);">
+          <div class="card-header">
+            <div style="display: flex; justify-content: space-between; align-items: start; width: 100%; gap: var(--space-4);">
+              <h3 class="card-title" style="flex: 1;">
+                <span class="card-icon">📊</span>
+                ${f.antecedent} → ${f.consequent}
+              </h3>
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                <span class="badge badge-${getEffectBadge(f.effect_size)}">
+                  d = ${f.effect_size.toFixed(2)}
+                </span>
+                <span class="badge badge-${getSigBadge(f.p_value)}">
+                  p = ${f.p_value.toFixed(3)}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <!-- Finding Details -->
+            <div style="background: var(--gray-50); padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+              <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2);">
+                📝 Finding
+              </div>
+              <p style="margin-bottom: var(--space-3); line-height: 1.6;">
+                ${f.description}
+              </p>
+            </div>
+
+            <!-- Statistical Details -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-4);">
+              <div>
+                <div style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                  Effect Size (Cohen's d)
+                </div>
+                <div style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--primary-blue);">
+                  ${f.effect_size.toFixed(2)}
+                  <span style="font-size: var(--text-sm); font-weight: var(--font-normal); color: var(--gray-600);">
+                    ${getEffectLabel(f.effect_size)}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                  Statistical Significance
+                </div>
+                <div style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--primary-blue);">
+                  p = ${f.p_value.toFixed(3)}
+                  <span style="font-size: var(--text-sm); font-weight: var(--font-normal); color: var(--gray-600);">
+                    ${getSigLabel(f.p_value)}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                  Sample Size
+                </div>
+                <div style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--primary-blue);">
+                  N = ${f.sample_size}
+                  <span style="font-size: var(--text-sm); font-weight: var(--font-normal); color: var(--gray-600);">
+                    participants
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                  Confidence Interval
+                </div>
+                <div style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--primary-blue);">
+                  ${f.ci_lower.toFixed(2)} - ${f.ci_upper.toFixed(2)}
+                  <span style="font-size: var(--text-sm); font-weight: var(--font-normal); color: var(--gray-600);">
+                    95% CI
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interpretation -->
+            ${f.interpretation ? `
+              <div class="alert alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                  <div class="alert-title">Interpretation</div>
+                  <div class="alert-message">${f.interpretation}</div>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="card-footer">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+              <div style="font-size: var(--text-sm); color: var(--gray-600);">
+                📚 <strong>${f.paper_title}</strong> (${f.paper_year})
+              </div>
+              <div style="display: flex; gap: var(--space-2);">
+                <button class="btn btn-secondary" onclick="viewPaper('${f.paper_id}')">
+                  <span class="btn-icon">📄</span>
+                  View Paper
+                </button>
+                <button class="btn btn-primary" onclick="addToReport('${f.id}')">
+                  <span class="btn-icon">➕</span>
+                  Add to Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Update stats
+    function updateStats() {
+      const total = allFindings.length;
+      const highConf = allFindings.filter(f => f.p_value < 0.01).length;
+      const largeEffect = allFindings.filter(f => Math.abs(f.effect_size) > 0.5).length;
+      const avgN = Math.round(allFindings.reduce((sum, f) => sum + f.sample_size, 0) / total);
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-high-conf').textContent = highConf;
+      document.getElementById('stat-large-effect').textContent = largeEffect;
+      document.getElementById('stat-avg-n').textContent = avgN;
+    }
+
+    // Helper functions
+    function getEffectBadge(d) {
+      const abs = Math.abs(d);
+      if (abs > 0.8) return 'success';
+      if (abs > 0.5) return 'info';
+      if (abs > 0.3) return 'warning';
+      return 'error';
+    }
+
+    function getSigBadge(p) {
+      if (p < 0.01) return 'success';
+      if (p < 0.05) return 'info';
+      if (p < 0.10) return 'warning';
+      return 'error';
+    }
+
+    function getEffectLabel(d) {
+      const abs = Math.abs(d);
+      if (abs > 0.8) return '(very large)';
+      if (abs > 0.5) return '(large)';
+      if (abs > 0.3) return '(medium)';
+      if (abs > 0.2) return '(small)';
+      return '(very small)';
+    }
+
+    function getSigLabel(p) {
+      if (p < 0.01) return '(highly significant)';
+      if (p < 0.05) return '(significant)';
+      if (p < 0.10) return '(marginally significant)';
+      return '(not significant)';
+    }
+
+    function clearFilters() {
+      document.getElementById('search-query').value = '';
+      document.getElementById('filter-var-type').value = 'all';
+      document.getElementById('filter-effect').value = 'all';
+      document.getElementById('filter-sig').value = 'all';
+      filterFindings();
+    }
+
+    function refreshFindings() {
+      loadFindings();
+    }
+
+    function viewPaper(paperId) {
+      alert(`Opening paper: ${paperId}\n\nThis would navigate to the full paper view in the Library.`);
+    }
+
+    function addToReport(findingId) {
+      alert(`Adding finding ${findingId} to report!\n\n✅ Finding added to your report draft.`);
+    }
+
+    function exportFindings() {
+      alert('📥 Exporting findings to CSV...\n\nThis would download a CSV file with all filtered findings.');
+    }
+
+    // Generate mock data
+    function generateMockFindings() {
+      return [
+        {
+          id: 'find-001',
+          antecedent: 'Natural Light Exposure',
+          consequent: 'Workplace Productivity',
+          description: 'Increased natural light in office environments led to 18% improvement in task completion rates and reduced errors by 12%.',
+          effect_size: 0.62,
+          p_value: 0.003,
+          sample_size: 142,
+          ci_lower: 0.38,
+          ci_upper: 0.86,
+          paper_id: 'paper-042',
+          paper_title: 'Daylight and Office Performance',
+          paper_year: 2022,
+          var_type: 'antecedent',
+          interpretation: 'Medium to large effect size with high statistical significance. Natural light appears to have a meaningful impact on productivity metrics.'
+        },
+        {
+          id: 'find-002',
+          antecedent: 'Indoor Plant Density',
+          consequent: 'Perceived Air Quality',
+          description: 'Offices with 3+ plants per 10m² showed 25% improvement in perceived air quality ratings compared to offices with no plants.',
+          effect_size: 0.78,
+          p_value: 0.001,
+          sample_size: 89,
+          ci_lower: 0.52,
+          ci_upper: 1.04,
+          paper_id: 'paper-087',
+          paper_title: 'Biophilic Design in Workplaces',
+          paper_year: 2023,
+          var_type: 'antecedent',
+          interpretation: 'Large effect size with very high significance. Plants demonstrate strong positive impact on subjective air quality perceptions.'
+        },
+        {
+          id: 'find-003',
+          antecedent: 'Ceiling Height',
+          consequent: 'Creative Performance',
+          description: 'Participants in rooms with 3m+ ceilings scored 15% higher on creative thinking tasks than those in standard 2.4m ceiling rooms.',
+          effect_size: 0.45,
+          p_value: 0.012,
+          sample_size: 216,
+          ci_lower: 0.18,
+          ci_upper: 0.72,
+          paper_id: 'paper-129',
+          paper_title: 'Spatial Cognition and Architecture',
+          paper_year: 2021,
+          var_type: 'antecedent',
+          interpretation: 'Medium effect size with good statistical power. Ceiling height appears to influence abstract thinking processes.'
+        },
+        {
+          id: 'find-004',
+          antecedent: 'Color Temperature (Warm)',
+          consequent: 'Stress Levels',
+          description: 'Warm lighting (2700K) reduced cortisol levels by 8% compared to cool lighting (5000K) in office settings.',
+          effect_size: -0.32,
+          p_value: 0.048,
+          sample_size: 67,
+          ci_lower: -0.61,
+          ci_upper: -0.03,
+          paper_id: 'paper-201',
+          paper_title: 'Lighting and Physiological Stress',
+          paper_year: 2020,
+          var_type: 'antecedent',
+          interpretation: 'Small to medium negative effect (reduction in stress). Borderline significance with modest sample size.'
+        },
+        {
+          id: 'find-005',
+          antecedent: 'Window Views of Nature',
+          consequent: 'Post-Surgery Recovery Time',
+          description: 'Hospital patients with window views of nature had 8.5% shorter recovery times than those with views of buildings.',
+          effect_size: -0.51,
+          p_value: 0.007,
+          sample_size: 234,
+          ci_lower: -0.78,
+          ci_upper: -0.24,
+          paper_id: 'paper-156',
+          paper_title: 'Therapeutic Landscapes in Healthcare',
+          paper_year: 2019,
+          var_type: 'antecedent',
+          interpretation: 'Medium negative effect (faster recovery). Strong evidence with good power and clinical significance.'
+        }
+      ];
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

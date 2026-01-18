@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "SubjectTrait": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "scale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "used_as_moderator": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "sample": {
+      "additionalProperties": false,
+      "properties": {
+        "clinical_status": {
+          "additionalProperties": false,
+          "properties": {
+            "key_exclusions": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "key_inclusions": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "population": {
+              "enum": [
+                "healthy",
+                "clinical",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "culture": {
+          "additionalProperties": false,
+          "properties": {
+            "countries": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "region": {
+              "enum": [
+                "WEIRD",
+                "non_WEIRD",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "self_construal_profile": {
+              "enum": [
+                "more_independent",
+                "more_interdependent",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "demographics": {
+          "additionalProperties": false,
+          "properties": {
+            "age_band": {
+              "enum": [
+                "child",
+                "adolescent",
+                "young_adult",
+                "middle_adult",
+                "older_adult",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "age_mean": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "age_range": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "age_sd": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "education_band": {
+              "enum": [
+                "school",
+                "some_university",
+                "university_undergrads",
+                "graduates",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "sample_size": {
+              "type": [
+                "integer",
+                "number",
+                "null"
+              ]
+            },
+            "sex_gender_distribution": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "n_total": {
+          "type": [
+            "integer",
+            "number",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "traits_measured": {
+      "items": {
+        "$ref": "#/$defs/SubjectTrait"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "type": {
+      "const": "panel_subjects"
+    }
+  },
+  "required": [
+    "type",
+    "paper_id",
+    "sample"
+  ],
+  "title": "PanelSubjects",
+  "type": "object"
+}

@@ -1,0 +1,5 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Rules</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"></head>
+<body><header><h1>User Rules</h1><nav><a href="{{url_for('index')}}">Home</a> | <a href="{{url_for('new_rule')}}">New</a></nav>
+{% with messages=get_flashed_messages() %}{% if messages %}<ul>{% for m in messages %}<li>{{m}}</li>{% endfor %}</ul>{% endif %}{% endwith %}
+</header><main>{% block content %}{% endblock %}</main></body></html>

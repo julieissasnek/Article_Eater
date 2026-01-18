@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rule Inspector - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link active">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Rule Inspector</h1>
+          <p class="text-gray-600">
+            <span id="total-rules">--</span> synthesized rules • 
+            Average confidence: <span id="avg-confidence">--</span>
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadRules()">
+            <span>🔄</span> Refresh
+          </button>
+          <button class="btn btn-primary" onclick="UI.showModal('export-modal')">
+            <span>⬇️</span> Export
+          </button>
+        </div>
+      </header>
+
+      <!-- Filters -->
+      <div class="card">
+        <div class="card-content">
+          <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Search Rules</label>
+              <input 
+                type="text" 
+                id="search-input"
+                class="form-input" 
+                NOTE="Search by rule text, consequent, or topic..."
+                oninput="searchRules()"
+              >
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Confidence Level</label>
+              <select class="form-select" id="confidence-filter" onchange="filterRules()">
+                <option value="all">All Levels</option>
+                <option value="high">High (≥80%)</option>
+                <option value="medium">Medium (60-79%)</option>
+                <option value="low">Low (<60%)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label">Sort By</label>
+              <select class="form-select" id="sort-select" onchange="sortRules()">
+                <option value="confidence">Confidence (High to Low)</option>
+                <option value="recent">Recently Created</option>
+                <option value="studies">Number of Studies</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card success">
+          <div class="stat-label">High Confidence</div>
+          <div class="stat-value" id="stat-high">--</div>
+          <div class="stat-change">≥80% confidence</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-label">Medium Confidence</div>
+          <div class="stat-value" id="stat-medium">--</div>
+          <div class="stat-change">60-79% confidence</div>
+        </div>
+        <div class="stat-card error">
+          <div class="stat-label">Low Confidence</div>
+          <div class="stat-value" id="stat-low">--</div>
+          <div class="stat-change"><60% confidence</div>
+        </div>
+        <div class="stat-card info">
+          <div class="stat-label">With Contradictions</div>
+          <div class="stat-value" id="stat-contradictions">--</div>
+          <div class="stat-change">Need review</div>
+        </div>
+      </div>
+
+      <!-- Rules List -->
+      <div id="rules-content">
+        <div class="text-center" style="padding: 60px;">
+          <div class="spinner"></div>
+          <p class="text-gray-600 mt-md">Loading rules...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Rule Detail Modal -->
+  <div id="rule-modal" class="modal">
+    <div class="modal-content" style="max-width: 1000px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Rule #<span id="modal-rule-id">--</span></h2>
+        <button class="modal-close" onclick="UI.hideModal('rule-modal')">×</button>
+      </div>
+      <div id="modal-content">
+        <div class="text-center" style="padding: 40px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="export-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Export Rules</h2>
+        <button class="modal-close" onclick="UI.hideModal('export-modal')">×</button>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">Export Format</label>
+          <select class="form-select" id="export-format">
+            <option value="json">JSON (structured data)</option>
+            <option value="csv">CSV (spreadsheet)</option>
+            <option value="markdown">Markdown (readable)</option>
+            <option value="bibtex">BibTeX (citations)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Include Evidence</label>
+          <div style="display: flex; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" id="include-supporting" checked>
+              Supporting studies
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" id="include-contradicting">
+              Contradicting studies
+            </label>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button class="btn btn-secondary" onclick="UI.hideModal('export-modal')">Cancel</button>
+          <button class="btn btn-primary" onclick="exportRules()">
+            <span>⬇️</span> Export
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let rules = [];
+    let filteredRules = [];
+
+    // Load rules on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadRules();
+    });
+
+    // Load rules from API
+    async function loadRules() {
+      try {
+        // In production: const rules = await api.listRules(100);
+        // For demo, generate NOTE data
+        rules = generateMockRules();
+        filteredRules = [...rules];
+        
+        updateStats();
+        displayRules();
+        
+      } catch (error) {
+        console.error('Rules load error:', error);
+        document.getElementById('rules-content').innerHTML = `
+          <div class="alert alert-error">
+            Failed to load rules: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // Generate NOTE rules
+    function generateMockRules() {
+      const templates = [
+        {
+          template: "Natural light exposure (>500 lux) in office spaces correlates with {effect}% reduction in self-reported stress",
+          consequent: "stress levels",
+          effect: [18, 31]
+        },
+        {
+          template: "Presence of living plants in indoor environments reduces cortisol levels by {effect}%",
+          consequent: "cortisol levels",
+          effect: [15, 28]
+        },
+        {
+          template: "Ceiling heights above {threshold}m enhance creative problem-solving performance by {effect}%",
+          consequent: "creative performance",
+          effect: [12, 23],
+          threshold: 3.0
+        },
+        {
+          template: "Views of natural landscapes from workspace increase attention restoration by {effect}%",
+          consequent: "attention restoration",
+          effect: [20, 35]
+        },
+        {
+          template: "Acoustic comfort (noise <45 dB) improves concentration task performance by {effect}%",
+          consequent: "concentration",
+          effect: [14, 27]
+        },
+        {
+          template: "Warm color temperatures (2700-3000K) in evening environments improve sleep onset by {effect} minutes",
+          consequent: "sleep onset time",
+          effect: [12, 25]
+        },
+        {
+          template: "Access to outdoor spaces increases physical activity by {effect} steps per day",
+          consequent: "physical activity",
+          effect: [800, 1500]
+        },
+        {
+          template: "Natural ventilation (vs. mechanical) correlates with {effect}% reduction in sick building syndrome symptoms",
+          consequent: "SBS symptoms",
+          effect: [22, 38]
+        }
+      ];
+
+      const mockRules = [];
+      
+      templates.forEach((template, i) => {
+        const effectMin = template.effect[0];
+        const effectMax = template.effect[1];
+        const confidence = Math.max(0.55, Math.min(0.95, 0.7 + (Math.random() * 0.25)));
+        const studyCount = Math.floor(3 + Math.random() * 10);
+        const contradictionCount = confidence < 0.7 ? Math.floor(Math.random() * 2) : 0;
+        
+        let ruleText = template.template.replace('{effect}', `${effectMin}-${effectMax}`);
+        if (template.threshold) {
+          ruleText = ruleText.replace('{threshold}', template.threshold);
+        }
+        
+        mockRules.push({
+          id: `rule-${i + 1}`,
+          rule: ruleText,
+          consequent: template.consequent,
+          confidence: confidence,
+          triangulation: Math.min(1.0, studyCount / 5.0),
+          consistency: confidence * 0.95,
+          significance: 0.85 + (Math.random() * 0.1),
+          studyCount: studyCount,
+          contradictionCount: contradictionCount,
+          effectRange: { min: effectMin, max: effectMax },
+          createdAt: new Date(2025, 10, 14 - i).toISOString(),
+          limitations: [
+            studyCount < 5 ? "Small number of studies" : null,
+            "Most studies in Northern Europe",
+            confidence < 0.7 ? "High variability in effect sizes" : null
+          ].filter(Boolean)
+        });
+      });
+      
+      return mockRules;
+    }
+
+    // Update stats
+    function updateStats() {
+      const total = rules.length;
+      const high = rules.filter(r => r.confidence >= 0.8).length;
+      const medium = rules.filter(r => r.confidence >= 0.6 && r.confidence < 0.8).length;
+      const low = rules.filter(r => r.confidence < 0.6).length;
+      const withContradictions = rules.filter(r => r.contradictionCount > 0).length;
+      const avgConfidence = (rules.reduce((sum, r) => sum + r.confidence, 0) / total * 100).toFixed(0);
+
+      document.getElementById('total-rules').textContent = total;
+      document.getElementById('avg-confidence').textContent = avgConfidence + '%';
+      document.getElementById('stat-high').textContent = high;
+      document.getElementById('stat-medium').textContent = medium;
+      document.getElementById('stat-low').textContent = low;
+      document.getElementById('stat-contradictions').textContent = withContradictions;
+    }
+
+    // Display rules
+    function displayRules() {
+      const container = document.getElementById('rules-content');
+
+      if (filteredRules.length === 0) {
+        container.innerHTML = `
+          <div class="text-center" style="padding: 60px;">
+            <p class="text-xl text-gray-600">No rules found</p>
+            <p class="text-sm text-gray-500 mt-md">Try adjusting your filters</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredRules.map(rule => {
+        const confidencePercent = Math.round(rule.confidence * 100);
+        const confidenceColor = UI.getConfidenceColor(rule.confidence);
+        
+        return `
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-header">
+              <div>
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem;">
+                  Rule #${rule.id.split('-')[1]}
+                </h3>
+                <p class="text-sm text-gray-600">
+                  ${rule.studyCount} studies • 
+                  ${rule.contradictionCount > 0 ? `${rule.contradictionCount} contradictions • ` : ''}
+                  Created ${UI.formatDate(rule.createdAt)}
+                </p>
+              </div>
+              <div class="confidence-meter">
+                <div class="confidence-bar" style="width: 150px;">
+                  <div class="confidence-bar-fill" style="width: ${confidencePercent}%"></div>
+                </div>
+                <div class="confidence-label" style="color: var(--${confidenceColor});">
+                  ${confidencePercent}%
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-content">
+              <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 1rem;">
+                ${rule.rule}
+              </p>
+
+              <div style="margin: 1rem 0;">
+                <strong class="text-sm">Confidence Breakdown:</strong>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                  <div>
+                    <div class="text-xs text-gray-600">Triangulation</div>
+                    <div class="progress-bar" style="height: 6px; margin-top: 0.25rem;">
+                      <div class="progress-fill success" style="width: ${rule.triangulation * 100}%"></div>
+                    </div>
+                    <div class="text-xs text-gray-600">${Math.round(rule.triangulation * 100)}%</div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-gray-600">Consistency</div>
+                    <div class="progress-bar" style="height: 6px; margin-top: 0.25rem;">
+                      <div class="progress-fill success" style="width: ${rule.consistency * 100}%"></div>
+                    </div>
+                    <div class="text-xs text-gray-600">${Math.round(rule.consistency * 100)}%</div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-gray-600">Significance</div>
+                    <div class="progress-bar" style="height: 6px; margin-top: 0.25rem;">
+                      <div class="progress-fill success" style="width: ${rule.significance * 100}%"></div>
+                    </div>
+                    <div class="text-xs text-gray-600">${Math.round(rule.significance * 100)}%</div>
+                  </div>
+                </div>
+              </div>
+
+              ${rule.limitations.length > 0 ? `
+                <div class="alert alert-warning" style="margin-top: 1rem;">
+                  <strong>Limitations:</strong>
+                  <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.875rem;">
+                    ${rule.limitations.map(l => `<li>${l}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                <div style="display: flex; gap: 0.5rem;">
+                  <span class="badge badge-info">${rule.studyCount} studies</span>
+                  ${rule.contradictionCount > 0 ? 
+                    `<span class="badge badge-warning">${rule.contradictionCount} contradictions</span>` : 
+                    '<span class="badge badge-success">No contradictions</span>'}
+                </div>
+                <button class="btn btn-sm btn-primary" onclick="viewRuleDetails('${rule.id}')">
+                  View Evidence →
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Search rules
+    function searchRules() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      
+      if (!query) {
+        filteredRules = [...rules];
+      } else {
+        filteredRules = rules.filter(rule => 
+          rule.rule.toLowerCase().includes(query) ||
+          rule.consequent.toLowerCase().includes(query)
+        );
+      }
+      
+      displayRules();
+    }
+
+    // Filter rules
+    function filterRules() {
+      const filter = document.getElementById('confidence-filter').value;
+      
+      switch(filter) {
+        case 'high':
+          filteredRules = rules.filter(r => r.confidence >= 0.8);
+          break;
+        case 'medium':
+          filteredRules = rules.filter(r => r.confidence >= 0.6 && r.confidence < 0.8);
+          break;
+        case 'low':
+          filteredRules = rules.filter(r => r.confidence < 0.6);
+          break;
+        default:
+          filteredRules = [...rules];
+      }
+      
+      displayRules();
+    }
+
+    // Sort rules
+    function sortRules() {
+      const sortBy = document.getElementById('sort-select').value;
+      
+      switch(sortBy) {
+        case 'recent':
+          filteredRules.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          break;
+        case 'studies':
+          filteredRules.sort((a, b) => b.studyCount - a.studyCount);
+          break;
+        case 'confidence':
+        default:
+          filteredRules.sort((a, b) => b.confidence - a.confidence);
+      }
+      
+      displayRules();
+    }
+
+    // View rule details
+    function viewRuleDetails(ruleId) {
+      const rule = rules.find(r => r.id === ruleId);
+      if (!rule) return;
+
+      document.getElementById('modal-rule-id').textContent = ruleId.split('-')[1];
+      
+      // Generate NOTE evidence
+      const evidence = generateMockEvidence(rule.studyCount, rule.contradictionCount);
+      
+      document.getElementById('modal-content').innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+          <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-blue);">
+            <p style="font-size: 1.125rem; line-height: 1.6; margin: 0;">
+              ${rule.rule}
+            </p>
+          </div>
+
+          <div class="confidence-meter" style="margin-top: 1rem;">
+            <span style="font-weight: 600;">Overall Confidence:</span>
+            <div class="confidence-bar" style="flex: 1; margin: 0 1rem;">
+              <div class="confidence-bar-fill" style="width: ${rule.confidence * 100}%"></div>
+            </div>
+            <span style="font-weight: 700; color: var(--${UI.getConfidenceColor(rule.confidence)});">
+              ${Math.round(rule.confidence * 100)}%
+            </span>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">
+          Supporting Evidence (${evidence.supporting.length} studies)
+        </h3>
+        
+        ${evidence.supporting.map(study => `
+          <div class="paper-card" style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <span style="font-size: 1.25rem;">✓</span>
+                  <strong>${study.title}</strong>
+                </div>
+                <p class="text-sm text-gray-600">
+                  ${study.authors.join(', ')} (${study.year})
+                </p>
+                <p class="text-sm" style="margin: 0.5rem 0;">
+                  "${study.quote}"
+                </p>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                  <span class="badge badge-gray">n=${study.sampleSize}</span>
+                  <span class="badge badge-gray">p=${study.pValue}</span>
+                  <span class="badge badge-gray">d=${study.effectSize}</span>
+                  <span class="badge badge-gray">Page ${study.page}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+
+        ${evidence.contradicting.length > 0 ? `
+          <h3 style="font-size: 1rem; font-weight: 600; margin: 1.5rem 0 1rem;">
+            Contradicting Evidence (${evidence.contradicting.length} studies)
+          </h3>
+          
+          ${evidence.contradicting.map(study => `
+            <div class="paper-card" style="margin-bottom: 1rem; border-left-color: var(--warning);">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.25rem;">⚠️</span>
+                    <strong>${study.title}</strong>
+                  </div>
+                  <p class="text-sm text-gray-600">
+                    ${study.authors.join(', ')} (${study.year})
+                  </p>
+                  <p class="text-sm" style="margin: 0.5rem 0;">
+                    "${study.quote}"
+                  </p>
+                  <div class="alert alert-warning" style="margin-top: 0.5rem; padding: 0.5rem;">
+                    <strong>Why it contradicts:</strong> ${study.reason}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        ` : ''}
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button class="btn btn-secondary" onclick="UI.hideModal('rule-modal')">Close</button>
+          <button class="btn btn-primary" onclick="exportSingleRule('${rule.id}')">
+            Export This Rule
+          </button>
+        </div>
+      `;
+
+      UI.showModal('rule-modal');
+    }
+
+    // Generate NOTE evidence
+    function generateMockEvidence(supportingCount, contradictingCount) {
+      const authors = [
+        ['Boubekri, M.', 'Hull, R.B.'],
+        ['Aries, M.', 'Veitch, J.'],
+        ['Kaplan, R.', 'Kaplan, S.'],
+        ['Ulrich, R.S.', 'Zimring, C.']
+      ];
+
+      const supporting = [];
+      for (let i = 0; i < supportingCount; i++) {
+        supporting.push({
+          title: `Study ${i + 1} on Environmental Effects`,
+          authors: authors[i % authors.length],
+          year: 2015 + (i % 10),
+          quote: `Participants showed significant improvement in the experimental condition compared to control.`,
+          sampleSize: 50 + i * 10,
+          pValue: (0.001 + Math.random() * 0.04).toFixed(3),
+          effectSize: (0.25 + Math.random() * 0.5).toFixed(2),
+          page: 5 + i
+        });
+      }
+
+      const contradicting = [];
+      for (let i = 0; i < contradictingCount; i++) {
+        contradicting.push({
+          title: `Alternative Study ${i + 1}`,
+          authors: authors[i % authors.length],
+          year: 2018 + i,
+          quote: `No significant difference was observed between conditions.`,
+          reason: i % 2 === 0 ? 
+            "Small sample size (n=23) may lack statistical power" :
+            "Used different measurement instrument (self-report vs. physiological)"
+        });
+      }
+
+      return { supporting, contradicting };
+    }
+
+    // Export rules
+    function exportRules() {
+      const format = document.getElementById('export-format').value;
+      const includeSupporting = document.getElementById('include-supporting').checked;
+      const includeContradicting = document.getElementById('include-contradicting').checked;
+
+      UI.toast(`Exporting ${filteredRules.length} rules as ${format.toUpperCase()}...`, 'info');
+      
+      // In production, this would call API and download file
+      setTimeout(() => {
+        UI.toast('Export complete!', 'success');
+        UI.hideModal('export-modal');
+      }, 1000);
+    }
+
+    // Export single rule
+    function exportSingleRule(ruleId) {
+      UI.toast('Exporting rule...', 'info');
+      setTimeout(() => {
+        UI.toast('Rule exported!', 'success');
+      }, 500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "mechanism_claims": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_text": {
+            "type": "string"
+          },
+          "evidence_snippet": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "page_span": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "phenomenon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "role": {
+            "enum": [
+              "explains",
+              "is_consistent_with",
+              "challenges",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "strength": {
+            "enum": [
+              "speculative",
+              "consistent",
+              "strongly_supported",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "theory": {
+            "enum": [
+              "predictive_coding",
+              "biophilia",
+              "attention_restoration",
+              "stress_recovery",
+              "other",
+              "unknown",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "claim_text"
+        ],
+        "type": "object"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "type": {
+      "const": "panel_mechanisms"
+    }
+  },
+  "required": [
+    "type",
+    "paper_id"
+  ],
+  "title": "PanelMechanisms",
+  "type": "object"
+}

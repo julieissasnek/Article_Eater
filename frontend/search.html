@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Search - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link active">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>New Search</h1>
+          <p class="text-gray-600">Search Semantic Scholar for academic papers</p>
+          <div id="mode-banner" class="alert alert-warning hidden" style="margin-top: 0.5rem;"></div>
+        </div>
+        <div class="header-actions">
+          <a href="dashboard.html" class="btn btn-secondary">
+            <span>←</span> Back to Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- Search Form -->
+      <div class="card" id="search-card">
+        <div class="card-header">
+          <h2 class="card-title">Step 1: Enter Research Query</h2>
+        </div>
+        <div class="card-content">
+          <form id="search-form" onsubmit="handleSearch(event)">
+            <div class="form-group">
+              <label class="form-label">Research Question or Topic</label>
+              <input 
+                type="text" 
+                id="search-query"
+                class="form-input" 
+                NOTE="e.g., How does natural light affect stress in office workers?"
+                required
+                style="font-size: 1.125rem; padding: 1rem;"
+              >
+              <div class="form-hint">
+                💡 Tips: Be specific, include outcomes, specify context
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Search Options</label>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                  <label class="form-label text-sm">Year Range</label>
+                  <select class="form-select" id="year-filter">
+                    <option value="all">All years</option>
+                    <option value="2020-2025" selected>2020-2025 (Recent)</option>
+                    <option value="2015-2025">2015-2025 (Last 10 years)</option>
+                    <option value="2010-2025">2010-2025 (Last 15 years)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label text-sm">Result Limit</label>
+                  <select class="form-select" id="result-limit">
+                    <option value="50">50 papers</option>
+                    <option value="100" selected>100 papers</option>
+                    <option value="200">200 papers</option>
+                    <option value="500">500 papers (slow)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label text-sm">Open Access Only</label>
+                  <select class="form-select" id="open-access">
+                    <option value="false">All papers</option>
+                    <option value="true">Open access only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-info">
+              <strong>Estimated cost:</strong> L0 harvest is FREE (Semantic Scholar API). 
+              After triage, estimated $0.25-0.50 for L1 clustering.
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+              <button type="button" class="btn btn-secondary" onclick="showExamples()">
+                💡 Show Examples
+              </button>
+              <button type="submit" class="btn btn-primary btn-lg">
+                <span>🔍</span> Search Papers
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      <div id="results-container" class="hidden">
+        <!-- Results Header -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Step 2: Review Candidates</h2>
+              <p class="text-sm text-gray-600">
+                Found <span id="result-count">0</span> papers • 
+                <span id="selected-count">0</span> selected
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-sm btn-secondary" onclick="selectAll()">Select All</button>
+              <button class="btn btn-sm btn-secondary" onclick="selectNone()">Select None</button>
+              <button class="btn btn-sm btn-primary" onclick="processSelected()" id="process-btn" disabled>
+                <span>➡️</span> Process Selected
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+              <div class="form-group" style="flex: 1; margin: 0;">
+                <input 
+                  type="text" 
+                  id="filter-input"
+                  class="form-input" 
+                  NOTE="Filter by title, author, or keyword..."
+                  oninput="filterResults()"
+                >
+              </div>
+              <div class="form-group" style="width: 200px; margin: 0;">
+                <select class="form-select" id="sort-select" onchange="sortResults()">
+                  <option value="relevance">Sort by Relevance</option>
+                  <option value="year">Sort by Year</option>
+                  <option value="citations">Sort by Citations</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="selection-summary" class="alert alert-info">
+              <strong>Selection:</strong> <span id="summary-text">Select papers to process</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results List -->
+        <div id="results-list"></div>
+
+        <!-- Process Panel -->
+        <div class="card" style="position: sticky; bottom: 20px; background: white; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);">
+          <div class="card-content">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong><span id="bottom-count">0</span> papers selected</strong>
+                <p class="text-sm text-gray-600">
+                  Estimated: $<span id="estimated-cost">0.00</span> | 
+                  Time: <span id="estimated-time">0</span> min
+                </p>
+              </div>
+              <button class="btn btn-primary btn-lg" onclick="processSelected()" id="process-btn-bottom" disabled>
+                <span>➡️</span> Process Selected Papers
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Examples Modal -->
+      <div id="examples-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Example Queries</h2>
+            <button class="modal-close" onclick="UI.hideModal('examples-modal')">×</button>
+          </div>
+          <div>
+            <p class="text-gray-600 mb-md">Click an example to use it:</p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <button class="btn btn-secondary" style="text-align: left;" onclick="useExample('How does biophilic design affect stress in hospital patients?')">
+                🏥 Biophilic design in hospitals
+              </button>
+              <button class="btn btn-secondary" style="text-align: left;" onclick="useExample('Impact of ceiling height on creative thinking and problem solving')">
+                🏢 Ceiling height and creativity
+              </button>
+              <button class="btn btn-secondary" style="text-align: left;" onclick="useExample('Effects of natural light exposure on circadian rhythm and sleep quality')">
+                💡 Natural light and sleep
+              </button>
+              <button class="btn btn-secondary" style="text-align: left;" onclick="useExample('Color temperature influence on mood and productivity in office environments')">
+                🎨 Color temperature in offices
+              </button>
+              <button class="btn btn-secondary" style="text-align: left;" onclick="useExample('Window views and nature visibility impact on cognitive restoration')">
+                🪟 Window views and cognition
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let searchResults = [];
+let selectedPapers = new Set();
+let demoMode = false;
+
+async function loadUIConfig() {
+  try {
+    const resp = await fetch(`${API_BASE_URL}/ui/config`);
+    if (!resp.ok) {
+      console.warn('Failed to load UI config:', resp.status);
+      return;
+    }
+    const cfg = await resp.json();
+    demoMode = !!cfg.demo_mode;
+    const banner = document.getElementById('mode-banner');
+    if (banner) {
+      banner.classList.remove('hidden');
+      if (demoMode) {
+        banner.className = 'alert alert-warning';
+        banner.textContent = 'Demo mode: results are illustrative and may not reflect real processing.';
+      } else {
+        banner.className = 'alert alert-success';
+        banner.textContent = 'Research mode: results are derived from actual Article Eater pipeline output.';
+      }
+    }
+  } catch (err) {
+    console.warn('Error loading UI config', err);
+  }
+}
+
+async function pollJobAndLoadResults(jobId, query, limit) {
+  const maxAttempts = 40;
+  const delayMs = 1500;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const status = await api.getJobStatus(jobId);
+      if (!status || !status.status) {
+        break;
+      }
+      if (status.status === 'completed') {
+        const articles = await api.searchArticles(query, limit);
+        const results = articles.map((a, idx) => ({
+          id: a.article_id || a.id || `article-${idx}`,
+          title: a.title || '(untitled)',
+          authors: Array.isArray(a.authors) ? a.authors : (a.authors ? [a.authors] : []),
+          year: a.year || '',
+          venue: a.venue || '',
+          abstract: a.abstract || '',
+          citationCount: typeof a.citation_count === 'number' ? a.citation_count : (a.citationCount || 0),
+          isOpenAccess: !!(a.is_open_access || a.isOpenAccess),
+          relevanceScore: Math.max(0.5, 1 - idx * 0.01)
+        }));
+        displayResults(results);
+        return;
+      }
+      if (status.status === 'failed') {
+        UI.toast('Search job failed: ' + (status.error || 'unknown error'), 'error');
+        document.getElementById('search-card').style.opacity = '1';
+        return;
+      }
+    } catch (err) {
+      console.error('Error polling job status', err);
+      break;
+    }
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  }
+
+  UI.toast('Search did not complete in time. Check the Control Room.', 'warning');
+  document.getElementById('search-card').style.opacity = '1';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadUIConfig();
+});
+
+
+
+    // Handle search form submission
+    async function handleSearch(event) {
+      event.preventDefault();
+      
+      const query = document.getElementById('search-query').value;
+      const yearFilter = document.getElementById('year-filter').value;
+      const limit = parseInt(document.getElementById('result-limit').value);
+      const openAccess = document.getElementById('open-access').value === 'true';
+
+      // Show loading
+      document.getElementById('search-card').style.opacity = '0.5';
+      UI.toast('Searching Semantic Scholar...', 'info', 2000);
+
+      try {
+        // Submit L0 harvest job
+        const job = await api.submitJob('L0_harvest', {
+          query: query,
+          year_filter: yearFilter,
+          limit: limit,
+          open_access_only: openAccess
+        }, 100);
+
+UI.toast('Search job submitted! Loading results...', 'success');
+
+if (demoMode) {
+  // Demo mode: keep fast mock results for classroom walkthroughs
+  setTimeout(() => {
+    displayResults(generateMockResults(query, limit));
+  }, 1000);
+} else {
+  // Research mode: wait for real job completion and then load actual articles from the library
+  const jobId = job.job_id || job.jobId || job.id;
+  await pollJobAndLoadResults(jobId, query, limit);
+}
+
+      } catch (error) {
+        console.error('Search error:', error);
+        UI.toast('Search failed: ' + error.message, 'error');
+        document.getElementById('search-card').style.opacity = '1';
+      }
+    }
+
+    // Generate NOTE results for demo
+    function generateMockResults(query, count) {
+      const results = [];
+      const authors = ['Smith, J.', 'Johnson, M.', 'Williams, K.', 'Brown, L.', 'Davis, R.'];
+      const venues = ['Journal of Environmental Psychology', 'Building and Environment', 'Architectural Science Review'];
+      
+      for (let i = 0; i < Math.min(count, 50); i++) {
+        results.push({
+          id: `paper-${i}`,
+          title: `Study ${i + 1}: ${query.substring(0, 40)}... and Related Factors`,
+          authors: [authors[i % authors.length], authors[(i + 1) % authors.length]],
+          year: 2015 + (i % 10),
+          venue: venues[i % venues.length],
+          abstract: `This study investigates ${query.toLowerCase()}. We conducted an experimental study with n=${50 + i * 10} participants. Results showed significant effects (p<0.05, d=0.${30 + i % 50}). Implications for design practice are discussed.`,
+          citationCount: Math.floor(Math.random() * 200) + 10,
+          isOpenAccess: i % 3 === 0,
+          relevanceScore: Math.max(0.5, 1 - (i * 0.01))
+        });
+      }
+      
+      return results;
+    }
+
+    // Display search results
+    function displayResults(results) {
+      searchResults = results;
+      selectedPapers.clear();
+
+      document.getElementById('search-card').style.opacity = '1';
+      document.getElementById('results-container').classList.remove('hidden');
+      document.getElementById('result-count').textContent = results.length;
+      
+      updateResultsList();
+      updateSelectionSummary();
+
+      // Scroll to results
+      document.getElementById('results-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Update results list display
+    function updateResultsList() {
+      const container = document.getElementById('results-list');
+      
+      container.innerHTML = searchResults.map(paper => {
+        const isSelected = selectedPapers.has(paper.id);
+        const relevancePercent = Math.round(paper.relevanceScore * 100);
+        
+        return `
+          <div class="paper-card" style="border-left: 4px solid ${isSelected ? 'var(--primary-blue)' : 'var(--gray-200)'};">
+            <div style="display: flex; gap: 1rem;">
+              <input 
+                type="checkbox" 
+                id="check-${paper.id}"
+                ${isSelected ? 'checked' : ''}
+                onchange="togglePaper('${paper.id}')"
+                style="width: 20px; height: 20px; margin-top: 0.25rem; cursor: pointer;"
+              >
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                  <h3 class="paper-title">${paper.title}</h3>
+                  <div class="progress-bar" style="width: 100px; margin-left: 1rem;">
+                    <div class="progress-fill" style="width: ${relevancePercent}%; background-color: ${
+                      relevancePercent > 80 ? 'var(--success)' :
+                      relevancePercent > 60 ? 'var(--warning)' : 'var(--error)'
+                    }"></div>
+                  </div>
+                </div>
+                
+                <div class="paper-meta">
+                  <span>${paper.authors.join(', ')}</span>
+                  <span>•</span>
+                  <span>${paper.year}</span>
+                  <span>•</span>
+                  <span>${paper.venue}</span>
+                </div>
+                
+                <p class="text-sm text-gray-600" style="margin: 0.5rem 0;">
+                  ${DataUtils.truncate(paper.abstract, 200)}
+                </p>
+                
+                <div class="paper-tags">
+                  <span class="badge badge-gray">📊 ${paper.citationCount} citations</span>
+                  ${paper.isOpenAccess ? '<span class="badge badge-success">🔓 Open Access</span>' : '<span class="badge badge-gray">🔒 Subscription</span>'}
+                  <span class="badge ${relevancePercent > 80 ? 'badge-success' : relevancePercent > 60 ? 'badge-warning' : 'badge-error'}">
+                    ${relevancePercent}% relevant
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Toggle paper selection
+    function togglePaper(paperId) {
+      if (selectedPapers.has(paperId)) {
+        selectedPapers.delete(paperId);
+      } else {
+        selectedPapers.add(paperId);
+      }
+      updateSelectionSummary();
+      updateResultsList();
+    }
+
+    // Select all papers
+    function selectAll() {
+      searchResults.forEach(paper => selectedPapers.add(paper.id));
+      updateSelectionSummary();
+      updateResultsList();
+    }
+
+    // Select none
+    function selectNone() {
+      selectedPapers.clear();
+      updateSelectionSummary();
+      updateResultsList();
+    }
+
+    // Update selection summary
+    function updateSelectionSummary() {
+      const count = selectedPapers.size;
+      const estimatedCost = (count * 0.03).toFixed(2);
+      const estimatedTime = Math.ceil(count * 0.75);
+
+      document.getElementById('selected-count').textContent = count;
+      document.getElementById('bottom-count').textContent = count;
+      document.getElementById('estimated-cost').textContent = estimatedCost;
+      document.getElementById('estimated-time').textContent = estimatedTime;
+
+      const processBtn = document.getElementById('process-btn');
+      const processBtnBottom = document.getElementById('process-btn-bottom');
+      
+      if (count > 0) {
+        processBtn.disabled = false;
+        processBtnBottom.disabled = false;
+        document.getElementById('summary-text').textContent = 
+          `${count} papers selected (Est. cost: $${estimatedCost}, time: ${estimatedTime} min)`;
+      } else {
+        processBtn.disabled = true;
+        processBtnBottom.disabled = true;
+        document.getElementById('summary-text').textContent = 'Select papers to process';
+      }
+    }
+
+    // Filter results
+    function filterResults() {
+      const query = document.getElementById('filter-input').value.toLowerCase();
+      
+      const filtered = searchResults.filter(paper => 
+        paper.title.toLowerCase().includes(query) ||
+        paper.authors.some(a => a.toLowerCase().includes(query)) ||
+        paper.abstract.toLowerCase().includes(query)
+      );
+
+      searchResults = filtered;
+      updateResultsList();
+    }
+
+    // Sort results
+    function sortResults() {
+      const sortBy = document.getElementById('sort-select').value;
+      
+      switch(sortBy) {
+        case 'year':
+          searchResults.sort((a, b) => b.year - a.year);
+          break;
+        case 'citations':
+          searchResults.sort((a, b) => b.citationCount - a.citationCount);
+          break;
+        case 'relevance':
+        default:
+          searchResults.sort((a, b) => b.relevanceScore - a.relevanceScore);
+      }
+      
+      updateResultsList();
+    }
+
+    // Process selected papers
+    async function processSelected() {
+      const count = selectedPapers.size;
+      
+      if (count === 0) {
+        UI.toast('Please select at least one paper', 'warning');
+        return;
+      }
+
+      if (!confirm(`Process ${count} papers? This will cost approximately $${(count * 0.03).toFixed(2)}`)) {
+        return;
+      }
+
+      try {
+        const selectedPaperIds = Array.from(selectedPapers);
+        
+        // Submit L1 triage job
+        const job = await api.submitJob('L1_cluster', {
+          article_ids: selectedPaperIds
+        }, 100);
+
+        UI.toast(`Job submitted! Processing ${count} papers. Check queue for status.`, 'success', 5000);
+        
+        // Redirect to queue after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'queue.html';
+        }, 2000);
+
+      } catch (error) {
+        console.error('Process error:', error);
+        UI.toast('Failed to submit job: ' + error.message, 'error');
+      }
+    }
+
+    // Show examples
+    function showExamples() {
+      UI.showModal('examples-modal');
+    }
+
+    // Use example query
+    function useExample(query) {
+      document.getElementById('search-query').value = query;
+      UI.hideModal('examples-modal');
+      document.getElementById('search-query').focus();
+    }
+  </script>
+</body>
+</html>

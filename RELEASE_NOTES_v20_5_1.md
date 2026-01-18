@@ -1,0 +1,3 @@
+- Governance utilities added (updater, style guard, CI)
+- Style guide bundled under docs/style_guide_source/
+- No deletions; backups under archive/_replaced_1763336361/

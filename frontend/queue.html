@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Processing Queue - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link active">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Processing Queue</h1>
+          <p class="text-gray-600">
+            <span id="active-count">--</span> active jobs • 
+            <span id="completed-count">--</span> completed
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadQueue()" id="refresh-btn">
+            <span>🔄</span> Refresh
+          </button>
+          <button class="btn btn-secondary" onclick="toggleAutoRefresh()" id="auto-refresh-btn">
+            <span>⏸️</span> Auto-Refresh: ON
+          </button>
+        </div>
+      </header>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card warning">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="stat-pending">--</div>
+          <div class="stat-change">Waiting to process</div>
+        </div>
+        <div class="stat-card info">
+          <div class="stat-label">Running</div>
+          <div class="stat-value" id="stat-running">--</div>
+          <div class="stat-change">Currently processing</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value" id="stat-complete">--</div>
+          <div class="stat-change">Successfully finished</div>
+        </div>
+        <div class="stat-card error">
+          <div class="stat-label">Failed</div>
+          <div class="stat-value" id="stat-failed">--</div>
+          <div class="stat-change">Needs attention</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="card">
+        <div class="card-content">
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <div class="form-group" style="flex: 1; margin: 0;">
+              <select class="form-select" id="status-filter" onchange="filterQueue()">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="running">Running</option>
+                <option value="complete">Completed</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex: 1; margin: 0;">
+              <select class="form-select" id="type-filter" onchange="filterQueue()">
+                <option value="all">All Job Types</option>
+                <option value="L0_harvest">L0: Harvest</option>
+                <option value="L1_cluster">L1: Triage</option>
+                <option value="L2_extract">L2: Extract</option>
+                <option value="L3_synthesize">L3: Synthesize</option>
+              </select>
+            </div>
+            <button class="btn btn-secondary" onclick="clearCompleted()">
+              🗑️ Clear Completed
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Queue Content -->
+      <div id="queue-content">
+        <div class="text-center" style="padding: 60px;">
+          <div class="spinner"></div>
+          <p class="text-gray-600 mt-md">Loading queue...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Job Detail Modal -->
+  <div id="job-modal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Job Details</h2>
+        <button class="modal-close" onclick="UI.hideModal('job-modal')">×</button>
+      </div>
+      <div id="modal-content">
+        <div class="text-center" style="padding: 40px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let queue = [];
+    let filteredQueue = [];
+    let autoRefreshInterval = null;
+    let autoRefreshEnabled = true;
+
+    // Load queue on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadQueue();
+      startAutoRefresh();
+    });
+
+    // Load queue from API
+    async function loadQueue() {
+      try {
+        // In production: const jobs = await api.listJobs(null, 100);
+        // For demo, generate NOTE data
+        queue = generateMockQueue();
+        filteredQueue = [...queue];
+        
+        updateStats();
+        displayQueue();
+        
+        // Update refresh button
+        const btn = document.getElementById('refresh-btn');
+        btn.innerHTML = '<span>✓</span> Updated';
+        setTimeout(() => {
+          btn.innerHTML = '<span>🔄</span> Refresh';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Queue load error:', error);
+        document.getElementById('queue-content').innerHTML = `
+          <div class="alert alert-error">
+            Failed to load queue: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // Generate NOTE queue
+    function generateMockQueue() {
+      const jobs = [];
+      const statuses = ['pending', 'running', 'complete', 'failed'];
+      const types = ['L0_harvest', 'L1_cluster', 'L2_extract', 'L3_synthesize'];
+      const typeNames = {
+        'L0_harvest': 'Harvest Papers',
+        'L1_cluster': 'Triage & Cluster',
+        'L2_extract': 'Extract Findings',
+        'L3_synthesize': 'Synthesize Rules'
+      };
+
+      // Create some active jobs
+      for (let i = 0; i < 3; i++) {
+        const type = types[i % types.length];
+        jobs.push({
+          id: `job-${Date.now()}-${i}`,
+          jobType: type,
+          jobTypeName: typeNames[type],
+          status: i === 0 ? 'running' : 'pending',
+          priority: 100 - i * 10,
+          createdAt: new Date(Date.now() - i * 3600000).toISOString(),
+          startedAt: i === 0 ? new Date(Date.now() - 300000).toISOString() : null,
+          completedAt: null,
+          error: null,
+          params: type === 'L0_harvest' ? { query: 'biophilic design' } : { article_ids: [1, 2, 3] },
+          progress: i === 0 ? 65 : 0
+        });
+      }
+
+      // Create completed jobs
+      for (let i = 0; i < 8; i++) {
+        const type = types[i % types.length];
+        const failed = i === 5; // One failed job
+        jobs.push({
+          id: `job-complete-${i}`,
+          jobType: type,
+          jobTypeName: typeNames[type],
+          status: failed ? 'failed' : 'complete',
+          priority: 100,
+          createdAt: new Date(Date.now() - (i + 3) * 3600000).toISOString(),
+          startedAt: new Date(Date.now() - (i + 2) * 3600000).toISOString(),
+          completedAt: new Date(Date.now() - (i + 1) * 3600000).toISOString(),
+          error: failed ? 'PDF extraction failed: Scanned document requires OCR' : null,
+          params: type === 'L0_harvest' ? { query: `research query ${i}` } : { article_ids: [i * 3, i * 3 + 1] },
+          progress: 100,
+          duration: Math.floor(Math.random() * 300) + 30
+        });
+      }
+
+      return jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    // Update stats
+    function updateStats() {
+      const pending = queue.filter(j => j.status === 'pending').length;
+      const running = queue.filter(j => j.status === 'running').length;
+      const complete = queue.filter(j => j.status === 'complete').length;
+      const failed = queue.filter(j => j.status === 'failed').length;
+
+      document.getElementById('active-count').textContent = pending + running;
+      document.getElementById('completed-count').textContent = complete;
+      
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-running').textContent = running;
+      document.getElementById('stat-complete').textContent = complete;
+      document.getElementById('stat-failed').textContent = failed;
+    }
+
+    // Display queue
+    function displayQueue() {
+      const container = document.getElementById('queue-content');
+
+      if (filteredQueue.length === 0) {
+        container.innerHTML = `
+          <div class="text-center" style="padding: 60px;">
+            <p class="text-xl text-gray-600">No jobs in queue</p>
+            <p class="text-sm text-gray-500 mt-md">
+              <a href="search.html" class="btn btn-primary">Start a New Search</a>
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredQueue.map(job => {
+        const statusColors = {
+          pending: 'warning',
+          running: 'info',
+          complete: 'success',
+          failed: 'error'
+        };
+        const statusColor = statusColors[job.status];
+        const statusIcons = {
+          pending: '⏳',
+          running: '⚙️',
+          complete: '✓',
+          failed: '✗'
+        };
+        const statusIcon = statusIcons[job.status];
+
+        return `
+          <div class="card" style="margin-bottom: 1rem;">
+            <div class="card-header">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
+                  <span style="font-size: 1.5rem;">${statusIcon}</span>
+                  <div>
+                    <h3 style="font-size: 1rem; font-weight: 600; margin: 0;">
+                      ${job.jobTypeName}
+                    </h3>
+                    <p class="text-xs text-gray-600">
+                      Job ID: ${job.id.substring(0, 20)}...
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="badge badge-${statusColor}">
+                  ${job.status.toUpperCase()}
+                </span>
+                ${job.priority > 90 ? '<span class="badge badge-error">HIGH PRIORITY</span>' : ''}
+              </div>
+            </div>
+
+            <div class="card-content">
+              ${job.status === 'running' && job.progress ? `
+                <div style="margin-bottom: 1rem;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                    <span class="text-sm text-gray-600">Progress</span>
+                    <span class="text-sm font-semibold">${job.progress}%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill info" style="width: ${job.progress}%"></div>
+                  </div>
+                </div>
+              ` : ''}
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                  <div class="text-xs text-gray-600">Created</div>
+                  <div class="text-sm">${UI.formatDate(job.createdAt)}</div>
+                </div>
+                ${job.startedAt ? `
+                  <div>
+                    <div class="text-xs text-gray-600">Started</div>
+                    <div class="text-sm">${UI.formatDate(job.startedAt)}</div>
+                  </div>
+                ` : ''}
+                ${job.completedAt ? `
+                  <div>
+                    <div class="text-xs text-gray-600">Completed</div>
+                    <div class="text-sm">${UI.formatDate(job.completedAt)}</div>
+                  </div>
+                ` : ''}
+                ${job.duration ? `
+                  <div>
+                    <div class="text-xs text-gray-600">Duration</div>
+                    <div class="text-sm">${Math.floor(job.duration / 60)}m ${job.duration % 60}s</div>
+                  </div>
+                ` : ''}
+              </div>
+
+              ${job.params.query ? `
+                <div style="margin-bottom: 0.5rem;">
+                  <span class="text-xs text-gray-600">Query:</span>
+                  <span class="text-sm"> "${job.params.query}"</span>
+                </div>
+              ` : ''}
+
+              ${job.params.article_ids ? `
+                <div style="margin-bottom: 0.5rem;">
+                  <span class="text-xs text-gray-600">Articles:</span>
+                  <span class="text-sm"> ${job.params.article_ids.length} papers</span>
+                </div>
+              ` : ''}
+
+              ${job.error ? `
+                <div class="alert alert-error" style="margin-top: 1rem;">
+                  <strong>Error:</strong> ${job.error}
+                </div>
+              ` : ''}
+
+              <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem;">
+                <button class="btn btn-sm btn-secondary" onclick="viewJobDetails('${job.id}')">
+                  View Details
+                </button>
+                ${job.status === 'failed' ? `
+                  <button class="btn btn-sm btn-primary" onclick="retryJob('${job.id}')">
+                    🔄 Retry
+                  </button>
+                ` : ''}
+                ${job.status === 'pending' || job.status === 'running' ? `
+                  <button class="btn btn-sm btn-error" onclick="cancelJob('${job.id}')">
+                    ✗ Cancel
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Filter queue
+    function filterQueue() {
+      const statusFilter = document.getElementById('status-filter').value;
+      const typeFilter = document.getElementById('type-filter').value;
+
+      filteredQueue = queue.filter(job => {
+        const statusMatch = statusFilter === 'all' || job.status === statusFilter;
+        const typeMatch = typeFilter === 'all' || job.jobType === typeFilter;
+        return statusMatch && typeMatch;
+      });
+
+      displayQueue();
+    }
+
+    // View job details
+    function viewJobDetails(jobId) {
+      const job = queue.find(j => j.id === jobId);
+      if (!job) return;
+
+      document.getElementById('modal-content').innerHTML = `
+        <div>
+          <div class="alert alert-${job.status === 'complete' ? 'success' : job.status === 'failed' ? 'error' : 'info'}">
+            <strong>Status:</strong> ${job.status.toUpperCase()}
+          </div>
+
+          <div style="margin: 1.5rem 0;">
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Job Information</h3>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600;">Job ID</td>
+                  <td>${job.id}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600;">Type</td>
+                  <td>${job.jobTypeName} (${job.jobType})</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600;">Priority</td>
+                  <td>${job.priority}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600;">Created</td>
+                  <td>${UI.formatDate(job.createdAt)}</td>
+                </tr>
+                ${job.startedAt ? `
+                  <tr>
+                    <td style="font-weight: 600;">Started</td>
+                    <td>${UI.formatDate(job.startedAt)}</td>
+                  </tr>
+                ` : ''}
+                ${job.completedAt ? `
+                  <tr>
+                    <td style="font-weight: 600;">Completed</td>
+                    <td>${UI.formatDate(job.completedAt)}</td>
+                  </tr>
+                ` : ''}
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin: 1.5rem 0;">
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Parameters</h3>
+            <pre style="background: var(--gray-50); padding: 1rem; border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-mono); font-size: 0.875rem;">${JSON.stringify(job.params, null, 2)}</pre>
+          </div>
+
+          ${job.error ? `
+            <div class="alert alert-error">
+              <strong>Error Details:</strong><br>
+              ${job.error}
+            </div>
+          ` : ''}
+
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+            <button class="btn btn-secondary" onclick="UI.hideModal('job-modal')">Close</button>
+            ${job.status === 'failed' ? `
+              <button class="btn btn-primary" onclick="retryJob('${job.id}'); UI.hideModal('job-modal')">
+                Retry Job
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      UI.showModal('job-modal');
+    }
+
+    // Retry failed job
+    function retryJob(jobId) {
+      if (confirm('Retry this job?')) {
+        UI.toast('Job resubmitted to queue', 'success');
+        setTimeout(loadQueue, 500);
+      }
+    }
+
+    // Cancel job
+    function cancelJob(jobId) {
+      if (confirm('Cancel this job? This cannot be undone.')) {
+        UI.toast('Job cancelled', 'success');
+        setTimeout(loadQueue, 500);
+      }
+    }
+
+    // Clear completed jobs
+    function clearCompleted() {
+      const completedCount = queue.filter(j => j.status === 'complete').length;
+      if (completedCount === 0) {
+        UI.toast('No completed jobs to clear', 'info');
+        return;
+      }
+
+      if (confirm(`Clear ${completedCount} completed jobs from the queue?`)) {
+        queue = queue.filter(j => j.status !== 'complete');
+        filteredQueue = [...queue];
+        updateStats();
+        displayQueue();
+        UI.toast(`Cleared ${completedCount} completed jobs`, 'success');
+      }
+    }
+
+    // Auto-refresh functionality
+    function startAutoRefresh() {
+      if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+      }
+      autoRefreshInterval = setInterval(() => {
+        if (autoRefreshEnabled) {
+          loadQueue();
+        }
+      }, 5000); // Refresh every 5 seconds
+    }
+
+    function toggleAutoRefresh() {
+      autoRefreshEnabled = !autoRefreshEnabled;
+      const btn = document.getElementById('auto-refresh-btn');
+      
+      if (autoRefreshEnabled) {
+        btn.innerHTML = '<span>⏸️</span> Auto-Refresh: ON';
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-primary');
+        UI.toast('Auto-refresh enabled', 'success');
+      } else {
+        btn.innerHTML = '<span>▶️</span> Auto-Refresh: OFF';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        UI.toast('Auto-refresh disabled', 'info');
+      }
+    }
+
+    // Clean up interval on page unload
+    window.addEventListener('beforeunload', () => {
+      if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+      }
+    });
+  </script>
+</body>
+</html>

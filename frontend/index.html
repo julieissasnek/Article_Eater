@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Eater - Research Synthesis Made Easy</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  <style>
+    .hero {
+      text-align: center;
+      padding: var(--space-16) var(--space-8);
+      background: linear-gradient(135deg, #182B49 0%, #0F1B2E 100%);
+      color: white;
+      border-radius: var(--radius-2xl);
+      margin-bottom: var(--space-8);
+    }
+    
+    .hero-title {
+      font-size: 3rem;
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-4);
+      background: linear-gradient(135deg, white 0%, var(--ucsd-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-8);
+      opacity: 0.9;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .gui-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-6);
+      margin-bottom: var(--space-12);
+    }
+    
+    .gui-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transition: all var(--transition-base);
+      border: 2px solid var(--gray-200);
+    }
+    
+    .gui-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-2xl);
+      border-color: var(--ucsd-gold);
+    }
+    
+    .gui-card-preview {
+      height: 200px;
+      background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    
+    .gui-card-body {
+      padding: var(--space-5);
+    }
+    
+    .gui-card-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      color: var(--primary-blue);
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    
+    .gui-card-description {
+      color: var(--gray-600);
+      margin-bottom: var(--space-4);
+      line-height: 1.6;
+    }
+    
+    .gui-card-features {
+      list-style: none;
+      margin-bottom: var(--space-4);
+    }
+    
+    .gui-card-features li {
+      padding: var(--space-1) 0;
+      font-size: var(--text-sm);
+      color: var(--gray-700);
+    }
+    
+    .gui-card-features li:before {
+      content: "✓ ";
+      color: var(--success);
+      font-weight: var(--font-bold);
+      margin-right: var(--space-2);
+    }
+    
+    .gui-card-footer {
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--gray-200);
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+    
+    .section-title {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--primary-blue);
+      margin-bottom: var(--space-2);
+    }
+    
+    .section-subtitle {
+      font-size: var(--text-lg);
+      color: var(--gray-600);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-6);
+      margin-bottom: var(--space-12);
+    }
+    
+    .feature-card {
+      text-align: center;
+      padding: var(--space-6);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-3);
+    }
+    
+    .feature-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--primary-blue);
+      margin-bottom: var(--space-2);
+    }
+    
+    .feature-description {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content" style="margin-left: 0; max-width: 1400px; margin: 0 auto;">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1 class="hero-title">
+        📚 Article Eater
+      </h1>
+      <p class="hero-subtitle">
+        Synthesize research papers automatically with AI-powered insights
+      </p>
+      <div class="hero-buttons">
+        <a href="dashboard.html" class="btn btn-primary" style="font-size: 1.2rem; padding: var(--space-4) var(--space-8);">
+          <span class="btn-icon">🚀</span>
+          Launch Dashboard
+        </a>
+        <a href="search.html" class="btn btn-secondary" style="font-size: 1.2rem; padding: var(--space-4) var(--space-8); background: white; color: var(--primary-blue);">
+          <span class="btn-icon">🔍</span>
+          Start Searching
+        </a>
+      </div>
+    </div>
+
+    <!-- Features Overview -->
+    <div class="section-header">
+      <h2 class="section-title">What Makes Article Eater Special? ✨</h2>
+      <p class="section-subtitle">Powerful research synthesis tools designed for academics</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3 class="feature-title">AI-Powered</h3>
+        <p class="feature-description">
+          Automatic extraction of findings, statistics, and evidence from research papers
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3 class="feature-title">Multi-Document Synthesis</h3>
+        <p class="feature-description">
+          Combine findings from dozens of papers into coherent, evidence-based rules
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <h3 class="feature-title">Statistical Rigor</h3>
+        <p class="feature-description">
+          Track p-values, effect sizes, sample sizes, and methodological quality
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">Fast & Efficient</h3>
+        <p class="feature-description">
+          Process hundreds of papers in minutes with our L0-L5 pipeline
+        </p>
+      </div>
+    </div>
+
+    <!-- GUI Showcase -->
+    <div class="section-header">
+      <h2 class="section-title">Explore All Features 🎯</h2>
+      <p class="section-subtitle">Click any card to explore that interface</p>
+    </div>
+
+    <div class="gui-grid">
+      <!-- Dashboard -->
+      <div class="gui-card">
+        <div class="gui-card-preview">📊</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Dashboard
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Your command center with stats, recent activity, and quick actions
+          </p>
+          <ul class="gui-card-features">
+            <li>Real-time statistics</li>
+            <li>Recent activity feed</li>
+            <li>Quick start actions</li>
+            <li>System health monitoring</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">🚀</span>
+              Open Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="gui-card">
+        <div class="gui-card-preview">🔍</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            New Search
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Submit new research queries and configure processing parameters
+          </p>
+          <ul class="gui-card-features">
+            <li>Semantic Scholar integration</li>
+            <li>Advanced filters</li>
+            <li>Cost estimation</li>
+            <li>Job configuration</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="search.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">✨</span>
+              Start Searching
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Library -->
+      <div class="gui-card">
+        <div class="gui-card-preview">📚</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Library
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Browse, filter, and manage your collection of research papers
+          </p>
+          <ul class="gui-card-features">
+            <li>Advanced filtering</li>
+            <li>Sort by various criteria</li>
+            <li>Bulk operations</li>
+            <li>Export capabilities</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="library.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">📖</span>
+              Browse Library
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Findings -->
+      <div class="gui-card">
+        <div class="gui-card-preview">🔬</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Findings Browser
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Explore individual research findings with statistical details
+          </p>
+          <ul class="gui-card-features">
+            <li>Filter by variables</li>
+            <li>Statistical summaries</li>
+            <li>Link to source papers</li>
+            <li>Effect size visualization</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="findings.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">🔬</span>
+              View Findings
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Findings (NEW) -->
+      <div class="gui-card">
+        <div class="gui-card-preview">🔬</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Findings Browser
+            <span class="badge badge-info">New!</span>
+          </h3>
+          <p class="gui-card-description">
+            Explore individual research findings with statistical details
+          </p>
+          <ul class="gui-card-features">
+            <li>Filter by variables</li>
+            <li>Statistical summaries</li>
+            <li>Link to source papers</li>
+            <li>Effect size visualization</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="findings.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">🔬</span>
+              View Findings
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div class="gui-card">
+        <div class="gui-card-preview">📝</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Rule Inspector
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            View synthesized rules from multiple papers with evidence trails
+          </p>
+          <ul class="gui-card-features">
+            <li>Confidence scores</li>
+            <li>Evidence visualization</li>
+            <li>Contradiction detection</li>
+            <li>Topic filtering</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="rules.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">📝</span>
+              Inspect Rules
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactions -->
+      <div class="gui-card">
+        <div class="gui-card-preview">🔄</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Rule Interactions
+            <span class="badge badge-warning">Beta</span>
+          </h3>
+          <p class="gui-card-description">
+            Review and resolve interactions between conflicting rules
+          </p>
+          <ul class="gui-card-features">
+            <li>Conflict detection</li>
+            <li>Resolution workflow</li>
+            <li>Evidence comparison</li>
+            <li>Manual override</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="interactions.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">🔄</span>
+              View Interactions
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Queue -->
+      <div class="gui-card">
+        <div class="gui-card-preview">⏳</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Processing Queue
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Monitor background jobs and track processing progress in real-time
+          </p>
+          <ul class="gui-card-features">
+            <li>Live status updates</li>
+            <li>Progress visualization</li>
+            <li>Error diagnostics</li>
+            <li>Job management</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="queue.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">⏳</span>
+              View Queue
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage & Costs -->
+      <div class="gui-card">
+        <div class="gui-card-preview">💰</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Usage & Costs
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Track API usage, costs, and optimize your research budget
+          </p>
+          <ul class="gui-card-features">
+            <li>Cost breakdowns</li>
+            <li>Usage analytics</li>
+            <li>Budget tracking</li>
+            <li>Optimization tips</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="usage.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">📊</span>
+              View Usage
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports -->
+      <div class="gui-card">
+        <div class="gui-card-preview">📄</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Reports Generator
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Generate comprehensive research reports from your synthesized data
+          </p>
+          <ul class="gui-card-features">
+            <li>Multiple formats (PDF, DOCX)</li>
+            <li>Custom templates</li>
+            <li>Citation management</li>
+            <li>Visual charts</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="reports.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">📄</span>
+              Generate Reports
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help -->
+      <div class="gui-card">
+        <div class="gui-card-preview">❓</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Help & Tutorials
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Learn how to use Article Eater effectively with guides and videos
+          </p>
+          <ul class="gui-card-features">
+            <li>Interactive tutorials</li>
+            <li>Video walkthroughs</li>
+            <li>FAQ section</li>
+            <li>Troubleshooting</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="help.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">💡</span>
+              Get Help
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="gui-card">
+        <div class="gui-card-preview">👤</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Profile & Settings
+            <span class="badge badge-success">Core</span>
+          </h3>
+          <p class="gui-card-description">
+            Manage your account, API keys, and application preferences
+          </p>
+          <ul class="gui-card-features">
+            <li>Account management</li>
+            <li>API key storage</li>
+            <li>Notification settings</li>
+            <li>Data export</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="profile.html" class="btn btn-primary" style="width: 100%;">
+              <span class="btn-icon">⚙️</span>
+              Manage Profile
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Dashboard (Compact) -->
+      <div class="gui-card">
+        <div class="gui-card-preview">📈</div>
+        <div class="gui-card-body">
+          <h3 class="gui-card-title">
+            Usage HUD
+            <span class="badge badge-info">Compact</span>
+          </h3>
+          <p class="gui-card-description">
+            Quick glance at your API usage without the full interface
+          </p>
+          <ul class="gui-card-features">
+            <li>Minimal footprint</li>
+            <li>Real-time updates</li>
+            <li>Quick reference</li>
+            <li>Embed-friendly</li>
+          </ul>
+          <div class="gui-card-footer">
+            <a href="usage_dashboard.html" class="btn btn-secondary" style="width: 100%;">
+              <span class="btn-icon">📊</span>
+              Open HUD
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Getting Started -->
+    <div class="card" style="margin-bottom: var(--space-8);">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🚀</span>
+          Getting Started with Article Eater
+        </h2>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
+          <div>
+            <h3 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+              1. 🔍 Start a Search
+            </h3>
+            <p style="color: var(--gray-600);">
+              Use the <strong>New Search</strong> page to submit queries to Semantic Scholar. 
+              Specify your research topic and let the system find relevant papers.
+            </p>
+          </div>
+          
+          <div>
+            <h3 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+              2. 📚 Build Your Library
+            </h3>
+            <p style="color: var(--gray-600);">
+              Review discovered papers in your <strong>Library</strong>. Filter, sort, and 
+              select the most relevant research for your synthesis.
+            </p>
+          </div>
+          
+          <div>
+            <h3 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+              3. 🔬 Extract Findings
+            </h3>
+            <p style="color: var(--gray-600);">
+              Let AI extract structured findings from papers, including statistics, 
+              effect sizes, and evidence quality indicators.
+            </p>
+          </div>
+          
+          <div>
+            <h3 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+              4. 📝 Review Rules
+            </h3>
+            <p style="color: var(--gray-600);">
+              Examine synthesized rules in the <strong>Rule Inspector</strong>. Each rule 
+              combines evidence from multiple papers with confidence scores.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: var(--space-8); color: var(--gray-600); border-top: 2px solid var(--gray-200);">
+      <p style="font-size: var(--text-lg); margin-bottom: var(--space-2);">
+        📚 Article Eater v20.1
+      </p>
+      <p style="font-size: var(--text-sm);">
+        Research synthesis made easy with AI-powered insights
+      </p>
+      <p style="font-size: var(--text-sm); margin-top: var(--space-4);">
+        <a href="dashboard.html" style="color: var(--ucsd-gold); text-decoration: none; font-weight: var(--font-semibold);">
+          Get Started →
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

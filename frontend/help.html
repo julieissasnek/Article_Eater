@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Tutorials - Article Eater</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">
+        <span class="nav-logo-emoji">📚</span>
+        Article Eater
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="findings.html" class="nav-link">
+            <span class="nav-icon">🔬</span>
+            Findings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="interactions.html" class="nav-link">
+            <span class="nav-icon">🔄</span>
+            Interactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">📄</span>
+            Reports
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="help.html" class="nav-link active">
+            <span class="nav-icon">❓</span>
+            Help
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">
+            <span class="header-icon">❓</span>
+            <h1>Help & Tutorials</h1>
+          </div>
+          <p class="header-description">
+            Learn how to use Article Eater effectively with guides and videos
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="window.open('https://docs.articleeater.com', '_blank')">
+            <span class="btn-icon">📖</span>
+            Full Docs
+          </button>
+          <button class="btn btn-primary" onclick="startTour()">
+            <span class="btn-icon">🎯</span>
+            Start Tour
+          </button>
+        </div>
+      </header>
+
+      <!-- Search Help -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-body">
+          <div style="display: flex; gap: var(--space-4); align-items: center;">
+            <div style="font-size: 2.5rem;">🔍</div>
+            <div style="flex: 1;">
+              <input 
+                type="text" 
+                class="form-input" 
+                placeholder="Search help articles... (e.g., how to create a search)"
+                id="help-search"
+                onkeyup="filterHelpArticles()"
+                style="font-size: var(--text-lg);"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Start Guide -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">🚀</span>
+            Quick Start Guide
+          </h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-5);">
+            <!-- Step 1 -->
+            <div>
+              <div style="background: linear-gradient(135deg, var(--ucsd-gold) 0%, #A07810 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); margin-bottom: var(--space-3);">
+                1
+              </div>
+              <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                🔍 Search for Papers
+              </h4>
+              <p style="color: var(--gray-600); margin-bottom: var(--space-3);">
+                Use the <strong>New Search</strong> page to query Semantic Scholar for relevant research papers.
+              </p>
+              <a href="search.html" class="btn btn-secondary" style="font-size: var(--text-sm);">
+                Go to Search →
+              </a>
+            </div>
+
+            <!-- Step 2 -->
+            <div>
+              <div style="background: linear-gradient(135deg, var(--ucsd-gold) 0%, #A07810 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); margin-bottom: var(--space-3);">
+                2
+              </div>
+              <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                📚 Review Library
+              </h4>
+              <p style="color: var(--gray-600); margin-bottom: var(--space-3);">
+                Check your <strong>Library</strong> to see collected papers and select ones for processing.
+              </p>
+              <a href="library.html" class="btn btn-secondary" style="font-size: var(--text-sm);">
+                Go to Library →
+              </a>
+            </div>
+
+            <!-- Step 3 -->
+            <div>
+              <div style="background: linear-gradient(135deg, var(--ucsd-gold) 0%, #A07810 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); margin-bottom: var(--space-3);">
+                3
+              </div>
+              <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                🔬 Explore Findings
+              </h4>
+              <p style="color: var(--gray-600); margin-bottom: var(--space-3);">
+                Browse extracted findings with statistical details in the <strong>Findings</strong> browser.
+              </p>
+              <a href="findings.html" class="btn btn-secondary" style="font-size: var(--text-sm);">
+                Go to Findings →
+              </a>
+            </div>
+
+            <!-- Step 4 -->
+            <div>
+              <div style="background: linear-gradient(135deg, var(--ucsd-gold) 0%, #A07810 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); margin-bottom: var(--space-3);">
+                4
+              </div>
+              <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2); font-size: var(--text-lg);">
+                📝 Review Rules
+              </h4>
+              <p style="color: var(--gray-600); margin-bottom: var(--space-3);">
+                See synthesized multi-paper rules in the <strong>Rule Inspector</strong> with confidence scores.
+              </p>
+              <a href="rules.html" class="btn btn-secondary" style="font-size: var(--text-sm);">
+                Go to Rules →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Tutorials -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">🎬</span>
+            Video Tutorials
+          </h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-5);">
+            <div class="card">
+              <div style="background: var(--gray-200); height: 180px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                <div style="font-size: 3rem;">▶️</div>
+              </div>
+              <div class="card-body">
+                <h4 style="margin-bottom: var(--space-2);">Getting Started (5:23)</h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Complete walkthrough of your first research synthesis project
+                </p>
+                <button class="btn btn-primary" style="width: 100%;" onclick="playVideo('getting-started')">
+                  <span class="btn-icon">▶️</span>
+                  Watch Video
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="background: var(--gray-200); height: 180px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                <div style="font-size: 3rem;">▶️</div>
+              </div>
+              <div class="card-body">
+                <h4 style="margin-bottom: var(--space-2);">Advanced Filtering (3:45)</h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Learn to use filters to find the most relevant papers and findings
+                </p>
+                <button class="btn btn-primary" style="width: 100%;" onclick="playVideo('advanced-filtering')">
+                  <span class="btn-icon">▶️</span>
+                  Watch Video
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="background: var(--gray-200); height: 180px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                <div style="font-size: 3rem;">▶️</div>
+              </div>
+              <div class="card-body">
+                <h4 style="margin-bottom: var(--space-2);">Generating Reports (4:12)</h4>
+                <p style="color: var(--gray-600); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                  Create professional research reports from your synthesized data
+                </p>
+                <button class="btn btn-primary" style="width: 100%;" onclick="playVideo('generating-reports')">
+                  <span class="btn-icon">▶️</span>
+                  Watch Video
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">💬</span>
+            Frequently Asked Questions
+          </h3>
+        </div>
+        <div class="card-body" id="faq-container">
+          <!-- FAQ items will be populated here -->
+        </div>
+      </div>
+
+      <!-- Troubleshooting -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="card-icon">🔧</span>
+            Troubleshooting
+          </h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; gap: var(--space-4);">
+            <div class="card" style="border-left: 4px solid var(--warning);">
+              <div class="card-body">
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+                  ⚠️ Search Not Returning Results
+                </h4>
+                <p style="margin-bottom: var(--space-2);">
+                  <strong>Possible causes:</strong>
+                </p>
+                <ul style="margin-left: var(--space-5); margin-bottom: var(--space-2); color: var(--gray-700);">
+                  <li>Query is too specific or uses uncommon terms</li>
+                  <li>Filters are too restrictive (check year range, paper type)</li>
+                  <li>Semantic Scholar API may be temporarily unavailable</li>
+                </ul>
+                <p>
+                  <strong>Solutions:</strong> Try broader search terms, remove filters, or check the status page.
+                </p>
+              </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--error);">
+              <div class="card-body">
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+                  ❌ Processing Job Failed
+                </h4>
+                <p style="margin-bottom: var(--space-2);">
+                  <strong>Possible causes:</strong>
+                </p>
+                <ul style="margin-left: var(--space-5); margin-bottom: var(--space-2); color: var(--gray-700);">
+                  <li>Paper PDF is corrupted or inaccessible</li>
+                  <li>API quota exceeded</li>
+                  <li>Text extraction failed (scanned images, non-standard format)</li>
+                </ul>
+                <p>
+                  <strong>Solutions:</strong> Check the error message in Queue, verify API usage, or try manual upload of PDF.
+                </p>
+              </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--info);">
+              <div class="card-body">
+                <h4 style="color: var(--primary-blue); margin-bottom: var(--space-2);">
+                  💰 High API Costs
+                </h4>
+                <p style="margin-bottom: var(--space-2);">
+                  <strong>Optimization tips:</strong>
+                </p>
+                <ul style="margin-left: var(--space-5); color: var(--gray-700);">
+                  <li>Enable caching to avoid reprocessing papers</li>
+                  <li>Use preview mode before full processing</li>
+                  <li>Filter papers by quality indicators (citation count, journal impact)</li>
+                  <li>Process papers in batches during off-peak hours</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Support -->
+      <div class="card" style="margin-top: var(--space-6); background: linear-gradient(135deg, var(--info-light) 0%, white 100%);">
+        <div class="card-body" style="text-align: center; padding: var(--space-8);">
+          <div style="font-size: 3rem; margin-bottom: var(--space-4);">💌</div>
+          <h3 style="color: var(--primary-blue); margin-bottom: var(--space-3); font-size: var(--text-2xl);">
+            Still Need Help?
+          </h3>
+          <p style="color: var(--gray-600); margin-bottom: var(--space-5); max-width: 500px; margin-left: auto; margin-right: auto;">
+            Our support team is here to help! Get in touch and we'll respond within 24 hours.
+          </p>
+          <div style="display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="contactSupport()">
+              <span class="btn-icon">📧</span>
+              Contact Support
+            </button>
+            <button class="btn btn-secondary" onclick="window.open('https://github.com/articleeater/issues', '_blank')">
+              <span class="btn-icon">🐛</span>
+              Report Bug
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    // FAQ data
+    const faqData = [
+      {
+        question: "How long does it take to process papers?",
+        answer: "Processing time varies by pipeline level. L0-L1 (metadata) takes ~30 seconds per paper. L2-L3 (extraction) takes 2-5 minutes. L4-L5 (synthesis) can take 10-30 minutes for batches. You can monitor progress in the Processing Queue."
+      },
+      {
+        question: "What file formats are supported?",
+        answer: "Article Eater supports PDF files for paper uploads. For reports, we can generate PDF, DOCX, and XLSX formats. CSV export is available for findings and usage data."
+      },
+      {
+        question: "How are confidence scores calculated?",
+        answer: "Confidence scores combine multiple factors: number of supporting studies, statistical significance (p-values), effect sizes, sample sizes, methodological quality, and publication venue impact. Scores range from 0-100%."
+      },
+      {
+        question: "Can I export my data?",
+        answer: "Yes! You can export papers (CSV/BibTeX), findings (CSV/JSON), rules (JSON), and complete reports (PDF/DOCX/XLSX). Visit the Reports page or use export buttons in each section."
+      },
+      {
+        question: "What's the difference between Findings and Rules?",
+        answer: "Findings are individual research results extracted from single papers (e.g., 'natural light increases productivity by 15%'). Rules are synthesized conclusions combining evidence from multiple papers with confidence ratings."
+      },
+      {
+        question: "How do I manage API costs?",
+        answer: "Enable caching, filter papers before processing, use preview mode, and monitor usage on the Usage & Costs page. Set budget alerts in Profile to get notified when approaching limits."
+      },
+      {
+        question: "Can I collaborate with others?",
+        answer: "Currently Article Eater is single-user. Team features are planned for v21.0 including shared libraries, collaborative annotations, and team workspaces."
+      },
+      {
+        question: "What citation formats are supported?",
+        answer: "APA (7th ed), MLA, Chicago, and Harvard styles are supported. You can select your preferred format in Profile settings. BibTeX export is also available."
+      }
+    ];
+
+    // Initialize FAQ
+    function initFAQ() {
+      const container = document.getElementById('faq-container');
+      container.innerHTML = faqData.map((faq, index) => `
+        <div class="card" style="margin-bottom: var(--space-3); cursor: pointer;" onclick="toggleFAQ(${index})">
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h4 style="color: var(--primary-blue); margin: 0; font-size: var(--text-lg);">
+                ❓ ${faq.question}
+              </h4>
+              <span id="faq-icon-${index}" style="font-size: 1.5rem; transition: transform var(--transition-base);">
+                ▼
+              </span>
+            </div>
+            <div id="faq-answer-${index}" style="display: none; margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--gray-200); color: var(--gray-700); line-height: 1.6;">
+              ${faq.answer}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleFAQ(index) {
+      const answer = document.getElementById(`faq-answer-${index}`);
+      const icon = document.getElementById(`faq-icon-${index}`);
+      
+      if (answer.style.display === 'none') {
+        answer.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function filterHelpArticles() {
+      const query = document.getElementById('help-search').value.toLowerCase();
+      // In production, this would filter help content
+      console.log('Searching help for:', query);
+    }
+
+    function startTour() {
+      alert('🎯 Interactive Tour\n\nThis would start an interactive walkthrough of Article Eater, highlighting key features and showing you how to use them.\n\nThe tour covers:\n• Searching for papers\n• Processing your library\n• Viewing findings & rules\n• Generating reports');
+    }
+
+    function playVideo(videoId) {
+      alert(`▶️ Playing Video: ${videoId}\n\nThis would open a video tutorial in a modal player.`);
+    }
+
+    function contactSupport() {
+      alert('📧 Contact Support\n\nEmail: support@articleeater.com\n\nOr use the form at:\nhttps://articleeater.com/support\n\nWe typically respond within 24 hours!');
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', initFAQ);
+  </script>
+</body>
+</html>

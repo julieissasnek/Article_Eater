@@ -1,0 +1,444 @@
+# scripts/ae_streamlit_control_room.py
+"""Article Eater Control Room (Streamlit)
+
+A simple, inspectable dashboard for monitoring the research pipeline:
+
+1. Job Queue (processing_queue)
+2. Recent Findings (findings JOIN articles)
+3. Library Stats (articles, findings, failed jobs)
+
+Run with:
+
+    streamlit run scripts/ae_streamlit_control_room.py
+"""
+
+import os
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
+import sqlite3
+import streamlit as st
+
+# Ensure repo root is importable when Streamlit runs this script.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app.services.ui_events import log_ui_event
+
+# ---------------------------------------------------------------------
+# Page Config
+# ---------------------------------------------------------------------
+st.set_page_config(
+    page_title="Article Eater Control Room",
+    page_icon="🦁",
+    layout="wide",
+)
+
+# ---------------------------------------------------------------------
+# DB CONFIG & SETUP
+# ---------------------------------------------------------------------
+# Prefer explicit env vars, then fallback to local ae.db
+DB_PATH = (
+    os.environ.get("AE_DB_PATH")
+    or os.environ.get("AE_DB")
+    or "ae.db"
+)
+
+# --- PATCH: Always show render-gate status + DB truth panel -------------------
+st.caption("UI Loaded — if you can read this, Streamlit is rendering content.")
+
+def _safe_count(cur: sqlite3.Cursor, table: str) -> int | None:
+    try:
+        cur.execute(f"SELECT COUNT(*) FROM {table}")
+        return int(cur.fetchone()[0])
+    except Exception:
+        return None
+
+def _safe_distinct_status(cur: sqlite3.Cursor, table: str):
+    try:
+        cur.execute(f"SELECT DISTINCT status FROM {table} ORDER BY status")
+        return [r[0] for r in cur.fetchall()]
+    except Exception:
+        return None
+
+with st.expander("DB Diagnostics (always visible)", expanded=False):
+    st.write("DB:", str(Path(DB_PATH).expanduser().resolve()))
+    db_path = Path(DB_PATH).expanduser().resolve()
+    st.write("Exists:", db_path.exists(), "Size:", db_path.stat().st_size if db_path.exists() else None)
+    if db_path.exists():
+        con = sqlite3.connect(str(db_path))
+        cur = con.cursor()
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
+        tables = [r[0] for r in cur.fetchall()]
+        st.write("Tables:", tables)
+
+        for t in ["articles", "findings", "queue", "jobs", "ui_events", "work_queue", "paper_queue", "processing_queue"]:
+            n = _safe_count(cur, t)
+            if n is not None:
+                st.write(f"{t}: {n}")
+
+        for t in ["queue", "jobs", "work_queue", "paper_queue", "processing_queue"]:
+            sts = _safe_distinct_status(cur, t)
+            if sts is not None:
+                st.write(f"{t}.status:", sts)
+
+        con.close()
+# --- END PATCH ----------------------------------------------------------------
+
+
+def get_connection() -> sqlite3.Connection:
+    """Create a SQLite connection suitable for dashboard reads.
+
+    - Uses the same DB path convention as the backend.
+    - Enables WAL mode (should already be on, but we assert it).
+    - Uses a 30s timeout to play nicely with concurrent workers.
+    """
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    # WAL should already be enabled, but this is idempotent.
+    conn.execute("PRAGMA journal_mode=WAL;")
+    return conn
+
+
+def get_core_counts() -> dict:
+    """Fetch lightweight row counts for quick UI feedback."""
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM articles")
+        articles = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM findings")
+        findings = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM processing_queue")
+        queue = cur.fetchone()[0]
+    return {"articles": articles, "findings": findings, "queue": queue}
+
+
+def seed_demo_data() -> dict:
+    """Insert small demo dataset for UI previewing."""
+    demo_article_id = "demo:article:001"
+    demo_job_id = "demo-job-001"
+    now = datetime.now().isoformat()
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM articles WHERE article_id = ?", (demo_article_id,))
+        has_article = cur.fetchone()[0] > 0
+        if not has_article:
+            cur.execute(
+                """
+                INSERT INTO articles(
+                    article_id, title, abstract, doi, corpus_id, authors, year,
+                    venue, full_text, sections, text_length, is_open_access,
+                    citation_count, url_pdf, ingested_at, created_at
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    demo_article_id,
+                    "Demo Article: Sleep and Memory Consolidation",
+                    "A small synthetic abstract for UI preview purposes.",
+                    "10.1234/demo.sleep.2025",
+                    "demo-corpus-001",
+                    "Doe, J.; Smith, A.",
+                    2025,
+                    "Journal of Demo Science",
+                    "",
+                    "",
+                    0,
+                    1,
+                    12,
+                    "https://example.com/demo.pdf",
+                    now,
+                    now,
+                ),
+            )
+        cur.execute("SELECT COUNT(*) FROM findings WHERE paper_id = ?", (demo_article_id,))
+        has_findings = cur.fetchone()[0] > 0
+        if not has_findings:
+            cur.execute(
+                """
+                INSERT INTO findings(
+                    finding_level, consequent, antecedents, operational_measure,
+                    measure_type, measure_direction, p_value, effect_size,
+                    sample_size, job_id, paper_id, created_at
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    "primary",
+                    "memory_recall",
+                    "sleep_duration",
+                    "recall_score",
+                    "behavioral",
+                    "positive",
+                    0.03,
+                    0.42,
+                    120,
+                    demo_job_id,
+                    demo_article_id,
+                    now,
+                ),
+            )
+        cur.execute("SELECT COUNT(*) FROM processing_queue WHERE job_id = ?", (demo_job_id,))
+        has_job = cur.fetchone()[0] > 0
+        if not has_job:
+            cur.execute(
+                """
+                INSERT INTO processing_queue(
+                    job_id, job_type, params, status, priority, result, error,
+                    created_at, started_at, completed_at, updated_at
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    demo_job_id,
+                    "demo_extract",
+                    '{"source":"demo","note":"seeded for UI"}',
+                    "completed",
+                    50,
+                    '{"status":"ok"}',
+                    None,
+                    now,
+                    now,
+                    now,
+                    now,
+                ),
+            )
+        conn.commit()
+    return {"seeded_article": not has_article, "seeded_finding": not has_findings, "seeded_job": not has_job}
+
+
+# ---------------------------------------------------------------------
+# SIDEBAR CONTROLS
+# ---------------------------------------------------------------------
+st.sidebar.title("🦁 Control Room")
+
+auto_refresh = st.sidebar.checkbox("Auto-Refresh (5s)", value=True)
+show_debug = st.sidebar.checkbox("Show Debug Snapshot", value=False)
+
+log_ui_event(
+    surface="control_room",
+    action="view",
+    user_id=os.environ.get("USER") or os.environ.get("USERNAME") or "",
+    detail={"auto_refresh": bool(auto_refresh)},
+)
+
+
+st.sidebar.markdown(
+    """
+
+    **Tips**
+
+    - Turn on *Auto-Refresh* while running workers.
+    - Use this page to spot failed or stuck jobs quickly.
+    - DB path is taken from `AE_DB_PATH` / `AE_DB` or `ae.db` by default.
+    """
+)
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("Demo Data")
+if st.sidebar.button("Insert demo rows"):
+    seeded = seed_demo_data()
+    st.sidebar.success(
+        "Seeded demo data: "
+        + ", ".join([k for k, v in seeded.items() if v]) if any(seeded.values()) else "Demo data already present."
+    )
+
+if auto_refresh:
+    st.sidebar.caption("Auto-refresh is enabled.")
+
+# ---------------------------------------------------------------------
+# MAIN DASHBOARD
+# ---------------------------------------------------------------------
+st.markdown(
+    """
+    <div style="padding:12px;border:2px solid #ff6b6b;background:#fff5f5;color:#111;border-radius:8px;">
+      <strong>UI Loaded</strong> — if you can read this, Streamlit is rendering content.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.title("Research Pipeline Status")
+st.caption(f"DB: {DB_PATH}")
+
+try:
+    counts = get_core_counts()
+    st.metric("Articles", counts["articles"])
+    st.metric("Findings", counts["findings"])
+    st.metric("Queue", counts["queue"])
+    if counts["articles"] == 0 and counts["findings"] == 0 and counts["queue"] == 0:
+        st.warning("No data yet. Check that workers are running and writing to this DB.")
+    elif counts["findings"] == 0:
+        st.info("DB is reachable, but no findings yet. Jobs may still be running.")
+    else:
+        st.success("Data detected. UI should render populated sections below.")
+except Exception as exc:
+    st.error(f"DB connection error: {exc}")
+
+if show_debug:
+    with st.expander("Debug: DB snapshot", expanded=True):
+        try:
+            with get_connection() as conn:
+                df_articles_preview = pd.read_sql_query(
+                    "SELECT article_id, title, year, venue, created_at FROM articles ORDER BY created_at DESC LIMIT 5",
+                    conn,
+                )
+                df_findings_preview = pd.read_sql_query(
+                    "SELECT id, finding_level, consequent, effect_size, p_value, created_at FROM findings ORDER BY created_at DESC LIMIT 5",
+                    conn,
+                )
+                df_queue_preview = pd.read_sql_query(
+                    "SELECT job_id, job_type, status, created_at FROM processing_queue ORDER BY created_at DESC LIMIT 5",
+                    conn,
+                )
+            st.write("Articles (top 5)")
+            st.dataframe(df_articles_preview, use_container_width=True, hide_index=True)
+            st.write("Findings (top 5)")
+            st.dataframe(df_findings_preview, use_container_width=True, hide_index=True)
+            st.write("Queue (top 5)")
+            st.dataframe(df_queue_preview, use_container_width=True, hide_index=True)
+        except Exception as exc:
+            st.error(f"Debug preview failed: {exc}")
+else:
+    st.caption("Debug snapshot hidden. Use the sidebar toggle to show it.")
+
+# ---------------------------------------------------------------------
+# 1. QUEUE STATUS (The Heartbeat)
+# ---------------------------------------------------------------------
+st.subheader("1. Job Queue")
+
+try:
+    with get_connection() as conn:
+        df_queue = pd.read_sql_query(
+            """
+
+            SELECT
+                job_id,
+                job_type,
+                status,
+                priority,
+                created_at,
+                started_at,
+                completed_at,
+                error,
+                result
+            FROM processing_queue
+            ORDER BY
+                CASE status
+                    WHEN 'running' THEN 1
+                    WHEN 'pending' THEN 2
+                    ELSE 3
+                END,
+                created_at DESC
+            LIMIT 50
+            """,
+
+            conn,
+        )
+except Exception as exc:
+    st.error(f"Error reading job queue from DB: {exc}")
+    df_queue = pd.DataFrame()
+
+if not df_queue.empty:
+    def color_status(val: str) -> str:
+        """Light background colours by status."""
+        if val == "running":
+            return "background-color: #e6f3ff"  # light blue
+        if val == "failed":
+            return "background-color: #ffe6e6"  # light red
+        if val == "complete":
+            return "background-color: #e6ffe6"  # light green
+        return ""
+
+    st.dataframe(
+        df_queue.style.applymap(color_status, subset=["status"]),
+        use_container_width=True,
+        hide_index=True,
+    )
+else:
+    st.info("Queue is empty or unavailable.")
+
+# ---------------------------------------------------------------------
+# 2. FINDINGS STREAM (The Output)
+# ---------------------------------------------------------------------
+st.subheader("2. Recent Findings")
+
+try:
+    with get_connection() as conn:
+        df_findings = pd.read_sql_query(
+            """
+
+            SELECT
+                f.id,
+                f.finding_level,
+                f.consequent,
+                f.effect_size,
+                f.p_value,
+                a.title AS paper,
+                f.created_at
+            FROM findings f
+            JOIN articles a
+                ON f.paper_id = a.article_id
+            ORDER BY f.created_at DESC
+            LIMIT 10
+            """,
+
+            conn,
+        )
+except Exception as exc:
+    st.error(f"Error reading findings from DB: {exc}")
+    df_findings = pd.DataFrame()
+
+if not df_findings.empty:
+    st.dataframe(
+        df_findings,
+        use_container_width=True,
+        hide_index=True,
+    )
+else:
+    st.write("No findings extracted yet (or unable to query findings).")
+
+# ---------------------------------------------------------------------
+# 3. LIBRARY STATS (The Scope)
+# ---------------------------------------------------------------------
+st.subheader("3. Library Stats")
+
+col1, col2, col3 = st.columns(3)
+
+count_papers = 0
+count_findings = 0
+count_errors = 0
+
+try:
+    with get_connection() as conn:
+        row = conn.execute("SELECT COUNT(*) FROM articles").fetchone()
+        if row:
+            count_papers = row[0]
+
+        row = conn.execute("SELECT COUNT(*) FROM findings").fetchone()
+        if row:
+            count_findings = row[0]
+
+        row = conn.execute(
+            "SELECT COUNT(*) FROM processing_queue WHERE status = 'failed'"
+        ).fetchone()
+        if row:
+            count_errors = row[0]
+except Exception as exc:
+    st.error(f"Error reading library stats from DB: {exc}")
+
+col1.metric("📚 Papers", count_papers)
+col2.metric("🔍 Findings", count_findings)
+col3.metric("❌ Job Errors", count_errors)
+
+# ---------------------------------------------------------------------
+# FOOTER
+# ---------------------------------------------------------------------
+st.caption(
+    f"Connected to: `{DB_PATH}` | Last Updated: {datetime.now().strftime('%H:%M:%S')}"
+)
+
+if auto_refresh:
+    # Refresh after rendering so the UI isn't blank during reruns.
+    st.caption("Refreshing in 5s...")
+    time.sleep(5)
+    st.rerun()

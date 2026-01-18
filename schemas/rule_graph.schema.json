@@ -1,0 +1,463 @@
+{
+  "$defs": {
+    "NodeRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "environment_feature",
+            "structural_property",
+            "latent_construct",
+            "indicator",
+            "subject_attribute",
+            "theory",
+            "activity",
+            "context_feature",
+            "other"
+          ],
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "ontology_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "SubjectModerator": {
+      "additionalProperties": false,
+      "properties": {
+        "attribute": {
+          "type": "string"
+        },
+        "dimension": {
+          "enum": [
+            "demographics",
+            "culture",
+            "traits",
+            "clinical",
+            "sensory",
+            "context",
+            "other"
+          ],
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "levels": {
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "attribute",
+        "dimension",
+        "pattern"
+      ],
+      "type": "object"
+    },
+    "SubjectScope": {
+      "additionalProperties": false,
+      "properties": {
+        "clinical_status": {
+          "additionalProperties": false,
+          "properties": {
+            "key_exclusions": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "key_inclusions": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "population": {
+              "enum": [
+                "healthy",
+                "clinical",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "culture": {
+          "additionalProperties": false,
+          "properties": {
+            "countries": {
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "region": {
+              "enum": [
+                "WEIRD",
+                "non_WEIRD",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "self_construal_profile": {
+              "enum": [
+                "more_independent",
+                "more_interdependent",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "demographics": {
+          "additionalProperties": false,
+          "properties": {
+            "age_band": {
+              "enum": [
+                "child",
+                "adolescent",
+                "young_adult",
+                "middle_adult",
+                "older_adult",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "age_mean": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "age_range": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "age_sd": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "education_band": {
+              "enum": [
+                "school",
+                "some_university",
+                "university_undergrads",
+                "graduates",
+                "mixed",
+                "unknown",
+                null
+              ],
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "sample_size": {
+              "type": [
+                "integer",
+                "number",
+                "null"
+              ]
+            },
+            "sex_gender_distribution": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "traits_measured": {
+          "items": {
+            "$ref": "#/$defs/SubjectTrait"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "SubjectTrait": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "scale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "used_as_moderator": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "cluster_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "contradiction_notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effect_direction": {
+      "enum": [
+        "+",
+        "-",
+        "mixed",
+        "unknown"
+      ]
+    },
+    "effect_size": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "evidence": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "factor_nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeRef"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "factors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "graph_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "moderators": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outcome_nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeRef"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "outcomes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "relation_type": {
+      "enum": [
+        "causal",
+        "correlational",
+        "indicator",
+        "operationalization",
+        "structural",
+        "explanatory",
+        "evidential",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rule_id": {
+      "type": "string"
+    },
+    "rule_text": {
+      "type": "string"
+    },
+    "sos_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "prima_facie",
+        "partial",
+        "established",
+        "explanatory"
+      ]
+    },
+    "subject_moderators": {
+      "items": {
+        "$ref": "#/$defs/SubjectModerator"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "subject_scope": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SubjectScope"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "triangulation_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "updated_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "rule_id",
+    "status",
+    "rule_text",
+    "factors",
+    "outcomes",
+    "provenance"
+  ],
+  "title": "RuleGraph",
+  "type": "object"
+}

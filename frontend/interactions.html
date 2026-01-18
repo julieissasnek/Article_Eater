@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rule Interactions - Article Eater</title>
+  <link rel="stylesheet" href="css/main_v2.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">
+        <span class="nav-logo-emoji">📚</span>
+        Article Eater
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="interactions.html" class="nav-link active">
+            <span class="nav-icon">🔄</span>
+            Interactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">
+            <span class="header-icon">🔄</span>
+            <h1>Rule Interactions</h1>
+          </div>
+          <p class="header-description">
+            Review and resolve conflicts between synthesized rules
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="refreshInteractions()">
+            <span class="btn-icon">🔄</span>
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="showResolvedInteractions()">
+            <span class="btn-icon">✅</span>
+            View Resolved
+          </button>
+        </div>
+      </header>
+
+      <!-- Info Alert -->
+      <div class="alert alert-info">
+        <div class="alert-icon">💡</div>
+        <div class="alert-content">
+          <div class="alert-title">What are interactions?</div>
+          <div class="alert-message">
+            Sometimes different studies produce conflicting findings. We detect these contradictions
+            and help you review the evidence to determine which is more reliable.
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid" style="margin-bottom: var(--space-8);">
+        <div class="stat-card stat-card-warning">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-content">
+            <div class="stat-label">Pending Review</div>
+            <div class="stat-value" id="stat-pending">--</div>
+            <div class="stat-change">
+              Requires your attention
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-success">
+          <div class="stat-icon">✅</div>
+          <div class="stat-content">
+            <div class="stat-label">Resolved</div>
+            <div class="stat-value" id="stat-resolved">--</div>
+            <div class="stat-change">
+              Conflicts addressed
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-info">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <div class="stat-label">Total Interactions</div>
+            <div class="stat-value" id="stat-total">--</div>
+            <div class="stat-change">
+              All time
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-body">
+          <div style="display: flex; gap: var(--space-4); align-items: end; flex-wrap: wrap;">
+            <div class="form-group" style="margin: 0; flex: 1; min-width: 200px;">
+              <label class="form-label">
+                <span class="form-label-icon">🔍</span>
+                Filter by topic
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="filter-topic"
+                placeholder="e.g., lighting, biophilic"
+                onkeyup="filterInteractions()"
+              >
+            </div>
+            
+            <div class="form-group" style="margin: 0; min-width: 150px;">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="filter-status" onchange="filterInteractions()">
+                <option value="all">All</option>
+                <option value="pending" selected>Pending</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin: 0; min-width: 150px;">
+              <label class="form-label">Severity</label>
+              <select class="form-select" id="filter-severity" onchange="filterInteractions()">
+                <option value="all">All</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactions List -->
+      <div id="interactions-list">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">🎉</div>
+        <div class="empty-state-title">No conflicts found!</div>
+        <div class="empty-state-message">
+          All your rules are in agreement. Great work!
+        </div>
+        <button class="btn btn-primary" onclick="location.href='rules.html'" style="margin-top: var(--space-4);">
+          <span class="btn-icon">📝</span>
+          View All Rules
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading interactions... 🔄</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let allInteractions = [];
+    let currentFilter = {
+      topic: '',
+      status: 'pending',
+      severity: 'all'
+    };
+
+    // Initialize page
+    async function init() {
+      await loadInteractions();
+      updateStats();
+    }
+
+    // Load interactions from API
+    async function loadInteractions() {
+      try {
+        document.getElementById('loading-state').style.display = 'block';
+        document.getElementById('interactions-list').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'none';
+
+        // Mock data for demonstration - replace with actual API call
+        // const response = await fetch('/api/interactions');
+        // allInteractions = await response.json();
+        
+        allInteractions = generateMockInteractions();
+        
+        filterInteractions();
+      } catch (error) {
+        console.error('Error loading interactions:', error);
+        showError('Failed to load interactions. Please try again.');
+      } finally {
+        document.getElementById('loading-state').style.display = 'none';
+      }
+    }
+
+    // Filter and display interactions
+    function filterInteractions() {
+      currentFilter.topic = document.getElementById('filter-topic').value.toLowerCase();
+      currentFilter.status = document.getElementById('filter-status').value;
+      currentFilter.severity = document.getElementById('filter-severity').value;
+
+      let filtered = allInteractions.filter(interaction => {
+        const matchesTopic = !currentFilter.topic || 
+          interaction.topic.toLowerCase().includes(currentFilter.topic) ||
+          interaction.rule_a.toLowerCase().includes(currentFilter.topic) ||
+          interaction.rule_b.toLowerCase().includes(currentFilter.topic);
+        
+        const matchesStatus = currentFilter.status === 'all' || 
+          interaction.status === currentFilter.status;
+        
+        const matchesSeverity = currentFilter.severity === 'all' || 
+          interaction.severity === currentFilter.severity;
+        
+        return matchesTopic && matchesStatus && matchesSeverity;
+      });
+
+      displayInteractions(filtered);
+      updateStats();
+    }
+
+    // Display interactions
+    function displayInteractions(interactions) {
+      const container = document.getElementById('interactions-list');
+      
+      if (interactions.length === 0) {
+        container.style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+        return;
+      }
+
+      container.style.display = 'block';
+      document.getElementById('empty-state').style.display = 'none';
+
+      container.innerHTML = interactions.map(interaction => `
+        <div class="card" style="margin-bottom: var(--space-6);">
+          <div class="card-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <h3 class="card-title">
+                <span class="card-icon">⚡</span>
+                ${interaction.topic}
+              </h3>
+              <div style="display: flex; gap: var(--space-2); align-items: center;">
+                <span class="badge badge-${getSeverityClass(interaction.severity)}">
+                  ${interaction.severity} severity
+                </span>
+                <span class="badge badge-${interaction.status === 'resolved' ? 'success' : 'warning'}">
+                  ${interaction.status}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <!-- Conflict Description -->
+            <div class="alert alert-warning" style="margin-bottom: var(--space-5);">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-content">
+                <div class="alert-title">Conflict Detected</div>
+                <div class="alert-message">${interaction.description}</div>
+              </div>
+            </div>
+
+            <!-- Rule A vs Rule B -->
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-4); margin-bottom: var(--space-5);">
+              <!-- Rule A -->
+              <div style="background: var(--gray-50); padding: var(--space-4); border-radius: var(--radius-lg); border: 2px solid var(--info);">
+                <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2); display: flex; align-items: center; gap: var(--space-2);">
+                  <span>📝</span>
+                  Rule A
+                </div>
+                <p style="margin-bottom: var(--space-3);">${interaction.rule_a}</p>
+                <div style="font-size: var(--text-sm); color: var(--gray-600);">
+                  <div>📚 Based on ${interaction.rule_a_papers} papers</div>
+                  <div>⭐ Confidence: ${(interaction.rule_a_confidence * 100).toFixed(0)}%</div>
+                  <div>📊 Effect size: d=${interaction.rule_a_effect.toFixed(2)}</div>
+                </div>
+              </div>
+
+              <!-- VS Badge -->
+              <div style="display: flex; align-items: center; justify-content: center;">
+                <div style="background: var(--error); color: white; padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); font-weight: var(--font-bold); font-size: var(--text-sm);">
+                  VS
+                </div>
+              </div>
+
+              <!-- Rule B -->
+              <div style="background: var(--gray-50); padding: var(--space-4); border-radius: var(--radius-lg); border: 2px solid var(--warning);">
+                <div style="font-weight: var(--font-semibold); color: var(--primary-blue); margin-bottom: var(--space-2); display: flex; align-items: center; gap: var(--space-2);">
+                  <span>📝</span>
+                  Rule B
+                </div>
+                <p style="margin-bottom: var(--space-3);">${interaction.rule_b}</p>
+                <div style="font-size: var(--text-sm); color: var(--gray-600);">
+                  <div>📚 Based on ${interaction.rule_b_papers} papers</div>
+                  <div>⭐ Confidence: ${(interaction.rule_b_confidence * 100).toFixed(0)}%</div>
+                  <div>📊 Effect size: d=${interaction.rule_b_effect.toFixed(2)}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recommendation -->
+            ${interaction.status === 'pending' ? `
+              <div class="alert alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                  <div class="alert-title">Recommendation</div>
+                  <div class="alert-message">${interaction.recommendation}</div>
+                </div>
+              </div>
+            ` : `
+              <div class="alert alert-success">
+                <div class="alert-icon">✅</div>
+                <div class="alert-content">
+                  <div class="alert-title">Resolution</div>
+                  <div class="alert-message">${interaction.resolution}</div>
+                </div>
+              </div>
+            `}
+          </div>
+
+          <div class="card-footer">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+              <div style="font-size: var(--text-sm); color: var(--gray-600);">
+                ID: ${interaction.id} • Created: ${interaction.created}
+              </div>
+              ${interaction.status === 'pending' ? `
+                <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                  <button class="btn btn-secondary" onclick="viewEvidence('${interaction.id}')">
+                    <span class="btn-icon">🔬</span>
+                    View Evidence
+                  </button>
+                  <button class="btn btn-success" onclick="resolveInteraction('${interaction.id}', 'a')">
+                    <span class="btn-icon">✓</span>
+                    Accept A
+                  </button>
+                  <button class="btn btn-success" onclick="resolveInteraction('${interaction.id}', 'b')">
+                    <span class="btn-icon">✓</span>
+                    Accept B
+                  </button>
+                  <button class="btn btn-primary" onclick="markBothValid('${interaction.id}')">
+                    <span class="btn-icon">🔗</span>
+                    Both Valid
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Update statistics
+    function updateStats() {
+      const pending = allInteractions.filter(i => i.status === 'pending').length;
+      const resolved = allInteractions.filter(i => i.status === 'resolved').length;
+      const total = allInteractions.length;
+
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-resolved').textContent = resolved;
+      document.getElementById('stat-total').textContent = total;
+    }
+
+    // Helper functions
+    function getSeverityClass(severity) {
+      const classes = {
+        'high': 'error',
+        'medium': 'warning',
+        'low': 'info'
+      };
+      return classes[severity] || 'info';
+    }
+
+    function refreshInteractions() {
+      loadInteractions();
+    }
+
+    function showResolvedInteractions() {
+      document.getElementById('filter-status').value = 'resolved';
+      filterInteractions();
+    }
+
+    function viewEvidence(id) {
+      alert(`Opening detailed evidence view for interaction ${id}\n\nThis would show:\n• All source papers\n• Statistical details\n• Methodological quality\n• Study populations`);
+    }
+
+    function resolveInteraction(id, choice) {
+      if (confirm(`Accept Rule ${choice.toUpperCase()}?\n\nThis will mark this interaction as resolved.`)) {
+        const interaction = allInteractions.find(i => i.id === id);
+        if (interaction) {
+          interaction.status = 'resolved';
+          interaction.resolution = `Resolved in favor of Rule ${choice.toUpperCase()} based on ${choice === 'a' ? interaction.rule_a_papers : interaction.rule_b_papers} supporting papers and effect size of d=${choice === 'a' ? interaction.rule_a_effect.toFixed(2) : interaction.rule_b_effect.toFixed(2)}`;
+          filterInteractions();
+          
+          showSuccess(`✅ Interaction resolved! Rule ${choice.toUpperCase()} accepted.`);
+        }
+      }
+    }
+
+    function markBothValid(id) {
+      if (confirm('Mark both rules as valid?\n\nThis means the rules may apply in different contexts or populations.')) {
+        const interaction = allInteractions.find(i => i.id === id);
+        if (interaction) {
+          interaction.status = 'resolved';
+          interaction.resolution = 'Both rules marked as valid. They may apply in different contexts or reflect methodological differences. Further research needed to clarify boundary conditions.';
+          filterInteractions();
+          
+          showSuccess('✅ Both rules marked as valid with different contexts!');
+        }
+      }
+    }
+
+    function showError(message) {
+      alert(message);
+    }
+
+    function showSuccess(message) {
+      alert(message);
+    }
+
+    // Generate mock data for demonstration
+    function generateMockInteractions() {
+      return [
+        {
+          id: 'int-001',
+          topic: 'Natural Light Effects',
+          description: 'Conflicting findings about the impact of natural light on productivity',
+          rule_a: 'Natural light increases workplace productivity by 15-20%',
+          rule_a_papers: 8,
+          rule_a_confidence: 0.85,
+          rule_a_effect: 0.42,
+          rule_b: 'Natural light has minimal effect on productivity (3-5% improvement)',
+          rule_b_papers: 5,
+          rule_b_confidence: 0.72,
+          rule_b_effect: 0.18,
+          severity: 'high',
+          status: 'pending',
+          recommendation: 'Rule A has higher confidence (85% vs 72%) and larger sample size (8 vs 5 papers). However, Rule B studies may have controlled for more confounds. Review methodological quality of both sets.',
+          created: '2025-11-14'
+        },
+        {
+          id: 'int-002',
+          topic: 'Plant Density in Offices',
+          description: 'Different optimal plant densities suggested by research',
+          rule_a: 'One plant per 10m² is optimal for wellbeing',
+          rule_a_papers: 4,
+          rule_a_confidence: 0.68,
+          rule_a_effect: 0.31,
+          rule_b: 'Three plants per 10m² provides maximum benefit',
+          rule_b_papers: 6,
+          rule_b_confidence: 0.76,
+          rule_b_effect: 0.45,
+          severity: 'medium',
+          status: 'pending',
+          recommendation: 'Rule B has higher confidence and effect size. May indicate a dose-response relationship where benefits increase with more plants up to a threshold.',
+          created: '2025-11-13'
+        },
+        {
+          id: 'int-003',
+          topic: 'Ceiling Height Effects',
+          description: 'Contradictory findings on optimal ceiling height',
+          rule_a: 'Higher ceilings (3m+) promote creative thinking',
+          rule_a_papers: 7,
+          rule_a_confidence: 0.81,
+          rule_a_effect: 0.38,
+          rule_b: 'Ceiling height has no significant effect on cognition',
+          rule_b_papers: 3,
+          rule_b_confidence: 0.59,
+          rule_b_effect: 0.08,
+          severity: 'low',
+          status: 'resolved',
+          resolution: 'Resolved in favor of Rule A based on 7 supporting papers and effect size of d=0.38. Rule B studies had smaller sample sizes and may have lacked statistical power.',
+          created: '2025-11-12'
+        }
+      ];
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

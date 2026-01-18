@@ -1,0 +1,333 @@
+
+from __future__ import annotations
+import hashlib
+import json
+import os
+import sqlite3
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import List, Dict, Any
+from app.services.semantic_scholar import search as s2_search
+from app.services.embeddings import embed_text, cosine
+from app.services.extract_7panel import extract_findings_from_text
+from app.pdf_ingest import extract_pdf_text
+
+DB = os.environ.get("AE_DB","ae.db")
+
+def _conn():
+    return sqlite3.connect(DB)
+
+def run_l0_harvest(job_id: int, query: str, limit: int=20):
+    hits = s2_search(query, limit=limit)
+    with _conn() as con:
+        for h in hits:
+            con.execute("INSERT OR IGNORE INTO articles (s2_id,title,abstract,year,url,citation_count) VALUES (?,?,?,?,?,?)",
+                        (h.get('paperId'), h.get('title'), h.get('abstract'), h.get('year'), h.get('url'), h.get('citationCount',0)))
+        con.execute("UPDATE processing_queue SET status='done', result='l0_harvested' WHERE id=?", (job_id,))
+    return len(hits)
+
+def run_l1_clustering(job_id: int, topic: str, sample: int=200):
+    with _conn() as con:
+        rows = con.execute("SELECT id, abstract FROM articles WHERE abstract IS NOT NULL LIMIT ?", (sample,)).fetchall()
+    vecs = [(rid, embed_text(ab or "")) for rid, ab in rows]
+    # naive single-pass threshold clustering
+    clusters = []
+    TH = 0.8
+    for rid, v in vecs:
+        placed=False
+        for c in clusters:
+            if cosine(v, c['centroid']) > TH:
+                c['ids'].append(rid)
+                placed=True; break
+        if not placed:
+            clusters.append({'ids':[rid], 'centroid': v})
+    with _conn() as con:
+        for i, c in enumerate(clusters):
+            for rid in c['ids']:
+                con.execute("UPDATE articles SET cluster=? WHERE id=?", (i, rid))
+        con.execute("UPDATE processing_queue SET status='done', result='l1_clustered' WHERE id=?", (job_id,))
+    return len(clusters)
+
+def run_l2_extraction(job_id: int, article_id: int, topic: str):
+    with _conn() as con:
+        row = con.execute("SELECT id, title, abstract, pdf_text FROM articles WHERE id=?", (article_id,)).fetchone()
+    if not row: return 0
+    text = row[3] or row[2] or ""
+    findings = extract_findings_from_text(text, topic=topic, is_admin=False)
+    with _conn() as con:
+        for f in findings:
+            st = f.get("statistics",{}) if isinstance(f, dict) else {}
+            con.execute("""INSERT INTO findings(article_id, finding_text, p_value, effect_size, effect_size_type, sample_size, ci_lower, ci_upper, quote, page_span)
+                        VALUES(?,?,?,?,?,?,?,?,?,?)""", (article_id, 
+                            f.get("finding_text") if isinstance(f, dict) else str(f),
+                            st.get("p_value"), st.get("effect_size"), st.get("effect_size_type"), st.get("sample_size"),
+                            st.get("ci_lower"), st.get("ci_upper"),
+                            f.get("quote"), f.get("page_span")))
+        con.execute("UPDATE processing_queue SET status='done', result='l2_extracted' WHERE id=?", (job_id,))
+    return len(findings)
+
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def _sha256_file(p: Path) -> str:
+    h = hashlib.sha256()
+    with p.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _write_json(p: Path, obj: Any) -> None:
+    p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _write_jsonl(p: Path, rows: List[Dict[str, Any]]) -> None:
+    with p.open("w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+
+def _audit_event(run_id: str, paper_id: str, stage: str, event: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "schema": "ae.audit_event.v1",
+        "ts": _utc_now(),
+        "run_id": run_id,
+        "paper_id": paper_id,
+        "stage": stage,
+        "event": event,
+        "data": data,
+    }
+
+
+def _review_item(run_id: str, paper_id: str, item_id: str, severity: str, question: str, context: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "schema": "ae.review_item.v1",
+        "paper_id": paper_id,
+        "run_id": run_id,
+        "item_id": item_id,
+        "severity": severity,
+        "question": question,
+        "context": context,
+    }
+
+
+def run_from_contract_bundle(
+    *, in_dir: Path, out_dir: Path, profile: str, hitl: str
+) -> dict:
+    """
+    Read AF-style bundle in in_dir, run AE extraction, write AE outputs to out_dir,
+    and return a summary dict (counts, warnings, etc).
+    """
+    in_dir = Path(in_dir).resolve()
+    out_dir = Path(out_dir).resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    run_id = f"ae.run.{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
+    audits: List[Dict[str, Any]] = []
+    review_items: List[Dict[str, Any]] = []
+
+    pdf_path = in_dir / "paper.pdf"
+    paper_path = in_dir / "paper.json"
+    paper = json.loads(paper_path.read_text(encoding="utf-8"))
+
+    paper_id = paper.get("paper_id", "unknown")
+    pdf_sha256 = _sha256_file(pdf_path) if pdf_path.exists() else "0" * 64
+    paper_json_sha256 = _sha256_file(paper_path)
+
+    audits.append(_audit_event(run_id, paper_id, "ingest", "start", {"profile": profile, "hitl": hitl}))
+
+    text = ""
+    fulltext_path = in_dir / "fulltext.txt"
+    abstract_path = in_dir / "abstract.txt"
+    if fulltext_path.exists():
+        text = fulltext_path.read_text(encoding="utf-8", errors="ignore")
+    elif abstract_path.exists():
+        text = abstract_path.read_text(encoding="utf-8", errors="ignore")
+    elif pdf_path.exists():
+        text = extract_pdf_text(pdf_path) or ""
+
+    if not text:
+        audits.append(_audit_event(run_id, paper_id, "extract", "fail", {"reason": "no_text_extracted"}))
+        review_items.append(
+            _review_item(
+                run_id,
+                paper_id,
+                "rev_missing_text",
+                "blocking",
+                "No text could be extracted from the input bundle.",
+                {"pdf": str(pdf_path)},
+            )
+        )
+
+    topic = paper.get("title") or paper.get("doi") or "unknown"
+    findings = []
+    llm_blocked = False
+    if text:
+        has_llm_key = bool(os.environ.get("GOOGLE_API_KEY") or os.environ.get("OPENAI_API_KEY"))
+        if not has_llm_key:
+            llm_blocked = True
+            audits.append(_audit_event(run_id, paper_id, "extract", "skip", {"reason": "llm_not_configured"}))
+            review_items.append(
+                _review_item(
+                    run_id,
+                    paper_id,
+                    "rev_llm_key",
+                    "blocking",
+                    "LLM API key missing; configure GOOGLE_API_KEY or OPENAI_API_KEY.",
+                    {},
+                )
+            )
+        else:
+            try:
+                findings = extract_findings_from_text(text, topic=topic, is_admin=False)
+            except Exception as exc:
+                llm_blocked = True
+                audits.append(_audit_event(run_id, paper_id, "extract", "fail", {"reason": str(exc)}))
+                review_items.append(
+                    _review_item(
+                        run_id,
+                        paper_id,
+                        "rev_llm_error",
+                        "blocking",
+                        "LLM extraction failed; check provider configuration.",
+                        {"error": str(exc)},
+                    )
+                )
+
+    claims: List[Dict[str, Any]] = []
+    rules: List[Dict[str, Any]] = []
+    for idx, finding in enumerate(findings, start=1):
+        if isinstance(finding, dict):
+            stats = finding.get("statistics", {}) or {}
+            statement = finding.get("finding_text") or finding.get("statement") or "Unspecified finding"
+            confidence = float(finding.get("ae_confidence") or finding.get("confidence") or 0.0)
+        else:
+            stats = {}
+            statement = str(finding) or "Unspecified finding"
+            confidence = 0.0
+
+        claim_id = f"{paper_id}.claim.{idx}"
+        claim = {
+            "schema": "ae.claim.v1",
+            "claim_id": claim_id,
+            "paper_id": paper_id,
+            "claim_type": "descriptive",
+            "statement": statement,
+            "constructs": {
+                "environment_factors": [],
+                "outcomes": [],
+                "mediators": [],
+                "moderators": [],
+            },
+            "study": {
+                "design": "unknown",
+                "sample": {
+                    "n": stats.get("sample_size"),
+                    "population": None,
+                    "age_mean": None,
+                    "country": None,
+                },
+                "task": [],
+                "setting": [],
+            },
+            "statistics": {
+                "effect_size": {
+                    "type": stats.get("effect_size_type"),
+                    "value": stats.get("effect_size"),
+                },
+                "p_value": stats.get("p_value"),
+                "ci95": None,
+            },
+            "evidence": [],
+            "constraints": [],
+            "ae_confidence": confidence,
+        }
+        claims.append(claim)
+
+        rule_id = f"{paper_id}.rule.{idx}"
+        rule = {
+            "schema": "ae.rule.v1",
+            "rule_id": rule_id,
+            "paper_id": paper_id,
+            "rule_type": "edge",
+            "lhs": [],
+            "rhs": [],
+            "polarity": "unknown",
+            "strength": {"kind": "unknown", "type": None, "value": None},
+            "applicability": {"population": [], "setting": [], "boundary_conditions": []},
+            "evidence_links": [{"claim_id": claim_id}],
+            "bn_mapping": {"node_suggestions": [], "discretization_hint": "unknown"},
+            "ae_confidence": confidence,
+        }
+        rules.append(rule)
+
+    status = "SUCCESS" if claims else ("FAIL" if not text else "PARTIAL_SUCCESS")
+    blocking = []
+    errors = []
+    if not text:
+        blocking.append("no_text_extracted")
+        errors.append({"code": "no_text", "message": "No text could be extracted from bundle inputs."})
+    elif llm_blocked:
+        blocking.append("llm_not_configured")
+        errors.append({"code": "llm_not_configured", "message": "Missing or misconfigured LLM API key."})
+    elif not claims:
+        blocking.append("no_findings")
+
+    result = {
+        "schema": "ae.result.v1",
+        "paper_id": paper_id,
+        "pdf_sha256": pdf_sha256,
+        "run_id": run_id,
+        "status": status,
+        "profile": profile,
+        "hitl": hitl,
+        "summary": {
+            "n_claims": len(claims),
+            "n_rules": len(rules),
+            "n_effect_sizes": len([c for c in claims if c["statistics"]["effect_size"]["value"] is not None]),
+            "n_population_records": len([c for c in claims if c["study"]["sample"]["n"] is not None]),
+            "n_environment_factors": sum(len(c["constructs"]["environment_factors"]) for c in claims),
+        },
+        "artifacts": {
+            "claims_jsonl": "claims.jsonl",
+            "rules_jsonl": "rules.jsonl",
+            "provenance_json": "provenance.json",
+            "audit_log_jsonl": "audit.log.jsonl",
+        },
+        "quality": {"confidence": max([c["ae_confidence"] for c in claims], default=0.0), "blocking_issues": blocking, "warnings": []},
+        "errors": errors,
+    }
+
+    provenance = {
+        "schema": "ae.provenance.v1",
+        "paper_id": paper_id,
+        "run_id": run_id,
+        "created_at": _utc_now(),
+        "inputs": {"pdf_sha256": pdf_sha256, "paper_json_sha256": paper_json_sha256},
+        "environment": {"python": sys.version.split()[0], "platform": sys.platform},
+        "models": [],
+        "tools": [{"name": "ae.pipeline", "version": "v1"}],
+    }
+
+    audits.append(_audit_event(run_id, paper_id, "extract", "done", {"n_claims": len(claims), "n_rules": len(rules)}))
+    audits.append(_audit_event(run_id, paper_id, "finalize", "done", {"status": status}))
+
+    _write_json(out_dir / "result.json", result)
+    _write_jsonl(out_dir / "claims.jsonl", claims)
+    _write_jsonl(out_dir / "rules.jsonl", rules)
+    _write_json(out_dir / "provenance.json", provenance)
+    _write_jsonl(out_dir / "audit.log.jsonl", audits)
+    _write_jsonl(out_dir / "review_items.jsonl", review_items)
+
+    return {
+        "run_id": run_id,
+        "paper_id": paper_id,
+        "status": status,
+        "n_claims": len(claims),
+        "n_rules": len(rules),
+        "blocking_issues": blocking,
+    }

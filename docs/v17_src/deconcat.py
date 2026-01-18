@@ -1,0 +1,1 @@
+# Documentation-only copy of deconcat; use root/scripts/deconcat.py for runtime.

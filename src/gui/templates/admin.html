@@ -1,0 +1,144 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Admin Control Room</title>
+<link rel="stylesheet" href="/static/main.css"/>
+<style>
+.container{max-width:1100px;margin:2rem auto;padding:1rem}
+.tabs{border:1px solid #ddd;border-radius:12px;padding:1rem}
+.tab{display:none}.tab.active{display:block}
+.tab-headers{display:flex;gap:.5rem;margin-bottom:1rem}
+.btn{padding:.5rem .8rem;border:1px solid #aaa;border-radius:8px;background:#f7f7f7;cursor:pointer}
+.btn.primary{background:#1e90ff;color:#fff;border-color:#1e90ff}
+textarea{font-family: ui-monospace, SFMono-Regular, Menlo, monospace}
+.rg2-card{border:1px solid #eee;border-radius:8px;padding:.5rem .75rem;margin-top:.5rem;font-size:.9rem;background:#fafafa}
+.rg2-card h3{margin:.1rem 0;font-size:1rem}
+.rg2-meta{font-size:.8rem;color:#555;margin-bottom:.25rem}
+.rg2-rule{margin:.15rem 0}
+.rg2-rule-code{font-family: ui-monospace, SFMono-Regular, Menlo, monospace;font-size:.8rem;color:#555}
+
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal.hidden{display:none}
+.modal-backdrop{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.35)}
+.modal-content{position:relative;max-width:720px;width:90%;max-height:80vh;background:#fff;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:.75rem 1rem;overflow:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.modal-body{font-family: ui-monospace, SFMono-Regular, Menlo, monospace;font-size:.8rem;white-space:pre-wrap}
+</style>
+</head><body><main class="container">
+  <h1>Admin Control Room</h1>
+  <div class="tabs">
+    <div class="tab-headers">
+      <button class="btn" data-tab="prompts">Prompt Workshop</button>
+      <button class="btn" data-tab="confidence">Confidence Engine</button>
+      <button class="btn" data-tab="rulegraphv2">Subject Rules (RuleGraph v2)</button>
+      <button class="btn" data-tab="bnplayground">BN Playground</button>
+    </div>
+    <section id="tab-prompts" class="tab active">
+      <div><label>Choose prompt:</label> <select id="promptSelect"></select>
+        <button id="refreshPrompts" class="btn">Refresh</button></div>
+      <textarea id="promptEditor" rows="24" style="width:100%;margin-top:.5rem"></textarea>
+      <div style="margin-top:.5rem"><button id="savePrompt" class="btn primary">Save</button></div>
+    </section>
+    <section id="tab-confidence" class="tab">
+      <div id="confEditor"></div>
+      <div style="margin-top:.5rem"><button id="saveConfidence" class="btn primary">Save</button></div>
+    </section>
+    <section id="tab-rulegraphv2" class="tab">
+      <p>Subject-aware RuleGraph v2 events currently stored in <code>data/graph.jsonl</code>.</p>
+      <div style="margin-bottom:.5rem;">
+        <label for="rg2PaperFilter">Filter by paper ID:</label>
+        <select id="rg2PaperFilter">
+          <option value="">All papers</option>
+        </select>
+        <button id="reloadRulegraphV2" class="btn">Reload</button>
+      </div>
+      <div style="margin-bottom:.5rem;">
+        <label for="rg2RuleSearch">Search:</label>
+        <input id="rg2RuleSearch" type="text" placeholder="Search rule text, scope, traits, age band..." style="min-width:220px;">
+        <label for="rg2AgeBandFilter" style="margin-left:.5rem;">Age band:</label>
+        <select id="rg2AgeBandFilter">
+          <option value="">All age bands</option>
+        </select>
+        <label for="rg2TraitFilter" style="margin-left:.5rem;">Trait:</label>
+        <select id="rg2TraitFilter">
+          <option value="">All traits</option>
+        </select>
+        <button id="rg2ExportBn" class="btn" style="margin-left:.5rem;">Export BN (JSON)</button>
+      </div>
+
+
+<div style="margin-top:.5rem;">
+  <button id="rg2DownloadCoverage" class="btn">Download coverage JSON</button>
+  <button id="rg2RunSmoke" class="btn primary" style="margin-left:.5rem;">Run v2 subject pipeline smoke test</button>
+</div>
+      <div id="rg2CoveragePanel" style="margin-top:.5rem; font-size:.9em; padding:.5rem; border:1px solid #ddd; border-radius:4px;">
+  <strong>Subject typing coverage</strong>
+  <div id="rg2CoverageGlobal">Global: (loading...)</div>
+  <div id="rg2CoveragePaper">Current paper: (select a paper to see coverage)</div>
+</div>
+      <div id="rulegraphV2Summary" style="margin-top:.75rem;"></div>
+    </section>
+    <section id="tab-bnplayground" class="tab">
+      <p>Hint: for a multi-persona, read-only dashboard that builds on these BN exports, run the Streamlit Control Room (`scripts/ae_streamlit_control_room.py`).</p>
+      <p>BN Playground: load a BN export JSON (from the RuleGraph v2 tab) and see a quick summary of outcome families and subject parent patterns.</p>
+      <div style="margin-bottom:.5rem;">
+        <input id="bnPlaygroundFile" type="file" accept="application/json"/>
+        <button id="bnPlaygroundAnalyze" class="btn primary" style="margin-left:.5rem;">Analyze export</button>
+        <button id="bnPlaygroundDownload" class="btn" style="margin-left:.5rem;">Download CSV pack</button>
+      </div>
+      <pre id="bnPlaygroundOutput" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.85rem; background:#fafafa; padding:.5rem; border-radius:6px; border:1px solid #eee; min-height:4rem;"></pre>
+    </section>
+  </div>
+</main>
+<script src="/static/admin.js"></script>
+<div id="rg2DetailModal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="rg2ModalTitle">Rule details</h2>
+      <button id="rg2ModalClose" class="btn">Close</button>
+    </div>
+    
+<div class="modal-body">
+  <pre id="rg2ModalBodyJson" class="modal-body-json"></pre>
+  <div id="rg2SubjectEditor">
+    <h3>Curated subject info (feeds BN export)</h3>
+    <div class="rg2-form-row">
+      <label for="rg2AgeBandInput">Age band:</label>
+      <select id="rg2AgeBandInput"><option value="">(none)</option></select>
+      <label for="rg2EducationBandInput" style="margin-left:.5rem;">Education band:</label>
+      <select id="rg2EducationBandInput"><option value="">(none)</option></select>
+    </div>
+    <div class="rg2-form-row">
+      <label for="rg2ClinicalPopInput">Clinical population:</label>
+      <select id="rg2ClinicalPopInput"><option value="">(none)</option></select>
+    </div>
+    <div class="rg2-form-row">
+      <label for="rg2CultureRegionInput">Culture region:</label>
+      <select id="rg2CultureRegionInput"><option value="">(none)</option></select>
+      <label for="rg2SelfConstrualInput" style="margin-left:.5rem;">Self-construal profile:</label>
+      <select id="rg2SelfConstrualInput"><option value="">(none)</option></select>
+    </div>
+    <div class="rg2-form-row">
+      <label for="rg2SampleSizeInput">Sample size (n):</label>
+      <input id="rg2SampleSizeInput" type="number" min="0" step="1" />
+    </div>
+    <div class="rg2-form-row">
+      <label for="rg2TraitsInput">Traits (comma separated):</label>
+      <input id="rg2TraitsInput" type="text" placeholder="e.g., introversion, openness, high sensation-seeking" />
+    </div>
+    <div class="rg2-form-row">
+      <label for="rg2ModeratorsInput">Subject moderators (one per line, 'dimension|attribute'):</label>
+      <textarea id="rg2ModeratorsInput" rows="3" placeholder="lighting|dim vs bright&#10;noise|quiet vs loud"></textarea>
+    </div>
+    <div class="rg2-form-row">
+      <button id="rg2SubjectSave" class="btn primary">Save subject info</button>
+      <button id="rg2SubjectReset" class="btn">Reset to raw</button>
+    </div>
+    <div id="rg2SubjectStatus" class="rg2-meta"></div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+</body></html>

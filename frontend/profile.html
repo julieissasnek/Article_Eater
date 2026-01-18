@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link active">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Profile</h1>
+          <p class="text-gray-600">Manage your account and API keys</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadProfile()">
+            <span>🔄</span> Refresh
+          </button>
+        </div>
+      </header>
+
+      <!-- Account Information -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Account Information</h2>
+          <button class="btn btn-sm btn-secondary" onclick="UI.showModal('edit-profile-modal')">
+            Edit Profile
+          </button>
+        </div>
+        <div class="card-content">
+          <div style="display: grid; grid-template-columns: 150px 1fr; gap: 1rem;">
+            <div class="text-sm text-gray-600">Name:</div>
+            <div class="font-semibold" id="profile-name">--</div>
+
+            <div class="text-sm text-gray-600">Email:</div>
+            <div id="profile-email">--</div>
+
+            <div class="text-sm text-gray-600">Role:</div>
+            <div id="profile-role">--</div>
+
+            <div class="text-sm text-gray-600">Member Since:</div>
+            <div id="profile-member-since">--</div>
+
+            <div class="text-sm text-gray-600">Last Login:</div>
+            <div id="profile-last-login">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Keys -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">API Keys</h2>
+          <button class="btn btn-sm btn-primary" onclick="UI.showModal('add-key-modal')">
+            <span>➕</span> Add Key
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+            <strong>🔐 Security:</strong> All API keys are encrypted at rest (AES-256). 
+            Keys are never logged in plaintext. You can use your own keys or institutional keys.
+          </div>
+
+          <div id="api-keys-list">
+            <div class="text-center" style="padding: 2rem;">
+              <div class="spinner"></div>
+              <p class="text-gray-600 mt-md">Loading API keys...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preferences -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Preferences</h2>
+        </div>
+        <div class="card-content">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="pref-email-notifications" style="width: 20px; height: 20px;">
+              <div>
+                <div class="font-semibold">Email notifications for job completion</div>
+                <div class="text-sm text-gray-600">Get notified when processing jobs finish</div>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="pref-show-costs" checked style="width: 20px; height: 20px;">
+              <div>
+                <div class="font-semibold">Show cost estimates before job submission</div>
+                <div class="text-sm text-gray-600">See estimated costs before starting jobs</div>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="pref-manual-review" checked style="width: 20px; height: 20px;">
+              <div>
+                <div class="font-semibold">Require manual review for high-cost jobs (>$1.00)</div>
+                <div class="text-sm text-gray-600">Prevent accidental expensive operations</div>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="pref-auto-expire" checked style="width: 20px; height: 20px;">
+              <div>
+                <div class="font-semibold">Auto-expire session after 1 hour of inactivity</div>
+                <div class="text-sm text-gray-600">For security on shared computers</div>
+              </div>
+            </label>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="savePreferences()">
+              Save Preferences
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Security</h2>
+        </div>
+        <div class="card-content">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div>
+              <h3 class="font-semibold mb-sm">Audit Log</h3>
+              <p class="text-sm text-gray-600 mb-md">
+                All API key usage is tracked in an audit log for security and compliance.
+              </p>
+              <button class="btn btn-sm btn-secondary" onclick="viewAuditLog()">
+                View Audit Log
+              </button>
+            </div>
+
+            <div style="border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+              <h3 class="font-semibold mb-sm" style="color: var(--error);">Danger Zone</h3>
+              <p class="text-sm text-gray-600 mb-md">
+                These actions are irreversible. Please be certain.
+              </p>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-sm btn-secondary" onclick="clearAllData()">
+                  Clear All Data
+                </button>
+                <button class="btn btn-sm" style="background: var(--error); color: white;" onclick="deleteAccount()">
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="edit-profile-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Profile</h2>
+        <button class="modal-close" onclick="UI.hideModal('edit-profile-modal')">×</button>
+      </div>
+      <form onsubmit="saveProfile(event)">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" id="edit-name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="edit-email" required>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="UI.hideModal('edit-profile-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add API Key Modal -->
+  <div id="add-key-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add API Key</h2>
+        <button class="modal-close" onclick="UI.hideModal('add-key-modal')">×</button>
+      </div>
+      <form onsubmit="addAPIKey(event)">
+        <div class="form-group">
+          <label class="form-label">Provider</label>
+          <select class="form-select" id="key-provider" required>
+            <option value="">Select provider...</option>
+            <option value="openai">OpenAI (for GPT-4)</option>
+            <option value="anthropic">Anthropic (for Claude)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">API Key</label>
+          <input 
+            type="password" 
+            class="form-input" 
+            id="key-value" 
+            NOTE="sk-proj-..." 
+            required
+            style="font-family: var(--font-mono);"
+          >
+          <div class="form-hint">
+            Your key will be encrypted before storage. Never shared or logged.
+          </div>
+        </div>
+        <div class="alert alert-info">
+          <strong>Where to get API keys:</strong>
+          <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.875rem;">
+            <li>OpenAI: <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a></li>
+            <li>Anthropic: <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com/settings/keys</a></li>
+          </ul>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="UI.hideModal('add-key-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Key</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let profile = null;
+    let apiKeys = [];
+
+    // Load profile on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProfile();
+      loadAPIKeys();
+      loadPreferences();
+    });
+
+    // Load profile data
+    async function loadProfile() {
+      try {
+        // In production: profile = await api.getProfile();
+        // For demo, generate NOTE data
+        profile = {
+          name: 'Sarah Kim',
+          email: 'sarah.k@ucsd.edu',
+          role: 'Student (Cog Sci 187A)',
+          memberSince: '2025-09-15T00:00:00Z',
+          lastLogin: new Date().toISOString()
+        };
+
+        displayProfile();
+        
+      } catch (error) {
+        console.error('Profile load error:', error);
+        UI.toast('Failed to load profile', 'error');
+      }
+    }
+
+    // Display profile
+    function displayProfile() {
+      document.getElementById('profile-name').textContent = profile.name;
+      document.getElementById('profile-email').textContent = profile.email;
+      document.getElementById('profile-role').textContent = profile.role;
+      document.getElementById('profile-member-since').textContent = UI.formatDate(profile.memberSince);
+      document.getElementById('profile-last-login').textContent = UI.formatDate(profile.lastLogin);
+
+      // Populate edit form
+      document.getElementById('edit-name').value = profile.name;
+      document.getElementById('edit-email').value = profile.email;
+    }
+
+    // Save profile
+    function saveProfile(event) {
+      event.preventDefault();
+      
+      profile.name = document.getElementById('edit-name').value;
+      profile.email = document.getElementById('edit-email').value;
+
+      // In production: await api.updateProfile(profile);
+      
+      displayProfile();
+      UI.hideModal('edit-profile-modal');
+      UI.toast('Profile updated successfully', 'success');
+    }
+
+    // Load API keys
+    async function loadAPIKeys() {
+      try {
+        // In production: apiKeys = await api.listAPIKeys();
+        // For demo, generate NOTE data
+        apiKeys = [
+          {
+            provider: 'openai',
+            maskedKey: 'sk-proj-abc...xyz',
+            addedAt: '2025-09-20T10:00:00Z',
+            lastUsed: new Date().toISOString(),
+            usageCount: 127,
+            status: 'active'
+          }
+        ];
+
+        displayAPIKeys();
+        
+      } catch (error) {
+        console.error('API keys load error:', error);
+        document.getElementById('api-keys-list').innerHTML = `
+          <div class="alert alert-error">
+            Failed to load API keys: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // Display API keys
+    function displayAPIKeys() {
+      const container = document.getElementById('api-keys-list');
+
+      if (apiKeys.length === 0) {
+        container.innerHTML = `
+          <div class="text-center" style="padding: 2rem;">
+            <p class="text-gray-600">No API keys configured</p>
+            <p class="text-sm text-gray-500 mt-sm">
+              Add an API key to start using Article Eater
+            </p>
+            <button class="btn btn-primary mt-md" onclick="UI.showModal('add-key-modal')">
+              Add Your First Key
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = apiKeys.map(key => {
+        const providerNames = {
+          openai: 'OpenAI',
+          anthropic: 'Anthropic'
+        };
+        const providerName = providerNames[key.provider] || key.provider;
+
+        return `
+          <div class="card" style="margin-bottom: 1rem;">
+            <div class="card-content">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <strong>${providerName}</strong>
+                    <span class="badge badge-${key.status === 'active' ? 'success' : 'gray'}">
+                      ${key.status === 'active' ? '🟢 Active' : '⚫ Inactive'}
+                    </span>
+                  </div>
+                  <div class="text-sm" style="font-family: var(--font-mono); color: var(--gray-600); margin-bottom: 0.5rem;">
+                    ${key.maskedKey}
+                  </div>
+                  <div class="text-xs text-gray-600">
+                    Added ${UI.formatDate(key.addedAt)} • 
+                    Last used ${UI.formatDate(key.lastUsed)} • 
+                    ${key.usageCount} requests
+                  </div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="btn btn-sm btn-secondary" onclick="rotateKey('${key.provider}')">
+                    🔄 Rotate
+                  </button>
+                  <button class="btn btn-sm btn-error" onclick="removeKey('${key.provider}')">
+                    🗑️ Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Add API key
+    function addAPIKey(event) {
+      event.preventDefault();
+      
+      const provider = document.getElementById('key-provider').value;
+      const keyValue = document.getElementById('key-value').value;
+
+      // Validate key format
+      if (provider === 'openai' && !keyValue.startsWith('sk-')) {
+        UI.toast('OpenAI keys should start with "sk-"', 'error');
+        return;
+      }
+
+      if (provider === 'anthropic' && !keyValue.startsWith('sk-ant-')) {
+        UI.toast('Anthropic keys should start with "sk-ant-"', 'error');
+        return;
+      }
+
+      // Check if key already exists
+      if (apiKeys.find(k => k.provider === provider)) {
+        UI.toast(`${provider} key already exists. Remove it first.`, 'error');
+        return;
+      }
+
+      // In production: await api.addAPIKey(provider, keyValue);
+
+      // Add to list
+      apiKeys.push({
+        provider: provider,
+        maskedKey: keyValue.substring(0, 10) + '...' + keyValue.slice(-3),
+        addedAt: new Date().toISOString(),
+        lastUsed: null,
+        usageCount: 0,
+        status: 'active'
+      });
+
+      displayAPIKeys();
+      UI.hideModal('add-key-modal');
+      UI.toast('API key added successfully', 'success');
+
+      // Reset form
+      document.getElementById('key-provider').value = '';
+      document.getElementById('key-value').value = '';
+    }
+
+    // Remove API key
+    function removeKey(provider) {
+      if (confirm(`Remove ${provider} API key? This cannot be undone.`)) {
+        // In production: await api.deleteAPIKey(provider);
+        
+        apiKeys = apiKeys.filter(k => k.provider !== provider);
+        displayAPIKeys();
+        UI.toast('API key removed', 'success');
+      }
+    }
+
+    // Rotate API key
+    function rotateKey(provider) {
+      UI.toast('Rotate key feature coming soon', 'info');
+      // In production, this would:
+      // 1. Show modal to enter new key
+      // 2. Validate new key
+      // 3. Replace old key
+      // 4. Invalidate old key
+    }
+
+    // Save preferences
+    function savePreferences() {
+      const prefs = {
+        emailNotifications: document.getElementById('pref-email-notifications').checked,
+        showCosts: document.getElementById('pref-show-costs').checked,
+        manualReview: document.getElementById('pref-manual-review').checked,
+        autoExpire: document.getElementById('pref-auto-expire').checked
+      };
+
+      // In production: await api.updateProfile({ preferences: prefs });
+      localStorage.setItem('preferences', JSON.stringify(prefs));
+      
+      UI.toast('Preferences saved', 'success');
+    }
+
+    // Load preferences
+    function loadPreferences() {
+      const saved = localStorage.getItem('preferences');
+      if (saved) {
+        const prefs = JSON.parse(saved);
+        document.getElementById('pref-email-notifications').checked = prefs.emailNotifications || false;
+        document.getElementById('pref-show-costs').checked = prefs.showCosts !== false;
+        document.getElementById('pref-manual-review').checked = prefs.manualReview !== false;
+        document.getElementById('pref-auto-expire').checked = prefs.autoExpire !== false;
+      }
+    }
+
+    // View audit log
+    function viewAuditLog() {
+      UI.toast('Opening audit log...', 'info');
+      // In production, this would open a modal or navigate to audit log page
+      window.location.href = 'audit.html';
+    }
+
+    // Clear all data
+    function clearAllData() {
+      if (confirm('Clear all your data? This will delete all papers, findings, and rules. This cannot be undone.')) {
+        if (confirm('Are you absolutely sure? Type "DELETE" to confirm.')) {
+          // In production: await api.clearUserData();
+          UI.toast('All data cleared', 'success');
+          setTimeout(() => window.location.href = 'dashboard.html', 1500);
+        }
+      }
+    }
+
+    // Delete account
+    function deleteAccount() {
+      if (confirm('Delete your account? This will permanently delete all your data and cannot be undone.')) {
+        const confirmation = prompt('Type your email address to confirm account deletion:');
+        if (confirmation === profile.email) {
+          // In production: await api.deleteAccount();
+          alert('Account deleted. You will be logged out.');
+          window.location.href = 'login.html';
+        } else {
+          UI.toast('Email does not match. Account not deleted.', 'error');
+        }
+      }
+    }
+  </script>
+</body>
+</html>

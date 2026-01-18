@@ -1,0 +1,25 @@
+# envkit.yml — per-repo adapter configuration (template)
+
+runtime:
+  kind: "docker_compose"   # docker_compose | python | node | mixed
+
+health:
+  endpoints:
+    - "http://localhost:8401/health"
+    - "http://localhost:8401/version"
+
+fingerprint:
+  files:
+    - "Dockerfile.api"
+    - "Dockerfile.ui"
+    - "docker-compose.yml"
+    - "VERSION.txt"
+    - "backend/requirements.txt"
+    - "frontend_streamlit/requirements.txt"
+  dirs:
+    - "backend/app"
+    - "core"
+    - "frontend_streamlit"
+
+testing:
+  command: "./bin/self_test.sh"

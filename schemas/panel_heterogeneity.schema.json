@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "moderation_patterns": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "dimension": {
+            "enum": [
+              "demographics",
+              "culture",
+              "traits",
+              "clinical",
+              "sensory",
+              "context",
+              "other"
+            ],
+            "type": "string"
+          },
+          "evidence_snippet": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "finding_id": {
+            "type": "string"
+          },
+          "levels_compared": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "moderator": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "section": {
+            "enum": [
+              "Methods",
+              "Results",
+              "Discussion",
+              "other",
+              "unknown",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "stats_summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "finding_id",
+          "moderator",
+          "dimension",
+          "pattern"
+        ],
+        "type": "object"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "type": {
+      "const": "panel_heterogeneity"
+    }
+  },
+  "required": [
+    "type",
+    "paper_id"
+  ],
+  "title": "PanelHeterogeneity",
+  "type": "object"
+}

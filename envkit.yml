@@ -1,0 +1,20 @@
+# envkit.yml — per-repo adapter configuration (template)
+
+runtime:
+  kind: "python"   # docker_compose | python | node | mixed
+
+health:
+  endpoints:
+    - "http://localhost:8401/healthz"
+
+fingerprint:
+  files:
+    - "requirements.txt"
+    - "VERSION.txt"
+  dirs:
+    - "app"
+    - "modules"
+    - "scripts"
+
+testing:
+  command: "python scripts/run_all_checks.py"

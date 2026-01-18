@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage & Costs - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">📚 Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="search.html" class="nav-link">
+            <span class="nav-icon">🔍</span>
+            New Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="rules.html" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Rule Inspector
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="queue.html" class="nav-link">
+            <span class="nav-icon">⏳</span>
+            Processing Queue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="usage.html" class="nav-link active">
+            <span class="nav-icon">💰</span>
+            Usage & Costs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Profile
+          </a>
+        </li>
+      </ul>
+      <a href="interactions.html" class="nav-link">Interactions</a>
+</nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Usage & Costs</h1>
+          <p class="text-gray-600">Track your API usage and costs</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadUsage()">
+            <span>🔄</span> Refresh
+          </button>
+          <button class="btn btn-primary" onclick="UI.showModal('budget-modal')">
+            <span>⚙️</span> Set Budget
+          </button>
+        </div>
+      </header>
+
+      <!-- Budget Overview -->
+      <div class="card" style="background: linear-gradient(135deg, var(--primary-blue), #0D1B2E); color: white; margin-bottom: 2rem;">
+        <div class="card-content">
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: center;">
+            <div>
+              <div style="font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.5rem;">
+                Monthly Budget
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; font-weight: 700;" id="current-spend">$0.00</div>
+                <div style="font-size: 1.5rem; opacity: 0.8;">/ $<span id="budget-limit">10.00</span></div>
+              </div>
+              <div class="progress-bar" style="height: 12px; background: rgba(255,255,255,0.2);">
+                <div class="progress-fill" id="budget-progress" style="width: 0%; background: var(--ucsd-gold);"></div>
+              </div>
+              <div style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.9;">
+                <span id="budget-percent">0</span>% of budget used • 
+                $<span id="budget-remaining">10.00</span> remaining
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.5rem;">
+                Days Remaining
+              </div>
+              <div style="font-size: 2.5rem; font-weight: 700;" id="days-remaining">--</div>
+              <div style="font-size: 0.875rem; opacity: 0.8;">
+                until <span id="period-end">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Cost Breakdown</h2>
+          <select class="form-select" id="period-select" onchange="changePeriod()" style="width: auto;">
+            <option value="week">Last 7 Days</option>
+            <option value="month" selected>This Month</option>
+            <option value="quarter">Last 3 Months</option>
+            <option value="year">This Year</option>
+          </select>
+        </div>
+        <div class="card-content">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Count</th>
+                  <th>Cost per Unit</th>
+                  <th>Total Cost</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody id="cost-breakdown">
+                <tr>
+                  <td colspan="5" class="text-center" style="padding: 2rem;">
+                    <div class="spinner"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Charts -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <!-- Spending Trend -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Spending Trend</h2>
+          </div>
+          <div class="card-content">
+            <div id="spending-chart" style="min-height: 200px;"></div>
+          </div>
+        </div>
+
+        <!-- Operations Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Operations by Type</h2>
+          </div>
+          <div class="card-content">
+            <div id="operations-chart" style="min-height: 200px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost-Saving Tips -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">💡 Cost-Saving Tips</h2>
+        </div>
+        <div class="card-content">
+          <div style="display: grid; gap: 1rem;">
+            <div class="alert alert-info">
+              <strong>Use L1 Triage:</strong> Filter papers before expensive L2 extraction. This can save 60-80% of costs.
+            </div>
+            <div class="alert alert-info">
+              <strong>Batch Queries:</strong> Group similar searches together to reuse embeddings and reduce API calls.
+            </div>
+            <div class="alert alert-info">
+              <strong>Enable Caching:</strong> Already processed papers won't be re-extracted, saving money.
+            </div>
+            <div class="alert alert-info">
+              <strong>Set Budget Alerts:</strong> Get notified at 75% and 90% of your budget to avoid overruns.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Alerts -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Budget Alerts</h2>
+        </div>
+        <div class="card-content">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="alert-75" checked style="width: 20px; height: 20px;">
+              <span>Email me when I reach 75% of budget ($<span class="alert-amount-75">7.50</span>)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="alert-90" checked style="width: 20px; height: 20px;">
+              <span>Email me when I reach 90% of budget ($<span class="alert-amount-90">9.00</span>)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="block-exceed">
+              <span>Block new jobs when budget exceeded (recommended)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="show-estimates" checked>
+              <span>Show cost estimate before each job submission</span>
+            </label>
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="saveAlertSettings()">
+              Save Alert Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Budget Settings Modal -->
+  <div id="budget-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Set Monthly Budget</h2>
+        <button class="modal-close" onclick="UI.hideModal('budget-modal')">×</button>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">Monthly Budget Limit ($)</label>
+          <input 
+            type="number" 
+            class="form-input" 
+            id="budget-input"
+            value="10.00"
+            min="1"
+            step="0.50"
+            NOTE="10.00"
+          >
+          <div class="form-hint">
+            Recommended: $5-10 per month for typical usage
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>Typical costs:</strong>
+          <ul style="margin: 0.5rem 0 0 1.5rem;">
+            <li>L0 Harvest: FREE</li>
+            <li>L1 Triage (100 papers): $0.25</li>
+            <li>L2 Extract (20 papers): $0.60</li>
+            <li>L3 Synthesize (30 rules): $2.50</li>
+          </ul>
+          Total per search: ~$3.50
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button class="btn btn-secondary" onclick="UI.hideModal('budget-modal')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveBudget()">
+            Save Budget
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let usageData = null;
+
+    // Load usage on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadUsage();
+    });
+
+    // Load usage data
+    async function loadUsage() {
+      try {
+        // In production: const data = await api.getUsage();
+        // For demo, generate NOTE data
+        usageData = generateMockUsage();
+        
+        displayUsage();
+        
+      } catch (error) {
+        console.error('Usage load error:', error);
+        UI.toast('Failed to load usage data', 'error');
+      }
+    }
+
+    // Generate NOTE usage data
+    function generateMockUsage() {
+      const currentSpend = 2.85;
+      const budgetLimit = 10.00;
+      
+      return {
+        currentSpend: currentSpend,
+        budgetLimit: budgetLimit,
+        budgetPercent: Math.round((currentSpend / budgetLimit) * 100),
+        budgetRemaining: budgetLimit - currentSpend,
+        daysRemaining: 17,
+        periodEnd: 'Nov 30, 2025',
+        breakdown: [
+          { operation: 'L1: Triage', count: 250, costPerUnit: 0.0025, total: 0.62, percent: 22 },
+          { operation: 'L2: Extraction', count: 23, costPerUnit: 0.030, total: 0.69, percent: 24 },
+          { operation: 'L3: Synthesis', count: 8, costPerUnit: 0.180, total: 1.44, percent: 51 },
+          { operation: 'Misc (retries, validation)', count: null, costPerUnit: null, total: 0.10, percent: 3 }
+        ],
+        spendingTrend: [
+          { date: 'Nov 8', amount: 0.25 },
+          { date: 'Nov 9', amount: 0.15 },
+          { date: 'Nov 10', amount: 0.55 },
+          { date: 'Nov 11', amount: 0.30 },
+          { date: 'Nov 12', amount: 0.80 },
+          { date: 'Nov 13', amount: 0.45 },
+          { date: 'Nov 14', amount: 0.35 }
+        ]
+      };
+    }
+
+    // Display usage data
+    function displayUsage() {
+      // Budget overview
+      document.getElementById('current-spend').textContent = '$' + usageData.currentSpend.toFixed(2);
+      document.getElementById('budget-limit').textContent = usageData.budgetLimit.toFixed(2);
+      document.getElementById('budget-percent').textContent = usageData.budgetPercent;
+      document.getElementById('budget-remaining').textContent = usageData.budgetRemaining.toFixed(2);
+      document.getElementById('days-remaining').textContent = usageData.daysRemaining;
+      document.getElementById('period-end').textContent = usageData.periodEnd;
+
+      // Progress bar
+      const progressBar = document.getElementById('budget-progress');
+      progressBar.style.width = usageData.budgetPercent + '%';
+      
+      // Change color based on usage
+      if (usageData.budgetPercent >= 90) {
+        progressBar.style.background = 'var(--error)';
+      } else if (usageData.budgetPercent >= 75) {
+        progressBar.style.background = 'var(--warning)';
+      }
+
+      // Cost breakdown table
+      const tbody = document.getElementById('cost-breakdown');
+      tbody.innerHTML = usageData.breakdown.map(item => `
+        <tr>
+          <td><strong>${item.operation}</strong></td>
+          <td>${item.count !== null ? item.count.toLocaleString() : '—'}</td>
+          <td>${item.costPerUnit !== null ? '$' + item.costPerUnit.toFixed(4) : '—'}</td>
+          <td><strong>$${item.total.toFixed(2)}</strong></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="progress-bar" style="flex: 1; max-width: 100px;">
+                <div class="progress-fill" style="width: ${item.percent}%;"></div>
+              </div>
+              <span>${item.percent}%</span>
+            </div>
+          </td>
+        </tr>
+      `).join('') + `
+        <tr style="border-top: 2px solid var(--gray-300); font-weight: 600;">
+          <td>TOTAL</td>
+          <td>—</td>
+          <td>—</td>
+          <td>$${usageData.currentSpend.toFixed(2)}</td>
+          <td>100%</td>
+        </tr>
+      `;
+
+      // Spending trend chart
+      ChartUtils.createBarChart(
+        usageData.spendingTrend.map(d => ({ label: d.date, value: d.amount })),
+        'spending-chart'
+      );
+
+      // Operations chart
+      ChartUtils.createBarChart(
+        usageData.breakdown.filter(b => b.count).map(b => ({ 
+          label: b.operation.replace('L1: ', '').replace('L2: ', '').replace('L3: ', ''), 
+          value: b.count 
+        })),
+        'operations-chart'
+      );
+
+      // Update alert amounts
+      document.querySelector('.alert-amount-75').textContent = (usageData.budgetLimit * 0.75).toFixed(2);
+      document.querySelector('.alert-amount-90').textContent = (usageData.budgetLimit * 0.90).toFixed(2);
+    }
+
+    // Change period
+    function changePeriod() {
+      const period = document.getElementById('period-select').value;
+      UI.toast(`Showing data for: ${period}`, 'info');
+      // In production, reload data for selected period
+    }
+
+    // Save budget
+    function saveBudget() {
+      const newBudget = parseFloat(document.getElementById('budget-input').value);
+      
+      if (isNaN(newBudget) || newBudget < 1) {
+        UI.toast('Please enter a valid budget amount ($1 minimum)', 'error');
+        return;
+      }
+
+      usageData.budgetLimit = newBudget;
+      usageData.budgetPercent = Math.round((usageData.currentSpend / newBudget) * 100);
+      usageData.budgetRemaining = newBudget - usageData.currentSpend;
+
+      displayUsage();
+      UI.hideModal('budget-modal');
+      UI.toast(`Budget updated to $${newBudget.toFixed(2)}`, 'success');
+    }
+
+    // Save alert settings
+    function saveAlertSettings() {
+      const settings = {
+        alert75: document.getElementById('alert-75').checked,
+        alert90: document.getElementById('alert-90').checked,
+        blockExceed: document.getElementById('block-exceed').checked,
+        showEstimates: document.getElementById('show-estimates').checked
+      };
+
+      // In production, save to backend
+      localStorage.setItem('budgetAlerts', JSON.stringify(settings));
+      
+      UI.toast('Alert settings saved', 'success');
+    }
+
+    // Load saved alert settings
+    function loadAlertSettings() {
+      const saved = localStorage.getItem('budgetAlerts');
+      if (saved) {
+        const settings = JSON.parse(saved);
+        document.getElementById('alert-75').checked = settings.alert75;
+        document.getElementById('alert-90').checked = settings.alert90;
+        document.getElementById('block-exceed').checked = settings.blockExceed;
+        document.getElementById('show-estimates').checked = settings.showEstimates;
+      }
+    }
+
+    // Load settings on page load
+    loadAlertSettings();
+  </script>
+</body>
+</html>

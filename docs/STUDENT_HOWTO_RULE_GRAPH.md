@@ -1,0 +1,173 @@
+
+# How to Explore the Article Eater Rule Graph (Student Guide)
+
+This guide explains how to **explore** the rule / finding graph and inspect
+**provenance and justification** without accidentally changing any weights
+or rules.
+
+The system has two main surfaces you can use:
+
+1. A **read-only API** for navigating the JSONL graph store.
+2. A **rules GUI** where you can browse the curated rules table.
+
+In both cases, **anyone can browse**. Only designated admins can edit.
+
+---
+
+## 1. Read-only graph navigation (FastAPI)
+
+The backend exposes a small `/graph` API so you can inspect what the agents
+have written into the graph JSONL store.
+
+### 1.1 List raw graph events
+
+- Endpoint: `GET /graph/events`
+- Optional query parameters:
+  - `type`: filter by event type, e.g. `finding`, `seven_panel`,
+    `aggregation`, `links`.
+  - `paper_id`: restrict to a specific paper ID (if present in the events).
+  - `limit`: maximum number of events to return (default 500).
+
+**What you see**
+
+Each event is a JSON object, typically containing fields like:
+
+- `type`: what kind of event this is (e.g. `"finding"`, `"link"`).
+- `paper_id`: which paper it came from.
+- `topic` / `subtopic`: semantic tags.
+- `payload`: structured content from the LLM (e.g. Seven-Panel summary,
+  MicroFindingEvidence, justification text).
+- `created_at`: when this event was recorded.
+
+You can use this endpoint to:
+
+- Inspect all recorded findings for a given assignment.
+- See the **raw justification text** the agents used when they created a
+  rule or link.
+
+### 1.2 Navigate by topic
+
+- Endpoint: `GET /graph/topic/{topic}`
+
+Example:
+
+- `GET /graph/topic/working_memory`
+- `GET /graph/topic/structural_framing`
+
+**What you see**
+
+The response has two main lists:
+
+- `findings`: all finding objects associated with that topic.
+  - These include the underlying evidence, confidence, and justification
+    fields from the agents.
+- `links`: any recorded links between rules or findings for that topic.
+
+This is usually the best entry point if you already know the topic you are
+exploring (e.g. “framing effects”, “chunking”, “spaced repetition”).
+
+> **Important:** The `/graph` endpoints are **read-only**. They do not
+> provide any way to change the graph. They exist so students and
+> researchers can see the *provenance* of rules and links.
+
+---
+
+## 2. Rule table GUI (user_rules_gui)
+
+In addition to the raw graph JSONL, there is a small GUI for browsing the
+**curated rules table** and their weights.
+
+This GUI is a separate Flask app living under `apps/user_rules_gui`.
+
+### 2.1 Starting the GUI (simplified)
+
+In a virtual environment that has `flask` and `sqlalchemy` installed:
+
+```bash
+cd apps/user_rules_gui
+python app.py
+```
+
+By default, this will start a small web server on port `5051`:
+
+- URL: `http://localhost:5051/`
+
+(For production or lab deployment, your instructor or TA may run this for
+you and give you the URL.)
+
+### 2.2 What you can see
+
+The main page (`/`) shows a table with one row per rule:
+
+- **ID** – numeric ID in the `user_rules` table.
+- **Name** – a short label for the rule.
+- **Antecedent** – the “IF ...” side (often a condition over findings).
+- **Consequent** – the “THEN ...” side (e.g. a conclusion or BN node).
+- **Weight** – how strong this rule is currently taken to be.
+- **Source (provenance / notes)** – free-text field that usually contains:
+  - citations or paper IDs,
+  - references to graph events or topics,
+  - comments about why this rule was accepted.
+
+All visitors can see **full provenance and justification** for each rule:
+the antecedent, consequent, weight, and source are visible to everyone.
+
+### 2.3 Who can edit vs. who can only browse
+
+The GUI has an optional admin password controlled by the environment
+variable:
+
+```bash
+AE_RULES_ADMIN_PASSWORD="some-strong-string"
+```
+
+Behaviour:
+
+- If `AE_RULES_ADMIN_PASSWORD` is **not set**:
+  - The app is in **lab mode**.
+  - Everyone is effectively an admin (useful on a shared lab machine).
+- If `AE_RULES_ADMIN_PASSWORD` **is set**:
+  - All visitors can still **browse** the rules table.
+  - Only users who log in via `/login` with the correct password can:
+    - create new rules,
+    - edit existing rules,
+    - delete rules.
+
+On the page you will see:
+
+- A **“New”** link (to create rules) and **Edit/Delete** buttons
+  **only if you are an admin**.
+- An **“Admin login”** link if the GUI is protected.
+- A **“Logout”** link when you are logged in as admin.
+
+As a student, if you have not been given the admin password, you are in a
+**read-only** role: you can see all content but cannot change it.
+
+---
+
+## 3. Practical student workflow
+
+1. **Explore the graph JSONL via `/graph`:**
+   - Use `/graph/topic/{topic}` to find all findings and links related to a
+     concept you care about.
+   - Inspect the `payload` / justification fields to see how the agent
+     argued for the finding or link.
+
+2. **Cross-check the curated rules in the GUI:**
+   - Visit the user rules GUI (URL provided by your instructor).
+   - Find the rule(s) corresponding to your topic.
+   - Read:
+     - the antecedent / consequent structure,
+     - the current weight,
+     - the `source` field for provenance notes.
+
+3. **Think about calibration (conceptually):**
+   - You cannot directly change weights unless you are an admin, but you
+     can:
+     - evaluate whether the current weight seems justified,
+     - propose changes to your TA or supervisor,
+     - suggest additional evidence that might strengthen or weaken a rule.
+
+In this way, you can *fully navigate* the rule graph and understand the
+evidence behind each rule, while the system still protects the actual
+weights and definitions from accidental edits.

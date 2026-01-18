@@ -1,0 +1,8 @@
+{% extends "layout.html" %}{% block content %}
+<form method="post">
+<label>Name <input name="name" value="{{row.name if row else ''}}" required></label>
+<label>Antecedent <textarea name="antecedent" rows="6" required>{{row.antecedent if row else ''}}</textarea></label>
+<label>Consequent <textarea name="consequent" rows="6" required>{{row.consequent if row else ''}}</textarea></label>
+<label>Weight <input type="number" step="0.01" name="weight" value="{{row.weight if row else 1.0}}"></label>
+<label>Source <input name="source" value="{{row.source if row else ''}}"></label>
+<button>Save</button></form>{% endblock %}

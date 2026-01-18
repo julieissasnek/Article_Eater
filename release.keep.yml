@@ -1,0 +1,43 @@
+kept:
+  - Project_Constitution.md
+  - release.keep.yml
+  - deprecations.yml
+  - .github/workflows/governance.yml
+  - .github/pull_request_template.md
+  - CODEOWNERS
+  - scripts/check_governance.py
+  - scripts/orphan_sweep.py
+  - scripts/public_surface_ledger.py
+  - scripts/manifest_sha256.py
+  - reconstructor_min.py
+  - deconcat.py
+  - RUTHLESS_v5.1.md
+  - public_surface_ledger.json
+quarantine_rule: "Use quarantine/{date}/<original_path> and add a note below."
+notes: []
+
+critical_paths:
+  - contracts/**
+  - migrations/**
+  - prompts/**
+  - app/**
+  - templates/**
+
+notes: |
+  v17 dual-hierarchy files added; v16.1 content preserved.
+
+"v18.1: installed full workflow; moved v18 handoff bundles into docs/archive (sacred) on 2025-11-12."
+"v18.1.2 on 2025-11-12: Dockerfile, FastAPI app (/healthz,/metrics), CI v3, pre-commit, tests, logging."
+
+"v18.2.0 2025-11-14: design pack added."
+
+"v18.3 on 2025-11-14: high‑recall triage, multi‑pass extraction/QC, multi‑doc synthesis, rule frontier, schema+DB extensions; strictly additive."
+
+"v20.5.2 on 2025-11-17: comprehensive GUI style guide v3.0 added - includes complete design system documentation, view density system (Cards/Compact/List), full component library reference, and quick reference card. Existing GUI_STYLE_GUIDE.md v2.0 retained. Purely additive, no deletions."
+
+"v20.6.0 on 2025-11-17: Control Room GUI (/admin) with Prompts + Confidence tabs, provider-agnostic LLM agents (Gemini/OpenAI/Anthropic), raw_abstract field added to DB, safe patchers that archive originals. All replaced files saved under archive/_replaced_*. Strictly governance-compliant."
+"v20.6.2 on 2025-11-17: Power Upgrade with RBAC admin guard (X-Admin-Token + audit log), provider-agnostic LLM core with JSON schema validation, enhanced 7-panel prompt with full statistics (p-value, effect size + type, N, 95% CI, raw_abstract), BBN Calibrator for secondary calibration artifacts (calibration/bbn_calibration.json), admin policy docs. All replaced files quarantined to quarantine/20251117_164851/. Zero deletions."
+
+"v20.6.3 on 2025-11-17: Engine Power-On - replaced print() stubs with real LLM calls in agent_stubs.py for Agent_Finder, Agent_Aggregator, and Agent_Linker. Added prompt_aggregator.md and prompt_linker.md. Original agent_stubs.py archived to archive/_replaced_20251117_181129/. All agents now fully functional with provider-agnostic LLM core. Zero deletions."
+
+"v20.7.0 on 2025-11-17: Syntax fixes - corrected 'from __future__ import annotations' (was 'from future'), fixed '_read_prompt()' function calls, improved formatting in prompts and deconcat.py. All 5 modified files archived to archive/_replaced_20251117_190109/. Zero deletions. Bug fix release, no functional changes."

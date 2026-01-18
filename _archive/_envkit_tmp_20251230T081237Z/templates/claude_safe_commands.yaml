@@ -1,0 +1,29 @@
+# Claude command whitelist
+
+always_allowed:
+  - "./bin/prod_smoke.sh"
+  - "./bin/test.sh"
+  - "./bin/version.sh"
+  - "./bin/context.sh"
+  - "./bin/claude_start.sh"
+  - "cat"
+  - "ls"
+  - "find"
+  - "grep"
+  - "head"
+  - "tail"
+
+prompt_before:
+  - "git commit"
+  - "git push"
+  - "pip install"
+  - "./bin/version.sh bump"
+  - "./bin/release.sh"
+
+forbidden:
+  - "rm -rf"
+  - "sudo"
+  - "git reset --hard"
+  - "git clean"
+  - "curl | bash"
+  - "eval"
