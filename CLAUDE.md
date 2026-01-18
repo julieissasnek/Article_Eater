@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-*Last updated: Sunday, January 18, 2026*
+*Last updated: Sunday, January 18, 2026 (Decision Automation added)*
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -172,6 +172,38 @@ For design decisions, convene these voices (constructed from their published wor
 # NEVER run these
 rm -rf, sudo, git reset --hard, git clean, curl | bash
 ```
+
+## Decision Automation Preferences
+
+Claude Code should assess risk and automate low-risk decisions while always asking for high-risk ones.
+
+### ALWAYS PROCEED (No confirmation needed)
+Low risk, easily reversible, or read-only:
+- `ls`, `cat`, `head`, `tail`, `find`, `grep`, `du`, `wc` — read-only commands
+- `git status`, `git diff`, `git log` — informational git commands
+- `pwd`, `echo`, `which`, `type` — system info
+- Reading any file in this repo
+- `pytest`, `ruff check` — testing/linting (doesn't modify)
+
+### PROCEED WITH SESSION PERMISSION (Ask once, then allow)
+Medium risk, but within active work scope:
+- File edits within this repo during housekeeping/development
+- `git add`, `git commit` — tracked and reversible
+- Creating new files in this repo
+- Moving files within this repo (with git mv)
+- `git rm --cached` — untracking files (doesn't delete)
+
+### ALWAYS ASK (Never auto-approve)
+High risk, destructive, or external:
+- `rm`, `rm -rf` — deletion (use quarantine instead)
+- `git reset --hard`, `git clean` — destructive git
+- `git push` — external communication
+- `sudo` anything
+- `curl | bash`, `wget | bash` — external code execution
+- Any command outside this repo
+- Any command involving `/Downloads`, `/Desktop`, or `~` paths
+
+**When in doubt, ASK.** David prefers occasional interruption over accidental damage.
 
 ## Communication Style
 
