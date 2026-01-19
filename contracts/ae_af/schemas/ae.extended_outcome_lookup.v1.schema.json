@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ae.extended_outcome_lookup.v1.schema.json",
+  "title": "Article Eater Extended Outcome Lookup",
+  "description": "Extended outcome taxonomy with theory mappings, epistemic levels, and CNFA extensions. Sprint 4 deliverable.",
+  "type": "object",
+  "required": ["schema", "version", "lookup", "terms"],
+  "properties": {
+    "schema": {
+      "const": "ae.extended_outcome_lookup.v1",
+      "description": "Schema identifier"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the lookup"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of generation"
+    },
+    "lookup": {
+      "type": "object",
+      "description": "Synonym -> outcome_id mapping for resolution",
+      "additionalProperties": {
+        "type": "string",
+        "description": "Canonical outcome_id"
+      }
+    },
+    "terms": {
+      "type": "object",
+      "description": "Extended outcome definitions with epistemic metadata",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["outcome_id", "name", "domain"],
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "description": "Canonical identifier (e.g., 'cog.attention.sustained')"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Top-level domain (cog, affect, behav, social, physio, neural, health, arch)"
+          },
+          "parent": {
+            "type": ["string", "null"],
+            "description": "Parent outcome_id in hierarchy"
+          },
+          "epistemic_level": {
+            "type": "string",
+            "enum": ["THEORETICAL", "INTERMEDIATE", "EMPIRICAL", "OBSERVATIONAL"],
+            "description": "Default epistemic level for beliefs about this outcome"
+          },
+          "theory_relevance": {
+            "type": "object",
+            "description": "Theory_id -> relevance score (0-1) mapping",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "is_stub": {
+            "type": "boolean",
+            "description": "Whether this is an unresolved stub outcome"
+          },
+          "stub_reason": {
+            "type": ["string", "null"],
+            "description": "Reason for stub status (if applicable)"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Extended description of the outcome"
+          },
+          "bridge_candidates": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Other outcome_ids that are bridge candidates for cross-domain transfer"
+          }
+        }
+      }
+    },
+    "stubs": {
+      "type": "object",
+      "description": "Unresolved outcome stubs awaiting review",
+      "additionalProperties": {
+        "$ref": "#/properties/terms/additionalProperties"
+      }
+    },
+    "domains": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of all outcome domains"
+    },
+    "theory_outcome_relevance": {
+      "type": "object",
+      "description": "Theory_id -> {outcome_id: relevance} mappings",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "description": "Statistics about the taxonomy",
+      "properties": {
+        "terms_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of defined terms"
+        },
+        "lookup_entries": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of lookup synonyms"
+        },
+        "stubs_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of unresolved stubs"
+        },
+        "cnfa_terms_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of CNFA-specific terms"
+        }
+      }
+    }
+  }
+}

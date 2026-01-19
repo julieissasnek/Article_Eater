@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ae.coherence_summary.v1.schema.json",
+  "title": "Article Eater Coherence Summary",
+  "description": "Summary of web of belief coherence metrics and equilibrium convergence. Designed for human inspection, dashboards, and quick assessment.",
+  "type": "object",
+  "required": ["schema", "run_id", "paper_id", "created_at", "status"],
+  "properties": {
+    "schema": {
+      "const": "ae.coherence_summary.v1",
+      "description": "Schema identifier"
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Unique identifier for this pipeline run"
+    },
+    "paper_id": {
+      "type": "string",
+      "description": "Identifier of the source paper"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of summary creation"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "failed"],
+      "description": "Whether web integration succeeded"
+    },
+    "extraction_succeeded": {
+      "type": "boolean",
+      "description": "Whether the extraction pipeline succeeded (should be true even if web integration failed)"
+    },
+    "web_integration_succeeded": {
+      "type": "boolean",
+      "description": "Whether web of belief integration succeeded"
+    },
+    "error": {
+      "type": "object",
+      "description": "Error information if status is 'failed'",
+      "properties": {
+        "failure_stage": {
+          "type": "string",
+          "enum": ["import", "initialization", "mapping", "equilibrium", "serialization"],
+          "description": "Stage at which integration failed"
+        },
+        "error_type": {
+          "type": "string",
+          "description": "Python exception type name"
+        },
+        "error_message": {
+          "type": "string",
+          "description": "Human-readable error message"
+        },
+        "recoverable": {
+          "type": "boolean",
+          "description": "Whether the error might be resolved by retry or configuration change"
+        }
+      }
+    },
+    "coherence_before": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Coherence score before equilibrium seeking"
+    },
+    "coherence_after": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Coherence score after equilibrium seeking"
+    },
+    "coherence_delta": {
+      "type": ["number", "null"],
+      "description": "Change in coherence (after - before)"
+    },
+    "n_beliefs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of beliefs in the web"
+    },
+    "n_stubs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of stub beliefs (without theory connections)"
+    },
+    "n_anomalies": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of anomalous beliefs (in tension with web)"
+    },
+    "theory_distribution": {
+      "type": "object",
+      "description": "Count of beliefs per theory",
+      "additionalProperties": {"type": "integer"}
+    },
+    "level_distribution": {
+      "type": "object",
+      "description": "Count of beliefs per epistemic level",
+      "additionalProperties": {"type": "integer"}
+    },
+    "stub_reasons": {
+      "type": "object",
+      "description": "Count of stubs per reason",
+      "additionalProperties": {"type": "integer"}
+    },
+    "equilibrium_log": {
+      "type": "array",
+      "description": "Convergence trajectory showing coherence at each iteration",
+      "items": {
+        "type": "object",
+        "required": ["iteration", "coherence"],
+        "properties": {
+          "iteration": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Iteration number (0 = initial state)"
+          },
+          "coherence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Coherence score at this iteration"
+          }
+        }
+      }
+    },
+    "converged": {
+      "type": "boolean",
+      "description": "Whether equilibrium converged before max iterations"
+    },
+    "converged_at_iteration": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Iteration at which convergence was detected (null if not converged)"
+    }
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ae.web_state.v1.schema.json",
+  "title": "Article Eater Web of Belief State",
+  "description": "Serialized state of a Quinean Web of Belief after integration. Designed for Sprint 5 merge operations - contains full belief content and constraint structure.",
+  "type": "object",
+  "required": ["schema", "run_id", "paper_id", "created_at", "status"],
+  "properties": {
+    "schema": {
+      "const": "ae.web_state.v1",
+      "description": "Schema identifier"
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Unique identifier for this pipeline run"
+    },
+    "paper_id": {
+      "type": "string",
+      "description": "Identifier of the source paper"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of web state creation"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "failed"],
+      "description": "Whether web integration succeeded"
+    },
+    "error": {
+      "type": "object",
+      "description": "Error information if status is 'failed'",
+      "properties": {
+        "failure_stage": {
+          "type": "string",
+          "enum": ["import", "initialization", "mapping", "equilibrium", "serialization"],
+          "description": "Stage at which integration failed"
+        },
+        "error_type": {
+          "type": "string",
+          "description": "Python exception type name"
+        },
+        "error_message": {
+          "type": "string",
+          "description": "Human-readable error message"
+        },
+        "recoverable": {
+          "type": "boolean",
+          "description": "Whether the error might be resolved by retry or configuration change"
+        }
+      }
+    },
+    "n_beliefs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of beliefs in the web"
+    },
+    "n_constraints": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of constraints in the web"
+    },
+    "coherence_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Final coherence score after equilibrium"
+    },
+    "beliefs": {
+      "type": "object",
+      "description": "Dictionary of belief_id -> belief object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["belief_id", "content", "level", "status", "credence"],
+        "properties": {
+          "belief_id": {
+            "type": "string",
+            "description": "Unique identifier for this belief"
+          },
+          "content": {
+            "type": "string",
+            "description": "Full text content of the belief (not truncated)"
+          },
+          "level": {
+            "type": "string",
+            "enum": ["THEORETICAL", "INTERMEDIATE", "EMPIRICAL", "OBSERVATIONAL"],
+            "description": "Epistemic level in the Quinean hierarchy"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["STUB", "TENTATIVE", "ESTABLISHED", "ENTRENCHED", "ANOMALOUS"],
+            "description": "Current status of the belief in the web"
+          },
+          "credence": {
+            "type": "object",
+            "description": "Credence information",
+            "properties": {
+              "value": {"type": "number", "minimum": 0, "maximum": 1},
+              "uncertainty": {"type": ["number", "null"]},
+              "n_supporting": {"type": "integer"},
+              "n_contradicting": {"type": "integer"},
+              "n_observations": {"type": "integer"}
+            }
+          },
+          "theory_id": {
+            "type": ["string", "null"],
+            "description": "Primary theory this belief is attached to"
+          },
+          "entrenchment": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "How costly it would be to revise this belief"
+          },
+          "paper_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Source papers for this belief"
+          },
+          "domain": {
+            "type": ["string", "null"],
+            "description": "Primary domain (e.g., 'cog', 'affect')"
+          },
+          "tags": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Categorization tags"
+          },
+          "created_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When the belief was created"
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "description": "Dictionary of constraint_id -> constraint object (required for web reconstruction)",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["constraint_id", "source_id", "target_id", "constraint_type"],
+        "properties": {
+          "constraint_id": {
+            "type": "string",
+            "description": "Unique identifier for this constraint"
+          },
+          "source_id": {
+            "type": "string",
+            "description": "Belief ID of the source node"
+          },
+          "target_id": {
+            "type": "string",
+            "description": "Belief ID of the target node"
+          },
+          "constraint_type": {
+            "type": "string",
+            "enum": ["SUPPORTS", "CONTRADICTS", "EXPLAINS", "INSTANTIATES", "ANALOGOUS", "INDEPENDENT"],
+            "description": "Type of epistemic relationship"
+          },
+          "strength": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Strength of the constraint"
+          },
+          "bidirectional": {
+            "type": "boolean",
+            "description": "Whether the constraint applies in both directions"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Claim IDs providing evidence for this constraint"
+          },
+          "warrant_type": {
+            "type": ["string", "null"],
+            "description": "Type of warrant (empirical, theoretical, methodological)"
+          },
+          "provenance": {
+            "type": ["string", "null"],
+            "description": "Source of this constraint"
+          }
+        }
+      }
+    },
+    "integration_report": {
+      "type": "object",
+      "description": "Report from integrate_extraction()"
+    },
+    "equilibrium_config": {
+      "type": "object",
+      "description": "Configuration used for equilibrium seeking",
+      "properties": {
+        "seek_equilibrium": {"type": "boolean"},
+        "max_iterations": {"type": "integer"},
+        "convergence_threshold": {"type": "number"}
+      }
+    }
+  }
+}
