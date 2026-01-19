@@ -1,0 +1,114 @@
+# Gold Standard Corpus Manifest
+# Sprint 9: Article Eater Post-Quinean Validation Corpus
+#
+# This manifest defines the Gold Standard corpus for validating
+# the Article Eater extraction and coherence systems.
+
+version: "1.0"
+release_date: "2026-01-19"
+status: "in_development"
+
+# Annotators who contributed to this version
+annotators:
+  - "panel_consensus"
+
+# Papers included in this version
+papers:
+  # Foundational theory
+  - id: "kaplan_1989"
+    citation: "Kaplan, R., & Kaplan, S. (1989). The experience of nature: A psychological perspective."
+    domain: "ART"
+    type: "theory"
+    status: "annotated"
+
+  - id: "ulrich_1984"
+    citation: "Ulrich, R. S. (1984). View through a window may influence recovery from surgery."
+    domain: "SRT"
+    type: "empirical"
+    status: "annotated"
+
+  - id: "berman_2008"
+    citation: "Berman, M. G., Jonides, J., & Kaplan, S. (2008). The cognitive benefits of interacting with nature."
+    domain: "ART"
+    type: "experimental"
+    status: "pending"
+
+  - id: "appleton_1975"
+    citation: "Appleton, J. (1975). The experience of landscape."
+    domain: "prospect_refuge"
+    type: "theory"
+    status: "pending"
+
+  - id: "kellert_wilson_1993"
+    citation: "Kellert, S. R., & Wilson, E. O. (Eds.). (1993). The biophilia hypothesis."
+    domain: "biophilia"
+    type: "hypothesis"
+    status: "pending"
+
+  - id: "evans_mccoy_1998"
+    citation: "Evans, G. W., & McCoy, J. M. (1998). When buildings don't work."
+    domain: "built_environment"
+    type: "review"
+    status: "pending"
+
+  - id: "stamps_2000"
+    citation: "Stamps, A. E. (2000). Psychology and the aesthetics of the built environment."
+    domain: "preference"
+    type: "quantitative"
+    status: "pending"
+
+  - id: "hartig_2003"
+    citation: "Hartig, T., Evans, G. W., Jamner, L. D., Davis, D. S., & Garling, T. (2003)."
+    domain: "multi_theory"
+    type: "multi_theory"
+    status: "pending"
+
+  - id: "berto_2005"
+    citation: "Berto, R. (2005). Exposure to restorative environments helps restore attentional capacity."
+    domain: "ART"
+    type: "experimental"
+    status: "pending"
+
+  # Slots for additional papers
+  - id: "tbd_lighting"
+    citation: "TBD - Lighting paper"
+    domain: "sensory"
+    type: "empirical"
+    status: "not_selected"
+
+  - id: "tbd_wayfinding"
+    citation: "TBD - Wayfinding paper"
+    domain: "configurational"
+    type: "empirical"
+    status: "not_selected"
+
+  - id: "tbd_null"
+    citation: "TBD - Null result paper"
+    domain: "various"
+    type: "null"
+    status: "not_selected"
+
+# Corpus statistics
+statistics:
+  total_papers: 12
+  annotated: 2
+  pending: 7
+  not_selected: 3
+
+# Theory coverage
+theory_coverage:
+  ART: 4  # kaplan_1989, berman_2008, berto_2005, hartig_2003
+  SRT: 2  # ulrich_1984, hartig_2003
+  prospect_refuge: 1  # appleton_1975
+  biophilia: 1  # kellert_wilson_1993
+  non_nature: 4  # evans_mccoy_1998, stamps_2000, tbd_lighting, tbd_wayfinding
+  multi_theory: 2  # hartig_2003, berto_2005
+
+notes: |
+  This is the initial Gold Standard corpus for validating the Article Eater
+  Post-Quinean extraction system. Papers were selected to provide coverage
+  across:
+  - Multiple theories (ART, SRT, Prospect-Refuge, Biophilia)
+  - Multiple paper types (theory, empirical, review, multi-theory)
+  - Multiple environmental domains (natural, sensory, configurational)
+  - At least one null result (for negative test validation)

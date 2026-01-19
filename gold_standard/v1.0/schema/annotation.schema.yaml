@@ -1,0 +1,256 @@
+# Gold Standard Annotation Schema
+# Version: 1.0
+# Date: 2026-01-19
+#
+# This schema defines the structure for Gold Standard annotations
+# used to validate the Article Eater extraction system.
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "ae.gold_standard.annotation.v1.schema"
+title: "Gold Standard Paper Annotation"
+description: "Schema for annotating papers in the Gold Standard corpus"
+
+type: object
+required:
+  - paper_id
+  - citation
+  - version
+  - metadata
+  - paper_characteristics
+  - expected_beliefs
+
+properties:
+  paper_id:
+    type: string
+    description: "Unique identifier for the paper (e.g., 'kaplan_1989')"
+    pattern: "^[a-z]+_[0-9]{4}[a-z]?$"
+
+  citation:
+    type: string
+    description: "Full APA citation for the paper"
+
+  version:
+    type: string
+    description: "Annotation schema version"
+    pattern: "^[0-9]+\\.[0-9]+$"
+
+  metadata:
+    type: object
+    required:
+      - annotator
+      - annotation_date
+      - review_status
+    properties:
+      annotator:
+        type: string
+        description: "Who created this annotation"
+      annotation_date:
+        type: string
+        format: date
+      review_status:
+        type: string
+        enum: ["draft", "reviewed", "approved"]
+      notes:
+        type: string
+
+  paper_characteristics:
+    type: object
+    required:
+      - type
+      - theories
+    properties:
+      type:
+        type: string
+        enum: ["theory", "theory_book", "empirical", "experimental", "review", "meta_analysis", "multi_theory", "hypothesis", "quantitative"]
+      theories:
+        type: array
+        items:
+          type: string
+        description: "Theories discussed in this paper"
+      is_multi_theory:
+        type: boolean
+        default: false
+      ecological_validity:
+        type: string
+        enum: ["field_natural", "field_structured", "lab_vr", "lab_video", "lab_photos", "lab_abstract", "mixed", "not_applicable"]
+      methodology_score:
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+        minItems: 2
+        maxItems: 2
+        description: "Range [min, max] for methodology quality"
+
+  expected_beliefs:
+    type: array
+    items:
+      $ref: "#/definitions/expected_belief"
+    minItems: 1
+    description: "Beliefs expected to be extracted from this paper"
+
+  expected_constraints:
+    type: array
+    items:
+      $ref: "#/definitions/expected_constraint"
+    description: "Constraints expected between beliefs"
+
+  expected_bridges:
+    type: array
+    items:
+      $ref: "#/definitions/expected_bridge"
+    description: "Bridge warrants expected to be generated"
+
+  should_NOT_extract:
+    type: array
+    items:
+      type: object
+      required:
+        - pattern
+        - reason
+      properties:
+        pattern:
+          type: string
+        reason:
+          type: string
+    description: "Patterns that should NOT be extracted (negative tests)"
+
+  red_flags:
+    type: array
+    items:
+      type: string
+    description: "Warning signs during extraction that indicate errors"
+
+  validation_notes:
+    type: string
+    description: "Free-form notes about validating extractions from this paper"
+
+definitions:
+  expected_belief:
+    type: object
+    required:
+      - id
+      - content
+      - expected_credence
+      - epistemic_level
+    properties:
+      id:
+        type: string
+        description: "Unique belief ID within this annotation"
+      content:
+        type: string
+        description: "The belief content (what should be extracted)"
+      expected_credence:
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+        minItems: 2
+        maxItems: 2
+        description: "Acceptable credence range [min, max]"
+      epistemic_level:
+        type: string
+        enum: ["theoretical", "intermediate", "empirical", "observational"]
+      theory:
+        type: string
+        description: "Theory this belief is associated with"
+      environment_id:
+        type: string
+        description: "Canonical environment ID from taxonomy"
+      outcome_id:
+        type: string
+        description: "Canonical outcome ID from taxonomy"
+      causal_direction:
+        type: string
+        enum: ["unknown", "correlational", "forward", "reverse", "bidirectional", "common_cause", "mediated"]
+      scope:
+        type: object
+        properties:
+          population:
+            type: string
+          setting:
+            type: string
+          duration:
+            type: string
+          measurement:
+            type: string
+          geography:
+            type: string
+          scope_specified:
+            type: boolean
+      annotation_metadata:
+        type: object
+        properties:
+          confidence:
+            type: string
+            enum: ["high", "medium", "low"]
+          basis:
+            type: string
+            description: "Why we expect this belief to be extracted"
+
+  expected_constraint:
+    type: object
+    required:
+      - source
+      - target
+      - type
+    properties:
+      source:
+        type: string
+        description: "Source belief ID"
+      target:
+        type: string
+        description: "Target belief ID"
+      type:
+        type: string
+        enum: ["supports", "contradicts", "instantiates", "refines", "shared_evidence"]
+      causal_direction:
+        type: string
+        enum: ["unknown", "correlational", "forward", "reverse", "bidirectional", "common_cause", "mediated"]
+      expected_strength:
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+        minItems: 2
+        maxItems: 2
+      annotation_metadata:
+        type: object
+        properties:
+          confidence:
+            type: string
+          basis:
+            type: string
+
+  expected_bridge:
+    type: object
+    required:
+      - source_theory
+      - target_theory
+      - bridge_type
+    properties:
+      source_theory:
+        type: string
+      target_theory:
+        type: string
+      bridge_type:
+        type: string
+        enum: ["mechanism", "functional", "analogical", "constitutive", "empirical_covariance"]
+      expected_confidence:
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+        minItems: 2
+        maxItems: 2
+      annotation_metadata:
+        type: object
+        properties:
+          confidence:
+            type: string
+          basis:
+            type: string

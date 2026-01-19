@@ -1,0 +1,175 @@
+# Gold Standard Annotation: Kaplan & Kaplan (1989)
+# The Experience of Nature: A Psychological Perspective
+#
+# Sprint 9: Example annotation with full provenance tracking
+
+paper_id: "kaplan_1989"
+citation: "Kaplan, R., & Kaplan, S. (1989). The experience of nature: A psychological perspective. Cambridge University Press."
+version: "1.0"
+
+metadata:
+  annotator: "panel_consensus"
+  annotation_date: "2026-01-19"
+  review_status: "approved"
+
+paper_characteristics:
+  type: "theory_book"
+  theories: ["ART"]
+  is_multi_theory: false
+  ecological_validity: "field_natural"  # Book draws on field studies
+  methodology_score: [0.5, 0.7]  # Range reflects theoretical nature
+
+# Expected beliefs to be extracted
+expected_beliefs:
+  - id: "kaplan_1989_b1"
+    content: "Directed attention is a limited resource that becomes fatigued with use"
+    expected_credence: [0.6, 0.8]
+    epistemic_level: "theoretical"
+    theory: "ART"
+    environment_id: null  # Theoretical, not about specific environment
+    outcome_id: "psych.attention.fatigue"
+    scope:
+      population: "general"
+      setting: null
+      duration: null
+    annotation_metadata:
+      confidence: "high"
+      basis: "Core theoretical claim of ART, widely cited"
+
+  - id: "kaplan_1989_b2"
+    content: "Natural environments facilitate recovery from directed attention fatigue"
+    expected_credence: [0.5, 0.7]
+    epistemic_level: "intermediate"
+    theory: "ART"
+    environment_id: "natural.views"
+    outcome_id: "psych.attention.restoration"
+    causal_direction: "forward"
+    scope:
+      population: "general"
+      setting: "natural_environments"
+    annotation_metadata:
+      confidence: "high"
+      basis: "Central ART prediction"
+
+  - id: "kaplan_1989_b3"
+    content: "Soft fascination is a key component of restorative environments"
+    expected_credence: [0.5, 0.7]
+    epistemic_level: "intermediate"
+    theory: "ART"
+    environment_id: "natural.views"
+    outcome_id: "psych.attention.soft_fascination"
+    scope:
+      population: "general"
+    annotation_metadata:
+      confidence: "high"
+      basis: "One of four ART components"
+
+  - id: "kaplan_1989_b4"
+    content: "Being away (psychological escape) contributes to restoration"
+    expected_credence: [0.5, 0.7]
+    epistemic_level: "intermediate"
+    theory: "ART"
+    environment_id: null
+    outcome_id: "psych.restoration.being_away"
+    scope:
+      population: "general"
+    annotation_metadata:
+      confidence: "high"
+      basis: "One of four ART components"
+
+  - id: "kaplan_1989_b5"
+    content: "Extent (coherence and scope) of an environment supports restoration"
+    expected_credence: [0.5, 0.7]
+    epistemic_level: "intermediate"
+    theory: "ART"
+    environment_id: null
+    outcome_id: "psych.restoration.extent"
+    annotation_metadata:
+      confidence: "high"
+      basis: "One of four ART components"
+
+  - id: "kaplan_1989_b6"
+    content: "Compatibility between person and environment enhances restoration"
+    expected_credence: [0.5, 0.7]
+    epistemic_level: "intermediate"
+    theory: "ART"
+    environment_id: null
+    outcome_id: "psych.restoration.compatibility"
+    annotation_metadata:
+      confidence: "high"
+      basis: "One of four ART components"
+
+# Expected constraints between beliefs
+expected_constraints:
+  - source: "kaplan_1989_b1"
+    target: "kaplan_1989_b2"
+    type: "supports"
+    causal_direction: "forward"
+    expected_strength: [0.6, 0.8]
+    annotation_metadata:
+      confidence: "high"
+      basis: "Logical connection in ART framework - fatigue creates need for restoration"
+
+  - source: "kaplan_1989_b3"
+    target: "kaplan_1989_b2"
+    type: "supports"
+    expected_strength: [0.5, 0.7]
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Soft fascination is mechanism for restoration"
+
+  - source: "kaplan_1989_b4"
+    target: "kaplan_1989_b2"
+    type: "supports"
+    expected_strength: [0.5, 0.7]
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Being away is component of restoration"
+
+# Expected bridges to other theories
+expected_bridges:
+  - source_theory: "ART"
+    target_theory: "SRT"
+    bridge_type: "analogical"
+    expected_confidence: [0.3, 0.5]
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Both address restoration; different mechanisms proposed"
+
+# Things that should NOT be extracted
+should_NOT_extract:
+  - pattern: "ART is proven"
+    reason: "Overstates certainty - this is a theory book, not experimental confirmation"
+
+  - pattern: "Nature always restores"
+    reason: "Overgeneralization - ART acknowledges individual differences"
+
+  - pattern: "credence > 0.85"
+    reason: "Theory book, not experimental confirmation; high credence inappropriate"
+
+  - pattern: "specific effect size"
+    reason: "Book doesn't report effect sizes"
+
+  - pattern: "Kaplan discovered"
+    reason: "Attribution of discovery inappropriate for review/synthesis"
+
+# Red flags during annotation
+red_flags:
+  - "Any specific effect size claim (book doesn't report them)"
+  - "Claims about specific populations not discussed in book"
+  - "Claims with credence > 0.8 (theoretical claims warrant uncertainty)"
+  - "Causal claims without 'forward' direction noted (this is theoretical)"
+
+# Validation notes
+validation_notes: |
+  Kaplan & Kaplan (1989) is a foundational theory book that:
+  1. Introduces Attention Restoration Theory (ART)
+  2. Proposes four components: fascination, being away, extent, compatibility
+  3. Does NOT provide experimental validation (that came later)
+  4. Should produce theoretical-level beliefs with moderate credence
+
+  Key validation checks:
+  - All four ART components should be extracted
+  - Credences should be in [0.5, 0.7] range (theoretical claims)
+  - No specific effect sizes should be extracted
+  - Bridge to SRT should be generated (analogical)

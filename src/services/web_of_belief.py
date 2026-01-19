@@ -87,6 +87,82 @@ class ConstraintType(Enum):
     INSTANTIATES = "instantiates"  # Empirical → theoretical
     ANALOGOUS = "analogous"        # Similar structure
     INDEPENDENT = "independent"    # No direct constraint
+    BRIDGES = "bridges"            # Sprint 3: Bridge warrant connection
+    STRONG_TENSION = "strong_tension"  # Sprint 3: Strong tension from failed bridge
+    SHARED_EVIDENCE = "shared_evidence"  # Sprint 8: Same study supports both beliefs
+
+
+# =============================================================================
+# CAUSAL DIRECTION (Sprint 6 - Expert Panel: Pearl)
+# =============================================================================
+
+class CausalDirection(Enum):
+    """
+    Causal direction for constraint relationships.
+
+    Per expert panel (Pearl): Distinguish correlation from causation.
+    Default is CORRELATIONAL for empirical, UNKNOWN for theoretical.
+
+    Sprint 6 addition: MEDIATED for indirect causal paths.
+    """
+    UNKNOWN = "unknown"              # Default for theoretical claims
+    CORRELATIONAL = "correlational"  # Default for empirical findings
+    FORWARD = "forward"              # source → target (experimental evidence)
+    REVERSE = "reverse"              # target → source
+    BIDIRECTIONAL = "bidirectional"  # mutual causation
+    COMMON_CAUSE = "common_cause"    # C → A, C → B (confound)
+    MEDIATED = "mediated"            # A → M → B (indirect causal path)
+
+
+# =============================================================================
+# SCOPE CONDITIONS (Sprint 6 - Expert Panel: Cartwright)
+# =============================================================================
+
+@dataclass
+class ScopeConditions:
+    """
+    Scope conditions for beliefs.
+
+    Per expert panel (Cartwright): Most "contradictions" are scope boundaries.
+    Track conditions under which findings apply.
+
+    Panel Fix 3 (Cartwright): Unknown scope ≠ Universal scope.
+    Papers that don't specify scope shouldn't be assumed to apply everywhere.
+    - scope_specified=False: Paper didn't report scope conditions (unknown)
+    - scope_specified=True: Paper explicitly reported these scope conditions
+    """
+    population: Optional[str] = None      # "adults", "children", "clinical", "healthy"
+    setting: Optional[str] = None         # "lab", "field", "simulated", "vr"
+    duration: Optional[str] = None        # "acute", "chronic", "single_exposure"
+    measurement: Optional[str] = None     # "self_report", "physiological", "behavioral"
+    geography: Optional[str] = None       # "urban", "rural", "Western", "global"
+    moderators: List[str] = field(default_factory=list)
+
+    # Panel Fix 3: Distinguish between "unknown scope" and "specified scope"
+    scope_specified: bool = False  # Was scope explicitly reported in paper?
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'population': self.population,
+            'setting': self.setting,
+            'duration': self.duration,
+            'measurement': self.measurement,
+            'geography': self.geography,
+            'moderators': self.moderators.copy(),
+            'scope_specified': self.scope_specified
+        }
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'ScopeConditions':
+        return cls(
+            population=d.get('population'),
+            setting=d.get('setting'),
+            duration=d.get('duration'),
+            measurement=d.get('measurement'),
+            geography=d.get('geography'),
+            moderators=d.get('moderators', []),
+            scope_specified=d.get('scope_specified', False)
+        )
 
 
 # =============================================================================
@@ -185,47 +261,65 @@ class Credence:
 class Belief:
     """
     A single belief in the web.
-    
+
     Beliefs can exist at any epistemic level and may or may not be
     connected to other beliefs. A "stub" is a belief that exists but
     is not yet integrated into the theoretical structure.
+
+    Sprint 6 additions:
+    - scope: Conditions under which belief applies (per Cartwright)
+    - environment_id: Canonical ID of environment feature (per Bates)
+    - outcome_id: Canonical ID of outcome/DV (per Bates)
+
+    Sprint 8 additions:
+    - evidence_cluster_id: Groups beliefs from same study (prevents double-counting)
     """
     belief_id: str
     content: str  # What is believed
-    
+
     # Position in the web
     level: EpistemicLevel
     status: BeliefStatus = BeliefStatus.STUB
-    
+
     # Epistemic standing
     credence: Credence = field(default_factory=lambda: Credence(0.5, 0.4))
-    
+
     # Entrenchment: how costly is it to revise this belief?
     # Higher = more central to the web, more connections
     entrenchment: float = 0.5
-    
+
     # For empirical/observational beliefs: source information
     paper_ids: List[str] = field(default_factory=list)
-    
+
     # For theoretical beliefs: what theory (if any) does this belong to?
     theory_id: Optional[str] = None
-    
+
     # Temporal parameters (uncertain) - only for causal beliefs
     temporal_params: Optional[Dict[str, 'UncertainQuantity']] = None
-    
+
     # Metadata
     domain: str = ""
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     tags: List[str] = field(default_factory=list)
-    
+
+    # Sprint 6: Scope conditions (Expert Panel: Cartwright)
+    scope: Optional[ScopeConditions] = None
+
+    # Sprint 7: Canonical IDs for environment and outcome (Expert Panel: Bates)
+    environment_id: Optional[str] = None  # e.g., "spatial.openness", "natural.vegetation"
+    outcome_id: Optional[str] = None      # e.g., "psych.stress", "cog.attention"
+
+    # Sprint 8: Evidence clustering (prevents double-counting multi-theory papers)
+    evidence_cluster_id: Optional[str] = None  # e.g., "cluster:paper_123"
+
     def is_stub(self) -> bool:
         return self.status == BeliefStatus.STUB
-    
+
     def is_anomalous(self) -> bool:
         return self.status == BeliefStatus.ANOMALOUS
-    
+
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        result = {
             'belief_id': self.belief_id,
             'content': self.content,
             'level': self.level.value,
@@ -233,8 +327,53 @@ class Belief:
             'credence': self.credence.to_dict(),
             'entrenchment': self.entrenchment,
             'theory_id': self.theory_id,
-            'n_sources': len(self.paper_ids)
+            'n_sources': len(self.paper_ids),
+            'domain': self.domain,
+            'paper_ids': self.paper_ids.copy(),
+            'tags': self.tags.copy(),
+            'environment_id': self.environment_id,
+            'outcome_id': self.outcome_id,
+            'evidence_cluster_id': self.evidence_cluster_id,
         }
+        if self.scope:
+            result['scope'] = self.scope.to_dict()
+        return result
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'Belief':
+        """Create Belief from dictionary."""
+        scope = None
+        if 'scope' in d and d['scope']:
+            scope = ScopeConditions.from_dict(d['scope'])
+
+        credence_data = d.get('credence', {})
+        if isinstance(credence_data, dict):
+            credence = Credence(
+                value=credence_data.get('credence', credence_data.get('value', 0.5)),
+                uncertainty=credence_data.get('uncertainty', 0.4),
+                n_supporting=credence_data.get('n_supporting', 0),
+                n_contradicting=credence_data.get('n_contradicting', 0),
+                n_observations=credence_data.get('n_observations', 0)
+            )
+        else:
+            credence = Credence(0.5, 0.4)
+
+        return cls(
+            belief_id=d.get('belief_id', ''),
+            content=d.get('content', ''),
+            level=EpistemicLevel(d.get('level', 'empirical')),
+            status=BeliefStatus(d.get('status', 'stub')),
+            credence=credence,
+            entrenchment=d.get('entrenchment', 0.5),
+            paper_ids=d.get('paper_ids', []),
+            theory_id=d.get('theory_id'),
+            domain=d.get('domain', ''),
+            tags=d.get('tags', []),
+            scope=scope,
+            environment_id=d.get('environment_id'),
+            outcome_id=d.get('outcome_id'),
+            evidence_cluster_id=d.get('evidence_cluster_id')
+        )
 
 
 @dataclass
@@ -321,38 +460,74 @@ class UncertainQuantity:
 # CONSTRAINTS (Edges in the Web)
 # =============================================================================
 
-@dataclass 
+@dataclass
 class Constraint:
     """
     A constraint relationship between beliefs.
-    
+
     In a coherentist epistemology, beliefs constrain each other.
     The web is "tight" when constraints are satisfied, "loose" when
     there are tensions.
+
+    Sprint 6 additions:
+    - causal_direction: Direction of causal claim (per Pearl)
+    - causal_evidence: Type of evidence supporting causal claim
+    - mediator: For MEDIATED direction, what's the intervening variable?
     """
     constraint_id: str
     source_id: str
     target_id: str
-    
+
     constraint_type: ConstraintType
-    
+
     # Strength: how much does source constrain target?
     strength: float = 0.5  # 0 to 1
-    
+
     # Bidirectional? Most constraints are.
     bidirectional: bool = True
-    
+
     # Evidence for this constraint
     evidence_ids: List[str] = field(default_factory=list)
-    
+
+    # Sprint 6: Causal direction (Expert Panel: Pearl)
+    causal_direction: CausalDirection = CausalDirection.UNKNOWN
+    causal_evidence: Optional[str] = None  # "experimental", "longitudinal", "cross_sectional", "theoretical"
+    mediator: Optional[str] = None  # For MEDIATED: what's the M?
+
     def to_dict(self) -> Dict[str, Any]:
         return {
+            'constraint_id': self.constraint_id,
             'source': self.source_id,
             'target': self.target_id,
             'type': self.constraint_type.value,
             'strength': self.strength,
-            'bidirectional': self.bidirectional
+            'bidirectional': self.bidirectional,
+            'causal_direction': self.causal_direction.value,
+            'causal_evidence': self.causal_evidence,
+            'mediator': self.mediator,
+            'evidence_ids': self.evidence_ids.copy()
         }
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'Constraint':
+        causal_dir = d.get('causal_direction', 'unknown')
+        try:
+            causal_direction = CausalDirection(causal_dir)
+        except ValueError:
+            causal_direction = CausalDirection.UNKNOWN
+
+        return cls(
+            constraint_id=d.get('constraint_id', f"c:{d.get('source')}:{d.get('target')}"),
+            source_id=d.get('source', d.get('source_id')),
+            target_id=d.get('target', d.get('target_id')),
+            constraint_type=ConstraintType(d.get('type', 'supports')),
+            strength=d.get('strength', 0.5),
+            bidirectional=d.get('bidirectional', True),
+            evidence_ids=d.get('evidence_ids', []),
+            causal_direction=causal_direction,
+            causal_evidence=d.get('causal_evidence'),
+            mediator=d.get('mediator')
+        )
 
 
 # =============================================================================
@@ -528,7 +703,22 @@ class WebOfBelief:
         return belief
     
     def add_constraint(self, constraint: Constraint) -> None:
-        """Add a constraint between beliefs."""
+        """
+        Add a constraint between beliefs.
+
+        Per expert panel (Pearl): MEDIATED causal direction requires specification
+        of the mediator variable for proper causal reasoning about blocking/confounding.
+        """
+        # Panel Fix 1: Require mediator for MEDIATED causal direction
+        if constraint.causal_direction == CausalDirection.MEDIATED:
+            if constraint.mediator is None:
+                raise ValueError(
+                    f"MEDIATED causal direction requires mediator specification. "
+                    f"Constraint {constraint.constraint_id}: source={constraint.source_id}, "
+                    f"target={constraint.target_id}. Please specify what M mediates the "
+                    f"relationship (A→M→B)."
+                )
+
         self.constraints[constraint.constraint_id] = constraint
         self._constraints_by_belief[constraint.source_id].append(constraint.constraint_id)
         
@@ -584,7 +774,111 @@ class WebOfBelief:
             ))
         
         logger.info(f"Integrated stub {stub_id} into theory {theory_id}")
-    
+
+    def integrate_bridge(
+        self,
+        bridge,  # BridgeWarrant from bridge_warrants module
+        create_constraints: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Integrate a bridge warrant into the web.
+
+        Sprint 3: Bridge warrants create constraints between source and target beliefs.
+        When a bridge is integrated:
+        1. BRIDGES constraints are created between connected beliefs
+        2. If bridge has failed, STRONG_TENSION constraints are created
+        3. Web coherence is recalculated
+
+        Args:
+            bridge: BridgeWarrant instance from src/services/bridge_warrants
+            create_constraints: Whether to create constraints (default True)
+
+        Returns:
+            Dict with integration summary
+        """
+        result = {
+            "bridge_id": bridge.bridge_id,
+            "constraints_created": 0,
+            "tensions_created": 0,
+            "coherence_impact": 0.0
+        }
+
+        coherence_before = self._coherence_score
+
+        if not create_constraints:
+            return result
+
+        # Create constraints between source and target beliefs
+        source_beliefs = [bid for bid in bridge.source_beliefs if bid in self.beliefs]
+        target_beliefs = [bid for bid in bridge.target_beliefs if bid in self.beliefs]
+
+        # Determine constraint type based on bridge status
+        if bridge.status.value == "failed":
+            # Failed bridge creates strong tension
+            constraint_type = ConstraintType.STRONG_TENSION
+            strength = 0.9  # Strong tension
+        else:
+            constraint_type = ConstraintType.BRIDGES
+            strength = bridge.confidence
+
+        # Create constraints from source to target beliefs
+        for source_id in source_beliefs:
+            for target_id in target_beliefs:
+                constraint_id = f"c:bridge:{bridge.bridge_id}:{source_id}:{target_id}"
+
+                # Skip if constraint already exists
+                if constraint_id in self.constraints:
+                    continue
+
+                constraint = Constraint(
+                    constraint_id=constraint_id,
+                    source_id=source_id,
+                    target_id=target_id,
+                    constraint_type=constraint_type,
+                    strength=strength,
+                    bidirectional=True,
+                    evidence_ids=[bridge.bridge_id]
+                )
+
+                self.add_constraint(constraint)
+                result["constraints_created"] += 1
+
+                if constraint_type == ConstraintType.STRONG_TENSION:
+                    result["tensions_created"] += 1
+
+        # If bridge failed, also create tensions with disconfirming evidence
+        if bridge.failure_record:
+            for evidence_id in bridge.failure_record.disconfirming_evidence:
+                if evidence_id not in self.beliefs:
+                    continue
+
+                for source_id in source_beliefs:
+                    tension_id = f"c:tension:{bridge.bridge_id}:{source_id}:{evidence_id}"
+                    if tension_id in self.constraints:
+                        continue
+
+                    tension = Constraint(
+                        constraint_id=tension_id,
+                        source_id=source_id,
+                        target_id=evidence_id,
+                        constraint_type=ConstraintType.CONTRADICTS,
+                        strength=0.8,
+                        bidirectional=True,
+                        evidence_ids=[bridge.bridge_id]
+                    )
+
+                    self.add_constraint(tension)
+                    result["tensions_created"] += 1
+
+        # Recalculate coherence
+        self._update_coherence()
+        result["coherence_impact"] = self._coherence_score - coherence_before
+
+        self.version += 1
+        logger.info(f"Integrated bridge {bridge.bridge_id}: {result['constraints_created']} constraints, {result['tensions_created']} tensions")
+
+        return result
+
     # =========================================================================
     # THEORY WORLDS
     # =========================================================================
@@ -815,7 +1109,28 @@ class WebOfBelief:
             elif constraint.constraint_type in [ConstraintType.EXPLAINS, ConstraintType.INSTANTIATES]:
                 # Explanatory coherence
                 local_coherence = (source_cred * target_cred) * constraint.strength
-                
+
+            elif constraint.constraint_type == ConstraintType.BRIDGES:
+                # Sprint 3: Bridge constraints - coherent if both connected beliefs align
+                agreement = 1 - abs(source_cred - target_cred)
+                local_coherence = agreement * constraint.strength * 0.8  # Slightly less than direct support
+
+            elif constraint.constraint_type == ConstraintType.STRONG_TENSION:
+                # Sprint 3: Strong tension from failed bridges
+                # Similar to contradicts but with higher penalty
+                disagreement = abs(source_cred - target_cred)
+                local_coherence = disagreement * constraint.strength * 0.5  # Penalty for unresolved tension
+
+                # Strong tension if both are high credence (failed bridge with strong beliefs)
+                if source_cred > 0.5 and target_cred > 0.5:
+                    tensions.append({
+                        'source': constraint.source_id,
+                        'target': constraint.target_id,
+                        'source_credence': source_cred,
+                        'target_credence': target_cred,
+                        'type': 'bridge_failure_tension'
+                    })
+
             else:
                 local_coherence = 0.5 * constraint.strength
             

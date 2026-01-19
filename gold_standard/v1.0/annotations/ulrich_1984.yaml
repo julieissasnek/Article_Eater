@@ -1,0 +1,151 @@
+# Gold Standard Annotation: Ulrich (1984)
+# View through a window may influence recovery from surgery
+#
+# Sprint 9: Example annotation for empirical paper
+
+paper_id: "ulrich_1984"
+citation: "Ulrich, R. S. (1984). View through a window may influence recovery from surgery. Science, 224(4647), 420-421."
+version: "1.0"
+
+metadata:
+  annotator: "panel_consensus"
+  annotation_date: "2026-01-19"
+  review_status: "approved"
+
+paper_characteristics:
+  type: "empirical"
+  theories: ["SRT"]
+  is_multi_theory: false
+  ecological_validity: "field_natural"  # Real hospital, real patients
+  methodology_score: [0.7, 0.9]  # Natural experiment, strong design
+
+# Expected beliefs to be extracted
+expected_beliefs:
+  - id: "ulrich_1984_b1"
+    content: "Patients with window views of nature had shorter hospital stays"
+    expected_credence: [0.7, 0.9]
+    epistemic_level: "empirical"
+    theory: "SRT"
+    environment_id: "natural.views"
+    outcome_id: "health.recovery.length_of_stay"
+    causal_direction: "forward"
+    scope:
+      population: "surgical_patients"
+      setting: "hospital"
+      duration: "recovery_period"
+      measurement: "medical_records"
+      geography: "suburban_pennsylvania"
+      scope_specified: true
+    annotation_metadata:
+      confidence: "high"
+      basis: "Primary finding, statistically significant"
+
+  - id: "ulrich_1984_b2"
+    content: "Patients with nature views required fewer pain medications"
+    expected_credence: [0.65, 0.85]
+    epistemic_level: "empirical"
+    theory: "SRT"
+    environment_id: "natural.views"
+    outcome_id: "health.medication.analgesics"
+    causal_direction: "forward"
+    scope:
+      population: "surgical_patients"
+      setting: "hospital"
+      scope_specified: true
+    annotation_metadata:
+      confidence: "high"
+      basis: "Secondary finding, documented in records"
+
+  - id: "ulrich_1984_b3"
+    content: "Patients with brick wall views had more negative nurse notes"
+    expected_credence: [0.6, 0.8]
+    epistemic_level: "empirical"
+    theory: "SRT"
+    environment_id: "aesthetic.materials"
+    outcome_id: "health.behavior.nurse_evaluation"
+    causal_direction: "forward"
+    scope:
+      population: "surgical_patients"
+      setting: "hospital"
+      scope_specified: true
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Secondary finding, subjective measure"
+
+  - id: "ulrich_1984_b4"
+    content: "Natural views support stress recovery in hospital settings"
+    expected_credence: [0.6, 0.8]
+    epistemic_level: "intermediate"
+    theory: "SRT"
+    environment_id: "natural.views"
+    outcome_id: "psych.stress.recovery"
+    scope:
+      population: "patients"
+      setting: "hospital"
+      scope_specified: true
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Inferred from multiple outcome measures"
+
+# Expected constraints between beliefs
+expected_constraints:
+  - source: "ulrich_1984_b4"
+    target: "ulrich_1984_b1"
+    type: "instantiates"
+    expected_strength: [0.6, 0.8]
+    annotation_metadata:
+      confidence: "high"
+      basis: "Shorter stay is evidence of stress recovery"
+
+  - source: "ulrich_1984_b4"
+    target: "ulrich_1984_b2"
+    type: "instantiates"
+    expected_strength: [0.5, 0.7]
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Less pain medication suggests less stress"
+
+# Expected bridges to other theories
+expected_bridges:
+  - source_theory: "SRT"
+    target_theory: "ART"
+    bridge_type: "functional"
+    expected_confidence: [0.4, 0.6]
+    annotation_metadata:
+      confidence: "medium"
+      basis: "Both predict beneficial effects of nature, different mechanisms"
+
+# Things that should NOT be extracted
+should_NOT_extract:
+  - pattern: "nature cures illness"
+    reason: "Overgeneralization - study shows faster recovery, not cure"
+
+  - pattern: "all patients benefit"
+    reason: "Study was specific population (cholecystectomy patients)"
+
+  - pattern: "view causes healing"
+    reason: "Study shows correlation with outcomes, mechanism not established"
+
+  - pattern: "effect size"
+    reason: "Original paper doesn't report standard effect sizes"
+
+# Red flags during annotation
+red_flags:
+  - "Claims about causation (study was quasi-experimental)"
+  - "Generalization to non-surgical populations"
+  - "Claims about mechanism (SRT mechanism not tested directly)"
+  - "Specific effect sizes (not reported in original)"
+
+# Validation notes
+validation_notes: |
+  Ulrich (1984) is a landmark empirical paper that:
+  1. Provides early evidence for nature-health connection
+  2. Uses real hospital setting with matched controls
+  3. Has multiple outcome measures (stay length, medications, nurse notes)
+  4. Is often cited as support for SRT, though mechanism not directly tested
+
+  Key validation checks:
+  - Should extract empirical findings with moderate-high credence
+  - Should NOT overstate causality (quasi-experimental design)
+  - Should recognize scope limitations (specific patient population)
+  - Bridge to ART should be generated (functional equivalence)
