@@ -313,19 +313,36 @@ class CredibilityChecks:
         - Sample size positive (if provided)
         - P-value in [0, 1] (if provided)
         - Effect size reasonable (if provided)
+        - Raw credence values from metadata (bypass Credence auto-clamping)
         """
         flags = []
         meta = metadata or {}
 
-        # Check credence values
-        for belief in beliefs:
-            if belief.credence.value <= 0 or belief.credence.value >= 1:
+        # Check raw credence values from metadata (catches 0 and 1 before clamping)
+        raw_credences = meta.get('raw_credences', [])
+        for raw_c in raw_credences:
+            if raw_c <= 0 or raw_c >= 1:
                 flags.append(CredibilityFlag(
                     decision=Decision.BLOCK,
-                    reason=f"Credence outside (0,1): {belief.credence.value}",
+                    reason=f"Credence outside (0,1): {raw_c}",
                     confidence=1.0,
                     field_name="credence",
                     expected="(0, 1)",
+                    observed=str(raw_c),
+                ))
+
+        # Check credence values from beliefs
+        for belief in beliefs:
+            # Flag credence at or beyond boundaries
+            # Values == 0.01 or == 0.99 suggest clamping from invalid original
+            # Values < 0.01 or > 0.99 are directly invalid
+            if belief.credence.value <= 0.01 or belief.credence.value >= 0.99:
+                flags.append(CredibilityFlag(
+                    decision=Decision.BLOCK,
+                    reason=f"Credence at boundary (likely invalid original): {belief.credence.value}",
+                    confidence=0.9,
+                    field_name="credence",
+                    expected="(0.01, 0.99)",
                     observed=str(belief.credence.value),
                 ))
 
@@ -638,6 +655,85 @@ class CredibilityChecks:
 
         return cycles
 
+    def check_missing_methodology(
+        self,
+        metadata: Dict[str, Any]
+    ) -> List[CredibilityFlag]:
+        """
+        Check for missing critical methodology information.
+
+        Per Mayo: Can't evaluate claims without knowing methodology.
+        """
+        flags = []
+
+        # Check for missing sample size
+        sample_size = metadata.get('sample_size')
+        study_design = metadata.get('study_design')
+        sample_description = metadata.get('sample_description', '')
+
+        # Missing sample size is concerning for empirical claims
+        if sample_size is None and study_design not in ['theory', 'theory_book', 'review', None]:
+            flags.append(CredibilityFlag(
+                decision=Decision.REVIEW,
+                reason="Missing sample size for empirical study",
+                confidence=0.6,
+                field_name="sample_size",
+                expected="Sample size reported",
+                observed="Not reported",
+            ))
+
+        # No sample description
+        if not sample_description and study_design not in ['theory', 'theory_book', 'review', None]:
+            flags.append(CredibilityFlag(
+                decision=Decision.REVIEW,
+                reason="Missing sample description",
+                confidence=0.5,
+                field_name="sample_description",
+                expected="Sample description (population, demographics)",
+                observed="Not reported",
+            ))
+
+        return flags
+
+    def check_subgroup_sample_size(
+        self,
+        beliefs: List[Belief],
+        metadata: Dict[str, Any],
+        min_subgroup_n: int = 50
+    ) -> List[CredibilityFlag]:
+        """
+        Check if claims about subgroups have adequate sample sizes.
+
+        Per Simon: Total N can be misleading when claims target specific subgroups.
+        """
+        flags = []
+
+        subgroup_sizes = metadata.get('subgroup_sizes', {})
+        if not subgroup_sizes:
+            return flags
+
+        for belief in beliefs:
+            # Check if belief is scoped to a specific population
+            if belief.scope and belief.scope.population:
+                claimed_pop = belief.scope.population.lower()
+
+                # Look for matching subgroup in metadata
+                for subgroup_name, subgroup_n in subgroup_sizes.items():
+                    if subgroup_name.lower() in claimed_pop or claimed_pop in subgroup_name.lower():
+                        if subgroup_n < min_subgroup_n:
+                            flags.append(CredibilityFlag(
+                                decision=Decision.REVIEW,
+                                reason=f"Claim about '{claimed_pop}' uses subgroup N={subgroup_n} "
+                                       f"(below recommended {min_subgroup_n})",
+                                confidence=0.65,
+                                field_name="subgroup_sample_size",
+                                expected=f"N ≥ {min_subgroup_n} for subgroup claims",
+                                observed=f"N = {subgroup_n} for {subgroup_name}",
+                            ))
+                        break
+
+        return flags
+
     def check_statistical_validity(
         self,
         metadata: Dict[str, Any]
@@ -672,16 +768,25 @@ class CredibilityChecks:
         n_significant = metadata.get('n_significant')
         correction_applied = metadata.get('correction_applied', False)
 
-        if n_comparisons and n_significant and not correction_applied:
+        if n_comparisons and n_significant is not None and not correction_applied:
             expected_by_chance = n_comparisons * 0.05
-            if n_significant <= expected_by_chance * 1.5:
+            # Flag if significant results are within 3x of what's expected by chance
+            # E.g., 15 comparisons => ~0.75 expected, so flag if ≤2.25 significant
+            # This catches cases where results might just be noise
+            import math
+            # Use binomial approximation: expected ± 2*SD covers ~95% of chance findings
+            # SD = sqrt(n * p * (1-p)) ≈ sqrt(n * 0.05 * 0.95)
+            sd = math.sqrt(n_comparisons * 0.05 * 0.95)
+            upper_bound = expected_by_chance + 2.5 * sd  # ~99% upper bound by chance
+
+            if n_significant <= upper_bound:
                 flags.append(CredibilityFlag(
                     decision=Decision.REVIEW,
                     reason=f"Multiple comparison concern: {n_significant}/{n_comparisons} "
-                           f"significant (expected ~{expected_by_chance:.1f} by chance)",
+                           f"significant (expected ~{expected_by_chance:.1f}±{sd:.1f} by chance)",
                     confidence=0.6,
                     field_name="multiple_comparison",
-                    expected="Correction for multiple comparisons",
+                    expected="Correction for multiple comparisons or results well above chance",
                     observed=f"{n_significant} of {n_comparisons} without correction",
                 ))
 
@@ -866,6 +971,14 @@ class CredibilityTester:
 
         # Statistical validity checks
         for flag in safe_check(checks.check_statistical_validity, meta):
+            report.add_flag(flag)
+
+        # Missing methodology check (Sprint D)
+        for flag in safe_check(checks.check_missing_methodology, meta):
+            report.add_flag(flag)
+
+        # Subgroup sample size check (Sprint D)
+        for flag in safe_check(checks.check_subgroup_sample_size, beliefs, meta):
             report.add_flag(flag)
 
         # Update overall decision based on flags

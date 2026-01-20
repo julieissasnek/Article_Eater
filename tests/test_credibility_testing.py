@@ -884,3 +884,157 @@ class TestSprintCFailureStandard:
         # Should flag CI spanning zero
         assert not report.is_clean
         assert any("confidence interval" in f.reason.lower() for f in report.flags)
+
+
+# =============================================================================
+# SPRINT D TESTS: Calibration Enhancements
+# =============================================================================
+
+class TestMissingMethodologyCheck:
+    """Tests for missing methodology detection."""
+
+    def test_missing_sample_size_empirical(self, checks):
+        """Test detection of missing sample size for empirical study."""
+        flags = checks.check_missing_methodology({
+            'study_design': 'experiment',
+            'sample_description': '',  # No description either
+        })
+        assert len(flags) >= 1
+        assert any("sample" in f.reason.lower() for f in flags)
+
+    def test_missing_sample_size_theory_ok(self, checks):
+        """Test that theory papers don't need sample size."""
+        flags = checks.check_missing_methodology({
+            'study_design': 'theory',
+            'sample_description': '',
+        })
+        # Theory papers shouldn't be flagged for missing sample info
+        assert len(flags) == 0
+
+    def test_complete_methodology(self, checks):
+        """Test that complete methodology passes."""
+        flags = checks.check_missing_methodology({
+            'sample_size': 100,
+            'study_design': 'experiment',
+            'sample_description': 'Adults aged 18-65',
+        })
+        assert len(flags) == 0
+
+
+class TestSubgroupSampleSizeCheck:
+    """Tests for subgroup sample size detection."""
+
+    def test_adequate_subgroup_size(self, checks, sample_belief):
+        """Test that adequate subgroup size passes."""
+        flags = checks.check_subgroup_sample_size(
+            [sample_belief],
+            {'subgroup_sizes': {'adults': 100}}
+        )
+        assert len(flags) == 0
+
+    def test_small_subgroup_detected(self, checks):
+        """Test detection of small subgroup sample size."""
+        belief = Belief(
+            belief_id="test_subgroup",
+            content="Elderly benefit from nature",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+            scope=ScopeConditions(population="elderly", scope_specified=True),
+        )
+        flags = checks.check_subgroup_sample_size(
+            [belief],
+            {'subgroup_sizes': {'elderly': 25}}  # Below threshold
+        )
+        assert len(flags) >= 1
+        assert any("subgroup" in f.reason.lower() for f in flags)
+
+    def test_no_subgroup_info(self, checks, sample_belief):
+        """Test handling when no subgroup info provided."""
+        flags = checks.check_subgroup_sample_size([sample_belief], {})
+        assert len(flags) == 0  # No subgroup info = no flags
+
+
+class TestRawCredenceDetection:
+    """Tests for raw credence value detection (bypassing auto-clamping)."""
+
+    def test_raw_credence_zero_detected(self, checks):
+        """Test detection of credence=0 via raw_credences."""
+        flags = checks.check_numeric_validity(
+            [],  # No beliefs, using raw_credences
+            {'raw_credences': [0.0, 0.5]}
+        )
+        assert len(flags) >= 1
+        assert any("0.0" in f.observed or "0" in f.reason for f in flags)
+
+    def test_raw_credence_one_detected(self, checks):
+        """Test detection of credence=1 via raw_credences."""
+        flags = checks.check_numeric_validity(
+            [],
+            {'raw_credences': [0.5, 1.0]}
+        )
+        assert len(flags) >= 1
+        assert any("1.0" in f.observed or "1" in f.reason for f in flags)
+
+    def test_valid_raw_credences(self, checks):
+        """Test that valid raw credences pass."""
+        flags = checks.check_numeric_validity(
+            [],
+            {'raw_credences': [0.3, 0.5, 0.7]}
+        )
+        assert len(flags) == 0
+
+
+class TestSprintDFailureStandard:
+    """Tests for Sprint D failure standard cases."""
+
+    def test_subgroup_n_case(self, tester):
+        """Test subgroup N failure case from failure standard."""
+        belief = Belief(
+            belief_id="b_subgroup",
+            content="Nature exposure reduces stress in elderly adults",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.72, uncertainty=0.18),
+            scope=ScopeConditions(population="elderly", scope_specified=True),
+        )
+
+        report = tester.evaluate(
+            article_id="test_subgroup_n_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={
+                'sample_size': 200,  # Total N looks adequate
+                'study_design': 'experiment',
+                'sample_description': 'Adults aged 18-65',
+                'subgroup_sizes': {'elderly': 45},  # But critical subgroup is small
+            }
+        )
+
+        # Should flag small subgroup
+        assert not report.is_clean
+        assert any("subgroup" in f.reason.lower() for f in report.flags)
+
+    def test_multiple_comparison_case(self, tester):
+        """Test multiple comparison failure case."""
+        belief = Belief(
+            belief_id="b_multiple",
+            content="Nature reduces anxiety (one of 15 outcomes)",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.65, uncertainty=0.2),
+        )
+
+        report = tester.evaluate(
+            article_id="test_multiple_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={
+                'sample_size': 120,
+                'study_design': 'experiment',
+                'n_comparisons': 15,
+                'n_significant': 2,  # About expected by chance
+                'correction_applied': False,
+            }
+        )
+
+        # Should flag multiple comparison concern
+        assert not report.is_clean
+        assert any("comparison" in f.reason.lower() for f in report.flags)
