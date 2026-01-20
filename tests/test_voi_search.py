@@ -2,6 +2,7 @@
 Tests for VOI-Driven Search (TODO 3).
 
 Sprint H: Core structures, VOI scoring, source selection.
+Sprint I: Strategy selection, stopping rules, null result detection.
 
 Date: January 20, 2026
 """
@@ -24,6 +25,12 @@ from src.services.voi_search import (
     create_voi_coordinator,
     detect_gaps,
     calculate_voi,
+    # Sprint I
+    SearchStrategy,
+    StrategySelector,
+    StoppingDecision,
+    should_stop_searching,
+    NullResultDetector,
 )
 
 from src.services.web_of_belief import (
@@ -644,3 +651,272 @@ class TestNullResultVocabulary:
         for category, data in vocab['null_result_vocabulary'].items():
             assert 'terms' in data
             assert len(data['terms']) > 0
+
+
+# =============================================================================
+# SPRINT I: STRATEGY SELECTOR TESTS
+# =============================================================================
+
+class TestSearchStrategy:
+    """Tests for SearchStrategy enum."""
+
+    def test_strategies_exist(self):
+        """Test that all strategies are defined."""
+        assert SearchStrategy.KEYWORD.value == "keyword"
+        assert SearchStrategy.CITATION.value == "citation"
+        assert SearchStrategy.SEMANTIC.value == "semantic"
+
+    def test_strategy_count(self):
+        """Test number of strategies."""
+        assert len(SearchStrategy) == 3
+
+
+class TestStrategySelector:
+    """Tests for StrategySelector class."""
+
+    def test_selector_creation(self):
+        """Test creating a strategy selector."""
+        selector = StrategySelector()
+        assert selector.initial_epsilon == 0.3
+        assert selector.min_epsilon == 0.05
+        assert selector.total_searches == 0
+
+    def test_initial_epsilon(self):
+        """Test initial epsilon value."""
+        selector = StrategySelector(initial_epsilon=0.5)
+        assert selector.epsilon == 0.5
+
+    def test_epsilon_decay(self):
+        """Test that epsilon decays with searches."""
+        selector = StrategySelector(initial_epsilon=0.3, decay=0.9)
+
+        initial_epsilon = selector.epsilon
+
+        # Simulate some searches
+        for _ in range(10):
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, True)
+
+        assert selector.epsilon < initial_epsilon
+
+    def test_epsilon_minimum(self):
+        """Test that epsilon doesn't go below minimum."""
+        selector = StrategySelector(initial_epsilon=0.3, min_epsilon=0.1, decay=0.5)
+
+        # Many searches
+        for _ in range(100):
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, True)
+
+        assert selector.epsilon >= selector.min_epsilon
+
+    def test_select_strategy_returns_valid(self):
+        """Test that strategy selection returns a valid strategy."""
+        selector = StrategySelector()
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        strategy = selector.select_strategy(gap)
+        assert isinstance(strategy, SearchStrategy)
+
+    def test_record_search_updates_stats(self):
+        """Test that recording search updates statistics."""
+        selector = StrategySelector()
+
+        selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, True)
+        selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, False)
+
+        stats = selector.get_stats()
+        assert stats['total_searches'] == 2
+        assert 'uncertain_keyword' in stats['strategy_performance']
+        assert stats['strategy_performance']['uncertain_keyword']['attempts'] == 2
+        assert stats['strategy_performance']['uncertain_keyword']['successes'] == 1
+
+    def test_best_strategy_learning(self):
+        """Test that selector learns best strategy."""
+        selector = StrategySelector(initial_epsilon=0.0)  # No exploration
+
+        # Train: keyword always fails, citation always succeeds
+        for _ in range(10):
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, False)
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.CITATION, True)
+
+        # Should now prefer citation for uncertain gaps
+        selector.total_searches = 0  # Reset for deterministic test
+        selector.initial_epsilon = 0.0
+
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        # With epsilon=0, should always pick best
+        strategy = selector._best_strategy_for(GapType.UNCERTAIN)
+        assert strategy == SearchStrategy.CITATION
+
+
+# =============================================================================
+# SPRINT I: STOPPING RULES TESTS
+# =============================================================================
+
+class TestStoppingDecision:
+    """Tests for StoppingDecision dataclass."""
+
+    def test_decision_creation(self):
+        """Test creating a stopping decision."""
+        decision = StoppingDecision(
+            should_stop=True,
+            reason="Test reason",
+            relevant_found=5,
+            queries_executed=10
+        )
+        assert decision.should_stop is True
+        assert decision.relevant_found == 5
+
+
+class TestStoppingRules:
+    """Tests for stopping rule function."""
+
+    def test_stop_at_query_limit(self):
+        """Test stopping at query limit."""
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        decision = should_stop_searching(
+            gap,
+            results_so_far=[],
+            queries_executed=20,
+            max_queries=20
+        )
+
+        assert decision.should_stop is True
+        assert "limit" in decision.reason.lower()
+
+    def test_stop_with_sufficient_results(self):
+        """Test stopping with sufficient relevant results."""
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        results = [
+            SearchRecommendation(f"p{i}", f"Paper {i}", 0.8, "Match")
+            for i in range(15)
+        ]
+
+        decision = should_stop_searching(
+            gap,
+            results_so_far=results,
+            queries_executed=5,
+            sufficient_results=10
+        )
+
+        assert decision.should_stop is True
+        assert "sufficient" in decision.reason.lower()
+
+    def test_stop_diminishing_returns(self):
+        """Test stopping due to diminishing returns."""
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        # Low relevance results
+        results = [
+            SearchRecommendation(f"p{i}", f"Paper {i}", 0.1, "Low match")
+            for i in range(15)
+        ]
+
+        decision = should_stop_searching(
+            gap,
+            results_so_far=results,
+            queries_executed=6,
+            min_relevance=0.3
+        )
+
+        assert decision.should_stop is True
+        assert "diminishing" in decision.reason.lower()
+
+    def test_continue_searching(self):
+        """Test decision to continue searching."""
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        results = [
+            SearchRecommendation("p1", "Paper 1", 0.8, "Match")
+        ]
+
+        decision = should_stop_searching(
+            gap,
+            results_so_far=results,
+            queries_executed=2
+        )
+
+        assert decision.should_stop is False
+        assert "continue" in decision.reason.lower()
+
+
+# =============================================================================
+# SPRINT I: NULL RESULT DETECTOR TESTS
+# =============================================================================
+
+class TestNullResultDetector:
+    """Tests for NullResultDetector class."""
+
+    def test_detector_creation(self):
+        """Test creating a null result detector."""
+        detector = NullResultDetector()
+        assert detector.vocabulary is not None
+
+    def test_detect_direct_null(self):
+        """Test detecting direct null indicators."""
+        detector = NullResultDetector()
+
+        text = "Our study found no significant effect of the intervention."
+        result = detector.detect_null_indicators(text)
+
+        assert result['has_null_indicators'] is True
+        assert 'direct_null' in result['categories_detected']
+
+    def test_detect_replication_failure(self):
+        """Test detecting replication failure."""
+        detector = NullResultDetector()
+
+        text = "We failed to replicate the original findings."
+        result = detector.detect_null_indicators(text)
+
+        assert result['has_null_indicators'] is True
+        assert 'replication_failure' in result['categories_detected']
+
+    def test_detect_hedged_null(self):
+        """Test detecting hedged null results."""
+        detector = NullResultDetector()
+
+        text = "Results approached significance but did not reach significance."
+        result = detector.detect_null_indicators(text)
+
+        assert result['has_null_indicators'] is True
+
+    def test_no_null_indicators(self):
+        """Test text without null indicators."""
+        detector = NullResultDetector()
+
+        text = "Nature views significantly reduced stress levels."
+        result = detector.detect_null_indicators(text)
+
+        assert result['has_null_indicators'] is False
+        assert len(result['categories_detected']) == 0
+
+    def test_search_boost_with_null(self):
+        """Test search boost for paper with null results."""
+        detector = NullResultDetector()
+
+        text = "This replication study failed to replicate the original effect."
+        boost = detector.get_search_boost(text, GapType.UNCERTAIN)
+
+        assert boost > 1.0  # Should have positive boost
+
+    def test_search_boost_without_null(self):
+        """Test search boost for paper without null results."""
+        detector = NullResultDetector()
+
+        text = "Plants significantly improved air quality."
+        boost = detector.get_search_boost(text, GapType.UNCERTAIN)
+
+        assert boost == 1.0  # No boost
+
+    def test_multiple_categories_detected(self):
+        """Test detecting multiple null categories."""
+        detector = NullResultDetector()
+
+        text = "We found no significant effect, and this failed to replicate prior work."
+        result = detector.detect_null_indicators(text)
+
+        assert result['has_null_indicators'] is True
+        assert len(result['categories_detected']) >= 2

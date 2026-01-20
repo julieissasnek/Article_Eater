@@ -5,14 +5,16 @@ TODO 3: VOI-Driven Search
 
 Sprints:
 - Sprint H: Core structures, VOI scoring, source selection
-- Sprint I: Strategy selection, null result vocabulary
-- Sprint J: Stopping rules, TODO 1 integration
+- Sprint I: Strategy selection with epsilon decay, stopping rules,
+            null result detection
+- Sprint J: TODO 1 integration, pipeline helpers
 
 Per Phase D revised plan:
 - Two gap types initially: UNCERTAIN, UNEXPLORED (per Lampson)
 - Source selection by domain (per Giles)
 - Epsilon-greedy with decay (per Simon)
 - Expanded null result vocabulary (per Cartwright)
+- Satisficing stopping rules (per Simon)
 
 Date: January 20, 2026
 """
@@ -568,6 +570,326 @@ class VOISearchCoordinator:
                 json.dump(result, f, indent=2)
 
         return result
+
+
+# =============================================================================
+# SPRINT I: STRATEGY SELECTION (per Simon)
+# =============================================================================
+
+class SearchStrategy(Enum):
+    """Available search strategies."""
+    KEYWORD = "keyword"       # Standard keyword search
+    CITATION = "citation"     # Citation-based search (find citing papers)
+    SEMANTIC = "semantic"     # Semantic similarity search
+
+
+class StrategySelector:
+    """
+    Strategy selection with decaying exploration.
+
+    Per Simon: Start with exploration, gradually shift to exploitation
+    as we learn which strategies work best for each gap type.
+    """
+
+    def __init__(
+        self,
+        initial_epsilon: float = 0.3,
+        min_epsilon: float = 0.05,
+        decay: float = 0.99
+    ):
+        """
+        Initialize strategy selector.
+
+        Args:
+            initial_epsilon: Initial exploration rate (0-1)
+            min_epsilon: Minimum exploration rate
+            decay: Decay factor per search
+        """
+        self.initial_epsilon = initial_epsilon
+        self.min_epsilon = min_epsilon
+        self.decay = decay
+        self.total_searches = 0
+
+        # Track strategy performance by gap type
+        self._strategy_successes: Dict[Tuple[GapType, SearchStrategy], int] = {}
+        self._strategy_attempts: Dict[Tuple[GapType, SearchStrategy], int] = {}
+
+    @property
+    def epsilon(self) -> float:
+        """Current epsilon (decays with experience)."""
+        return max(
+            self.initial_epsilon * (self.decay ** self.total_searches),
+            self.min_epsilon
+        )
+
+    def select_strategy(self, gap: EpistemicGap) -> SearchStrategy:
+        """
+        Select strategy with epsilon-greedy + decay.
+
+        Args:
+            gap: The epistemic gap to search for
+
+        Returns:
+            Selected search strategy
+        """
+        if random.random() < self.epsilon:
+            # Explore: random strategy
+            return random.choice(list(SearchStrategy))
+        else:
+            # Exploit: best known strategy for this gap type
+            return self._best_strategy_for(gap.gap_type)
+
+    def _best_strategy_for(self, gap_type: GapType) -> SearchStrategy:
+        """Get best performing strategy for gap type."""
+        best_strategy = SearchStrategy.KEYWORD
+        best_rate = 0.0
+
+        for strategy in SearchStrategy:
+            key = (gap_type, strategy)
+            attempts = self._strategy_attempts.get(key, 0)
+
+            if attempts > 0:
+                success_rate = self._strategy_successes.get(key, 0) / attempts
+                if success_rate > best_rate:
+                    best_rate = success_rate
+                    best_strategy = strategy
+
+        return best_strategy
+
+    def record_search(
+        self,
+        gap_type: GapType,
+        strategy: SearchStrategy,
+        success: bool
+    ) -> None:
+        """
+        Record search outcome for learning.
+
+        Args:
+            gap_type: Type of gap searched
+            strategy: Strategy used
+            success: Whether search found relevant results
+        """
+        self.total_searches += 1
+        key = (gap_type, strategy)
+
+        self._strategy_attempts[key] = self._strategy_attempts.get(key, 0) + 1
+        if success:
+            self._strategy_successes[key] = self._strategy_successes.get(key, 0) + 1
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Get strategy performance statistics."""
+        stats = {
+            'total_searches': self.total_searches,
+            'current_epsilon': self.epsilon,
+            'strategy_performance': {}
+        }
+
+        for (gap_type, strategy), attempts in self._strategy_attempts.items():
+            successes = self._strategy_successes.get((gap_type, strategy), 0)
+            key = f"{gap_type.value}_{strategy.value}"
+            stats['strategy_performance'][key] = {
+                'attempts': attempts,
+                'successes': successes,
+                'success_rate': successes / attempts if attempts > 0 else 0
+            }
+
+        return stats
+
+
+# =============================================================================
+# SPRINT I: STOPPING RULES (per Simon)
+# =============================================================================
+
+@dataclass
+class StoppingDecision:
+    """Result of stopping rule evaluation."""
+    should_stop: bool
+    reason: str
+    relevant_found: int
+    queries_executed: int
+
+
+def should_stop_searching(
+    gap: EpistemicGap,
+    results_so_far: List[SearchRecommendation],
+    queries_executed: int,
+    max_queries: int = 20,
+    min_relevance: float = 0.3,
+    sufficient_results: int = 10
+) -> StoppingDecision:
+    """
+    Determine if we should stop searching for this gap.
+
+    Per Simon: satisficing with diminishing returns.
+
+    Args:
+        gap: The epistemic gap being searched
+        results_so_far: All recommendations collected
+        queries_executed: Number of queries run
+        max_queries: Hard limit on queries
+        min_relevance: Minimum relevance score to count
+        sufficient_results: Stop when this many relevant found
+
+    Returns:
+        StoppingDecision with should_stop flag and reason
+    """
+    relevant_results = [r for r in results_so_far if r.relevance_score >= min_relevance]
+    n_relevant = len(relevant_results)
+
+    # Hard limit
+    if queries_executed >= max_queries:
+        return StoppingDecision(
+            should_stop=True,
+            reason=f"Reached query limit ({max_queries})",
+            relevant_found=n_relevant,
+            queries_executed=queries_executed
+        )
+
+    # Sufficient results
+    if n_relevant >= sufficient_results:
+        return StoppingDecision(
+            should_stop=True,
+            reason=f"Found sufficient relevant papers ({n_relevant})",
+            relevant_found=n_relevant,
+            queries_executed=queries_executed
+        )
+
+    # Diminishing returns
+    if queries_executed >= 5:
+        # Check last 10 results
+        recent_results = results_so_far[-10:] if len(results_so_far) >= 10 else results_so_far
+        recent_relevant = sum(1 for r in recent_results if r.relevance_score >= min_relevance)
+
+        if recent_relevant == 0:
+            return StoppingDecision(
+                should_stop=True,
+                reason="No relevant papers in recent results (diminishing returns)",
+                relevant_found=n_relevant,
+                queries_executed=queries_executed
+            )
+
+    # Continue searching
+    return StoppingDecision(
+        should_stop=False,
+        reason="Continue searching",
+        relevant_found=n_relevant,
+        queries_executed=queries_executed
+    )
+
+
+# =============================================================================
+# SPRINT I: NULL RESULT DETECTION (per Cartwright)
+# =============================================================================
+
+class NullResultDetector:
+    """
+    Detect null result indicators in paper text.
+
+    Per Cartwright: Papers with null results are underrepresented
+    but crucial for accurate belief calibration.
+    """
+
+    def __init__(self, vocab_path: Optional[str] = None):
+        """
+        Initialize detector.
+
+        Args:
+            vocab_path: Path to null_result_indicators.yaml
+        """
+        self.vocabulary = self._load_vocabulary(vocab_path)
+
+    def _load_vocabulary(self, vocab_path: Optional[str]) -> Dict[str, Any]:
+        """Load null result vocabulary."""
+        if vocab_path is None:
+            # Default path
+            import os
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            vocab_path = os.path.join(project_root, "contracts", "vocab", "null_result_indicators.yaml")
+
+        try:
+            import yaml
+            from pathlib import Path
+            path = Path(vocab_path)
+            if path.exists():
+                with open(path) as f:
+                    return yaml.safe_load(f)
+        except Exception as e:
+            logger.warning(f"Could not load null result vocabulary: {e}")
+
+        return {'null_result_vocabulary': {}}
+
+    def detect_null_indicators(
+        self,
+        text: str
+    ) -> Dict[str, Any]:
+        """
+        Detect null result indicators in text.
+
+        Args:
+            text: Abstract or title text to analyze
+
+        Returns:
+            Dict with detected categories and terms
+        """
+        text_lower = text.lower()
+        results = {
+            'has_null_indicators': False,
+            'categories_detected': [],
+            'terms_found': [],
+            'total_weight': 0.0
+        }
+
+        vocab = self.vocabulary.get('null_result_vocabulary', {})
+
+        for category, data in vocab.items():
+            terms = data.get('terms', [])
+            weight = data.get('weight', 1.0)
+
+            for term in terms:
+                if term.lower() in text_lower:
+                    results['has_null_indicators'] = True
+                    if category not in results['categories_detected']:
+                        results['categories_detected'].append(category)
+                    results['terms_found'].append(term)
+                    results['total_weight'] += weight
+
+        return results
+
+    def get_search_boost(
+        self,
+        text: str,
+        gap_type: GapType
+    ) -> float:
+        """
+        Calculate search priority boost for a paper.
+
+        Higher boost = prioritize papers with null results.
+
+        Args:
+            text: Paper text to analyze
+            gap_type: Type of gap being searched
+
+        Returns:
+            Boost factor (1.0 = no boost)
+        """
+        detection = self.detect_null_indicators(text)
+
+        if not detection['has_null_indicators']:
+            return 1.0
+
+        # Base boost from detected weight
+        boost = 1.0 + (detection['total_weight'] * 0.2)
+
+        # Additional boost if categories match gap type relevance
+        relevance = self.vocabulary.get('gap_type_relevance', {})
+        relevant_categories = relevance.get(gap_type.value, [])
+
+        for category in detection['categories_detected']:
+            if category in relevant_categories:
+                boost += 0.2
+
+        return min(boost, 2.5)  # Cap at 2.5x
 
 
 # =============================================================================
