@@ -1,0 +1,33 @@
+# Borderline Case: Small Scope Extension
+# Minimal overreach - should probably pass
+
+case_id: "border_small_scope_extension"
+category: "borderline"
+expected_decision: "accept_or_review"
+
+article:
+  id: "test_small_scope_001"
+  title: "Nature Effects in Working Adults"
+
+metadata:
+  sample_size: 150
+  study_design: "experiment"
+  p_value: 0.005
+  effect_size: 0.45
+  sample_description: "Working adults aged 25-55 in urban settings"
+
+beliefs:
+  - belief_id: "b_small_scope"
+    content: "Nature breaks improve afternoon productivity"
+    level: "empirical"
+    credence: 0.68
+    uncertainty: 0.18
+    scope:
+      population: "adults"  # Slight generalization from "working adults 25-55"
+      setting: "workplace"
+      scope_specified: true
+
+constraints: []
+
+expected_flags:
+  notes: "Scope extension from 'working adults 25-55' to 'adults' is minimal"

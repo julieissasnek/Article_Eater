@@ -1,0 +1,39 @@
+# Borderline Case: Longitudinal Causal Claim
+# Longitudinal helps but doesn't fully establish causation
+
+case_id: "border_longitudinal_causal"
+category: "borderline"
+expected_decision: "accept_or_review"
+
+article:
+  id: "test_longitudinal_001"
+  title: "Longitudinal Study of Green Space and Mental Health"
+
+metadata:
+  sample_size: 500
+  study_design: "longitudinal"  # Provides temporal precedence
+  p_value: 0.001
+  effect_size: 0.30
+  duration: "2 years"
+  sample_description: "Community adults"
+
+beliefs:
+  - belief_id: "b_longitudinal"
+    content: "Living near green space improves mental health over time"
+    level: "empirical"
+    credence: 0.70
+    uncertainty: 0.15
+
+constraints:
+  - constraint_id: "c_longitudinal"
+    source_id: "b_longitudinal"
+    target_id: "theory_nature_health"
+    constraint_type: "supports"
+    causal_direction: "forward"  # Causal claim
+    strength: 0.55  # Moderate strength appropriate for longitudinal
+
+expected_flags:
+  notes: |
+    Longitudinal design provides temporal precedence but doesn't rule out
+    confounders (e.g., healthier people choose to live near green space).
+    Moderate causal claim may be acceptable.

@@ -666,3 +666,221 @@ class TestEdgeCases:
         )
         # Should not crash
         assert report is not None
+
+
+# =============================================================================
+# SPRINT C TESTS: New Checks
+# =============================================================================
+
+class TestCausalCycleCheck:
+    """Tests for causal cycle detection."""
+
+    def test_no_cycle(self, checks):
+        """Test with linear constraint chain (no cycle)."""
+        constraints = [
+            Constraint(
+                constraint_id="c1",
+                source_id="a",
+                target_id="b",
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+            Constraint(
+                constraint_id="c2",
+                source_id="b",
+                target_id="c",
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+        ]
+        flags = checks.check_causal_cycles(constraints)
+        assert len(flags) == 0
+
+    def test_cycle_detected(self, checks):
+        """Test that cycle is detected."""
+        constraints = [
+            Constraint(
+                constraint_id="c1",
+                source_id="a",
+                target_id="b",
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+            Constraint(
+                constraint_id="c2",
+                source_id="b",
+                target_id="a",  # Creates cycle: a → b → a
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+        ]
+        flags = checks.check_causal_cycles(constraints)
+        assert len(flags) >= 1
+        assert flags[0].decision == Decision.REVIEW
+        assert "cycle" in flags[0].reason.lower()
+
+
+class TestStatisticalValidityCheck:
+    """Tests for statistical validity checks."""
+
+    def test_ci_not_spanning_zero(self, checks):
+        """Test CI that doesn't span zero."""
+        flags = checks.check_statistical_validity({
+            'confidence_interval': [0.1, 0.5],
+            'p_value': 0.01
+        })
+        assert len(flags) == 0
+
+    def test_ci_spans_zero(self, checks):
+        """Test CI that spans zero."""
+        flags = checks.check_statistical_validity({
+            'confidence_interval': [-0.1, 0.5],
+            'p_value': 0.01  # Claimed significant despite CI spanning zero
+        })
+        assert len(flags) >= 1
+        assert any("confidence interval" in f.reason.lower() for f in flags)
+
+    def test_multiple_comparison_problem(self, checks):
+        """Test multiple comparison without correction."""
+        flags = checks.check_statistical_validity({
+            'n_comparisons': 20,
+            'n_significant': 1,  # Expected ~1 by chance
+            'correction_applied': False
+        })
+        assert len(flags) >= 1
+        assert any("comparison" in f.reason.lower() for f in flags)
+
+    def test_multiple_comparison_with_correction(self, checks):
+        """Test multiple comparison with correction (should pass)."""
+        flags = checks.check_statistical_validity({
+            'n_comparisons': 20,
+            'n_significant': 3,
+            'correction_applied': True  # Correction applied
+        })
+        assert len(flags) == 0
+
+
+class TestCalibration:
+    """Tests for calibration functions."""
+
+    def test_calibration_with_data(self):
+        """Test calibration with sample data."""
+        from src.services.credibility_testing import calibrate_thresholds, CredibilityReport, CredibilityFlag
+        from datetime import datetime, timezone
+
+        # Create sample reports
+        reports = []
+
+        # True positives (flagged and actually problematic)
+        for i in range(5):
+            report = CredibilityReport(
+                article_id=f"tp_{i}",
+                timestamp=datetime.now(timezone.utc),
+            )
+            report.add_flag(CredibilityFlag(
+                decision=Decision.REVIEW,
+                reason="Test flag",
+                confidence=0.7 + i * 0.05,
+                field_name="test_type"
+            ))
+            reports.append((report, True))  # is_problem=True
+
+        # True negatives (not flagged and not problematic)
+        for i in range(5):
+            report = CredibilityReport(
+                article_id=f"tn_{i}",
+                timestamp=datetime.now(timezone.utc),
+            )
+            reports.append((report, False))
+
+        # False positives (flagged but not actually problematic)
+        for i in range(2):
+            report = CredibilityReport(
+                article_id=f"fp_{i}",
+                timestamp=datetime.now(timezone.utc),
+            )
+            report.add_flag(CredibilityFlag(
+                decision=Decision.REVIEW,
+                reason="False alarm",
+                confidence=0.4 + i * 0.1,
+                field_name="test_type"
+            ))
+            reports.append((report, False))
+
+        # Run calibration
+        results = calibrate_thresholds(reports, target_sensitivity=0.8)
+
+        assert "test_type" in results
+        assert results["test_type"].n_samples >= 5
+
+
+class TestSprintCFailureStandard:
+    """Tests for Sprint C failure cases."""
+
+    def test_causal_cycle_case(self, tester):
+        """Test causal cycle failure case."""
+        belief1 = Belief(
+            belief_id="b_nature_stress",
+            content="Nature exposure reduces stress",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.70, uncertainty=0.15),
+        )
+        belief2 = Belief(
+            belief_id="b_stress_nature",
+            content="Lower stress increases nature-seeking",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.65, uncertainty=0.18),
+        )
+
+        # Constraints creating a cycle
+        constraints = [
+            Constraint(
+                constraint_id="c1",
+                source_id="b_nature_stress",
+                target_id="b_stress_nature",
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+            Constraint(
+                constraint_id="c2",
+                source_id="b_stress_nature",
+                target_id="b_nature_stress",  # Creates cycle
+                constraint_type=ConstraintType.EXPLAINS,
+                causal_direction=CausalDirection.FORWARD,
+            ),
+        ]
+
+        report = tester.evaluate(
+            article_id="test_cycle_001",
+            beliefs=[belief1, belief2],
+            constraints=constraints,
+            metadata={'sample_size': 200, 'study_design': 'longitudinal'}
+        )
+
+        assert not report.is_clean
+        assert any("cycle" in f.reason.lower() for f in report.flags)
+
+    def test_ci_spans_zero_case(self, tester):
+        """Test CI spanning zero failure case."""
+        belief = Belief(
+            belief_id="b_ci_zero",
+            content="Nature reduces anxiety",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.68, uncertainty=0.15),
+        )
+
+        report = tester.evaluate(
+            article_id="test_ci_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={
+                'sample_size': 80,
+                'study_design': 'experiment',
+                'confidence_interval': [-0.05, 0.75],
+                'p_value': 0.06
+            }
+        )
+
+        # Should flag CI spanning zero
+        assert not report.is_clean
+        assert any("confidence interval" in f.reason.lower() for f in report.flags)

@@ -1,0 +1,37 @@
+# Failure Case: CI Spans Zero but Reported as Significant
+# Subtle failure - statistical interpretation error
+
+case_id: "fail_subtle_ci_zero"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_ci_zero_001"
+  title: "Marginally Significant Nature Effects"
+
+metadata:
+  sample_size: 80
+  study_design: "experiment"
+  p_value: 0.06  # Not significant at .05
+  effect_size: 0.35
+  confidence_interval: [-0.05, 0.75]  # CI spans zero!
+  sample_description: "Adults"
+
+beliefs:
+  - belief_id: "b_ci_zero"
+    content: "Nature images reduce anxiety (marginal effect)"
+    level: "empirical"
+    credence: 0.68  # High credence despite non-significant result
+    uncertainty: 0.15
+
+constraints:
+  - constraint_id: "c_ci_zero"
+    source_id: "b_ci_zero"
+    target_id: "theory_nature_affect"
+    constraint_type: "supports"
+    strength: 0.7  # PROBLEM: strong support from non-significant finding
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "significant"
+    notes: "CI [-0.05, 0.75] includes zero; effect is not significant"

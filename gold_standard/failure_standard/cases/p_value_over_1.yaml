@@ -1,0 +1,29 @@
+# Failure Case: P-value > 1
+# Obvious failure - must be caught
+
+case_id: "fail_obvious_p_over_1"
+category: "obvious"
+expected_decision: "block"
+
+article:
+  id: "test_p_over_1_001"
+  title: "Statistical Error Test Case"
+
+metadata:
+  sample_size: 100
+  study_design: "experiment"
+  p_value: 1.5  # INVALID: p-values must be in [0,1]
+  effect_size: 0.4
+
+beliefs:
+  - belief_id: "b_p_over_1"
+    content: "Treatment improves outcome"
+    level: "empirical"
+    credence: 0.6
+    uncertainty: 0.2
+
+constraints: []
+
+expected_flags:
+  - decision: "block"
+    reason_contains: "p-value"

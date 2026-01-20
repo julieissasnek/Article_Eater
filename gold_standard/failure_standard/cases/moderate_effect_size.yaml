@@ -1,0 +1,29 @@
+# Borderline Case: Moderate Effect Size
+# Near threshold - for calibration
+
+case_id: "border_moderate_effect"
+category: "borderline"
+expected_decision: "review_or_accept"
+
+article:
+  id: "test_moderate_effect_001"
+  title: "Moderate Nature Effects in Lab"
+
+metadata:
+  sample_size: 80
+  study_design: "lab_experiment"
+  p_value: 0.01
+  effect_size: 1.3  # High but possibly plausible for lab
+  sample_description: "University students"
+
+beliefs:
+  - belief_id: "b_moderate"
+    content: "Nature images moderately reduce physiological stress markers"
+    level: "empirical"
+    credence: 0.72
+    uncertainty: 0.15
+
+constraints: []
+
+expected_flags:
+  notes: "d=1.3 is high but possibly acceptable in controlled lab conditions"

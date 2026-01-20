@@ -15,6 +15,52 @@ from app.services.extract_7panel import extract_findings_from_text
 from app.pdf_ingest import extract_pdf_text
 from lib.outcome_resolver import resolve_or_queue
 
+# Sprint 2: Web of Belief integration (Post-Quinean)
+# These imports enable coherentist analysis of extracted findings
+try:
+    from src.services.web_of_belief import WebOfBelief, create_neuroarchitecture_web
+    from src.services.extraction_to_web import (
+        integrate_extraction,
+        export_stubs_jsonl,
+        export_tensions_jsonl,
+        get_stub_report,
+        get_tensions,
+        load_outcome_lookup
+    )
+    WEB_OF_BELIEF_AVAILABLE = True
+except ImportError:
+    WEB_OF_BELIEF_AVAILABLE = False
+
+# Sprint 3: Bridge Warrants integration
+try:
+    from src.services.bridge_warrants import (
+        BridgeWarrant,
+        BridgeRegistry,
+        BridgeType,
+        BridgeStatus,
+        create_bridge,
+        detect_bridge_from_claim,
+        export_bridges_jsonl,
+        create_anomaly_from_bridge_failure,
+        export_anomalies_jsonl,
+        Anomaly
+    )
+    BRIDGE_WARRANTS_AVAILABLE = True
+except ImportError:
+    BRIDGE_WARRANTS_AVAILABLE = False
+
+# Sprint B: Credibility Testing integration (TODO 1)
+try:
+    from src.services.credibility_testing import (
+        CredibilityTester,
+        CredibilityReport,
+        Decision,
+        create_tester,
+    )
+    CREDIBILITY_TESTING_AVAILABLE = True
+except ImportError:
+    CREDIBILITY_TESTING_AVAILABLE = False
+
 DB = os.environ.get("AE_DB", "ae.db")
 BN_EXPORT_VERSION = "0.2"
 BN_EXPORT_GENERATOR = "article_eater_rulegraph_v2"
@@ -124,6 +170,431 @@ def _bn_export_from_rules(rules: List[Dict[str, Any]], paper_id: str) -> Dict[st
         "edges": edges,
         "rules": export_rules,
     }
+
+
+# =============================================================================
+# SPRINT 2: WEB OF BELIEF INTEGRATION (Expert Panel Revised 2026-01-18)
+# =============================================================================
+
+# Logging for web integration (Decision 2.2: WARNING-level on failure)
+import logging
+_web_logger = logging.getLogger("ae.web_integration")
+
+# Equilibrium configuration (Decision 2.5: Make configurable)
+WEB_SEEK_EQUILIBRIUM = os.environ.get("AE_WEB_SEEK_EQUILIBRIUM", "true").lower() == "true"
+WEB_EQUILIBRIUM_MAX_ITERATIONS = int(os.environ.get("AE_WEB_EQUILIBRIUM_MAX_ITERATIONS", "10"))
+WEB_EQUILIBRIUM_CONVERGENCE_THRESHOLD = float(os.environ.get("AE_WEB_CONVERGENCE_THRESHOLD", "0.001"))
+
+
+def _serialize_belief_full(belief) -> Dict[str, Any]:
+    """Serialize a belief with FULL content for Sprint 5 merge support (Decision 2.4)."""
+    credence_dict = {}
+    if hasattr(belief.credence, 'to_dict'):
+        credence_dict = belief.credence.to_dict()
+    elif hasattr(belief.credence, 'value'):
+        credence_dict = {
+            "value": belief.credence.value,
+            "uncertainty": getattr(belief.credence, 'uncertainty', None),
+            "n_supporting": getattr(belief.credence, 'n_supporting', 0),
+            "n_contradicting": getattr(belief.credence, 'n_contradicting', 0),
+            "n_observations": getattr(belief.credence, 'n_observations', 0)
+        }
+    else:
+        credence_dict = {"value": float(belief.credence)}
+
+    return {
+        "belief_id": belief.belief_id,
+        "content": belief.content,  # FULL content, not truncated (Decision 2.4)
+        "level": belief.level.value if hasattr(belief.level, 'value') else str(belief.level),
+        "status": belief.status.value if hasattr(belief.status, 'value') else str(belief.status),
+        "credence": credence_dict,
+        "theory_id": belief.theory_id,
+        "entrenchment": belief.entrenchment,
+        "paper_ids": getattr(belief, 'paper_ids', []),
+        "domain": getattr(belief, 'domain', None),
+        "tags": getattr(belief, 'tags', []),
+        "created_at": belief.created_at.isoformat() if hasattr(belief, 'created_at') and belief.created_at else None
+    }
+
+
+def _serialize_constraint_full(constraint) -> Dict[str, Any]:
+    """Serialize a constraint for full web reconstruction (Decision 2.4)."""
+    return {
+        "constraint_id": constraint.constraint_id,
+        "source_id": constraint.source_id,
+        "target_id": constraint.target_id,
+        "constraint_type": constraint.constraint_type.value if hasattr(constraint.constraint_type, 'value') else str(constraint.constraint_type),
+        "strength": constraint.strength,
+        "bidirectional": getattr(constraint, 'bidirectional', False),
+        "evidence_ids": getattr(constraint, 'evidence_ids', []),
+        "warrant_type": getattr(constraint, 'warrant_type', None),
+        "provenance": getattr(constraint, 'provenance', None)
+    }
+
+
+def _write_error_state_files(
+    out_dir: Path,
+    run_id: str,
+    paper_id: str,
+    failure_stage: str,
+    error_type: str,
+    error_message: str,
+    recoverable: bool = False
+) -> None:
+    """Write error-state files on integration failure (Decision 2.6)."""
+    error_info = {
+        "failure_stage": failure_stage,
+        "error_type": error_type,
+        "error_message": error_message,
+        "recoverable": recoverable
+    }
+
+    # Write coherence_summary.json with error state
+    coherence_summary = {
+        "schema": "ae.coherence_summary.v1",
+        "run_id": run_id,
+        "paper_id": paper_id,
+        "created_at": _utc_now(),
+        "status": "failed",
+        "extraction_succeeded": True,
+        "web_integration_succeeded": False,
+        "error": error_info,
+        "coherence_before": None,
+        "coherence_after": None,
+        "n_beliefs": 0,
+        "n_stubs": 0,
+        "n_anomalies": 0
+    }
+    _write_json(out_dir / "coherence_summary.json", coherence_summary)
+
+    # Write web_state.json with error state
+    web_state = {
+        "schema": "ae.web_state.v1",
+        "run_id": run_id,
+        "paper_id": paper_id,
+        "created_at": _utc_now(),
+        "status": "failed",
+        "error": error_info,
+        "beliefs": {},
+        "constraints": {}
+    }
+    _write_json(out_dir / "web_state.json", web_state)
+
+
+def _integrate_into_web_of_belief(
+    claims: List[Dict[str, Any]],
+    rules: List[Dict[str, Any]],
+    out_dir: Path,
+    run_id: str,
+    paper_id: str
+) -> Dict[str, Any]:
+    """
+    Integrate extracted claims and rules into a Quinean Web of Belief.
+
+    Sprint 2 integration point: This function bridges Track A (extraction)
+    with Track B (epistemic analysis).
+
+    Expert Panel Revisions (2026-01-18):
+    - Decision 2.2: Structured error capture, WARNING-level logging
+    - Decision 2.4: Full belief content and constraint serialization
+    - Decision 2.5: Configurable equilibrium parameters, convergence logging
+    - Decision 2.6: Write error-state files on failure
+
+    Outputs written to out_dir:
+    - web_state.json: Serialized web of belief state (full, for Sprint 5 merge)
+    - stubs.jsonl: Beliefs without theory connections
+    - tensions.jsonl: Beliefs in tension with the web
+    - coherence_summary.json: Web coherence metrics and equilibrium log
+
+    Returns:
+        Dict with integration summary for inclusion in result.json
+    """
+    # Decision 2.2: Structured error capture
+    def make_error_result(failure_stage: str, error_type: str, error_message: str, recoverable: bool = False):
+        return {
+            "web_integration": "failed",
+            "failure_stage": failure_stage,
+            "error_type": error_type,
+            "error_message": error_message,
+            "recoverable": recoverable,
+            "n_beliefs": 0,
+            "n_stubs": 0,
+            "n_tensions": 0,
+            "coherence": None
+        }
+
+    # Check if web of belief is available
+    if not WEB_OF_BELIEF_AVAILABLE:
+        _web_logger.warning(f"[{paper_id}] Web integration skipped: web_of_belief module not available")
+        # Decision 2.6: Write error-state files
+        _write_error_state_files(
+            out_dir, run_id, paper_id,
+            failure_stage="import",
+            error_type="ImportError",
+            error_message="web_of_belief module not available",
+            recoverable=True
+        )
+        return make_error_result("import", "ImportError", "web_of_belief module not available", recoverable=True)
+
+    # Stage 1: Import and initialization
+    try:
+        web = create_neuroarchitecture_web()
+        outcome_lookup = load_outcome_lookup()
+    except Exception as e:
+        _web_logger.warning(f"[{paper_id}] Web integration failed at initialization: {e}")
+        _write_error_state_files(out_dir, run_id, paper_id, "initialization", type(e).__name__, str(e), recoverable=True)
+        return make_error_result("initialization", type(e).__name__, str(e), recoverable=True)
+
+    # Stage 1.5: Credibility Testing (Sprint B - TODO 1)
+    credibility_report = None
+    if CREDIBILITY_TESTING_AVAILABLE:
+        try:
+            tester = create_tester(web)
+
+            # Extract metadata for credibility checks
+            credibility_metadata = {
+                'sample_size': None,
+                'study_design': None,
+                'sample_description': '',
+                'effect_size': None,
+                'p_value': None,
+            }
+
+            # Try to extract metadata from claims
+            for claim in claims:
+                if isinstance(claim, dict):
+                    if 'sample_size' in claim and credibility_metadata['sample_size'] is None:
+                        credibility_metadata['sample_size'] = claim.get('sample_size')
+                    if 'study_design' in claim and credibility_metadata['study_design'] is None:
+                        credibility_metadata['study_design'] = claim.get('study_design')
+                    if 'effect_size' in claim and credibility_metadata['effect_size'] is None:
+                        credibility_metadata['effect_size'] = claim.get('effect_size')
+
+            # Convert claims to beliefs for credibility evaluation
+            # (CredibilityTester works with Belief objects, but we don't have them yet)
+            # For now, we perform basic metadata checks
+            from src.services.web_of_belief import Belief, Credence, EpistemicLevel
+
+            temp_beliefs = []
+            for claim in claims:
+                if isinstance(claim, dict):
+                    temp_beliefs.append(Belief(
+                        belief_id=claim.get('claim_id', 'temp'),
+                        content=claim.get('claim', ''),
+                        level=EpistemicLevel.EMPIRICAL,
+                        credence=Credence(value=0.5, uncertainty=0.3),
+                    ))
+
+            credibility_report = tester.evaluate(
+                article_id=paper_id,
+                beliefs=temp_beliefs,
+                constraints=[],
+                metadata=credibility_metadata
+            )
+
+            # Log credibility assessment
+            if credibility_report.is_clean:
+                _web_logger.info(f"[{paper_id}] Credibility check: PASS (no flags)")
+            else:
+                _web_logger.warning(
+                    f"[{paper_id}] Credibility check: {credibility_report.overall_decision.value.upper()} "
+                    f"({len(credibility_report.flags)} flags)"
+                )
+
+            # Write credibility report
+            cred_report_path = out_dir / "credibility_report.json"
+            with open(cred_report_path, 'w') as f:
+                json.dump(credibility_report.to_dict(), f, indent=2, default=str)
+
+            # If BLOCK, halt integration
+            if credibility_report.overall_decision == Decision.BLOCK:
+                _web_logger.error(f"[{paper_id}] Credibility BLOCK - halting integration")
+                return make_error_result(
+                    "credibility",
+                    "CredibilityBlock",
+                    f"Credibility check failed: {[f.reason for f in credibility_report.flags]}",
+                    recoverable=True
+                )
+
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Credibility testing failed: {e}")
+            # Non-fatal - continue with integration
+
+    # Stage 2: Mapping claims and rules to beliefs
+    try:
+        # Decision 2.5: Configurable equilibrium, with convergence logging
+        equilibrium_log = []
+
+        # Custom integration with convergence tracking
+        report = integrate_extraction(
+            claims=claims,
+            rules=rules,
+            web=web,
+            outcome_lookup=outcome_lookup,
+            seek_equilibrium=False,  # We'll do it manually for logging
+            equilibrium_iterations=0
+        )
+
+        # Record initial coherence
+        initial_coherence = web.coherence_score() if hasattr(web, 'coherence_score') else 0.0
+        equilibrium_log.append({"iteration": 0, "coherence": initial_coherence})
+
+        # Decision 2.5: Manual equilibrium with convergence detection
+        if WEB_SEEK_EQUILIBRIUM and hasattr(web, 'seek_equilibrium'):
+            prev_coherence = initial_coherence
+            converged = False
+            converged_at = None
+
+            for i in range(1, WEB_EQUILIBRIUM_MAX_ITERATIONS + 1):
+                web.seek_equilibrium(max_iterations=1)
+                current_coherence = web.coherence_score() if hasattr(web, 'coherence_score') else 0.0
+                equilibrium_log.append({"iteration": i, "coherence": current_coherence})
+
+                delta = abs(current_coherence - prev_coherence)
+                if delta < WEB_EQUILIBRIUM_CONVERGENCE_THRESHOLD:
+                    converged = True
+                    converged_at = i
+                    break
+                prev_coherence = current_coherence
+
+            final_coherence = current_coherence
+        else:
+            converged = True
+            converged_at = 0
+            final_coherence = initial_coherence
+
+    except Exception as e:
+        _web_logger.warning(f"[{paper_id}] Web integration failed at mapping: {e}")
+        _write_error_state_files(out_dir, run_id, paper_id, "mapping", type(e).__name__, str(e), recoverable=False)
+        return make_error_result("mapping", type(e).__name__, str(e), recoverable=False)
+
+    # Stage 2.5: Sprint 3 Bridge Detection and Integration
+    bridge_registry = None
+    anomalies = []
+    n_bridges = 0
+
+    if BRIDGE_WARRANTS_AVAILABLE:
+        try:
+            bridge_registry = BridgeRegistry()
+
+            # Detect bridges from claims
+            for claim in claims:
+                detected_bridge = detect_bridge_from_claim(claim, target_domain="architectural_perception")
+                if detected_bridge:
+                    bridge_registry.add(detected_bridge)
+                    # Integrate bridge into web
+                    if hasattr(web, 'integrate_bridge'):
+                        web.integrate_bridge(detected_bridge, create_constraints=True)
+
+            n_bridges = len(bridge_registry.all())
+
+            # Create anomaly records for any failed bridges
+            for failed_bridge in bridge_registry.get_failed():
+                anomaly = create_anomaly_from_bridge_failure(failed_bridge)
+                anomalies.append(anomaly)
+
+            _web_logger.info(f"[{paper_id}] Bridge detection: {n_bridges} bridges detected, {len(anomalies)} anomalies")
+
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Bridge detection failed (non-fatal): {e}")
+            # Bridge detection failure is non-fatal; continue with web integration
+
+    # Stage 3: Serialization
+    try:
+        # Decision 2.4: Full belief and constraint serialization
+        beliefs_serialized = {
+            bid: _serialize_belief_full(b)
+            for bid, b in web.beliefs.items()
+        }
+
+        constraints_serialized = {
+            cid: _serialize_constraint_full(c)
+            for cid, c in web.constraints.items()
+        }
+
+        # Export web state with FULL content (Decision 2.4)
+        web_state = {
+            "schema": "ae.web_state.v1",
+            "run_id": run_id,
+            "paper_id": paper_id,
+            "created_at": _utc_now(),
+            "status": "success",
+            "n_beliefs": len(web.beliefs),
+            "n_constraints": len(web.constraints),
+            "coherence_score": final_coherence,
+            "beliefs": beliefs_serialized,
+            "constraints": constraints_serialized,  # Decision 2.4: Include constraints
+            "integration_report": report.to_dict(),
+            # Decision 2.5: Equilibrium metadata for reproducibility
+            "equilibrium_config": {
+                "seek_equilibrium": WEB_SEEK_EQUILIBRIUM,
+                "max_iterations": WEB_EQUILIBRIUM_MAX_ITERATIONS,
+                "convergence_threshold": WEB_EQUILIBRIUM_CONVERGENCE_THRESHOLD
+            }
+        }
+        _write_json(out_dir / "web_state.json", web_state)
+
+        # Export stubs
+        n_stubs = export_stubs_jsonl(web, out_dir / "stubs.jsonl")
+
+        # Export tensions
+        n_tensions = export_tensions_jsonl(web, out_dir / "tensions.jsonl")
+
+        # Sprint 3: Export bridges and anomalies
+        if bridge_registry and BRIDGE_WARRANTS_AVAILABLE:
+            export_bridges_jsonl(bridge_registry, out_dir / "bridges.jsonl")
+            if anomalies:
+                export_anomalies_jsonl(anomalies, out_dir / "anomalies.jsonl")
+
+        # Write coherence summary with equilibrium log (Decision 2.5)
+        coherence_summary = {
+            "schema": "ae.coherence_summary.v1",
+            "run_id": run_id,
+            "paper_id": paper_id,
+            "created_at": _utc_now(),
+            "status": "success",
+            "extraction_succeeded": True,
+            "web_integration_succeeded": True,
+            "coherence_before": initial_coherence,
+            "coherence_after": final_coherence,
+            "coherence_delta": final_coherence - initial_coherence if initial_coherence is not None else None,
+            "n_beliefs": len(web.beliefs),
+            "n_stubs": n_stubs,
+            "n_anomalies": report.n_anomalies + len(anomalies),  # Include bridge anomalies
+            "theory_distribution": report.theory_distribution,
+            "level_distribution": report.level_distribution,
+            "stub_reasons": report.stub_reasons,
+            # Decision 2.5: Convergence log
+            "equilibrium_log": equilibrium_log,
+            "converged": converged,
+            "converged_at_iteration": converged_at,
+            # Sprint 3: Bridge statistics
+            "n_bridges": n_bridges,
+            "n_bridge_anomalies": len(anomalies)
+        }
+        _write_json(out_dir / "coherence_summary.json", coherence_summary)
+
+        return {
+            "web_integration": "success",
+            "n_beliefs": len(web.beliefs),
+            "n_constraints": len(web.constraints),
+            "n_stubs": n_stubs,
+            "n_tensions": n_tensions,
+            "coherence_before": initial_coherence,
+            "coherence_after": final_coherence,
+            "theory_distribution": report.theory_distribution,
+            "converged": converged,
+            "converged_at_iteration": converged_at,
+            # Sprint 3: Bridge statistics
+            "n_bridges": n_bridges,
+            "n_bridge_anomalies": len(anomalies)
+        }
+
+    except Exception as e:
+        _web_logger.warning(f"[{paper_id}] Web integration failed at serialization: {e}")
+        _write_error_state_files(out_dir, run_id, paper_id, "serialization", type(e).__name__, str(e), recoverable=False)
+        return make_error_result("serialization", type(e).__name__, str(e), recoverable=False)
+
 
 def _compute_af_decision(
     claims: List[Dict[str, Any]],
@@ -462,6 +933,24 @@ def _run_from_contract_bundle_impl(
             )
         )
 
+    # Sprint 2: Web of Belief integration
+    web_integration_result = _integrate_into_web_of_belief(
+        claims=claims,
+        rules=rules,
+        out_dir=out_dir,
+        run_id=run_id,
+        paper_id=paper_id
+    )
+    audits.append(
+        _audit_event(
+            run_id,
+            paper_id,
+            "web_integration",
+            web_integration_result.get("web_integration", "unknown"),
+            web_integration_result,
+        )
+    )
+
     status = "SUCCESS" if claims else ("FAIL" if not text else "PARTIAL_SUCCESS")
     blocking = []
     errors = []
@@ -509,6 +998,14 @@ def _run_from_contract_bundle_impl(
             "rules_jsonl": "rules.jsonl",
             "provenance_json": "provenance.json",
             "audit_log_jsonl": "audit.log.jsonl",
+            # Sprint 2: Web of Belief outputs
+            "web_state_json": "web_state.json" if web_integration_result.get("web_integration") == "success" else None,
+            "stubs_jsonl": "stubs.jsonl" if web_integration_result.get("web_integration") == "success" else None,
+            "tensions_jsonl": "tensions.jsonl" if web_integration_result.get("web_integration") == "success" else None,
+            "coherence_summary_json": "coherence_summary.json" if web_integration_result.get("web_integration") == "success" else None,
+            # Sprint 3: Bridge warrant outputs
+            "bridges_jsonl": "bridges.jsonl" if web_integration_result.get("n_bridges", 0) > 0 else None,
+            "anomalies_jsonl": "anomalies.jsonl" if web_integration_result.get("n_bridge_anomalies", 0) > 0 else None,
         },
         "quality": {
             "confidence": decision["confidence"],
@@ -516,6 +1013,8 @@ def _run_from_contract_bundle_impl(
             "warnings": warnings,
             "af_decision": decision,
         },
+        # Sprint 2: Web of Belief integration summary
+        "web_integration": web_integration_result,
         "errors": errors,
     }
     audits.append(_audit_event(run_id, paper_id, "decision", "af", decision))
@@ -551,6 +1050,11 @@ def _run_from_contract_bundle_impl(
         "n_claims": len(claims),
         "n_rules": len(rules),
         "blocking_issues": blocking,
+        # Sprint 2: Web of Belief integration summary
+        "web_integration": web_integration_result.get("web_integration"),
+        "n_beliefs": web_integration_result.get("n_beliefs", 0),
+        "n_stubs": web_integration_result.get("n_stubs", 0),
+        "coherence": web_integration_result.get("coherence_after"),
     }
 
 # --- CHATGPT_PATCH_AE_AF_WIRING_V1 BEGIN ---

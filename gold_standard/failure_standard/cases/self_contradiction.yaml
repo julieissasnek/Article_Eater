@@ -1,0 +1,38 @@
+# Failure Case: Self-Contradiction
+# Obvious failure - paper claims both X and not-X
+
+case_id: "fail_obvious_self_contradiction"
+category: "obvious"
+expected_decision: "block"
+
+article:
+  id: "test_contradiction_001"
+  title: "Contradictory Claims Test Case"
+
+metadata:
+  sample_size: 100
+  study_design: "experiment"
+
+beliefs:
+  - belief_id: "b_positive"
+    content: "Nature exposure reduces stress"
+    level: "empirical"
+    credence: 0.7
+    uncertainty: 0.15
+
+  - belief_id: "b_negative"
+    content: "Nature exposure does not affect stress"
+    level: "empirical"
+    credence: 0.7
+    uncertainty: 0.15
+
+constraints:
+  - constraint_id: "c_contradiction"
+    source_id: "b_positive"
+    target_id: "b_negative"
+    constraint_type: "contradicts"
+    strength: 0.9
+
+expected_flags:
+  - decision: "block"
+    reason_contains: "contradict"

@@ -1,0 +1,49 @@
+# Failure Case: Causal Cycle Created
+# Subtle failure - new constraint creates circular causation
+
+case_id: "fail_subtle_causal_cycle"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_cycle_001"
+  title: "Bidirectional Nature-Stress Relationship"
+
+metadata:
+  sample_size: 200
+  study_design: "longitudinal"
+  sample_description: "Adults"
+
+beliefs:
+  - belief_id: "b_nature_stress"
+    content: "Nature exposure reduces stress"
+    level: "empirical"
+    credence: 0.70
+    uncertainty: 0.15
+
+  - belief_id: "b_stress_nature"
+    content: "Lower stress increases nature-seeking behavior"
+    level: "empirical"
+    credence: 0.65
+    uncertainty: 0.18
+
+constraints:
+  # These two constraints create a causal cycle
+  - constraint_id: "c_nature_to_stress"
+    source_id: "b_nature_stress"
+    target_id: "stress_level"
+    constraint_type: "explains"
+    causal_direction: "forward"
+    strength: 0.7
+
+  - constraint_id: "c_stress_to_nature"
+    source_id: "b_stress_nature"
+    target_id: "b_nature_stress"
+    constraint_type: "explains"
+    causal_direction: "forward"  # Creates cycle: nature → stress → nature
+    strength: 0.6
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "cycle"
+    notes: "Causal cycles may be valid (feedback loops) but need review"

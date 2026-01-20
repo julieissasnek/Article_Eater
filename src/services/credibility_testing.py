@@ -551,6 +551,233 @@ class CredibilityChecks:
 
         return flags
 
+    def check_causal_cycles(
+        self,
+        constraints: List[Constraint],
+        existing_constraints: Optional[List[Constraint]] = None
+    ) -> List[CredibilityFlag]:
+        """
+        Check if new constraints create causal cycles.
+
+        Per Pearl: Cycles aren't always wrong (feedback loops exist)
+        but should be reviewed.
+        """
+        flags = []
+
+        # Build directed graph from constraints
+        graph: Dict[str, Set[str]] = {}
+        all_constraints = list(constraints)
+        if existing_constraints:
+            all_constraints.extend(existing_constraints)
+
+        for constraint in all_constraints:
+            # Only consider causal/explanatory constraints
+            if constraint.causal_direction in [CausalDirection.FORWARD, CausalDirection.REVERSE]:
+                source = constraint.source_id
+                target = constraint.target_id
+
+                if constraint.causal_direction == CausalDirection.REVERSE:
+                    source, target = target, source
+
+                if source not in graph:
+                    graph[source] = set()
+                graph[source].add(target)
+
+            elif constraint.constraint_type == ConstraintType.EXPLAINS:
+                source = constraint.source_id
+                target = constraint.target_id
+                if source not in graph:
+                    graph[source] = set()
+                graph[source].add(target)
+
+        # Find cycles using DFS
+        cycles = self._find_cycles(graph)
+
+        for cycle in cycles:
+            # Check if cycle involves new constraints
+            new_ids = {c.source_id for c in constraints} | {c.target_id for c in constraints}
+            if any(node in new_ids for node in cycle):
+                flags.append(CredibilityFlag(
+                    decision=Decision.REVIEW,
+                    reason=f"Causal cycle detected: {' → '.join(cycle[:4])}{'...' if len(cycle) > 4 else ''}",
+                    confidence=0.6,
+                    field_name="causal_cycle",
+                    expected="No causal cycles (or documented feedback loop)",
+                    observed=f"Cycle of length {len(cycle)}",
+                ))
+
+        return flags
+
+    def _find_cycles(self, graph: Dict[str, Set[str]]) -> List[List[str]]:
+        """Find all cycles in a directed graph using DFS."""
+        cycles = []
+        visited = set()
+        rec_stack = set()
+        path = []
+
+        def dfs(node: str):
+            visited.add(node)
+            rec_stack.add(node)
+            path.append(node)
+
+            for neighbor in graph.get(node, []):
+                if neighbor not in visited:
+                    dfs(neighbor)
+                elif neighbor in rec_stack:
+                    # Found cycle
+                    cycle_start = path.index(neighbor)
+                    cycle = path[cycle_start:] + [neighbor]
+                    cycles.append(cycle)
+
+            path.pop()
+            rec_stack.remove(node)
+
+        for node in graph:
+            if node not in visited:
+                dfs(node)
+
+        return cycles
+
+    def check_statistical_validity(
+        self,
+        metadata: Dict[str, Any]
+    ) -> List[CredibilityFlag]:
+        """
+        Check for statistical interpretation issues.
+
+        Catches: CI spanning zero, multiple comparison problems, etc.
+        """
+        flags = []
+
+        # Check if CI spans zero
+        ci = metadata.get('confidence_interval')
+        p_value = metadata.get('p_value')
+
+        if ci and len(ci) == 2:
+            lower, upper = ci
+            if lower < 0 < upper:
+                # CI spans zero - always flag for review
+                # This indicates the effect may not be real
+                flags.append(CredibilityFlag(
+                    decision=Decision.REVIEW,
+                    reason=f"Confidence interval spans zero [{lower:.2f}, {upper:.2f}]",
+                    confidence=0.7 if (p_value and p_value > 0.05) else 0.8,
+                    field_name="confidence_interval",
+                    expected="CI not spanning zero for claimed effect",
+                    observed=f"[{lower:.2f}, {upper:.2f}]" + (f" (p={p_value})" if p_value else ""),
+                ))
+
+        # Check for multiple comparison issues
+        n_comparisons = metadata.get('n_comparisons')
+        n_significant = metadata.get('n_significant')
+        correction_applied = metadata.get('correction_applied', False)
+
+        if n_comparisons and n_significant and not correction_applied:
+            expected_by_chance = n_comparisons * 0.05
+            if n_significant <= expected_by_chance * 1.5:
+                flags.append(CredibilityFlag(
+                    decision=Decision.REVIEW,
+                    reason=f"Multiple comparison concern: {n_significant}/{n_comparisons} "
+                           f"significant (expected ~{expected_by_chance:.1f} by chance)",
+                    confidence=0.6,
+                    field_name="multiple_comparison",
+                    expected="Correction for multiple comparisons",
+                    observed=f"{n_significant} of {n_comparisons} without correction",
+                ))
+
+        return flags
+
+
+# =============================================================================
+# CALIBRATION (per Simon: explicit calibration procedure)
+# =============================================================================
+
+@dataclass
+class CalibrationResult:
+    """Result of calibrating thresholds from Gold Standard."""
+    check_name: str
+    optimal_threshold: float
+    sensitivity: float
+    specificity: float
+    n_samples: int
+    rationale: str
+
+
+def calibrate_thresholds(
+    gold_standard_reports: List[Tuple[CredibilityReport, bool]],
+    target_sensitivity: float = 0.8
+) -> Dict[str, CalibrationResult]:
+    """
+    Calibrate thresholds based on Gold Standard performance.
+
+    Per Simon: Explicit calibration procedure.
+
+    Args:
+        gold_standard_reports: List of (report, is_actually_problem) tuples
+        target_sensitivity: Target sensitivity level (default 80%)
+
+    Returns:
+        Dict mapping check names to calibration results
+    """
+    results = {}
+
+    # Group by flag type
+    flag_outcomes: Dict[str, List[Tuple[float, bool]]] = {}
+
+    for report, is_problem in gold_standard_reports:
+        for flag in report.flags:
+            flag_type = flag.field_name or "unknown"
+            if flag_type not in flag_outcomes:
+                flag_outcomes[flag_type] = []
+            flag_outcomes[flag_type].append((flag.confidence, is_problem))
+
+    # For each flag type, find optimal threshold
+    for flag_type, outcomes in flag_outcomes.items():
+        if len(outcomes) < 5:
+            # Not enough data
+            results[flag_type] = CalibrationResult(
+                check_name=flag_type,
+                optimal_threshold=0.5,
+                sensitivity=0.0,
+                specificity=0.0,
+                n_samples=len(outcomes),
+                rationale="Insufficient data for calibration"
+            )
+            continue
+
+        # Sort by confidence
+        outcomes.sort(key=lambda x: x[0])
+
+        # Find threshold achieving target sensitivity
+        best_threshold = 0.5
+        best_sens = 0.0
+        best_spec = 0.0
+
+        for threshold in [0.3, 0.4, 0.5, 0.6, 0.7, 0.8]:
+            tp = sum(1 for conf, is_prob in outcomes if conf >= threshold and is_prob)
+            fn = sum(1 for conf, is_prob in outcomes if conf < threshold and is_prob)
+            tn = sum(1 for conf, is_prob in outcomes if conf < threshold and not is_prob)
+            fp = sum(1 for conf, is_prob in outcomes if conf >= threshold and not is_prob)
+
+            sens = tp / (tp + fn) if (tp + fn) > 0 else 0
+            spec = tn / (tn + fp) if (tn + fp) > 0 else 0
+
+            if sens >= target_sensitivity and spec > best_spec:
+                best_threshold = threshold
+                best_sens = sens
+                best_spec = spec
+
+        results[flag_type] = CalibrationResult(
+            check_name=flag_type,
+            optimal_threshold=best_threshold,
+            sensitivity=best_sens,
+            specificity=best_spec,
+            n_samples=len(outcomes),
+            rationale=f"Threshold {best_threshold} achieves {best_sens:.0%} sensitivity, {best_spec:.0%} specificity"
+        )
+
+    return results
+
 
 # =============================================================================
 # CREDIBILITY TESTER (Main Interface)
@@ -627,6 +854,18 @@ class CredibilityTester:
             report.add_flag(flag)
 
         for flag in safe_check(checks.check_effect_size_plausibility, meta, study_design):
+            report.add_flag(flag)
+
+        # Sprint C additions
+        # Causal cycle detection
+        existing_constraints = []
+        if self.snapshot:
+            existing_constraints = self.snapshot.constraints
+        for flag in safe_check(checks.check_causal_cycles, constraints, existing_constraints):
+            report.add_flag(flag)
+
+        # Statistical validity checks
+        for flag in safe_check(checks.check_statistical_validity, meta):
             report.add_flag(flag)
 
         # Update overall decision based on flags

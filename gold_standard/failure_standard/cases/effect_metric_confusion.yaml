@@ -1,0 +1,36 @@
+# Failure Case: Effect Size Metric Confusion
+# Subtle failure - Cohen's d reported but different calculation used
+
+case_id: "fail_subtle_effect_metric"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_metric_001"
+  title: "Small Sample Effect Size Study"
+
+metadata:
+  sample_size: 25  # Small sample where d vs g matters more
+  study_design: "experiment"
+  p_value: 0.03
+  effect_size: 0.85  # Reported as Cohen's d
+  effect_size_type: "cohens_d"  # But may actually be Hedges' g
+  sample_description: "Adults"
+
+notes: |
+  With N=25, the difference between Cohen's d and Hedges' g
+  (which corrects for small sample bias) can be meaningful.
+  Hedges' g would be approximately 0.80 for this sample.
+
+beliefs:
+  - belief_id: "b_metric"
+    content: "Effect size is large (d=0.85)"
+    level: "empirical"
+    credence: 0.70
+    uncertainty: 0.18
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "effect"

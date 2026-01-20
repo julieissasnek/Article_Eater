@@ -1,0 +1,39 @@
+# Failure Case: Multiple Comparison Problem
+# Subtle failure - many tests, few significant, no correction
+
+case_id: "fail_subtle_multiple_comparison"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_multiple_001"
+  title: "Comprehensive Analysis of Nature Effects"
+
+metadata:
+  sample_size: 120
+  study_design: "experiment"
+  n_comparisons: 15  # Many tests
+  n_significant: 2   # Only 2 significant at p<.05
+  # Expected by chance: 15 * 0.05 = 0.75
+  correction_applied: false
+  sample_description: "Adults"
+
+beliefs:
+  - belief_id: "b_multiple_1"
+    content: "Nature reduces anxiety (one of 15 outcomes tested)"
+    level: "empirical"
+    credence: 0.65
+    uncertainty: 0.2
+
+  - belief_id: "b_multiple_2"
+    content: "Nature improves mood (one of 15 outcomes tested)"
+    level: "empirical"
+    credence: 0.63
+    uncertainty: 0.2
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "comparison"
+    notes: "2/15 significant without correction is ~expected by chance"

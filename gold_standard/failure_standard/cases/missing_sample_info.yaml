@@ -1,0 +1,31 @@
+# Failure Case: Missing Sample Information
+# Subtle failure - claims effect but doesn't report sample details
+
+case_id: "fail_subtle_no_sample_info"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_no_sample_001"
+  title: "Nature Effects Study (Details Missing)"
+
+metadata:
+  sample_size: null  # Not reported
+  study_design: "unknown"
+  p_value: null
+  effect_size: null
+  sample_description: ""  # No description
+
+beliefs:
+  - belief_id: "b_no_sample"
+    content: "Natural environments improve wellbeing"
+    level: "empirical"
+    credence: 0.60
+    uncertainty: 0.25
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "sample"
+    notes: "Cannot evaluate claim without knowing sample characteristics"

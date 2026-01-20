@@ -1,0 +1,27 @@
+# Failure Case: Credence = 0
+# Obvious failure - impossible in Bayesian framework
+
+case_id: "fail_obvious_credence_zero"
+category: "obvious"
+expected_decision: "block"
+
+article:
+  id: "test_credence_zero_001"
+  title: "Impossible Certainty Test Case"
+
+metadata:
+  sample_size: 50
+  study_design: "experiment"
+
+beliefs:
+  - belief_id: "b_credence_zero"
+    content: "Effect is absolutely impossible"
+    level: "empirical"
+    credence: 0.0  # INVALID: credence must be in (0,1)
+    uncertainty: 0.1
+
+constraints: []
+
+expected_flags:
+  - decision: "block"
+    reason_contains: "credence"

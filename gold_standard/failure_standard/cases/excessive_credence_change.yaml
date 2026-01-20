@@ -1,0 +1,44 @@
+# Failure Case: Excessive Credence Change
+# Subtle failure - single paper causing dramatic belief revision
+
+case_id: "fail_subtle_credence_jump"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_credence_jump_001"
+  title: "Definitive Study on Nature and Cognition"
+
+metadata:
+  sample_size: 150
+  study_design: "experiment"
+  p_value: 0.01
+  effect_size: 0.6
+  sample_description: "University students"
+
+# Pre-integration state
+pre_integration:
+  belief_id: "existing_nature_cognition"
+  credence: 0.50
+  uncertainty: 0.25
+  n_supporting: 2
+  n_contradicting: 1
+
+# Post-integration state (PROBLEM: too large a jump)
+post_integration:
+  credence: 0.90  # SUSPICIOUS: 0.40 change from single paper
+  uncertainty: 0.10
+
+beliefs:
+  - belief_id: "b_credence_jump"
+    content: "Nature exposure improves cognitive performance"
+    level: "empirical"
+    credence: 0.90
+    uncertainty: 0.10
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "credence"
+    notes: "No single paper should cause 0.40 credence change"

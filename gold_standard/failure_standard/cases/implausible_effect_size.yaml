@@ -1,0 +1,31 @@
+# Failure Case: Implausibly Large Effect Size
+# Subtle failure - d=2.5 is unrealistic for environmental psychology
+
+case_id: "fail_subtle_huge_effect"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_huge_effect_001"
+  title: "Dramatic Effects of Brief Nature Exposure"
+
+metadata:
+  sample_size: 60
+  study_design: "field_study"
+  p_value: 0.001
+  effect_size: 2.5  # SUSPICIOUS: d>1.5 is rare in environmental psychology
+  sample_description: "Office workers"
+
+beliefs:
+  - belief_id: "b_huge_effect"
+    content: "5-minute nature walk massively reduces cortisol"
+    level: "empirical"
+    credence: 0.75
+    uncertainty: 0.15
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "effect size"
+    notes: "d=2.5 from brief environmental manipulation is implausible per Kaplan"

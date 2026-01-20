@@ -1,0 +1,39 @@
+# Failure Case: Subgroup N Confusion
+# Subtle failure - total N looks fine but critical comparison uses small subgroup
+
+case_id: "fail_subtle_subgroup_n"
+category: "subtle"
+expected_decision: "review"
+
+article:
+  id: "test_subgroup_n_001"
+  title: "Nature and Stress in Different Age Groups"
+
+metadata:
+  sample_size: 200  # Total N looks adequate
+  study_design: "experiment"
+  p_value: 0.04
+  effect_size: 0.65
+  sample_description: "Adults aged 18-65"
+  # Hidden issue: Only N=45 elderly participants for key comparison
+  subgroup_sizes:
+    young_adults: 85
+    middle_aged: 70
+    elderly: 45  # Critical comparison group is small
+
+beliefs:
+  - belief_id: "b_subgroup"
+    content: "Nature exposure reduces stress in elderly adults"
+    level: "empirical"
+    credence: 0.72
+    uncertainty: 0.18
+    scope:
+      population: "elderly"
+      scope_specified: true
+
+constraints: []
+
+expected_flags:
+  - decision: "review"
+    reason_contains: "sample"
+    notes: "N=45 for key claim is marginal; total N=200 is misleading"
