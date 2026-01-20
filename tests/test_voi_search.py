@@ -3,6 +3,7 @@ Tests for VOI-Driven Search (TODO 3).
 
 Sprint H: Core structures, VOI scoring, source selection.
 Sprint I: Strategy selection, stopping rules, null result detection.
+Sprint J: Credibility profile estimation, pipeline helpers.
 
 Date: January 20, 2026
 """
@@ -31,6 +32,12 @@ from src.services.voi_search import (
     StoppingDecision,
     should_stop_searching,
     NullResultDetector,
+    # Sprint J
+    CredibilityProfileEstimator,
+    create_search_plan_for_web,
+    estimate_search_value,
+    prioritize_recommendations,
+    export_todo3_summary,
 )
 
 from src.services.web_of_belief import (
@@ -920,3 +927,247 @@ class TestNullResultDetector:
 
         assert result['has_null_indicators'] is True
         assert len(result['categories_detected']) >= 2
+
+
+# =============================================================================
+# SPRINT J: CREDIBILITY PROFILE ESTIMATOR TESTS
+# =============================================================================
+
+class TestCredibilityProfileEstimator:
+    """Tests for CredibilityProfileEstimator class."""
+
+    def test_estimator_creation(self):
+        """Test creating a credibility profile estimator."""
+        estimator = CredibilityProfileEstimator()
+        assert estimator.STUDY_TYPE_PROFILES is not None
+
+    def test_estimate_meta_analysis(self):
+        """Test estimating profile for meta-analysis."""
+        estimator = CredibilityProfileEstimator()
+
+        profile = estimator.estimate_profile(
+            "A meta-analysis of nature exposure and stress reduction"
+        )
+
+        assert profile['expected_credibility'] >= 0.8
+        assert profile['sample_size_issue'] < 0.2
+
+    def test_estimate_rct(self):
+        """Test estimating profile for RCT."""
+        estimator = CredibilityProfileEstimator()
+
+        profile = estimator.estimate_profile(
+            "Randomized controlled trial of office plants on mood"
+        )
+
+        assert profile['expected_credibility'] >= 0.7
+        assert profile['causal_direction_issue'] < 0.2
+
+    def test_estimate_cross_sectional(self):
+        """Test estimating profile for cross-sectional study."""
+        estimator = CredibilityProfileEstimator()
+
+        profile = estimator.estimate_profile(
+            "A cross-sectional survey of workspace preferences"
+        )
+
+        assert profile['expected_credibility'] <= 0.6
+        assert profile['causal_direction_issue'] > 0.3
+
+    def test_estimate_unknown_type(self):
+        """Test estimating profile for unknown study type."""
+        estimator = CredibilityProfileEstimator()
+
+        profile = estimator.estimate_profile(
+            "Effects of greenery on performance"
+        )
+
+        assert 'expected_credibility' in profile
+        assert profile['expected_credibility'] == 0.5  # Unknown default
+
+    def test_positive_indicator_boost(self):
+        """Test that positive indicators boost credibility."""
+        estimator = CredibilityProfileEstimator()
+
+        without_indicator = estimator.estimate_profile(
+            "A study of nature and stress"
+        )
+        with_indicator = estimator.estimate_profile(
+            "A pre-registered study of nature and stress"
+        )
+
+        assert with_indicator['expected_credibility'] > without_indicator['expected_credibility']
+
+    def test_negative_indicator_reduction(self):
+        """Test that negative indicators reduce credibility."""
+        estimator = CredibilityProfileEstimator()
+
+        without_indicator = estimator.estimate_profile(
+            "A study of nature views"
+        )
+        with_indicator = estimator.estimate_profile(
+            "A preliminary pilot study of nature views with small sample"
+        )
+
+        assert with_indicator['expected_credibility'] < without_indicator['expected_credibility']
+
+
+# =============================================================================
+# SPRINT J: PIPELINE HELPERS TESTS
+# =============================================================================
+
+class TestPipelineHelpers:
+    """Tests for Sprint J pipeline helper functions."""
+
+    def test_create_search_plan_for_web(self, web_with_gaps, tmp_path):
+        """Test creating search plan for a web."""
+        output_path = tmp_path / "search_plan.json"
+
+        plan = create_search_plan_for_web(
+            web_with_gaps,
+            max_gaps=3,
+            output_path=str(output_path)
+        )
+
+        assert 'n_gaps' in plan
+        assert 'gaps' in plan
+        assert output_path.exists()
+
+    def test_estimate_search_value(self, web_with_gaps):
+        """Test estimating search value."""
+        estimate = estimate_search_value(web_with_gaps)
+
+        assert 'n_gaps' in estimate
+        assert 'total_voi' in estimate
+        assert 'average_voi' in estimate
+        assert 'recommendation' in estimate
+
+    def test_estimate_search_value_empty_web(self):
+        """Test estimating search value for empty web."""
+        web = WebOfBelief()
+
+        estimate = estimate_search_value(web)
+
+        assert estimate['n_gaps'] == 0
+        assert 'No significant gaps' in estimate['recommendation']
+
+    def test_prioritize_recommendations(self):
+        """Test prioritizing recommendations."""
+        gap = EpistemicGap(GapType.UNCERTAIN, "Test", "b_test", 0.5)
+
+        recommendations = [
+            SearchRecommendation(
+                "p1",
+                "A preliminary study with small sample",
+                0.8,
+                "High relevance"
+            ),
+            SearchRecommendation(
+                "p2",
+                "A meta-analysis of prior research",
+                0.7,
+                "Medium relevance"
+            ),
+            SearchRecommendation(
+                "p3",
+                "A randomized controlled trial with large sample n = 500",
+                0.75,
+                "Good match"
+            ),
+        ]
+
+        prioritized = prioritize_recommendations(recommendations, gap)
+
+        # Should all have credibility profiles now
+        for rec in prioritized:
+            assert rec.expected_credibility_profile is not None
+
+        # Meta-analysis should likely rank higher despite lower raw relevance
+        # due to higher credibility
+        assert len(prioritized) == 3
+
+    def test_export_todo3_summary(self, web_with_gaps, tmp_path):
+        """Test exporting TODO 3 summary."""
+        output_path = tmp_path / "todo3_summary.json"
+
+        summary = export_todo3_summary(web_with_gaps, str(output_path))
+
+        assert 'value_estimate' in summary
+        assert 'n_gaps' in summary
+        assert 'search_plans' in summary
+        assert 'metadata' in summary
+        assert output_path.exists()
+
+        # Verify file content
+        import json
+        with open(output_path) as f:
+            saved = json.load(f)
+        assert saved['metadata']['generated_by'] == 'TODO 3: VOI-Driven Search'
+
+
+class TestEndToEndTODO3:
+    """End-to-end tests for TODO 3."""
+
+    def test_full_workflow(self, web_with_gaps, tmp_path):
+        """Test complete TODO 3 workflow."""
+        # 1. Detect gaps
+        gaps = detect_gaps(web_with_gaps, max_gaps=5)
+        assert len(gaps) > 0
+
+        # 2. Get search value estimate
+        estimate = estimate_search_value(web_with_gaps)
+        assert estimate['total_voi'] > 0
+
+        # 3. Create coordinator and get plans
+        coordinator = create_voi_coordinator(web_with_gaps)
+        for gap in gaps[:2]:
+            plan = coordinator.generate_search_plan(gap)
+            assert 'sources' in plan
+            assert 'queries' in plan
+
+        # 4. Export summary
+        output_path = tmp_path / "full_workflow.json"
+        summary = export_todo3_summary(web_with_gaps, str(output_path))
+        assert output_path.exists()
+
+    def test_strategy_learning_integration(self, web_with_gaps):
+        """Test that strategy selector integrates with workflow."""
+        selector = StrategySelector()
+        gaps = detect_gaps(web_with_gaps, max_gaps=3)
+
+        for gap in gaps:
+            strategy = selector.select_strategy(gap)
+            assert isinstance(strategy, SearchStrategy)
+
+            # Simulate search outcome
+            selector.record_search(gap.gap_type, strategy, success=True)
+
+        stats = selector.get_stats()
+        assert stats['total_searches'] == len(gaps)
+
+    def test_stopping_rule_integration(self, web_with_gaps):
+        """Test stopping rules in workflow."""
+        gaps = detect_gaps(web_with_gaps, max_gaps=1)
+
+        if gaps:
+            gap = gaps[0]
+
+            # Simulate accumulating results
+            results = []
+            for i in range(8):
+                results.append(SearchRecommendation(
+                    f"p{i}",
+                    f"Paper {i}",
+                    0.5 + (i * 0.05),  # Increasing relevance
+                    "Match"
+                ))
+
+                decision = should_stop_searching(
+                    gap,
+                    results,
+                    queries_executed=i + 1
+                )
+
+                # Shouldn't stop too early
+                if i < 4:
+                    assert not decision.should_stop

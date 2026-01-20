@@ -7,7 +7,7 @@ Sprints:
 - Sprint H: Core structures, VOI scoring, source selection
 - Sprint I: Strategy selection with epsilon decay, stopping rules,
             null result detection
-- Sprint J: TODO 1 integration, pipeline helpers
+- Sprint J: Credibility profile estimation, pipeline helpers
 
 Per Phase D revised plan:
 - Two gap types initially: UNCERTAIN, UNEXPLORED (per Lampson)
@@ -890,6 +890,307 @@ class NullResultDetector:
                 boost += 0.2
 
         return min(boost, 2.5)  # Cap at 2.5x
+
+
+# =============================================================================
+# SPRINT J: TODO 1 INTEGRATION (Credibility Expectations)
+# =============================================================================
+
+class CredibilityProfileEstimator:
+    """
+    Estimate credibility profile for search results.
+
+    Helps prioritize papers less likely to be rejected by TODO 1.
+    """
+
+    # Expected issue probabilities by study type
+    STUDY_TYPE_PROFILES = {
+        "meta-analysis": {
+            "sample_size_issue": 0.05,
+            "scope_issue": 0.15,
+            "causal_direction_issue": 0.10,
+            "expected_credibility": 0.85
+        },
+        "systematic_review": {
+            "sample_size_issue": 0.10,
+            "scope_issue": 0.20,
+            "causal_direction_issue": 0.15,
+            "expected_credibility": 0.80
+        },
+        "rct": {
+            "sample_size_issue": 0.15,
+            "scope_issue": 0.25,
+            "causal_direction_issue": 0.05,
+            "expected_credibility": 0.75
+        },
+        "longitudinal": {
+            "sample_size_issue": 0.20,
+            "scope_issue": 0.20,
+            "causal_direction_issue": 0.15,
+            "expected_credibility": 0.70
+        },
+        "cross_sectional": {
+            "sample_size_issue": 0.25,
+            "scope_issue": 0.30,
+            "causal_direction_issue": 0.40,
+            "expected_credibility": 0.55
+        },
+        "case_study": {
+            "sample_size_issue": 0.60,
+            "scope_issue": 0.50,
+            "causal_direction_issue": 0.30,
+            "expected_credibility": 0.40
+        },
+        "unknown": {
+            "sample_size_issue": 0.35,
+            "scope_issue": 0.35,
+            "causal_direction_issue": 0.35,
+            "expected_credibility": 0.50
+        }
+    }
+
+    def estimate_profile(
+        self,
+        title: str,
+        abstract: Optional[str] = None
+    ) -> Dict[str, float]:
+        """
+        Estimate credibility profile from paper metadata.
+
+        Args:
+            title: Paper title
+            abstract: Optional abstract text
+
+        Returns:
+            Dict with issue probabilities and expected credibility
+        """
+        text = f"{title} {abstract or ''}".lower()
+        study_type = self._infer_study_type(text)
+
+        profile = self.STUDY_TYPE_PROFILES.get(
+            study_type,
+            self.STUDY_TYPE_PROFILES["unknown"]
+        ).copy()
+
+        # Adjust based on content indicators
+        profile = self._adjust_for_content(profile, text)
+
+        return profile
+
+    def _infer_study_type(self, text: str) -> str:
+        """Infer study type from text."""
+        if "meta-analysis" in text or "meta analysis" in text:
+            return "meta-analysis"
+        elif "systematic review" in text:
+            return "systematic_review"
+        elif "randomized controlled" in text or "randomised controlled" in text or "rct" in text:
+            return "rct"
+        elif "longitudinal" in text or "follow-up" in text or "prospective" in text:
+            return "longitudinal"
+        elif "case study" in text or "case report" in text:
+            return "case_study"
+        elif "cross-sectional" in text or "survey" in text:
+            return "cross_sectional"
+        else:
+            return "unknown"
+
+    def _adjust_for_content(
+        self,
+        profile: Dict[str, float],
+        text: str
+    ) -> Dict[str, float]:
+        """Adjust profile based on content indicators."""
+        adjusted = profile.copy()
+
+        # Positive indicators
+        if "large sample" in text or "n = " in text or "n=" in text:
+            adjusted["sample_size_issue"] *= 0.7
+            adjusted["expected_credibility"] = min(adjusted["expected_credibility"] + 0.05, 1.0)
+
+        if "replication" in text:
+            adjusted["expected_credibility"] = min(adjusted["expected_credibility"] + 0.1, 1.0)
+
+        if "pre-registered" in text or "preregistered" in text:
+            adjusted["expected_credibility"] = min(adjusted["expected_credibility"] + 0.1, 1.0)
+
+        # Negative indicators
+        if "pilot" in text or "preliminary" in text:
+            adjusted["expected_credibility"] *= 0.9
+
+        if "small sample" in text or "limited sample" in text:
+            adjusted["sample_size_issue"] = min(adjusted["sample_size_issue"] + 0.2, 1.0)
+            adjusted["expected_credibility"] *= 0.85
+
+        return adjusted
+
+
+# =============================================================================
+# SPRINT J: PIPELINE INTEGRATION
+# =============================================================================
+
+def create_search_plan_for_web(
+    web: WebOfBelief,
+    max_gaps: int = 5,
+    output_path: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Pipeline helper: Create comprehensive search plan for a web.
+
+    Args:
+        web: Web of belief to analyze
+        max_gaps: Maximum gaps to include
+        output_path: Optional path to write JSON
+
+    Returns:
+        Dict with prioritized gaps and search plans
+    """
+    coordinator = VOISearchCoordinator(web)
+    return coordinator.export_search_priorities(output_path, max_gaps)
+
+
+def estimate_search_value(
+    web: WebOfBelief,
+    max_gaps: int = 10
+) -> Dict[str, Any]:
+    """
+    Pipeline helper: Estimate total value of searching.
+
+    Returns summary of potential knowledge gain from searching.
+
+    Args:
+        web: Web of belief
+        max_gaps: Maximum gaps to consider
+
+    Returns:
+        Dict with search value estimates
+    """
+    gaps = detect_gaps(web, max_gaps)
+
+    if not gaps:
+        return {
+            'n_gaps': 0,
+            'total_voi': 0.0,
+            'average_voi': 0.0,
+            'gap_type_breakdown': {},
+            'recommendation': 'No significant gaps identified.'
+        }
+
+    total_voi = sum(g.voi_score for g in gaps)
+    avg_voi = total_voi / len(gaps)
+
+    # Breakdown by type
+    type_counts = {}
+    type_voi = {}
+    for gap in gaps:
+        gap_type = gap.gap_type.value
+        type_counts[gap_type] = type_counts.get(gap_type, 0) + 1
+        type_voi[gap_type] = type_voi.get(gap_type, 0.0) + gap.voi_score
+
+    # Generate recommendation
+    if avg_voi > 0.6:
+        recommendation = 'High value: Strongly recommend searching for new literature.'
+    elif avg_voi > 0.4:
+        recommendation = 'Moderate value: Consider searching for specific gaps.'
+    else:
+        recommendation = 'Low value: Current evidence may be sufficient.'
+
+    return {
+        'n_gaps': len(gaps),
+        'total_voi': total_voi,
+        'average_voi': avg_voi,
+        'gap_type_breakdown': {
+            t: {'count': type_counts[t], 'total_voi': type_voi[t]}
+            for t in type_counts
+        },
+        'recommendation': recommendation
+    }
+
+
+def prioritize_recommendations(
+    recommendations: List[SearchRecommendation],
+    gap: EpistemicGap,
+    null_detector: Optional[NullResultDetector] = None
+) -> List[SearchRecommendation]:
+    """
+    Pipeline helper: Prioritize recommendations with credibility and null boosts.
+
+    Args:
+        recommendations: List of search recommendations
+        gap: The gap being addressed
+        null_detector: Optional null result detector
+
+    Returns:
+        Recommendations sorted by adjusted priority
+    """
+    estimator = CredibilityProfileEstimator()
+    null_detector = null_detector or NullResultDetector()
+
+    scored = []
+    for rec in recommendations:
+        # Base score from relevance
+        score = rec.relevance_score
+
+        # Add credibility profile
+        profile = estimator.estimate_profile(rec.title)
+        rec.expected_credibility_profile = profile
+
+        # Boost by expected credibility
+        score *= (0.5 + 0.5 * profile['expected_credibility'])
+
+        # Boost for null results
+        null_boost = null_detector.get_search_boost(rec.title, gap.gap_type)
+        score *= null_boost
+
+        scored.append((rec, score))
+
+    # Sort by adjusted score
+    scored.sort(key=lambda x: x[1], reverse=True)
+
+    return [rec for rec, _ in scored]
+
+
+def export_todo3_summary(
+    web: WebOfBelief,
+    output_path: str
+) -> Dict[str, Any]:
+    """
+    Pipeline helper: Export comprehensive TODO 3 summary.
+
+    Creates a JSON file with all search-related analysis.
+
+    Args:
+        web: Web of belief
+        output_path: Path to write JSON
+
+    Returns:
+        Summary dict
+    """
+    # Get gaps and value estimate
+    value_estimate = estimate_search_value(web)
+    gaps = detect_gaps(web, max_gaps=10)
+
+    # Generate search plans
+    coordinator = VOISearchCoordinator(web)
+    plans = []
+    for gap in gaps:
+        plan = coordinator.generate_search_plan(gap)
+        plans.append(plan)
+
+    summary = {
+        'value_estimate': value_estimate,
+        'n_gaps': len(gaps),
+        'search_plans': plans,
+        'metadata': {
+            'generated_by': 'TODO 3: VOI-Driven Search',
+            'version': '1.0'
+        }
+    }
+
+    import json
+    with open(output_path, 'w') as f:
+        json.dump(summary, f, indent=2)
+
+    return summary
 
 
 # =============================================================================
