@@ -1,8 +1,12 @@
 """
 Interpretive Intelligence for Article Eater Post-Quinean.
 
-Phase E: Implementation (Sprint E)
 TODO 2: Interpretive Intelligence
+
+Sprints:
+- Sprint E: Core patterns, vocabulary bridge, engine
+- Sprint F: Credibility explainer, search context generator
+- Sprint G: Template refinement, COMPREHENSIVE detail level
 
 Per Phase D revised plan:
 - Two patterns initially: EVIDENCE, PRACTICAL (per Lampson)
@@ -675,7 +679,39 @@ class PracticalImplicationsPattern:
         detail: DetailLevel,
         expertise: ExpertiseLevel
     ) -> str:
-        """Render practical implications to natural language."""
+        """
+        Render practical implications to natural language.
+
+        Sprint G: Added proper detail level handling.
+        """
+        if detail == DetailLevel.SUMMARY:
+            return self._render_practical_summary(result, expertise)
+        elif detail == DetailLevel.STANDARD:
+            return self._render_practical_standard(result, expertise)
+        else:
+            return self._render_practical_comprehensive(result, expertise)
+
+    def _render_practical_summary(
+        self,
+        result: PracticalResult,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """One-paragraph practical summary."""
+        if not result.implications:
+            return f"No specific design recommendations could be derived from: {result.target_belief.content[:50]}..."
+
+        impl = result.implications[0]
+        if expertise == ExpertiseLevel.NOVICE:
+            return f"**Recommendation:** {impl.action} This is supported by {impl.evidence_strength} evidence."
+        else:
+            return f"**{impl.action}** (Evidence: {impl.evidence_strength}, Confidence: {impl.confidence:.0%})"
+
+    def _render_practical_standard(
+        self,
+        result: PracticalResult,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """Standard practical explanation."""
         lines = []
 
         lines.append("## Practical Implications")
@@ -704,6 +740,84 @@ class PracticalImplicationsPattern:
             lines.append("")
 
         lines.append(f"*{result.applicability_note}*")
+
+        return "\n".join(lines)
+
+    def _render_practical_comprehensive(
+        self,
+        result: PracticalResult,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """
+        Comprehensive practical explanation with all details.
+
+        Sprint G: Added for COMPREHENSIVE detail level.
+        """
+        lines = []
+
+        lines.append(f"## Comprehensive Practical Analysis: {result.target_belief.content}")
+        lines.append("")
+
+        # Metadata
+        lines.append("### Analysis Metadata")
+        lines.append(f"- Belief ID: `{result.target_belief.belief_id}`")
+        lines.append(f"- Epistemic Level: {result.target_belief.level.value}")
+        lines.append(f"- Credence: {result.target_belief.credence.value:.3f} (±{result.target_belief.credence.uncertainty:.3f})")
+        if result.target_belief.scope:
+            scope = result.target_belief.scope
+            lines.append(f"- Population: {getattr(scope, 'population', 'Unspecified')}")
+            lines.append(f"- Setting: {getattr(scope, 'setting', 'Unspecified')}")
+        lines.append("")
+
+        # Design Recommendations
+        lines.append("### Design Recommendations")
+        lines.append("")
+        if result.implications:
+            for i, impl in enumerate(result.implications, 1):
+                lines.append(f"#### Recommendation {i}")
+                lines.append(f"**Action:** {impl.action}")
+                lines.append("")
+                lines.append(f"- Evidence Strength: {impl.evidence_strength}")
+                lines.append(f"- Confidence Level: {impl.confidence:.1%}")
+                if impl.caveats:
+                    lines.append("- Specific Caveats:")
+                    for caveat in impl.caveats:
+                        lines.append(f"  - {caveat}")
+                lines.append("")
+        else:
+            lines.append("*No specific design recommendations derived.*")
+            lines.append("")
+
+        # Design Considerations
+        if result.design_considerations:
+            lines.append("### Design Considerations")
+            lines.append("")
+            for consideration in result.design_considerations:
+                lines.append(f"- {consideration}")
+            lines.append("")
+
+        # Caveats and Limitations
+        lines.append("### Caveats and Limitations")
+        lines.append("")
+        if result.caveats:
+            for caveat in result.caveats:
+                lines.append(f"- **{caveat}**")
+        else:
+            lines.append("- No specific caveats identified")
+        lines.append("")
+
+        # Applicability Assessment
+        lines.append("### Applicability Assessment")
+        lines.append(f"{result.applicability_note}")
+        lines.append("")
+
+        # Translation Guidance (per Kaplan)
+        lines.append("### Lab-to-Practice Translation")
+        lines.append("When applying these findings:")
+        lines.append("- Consider local context and constraints")
+        lines.append("- Start with pilot implementations")
+        lines.append("- Monitor outcomes against research predictions")
+        lines.append("- Document adaptations for future reference")
 
         return "\n".join(lines)
 
@@ -1453,3 +1567,55 @@ def quick_explain(
     )
     response = engine.explain(request)
     return response.explanation if response.success else response.message or "Error"
+
+
+# =============================================================================
+# TODO 3 HANDOFF (Sprint G)
+# =============================================================================
+"""
+TODO 3 Handoff Summary: VOI-Driven Search
+
+This module provides the foundation for TODO 3 through:
+
+1. Gap Identification (GapIdentifier class)
+   - Identifies UNCERTAIN gaps (high credence uncertainty)
+   - Identifies UNEXPLORED gaps (few supporting studies)
+   - Returns prioritized IdentifiedGap objects
+
+2. Search Context Generation (SearchContextGenerator class)
+   - Converts IdentifiedGap -> SearchContext
+   - Generates search queries based on gap type
+   - Specifies target study types (RCT, longitudinal, etc.)
+   - Calculates priority scores
+
+3. Pipeline Integration Functions
+   - generate_search_contexts(gaps, beliefs) -> List[SearchContext]
+   - export_gaps_for_search(gaps, beliefs, path) -> JSON output
+
+4. Data Flow for TODO 3:
+
+   InterpretiveEngine.explain()
+       |
+       v
+   GapIdentifier.identify_gaps()
+       |
+       v
+   SearchContextGenerator.generate_search_context()
+       |
+       v
+   SearchContext (contains: queries, study_types, priority, rationale)
+       |
+       v
+   TODO 3: VOI-Driven Search
+
+5. Key Classes for TODO 3 Integration:
+   - IdentifiedGap: gap_type, description, belief_id, priority
+   - SearchContext: gap, search_queries, target_study_types, priority_score, rationale
+
+6. Extension Points:
+   - Add new gap types to GapIdentifier (CAUSAL, SCOPE per Phase D)
+   - Add VOI scoring to SearchContextGenerator
+   - Implement source selection (per Giles) in TODO 3
+
+See: docs/implementation_plans/PHASE_D_REVISED_PLANS_2026_01_20.md
+"""

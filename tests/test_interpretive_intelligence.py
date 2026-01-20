@@ -2,6 +2,8 @@
 Tests for Interpretive Intelligence (TODO 2).
 
 Sprint E: Core patterns, vocabulary bridge, and question classification.
+Sprint F: Credibility explainer, search context generator.
+Sprint G: COMPREHENSIVE detail level, template refinement.
 
 Date: January 20, 2026
 """
@@ -1024,3 +1026,129 @@ class TestPipelineIntegration:
         with open(output_path) as f:
             saved = json.load(f)
         assert saved['n_gaps'] == 1
+
+
+# =============================================================================
+# SPRINT G: COMPREHENSIVE DETAIL LEVEL TESTS
+# =============================================================================
+
+class TestComprehensiveDetailLevel:
+    """Tests for Sprint G COMPREHENSIVE detail level."""
+
+    def test_practical_summary_level(self, web_with_evidence):
+        """Test practical pattern with SUMMARY detail level."""
+        pattern = PracticalImplicationsPattern()
+        evidence_pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+
+        evidence = evidence_pattern.traverse(web_with_evidence, belief_id)
+        result = pattern.traverse(web_with_evidence, belief_id, evidence)
+
+        output = pattern.render(result, DetailLevel.SUMMARY, ExpertiseLevel.PRACTITIONER)
+
+        # Summary should be short
+        assert len(output) < 500
+        assert "Recommendation" in output or "recommendation" in output.lower() or "natural" in output.lower()
+
+    def test_practical_standard_level(self, web_with_evidence):
+        """Test practical pattern with STANDARD detail level."""
+        pattern = PracticalImplicationsPattern()
+        evidence_pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+
+        evidence = evidence_pattern.traverse(web_with_evidence, belief_id)
+        result = pattern.traverse(web_with_evidence, belief_id, evidence)
+
+        output = pattern.render(result, DetailLevel.STANDARD, ExpertiseLevel.PRACTITIONER)
+
+        # Standard includes headers
+        assert "##" in output
+        assert "Practical Implications" in output
+
+    def test_practical_comprehensive_level(self, web_with_evidence):
+        """Test practical pattern with COMPREHENSIVE detail level."""
+        pattern = PracticalImplicationsPattern()
+        evidence_pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+
+        evidence = evidence_pattern.traverse(web_with_evidence, belief_id)
+        result = pattern.traverse(web_with_evidence, belief_id, evidence)
+
+        output = pattern.render(result, DetailLevel.COMPREHENSIVE, ExpertiseLevel.PRACTITIONER)
+
+        # Comprehensive includes metadata
+        assert "Comprehensive Practical Analysis" in output
+        assert "Analysis Metadata" in output
+        assert "Belief ID" in output
+        assert "Lab-to-Practice Translation" in output
+
+    def test_comprehensive_includes_credence_details(self, web_with_evidence):
+        """Test that comprehensive includes credence details."""
+        pattern = PracticalImplicationsPattern()
+        evidence_pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+
+        evidence = evidence_pattern.traverse(web_with_evidence, belief_id)
+        result = pattern.traverse(web_with_evidence, belief_id, evidence)
+
+        output = pattern.render(result, DetailLevel.COMPREHENSIVE, ExpertiseLevel.RESEARCHER)
+
+        # Should show numeric credence
+        assert "Credence:" in output or "credence" in output.lower()
+
+    def test_evidence_comprehensive_level(self, web_with_evidence):
+        """Test evidence pattern with COMPREHENSIVE detail level."""
+        pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+        result = pattern.traverse(web_with_evidence, belief_id)
+
+        output = pattern.render(result, DetailLevel.COMPREHENSIVE, ExpertiseLevel.RESEARCHER)
+
+        # Comprehensive includes full study details
+        assert "Comprehensive Evidence Trace" in output
+        assert "Metadata" in output
+        assert "Quantitative Summary" in output
+        assert "Full Evidence List" in output
+
+    def test_detail_levels_have_increasing_length(self, web_with_evidence):
+        """Test that detail levels produce increasing amounts of output."""
+        pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+        result = pattern.traverse(web_with_evidence, belief_id)
+
+        summary = pattern.render(result, DetailLevel.SUMMARY, ExpertiseLevel.PRACTITIONER)
+        standard = pattern.render(result, DetailLevel.STANDARD, ExpertiseLevel.PRACTITIONER)
+        comprehensive = pattern.render(result, DetailLevel.COMPREHENSIVE, ExpertiseLevel.PRACTITIONER)
+
+        # Each level should be longer than the previous
+        assert len(summary) < len(standard) < len(comprehensive)
+
+
+class TestSprintGTemplateRefinement:
+    """Tests for Sprint G template refinements."""
+
+    def test_novice_practical_summary_is_accessible(self, web_with_evidence):
+        """Test that novice summary uses accessible language."""
+        pattern = PracticalImplicationsPattern()
+        evidence_pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+
+        evidence = evidence_pattern.traverse(web_with_evidence, belief_id)
+        result = pattern.traverse(web_with_evidence, belief_id, evidence)
+
+        output = pattern.render(result, DetailLevel.SUMMARY, ExpertiseLevel.NOVICE)
+
+        # Should not contain overly technical terms
+        assert "psychophysiological" not in output.lower()
+        assert "effect size" not in output.lower()
+
+    def test_researcher_comprehensive_includes_technical(self, web_with_evidence):
+        """Test that researcher comprehensive includes technical details."""
+        pattern = EvidenceTracePattern()
+        belief_id = "b_main"
+        result = pattern.traverse(web_with_evidence, belief_id)
+
+        output = pattern.render(result, DetailLevel.COMPREHENSIVE, ExpertiseLevel.RESEARCHER)
+
+        # Should include technical measures
+        assert "Study Quality" in output or "Constraint Strength" in output
