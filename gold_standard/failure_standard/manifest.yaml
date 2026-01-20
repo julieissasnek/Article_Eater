@@ -1,0 +1,170 @@
+# Failure Standard Corpus Manifest
+# Article Eater Post-Quinean
+#
+# Phase E: Implementation (Sprint B)
+# Per Mayo: Create adversarial test cases for credibility detection.
+#
+# This corpus contains deliberately flawed inputs to test that the
+# credibility testing system correctly detects problems.
+#
+# Date: January 20, 2026
+
+version: "1.0"
+purpose: "Adversarial test cases for credibility detection"
+created: "2026-01-20"
+
+# =============================================================================
+# OBVIOUS FAILURES (Critical issues that must be caught)
+# =============================================================================
+
+obvious_failures:
+
+  # Numeric validity checks
+  - id: "fail_obvious_negative_n"
+    description: "Paper with negative sample size"
+    expected_decision: "block"
+    expected_reason_contains: "sample size"
+    case_file: "cases/negative_sample_size.yaml"
+
+  - id: "fail_obvious_p_over_1"
+    description: "Paper with p-value > 1"
+    expected_decision: "block"
+    expected_reason_contains: "p-value"
+    case_file: "cases/p_value_over_1.yaml"
+
+  - id: "fail_obvious_credence_zero"
+    description: "Paper with credence = 0 (impossible in Bayesian framework)"
+    expected_decision: "block"
+    expected_reason_contains: "credence"
+    case_file: "cases/credence_zero.yaml"
+
+  - id: "fail_obvious_credence_one"
+    description: "Paper with credence = 1 (impossible in Bayesian framework)"
+    expected_decision: "block"
+    expected_reason_contains: "credence"
+    case_file: "cases/credence_one.yaml"
+
+  - id: "fail_obvious_self_contradiction"
+    description: "Paper with contradictory claims (X and not-X)"
+    expected_decision: "block"
+    expected_reason_contains: "contradict"
+    case_file: "cases/self_contradiction.yaml"
+
+# =============================================================================
+# SUBTLE FAILURES (Per Mayo: Real problems are subtle)
+# =============================================================================
+
+subtle_failures:
+
+  # Subgroup analysis issues
+  - id: "fail_subtle_subgroup_n"
+    description: "N=200 total but critical comparison is N=45 subgroup"
+    expected_decision: "review"
+    expected_reason_contains: "sample"
+    notes: "Total N looks fine but actual analysis N is small"
+    case_file: "cases/subgroup_n_confusion.yaml"
+
+  # Effect size metric confusion
+  - id: "fail_subtle_effect_metric"
+    description: "Cohen's d reported but Hedges' g calculation used"
+    expected_decision: "review"
+    expected_reason_contains: "effect"
+    notes: "Metrics are close but not identical; small samples affected more"
+    case_file: "cases/effect_metric_confusion.yaml"
+
+  # Confidence interval issues
+  - id: "fail_subtle_ci_zero"
+    description: "CI spans zero but reported as marginally significant"
+    expected_decision: "review"
+    expected_reason_contains: "significant"
+    notes: "CI containing zero means not significant at that level"
+    case_file: "cases/ci_spans_zero.yaml"
+
+  # Multiple comparison issues
+  - id: "fail_subtle_multiple_comparison"
+    description: "15 comparisons, 2 significant at p<.05, no correction"
+    expected_decision: "review"
+    expected_reason_contains: "comparison"
+    notes: "Expected ~0.75 false positives by chance alone"
+    case_file: "cases/multiple_comparison.yaml"
+
+  # Causal warrant issues (per Pearl)
+  - id: "fail_subtle_causal_from_survey"
+    description: "Causal claim from cross-sectional survey"
+    expected_decision: "review"
+    expected_reason_contains: "causal"
+    notes: "Surveys cannot establish causation without longitudinal design"
+    case_file: "cases/causal_from_survey.yaml"
+
+  # Scope overreach (per Cartwright)
+  - id: "fail_subtle_universal_from_students"
+    description: "Universal claim from N=50 psychology undergraduates"
+    expected_decision: "review"
+    expected_reason_contains: "scope"
+    notes: "WEIRD samples don't generalize to universal claims"
+    case_file: "cases/universal_from_students.yaml"
+
+  # Effect size plausibility (per Kaplan)
+  - id: "fail_subtle_huge_effect"
+    description: "d=2.5 effect from brief environmental manipulation"
+    expected_decision: "review"
+    expected_reason_contains: "effect size"
+    notes: "Environmental psychology rarely sees d>1.0"
+    case_file: "cases/implausible_effect_size.yaml"
+
+  # Credence change magnitude
+  - id: "fail_subtle_credence_jump"
+    description: "Single paper changes credence from 0.5 to 0.9"
+    expected_decision: "review"
+    expected_reason_contains: "credence"
+    notes: "No single paper should cause such a large update"
+    case_file: "cases/excessive_credence_change.yaml"
+
+  # Missing information
+  - id: "fail_subtle_no_sample_info"
+    description: "Paper claims effect but reports no sample information"
+    expected_decision: "review"
+    expected_reason_contains: "sample"
+    notes: "Cannot evaluate claim without knowing sample"
+    case_file: "cases/missing_sample_info.yaml"
+
+# =============================================================================
+# BORDERLINE CASES (May or may not be flagged - for threshold tuning)
+# =============================================================================
+
+borderline_cases:
+
+  - id: "border_moderate_effect"
+    description: "d=1.3 effect from lab experiment (plausible but high)"
+    expected_decision: "review_or_accept"
+    notes: "Near the threshold; helps calibrate effect size limits"
+    case_file: "cases/moderate_effect_size.yaml"
+
+  - id: "border_small_scope_extension"
+    description: "Adults claim from adult sample (slight extension)"
+    expected_decision: "accept_or_review"
+    notes: "Minimal scope extension; should probably pass"
+    case_file: "cases/small_scope_extension.yaml"
+
+  - id: "border_longitudinal_causal"
+    description: "Weak causal claim from longitudinal observational study"
+    expected_decision: "accept_or_review"
+    notes: "Longitudinal helps but doesn't fully establish causation"
+    case_file: "cases/longitudinal_causal.yaml"
+
+# =============================================================================
+# TEST CONFIGURATION
+# =============================================================================
+
+test_config:
+  # All obvious failures must be detected (100% recall)
+  obvious_failure_recall_target: 1.0
+
+  # Subtle failures should mostly be detected (80% recall)
+  subtle_failure_recall_target: 0.8
+
+  # False positive rate on clean cases should be low
+  false_positive_target: 0.2
+
+  # Borderline cases are for calibration, not strict pass/fail
+  borderline_for_calibration_only: true

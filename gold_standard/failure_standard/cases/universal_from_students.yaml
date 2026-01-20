@@ -1,0 +1,42 @@
+# Failure Case: Universal Claim from Student Sample
+# Subtle failure - per Cartwright critique on scope overreach
+
+case_id: "fail_subtle_universal_from_students"
+category: "subtle"
+expected_decision: "review"
+
+# Article metadata
+article:
+  id: "test_scope_overreach_001"
+  title: "Universal Effects of Biophilic Design on Cognitive Performance"
+
+# Small, specific sample
+metadata:
+  sample_size: 48
+  study_design: "experiment"
+  p_value: 0.02
+  effect_size: 0.55
+  sample_description: "Psychology undergraduate students at a Western university"
+
+# Extracted beliefs with universal scope (no population restriction)
+beliefs:
+  - belief_id: "b_scope_overreach_1"
+    content: "Biophilic design elements improve cognitive performance"
+    level: "empirical"
+    credence: 0.72
+    uncertainty: 0.18
+    scope:
+      population: null  # PROBLEM: No population scope despite specific sample
+      setting: "laboratory"
+      scope_specified: false
+
+constraints: []
+
+# Expected check behavior
+expected_flags:
+  - decision: "review"
+    reason_contains: "scope"
+    notes: |
+      Sample is WEIRD (Western, Educated, Industrialized, Rich, Democratic)
+      undergraduate students. Should not generalize to universal claims.
+      Scope distance from "students" to "universal" is large.

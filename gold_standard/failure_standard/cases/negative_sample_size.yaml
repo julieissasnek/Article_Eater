@@ -1,0 +1,34 @@
+# Failure Case: Negative Sample Size
+# Obvious failure - must be caught
+
+case_id: "fail_obvious_negative_n"
+category: "obvious"
+expected_decision: "block"
+
+# Article metadata
+article:
+  id: "test_negative_n_001"
+  title: "Effects of Nature on Stress (INVALID TEST CASE)"
+
+# Deliberately invalid metadata
+metadata:
+  sample_size: -50  # INVALID: negative
+  study_design: "experiment"
+  p_value: 0.03
+  effect_size: 0.5
+
+# Extracted beliefs (content doesn't matter for this check)
+beliefs:
+  - belief_id: "b_negative_n_1"
+    content: "Nature exposure reduces cortisol levels"
+    level: "empirical"
+    credence: 0.65
+    uncertainty: 0.2
+
+constraints: []
+
+# Expected check behavior
+expected_flags:
+  - decision: "block"
+    reason_contains: "sample size"
+    reason_contains_alt: "non-positive"

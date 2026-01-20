@@ -1,0 +1,668 @@
+"""
+Tests for Credibility Testing Module.
+
+Phase E: Implementation (Sprint B)
+TODO 1: Credibility Testing Method
+
+Test categories:
+1. Unit tests for individual checks
+2. Integration tests for CredibilityTester
+3. Failure Standard corpus tests
+
+Date: January 20, 2026
+"""
+
+import pytest
+from datetime import datetime, timezone
+
+from src.services.credibility_testing import (
+    Decision,
+    CredibilityFlag,
+    CredibilityReport,
+    CredibilityChecks,
+    CredibilityTester,
+    WebSnapshot,
+    get_design_strength,
+    scope_distance,
+    classify_population,
+    safe_check,
+    create_tester,
+    quick_check,
+    DESIGN_STRENGTH,
+    POPULATION_SPECIFICITY,
+)
+
+from src.services.web_of_belief import (
+    Belief,
+    Constraint,
+    Credence,
+    EpistemicLevel,
+    BeliefStatus,
+    ConstraintType,
+    CausalDirection,
+    ScopeConditions,
+)
+
+
+# =============================================================================
+# FIXTURES
+# =============================================================================
+
+@pytest.fixture
+def sample_belief():
+    """Create a sample belief for testing."""
+    return Belief(
+        belief_id="test_belief_1",
+        content="Nature exposure reduces stress",
+        level=EpistemicLevel.EMPIRICAL,
+        status=BeliefStatus.TENTATIVE,
+        credence=Credence(value=0.65, uncertainty=0.2),
+        paper_ids=["paper_001"],
+    )
+
+
+@pytest.fixture
+def sample_constraint():
+    """Create a sample constraint for testing."""
+    return Constraint(
+        constraint_id="test_constraint_1",
+        source_id="test_belief_1",
+        target_id="test_belief_2",
+        constraint_type=ConstraintType.SUPPORTS,
+        strength=0.6,
+        causal_direction=CausalDirection.CORRELATIONAL,
+    )
+
+
+@pytest.fixture
+def checks():
+    """Create CredibilityChecks instance."""
+    return CredibilityChecks()
+
+
+@pytest.fixture
+def tester():
+    """Create CredibilityTester instance."""
+    return CredibilityTester()
+
+
+# =============================================================================
+# UNIT TESTS: Decision and CredibilityFlag
+# =============================================================================
+
+class TestDecision:
+    """Tests for Decision enum."""
+
+    def test_decision_values(self):
+        """Verify Decision enum has expected values."""
+        assert Decision.BLOCK.value == "block"
+        assert Decision.REVIEW.value == "review"
+
+    def test_decision_comparison(self):
+        """Verify Decision values are distinct."""
+        assert Decision.BLOCK != Decision.REVIEW
+
+
+class TestCredibilityFlag:
+    """Tests for CredibilityFlag dataclass."""
+
+    def test_flag_creation(self):
+        """Test basic flag creation."""
+        flag = CredibilityFlag(
+            decision=Decision.REVIEW,
+            reason="Test reason",
+            confidence=0.8,
+        )
+        assert flag.decision == Decision.REVIEW
+        assert flag.reason == "Test reason"
+        assert flag.confidence == 0.8
+
+    def test_flag_to_dict(self):
+        """Test flag serialization."""
+        flag = CredibilityFlag(
+            decision=Decision.BLOCK,
+            reason="Invalid value",
+            confidence=1.0,
+            field_name="sample_size",
+            expected="> 0",
+            observed="-50",
+        )
+        d = flag.to_dict()
+        assert d['decision'] == "block"
+        assert d['field_name'] == "sample_size"
+
+
+class TestCredibilityReport:
+    """Tests for CredibilityReport."""
+
+    def test_clean_report(self):
+        """Test report with no flags."""
+        report = CredibilityReport(
+            article_id="test_001",
+            timestamp=datetime.now(timezone.utc),
+        )
+        assert report.is_clean
+        assert len(report.flags) == 0
+
+    def test_add_flag(self):
+        """Test adding flags to report."""
+        report = CredibilityReport(
+            article_id="test_001",
+            timestamp=datetime.now(timezone.utc),
+        )
+
+        flag = CredibilityFlag(
+            decision=Decision.REVIEW,
+            reason="Test",
+            confidence=0.5,
+        )
+        report.add_flag(flag)
+
+        assert not report.is_clean
+        assert len(report.flags) == 1
+        assert report.overall_decision == Decision.REVIEW
+
+    def test_block_wins(self):
+        """Test that BLOCK decision wins over REVIEW."""
+        report = CredibilityReport(
+            article_id="test_001",
+            timestamp=datetime.now(timezone.utc),
+        )
+
+        # Add REVIEW flag first
+        report.add_flag(CredibilityFlag(
+            decision=Decision.REVIEW,
+            reason="Minor issue",
+            confidence=0.5,
+        ))
+        assert report.overall_decision == Decision.REVIEW
+
+        # Add BLOCK flag
+        report.add_flag(CredibilityFlag(
+            decision=Decision.BLOCK,
+            reason="Critical issue",
+            confidence=1.0,
+        ))
+        assert report.overall_decision == Decision.BLOCK
+
+    def test_to_explanation_context(self):
+        """Test conversion to explanation context for TODO 2."""
+        report = CredibilityReport(
+            article_id="test_001",
+            timestamp=datetime.now(timezone.utc),
+        )
+        report.add_flag(CredibilityFlag(
+            decision=Decision.REVIEW,
+            reason="Scope overreach",
+            confidence=0.7,
+        ))
+
+        context = report.to_explanation_context()
+        assert context['article_id'] == "test_001"
+        assert context['decision'] == "review"
+        assert "Scope overreach" in context['reasons']
+
+
+# =============================================================================
+# UNIT TESTS: Helper Functions
+# =============================================================================
+
+class TestDesignStrength:
+    """Tests for study design strength."""
+
+    def test_known_designs(self):
+        """Test strength values for known designs."""
+        assert get_design_strength("rct") == 1.0
+        assert get_design_strength("correlational") == 0.4
+        assert get_design_strength("quasi_experiment") == 0.7
+
+    def test_case_insensitive(self):
+        """Test case insensitivity."""
+        assert get_design_strength("RCT") == 1.0
+        assert get_design_strength("Correlational") == 0.4
+
+    def test_unknown_design(self):
+        """Test default for unknown designs."""
+        assert get_design_strength("unknown_type") == 0.4
+        assert get_design_strength(None) == 0.4
+
+
+class TestScopeDistance:
+    """Tests for scope distance calculation."""
+
+    def test_same_scope(self):
+        """Test distance when sample matches scope."""
+        distance = scope_distance("undergraduate students", "students")
+        assert distance == 0.0 or distance < 0.1
+
+    def test_large_distance(self):
+        """Test distance for overreach."""
+        distance = scope_distance("ADHD children", None)  # Universal claim
+        assert distance > 0.5
+
+    def test_classify_population_clinical(self):
+        """Test population classification."""
+        assert classify_population("patients with depression") == "specific_clinical"
+        assert classify_population("hospital patients") == "clinical"
+
+    def test_classify_population_demographic(self):
+        """Test demographic classification."""
+        assert classify_population("elderly adults") == "demographic_subset"
+        assert classify_population("undergraduate students") == "demographic_subset"
+
+
+class TestSafeCheck:
+    """Tests for safe_check wrapper."""
+
+    def test_successful_check(self):
+        """Test wrapper with successful check."""
+        def good_check() -> list:
+            return [CredibilityFlag(Decision.REVIEW, "test", 0.5)]
+
+        result = safe_check(good_check)
+        assert len(result) == 1
+        assert result[0].reason == "test"
+
+    def test_failing_check(self):
+        """Test wrapper catches exceptions."""
+        def bad_check() -> list:
+            raise ValueError("Something went wrong")
+
+        result = safe_check(bad_check)
+        assert len(result) == 1
+        assert result[0].decision == Decision.REVIEW
+        assert "failed" in result[0].reason.lower()
+
+
+# =============================================================================
+# UNIT TESTS: Individual Checks
+# =============================================================================
+
+class TestNumericValidityCheck:
+    """Tests for numeric validity check."""
+
+    def test_valid_values(self, checks, sample_belief):
+        """Test with valid numeric values."""
+        flags = checks.check_numeric_validity(
+            [sample_belief],
+            {'sample_size': 100, 'p_value': 0.05}
+        )
+        assert len(flags) == 0
+
+    def test_negative_sample_size(self, checks, sample_belief):
+        """Test detection of negative sample size."""
+        flags = checks.check_numeric_validity(
+            [sample_belief],
+            {'sample_size': -50}
+        )
+        assert len(flags) == 1
+        assert flags[0].decision == Decision.BLOCK
+        assert "sample size" in flags[0].reason.lower()
+
+    def test_invalid_p_value(self, checks, sample_belief):
+        """Test detection of p-value > 1."""
+        flags = checks.check_numeric_validity(
+            [sample_belief],
+            {'p_value': 1.5}
+        )
+        assert len(flags) == 1
+        assert flags[0].decision == Decision.BLOCK
+
+    def test_credence_at_boundary(self, checks):
+        """Test detection of credence at boundaries.
+
+        Note: Credence class auto-clamps to (0.01, 0.99) in __post_init__,
+        so we test by manually setting the value after construction.
+        """
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.2),
+        )
+        # Manually set to boundary value to test the check
+        belief.credence.value = 0.0  # Invalid: 0
+        flags = checks.check_numeric_validity([belief], {})
+        assert len(flags) >= 1
+        assert any(f.decision == Decision.BLOCK for f in flags)
+
+
+class TestCausalWarrantCheck:
+    """Tests for causal warrant check."""
+
+    def test_rct_with_causal_claim(self, checks):
+        """RCT should support causal claims."""
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="b1",
+            target_id="b2",
+            constraint_type=ConstraintType.SUPPORTS,
+            strength=0.9,
+            causal_direction=CausalDirection.FORWARD,
+        )
+        flags = checks.check_causal_warrant([constraint], "rct")
+        assert len(flags) == 0
+
+    def test_survey_with_causal_claim(self, checks):
+        """Survey should not support strong causal claims."""
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="b1",
+            target_id="b2",
+            constraint_type=ConstraintType.SUPPORTS,
+            strength=0.8,  # High strength
+            causal_direction=CausalDirection.FORWARD,  # Causal claim
+        )
+        flags = checks.check_causal_warrant([constraint], "cross_sectional")
+        assert len(flags) >= 1
+        assert flags[0].decision == Decision.REVIEW
+
+    def test_correlational_claim_ok(self, checks):
+        """Correlational claims should be fine from surveys."""
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="b1",
+            target_id="b2",
+            constraint_type=ConstraintType.SUPPORTS,
+            strength=0.8,
+            causal_direction=CausalDirection.CORRELATIONAL,  # Not causal
+        )
+        flags = checks.check_causal_warrant([constraint], "survey")
+        assert len(flags) == 0
+
+
+class TestScopeOverreachCheck:
+    """Tests for scope overreach check."""
+
+    def test_appropriate_scope(self, checks):
+        """Test when scope matches sample."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            scope=ScopeConditions(
+                population="students",
+                scope_specified=True
+            ),
+        )
+        flags = checks.check_scope_overreach(
+            [belief],
+            "undergraduate psychology students"
+        )
+        assert len(flags) == 0
+
+    def test_universal_from_students(self, checks):
+        """Test overreach from student sample to universal."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            scope=ScopeConditions(
+                population=None,  # Universal
+                scope_specified=False
+            ),
+        )
+        flags = checks.check_scope_overreach(
+            [belief],
+            "undergraduate students at Western university"
+        )
+        assert len(flags) >= 1
+        assert flags[0].decision == Decision.REVIEW
+
+
+class TestEffectSizePlausibility:
+    """Tests for effect size plausibility check."""
+
+    def test_reasonable_effect(self, checks):
+        """Test with reasonable effect size."""
+        flags = checks.check_effect_size_plausibility(
+            {'effect_size': 0.5},
+            "lab_experiment"
+        )
+        assert len(flags) == 0
+
+    def test_implausible_effect(self, checks):
+        """Test with implausibly large effect size."""
+        flags = checks.check_effect_size_plausibility(
+            {'effect_size': 2.5},
+            "field_study"
+        )
+        assert len(flags) >= 1
+        assert flags[0].decision == Decision.REVIEW
+
+    def test_missing_effect_size(self, checks):
+        """Test with no effect size (should not flag)."""
+        flags = checks.check_effect_size_plausibility({}, "experiment")
+        assert len(flags) == 0
+
+
+# =============================================================================
+# INTEGRATION TESTS: CredibilityTester
+# =============================================================================
+
+class TestCredibilityTester:
+    """Integration tests for CredibilityTester."""
+
+    def test_clean_article(self, tester, sample_belief, sample_constraint):
+        """Test evaluation of clean article."""
+        report = tester.evaluate(
+            article_id="test_001",
+            beliefs=[sample_belief],
+            constraints=[sample_constraint],
+            metadata={
+                'sample_size': 100,
+                'study_design': 'experiment',
+                'sample_description': 'adults',
+            }
+        )
+        assert report.is_clean or report.overall_decision == Decision.REVIEW
+
+    def test_invalid_article(self, tester):
+        """Test evaluation of article with obvious errors."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.2),
+        )
+        report = tester.evaluate(
+            article_id="test_002",
+            beliefs=[belief],
+            constraints=[],
+            metadata={'sample_size': -100}  # Invalid
+        )
+        assert not report.is_clean
+        assert report.overall_decision == Decision.BLOCK
+
+    def test_multiple_issues(self, tester):
+        """Test article with multiple issues."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.2),
+            scope=ScopeConditions(population=None, scope_specified=False),
+        )
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="test",
+            target_id="other",
+            constraint_type=ConstraintType.SUPPORTS,
+            strength=0.9,
+            causal_direction=CausalDirection.FORWARD,
+        )
+
+        report = tester.evaluate(
+            article_id="test_003",
+            beliefs=[belief],
+            constraints=[constraint],
+            metadata={
+                'sample_size': 30,
+                'study_design': 'survey',  # Survey with causal claim
+                'sample_description': 'students',  # Universal scope from students
+                'effect_size': 2.0,  # Large effect
+            }
+        )
+
+        assert not report.is_clean
+        assert len(report.flags) >= 2  # Multiple issues
+
+
+class TestQuickCheck:
+    """Tests for quick_check function."""
+
+    def test_quick_check_pass(self):
+        """Test quick check with valid data."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.6, uncertainty=0.2),
+        )
+        result = quick_check(
+            [belief], [],
+            {'sample_size': 100}
+        )
+        assert result is True
+
+    def test_quick_check_fail(self):
+        """Test quick check with invalid data."""
+        belief = Belief(
+            belief_id="test",
+            content="Test",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.2),
+        )
+        result = quick_check(
+            [belief], [],
+            {'sample_size': -50}  # Invalid
+        )
+        assert result is False
+
+
+# =============================================================================
+# FAILURE STANDARD TESTS
+# =============================================================================
+
+class TestFailureStandard:
+    """Tests against Failure Standard corpus."""
+
+    def test_negative_sample_size_detected(self, tester):
+        """Failure case: negative sample size must be blocked."""
+        belief = Belief(
+            belief_id="b_negative_n_1",
+            content="Nature exposure reduces cortisol levels",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.65, uncertainty=0.2),
+        )
+        report = tester.evaluate(
+            article_id="test_negative_n_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={'sample_size': -50}
+        )
+
+        assert not report.is_clean
+        assert report.overall_decision == Decision.BLOCK
+        assert any("sample" in f.reason.lower() for f in report.flags)
+
+    def test_causal_from_survey_flagged(self, tester):
+        """Failure case: causal claim from survey should be reviewed."""
+        belief = Belief(
+            belief_id="b_causal_survey_1",
+            content="Time spent in nature causes reduced stress levels",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.70, uncertainty=0.15),
+        )
+        constraint = Constraint(
+            constraint_id="c_causal_survey_1",
+            source_id="b_causal_survey_1",
+            target_id="theory_nature_stress",
+            constraint_type=ConstraintType.SUPPORTS,
+            strength=0.7,
+            causal_direction=CausalDirection.FORWARD,
+        )
+
+        report = tester.evaluate(
+            article_id="test_causal_survey_001",
+            beliefs=[belief],
+            constraints=[constraint],
+            metadata={
+                'sample_size': 500,
+                'study_design': 'cross_sectional',
+            }
+        )
+
+        assert not report.is_clean
+        assert any("causal" in f.reason.lower() for f in report.flags)
+
+    def test_scope_overreach_flagged(self, tester):
+        """Failure case: universal claim from students should be reviewed."""
+        belief = Belief(
+            belief_id="b_scope_overreach_1",
+            content="Biophilic design elements improve cognitive performance",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.72, uncertainty=0.18),
+            scope=ScopeConditions(population=None, scope_specified=False),
+        )
+
+        report = tester.evaluate(
+            article_id="test_scope_overreach_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={
+                'sample_size': 48,
+                'study_design': 'experiment',
+                'sample_description': 'Psychology undergraduate students at a Western university',
+            }
+        )
+
+        assert not report.is_clean
+        assert any("scope" in f.reason.lower() for f in report.flags)
+
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+class TestEdgeCases:
+    """Tests for edge cases and boundary conditions."""
+
+    def test_empty_beliefs(self, tester):
+        """Test with no beliefs."""
+        report = tester.evaluate(
+            article_id="empty_001",
+            beliefs=[],
+            constraints=[],
+            metadata={}
+        )
+        # Should not crash, may or may not flag
+        assert report.article_id == "empty_001"
+
+    def test_empty_metadata(self, tester, sample_belief):
+        """Test with no metadata."""
+        report = tester.evaluate(
+            article_id="no_meta_001",
+            beliefs=[sample_belief],
+            constraints=[],
+            metadata=None
+        )
+        # Should not crash
+        assert report.article_id == "no_meta_001"
+
+    def test_missing_fields_handled(self, tester):
+        """Test graceful handling of missing fields."""
+        # Belief with minimal fields
+        belief = Belief(
+            belief_id="minimal",
+            content="Minimal belief",
+            level=EpistemicLevel.EMPIRICAL,
+        )
+        report = tester.evaluate(
+            article_id="minimal_001",
+            beliefs=[belief],
+            constraints=[],
+            metadata={}
+        )
+        # Should not crash
+        assert report is not None

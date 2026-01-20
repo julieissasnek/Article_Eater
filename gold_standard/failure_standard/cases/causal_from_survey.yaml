@@ -1,0 +1,43 @@
+# Failure Case: Causal Claim from Survey
+# Subtle failure - per Pearl critique
+
+case_id: "fail_subtle_causal_from_survey"
+category: "subtle"
+expected_decision: "review"
+
+# Article metadata
+article:
+  id: "test_causal_survey_001"
+  title: "Nature Causes Stress Reduction: A Survey Study"
+
+# Methodology doesn't support causal claims
+metadata:
+  sample_size: 500
+  study_design: "cross_sectional"  # Survey, not experiment
+  p_value: 0.001
+  effect_size: 0.35
+  sample_description: "Adults from online panel"
+
+# Extracted beliefs with causal claim
+beliefs:
+  - belief_id: "b_causal_survey_1"
+    content: "Time spent in nature causes reduced stress levels"
+    level: "empirical"
+    credence: 0.70
+    uncertainty: 0.15
+
+# Constraint has causal direction despite survey design
+constraints:
+  - constraint_id: "c_causal_survey_1"
+    source_id: "b_causal_survey_1"
+    target_id: "theory_nature_stress"
+    constraint_type: "supports"
+    causal_direction: "forward"  # PROBLEM: claiming causation from survey
+    strength: 0.7
+
+# Expected check behavior
+expected_flags:
+  - decision: "review"
+    reason_contains: "causal"
+    reason_contains_alt: "study design"
+    notes: "Survey cannot establish causation - should be flagged"
