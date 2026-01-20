@@ -983,6 +983,445 @@ class InterpretiveEngine:
 
 
 # =============================================================================
+# SPRINT F: CREDIBILITY EXPLAINER (Enhanced TODO 1 Integration)
+# =============================================================================
+
+@dataclass
+class FlagExplanation:
+    """Detailed explanation of a single credibility flag."""
+    flag_type: str
+    severity: str  # "critical" or "warning"
+    explanation: str
+    recommendation: str
+    technical_detail: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'flag_type': self.flag_type,
+            'severity': self.severity,
+            'explanation': self.explanation,
+            'recommendation': self.recommendation,
+            'technical_detail': self.technical_detail,
+        }
+
+
+class CredibilityExplainer:
+    """
+    Enhanced credibility explanation for TODO 1 integration.
+
+    Sprint F: Provides detailed, human-readable explanations of
+    credibility flags with recommendations.
+    """
+
+    # Human-readable explanations for flag types
+    FLAG_EXPLANATIONS = {
+        "credence": {
+            "explanation": "The stated confidence level is outside the valid range (must be between 0 and 1, exclusive).",
+            "recommendation": "Check the original paper for the actual confidence level reported.",
+            "severity": "critical"
+        },
+        "sample_size": {
+            "explanation": "The sample size reported is invalid (must be a positive number).",
+            "recommendation": "Verify the sample size from the original paper.",
+            "severity": "critical"
+        },
+        "p_value": {
+            "explanation": "The p-value reported is outside the valid range (must be between 0 and 1).",
+            "recommendation": "Check the statistical analysis section of the original paper.",
+            "severity": "critical"
+        },
+        "self_contradiction": {
+            "explanation": "The paper appears to contain contradictory claims.",
+            "recommendation": "Review the paper for potentially conflicting findings or extraction errors.",
+            "severity": "critical"
+        },
+        "causal_direction": {
+            "explanation": "The causal claim made is stronger than the study design can support.",
+            "recommendation": "Consider weakening the causal language or noting the study design limitations.",
+            "severity": "warning"
+        },
+        "scope": {
+            "explanation": "The claimed scope of findings may extend beyond what the sample can support.",
+            "recommendation": "Consider limiting claims to the specific population studied.",
+            "severity": "warning"
+        },
+        "effect_size": {
+            "explanation": "The effect size reported seems unusually large for this type of study.",
+            "recommendation": "Verify the effect size calculation and consider replication evidence.",
+            "severity": "warning"
+        },
+        "causal_cycle": {
+            "explanation": "The causal relationships form a cycle, which may indicate feedback loops or extraction errors.",
+            "recommendation": "Review whether this represents a genuine feedback mechanism.",
+            "severity": "warning"
+        },
+        "confidence_interval": {
+            "explanation": "The confidence interval spans zero, suggesting the effect may not be statistically reliable.",
+            "recommendation": "Exercise caution in drawing conclusions from this finding.",
+            "severity": "warning"
+        },
+        "multiple_comparison": {
+            "explanation": "Multiple statistical tests were performed without correction, increasing false positive risk.",
+            "recommendation": "Look for corrected analyses or treat findings as preliminary.",
+            "severity": "warning"
+        },
+        "sample_description": {
+            "explanation": "The study lacks adequate description of the sample population.",
+            "recommendation": "Consider the generalizability limitations due to unknown sample characteristics.",
+            "severity": "warning"
+        },
+        "subgroup_sample_size": {
+            "explanation": "The claim targets a subgroup with a small sample size.",
+            "recommendation": "Treat subgroup findings as preliminary until replicated with larger samples.",
+            "severity": "warning"
+        },
+    }
+
+    def explain_report(
+        self,
+        report: Any,  # CredibilityReport
+        detail: DetailLevel = DetailLevel.STANDARD,
+        expertise: ExpertiseLevel = ExpertiseLevel.PRACTITIONER
+    ) -> str:
+        """
+        Generate comprehensive explanation of a credibility report.
+
+        Args:
+            report: CredibilityReport from credibility testing
+            detail: How much detail to include
+            expertise: User's expertise level
+
+        Returns:
+            Human-readable explanation
+        """
+        if report.is_clean:
+            return self._render_clean_report(report, expertise)
+
+        explanations = []
+        for flag in report.flags:
+            explanations.append(self._explain_flag(flag, expertise))
+
+        return self._render_report(report, explanations, detail, expertise)
+
+    def _explain_flag(
+        self,
+        flag: Any,  # CredibilityFlag
+        expertise: ExpertiseLevel
+    ) -> FlagExplanation:
+        """Generate detailed explanation for a single flag."""
+        flag_type = flag.field_name or "unknown"
+        template = self.FLAG_EXPLANATIONS.get(flag_type, {
+            "explanation": flag.reason,
+            "recommendation": "Review the original source.",
+            "severity": "warning"
+        })
+
+        # Adjust language for expertise level
+        explanation = template["explanation"]
+        if expertise == ExpertiseLevel.NOVICE:
+            explanation = self._simplify_for_novice(explanation)
+
+        technical_detail = None
+        if expertise == ExpertiseLevel.RESEARCHER and flag.expected and flag.observed:
+            technical_detail = f"Expected: {flag.expected}, Observed: {flag.observed}"
+
+        return FlagExplanation(
+            flag_type=flag_type,
+            severity="critical" if flag.decision.value == "block" else "warning",
+            explanation=explanation,
+            recommendation=template["recommendation"],
+            technical_detail=technical_detail
+        )
+
+    def _simplify_for_novice(self, text: str) -> str:
+        """Simplify technical language for novice users."""
+        replacements = {
+            "p-value": "statistical significance measure",
+            "confidence interval": "range of likely values",
+            "effect size": "strength of the effect",
+            "causal": "cause-and-effect",
+            "statistical": "mathematical",
+            "replication": "repeated studies",
+        }
+        result = text
+        for technical, simple in replacements.items():
+            result = result.replace(technical, simple)
+        return result
+
+    def _render_clean_report(self, report: Any, expertise: ExpertiseLevel) -> str:
+        """Render explanation for a clean report."""
+        if expertise == ExpertiseLevel.NOVICE:
+            return f"**Good news!** This paper ({report.article_id}) passed all quality checks. " \
+                   "The findings appear to be well-supported by the methodology."
+        else:
+            return f"**Credibility Assessment: ACCEPT**\n\n" \
+                   f"Paper: {report.article_id}\n" \
+                   "No credibility concerns identified. All checks passed."
+
+    def _render_report(
+        self,
+        report: Any,
+        explanations: List[FlagExplanation],
+        detail: DetailLevel,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """Render full explanation for a flagged report."""
+        lines = []
+
+        # Header
+        decision = report.overall_decision.value.upper()
+        if expertise == ExpertiseLevel.NOVICE:
+            if decision == "BLOCK":
+                lines.append("**Caution Required!** This paper has significant quality concerns.")
+            else:
+                lines.append("**Review Recommended!** This paper has some quality concerns to consider.")
+        else:
+            lines.append(f"## Credibility Assessment: {decision}")
+
+        lines.append("")
+        lines.append(f"**Paper:** {report.article_id}")
+        lines.append(f"**Concerns:** {len(report.flags)}")
+        lines.append("")
+
+        # Critical issues first
+        critical = [e for e in explanations if e.severity == "critical"]
+        warnings = [e for e in explanations if e.severity == "warning"]
+
+        if critical:
+            lines.append("### Critical Issues")
+            lines.append("")
+            for exp in critical:
+                lines.extend(self._render_flag_explanation(exp, detail, expertise))
+            lines.append("")
+
+        if warnings and detail != DetailLevel.SUMMARY:
+            lines.append("### Warnings")
+            lines.append("")
+            for exp in warnings:
+                lines.extend(self._render_flag_explanation(exp, detail, expertise))
+            lines.append("")
+
+        # Overall recommendation
+        lines.append("### Recommendation")
+        lines.append("")
+        if decision == "BLOCK":
+            lines.append("This paper should not be automatically processed. "
+                        "Manual review is required to address the critical issues above.")
+        else:
+            lines.append("This paper can be processed, but the concerns above "
+                        "should be considered when interpreting the findings.")
+
+        return "\n".join(lines)
+
+    def _render_flag_explanation(
+        self,
+        exp: FlagExplanation,
+        detail: DetailLevel,
+        expertise: ExpertiseLevel
+    ) -> List[str]:
+        """Render a single flag explanation."""
+        lines = []
+        lines.append(f"**{exp.flag_type.replace('_', ' ').title()}**")
+        lines.append(f"- {exp.explanation}")
+
+        if detail != DetailLevel.SUMMARY:
+            lines.append(f"- *Recommendation:* {exp.recommendation}")
+
+        if detail == DetailLevel.COMPREHENSIVE and exp.technical_detail:
+            lines.append(f"- *Technical:* {exp.technical_detail}")
+
+        lines.append("")
+        return lines
+
+
+# =============================================================================
+# SPRINT F: SEARCH CONTEXT (for TODO 3 Integration)
+# =============================================================================
+
+@dataclass
+class SearchContext:
+    """
+    Context for TODO 3 VOI-driven search.
+
+    Contains information about what to search for and why.
+    """
+    gap: IdentifiedGap
+    search_queries: List[str]
+    target_study_types: List[str]
+    priority_score: float
+    rationale: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'gap': self.gap.to_dict(),
+            'search_queries': self.search_queries,
+            'target_study_types': self.target_study_types,
+            'priority_score': self.priority_score,
+            'rationale': self.rationale,
+        }
+
+
+class SearchContextGenerator:
+    """
+    Generate search contexts for identified gaps.
+
+    Sprint F: Prepares gaps for TODO 3 VOI-driven search.
+    """
+
+    def generate_search_context(
+        self,
+        gap: IdentifiedGap,
+        belief: Optional[Belief] = None
+    ) -> SearchContext:
+        """
+        Generate search context for a gap.
+
+        Args:
+            gap: The identified gap
+            belief: Optional belief associated with the gap
+
+        Returns:
+            SearchContext with search queries and priorities
+        """
+        queries = []
+        target_studies = []
+        rationale = ""
+
+        if gap.gap_type == "uncertain":
+            # Need more evidence for existing belief
+            if belief:
+                content_keywords = self._extract_keywords(belief.content)
+                queries = [
+                    f"{' '.join(content_keywords[:3])} meta-analysis",
+                    f"{' '.join(content_keywords[:3])} systematic review",
+                    f"{' '.join(content_keywords[:3])} replication",
+                ]
+                target_studies = ["meta-analysis", "systematic_review", "rct"]
+                rationale = f"High uncertainty ({gap.priority:.0%}) on existing belief. " \
+                           "Prioritize high-quality synthesis studies."
+
+        elif gap.gap_type == "unexplored":
+            # Topic area with sparse coverage
+            if belief:
+                content_keywords = self._extract_keywords(belief.content)
+                queries = [
+                    f"{' '.join(content_keywords[:3])} empirical study",
+                    f"{' '.join(content_keywords[:3])} experiment",
+                    f"{' '.join(content_keywords[:2])} {content_keywords[-1] if len(content_keywords) > 2 else ''}",
+                ]
+                target_studies = ["experiment", "longitudinal", "observational"]
+                rationale = "Sparse evidence coverage. Prioritize primary studies."
+
+        return SearchContext(
+            gap=gap,
+            search_queries=queries,
+            target_study_types=target_studies,
+            priority_score=gap.priority,
+            rationale=rationale
+        )
+
+    def _extract_keywords(self, text: str) -> List[str]:
+        """Extract keywords from text for search queries."""
+        stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
+                    'to', 'of', 'in', 'for', 'on', 'with', 'that', 'this', 'it',
+                    'and', 'or', 'but', 'can', 'may', 'will', 'would', 'could',
+                    'should', 'have', 'has', 'had', 'do', 'does', 'did'}
+
+        words = text.lower().split()
+        keywords = [w.strip('.,;:!?()[]') for w in words if w not in stopwords and len(w) > 2]
+        return keywords[:5]  # Top 5 keywords
+
+    def prioritize_gaps(self, gaps: List[IdentifiedGap]) -> List[IdentifiedGap]:
+        """
+        Prioritize gaps for search.
+
+        Returns gaps sorted by priority (highest first).
+        """
+        return sorted(gaps, key=lambda g: g.priority, reverse=True)
+
+
+# =============================================================================
+# SPRINT F: PIPELINE INTEGRATION
+# =============================================================================
+
+def explain_article_assessment(
+    report: Any,  # CredibilityReport
+    detail: DetailLevel = DetailLevel.STANDARD,
+    expertise: ExpertiseLevel = ExpertiseLevel.PRACTITIONER
+) -> str:
+    """
+    Pipeline helper: Generate explanation for article credibility assessment.
+
+    Args:
+        report: CredibilityReport from credibility testing
+        detail: Detail level for explanation
+        expertise: User's expertise level
+
+    Returns:
+        Human-readable explanation
+    """
+    explainer = CredibilityExplainer()
+    return explainer.explain_report(report, detail, expertise)
+
+
+def generate_search_contexts(
+    gaps: List[IdentifiedGap],
+    beliefs: Optional[Dict[str, Belief]] = None
+) -> List[SearchContext]:
+    """
+    Pipeline helper: Generate search contexts for identified gaps.
+
+    Args:
+        gaps: List of identified gaps
+        beliefs: Optional dict of belief_id -> Belief
+
+    Returns:
+        List of SearchContext objects for TODO 3
+    """
+    generator = SearchContextGenerator()
+    contexts = []
+
+    for gap in generator.prioritize_gaps(gaps):
+        belief = beliefs.get(gap.belief_id) if beliefs else None
+        context = generator.generate_search_context(gap, belief)
+        contexts.append(context)
+
+    return contexts
+
+
+def export_gaps_for_search(
+    gaps: List[IdentifiedGap],
+    beliefs: Optional[Dict[str, Belief]] = None,
+    output_path: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Pipeline helper: Export gaps as search contexts for TODO 3.
+
+    Args:
+        gaps: List of identified gaps
+        beliefs: Optional dict of belief_id -> Belief
+        output_path: Optional path to write JSON output
+
+    Returns:
+        Dict with search contexts
+    """
+    contexts = generate_search_contexts(gaps, beliefs)
+
+    result = {
+        'n_gaps': len(gaps),
+        'n_search_contexts': len(contexts),
+        'search_contexts': [c.to_dict() for c in contexts],
+    }
+
+    if output_path:
+        import json
+        with open(output_path, 'w') as f:
+            json.dump(result, f, indent=2)
+
+    return result
+
+
+# =============================================================================
 # FACTORY FUNCTIONS
 # =============================================================================
 

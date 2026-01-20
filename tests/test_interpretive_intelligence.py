@@ -727,3 +727,300 @@ class TestEndToEnd:
 
         assert response.success
         assert "Practical" in response.explanation
+
+
+# =============================================================================
+# SPRINT F TESTS: Enhanced Credibility Integration
+# =============================================================================
+
+# Import Sprint F additions
+from src.services.interpretive_intelligence import (
+    FlagExplanation,
+    CredibilityExplainer,
+    SearchContext,
+    SearchContextGenerator,
+    explain_article_assessment,
+    generate_search_contexts,
+    export_gaps_for_search,
+)
+
+
+class TestFlagExplanation:
+    """Tests for FlagExplanation dataclass."""
+
+    def test_flag_explanation_creation(self):
+        """Test creating a flag explanation."""
+        exp = FlagExplanation(
+            flag_type="sample_size",
+            severity="critical",
+            explanation="Invalid sample size",
+            recommendation="Check the paper"
+        )
+        assert exp.flag_type == "sample_size"
+        assert exp.severity == "critical"
+
+    def test_to_dict(self):
+        """Test flag explanation serialization."""
+        exp = FlagExplanation(
+            flag_type="p_value",
+            severity="critical",
+            explanation="Invalid p-value",
+            recommendation="Review statistics",
+            technical_detail="Expected: [0,1], Observed: 1.5"
+        )
+        d = exp.to_dict()
+        assert d['flag_type'] == 'p_value'
+        assert d['technical_detail'] is not None
+
+
+class TestCredibilityExplainer:
+    """Tests for CredibilityExplainer class."""
+
+    @pytest.fixture
+    def explainer(self):
+        return CredibilityExplainer()
+
+    @pytest.fixture
+    def mock_clean_report(self):
+        """Create a mock clean credibility report."""
+        class MockReport:
+            article_id = "test_paper"
+            is_clean = True
+            flags = []
+            overall_decision = type('Decision', (), {'value': 'accept'})()
+
+            def to_explanation_context(self):
+                return {
+                    'article_id': self.article_id,
+                    'decision': 'accept',
+                    'reasons': [],
+                    'n_flags': 0
+                }
+        return MockReport()
+
+    @pytest.fixture
+    def mock_flagged_report(self):
+        """Create a mock flagged credibility report."""
+        class MockFlag:
+            decision = type('Decision', (), {'value': 'review'})()
+            reason = "Sample size too small"
+            confidence = 0.7
+            field_name = "sample_size"
+            expected = "> 30"
+            observed = "15"
+
+        class MockReport:
+            article_id = "flagged_paper"
+            is_clean = False
+            flags = [MockFlag()]
+            overall_decision = type('Decision', (), {'value': 'review'})()
+
+            def to_explanation_context(self):
+                return {
+                    'article_id': self.article_id,
+                    'decision': 'review',
+                    'reasons': [f.reason for f in self.flags],
+                    'n_flags': len(self.flags)
+                }
+        return MockReport()
+
+    def test_explain_clean_report(self, explainer, mock_clean_report):
+        """Test explaining a clean report."""
+        explanation = explainer.explain_report(
+            mock_clean_report,
+            DetailLevel.STANDARD,
+            ExpertiseLevel.PRACTITIONER
+        )
+        assert "ACCEPT" in explanation or "passed" in explanation.lower()
+
+    def test_explain_flagged_report(self, explainer, mock_flagged_report):
+        """Test explaining a flagged report."""
+        explanation = explainer.explain_report(
+            mock_flagged_report,
+            DetailLevel.STANDARD,
+            ExpertiseLevel.PRACTITIONER
+        )
+        assert "REVIEW" in explanation or "concern" in explanation.lower()
+
+    def test_novice_simplification(self, explainer, mock_flagged_report):
+        """Test that novice mode simplifies language."""
+        explanation = explainer.explain_report(
+            mock_flagged_report,
+            DetailLevel.STANDARD,
+            ExpertiseLevel.NOVICE
+        )
+        # Should use simpler language
+        assert isinstance(explanation, str)
+        assert len(explanation) > 0
+
+    def test_comprehensive_includes_technical(self, explainer, mock_flagged_report):
+        """Test that comprehensive mode includes technical details."""
+        explanation = explainer.explain_report(
+            mock_flagged_report,
+            DetailLevel.COMPREHENSIVE,
+            ExpertiseLevel.RESEARCHER
+        )
+        # Should be longer and more detailed
+        assert len(explanation) > 100
+
+
+class TestSearchContext:
+    """Tests for SearchContext dataclass."""
+
+    def test_search_context_creation(self):
+        """Test creating a search context."""
+        gap = IdentifiedGap(
+            gap_type="uncertain",
+            description="High uncertainty",
+            belief_id="b_test",
+            priority=0.4
+        )
+        ctx = SearchContext(
+            gap=gap,
+            search_queries=["nature stress meta-analysis"],
+            target_study_types=["meta-analysis"],
+            priority_score=0.4,
+            rationale="Need synthesis studies"
+        )
+        assert len(ctx.search_queries) > 0
+        assert ctx.priority_score == 0.4
+
+    def test_to_dict(self):
+        """Test search context serialization."""
+        gap = IdentifiedGap(
+            gap_type="unexplored",
+            description="Few studies",
+            belief_id="b_test",
+            priority=0.5
+        )
+        ctx = SearchContext(
+            gap=gap,
+            search_queries=["query1", "query2"],
+            target_study_types=["experiment"],
+            priority_score=0.5,
+            rationale="Test"
+        )
+        d = ctx.to_dict()
+        assert 'search_queries' in d
+        assert len(d['search_queries']) == 2
+
+
+class TestSearchContextGenerator:
+    """Tests for SearchContextGenerator class."""
+
+    @pytest.fixture
+    def generator(self):
+        return SearchContextGenerator()
+
+    def test_generate_uncertain_context(self, generator, sample_belief):
+        """Test generating context for uncertain gap."""
+        gap = IdentifiedGap(
+            gap_type="uncertain",
+            description="High uncertainty",
+            belief_id=sample_belief.belief_id,
+            priority=0.4
+        )
+        ctx = generator.generate_search_context(gap, sample_belief)
+
+        assert len(ctx.search_queries) > 0
+        assert "meta-analysis" in ctx.search_queries[0] or "review" in ctx.search_queries[1]
+        assert ctx.priority_score == 0.4
+
+    def test_generate_unexplored_context(self, generator, sample_belief):
+        """Test generating context for unexplored gap."""
+        gap = IdentifiedGap(
+            gap_type="unexplored",
+            description="Few studies",
+            belief_id=sample_belief.belief_id,
+            priority=0.5
+        )
+        ctx = generator.generate_search_context(gap, sample_belief)
+
+        assert len(ctx.search_queries) > 0
+        assert "experiment" in ctx.target_study_types or "empirical" in ctx.search_queries[0]
+
+    def test_prioritize_gaps(self, generator):
+        """Test gap prioritization."""
+        gaps = [
+            IdentifiedGap("uncertain", "Low priority", "b1", 0.2),
+            IdentifiedGap("unexplored", "High priority", "b2", 0.8),
+            IdentifiedGap("uncertain", "Medium priority", "b3", 0.5),
+        ]
+        prioritized = generator.prioritize_gaps(gaps)
+
+        assert prioritized[0].priority == 0.8  # Highest first
+        assert prioritized[-1].priority == 0.2  # Lowest last
+
+
+class TestPipelineIntegration:
+    """Tests for pipeline integration functions."""
+
+    @pytest.fixture
+    def mock_report(self):
+        """Create a mock credibility report."""
+        class MockFlag:
+            decision = type('Decision', (), {'value': 'block'})()
+            reason = "Critical issue"
+            confidence = 0.9
+            field_name = "credence"
+            expected = "(0, 1)"
+            observed = "0.0"
+
+        class MockReport:
+            article_id = "test_paper"
+            is_clean = False
+            flags = [MockFlag()]
+            overall_decision = type('Decision', (), {'value': 'block'})()
+
+            def to_explanation_context(self):
+                return {
+                    'article_id': self.article_id,
+                    'decision': 'block',
+                    'reasons': [f.reason for f in self.flags],
+                    'n_flags': len(self.flags)
+                }
+        return MockReport()
+
+    def test_explain_article_assessment(self, mock_report):
+        """Test pipeline helper for article assessment."""
+        explanation = explain_article_assessment(
+            mock_report,
+            DetailLevel.STANDARD,
+            ExpertiseLevel.PRACTITIONER
+        )
+        assert "BLOCK" in explanation
+        assert len(explanation) > 50
+
+    def test_generate_search_contexts(self, sample_belief):
+        """Test pipeline helper for search contexts."""
+        gaps = [
+            IdentifiedGap("uncertain", "Test gap 1", sample_belief.belief_id, 0.4),
+            IdentifiedGap("unexplored", "Test gap 2", sample_belief.belief_id, 0.6),
+        ]
+        beliefs = {sample_belief.belief_id: sample_belief}
+
+        contexts = generate_search_contexts(gaps, beliefs)
+
+        assert len(contexts) == 2
+        # Should be sorted by priority
+        assert contexts[0].priority_score >= contexts[1].priority_score
+
+    def test_export_gaps_for_search(self, sample_belief, tmp_path):
+        """Test exporting gaps for search."""
+        gaps = [
+            IdentifiedGap("uncertain", "Test gap", sample_belief.belief_id, 0.5),
+        ]
+        beliefs = {sample_belief.belief_id: sample_belief}
+
+        output_path = tmp_path / "gaps.json"
+        result = export_gaps_for_search(gaps, beliefs, str(output_path))
+
+        assert result['n_gaps'] == 1
+        assert result['n_search_contexts'] == 1
+        assert output_path.exists()
+
+        # Verify file content
+        import json
+        with open(output_path) as f:
+            saved = json.load(f)
+        assert saved['n_gaps'] == 1
