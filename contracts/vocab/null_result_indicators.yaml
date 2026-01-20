@@ -1,0 +1,124 @@
+# Null Result Indicators for VOI-Driven Search
+#
+# Per Cartwright: Papers reporting null results are often
+# underrepresented in literature but crucial for accurate
+# belief calibration.
+#
+# TODO 3: Sprint H
+# Date: January 20, 2026
+
+version: "1.0"
+
+# Vocabulary for detecting null results in paper abstracts/titles
+null_result_vocabulary:
+  # Direct null findings
+  direct_null:
+    terms:
+      - "no effect"
+      - "no significant"
+      - "null result"
+      - "no difference"
+      - "no relationship"
+      - "no association"
+      - "no correlation"
+      - "no impact"
+    weight: 1.0
+    description: "Explicit statements of null findings"
+
+  # Failed replications
+  replication_failure:
+    terms:
+      - "failed to replicate"
+      - "did not replicate"
+      - "replication failure"
+      - "unsuccessful replication"
+      - "could not reproduce"
+      - "non-replication"
+    weight: 0.9
+    description: "Failed attempts to reproduce prior findings"
+
+  # Hedged or marginal null results
+  hedged_null:
+    terms:
+      - "not robust"
+      - "did not reach significance"
+      - "marginally significant"
+      - "trending but not significant"
+      - "approached significance"
+      - "non-significant trend"
+      - "weak evidence"
+    weight: 0.7
+    description: "Results that nearly reached significance but did not"
+
+  # Contrary to expectations
+  contrary_to_hypothesis:
+    terms:
+      - "contrary to hypotheses"
+      - "unexpected null"
+      - "surprising absence"
+      - "hypothesis not supported"
+      - "contrary to predictions"
+      - "failed to confirm"
+      - "disconfirming evidence"
+    weight: 0.8
+    description: "Findings that contradict theoretical predictions"
+
+  # Methodological limitations causing null
+  methodological_null:
+    terms:
+      - "underpowered"
+      - "insufficient power"
+      - "wide confidence interval"
+      - "low statistical power"
+      - "small sample size limitation"
+      - "inconclusive due to"
+    weight: 0.6
+    description: "Null results attributable to methodological limitations"
+
+  # Publication bias indicators
+  publication_bias:
+    terms:
+      - "file drawer"
+      - "publication bias"
+      - "unpublished"
+      - "grey literature"
+      - "negative results"
+    weight: 0.5
+    description: "Terms indicating awareness of publication bias"
+
+# Search boost factors for papers containing null indicators
+# Higher boost = prioritize finding these papers
+search_priority_boost:
+  direct_null: 1.5
+  replication_failure: 1.8
+  hedged_null: 1.2
+  contrary_to_hypothesis: 1.4
+  methodological_null: 1.1
+  publication_bias: 1.3
+
+# Gap type specific relevance
+# Which null categories are most relevant for each gap type
+gap_type_relevance:
+  uncertain:
+    - replication_failure
+    - direct_null
+    - hedged_null
+  unexplored:
+    - direct_null
+    - contrary_to_hypothesis
+    - publication_bias
+
+# Study type preferences for addressing null result concerns
+study_type_preferences:
+  meta_analysis:
+    boost: 2.0
+    reason: "Aggregates evidence including null results"
+  systematic_review:
+    boost: 1.8
+    reason: "Comprehensively covers literature including negatives"
+  replication_study:
+    boost: 1.6
+    reason: "Directly tests reproducibility"
+  registered_report:
+    boost: 1.5
+    reason: "Pre-registered, less affected by publication bias"
