@@ -115,6 +115,22 @@ class CausalDirection(Enum):
 
 
 # =============================================================================
+# SOURCE DEPTH (Tier 1 - Panel: Cartwright)
+# =============================================================================
+
+class SourceDepth(Enum):
+    """
+    Depth of source material used for extraction.
+
+    Per expert panel (Cartwright): Causal claims from abstracts should be
+    treated with more skepticism than those from full-text analysis.
+    """
+    FULL_TEXT = "full_text"      # Complete paper analyzed
+    ABSTRACT = "abstract"        # Only abstract available
+    METADATA = "metadata"        # Only title/keywords/structured data
+
+
+# =============================================================================
 # SCOPE CONDITIONS (Sprint 6 - Expert Panel: Cartwright)
 # =============================================================================
 
@@ -162,6 +178,111 @@ class ScopeConditions:
             geography=d.get('geography'),
             moderators=d.get('moderators', []),
             scope_specified=d.get('scope_specified', False)
+        )
+
+
+# =============================================================================
+# ENABLING CONDITIONS (Tier 1 - Panel: Cartwright)
+# =============================================================================
+
+@dataclass
+class EnablingConditions:
+    """
+    Enabling conditions for a belief to manifest its effect.
+
+    Per expert panel (Cartwright): Distinct from scope conditions.
+    - Scope: "This finding applies to office settings" (domain restriction)
+    - Enabling: "This effect requires >30 min exposure" (activation requirement)
+
+    Without enabling conditions, the system cannot explain why findings
+    sometimes fail to replicate (mechanism blocked vs. absent).
+
+    Panel Review (R1): Added temporal_order and dose_response per Cartwright.
+    """
+    minimum_exposure: Optional[str] = None     # e.g., ">30 minutes"
+    baseline_state: Optional[str] = None       # e.g., "non-depressed baseline"
+    concurrent_factors: List[str] = field(default_factory=list)  # Must be present
+    blocking_factors: List[str] = field(default_factory=list)    # Must be absent
+    threshold: Optional[str] = None            # e.g., ">300 lux illuminance"
+    dosage: Optional[str] = None               # e.g., "daily exposure"
+    # R1 additions (Cartwright)
+    temporal_order: Optional[str] = None       # e.g., "exposure precedes outcome by >1 hour"
+    dose_response: Optional[bool] = None       # Does effect scale with dosage?
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'minimum_exposure': self.minimum_exposure,
+            'baseline_state': self.baseline_state,
+            'concurrent_factors': self.concurrent_factors.copy(),
+            'blocking_factors': self.blocking_factors.copy(),
+            'threshold': self.threshold,
+            'dosage': self.dosage
+        }
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'EnablingConditions':
+        return cls(
+            minimum_exposure=d.get('minimum_exposure'),
+            baseline_state=d.get('baseline_state'),
+            concurrent_factors=d.get('concurrent_factors', []),
+            blocking_factors=d.get('blocking_factors', []),
+            threshold=d.get('threshold'),
+            dosage=d.get('dosage')
+        )
+
+    def is_empty(self) -> bool:
+        """Check if any enabling conditions are specified."""
+        return (
+            self.minimum_exposure is None and
+            self.baseline_state is None and
+            len(self.concurrent_factors) == 0 and
+            len(self.blocking_factors) == 0 and
+            self.threshold is None and
+            self.dosage is None
+        )
+
+
+# =============================================================================
+# CREDENCE HISTORY (Tier 1 - Panel: Simon, Epistemologist)
+# =============================================================================
+
+@dataclass
+class CredenceHistoryEntry:
+    """
+    A single entry in a belief's credence history.
+
+    Used for stability tracking and oscillation detection.
+    Per expert panel (Simon): Track credence changes to detect when
+    the web has stabilized given available evidence.
+    """
+    timestamp: datetime
+    credence_value: float
+    delta: float                    # Change from previous value
+    triggered_by: Optional[str]     # Paper ID that caused update
+    update_reason: str = ""         # Brief description of why
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'timestamp': self.timestamp.isoformat(),
+            'credence_value': self.credence_value,
+            'delta': self.delta,
+            'triggered_by': self.triggered_by,
+            'update_reason': self.update_reason
+        }
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'CredenceHistoryEntry':
+        ts = d.get('timestamp')
+        if isinstance(ts, str):
+            ts = datetime.fromisoformat(ts)
+        elif ts is None:
+            ts = datetime.now(timezone.utc)
+        return cls(
+            timestamp=ts,
+            credence_value=d.get('credence_value', 0.5),
+            delta=d.get('delta', 0.0),
+            triggered_by=d.get('triggered_by'),
+            update_reason=d.get('update_reason', '')
         )
 
 
@@ -312,11 +433,107 @@ class Belief:
     # Sprint 8: Evidence clustering (prevents double-counting multi-theory papers)
     evidence_cluster_id: Optional[str] = None  # e.g., "cluster:paper_123"
 
+    # Tier 1 additions (Expert Panel: Cartwright, Simon, Epistemologist)
+    source_depth: SourceDepth = SourceDepth.FULL_TEXT  # How deeply was source analyzed?
+    enabling_conditions: Optional[EnablingConditions] = None  # Activation requirements
+    contested: bool = False  # True if credence oscillates (genuine disagreement)
+    credence_history: List[CredenceHistoryEntry] = field(default_factory=list)
+
     def is_stub(self) -> bool:
         return self.status == BeliefStatus.STUB
 
     def is_anomalous(self) -> bool:
         return self.status == BeliefStatus.ANOMALOUS
+
+    def record_credence_change(
+        self,
+        new_credence: float,
+        triggered_by: Optional[str] = None,
+        reason: str = ""
+    ) -> None:
+        """
+        Record a credence change in history.
+
+        Per expert panel (Simon): Track changes for stability detection.
+        """
+        # Calculate delta from last recorded value, not current credence
+        if self.credence_history:
+            old_credence = self.credence_history[-1].credence_value
+        else:
+            old_credence = self.credence.value
+        delta = new_credence - old_credence
+
+        entry = CredenceHistoryEntry(
+            timestamp=datetime.now(timezone.utc),
+            credence_value=new_credence,
+            delta=delta,
+            triggered_by=triggered_by,
+            update_reason=reason
+        )
+        self.credence_history.append(entry)
+
+        # Check for oscillation (crosses threshold > twice)
+        self._check_oscillation()
+
+    def _check_oscillation(self, threshold: float = 0.5, min_crossings: int = 3) -> None:
+        """
+        Detect if credence is oscillating across a threshold.
+
+        Per expert panel (Epistemologist): Oscillation indicates genuine
+        disagreement in the literature, not noise. Flag as contested.
+        """
+        if len(self.credence_history) < min_crossings + 1:
+            return
+
+        # Count threshold crossings in recent history
+        recent = self.credence_history[-10:]  # Last 10 changes
+        crossings = 0
+        for i in range(1, len(recent)):
+            prev = recent[i - 1].credence_value
+            curr = recent[i].credence_value
+            if (prev < threshold and curr >= threshold) or \
+               (prev >= threshold and curr < threshold):
+                crossings += 1
+
+        if crossings >= min_crossings:
+            self.contested = True
+
+    def credence_stability(self, window: int = 5) -> float:
+        """
+        Calculate credence stability over recent history.
+
+        Returns the maximum absolute delta in the last `window` updates.
+        Lower values indicate more stability.
+
+        Per expert panel (Simon): Use for stopping rules.
+        """
+        if len(self.credence_history) < window:
+            return 1.0  # Not enough history, assume unstable
+
+        recent = self.credence_history[-window:]
+        max_delta = max(abs(entry.delta) for entry in recent)
+        return max_delta
+
+    def is_stable(self, threshold: float = 0.01, window: int = 5) -> bool:
+        """
+        Check if credence has stabilized.
+
+        Per expert panel (Simon): Stable if max delta < threshold
+        over the last `window` updates.
+        """
+        return self.credence_stability(window) < threshold
+
+    def credence_range(self) -> Tuple[float, float]:
+        """
+        Return the range of credence values in history.
+
+        Useful for contested beliefs where a point estimate is misleading.
+        """
+        if not self.credence_history:
+            return (self.credence.value, self.credence.value)
+
+        values = [entry.credence_value for entry in self.credence_history]
+        return (min(values), max(values))
 
     def to_dict(self) -> Dict[str, Any]:
         result = {
@@ -334,9 +551,16 @@ class Belief:
             'environment_id': self.environment_id,
             'outcome_id': self.outcome_id,
             'evidence_cluster_id': self.evidence_cluster_id,
+            # Tier 1 additions
+            'source_depth': self.source_depth.value,
+            'contested': self.contested,
         }
         if self.scope:
             result['scope'] = self.scope.to_dict()
+        if self.enabling_conditions:
+            result['enabling_conditions'] = self.enabling_conditions.to_dict()
+        if self.credence_history:
+            result['credence_history'] = [h.to_dict() for h in self.credence_history]
         return result
 
     @classmethod
@@ -345,6 +569,25 @@ class Belief:
         scope = None
         if 'scope' in d and d['scope']:
             scope = ScopeConditions.from_dict(d['scope'])
+
+        # Parse enabling conditions (Tier 1 addition)
+        enabling_conditions = None
+        if 'enabling_conditions' in d and d['enabling_conditions']:
+            enabling_conditions = EnablingConditions.from_dict(d['enabling_conditions'])
+
+        # Parse credence history (Tier 1 addition)
+        credence_history = []
+        if 'credence_history' in d and d['credence_history']:
+            credence_history = [
+                CredenceHistoryEntry.from_dict(h) for h in d['credence_history']
+            ]
+
+        # Parse source depth (Tier 1 addition)
+        source_depth_str = d.get('source_depth', 'full_text')
+        try:
+            source_depth = SourceDepth(source_depth_str)
+        except ValueError:
+            source_depth = SourceDepth.FULL_TEXT
 
         credence_data = d.get('credence', {})
         if isinstance(credence_data, dict):
@@ -372,7 +615,12 @@ class Belief:
             scope=scope,
             environment_id=d.get('environment_id'),
             outcome_id=d.get('outcome_id'),
-            evidence_cluster_id=d.get('evidence_cluster_id')
+            evidence_cluster_id=d.get('evidence_cluster_id'),
+            # Tier 1 additions
+            source_depth=source_depth,
+            enabling_conditions=enabling_conditions,
+            contested=d.get('contested', False),
+            credence_history=credence_history
         )
 
 

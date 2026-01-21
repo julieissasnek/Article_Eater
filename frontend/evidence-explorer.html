@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evidence Explorer - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Evidence Explorer specific styles */
+    :root {
+      --graph-bg: #f8fafc;
+      --node-stroke: #1e293b;
+      --edge-default: #94a3b8;
+      --edge-supports: #22c55e;
+      --edge-contradicts: #ef4444;
+      --edge-correlational: #a855f7;
+    }
+
+    .explorer-container {
+      display: flex;
+      height: calc(100vh - 80px);
+      gap: var(--space-md);
+    }
+
+    /* Graph container */
+    .graph-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--graph-bg);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .graph-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .graph-toolbar-left {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    .graph-toolbar-right {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    #cy {
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Category filter dropdown */
+    .category-filter {
+      padding: var(--space-xs) var(--space-sm);
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.875rem;
+    }
+
+    /* Detail panel (slide-out per panel feedback) */
+    .detail-panel {
+      width: 400px;
+      background: white;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+
+    .detail-panel.hidden {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .detail-header {
+      padding: var(--space-md);
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .detail-header h3 {
+      margin: 0 0 var(--space-xs) 0;
+      font-size: 1rem;
+    }
+
+    .detail-close {
+      position: absolute;
+      right: var(--space-md);
+      top: var(--space-md);
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    .detail-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-md);
+    }
+
+    /* Progressive disclosure levels per Simon */
+    .headline-view {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: var(--space-md);
+      padding: var(--space-md);
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+    }
+
+    .summary-view {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .traffic-light {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .traffic-light.green { background: #22c55e; }
+    .traffic-light.yellow { background: #eab308; }
+    .traffic-light.red { background: #ef4444; }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .stat-item {
+      padding: var(--space-sm);
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* Expand details button */
+    .expand-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      padding: var(--space-sm);
+      width: 100%;
+      border: 1px dashed var(--gray-300);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--gray-600);
+      cursor: pointer;
+      margin-bottom: var(--space-md);
+    }
+
+    .expand-details:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+    }
+
+    /* Full detail section */
+    .full-details {
+      display: none;
+    }
+
+    .full-details.expanded {
+      display: block;
+    }
+
+    .detail-section {
+      margin-bottom: var(--space-md);
+    }
+
+    .detail-section h4 {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      margin-bottom: var(--space-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .constraint-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .constraint-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm);
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-xs);
+      font-size: 0.875rem;
+    }
+
+    .constraint-type {
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      text-transform: uppercase;
+    }
+
+    .constraint-type.supports { background: #dcfce7; color: #166534; }
+    .constraint-type.contradicts { background: #fee2e2; color: #991b1b; }
+
+    /* Stability panel */
+    .stability-panel {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .stability-bar {
+      height: 8px;
+      background: var(--gray-200);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: var(--space-sm);
+    }
+
+    .stability-fill {
+      height: 100%;
+      background: var(--success);
+      transition: width 0.3s ease;
+    }
+
+    .stability-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    /* Contested badge */
+    .contested-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    /* Legend */
+    .legend {
+      padding: var(--space-sm);
+      background: white;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+    }
+
+    .legend-title {
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-bottom: 4px;
+    }
+
+    .legend-line {
+      width: 20px;
+      height: 2px;
+    }
+
+    .legend-line.supports { background: var(--edge-supports); }
+    .legend-line.contradicts { background: var(--edge-contradicts); }
+    .legend-line.correlational {
+      background: var(--edge-correlational);
+      border-style: dashed;
+    }
+
+    /* Search box */
+    .search-box {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: var(--space-xs) var(--space-sm);
+      padding-left: 36px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+    }
+
+    /* Loading state */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--primary-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--gray-500);
+    }
+
+    .empty-state h3 {
+      margin-bottom: var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar (same as other pages) -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">Article Eater</h1>
+        <span class="version">v21.0.0</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li><a href="library.html">Library</a></li>
+        <li class="active"><a href="evidence-explorer.html">Evidence Explorer</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="findings.html">Findings</a></li>
+        <li><a href="queue.html">Queue</a></li>
+        <li><a href="usage.html">Usage</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Evidence Explorer</h1>
+        <p class="header-subtitle">Visualize the web of belief</p>
+      </header>
+
+      <!-- Stability Summary (per Panel feedback) -->
+      <div class="stability-panel" id="stability-panel">
+        <div class="stability-bar">
+          <div class="stability-fill" id="stability-fill" style="width: 0%"></div>
+        </div>
+        <div class="stability-stats">
+          <span><strong id="stable-count">0</strong> stable</span>
+          <span><strong id="unstable-count">0</strong> evolving</span>
+          <span><strong id="contested-count">0</strong> contested</span>
+          <span id="papers-count">0 papers processed</span>
+        </div>
+      </div>
+
+      <!-- Explorer Container -->
+      <div class="explorer-container">
+        <!-- Graph Panel -->
+        <div class="graph-panel">
+          <div class="graph-toolbar">
+            <div class="graph-toolbar-left">
+              <div class="search-box">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" id="search-input" placeholder="Search beliefs...">
+              </div>
+              <select class="category-filter" id="category-filter">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+            <div class="graph-toolbar-right">
+              <button class="btn btn-sm" id="zoom-in">+</button>
+              <button class="btn btn-sm" id="zoom-out">-</button>
+              <button class="btn btn-sm" id="fit-graph">Fit</button>
+              <button class="btn btn-sm btn-primary" id="load-demo">Load Demo</button>
+            </div>
+          </div>
+
+          <!-- Cytoscape container -->
+          <div id="cy">
+            <div class="empty-state" id="empty-state">
+              <h3>No data loaded</h3>
+              <p>Click "Load Demo" to see sample evidence</p>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="legend">
+            <div class="legend-title">Edge Types</div>
+            <div class="legend-item">
+              <div class="legend-line supports"></div>
+              <span>Supports</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-line contradicts"></div>
+              <span>Contradicts</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-line correlational" style="border-top: 2px dashed #a855f7;"></div>
+              <span>Correlational (no arrow)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail Panel (slide-out per Panel feedback) -->
+        <div class="detail-panel hidden" id="detail-panel">
+          <div class="detail-header" style="position: relative;">
+            <h3 id="detail-title">Belief Details</h3>
+            <button class="detail-close" id="close-detail">&times;</button>
+          </div>
+          <div class="detail-content">
+            <!-- Headline view (Level 1 per Simon) -->
+            <div class="headline-view" id="headline-view">
+              Select a node to view details
+            </div>
+
+            <!-- Summary view (Level 2 per Simon) -->
+            <div class="summary-view" id="summary-view">
+              <div class="traffic-light" id="traffic-light"></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Confidence</div>
+                  <div class="stat-value" id="credence-value">-</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Sources</div>
+                  <div class="stat-value" id="source-count">-</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Stability</div>
+                  <div class="stat-value" id="stability-status">-</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Status</div>
+                  <div class="stat-value" id="belief-status">-</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expand button -->
+            <button class="expand-details" id="expand-btn">
+              <span id="expand-icon">&#9660;</span>
+              <span id="expand-text">Show Full Details</span>
+            </button>
+
+            <!-- Full details (Level 3 per Simon) -->
+            <div class="full-details" id="full-details">
+              <div class="detail-section">
+                <h4>Scope Conditions</h4>
+                <div id="scope-conditions">No scope conditions specified</div>
+              </div>
+
+              <div class="detail-section">
+                <h4>Enabling Conditions</h4>
+                <div id="enabling-conditions">No enabling conditions specified</div>
+              </div>
+
+              <div class="detail-section">
+                <h4>Connected Beliefs</h4>
+                <ul class="constraint-list" id="constraints-list">
+                  <li class="constraint-item">No connections</li>
+                </ul>
+              </div>
+
+              <div class="detail-section">
+                <h4>Source Papers</h4>
+                <ul id="source-list">
+                  <li>No sources</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Cytoscape.js CDN -->
+  <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+
+  <script>
+    // API base URL
+    const API_BASE = window.location.origin + '/api/v1/web';
+
+    // Global state
+    let cy = null;
+    let selectedNode = null;
+
+    // Initialize Cytoscape
+    function initCytoscape() {
+      cy = cytoscape({
+        container: document.getElementById('cy'),
+        style: [
+          // Node styles
+          {
+            selector: 'node',
+            style: {
+              'background-color': (ele) => getCategoryColor(ele.data('outcome_category')),
+              'label': (ele) => truncateLabel(ele.data('label') || ele.data('content')),
+              'text-valign': 'bottom',
+              'text-halign': 'center',
+              'font-size': '10px',
+              'width': (ele) => 20 + (ele.data('credence') || 0.5) * 30,
+              'height': (ele) => 20 + (ele.data('credence') || 0.5) * 30,
+              'border-width': (ele) => ele.data('contested') ? 3 : 1,
+              'border-color': (ele) => ele.data('contested') ? '#eab308' : '#1e293b',
+              'border-style': (ele) => ele.data('contested') ? 'dashed' : 'solid'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': 4,
+              'border-color': '#3b82f6'
+            }
+          },
+          // Edge styles per Pearl's recommendation
+          {
+            selector: 'edge',
+            style: {
+              'width': 2,
+              'line-color': '#94a3b8',
+              'curve-style': 'bezier'
+            }
+          },
+          {
+            selector: 'edge[type="SUPPORTS"]',
+            style: {
+              'line-color': '#22c55e',
+              'target-arrow-color': '#22c55e',
+              'target-arrow-shape': 'triangle'
+            }
+          },
+          {
+            selector: 'edge[type="CONTRADICTS"]',
+            style: {
+              'line-color': '#ef4444',
+              'target-arrow-color': '#ef4444',
+              'target-arrow-shape': 'triangle'
+            }
+          },
+          // Correlational edges: no arrowhead, reduced opacity (Pearl)
+          {
+            selector: 'edge[is_correlational]',
+            style: {
+              'line-color': '#a855f7',
+              'line-style': 'dashed',
+              'opacity': 0.5,
+              'target-arrow-shape': 'none'  // No arrowhead per Pearl
+            }
+          }
+        ],
+        layout: {
+          name: 'cose',
+          animate: false,
+          nodeRepulsion: 8000,
+          nodeOverlap: 20,
+          idealEdgeLength: 100
+        }
+      });
+
+      // Node click handler
+      cy.on('tap', 'node', function(evt) {
+        const node = evt.target;
+        selectedNode = node;
+        showNodeDetail(node.data('id'));
+      });
+
+      // Background click - hide detail
+      cy.on('tap', function(evt) {
+        if (evt.target === cy) {
+          hideDetailPanel();
+        }
+      });
+    }
+
+    // Category color mapping
+    function getCategoryColor(category) {
+      const colors = {
+        'productivity': '#3b82f6',
+        'stress_reduction': '#22c55e',
+        'stress': '#22c55e',
+        'cognitive_performance': '#8b5cf6',
+        'cognitive_development': '#8b5cf6',
+        'health_outcomes': '#ec4899',
+        'air_quality': '#06b6d4',
+        'uncategorized': '#94a3b8'
+      };
+      return colors[category] || colors['uncategorized'];
+    }
+
+    // Truncate long labels
+    function truncateLabel(text) {
+      if (!text) return '';
+      return text.length > 40 ? text.substring(0, 37) + '...' : text;
+    }
+
+    // Load graph data
+    async function loadGraph(maxNodes = 30, minCredence = 0, category = '') {
+      try {
+        showLoading(true);
+        const params = new URLSearchParams({
+          max_nodes: maxNodes,
+          min_credence: minCredence
+        });
+        if (category) params.append('outcome_category', category);
+
+        const response = await fetch(`${API_BASE}/graph?${params}`);
+        const data = await response.json();
+
+        // Hide empty state
+        document.getElementById('empty-state').style.display = 'none';
+
+        // Clear and add elements
+        cy.elements().remove();
+
+        const elements = [];
+
+        // Add nodes
+        for (const node of data.nodes) {
+          elements.push({
+            data: {
+              id: node.id,
+              label: node.label || node.content,
+              content: node.content,
+              credence: node.credence,
+              outcome_category: node.outcome_category,
+              contested: node.contested,
+              status: node.status
+            }
+          });
+        }
+
+        // Add edges
+        for (const edge of data.edges) {
+          elements.push({
+            data: {
+              id: edge.id,
+              source: edge.source,
+              target: edge.target,
+              type: edge.type,
+              is_correlational: edge.is_correlational,
+              strength: edge.strength
+            }
+          });
+        }
+
+        cy.add(elements);
+        cy.layout({ name: 'cose', animate: false }).run();
+
+        showLoading(false);
+      } catch (error) {
+        console.error('Error loading graph:', error);
+        showLoading(false);
+      }
+    }
+
+    // Load stability data
+    async function loadStability() {
+      try {
+        const response = await fetch(`${API_BASE}/stability`);
+        const data = await response.json();
+
+        const total = data.total_beliefs || 1;
+        const stablePercent = (data.stable_beliefs / total) * 100;
+
+        document.getElementById('stability-fill').style.width = stablePercent + '%';
+        document.getElementById('stable-count').textContent = data.stable_beliefs;
+        document.getElementById('unstable-count').textContent = data.unstable_beliefs;
+        document.getElementById('contested-count').textContent = data.contested_beliefs;
+        document.getElementById('papers-count').textContent = data.papers_processed + ' papers processed';
+
+      } catch (error) {
+        console.error('Error loading stability:', error);
+      }
+    }
+
+    // Load categories for filter
+    async function loadCategories() {
+      try {
+        const response = await fetch(`${API_BASE}/categories`);
+        const data = await response.json();
+
+        const select = document.getElementById('category-filter');
+        select.innerHTML = '<option value="">All Categories</option>';
+
+        for (const cat of data.categories) {
+          const option = document.createElement('option');
+          option.value = cat.name;
+          option.textContent = `${cat.name} (${cat.count})`;
+          select.appendChild(option);
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    }
+
+    // Show node detail in panel
+    async function showNodeDetail(nodeId) {
+      try {
+        const response = await fetch(`${API_BASE}/node/${nodeId}`);
+        const data = await response.json();
+
+        // Show panel
+        document.getElementById('detail-panel').classList.remove('hidden');
+
+        // Headline view
+        document.getElementById('headline-view').textContent = data.headline;
+
+        // Summary view
+        const light = document.getElementById('traffic-light');
+        light.className = 'traffic-light ' + data.summary.traffic_light;
+
+        document.getElementById('credence-value').textContent =
+          (data.summary.credence_value * 100).toFixed(0) + '%';
+        document.getElementById('source-count').textContent = data.summary.source_count;
+        document.getElementById('stability-status').textContent = data.summary.stability_status;
+        document.getElementById('belief-status').textContent = data.status;
+
+        // Full details - scope
+        const scopeDiv = document.getElementById('scope-conditions');
+        if (data.scope) {
+          scopeDiv.innerHTML = `
+            <div>Population: ${data.scope.population || 'Any'}</div>
+            <div>Environment: ${data.scope.environment || 'Any'}</div>
+            <div>Time: ${data.scope.temporal || 'Any'}</div>
+          `;
+        } else {
+          scopeDiv.textContent = 'No scope conditions specified';
+        }
+
+        // Enabling conditions
+        const enablingDiv = document.getElementById('enabling-conditions');
+        if (data.enabling_conditions) {
+          const ec = data.enabling_conditions;
+          const parts = [];
+          if (ec.threshold) parts.push(`Threshold: ${ec.threshold}`);
+          if (ec.temporal_order) parts.push(`Timing: ${ec.temporal_order}`);
+          if (ec.minimum_exposure) parts.push(`Min exposure: ${ec.minimum_exposure}`);
+          enablingDiv.innerHTML = parts.length ? parts.join('<br>') : 'None specified';
+        } else {
+          enablingDiv.textContent = 'No enabling conditions specified';
+        }
+
+        // Constraints
+        const constraintsList = document.getElementById('constraints-list');
+        const allConstraints = [...(data.outgoing_constraints || []), ...(data.incoming_constraints || [])];
+        if (allConstraints.length > 0) {
+          constraintsList.innerHTML = allConstraints.map(c => `
+            <li class="constraint-item">
+              <span class="constraint-type ${c.type.toLowerCase()}">${c.type}</span>
+              ${c.target_content || c.source_content || 'Unknown'}
+            </li>
+          `).join('');
+        } else {
+          constraintsList.innerHTML = '<li class="constraint-item">No connections</li>';
+        }
+
+        // Sources
+        const sourceList = document.getElementById('source-list');
+        if (data.sources && data.sources.length > 0) {
+          sourceList.innerHTML = data.sources.map(s => `
+            <li>${s.paper_id || 'Unknown source'}</li>
+          `).join('');
+        } else {
+          sourceList.innerHTML = '<li>No sources</li>';
+        }
+
+      } catch (error) {
+        console.error('Error loading node detail:', error);
+      }
+    }
+
+    // Hide detail panel
+    function hideDetailPanel() {
+      document.getElementById('detail-panel').classList.add('hidden');
+      selectedNode = null;
+      if (cy) cy.$(':selected').unselect();
+    }
+
+    // Toggle full details
+    function toggleFullDetails() {
+      const fullDetails = document.getElementById('full-details');
+      const expandIcon = document.getElementById('expand-icon');
+      const expandText = document.getElementById('expand-text');
+
+      if (fullDetails.classList.contains('expanded')) {
+        fullDetails.classList.remove('expanded');
+        expandIcon.textContent = '\u25BC';
+        expandText.textContent = 'Show Full Details';
+      } else {
+        fullDetails.classList.add('expanded');
+        expandIcon.textContent = '\u25B2';
+        expandText.textContent = 'Hide Details';
+      }
+    }
+
+    // Show/hide loading
+    function showLoading(show) {
+      // Could add loading overlay here
+    }
+
+    // Load demo data
+    async function loadDemo() {
+      try {
+        await fetch(`${API_BASE}/admin/load-demo`, { method: 'POST' });
+        await loadGraph();
+        await loadStability();
+        await loadCategories();
+      } catch (error) {
+        console.error('Error loading demo:', error);
+      }
+    }
+
+    // Search handler
+    async function handleSearch(query) {
+      if (!query) {
+        await loadGraph();
+        return;
+      }
+      try {
+        const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        // Highlight matching nodes
+        cy.nodes().removeClass('highlighted');
+        for (const result of data.beliefs) {
+          const node = cy.getElementById(result.id);
+          if (node.length) {
+            node.addClass('highlighted');
+          }
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initCytoscape();
+
+      // Event listeners
+      document.getElementById('load-demo').addEventListener('click', loadDemo);
+      document.getElementById('close-detail').addEventListener('click', hideDetailPanel);
+      document.getElementById('expand-btn').addEventListener('click', toggleFullDetails);
+
+      document.getElementById('zoom-in').addEventListener('click', () => cy.zoom(cy.zoom() * 1.2));
+      document.getElementById('zoom-out').addEventListener('click', () => cy.zoom(cy.zoom() / 1.2));
+      document.getElementById('fit-graph').addEventListener('click', () => cy.fit());
+
+      document.getElementById('category-filter').addEventListener('change', (e) => {
+        loadGraph(30, 0, e.target.value);
+      });
+
+      let searchTimeout;
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => handleSearch(e.target.value), 300);
+      });
+
+      // Try to load initial data
+      loadGraph().then(() => {
+        loadStability();
+        loadCategories();
+      });
+    });
+  </script>
+</body>
+</html>

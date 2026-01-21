@@ -2,7 +2,7 @@
 Article Eater - Extraction to Web of Belief Mapper
 ===================================================
 
-Sprint 1: Core Mapper Implementation
+Sprint 1: Core Mapper Implementation (Post-Expert Panel Review 2026-01-18)
 
 Maps contract pipeline outputs (ae.claim.v1, ae.rule.v1) to the Quinean
 web of belief (web_of_belief.py), enabling coherentist analysis of
@@ -18,12 +18,21 @@ Key Mappings:
 - outcome constructs → Theory relevance
 - Missing theory connections → Stub status
 
-Design Decisions (see Expert Panel Checkpoint notes):
-1. claim_type mapping follows epistemic hierarchy (mechanistic=THEORETICAL,
-   causal=INTERMEDIATE, associational=EMPIRICAL, etc.)
-2. Theory inference uses outcome taxonomy + keyword matching
-3. Null findings become ANOMALOUS beliefs (not discarded)
-4. Population scope preserved in belief metadata
+Expert Panel Resolutions (2026-01-18):
+1. claim_type → EpistemicLevel: "mechanistic" maps to INTERMEDIATE (not THEORETICAL)
+   - Mechanistic claims are higher-generality generalizations, not core theory
+   - Mechanistic claims get entrenchment boost (+0.15)
+2. Theory threshold (0.4) is configurable via AE_THEORY_THRESHOLD env var
+   - Multi-theory attachment supported for claims relevant to multiple theories
+   - Secondary theories attached if score >= SECONDARY_THEORY_THRESHOLD (0.3)
+3. Null findings are NOT automatically ANOMALOUS
+   - No 50% credence penalty for null findings
+   - Evidential direction tracked separately (supports/contradicts)
+4. Theory inference uses diminishing returns (not max())
+   - Multiple signals boost confidence but don't accumulate unboundedly
+   - Formula: combined = 1 - (1 - current) * (1 - new * 0.5)
+5. POLARITY_MODIFIERS: null → CONTRADICTS (not INDEPENDENT) with 0.6 strength
+   - Null findings are evidence AGAINST an effect, not absence of evidence
 
 Future Integration Points:
 - TheoryRegistry: Belief IDs designed to be compatible with prediction_id format
@@ -42,6 +51,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import json
 import logging
+import os
 import re
 
 # Import target structures from web of belief
@@ -67,15 +77,32 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 # Map claim_type to EpistemicLevel
-# Expert Panel Decision Point: Is this mapping philosophically defensible?
+# Expert Panel Resolution (2026-01-18):
+#   - "mechanistic" → INTERMEDIATE (not THEORETICAL)
+#   - Mechanistic claims are higher-generality generalizations, not core theory commitments
+#   - True THEORETICAL: "nature reduces stress" (core theory statement)
+#   - INTERMEDIATE: "reduced cortisol mediates nature's stress effects" (mechanistic)
 CLAIM_TYPE_TO_LEVEL: Dict[str, EpistemicLevel] = {
-    "mechanistic": EpistemicLevel.THEORETICAL,    # Mechanism claims are theory-level
+    "mechanistic": EpistemicLevel.INTERMEDIATE,    # Mechanistic = higher-generality generalization
     "causal": EpistemicLevel.INTERMEDIATE,         # Generalizations
     "associational": EpistemicLevel.EMPIRICAL,     # Single-study findings
     "moderated": EpistemicLevel.EMPIRICAL,         # With moderator metadata
     "descriptive": EpistemicLevel.OBSERVATIONAL,   # Direct measurements
-    "null": EpistemicLevel.EMPIRICAL,              # Null findings (mark as anomalous)
+    "null": EpistemicLevel.EMPIRICAL,              # Null findings
 }
+
+# Entrenchment boost for mechanistic claims (they license more inferences)
+MECHANISTIC_ENTRENCHMENT_BOOST: float = 0.15
+
+# Theory inference threshold (configurable via environment variable)
+# Expert Panel Resolution (2026-01-18):
+#   - Default 0.4 is reasonable for discriminating multi-source theories
+#   - Can be adjusted via AE_THEORY_THRESHOLD env var for different corpora
+THEORY_THRESHOLD: float = float(os.environ.get("AE_THEORY_THRESHOLD", "0.4"))
+
+# Secondary theory threshold for multi-theory attachment
+# Theories scoring above this get attached as secondary
+SECONDARY_THEORY_THRESHOLD: float = float(os.environ.get("AE_SECONDARY_THEORY_THRESHOLD", "0.3"))
 
 # Map rule_type + polarity to ConstraintType
 RULE_TYPE_TO_CONSTRAINT: Dict[str, ConstraintType] = {
@@ -87,10 +114,14 @@ RULE_TYPE_TO_CONSTRAINT: Dict[str, ConstraintType] = {
 }
 
 # Map polarity to constraint behavior
+# Expert Panel Resolution (2026-01-18):
+#   - Null findings CONTRADICT the predicted effect (not INDEPENDENT)
+#   - Strength 0.6 reflects that null findings are meaningful evidence
+#   - INDEPENDENT was wrong: a null is evidence against, not absence of evidence
 POLARITY_MODIFIERS: Dict[str, Tuple[ConstraintType, float]] = {
     "positive": (ConstraintType.SUPPORTS, 1.0),
     "negative": (ConstraintType.CONTRADICTS, 1.0),
-    "null": (ConstraintType.INDEPENDENT, 0.3),
+    "null": (ConstraintType.CONTRADICTS, 0.6),   # Null findings contradict the effect
     "u_shaped": (ConstraintType.SUPPORTS, 0.7),  # Partial support
     "unknown": (ConstraintType.SUPPORTS, 0.5),   # Uncertain support
 }
@@ -144,21 +175,29 @@ class MappingResult:
     entity_id: str
     entity_type: str  # "belief" or "constraint"
     entity: Optional[Any] = None
-    
+
     # Diagnostic info
     theory_inferences: Dict[str, float] = field(default_factory=dict)
+    # Multi-theory attachment: all theories above secondary threshold
+    # Expert Panel Resolution (2026-01-18): Allow multi-theory attachment
+    theory_ids: Dict[str, float] = field(default_factory=dict)
+    primary_theory_id: Optional[str] = None
     is_stub: bool = False
     stub_reason: Optional[str] = None
+    inference_trace: List[str] = field(default_factory=list)  # Audit trail for theory inference
     warnings: List[str] = field(default_factory=list)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'success': self.success,
             'entity_id': self.entity_id,
             'entity_type': self.entity_type,
             'theory_inferences': self.theory_inferences,
+            'theory_ids': self.theory_ids,
+            'primary_theory_id': self.primary_theory_id,
             'is_stub': self.is_stub,
             'stub_reason': self.stub_reason,
+            'inference_trace': self.inference_trace,
             'warnings': self.warnings
         }
 
@@ -248,35 +287,64 @@ def infer_semantic_status(claim: Dict[str, Any]) -> SemanticStatus:
     return SemanticStatus.PERIPHERAL
 
 
+def _diminishing_returns_combine(current: float, new_score: float) -> float:
+    """
+    Combine scores using diminishing returns formula.
+
+    Expert Panel Resolution (2026-01-18):
+    - Multiple signals for the same theory should boost confidence
+    - But each additional signal adds less than the previous
+    - Formula: combined = 1 - (1 - current) * (1 - new * 0.5)
+    - This prevents runaway accumulation while rewarding corroboration
+
+    Example:
+    - 0.0 + 0.6 → 0.30 (first signal worth half its value)
+    - 0.3 + 0.6 → 0.51 (second signal still helps, but less)
+    - 0.5 + 0.6 → 0.65 (third signal helps even less)
+    """
+    if current == 0:
+        return new_score * 0.5
+    return 1 - (1 - current) * (1 - new_score * 0.5)
+
+
+@dataclass
+class TheoryInferenceResult:
+    """Result of theory inference with audit trail."""
+    relevance: Dict[str, float]
+    trace: List[str]  # Human-readable audit trail
+
+
 def infer_theory_relevance(
     claim: Dict[str, Any],
     outcome_lookup: Optional[Dict[str, Any]] = None
 ) -> Dict[str, float]:
     """
     Infer which theories this claim is relevant to.
-    
-    Uses three strategies:
+
+    Uses three strategies with diminishing returns combination:
     1. Outcome taxonomy mapping (most reliable)
     2. Statement keyword matching (fallback)
     3. Environment factor matching (additional signal)
-    
+
+    Expert Panel Resolution (2026-01-18):
+    - Uses diminishing returns instead of max() for score combination
+    - Multiple signals boost confidence but don't accumulate unboundedly
+    - Maintains audit trail for transparency
+
     Returns: Dict[theory_id, relevance_score (0-1)]
-    
-    Expert Panel Decision Point:
-    - Is keyword-based inference too noisy?
-    - What's the right threshold for declaring a stub?
     """
     relevance: Dict[str, float] = {}
-    
+    trace: List[str] = []
+
     constructs = claim.get("constructs", {})
     outcomes = constructs.get("outcomes", [])
     environment_factors = constructs.get("environment_factors", [])
     statement = claim.get("statement", "").lower()
-    
+
     # Strategy 1: Outcome taxonomy mapping
     for outcome in outcomes:
         outcome_id = outcome.get("id", "")
-        
+
         # Check hierarchical matches (e.g., cog.attention.sustained matches cog, cog.attention)
         parts = outcome_id.split(".")
         for i in range(len(parts), 0, -1):
@@ -285,44 +353,65 @@ def infer_theory_relevance(
                 for theory in OUTCOME_DOMAIN_TO_THEORY[partial_id]:
                     # More specific matches get higher scores
                     score = 0.5 + (i / len(parts)) * 0.3
-                    relevance[theory] = max(relevance.get(theory, 0), score)
-    
+                    old_val = relevance.get(theory, 0)
+                    relevance[theory] = _diminishing_returns_combine(old_val, score)
+                    trace.append(f"Outcome:{partial_id}→{theory} score={score:.2f} (combined: {old_val:.2f}→{relevance[theory]:.2f})")
+
     # Strategy 2: Keyword matching
     for theory, keywords in THEORY_KEYWORDS.items():
         for keyword in keywords:
             if keyword.lower() in statement:
                 # Keywords in statement provide moderate signal
-                relevance[theory] = max(relevance.get(theory, 0), 0.6)
+                old_val = relevance.get(theory, 0)
+                relevance[theory] = _diminishing_returns_combine(old_val, 0.6)
+                trace.append(f"Keyword:'{keyword}'→{theory} score=0.60 (combined: {old_val:.2f}→{relevance[theory]:.2f})")
                 break
-    
+
     # Strategy 3: Environment factors (weaker signal)
     for env_factor in environment_factors:
         env_id = env_factor.get("id", "").lower()
         if any(w in env_id for w in ["nature", "green", "plant", "outdoor", "park"]):
             # Nature-related factors suggest ART, SRT, Biophilia
             for theory in ["ART", "SRT", "Biophilia"]:
-                relevance[theory] = max(relevance.get(theory, 0), 0.4)
-    
+                old_val = relevance.get(theory, 0)
+                relevance[theory] = _diminishing_returns_combine(old_val, 0.4)
+                trace.append(f"EnvFactor:{env_id}→{theory} score=0.40 (combined: {old_val:.2f}→{relevance[theory]:.2f})")
+
+    # Log trace at debug level
+    if trace:
+        logger.debug(f"Theory inference trace for claim: {trace}")
+
     return relevance
+
+
+@dataclass
+class CredenceResult:
+    """Result of credence computation with evidential direction."""
+    credence: "Credence"
+    evidential_direction: str  # "supports", "contradicts", or "neutral"
 
 
 def compute_credence_from_statistics(
     ae_confidence: float,
     statistics: Dict[str, Any],
     claim_type: str
-) -> Credence:
+) -> CredenceResult:
     """
     Compute initial credence from AE confidence and statistics.
-    
+
+    Expert Panel Resolution (2026-01-18):
+    - No automatic credence penalty for null findings
+    - Null findings are valid evidence that happened NOT to find an effect
+    - Track evidential direction separately from credence value
+
     Combines:
     - ae_confidence: Extraction confidence (how sure we are about the claim)
     - p_value: Statistical significance (if available)
     - effect_size: Magnitude of effect
-    - claim_type: Null claims start lower
     """
     # Base credence from AE confidence
     base_value = ae_confidence
-    
+
     # Adjust for p-value if available
     p_value = statistics.get("p_value")
     if p_value is not None:
@@ -332,31 +421,42 @@ def compute_credence_from_statistics(
             pass  # No adjustment
         elif p_value > 0.1:
             base_value = max(0.3, base_value * 0.8)
-    
-    # Null findings get lower initial credence
-    # (The finding is real, but it's evidence AGAINST an effect)
-    if claim_type == "null":
-        base_value = base_value * 0.5  # More uncertain
-    
+
+    # Expert Panel Resolution: NO automatic penalty for null findings
+    # Null findings are valid evidence with the same credence as positive findings
+    # The direction (supports vs contradicts) is tracked separately
+
     # Compute uncertainty (meta-uncertainty)
     # Higher with fewer statistics, lower with more
     effect_size = statistics.get("effect_size", {})
     ci95 = statistics.get("ci95")
-    
+
     uncertainty = 0.4  # Default
     if effect_size.get("value") is not None and ci95 is not None:
         # Have both effect size and CI: lower uncertainty
         uncertainty = 0.25
     elif effect_size.get("value") is not None or ci95 is not None:
         uncertainty = 0.35
-    
-    return Credence(
+
+    # Determine evidential direction
+    if claim_type == "null":
+        evidential_direction = "contradicts"  # Null findings contradict the effect
+        n_supporting = 0
+        n_contradicting = 1
+    else:
+        evidential_direction = "supports"
+        n_supporting = 1
+        n_contradicting = 0
+
+    credence = Credence(
         value=max(0.1, min(0.9, base_value)),
         uncertainty=uncertainty,
-        n_supporting=1 if claim_type != "null" else 0,
-        n_contradicting=1 if claim_type == "null" else 0,
+        n_supporting=n_supporting,
+        n_contradicting=n_contradicting,
         n_observations=1
     )
+
+    return CredenceResult(credence=credence, evidential_direction=evidential_direction)
 
 
 def claim_to_belief(
@@ -397,34 +497,53 @@ def claim_to_belief(
         # Infer theory relevance
         theory_inferences = infer_theory_relevance(claim, outcome_lookup)
         result.theory_inferences = theory_inferences
-        
-        # Determine theory_id (best match) or mark as stub
+
+        # Determine theory attachment with multi-theory support
+        # Expert Panel Resolution (2026-01-18): Use configurable threshold and allow multi-theory
         theory_id = None
+        attached_theories: Dict[str, float] = {}
+
         if theory_inferences:
-            best_theory = max(theory_inferences, key=theory_inferences.get)
-            best_score = theory_inferences[best_theory]
-            
-            # Threshold for theory assignment (Expert Panel Decision Point)
-            if best_score >= 0.4:
+            # Sort theories by score descending
+            sorted_theories = sorted(theory_inferences.items(), key=lambda x: x[1], reverse=True)
+            best_theory, best_score = sorted_theories[0]
+
+            # Primary theory: must meet main threshold
+            if best_score >= THEORY_THRESHOLD:
                 theory_id = best_theory
+                result.primary_theory_id = best_theory
+                result.inference_trace.append(f"Primary: {best_theory}={best_score:.2f} (threshold={THEORY_THRESHOLD})")
+
+                # Attach secondary theories above secondary threshold
+                for theory, score in sorted_theories:
+                    if score >= SECONDARY_THEORY_THRESHOLD:
+                        attached_theories[theory] = score
+                        if theory != best_theory:
+                            result.inference_trace.append(f"Secondary: {theory}={score:.2f}")
             else:
                 result.is_stub = True
-                result.stub_reason = f"Theory scores below threshold (best: {best_theory}={best_score:.2f})"
+                result.stub_reason = f"Theory scores below threshold (best: {best_theory}={best_score:.2f}, threshold={THEORY_THRESHOLD})"
+                result.inference_trace.append(f"Stub: best={best_theory}={best_score:.2f} < threshold={THEORY_THRESHOLD}")
         else:
             result.is_stub = True
             result.stub_reason = "No theory relevance inferred from outcomes or statement"
-        
+            result.inference_trace.append("Stub: no theory relevance detected")
+
+        result.theory_ids = attached_theories
+
+        # Compute credence (returns CredenceResult with evidential_direction)
+        credence_result = compute_credence_from_statistics(ae_confidence, statistics, claim_type)
+        credence = credence_result.credence
+
         # Determine status
+        # Expert Panel Resolution (2026-01-18): Null findings are NOT automatically ANOMALOUS
+        # They are valid TENTATIVE evidence that happens to contradict an effect
         if result.is_stub:
             status = BeliefStatus.STUB
-        elif claim_type == "null":
-            status = BeliefStatus.ANOMALOUS
-            result.warnings.append("Null finding marked as anomalous")
         else:
             status = BeliefStatus.TENTATIVE
-        
-        # Compute credence
-        credence = compute_credence_from_statistics(ae_confidence, statistics, claim_type)
+            if claim_type == "null":
+                result.inference_trace.append(f"Evidential direction: {credence_result.evidential_direction}")
         
         # Extract temporal parameters if available
         temporal_params = None
@@ -433,6 +552,11 @@ def claim_to_belief(
             # Could track temporal onset/duration if encoded in study.task
             pass  # Future enhancement
         
+        # Compute entrenchment (mechanistic claims get a boost)
+        base_entrenchment = 0.3 if not result.is_stub else 0.1
+        if claim_type == "mechanistic":
+            base_entrenchment += MECHANISTIC_ENTRENCHMENT_BOOST
+
         # Create the Belief
         belief = Belief(
             belief_id=claim_id,
@@ -440,7 +564,7 @@ def claim_to_belief(
             level=level,
             status=status,
             credence=credence,
-            entrenchment=0.3 if not result.is_stub else 0.1,
+            entrenchment=base_entrenchment,
             paper_ids=[paper_id],
             theory_id=theory_id,
             domain=_extract_domain(constructs),

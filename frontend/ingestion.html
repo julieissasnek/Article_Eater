@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Eater - Ingestion UI</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .panel-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Beliefs Section */
+        .beliefs-section {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .beliefs-section h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .belief-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .belief-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .belief-number {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .belief-card .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .belief-card .form-group label {
+            font-size: 0.85rem;
+        }
+
+        .remove-belief {
+            color: var(--danger);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0;
+        }
+
+        /* Credence Slider */
+        .credence-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .credence-input input[type="range"] {
+            flex: 1;
+        }
+
+        .credence-value {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Collapsible Sections */
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .collapsible-header:hover {
+            background: #f1f5f9;
+        }
+
+        .collapsible-content {
+            display: none;
+            padding: 1rem;
+            background: #fafafa;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .collapsible-content.open {
+            display: block;
+        }
+
+        .toggle-icon {
+            transition: transform 0.2s;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+
+        /* Warnings/Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+        }
+
+        /* Stats Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Recent Papers List */
+        .paper-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .paper-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .paper-item:last-child {
+            border-bottom: none;
+        }
+
+        .paper-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .paper-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .paper-beliefs-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Tags Input */
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            min-height: 42px;
+        }
+
+        .tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        .tags-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+            padding: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Article Eater - Ingestion UI</h1>
+        <nav class="header-nav">
+            <a href="evidence-explorer.html">Evidence Explorer</a>
+            <a href="ingestion.html" class="active">Ingestion</a>
+            <a href="#" onclick="showQueryInterface()">Query Interface</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Left Panel: Paper Form -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Add New Paper</h2>
+            </div>
+            <div class="panel-body">
+                <form id="paper-form">
+                    <!-- Paper Metadata -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paper_id">Paper ID *</label>
+                            <input type="text" id="paper_id" placeholder="e.g., smith_2023_light" required>
+                            <p class="hint">Unique identifier for this paper</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="source_depth">Source Depth *</label>
+                            <select id="source_depth">
+                                <option value="abstract">Abstract Only</option>
+                                <option value="full_text">Full Text</option>
+                                <option value="metadata">Metadata Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" placeholder="Paper title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="authors">Authors</label>
+                        <input type="text" id="authors" placeholder="Smith, J.; Jones, A.">
+                        <p class="hint">Separate multiple authors with semicolons</p>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <input type="number" id="year" placeholder="2023" min="1900" max="2030">
+                        </div>
+                        <div class="form-group">
+                            <label for="journal">Journal</label>
+                            <input type="text" id="journal" placeholder="Journal name">
+                        </div>
+                        <div class="form-group">
+                            <label for="doi">DOI</label>
+                            <input type="text" id="doi" placeholder="10.1234/...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="abstract">Abstract</label>
+                        <textarea id="abstract" placeholder="Paper abstract..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Keywords</label>
+                        <div class="tags-input" id="keywords-input">
+                            <input type="text" placeholder="Add keyword..." onkeydown="handleKeywordInput(event)">
+                        </div>
+                    </div>
+
+                    <!-- Beliefs Section -->
+                    <div class="beliefs-section">
+                        <h3>
+                            <span>Beliefs from this Paper</span>
+                            <button type="button" class="btn btn-secondary" onclick="addBeliefForm()">+ Add Belief</button>
+                        </h3>
+                        <div id="beliefs-container">
+                            <!-- Belief forms will be added here -->
+                        </div>
+                    </div>
+
+                    <div id="form-alerts"></div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Add Paper</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Panel: Stats & Recent -->
+        <div>
+            <!-- Stats Panel -->
+            <div class="panel" style="margin-bottom: 2rem;">
+                <div class="panel-header">
+                    <h2>Ingestion Statistics</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-papers">0</div>
+                            <div class="stat-label">Papers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-beliefs">0</div>
+                            <div class="stat-label">Beliefs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-causal">0</div>
+                            <div class="stat-label">Causal Claims</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-abstract-causal">0</div>
+                            <div class="stat-label">Abstract-Only Causal</div>
+                        </div>
+                    </div>
+
+                    <div id="abstract-causal-warning" class="alert alert-warning" style="display: none; margin-top: 1rem;">
+                        <strong>Cartwright Warning:</strong> Some causal claims are based only on abstracts.
+                        Full-text verification recommended.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Papers Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recent Papers</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="paper-list" id="papers-list">
+                        <p class="hint" style="text-align: center; padding: 2rem;">
+                            No papers ingested yet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outcome Categories Panel -->
+            <div class="panel" style="margin-top: 2rem;">
+                <div class="panel-header">
+                    <h2>Outcome Categories</h2>
+                </div>
+                <div class="panel-body">
+                    <div id="outcome-categories">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Belief Template (hidden) -->
+    <template id="belief-template">
+        <div class="belief-card" data-belief-index="">
+            <div class="belief-card-header">
+                <span class="belief-number">Belief #<span class="belief-num"></span></span>
+                <button type="button" class="remove-belief" onclick="removeBeliefForm(this)">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <label>Content *</label>
+                <textarea class="belief-content" placeholder="The belief statement..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Credence</label>
+                    <div class="credence-input">
+                        <input type="range" class="belief-credence" min="0" max="100" value="50"
+                               oninput="updateCredenceDisplay(this)">
+                        <span class="credence-value">0.50</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Uncertainty</label>
+                    <div class="credence-input">
+                        <input type="range" class="belief-uncertainty" min="0" max="50" value="20"
+                               oninput="updateUncertaintyDisplay(this)">
+                        <span class="credence-value">0.20</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Epistemic Level</label>
+                    <select class="belief-level">
+                        <option value="empirical">Empirical</option>
+                        <option value="observation">Observation</option>
+                        <option value="theoretical">Theoretical</option>
+                        <option value="meta_theoretical">Meta-theoretical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Outcome Category</label>
+                    <select class="belief-outcome">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" class="belief-causal" id="">
+                <label>This is a causal claim</label>
+            </div>
+
+            <!-- Collapsible: Scope Conditions -->
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <span>Scope Conditions (optional)</span>
+                <span class="toggle-icon">&#9654;</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="form-group">
+                    <label>Population</label>
+                    <input type="text" class="scope-population" placeholder="e.g., office workers">
+                </div>
+                <div class="form-group">
+                    <label>Setting</label>
+                    <input type="text" class="scope-setting" placeholder="e.g., open plan offices">
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" class="scope-duration" placeholder="e.g., 8-hour workday">
+                </div>
+            </div>
+
+            <!-- Collapsible: Enabling Conditions -->
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <span>Enabling Conditions (optional)</span>
+                <span class="toggle-icon">&#9654;</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="form-group">
+                    <label>Minimum Exposure</label>
+                    <input type="text" class="enabling-exposure" placeholder="e.g., 30 minutes">
+                </div>
+                <div class="form-group">
+                    <label>Threshold</label>
+                    <input type="text" class="enabling-threshold" placeholder="e.g., 100 lux minimum">
+                </div>
+                <div class="form-group">
+                    <label>Temporal Order</label>
+                    <input type="text" class="enabling-temporal" placeholder="e.g., exposure precedes task">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // API base URL
+        const API_BASE = '/api/ingestion';
+
+        // State
+        let beliefCount = 0;
+        let keywords = [];
+        let outcomeCategories = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadPapers();
+            loadOutcomeCategories();
+
+            // Form submission
+            document.getElementById('paper-form').addEventListener('submit', handleSubmit);
+        });
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+
+                document.getElementById('stat-papers').textContent = data.total_papers;
+                document.getElementById('stat-beliefs').textContent = data.total_beliefs;
+                document.getElementById('stat-causal').textContent = data.causal_claims;
+                document.getElementById('stat-abstract-causal').textContent = data.abstract_only_causal;
+
+                // Show warning if abstract-only causal claims exist
+                const warning = document.getElementById('abstract-causal-warning');
+                warning.style.display = data.abstract_only_causal > 0 ? 'block' : 'none';
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Load papers list
+        async function loadPapers() {
+            try {
+                const response = await fetch(`${API_BASE}/papers`);
+                const papers = await response.json();
+
+                const container = document.getElementById('papers-list');
+
+                if (papers.length === 0) {
+                    container.innerHTML = '<p class="hint" style="text-align: center; padding: 2rem;">No papers ingested yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = papers.map(paper => `
+                    <div class="paper-item">
+                        <div>
+                            <div class="paper-title">${paper.title}</div>
+                            <div class="paper-meta">${paper.paper_id} | ${paper.year || 'No year'} | ${paper.source_depth}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load papers:', error);
+            }
+        }
+
+        // Load outcome categories
+        async function loadOutcomeCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/outcome-categories`);
+                outcomeCategories = await response.json();
+
+                const container = document.getElementById('outcome-categories');
+                container.innerHTML = Object.entries(outcomeCategories)
+                    .map(([key, desc]) => `
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>${key}:</strong> <span style="color: var(--text-muted)">${desc}</span>
+                        </div>
+                    `).join('');
+
+                // Update all belief outcome selects
+                updateOutcomeSelects();
+            } catch (error) {
+                console.error('Failed to load outcome categories:', error);
+            }
+        }
+
+        // Update outcome category selects
+        function updateOutcomeSelects() {
+            const selects = document.querySelectorAll('.belief-outcome');
+            const options = '<option value="">-- Select --</option>' +
+                Object.keys(outcomeCategories)
+                    .map(key => `<option value="${key}">${key}</option>`)
+                    .join('');
+
+            selects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = options;
+                select.value = currentValue;
+            });
+        }
+
+        // Add belief form
+        function addBeliefForm() {
+            beliefCount++;
+            const template = document.getElementById('belief-template');
+            const clone = template.content.cloneNode(true);
+
+            // Update indices
+            const card = clone.querySelector('.belief-card');
+            card.dataset.beliefIndex = beliefCount;
+            card.querySelector('.belief-num').textContent = beliefCount;
+
+            // Set unique checkbox ID
+            const checkbox = card.querySelector('.belief-causal');
+            checkbox.id = `causal-${beliefCount}`;
+            card.querySelector('label[for=""]')?.setAttribute('for', `causal-${beliefCount}`);
+
+            document.getElementById('beliefs-container').appendChild(clone);
+            updateOutcomeSelects();
+        }
+
+        // Remove belief form
+        function removeBeliefForm(button) {
+            const card = button.closest('.belief-card');
+            card.remove();
+            renumberBeliefs();
+        }
+
+        // Renumber beliefs after removal
+        function renumberBeliefs() {
+            const cards = document.querySelectorAll('.belief-card');
+            cards.forEach((card, index) => {
+                card.dataset.beliefIndex = index + 1;
+                card.querySelector('.belief-num').textContent = index + 1;
+            });
+        }
+
+        // Toggle collapsible sections
+        function toggleCollapsible(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        // Update credence display
+        function updateCredenceDisplay(input) {
+            const value = (input.value / 100).toFixed(2);
+            input.nextElementSibling.textContent = value;
+        }
+
+        // Update uncertainty display
+        function updateUncertaintyDisplay(input) {
+            const value = (input.value / 100).toFixed(2);
+            input.nextElementSibling.textContent = value;
+        }
+
+        // Handle keyword input
+        function handleKeywordInput(event) {
+            if (event.key === 'Enter' || event.key === ',') {
+                event.preventDefault();
+                const input = event.target;
+                const keyword = input.value.trim().replace(',', '');
+
+                if (keyword && !keywords.includes(keyword)) {
+                    keywords.push(keyword);
+                    renderKeywords();
+                }
+                input.value = '';
+            }
+        }
+
+        // Render keywords
+        function renderKeywords() {
+            const container = document.getElementById('keywords-input');
+            const input = container.querySelector('input');
+
+            // Remove existing tags
+            container.querySelectorAll('.tag').forEach(tag => tag.remove());
+
+            // Add new tags
+            keywords.forEach(keyword => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.innerHTML = `${keyword} <span class="tag-remove" onclick="removeKeyword('${keyword}')">&times;</span>`;
+                container.insertBefore(tag, input);
+            });
+        }
+
+        // Remove keyword
+        function removeKeyword(keyword) {
+            keywords = keywords.filter(k => k !== keyword);
+            renderKeywords();
+        }
+
+        // Handle form submission
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const alertsContainer = document.getElementById('form-alerts');
+            alertsContainer.innerHTML = '';
+
+            // Collect paper data
+            const paper = {
+                paper_id: document.getElementById('paper_id').value,
+                title: document.getElementById('title').value,
+                authors: document.getElementById('authors').value.split(';').map(a => a.trim()).filter(a => a),
+                year: parseInt(document.getElementById('year').value) || null,
+                journal: document.getElementById('journal').value || null,
+                doi: document.getElementById('doi').value || null,
+                source_depth: document.getElementById('source_depth').value,
+                abstract: document.getElementById('abstract').value || null,
+                keywords: keywords
+            };
+
+            // Collect beliefs
+            const beliefs = [];
+            const beliefCards = document.querySelectorAll('.belief-card');
+
+            for (const card of beliefCards) {
+                const content = card.querySelector('.belief-content').value;
+                if (!content) continue;
+
+                const belief = {
+                    content: content,
+                    credence: parseFloat(card.querySelector('.belief-credence').value) / 100,
+                    credence_uncertainty: parseFloat(card.querySelector('.belief-uncertainty').value) / 100,
+                    level: card.querySelector('.belief-level').value,
+                    outcome_id: card.querySelector('.belief-outcome').value || null,
+                    source_depth: paper.source_depth,
+                    is_causal: card.querySelector('.belief-causal').checked
+                };
+
+                // Scope conditions
+                const population = card.querySelector('.scope-population').value;
+                const setting = card.querySelector('.scope-setting').value;
+                const duration = card.querySelector('.scope-duration').value;
+
+                if (population || setting || duration) {
+                    belief.scope = {
+                        population: population || null,
+                        setting: setting || null,
+                        duration: duration || null,
+                        scope_specified: true
+                    };
+                }
+
+                // Enabling conditions
+                const exposure = card.querySelector('.enabling-exposure').value;
+                const threshold = card.querySelector('.enabling-threshold').value;
+                const temporal = card.querySelector('.enabling-temporal').value;
+
+                if (exposure || threshold || temporal) {
+                    belief.enabling_conditions = {
+                        minimum_exposure: exposure || null,
+                        threshold: threshold || null,
+                        temporal_order: temporal || null
+                    };
+                }
+
+                beliefs.push(belief);
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/paper`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ paper, beliefs })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Show success
+                    alertsContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            Paper "${result.paper_id}" added successfully with ${result.beliefs_added} beliefs.
+                        </div>
+                    `;
+
+                    // Show warnings if any
+                    if (result.warnings.length > 0) {
+                        alertsContainer.innerHTML += `
+                            <div class="alert alert-warning">
+                                <strong>Warnings:</strong><br>
+                                ${result.warnings.join('<br>')}
+                            </div>
+                        `;
+                    }
+
+                    // Refresh data
+                    loadStats();
+                    loadPapers();
+                    resetForm();
+                } else {
+                    alertsContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            Error: ${result.detail || 'Failed to add paper'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertsContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Network error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('paper-form').reset();
+            document.getElementById('beliefs-container').innerHTML = '';
+            beliefCount = 0;
+            keywords = [];
+            renderKeywords();
+        }
+
+        // Show query interface (placeholder)
+        function showQueryInterface() {
+            alert('Query interface coming in Sprint C4!');
+        }
+    </script>
+</body>
+</html>

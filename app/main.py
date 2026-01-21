@@ -915,6 +915,7 @@ from .db import ensure_db
 from .routes.usage import router as usage_router
 from .routes.graph import router as graph_router
 from .routes.keys import router as keys_router
+from .routes.web_of_belief import router as web_of_belief_router
 
 try:
     ensure_db()
@@ -924,6 +925,7 @@ except Exception:
 app.include_router(usage_router)
 app.include_router(graph_router)
 app.include_router(keys_router)
+app.include_router(web_of_belief_router, prefix='/api/v1', tags=['web-of-belief'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)

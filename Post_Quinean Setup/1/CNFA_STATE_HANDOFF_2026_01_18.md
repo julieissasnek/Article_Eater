@@ -232,7 +232,7 @@ Findings that don't fit the current ontology aren't forced in or dropped—they'
 
 ## REPO LOCATION AND STRUCTURE
 
-**Local Path**: `/Users/davidusa/REPOS/Article_Eater_v20_8_0`
+**Local Path**: `/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1`
 
 **Streamlining Plan** (agreed upon 2026-01-18):
 - Aggressive version increments (V20.8.0 → V21.0.0 for Post-Quinean)
@@ -317,7 +317,7 @@ When context is running low:
 
 **Claude Code** (Terminal):
 - For: Writing code, running tests, git, file operations, streamlining
-- Start with: `cd /Users/davidusa/REPOS/Article_Eater_v20_8_0 && claude`
+- Start with: `cd /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1 && claude`
 
 **Workflow**: Use Project chat for decisions, Claude Code for implementation. Sync via updated handoff docs.
 
