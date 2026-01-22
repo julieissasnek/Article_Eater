@@ -96,9 +96,19 @@ class ReportGenerator:
 
     # H2: Fallback outcome categories (used only if taxonomy unavailable)
     # E1.D3 (per Kaplan): Added physio.stress (distinct from affect.stress)
+    # F1.3: Expanded per Kaplan (ruthless review 2026-01-22)
     _FALLBACK_OUTCOME_CATEGORIES = {
+        # Original categories
         'behav.productivity', 'cog.performance', 'affect.stress', 'health.wellbeing',
-        'health', 'cog.attention', 'affect.mood', 'physio.stress'
+        'health', 'cog.attention', 'affect.mood', 'physio.stress',
+        # F1.3: Expanded outcomes per Kaplan
+        'cog.creativity',       # Creative thinking
+        'behav.collaboration',  # Teamwork, communication
+        'physio.circadian',     # Circadian rhythm measures
+        'affect.satisfaction',  # Job/space satisfaction
+        'cog.focus',           # Concentration, focus
+        'physio.cortisol',     # Stress hormone
+        'behav.absenteeism',   # Attendance patterns
     }
 
     def __init__(self, web: WebOfBelief):
@@ -765,6 +775,24 @@ class ReportGenerator:
             'time of day', 'circadian', 'diurnal'
         ]
 
+        # F1.4: Kaplan domain confounders (ruthless review 2026-01-22)
+        kaplan_domain = [
+            'occupant density', 'crowding',
+            'personal control', 'autonomy',
+            'work type', 'knowledge work', 'routine work',
+            'habituation', 'prior exposure', 'adaptation',
+            'workstation', 'workspace configuration',
+            'job demands', 'job control', 'job type'
+        ]
+
+        # F2.3: Pearl implicit confounder control patterns (ruthless review)
+        implicit_control = [
+            'adjusted model', 'full model', 'final model',
+            'multivariate', 'multiple regression', 'multilevel',
+            'after including covariates', 'Model 2', 'Model 3',
+            'Model II', 'Model III', 'hierarchical model'
+        ]
+
         # Mediator/moderator terms
         mechanism_terms = [
             'mediator', 'mediating', 'mediation',
@@ -773,7 +801,8 @@ class ReportGenerator:
         ]
 
         return (statistical + causal_identification + domain_specific +
-                environmental_psych + mechanism_terms)
+                environmental_psych + kaplan_domain + implicit_control +
+                mechanism_terms)
 
     def _get_confounder_gap_severity(
         self,

@@ -142,21 +142,9 @@ class IngestionStats(BaseModel):
 
 # Simple in-memory storage for papers
 _papers: Dict[str, PaperMetadata] = {}
-_web: Optional[WebOfBelief] = None
 
-
-def get_web() -> WebOfBelief:
-    """Get or create the web of belief."""
-    global _web
-    if _web is None:
-        _web = WebOfBelief()
-    return _web
-
-
-def set_web(web: WebOfBelief) -> None:
-    """Set the web of belief (for testing)."""
-    global _web
-    _web = web
+# F-Sprint Fix: Use centralized web instance per Lamport
+from app.routes.web_of_belief import get_web, set_web
 
 
 # =============================================================================

@@ -916,6 +916,10 @@ from .routes.usage import router as usage_router
 from .routes.graph import router as graph_router
 from .routes.keys import router as keys_router
 from .routes.web_of_belief import router as web_of_belief_router
+# F-Sprint Fix: Mount missing routers per ChatGPT ruthless review (2026-01-22)
+from .routes.query import router as query_router
+from .routes.reports import router as reports_router
+from .routes.ingestion import router as ingestion_router
 
 try:
     ensure_db()
@@ -926,6 +930,10 @@ app.include_router(usage_router)
 app.include_router(graph_router)
 app.include_router(keys_router)
 app.include_router(web_of_belief_router, prefix='/api/v1', tags=['web-of-belief'])
+# F-Sprint Fix: Mount query/reports/ingestion routers
+app.include_router(query_router, prefix='/api/v1', tags=['query'])
+app.include_router(reports_router, prefix='/api/v1', tags=['reports'])
+app.include_router(ingestion_router, prefix='/api/v1', tags=['ingestion'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)

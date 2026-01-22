@@ -20,6 +20,8 @@ Bridge Types (from Cartwright's typology, extended):
   Example: Fractal patterns in nature -> fractal patterns in architecture
 - CONSTITUTIVE: Target domain is literally composed of source domain
   Example: Room corners are composed of angular objects
+- CAPACITY: Entity has stable capacity independent of mechanism (F2.1 per Cartwright)
+  Example: "Plants have the capacity to reduce stress" - doesn't specify mechanism
 
 Bridge-Weighted Credence Formula:
     P(CNFA effect) = P(parent theory) x P(bridge) x P(CNFA-specific)
@@ -65,6 +67,8 @@ class BridgeType(Enum):
     FUNCTIONAL = "functional"      # Same outcome, different mechanisms
     ANALOGICAL = "analogical"      # Structural similarity
     CONSTITUTIVE = "constitutive"  # Target contains source
+    # F2.1: Capacity bridge type per Cartwright (ruthless review 2026-01-22)
+    CAPACITY = "capacity"          # Entity has stable capacity (not mechanism-based)
     EMPIRICAL_COVARIANCE = "empirical_covariance"  # Sprint 8: Co-tested in same study
 
 
@@ -86,9 +90,13 @@ class ConfidenceSource(Enum):
 
 
 # Default P(bridge) values per expert panel (2026-01-18)
+# F2.1: Updated per Cartwright (ruthless review 2026-01-22):
+#   - CONSTITUTIVE reduced from 0.85 to 0.75 (definitional bridges can be contested)
+#   - CAPACITY added at 0.55 (entities have stable capacities, not mechanism-based)
 DEFAULT_BRIDGE_CONFIDENCE: Dict[BridgeType, float] = {
-    BridgeType.CONSTITUTIVE: 0.85,  # Target literally contains source
+    BridgeType.CONSTITUTIVE: 0.75,  # Target literally contains source (reduced per Cartwright)
     BridgeType.MECHANISM: 0.60,     # Mechanisms often conserved
+    BridgeType.CAPACITY: 0.55,      # Entity has stable capacity (F2.1)
     BridgeType.FUNCTIONAL: 0.50,    # Functions via different mechanisms
     BridgeType.ANALOGICAL: 0.35,    # Suggestive but often fail
     BridgeType.EMPIRICAL_COVARIANCE: 0.60,  # Sprint 8: Co-tested in same study
@@ -719,6 +727,21 @@ DOMAIN_KEYWORDS: Dict[str, List[str]] = {
     "cognition": ["attention", "memory", "cognitive", "processing", "perception"],
 }
 
+# F2.1: Capacity bridge detection patterns per Cartwright (ruthless review 2026-01-22)
+# Capacity bridges assert that an entity has a stable capacity, not dependent on mechanism
+CAPACITY_KEYWORDS: List[str] = [
+    "has the capacity",
+    "capable of",
+    "able to",
+    "tends to",
+    "propensity to",
+    "disposition",
+    "inherent ability",
+    "natural capacity",
+    "potential to",
+    "capacity for",
+]
+
 
 def suggest_bridges(
     source_domain: str,
@@ -847,6 +870,9 @@ def detect_bridge_from_claim(
         bridge_type = BridgeType.FUNCTIONAL
     elif any(kw in statement for kw in ["component", "part of", "consists of"]):
         bridge_type = BridgeType.CONSTITUTIVE
+    # F2.1: Capacity bridge detection per Cartwright (ruthless review 2026-01-22)
+    elif any(kw in statement for kw in CAPACITY_KEYWORDS):
+        bridge_type = BridgeType.CAPACITY
 
     bridge = create_bridge(
         source_domain=source_domain,

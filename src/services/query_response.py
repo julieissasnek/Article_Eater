@@ -576,6 +576,48 @@ class QueryResponseGenerator:
         elif positive_physiological and negative_self_report:
             reasons.append("Measurement method difference: positive findings from physiological measures; negative findings from self-report")
 
+        # F2.2: Behavioral vs self-report (per Cartwright, ruthless review 2026-01-22)
+        # What people do vs what they say
+        positive_behavioral = any(
+            any(kw in b.content.lower() for kw in behavioral_keywords)
+            for b in positive_direction
+        )
+        negative_behavioral = any(
+            any(kw in b.content.lower() for kw in behavioral_keywords)
+            for b in negative_direction
+        )
+        if positive_behavioral and negative_self_report:
+            reasons.append("Measurement method difference: positive findings from behavioral measures; negative findings from self-report")
+        elif positive_self_report and negative_behavioral:
+            reasons.append("Measurement method difference: positive findings from self-report; negative findings from behavioral measures")
+
+        # F2.2: Objective vs subjective (per Cartwright, ruthless review 2026-01-22)
+        objective_keywords = ['lux', 'decibels', 'dB', 'PPM', 'ppm', 'CO2', 'temperature', 'measured',
+                             'sensor', 'meter', 'dosimeter', 'photometer', 'quantified']
+        subjective_keywords = ['perceived', 'rated', 'reported', 'felt', 'experienced', 'satisfaction',
+                              'preference', 'comfort rating', 'VAS', 'Likert']
+
+        positive_objective = any(
+            any(kw in b.content.lower() for kw in objective_keywords)
+            for b in positive_direction
+        )
+        negative_subjective = any(
+            any(kw in b.content.lower() for kw in subjective_keywords)
+            for b in negative_direction
+        )
+        positive_subjective = any(
+            any(kw in b.content.lower() for kw in subjective_keywords)
+            for b in positive_direction
+        )
+        negative_objective = any(
+            any(kw in b.content.lower() for kw in objective_keywords)
+            for b in negative_direction
+        )
+        if positive_objective and negative_subjective:
+            reasons.append("Measurement method difference: positive findings from objective measures; negative findings from subjective ratings")
+        elif positive_subjective and negative_objective:
+            reasons.append("Measurement method difference: positive findings from subjective ratings; negative findings from objective measures")
+
         # E1.D2: Check for temporal differences (per Kaplan - relevant for neuroarchitecture)
         short_term_keywords = ['short-term', 'acute', 'immediate', 'brief', 'minutes', 'hours']
         long_term_keywords = ['long-term', 'chronic', 'prolonged', 'weeks', 'months', 'years']

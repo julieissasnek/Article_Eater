@@ -53,6 +53,8 @@ class CausalClassification:
     confounder_mentioned: bool = False  # H3: Does it mention confounders?
     mechanism_mentioned: bool = False  # E1.D5: Separate indicator, not confidence booster
     is_quasi_experimental: bool = False  # E1.D5: Quasi-experimental design detected
+    # F1.2: Theoretical framework detection (per Kaplan, ruthless review)
+    theoretical_frameworks: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -63,7 +65,8 @@ class CausalClassification:
             'warnings': self.warnings,
             'confounder_mentioned': self.confounder_mentioned,
             'mechanism_mentioned': self.mechanism_mentioned,
-            'is_quasi_experimental': self.is_quasi_experimental
+            'is_quasi_experimental': self.is_quasi_experimental,
+            'theoretical_frameworks': self.theoretical_frameworks
         }
 
 
@@ -205,20 +208,55 @@ QUASI_EXPERIMENTAL_PATTERNS = [
 ]
 
 # E1.D5 Panel: Neuroarchitecture-specific patterns (per Kaplan)
+# F1.1: Expanded per ruthless review (2026-01-22)
 NEUROARCH_CAUSAL_PATTERNS = [
+    # Original intervention patterns
     r'\bdesign\s+intervention\b',
     r'\bbuilt\s+environment\s+manipulation\b',
     r'\blighting\s+intervention\b',
     r'\barchitectural\s+intervention\b',
     r'\benvironmental\s+manipulation\b',
+    # F1.1: Building certification/design (Kaplan)
+    r'\bgreen\s+building\b',
+    r'\bWELL\s+certif',
+    r'\bLEED\b',
+    r'\bbiophilic\s+design\b',
+    # F1.1: Lighting interventions (Kaplan)
+    r'\bdaylighting\b',
+    r'\bglare\s+control\b',
+    r'\blighting\s+design\b',
+    r'\bcircadian\s+lighting\b',
+    r'\btunable\s+lighting\b',
+    # F1.1: Environmental quality (Kaplan)
+    r'\bthermal\s+comfort\b',
+    r'\bacoustic\s+comfort\b',
+    r'\bindoor\s+air\s+quality\b',
+    r'\bIAQ\b',
+    r'\bair\s+quality\s+intervention\b',
+    r'\bventilation\s+design\b',
 ]
 
 NEUROARCH_SUGGESTIVE_PATTERNS = [
+    # Original suggestive patterns
     r'\brestorative\s+effect\b',
     r'\brestorative\s+environment\b',
     r'\bbiophilic\s+response\b',
     r'\battention\s+restoration\b',
     r'\bstress\s+recovery\b',
+    # F1.1: View and access patterns (Kaplan)
+    r'\bview\s+quality\b',
+    r'\bvisual\s+access\b',
+    r'\bnatural\s+ventilation\b',
+    r'\bdaylight\s+factor\b',
+    r'\bdaylight\s+exposure\b',
+    r'\bwindow\s+view\b',
+    r'\bnature\s+view\b',
+    r'\bgreen\s+view\b',
+    # F1.1: Occupant response patterns (Kaplan)
+    r'\boccupant\s+comfort\b',
+    r'\boccupant\s+satisfaction\b',
+    r'\bworkplace\s+satisfaction\b',
+    r'\benvironmental\s+satisfaction\b',
 ]
 
 NEUROARCH_ASSOCIATIONAL_PATTERNS = [
@@ -227,6 +265,65 @@ NEUROARCH_ASSOCIATIONAL_PATTERNS = [
     r'\brated\s+(higher|lower|as)\b',
     r'\brating\s+study\b',
     r'\bsubjective\s+assessment\b',
+]
+
+# =============================================================================
+# F1.2: Theoretical Framework Patterns (per Kaplan, ruthless review 2026-01-22)
+# =============================================================================
+
+# Attention Restoration Theory (ART) - Kaplan & Kaplan
+ATTENTION_RESTORATION_PATTERNS = [
+    r'\bbeing\s+away\b',
+    r'\bfascination\b',
+    r'\bsoft\s+fascination\b',
+    r'\bextent\b',  # ART component (when in restoration context)
+    r'\bcompatibility\b',  # ART component
+    r'\battention\s+restoration\s+theory\b',
+    r'\bART\b',  # When in context of restoration
+    r'\bKaplan\b',  # Rachel & Stephen Kaplan
+    r'\bdirected\s+attention\s+fatigue\b',
+    r'\battentional\s+fatigue\b',
+    r'\bmental\s+fatigue\s+recovery\b',
+    r'\brestorative\s+quality\b',
+    r'\brestorative\s+qualities\b',
+]
+
+# Prospect-Refuge Theory - Jay Appleton
+PROSPECT_REFUGE_PATTERNS = [
+    r'\bprospect\b',
+    r'\brefuge\b',
+    r'\bmystery\b',  # landscape preference
+    r'\bcomplexity\b',  # landscape preference
+    r'\bAppleton\b',  # Jay Appleton
+    r'\bsavanna\s+hypothesis\b',
+    r'\bsavanna\s+preference\b',
+    r'\bevolutionary\s+preference\b',
+    r'\bhabitat\s+preference\b',
+    r'\blandscape\s+preference\b',
+]
+
+# Stress Recovery Theory (SRT) - Roger Ulrich
+STRESS_RECOVERY_PATTERNS = [
+    r'\bstress\s+recovery\s+theory\b',
+    r'\bSRT\b',
+    r'\bUlrich\b',  # Roger Ulrich
+    r'\baffective\s+response\b',
+    r'\bpsychophysiological\s+stress\b',
+    r'\bstress\s+reduction\b',
+    r'\bphysiological\s+stress\s+recovery\b',
+    r'\bhospital\s+view\b',  # Ulrich's famous study
+    r'\bview\s+through\s+window\b',
+]
+
+# Biophilia Hypothesis - E.O. Wilson
+BIOPHILIA_PATTERNS = [
+    r'\bbiophilia\b',
+    r'\bbiophilic\b',
+    r'\bWilson\b',  # E.O. Wilson
+    r'\binnate\s+affiliation\b',
+    r'\bnature\s+connection\b',
+    r'\bnature\s+connectedness\b',
+    r'\bnature\s+relatedness\b',
 ]
 
 
@@ -265,6 +362,20 @@ class CausalClassifier:
         ]
         self.neuroarch_associational = [
             re.compile(p, re.IGNORECASE) for p in NEUROARCH_ASSOCIATIONAL_PATTERNS
+        ]
+
+        # F1.2: Theoretical framework patterns (per Kaplan, ruthless review)
+        self.art_patterns = [
+            re.compile(p, re.IGNORECASE) for p in ATTENTION_RESTORATION_PATTERNS
+        ]
+        self.prospect_refuge_patterns = [
+            re.compile(p, re.IGNORECASE) for p in PROSPECT_REFUGE_PATTERNS
+        ]
+        self.srt_patterns = [
+            re.compile(p, re.IGNORECASE) for p in STRESS_RECOVERY_PATTERNS
+        ]
+        self.biophilia_patterns = [
+            re.compile(p, re.IGNORECASE) for p in BIOPHILIA_PATTERNS
         ]
 
     def classify(self, content: str, context: Optional[Dict[str, Any]] = None) -> CausalClassification:
@@ -325,6 +436,9 @@ class CausalClassifier:
         # E1.D5: Check for quasi-experimental design (per Pearl)
         is_quasi_experimental = len(quasi_experimental_matches) > 0
 
+        # F1.2: Detect theoretical frameworks (per Kaplan, ruthless review)
+        theoretical_frameworks = self._detect_theoretical_frameworks(content)
+
         # E1.D5 Restructure: Determine tier using design-first approach (per Pearl)
         tier, confidence, evidence_type = self._determine_tier_pearl(
             effective_causal,
@@ -347,6 +461,9 @@ class CausalClassifier:
             matched_patterns.extend([f"associational:{m}" for m in all_associational_matches])
         if quasi_experimental_matches:
             matched_patterns.extend([f"quasi-exp:{m}" for m in quasi_experimental_matches])
+        # F1.2: Add theoretical frameworks to matched patterns
+        if theoretical_frameworks:
+            matched_patterns.extend([f"theory:{f}" for f in theoretical_frameworks])
 
         # Generate warnings
         warnings = self._generate_warnings(
@@ -362,7 +479,8 @@ class CausalClassifier:
             warnings=warnings,
             confounder_mentioned=len(confounder_matches) > 0,
             mechanism_mentioned=len(mechanism_matches) > 0,
-            is_quasi_experimental=is_quasi_experimental
+            is_quasi_experimental=is_quasi_experimental,
+            theoretical_frameworks=theoretical_frameworks
         )
 
     def _match_patterns(self, content: str, patterns: List[re.Pattern]) -> List[str]:
@@ -408,6 +526,36 @@ class CausalClassifier:
         ]
         content_lower = content.lower()
         return any(term in content_lower for term in experimental_terms)
+
+    def _detect_theoretical_frameworks(self, content: str) -> List[str]:
+        """
+        F1.2: Detect theoretical frameworks mentioned in content.
+
+        Per Kaplan (ruthless review): Explicitly detect domain-specific
+        theoretical frameworks that provide epistemological grounding.
+
+        Returns:
+            List of framework names detected (e.g., ['ART', 'prospect-refuge'])
+        """
+        frameworks = []
+
+        # Attention Restoration Theory (Kaplan & Kaplan)
+        if self._match_patterns(content, self.art_patterns):
+            frameworks.append('ART')
+
+        # Prospect-Refuge Theory (Appleton)
+        if self._match_patterns(content, self.prospect_refuge_patterns):
+            frameworks.append('prospect-refuge')
+
+        # Stress Recovery Theory (Ulrich)
+        if self._match_patterns(content, self.srt_patterns):
+            frameworks.append('SRT')
+
+        # Biophilia Hypothesis (Wilson)
+        if self._match_patterns(content, self.biophilia_patterns):
+            frameworks.append('biophilia')
+
+        return frameworks
 
     def _determine_tier_pearl(
         self,
