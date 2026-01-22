@@ -550,9 +550,26 @@ class QueryResponseGenerator:
 
         # E1.D2 Panel (Cartwright): Check for measurement method differences
         # Critical for neuroarchitecture research where self-report vs physiological measures differ
-        self_report_keywords = ['self-report', 'questionnaire', 'survey', 'subjective', 'perceived']
-        physiological_keywords = ['physiological', 'cortisol', 'heart rate', 'blood pressure', 'EEG', 'fMRI', 'biomarker']
-        behavioral_keywords = ['behavioral', 'performance', 'task', 'accuracy', 'reaction time']
+        # Panel validation (2026-01-22): Expanded to 6 modalities per Cartwright
+        # 1. Self-report (subjective)
+        self_report_keywords = ['self-report', 'questionnaire', 'survey', 'subjective', 'perceived',
+                               'satisfaction', 'preference', 'rating scale', 'Likert', 'VAS']
+        # 2. Behavioral/Performance (task-based)
+        behavioral_keywords = ['behavioral', 'performance', 'task', 'accuracy', 'reaction time',
+                              'response time', 'error rate', 'completion time', 'task performance']
+        # 3. Physiological (biomarkers)
+        physiological_keywords = ['physiological', 'cortisol', 'heart rate', 'blood pressure', 'EEG',
+                                 'fMRI', 'biomarker', 'HRV', 'skin conductance', 'salivary alpha-amylase',
+                                 'pupillometry', 'galvanic skin response', 'GSR', 'neuroendocrine']
+        # 4. Environmental/Physical (sensors)
+        environmental_keywords = ['lux', 'decibels', 'dB', 'PPM', 'ppm', 'CO2', 'temperature',
+                                 'humidity', 'sensor', 'meter', 'dosimeter', 'photometer', 'air quality']
+        # 5. Observational (researcher-coded)
+        observational_keywords = ['observation', 'researcher coded', 'behavior coding', 'video analysis',
+                                 'systematic observation', 'observer rating', 'third-party assessment']
+        # 6. Archival (records)
+        archival_keywords = ['archival', 'records', 'absenteeism', 'HR data', 'administrative data',
+                            'claims data', 'medical records', 'employment records', 'historical data']
 
         positive_self_report = any(
             any(kw in b.content.lower() for kw in self_report_keywords)
@@ -592,10 +609,43 @@ class QueryResponseGenerator:
             reasons.append("Measurement method difference: positive findings from self-report; negative findings from behavioral measures")
 
         # F2.2: Objective vs subjective (per Cartwright, ruthless review 2026-01-22)
+        # Panel validation (2026-01-22): Expanded objective/subjective categories
         objective_keywords = ['lux', 'decibels', 'dB', 'PPM', 'ppm', 'CO2', 'temperature', 'measured',
-                             'sensor', 'meter', 'dosimeter', 'photometer', 'quantified']
+                             'sensor', 'meter', 'dosimeter', 'photometer', 'quantified', 'objective measure']
         subjective_keywords = ['perceived', 'rated', 'reported', 'felt', 'experienced', 'satisfaction',
-                              'preference', 'comfort rating', 'VAS', 'Likert']
+                              'preference', 'comfort rating', 'VAS', 'Likert', 'subjective assessment']
+
+        # Panel validation (2026-01-22): Check observational vs self-report per Cartwright
+        observational_keywords = ['observation', 'researcher coded', 'behavior coding', 'video analysis',
+                                 'systematic observation', 'observer rating', 'third-party assessment']
+        positive_observational = any(
+            any(kw in b.content.lower() for kw in observational_keywords)
+            for b in positive_direction
+        )
+        negative_observational = any(
+            any(kw in b.content.lower() for kw in observational_keywords)
+            for b in negative_direction
+        )
+        if positive_observational and negative_self_report:
+            reasons.append("Measurement method difference: positive findings from researcher observation; negative findings from self-report")
+        elif positive_self_report and negative_observational:
+            reasons.append("Measurement method difference: positive findings from self-report; negative findings from researcher observation")
+
+        # Panel validation (2026-01-22): Check archival vs self-report per Cartwright
+        archival_keywords = ['archival', 'records', 'absenteeism', 'HR data', 'administrative data',
+                            'claims data', 'medical records', 'employment records', 'historical data']
+        positive_archival = any(
+            any(kw in b.content.lower() for kw in archival_keywords)
+            for b in positive_direction
+        )
+        negative_archival = any(
+            any(kw in b.content.lower() for kw in archival_keywords)
+            for b in negative_direction
+        )
+        if positive_archival and negative_self_report:
+            reasons.append("Measurement method difference: positive findings from archival records; negative findings from self-report")
+        elif positive_self_report and negative_archival:
+            reasons.append("Measurement method difference: positive findings from self-report; negative findings from archival records")
 
         positive_objective = any(
             any(kw in b.content.lower() for kw in objective_keywords)

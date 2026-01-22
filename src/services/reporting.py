@@ -97,6 +97,7 @@ class ReportGenerator:
     # H2: Fallback outcome categories (used only if taxonomy unavailable)
     # E1.D3 (per Kaplan): Added physio.stress (distinct from affect.stress)
     # F1.3: Expanded per Kaplan (ruthless review 2026-01-22)
+    # Panel validation (2026-01-22): Added missing outcomes per Kaplan (M3)
     _FALLBACK_OUTCOME_CATEGORIES = {
         # Original categories
         'behav.productivity', 'cog.performance', 'affect.stress', 'health.wellbeing',
@@ -109,6 +110,11 @@ class ReportGenerator:
         'cog.focus',           # Concentration, focus
         'physio.cortisol',     # Stress hormone
         'behav.absenteeism',   # Attendance patterns
+        # Panel validation (2026-01-22): M3 additions per Kaplan
+        'behav.social',        # Social interaction, communication frequency
+        'affect.privacy',      # Perceived privacy satisfaction
+        'cog.wayfinding',      # Navigation, spatial orientation
+        'affect.control',      # Perceived environmental control
     }
 
     def __init__(self, web: WebOfBelief):
@@ -751,13 +757,20 @@ class ReportGenerator:
         ]
 
         # Pearl additions: causal identification strategies
+        # L1: Panel validation (2026-01-22) - added IPW, doubly robust, g-computation
         causal_identification = [
             'propensity score', 'instrumental variable', 'instrument',
             'difference-in-differences', 'diff-in-diff', 'DiD',
             'regression discontinuity', 'RDD',
             'matching', 'matched sample', 'matched pairs',
             'stratified', 'stratification', 'blocked',
-            'within-subjects', 'within-subject', 'repeated measures'
+            'within-subjects', 'within-subject', 'repeated measures',
+            # L1: Strong causal method indicators per Pearl panel validation
+            'inverse probability weighting', 'IPW', 'IPTW',
+            'doubly robust', 'doubly-robust',
+            'g-computation', 'g computation', 'G-formula',
+            'marginal structural model', 'MSM',
+            'targeted learning', 'TMLE'
         ]
 
         # Cartwright additions: domain-specific confounders
@@ -785,6 +798,32 @@ class ReportGenerator:
             'job demands', 'job control', 'job type'
         ]
 
+        # Panel validation (2026-01-22): M4 additions per Kaplan
+        # Demographic confounders
+        demographic = [
+            'age', 'gender', 'sex', 'education', 'education level',
+            'cultural background', 'culture', 'nationality', 'ethnicity'
+        ]
+
+        # Individual differences (sensitivity)
+        individual_differences = [
+            'noise sensitivity', 'thermal sensitivity', 'light sensitivity',
+            'personality', 'introvert', 'extravert', 'neuroticism',
+            'environmental sensitivity'
+        ]
+
+        # Environmental confounders
+        environmental_confounders = [
+            'window access', 'view content', 'daylight access',
+            'air quality', 'ventilation rate', 'temperature'
+        ]
+
+        # Organizational confounders
+        organizational = [
+            'organizational culture', 'management style',
+            'team size', 'tenure', 'job satisfaction', 'workload'
+        ]
+
         # F2.3: Pearl implicit confounder control patterns (ruthless review)
         implicit_control = [
             'adjusted model', 'full model', 'final model',
@@ -802,7 +841,8 @@ class ReportGenerator:
 
         return (statistical + causal_identification + domain_specific +
                 environmental_psych + kaplan_domain + implicit_control +
-                mechanism_terms)
+                mechanism_terms + demographic + individual_differences +
+                environmental_confounders + organizational)
 
     def _get_confounder_gap_severity(
         self,

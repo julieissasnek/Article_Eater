@@ -215,6 +215,147 @@ Per Pearl and Kaplan:
 
 ---
 
+## 9. Worked Examples (Per Naur, panel validation 2026-01-22)
+
+### Example 1: Claim Becomes Belief with Credence
+
+**Input claim** (from paper abstract):
+> "Exposure to indoor plants significantly improved self-reported productivity (p < 0.05)"
+
+**Processing steps**:
+
+1. **Causal classification**: SUGGESTIVE
+   - Contains causal language ("improved")
+   - But: abstract-only source, no mechanism specified
+   - Pattern match: `improve` → directional causal language
+
+2. **Credence assignment**: 0.65 ± 0.15
+   - Base credence: 0.70 (p < 0.05 result)
+   - Source depth penalty: -0.05 (abstract-only)
+   - Single study: no multi-source boost
+   - Uncertainty: 0.15 (typical for self-report outcomes)
+
+3. **Resulting belief**:
+   ```json
+   {
+     "content": "Indoor plants improve self-reported productivity",
+     "credence": {"value": 0.65, "uncertainty": 0.15},
+     "tier": "SUGGESTIVE",
+     "source_depth": "abstract",
+     "outcome_id": "behav.productivity",
+     "warnings": ["CAUTION: Abstract-only causal claim"]
+   }
+   ```
+
+### Example 2: Directional Opposition Detection
+
+**Situation**: Two studies on plants and stress
+
+**Belief A** (physiological):
+> "Plants reduce cortisol levels" → credence 0.75, direction: NEGATIVE (stress)
+
+**Belief B** (self-report):
+> "Plants increase perceived stress in open offices" → credence 0.68, direction: POSITIVE (stress)
+
+**Detection process**:
+
+1. Both beliefs about same topic (plants, stress)
+2. Both have credence > 0.6 (significant)
+3. Directional analysis:
+   - A: "reduce" → negative direction on stress
+   - B: "increase" → positive direction on stress
+4. **Result**: Directional opposition detected
+
+**Output**:
+```json
+{
+  "contested": true,
+  "reasons_for_disagreement": [
+    "Measurement method difference: negative findings from physiological measures; positive findings from self-report"
+  ]
+}
+```
+
+### Example 3: Bridge Warrant Transfer
+
+**Source domain**: Hospital recovery study
+> "Nature views reduce hospital stay by 1 day" (Ulrich, 1984)
+
+**Target domain**: Office productivity
+
+**Bridge analysis**:
+
+1. **Bridge type**: FUNCTIONAL
+   - Same outcome category (stress recovery)
+   - Different population (patients vs office workers)
+   - Different mechanism possible (surgery recovery vs work stress)
+
+2. **Bridge confidence**: P(bridge) = 0.50
+
+3. **Transfer calculation**:
+   ```
+   P(office_benefit) = P(hospital_finding) × P(bridge) × P(office_specific)
+                     = 0.85 × 0.50 × 0.70
+                     = 0.30
+   ```
+
+4. **Result**: The hospital finding suggests, but doesn't prove, office benefits
+   - Credence for office claim: 0.30 (low, needs direct evidence)
+   - Bridge type: FUNCTIONAL (documented)
+
+---
+
+## 10. Negative Examples: What the System Doesn't Do (Per Naur)
+
+### Why Not Bayesian Updating?
+
+**What we DON'T do**:
+```python
+# REJECTED: Standard Bayesian update
+P(H|E) = P(E|H) × P(H) / P(E)
+```
+
+**Why not**:
+1. Assumes independence between evidence pieces (violated in coherentist web)
+2. Requires known likelihoods P(E|H) which we don't have
+3. Doesn't handle web constraints (SUPPORTS, CONTRADICTS, REQUIRES)
+
+**What we DO instead**:
+Coherence-based revision where all nodes can change, constrained by:
+- Support relationships (beliefs that support each other rise together)
+- Contradiction relationships (opposing beliefs can't both be high)
+- Requirement relationships (enabling conditions must hold)
+
+### Why Not Four Tiers?
+
+**What we DON'T do**:
+- CAUSAL-STRONG (experimental, mechanisms)
+- CAUSAL-WEAK (experimental, no mechanism)
+- SUGGESTIVE
+- ASSOCIATIONAL
+
+**Why not**:
+1. Distinguishing "CAUSAL-STRONG" from "CAUSAL-WEAK" is unreliable
+2. Users struggle with 4+ categories (Simon's bounded rationality)
+3. The distinction is captured by warnings instead
+
+### What Happens to Claims That Don't Fit?
+
+**Situation**: A claim uses unfamiliar ontology
+> "The feng shui of the office affects qi flow"
+
+**What we DON'T do**:
+- Force into existing categories ("qi flow" → stress?)
+- Silently discard
+
+**What we DO instead**:
+1. Mark as **STUB** (unintegrated finding)
+2. Preserve original language
+3. Hold in special set for future ontology expansion
+4. Log for human review: "STUB: Unknown framework 'feng shui/qi'"
+
+---
+
 ## References
 
 - Beebee, H., Hitchcock, C., & Menzies, P. (Eds.). (2009). *The Oxford Handbook of Causation*. Oxford University Press.

@@ -1708,6 +1708,91 @@ class WebOfBelief:
             }
         }
 
+    def snapshot(self) -> 'WebOfBeliefSnapshot':
+        """
+        Create an immutable snapshot of the web for query operations.
+
+        Per Lamport (panel validation 2026-01-22): Route handlers should use
+        snapshots for reads to ensure consistency during query execution.
+
+        The snapshot is taken at call time and will not reflect any subsequent
+        changes to the web. This provides snapshot isolation semantics for
+        query operations.
+
+        Returns:
+            WebOfBeliefSnapshot: A frozen copy of the web state
+        """
+        return WebOfBeliefSnapshot(
+            domain=self.domain,
+            version=self.version,
+            beliefs=copy.deepcopy(self.beliefs),
+            constraints=copy.deepcopy(self.constraints),
+            coherence_score=self._coherence_score,
+            tensions=copy.deepcopy(self._tensions),
+            theory_ids=copy.deepcopy(self.theory_ids),
+            stubs=copy.deepcopy(self._stubs),
+            snapshot_at=datetime.now(timezone.utc)
+        )
+
+
+# =============================================================================
+# SNAPSHOT CLASS (Per Lamport, panel validation 2026-01-22)
+# =============================================================================
+
+@dataclass
+class WebOfBeliefSnapshot:
+    """
+    Immutable snapshot of the web of belief for query operations.
+
+    Per Lamport (panel validation 2026-01-22): Queries should operate on
+    snapshot of web state to ensure consistency. This class provides:
+
+    1. Read-only access to beliefs and constraints
+    2. Snapshot isolation semantics (no mutations during query)
+    3. Explicit snapshot timestamp for auditing
+
+    Usage:
+        web_snapshot = web.snapshot()
+        # All query operations use web_snapshot
+        beliefs = web_snapshot.beliefs  # Safe, immutable copy
+
+    Note: This snapshot is a deep copy taken at snapshot() call time.
+    It will NOT reflect any subsequent changes to the source web.
+    """
+    domain: str
+    version: int
+    beliefs: Dict[str, Belief]
+    constraints: Dict[str, Constraint]
+    coherence_score: float
+    tensions: List[Dict[str, Any]]
+    theory_ids: Set[str]
+    stubs: Set[str]
+    snapshot_at: datetime
+
+    def get_beliefs_by_level(self, level: EpistemicLevel) -> List[Belief]:
+        """Get all beliefs at a given epistemic level."""
+        return [b for b in self.beliefs.values() if b.level == level]
+
+    def get_stubs(self) -> List[Belief]:
+        """Get all unintegrated findings."""
+        return [self.beliefs[bid] for bid in self.stubs if bid in self.beliefs]
+
+    def get_anomalies(self) -> List[Belief]:
+        """Get beliefs marked as anomalous."""
+        return [b for b in self.beliefs.values() if b.status == BeliefStatus.ANOMALOUS]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'domain': self.domain,
+            'version': self.version,
+            'n_beliefs': len(self.beliefs),
+            'n_constraints': len(self.constraints),
+            'n_stubs': len(self.stubs),
+            'coherence': self.coherence_score,
+            'n_tensions': len(self.tensions),
+            'snapshot_at': self.snapshot_at.isoformat()
+        }
+
 
 # =============================================================================
 # FACTORY FOR NEUROARCHITECTURE DOMAIN

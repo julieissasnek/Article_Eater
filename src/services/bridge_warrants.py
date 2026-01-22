@@ -92,11 +92,12 @@ class ConfidenceSource(Enum):
 # Default P(bridge) values per expert panel (2026-01-18)
 # F2.1: Updated per Cartwright (ruthless review 2026-01-22):
 #   - CONSTITUTIVE reduced from 0.85 to 0.75 (definitional bridges can be contested)
-#   - CAPACITY added at 0.55 (entities have stable capacities, not mechanism-based)
+#   - CAPACITY added at 0.45 (entities have stable capacities, but often unfalsifiable)
+# Panel validation (2026-01-22): CAPACITY reduced from 0.55 to 0.45 per Cartwright
 DEFAULT_BRIDGE_CONFIDENCE: Dict[BridgeType, float] = {
     BridgeType.CONSTITUTIVE: 0.75,  # Target literally contains source (reduced per Cartwright)
     BridgeType.MECHANISM: 0.60,     # Mechanisms often conserved
-    BridgeType.CAPACITY: 0.55,      # Entity has stable capacity (F2.1)
+    BridgeType.CAPACITY: 0.45,      # Entity has stable capacity - reduced per Cartwright panel validation
     BridgeType.FUNCTIONAL: 0.50,    # Functions via different mechanisms
     BridgeType.ANALOGICAL: 0.35,    # Suggestive but often fail
     BridgeType.EMPIRICAL_COVARIANCE: 0.60,  # Sprint 8: Co-tested in same study
@@ -729,17 +730,20 @@ DOMAIN_KEYWORDS: Dict[str, List[str]] = {
 
 # F2.1: Capacity bridge detection patterns per Cartwright (ruthless review 2026-01-22)
 # Capacity bridges assert that an entity has a stable capacity, not dependent on mechanism
+# Panel validation (2026-01-22): Removed "tends to" and "able to" - too broad, could be
+# statistical tendencies or possibility claims rather than true capacity assertions.
+# True capacity language asserts stable causal power without specifying mechanism.
 CAPACITY_KEYWORDS: List[str] = [
-    "has the capacity",
-    "capable of",
-    "able to",
-    "tends to",
-    "propensity to",
-    "disposition",
-    "inherent ability",
-    "natural capacity",
-    "potential to",
-    "capacity for",
+    "has the capacity",      # True capacity claim
+    "possesses the capacity", # True capacity claim
+    "inherent capacity",     # Stable intrinsic property
+    "intrinsic ability",     # Dispositional property
+    "dispositional property", # Philosophical capacity language
+    "natural capacity",      # Inherent stable power
+    "capacity for",          # True capacity claim
+    "capable of",            # Moderate capacity indicator (kept per panel)
+    "propensity to",         # Dispositional language
+    "disposition",           # Dispositional language
 ]
 
 

@@ -219,7 +219,9 @@ NEUROARCH_CAUSAL_PATTERNS = [
     # F1.1: Building certification/design (Kaplan)
     r'\bgreen\s+building\b',
     r'\bWELL\s+certif',
-    r'\bLEED\b',
+    # Panel validation (2026-01-22): Tightened LEED pattern - was too broad
+    # Could match "leed" as a verb or name. Now requires certification context.
+    r'\bLEED\s+(certified|certification|rating|platinum|gold|silver)\b',
     r'\bbiophilic\s+design\b',
     # F1.1: Lighting interventions (Kaplan)
     r'\bdaylighting\b',
@@ -228,7 +230,8 @@ NEUROARCH_CAUSAL_PATTERNS = [
     r'\bcircadian\s+lighting\b',
     r'\btunable\s+lighting\b',
     # F1.1: Environmental quality (Kaplan)
-    r'\bthermal\s+comfort\b',
+    # Panel validation (2026-01-22): Removed `thermal comfort` - it's typically an
+    # outcome variable, not an intervention. Moved to NEUROARCH_SUGGESTIVE_PATTERNS.
     r'\bacoustic\s+comfort\b',
     r'\bindoor\s+air\s+quality\b',
     r'\bIAQ\b',
@@ -257,6 +260,8 @@ NEUROARCH_SUGGESTIVE_PATTERNS = [
     r'\boccupant\s+satisfaction\b',
     r'\bworkplace\s+satisfaction\b',
     r'\benvironmental\s+satisfaction\b',
+    # Panel validation (2026-01-22): Moved from CAUSAL - it's an outcome variable
+    r'\bthermal\s+comfort\b',
 ]
 
 NEUROARCH_ASSOCIATIONAL_PATTERNS = [
@@ -272,12 +277,15 @@ NEUROARCH_ASSOCIATIONAL_PATTERNS = [
 # =============================================================================
 
 # Attention Restoration Theory (ART) - Kaplan & Kaplan
+# Panel validation (2026-01-22): Removed `extent` and `compatibility` as standalone
+# patterns - too generic without ART context, would cause false positives.
+# These terms only indicate ART when combined with restoration language.
 ATTENTION_RESTORATION_PATTERNS = [
     r'\bbeing\s+away\b',
     r'\bfascination\b',
     r'\bsoft\s+fascination\b',
-    r'\bextent\b',  # ART component (when in restoration context)
-    r'\bcompatibility\b',  # ART component
+    # Removed: r'\bextent\b' - too generic (per Kaplan panel)
+    # Removed: r'\bcompatibility\b' - too generic (per Kaplan panel)
     r'\battention\s+restoration\s+theory\b',
     r'\bART\b',  # When in context of restoration
     r'\bKaplan\b',  # Rachel & Stephen Kaplan
@@ -289,11 +297,17 @@ ATTENTION_RESTORATION_PATTERNS = [
 ]
 
 # Prospect-Refuge Theory - Jay Appleton
+# Panel validation (2026-01-22): Removed `mystery` and `complexity` as standalone
+# patterns - these words appear everywhere. They require co-occurrence with
+# `landscape`, `preference`, or `Appleton` to indicate this theory.
 PROSPECT_REFUGE_PATTERNS = [
     r'\bprospect\b',
     r'\brefuge\b',
-    r'\bmystery\b',  # landscape preference
-    r'\bcomplexity\b',  # landscape preference
+    r'\bprospect.{0,20}refuge\b',  # Co-occurrence: prospect and refuge together
+    # Removed standalone mystery/complexity - too generic (per Kaplan panel)
+    # Use co-occurrence patterns instead:
+    r'\b(mystery|complexity).{0,30}(landscape|preference|Appleton)\b',
+    r'\b(landscape|preference|Appleton).{0,30}(mystery|complexity)\b',
     r'\bAppleton\b',  # Jay Appleton
     r'\bsavanna\s+hypothesis\b',
     r'\bsavanna\s+preference\b',
@@ -324,6 +338,37 @@ BIOPHILIA_PATTERNS = [
     r'\bnature\s+connection\b',
     r'\bnature\s+connectedness\b',
     r'\bnature\s+relatedness\b',
+]
+
+# Panel validation (2026-01-22): Missing frameworks added per Kaplan
+# Place Attachment Theory
+PLACE_ATTACHMENT_PATTERNS = [
+    r'\bplace\s+attachment\b',
+    r'\bplace\s+identity\b',
+    r'\bplace\s+dependence\b',
+    r'\bsense\s+of\s+place\b',
+    r'\bgenius\s+loci\b',
+    r'\bplace\s+bonding\b',
+]
+
+# Restorative Environments (distinct from ART - focuses on measurement)
+RESTORATIVE_ENVIRONMENT_PATTERNS = [
+    r'\brestorative\s+environment\b',
+    r'\bperceived\s+restorativeness\b',
+    r'\bPRS\b',  # Perceived Restorativeness Scale
+    r'\brestorative\s+potential\b',
+    r'\brestorative\s+outcomes?\b',
+    r'\benvironmental\s+restoration\b',
+]
+
+# Environmental Preference (Kaplan & Kaplan preference matrix)
+ENVIRONMENTAL_PREFERENCE_PATTERNS = [
+    r'\bpreference\s+matrix\b',
+    r'\bcoherence.{0,20}legibility\b',  # Kaplan's 2D matrix components
+    r'\blegibility.{0,20}coherence\b',
+    r'\bKaplan.{0,30}preference\b',
+    r'\blandscape\s+coherence\b',
+    r'\bscene\s+legibility\b',
 ]
 
 
@@ -376,6 +421,16 @@ class CausalClassifier:
         ]
         self.biophilia_patterns = [
             re.compile(p, re.IGNORECASE) for p in BIOPHILIA_PATTERNS
+        ]
+        # Panel validation (2026-01-22): Added missing frameworks per Kaplan
+        self.place_attachment_patterns = [
+            re.compile(p, re.IGNORECASE) for p in PLACE_ATTACHMENT_PATTERNS
+        ]
+        self.restorative_env_patterns = [
+            re.compile(p, re.IGNORECASE) for p in RESTORATIVE_ENVIRONMENT_PATTERNS
+        ]
+        self.env_preference_patterns = [
+            re.compile(p, re.IGNORECASE) for p in ENVIRONMENTAL_PREFERENCE_PATTERNS
         ]
 
     def classify(self, content: str, context: Optional[Dict[str, Any]] = None) -> CausalClassification:
@@ -534,6 +589,9 @@ class CausalClassifier:
         Per Kaplan (ruthless review): Explicitly detect domain-specific
         theoretical frameworks that provide epistemological grounding.
 
+        Panel validation (2026-01-22): Added Place Attachment, Restorative
+        Environments, and Environmental Preference frameworks per Kaplan.
+
         Returns:
             List of framework names detected (e.g., ['ART', 'prospect-refuge'])
         """
@@ -554,6 +612,19 @@ class CausalClassifier:
         # Biophilia Hypothesis (Wilson)
         if self._match_patterns(content, self.biophilia_patterns):
             frameworks.append('biophilia')
+
+        # Panel validation (2026-01-22): Added missing frameworks per Kaplan
+        # Place Attachment Theory
+        if self._match_patterns(content, self.place_attachment_patterns):
+            frameworks.append('place-attachment')
+
+        # Restorative Environments
+        if self._match_patterns(content, self.restorative_env_patterns):
+            frameworks.append('restorative-environments')
+
+        # Environmental Preference (Kaplan preference matrix)
+        if self._match_patterns(content, self.env_preference_patterns):
+            frameworks.append('environmental-preference')
 
         return frameworks
 

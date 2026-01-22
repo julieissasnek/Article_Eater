@@ -314,6 +314,37 @@
     .vocab-term.expanded {
       background: #e0f2fe;
       color: #0369a1;
+      cursor: help;
+      position: relative;
+    }
+
+    /* L2: Vocabulary expansion tooltips (panel validation 2026-01-22 per Bates) */
+    .vocab-term.expanded[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      z-index: 100;
+      margin-bottom: 4px;
+    }
+
+    .vocab-term.expanded[data-tooltip]:hover::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1e293b;
+      margin-bottom: -6px;
+      z-index: 100;
     }
 
     .vocab-term.matched {
@@ -661,6 +692,54 @@
                 <button data-value="" class="active">All</button>
                 <button data-value="true">Yes</button>
                 <button data-value="false">No</button>
+              </div>
+            </div>
+
+            <!-- M5: Year Range Filter (panel validation 2026-01-22 per Bates) -->
+            <div class="filter-group">
+              <span class="filter-label">Year:</span>
+              <div class="filter-range">
+                <input type="number" id="filter-year-min" min="1980" max="2026" value="2000" style="width: 60px;">
+                <span>-</span>
+                <input type="number" id="filter-year-max" min="1980" max="2026" value="2026" style="width: 60px;">
+              </div>
+            </div>
+
+            <!-- M5: Study Type Filter (panel validation 2026-01-22 per Bates) -->
+            <div class="filter-group">
+              <span class="filter-label">Study Type:</span>
+              <select class="filter-select" id="filter-study-type">
+                <option value="">All</option>
+                <option value="EXPERIMENTAL">Experimental</option>
+                <option value="QUASI_EXPERIMENTAL">Quasi-experimental</option>
+                <option value="OBSERVATIONAL">Observational</option>
+                <option value="REVIEW">Review</option>
+                <option value="META_ANALYSIS">Meta-analysis</option>
+              </select>
+            </div>
+
+            <!-- M5: Theoretical Framework Facet (panel validation 2026-01-22 per Bates) -->
+            <div class="filter-group">
+              <span class="filter-label">Framework:</span>
+              <select class="filter-select" id="filter-framework">
+                <option value="">All</option>
+                <option value="ART">Attention Restoration (ART)</option>
+                <option value="SRT">Stress Recovery (SRT)</option>
+                <option value="prospect-refuge">Prospect-Refuge</option>
+                <option value="biophilia">Biophilia</option>
+                <option value="place-attachment">Place Attachment</option>
+                <option value="restorative-environments">Restorative Environments</option>
+                <option value="environmental-preference">Environmental Preference</option>
+              </select>
+            </div>
+
+            <!-- Credence Presets (L3: panel validation 2026-01-22 per Bates) -->
+            <div class="filter-group">
+              <span class="filter-label">Quick:</span>
+              <div class="filter-toggle" id="filter-credence-presets">
+                <button data-min="70" data-max="100">High</button>
+                <button data-min="40" data-max="70">Medium</button>
+                <button data-min="0" data-max="40">Low</button>
               </div>
             </div>
 
@@ -1133,12 +1212,25 @@
         });
       }
 
-      // Add expanded terms
+      // Add expanded terms with tooltips (L2: panel validation 2026-01-22 per Bates)
+      // Show "why expanded" on hover
       if (queryData.expanded_terms && queryData.expanded_terms.length > 0) {
-        queryData.expanded_terms.forEach(term => {
+        queryData.expanded_terms.forEach(termData => {
           const span = document.createElement('span');
           span.className = 'vocab-term expanded';
-          span.textContent = term;
+
+          // Support both string and object formats
+          if (typeof termData === 'string') {
+            span.textContent = termData;
+            span.title = 'Related concept'; // Default reason
+          } else {
+            // Object format: { term: "...", reason: "synonym|broader|related|..." }
+            span.textContent = termData.term;
+            span.title = termData.reason || 'Related concept';
+          }
+
+          // L2: Add visible tooltip indicator
+          span.setAttribute('data-tooltip', span.title);
           expandedDiv.appendChild(span);
         });
       }
@@ -1166,12 +1258,18 @@
     // ==========================================================================
 
     // Current filter state
+    // M5: Added year range, study type, framework filters (panel validation 2026-01-22)
     const filterState = {
       sourceDepth: '',
       causalTier: '',
       credenceMin: 0,
       credenceMax: 100,
-      contested: ''
+      contested: '',
+      // M5 additions
+      yearMin: 2000,
+      yearMax: 2026,
+      studyType: '',
+      framework: ''
     };
 
     // Apply filters to graph
@@ -1273,6 +1371,11 @@
       filterState.credenceMin = 0;
       filterState.credenceMax = 100;
       filterState.contested = '';
+      // M5: Reset new filter state
+      filterState.yearMin = 2000;
+      filterState.yearMax = 2026;
+      filterState.studyType = '';
+      filterState.framework = '';
 
       document.getElementById('filter-source-depth').value = '';
       document.getElementById('filter-causal-tier').value = '';
@@ -1284,6 +1387,12 @@
       document.querySelectorAll('#filter-contested button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.value === '');
       });
+
+      // M5: Reset new filter inputs
+      document.getElementById('filter-year-min').value = 2000;
+      document.getElementById('filter-year-max').value = 2026;
+      document.getElementById('filter-study-type').value = '';
+      document.getElementById('filter-framework').value = '';
 
       applyFilters();
     }
@@ -1322,6 +1431,44 @@
           document.querySelectorAll('#filter-contested button').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           filterState.contested = btn.dataset.value;
+          applyFilters();
+        });
+      });
+
+      // M5: Year range (panel validation 2026-01-22)
+      document.getElementById('filter-year-min').addEventListener('change', (e) => {
+        filterState.yearMin = parseInt(e.target.value) || 2000;
+        applyFilters();
+      });
+
+      document.getElementById('filter-year-max').addEventListener('change', (e) => {
+        filterState.yearMax = parseInt(e.target.value) || 2026;
+        applyFilters();
+      });
+
+      // M5: Study type filter (panel validation 2026-01-22)
+      document.getElementById('filter-study-type').addEventListener('change', (e) => {
+        filterState.studyType = e.target.value;
+        applyFilters();
+      });
+
+      // M5: Theoretical framework filter (panel validation 2026-01-22)
+      document.getElementById('filter-framework').addEventListener('change', (e) => {
+        filterState.framework = e.target.value;
+        applyFilters();
+      });
+
+      // L3: Credence presets (panel validation 2026-01-22)
+      document.querySelectorAll('#filter-credence-presets button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const minVal = parseInt(btn.dataset.min);
+          const maxVal = parseInt(btn.dataset.max);
+          filterState.credenceMin = minVal;
+          filterState.credenceMax = maxVal;
+          document.getElementById('filter-credence-min').value = minVal;
+          document.getElementById('filter-credence-max').value = maxVal;
+          document.getElementById('credence-min-display').textContent = minVal + '%';
+          document.getElementById('credence-max-display').textContent = maxVal + '%';
           applyFilters();
         });
       });

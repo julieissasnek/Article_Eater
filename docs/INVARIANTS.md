@@ -89,6 +89,18 @@ INV-W7: coherence_score monotonically increases during equilibrium-seeking
         If seek_equilibrium is enabled:
             coherence_score(t+1) ≥ coherence_score(t) - ε
             where ε is the convergence threshold (default: 0.001)
+
+INV-W8: Credence updates must preserve transitivity (per Lamport, panel 2026-01-22)
+        If A supports B and B supports C,
+        then credence(A) change should propagate to C.
+
+        Implementation note: When belief A's credence changes:
+        1. Identify all beliefs B directly supported by A (SUPPORTS constraint)
+        2. For each B, identify beliefs C directly supported by B
+        3. Propagate credence impact: ΔC = ΔA × strength(A→B) × strength(B→C) × 0.5
+        4. Propagation stops when ΔX < 0.01 (threshold)
+
+        This ensures the web maintains coherence across transitive relationships.
 ```
 
 ---
@@ -145,8 +157,11 @@ INV-BR4: confidence ∈ [0.05, 0.95]
          (Never zero, never certain)
 
 INV-BR5: default confidences are type-dependent
-         CONSTITUTIVE: 0.75, MECHANISM: 0.60, CAPACITY: 0.55,
+         CONSTITUTIVE: 0.75, MECHANISM: 0.60, CAPACITY: 0.45,
          FUNCTIONAL: 0.50, ANALOGICAL: 0.35, EMPIRICAL_COVARIANCE: 0.60
+
+         Note: CAPACITY reduced from 0.55 to 0.45 per Cartwright (panel 2026-01-22)
+         because capacity claims are often unfalsifiable assertions.
 ```
 
 ### Status Invariants
@@ -216,7 +231,12 @@ INV-R3: CRITICAL = abstract-only causal without confounder
 ### Read-Write Behavior
 ```
 CONSISTENCY-1: Queries operate on snapshot of web state
-               During query execution, web state does not change
+               During query execution, web state does not change.
+               Panel validation (2026-01-22 - Lamport): Clarified as follows:
+               - Snapshot is taken at query start via web.snapshot()
+               - The snapshot is an explicit deep copy (not implicit)
+               - If web changes during query, snapshot remains consistent
+               - Route handlers SHOULD call snapshot() before query operations
 
 CONSISTENCY-2: Mutations are atomic at belief level
                Individual belief updates are atomic; no partial updates
@@ -225,10 +245,29 @@ CONSISTENCY-3: No read-write locking currently implemented
                Concurrent reads are safe; concurrent writes may conflict
 ```
 
+### Snapshot Isolation (Per Lamport, panel validation 2026-01-22)
+```
+SNAPSHOT-1: When is snapshot taken?
+            At query start, when web.snapshot() is called.
+            This returns WebOfBeliefSnapshot, an immutable copy.
+
+SNAPSHOT-2: What happens if web changes during query?
+            Query continues with the snapshot state.
+            Snapshot is NOT affected by concurrent writes.
+            This provides snapshot isolation semantics.
+
+SNAPSHOT-3: Is snapshot explicit or implicit?
+            EXPLICIT: snapshot() returns a deep copy.
+            Route handlers should use:
+                web_snapshot = get_web().snapshot()
+                # All operations use web_snapshot
+```
+
 ### Recommended Practices
 ```
-PRACTICE-1: Copy-on-read for query operations
-            Queries should work on a copy of the belief set
+PRACTICE-1: Use snapshot() for query operations
+            Route handlers should call web.snapshot() and use
+            the returned snapshot for all read operations.
 
 PRACTICE-2: Validate before write
             Check invariants before committing mutations
