@@ -271,6 +271,177 @@
       font-weight: 500;
     }
 
+    /* F4.1: Vocabulary Expansion Display (Bates, ruthless review 2026-01-22) */
+    .vocab-expansion-panel {
+      display: none;
+      padding: var(--space-sm) var(--space-md);
+      background: #f0f9ff;
+      border-bottom: 1px solid #bae6fd;
+      font-size: 0.875rem;
+    }
+
+    .vocab-expansion-panel.visible {
+      display: block;
+    }
+
+    .vocab-expansion-header {
+      font-weight: 600;
+      color: #0369a1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .vocab-terms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xs);
+    }
+
+    .vocab-term {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+    }
+
+    .vocab-term.original {
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .vocab-term.expanded {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .vocab-term.matched {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .vocab-legend {
+      font-size: 0.7rem;
+      color: var(--gray-500);
+    }
+
+    /* F4.2: Faceted Filtering (Bates, ruthless review 2026-01-22) */
+    .filter-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+
+    .filter-select {
+      padding: 4px 8px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.75rem;
+      min-width: 100px;
+    }
+
+    .filter-range {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .filter-range input[type="range"] {
+      width: 80px;
+      height: 4px;
+    }
+
+    .filter-range-value {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      min-width: 35px;
+    }
+
+    .filter-toggle {
+      display: flex;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .filter-toggle button {
+      padding: 4px 8px;
+      border: none;
+      background: white;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    .filter-toggle button.active {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .filter-toggle button:not(:last-child) {
+      border-right: 1px solid var(--gray-300);
+    }
+
+    .filter-reset {
+      padding: 4px 8px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--gray-500);
+    }
+
+    .filter-reset:hover {
+      background: var(--gray-100);
+    }
+
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .active-filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      background: var(--primary-blue);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 0.7rem;
+    }
+
+    .active-filter-tag button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.8rem;
+    }
+
     /* Legend */
     .legend {
       padding: var(--space-sm);
@@ -426,6 +597,78 @@
               <button class="btn btn-sm" id="fit-graph">Fit</button>
               <button class="btn btn-sm btn-primary" id="load-demo">Load Demo</button>
             </div>
+          </div>
+
+          <!-- F4.1: Vocabulary Expansion Display (Bates, ruthless review) -->
+          <div class="vocab-expansion-panel" id="vocab-panel">
+            <div class="vocab-expansion-header">Query Expansion</div>
+            <div class="vocab-terms" id="vocab-original">
+              <span class="vocab-label">Original:</span>
+            </div>
+            <div class="vocab-terms" id="vocab-expanded">
+              <span class="vocab-label">Expanded:</span>
+            </div>
+            <div class="vocab-terms" id="vocab-matched">
+              <span class="vocab-label">Matched:</span>
+            </div>
+            <div class="vocab-legend">
+              <span class="vocab-term original">Original</span> = your query terms |
+              <span class="vocab-term expanded">Expanded</span> = synonyms added |
+              <span class="vocab-term matched">Matched</span> = found in results
+            </div>
+          </div>
+
+          <!-- F4.2: Faceted Filtering (Bates, ruthless review) -->
+          <div class="filter-panel" id="filter-panel">
+            <!-- Source Depth Filter -->
+            <div class="filter-group">
+              <span class="filter-label">Source:</span>
+              <select class="filter-select" id="filter-source-depth">
+                <option value="">All</option>
+                <option value="FULL_TEXT">Full-text</option>
+                <option value="ABSTRACT">Abstract</option>
+                <option value="METADATA">Metadata</option>
+              </select>
+            </div>
+
+            <!-- Causal Tier Filter -->
+            <div class="filter-group">
+              <span class="filter-label">Causal Tier:</span>
+              <select class="filter-select" id="filter-causal-tier">
+                <option value="">All</option>
+                <option value="CAUSAL">Causal</option>
+                <option value="SUGGESTIVE">Suggestive</option>
+                <option value="ASSOCIATIONAL">Associational</option>
+              </select>
+            </div>
+
+            <!-- Credence Range Filter -->
+            <div class="filter-group">
+              <span class="filter-label">Credence:</span>
+              <div class="filter-range">
+                <input type="range" id="filter-credence-min" min="0" max="100" value="0">
+                <span class="filter-range-value" id="credence-min-display">0%</span>
+                <span>-</span>
+                <input type="range" id="filter-credence-max" min="0" max="100" value="100">
+                <span class="filter-range-value" id="credence-max-display">100%</span>
+              </div>
+            </div>
+
+            <!-- Contested Status Filter -->
+            <div class="filter-group">
+              <span class="filter-label">Contested:</span>
+              <div class="filter-toggle" id="filter-contested">
+                <button data-value="" class="active">All</button>
+                <button data-value="true">Yes</button>
+                <button data-value="false">No</button>
+              </div>
+            </div>
+
+            <!-- Reset Filters -->
+            <button class="filter-reset" id="reset-filters">Reset</button>
+
+            <!-- Active Filters Display -->
+            <div class="active-filters" id="active-filters"></div>
           </div>
 
           <!-- Cytoscape container -->
@@ -864,15 +1107,255 @@
       }
     }
 
+    // ==========================================================================
+    // F4.1: Vocabulary Expansion Display (Bates, ruthless review 2026-01-22)
+    // ==========================================================================
+
+    // Show vocabulary expansion panel with query details
+    function showVocabularyExpansion(queryData) {
+      const panel = document.getElementById('vocab-panel');
+      const originalDiv = document.getElementById('vocab-original');
+      const expandedDiv = document.getElementById('vocab-expanded');
+      const matchedDiv = document.getElementById('vocab-matched');
+
+      // Clear previous
+      originalDiv.innerHTML = '<span class="vocab-label">Original:</span>';
+      expandedDiv.innerHTML = '<span class="vocab-label">Expanded:</span>';
+      matchedDiv.innerHTML = '<span class="vocab-label">Matched:</span>';
+
+      // Add original terms
+      if (queryData.original_terms && queryData.original_terms.length > 0) {
+        queryData.original_terms.forEach(term => {
+          const span = document.createElement('span');
+          span.className = 'vocab-term original';
+          span.textContent = term;
+          originalDiv.appendChild(span);
+        });
+      }
+
+      // Add expanded terms
+      if (queryData.expanded_terms && queryData.expanded_terms.length > 0) {
+        queryData.expanded_terms.forEach(term => {
+          const span = document.createElement('span');
+          span.className = 'vocab-term expanded';
+          span.textContent = term;
+          expandedDiv.appendChild(span);
+        });
+      }
+
+      // Add matched terms
+      if (queryData.matched_terms && queryData.matched_terms.length > 0) {
+        queryData.matched_terms.forEach(term => {
+          const span = document.createElement('span');
+          span.className = 'vocab-term matched';
+          span.textContent = term;
+          matchedDiv.appendChild(span);
+        });
+      }
+
+      panel.classList.add('visible');
+    }
+
+    // Hide vocabulary expansion panel
+    function hideVocabularyExpansion() {
+      document.getElementById('vocab-panel').classList.remove('visible');
+    }
+
+    // ==========================================================================
+    // F4.2: Faceted Filtering (Bates, ruthless review 2026-01-22)
+    // ==========================================================================
+
+    // Current filter state
+    const filterState = {
+      sourceDepth: '',
+      causalTier: '',
+      credenceMin: 0,
+      credenceMax: 100,
+      contested: ''
+    };
+
+    // Apply filters to graph
+    function applyFilters() {
+      if (!cy) return;
+
+      cy.nodes().forEach(node => {
+        let visible = true;
+
+        // Source depth filter
+        if (filterState.sourceDepth && node.data('source_depth')) {
+          visible = visible && node.data('source_depth') === filterState.sourceDepth;
+        }
+
+        // Causal tier filter
+        if (filterState.causalTier && node.data('causal_tier')) {
+          visible = visible && node.data('causal_tier') === filterState.causalTier;
+        }
+
+        // Credence range filter
+        const credence = (node.data('credence') || 0.5) * 100;
+        visible = visible && credence >= filterState.credenceMin && credence <= filterState.credenceMax;
+
+        // Contested filter
+        if (filterState.contested !== '') {
+          const isContested = node.data('contested') === true;
+          visible = visible && (filterState.contested === 'true' ? isContested : !isContested);
+        }
+
+        // Apply visibility
+        if (visible) {
+          node.style('display', 'element');
+        } else {
+          node.style('display', 'none');
+        }
+      });
+
+      // Update active filters display
+      updateActiveFiltersDisplay();
+    }
+
+    // Update active filters display
+    function updateActiveFiltersDisplay() {
+      const container = document.getElementById('active-filters');
+      container.innerHTML = '';
+
+      if (filterState.sourceDepth) {
+        addActiveFilterTag(container, 'Source: ' + filterState.sourceDepth, () => {
+          document.getElementById('filter-source-depth').value = '';
+          filterState.sourceDepth = '';
+          applyFilters();
+        });
+      }
+
+      if (filterState.causalTier) {
+        addActiveFilterTag(container, 'Tier: ' + filterState.causalTier, () => {
+          document.getElementById('filter-causal-tier').value = '';
+          filterState.causalTier = '';
+          applyFilters();
+        });
+      }
+
+      if (filterState.credenceMin > 0 || filterState.credenceMax < 100) {
+        addActiveFilterTag(container, `Credence: ${filterState.credenceMin}%-${filterState.credenceMax}%`, () => {
+          document.getElementById('filter-credence-min').value = 0;
+          document.getElementById('filter-credence-max').value = 100;
+          filterState.credenceMin = 0;
+          filterState.credenceMax = 100;
+          document.getElementById('credence-min-display').textContent = '0%';
+          document.getElementById('credence-max-display').textContent = '100%';
+          applyFilters();
+        });
+      }
+
+      if (filterState.contested !== '') {
+        addActiveFilterTag(container, 'Contested: ' + (filterState.contested === 'true' ? 'Yes' : 'No'), () => {
+          document.querySelectorAll('#filter-contested button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.value === '');
+          });
+          filterState.contested = '';
+          applyFilters();
+        });
+      }
+    }
+
+    // Add active filter tag
+    function addActiveFilterTag(container, text, onRemove) {
+      const tag = document.createElement('span');
+      tag.className = 'active-filter-tag';
+      tag.innerHTML = `${text} <button>&times;</button>`;
+      tag.querySelector('button').addEventListener('click', onRemove);
+      container.appendChild(tag);
+    }
+
+    // Reset all filters
+    function resetFilters() {
+      filterState.sourceDepth = '';
+      filterState.causalTier = '';
+      filterState.credenceMin = 0;
+      filterState.credenceMax = 100;
+      filterState.contested = '';
+
+      document.getElementById('filter-source-depth').value = '';
+      document.getElementById('filter-causal-tier').value = '';
+      document.getElementById('filter-credence-min').value = 0;
+      document.getElementById('filter-credence-max').value = 100;
+      document.getElementById('credence-min-display').textContent = '0%';
+      document.getElementById('credence-max-display').textContent = '100%';
+
+      document.querySelectorAll('#filter-contested button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === '');
+      });
+
+      applyFilters();
+    }
+
+    // Initialize filter event listeners
+    function initFilterListeners() {
+      // Source depth
+      document.getElementById('filter-source-depth').addEventListener('change', (e) => {
+        filterState.sourceDepth = e.target.value;
+        applyFilters();
+      });
+
+      // Causal tier
+      document.getElementById('filter-causal-tier').addEventListener('change', (e) => {
+        filterState.causalTier = e.target.value;
+        applyFilters();
+      });
+
+      // Credence min
+      document.getElementById('filter-credence-min').addEventListener('input', (e) => {
+        filterState.credenceMin = parseInt(e.target.value);
+        document.getElementById('credence-min-display').textContent = filterState.credenceMin + '%';
+        applyFilters();
+      });
+
+      // Credence max
+      document.getElementById('filter-credence-max').addEventListener('input', (e) => {
+        filterState.credenceMax = parseInt(e.target.value);
+        document.getElementById('credence-max-display').textContent = filterState.credenceMax + '%';
+        applyFilters();
+      });
+
+      // Contested toggle
+      document.querySelectorAll('#filter-contested button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#filter-contested button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterState.contested = btn.dataset.value;
+          applyFilters();
+        });
+      });
+
+      // Reset button
+      document.getElementById('reset-filters').addEventListener('click', resetFilters);
+    }
+
+    // ==========================================================================
+    // Search handler (updated for F4.1 vocabulary display)
+    // ==========================================================================
+
     // Search handler
     async function handleSearch(query) {
       if (!query) {
+        hideVocabularyExpansion();
         await loadGraph();
         return;
       }
       try {
         const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
+
+        // F4.1: Show vocabulary expansion if available
+        if (data.vocabulary_expansion) {
+          showVocabularyExpansion(data.vocabulary_expansion);
+        } else {
+          // Construct from available data
+          showVocabularyExpansion({
+            original_terms: query.split(/\s+/).filter(t => t.length > 2),
+            expanded_terms: data.expanded_terms || [],
+            matched_terms: data.matched_terms || []
+          });
+        }
 
         // Highlight matching nodes
         cy.nodes().removeClass('highlighted');
@@ -890,6 +1373,9 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       initCytoscape();
+
+      // F4.2: Initialize filter listeners
+      initFilterListeners();
 
       // Event listeners
       document.getElementById('load-demo').addEventListener('click', loadDemo);
