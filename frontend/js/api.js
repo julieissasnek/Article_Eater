@@ -1,4 +1,4 @@
-// Article Eater v18.5 - API Client
+// Article Eater V22.0.0 (Post-Quinean) - API Client
 // Handles all communication with backend API
 
 // ============================================================================

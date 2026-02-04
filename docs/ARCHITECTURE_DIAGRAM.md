@@ -1,7 +1,7 @@
 # Architecture Diagram
 
 **Date**: January 22, 2026
-**Version**: V21.0.0 (Post-Quinean)
+**Version**: V22.0.0 (Post-Quinean)
 **Purpose**: Visual documentation of system architecture (per Parnas, ruthless review 2026-01-22)
 
 ---
@@ -10,7 +10,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ARTICLE EATER V21.0.0                             │
+│                           ARTICLE EATER V22.0.0                             │
 │                              (Post-Quinean)                                 │
 └─────────────────────────────────────────────────────────────────────────────┘
 

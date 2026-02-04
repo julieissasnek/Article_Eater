@@ -63,7 +63,8 @@ from src.services.web_of_belief import (
     UncertainQuantity,
     EpistemicLevel,
     BeliefStatus,
-    ConstraintType
+    ConstraintType,
+    ScopeConditions,
 )
 
 # Import semantic status from refined epistemic (for future use)
@@ -557,6 +558,11 @@ def claim_to_belief(
         if claim_type == "mechanistic":
             base_entrenchment += MECHANISTIC_ENTRENCHMENT_BOOST
 
+        # Extract scope conditions (Panel Fix 2026-01-23)
+        scope = _extract_scope(claim)
+        environment_id = _extract_environment_id(claim)
+        outcome_id = _extract_outcome_id(claim)
+
         # Create the Belief
         belief = Belief(
             belief_id=claim_id,
@@ -568,7 +574,11 @@ def claim_to_belief(
             paper_ids=[paper_id],
             theory_id=theory_id,
             domain=_extract_domain(constructs),
-            tags=_extract_tags(claim)
+            tags=_extract_tags(claim),
+            # Sprint 6/7 fields (Panel Fix 2026-01-23)
+            scope=scope,
+            environment_id=environment_id,
+            outcome_id=outcome_id,
         )
         
         result.entity = belief
@@ -838,6 +848,72 @@ def _extract_tags(claim: Dict[str, Any]) -> List[str]:
         tags.append(f"design:{design}")
     
     return tags
+
+
+def _extract_scope(claim: Dict[str, Any]) -> ScopeConditions:
+    """
+    Extract scope conditions from claim's study metadata.
+
+    Maps ae.claim.v1 study fields to ScopeConditions:
+    - study.sample.population → population
+    - study.sample.country → geography
+    - study.setting[].id → setting
+    - study.design → measurement context
+
+    Panel Fix (2026-01-23): Ensures subject type constraints flow through
+    to the belief for proper scope-boundary conflict detection.
+    """
+    study = claim.get("study", {})
+    sample = study.get("sample", {})
+    settings = study.get("setting", [])
+
+    # Extract setting from first setting item if available
+    setting_value = None
+    if settings and isinstance(settings, list) and len(settings) > 0:
+        setting_value = settings[0].get("id") or settings[0].get("notes")
+
+    # Determine if scope was explicitly specified
+    # Scope is specified if we have population OR setting OR country
+    has_population = bool(sample.get("population"))
+    has_setting = bool(setting_value)
+    has_geography = bool(sample.get("country"))
+    scope_specified = has_population or has_setting or has_geography
+
+    return ScopeConditions(
+        population=sample.get("population"),
+        setting=setting_value,
+        geography=sample.get("country"),
+        measurement=study.get("design"),  # Map design to measurement context
+        scope_specified=scope_specified
+    )
+
+
+def _extract_environment_id(claim: Dict[str, Any]) -> Optional[str]:
+    """
+    Extract primary environment factor ID from claim.
+
+    Maps ae.claim.v1 constructs.environment_factors to canonical ID.
+    Used for taxonomy-based matching and conflict detection.
+    """
+    constructs = claim.get("constructs", {})
+    env_factors = constructs.get("environment_factors", [])
+    if env_factors and isinstance(env_factors, list) and len(env_factors) > 0:
+        return env_factors[0].get("id")
+    return None
+
+
+def _extract_outcome_id(claim: Dict[str, Any]) -> Optional[str]:
+    """
+    Extract primary outcome ID from claim.
+
+    Maps ae.claim.v1 constructs.outcomes to canonical ID.
+    Used for taxonomy-based matching and theory inference.
+    """
+    constructs = claim.get("constructs", {})
+    outcomes = constructs.get("outcomes", [])
+    if outcomes and isinstance(outcomes, list) and len(outcomes) > 0:
+        return outcomes[0].get("id")
+    return None
 
 
 def load_outcome_lookup(path: Optional[Path] = None) -> Dict[str, Any]:

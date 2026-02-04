@@ -1,5 +1,5 @@
 """
-Article Eater v19.0 - Authentication System
+Article Eater V22.0.0 (Post-Quinean) - Authentication System
 JWT-based authentication with user management
 """
 

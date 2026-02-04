@@ -1,5 +1,5 @@
 """
-Article Eater v19.0 - WebSocket Real-Time Updates
+Article Eater V22.0.0 (Post-Quinean) - WebSocket Real-Time Updates
 Live updates for job queue, progress, and notifications
 """
 

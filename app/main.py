@@ -66,7 +66,7 @@ from app.routes.profile import router as profile_router
 app = FastAPI(
     title="Article Eater API",
     description="""
-# Article Eater v18.5 - Academic Literature Processing System
+# Article Eater V22.0.0 (Post-Quinean) - Academic Literature Processing System
 
 ## Overview
 Article Eater is an AI-powered research automation system that helps students and researchers 
@@ -100,7 +100,7 @@ Production deployment will use JWT tokens.
 - Issues: Create GitHub issue
 - Contact: article-eater@ucsd.edu
     """,
-    version="18.5.0",
+    version="22.0.0",
     contact={
         "name": "Article Eater Team",
         "email": "article-eater@ucsd.edu",
@@ -141,6 +141,14 @@ Production deployment will use JWT tokens.
         {
             "name": "admin",
             "description": "Administrative endpoints (restricted)"
+        },
+        {
+            "name": "galleries",
+            "description": "ClaimGallery visual evidence system - build and explore visual evidence for claims"
+        },
+        {
+            "name": "annotator",
+            "description": "Article annotation - annotate PDFs with quality tiers, theories, and architectural typologies"
         }
     ],
     docs_url="/docs",  # Swagger UI
@@ -157,8 +165,10 @@ app.add_middleware(
         "http://localhost:8080",           # Local development
         "http://localhost:3000",           # Alternative dev port
         "http://127.0.0.1:8080",          # Alternative localhost
+        "http://localhost:5173",           # Vite dev server
         "https://article-eater.ucsd.edu",  # Production
-        "*"                                # For initial testing (remove in production)
+        # NOTE: Wildcard "*" removed per security review (2026-01-22)
+        # allow_credentials=True is incompatible with "*" origin
     ],
     allow_credentials=True,
     allow_methods=["*"],                   # Allow all HTTP methods
@@ -227,7 +237,7 @@ async def healthz():
     """Health check endpoint"""
     return {
         "status": "ok",
-        "version": "19.0.0",
+        "version": "22.0.0",
         "timestamp": datetime.now().isoformat(),
         "features": {
             "authentication": True,
@@ -888,7 +898,7 @@ def auto_migrate_database():
 async def startup_event():
     """Run on application startup"""
     logger.info("="*60)
-    logger.info("Article Eater API v19.0 starting up...")
+    logger.info("Article Eater API V22.0.0 (Post-Quinean) starting up...")
     logger.info("="*60)
     logger.info(f"Database: {DB_PATH}")
     logger.info("CORS enabled for local development and production")
@@ -920,6 +930,12 @@ from .routes.web_of_belief import router as web_of_belief_router
 from .routes.query import router as query_router
 from .routes.reports import router as reports_router
 from .routes.ingestion import router as ingestion_router
+# G-Sprint: ClaimGallery visual evidence layer (2026-01-22)
+from .routes.galleries import router as galleries_router
+# Article annotation GUI (2026-01-23)
+from .routes.annotator import router as annotator_router
+# Image pool management (2026-01-28)
+from .routes.image_pool import router as image_pool_router
 
 try:
     ensure_db()
@@ -934,6 +950,12 @@ app.include_router(web_of_belief_router, prefix='/api/v1', tags=['web-of-belief'
 app.include_router(query_router, prefix='/api/v1', tags=['query'])
 app.include_router(reports_router, prefix='/api/v1', tags=['reports'])
 app.include_router(ingestion_router, prefix='/api/v1', tags=['ingestion'])
+# G-Sprint: ClaimGallery visual evidence layer (2026-01-22)
+app.include_router(galleries_router, tags=['galleries'])
+# Article annotation GUI (2026-01-23)
+app.include_router(annotator_router, prefix='/api/v1/annotator', tags=['annotator'])
+# Image pool management (2026-01-28)
+app.include_router(image_pool_router, tags=['image-pool'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)
@@ -952,3 +974,168 @@ from pathlib import Path as _Path
 def admin_page():
     p = _Path('src/gui/templates/admin.html')
     return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Admin Control Room</h1>'
+
+@app.get('/article-annotator', response_class=HTMLResponse)
+def article_annotator_page():
+    """Article Annotator GUI for annotating PDFs with theories and quality tiers."""
+    p = _Path('frontend/article-annotator.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Article Annotator Not Found</h1>'
+
+@app.get('/image-collector', response_class=HTMLResponse)
+def image_collector_page():
+    """Image Collector GUI for downloading CC images for gallery building."""
+    p = _Path('frontend/image-collector.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Image Collector Not Found</h1>'
+
+@app.get('/image-inspector', response_class=HTMLResponse)
+def image_inspector_page():
+    """Image Inspector GUI for browsing and tagging images."""
+    p = _Path('frontend/image-inspector.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Image Inspector Not Found</h1>'
+
+# ============================================================================
+# STATIC FILES & FRONTEND ROUTES (2026-01-23)
+# ============================================================================
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Mount entire frontend directory for static assets (CSS, JS, HTML files)
+# This allows both /css/main.css and /dashboard.html to work
+app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
+app.mount("/js", StaticFiles(directory="frontend/js"), name="js")
+# Mount frontend HTML files - must come AFTER specific routes
+# This is mounted at the end of this file to avoid shadowing API routes
+
+# Frontend page routes
+@app.get('/dashboard', response_class=HTMLResponse)
+def dashboard_page():
+    """Main dashboard page."""
+    p = _Path('frontend/dashboard.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Dashboard Not Found</h1>'
+
+@app.get('/library', response_class=HTMLResponse)
+def library_page():
+    """Article library page."""
+    p = _Path('frontend/library.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Library Not Found</h1>'
+
+@app.get('/claim-gallery', response_class=HTMLResponse)
+def claim_gallery_page():
+    """Claim gallery page for visual evidence."""
+    p = _Path('frontend/claim-gallery.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Claim Gallery Not Found</h1>'
+
+@app.get('/evidence-explorer', response_class=HTMLResponse)
+def evidence_explorer_page():
+    """Evidence explorer page."""
+    p = _Path('frontend/evidence-explorer.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Evidence Explorer Not Found</h1>'
+
+@app.get('/findings', response_class=HTMLResponse)
+def findings_page():
+    """Findings page."""
+    p = _Path('frontend/findings.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Findings Not Found</h1>'
+
+@app.get('/rules-page', response_class=HTMLResponse)
+def rules_page():
+    """Rules page."""
+    p = _Path('frontend/rules.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Rules Not Found</h1>'
+
+@app.get('/queue', response_class=HTMLResponse)
+def queue_page():
+    """Job queue page."""
+    p = _Path('frontend/queue.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Queue Not Found</h1>'
+
+@app.get('/search', response_class=HTMLResponse)
+def search_page():
+    """Search page."""
+    p = _Path('frontend/search.html')
+    return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Search Not Found</h1>'
+
+# ============================================================================
+# PDF SERVING ENDPOINT (for remote PDF viewing)
+# ============================================================================
+# Uses configurable paths from app.config.pdf_storage
+# For server migration: set AE_PDF_STORAGE_MODE=server environment variable
+# ============================================================================
+import mimetypes
+from app.config.pdf_storage import find_pdf, find_pdf_by_zotero_key, get_config
+
+@app.get('/api/v1/pdf/{pdf_id:path}')
+async def serve_pdf(pdf_id: str, zotero_key: str = None):
+    """
+    Serve a PDF file for viewing in browser.
+
+    The pdf_id can be:
+    - A filename to search across all configured paths
+    - A full path (URL-encoded)
+
+    Optional zotero_key parameter for direct Zotero storage lookup.
+
+    MIGRATION NOTE:
+    ---------------
+    Paths are configured in app/config/pdf_storage.py
+    For server deployment, set: AE_PDF_STORAGE_MODE=server
+    """
+    from urllib.parse import unquote
+
+    # Decode URL-encoded path
+    pdf_path = unquote(pdf_id)
+
+    # If Zotero key provided, try Zotero storage first
+    if zotero_key:
+        found = find_pdf_by_zotero_key(zotero_key)
+        if found:
+            return FileResponse(
+                path=str(found),
+                media_type='application/pdf',
+                filename=found.name
+            )
+
+    # Search all configured paths
+    found = find_pdf(pdf_path)
+    if found:
+        return FileResponse(
+            path=str(found),
+            media_type='application/pdf',
+            filename=found.name
+        )
+
+    raise HTTPException(status_code=404, detail=f"PDF not found: {pdf_id}")
+
+
+@app.get('/api/v1/pdf-config')
+async def get_pdf_config():
+    """
+    Get current PDF storage configuration.
+    Useful for verifying server setup after migration.
+    """
+    config = get_config()
+    return {
+        'mode': config.mode,
+        'primary_path': str(config.primary_path),
+        'search_paths': [str(p) for p in config.search_paths],
+        'zotero_storage_path': str(config.zotero_storage_path) if config.zotero_storage_path else None,
+        'primary_path_exists': config.primary_path.exists(),
+        'search_paths_status': {str(p): p.exists() for p in config.search_paths}
+    }
+
+
+@app.get('/api/v1/pdf-migration')
+async def get_migration_info():
+    """
+    Get migration information for moving to server deployment.
+    Lists Zotero PDFs and provides migration commands.
+    """
+    from app.config.pdf_storage import prepare_server_migration
+    return prepare_server_migration()
+
+# ============================================================================
+# FRONTEND STATIC FILES - MUST BE LAST (catch-all for .html files)
+# ============================================================================
+# Mount the frontend directory last so it doesn't shadow API routes
+# This allows direct access to files like /dashboard.html, /library.html, etc.
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

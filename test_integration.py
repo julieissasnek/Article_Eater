@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Integration Test Script for Article Eater v18.5
+Integration Test Script for Article Eater V22.0.0 (Post-Quinean)
 Tests backend-frontend connectivity
 """
 

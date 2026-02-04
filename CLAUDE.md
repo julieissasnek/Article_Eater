@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-*Last updated: Sunday, January 19, 2026 (Sprints 6-9 complete, Panel Fixes applied)*
+*Last updated: Monday, February 3, 2026 (V22.0.0 - Added mandatory decision tracking & panel consultation workflow)*
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-Article Eater V21.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Currently integrating Quinean Web of Belief coherentist epistemology.
+Article Eater V22.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Quinean Web of Belief coherentist epistemology fully integrated.
 
 **Owner**: Professor David Kirsh, UCSD Cognitive Science (since 1989), former MIT AI Lab
 
@@ -111,6 +111,32 @@ OUTPUT
 └── bn_export/                          (BN-ready format - Sprint 7)
 ```
 
+## Security Model (Local Research Tool)
+
+**Deployment Model**: This system is designed as a **local-only research tool** (Model A per panel review).
+
+### Write Endpoint Authorization
+
+Write endpoints (`/api/v1/ingestion/*`, `/profile/api-keys/*`) are **intentionally unguarded** because:
+1. The server binds to localhost by default
+2. This is an academic research tool, not a public service
+3. Authentication overhead would impede rapid iteration during research
+
+### Production Exposure Warning
+
+**DO NOT expose this API to public networks without adding authentication.**
+
+If network exposure is required:
+1. Add `Depends(get_current_user)` to write endpoints
+2. Implement proper API key validation
+3. Consider rate limiting
+4. Review CORS configuration for your deployment
+
+### CORS Configuration
+
+CORS is configured for specific origins (localhost dev servers + production domain).
+The wildcard `"*"` origin is **not used** when `allow_credentials=True` per security best practices (fixed 2026-01-22).
+
 ## Essential Files (Canonical Locations)
 
 ### PRIORITY 1 - Context & Planning
@@ -195,9 +221,17 @@ bash doctor.sh                              # Verify installation
 ## Version Strategy
 
 - **V20.8.0** = Legacy frozen release (reference baseline)
-- **PostQuinean_v1** = Current release with Sprints 1-5 complete
+- **V21.0.0** = Post-Quinean initial release (Sprints 1-9)
+- **V22.0.0** = Current release (Sprint F panel validation + Phase 1 security fixes + GUI/UX review)
+- **PostQuinean_v1** = Repo branch name (first Quinean architecture iteration)
 - Aggressive version increments preferred
-- Always create dated minimal ZIPs: `PostQuinean_v1_ESSENTIAL_2026_01_18.zip`
+- Always create dated minimal ZIPs: `PostQuinean_v1_ESSENTIAL_2026_01_22.zip`
+
+### V22.0.0 Changelog (2026-01-22)
+- Sprint F panel validation (16 experts)
+- Phase 1 security fixes (CORS, router wiring test, auth documentation)
+- GUI/UX ruthless review with AI-enhanced UX recommendations
+- Version alignment across all source files
 
 ## Coding Conventions
 
@@ -215,6 +249,102 @@ For design decisions, convene these voices (constructed from their published wor
 - **Dr. Herbert Simon** — Bounded rationality, system design
 - **Dr. Marcia Bates** — Information science, knowledge organization
 - **Dr. Rachel Kaplan** — Environmental psychology (the domain)
+
+### Extended Panel (Task Context & Cognitive Work)
+For task-related decisions, also include:
+- **Dr. Gary Klein** — Naturalistic Decision Making, expertise in context
+- **Dr. K. Anders Ericsson** — Deliberate practice, skill acquisition
+- **Dr. Daniel Kahneman** — System 1/2, cognitive load, attention
+- **Dr. Lucy Suchman** — Situated action, ecological validity
+
+## Decision Tracking & Panel Consultation (MANDATORY)
+
+**This workflow is REQUIRED for all implementation work.** Claude Code MUST follow this process.
+
+### Step 1: Track Decisions As You Work
+
+During implementation, record every non-trivial decision in WHERE_WE_STAND.md under "Implementation Decisions Pending Panel Review":
+
+```markdown
+| ID | Decision | Context | Alternatives Considered | Risk Level |
+|----|----------|---------|------------------------|------------|
+| D1 | [What you decided] | [Why it came up] | [Other options] | Low/Med/High |
+```
+
+**What counts as a decision:**
+- Default values or thresholds chosen
+- Data structure choices
+- Algorithm selections
+- Confidence scoring approaches
+- Fallback behaviors
+- Edge case handling
+- Anything where reasonable alternatives exist
+
+### Step 2: Trigger Panel Consultation
+
+Invoke the expert panel when ANY of these conditions are met:
+1. **Decision count ≥ 5** — Accumulated enough decisions to warrant review
+2. **Sprint boundary** — Before starting a new sprint
+3. **High-risk decision** — Any single decision with significant architectural impact
+4. **User request** — David asks for panel review
+5. **Uncertainty** — You're genuinely unsure about a decision
+
+### Step 3: Panel Consultation Format
+
+When consulting the panel, use this structure:
+
+```markdown
+## Panel Consultation: [Topic]
+**Date**: [YYYY-MM-DD]
+**Decisions Under Review**: D1, D2, D3...
+
+### Decision D1: [Title]
+**Context**: [Why this decision arose]
+**Current Choice**: [What was implemented]
+**Alternatives**: [Other options considered]
+**Risk**: [What could go wrong]
+
+[Repeat for each decision]
+
+---
+
+## Panel Responses
+
+### Dr. [Name] ([Expertise]):
+[Constructed response based on their published work and methodology]
+
+[Repeat for each relevant panelist]
+
+---
+
+## Synthesis & Resolutions
+| Decision | Panel Verdict | Action Required |
+|----------|---------------|-----------------|
+| D1 | Approved / Revise / Defer | [Specific action if any] |
+```
+
+### Step 4: Record Outcomes
+
+After panel consultation:
+1. Update WHERE_WE_STAND.md — Mark decisions as "Panel Approved" or note required changes
+2. Update CLAUDE.md sprint status — If significant, add to changelog
+3. Create dated panel doc — `docs/PANEL_CONSULTATION_[TOPIC]_[DATE].md`
+4. Clear the pending decisions table — Move reviewed decisions to "Resolved" section
+
+### Enforcement
+
+**Claude Code MUST NOT proceed past a sprint boundary without panel consultation.**
+
+If decision count reaches 5+ during implementation:
+1. Pause implementation
+2. Notify user: "I've accumulated [N] implementation decisions that warrant panel review."
+3. Offer to conduct panel consultation before continuing
+
+### Decision Tracking Location
+
+Primary tracking file: `/Users/davidusa/REPOS/Outcome_Contractor/WHERE_WE_STAND.md`
+
+Section: "Implementation Decisions Pending Panel Review"
 
 ## Forbidden Operations
 

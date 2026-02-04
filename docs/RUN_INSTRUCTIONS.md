@@ -1,4 +1,4 @@
-# Run Instructions: Article Eater V21.0.0 (Post-Quinean)
+# Run Instructions: Article Eater V22.0.0 (Post-Quinean)
 
 **Date**: January 22, 2026
 **Purpose**: Document how to run the system

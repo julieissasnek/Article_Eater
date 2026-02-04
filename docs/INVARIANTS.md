@@ -1,7 +1,7 @@
 # System Invariants
 
 **Date**: January 22, 2026
-**Version**: V21.0.0 (Post-Quinean)
+**Version**: V22.0.0 (Post-Quinean)
 **Purpose**: Document invariants and consistency model (per Lamport, ruthless review 2026-01-22)
 
 ---
