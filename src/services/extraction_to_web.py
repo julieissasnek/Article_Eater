@@ -70,6 +70,14 @@ from src.services.web_of_belief import (
 # Import semantic status from refined epistemic (for future use)
 from src.services.refined_epistemic import SemanticStatus
 
+# Import embedding-based theory matcher (TD-A: Theory Inference)
+from src.services.theory_matcher import (
+    EmbeddingTheoryMatcher,
+    TheoryMatchResult,
+    MatchMethod,
+    get_theory_matcher,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -104,6 +112,11 @@ THEORY_THRESHOLD: float = float(os.environ.get("AE_THEORY_THRESHOLD", "0.4"))
 # Secondary theory threshold for multi-theory attachment
 # Theories scoring above this get attached as secondary
 SECONDARY_THEORY_THRESHOLD: float = float(os.environ.get("AE_SECONDARY_THEORY_THRESHOLD", "0.3"))
+
+# Enable embedding-based theory matching (TD-A: Theory Inference)
+# When True, uses sentence-transformers for semantic similarity
+# Falls back to keyword matching if embeddings unavailable
+USE_EMBEDDING_THEORY_MATCHING: bool = os.environ.get("AE_USE_EMBEDDING_THEORY", "true").lower() == "true"
 
 # Map rule_type + polarity to ConstraintType
 RULE_TYPE_TO_CONSTRAINT: Dict[str, ConstraintType] = {
@@ -188,6 +201,13 @@ class MappingResult:
     inference_trace: List[str] = field(default_factory=list)  # Audit trail for theory inference
     warnings: List[str] = field(default_factory=list)
 
+    # TD-A: Enhanced theory inference fields
+    theory_inference_method: str = "legacy"  # "legacy", "embedding", "hybrid"
+    theory_confidence: float = 0.0
+    needs_theory_review: bool = False
+    theory_review_reason: Optional[str] = None
+    disambiguation_applied: bool = False
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'success': self.success,
@@ -199,7 +219,13 @@ class MappingResult:
             'is_stub': self.is_stub,
             'stub_reason': self.stub_reason,
             'inference_trace': self.inference_trace,
-            'warnings': self.warnings
+            'warnings': self.warnings,
+            # TD-A fields
+            'theory_inference_method': self.theory_inference_method,
+            'theory_confidence': self.theory_confidence,
+            'needs_theory_review': self.needs_theory_review,
+            'theory_review_reason': self.theory_review_reason,
+            'disambiguation_applied': self.disambiguation_applied
         }
 
 
@@ -313,6 +339,112 @@ class TheoryInferenceResult:
     """Result of theory inference with audit trail."""
     relevance: Dict[str, float]
     trace: List[str]  # Human-readable audit trail
+    # TD-A additions
+    method: str = "legacy"  # "legacy", "embedding", "hybrid"
+    confidence: float = 0.0
+    needs_review: bool = False
+    review_reason: Optional[str] = None
+    disambiguation_applied: bool = False
+
+
+def infer_theory_relevance_enhanced(
+    claim: Dict[str, Any],
+    outcome_lookup: Optional[Dict[str, Any]] = None,
+    use_embeddings: bool = True
+) -> TheoryInferenceResult:
+    """
+    Enhanced theory inference using embedding-based matching (TD-A).
+
+    Combines:
+    1. Embedding similarity (semantic matching via sentence-transformers)
+    2. Outcome taxonomy mapping (structured knowledge)
+    3. Disambiguation rules (false positive filtering)
+
+    Args:
+        claim: Claim dictionary with statement, constructs
+        outcome_lookup: Optional outcome taxonomy
+        use_embeddings: Whether to use embedding matching
+
+    Returns:
+        TheoryInferenceResult with relevance scores, confidence, and review flags
+    """
+    constructs = claim.get("constructs", {})
+    outcomes = constructs.get("outcomes", [])
+    environment_factors = constructs.get("environment_factors", [])
+    statement = claim.get("statement", "")
+
+    trace: List[str] = []
+    relevance: Dict[str, float] = {}
+
+    # Strategy 1: Embedding-based matching (if enabled and available)
+    embedding_result: Optional[TheoryMatchResult] = None
+    if use_embeddings and USE_EMBEDDING_THEORY_MATCHING:
+        try:
+            matcher = get_theory_matcher()
+            # Build context from outcomes and environment
+            outcome_ids = [o.get("id", "") for o in outcomes]
+            env_ids = [e.get("id", "") for e in environment_factors]
+
+            embedding_result = matcher.match_with_context(
+                statement=statement,
+                outcome_ids=outcome_ids if outcome_ids else None,
+                environment_factors=env_ids if env_ids else None
+            )
+
+            # Use embedding scores as base
+            relevance = embedding_result.scores.copy()
+            trace.append(f"Embedding:{embedding_result.method.value} "
+                        f"best={embedding_result.theory}:{embedding_result.confidence:.2f}")
+
+            if embedding_result.disambiguation_applied:
+                for note in embedding_result.disambiguation_notes:
+                    trace.append(f"Disambiguation: {note}")
+
+        except Exception as e:
+            logger.warning(f"Embedding matching failed, falling back to legacy: {e}")
+            embedding_result = None
+
+    # Strategy 2: Outcome taxonomy mapping (always applied as boost)
+    for outcome in outcomes:
+        outcome_id = outcome.get("id", "")
+        parts = outcome_id.split(".")
+        for i in range(len(parts), 0, -1):
+            partial_id = ".".join(parts[:i])
+            if partial_id in OUTCOME_DOMAIN_TO_THEORY:
+                for theory in OUTCOME_DOMAIN_TO_THEORY[partial_id]:
+                    score = 0.5 + (i / len(parts)) * 0.3
+                    old_val = relevance.get(theory, 0)
+                    # If embeddings already scored this, use diminishing returns
+                    if embedding_result and theory in embedding_result.scores:
+                        relevance[theory] = _diminishing_returns_combine(old_val, score * 0.5)
+                    else:
+                        relevance[theory] = _diminishing_returns_combine(old_val, score)
+                    trace.append(f"Outcome:{partial_id}→{theory} "
+                               f"(combined: {old_val:.2f}→{relevance[theory]:.2f})")
+
+    # Determine method and confidence
+    if embedding_result:
+        method = embedding_result.method.value
+        confidence = embedding_result.confidence
+        needs_review = embedding_result.needs_review
+        review_reason = embedding_result.review_reason
+        disambiguation_applied = embedding_result.disambiguation_applied
+    else:
+        method = "legacy"
+        confidence = max(relevance.values()) if relevance else 0.0
+        needs_review = confidence < THEORY_THRESHOLD
+        review_reason = f"Low confidence: {confidence:.2f}" if needs_review else None
+        disambiguation_applied = False
+
+    return TheoryInferenceResult(
+        relevance=relevance,
+        trace=trace,
+        method=method,
+        confidence=confidence,
+        needs_review=needs_review,
+        review_reason=review_reason,
+        disambiguation_applied=disambiguation_applied
+    )
 
 
 def infer_theory_relevance(
@@ -494,10 +626,19 @@ def claim_to_belief(
         
         # Infer epistemic level
         level = infer_epistemic_level(claim_type)
-        
-        # Infer theory relevance
-        theory_inferences = infer_theory_relevance(claim, outcome_lookup)
+
+        # Infer theory relevance (TD-A: Use enhanced embedding-based matching)
+        theory_result = infer_theory_relevance_enhanced(claim, outcome_lookup)
+        theory_inferences = theory_result.relevance
         result.theory_inferences = theory_inferences
+
+        # TD-A: Record enhanced inference metadata
+        result.theory_inference_method = theory_result.method
+        result.theory_confidence = theory_result.confidence
+        result.needs_theory_review = theory_result.needs_review
+        result.theory_review_reason = theory_result.review_reason
+        result.disambiguation_applied = theory_result.disambiguation_applied
+        result.inference_trace.extend(theory_result.trace)
 
         # Determine theory attachment with multi-theory support
         # Expert Panel Resolution (2026-01-18): Use configurable threshold and allow multi-theory

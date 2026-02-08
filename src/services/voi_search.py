@@ -8,6 +8,7 @@ Sprints:
 - Sprint I: Strategy selection with epsilon decay, stopping rules,
             null result detection
 - Sprint J: Credibility profile estimation, pipeline helpers
+- Sprint K: Cross-field vocabulary integration (Lane E, 2026-02-08)
 
 Per Phase D revised plan:
 - Two gap types initially: UNCERTAIN, UNEXPLORED (per Lampson)
@@ -15,19 +16,212 @@ Per Phase D revised plan:
 - Epsilon-greedy with decay (per Simon)
 - Expanded null result vocabulary (per Cartwright)
 - Satisficing stopping rules (per Simon)
+- Cross-field vocabulary for query expansion (Lane E enhancement)
 
 Date: January 20, 2026
+Updated: February 8, 2026 (Lane E: Cross-field vocabulary)
 """
 
 import logging
 import random
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional, Tuple, Set
 from enum import Enum
+from pathlib import Path
+
+import yaml
 
 from src.services.web_of_belief import WebOfBelief, Belief, Credence
 
 logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# CROSS-FIELD VOCABULARY (Sprint K - Lane E)
+# =============================================================================
+
+class CrossFieldVocabulary:
+    """
+    Loads and provides access to cross-field vocabulary mappings.
+
+    Enables translation of CNfA concepts to terminology in adjacent fields.
+    This allows search queries to find relevant literature across disciplines
+    that use different terminology for related concepts.
+
+    Example:
+        vocab = CrossFieldVocabulary()
+        terms = vocab.expand_query("stress recovery")
+        # Returns: ["stress recovery", "psychophysiological recovery",
+        #           "relaxation response", "HPA axis recovery", ...]
+    """
+
+    def __init__(self, vocab_path: Optional[Path] = None):
+        """
+        Initialize vocabulary loader.
+
+        Args:
+            vocab_path: Path to cross_field_vocabulary.yaml.
+                       Uses default location if None.
+        """
+        if vocab_path is None:
+            vocab_path = Path(__file__).parent.parent.parent / \
+                        "contracts" / "vocab" / "cross_field_vocabulary.yaml"
+
+        self.vocab_path = vocab_path
+        self.concepts: Dict[str, Dict] = {}
+        self.query_templates: Dict[str, Dict] = {}
+        self.fields: Dict[str, Dict] = {}
+
+        self._load_vocabulary()
+
+    def _load_vocabulary(self) -> None:
+        """Load vocabulary from YAML file."""
+        if not self.vocab_path.exists():
+            logger.warning(f"Cross-field vocabulary not found: {self.vocab_path}")
+            return
+
+        try:
+            with open(self.vocab_path, 'r') as f:
+                data = yaml.safe_load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load vocabulary: {e}")
+            return
+
+        # Load concepts
+        for key, value in data.items():
+            if key in ('version', 'created', 'description',
+                       'query_templates', 'fields', 'measurement_methods'):
+                continue
+            if isinstance(value, dict) and 'canonical_term' in value:
+                self.concepts[key] = value
+
+        self.query_templates = data.get('query_templates', {})
+        self.fields = data.get('fields', {})
+        logger.info(f"Loaded {len(self.concepts)} cross-field concepts")
+
+    def get_all_terms(self, concept: str) -> List[str]:
+        """
+        Get all terms (across all fields) for a concept.
+
+        Args:
+            concept: Concept identifier (e.g., "stress_recovery")
+
+        Returns:
+            List of all equivalent terms across fields
+        """
+        if concept not in self.concepts:
+            return [concept]
+
+        all_terms = []
+        concept_data = self.concepts[concept]
+
+        for key, value in concept_data.items():
+            if key.endswith('_terms') and isinstance(value, list):
+                all_terms.extend(value)
+
+        return list(set(all_terms))
+
+    def get_field_terms(self, concept: str, field: str) -> List[str]:
+        """
+        Get terms for a concept in a specific field.
+
+        Args:
+            concept: Concept identifier
+            field: Field name (e.g., "neuroscience", "architecture")
+
+        Returns:
+            List of terms used in that field
+        """
+        if concept not in self.concepts:
+            return [concept]
+
+        field_key = f"{field}_terms"
+        return self.concepts[concept].get(field_key, [])
+
+    def expand_query(
+        self,
+        base_term: str,
+        target_fields: Optional[List[str]] = None,
+        max_terms: int = 5
+    ) -> List[str]:
+        """
+        Expand a term to include synonyms from target fields.
+
+        This is the primary method for cross-field query expansion.
+
+        Args:
+            base_term: The CNfA term to expand
+            target_fields: Fields to include (None = all)
+            max_terms: Maximum terms to return
+
+        Returns:
+            List of equivalent terms across fields
+        """
+        # Find matching concept by searching all terms
+        matching_concept = None
+        for concept_name, concept_data in self.concepts.items():
+            all_terms = self.get_all_terms(concept_name)
+            if base_term.lower() in [t.lower() for t in all_terms]:
+                matching_concept = concept_name
+                break
+
+        if not matching_concept:
+            return [base_term]
+
+        if target_fields:
+            terms = []
+            for field in target_fields:
+                terms.extend(self.get_field_terms(matching_concept, field))
+            result = list(set(terms)) if terms else [base_term]
+        else:
+            result = self.get_all_terms(matching_concept)
+
+        # Ensure base term is first in results (important for truncation)
+        result_lower = [r.lower() for r in result]
+        if base_term.lower() in result_lower:
+            # Remove it from current position and put at front
+            idx = result_lower.index(base_term.lower())
+            original_term = result[idx]
+            result = [original_term] + result[:idx] + result[idx+1:]
+        else:
+            result = [base_term] + result
+
+        return result[:max_terms]
+
+    def get_journals_for_field(self, field: str) -> List[str]:
+        """Get relevant journals for a field."""
+        if field in self.fields:
+            return self.fields[field].get('journals', [])
+        return []
+
+    def find_concept(self, term: str) -> Optional[str]:
+        """
+        Find which concept a term belongs to.
+
+        Args:
+            term: Term to look up
+
+        Returns:
+            Concept name or None if not found
+        """
+        term_lower = term.lower()
+        for concept_name, concept_data in self.concepts.items():
+            all_terms = self.get_all_terms(concept_name)
+            if term_lower in [t.lower() for t in all_terms]:
+                return concept_name
+        return None
+
+
+# Singleton instance for convenience
+_vocabulary_instance: Optional[CrossFieldVocabulary] = None
+
+
+def get_cross_field_vocabulary() -> CrossFieldVocabulary:
+    """Get or create singleton vocabulary instance."""
+    global _vocabulary_instance
+    if _vocabulary_instance is None:
+        _vocabulary_instance = CrossFieldVocabulary()
+    return _vocabulary_instance
 
 
 # =============================================================================
@@ -330,7 +524,18 @@ class QueryGenerator:
     Generate search queries from epistemic gaps.
 
     Creates queries appropriate for the gap type and target sources.
+    Enhanced with cross-field vocabulary expansion (Sprint K).
     """
+
+    def __init__(self, vocabulary: Optional[CrossFieldVocabulary] = None):
+        """
+        Initialize query generator.
+
+        Args:
+            vocabulary: Cross-field vocabulary for query expansion.
+                       Uses singleton if None.
+        """
+        self.vocabulary = vocabulary or get_cross_field_vocabulary()
 
     def generate_queries(
         self,
@@ -411,6 +616,103 @@ class QueryGenerator:
         terms = [w for w in words if w not in stopwords and len(w) > 2]
 
         return terms
+
+    def generate_cross_field_queries(
+        self,
+        gap: EpistemicGap,
+        belief: Optional[Belief] = None,
+        target_fields: Optional[List[str]] = None,
+        max_queries: int = 5
+    ) -> List[str]:
+        """
+        Generate queries with cross-field vocabulary expansion.
+
+        Sprint K (Lane E): Uses the cross-field vocabulary to find
+        papers in adjacent disciplines using different terminology.
+
+        Args:
+            gap: The epistemic gap
+            belief: Optional belief for context
+            target_fields: Fields to target (None = all)
+            max_queries: Maximum queries to generate
+
+        Returns:
+            List of cross-field expanded queries
+        """
+        queries = []
+
+        # Extract key terms
+        base_terms = self._extract_terms(gap.description)
+        if belief:
+            base_terms.extend(self._extract_terms(belief.content)[:3])
+
+        # Default fields for CNfA
+        if target_fields is None:
+            target_fields = ['psychology', 'neuroscience', 'architecture', 'medicine']
+
+        # Expand each key term across fields
+        for term in base_terms[:3]:
+            expanded = self.vocabulary.expand_query(term, target_fields)
+            if expanded and len(expanded) > 1:
+                # Create OR query with expanded terms
+                or_terms = " OR ".join([f'"{t}"' for t in expanded[:4]])
+                queries.append(f"({or_terms})")
+
+        # Field-specific queries
+        for field in target_fields:
+            field_queries = []
+            for term in base_terms[:2]:
+                field_terms = self.vocabulary.get_field_terms(
+                    self.vocabulary.find_concept(term) or term,
+                    field
+                )
+                if field_terms:
+                    field_queries.extend(field_terms[:2])
+
+            if field_queries:
+                query = " AND ".join([f'"{t}"' for t in field_queries[:3]])
+                queries.append(query)
+
+        # Deduplicate
+        seen = set()
+        unique = []
+        for q in queries:
+            if q.lower() not in seen:
+                seen.add(q.lower())
+                unique.append(q)
+
+        return unique[:max_queries]
+
+    def expand_query_terms(
+        self,
+        query: str,
+        target_fields: Optional[List[str]] = None
+    ) -> List[str]:
+        """
+        Expand a query with cross-field terminology.
+
+        Args:
+            query: Original query string
+            target_fields: Fields to target
+
+        Returns:
+            List of expanded query variants
+        """
+        expanded = [query]
+
+        # Extract quoted terms
+        import re
+        quoted = re.findall(r'"([^"]+)"', query)
+
+        for term in quoted:
+            synonyms = self.vocabulary.expand_query(term, target_fields)
+            for syn in synonyms[:2]:
+                if syn.lower() != term.lower():
+                    variant = query.replace(f'"{term}"', f'"{syn}"')
+                    if variant not in expanded:
+                        expanded.append(variant)
+
+        return expanded
 
 
 # =============================================================================

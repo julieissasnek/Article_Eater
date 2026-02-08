@@ -4,8 +4,10 @@ Tests for VOI-Driven Search (TODO 3).
 Sprint H: Core structures, VOI scoring, source selection.
 Sprint I: Strategy selection, stopping rules, null result detection.
 Sprint J: Credibility profile estimation, pipeline helpers.
+Sprint K: Cross-field vocabulary integration (Lane E, 2026-02-08).
 
 Date: January 20, 2026
+Updated: February 8, 2026 (Lane E)
 """
 
 import pytest
@@ -1171,3 +1173,173 @@ class TestEndToEndTODO3:
                 # Shouldn't stop too early
                 if i < 4:
                     assert not decision.should_stop
+
+
+# =============================================================================
+# SPRINT K (Lane E): CROSS-FIELD VOCABULARY TESTS
+# =============================================================================
+
+class TestCrossFieldVocabulary:
+    """Tests for CrossFieldVocabulary class (Sprint K)."""
+
+    def test_vocab_file_exists(self):
+        """Test that cross-field vocabulary file exists."""
+        vocab_path = Path(__file__).parent.parent / "contracts" / "vocab" / "cross_field_vocabulary.yaml"
+        assert vocab_path.exists(), "cross_field_vocabulary.yaml should exist"
+
+    def test_vocab_file_valid_yaml(self):
+        """Test that vocabulary file is valid YAML."""
+        import yaml
+        vocab_path = Path(__file__).parent.parent / "contracts" / "vocab" / "cross_field_vocabulary.yaml"
+
+        with open(vocab_path) as f:
+            vocab = yaml.safe_load(f)
+
+        assert vocab is not None
+        assert 'version' in vocab
+
+    def test_vocab_has_core_concepts(self):
+        """Test that vocabulary has core CNfA concepts."""
+        import yaml
+        vocab_path = Path(__file__).parent.parent / "contracts" / "vocab" / "cross_field_vocabulary.yaml"
+
+        with open(vocab_path) as f:
+            vocab = yaml.safe_load(f)
+
+        # Check for key concepts
+        assert 'stress_recovery' in vocab
+        assert 'attention_restoration' in vocab
+        assert 'biophilia' in vocab
+
+    def test_concepts_have_field_terms(self):
+        """Test that concepts have field-specific terms."""
+        import yaml
+        vocab_path = Path(__file__).parent.parent / "contracts" / "vocab" / "cross_field_vocabulary.yaml"
+
+        with open(vocab_path) as f:
+            vocab = yaml.safe_load(f)
+
+        stress_recovery = vocab['stress_recovery']
+        assert 'cnfa_terms' in stress_recovery
+        assert 'psychology_terms' in stress_recovery
+        assert 'neuroscience_terms' in stress_recovery
+
+
+class TestCrossFieldVocabularyClass:
+    """Tests for CrossFieldVocabulary class."""
+
+    def test_vocabulary_creation(self):
+        """Test creating vocabulary loader."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+        assert len(vocab.concepts) > 0
+
+    def test_get_all_terms(self):
+        """Test getting all terms for a concept."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        terms = vocab.get_all_terms('stress_recovery')
+        assert len(terms) > 5  # Should have terms from multiple fields
+        assert 'stress recovery' in [t.lower() for t in terms]
+
+    def test_get_field_terms(self):
+        """Test getting field-specific terms."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        neuro_terms = vocab.get_field_terms('stress_recovery', 'neuroscience')
+        assert len(neuro_terms) > 0
+        # Should have neuroscience-specific terminology
+        neuro_lower = [t.lower() for t in neuro_terms]
+        assert any('cortisol' in t or 'hpa' in t or 'autonomic' in t for t in neuro_lower)
+
+    def test_expand_query(self):
+        """Test query expansion."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        expanded = vocab.expand_query('stress recovery')
+        assert len(expanded) > 1
+        assert 'stress recovery' in [t.lower() for t in expanded]
+
+    def test_expand_query_with_target_fields(self):
+        """Test query expansion with specific target fields."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        expanded = vocab.expand_query('stress recovery', target_fields=['neuroscience'])
+        assert len(expanded) >= 1
+        # Should only have neuroscience terms
+
+    def test_find_concept(self):
+        """Test finding concept by term."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        # Should find stress_recovery from various terms
+        concept = vocab.find_concept('psychophysiological recovery')
+        assert concept == 'stress_recovery'
+
+    def test_get_journals_for_field(self):
+        """Test getting journals for a field."""
+        from src.services.voi_search import CrossFieldVocabulary
+        vocab = CrossFieldVocabulary()
+
+        journals = vocab.get_journals_for_field('environmental_psychology')
+        assert len(journals) > 0
+
+    def test_singleton_getter(self):
+        """Test singleton vocabulary getter."""
+        from src.services.voi_search import get_cross_field_vocabulary
+        vocab1 = get_cross_field_vocabulary()
+        vocab2 = get_cross_field_vocabulary()
+        assert vocab1 is vocab2
+
+
+class TestCrossFieldQueryGeneration:
+    """Tests for cross-field query generation."""
+
+    def test_query_generator_has_vocabulary(self):
+        """Test that QueryGenerator has vocabulary."""
+        generator = QueryGenerator()
+        assert generator.vocabulary is not None
+
+    def test_generate_cross_field_queries(self, sample_belief):
+        """Test generating cross-field queries."""
+        generator = QueryGenerator()
+        gap = EpistemicGap(
+            gap_type=GapType.UNCERTAIN,
+            description="Stress reduction through nature exposure",
+            primary_belief_id=sample_belief.belief_id,
+            voi_score=0.6
+        )
+
+        queries = generator.generate_cross_field_queries(gap, sample_belief)
+        assert len(queries) > 0
+
+    def test_cross_field_queries_expand_terms(self, sample_belief):
+        """Test that cross-field queries expand terminology."""
+        generator = QueryGenerator()
+        gap = EpistemicGap(
+            gap_type=GapType.UNCERTAIN,
+            description="stress recovery nature",
+            primary_belief_id=sample_belief.belief_id,
+            voi_score=0.6
+        )
+
+        queries = generator.generate_cross_field_queries(gap, sample_belief)
+        all_queries = " ".join(queries).lower()
+
+        # Should have some expanded terms, not just original
+        assert len(queries) > 0
+
+    def test_expand_query_terms(self, sample_belief):
+        """Test expanding query terms."""
+        generator = QueryGenerator()
+
+        original = '"stress recovery" AND nature'
+        expanded = generator.expand_query_terms(original)
+
+        assert len(expanded) >= 1
+        assert original in expanded

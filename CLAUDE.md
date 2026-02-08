@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-*Last updated: Monday, February 3, 2026 (V22.0.0 - Added mandatory decision tracking & panel consultation workflow)*
+*Last updated: Saturday, February 8, 2026 (V22.1.0 - Sprint 2.5 Social Epistemology complete)*
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-Article Eater V22.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Quinean Web of Belief coherentist epistemology fully integrated.
+Article Eater V22.1.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Quinean Web of Belief coherentist epistemology fully integrated, with Sprint 2.5 Social Epistemology adding community-relative credence.
 
 **Owner**: Professor David Kirsh, UCSD Cognitive Science (since 1989), former MIT AI Lab
 
@@ -68,6 +68,29 @@ Article Eater V22.0.0 (Post-Quinean) extracts evidence-backed rules from scienti
   - ExtractionComparator with content similarity, credence range, level checking
   - Negative test validation (should_NOT_extract patterns)
   - 21 tests passing
+- **Sprint 1.5**: COMPLETE - Epistemic-Causal Integration (2026-02-08)
+  - Bridges Quinean epistemic layer with Pearlian causal inference
+  - Van Fraassen contrast classes for population-relative meaning
+  - New module: `src/services/epistemic_causal_bridge.py` (~2000 lines)
+  - Key classes: `EpistemicCausalBridge`, `ContrastClass`, `PopulationContext`
+  - Five influence pathways: Level→Confidence, Entrenchment→Robustness, Arguments→Contrast, Coherence→Admissibility, Meta-uncertainty→Propagation
+  - WebOfBelief new methods: `create_causal_bridge()`, `counterfactual()`, `causal_bridge_available()`
+  - Panel resolutions: Entrenchment decomposition, temporal dynamics, coherence caching
+  - 34 tests passing
+- **Sprint 2.5**: COMPLETE - Social Epistemology (2026-02-08)
+  - Scientific knowledge is produced by communities, not isolated individuals
+  - New module: `src/services/social_epistemology.py` (~1300 lines)
+  - Schema: `contracts/schemas/social_epistemology.schema.json`
+  - Key classes: `EpistemicCommunity`, `BeliefProvenance`, `ContestationTracker`, `MethodologicalDiversityAssessor`, `CommunityRegistry`
+  - Panel P-SE consulted (Longino, Kitcher, Knorr Cetina, Collins, Kuhn)
+  - SE-1: Community identification by theory (0.35), exemplars (0.25), methods (0.25), citations (0.15)
+  - SE-2: Report disagreement by default; average only for empirical within-paradigm
+  - SE-3: Track power separately from credence; use domain-specific track record
+  - SE-4: Snapshot-based history with event annotations
+  - SE-5: Three-tier hierarchy (Field > Paradigm > Lab)
+  - WebOfBelief Belief class extended: `provenance`, `community_associations`, `get_community_credence()`, `is_community_contested()`
+  - Seed data: ART, SRT, Biophilia, Environmental Psychology communities
+  - 54 tests passing
 
 ## Quinean Commitment (Why This Matters)
 
@@ -91,11 +114,20 @@ EXTRACTION LAYER (Track A - Production)
     │
     ▼
 EPISTEMIC LAYER (Track B - Quinean Engine)
-├── src/services/web_of_belief.py       (1300+ lines - THE key file)
+├── src/services/web_of_belief.py       (1900+ lines - THE key file)
 ├── src/services/extraction_to_web.py   (Sprint 1 mapper: claims→beliefs)
 ├── src/services/refined_epistemic.py   (Boghossian semantics, Glymour dependencies)
 ├── src/services/abstraction_levels.py  (Theory nesting, model zoom)
 └── src/services/dual_epistemology.py   (Foundationalist vs coherentist comparison)
+    │
+    ▼
+CAUSAL LAYER (Track B.1 - Epistemic-Causal Bridge, Sprint 1.5)
+├── src/services/epistemic_causal_bridge.py  (2000+ lines - Quinean→Pearlian)
+│   ├── EpistemicCausalBridge       (Main orchestration)
+│   ├── ContrastClass               (Van Fraassen contrast specification)
+│   ├── PopulationContext           (Baseline-dependent meaning)
+│   └── MultiTheoryModel            (Per-theory structural equations)
+└── WebOfBelief.counterfactual()    (Convenience method)
     │
     ▼
 THEORY SYSTEM (Track C - Database)
@@ -150,7 +182,9 @@ The wildcard `"*"` origin is **not used** when `allow_credentials=True` per secu
 ### PRIORITY 2 - Core Engine Code
 | File | Purpose |
 |------|---------|
-| `src/services/web_of_belief.py` | Quinean coherentist engine (1300+ lines) |
+| `src/services/web_of_belief.py` | Quinean coherentist engine (1900+ lines) |
+| `src/services/epistemic_causal_bridge.py` | Sprint 1.5 Quinean→Pearlian bridge (2000+ lines) |
+| `src/services/social_epistemology.py` | Sprint 2.5 community-relative credence (1300+ lines) |
 | `src/services/extraction_to_web.py` | Sprint 1 mapper (claims→beliefs) |
 | `src/services/bridge_warrants.py` | Sprint 3 bridge warrants (knowledge transfer) |
 | `src/services/refined_epistemic.py` | Boghossian semantics, Glymour dependencies |
@@ -167,6 +201,7 @@ The wildcard `"*"` origin is **not used** when `allow_credentials=True` per secu
 |------|---------|
 | `contracts/ae_af/schemas/ae.claim.v1.schema.json` | Claim schema |
 | `contracts/ae_af/schemas/ae.rule.v1.schema.json` | Rule schema |
+| `contracts/schemas/social_epistemology.schema.json` | Sprint 2.5 social epistemology schema |
 | `contracts/vocab/outcome_lookup.json` | Outcome taxonomy |
 | `contracts/vocab/environment_lookup.json` | Environment/tag taxonomy |
 
@@ -222,10 +257,21 @@ bash doctor.sh                              # Verify installation
 
 - **V20.8.0** = Legacy frozen release (reference baseline)
 - **V21.0.0** = Post-Quinean initial release (Sprints 1-9)
-- **V22.0.0** = Current release (Sprint F panel validation + Phase 1 security fixes + GUI/UX review)
+- **V22.0.0** = Sprint F panel validation + Phase 1 security fixes + GUI/UX review
+- **V22.1.0** = Current release (Sprint 2.5 Social Epistemology + Strategic TODOs 1-3)
 - **PostQuinean_v1** = Repo branch name (first Quinean architecture iteration)
 - Aggressive version increments preferred
-- Always create dated minimal ZIPs: `PostQuinean_v1_ESSENTIAL_2026_01_22.zip`
+- Always create dated minimal ZIPs: `PostQuinean_v1_ESSENTIAL_2026_02_08.zip`
+
+### V22.1.0 Changelog (2026-02-08)
+- Sprint 2.5 Social Epistemology complete (P-SE panel consulted)
+- New module: `src/services/social_epistemology.py` (~1300 lines, 54 tests)
+- Community-relative credence, contestation tracking, methodological diversity assessment
+- WebOfBelief extended with provenance and community associations
+- TODO 1: Credibility Testing enhancements (feedback module, semantic coherence)
+- TODO 2: Interpretive Intelligence enhancements (MECHANISM + DISAGREEMENT patterns)
+- TODO 3: VOI-Driven Search enhancements (cross-field vocabulary)
+- Panels P-TC and P-QW consulted
 
 ### V22.0.0 Changelog (2026-01-22)
 - Sprint F panel validation (16 experts)

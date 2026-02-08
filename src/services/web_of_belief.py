@@ -52,6 +52,33 @@ import copy
 
 logger = logging.getLogger(__name__)
 
+# =============================================================================
+# OPTIONAL: EPISTEMIC-CAUSAL BRIDGE (Sprint 1.5)
+# =============================================================================
+# The bridge integrates the Quinean epistemic layer with Pearlian causal inference.
+# Import is optional to avoid circular dependencies and allow standalone use.
+
+try:
+    from src.services import epistemic_causal_bridge as ecb
+    BRIDGE_AVAILABLE = True
+except ImportError:
+    ecb = None
+    BRIDGE_AVAILABLE = False
+
+
+# =============================================================================
+# OPTIONAL: SOCIAL EPISTEMOLOGY (Sprint 2.5)
+# =============================================================================
+# Social epistemology constructs for community-relative credence and provenance.
+# Import is optional to avoid circular dependencies.
+
+try:
+    from src.services import social_epistemology as se
+    SOCIAL_EPISTEMOLOGY_AVAILABLE = True
+except ImportError:
+    se = None
+    SOCIAL_EPISTEMOLOGY_AVAILABLE = False
+
 
 # =============================================================================
 # EPISTEMIC LEVELS
@@ -90,6 +117,48 @@ class ConstraintType(Enum):
     BRIDGES = "bridges"            # Sprint 3: Bridge warrant connection
     STRONG_TENSION = "strong_tension"  # Sprint 3: Strong tension from failed bridge
     SHARED_EVIDENCE = "shared_evidence"  # Sprint 8: Same study supports both beliefs
+
+
+# =============================================================================
+# INFERENCE TYPE (Sprint 1.6 - P-EC Panel: Synergies)
+# =============================================================================
+
+class InferenceType(Enum):
+    """
+    Type of inference that produced or supports a belief.
+
+    Sprint 1.6.1: Mark beliefs by their inferential origin.
+
+    - INDUCTIVE: Generalization from observations (empirical → general)
+    - DEDUCTIVE: Derived from theory (theory → prediction)
+    - ABDUCTIVE: Inference to best explanation (data → theory)
+    - MIXED: Multiple inference types combined
+    - UNKNOWN: Not yet classified
+    """
+    INDUCTIVE = "inductive"        # Data → generalization
+    DEDUCTIVE = "deductive"        # Theory → prediction
+    ABDUCTIVE = "abductive"        # Data → best explanation
+    MIXED = "mixed"                # Multiple types
+    UNKNOWN = "unknown"            # Not classified
+
+
+class BeliefKind(Enum):
+    """
+    Functional type of belief in the web.
+
+    Sprint 1.6.2: Mark beliefs by their functional role.
+
+    - MECHANISTIC: Describes causal mechanism (how X causes Y)
+    - EVIDENTIAL: Reports empirical finding (X was observed)
+    - THEORETICAL: Core theoretical commitment (X is fundamental)
+    - METHODOLOGICAL: About measurement or methods
+    - BRIDGE: Connects domains (per Cartwright's capacities)
+    """
+    MECHANISTIC = "mechanistic"    # Causal mechanism
+    EVIDENTIAL = "evidential"      # Empirical finding
+    THEORETICAL = "theoretical"    # Core commitment
+    METHODOLOGICAL = "methodological"  # About methods
+    BRIDGE = "bridge"              # Cross-domain connection
 
 
 # =============================================================================
@@ -439,6 +508,14 @@ class Belief:
     contested: bool = False  # True if credence oscillates (genuine disagreement)
     credence_history: List[CredenceHistoryEntry] = field(default_factory=list)
 
+    # Sprint 1.6 additions (P-EC Panel: Synergies)
+    inference_type: InferenceType = InferenceType.UNKNOWN  # How was this belief derived?
+    belief_kind: BeliefKind = BeliefKind.EVIDENTIAL  # Functional role in the web
+
+    # Sprint 2.5 additions (P-SE Panel: Social Epistemology)
+    provenance: Optional[Any] = None  # BeliefProvenance, typed as Any to avoid circular import
+    community_associations: Dict[str, float] = field(default_factory=dict)  # community_id → strength
+
     def is_stub(self) -> bool:
         return self.status == BeliefStatus.STUB
 
@@ -535,6 +612,144 @@ class Belief:
         values = [entry.credence_value for entry in self.credence_history]
         return (min(values), max(values))
 
+    # =========================================================================
+    # SPRINT 1.6: INFERENCE AND VALUE METHODS
+    # =========================================================================
+
+    def infer_inference_type(self) -> InferenceType:
+        """
+        Infer the inference type based on belief characteristics.
+
+        Sprint 1.6.1: Automatic classification heuristics.
+
+        Rules:
+        - EMPIRICAL/OBSERVATIONAL level → INDUCTIVE (data→generalization)
+        - THEORETICAL level with high entrenchment → often ABDUCTIVE
+        - INTERMEDIATE level with theory_id → DEDUCTIVE (theory→prediction)
+        - Multiple source types → MIXED
+        """
+        if self.level in [EpistemicLevel.EMPIRICAL, EpistemicLevel.OBSERVATIONAL]:
+            return InferenceType.INDUCTIVE
+        elif self.level == EpistemicLevel.THEORETICAL:
+            # Theoretical beliefs are often abductive (inference to best explanation)
+            return InferenceType.ABDUCTIVE
+        elif self.level == EpistemicLevel.INTERMEDIATE:
+            if self.theory_id:
+                # Derived from theory
+                return InferenceType.DEDUCTIVE
+            else:
+                # Generalization without theory
+                return InferenceType.INDUCTIVE
+        return InferenceType.UNKNOWN
+
+    def infer_belief_kind(self) -> BeliefKind:
+        """
+        Infer the belief kind based on characteristics.
+
+        Sprint 1.6.2: Automatic classification heuristics.
+
+        Rules:
+        - Content mentions "mechanism", "causes", "pathway" → MECHANISTIC
+        - Has paper_ids → EVIDENTIAL
+        - THEORETICAL level → THEORETICAL
+        - Content mentions "measure", "scale", "instrument" → METHODOLOGICAL
+        """
+        content_lower = self.content.lower()
+
+        # Check for mechanism keywords
+        mechanism_keywords = ['mechanism', 'causes', 'pathway', 'mediates', 'triggers']
+        if any(kw in content_lower for kw in mechanism_keywords):
+            return BeliefKind.MECHANISTIC
+
+        # Check for methodological keywords
+        method_keywords = ['measure', 'scale', 'instrument', 'operationalize', 'assess']
+        if any(kw in content_lower for kw in method_keywords):
+            return BeliefKind.METHODOLOGICAL
+
+        # Level-based inference
+        if self.level == EpistemicLevel.THEORETICAL:
+            return BeliefKind.THEORETICAL
+        elif self.level in [EpistemicLevel.EMPIRICAL, EpistemicLevel.OBSERVATIONAL]:
+            return BeliefKind.EVIDENTIAL
+        elif self.level == EpistemicLevel.INTERMEDIATE:
+            # Could be mechanistic or bridge
+            if 'bridge' in content_lower or 'transfer' in content_lower:
+                return BeliefKind.BRIDGE
+            return BeliefKind.MECHANISTIC
+
+        return BeliefKind.EVIDENTIAL
+
+    def auto_classify(self) -> None:
+        """
+        Automatically classify inference_type and belief_kind if unknown.
+
+        Sprint 1.6: Call this after creating a belief to auto-populate
+        classification fields.
+        """
+        if self.inference_type == InferenceType.UNKNOWN:
+            self.inference_type = self.infer_inference_type()
+        if self.belief_kind == BeliefKind.EVIDENTIAL:  # Default, might need updating
+            inferred = self.infer_belief_kind()
+            if inferred != BeliefKind.EVIDENTIAL or self.level != EpistemicLevel.EMPIRICAL:
+                self.belief_kind = inferred
+
+    # =========================================================================
+    # SPRINT 2.5: SOCIAL EPISTEMOLOGY METHODS
+    # =========================================================================
+
+    def get_community_credence(self, community_id: str) -> Optional[float]:
+        """
+        Get credence from a specific community's perspective.
+
+        Sprint 2.5: Community-relative credence per panel synthesis for SE-2.
+
+        Args:
+            community_id: The community to get credence for
+
+        Returns:
+            Credence value (0-1) or None if not available
+        """
+        if self.provenance and hasattr(self.provenance, 'get_community_credence'):
+            return self.provenance.get_community_credence(community_id)
+        return None
+
+    def is_community_contested(self) -> bool:
+        """
+        Check if belief is contested across communities.
+
+        Sprint 2.5: A belief is contested if communities have significantly
+        different credences (spread > 0.2 per panel synthesis for SE-2).
+
+        Returns:
+            True if contested, False otherwise
+        """
+        if self.provenance and hasattr(self.provenance, 'is_contested'):
+            return self.provenance.is_contested()
+        return False
+
+    def set_provenance(self, provenance: Any) -> None:
+        """
+        Set the provenance for this belief.
+
+        Sprint 2.5: Provenance tracks who produced this belief and with what methods.
+
+        Args:
+            provenance: BeliefProvenance instance
+        """
+        self.provenance = provenance
+
+    def add_community_association(self, community_id: str, strength: float) -> None:
+        """
+        Add or update a community association.
+
+        Sprint 2.5: Track which communities this belief is associated with.
+
+        Args:
+            community_id: The community ID
+            strength: Association strength (0-1)
+        """
+        self.community_associations[community_id] = max(0.0, min(1.0, strength))
+
     def to_dict(self) -> Dict[str, Any]:
         result = {
             'belief_id': self.belief_id,
@@ -554,6 +769,9 @@ class Belief:
             # Tier 1 additions
             'source_depth': self.source_depth.value,
             'contested': self.contested,
+            # Sprint 1.6 additions
+            'inference_type': self.inference_type.value,
+            'belief_kind': self.belief_kind.value,
         }
         if self.scope:
             result['scope'] = self.scope.to_dict()
@@ -561,6 +779,11 @@ class Belief:
             result['enabling_conditions'] = self.enabling_conditions.to_dict()
         if self.credence_history:
             result['credence_history'] = [h.to_dict() for h in self.credence_history]
+        # Sprint 2.5 additions
+        if self.provenance and hasattr(self.provenance, 'to_dict'):
+            result['provenance'] = self.provenance.to_dict()
+        if self.community_associations:
+            result['community_associations'] = self.community_associations.copy()
         return result
 
     @classmethod
@@ -588,6 +811,28 @@ class Belief:
             source_depth = SourceDepth(source_depth_str)
         except ValueError:
             source_depth = SourceDepth.FULL_TEXT
+
+        # Parse inference type (Sprint 1.6 addition)
+        inference_type_str = d.get('inference_type', 'unknown')
+        try:
+            inference_type = InferenceType(inference_type_str)
+        except ValueError:
+            inference_type = InferenceType.UNKNOWN
+
+        # Parse belief kind (Sprint 1.6 addition)
+        belief_kind_str = d.get('belief_kind', 'evidential')
+        try:
+            belief_kind = BeliefKind(belief_kind_str)
+        except ValueError:
+            belief_kind = BeliefKind.EVIDENTIAL
+
+        # Parse provenance (Sprint 2.5 addition)
+        provenance = None
+        if 'provenance' in d and d['provenance'] and SOCIAL_EPISTEMOLOGY_AVAILABLE:
+            provenance = se.BeliefProvenance.from_dict(d['provenance'])
+
+        # Parse community associations (Sprint 2.5 addition)
+        community_associations = d.get('community_associations', {})
 
         credence_data = d.get('credence', {})
         if isinstance(credence_data, dict):
@@ -620,7 +865,13 @@ class Belief:
             source_depth=source_depth,
             enabling_conditions=enabling_conditions,
             contested=d.get('contested', False),
-            credence_history=credence_history
+            credence_history=credence_history,
+            # Sprint 1.6 additions
+            inference_type=inference_type,
+            belief_kind=belief_kind,
+            # Sprint 2.5 additions
+            provenance=provenance,
+            community_associations=community_associations
         )
 
 
@@ -1455,11 +1706,483 @@ class WebOfBelief:
     
     def tensions(self) -> List[Dict[str, Any]]:
         return self._tensions.copy()
-    
+
+    # =========================================================================
+    # VALUE COMPUTATION (Sprint 1.6.3 - P-EC Panel: Chang)
+    # =========================================================================
+
+    def belief_centrality(self, belief_id: str) -> float:
+        """
+        Compute centrality of a belief in the web.
+
+        Sprint 1.6.3: Centrality measures how connected a belief is.
+        High centrality = belief is crucial to the web structure.
+
+        Per P-EC panel (Chang): Beliefs with high centrality have high
+        "epistemic value" because revising them would cascade through the web.
+
+        Returns:
+            Normalized centrality score [0, 1]. 0 = no connections, 1 = highly connected.
+        """
+        if belief_id not in self.beliefs:
+            return 0.0
+
+        # Count constraints where this belief is source or target
+        constraint_count = 0
+        for constraint in self.constraints.values():
+            if constraint.source_id == belief_id or constraint.target_id == belief_id:
+                constraint_count += 1
+
+        if not self.constraints:
+            return 0.0
+
+        # Normalize by max possible connections (all other beliefs)
+        max_connections = len(self.beliefs) - 1
+        if max_connections <= 0:
+            return 0.0
+
+        # Centrality is proportion of possible connections realized
+        # Cap at 1.0 in case there are multiple constraints to same belief
+        centrality = min(1.0, constraint_count / max_connections)
+        return centrality
+
+    def belief_sensitivity(self, belief_id: str, delta: float = 0.1) -> float:
+        """
+        Estimate sensitivity of web coherence to changes in this belief.
+
+        Sprint 1.6.3: Sensitivity measures how much coherence changes when
+        this belief's credence changes by delta.
+
+        Per P-EC panel (Chang): High sensitivity beliefs are "fragile points"
+        - revising them would significantly affect overall coherence.
+
+        Args:
+            belief_id: The belief to test
+            delta: Amount to perturb credence (default 0.1)
+
+        Returns:
+            Sensitivity score [0, 1]. Higher = coherence more sensitive to this belief.
+        """
+        if belief_id not in self.beliefs:
+            return 0.0
+
+        belief = self.beliefs[belief_id]
+        original_credence = belief.credence.value
+        original_coherence = self._coherence_score
+
+        # Perturb up (if possible) or down
+        if original_credence + delta <= 1.0:
+            test_credence = original_credence + delta
+        else:
+            test_credence = original_credence - delta
+
+        # Temporarily change credence
+        belief.credence = Credence(
+            value=test_credence,
+            uncertainty=belief.credence.uncertainty,
+            n_supporting=belief.credence.n_supporting,
+            n_contradicting=belief.credence.n_contradicting,
+            n_observations=belief.credence.n_observations
+        )
+
+        # Recompute coherence
+        self._update_coherence()
+        new_coherence = self._coherence_score
+
+        # Restore original credence
+        belief.credence = Credence(
+            value=original_credence,
+            uncertainty=belief.credence.uncertainty,
+            n_supporting=belief.credence.n_supporting,
+            n_contradicting=belief.credence.n_contradicting,
+            n_observations=belief.credence.n_observations
+        )
+
+        # Restore original coherence
+        self._update_coherence()
+
+        # Sensitivity is absolute change in coherence per unit delta
+        # Normalize to [0, 1] range (max coherence change is 1.0)
+        sensitivity = abs(new_coherence - original_coherence) / delta
+        return min(1.0, sensitivity)
+
+    def belief_value(self, belief_id: str, centrality_weight: float = 0.5) -> float:
+        """
+        Compute combined epistemic value of a belief.
+
+        Sprint 1.6.3: Value combines centrality (structural importance) and
+        sensitivity (fragility). High-value beliefs are both central and sensitive.
+
+        Per P-EC panel (Chang, SY-9): This metric identifies beliefs that are
+        most worth investigating - they're structurally important AND their
+        revision would significantly affect the web.
+
+        Args:
+            belief_id: The belief to evaluate
+            centrality_weight: Weight for centrality vs sensitivity (default 0.5)
+
+        Returns:
+            Value score [0, 1]. Higher = more epistemically valuable.
+        """
+        centrality = self.belief_centrality(belief_id)
+        sensitivity = self.belief_sensitivity(belief_id)
+
+        sensitivity_weight = 1.0 - centrality_weight
+        value = centrality_weight * centrality + sensitivity_weight * sensitivity
+        return value
+
+    def beliefs_by_value(self, top_n: Optional[int] = None) -> List[Tuple[str, float, float, float]]:
+        """
+        Rank all beliefs by their epistemic value.
+
+        Sprint 1.6.3: Returns beliefs sorted by value (descending).
+
+        Args:
+            top_n: Return only top N beliefs (None for all)
+
+        Returns:
+            List of (belief_id, value, centrality, sensitivity) tuples.
+        """
+        results = []
+        for belief_id in self.beliefs:
+            centrality = self.belief_centrality(belief_id)
+            sensitivity = self.belief_sensitivity(belief_id)
+            value = 0.5 * centrality + 0.5 * sensitivity
+            results.append((belief_id, value, centrality, sensitivity))
+
+        # Sort by value descending
+        results.sort(key=lambda x: x[1], reverse=True)
+
+        if top_n is not None:
+            return results[:top_n]
+        return results
+
+    def high_value_beliefs(self, threshold: float = 0.5) -> List[Dict[str, Any]]:
+        """
+        Get beliefs above a value threshold with details.
+
+        Sprint 1.6.3: Convenience method for identifying investigation targets.
+
+        Args:
+            threshold: Minimum value to include (default 0.5)
+
+        Returns:
+            List of dicts with belief details and value metrics.
+        """
+        results = []
+        for belief_id, value, centrality, sensitivity in self.beliefs_by_value():
+            if value < threshold:
+                break  # Already sorted, no more above threshold
+
+            belief = self.beliefs[belief_id]
+            results.append({
+                'belief_id': belief_id,
+                'content': belief.content,
+                'level': belief.level.value,
+                'credence': belief.credence.value,
+                'entrenchment': belief.entrenchment,
+                'value': value,
+                'centrality': centrality,
+                'sensitivity': sensitivity,
+                'inference_type': belief.inference_type.value,
+                'belief_kind': belief.belief_kind.value
+            })
+
+        return results
+
+    # =========================================================================
+    # TENSION-RESOLVING EXPERIMENTS (Sprint 1.6.4)
+    # =========================================================================
+
+    def suggest_experiments(self, max_suggestions: int = 5) -> List[Dict[str, Any]]:
+        """
+        Suggest experiments that could resolve tensions in the web.
+
+        Sprint 1.6.4: Analyzes current tensions and suggests empirical
+        investigations that could help resolve them.
+
+        Per P-EC panel: Tensions are epistemically valuable - they reveal
+        where our knowledge is incomplete or contradictory. Experiments
+        that resolve tensions have high Value of Information (VOI).
+
+        Args:
+            max_suggestions: Maximum number of suggestions to return
+
+        Returns:
+            List of experiment suggestions with details.
+        """
+        self._update_coherence()  # Ensure tensions are current
+        suggestions = []
+
+        for tension in self._tensions[:max_suggestions]:
+            source = self.beliefs.get(tension['source'])
+            target = self.beliefs.get(tension['target'])
+
+            if not source or not target:
+                continue
+
+            suggestion = self._generate_experiment_suggestion(source, target, tension)
+            if suggestion:
+                suggestions.append(suggestion)
+
+        # Also suggest experiments for high-value contested beliefs
+        contested = [b for b in self.beliefs.values() if b.contested]
+        for belief in contested[:max_suggestions - len(suggestions)]:
+            if len(suggestions) >= max_suggestions:
+                break
+            suggestion = self._generate_contested_experiment(belief)
+            if suggestion:
+                suggestions.append(suggestion)
+
+        return suggestions
+
+    def _generate_experiment_suggestion(
+        self,
+        source: Belief,
+        target: Belief,
+        tension: Dict[str, Any]
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Generate an experiment suggestion for a specific tension.
+
+        Sprint 1.6.4: Creates structured experiment recommendations.
+        """
+        # Determine experiment type based on belief levels
+        exp_type = self._infer_experiment_type(source, target)
+
+        # Identify what would need to be tested
+        if source.level == EpistemicLevel.THEORETICAL and target.level == EpistemicLevel.EMPIRICAL:
+            # Theory-data conflict: need to test the theoretical prediction
+            test_focus = "theoretical_prediction"
+            hypothesis = f"Test whether {source.content} correctly predicts {target.content}"
+        elif source.level == target.level == EpistemicLevel.EMPIRICAL:
+            # Conflicting empirical findings: need replication
+            test_focus = "replication"
+            hypothesis = f"Replicate to determine whether {source.content} or {target.content} holds"
+        elif source.level == EpistemicLevel.INTERMEDIATE:
+            # Mechanism conflict: need mechanism test
+            test_focus = "mechanism"
+            hypothesis = f"Test the mechanism: does {source.content} explain {target.content}?"
+        else:
+            test_focus = "general"
+            hypothesis = f"Investigate conflict between {source.belief_id} and {target.belief_id}"
+
+        # Estimate priority based on belief values
+        priority = max(
+            self.belief_value(source.belief_id),
+            self.belief_value(target.belief_id)
+        )
+
+        # Generate scope suggestions
+        scope_suggestion = self._suggest_scope(source, target)
+
+        return {
+            'experiment_id': f"exp:tension:{source.belief_id}:{target.belief_id}",
+            'type': exp_type,
+            'tension_type': tension.get('type', 'unknown'),
+            'test_focus': test_focus,
+            'hypothesis': hypothesis,
+            'source_belief': {
+                'id': source.belief_id,
+                'content': source.content,
+                'credence': source.credence.value,
+                'level': source.level.value
+            },
+            'target_belief': {
+                'id': target.belief_id,
+                'content': target.content,
+                'credence': target.credence.value,
+                'level': target.level.value
+            },
+            'priority': priority,
+            'scope_suggestion': scope_suggestion,
+            'expected_resolution': self._estimate_resolution(source, target)
+        }
+
+    def _generate_contested_experiment(self, belief: Belief) -> Optional[Dict[str, Any]]:
+        """
+        Generate experiment suggestion for a contested belief.
+
+        Sprint 1.6.4: Contested beliefs (oscillating credence) indicate
+        genuine disagreement that experimentation could resolve.
+        """
+        credence_range = belief.credence_range()
+
+        return {
+            'experiment_id': f"exp:contested:{belief.belief_id}",
+            'type': 'replication_study',
+            'tension_type': 'credence_oscillation',
+            'test_focus': 'replication',
+            'hypothesis': f"Determine stable credence for: {belief.content}",
+            'source_belief': {
+                'id': belief.belief_id,
+                'content': belief.content,
+                'credence': belief.credence.value,
+                'credence_range': credence_range,
+                'level': belief.level.value
+            },
+            'target_belief': None,  # No target for contested belief
+            'priority': self.belief_value(belief.belief_id),
+            'scope_suggestion': self._suggest_contested_scope(belief),
+            'expected_resolution': {
+                'if_confirmed': f"Credence stabilizes above {credence_range[1]:.2f}",
+                'if_refuted': f"Credence stabilizes below {credence_range[0]:.2f}",
+                'uncertainty_reduction': abs(credence_range[1] - credence_range[0])
+            }
+        }
+
+    def _infer_experiment_type(self, source: Belief, target: Belief) -> str:
+        """Infer what type of experiment would address the tension."""
+        levels = {source.level, target.level}
+
+        if EpistemicLevel.OBSERVATIONAL in levels:
+            return 'measurement_study'
+        elif EpistemicLevel.THEORETICAL in levels and EpistemicLevel.EMPIRICAL in levels:
+            return 'hypothesis_test'
+        elif levels == {EpistemicLevel.EMPIRICAL}:
+            return 'replication_study'
+        elif EpistemicLevel.INTERMEDIATE in levels:
+            return 'mechanism_study'
+        else:
+            return 'exploratory_study'
+
+    def _suggest_scope(self, source: Belief, target: Belief) -> Dict[str, Any]:
+        """Suggest scope conditions for the experiment."""
+        # Combine scope conditions from both beliefs
+        scopes = [source.scope, target.scope]
+        scopes = [s for s in scopes if s is not None]
+
+        if not scopes:
+            return {
+                'population': 'unspecified',
+                'setting': 'unspecified',
+                'note': 'Neither belief specifies scope - consider multiple settings'
+            }
+
+        # Find common scope elements
+        populations = [s.population for s in scopes if s.population]
+        settings = [s.setting for s in scopes if s.setting]
+
+        return {
+            'population': populations[0] if populations else 'unspecified',
+            'setting': settings[0] if settings else 'unspecified',
+            'should_vary': self._identify_scope_differences(scopes),
+            'note': 'Test under conditions specified by both beliefs'
+        }
+
+    def _suggest_contested_scope(self, belief: Belief) -> Dict[str, Any]:
+        """Suggest scope for contested belief experiment."""
+        if belief.scope:
+            return {
+                'population': belief.scope.population or 'unspecified',
+                'setting': belief.scope.setting or 'unspecified',
+                'note': 'Replicate across multiple contexts to test generalizability'
+            }
+        return {
+            'population': 'unspecified',
+            'setting': 'unspecified',
+            'note': 'Scope not specified - systematic replication recommended'
+        }
+
+    def _identify_scope_differences(self, scopes: List[ScopeConditions]) -> List[str]:
+        """Identify where scope conditions differ between beliefs."""
+        differences = []
+        if len(scopes) < 2:
+            return differences
+
+        s1, s2 = scopes[0], scopes[1]
+        if s1.population != s2.population:
+            differences.append('population')
+        if s1.setting != s2.setting:
+            differences.append('setting')
+        if s1.duration != s2.duration:
+            differences.append('duration')
+        if s1.measurement != s2.measurement:
+            differences.append('measurement')
+
+        return differences
+
+    def _estimate_resolution(self, source: Belief, target: Belief) -> Dict[str, Any]:
+        """Estimate how the tension might be resolved."""
+        return {
+            'if_source_confirmed': f"{source.belief_id} credence increases, {target.belief_id} decreases",
+            'if_target_confirmed': f"{target.belief_id} credence increases, {source.belief_id} decreases",
+            'if_scope_boundary': "Both may be correct in different contexts",
+            'entrenchment_impact': {
+                'source': source.entrenchment,
+                'target': target.entrenchment,
+                'easier_to_revise': source.belief_id if source.entrenchment < target.entrenchment else target.belief_id
+            }
+        }
+
+    def get_research_priorities(self, top_n: int = 10) -> Dict[str, Any]:
+        """
+        Get research priorities combining tensions, high-value beliefs, and experiments.
+
+        Sprint 1.6.4: Comprehensive research agenda based on web state.
+
+        Returns:
+            Dictionary with prioritized research directions.
+        """
+        self._update_coherence()
+
+        return {
+            'web_coherence': self._coherence_score,
+            'n_tensions': len(self._tensions),
+            'n_contested': sum(1 for b in self.beliefs.values() if b.contested),
+            'suggested_experiments': self.suggest_experiments(max_suggestions=top_n),
+            'high_value_beliefs': self.high_value_beliefs(threshold=0.3)[:top_n],
+            'research_directions': self._generate_research_directions()
+        }
+
+    def _generate_research_directions(self) -> List[Dict[str, str]]:
+        """Generate high-level research direction recommendations."""
+        directions = []
+
+        # Based on tension types
+        tension_types = defaultdict(int)
+        for t in self._tensions:
+            tension_types[t.get('type', 'unknown')] += 1
+
+        if tension_types['contradiction_tension'] > 0:
+            directions.append({
+                'direction': 'Resolve contradictory findings',
+                'rationale': f"{tension_types['contradiction_tension']} pairs of high-credence beliefs contradict each other",
+                'approach': 'Systematic replication with scope variation'
+            })
+
+        if tension_types['bridge_failure_tension'] > 0:
+            directions.append({
+                'direction': 'Strengthen knowledge transfer',
+                'rationale': f"{tension_types['bridge_failure_tension']} bridge relationships have failed",
+                'approach': 'Test enabling conditions for knowledge transfer'
+            })
+
+        # Based on belief distribution
+        levels = defaultdict(int)
+        for b in self.beliefs.values():
+            levels[b.level] += 1
+
+        if levels[EpistemicLevel.THEORETICAL] > levels[EpistemicLevel.EMPIRICAL]:
+            directions.append({
+                'direction': 'More empirical testing needed',
+                'rationale': 'More theoretical than empirical beliefs',
+                'approach': 'Design experiments to test theoretical predictions'
+            })
+
+        if levels[EpistemicLevel.OBSERVATIONAL] == 0:
+            directions.append({
+                'direction': 'Add observational grounding',
+                'rationale': 'No observational-level beliefs',
+                'approach': 'Conduct direct measurement studies'
+            })
+
+        return directions
+
     # =========================================================================
     # EVIDENCE PROCESSING
     # =========================================================================
-    
+
     def add_evidence(
         self,
         belief_id: str,
@@ -1707,6 +2430,87 @@ class WebOfBelief:
                 for tid in self.theory_ids
             }
         }
+
+    # =========================================================================
+    # EPISTEMIC-CAUSAL BRIDGE (Sprint 1.5)
+    # =========================================================================
+
+    def create_causal_bridge(self) -> 'ecb.EpistemicCausalBridge':
+        """
+        Create an epistemic-causal bridge for this web.
+
+        The bridge integrates:
+        1. Quinean epistemic layer (beliefs, credences, entrenchment)
+        2. Pearlian causal layer (DAGs, SCMs, do-calculus)
+        3. Van Fraassen contrast classes (population-relative meaning)
+
+        Returns:
+            EpistemicCausalBridge: Bridge instance connected to this web
+
+        Raises:
+            ImportError: If epistemic_causal_bridge module not available
+
+        Example:
+            bridge = web.create_causal_bridge()
+            bridge.build_causal_models()
+            result = bridge.counterfactual(
+                intervention={"nature": 1.0},
+                outcome="stress"
+            )
+        """
+        if not BRIDGE_AVAILABLE:
+            raise ImportError(
+                "Epistemic-causal bridge not available. "
+                "Ensure src/services/epistemic_causal_bridge.py exists."
+            )
+        return ecb.EpistemicCausalBridge(self)
+
+    def counterfactual(
+        self,
+        intervention: Dict[str, float],
+        outcome: str,
+        evidence: Optional[Dict[str, float]] = None,
+        credence_threshold: float = 0.5
+    ) -> Any:
+        """
+        Convenience method for counterfactual queries.
+
+        Builds causal models from the web and computes a counterfactual
+        with full Quinean analysis (robustness, coherence, scope).
+
+        Args:
+            intervention: Dict mapping variable names to intervention values
+            outcome: Name of the outcome variable to query
+            evidence: Optional dict of observed evidence
+            credence_threshold: Minimum credence for beliefs to include
+
+        Returns:
+            QuineanCounterfactualResult with point estimate, CI, and quality metrics
+
+        Example:
+            result = web.counterfactual(
+                intervention={"nature_exposure": 1.0},
+                outcome="stress_level"
+            )
+            print(result.summary())
+        """
+        if not BRIDGE_AVAILABLE:
+            raise ImportError(
+                "Epistemic-causal bridge not available. "
+                "Ensure src/services/epistemic_causal_bridge.py exists."
+            )
+
+        bridge = ecb.EpistemicCausalBridge(self)
+        bridge.build_causal_models(credence_threshold=credence_threshold)
+        return bridge.counterfactual(
+            intervention=intervention,
+            outcome=outcome,
+            evidence=evidence
+        )
+
+    def causal_bridge_available(self) -> bool:
+        """Check if the epistemic-causal bridge module is available."""
+        return BRIDGE_AVAILABLE
 
     def snapshot(self) -> 'WebOfBeliefSnapshot':
         """

@@ -792,6 +792,168 @@ class CredibilityChecks:
 
         return flags
 
+    # =========================================================================
+    # SEVERITY 3 CHECKS (Minor - unusual patterns)
+    # =========================================================================
+
+    def check_semantic_coherence(
+        self,
+        constraints: List[Constraint],
+        beliefs: Optional[Dict[str, Belief]] = None,
+        similarity_threshold: float = 0.15
+    ) -> List[CredibilityFlag]:
+        """
+        Check if constraints connect semantically related beliefs.
+
+        Per Bates: Use taxonomy distance, keyword overlap, or embeddings.
+
+        This is a Severity 3 (Minor) check - unusual patterns that might be fine.
+
+        Args:
+            constraints: New constraints to check
+            beliefs: Dict of belief_id -> Belief (from web or snapshot)
+            similarity_threshold: Minimum similarity score (0-1)
+
+        Returns:
+            List of flags for semantically distant constraint pairs
+        """
+        flags = []
+
+        if not beliefs:
+            # Try to get from snapshot
+            if self.snapshot:
+                beliefs = self.snapshot.beliefs
+            else:
+                return flags  # Can't check without beliefs
+
+        for constraint in constraints:
+            source_belief = beliefs.get(constraint.source_id)
+            target_belief = beliefs.get(constraint.target_id)
+
+            if not source_belief or not target_belief:
+                continue
+
+            # Compute semantic similarity
+            similarity = self._compute_semantic_similarity(source_belief, target_belief)
+
+            if similarity < similarity_threshold:
+                flags.append(CredibilityFlag(
+                    decision=Decision.REVIEW,
+                    reason=f"Constraint connects semantically distant beliefs (similarity={similarity:.2f})",
+                    confidence=0.4 + 0.3 * (similarity_threshold - similarity),
+                    field_name="semantic_coherence",
+                    expected=f"Semantic similarity ≥ {similarity_threshold}",
+                    observed=f"Similarity = {similarity:.2f}",
+                ))
+
+        return flags
+
+    def _compute_semantic_similarity(
+        self,
+        belief1: Belief,
+        belief2: Belief
+    ) -> float:
+        """
+        Compute semantic similarity between two beliefs.
+
+        Uses multiple methods per Bates:
+        1. Environment taxonomy distance (if both have environment_id)
+        2. Outcome taxonomy distance (if both have outcome_id)
+        3. Keyword overlap (Jaccard similarity)
+        4. Theory overlap (if both have theory_ids)
+
+        Returns average of available methods (0-1, higher = more similar).
+        """
+        scores = []
+
+        # 1. Environment taxonomy similarity
+        env1 = getattr(belief1, 'environment_id', None)
+        env2 = getattr(belief2, 'environment_id', None)
+        if env1 and env2:
+            # Simple matching for now (could use taxonomy distance)
+            if env1 == env2:
+                scores.append(1.0)
+            elif self._share_taxonomy_prefix(env1, env2):
+                scores.append(0.6)
+            else:
+                scores.append(0.2)
+
+        # 2. Outcome taxonomy similarity
+        out1 = getattr(belief1, 'outcome_id', None)
+        out2 = getattr(belief2, 'outcome_id', None)
+        if out1 and out2:
+            if out1 == out2:
+                scores.append(1.0)
+            elif self._share_taxonomy_prefix(out1, out2):
+                scores.append(0.6)
+            else:
+                scores.append(0.2)
+
+        # 3. Keyword overlap (Jaccard)
+        content1 = belief1.content.lower() if hasattr(belief1, 'content') else ""
+        content2 = belief2.content.lower() if hasattr(belief2, 'content') else ""
+
+        # Remove common stopwords
+        stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
+                     'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
+                     'would', 'could', 'should', 'may', 'might', 'must', 'can',
+                     'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from',
+                     'as', 'into', 'through', 'during', 'before', 'after',
+                     'above', 'below', 'between', 'under', 'and', 'but', 'or',
+                     'nor', 'so', 'yet', 'both', 'either', 'neither', 'not',
+                     'only', 'own', 'same', 'than', 'too', 'very', 'just',
+                     'that', 'this', 'these', 'those', 'it', 'its'}
+
+        words1 = {w for w in content1.split() if w not in stopwords and len(w) > 2}
+        words2 = {w for w in content2.split() if w not in stopwords and len(w) > 2}
+
+        if words1 and words2:
+            jaccard = len(words1 & words2) / len(words1 | words2)
+            scores.append(jaccard)
+
+        # 4. Theory overlap
+        theories1 = set(getattr(belief1, 'theory_ids', []) or [])
+        theories2 = set(getattr(belief2, 'theory_ids', []) or [])
+        if theories1 and theories2:
+            theory_overlap = len(theories1 & theories2) / len(theories1 | theories2)
+            scores.append(theory_overlap)
+
+        # Return average or 0.5 if no scores available
+        if scores:
+            return sum(scores) / len(scores)
+        return 0.5  # Neutral if we can't compute
+
+    def _share_taxonomy_prefix(self, id1: str, id2: str, levels: int = 2) -> bool:
+        """Check if two taxonomy IDs share a common prefix."""
+        parts1 = id1.split('.')[:levels]
+        parts2 = id2.split('.')[:levels]
+        return parts1 == parts2 and len(parts1) > 0
+
+    def check_new_stubs(
+        self,
+        beliefs: List[Belief]
+    ) -> List[CredibilityFlag]:
+        """
+        Note when stubs are created (findings without theoretical home).
+
+        Per Quinean principles: Stubs are expected but should be tracked.
+        This is informational, not necessarily a problem.
+        """
+        flags = []
+
+        for belief in beliefs:
+            if getattr(belief, 'status', None) == BeliefStatus.STUB:
+                flags.append(CredibilityFlag(
+                    decision=Decision.REVIEW,
+                    reason="New stub created (finding without theoretical home)",
+                    confidence=0.3,  # Low confidence - stubs are often fine
+                    field_name="stub_creation",
+                    expected="Belief integrated with theory",
+                    observed=f"Stub: {belief.content[:50]}...",
+                ))
+
+        return flags
+
 
 # =============================================================================
 # CALIBRATION (per Simon: explicit calibration procedure)
@@ -979,6 +1141,18 @@ class CredibilityTester:
 
         # Subgroup sample size check (Sprint D)
         for flag in safe_check(checks.check_subgroup_sample_size, beliefs, meta):
+            report.add_flag(flag)
+
+        # Severity 3 checks (Minor - unusual patterns)
+        # Semantic coherence check
+        beliefs_dict = {b.belief_id: b for b in beliefs} if beliefs else {}
+        if self.snapshot:
+            beliefs_dict.update(self.snapshot.beliefs)
+        for flag in safe_check(checks.check_semantic_coherence, constraints, beliefs_dict):
+            report.add_flag(flag)
+
+        # Stub creation check
+        for flag in safe_check(checks.check_new_stubs, beliefs):
             report.add_flag(flag)
 
         # Update overall decision based on flags

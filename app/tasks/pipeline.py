@@ -61,6 +61,17 @@ try:
 except ImportError:
     CREDIBILITY_TESTING_AVAILABLE = False
 
+# Feedback tracking for credibility testing threshold calibration
+try:
+    from src.services.credibility_feedback import (
+        FeedbackTracker,
+        create_tracker as create_feedback_tracker,
+        get_default_tracker,
+    )
+    CREDIBILITY_FEEDBACK_AVAILABLE = True
+except ImportError:
+    CREDIBILITY_FEEDBACK_AVAILABLE = False
+
 DB = os.environ.get("AE_DB", "ae.db")
 BN_EXPORT_VERSION = "0.2"
 BN_EXPORT_GENERATOR = "article_eater_rulegraph_v2"
@@ -415,6 +426,21 @@ def _integrate_into_web_of_belief(
                     f"Credibility check failed: {[f.reason for f in credibility_report.flags]}",
                     recoverable=True
                 )
+
+            # If REVIEW, add to review queue for human follow-up
+            if credibility_report.overall_decision == Decision.REVIEW:
+                review_queue_path = out_dir.parent / "review_queue.jsonl"
+                review_entry = {
+                    'article_id': paper_id,
+                    'timestamp': credibility_report.timestamp.isoformat() if hasattr(credibility_report.timestamp, 'isoformat') else str(credibility_report.timestamp),
+                    'n_flags': len(credibility_report.flags),
+                    'flags_summary': [f.reason[:80] for f in credibility_report.flags],
+                    'report_path': str(cred_report_path),
+                    'status': 'pending_review',
+                }
+                with open(review_queue_path, 'a') as f:
+                    f.write(json.dumps(review_entry) + '\n')
+                _web_logger.info(f"[{paper_id}] Added to review queue ({len(credibility_report.flags)} flags)")
 
         except Exception as e:
             _web_logger.warning(f"[{paper_id}] Credibility testing failed: {e}")

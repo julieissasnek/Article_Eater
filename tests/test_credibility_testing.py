@@ -1038,3 +1038,207 @@ class TestSprintDFailureStandard:
         # Should flag multiple comparison concern
         assert not report.is_clean
         assert any("comparison" in f.reason.lower() for f in report.flags)
+
+
+# =============================================================================
+# Severity 3: Semantic Coherence Checks
+# =============================================================================
+
+class TestSemanticCoherenceCheck:
+    """Tests for semantic coherence checking."""
+
+    def test_semantically_related_beliefs(self):
+        """Test that related beliefs don't trigger flag."""
+        checks = CredibilityChecks()
+
+        # Two beliefs about similar topics
+        belief1 = Belief(
+            belief_id="b1",
+            content="Nature exposure reduces stress levels in office workers",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+        belief1.environment_id = "indoor.office"
+        belief1.outcome_id = "psychological.stress"
+
+        belief2 = Belief(
+            belief_id="b2",
+            content="Plants in offices decrease worker stress responses",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.65, uncertainty=0.2),
+        )
+        belief2.environment_id = "indoor.office"
+        belief2.outcome_id = "psychological.stress"
+
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="b1",
+            target_id="b2",
+            constraint_type=ConstraintType.SUPPORTS,
+        )
+
+        beliefs_dict = {"b1": belief1, "b2": belief2}
+        flags = checks.check_semantic_coherence([constraint], beliefs_dict)
+
+        # Related beliefs should not flag
+        assert len(flags) == 0
+
+    def test_semantically_distant_beliefs(self):
+        """Test that unrelated beliefs trigger flag."""
+        checks = CredibilityChecks()
+
+        # Two beliefs about very different topics
+        belief1 = Belief(
+            belief_id="b1",
+            content="Ceiling height affects creativity in design studios",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.6, uncertainty=0.2),
+        )
+        belief1.environment_id = "indoor.studio"
+        belief1.outcome_id = "cognitive.creativity"
+
+        belief2 = Belief(
+            belief_id="b2",
+            content="Elderly patients prefer blue color schemes",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.25),
+        )
+        belief2.environment_id = "healthcare.hospital"
+        belief2.outcome_id = "aesthetic.preference"
+
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="b1",
+            target_id="b2",
+            constraint_type=ConstraintType.SUPPORTS,
+        )
+
+        beliefs_dict = {"b1": belief1, "b2": belief2}
+        flags = checks.check_semantic_coherence([constraint], beliefs_dict, similarity_threshold=0.3)
+
+        # Distant beliefs should flag
+        assert len(flags) == 1
+        assert "semantic" in flags[0].reason.lower()
+
+    def test_missing_beliefs_no_flag(self):
+        """Test that missing beliefs don't cause errors."""
+        checks = CredibilityChecks()
+
+        constraint = Constraint(
+            constraint_id="c1",
+            source_id="missing1",
+            target_id="missing2",
+            constraint_type=ConstraintType.SUPPORTS,
+        )
+
+        flags = checks.check_semantic_coherence([constraint], {})
+        assert len(flags) == 0
+
+
+class TestNewStubsCheck:
+    """Tests for stub creation detection."""
+
+    def test_stub_detected(self):
+        """Test that stubs are flagged."""
+        checks = CredibilityChecks()
+
+        stub_belief = Belief(
+            belief_id="stub1",
+            content="Novel finding without theoretical home",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.5, uncertainty=0.3),
+        )
+        stub_belief.status = BeliefStatus.STUB
+
+        flags = checks.check_new_stubs([stub_belief])
+        assert len(flags) == 1
+        assert "stub" in flags[0].reason.lower()
+
+    def test_non_stub_not_flagged(self):
+        """Test that normal beliefs are not flagged."""
+        checks = CredibilityChecks()
+
+        normal_belief = Belief(
+            belief_id="normal1",
+            content="Normal belief with theory",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+            status=BeliefStatus.TENTATIVE,  # Explicitly not a STUB
+        )
+
+        flags = checks.check_new_stubs([normal_belief])
+        assert len(flags) == 0
+
+
+class TestSemanticSimilarityComputation:
+    """Tests for the semantic similarity computation helper."""
+
+    def test_same_taxonomy_high_similarity(self):
+        """Test that same taxonomy IDs give high similarity."""
+        checks = CredibilityChecks()
+
+        belief1 = Belief(
+            belief_id="b1",
+            content="Test belief one",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+        belief1.environment_id = "indoor.office.openplan"
+        belief1.outcome_id = "psychological.stress"
+
+        belief2 = Belief(
+            belief_id="b2",
+            content="Test belief two",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+        belief2.environment_id = "indoor.office.openplan"
+        belief2.outcome_id = "psychological.stress"
+
+        similarity = checks._compute_semantic_similarity(belief1, belief2)
+        assert similarity >= 0.8
+
+    def test_keyword_overlap_contributes(self):
+        """Test that keyword overlap contributes to similarity."""
+        checks = CredibilityChecks()
+
+        belief1 = Belief(
+            belief_id="b1",
+            content="Nature exposure reduces cortisol stress levels significantly",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+
+        belief2 = Belief(
+            belief_id="b2",
+            content="Green nature environments reduce stress cortisol levels",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+
+        similarity = checks._compute_semantic_similarity(belief1, belief2)
+        assert similarity > 0.3  # Significant keyword overlap
+
+    def test_shared_theory_increases_similarity(self):
+        """Test that shared theories increase similarity."""
+        checks = CredibilityChecks()
+
+        belief1 = Belief(
+            belief_id="b1",
+            content="Finding A",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+        belief1.theory_ids = ["ART", "SRT"]
+
+        belief2 = Belief(
+            belief_id="b2",
+            content="Finding B",
+            level=EpistemicLevel.EMPIRICAL,
+            credence=Credence(value=0.7, uncertainty=0.15),
+        )
+        belief2.theory_ids = ["ART", "Biophilia"]
+
+        similarity = checks._compute_semantic_similarity(belief1, belief2)
+        # They share ART theory
+        assert similarity > 0.3

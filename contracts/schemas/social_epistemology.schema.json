@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/social_epistemology.v1.schema.json",
+  "title": "Social Epistemology Schema",
+  "description": "Schema for social epistemology constructs in Article Eater (Sprint 2.5)",
+  "version": "1.0.0",
+  "created": "2026-02-08",
+
+  "definitions": {
+    "CommunityType": {
+      "type": "string",
+      "description": "How the community is primarily defined",
+      "enum": [
+        "journal_cluster",
+        "citation_network",
+        "theory_commitment",
+        "methodological",
+        "institutional",
+        "paradigm"
+      ]
+    },
+
+    "CommunityLevel": {
+      "type": "string",
+      "description": "Hierarchical level of community (per SE-5)",
+      "enum": ["field", "paradigm", "subfield", "lab"]
+    },
+
+    "ContestationType": {
+      "type": "string",
+      "description": "Type of disagreement between communities",
+      "enum": [
+        "empirical",
+        "methodological",
+        "theoretical",
+        "scope",
+        "value",
+        "incommensurable"
+      ]
+    },
+
+    "DisagreementResolution": {
+      "type": "string",
+      "description": "How to handle community disagreement (per SE-2)",
+      "enum": ["average", "report_separately", "flag_incommensurable"]
+    },
+
+    "CommunityHistoryEvent": {
+      "type": "object",
+      "description": "A significant event in community history",
+      "required": ["event_id", "timestamp", "event_type", "description"],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "description": "Unique event identifier"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the event occurred"
+        },
+        "event_type": {
+          "type": "string",
+          "description": "Type of event",
+          "enum": ["credence_shift", "theory_adoption", "method_change", "paradigm_shift"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the event"
+        },
+        "affected_beliefs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Belief IDs affected by this event"
+        },
+        "magnitude": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Size of change (e.g., credence delta)"
+        },
+        "causal_tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Causal factors (new_evidence, methodology_change, generational, funding_shift)"
+        },
+        "triggering_papers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "DOIs of papers that triggered the change"
+        }
+      }
+    },
+
+    "EpistemicCommunity": {
+      "type": "object",
+      "description": "A community that shares epistemic standards and practices",
+      "required": ["community_id", "name", "community_type", "level"],
+      "properties": {
+        "community_id": {
+          "type": "string",
+          "description": "Unique identifier (e.g., 'comm:art')"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name"
+        },
+        "community_type": {
+          "$ref": "#/definitions/CommunityType"
+        },
+        "level": {
+          "$ref": "#/definitions/CommunityLevel"
+        },
+        "foundational_works": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "DOIs of exemplary papers (per Kuhn)"
+        },
+        "core_theories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Theory IDs the community commits to"
+        },
+        "preferred_methods": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Methodological preferences (per Knorr Cetina)"
+        },
+        "characteristic_vocabulary": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Shared technical terms (per Collins)"
+        },
+        "member_authors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Author IDs (approximate)"
+        },
+        "associated_journals": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "ISSN or journal names"
+        },
+        "associated_institutions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "University affiliations"
+        },
+        "parent_community_id": {
+          "type": ["string", "null"],
+          "description": "Parent in hierarchy (Lab→Subfield→Field)"
+        },
+        "child_community_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Sub-communities"
+        },
+        "institutional_power": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Power metric (tracked but NOT used for credence, per SE-3)"
+        },
+        "domain_track_records": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Domain → historical accuracy"
+        },
+        "contestation_level": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How contested the community's positions are"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When community was first identified"
+        },
+        "history_events": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/CommunityHistoryEvent" },
+          "description": "Significant historical events (per SE-4)"
+        }
+      }
+    },
+
+    "BeliefProvenance": {
+      "type": "object",
+      "description": "Tracks the social origins of a belief",
+      "required": ["belief_id"],
+      "properties": {
+        "belief_id": {
+          "type": "string",
+          "description": "The belief this provenance describes"
+        },
+        "producing_communities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Community IDs that produced this belief"
+        },
+        "producing_labs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Lab-level IDs (more specific)"
+        },
+        "producing_authors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary author IDs"
+        },
+        "methods_used": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Methods used (e.g., lab_experiment, field_study)"
+        },
+        "instruments_used": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Instruments used (e.g., POMS, cortisol_assay)"
+        },
+        "community_credences": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Community ID → credence (per SE-2)"
+        },
+        "endorsing_communities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Communities that accept this belief"
+        },
+        "contesting_communities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Communities that dispute this belief"
+        },
+        "contestation_type": {
+          "$ref": "#/definitions/ContestationType"
+        },
+        "contestation_details": {
+          "type": ["string", "null"],
+          "description": "Details about the contestation"
+        },
+        "aggregation_approach": {
+          "$ref": "#/definitions/DisagreementResolution"
+        },
+        "aggregated_credence": {
+          "type": ["number", "null"],
+          "description": "Aggregated credence (only if AVERAGE approach)"
+        }
+      }
+    },
+
+    "Contestation": {
+      "type": "object",
+      "description": "A specific contestation between communities on a belief",
+      "required": [
+        "contestation_id",
+        "belief_id",
+        "contesting_community_id",
+        "target_community_id",
+        "contestation_type"
+      ],
+      "properties": {
+        "contestation_id": {
+          "type": "string",
+          "description": "Unique contestation identifier"
+        },
+        "belief_id": {
+          "type": "string",
+          "description": "The belief being contested"
+        },
+        "contesting_community_id": {
+          "type": "string",
+          "description": "Who is contesting"
+        },
+        "target_community_id": {
+          "type": "string",
+          "description": "Whose position is being contested"
+        },
+        "contestation_type": {
+          "$ref": "#/definitions/ContestationType"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description"
+        },
+        "contesting_papers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "DOIs that challenge"
+        },
+        "target_papers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "DOIs being challenged"
+        },
+        "is_resolved": {
+          "type": "boolean",
+          "description": "Whether the contestation has been resolved"
+        },
+        "resolution_date": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "When the contestation was resolved"
+        },
+        "resolution_description": {
+          "type": ["string", "null"],
+          "description": "How the contestation was resolved"
+        },
+        "agreed_resolution_criteria": {
+          "type": ["string", "null"],
+          "description": "Criteria both parties agree would settle dispute"
+        },
+        "experimenter_regress": {
+          "type": "boolean",
+          "description": "True if no agreed resolution criteria (per Collins)"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the contestation was first identified"
+        }
+      }
+    },
+
+    "MethodologicalProfile": {
+      "type": "object",
+      "description": "Profile of methods used to support a belief",
+      "required": ["belief_id"],
+      "properties": {
+        "belief_id": {
+          "type": "string",
+          "description": "The belief being profiled"
+        },
+        "methods": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" },
+          "description": "Method → count of papers"
+        },
+        "instruments": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" },
+          "description": "Instrument → count"
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" },
+          "description": "Setting → count"
+        },
+        "populations": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" },
+          "description": "Population → count"
+        },
+        "diversity_index": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Normalized diversity index"
+        },
+        "vulnerabilities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Identified vulnerabilities"
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "description": "Root object for social epistemology state",
+  "properties": {
+    "communities": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/EpistemicCommunity" },
+      "description": "All registered epistemic communities"
+    },
+    "contestations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Contestation" },
+      "description": "All tracked contestations"
+    },
+    "provenances": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/BeliefProvenance" },
+      "description": "Provenance records for beliefs"
+    },
+    "methodological_profiles": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MethodologicalProfile" },
+      "description": "Methodological diversity profiles"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "last_updated": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

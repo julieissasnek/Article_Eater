@@ -44,12 +44,14 @@ logger = logging.getLogger(__name__)
 
 class ExplanationPattern(Enum):
     """
-    Two patterns initially (per Lampson).
+    Explanation patterns (expanded per Phase D plan).
 
-    Start simple, add more only when these can't answer common questions.
+    Started with two (per Lampson), added more as needed.
     """
-    EVIDENCE = "evidence"      # What supports this belief?
-    PRACTICAL = "practical"    # What should I do with this?
+    EVIDENCE = "evidence"          # What supports this belief?
+    PRACTICAL = "practical"        # What should I do with this?
+    MECHANISM = "mechanism"        # How does this work? (Pearl)
+    DISAGREEMENT = "disagreement"  # Where do experts differ? (Cartwright)
 
 
 class DetailLevel(Enum):
@@ -256,6 +258,14 @@ class QuestionClassifier:
         ExplanationPattern.PRACTICAL: [
             "should", "recommend", "design", "apply", "use",
             "implement", "practice", "suggest", "advice", "action"
+        ],
+        ExplanationPattern.MECHANISM: [
+            "how", "why", "mechanism", "works", "cause", "causal",
+            "process", "pathway", "mediator", "leads", "explains"
+        ],
+        ExplanationPattern.DISAGREEMENT: [
+            "disagree", "controversy", "debate", "dispute", "conflict",
+            "differ", "consensus", "contested", "agree", "opinion"
         ]
     }
 
@@ -302,7 +312,9 @@ class QuestionClassifier:
                 prompt="What kind of answer are you looking for?",
                 options=[
                     ("Evidence summary (what research shows)", ExplanationPattern.EVIDENCE),
-                    ("Design recommendations (what to do)", ExplanationPattern.PRACTICAL)
+                    ("Design recommendations (what to do)", ExplanationPattern.PRACTICAL),
+                    ("Mechanism explanation (how it works)", ExplanationPattern.MECHANISM),
+                    ("Disagreement summary (where experts differ)", ExplanationPattern.DISAGREEMENT)
                 ]
             )
 
@@ -823,6 +835,468 @@ class PracticalImplicationsPattern:
 
 
 # =============================================================================
+# MECHANISM PATTERN (per Pearl: explain causal structure)
+# =============================================================================
+
+@dataclass
+class MechanismStep:
+    """A single step in a causal mechanism chain."""
+    belief_id: str
+    content: str
+    role: str  # "cause", "mediator", "effect", "moderator"
+    evidence_strength: float
+    mechanism_type: str  # "physiological", "psychological", "behavioral", "environmental"
+
+
+@dataclass
+class MechanismResult:
+    """Result of mechanism traversal."""
+    target_belief: Belief
+    causal_chain: List[MechanismStep]
+    mediators: List[MechanismStep]
+    moderators: List[MechanismStep]
+    mechanism_type: str
+    confidence: float
+    has_experimental_support: bool
+
+
+class MechanismExplanationPattern:
+    """
+    Pattern: How does this work?
+
+    Per Pearl: Explain causal mechanisms, not just correlations.
+    Traces causal chains and identifies mediating/moderating factors.
+    """
+
+    def __init__(self, web: WebOfBelief):
+        self.web = web
+
+    def traverse(self, belief_id: str) -> Optional[MechanismResult]:
+        """Trace causal mechanisms for a belief."""
+        if belief_id not in self.web.beliefs:
+            return None
+
+        target = self.web.beliefs[belief_id]
+        causal_chain = []
+        mediators = []
+        moderators = []
+        has_experimental = False
+
+        # Find causal antecedents (what causes this belief's outcome)
+        for constraint_id, constraint in self.web.constraints.items():
+            if constraint.target_id == belief_id:
+                source = self.web.beliefs.get(constraint.source_id)
+                if not source:
+                    continue
+
+                # Check constraint type for causal role
+                role = self._determine_role(constraint)
+                if role == "moderator":
+                    moderators.append(MechanismStep(
+                        belief_id=source.belief_id,
+                        content=source.content,
+                        role=role,
+                        evidence_strength=getattr(constraint, 'strength', 0.5),
+                        mechanism_type=self._infer_mechanism_type(source),
+                    ))
+                elif role == "mediator":
+                    mediators.append(MechanismStep(
+                        belief_id=source.belief_id,
+                        content=source.content,
+                        role=role,
+                        evidence_strength=getattr(constraint, 'strength', 0.5),
+                        mechanism_type=self._infer_mechanism_type(source),
+                    ))
+                else:
+                    causal_chain.append(MechanismStep(
+                        belief_id=source.belief_id,
+                        content=source.content,
+                        role=role,
+                        evidence_strength=getattr(constraint, 'strength', 0.5),
+                        mechanism_type=self._infer_mechanism_type(source),
+                    ))
+
+                # Check for experimental support
+                if hasattr(constraint, 'evidence_type') and constraint.evidence_type == 'experimental':
+                    has_experimental = True
+
+        # Determine overall mechanism type
+        mechanism_type = self._determine_overall_mechanism(causal_chain, mediators)
+
+        # Calculate confidence
+        confidence = self._calculate_mechanism_confidence(causal_chain, mediators, has_experimental)
+
+        return MechanismResult(
+            target_belief=target,
+            causal_chain=causal_chain,
+            mediators=mediators,
+            moderators=moderators,
+            mechanism_type=mechanism_type,
+            confidence=confidence,
+            has_experimental_support=has_experimental,
+        )
+
+    def _determine_role(self, constraint: Constraint) -> str:
+        """Determine the causal role of a constraint."""
+        ctype = constraint.constraint_type
+        if ctype == ConstraintType.EXPLAINS:
+            return "cause"
+        elif hasattr(constraint, 'mediator') and constraint.mediator:
+            return "mediator"
+        elif hasattr(constraint, 'is_moderator') and constraint.is_moderator:
+            return "moderator"
+        return "cause"
+
+    def _infer_mechanism_type(self, belief: Belief) -> str:
+        """Infer the type of mechanism from belief content."""
+        content_lower = belief.content.lower()
+        if any(w in content_lower for w in ['cortisol', 'heart rate', 'blood', 'neural', 'brain']):
+            return "physiological"
+        elif any(w in content_lower for w in ['stress', 'attention', 'mood', 'cognitive', 'memory']):
+            return "psychological"
+        elif any(w in content_lower for w in ['behavior', 'action', 'movement', 'activity']):
+            return "behavioral"
+        return "environmental"
+
+    def _determine_overall_mechanism(
+        self,
+        causal_chain: List[MechanismStep],
+        mediators: List[MechanismStep]
+    ) -> str:
+        """Determine the dominant mechanism type."""
+        all_steps = causal_chain + mediators
+        if not all_steps:
+            return "unknown"
+
+        type_counts: Dict[str, int] = {}
+        for step in all_steps:
+            type_counts[step.mechanism_type] = type_counts.get(step.mechanism_type, 0) + 1
+
+        return max(type_counts, key=type_counts.get)
+
+    def _calculate_mechanism_confidence(
+        self,
+        causal_chain: List[MechanismStep],
+        mediators: List[MechanismStep],
+        has_experimental: bool
+    ) -> float:
+        """Calculate confidence in the mechanism explanation."""
+        if not causal_chain:
+            return 0.2
+
+        # Average evidence strength
+        all_steps = causal_chain + mediators
+        avg_strength = sum(s.evidence_strength for s in all_steps) / len(all_steps)
+
+        # Bonus for experimental support
+        if has_experimental:
+            avg_strength = min(1.0, avg_strength + 0.15)
+
+        # Penalty for long chains (more uncertainty compounds)
+        chain_penalty = max(0, (len(causal_chain) - 3) * 0.05)
+
+        return max(0.1, avg_strength - chain_penalty)
+
+    def render(
+        self,
+        result: MechanismResult,
+        detail: DetailLevel,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """Render mechanism explanation as text."""
+        lines = []
+
+        # Header
+        target_summary = result.target_belief.content[:60] + "..." if len(result.target_belief.content) > 60 else result.target_belief.content
+        lines.append(f"## How Does This Work: {target_summary}")
+        lines.append("")
+
+        # Mechanism type and confidence
+        lines.append(f"**Mechanism Type:** {result.mechanism_type.title()}")
+        lines.append(f"**Confidence:** {result.confidence:.0%}")
+        if result.has_experimental_support:
+            lines.append("**Note:** Supported by experimental evidence")
+        lines.append("")
+
+        # Causal chain
+        if result.causal_chain:
+            lines.append("### Causal Pathway")
+            for i, step in enumerate(result.causal_chain, 1):
+                if detail == DetailLevel.SUMMARY:
+                    lines.append(f"{i}. {step.content[:80]}...")
+                else:
+                    lines.append(f"{i}. **{step.role.title()}**: {step.content}")
+                    if detail == DetailLevel.COMPREHENSIVE:
+                        lines.append(f"   - Evidence strength: {step.evidence_strength:.0%}")
+                        lines.append(f"   - Type: {step.mechanism_type}")
+            lines.append("")
+
+        # Mediators
+        if result.mediators and detail != DetailLevel.SUMMARY:
+            lines.append("### Mediating Factors")
+            lines.append("These factors explain *how* the effect occurs:")
+            for med in result.mediators:
+                lines.append(f"- {med.content}")
+            lines.append("")
+
+        # Moderators
+        if result.moderators and detail != DetailLevel.SUMMARY:
+            lines.append("### Moderating Factors")
+            lines.append("These factors affect *when* or *for whom* the effect occurs:")
+            for mod in result.moderators:
+                lines.append(f"- {mod.content}")
+            lines.append("")
+
+        # Expertise-appropriate explanation
+        if expertise == ExpertiseLevel.NOVICE:
+            lines.append("### What This Means")
+            lines.append(f"This finding works through a {result.mechanism_type} process. ")
+            lines.append("The causal chain above shows the steps from cause to effect.")
+
+        return "\n".join(lines)
+
+
+# =============================================================================
+# DISAGREEMENT PATTERN (per Cartwright: where do experts differ?)
+# =============================================================================
+
+@dataclass
+class DisagreementPoint:
+    """A point of disagreement in the literature."""
+    topic: str
+    position_a: str
+    position_b: str
+    belief_a_id: str
+    belief_b_id: str
+    disagreement_type: str  # "empirical", "theoretical", "methodological", "scope"
+    resolution_status: str  # "unresolved", "trending_toward", "context_dependent"
+
+
+@dataclass
+class DisagreementResult:
+    """Result of disagreement analysis."""
+    target_belief: Belief
+    disagreements: List[DisagreementPoint]
+    consensus_areas: List[str]
+    main_controversies: List[str]
+    resolution_prospects: str
+
+
+class DisagreementSummaryPattern:
+    """
+    Pattern: Where do experts differ?
+
+    Per Cartwright: Highlight where scientific consensus breaks down.
+    Useful for understanding the state of knowledge.
+    """
+
+    def __init__(self, web: WebOfBelief):
+        self.web = web
+
+    def traverse(self, belief_id: str) -> Optional[DisagreementResult]:
+        """Find disagreements related to a belief."""
+        if belief_id not in self.web.beliefs:
+            return None
+
+        target = self.web.beliefs[belief_id]
+        disagreements = []
+        consensus_areas = []
+
+        # Find contradicting beliefs
+        for constraint_id, constraint in self.web.constraints.items():
+            if constraint.constraint_type != ConstraintType.CONTRADICTS:
+                continue
+
+            # Check if target is involved
+            if constraint.source_id == belief_id or constraint.target_id == belief_id:
+                other_id = constraint.target_id if constraint.source_id == belief_id else constraint.source_id
+                other_belief = self.web.beliefs.get(other_id)
+                if not other_belief:
+                    continue
+
+                disagreements.append(DisagreementPoint(
+                    topic=self._extract_topic(target, other_belief),
+                    position_a=target.content,
+                    position_b=other_belief.content,
+                    belief_a_id=target.belief_id,
+                    belief_b_id=other_belief.belief_id,
+                    disagreement_type=self._classify_disagreement(target, other_belief, constraint),
+                    resolution_status=self._assess_resolution_status(target, other_belief),
+                ))
+
+        # Find supporting beliefs (areas of consensus)
+        for constraint_id, constraint in self.web.constraints.items():
+            if constraint.constraint_type == ConstraintType.SUPPORTS:
+                if constraint.source_id == belief_id or constraint.target_id == belief_id:
+                    other_id = constraint.target_id if constraint.source_id == belief_id else constraint.source_id
+                    other_belief = self.web.beliefs.get(other_id)
+                    if other_belief:
+                        consensus_areas.append(other_belief.content[:80])
+
+        # Identify main controversies
+        main_controversies = self._identify_main_controversies(disagreements)
+
+        # Assess resolution prospects
+        resolution_prospects = self._assess_resolution_prospects(disagreements)
+
+        return DisagreementResult(
+            target_belief=target,
+            disagreements=disagreements,
+            consensus_areas=consensus_areas[:5],  # Limit to top 5
+            main_controversies=main_controversies,
+            resolution_prospects=resolution_prospects,
+        )
+
+    def _extract_topic(self, belief_a: Belief, belief_b: Belief) -> str:
+        """Extract the topic of disagreement."""
+        # Simple approach: find common words
+        words_a = set(belief_a.content.lower().split())
+        words_b = set(belief_b.content.lower().split())
+        common = words_a & words_b
+        # Filter stopwords
+        stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'and', 'or', 'in', 'on', 'to', 'of', 'for', 'that', 'this'}
+        topic_words = [w for w in common if w not in stopwords and len(w) > 3]
+        if topic_words:
+            return " ".join(topic_words[:3])
+        return "unspecified"
+
+    def _classify_disagreement(
+        self,
+        belief_a: Belief,
+        belief_b: Belief,
+        constraint: Constraint
+    ) -> str:
+        """Classify the type of disagreement."""
+        # Check constraint metadata if available
+        if hasattr(constraint, 'disagreement_type'):
+            return constraint.disagreement_type
+
+        # Infer from belief levels
+        if belief_a.level != belief_b.level:
+            return "scope"
+
+        # Check for methodological keywords
+        content = (belief_a.content + belief_b.content).lower()
+        if any(w in content for w in ['method', 'measure', 'sample', 'study design']):
+            return "methodological"
+        if any(w in content for w in ['theory', 'model', 'framework', 'hypothesis']):
+            return "theoretical"
+
+        return "empirical"
+
+    def _assess_resolution_status(self, belief_a: Belief, belief_b: Belief) -> str:
+        """Assess whether the disagreement is resolving."""
+        # Check credence values
+        cred_a = belief_a.credence.value
+        cred_b = belief_b.credence.value
+
+        if abs(cred_a - cred_b) > 0.3:
+            if cred_a > cred_b:
+                return f"trending_toward_a (credence: {cred_a:.0%} vs {cred_b:.0%})"
+            else:
+                return f"trending_toward_b (credence: {cred_b:.0%} vs {cred_a:.0%})"
+
+        # Check uncertainty
+        if belief_a.credence.uncertainty > 0.3 or belief_b.credence.uncertainty > 0.3:
+            return "unresolved (high uncertainty)"
+
+        return "context_dependent"
+
+    def _identify_main_controversies(self, disagreements: List[DisagreementPoint]) -> List[str]:
+        """Identify the main controversies."""
+        if not disagreements:
+            return ["No major controversies identified"]
+
+        # Group by type
+        by_type: Dict[str, List[DisagreementPoint]] = {}
+        for d in disagreements:
+            if d.disagreement_type not in by_type:
+                by_type[d.disagreement_type] = []
+            by_type[d.disagreement_type].append(d)
+
+        controversies = []
+        for dtype, points in by_type.items():
+            if len(points) >= 2:
+                controversies.append(f"Multiple {dtype} disagreements ({len(points)} points)")
+            else:
+                controversies.append(f"{dtype.title()} disagreement: {points[0].topic}")
+
+        return controversies[:3]
+
+    def _assess_resolution_prospects(self, disagreements: List[DisagreementPoint]) -> str:
+        """Assess overall resolution prospects."""
+        if not disagreements:
+            return "No disagreements to resolve"
+
+        unresolved = sum(1 for d in disagreements if "unresolved" in d.resolution_status)
+        trending = sum(1 for d in disagreements if "trending" in d.resolution_status)
+
+        if trending > unresolved:
+            return "Good - evidence is converging"
+        elif unresolved > len(disagreements) * 0.7:
+            return "Uncertain - many open questions remain"
+        else:
+            return "Mixed - some areas converging, others still contested"
+
+    def render(
+        self,
+        result: DisagreementResult,
+        detail: DetailLevel,
+        expertise: ExpertiseLevel
+    ) -> str:
+        """Render disagreement summary as text."""
+        lines = []
+
+        # Header
+        target_summary = result.target_belief.content[:60] + "..." if len(result.target_belief.content) > 60 else result.target_belief.content
+        lines.append(f"## Where Experts Disagree: {target_summary}")
+        lines.append("")
+
+        # Overview
+        lines.append(f"**Disagreements Found:** {len(result.disagreements)}")
+        lines.append(f"**Resolution Prospects:** {result.resolution_prospects}")
+        lines.append("")
+
+        # Main controversies
+        if result.main_controversies:
+            lines.append("### Main Controversies")
+            for controversy in result.main_controversies:
+                lines.append(f"- {controversy}")
+            lines.append("")
+
+        # Detailed disagreements
+        if detail != DetailLevel.SUMMARY and result.disagreements:
+            lines.append("### Specific Disagreements")
+            for i, d in enumerate(result.disagreements, 1):
+                lines.append(f"#### {i}. {d.topic.title()}")
+                lines.append(f"**Type:** {d.disagreement_type}")
+                lines.append(f"**Status:** {d.resolution_status}")
+                if detail == DetailLevel.COMPREHENSIVE:
+                    lines.append(f"- Position A: {d.position_a}")
+                    lines.append(f"- Position B: {d.position_b}")
+                lines.append("")
+
+        # Areas of consensus
+        if result.consensus_areas and detail != DetailLevel.SUMMARY:
+            lines.append("### Areas of Consensus")
+            lines.append("Experts generally agree on:")
+            for area in result.consensus_areas:
+                lines.append(f"- {area}")
+            lines.append("")
+
+        # Expertise-appropriate note
+        if expertise == ExpertiseLevel.NOVICE:
+            lines.append("### What This Means for Practice")
+            if not result.disagreements:
+                lines.append("There is strong consensus on this topic, so findings can be applied with confidence.")
+            else:
+                lines.append("Because experts disagree, consider multiple perspectives before making decisions.")
+                lines.append("Focus on areas of consensus where possible.")
+
+        return "\n".join(lines)
+
+
+# =============================================================================
 # GAP IDENTIFICATION (for TODO 3 integration)
 # =============================================================================
 
@@ -891,6 +1365,8 @@ class InterpretiveEngine:
         self.classifier = QuestionClassifier()
         self.evidence_pattern = EvidenceTracePattern()
         self.practical_pattern = PracticalImplicationsPattern()
+        self.mechanism_pattern = MechanismExplanationPattern(web)
+        self.disagreement_pattern = DisagreementSummaryPattern(web)
         self.gap_identifier = GapIdentifier()
 
     def explain(
@@ -941,6 +1417,34 @@ class InterpretiveEngine:
                     request.expertise
                 )
                 structured_data = practical_result
+
+            elif request.pattern == ExplanationPattern.MECHANISM:
+                mechanism_result = self.mechanism_pattern.traverse(belief_id)
+                if not mechanism_result:
+                    return ExplanationResponse(
+                        success=False,
+                        message=f"Could not trace mechanism for: {belief_id}"
+                    )
+                explanation = self.mechanism_pattern.render(
+                    mechanism_result,
+                    request.detail,
+                    request.expertise
+                )
+                structured_data = mechanism_result
+
+            elif request.pattern == ExplanationPattern.DISAGREEMENT:
+                disagreement_result = self.disagreement_pattern.traverse(belief_id)
+                if not disagreement_result:
+                    return ExplanationResponse(
+                        success=False,
+                        message=f"Could not analyze disagreements for: {belief_id}"
+                    )
+                explanation = self.disagreement_pattern.render(
+                    disagreement_result,
+                    request.detail,
+                    request.expertise
+                )
+                structured_data = disagreement_result
 
             else:
                 return ExplanationResponse(

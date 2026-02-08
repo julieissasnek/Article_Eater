@@ -141,8 +141,8 @@ class TestExplanationPattern:
         assert ExplanationPattern.PRACTICAL.value == "practical"
 
     def test_pattern_count(self):
-        """Two patterns initially per Lampson."""
-        assert len(ExplanationPattern) == 2
+        """Four patterns expanded from initial two."""
+        assert len(ExplanationPattern) == 4
 
 
 class TestDetailLevel:
@@ -275,6 +275,18 @@ class TestQuestionClassifier:
         assert pattern == ExplanationPattern.PRACTICAL
         assert confidence > 0.5
 
+    def test_mechanism_keywords(self, classifier):
+        """Test classification of mechanism-related questions."""
+        pattern, confidence = classifier.classify("How does nature exposure work to reduce stress?")
+        assert pattern == ExplanationPattern.MECHANISM
+        assert confidence > 0.5
+
+    def test_disagreement_keywords(self, classifier):
+        """Test classification of disagreement-related questions."""
+        pattern, confidence = classifier.classify("Do experts disagree about this controversy?")
+        assert pattern == ExplanationPattern.DISAGREEMENT
+        assert confidence > 0.5
+
     def test_mixed_keywords_evidence_dominant(self, classifier):
         """Test with multiple evidence keywords."""
         pattern, confidence = classifier.classify("What research studies and findings support this?")
@@ -296,7 +308,7 @@ class TestQuestionClassifier:
         """Test that low confidence returns clarifying question."""
         result = classifier.classify_or_clarify("Tell me about plants.")
         assert isinstance(result, ClarifyingQuestion)
-        assert len(result.options) == 2
+        assert len(result.options) == 4  # All four patterns offered
 
 
 class TestClarifyingQuestion:
@@ -541,6 +553,36 @@ class TestInterpretiveEngine:
         assert response.success is True
         assert "Practical" in response.explanation
         assert response.pattern == ExplanationPattern.PRACTICAL
+
+    def test_explain_mechanism(self, engine):
+        """Test explaining with mechanism pattern."""
+        request = ExplanationRequest(
+            pattern=ExplanationPattern.MECHANISM,
+            belief_id="b_main",
+            detail=DetailLevel.STANDARD,
+            expertise=ExpertiseLevel.PRACTITIONER
+        )
+
+        response = engine.explain(request)
+
+        # Should succeed (may have limited mechanism data in test fixture)
+        assert response.success is True
+        assert response.pattern == ExplanationPattern.MECHANISM
+
+    def test_explain_disagreement(self, engine):
+        """Test explaining with disagreement pattern."""
+        request = ExplanationRequest(
+            pattern=ExplanationPattern.DISAGREEMENT,
+            belief_id="b_main",
+            detail=DetailLevel.STANDARD,
+            expertise=ExpertiseLevel.PRACTITIONER
+        )
+
+        response = engine.explain(request)
+
+        # Should succeed
+        assert response.success is True
+        assert response.pattern == ExplanationPattern.DISAGREEMENT
 
     def test_explain_nonexistent_belief(self, engine):
         """Test explaining nonexistent belief."""
