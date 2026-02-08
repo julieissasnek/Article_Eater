@@ -125,7 +125,7 @@ class TestBeliefOperations:
             status=BeliefStatus.TENTATIVE,
             credence=Credence(0.75, 0.15, n_observations=10),
             theory_id="SRT",
-            entrenchment=0.5,
+            _legacy_entrenchment=0.5,
             domain="physio",
             paper_ids=["paper:001", "paper:002"]
         )
@@ -713,7 +713,7 @@ class TestRoundTrip:
             status=BeliefStatus.TENTATIVE,
             credence=Credence(0.7, 0.2, n_supporting=5, n_contradicting=1, n_observations=6),
             theory_id="ART",
-            entrenchment=0.6,
+            _legacy_entrenchment=0.6,
             domain="cog",
             tags=["attention", "test"],
             paper_ids=["paper:001"]

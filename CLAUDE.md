@@ -174,6 +174,20 @@ If network exposure is required:
 CORS is configured for specific origins (localhost dev servers + production domain).
 The wildcard `"*"` origin is **not used** when `allow_credentials=True` per security best practices (fixed 2026-01-22).
 
+## Task Coordination (Parallel Terminals)
+
+**Before starting ANY task**, check `ACTIVE_TASKS.md` to see what's claimed by other terminals.
+
+| File | Purpose |
+|------|---------|
+| `ACTIVE_TASKS.md` | Real-time task claims (who's working on what NOW) |
+| `TASKS.md` | Full task history and project backlog |
+| `PARALLEL_WORK.md` | File ownership for lane-based work |
+
+**Protocol**: Check in → Claim task → Work → Check out → Update TASKS.md
+
+See root `/Users/davidusa/REPOS/CLAUDE.md` for full check-in/check-out protocol.
+
 ## Essential Files (Canonical Locations)
 
 ### PRIORITY 1 - Context & Planning

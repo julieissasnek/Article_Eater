@@ -6,19 +6,36 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Complet
 
 ---
 
+## Task Coordination (MANDATORY)
+
+**Before starting ANY task, check `ACTIVE_TASKS.md`** to see what's claimed.
+
+```
+1. Read ACTIVE_TASKS.md
+2. Claim your task (add row to Active Claims)
+3. Start work
+4. Update ACTIVE_TASKS.md when done
+5. Update this file (TASKS.md) with completion status
+```
+
+This prevents duplicate work across parallel terminals.
+
+---
+
 ## Current Priority Order
 
 1. ~~**Sprint 2.5 Social Epistemology**~~ ✓ COMPLETE
 2. ~~**Panel Convening**~~ ✓ COMPLETE — P-TC (7 decisions), P-QW (6 decisions)
 3. ~~**Strategic TODOs 1-3**~~ ✓ COMPLETE — Credibility, Interpretive, VOI
-4. **Sprint 2.6 Panel Implementation** — P-TC Track A (7 tasks), P-QW Track B (7 tasks)
+4. ~~**Sprint 2.6 Panel Implementation**~~ ✓ COMPLETE — P-TC Track A, P-QW Track B
 5. ~~**Technical Debt**~~ ✓ ALL COMPLETE [TD-A, TD-B, TD-C, TD-D, TD-E]
+6. **Sprint 2.0.4-2.0.5** — Pipeline testing and error handling (SEE ACTIVE_TASKS.md)
 
 ---
 
 ## Parallel Work Lanes
 
-**Coordination file**: `PARALLEL_WORK.md` — Check before starting work!
+**Coordination files**: `ACTIVE_TASKS.md` (task claims) + `PARALLEL_WORK.md` (file ownership)
 
 | Lane | Scope | Key Files | Status |
 |------|-------|-----------|--------|
@@ -412,7 +429,7 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | 2.0.1 | Wire `extraction_to_web.py` into `pipeline.py` | 2h | Sprint 1.5 | ✓ DONE |
 | 2.0.2 | Implement output serialization | 3h | — | ✓ DONE |
 | 2.0.3 | Add CLI flags for web outputs | 2h | — | ✓ DONE |
-| 2.0.4 | Test with sample papers | 4h | All above | Pending |
+| 2.0.4 | Test with sample papers | 4h | All above | ✓ DONE |
 | 2.0.5 | Error handling and logging | 2h | All above | Pending |
 
 **Sprint 2.0.1 Completion (2026-02-08)**:
@@ -444,6 +461,20 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 - Web integration can now be completely disabled via `--no-web`
 - Environment variables overridden by CLI flags
 - 9 new tests (`test_cli_web_flags.py`)
+
+**Sprint 2.0.4 Completion (2026-02-08)**:
+- Tested pipeline with `contracts/ae_af/examples/input_bundle_minimal`
+- Fixed V23 entrenchment compatibility issues:
+  - Added `entrenchment` property to Belief class (returns `_legacy_entrenchment`)
+  - Updated all Belief constructors to use `_legacy_entrenchment=` parameter
+  - Fixed 3 test files: test_epistemic_causal_integration.py, test_web_persistence.py, test_phase1_refined_epistemic.py
+- All outputs verified:
+  - `web_state.json`: 8 beliefs, 3 constraints, coherence=0.5
+  - `manifest.json`: SHA256 checksums for all 8 output files
+  - `cluster_stats.json`: 6 clusters (3 theory, 2 level, 1 orphan)
+  - `bn_edges.json`: 2 edges with 95% credible intervals
+  - `coherence_summary.json`: TD-C scalable coherence used, TD-E incremental BN used
+- All 1442 tests passing
 
 ### Sprint 3.0: Full Integration
 

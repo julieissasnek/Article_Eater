@@ -59,7 +59,7 @@ def minimal_web():
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.75, 0.15),
-        entrenchment=0.7,
+        _legacy_entrenchment=0.7,
         theory_id="SRT",
         tags=["outcome:stress", "exposure:nature"]
     )
@@ -73,7 +73,7 @@ def minimal_web():
         level=EpistemicLevel.INTERMEDIATE,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.70, 0.20),
-        entrenchment=0.5,
+        _legacy_entrenchment=0.5,
         theory_id="SRT",
         tags=["outcome:parasympathetic", "exposure:nature"]
     )
@@ -86,7 +86,7 @@ def minimal_web():
         level=EpistemicLevel.EMPIRICAL,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.80, 0.10),
-        entrenchment=0.6,
+        _legacy_entrenchment=0.6,
         theory_id="SRT",
         paper_ids=["ulrich_1984"],
         tags=["outcome:recovery", "exposure:nature_view"]
@@ -125,7 +125,7 @@ def multi_theory_web():
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ENTRENCHED,
         credence=Credence(0.80, 0.10),
-        entrenchment=0.85,
+        _legacy_entrenchment=0.85,
         theory_id="SRT",
         tags=["outcome:stress"]
     ))
@@ -138,7 +138,7 @@ def multi_theory_web():
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ENTRENCHED,
         credence=Credence(0.75, 0.12),
-        entrenchment=0.80,
+        _legacy_entrenchment=0.80,
         theory_id="ART",
         tags=["outcome:attention"]
     ))
@@ -151,7 +151,7 @@ def multi_theory_web():
         level=EpistemicLevel.EMPIRICAL,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.85, 0.08),
-        entrenchment=0.5,
+        _legacy_entrenchment=0.5,
         paper_ids=["study_001", "study_002"],
         tags=["outcome:mood", "outcome:attention", "exposure:nature_walk"]
     ))
@@ -856,7 +856,7 @@ class TestTensionResolvingExperiments:
             level=EpistemicLevel.EMPIRICAL,
             status=BeliefStatus.ESTABLISHED,
             credence=Credence(0.75, 0.15),
-            entrenchment=0.5,
+            _legacy_entrenchment=0.5,
             paper_ids=["study_001"]
         )
         belief2 = Belief(
@@ -865,7 +865,7 @@ class TestTensionResolvingExperiments:
             level=EpistemicLevel.EMPIRICAL,
             status=BeliefStatus.ESTABLISHED,
             credence=Credence(0.70, 0.20),
-            entrenchment=0.4,
+            _legacy_entrenchment=0.4,
             paper_ids=["study_002"]
         )
 
@@ -1018,7 +1018,7 @@ class TestEnablingConditions:
             level=EpistemicLevel.THEORETICAL,
             status=BeliefStatus.ESTABLISHED,
             credence=Credence(0.75, 0.15),
-            entrenchment=0.7,
+            _legacy_entrenchment=0.7,
             theory_id="SRT",
             enabling_conditions=EnablingConditions(
                 minimum_exposure=">30 minutes",
@@ -1038,7 +1038,7 @@ class TestEnablingConditions:
             level=EpistemicLevel.INTERMEDIATE,
             status=BeliefStatus.ESTABLISHED,
             credence=Credence(0.70, 0.20),
-            entrenchment=0.5,
+            _legacy_entrenchment=0.5,
             theory_id="SRT",
             tags=["outcome:parasympathetic", "exposure:nature"]
         )
