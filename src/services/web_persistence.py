@@ -678,9 +678,20 @@ class WebPersistenceService:
     # BELIEF OPERATIONS
     # =========================================================================
 
-    def save_belief(self, web_id: str, belief: Belief) -> None:
-        """Save a belief to the database."""
+    def save_belief(self, web_id: str, belief: Belief, entrenchment: Optional[float] = None) -> None:
+        """
+        Save a belief to the database.
+
+        Args:
+            web_id: The web ID to save to
+            belief: The belief to save
+            entrenchment: V23.0.0 - Computed entrenchment value (emergent, not stored).
+                         If None, uses _legacy_entrenchment for backward compatibility.
+        """
         now = self._utc_now()
+
+        # V23.0.0: Entrenchment is emergent, not stored on Belief. Use provided value or legacy.
+        entrenchment_value = entrenchment if entrenchment is not None else getattr(belief, '_legacy_entrenchment', 0.5)
 
         # Extract credence value directly from the object
         credence_value = belief.credence.value if hasattr(belief.credence, 'value') else 0.5
@@ -716,7 +727,7 @@ class WebPersistenceService:
                 credence_n_contradicting,
                 credence_n_observations,
                 belief.theory_id,
-                belief.entrenchment,
+                entrenchment_value,
                 getattr(belief, 'domain', None),
                 getattr(belief, 'attribute_id', None),  # Expert Panel 5.2
                 getattr(belief, 'outcome_type', None),  # Expert Panel 5.2
@@ -765,7 +776,7 @@ class WebPersistenceService:
             status=BeliefStatus(row['status']),
             credence=credence,
             theory_id=row['theory_id'],
-            entrenchment=row['entrenchment'] or 0.3,
+            _legacy_entrenchment=row['entrenchment'] or 0.3,
             domain=row['domain'],
             tags=json.loads(row['tags']) if row['tags'] else [],
             paper_ids=json.loads(row['paper_ids']) if row['paper_ids'] else [],
@@ -1905,6 +1916,7 @@ class WebPersistenceService:
         ]
 
         # Create a new belief with modified ID
+        # V23.0.0: entrenchment is now emergent (computed from web position)
         conflict_id = f"{belief.belief_id}:conflict:{source_paper_id}"
         conflict_belief = Belief(
             belief_id=conflict_id,
@@ -1913,7 +1925,6 @@ class WebPersistenceService:
             status=belief.status,
             credence=belief.credence,
             theory_id=belief.theory_id,
-            entrenchment=belief.entrenchment,
             paper_ids=[source_paper_id]
         )
 

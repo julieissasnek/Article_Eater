@@ -474,9 +474,16 @@ class Belief:
     # Epistemic standing
     credence: Credence = field(default_factory=lambda: Credence(0.5, 0.4))
 
-    # Entrenchment: how costly is it to revise this belief?
-    # Higher = more central to the web, more connections
-    entrenchment: float = 0.5
+    # V23.0.0 BREAKING CHANGE: Entrenchment is now EMERGENT, not stored.
+    # Per panel consultation (2026-02-08): Settable entrenchment violates
+    # Quinean coherentism by creating hidden foundationalism.
+    #
+    # Entrenchment is now computed by WebOfBelief.get_entrenchment(belief_id)
+    # using the Thagard formula: 40% connectivity + 30% level + 30% coherence_contrib
+    #
+    # This field is kept ONLY for backward compatibility with serialization.
+    # It is NOT used in computation - use web.get_entrenchment(belief_id) instead.
+    _legacy_entrenchment: float = 0.5  # For deserialization only, ignored in new code
 
     # For empirical/observational beliefs: source information
     paper_ids: List[str] = field(default_factory=list)
@@ -521,6 +528,17 @@ class Belief:
 
     def is_anomalous(self) -> bool:
         return self.status == BeliefStatus.ANOMALOUS
+
+    @property
+    def entrenchment(self) -> float:
+        """
+        Backward-compatible property for entrenchment.
+
+        V23.0.0: Entrenchment is now computed dynamically by WebOfBelief.get_entrenchment().
+        This property returns _legacy_entrenchment for serialization compatibility.
+        For accurate entrenchment, use web.get_entrenchment(belief_id) instead.
+        """
+        return self._legacy_entrenchment
 
     def record_credence_change(
         self,
@@ -750,14 +768,23 @@ class Belief:
         """
         self.community_associations[community_id] = max(0.0, min(1.0, strength))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self, computed_entrenchment: Optional[float] = None) -> Dict[str, Any]:
+        """
+        Serialize belief to dictionary.
+
+        Args:
+            computed_entrenchment: Entrenchment value computed by WebOfBelief.
+                                   If None, uses legacy value for backward compat.
+        """
+        # V23.0.0: Entrenchment is computed, not stored. Use provided value or legacy.
+        entrenchment_value = computed_entrenchment if computed_entrenchment is not None else self._legacy_entrenchment
         result = {
             'belief_id': self.belief_id,
             'content': self.content,
             'level': self.level.value,
             'status': self.status.value,
             'credence': self.credence.to_dict(),
-            'entrenchment': self.entrenchment,
+            'entrenchment': entrenchment_value,  # Computed value for serialization
             'theory_id': self.theory_id,
             'n_sources': len(self.paper_ids),
             'domain': self.domain,
@@ -852,7 +879,7 @@ class Belief:
             level=EpistemicLevel(d.get('level', 'empirical')),
             status=BeliefStatus(d.get('status', 'stub')),
             credence=credence,
-            entrenchment=d.get('entrenchment', 0.5),
+            _legacy_entrenchment=d.get('entrenchment', 0.5),  # V23.0.0: Legacy field for backward compat
             paper_ids=d.get('paper_ids', []),
             theory_id=d.get('theory_id'),
             domain=d.get('domain', ''),
@@ -1124,16 +1151,127 @@ class WebOfBelief:
         # Coherence tracking
         self._coherence_score: float = 0.5
         self._tensions: List[Dict[str, Any]] = []
-        
+
+        # V23.0.0: Entrenchment cache (emergent, not stored)
+        # Per panel consultation (2026-02-08): Entrenchment is computed dynamically
+        # using Thagard formula: 40% connectivity + 30% level + 30% coherence_contrib
+        self._entrenchment_cache: Dict[str, float] = {}
+        self._entrenchment_cache_valid: bool = False
+
         # History
         self.version: int = 0
         self.created_at = datetime.now(timezone.utc)
         self.last_updated = datetime.now(timezone.utc)
     
     # =========================================================================
+    # ENTRENCHMENT (V23.0.0 - EMERGENT, NOT STORED)
+    # =========================================================================
+
+    # Level weights for entrenchment calculation (foundherentism)
+    # Theoretical beliefs are naturally more entrenched, but this is soft -
+    # a highly-connected observation can still outrank an isolated theory.
+    _LEVEL_WEIGHTS: Dict[EpistemicLevel, float] = {
+        EpistemicLevel.THEORETICAL: 0.8,
+        EpistemicLevel.INTERMEDIATE: 0.5,
+        EpistemicLevel.EMPIRICAL: 0.3,
+        EpistemicLevel.OBSERVATIONAL: 0.2,
+    }
+
+    def get_entrenchment(self, belief_id: str) -> float:
+        """
+        Compute entrenchment for a belief (V23.0.0).
+
+        Per panel consultation (2026-02-08):
+        - Entrenchment is EMERGENT from web structure, not a stored property
+        - Uses Thagard formula: connectivity (40%) + level (30%) + coherence_contrib (30%)
+        - Cached with invalidation on constraint changes
+
+        This replaces the old belief.entrenchment field which violated Quinean
+        coherentism by creating hidden foundationalism.
+
+        Args:
+            belief_id: The belief to compute entrenchment for
+
+        Returns:
+            Entrenchment value (0.0 to 1.0)
+        """
+        if belief_id not in self.beliefs:
+            return 0.0
+
+        # Check cache
+        if self._entrenchment_cache_valid and belief_id in self._entrenchment_cache:
+            return self._entrenchment_cache[belief_id]
+
+        # Compute entrenchment using Thagard formula
+        entrenchment = self._compute_entrenchment(belief_id)
+
+        # Cache result
+        self._entrenchment_cache[belief_id] = entrenchment
+        return entrenchment
+
+    def _compute_entrenchment(self, belief_id: str) -> float:
+        """
+        Compute entrenchment using Thagard formula.
+
+        Formula: 0.4 * connectivity + 0.3 * level_weight + 0.3 * coherence_contribution
+
+        Per panel:
+        - Thagard: Connectivity and level matter
+        - Simon: Coherence contribution is expensive, use simplified proxy
+        - Cartwright: Allow soft hierarchy but not hard foundationalism
+        """
+        belief = self.beliefs.get(belief_id)
+        if not belief:
+            return 0.0
+
+        # Factor 1: Connectivity (40%)
+        # Number of constraints involving this belief, saturating at 10
+        constraint_ids = self._constraints_by_belief.get(belief_id, [])
+        constraint_count = len(constraint_ids)
+        connectivity = min(1.0, constraint_count / 10.0)
+
+        # Factor 2: Epistemic level weight (30%)
+        # Soft hierarchy: theories naturally more entrenched but not absolutely
+        level_weight = self._LEVEL_WEIGHTS.get(belief.level, 0.3)
+
+        # Factor 3: Coherence contribution proxy (30%)
+        # Full computation is expensive. Use simplified proxy:
+        # - High credence + low uncertainty = contributes positively
+        # - Status ESTABLISHED or ENTRENCHED (legacy) = higher contribution
+        credence_factor = belief.credence.value * (1 - belief.credence.uncertainty)
+
+        status_bonus = {
+            BeliefStatus.ESTABLISHED: 0.2,
+            BeliefStatus.ENTRENCHED: 0.3,  # Legacy status, still meaningful
+            BeliefStatus.TENTATIVE: 0.0,
+            BeliefStatus.STUB: -0.1,
+            BeliefStatus.ANOMALOUS: -0.2,
+        }.get(belief.status, 0.0)
+
+        coherence_contrib = max(0.0, min(1.0, credence_factor + status_bonus))
+
+        # Combine with weights
+        entrenchment = (
+            0.4 * connectivity +
+            0.3 * level_weight +
+            0.3 * coherence_contrib
+        )
+
+        return max(0.0, min(1.0, entrenchment))
+
+    def _invalidate_entrenchment_cache(self) -> None:
+        """Invalidate entrenchment cache (call when constraints change)."""
+        self._entrenchment_cache_valid = False
+        self._entrenchment_cache.clear()
+
+    def _validate_entrenchment_cache(self) -> None:
+        """Mark entrenchment cache as valid."""
+        self._entrenchment_cache_valid = True
+
+    # =========================================================================
     # BELIEF MANAGEMENT
     # =========================================================================
-    
+
     def add_belief(
         self,
         belief: Belief,
@@ -1187,13 +1325,16 @@ class WebOfBelief:
         theoretical structure. They represent the "edge" of our knowledge
         that may eventually be integrated or may remain anomalous.
         """
+        # V23.0.0: Entrenchment is now computed, not stored.
+        # Stubs naturally have low entrenchment due to:
+        # - Few constraints (low connectivity)
+        # - STUB status (negative coherence contribution)
         belief = Belief(
             belief_id=belief_id,
             content=content,
             level=level,
             status=BeliefStatus.STUB,
             credence=Credence(initial_credence, 0.4),
-            entrenchment=0.2,  # Stubs are not entrenched
             paper_ids=[paper_id],
             tags=tags or []
         )
@@ -1220,10 +1361,13 @@ class WebOfBelief:
 
         self.constraints[constraint.constraint_id] = constraint
         self._constraints_by_belief[constraint.source_id].append(constraint.constraint_id)
-        
+
         if constraint.bidirectional:
             self._constraints_by_belief[constraint.target_id].append(constraint.constraint_id)
-        
+
+        # V23.0.0: Invalidate entrenchment cache when constraints change
+        self._invalidate_entrenchment_cache()
+
         # Recalculate coherence
         self._update_coherence()
     
@@ -1252,8 +1396,11 @@ class WebOfBelief:
         # Update belief
         belief.theory_id = theory_id
         belief.status = BeliefStatus.TENTATIVE
-        belief.entrenchment = 0.4  # Increase slightly
-        
+        # V23.0.0: Entrenchment now computed, not stored.
+        # Integration naturally increases entrenchment via:
+        # - New constraints (higher connectivity)
+        # - TENTATIVE status (better than STUB)
+
         self._stubs.discard(stub_id)
         self._beliefs_by_theory[theory_id].append(stub_id)
         
@@ -1661,8 +1808,10 @@ class WebOfBelief:
                 source = self.beliefs[tension['source']]
                 target = self.beliefs[tension['target']]
                 
-                # Adjust the less entrenched one
-                if source.entrenchment < target.entrenchment:
+                # Adjust the less entrenched one (V23: emergent entrenchment)
+                source_entrenchment = self.get_entrenchment(source.belief_id)
+                target_entrenchment = self.get_entrenchment(target.belief_id)
+                if source_entrenchment < target_entrenchment:
                     to_adjust = source
                     reason = f"in contradiction with more entrenched {target.belief_id}"
                 else:
@@ -2620,7 +2769,7 @@ def create_neuroarchitecture_web() -> WebOfBelief:
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.75, 0.2),
-        entrenchment=0.8,
+        _legacy_entrenchment=0.8,
         theory_id="ART"
     )
     art_core.temporal_params = {
@@ -2637,7 +2786,7 @@ def create_neuroarchitecture_web() -> WebOfBelief:
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.72, 0.22),
-        entrenchment=0.75,
+        _legacy_entrenchment=0.75,
         theory_id="SRT"
     )
     srt_core.temporal_params = {
@@ -2654,7 +2803,7 @@ def create_neuroarchitecture_web() -> WebOfBelief:
         level=EpistemicLevel.THEORETICAL,
         status=BeliefStatus.ENTRENCHED,
         credence=Credence(0.68, 0.25),
-        entrenchment=0.7,
+        _legacy_entrenchment=0.7,
         theory_id="BIOPHILIA"
     )
     web.add_belief(bio_core)
@@ -2667,7 +2816,7 @@ def create_neuroarchitecture_web() -> WebOfBelief:
         level=EpistemicLevel.INTERMEDIATE,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.78, 0.15),
-        entrenchment=0.6
+        _legacy_entrenchment=0.6
     )
     web.add_belief(nature_stress, connect_to=[
         ("SRT_core", ConstraintType.INSTANTIATES, 0.7),
@@ -2680,7 +2829,7 @@ def create_neuroarchitecture_web() -> WebOfBelief:
         level=EpistemicLevel.INTERMEDIATE,
         status=BeliefStatus.ESTABLISHED,
         credence=Credence(0.72, 0.18),
-        entrenchment=0.55
+        _legacy_entrenchment=0.55
     )
     web.add_belief(nature_attention, connect_to=[
         ("ART_core", ConstraintType.INSTANTIATES, 0.75)

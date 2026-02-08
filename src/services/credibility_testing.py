@@ -45,11 +45,13 @@ logger = logging.getLogger(__name__)
 
 class Decision(Enum):
     """
-    Two-category initial system (per Lampson critique).
+    Three-category system.
 
-    Start simple, add categories only when needed.
-    ACCEPT is implicit (no flags = accept).
+    Fix: Added explicit ACCEPT state (ChatGPT review 2026-02-08).
+    Previously ACCEPT was implicit, causing semantic mismatch where
+    overall_decision=REVIEW but serialization showed 'accept'.
     """
+    ACCEPT = "accept"    # No issues found, can proceed automatically
     BLOCK = "block"      # Cannot proceed automatically (critical issue)
     REVIEW = "review"    # Flag for human review (needs attention)
 
@@ -87,20 +89,22 @@ class CredibilityReport:
     Complete credibility assessment for an article.
 
     Minimal interface per Lampson.
+    Fix: Default to ACCEPT, transition to REVIEW/BLOCK on flags (ChatGPT review 2026-02-08).
     """
     article_id: str
     timestamp: datetime
     flags: List[CredibilityFlag] = field(default_factory=list)
-    overall_decision: Decision = Decision.REVIEW  # Default to review if any flags
+    overall_decision: Decision = Decision.ACCEPT  # Fix: Default to ACCEPT when clean
 
     def add_flag(self, flag: CredibilityFlag) -> None:
         """Add a flag and update overall decision."""
         self.flags.append(flag)
-        # BLOCK wins over REVIEW
+        # BLOCK wins over REVIEW wins over ACCEPT
         if flag.decision == Decision.BLOCK:
             self.overall_decision = Decision.BLOCK
-        elif self.overall_decision != Decision.BLOCK:
+        elif self.overall_decision == Decision.ACCEPT:
             self.overall_decision = Decision.REVIEW
+        # If already BLOCK, stay BLOCK; if already REVIEW, stay REVIEW
 
     @property
     def is_clean(self) -> bool:
@@ -108,11 +112,12 @@ class CredibilityReport:
         return len(self.flags) == 0
 
     def to_dict(self) -> Dict[str, Any]:
+        # Fix: Use overall_decision directly since ACCEPT is now explicit (ChatGPT review 2026-02-08)
         return {
             'article_id': self.article_id,
             'timestamp': self.timestamp.isoformat(),
             'flags': [f.to_dict() for f in self.flags],
-            'overall_decision': self.overall_decision.value if self.flags else 'accept',
+            'overall_decision': self.overall_decision.value,
             'n_flags': len(self.flags),
         }
 
@@ -121,9 +126,10 @@ class CredibilityReport:
         Interface for TODO 2 integration.
         Per Phase D: Define integration interfaces.
         """
+        # Fix: Use overall_decision directly since ACCEPT is now explicit (ChatGPT review 2026-02-08)
         return {
             'article_id': self.article_id,
-            'decision': self.overall_decision.value if self.flags else 'accept',
+            'decision': self.overall_decision.value,
             'reasons': [f.reason for f in self.flags],
             'n_flags': len(self.flags),
         }

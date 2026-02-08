@@ -262,14 +262,16 @@ class DualEpistemologyAnalyzer:
             
             belief = self.coherentist.state.beliefs[bid]
             cred = belief.credence
-            
+
             # VOI peaks at 0.5
             voi = cred * (1 - cred) * 4
-            
+
             # Adjust for entrenchment (less entrenched = more revisable = higher VOI)
-            voi *= (1 - belief.entrenchment * 0.5)
-            
-            reason = f"Credence: {cred:.2f}, Entrenchment: {belief.entrenchment:.2f}"
+            # V23: entrenchment is now emergent from web position
+            entrenchment = self.coherentist.state.get_entrenchment(bid)
+            voi *= (1 - entrenchment * 0.5)
+
+            reason = f"Credence: {cred:.2f}, Entrenchment: {entrenchment:.2f}"
             priorities.append((tid, voi, reason))
         
         return sorted(priorities, key=lambda x: -x[1])

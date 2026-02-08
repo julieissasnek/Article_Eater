@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Saturday, February 8, 2026 (parallel sessions active)*
+*Last updated: Saturday, February 8, 2026 (V23.0.0 - Emergent Entrenchment)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -530,6 +530,7 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-08 | **V23.0.0 BREAKING CHANGE: Emergent Entrenchment**: Removed `entrenchment` as settable field from `Belief` class. Added `WebOfBelief.get_entrenchment(belief_id)` method computing entrenchment via Thagard formula (40% connectivity + 30% level_weight + 30% coherence_contrib). Lazy caching with invalidation on constraint changes. Updated 8 files to use new method. Panel consultation: Quine, Haack, Thagard, Cartwright, Parnas, Simon. Philosophy clarified as foundherentism (Haack 1993), not pure Quinean coherentism. Fixed P1 bugs from ChatGPT ruthless review: constraint index purge, boundary status staleness, decision semantics (ACCEPT default). Created `tests/test_scalable_coherence_benchmark.py` (8 tests). Panel doc: `docs/PANEL_CONSULTATION_ENTRENCHMENT_2026-02-08.md`. |
 | 2026-02-08 | **SPRINT 2.0.3 COMPLETE**: CLI flags for web outputs. Added `--web/--no-web`, `--web-equilibrium/--no-web-equilibrium`, `--web-max-iterations`, `--web-convergence-threshold` for Web of Belief control. Added `--export-manifest`, `--export-bn`, `--export-cluster-stats`, `--export-bn-edges` (all with `--no-*` variants) for export control. Updated pipeline functions to accept `web_options` and `export_options` dicts. 9 tests (`test_cli_web_flags.py`). |
 | 2026-02-08 | **SPRINT 2.0.2 COMPLETE**: Output Serialization. Created `src/services/output_serializer.py` (~500 lines) with manifest generation, SHA256 checksums, TD module exports (theory inference audit, scope conditions, temporal expressions, cluster stats, BN edges with credible intervals). Schema versions for all outputs. Pipeline now generates `manifest.json`, `cluster_stats.json`, `bn_edges.json`. 20 tests (`test_output_serializer.py`). |
 | 2026-02-08 | **SPRINT 2.0.1 COMPLETE**: Pipeline Integration wiring. Wired TD-C (Scalable Coherence) and TD-E (Incremental BN) into `app/tasks/pipeline.py`. Added CoherenceManager for O(n log n) coherence computation. Added IncrementalBNBuilder for Bayesian edge parameter updates. New output: `bn_incremental_state.json`. Enhanced `coherence_summary.json` with TD statistics (`scalable_coherence_used`, `incremental_bn_used`, `n_bn_updates`, `n_bn_edges`). Created `tests/test_pipeline_td_wiring.py` (13 tests). |

@@ -5,8 +5,8 @@ Image Pool Manager
 Manages a local database of Creative Commons images for gallery building.
 Supports downloading from Unsplash, Pexels, and Pixabay.
 
-Date: January 28, 2026
-Version: V22.0.0 (Post-Quinean)
+Date: February 8, 2026
+Version: V23.0.0 (Post-Quinean, Foundherentist)
 """
 
 import sqlite3

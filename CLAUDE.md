@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-*Last updated: Saturday, February 8, 2026 (V22.1.0 - Sprint 2.5 Social Epistemology complete)*
+*Last updated: Saturday, February 8, 2026 (V23.0.0 - Emergent Entrenchment)*
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-Article Eater V22.1.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. Quinean Web of Belief coherentist epistemology fully integrated, with Sprint 2.5 Social Epistemology adding community-relative credence.
+Article Eater V23.0.0 (Post-Quinean) extracts evidence-backed rules from scientific articles for CNFA neuroarchitecture research. **Foundherentist epistemology** (Haack, 1993) now explicitly adopted: coherentist at core with soft epistemic level constraints. V23.0.0 makes entrenchment emergent from web structure per panel consultation (Quine, Haack, Thagard).
 
 **Owner**: Professor David Kirsh, UCSD Cognitive Science (since 1989), former MIT AI Lab
 
@@ -92,12 +92,17 @@ Article Eater V22.1.0 (Post-Quinean) extracts evidence-backed rules from scienti
   - Seed data: ART, SRT, Biophilia, Environmental Psychology communities
   - 54 tests passing
 
-## Quinean Commitment (Why This Matters)
+## Foundherentist Epistemology (V23.0.0)
 
-This project uses **coherentist epistemology** (Quine's Web of Belief):
-- Nothing is foundational—all beliefs are revisable
-- Justification comes from coherence, not accumulation
+This project uses **foundherentism** (Haack, 1993) with Quinean inspiration:
+- Coherentist at core—justification comes from mutual support, not accumulation
+- **Soft** epistemic level constraints—theoretical beliefs naturally more entrenched, but not foundational
 - The BN (Bayesian Network) is a *derivative* of the web, not primary
+- **V23.0.0 BREAKING CHANGE**: Entrenchment is now **emergent**, computed from:
+  - 40% connectivity (constraint count)
+  - 30% epistemic level weight (THEORETICAL=0.8, EMPIRICAL=0.3, etc.)
+  - 30% coherence contribution (credence + status)
+- This is NOT pure Quine (foundationalism through the back door was fixed) but explicit foundherentism
 - When evidence conflicts, ANY node can be revised (theory, auxiliary assumptions, measurement)
 - Stubs = findings that don't fit current ontology (held, not forced or dropped)
 
@@ -258,10 +263,24 @@ bash doctor.sh                              # Verify installation
 - **V20.8.0** = Legacy frozen release (reference baseline)
 - **V21.0.0** = Post-Quinean initial release (Sprints 1-9)
 - **V22.0.0** = Sprint F panel validation + Phase 1 security fixes + GUI/UX review
-- **V22.1.0** = Current release (Sprint 2.5 Social Epistemology + Strategic TODOs 1-3)
+- **V22.1.0** = Sprint 2.5 Social Epistemology + Strategic TODOs 1-3
+- **V23.0.0** = Current release (Emergent Entrenchment - BREAKING CHANGE)
 - **PostQuinean_v1** = Repo branch name (first Quinean architecture iteration)
 - Aggressive version increments preferred
 - Always create dated minimal ZIPs: `PostQuinean_v1_ESSENTIAL_2026_02_08.zip`
+
+### V23.0.0 Changelog (2026-02-08) **BREAKING CHANGE**
+- **Entrenchment is now emergent, not settable** (Panel consultation: Quine, Haack, Thagard)
+- `Belief.entrenchment` field removed → use `WebOfBelief.get_entrenchment(belief_id)`
+- Thagard formula: 40% connectivity + 30% level_weight + 30% coherence_contrib
+- Lazy caching with invalidation on constraint changes (Simon)
+- Philosophy clarified: **Foundherentism** (Haack), not pure Quinean coherentism
+- Fixed bugs from ChatGPT ruthless review:
+  - Constraint index purge bug in `scalable_coherence.py`
+  - Boundary status staleness after removals
+  - Decision semantics mismatch in `credibility_testing.py` (ACCEPT default for clean reports)
+- New tests: `tests/test_scalable_coherence_benchmark.py` (8 tests)
+- Panel documentation: `docs/PANEL_CONSULTATION_ENTRENCHMENT_2026-02-08.md`
 
 ### V22.1.0 Changelog (2026-02-08)
 - Sprint 2.5 Social Epistemology complete (P-SE panel consulted)

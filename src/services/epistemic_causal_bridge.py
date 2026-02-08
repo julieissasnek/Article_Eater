@@ -1122,9 +1122,10 @@ class EpistemicCausalBridge:
                 supporting_beliefs = self._find_supporting_beliefs(beliefs, var_id, parents)
                 
                 # Estimate credence from supporting beliefs
+                # V23.0.0: Entrenchment is emergent, computed from web position
                 if supporting_beliefs:
                     avg_credence = sum(b.credence.value for b in supporting_beliefs) / len(supporting_beliefs)
-                    avg_entrenchment = sum(b.entrenchment for b in supporting_beliefs) / len(supporting_beliefs)
+                    avg_entrenchment = sum(self.web.get_entrenchment(b.belief_id) for b in supporting_beliefs) / len(supporting_beliefs)
                 else:
                     avg_credence = 0.5
                     avg_entrenchment = 0.3
@@ -1407,12 +1408,14 @@ class EpistemicCausalBridge:
             sensitivity = self._estimate_belief_sensitivity(belief_id, query, theory_results)
             
             if sensitivity > 0.1:
+                # V23.0.0: Entrenchment is emergent, computed from web position
+                entrenchment = self.web.get_entrenchment(belief_id)
                 sensitive.append({
                     'belief_id': belief_id,
                     'credence': belief.credence.value,
-                    'entrenchment': belief.entrenchment,
+                    'entrenchment': entrenchment,
                     'sensitivity': sensitivity,
-                    'revision_cost': belief.entrenchment * (1 - belief.credence.uncertainty)
+                    'revision_cost': entrenchment * (1 - belief.credence.uncertainty)
                 })
         
         sensitive.sort(key=lambda x: x['sensitivity'], reverse=True)
@@ -1486,8 +1489,9 @@ class EpistemicCausalBridge:
                     ))
         
         # Check for contradictions with entrenched beliefs
+        # V23.0.0: Entrenchment is emergent, computed from web position
         for belief in self.web.beliefs.values():
-            if belief.entrenchment < 0.6:
+            if self.web.get_entrenchment(belief.belief_id) < 0.6:
                 continue
             # Check if counterfactual contradicts this belief
             # (simplified: check if opposite direction)
@@ -2117,7 +2121,18 @@ class WebOfBelief:
         if not theory_beliefs:
             return 0.5
         return sum(b.credence.value for b in theory_beliefs) / len(theory_beliefs)
-    
+
+    def get_entrenchment(self, belief_id: str) -> float:
+        """
+        Get entrenchment for a belief.
+
+        V23.0.0: Entrenchment is emergent in the main WebOfBelief.
+        This minimal implementation uses the stored value for simplicity.
+        """
+        if belief_id not in self.beliefs:
+            return 0.5
+        return self.beliefs[belief_id].entrenchment
+
     def seek_equilibrium(self, max_iterations: int = 10):
         """Simplified equilibrium seeking."""
         for _ in range(max_iterations):
@@ -2143,7 +2158,8 @@ class WebOfBelief:
                     # Push apart
                     if source.credence.value > 0.5 and target.credence.value > 0.5:
                         # Both high - lower the less entrenched one
-                        if source.entrenchment < target.entrenchment:
+                        # V23.0.0: Use get_entrenchment for consistency with main implementation
+                        if self.get_entrenchment(source.belief_id) < self.get_entrenchment(target.belief_id):
                             source.credence = Credence(
                                 value=source.credence.value * 0.95,
                                 uncertainty=source.credence.uncertainty

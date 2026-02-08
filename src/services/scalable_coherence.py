@@ -205,6 +205,10 @@ class ConstraintNetwork:
         if target_id in self.nodes:
             self.nodes[target_id].remove_constraint(source_id)
 
+        # Fix: Recompute boundary status after constraint removal (ChatGPT review 2026-02-08)
+        self._update_boundary_status(source_id)
+        self._update_boundary_status(target_id)
+
     def remove_belief(self, belief_id: str) -> None:
         """Remove a belief and all its constraints from the network."""
         if belief_id not in self.nodes:
@@ -212,12 +216,28 @@ class ConstraintNetwork:
 
         node = self.nodes[belief_id]
 
+        # Fix: Purge _constraint_index entries for this belief (ChatGPT review 2026-02-08)
+        # Collect constraint IDs to remove
+        constraint_ids_to_remove = [
+            cid for cid, (src, tgt) in self._constraint_index.items()
+            if src == belief_id or tgt == belief_id
+        ]
+        for cid in constraint_ids_to_remove:
+            del self._constraint_index[cid]
+
+        # Collect neighbors before removal for boundary status update
+        neighbors_to_update = list(node.neighbors())
+
         # Remove all constraints involving this belief
-        for other_id in list(node.neighbors()):
+        for other_id in neighbors_to_update:
             if other_id in self.nodes:
                 self.nodes[other_id].remove_constraint(belief_id)
 
         del self.nodes[belief_id]
+
+        # Fix: Recompute boundary status for affected neighbors (ChatGPT review 2026-02-08)
+        for other_id in neighbors_to_update:
+            self._update_boundary_status(other_id)
 
     def _update_boundary_status(self, belief_id: str) -> None:
         """Update whether a belief is a boundary node."""

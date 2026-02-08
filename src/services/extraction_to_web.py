@@ -754,7 +754,7 @@ def claim_to_belief(
             level=level,
             status=status,
             credence=credence,
-            entrenchment=base_entrenchment,
+            _legacy_entrenchment=base_entrenchment,
             paper_ids=[paper_id],
             theory_id=theory_id,
             domain=_extract_domain(constructs),
@@ -1456,15 +1456,20 @@ def export_tensions_jsonl(web: WebOfBelief, path: Path) -> int:
 # COMPATIBILITY WITH THEORY REGISTRY
 # =============================================================================
 
-def belief_to_prediction_format(belief: Belief) -> Dict[str, Any]:
+def belief_to_prediction_format(belief: Belief, entrenchment: Optional[float] = None) -> Dict[str, Any]:
     """
     Convert a Belief to a format compatible with TheoryRegistry predictions table.
-    
+
     This enables future integration where beliefs can be stored in the
     persistent theory registry.
-    
+
     Note: Not all belief fields map cleanly to predictions; this is a
     lossy conversion for compatibility purposes.
+
+    Args:
+        belief: The belief to convert
+        entrenchment: V23.0.0 - Computed entrenchment value (emergent, not stored).
+                      If None, uses _legacy_entrenchment for backward compatibility.
     """
     return {
         "prediction_id": belief.belief_id,
@@ -1502,7 +1507,8 @@ def belief_to_prediction_format(belief: Belief) -> Dict[str, Any]:
         "maps_to_edge_id": None,
         "maps_to_nodes": None,
         "contributes_prior": 1,
-        "prior_weight": belief.entrenchment,
+        # V23.0.0: Entrenchment is emergent, not stored. Use provided value or legacy.
+        "prior_weight": entrenchment if entrenchment is not None else getattr(belief, '_legacy_entrenchment', 0.5),
         "extraction_source": ",".join(belief.paper_ids),
         "created_at": belief.created_at.isoformat() if belief.created_at else None,
         "updated_at": datetime.now(timezone.utc).isoformat()

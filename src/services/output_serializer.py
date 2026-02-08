@@ -466,7 +466,8 @@ def serialize_bn_edges(
 
 def serialize_belief_enhanced(
     belief: Any,
-    mapping_result: Optional[Dict[str, Any]] = None
+    mapping_result: Optional[Dict[str, Any]] = None,
+    entrenchment: Optional[float] = None
 ) -> Dict[str, Any]:
     """
     Serialize a belief with all TD module enhancements.
@@ -477,6 +478,12 @@ def serialize_belief_enhanced(
     - Scope conditions (TD-B)
     - Temporal data (TD-D)
     - Task context (Sprint 2.6)
+
+    Args:
+        belief: The belief to serialize
+        mapping_result: Optional mapping result from TD modules
+        entrenchment: V23.0.0 - Computed entrenchment value (emergent, not stored).
+                      If None, uses _legacy_entrenchment for backward compatibility.
     """
     # Base serialization
     credence_dict = {}
@@ -493,6 +500,9 @@ def serialize_belief_enhanced(
     else:
         credence_dict = {"value": float(belief.credence)}
 
+    # V23.0.0: Entrenchment is emergent, not stored. Use provided value or legacy.
+    entrenchment_value = entrenchment if entrenchment is not None else getattr(belief, '_legacy_entrenchment', 0.5)
+
     result = {
         "belief_id": belief.belief_id,
         "content": belief.content,
@@ -500,7 +510,7 @@ def serialize_belief_enhanced(
         "status": belief.status.value if hasattr(belief.status, 'value') else str(belief.status),
         "credence": credence_dict,
         "theory_id": belief.theory_id,
-        "entrenchment": belief.entrenchment,
+        "entrenchment": entrenchment_value,
         "paper_ids": getattr(belief, 'paper_ids', []),
         "domain": getattr(belief, 'domain', None),
         "tags": getattr(belief, 'tags', []),
