@@ -28,7 +28,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| 2.0.4 | Test pipeline with sample papers | Terminal-2 | 2026-02-08 17:30 | IN_PROGRESS | Running sample papers through pipeline |
+| 3.0-PLAN | Sprint 3.0 Planning (expert panel) | Terminal-1 | 2026-02-08 18:15 | IN_PROGRESS | Formal plan with use cases |
 
 ---
 
@@ -48,6 +48,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| 2.0.4 | Test pipeline with sample papers | Terminal-2 | 18:20 | Pipeline tested with minimal bundle. All outputs verified (web_state, manifest, cluster_stats, bn_edges). Fixed entrenchment compat issues. 1442 tests passing. |
 | V23.0.0 | Emergent Entrenchment | Terminal-1 | 17:55 | Breaking change committed. 15 files, 8 tests. |
 | 2.6.1-7 | P-TC Track A | Terminal-? | Earlier | Task context fields added |
 | 2.6.8-14 | P-QW Track B | Terminal-? | Earlier | Quality weighting updated |
@@ -81,4 +82,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-08 18:00*
+*Last coordination check: 2026-02-08 18:20*
