@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Annotator - Article Eater</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        :root {
+            --gold: #f59e0b;
+            --high: #10b981;
+            --moderate: #3b82f6;
+            --low: #6b7280;
+            --training: #8b5cf6;
+        }
+
+        .annotator-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar - Article List */
+        .article-sidebar {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-height: calc(100vh - 120px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .article-search {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .article-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .article-item {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .article-item:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .article-item.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .article-item.annotated {
+            border-left: 3px solid var(--success);
+        }
+
+        .article-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .quality-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .quality-gold { background: #fef3c7; color: #92400e; }
+        .quality-high { background: #d1fae5; color: #065f46; }
+        .quality-moderate { background: #dbeafe; color: #1e40af; }
+        .quality-low { background: #f3f4f6; color: #374151; }
+        .quality-training { background: #ede9fe; color: #5b21b6; }
+
+        /* Main Form */
+        .annotation-form {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .form-body {
+            padding: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-group .hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.625rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Theory Tags */
+        .theory-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .theory-tag {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .theory-tag:hover {
+            border-color: var(--primary);
+        }
+
+        .theory-tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .theory-tag.primary {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        /* Typology Grid */
+        .typology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .typology-item {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .typology-item:hover {
+            border-color: var(--primary);
+        }
+
+        .typology-item.selected {
+            background: #eff6ff;
+            border-color: var(--primary);
+        }
+
+        /* Quality Tier Selector */
+        .quality-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .quality-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quality-option:hover {
+            border-color: var(--primary);
+        }
+
+        .quality-option.selected {
+            border-width: 2px;
+        }
+
+        .quality-option.selected.gold { border-color: var(--gold); background: #fffbeb; }
+        .quality-option.selected.high { border-color: var(--high); background: #ecfdf5; }
+        .quality-option.selected.moderate { border-color: var(--moderate); background: #eff6ff; }
+        .quality-option.selected.low { border-color: var(--low); background: #f9fafb; }
+        .quality-option.selected.training { border-color: var(--training); background: #f5f3ff; }
+
+        .quality-option .tier-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .quality-option .tier-desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Study Type */
+        .study-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .study-type-item {
+            padding: 0.625rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .study-type-item:hover {
+            border-color: var(--primary);
+        }
+
+        .study-type-item.selected {
+            background: #eff6ff;
+            border-color: var(--primary);
+        }
+
+        .study-type-item .credibility {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+        }
+
+        .slider-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* References Section */
+        .reference-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.5rem;
+        }
+
+        .reference-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-item .ref-title {
+            font-weight: 500;
+        }
+
+        .reference-item .ref-meta {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .status-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* PDF Viewer Panel */
+        .pdf-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-panel.visible {
+            transform: translateX(0);
+        }
+
+        .pdf-panel-header {
+            padding: 1rem;
+            background: var(--primary, #182B49);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-panel-header h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pdf-panel-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .pdf-panel-close:hover {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .pdf-panel-content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .pdf-panel-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-panel-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #6b7280;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Adjust main content when PDF panel is open */
+        body.pdf-panel-open .app-container {
+            width: 50%;
+        }
+
+        body.pdf-panel-open .annotator-container {
+            grid-template-columns: 280px 1fr;
+        }
+
+        /* PDF Modal for full-screen view */
+        .pdf-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-modal.visible {
+            display: flex;
+        }
+
+        .pdf-modal-content {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-modal-header {
+            padding: 1rem;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-modal-body {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .pdf-modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="nav-logo">Article Eater</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link">
+                        <span class="nav-icon">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/library" class="nav-link">
+                        <span class="nav-icon">Library</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/article-annotator" class="nav-link active">
+                        <span class="nav-icon">Annotator</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/claim-gallery" class="nav-link">
+                        <span class="nav-icon">Gallery</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" style="padding: 0;">
+            <div class="annotator-container">
+                <!-- Article List Sidebar -->
+                <aside class="article-sidebar">
+                    <div class="sidebar-header">
+                        <h2>Articles to Annotate</h2>
+                        <input type="text" class="article-search" placeholder="Search articles..." id="articleSearch" oninput="filterArticles()">
+                        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" style="flex:1; padding: 0.5rem;" onclick="loadFromAF()">Load from AF</button>
+                            <button class="btn btn-secondary" style="flex:1; padding: 0.5rem;" onclick="loadFromDB()">Load from DB</button>
+                            <button class="btn btn-secondary" style="flex:1; padding: 0.5rem;" onclick="loadFromZotero()">Zotero</button>
+                        </div>
+                        <!-- PDF Upload -->
+                        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                            <label style="font-size: 0.8rem; font-weight: 500; display: block; margin-bottom: 0.5rem;">Upload PDFs</label>
+                            <input type="file" id="pdfUpload" accept=".pdf" multiple
+                                   style="font-size: 0.75rem; width: 100%;"
+                                   onchange="handlePDFUpload(event)">
+                            <div id="uploadProgress" style="display: none; margin-top: 0.5rem;">
+                                <div style="background: #e5e7eb; border-radius: 4px; height: 6px; overflow: hidden;">
+                                    <div id="uploadProgressBar" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                                </div>
+                                <span id="uploadStatus" style="font-size: 0.7rem; color: var(--text-muted);"></span>
+                            </div>
+                        </div>
+                        <!-- API Status Indicator -->
+                        <div id="apiStatus" style="margin-top: 0.5rem; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
+                            <span id="apiStatusDot" style="width: 8px; height: 8px; border-radius: 50%; background: #9ca3af;"></span>
+                            <span id="apiStatusText">Checking connection...</span>
+                        </div>
+                    </div>
+                    <div class="article-list" id="articleList">
+                        <!-- Articles loaded dynamically -->
+                        <div class="article-item" onclick="selectArticle('demo1')">
+                            <div class="article-title">Effects of Biophilic Design on Occupant Wellbeing</div>
+                            <div class="article-meta">2024 | Not annotated</div>
+                        </div>
+                        <div class="article-item annotated" onclick="selectArticle('demo2')">
+                            <div class="article-title">Attention Restoration in Natural Environments</div>
+                            <div class="article-meta">Kaplan & Kaplan, 1989</div>
+                            <span class="quality-badge quality-gold">Gold</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Annotation Form -->
+                <div class="annotation-form">
+                    <div class="form-header">
+                        <h2>Article Annotation</h2>
+                        <div>
+                            <span id="annotationStatus" style="margin-right: 1rem; color: var(--text-muted);">No article selected</span>
+                            <button class="btn btn-primary" onclick="saveAnnotation()">Save Annotation</button>
+                        </div>
+                    </div>
+
+                    <div class="form-body">
+                        <div id="statusMessage"></div>
+
+                        <!-- Basic Info -->
+                        <div class="form-section">
+                            <h3 class="section-title">1. Article Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="articleTitle" placeholder="Full article title">
+                                </div>
+                                <div class="form-group">
+                                    <label>DOI</label>
+                                    <input type="text" id="articleDOI" placeholder="10.xxxx/xxxxx">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Authors</label>
+                                    <input type="text" id="articleAuthors" placeholder="Last, F., Last, F., ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <input type="number" id="articleYear" placeholder="2024" min="1900" max="2030">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>PDF Location</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="pdfPath" placeholder="/path/to/article.pdf" style="flex: 1;">
+                                    <button class="btn btn-secondary" onclick="viewPDF()" title="View PDF">
+                                        View PDF
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="togglePDFPanel()" title="Toggle PDF Panel">
+                                        Split View
+                                    </button>
+                                </div>
+                                <p class="hint">Enter path or click "Load from AF" to populate automatically</p>
+                            </div>
+                        </div>
+
+                        <!-- Quality Tier -->
+                        <div class="form-section">
+                            <h3 class="section-title">2. Quality Tier</h3>
+                            <p class="hint" style="margin-bottom: 1rem;">Select the evidence quality tier for this article</p>
+                            <div class="quality-selector">
+                                <div class="quality-option gold" onclick="selectQuality('gold')">
+                                    <div class="tier-name">Gold Standard</div>
+                                    <div class="tier-desc">Seminal paper, foundational theory, or high-quality meta-analysis</div>
+                                </div>
+                                <div class="quality-option high" onclick="selectQuality('high')">
+                                    <div class="tier-name">High</div>
+                                    <div class="tier-desc">RCT, systematic review, well-designed longitudinal study</div>
+                                </div>
+                                <div class="quality-option moderate" onclick="selectQuality('moderate')">
+                                    <div class="tier-name">Moderate</div>
+                                    <div class="tier-desc">Cross-sectional, quasi-experimental, observational</div>
+                                </div>
+                                <div class="quality-option low" onclick="selectQuality('low')">
+                                    <div class="tier-name">Low</div>
+                                    <div class="tier-desc">Case study, anecdotal, methodological concerns</div>
+                                </div>
+                                <div class="quality-option training" onclick="selectQuality('training')">
+                                    <div class="tier-name">Training</div>
+                                    <div class="tier-desc">For system calibration only, not evidence</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="qualityTier" value="">
+                        </div>
+
+                        <!-- Study Type -->
+                        <div class="form-section">
+                            <h3 class="section-title">3. Study Type</h3>
+                            <div class="study-type-grid">
+                                <div class="study-type-item" onclick="selectStudyType('meta-analysis')">
+                                    <div>Meta-Analysis</div>
+                                    <div class="credibility">Credibility: 0.85</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('systematic_review')">
+                                    <div>Systematic Review</div>
+                                    <div class="credibility">Credibility: 0.80</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('rct')">
+                                    <div>RCT</div>
+                                    <div class="credibility">Credibility: 0.75</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('longitudinal')">
+                                    <div>Longitudinal</div>
+                                    <div class="credibility">Credibility: 0.70</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('cross_sectional')">
+                                    <div>Cross-Sectional</div>
+                                    <div class="credibility">Credibility: 0.55</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('case_study')">
+                                    <div>Case Study</div>
+                                    <div class="credibility">Credibility: 0.40</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('theory')">
+                                    <div>Theory Paper</div>
+                                    <div class="credibility">Foundational</div>
+                                </div>
+                                <div class="study-type-item" onclick="selectStudyType('review')">
+                                    <div>Narrative Review</div>
+                                    <div class="credibility">Credibility: 0.50</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="studyType" value="">
+                        </div>
+
+                        <!-- Theories -->
+                        <div class="form-section">
+                            <h3 class="section-title">4. Relevant Theories (CNfA)</h3>
+                            <p class="hint" style="margin-bottom: 1rem;">Click to select. First selection becomes primary theory.</p>
+                            <div class="theory-selector" id="theorySelector">
+                                <!-- Perception & Cognition -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'affordance')" title="MECHANISM: Perception is shaped by what the environment affords—the possibilities for action it enables.">Affordance Theory</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'enactivism')" title="MECHANISM: Perception emerges from sensorimotor engagement with the world, not from passive representation.">Enactivism</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'predictive_processing')" title="MECHANISM: The brain constantly predicts sensory input; mismatch leads to cognitive load or interest.">Predictive Processing</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'cognitive_load')" title="MECHANISM: Excessive information increases mental effort, reducing performance and increasing stress.">Cognitive Load Theory</div>
+                                <!-- Attention & Restoration -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'art')" title="MECHANISM: Environments restore attention by engaging involuntary attention ('soft fascination').">Attention Restoration (ART)</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'srt')" title="MECHANISM: Natural environments enable faster recovery from stress than urban or artificial settings.">Stress Recovery (SRT)</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'biophilia')" title="MECHANISM: Humans have an evolved affinity for life and life-like forms.">Biophilia Hypothesis</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'env_load')" title="MECHANISM: Excessive sensory input overwhelms cognitive processing, leading to stress or withdrawal.">Environmental Load</div>
+                                <!-- Space & Navigation -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'prospect_refuge')" title="MECHANISM: People prefer environments where they can see without being seen (prospect + refuge).">Prospect-Refuge</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'spatial_legibility')" title="MECHANISM: A 'legible' environment is one whose layout is easily understood and navigated.">Spatial Legibility (Lynch)</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'spatial_syntax')" title="MECHANISM: Spatial configuration of buildings predicts movement and interaction patterns.">Spatial Syntax</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'arch_narrative')" title="MECHANISM: Spaces unfold sequentially and suggest a storyline—cognitive maps form through narrative.">Architectural Narrative</div>
+                                <!-- Embodiment & Aesthetics -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'embodied_sim')" title="MECHANISM: The body simulates perceived forms, particularly those resembling movement or affectively salient shapes.">Embodied Simulation</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'mirror_neuron')" title="MECHANISM: Observation of others' actions activates neural circuits involved in performing those actions.">Mirror Neuron Theory</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'neuroaesthetics')" title="MECHANISM: Aesthetic experience correlates with activation in specific neural circuits, modulated by form/symmetry.">Neuroaesthetics</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'emotion_congruent')" title="MECHANISM: Emotional states shape how environments are perceived and remembered.">Emotion-Congruent</div>
+                                <!-- Social & Territorial -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'territoriality')" title="MECHANISM: Humans demarcate zones of control; violation provokes stress or defensive behavior.">Territoriality</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'social_density')" title="MECHANISM: The ratio of people to space affects stress, aggression, and comfort.">Social Density</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'social_facilitation')" title="MECHANISM: The presence of others can enhance or impair task performance depending on complexity/privacy.">Social Facilitation</div>
+                                <!-- Environmental Factors -->
+                                <div class="theory-tag" onclick="toggleTheory(this, 'entrainment')" title="MECHANISM: Rhythmic environmental cues synchronize physiological states like heart rate or attention.">Entrainment</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'circadian')" title="MECHANISM: Light cues synchronize circadian rhythms; architectural lighting can disrupt or reinforce this.">Circadian Entrainment</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'thermal_allostasis')" title="MECHANISM: Humans regulate comfort by actively adjusting behavior; spaces should support such regulation.">Thermal Allostasis</div>
+                                <div class="theory-tag" onclick="toggleTheory(this, 'semiosis')" title="MECHANISM: People derive meaning from architectural symbols; environments are semiotic systems with cultural codes.">Semiosis / Meaning</div>
+                            </div>
+                            <input type="hidden" id="selectedTheories" value="">
+                            <input type="hidden" id="primaryTheory" value="">
+                        </div>
+
+                        <!-- Architectural Typology -->
+                        <div class="form-section">
+                            <h3 class="section-title">5. Architectural Typology</h3>
+                            <p class="hint" style="margin-bottom: 1rem;">Is this article about a specific building type? (Select all that apply)</p>
+
+                            <div class="form-group">
+                                <label>Typology Scope</label>
+                                <select id="typologyScope">
+                                    <option value="general">General / Not Specific</option>
+                                    <option value="specific">Specific Typology</option>
+                                    <option value="comparative">Comparative (Multiple Types)</option>
+                                </select>
+                            </div>
+
+                            <div id="typologyOptions" style="display: none;">
+                                <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">Building Types</label>
+                                <div class="typology-grid">
+                                    <!-- Residential -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'residential_single')">Single Family Home</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'residential_multi')">Multi-Family / Apartment</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'residential_senior')">Senior Living</div>
+                                    <!-- Commercial -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'office')">Office</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'retail')">Retail / Commercial</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'hospitality')">Hotel / Hospitality</div>
+                                    <!-- Institutional -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'healthcare')">Healthcare / Hospital</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'education_k12')">School (K-12)</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'education_higher')">Higher Education</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'library')">Library</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'museum')">Museum / Gallery</div>
+                                    <!-- Recreation -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'recreation')">Recreation / Sports</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'religious')">Religious</div>
+                                    <!-- Industrial -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'industrial')">Industrial / Factory</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'laboratory')">Laboratory / Research</div>
+                                    <!-- Urban -->
+                                    <div class="typology-item" onclick="toggleTypology(this, 'urban_space')">Urban Public Space</div>
+                                    <div class="typology-item" onclick="toggleTypology(this, 'transit')">Transit / Transportation</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedTypologies" value="">
+                        </div>
+
+                        <!-- Scope & Population -->
+                        <div class="form-section">
+                            <h3 class="section-title">6. Study Scope</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Population</label>
+                                    <select id="population">
+                                        <option value="">Not specified</option>
+                                        <option value="general_adults">General Adults</option>
+                                        <option value="children">Children</option>
+                                        <option value="elderly">Elderly</option>
+                                        <option value="students">Students</option>
+                                        <option value="workers">Office Workers</option>
+                                        <option value="patients">Patients</option>
+                                        <option value="clinical">Clinical Population</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Setting</label>
+                                    <select id="setting">
+                                        <option value="">Not specified</option>
+                                        <option value="field_natural">Field (Natural Environment)</option>
+                                        <option value="field_built">Field (Built Environment)</option>
+                                        <option value="lab">Laboratory</option>
+                                        <option value="vr">Virtual Reality</option>
+                                        <option value="photos">Photos/Images</option>
+                                        <option value="simulation">Simulation</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Sample Size (if known)</label>
+                                    <input type="number" id="sampleSize" placeholder="N participants">
+                                </div>
+                                <div class="form-group">
+                                    <label>Country/Region</label>
+                                    <input type="text" id="geography" placeholder="e.g., USA, Europe, Global">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Methodology Score -->
+                        <div class="form-section">
+                            <h3 class="section-title">7. Methodology Assessment</h3>
+                            <div class="form-group">
+                                <label>Overall Methodology Score</label>
+                                <div class="slider-container">
+                                    <input type="range" id="methodologyScore" min="0" max="100" value="50" oninput="updateSliderValue('methodologyScore', 'methodologyValue')">
+                                    <span class="slider-value" id="methodologyValue">0.50</span>
+                                </div>
+                                <p class="hint">0 = Poor methodology, 1 = Excellent methodology</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Annotation Confidence</label>
+                                <div class="slider-container">
+                                    <input type="range" id="annotationConfidence" min="0" max="100" value="75" oninput="updateSliderValue('annotationConfidence', 'confidenceValue')">
+                                    <span class="slider-value" id="confidenceValue">0.75</span>
+                                </div>
+                                <p class="hint">How confident are you in this annotation?</p>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="form-section">
+                            <h3 class="section-title">8. Annotation Notes</h3>
+                            <div class="form-group">
+                                <label>Key Findings / Claims</label>
+                                <textarea id="keyFindings" rows="3" placeholder="Main empirical findings from this article..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Concerns / Limitations</label>
+                                <textarea id="concerns" rows="2" placeholder="Any methodological concerns, limitations, or red flags..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Additional Notes</label>
+                                <textarea id="additionalNotes" rows="2" placeholder="Other relevant information..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="saveAnnotation()">Save Annotation</button>
+                            <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+                            <button class="btn btn-success" onclick="saveAndNext()">Save & Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PDF Side Panel -->
+    <div id="pdfPanel" class="pdf-panel">
+        <div class="pdf-panel-header">
+            <h3 id="pdfPanelTitle">PDF Viewer</h3>
+            <button class="pdf-panel-close" onclick="closePDFPanel()">&times;</button>
+        </div>
+        <div class="pdf-panel-content">
+            <div id="pdfPanelEmpty" class="pdf-panel-empty">
+                <div>
+                    <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">No PDF loaded</p>
+                    <p>Select an article or enter a PDF path and click "View PDF"</p>
+                </div>
+            </div>
+            <iframe id="pdfPanelFrame" style="display: none;"></iframe>
+        </div>
+    </div>
+
+    <!-- PDF Full-Screen Modal -->
+    <div id="pdfModal" class="pdf-modal" onclick="closePDFModal(event)">
+        <div class="pdf-modal-content" onclick="event.stopPropagation()">
+            <div class="pdf-modal-header">
+                <h3 id="pdfModalTitle">PDF Viewer</h3>
+                <button class="btn btn-secondary" onclick="closePDFModal()">Close</button>
+            </div>
+            <div class="pdf-modal-body">
+                <iframe id="pdfModalFrame"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentArticle = null;
+        let selectedTheories = [];
+        let primaryTheory = null;
+        let selectedTypologies = [];
+        let selectedQuality = null;
+        let selectedStudyType = null;
+
+        // Theory definitions with mechanisms (from CNfA document)
+        const THEORIES = {
+            'affordance': { name: 'Affordance Theory', author: 'Gibson', year: 1979,
+                mechanism: 'Perception is shaped by what the environment affords the organism—i.e., the possibilities for action it enables.' },
+            'enactivism': { name: 'Enactivism', author: 'Noë', year: 2004,
+                mechanism: 'Perception emerges from sensorimotor engagement with the world, not from passive representation.' },
+            'predictive_processing': { name: 'Predictive Processing', author: 'Clark', year: 2013,
+                mechanism: 'The brain constantly predicts sensory input; mismatch leads to cognitive load or interest depending on context.' },
+            'cognitive_load': { name: 'Cognitive Load Theory', author: 'Sweller', year: 1988,
+                mechanism: 'Excessive information increases mental effort, reducing performance and increasing stress.' },
+            'art': { name: 'Attention Restoration Theory', author: 'Kaplan & Kaplan', year: 1989,
+                mechanism: "Certain environments restore attention by engaging involuntary attention ('soft fascination') and allowing voluntary attention to replenish." },
+            'srt': { name: 'Stress Recovery Theory', author: 'Ulrich', year: 1984,
+                mechanism: 'Natural environments enable faster recovery from stress than urban or artificial settings.' },
+            'biophilia': { name: 'Biophilia Hypothesis', author: 'Kellert & Wilson', year: 1993,
+                mechanism: 'Humans have an evolved affinity for life and life-like forms.' },
+            'env_load': { name: 'Environmental Load Theory', author: 'Milgram', year: 1970,
+                mechanism: 'Excessive sensory input or complexity overwhelms cognitive processing, leading to stress or withdrawal.' },
+            'prospect_refuge': { name: 'Prospect-Refuge Theory', author: 'Appleton', year: 1975,
+                mechanism: 'People prefer environments where they can see without being seen (prospect + refuge).' },
+            'spatial_legibility': { name: 'Spatial Legibility', author: 'Lynch', year: 1960,
+                mechanism: "A 'legible' environment is one whose layout is easily understood and navigated." },
+            'spatial_syntax': { name: 'Spatial Syntax', author: 'Hillier & Hanson', year: 1984,
+                mechanism: 'The spatial configuration of buildings predicts movement and interaction patterns.' },
+            'arch_narrative': { name: 'Architectural Narrative', author: 'Loomis & Montello', year: 2022,
+                mechanism: 'Spaces unfold sequentially and suggest a storyline—cognitive maps form in part through this narrative experience.' },
+            'embodied_sim': { name: 'Embodied Simulation', author: 'Vartanian et al.', year: 2013,
+                mechanism: 'The body simulates perceived forms, particularly those resembling movement or affectively salient shapes.' },
+            'mirror_neuron': { name: 'Mirror Neuron Theory', author: 'Rizzolatti', year: 1996,
+                mechanism: "Observation of others' actions activates neural circuits involved in performing those actions—supporting social cognition." },
+            'neuroaesthetics': { name: 'Neuroaesthetics', author: 'Zeki', year: 1999,
+                mechanism: 'Aesthetic experience correlates with activation in specific neural circuits, modulated by form, symmetry, and context.' },
+            'emotion_congruent': { name: 'Emotion-Congruent Processing', author: 'Knez', year: 2008,
+                mechanism: 'Emotional states shape how environments are perceived and remembered.' },
+            'territoriality': { name: 'Territoriality', author: 'Altman', year: 1975,
+                mechanism: 'Humans demarcate zones of control; violation of these zones in architecture can provoke stress or defensive behavior.' },
+            'social_density': { name: 'Social Density Theory', author: 'Evans', year: 2007,
+                mechanism: 'The ratio of people to space affects stress, aggression, and comfort.' },
+            'social_facilitation': { name: 'Social Facilitation', author: 'Zajonc', year: 1965,
+                mechanism: 'The presence of others can enhance or impair task performance depending on complexity and privacy.' },
+            'entrainment': { name: 'Entrainment', author: 'Franěk et al.', year: 2018,
+                mechanism: 'Rhythmic environmental cues (e.g., light, sound, movement) synchronize physiological states like heart rate or attention cycles.' },
+            'circadian': { name: 'Circadian Entrainment', author: 'Ghosh et al.', year: 2015,
+                mechanism: 'Light cues synchronize circadian rhythms; architectural lighting can disrupt or reinforce this.' },
+            'thermal_allostasis': { name: 'Thermal Allostasis', author: 'Zhang et al.', year: 2010,
+                mechanism: 'Humans regulate comfort by actively adjusting behavior and environmental variables; spaces should support such regulation.' },
+            'semiosis': { name: 'Meaning Construction / Semiosis', author: 'Lindstrom et al.', year: 2016,
+                mechanism: 'People derive meaning from architectural symbols; environments are semiotic systems with layered cultural codes.' }
+        };
+
+        // Quality tier selection
+        function selectQuality(tier) {
+            document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.quality-option.${tier}`).classList.add('selected');
+            selectedQuality = tier;
+            document.getElementById('qualityTier').value = tier;
+        }
+
+        // Study type selection
+        function selectStudyType(type) {
+            document.querySelectorAll('.study-type-item').forEach(el => el.classList.remove('selected'));
+            event.target.closest('.study-type-item').classList.add('selected');
+            selectedStudyType = type;
+            document.getElementById('studyType').value = type;
+        }
+
+        // Theory selection
+        function toggleTheory(element, theoryId) {
+            if (element.classList.contains('selected') || element.classList.contains('primary')) {
+                // Deselect
+                element.classList.remove('selected', 'primary');
+                selectedTheories = selectedTheories.filter(t => t !== theoryId);
+                if (primaryTheory === theoryId) {
+                    primaryTheory = selectedTheories.length > 0 ? selectedTheories[0] : null;
+                    updatePrimaryTheoryDisplay();
+                }
+            } else {
+                // Select
+                if (selectedTheories.length === 0) {
+                    // First selection is primary
+                    element.classList.add('primary');
+                    primaryTheory = theoryId;
+                } else {
+                    element.classList.add('selected');
+                }
+                selectedTheories.push(theoryId);
+            }
+            document.getElementById('selectedTheories').value = selectedTheories.join(',');
+            document.getElementById('primaryTheory').value = primaryTheory || '';
+        }
+
+        function updatePrimaryTheoryDisplay() {
+            document.querySelectorAll('.theory-tag').forEach(el => {
+                const tid = el.getAttribute('onclick').match(/'([^']+)'/)[1];
+                el.classList.remove('primary');
+                if (tid === primaryTheory) {
+                    el.classList.add('primary');
+                }
+            });
+        }
+
+        // Typology selection
+        function toggleTypology(element, typologyId) {
+            element.classList.toggle('selected');
+            if (element.classList.contains('selected')) {
+                selectedTypologies.push(typologyId);
+            } else {
+                selectedTypologies = selectedTypologies.filter(t => t !== typologyId);
+            }
+            document.getElementById('selectedTypologies').value = selectedTypologies.join(',');
+        }
+
+        // Typology scope change
+        document.getElementById('typologyScope').addEventListener('change', function() {
+            const options = document.getElementById('typologyOptions');
+            options.style.display = this.value !== 'general' ? 'block' : 'none';
+        });
+
+        // Slider update
+        function updateSliderValue(sliderId, valueId) {
+            const slider = document.getElementById(sliderId);
+            const valueEl = document.getElementById(valueId);
+            valueEl.textContent = (slider.value / 100).toFixed(2);
+        }
+
+        // Article selection
+        function selectArticle(articleId) {
+            document.querySelectorAll('.article-item').forEach(el => el.classList.remove('selected'));
+            const selectedEl = event.target.closest('.article-item');
+            selectedEl.classList.add('selected');
+            currentArticle = articleId;
+
+            // Get article data from stored data or data attributes
+            const article = articlesData[articleId] || {
+                title: selectedEl.dataset.title || '',
+                year: selectedEl.dataset.year || '',
+                authors: selectedEl.dataset.authors || '',
+                pdf_path: selectedEl.dataset.pdfPath || ''
+            };
+
+            // Update status with source info
+            const sourceInfo = article.zotero_key ? ' (from Zotero)' : '';
+            document.getElementById('annotationStatus').textContent = `Editing: ${article.title?.substring(0, 40) || articleId}${sourceInfo}`;
+
+            // =====================================================
+            // POPULATE FORM WITH ZOTERO/ARTICLE METADATA
+            // =====================================================
+
+            // Basic article info
+            document.getElementById('articleTitle').value = article.title || '';
+            document.getElementById('articleYear').value = article.year || '';
+            document.getElementById('articleAuthors').value = article.authors || '';
+            document.getElementById('articleDOI').value = article.doi || '';
+            document.getElementById('pdfPath').value = article.pdf_path || '';
+
+            // If from Zotero, populate additional fields
+            if (article.zotero_key) {
+                // Pre-fill key findings with abstract if available
+                const keyFindingsEl = document.getElementById('keyFindings');
+                if (article.abstract && !keyFindingsEl.value) {
+                    keyFindingsEl.value = `[Zotero Abstract]\n${article.abstract}`;
+                }
+
+                // Map Zotero item type to study type
+                const typeMapping = {
+                    'journalArticle': 'empirical',
+                    'book': 'review',
+                    'bookSection': 'review',
+                    'conferencePaper': 'empirical',
+                    'thesis': 'empirical',
+                    'report': 'empirical',
+                    'review': 'systematic-review'
+                };
+                const suggestedStudyType = typeMapping[article.item_type];
+                if (suggestedStudyType && !selectedStudyType) {
+                    // Don't auto-select, but show hint
+                    console.log(`Suggested study type based on Zotero: ${suggestedStudyType}`);
+                }
+
+                // Show Zotero tags as hints for theories
+                if (article.tags && article.tags.length > 0) {
+                    console.log(`Zotero tags (may indicate theories): ${article.tags.join(', ')}`);
+                    // Could auto-match tags to theories here
+                }
+
+                // Add journal info to notes if available
+                const notesEl = document.getElementById('additionalNotes');
+                if (article.journal && !notesEl.value) {
+                    let citation = '';
+                    if (article.journal) citation += article.journal;
+                    if (article.volume) citation += `, ${article.volume}`;
+                    if (article.issue) citation += `(${article.issue})`;
+                    if (article.pages) citation += `, ${article.pages}`;
+                    if (citation) {
+                        notesEl.value = `[Citation] ${citation}`;
+                    }
+                }
+
+                // Show metadata summary in console for reference
+                console.log('Zotero metadata loaded:', {
+                    title: article.title,
+                    authors: article.authors,
+                    year: article.year,
+                    doi: article.doi,
+                    journal: article.journal,
+                    item_type: article.item_type,
+                    tags: article.tags,
+                    abstract: article.abstract?.substring(0, 100) + '...'
+                });
+            }
+
+            // If PDF panel is open, refresh it with new PDF
+            const panel = document.getElementById('pdfPanel');
+            if (panel.classList.contains('visible') && (article.pdf_path || article.zotero_has_pdf)) {
+                openPDFPanel();
+            }
+
+            // Load existing annotation if available (may override Zotero defaults)
+            loadArticleData(articleId);
+        }
+
+        function loadArticleData(articleId) {
+            // Try to load existing annotation from API
+            fetch(`/api/v1/annotator/annotation/${articleId}`)
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error('No existing annotation');
+                })
+                .then(annotation => {
+                    // Populate form with existing annotation
+                    if (annotation.doi) document.getElementById('articleDOI').value = annotation.doi;
+                    if (annotation.quality_tier) selectQuality(annotation.quality_tier);
+                    if (annotation.study_type) {
+                        selectedStudyType = annotation.study_type;
+                        document.getElementById('studyType').value = annotation.study_type;
+                    }
+                    if (annotation.key_findings) document.getElementById('keyFindings').value = annotation.key_findings;
+                    if (annotation.concerns) document.getElementById('concerns').value = annotation.concerns;
+                    if (annotation.additional_notes) document.getElementById('additionalNotes').value = annotation.additional_notes;
+                    console.log('Loaded existing annotation:', annotation);
+                })
+                .catch(e => {
+                    console.log('No existing annotation for:', articleId);
+                });
+        }
+
+        function filterArticles() {
+            const search = document.getElementById('articleSearch').value.toLowerCase();
+            document.querySelectorAll('.article-item').forEach(el => {
+                const title = el.querySelector('.article-title').textContent.toLowerCase();
+                el.style.display = title.includes(search) ? 'block' : 'none';
+            });
+        }
+
+        // Load from Article Finder
+        async function loadFromAF() {
+            try {
+                // In real implementation, call API to get PDFs from AF directory
+                const response = await fetch('/api/v1/annotator/load-af-articles');
+                const articles = await response.json();
+                displayArticles(articles);
+            } catch (e) {
+                console.log('Loading demo articles (API not available)');
+                // Demo data
+                const demoArticles = [
+                    { id: 'kellert_2015', title: 'The Practice of Biophilic Design', year: 2015, annotated: false },
+                    { id: 'ulrich_1984', title: 'View through a window may influence recovery from surgery', year: 1984, annotated: true, quality: 'gold' },
+                    { id: 'kaplan_1989', title: 'The experience of nature: A psychological perspective', year: 1989, annotated: true, quality: 'gold' },
+                    { id: 'vartanian_2013', title: 'Impact of contour on aesthetic judgments', year: 2013, annotated: false },
+                ];
+                displayArticles(demoArticles);
+            }
+        }
+
+        async function loadFromDB() {
+            try {
+                const response = await fetch('/api/v1/annotator/load-db-articles');
+                const articles = await response.json();
+                displayArticles(articles);
+            } catch (e) {
+                showStatus('Could not load from database', 'error');
+            }
+        }
+
+        // Store articles data for access when selecting
+        let articlesData = {};
+
+        function displayArticles(articles) {
+            const list = document.getElementById('articleList');
+            // Store articles for later access
+            articles.forEach(a => articlesData[a.id] = a);
+
+            list.innerHTML = articles.map(a => {
+                const hasPdf = a.pdf_path || a.zotero_has_pdf;
+                const pdfIcon = hasPdf ? '<span style="color: #10b981; font-size: 0.7rem; margin-left: 0.25rem;" title="PDF available">PDF</span>' : '';
+
+                // Format author display (first author + et al if multiple)
+                let authorDisplay = '';
+                if (a.authors) {
+                    const firstAuthor = a.authors.split(';')[0].split(',')[0].trim();
+                    const hasMultiple = a.authors.includes(';');
+                    authorDisplay = firstAuthor + (hasMultiple ? ' et al.' : '');
+                }
+
+                // Item type badge
+                const typeColors = {
+                    'journalArticle': '#3b82f6',
+                    'book': '#8b5cf6',
+                    'conferencePaper': '#f59e0b',
+                    'thesis': '#10b981',
+                    'report': '#6b7280'
+                };
+                const typeColor = typeColors[a.item_type] || '#6b7280';
+                const typeBadge = a.item_type ? `<span style="background: ${typeColor}; color: white; font-size: 0.6rem; padding: 1px 4px; border-radius: 3px; margin-left: 0.25rem;">${a.item_type?.replace('Article', '').replace('Paper', '')}</span>` : '';
+
+                // Tags display (first 2)
+                const tagDisplay = a.tags?.slice(0, 2).map(t =>
+                    `<span style="background: #e5e7eb; font-size: 0.6rem; padding: 1px 4px; border-radius: 3px;">${t}</span>`
+                ).join(' ') || '';
+
+                return `
+                <div class="article-item ${a.annotated ? 'annotated' : ''}"
+                     onclick="selectArticle('${a.id}')"
+                     data-pdf-path="${a.pdf_path || ''}"
+                     data-title="${(a.title || '').replace(/"/g, '&quot;')}"
+                     data-year="${a.year || ''}"
+                     data-authors="${(a.authors || '').replace(/"/g, '&quot;')}">
+                    <div class="article-title" style="font-size: 0.85rem; line-height: 1.3;">
+                        ${a.title}${pdfIcon}${typeBadge}
+                    </div>
+                    <div class="article-meta" style="font-size: 0.75rem; margin-top: 0.25rem;">
+                        ${authorDisplay ? authorDisplay + ' ' : ''}(${a.year || '?'})${a.journal ? ' - ' + a.journal.substring(0, 25) : ''}
+                    </div>
+                    ${tagDisplay ? `<div style="margin-top: 0.25rem;">${tagDisplay}</div>` : ''}
+                    ${a.quality ? `<span class="quality-badge quality-${a.quality}">${a.quality}</span>` : ''}
+                </div>
+            `}).join('');
+        }
+
+        // Save annotation
+        async function saveAnnotation() {
+            const annotation = {
+                article_id: currentArticle,
+                title: document.getElementById('articleTitle').value,
+                doi: document.getElementById('articleDOI').value,
+                authors: document.getElementById('articleAuthors').value,
+                year: parseInt(document.getElementById('articleYear').value),
+                pdf_path: document.getElementById('pdfPath').value,
+                quality_tier: selectedQuality,
+                study_type: selectedStudyType,
+                theories: selectedTheories,
+                primary_theory: primaryTheory,
+                typology_scope: document.getElementById('typologyScope').value,
+                typologies: selectedTypologies,
+                population: document.getElementById('population').value,
+                setting: document.getElementById('setting').value,
+                sample_size: parseInt(document.getElementById('sampleSize').value) || null,
+                geography: document.getElementById('geography').value,
+                methodology_score: parseFloat(document.getElementById('methodologyScore').value) / 100,
+                annotation_confidence: parseFloat(document.getElementById('annotationConfidence').value) / 100,
+                key_findings: document.getElementById('keyFindings').value,
+                concerns: document.getElementById('concerns').value,
+                additional_notes: document.getElementById('additionalNotes').value,
+                annotated_at: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('/api/v1/annotator/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(annotation)
+                });
+
+                if (response.ok) {
+                    showStatus('Annotation saved successfully!', 'success');
+                } else {
+                    throw new Error('Save failed');
+                }
+            } catch (e) {
+                // Demo mode - save to localStorage
+                const saved = JSON.parse(localStorage.getItem('annotations') || '{}');
+                saved[currentArticle || 'new_' + Date.now()] = annotation;
+                localStorage.setItem('annotations', JSON.stringify(saved));
+                showStatus('Annotation saved locally (demo mode)', 'success');
+                console.log('Saved annotation:', annotation);
+            }
+        }
+
+        function saveAndNext() {
+            saveAnnotation();
+            // Move to next unannotated article
+            const items = document.querySelectorAll('.article-item:not(.annotated)');
+            if (items.length > 0) {
+                items[0].click();
+            }
+        }
+
+        function clearForm() {
+            document.querySelectorAll('input:not([type="hidden"]), textarea, select').forEach(el => {
+                if (el.type === 'range') {
+                    el.value = el.id === 'methodologyScore' ? 50 : 75;
+                } else {
+                    el.value = '';
+                }
+            });
+            document.querySelectorAll('.quality-option, .study-type-item, .theory-tag, .typology-item')
+                .forEach(el => el.classList.remove('selected', 'primary'));
+            selectedTheories = [];
+            selectedTypologies = [];
+            primaryTheory = null;
+            selectedQuality = null;
+            selectedStudyType = null;
+            updateSliderValue('methodologyScore', 'methodologyValue');
+            updateSliderValue('annotationConfidence', 'confidenceValue');
+        }
+
+        function showStatus(message, type) {
+            const el = document.getElementById('statusMessage');
+            el.className = `status-message status-${type}`;
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 3000);
+        }
+
+        // =====================================================================
+        // PDF VIEWER FUNCTIONS
+        // =====================================================================
+
+        /**
+         * Get the PDF URL for viewing.
+         * Uses the /api/v1/pdf/ endpoint for local PDFs,
+         * or the Zotero proxy for Zotero items.
+         */
+        function getPDFUrl(pdfPath, zoteroKey = null) {
+            // If we have a Zotero key, use the proxy endpoint
+            if (zoteroKey && currentSource === 'zotero') {
+                const params = new URLSearchParams({
+                    api_key: zoteroConfig.apiKey,
+                    user_id: zoteroConfig.userId || '',
+                    group_id: zoteroConfig.groupId || ''
+                });
+                return `/api/v1/annotator/zotero/pdf/${zoteroKey}?${params}`;
+            }
+
+            if (!pdfPath) return null;
+
+            // If it's already a URL, use it directly
+            if (pdfPath.startsWith('http://') || pdfPath.startsWith('https://')) {
+                return pdfPath;
+            }
+
+            // Extract just the filename or encode the full path
+            const filename = pdfPath.split('/').pop();
+
+            // Try the API endpoint with the filename first
+            return `/api/v1/pdf/${encodeURIComponent(filename)}`;
+        }
+
+        /**
+         * Open PDF in a new tab (full screen view)
+         */
+        function viewPDF() {
+            const pdfPath = document.getElementById('pdfPath').value;
+
+            // Get current article's Zotero key if available
+            const currentArticleData = currentArticle ? articlesData[currentArticle] : null;
+            const zoteroKey = currentArticleData?.zotero_key;
+            const hasPdf = currentArticleData?.zotero_has_pdf;
+
+            if (!pdfPath && !(zoteroKey && hasPdf)) {
+                showStatus('No PDF available for this article', 'error');
+                return;
+            }
+
+            const pdfUrl = getPDFUrl(pdfPath, zoteroKey);
+            window.open(pdfUrl, '_blank');
+        }
+
+        /**
+         * Toggle the side panel PDF viewer
+         */
+        function togglePDFPanel() {
+            const panel = document.getElementById('pdfPanel');
+            const isVisible = panel.classList.contains('visible');
+
+            if (isVisible) {
+                closePDFPanel();
+            } else {
+                openPDFPanel();
+            }
+        }
+
+        /**
+         * Open the PDF in the side panel
+         */
+        function openPDFPanel() {
+            const pdfPath = document.getElementById('pdfPath').value;
+            const panel = document.getElementById('pdfPanel');
+            const frame = document.getElementById('pdfPanelFrame');
+            const empty = document.getElementById('pdfPanelEmpty');
+            const title = document.getElementById('pdfPanelTitle');
+
+            panel.classList.add('visible');
+            document.body.classList.add('pdf-panel-open');
+
+            // Get current article's Zotero key if available
+            const currentArticleData = currentArticle ? articlesData[currentArticle] : null;
+            const zoteroKey = currentArticleData?.zotero_key;
+            const hasPdf = currentArticleData?.zotero_has_pdf;
+
+            if (pdfPath || (zoteroKey && hasPdf)) {
+                const pdfUrl = getPDFUrl(pdfPath, zoteroKey);
+                frame.src = pdfUrl;
+                frame.style.display = 'block';
+                empty.style.display = 'none';
+                title.textContent = currentArticleData?.title?.substring(0, 50) || pdfPath?.split('/').pop() || 'PDF Viewer';
+            } else {
+                frame.style.display = 'none';
+                empty.style.display = 'flex';
+                title.textContent = 'PDF Viewer';
+            }
+        }
+
+        /**
+         * Close the PDF side panel
+         */
+        function closePDFPanel() {
+            const panel = document.getElementById('pdfPanel');
+            const frame = document.getElementById('pdfPanelFrame');
+
+            panel.classList.remove('visible');
+            document.body.classList.remove('pdf-panel-open');
+            frame.src = '';
+        }
+
+        /**
+         * Open PDF in modal (full page overlay)
+         */
+        function openPDFModal() {
+            const pdfPath = document.getElementById('pdfPath').value;
+            if (!pdfPath) {
+                showStatus('Please enter a PDF path first', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('pdfModal');
+            const frame = document.getElementById('pdfModalFrame');
+            const title = document.getElementById('pdfModalTitle');
+
+            const pdfUrl = getPDFUrl(pdfPath);
+            frame.src = pdfUrl;
+            title.textContent = pdfPath.split('/').pop() || 'PDF Viewer';
+            modal.classList.add('visible');
+        }
+
+        /**
+         * Close the PDF modal
+         */
+        function closePDFModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+
+            const modal = document.getElementById('pdfModal');
+            const frame = document.getElementById('pdfModalFrame');
+
+            modal.classList.remove('visible');
+            frame.src = '';
+        }
+
+        /**
+         * Load PDF when an article is selected (if it has a pdf_path)
+         */
+        function loadPDFForArticle(pdfPath) {
+            if (pdfPath) {
+                document.getElementById('pdfPath').value = pdfPath;
+
+                // If panel is open, refresh it
+                const panel = document.getElementById('pdfPanel');
+                if (panel.classList.contains('visible')) {
+                    openPDFPanel();
+                }
+            }
+        }
+
+        // Keyboard shortcut: Escape to close PDF panel/modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePDFPanel();
+                closePDFModal();
+            }
+        });
+
+        // =====================================================================
+        // PDF UPLOAD FUNCTIONS
+        // =====================================================================
+
+        /**
+         * Handle multiple PDF file uploads
+         */
+        async function handlePDFUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const statusText = document.getElementById('uploadStatus');
+
+            progressDiv.style.display = 'block';
+            statusText.textContent = `Uploading ${files.length} file(s)...`;
+
+            let uploaded = 0;
+            let failed = 0;
+            const results = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                progressBar.style.width = `${((i + 0.5) / files.length) * 100}%`;
+                statusText.textContent = `Uploading ${i + 1}/${files.length}: ${file.name}`;
+
+                try {
+                    const result = await uploadSinglePDF(file);
+                    results.push(result);
+                    uploaded++;
+                } catch (e) {
+                    console.error(`Failed to upload ${file.name}:`, e);
+                    failed++;
+                }
+
+                progressBar.style.width = `${((i + 1) / files.length) * 100}%`;
+            }
+
+            statusText.textContent = `Done: ${uploaded} uploaded, ${failed} failed`;
+            progressBar.style.background = failed > 0 ? '#f59e0b' : '#10b981';
+
+            // Refresh article list
+            if (uploaded > 0) {
+                await loadFromAF();
+                showStatus(`Uploaded ${uploaded} PDF(s) successfully`, 'success');
+            }
+
+            // Reset after delay
+            setTimeout(() => {
+                progressDiv.style.display = 'none';
+                progressBar.style.width = '0%';
+                progressBar.style.background = 'var(--primary)';
+                event.target.value = '';
+            }, 3000);
+        }
+
+        /**
+         * Upload a single PDF file
+         */
+        async function uploadSinglePDF(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetchWithRetry('/api/v1/annotator/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.statusText}`);
+            }
+
+            return await response.json();
+        }
+
+        // =====================================================================
+        // ZOTERO INTEGRATION
+        // =====================================================================
+
+        // Zotero configuration - user can set these
+        // Default credentials for Professor Kirsh's library
+        let zoteroConfig = {
+            apiKey: localStorage.getItem('zotero_api_key') || 'UQhvCmBS6VqpjsGJaD5ltf0y',
+            userId: localStorage.getItem('zotero_user_id') || '14723305',
+            groupId: localStorage.getItem('zotero_group_id') || '',
+            collectionKey: localStorage.getItem('zotero_collection_key') || ''
+        };
+
+        // Track which source we're using
+        let currentSource = 'af'; // 'af', 'db', or 'zotero'
+        let zoteroArticles = []; // Store Zotero articles for PDF download
+        let zoteroCollections = []; // Store available collections
+
+        /**
+         * Fetch Zotero collections for filtering
+         */
+        async function fetchZoteroCollections() {
+            const baseUrl = zoteroConfig.groupId
+                ? `https://api.zotero.org/groups/${zoteroConfig.groupId}`
+                : `https://api.zotero.org/users/${zoteroConfig.userId}`;
+
+            const url = `${baseUrl}/collections?format=json`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Zotero-API-Key': zoteroConfig.apiKey,
+                        'Zotero-API-Version': '3'
+                    }
+                });
+
+                if (!response.ok) return [];
+
+                const collections = await response.json();
+                return collections.map(c => ({
+                    key: c.key,
+                    name: c.data.name,
+                    numItems: c.meta?.numItems || 0,
+                    parent: c.data.parentCollection
+                })).filter(c => c.numItems > 0).sort((a, b) => b.numItems - a.numItems);
+            } catch (e) {
+                console.error('Failed to fetch collections:', e);
+                return [];
+            }
+        }
+
+        /**
+         * Show collection selector after loading from Zotero
+         */
+        async function showCollectionSelector() {
+            if (zoteroCollections.length === 0) {
+                zoteroCollections = await fetchZoteroCollections();
+            }
+
+            // Check if selector already exists
+            let selector = document.getElementById('zoteroCollectionSelector');
+            if (!selector) {
+                const sidebar = document.querySelector('.sidebar-header');
+                const div = document.createElement('div');
+                div.id = 'zoteroCollectionDiv';
+                div.style.cssText = 'margin-top: 0.5rem;';
+                div.innerHTML = `
+                    <label style="font-size: 0.75rem; font-weight: 500; display: block; margin-bottom: 0.25rem;">
+                        Zotero Collection
+                    </label>
+                    <select id="zoteroCollectionSelector" style="width: 100%; padding: 0.25rem; font-size: 0.75rem; border-radius: 4px; border: 1px solid #d1d5db;"
+                            onchange="loadZoteroCollection(this.value)">
+                        <option value="">All Items</option>
+                    </select>
+                `;
+                sidebar.appendChild(div);
+                selector = document.getElementById('zoteroCollectionSelector');
+            }
+
+            // Populate options
+            selector.innerHTML = '<option value="">All Items (' + zoteroArticles.length + ')</option>' +
+                zoteroCollections.map(c =>
+                    `<option value="${c.key}">${c.name} (${c.numItems})</option>`
+                ).join('');
+
+            // Select current collection if set
+            if (zoteroConfig.collectionKey) {
+                selector.value = zoteroConfig.collectionKey;
+            }
+        }
+
+        /**
+         * Load items from a specific collection
+         */
+        async function loadZoteroCollection(collectionKey) {
+            zoteroConfig.collectionKey = collectionKey;
+            localStorage.setItem('zotero_collection_key', collectionKey);
+            await loadFromZotero(true);  // Skip setup - user already has credentials configured
+        }
+
+        /**
+         * Load PDFs from Zotero library
+         * @param {boolean} skipSetup - If true, skip the setup modal (used after confirming)
+         */
+        async function loadFromZotero(skipSetup = false) {
+            // Always show setup first (unless explicitly skipped after user confirms)
+            if (!skipSetup) {
+                showZoteroSetup();
+                return;
+            }
+
+            // Validate credentials
+            if (!zoteroConfig.apiKey || (!zoteroConfig.userId && !zoteroConfig.groupId)) {
+                showStatus('Please configure Zotero credentials', 'error');
+                showZoteroSetup();
+                return;
+            }
+
+            showStatus('Connecting to Zotero...', 'info');
+
+            try {
+                const articles = await fetchZoteroItems();
+                if (articles.length === 0) {
+                    showStatus('No items found in Zotero library', 'warning');
+                    return;
+                }
+
+                zoteroArticles = articles;
+                currentSource = 'zotero';
+                displayArticles(articles);
+
+                // Show collection selector
+                showCollectionSelector();
+
+                // Count items with PDFs
+                const withPdf = articles.filter(a => a.zotero_has_pdf).length;
+                const collectionName = zoteroConfig.collectionKey ?
+                    zoteroCollections.find(c => c.key === zoteroConfig.collectionKey)?.name || 'Collection' :
+                    'All Items';
+                showStatus(`Loaded ${articles.length} items from "${collectionName}" (${withPdf} with PDFs)`, 'success');
+            } catch (e) {
+                console.error('Zotero error:', e);
+                showStatus(`Zotero error: ${e.message}`, 'error');
+                showZoteroSetup();
+            }
+        }
+
+        /**
+         * Show option to download all PDFs from Zotero
+         */
+        function showZoteroDownloadOption(articles) {
+            const withPdf = articles.filter(a => a.zotero_has_pdf).length;
+
+            // Add download button to sidebar if not exists
+            let downloadBtn = document.getElementById('zoteroDownloadBtn');
+            if (!downloadBtn) {
+                const sidebar = document.querySelector('.sidebar-header');
+                const div = document.createElement('div');
+                div.id = 'zoteroDownloadDiv';
+                div.style.cssText = 'margin-top: 0.5rem; padding: 0.5rem; background: #fef3c7; border-radius: 4px; font-size: 0.75rem;';
+                div.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Zotero:</strong> ${withPdf} items may have PDFs
+                    </div>
+                    <button id="zoteroDownloadBtn" class="btn btn-primary" style="width: 100%; padding: 0.5rem; font-size: 0.75rem;" onclick="downloadAllZoteroPDFs()">
+                        Download All PDFs
+                    </button>
+                    <div id="zoteroDownloadProgress" style="display: none; margin-top: 0.5rem;">
+                        <div style="background: #e5e7eb; border-radius: 4px; height: 6px; overflow: hidden;">
+                            <div id="zoteroProgressBar" style="background: #3b82f6; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                        </div>
+                        <span id="zoteroProgressText" style="font-size: 0.7rem;"></span>
+                    </div>
+                `;
+                sidebar.appendChild(div);
+            }
+        }
+
+        /**
+         * Download all PDFs from Zotero library
+         */
+        async function downloadAllZoteroPDFs() {
+            const articles = zoteroArticles.filter(a => a.zotero_has_pdf);
+            if (articles.length === 0) {
+                showStatus('No PDFs to download', 'warning');
+                return;
+            }
+
+            const progressDiv = document.getElementById('zoteroDownloadProgress');
+            const progressBar = document.getElementById('zoteroProgressBar');
+            const progressText = document.getElementById('zoteroProgressText');
+            const downloadBtn = document.getElementById('zoteroDownloadBtn');
+
+            progressDiv.style.display = 'block';
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = 'Downloading...';
+
+            let downloaded = 0;
+            let failed = 0;
+            let skipped = 0;
+
+            for (let i = 0; i < articles.length; i++) {
+                const article = articles[i];
+                progressBar.style.width = `${((i + 0.5) / articles.length) * 100}%`;
+                progressText.textContent = `${i + 1}/${articles.length}: ${article.title.substring(0, 30)}...`;
+
+                try {
+                    const result = await downloadZoteroPDF(article.zotero_key);
+                    if (result && result.path) {
+                        // Update article with local path
+                        article.pdf_path = result.path;
+                        articlesData[article.id].pdf_path = result.path;
+                        downloaded++;
+                    } else {
+                        skipped++;
+                    }
+                } catch (e) {
+                    console.warn(`Failed to download PDF for ${article.title}:`, e.message);
+                    if (e.message.includes('No PDF attachment')) {
+                        skipped++;
+                    } else {
+                        failed++;
+                    }
+                }
+
+                progressBar.style.width = `${((i + 1) / articles.length) * 100}%`;
+            }
+
+            progressText.textContent = `Done: ${downloaded} downloaded, ${skipped} skipped, ${failed} failed`;
+            progressBar.style.background = failed > 0 ? '#f59e0b' : '#10b981';
+            downloadBtn.textContent = 'Download Complete';
+
+            // Refresh display
+            displayArticles(zoteroArticles);
+            showStatus(`Downloaded ${downloaded} PDFs from Zotero`, 'success');
+
+            // Reset after delay
+            setTimeout(() => {
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = 'Download All PDFs';
+                progressBar.style.width = '0%';
+                progressBar.style.background = '#3b82f6';
+            }, 5000);
+        }
+
+        /**
+         * Fetch items from Zotero API
+         */
+        async function fetchZoteroItems() {
+            const baseUrl = zoteroConfig.groupId
+                ? `https://api.zotero.org/groups/${zoteroConfig.groupId}`
+                : `https://api.zotero.org/users/${zoteroConfig.userId}`;
+
+            // Exclude attachments and notes, get only actual items
+            let url = `${baseUrl}/items?format=json&itemType=-attachment%20-note&limit=100&sort=dateModified&direction=desc`;
+
+            if (zoteroConfig.collectionKey) {
+                url = `${baseUrl}/collections/${zoteroConfig.collectionKey}/items?format=json&itemType=-attachment%20-note&limit=100`;
+            }
+
+            const response = await fetch(url, {
+                headers: {
+                    'Zotero-API-Key': zoteroConfig.apiKey,
+                    'Zotero-API-Version': '3'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403) throw new Error('Invalid API key');
+                if (response.status === 404) throw new Error('Library/collection not found');
+                throw new Error(`Zotero API error: ${response.status}`);
+            }
+
+            const items = await response.json();
+
+            // Convert Zotero items to our format with FULL metadata
+            return items.map(item => {
+                const d = item.data;
+
+                // Format authors properly
+                const authors = d.creators?.map(c => {
+                    if (c.name) return c.name;  // Single name field
+                    return `${c.lastName || ''}, ${c.firstName || ''}`.trim();
+                }).join('; ') || '';
+
+                // Extract year from date string
+                const year = d.date ? parseInt(d.date.substring(0, 4)) : null;
+
+                return {
+                    // Basic identification
+                    id: item.key,
+                    zotero_key: item.key,
+
+                    // Core metadata
+                    title: d.title || 'Untitled',
+                    authors: authors,
+                    year: year,
+                    doi: d.DOI || '',
+
+                    // Publication info
+                    journal: d.publicationTitle || d.bookTitle || d.proceedingsTitle || '',
+                    volume: d.volume || '',
+                    issue: d.issue || '',
+                    pages: d.pages || '',
+                    publisher: d.publisher || '',
+
+                    // Rich content
+                    abstract: d.abstractNote || '',
+                    item_type: d.itemType || 'unknown',  // journalArticle, book, conferencePaper, etc.
+
+                    // Zotero organization
+                    tags: d.tags?.map(t => t.tag) || [],
+                    collections: d.collections || [],
+
+                    // URLs
+                    url: d.url || '',
+
+                    // Status flags
+                    annotated: false,
+                    pdf_path: '',
+                    zotero_has_pdf: (d.numChildren || 0) > 0,
+
+                    // Timestamps
+                    date_added: d.dateAdded,
+                    date_modified: d.dateModified
+                };
+            });
+        }
+
+        /**
+         * Download PDF from Zotero attachment
+         */
+        async function downloadZoteroPDF(itemKey) {
+            const baseUrl = zoteroConfig.groupId
+                ? `https://api.zotero.org/groups/${zoteroConfig.groupId}`
+                : `https://api.zotero.org/users/${zoteroConfig.userId}`;
+
+            // First get children (attachments)
+            const childrenUrl = `${baseUrl}/items/${itemKey}/children?format=json`;
+            const childrenResp = await fetch(childrenUrl, {
+                headers: {
+                    'Zotero-API-Key': zoteroConfig.apiKey,
+                    'Zotero-API-Version': '3'
+                }
+            });
+
+            if (!childrenResp.ok) throw new Error('Failed to get attachments');
+
+            const children = await childrenResp.json();
+            const pdfAttachment = children.find(c => c.data.contentType === 'application/pdf');
+
+            if (!pdfAttachment) {
+                throw new Error('No PDF attachment found');
+            }
+
+            // Download the PDF file
+            const fileUrl = `${baseUrl}/items/${pdfAttachment.key}/file`;
+            const fileResp = await fetch(fileUrl, {
+                headers: {
+                    'Zotero-API-Key': zoteroConfig.apiKey
+                }
+            });
+
+            if (!fileResp.ok) throw new Error('Failed to download PDF');
+
+            const blob = await fileResp.blob();
+            const file = new File([blob], `${itemKey}.pdf`, { type: 'application/pdf' });
+
+            // Upload to our server
+            return await uploadSinglePDF(file);
+        }
+
+        /**
+         * Show Zotero setup dialog
+         */
+        function showZoteroSetup() {
+            const html = `
+                <div style="padding: 1rem;">
+                    <h3 style="margin-bottom: 1rem;">Zotero Setup</h3>
+                    <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 1rem;">
+                        To connect to Zotero, you need an API key from
+                        <a href="https://www.zotero.org/settings/keys" target="_blank">zotero.org/settings/keys</a>
+                    </p>
+                    <div style="margin-bottom: 0.75rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem;">API Key</label>
+                        <input type="password" id="zoteroApiKey" value="${zoteroConfig.apiKey}"
+                               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem;">User ID (for personal library)</label>
+                        <input type="text" id="zoteroUserId" value="${zoteroConfig.userId}"
+                               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                               placeholder="Your numeric user ID">
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem;">Group ID (optional, for shared library)</label>
+                        <input type="text" id="zoteroGroupId" value="${zoteroConfig.groupId}"
+                               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                               placeholder="Group ID if using shared library">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem;">Collection Key (optional)</label>
+                        <input type="text" id="zoteroCollectionKey" value="${zoteroConfig.collectionKey}"
+                               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                               placeholder="8-character collection key">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="saveZoteroConfig()" class="btn btn-primary" style="flex: 1;">Save & Connect</button>
+                        <button onclick="closeZoteroSetup()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            // Create modal
+            const modal = document.createElement('div');
+            modal.id = 'zoteroModal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 3000;';
+            modal.innerHTML = `<div style="background: white; border-radius: 8px; max-width: 400px; width: 90%;">${html}</div>`;
+            modal.onclick = (e) => { if (e.target === modal) closeZoteroSetup(); };
+            document.body.appendChild(modal);
+        }
+
+        function saveZoteroConfig() {
+            zoteroConfig.apiKey = document.getElementById('zoteroApiKey').value.trim();
+            zoteroConfig.userId = document.getElementById('zoteroUserId').value.trim();
+            zoteroConfig.groupId = document.getElementById('zoteroGroupId').value.trim();
+            zoteroConfig.collectionKey = document.getElementById('zoteroCollectionKey').value.trim();
+
+            // Save to localStorage
+            localStorage.setItem('zotero_api_key', zoteroConfig.apiKey);
+            localStorage.setItem('zotero_user_id', zoteroConfig.userId);
+            localStorage.setItem('zotero_group_id', zoteroConfig.groupId);
+            localStorage.setItem('zotero_collection_key', zoteroConfig.collectionKey);
+
+            closeZoteroSetup();
+            loadFromZotero(true);  // Skip setup since user just confirmed
+        }
+
+        function closeZoteroSetup() {
+            const modal = document.getElementById('zoteroModal');
+            if (modal) modal.remove();
+        }
+
+        // =====================================================================
+        // ROBUST API HANDLING
+        // =====================================================================
+
+        /**
+         * Fetch with automatic retry and exponential backoff
+         */
+        async function fetchWithRetry(url, options = {}, maxRetries = 3) {
+            let lastError;
+
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, {
+                        ...options,
+                        signal: AbortSignal.timeout(30000) // 30 second timeout
+                    });
+
+                    // Update API status on successful response
+                    updateAPIStatus(true);
+
+                    return response;
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`API request failed (attempt ${attempt + 1}/${maxRetries}):`, error);
+
+                    // Update API status on failure
+                    updateAPIStatus(false, error.message);
+
+                    // Wait before retry (exponential backoff)
+                    if (attempt < maxRetries - 1) {
+                        const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+            }
+
+            throw lastError;
+        }
+
+        /**
+         * Update API connection status indicator
+         */
+        function updateAPIStatus(connected, errorMsg = null) {
+            const dot = document.getElementById('apiStatusDot');
+            const text = document.getElementById('apiStatusText');
+
+            if (connected) {
+                dot.style.background = '#10b981'; // Green
+                text.textContent = 'API Connected';
+            } else {
+                dot.style.background = '#ef4444'; // Red
+                text.textContent = errorMsg ? `Error: ${errorMsg.substring(0, 30)}` : 'Connection failed';
+            }
+        }
+
+        /**
+         * Check API health on load
+         */
+        async function checkAPIHealth() {
+            try {
+                const response = await fetch('/healthz', { signal: AbortSignal.timeout(5000) });
+                if (response.ok) {
+                    updateAPIStatus(true);
+                    return true;
+                }
+            } catch (e) {
+                updateAPIStatus(false, 'Server unreachable');
+            }
+            return false;
+        }
+
+        // =====================================================================
+        // INITIALIZE
+        // =====================================================================
+
+        // Initialize
+        updateSliderValue('methodologyScore', 'methodologyValue');
+        updateSliderValue('annotationConfidence', 'confidenceValue');
+
+        // Save default Zotero credentials to localStorage if not already set
+        if (!localStorage.getItem('zotero_api_key') && zoteroConfig.apiKey) {
+            localStorage.setItem('zotero_api_key', zoteroConfig.apiKey);
+            localStorage.setItem('zotero_user_id', zoteroConfig.userId);
+        }
+
+        // Check API health first, then load articles
+        checkAPIHealth().then(healthy => {
+            if (healthy) {
+                loadFromAF();
+            } else {
+                showStatus('Server not responding - using demo mode', 'warning');
+            }
+        });
+    </script>
+</body>
+</html>

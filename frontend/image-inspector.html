@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Inspector - Article Eater V22</title>
+    <link rel="stylesheet" href="/css/gallery-streamlit.css">
+    <style>
+        /* Inspector Specific Styles */
+        .inspector-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 360px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left sidebar - filters */
+        .filter-sidebar {
+            background: var(--gallery-bg-secondary);
+            border-right: 1px solid var(--gallery-border);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gallery-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gallery-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--gallery-border);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--gallery-bg-tertiary);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-tag:hover {
+            background: var(--gallery-primary-bg);
+        }
+
+        .filter-tag.active {
+            background: var(--gallery-primary);
+            color: white;
+        }
+
+        /* Main area - image grid */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gallery-border);
+            background: var(--gallery-bg-primary);
+        }
+
+        .main-header h1 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1rem;
+            background: var(--gallery-bg-secondary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .header-btn.primary {
+            background: var(--gallery-primary);
+            color: white;
+            border-color: var(--gallery-primary);
+        }
+
+        .image-grid-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        /* Thumbnail card */
+        .thumb-card {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 2px solid transparent;
+        }
+
+        .thumb-card:hover {
+            transform: scale(1.02);
+        }
+
+        .thumb-card.selected {
+            border-color: var(--gallery-primary);
+            box-shadow: 0 0 0 3px var(--gallery-primary-bg);
+        }
+
+        .thumb-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumb-card .thumb-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+        }
+
+        .thumb-card .thumb-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .thumb-card .thumb-tag {
+            padding: 0.125rem 0.375rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            font-size: 0.625rem;
+        }
+
+        .thumb-card .thumb-score {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--gallery-primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.625rem;
+            font-weight: 600;
+        }
+
+        .thumb-card .thumb-check {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid var(--gallery-border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .thumb-card.selected .thumb-check {
+            background: var(--gallery-primary);
+            border-color: var(--gallery-primary);
+            color: white;
+        }
+
+        /* C9 fix: Visual indicator for tagged images */
+        .thumb-card.tagged::after {
+            content: '\\2713';
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: var(--gallery-positive);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Right sidebar - detail panel */
+        .detail-sidebar {
+            background: var(--gallery-bg-primary);
+            border-left: 1px solid var(--gallery-border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .detail-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gallery-border);
+        }
+
+        .detail-header h2 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .detail-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .detail-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gallery-text-muted);
+            text-transform: uppercase;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.375rem 0;
+            font-size: 0.8125rem;
+            border-bottom: 1px solid var(--gallery-bg-tertiary);
+        }
+
+        .detail-row .label {
+            color: var(--gallery-text-secondary);
+        }
+
+        .detail-row .value {
+            color: var(--gallery-text-primary);
+            font-weight: 500;
+        }
+
+        /* Tagging interface */
+        .tag-editor {
+            background: var(--gallery-bg-secondary);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .tag-category {
+            margin-bottom: 1rem;
+        }
+
+        .tag-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-category-header h5 {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin: 0;
+            color: var(--gallery-text-secondary);
+        }
+
+        .tag-input-wrapper {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .tag-input-wrapper input {
+            flex: 1;
+            padding: 0.375rem 0.5rem;
+            border: 1px solid var(--gallery-border);
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .tag-input-wrapper button {
+            padding: 0.375rem 0.75rem;
+            background: var(--gallery-primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--gallery-bg-primary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .tag-chip .remove-tag {
+            cursor: pointer;
+            color: var(--gallery-text-muted);
+        }
+
+        .tag-chip .remove-tag:hover {
+            color: var(--gallery-negative);
+        }
+
+        /* Score sliders */
+        .score-slider {
+            margin-bottom: 1rem;
+        }
+
+        .score-slider label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--gallery-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .score-slider input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gallery-bg-tertiary);
+            appearance: none;
+        }
+
+        .score-slider input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gallery-primary);
+            cursor: pointer;
+        }
+
+        /* Quick tag buttons */
+        .quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-tag {
+            padding: 0.25rem 0.5rem;
+            background: var(--gallery-bg-tertiary);
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quick-tag:hover {
+            background: var(--gallery-primary-bg);
+            border-color: var(--gallery-primary);
+        }
+
+        .quick-tag.active {
+            background: var(--gallery-primary);
+            color: white;
+        }
+
+        /* Save button */
+        .save-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gallery-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .save-btn:hover {
+            background: var(--gallery-primary-dark);
+        }
+
+        .save-btn:disabled {
+            background: var(--gallery-text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Empty state */
+        .empty-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--gallery-text-muted);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .empty-detail .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Navigation bar */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--gallery-bg-secondary);
+            border-bottom: 1px solid var(--gallery-border);
+        }
+
+        .nav-link {
+            font-size: 0.875rem;
+            color: var(--gallery-text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .nav-link:hover {
+            background: var(--gallery-bg-tertiary);
+            color: var(--gallery-text-primary);
+        }
+
+        .nav-link.active {
+            background: var(--gallery-primary-bg);
+            color: var(--gallery-primary);
+            font-weight: 500;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-top: 1px solid var(--gallery-border);
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gallery-border);
+            background: var(--gallery-bg-primary);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            font-size: 0.875rem;
+            color: var(--gallery-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="/image-collector" class="nav-link">Collector</a>
+        <a href="/image-inspector" class="nav-link active">Inspector</a>
+        <a href="/claim-gallery" class="nav-link">Gallery</a>
+        <a href="/article-annotator" class="nav-link">Annotator</a>
+    </nav>
+
+    <div class="inspector-container">
+        <!-- Left sidebar - Filters -->
+        <aside class="filter-sidebar">
+            <div class="filter-section">
+                <h3>Filters</h3>
+
+                <div class="filter-group">
+                    <label>Source</label>
+                    <select id="filterSource">
+                        <option value="">All Sources</option>
+                        <option value="unsplash">Unsplash</option>
+                        <option value="pexels">Pexels</option>
+                        <option value="pixabay">Pixabay</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filterStatus">
+                        <option value="">All Images</option>
+                        <option value="tagged">Tagged Only</option>
+                        <option value="untagged">Untagged Only</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Search Query</label>
+                    <input type="text" id="filterQuery" placeholder="Filter by query...">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Feature Tags</h3>
+                <div class="filter-tags" id="featureFilterTags">
+                    <span class="filter-tag" data-tag="refuge">refuge</span>
+                    <span class="filter-tag" data-tag="prospect">prospect</span>
+                    <span class="filter-tag" data-tag="biophilia">biophilia</span>
+                    <span class="filter-tag" data-tag="wayfinding">wayfinding</span>
+                    <span class="filter-tag" data-tag="complexity">complexity</span>
+                    <span class="filter-tag" data-tag="coherence">coherence</span>
+                    <span class="filter-tag" data-tag="mystery">mystery</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Context Tags</h3>
+                <div class="filter-tags" id="contextFilterTags">
+                    <span class="filter-tag" data-tag="office">office</span>
+                    <span class="filter-tag" data-tag="hospital">hospital</span>
+                    <span class="filter-tag" data-tag="school">school</span>
+                    <span class="filter-tag" data-tag="library">library</span>
+                    <span class="filter-tag" data-tag="residential">residential</span>
+                    <span class="filter-tag" data-tag="retail">retail</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Stats</h3>
+                <div class="detail-row">
+                    <span class="label">Total</span>
+                    <span class="value" id="statTotal">0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Tagged</span>
+                    <span class="value" id="statTagged">0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Selected</span>
+                    <span class="value" id="statSelected">0</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main panel - Image grid -->
+        <main class="main-panel">
+            <header class="main-header">
+                <h1>Image Inspector</h1>
+                <div class="header-actions">
+                    <button class="header-btn" id="selectAllBtn">Select All</button>
+                    <button class="header-btn" id="batchTagBtn">Batch Tag Selected</button>
+                    <button class="header-btn danger" id="deleteSelectedBtn" style="background:var(--gallery-negative); color:white;">Delete Selected</button>
+                    <button class="header-btn primary" id="exportBtn">Export for Gallery</button>
+                </div>
+            </header>
+
+            <div class="image-grid-container">
+                <div class="image-grid" id="imageGrid">
+                    <!-- Images loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button id="prevBtn" disabled>&larr; Previous</button>
+                <span id="pageInfo">Page 1 of 1</span>
+                <button id="nextBtn" disabled>Next &rarr;</button>
+            </div>
+        </main>
+
+        <!-- Right sidebar - Detail panel -->
+        <aside class="detail-sidebar">
+            <header class="detail-header">
+                <h2>Image Details</h2>
+            </header>
+
+            <div class="detail-content" id="detailContent">
+                <div class="empty-detail">
+                    <div class="empty-icon">&#128247;</div>
+                    <p>Select an image to view and edit details</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Batch tag modal -->
+    <div id="batchModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; padding:2rem; border-radius:8px; max-width:500px; width:90%;">
+            <h3 style="margin:0 0 1rem 0;">Batch Tag Selected Images</h3>
+            <div id="batchTagContent">
+                <!-- Tag editor for batch -->
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+                <button onclick="closeBatchModal()" style="flex:1; padding:0.75rem; border:1px solid #ddd; background:white; border-radius:4px; cursor:pointer;">Cancel</button>
+                <button onclick="applyBatchTags()" style="flex:1; padding:0.75rem; background:var(--gallery-primary); color:white; border:none; border-radius:4px; cursor:pointer;">Apply Tags</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================================================
+        // State
+        // =============================================================================
+        let images = [];
+        let selectedImage = null;
+        let selectedImages = new Set();
+        let currentPage = 1;
+        let totalPages = 1;
+        let hasUnsavedChanges = false;  // C6 fix: track unsaved changes
+        let originalImageState = null;  // C6 fix: store original state for comparison
+        const pageSize = 50;
+
+        let filters = {
+            source: '',
+            status: '',
+            query: '',
+            featureTags: [],
+            contextTags: []
+        };
+
+        const quickFeatureTags = ['refuge', 'prospect', 'biophilia', 'wayfinding', 'complexity', 'coherence', 'mystery'];
+        const quickContextTags = ['office', 'hospital', 'school', 'library', 'residential', 'retail', 'hotel', 'museum'];
+
+        // =============================================================================
+        // API
+        // =============================================================================
+        async function fetchImages() {
+            const params = new URLSearchParams({
+                limit: pageSize,
+                offset: (currentPage - 1) * pageSize
+            });
+
+            if (filters.source) params.append('source', filters.source);
+            if (filters.query) params.append('query', filters.query);
+            if (filters.status === 'tagged') params.append('tagged_only', 'true');
+
+            try {
+                const resp = await fetch(`/api/v1/image-pool/images?${params}`);
+                const data = await resp.json();
+                images = data.images || [];
+                totalPages = Math.ceil(data.total / pageSize) || 1;
+
+                // Client-side filtering for tags (API doesn't support yet)
+                if (filters.featureTags.length > 0) {
+                    images = images.filter(img =>
+                        filters.featureTags.some(t => (img.feature_tags || []).includes(t))
+                    );
+                }
+                if (filters.contextTags.length > 0) {
+                    images = images.filter(img =>
+                        filters.contextTags.some(t => (img.context_tags || []).includes(t))
+                    );
+                }
+                if (filters.status === 'untagged') {
+                    images = images.filter(img => !img.tagged_at);
+                }
+
+                renderGrid();
+                updatePagination();
+                updateStats();
+            } catch (e) {
+                console.error('Failed to fetch images:', e);
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const resp = await fetch('/api/v1/image-pool/stats');
+                const stats = await resp.json();
+                document.getElementById('statTotal').textContent = stats.total_images || 0;
+                document.getElementById('statTagged').textContent = stats.tagged_images || 0;
+            } catch (e) {
+                console.error('Failed to fetch stats:', e);
+            }
+        }
+
+        async function saveImageTags(imageId, data) {
+            try {
+                const resp = await fetch(`/api/v1/image-pool/images/${imageId}/tags`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return resp.ok;
+            } catch (e) {
+                console.error('Failed to save tags:', e);
+                return false;
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            // Create toast container if it doesn't exist
+            let container = document.querySelector('.toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'toast-container';
+                container.style.cssText = 'position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); z-index:1001;';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.style.cssText = 'padding:0.75rem 1.5rem; background:var(--gallery-text-primary); color:white; border-radius:6px; font-size:0.875rem; margin-top:0.5rem;';
+            if (type === 'success') toast.style.background = 'var(--gallery-positive)';
+            if (type === 'error') toast.style.background = 'var(--gallery-negative)';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        async function batchTagImages(imageIds, data) {
+            try {
+                const resp = await fetch('/api/v1/image-pool/images/batch-tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_ids: imageIds,
+                        ...data
+                    })
+                });
+                return await resp.json();
+            } catch (e) {
+                console.error('Failed to batch tag:', e);
+                return { success: [], failed: imageIds };
+            }
+        }
+
+        // =============================================================================
+        // Render
+        // =============================================================================
+        function renderGrid() {
+            const grid = document.getElementById('imageGrid');
+
+            if (images.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; padding:4rem; color:var(--gallery-text-muted);">
+                        <div style="font-size:3rem; margin-bottom:1rem;">&#128247;</div>
+                        <p>No images found. Try adjusting filters or collect more images.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = images.map(img => {
+                const maxScore = Math.max(...Object.values(img.feature_scores || { _: 0 }));
+                const scoreDisplay = maxScore > 0 ? Math.round(maxScore * 100) + '%' : '';
+                const isTagged = img.tagged_at !== null;  // C9 fix: track tagged status
+
+                return `
+                    <div class="thumb-card ${selectedImages.has(img.image_id) ? 'selected' : ''} ${selectedImage?.image_id === img.image_id ? 'selected' : ''} ${isTagged ? 'tagged' : ''}"
+                         onclick="selectImage('${img.image_id}')"
+                         ondblclick="toggleSelection('${img.image_id}')">
+                        <img src="/api/v1/image-pool/thumbnail/${img.image_id}"
+                             alt="${img.query_used}"
+                             loading="lazy">
+                        <div class="thumb-check" onclick="event.stopPropagation(); toggleSelection('${img.image_id}')">
+                            ${selectedImages.has(img.image_id) ? '&#10003;' : ''}
+                        </div>
+                        ${scoreDisplay ? `<div class="thumb-score">${scoreDisplay}</div>` : ''}
+                        <div class="thumb-overlay">
+                            <div class="thumb-tags">
+                                ${(img.feature_tags || []).slice(0, 3).map(t => `<span class="thumb-tag">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderDetail() {
+            const content = document.getElementById('detailContent');
+
+            if (!selectedImage) {
+                content.innerHTML = `
+                    <div class="empty-detail">
+                        <div class="empty-icon">&#128247;</div>
+                        <p>Select an image to view and edit details</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const img = selectedImage;
+            const scores = img.feature_scores || {};
+
+            content.innerHTML = `
+                <img class="detail-image" src="/api/v1/image-pool/image/${img.image_id}" alt="${img.query_used}">
+
+                <div class="detail-section">
+                    <h4>Info</h4>
+                    <div class="detail-row">
+                        <span class="label">Source</span>
+                        <span class="value">${img.source}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Query</span>
+                        <span class="value">${img.query_used || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Size</span>
+                        <span class="value">${img.width}x${img.height}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Photographer</span>
+                        <span class="value">${img.photographer || 'Unknown'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">License</span>
+                        <span class="value">${img.license_type}</span>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Feature Scores</h4>
+                    ${quickFeatureTags.map(tag => `
+                        <div class="score-slider">
+                            <label>
+                                <span>${tag}</span>
+                                <span id="score_${tag}_value">${Math.round((scores[tag] || 0) * 100)}%</span>
+                            </label>
+                            <input type="range" min="0" max="100" value="${Math.round((scores[tag] || 0) * 100)}"
+                                   id="score_${tag}"
+                                   oninput="updateScoreDisplay('${tag}', this.value)">
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="detail-section">
+                    <div class="tag-editor">
+                        <div class="tag-category">
+                            <div class="tag-category-header">
+                                <h5>Feature Tags</h5>
+                            </div>
+                            <div class="quick-tags">
+                                ${quickFeatureTags.map(t => `
+                                    <span class="quick-tag ${(img.feature_tags || []).includes(t) ? 'active' : ''}"
+                                          onclick="toggleTag('feature', '${t}')">${t}</span>
+                                `).join('')}
+                            </div>
+                            <div class="tag-list" id="featureTagList">
+                                ${(img.feature_tags || []).filter(t => !quickFeatureTags.includes(t)).map(t => `
+                                    <span class="tag-chip">${t} <span class="remove-tag" onclick="removeTag('feature', '${t}')">&times;</span></span>
+                                `).join('')}
+                            </div>
+                            <div class="tag-input-wrapper" style="margin-top:0.5rem;">
+                                <input type="text" id="newFeatureTag" placeholder="Add custom tag...">
+                                <button onclick="addCustomTag('feature')">+</button>
+                            </div>
+                        </div>
+
+                        <div class="tag-category">
+                            <div class="tag-category-header">
+                                <h5>Context Tags</h5>
+                            </div>
+                            <div class="quick-tags">
+                                ${quickContextTags.map(t => `
+                                    <span class="quick-tag ${(img.context_tags || []).includes(t) ? 'active' : ''}"
+                                          onclick="toggleTag('context', '${t}')">${t}</span>
+                                `).join('')}
+                            </div>
+                            <div class="tag-list" id="contextTagList">
+                                ${(img.context_tags || []).filter(t => !quickContextTags.includes(t)).map(t => `
+                                    <span class="tag-chip">${t} <span class="remove-tag" onclick="removeTag('context', '${t}')">&times;</span></span>
+                                `).join('')}
+                            </div>
+                            <div class="tag-input-wrapper" style="margin-top:0.5rem;">
+                                <input type="text" id="newContextTag" placeholder="Add custom tag...">
+                                <button onclick="addCustomTag('context')">+</button>
+                            </div>
+                        </div>
+
+                        <div class="tag-category">
+                            <div class="tag-category-header">
+                                <h5>Notes</h5>
+                            </div>
+                            <textarea id="imageNotes" style="width:100%; height:60px; padding:0.5rem; border:1px solid var(--gallery-border); border-radius:4px; font-size:0.8rem;"
+                                      placeholder="Add notes about this image...">${img.notes || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                    <button class="save-btn" onclick="saveCurrentImage()" style="flex: 1;">Save Changes</button>
+                    <button class="delete-btn" onclick="deleteCurrentImage()" style="flex: 0; padding: 0.75rem 1.25rem; background: var(--gallery-negative); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Delete</button>
+                </div>
+            `;
+        }
+
+        function updatePagination() {
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prevBtn').disabled = currentPage <= 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+        }
+
+        function updateStats() {
+            document.getElementById('statSelected').textContent = selectedImages.size;
+        }
+
+        function updateScoreDisplay(tag, value) {
+            document.getElementById(`score_${tag}_value`).textContent = value + '%';
+        }
+
+        // =============================================================================
+        // Actions
+        // =============================================================================
+        function selectImage(imageId) {
+            // C6 fix: Check for unsaved changes before switching
+            if (hasUnsavedChanges && selectedImage) {
+                if (!confirm('You have unsaved changes. Discard them?')) {
+                    return;
+                }
+            }
+
+            selectedImage = images.find(img => img.image_id === imageId);
+            // C6 fix: Store original state for comparison
+            originalImageState = selectedImage ? JSON.stringify({
+                feature_tags: [...selectedImage.feature_tags],
+                context_tags: [...selectedImage.context_tags],
+                feature_scores: {...selectedImage.feature_scores},
+                notes: selectedImage.notes
+            }) : null;
+            hasUnsavedChanges = false;
+
+            renderGrid();
+            renderDetail();
+        }
+
+        function toggleSelection(imageId) {
+            if (selectedImages.has(imageId)) {
+                selectedImages.delete(imageId);
+            } else {
+                selectedImages.add(imageId);
+            }
+            renderGrid();
+            updateStats();
+        }
+
+        function selectAll() {
+            images.forEach(img => selectedImages.add(img.image_id));
+            renderGrid();
+            updateStats();
+        }
+
+        function toggleTag(type, tag) {
+            if (!selectedImage) return;
+
+            const tags = type === 'feature' ? selectedImage.feature_tags : selectedImage.context_tags;
+            const idx = tags.indexOf(tag);
+
+            if (idx >= 0) {
+                tags.splice(idx, 1);
+            } else {
+                tags.push(tag);
+            }
+
+            hasUnsavedChanges = true;  // C6 fix: mark as changed
+            renderDetail();
+        }
+
+        function removeTag(type, tag) {
+            if (!selectedImage) return;
+
+            const tags = type === 'feature' ? selectedImage.feature_tags : selectedImage.context_tags;
+            const idx = tags.indexOf(tag);
+            if (idx >= 0) {
+                tags.splice(idx, 1);
+            }
+            hasUnsavedChanges = true;  // C6 fix
+            renderDetail();
+        }
+
+        function addCustomTag(type) {
+            if (!selectedImage) return;
+
+            const input = document.getElementById(type === 'feature' ? 'newFeatureTag' : 'newContextTag');
+            const tag = input.value.trim().toLowerCase();
+
+            if (!tag) return;
+
+            const tags = type === 'feature' ? selectedImage.feature_tags : selectedImage.context_tags;
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+                hasUnsavedChanges = true;  // C6 fix
+            }
+
+            input.value = '';
+            renderDetail();
+        }
+
+        async function saveCurrentImage() {
+            if (!selectedImage) return;
+
+            const scores = {};
+            quickFeatureTags.forEach(tag => {
+                const slider = document.getElementById(`score_${tag}`);
+                if (slider) {
+                    scores[tag] = parseInt(slider.value) / 100;
+                }
+            });
+
+            const notes = document.getElementById('imageNotes')?.value || '';
+
+            const success = await saveImageTags(selectedImage.image_id, {
+                feature_tags: selectedImage.feature_tags,
+                context_tags: selectedImage.context_tags,
+                feature_scores: scores,
+                notes: notes
+            });
+
+            if (success) {
+                alert('Image saved successfully!');
+                await fetchImages();
+                await fetchStats();
+            } else {
+                alert('Failed to save image');
+            }
+        }
+
+        async function deleteCurrentImage() {
+            if (!selectedImage) return;
+
+            if (!confirm(`Delete this image from the pool?\n\nQuery: ${selectedImage.query_used}\nThis cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/v1/image-pool/images/${selectedImage.image_id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showToast('Image deleted', 'success');
+                    selectedImage = null;
+                    hasUnsavedChanges = false;
+                    await fetchImages();
+                    await fetchStats();
+                    renderDetail();
+                } else {
+                    showToast('Failed to delete image', 'error');
+                }
+            } catch (err) {
+                console.error('Delete error:', err);
+                showToast('Error deleting image', 'error');
+            }
+        }
+
+        function openBatchModal() {
+            if (selectedImages.size === 0) {
+                alert('Please select images first');
+                return;
+            }
+
+            document.getElementById('batchModal').style.display = 'flex';
+            document.getElementById('batchTagContent').innerHTML = `
+                <p style="margin-bottom:1rem; color:var(--gallery-text-secondary);">
+                    Apply tags to ${selectedImages.size} selected images
+                </p>
+                <div class="tag-category">
+                    <h5 style="font-size:0.75rem; margin-bottom:0.5rem;">Feature Tags</h5>
+                    <div class="quick-tags" id="batchFeatureTags">
+                        ${quickFeatureTags.map(t => `
+                            <span class="quick-tag" data-tag="${t}" onclick="this.classList.toggle('active')">${t}</span>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="tag-category" style="margin-top:1rem;">
+                    <h5 style="font-size:0.75rem; margin-bottom:0.5rem;">Context Tags</h5>
+                    <div class="quick-tags" id="batchContextTags">
+                        ${quickContextTags.map(t => `
+                            <span class="quick-tag" data-tag="${t}" onclick="this.classList.toggle('active')">${t}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeBatchModal() {
+            document.getElementById('batchModal').style.display = 'none';
+        }
+
+        async function applyBatchTags() {
+            const featureTags = Array.from(document.querySelectorAll('#batchFeatureTags .quick-tag.active'))
+                .map(el => el.dataset.tag);
+            const contextTags = Array.from(document.querySelectorAll('#batchContextTags .quick-tag.active'))
+                .map(el => el.dataset.tag);
+
+            const result = await batchTagImages(Array.from(selectedImages), {
+                feature_tags: featureTags,
+                context_tags: contextTags
+            });
+
+            closeBatchModal();
+            alert(`Tagged ${result.success.length} images (${result.failed.length} failed)`);
+
+            await fetchImages();
+            await fetchStats();
+        }
+
+        async function exportForGallery() {
+            const imageIds = selectedImages.size > 0 ? Array.from(selectedImages) : null;
+
+            try {
+                const resp = await fetch('/api/v1/image-pool/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_ids: imageIds,
+                        tagged_only: imageIds === null
+                    })
+                });
+
+                const data = await resp.json();
+
+                // Download as JSON
+                const blob = new Blob([JSON.stringify(data.images, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `image_pool_export_${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+
+                alert(`Exported ${data.count} images for gallery builder`);
+            } catch (e) {
+                alert('Export failed: ' + e.message);
+            }
+        }
+
+        // =============================================================================
+        // Filter handlers
+        // =============================================================================
+        document.getElementById('filterSource').addEventListener('change', e => {
+            filters.source = e.target.value;
+            currentPage = 1;
+            fetchImages();
+        });
+
+        document.getElementById('filterStatus').addEventListener('change', e => {
+            filters.status = e.target.value;
+            currentPage = 1;
+            fetchImages();
+        });
+
+        document.getElementById('filterQuery').addEventListener('input', e => {
+            filters.query = e.target.value;
+            currentPage = 1;
+            fetchImages();
+        });
+
+        document.querySelectorAll('#featureFilterTags .filter-tag').forEach(el => {
+            el.addEventListener('click', () => {
+                el.classList.toggle('active');
+                const tag = el.dataset.tag;
+                if (filters.featureTags.includes(tag)) {
+                    filters.featureTags = filters.featureTags.filter(t => t !== tag);
+                } else {
+                    filters.featureTags.push(tag);
+                }
+                currentPage = 1;
+                fetchImages();
+            });
+        });
+
+        document.querySelectorAll('#contextFilterTags .filter-tag').forEach(el => {
+            el.addEventListener('click', () => {
+                el.classList.toggle('active');
+                const tag = el.dataset.tag;
+                if (filters.contextTags.includes(tag)) {
+                    filters.contextTags = filters.contextTags.filter(t => t !== tag);
+                } else {
+                    filters.contextTags.push(tag);
+                }
+                currentPage = 1;
+                fetchImages();
+            });
+        });
+
+        // Pagination
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchImages();
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                fetchImages();
+            }
+        });
+
+        // Actions
+        document.getElementById('selectAllBtn').addEventListener('click', selectAll);
+        document.getElementById('batchTagBtn').addEventListener('click', openBatchModal);
+        document.getElementById('deleteSelectedBtn').addEventListener('click', deleteSelected);
+        document.getElementById('exportBtn').addEventListener('click', exportForGallery);
+
+        async function deleteSelected() {
+            if (selectedImages.size === 0) {
+                alert('Please select images first');
+                return;
+            }
+
+            if (!confirm(`Delete ${selectedImages.size} selected images?\n\nThis cannot be undone.`)) {
+                return;
+            }
+
+            let deleted = 0;
+            let failed = 0;
+
+            for (const imageId of selectedImages) {
+                try {
+                    const resp = await fetch(`/api/v1/image-pool/images/${imageId}`, { method: 'DELETE' });
+                    if (resp.ok) deleted++;
+                    else failed++;
+                } catch (e) {
+                    failed++;
+                }
+            }
+
+            selectedImages.clear();
+            showToast(`Deleted ${deleted} images${failed > 0 ? ` (${failed} failed)` : ''}`, failed > 0 ? 'error' : 'success');
+
+            await fetchImages();
+            await fetchStats();
+            renderDetail();
+        }
+
+        // =============================================================================
+        // Init
+        // =============================================================================
+        fetchImages();
+        fetchStats();
+    </script>
+</body>
+</html>

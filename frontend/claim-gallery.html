@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClaimGallery - Visual Evidence Viewer | Article Eater V22.0.0</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/gallery-streamlit.css">
+
+  <style>
+    /* Page-level styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--gallery-font-primary);
+      background: var(--gallery-bg-secondary);
+      min-height: 100vh;
+      padding: var(--gallery-space-6);
+    }
+
+    .page-header {
+      max-width: 1400px;
+      margin: 0 auto var(--gallery-space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-title {
+      font-size: var(--gallery-text-xl);
+      font-weight: 600;
+      color: var(--gallery-text-primary);
+    }
+
+    .page-subtitle {
+      font-size: var(--gallery-text-sm);
+      color: var(--gallery-text-secondary);
+    }
+
+    .page-controls {
+      display: flex;
+      gap: var(--gallery-space-3);
+    }
+
+    .page-control {
+      padding: var(--gallery-space-2) var(--gallery-space-4);
+      font-size: var(--gallery-text-sm);
+      font-weight: 500;
+      background: var(--gallery-bg-primary);
+      border: 1px solid var(--gallery-bg-tertiary);
+      border-radius: var(--gallery-radius-sm);
+      cursor: pointer;
+      color: var(--gallery-text-secondary);
+      transition: all var(--gallery-transition-fast);
+    }
+
+    .page-control:hover {
+      border-color: var(--gallery-link);
+      color: var(--gallery-link);
+    }
+
+    .page-control--active {
+      background: var(--gallery-link);
+      border-color: var(--gallery-link);
+      color: var(--gallery-text-inverse);
+    }
+
+    .gallery-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Drawer overlay */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--gallery-transition-normal);
+      z-index: 999;
+    }
+
+    .drawer-overlay--visible {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#gallery-main" class="gallery-skip-link">Skip to gallery content</a>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Visual Evidence Gallery</h1>
+      <p class="page-subtitle">Article Eater V22.0.0 (Post-Quinean)</p>
+    </div>
+    <div class="page-controls">
+      <select id="persona-select" class="page-control">
+        <option value="default">Default View</option>
+        <option value="architect">Architect</option>
+        <option value="student">Student</option>
+        <option value="researcher">Researcher</option>
+      </select>
+      <button id="export-btn" class="page-control">Export</button>
+    </div>
+  </header>
+
+  <!-- Gallery Container -->
+  <div class="gallery-wrapper">
+    <article id="gallery-main" class="claim-gallery" role="main" aria-label="Claim visual evidence gallery">
+
+      <!-- Gallery Header -->
+      <header class="gallery-header">
+        <div class="gallery-header__claim">
+          <h2 id="claim-statement" class="gallery-header__statement">
+            Loading claim...
+          </h2>
+          <div class="gallery-header__feature-outcome">
+            <span id="feature-tag" class="gallery-header__tag gallery-header__tag--feature">
+              Feature: Loading...
+            </span>
+            <span id="outcome-tag" class="gallery-header__tag gallery-header__tag--outcome">
+              Outcome: Loading...
+            </span>
+          </div>
+        </div>
+
+        <!-- Quality Bars -->
+        <div class="quality-bars" aria-label="Evidence quality metrics">
+          <div class="quality-bar quality-bar--design">
+            <div class="quality-bar__label">
+              <span>Design Strength</span>
+              <span id="quality-design" class="quality-bar__value">--</span>
+            </div>
+            <div class="quality-bar__track">
+              <div id="quality-design-fill" class="quality-bar__fill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="quality-bar quality-bar--consistency">
+            <div class="quality-bar__label">
+              <span>Consistency</span>
+              <span id="quality-consistency" class="quality-bar__value">--</span>
+            </div>
+            <div class="quality-bar__track">
+              <div id="quality-consistency-fill" class="quality-bar__fill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="quality-bar quality-bar--portability">
+            <div class="quality-bar__label">
+              <span>Portability</span>
+              <span id="quality-portability" class="quality-bar__value">--</span>
+            </div>
+            <div class="quality-bar__track">
+              <div id="quality-portability-fill" class="quality-bar__fill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Tabs -->
+      <nav class="gallery-tabs" role="tablist" aria-label="Gallery views">
+        <button class="gallery-tab gallery-tab--active" role="tab" aria-selected="true" data-tab="visual">
+          Visual Gallery
+        </button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-tab="evidence">
+          Evidence Details
+        </button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-tab="failures">
+          Failure Analysis
+        </button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-tab="export">
+          Export
+        </button>
+      </nav>
+
+      <!-- Visual Gallery Tab Content -->
+      <div id="tab-visual" class="tab-content" role="tabpanel">
+
+        <!-- Central Positives -->
+        <section class="gallery-section gallery-section--positive" aria-labelledby="section-positive-title">
+          <header class="gallery-section__header">
+            <span class="gallery-section__icon" aria-hidden="true">&#10003;</span>
+            <h3 id="section-positive-title" class="gallery-section__title">Central Positives</h3>
+            <span id="positive-count" class="gallery-section__subtitle">-- images</span>
+          </header>
+          <p style="color: var(--gallery-text-secondary); font-size: var(--gallery-text-sm); margin-bottom: var(--gallery-space-4);">
+            Images clearly showing the feature
+          </p>
+          <div id="positive-grid" class="gallery-grid" role="list">
+            <!-- Images inserted by JS -->
+          </div>
+        </section>
+
+        <!-- Central Negatives -->
+        <section class="gallery-section gallery-section--negative" aria-labelledby="section-negative-title">
+          <header class="gallery-section__header">
+            <span class="gallery-section__icon" aria-hidden="true">&#10007;</span>
+            <h3 id="section-negative-title" class="gallery-section__title">Central Negatives</h3>
+            <span id="negative-count" class="gallery-section__subtitle">-- images</span>
+          </header>
+          <p style="color: var(--gallery-text-secondary); font-size: var(--gallery-text-sm); margin-bottom: var(--gallery-space-4);">
+            Images clearly NOT showing the feature
+          </p>
+          <div id="negative-grid" class="gallery-grid" role="list">
+            <!-- Images inserted by JS -->
+          </div>
+        </section>
+
+        <!-- Near Misses -->
+        <section class="gallery-section gallery-section--near-miss" aria-labelledby="section-nearmiss-title">
+          <header class="gallery-section__header">
+            <span class="gallery-section__icon" aria-hidden="true">&#9888;</span>
+            <h3 id="section-nearmiss-title" class="gallery-section__title">Near Misses</h3>
+            <span id="nearmiss-count" class="gallery-section__subtitle">-- images</span>
+          </header>
+          <p style="color: var(--gallery-text-secondary); font-size: var(--gallery-text-sm); margin-bottom: var(--gallery-space-4);">
+            Borderline cases that reveal the decision boundary
+          </p>
+          <div id="nearmiss-grid" class="gallery-grid" role="list">
+            <!-- Images inserted by JS -->
+          </div>
+        </section>
+
+        <!-- Likely Failures -->
+        <section class="gallery-section gallery-section--failure" aria-labelledby="section-failure-title">
+          <header class="gallery-section__header">
+            <span class="gallery-section__icon" aria-hidden="true">&#9888;</span>
+            <h3 id="section-failure-title" class="gallery-section__title">Likely Failures</h3>
+            <span id="failure-count" class="gallery-section__subtitle">-- images</span>
+          </header>
+          <p style="color: var(--gallery-text-secondary); font-size: var(--gallery-text-sm); margin-bottom: var(--gallery-space-4);">
+            Feature present but moderators may prevent expected outcome
+          </p>
+          <div id="failure-grid" class="gallery-grid" role="list">
+            <!-- Images inserted by JS -->
+          </div>
+        </section>
+
+        <!-- Context Shift -->
+        <section class="gallery-section gallery-section--context" aria-labelledby="section-context-title">
+          <header class="gallery-section__header">
+            <span class="gallery-section__icon" aria-hidden="true">&#8596;</span>
+            <h3 id="section-context-title" class="gallery-section__title">Context Shift</h3>
+            <span id="context-count" class="gallery-section__subtitle">-- images</span>
+          </header>
+          <p style="color: var(--gallery-text-secondary); font-size: var(--gallery-text-sm); margin-bottom: var(--gallery-space-4);">
+            Feature in different building types (portability test)
+          </p>
+          <div id="context-grid" class="gallery-grid" role="list">
+            <!-- Images inserted by JS -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Evidence Details Tab Content (hidden by default) -->
+      <div id="tab-evidence" class="tab-content" role="tabpanel" style="display: none;">
+        <section class="gallery-section">
+          <h3 class="gallery-section__title">Evidence Summary</h3>
+          <div id="evidence-details" style="padding: var(--gallery-space-4);">
+            <p style="color: var(--gallery-text-muted);">Select an image to view detailed evidence information.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Failure Analysis Tab Content (hidden by default) -->
+      <div id="tab-failures" class="tab-content" role="tabpanel" style="display: none;">
+        <section class="gallery-section">
+          <h3 class="gallery-section__title">Failure Mode Analysis</h3>
+          <div id="failure-analysis" style="padding: var(--gallery-space-4);">
+            <p style="color: var(--gallery-text-muted);">Failure mode analysis will be shown here.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Export Tab Content (hidden by default) -->
+      <div id="tab-export" class="tab-content" role="tabpanel" style="display: none;">
+        <section class="gallery-section">
+          <h3 class="gallery-section__title">Export Gallery</h3>
+          <div style="padding: var(--gallery-space-4);">
+            <p style="color: var(--gallery-text-secondary); margin-bottom: var(--gallery-space-4);">
+              Export this gallery in various formats for design documents and research.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: var(--gallery-space-3); max-width: 400px;">
+              <button class="drawer-action" onclick="exportGallery('json')">
+                <span>Export as JSON (data)</span>
+              </button>
+              <button class="drawer-action" onclick="exportGallery('html')">
+                <span>Export as HTML (interactive)</span>
+              </button>
+              <button class="drawer-action" onclick="exportGallery('brief')">
+                <span>Export as Design Brief</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </article>
+  </div>
+
+  <!-- Drawer Overlay -->
+  <div id="drawer-overlay" class="drawer-overlay"></div>
+
+  <!-- Image Detail Drawer -->
+  <aside id="image-drawer" class="image-drawer" role="dialog" aria-labelledby="drawer-title" aria-hidden="true">
+    <header class="image-drawer__header">
+      <h4 id="drawer-title" style="font-size: var(--gallery-text-lg); font-weight: 600;">Image Details</h4>
+      <button id="drawer-close" class="image-drawer__close" aria-label="Close drawer">
+        &times;
+      </button>
+    </header>
+
+    <div class="image-drawer__content">
+      <img id="drawer-image" class="image-drawer__large-image" src="" alt="Selected image">
+
+      <!-- Construct Confidence -->
+      <div class="image-drawer__section">
+        <h5 class="image-drawer__section-title">Construct Confidence</h5>
+        <div class="confidence-bar" id="drawer-confidence-bar">
+          <div id="drawer-confidence-fill" class="confidence-bar__fill" style="width: 0%"></div>
+        </div>
+        <div class="confidence-bar__label">
+          <span id="drawer-confidence-basis">--</span>
+          <span id="drawer-confidence-score">--</span>
+        </div>
+      </div>
+
+      <!-- Selection Reason -->
+      <div class="image-drawer__section">
+        <h5 class="image-drawer__section-title">Why Selected</h5>
+        <p id="drawer-reason" class="image-drawer__section-content">--</p>
+      </div>
+
+      <!-- Feature Cues -->
+      <div class="image-drawer__section">
+        <h5 class="image-drawer__section-title">Feature Cues</h5>
+        <ul id="drawer-cues" class="image-drawer__cue-list">
+          <!-- Cues inserted by JS -->
+        </ul>
+      </div>
+
+      <!-- Moderator Flags -->
+      <div id="drawer-warnings-section" class="image-drawer__section" style="display: none;">
+        <h5 class="image-drawer__section-title">Moderator Flags</h5>
+        <div id="drawer-warnings">
+          <!-- Warnings inserted by JS -->
+        </div>
+      </div>
+
+      <!-- Outcome Evidence -->
+      <div class="image-drawer__section">
+        <h5 class="image-drawer__section-title">Outcome Evidence</h5>
+        <span id="drawer-outcome-badge" class="outcome-badge">--</span>
+        <p id="drawer-outcome-note" style="margin-top: var(--gallery-space-2); font-size: var(--gallery-text-sm); color: var(--gallery-text-secondary);">
+        </p>
+      </div>
+
+      <!-- Provenance -->
+      <div class="image-drawer__section">
+        <h5 class="image-drawer__section-title">Provenance</h5>
+        <dl class="image-drawer__provenance">
+          <dt>Source</dt>
+          <dd id="drawer-source">--</dd>
+          <dt>License</dt>
+          <dd id="drawer-license">--</dd>
+          <dt>Attribution</dt>
+          <dd id="drawer-attribution">--</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Drawer Actions -->
+    <div class="drawer-actions">
+      <button class="drawer-action" onclick="findSimilar('holds')">
+        Find similar: claim holds
+      </button>
+      <button class="drawer-action" onclick="findSimilar('fails')">
+        Find similar: claim fails
+      </button>
+      <button class="drawer-action drawer-action--danger" onclick="markMisclassified()">
+        Mark as misclassified
+      </button>
+    </div>
+  </aside>
+
+  <script>
+    // ==========================================================================
+    // ClaimGallery Viewer JavaScript
+    // ==========================================================================
+
+    // State
+    let galleryData = null;
+    let selectedImage = null;
+
+    // DOM Elements
+    const drawer = document.getElementById('image-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawerClose = document.getElementById('drawer-close');
+
+    // ==========================================================================
+    // Data Loading
+    // ==========================================================================
+
+    async function loadGallery(galleryId) {
+      try {
+        // Try to load from API first
+        const response = await fetch(`/api/v1/galleries/${galleryId}`);
+        if (response.ok) {
+          galleryData = await response.json();
+          renderGallery(galleryData);
+          return;
+        }
+      } catch (e) {
+        console.log('API not available, using demo data');
+      }
+
+      // Fall back to demo data
+      galleryData = getDemoData();
+      renderGallery(galleryData);
+    }
+
+    function getDemoData() {
+      return {
+        schema_version: "claim_gallery.v1",
+        gallery_id: "gal_demo_001",
+        generated_at: new Date().toISOString(),
+        claim: {
+          claim_id: "claim_refuge_001",
+          statement: "Refuge edges (partial enclosure) increase perceived safety in open office environments",
+          feature: {
+            feature_id: "feat_refuge_edge",
+            feature_name: "Refuge edges",
+            feature_definition: "Partial enclosure providing visual shelter while maintaining prospect"
+          },
+          outcome: {
+            outcome_id: "out_perceived_safety",
+            outcome_name: "Perceived safety",
+            valence: "higher_is_better"
+          }
+        },
+        evidence_quality: {
+          design_strength: 0.72,
+          consistency: 0.68,
+          portability: 0.55
+        },
+        slots: {
+          central_positive: generateDemoImages(6, 'positive', 0.75, 0.95),
+          central_negative: generateDemoImages(4, 'negative', 0.10, 0.40),
+          near_miss: generateDemoImages(5, 'nearmiss', 0.55, 0.70),
+          likely_failure: generateDemoImages(3, 'failure', 0.80, 0.90, true),
+          context_shift: generateDemoImages(4, 'context', 0.70, 0.85)
+        }
+      };
+    }
+
+    function generateDemoImages(count, type, minScore, maxScore, hasWarnings = false) {
+      const buildingTypes = ['Office', 'Hospital', 'School', 'Library', 'Retail'];
+      const cuesByType = {
+        positive: ['Alcove seating area', 'Partial ceiling drop', 'View to exterior maintained', 'Defined edge boundary'],
+        negative: ['Open floor plan', 'No enclosure elements', 'Uniform ceiling height', 'Exposed workspace'],
+        nearmiss: ['Partial enclosure present', 'Ambiguous boundary definition', 'Moderate edge definition'],
+        failure: ['Clear refuge edges', 'Visible crowding', 'Noise indicators present'],
+        context: ['Different building type', 'Same feature presence', 'Varied application']
+      };
+
+      return Array.from({ length: count }, (_, i) => ({
+        image_id: `${type}_${i}`,
+        uri_or_path: `https://picsum.photos/400/300?random=${type}${i}`,
+        selection_reason: `${type.charAt(0).toUpperCase() + type.slice(1)} example: score=${(minScore + Math.random() * (maxScore - minScore)).toFixed(2)}`,
+        construct_confidence: {
+          score: minScore + Math.random() * (maxScore - minScore),
+          basis: 'model_prediction',
+          explanatory_cues: cuesByType[type].slice(0, 2 + Math.floor(Math.random() * 2))
+        },
+        outcome_evidence: {
+          status: ['measured_on_this_image', 'literature_link_only', 'measured_on_similar_context'][Math.floor(Math.random() * 3)]
+        },
+        tags: {
+          building_type: buildingTypes[i % buildingTypes.length],
+          moderator_flags: hasWarnings ? ['high_occupancy', 'noise_level'].slice(0, 1 + Math.floor(Math.random() * 2)) : []
+        },
+        provenance: {
+          source: `Research Study ${i + 1}`,
+          license: 'CC BY-NC 4.0',
+          attribution: `Kaplan et al. (202${i % 6})`
+        }
+      }));
+    }
+
+    // ==========================================================================
+    // Rendering
+    // ==========================================================================
+
+    function renderGallery(data) {
+      // Header
+      document.getElementById('claim-statement').textContent = data.claim.statement;
+      document.getElementById('feature-tag').textContent = `Feature: ${data.claim.feature.feature_name}`;
+      document.getElementById('outcome-tag').textContent = `Outcome: ${data.claim.outcome.outcome_name}`;
+
+      // Quality bars
+      renderQualityBar('design', data.evidence_quality.design_strength);
+      renderQualityBar('consistency', data.evidence_quality.consistency);
+      renderQualityBar('portability', data.evidence_quality.portability);
+
+      // Slots
+      renderSlot('positive', data.slots.central_positive);
+      renderSlot('negative', data.slots.central_negative);
+      renderSlot('nearmiss', data.slots.near_miss);
+      renderSlot('failure', data.slots.likely_failure || []);
+      renderSlot('context', data.slots.context_shift || []);
+    }
+
+    function renderQualityBar(type, value) {
+      const displayValue = (value * 100).toFixed(0);
+      document.getElementById(`quality-${type}`).textContent = `${displayValue}%`;
+      document.getElementById(`quality-${type}-fill`).style.width = `${displayValue}%`;
+      document.getElementById(`quality-${type}-fill`).style.backgroundPosition = `${(1 - value) * 100}% 0`;
+    }
+
+    function renderSlot(slotId, images) {
+      const grid = document.getElementById(`${slotId}-grid`);
+      const count = document.getElementById(`${slotId}-count`);
+
+      count.textContent = `${images.length} images`;
+      grid.innerHTML = '';
+
+      if (images.length === 0) {
+        grid.innerHTML = `
+          <div class="gallery-empty">
+            <div class="gallery-empty__icon">&#128444;</div>
+            <div class="gallery-empty__title">No images</div>
+            <div class="gallery-empty__text">No images match this slot's criteria</div>
+          </div>
+        `;
+        return;
+      }
+
+      images.forEach(img => {
+        const card = createImageCard(img);
+        grid.appendChild(card);
+      });
+    }
+
+    function createImageCard(image) {
+      const card = document.createElement('div');
+      card.className = 'image-card';
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('data-image-id', image.image_id);
+
+      const confidence = image.construct_confidence.score;
+      const confClass = confidence >= 0.7 ? 'high' : confidence >= 0.5 ? 'medium' : 'low';
+      const hasWarnings = image.tags.moderator_flags && image.tags.moderator_flags.length > 0;
+
+      card.innerHTML = `
+        <div class="image-card__image-wrapper">
+          <img class="image-card__image"
+               src="${image.uri_or_path}"
+               alt="Image ${image.image_id}"
+               loading="lazy">
+          <div class="image-card__overlay"></div>
+        </div>
+        <div class="image-card__meta">
+          <div class="image-card__context">
+            ${image.tags.building_type ? `<span class="image-card__badge image-card__badge--building">${image.tags.building_type}</span>` : ''}
+            ${hasWarnings ? `<span class="image-card__badge image-card__badge--warning">&#9888; ${image.tags.moderator_flags.length}</span>` : ''}
+          </div>
+          <div class="confidence-bar confidence-bar--${confClass}">
+            <div class="confidence-bar__fill" style="width: ${confidence * 100}%"></div>
+          </div>
+          <div class="confidence-bar__label">
+            <span>Confidence</span>
+            <span>${(confidence * 100).toFixed(0)}%</span>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => openDrawer(image));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openDrawer(image);
+        }
+      });
+
+      return card;
+    }
+
+    // ==========================================================================
+    // Drawer
+    // ==========================================================================
+
+    function openDrawer(image) {
+      selectedImage = image;
+
+      // Update drawer content
+      document.getElementById('drawer-image').src = image.uri_or_path;
+      document.getElementById('drawer-image').alt = `Detailed view of ${image.image_id}`;
+      document.getElementById('drawer-reason').textContent = image.selection_reason;
+
+      // Confidence
+      const conf = image.construct_confidence;
+      const confPercent = (conf.score * 100).toFixed(0);
+      document.getElementById('drawer-confidence-score').textContent = `${confPercent}%`;
+      document.getElementById('drawer-confidence-basis').textContent = conf.basis.replace('_', ' ');
+      document.getElementById('drawer-confidence-fill').style.width = `${confPercent}%`;
+
+      const confBar = document.getElementById('drawer-confidence-bar');
+      confBar.className = 'confidence-bar';
+      if (conf.score >= 0.7) confBar.classList.add('confidence-bar--high');
+      else if (conf.score >= 0.5) confBar.classList.add('confidence-bar--medium');
+      else confBar.classList.add('confidence-bar--low');
+
+      // Cues
+      const cuesList = document.getElementById('drawer-cues');
+      cuesList.innerHTML = conf.explanatory_cues.map(cue =>
+        `<li class="image-drawer__cue">${cue}</li>`
+      ).join('');
+
+      // Warnings
+      const warningsSection = document.getElementById('drawer-warnings-section');
+      const warningsDiv = document.getElementById('drawer-warnings');
+      if (image.tags.moderator_flags && image.tags.moderator_flags.length > 0) {
+        warningsSection.style.display = 'block';
+        warningsDiv.innerHTML = image.tags.moderator_flags.map(flag =>
+          `<div class="image-drawer__warning">
+            <span class="image-drawer__warning-icon">&#9888;</span>
+            ${flag.replace('_', ' ')}
+          </div>`
+        ).join('');
+      } else {
+        warningsSection.style.display = 'none';
+      }
+
+      // Outcome evidence
+      const outcomeStatus = image.outcome_evidence.status;
+      const outcomeBadge = document.getElementById('drawer-outcome-badge');
+      outcomeBadge.className = 'outcome-badge';
+
+      const outcomeLabels = {
+        'measured_on_this_image': { label: 'Measured', class: 'measured', note: 'Outcome was directly measured on this image.' },
+        'measured_on_similar_context': { label: 'Similar Context', class: 'similar', note: 'Outcome measured in similar settings.' },
+        'literature_link_only': { label: 'Literature Only', class: 'literature', note: 'Link is through literature, not direct measurement.' },
+        'unknown': { label: 'Unknown', class: 'unknown', note: 'Outcome evidence status unknown.' }
+      };
+
+      const outcomeInfo = outcomeLabels[outcomeStatus] || outcomeLabels['unknown'];
+      outcomeBadge.textContent = outcomeInfo.label;
+      outcomeBadge.classList.add(`outcome-badge--${outcomeInfo.class}`);
+      document.getElementById('drawer-outcome-note').textContent = outcomeInfo.note;
+
+      // Provenance
+      document.getElementById('drawer-source').textContent = image.provenance.source;
+      document.getElementById('drawer-license').textContent = image.provenance.license;
+      document.getElementById('drawer-attribution').textContent = image.provenance.attribution;
+
+      // Show drawer
+      drawer.classList.add('image-drawer--open');
+      drawer.setAttribute('aria-hidden', 'false');
+      drawerOverlay.classList.add('drawer-overlay--visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('image-drawer--open');
+      drawer.setAttribute('aria-hidden', 'true');
+      drawerOverlay.classList.remove('drawer-overlay--visible');
+      document.body.style.overflow = '';
+      selectedImage = null;
+    }
+
+    drawerClose.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    // ==========================================================================
+    // Tabs
+    // ==========================================================================
+
+    document.querySelectorAll('.gallery-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update tab states
+        document.querySelectorAll('.gallery-tab').forEach(t => {
+          t.classList.remove('gallery-tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('gallery-tab--active');
+        tab.setAttribute('aria-selected', 'true');
+
+        // Show corresponding content
+        const tabId = tab.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.style.display = 'none';
+        });
+        document.getElementById(`tab-${tabId}`).style.display = 'block';
+      });
+    });
+
+    // ==========================================================================
+    // Actions
+    // ==========================================================================
+
+    function findSimilar(mode) {
+      if (!selectedImage) return;
+      alert(`Finding similar images where claim ${mode}...\n\nThis feature requires the full API.`);
+    }
+
+    function markMisclassified() {
+      if (!selectedImage) return;
+      const reason = prompt('Why do you think this image is misclassified?');
+      if (reason) {
+        console.log('Feedback:', {
+          image_id: selectedImage.image_id,
+          event_type: 'construct_label',
+          reason: reason
+        });
+        alert('Feedback recorded. Thank you!');
+      }
+    }
+
+    function exportGallery(format) {
+      if (format === 'json') {
+        const blob = new Blob([JSON.stringify(galleryData, null, 2)], { type: 'application/json' });
+        downloadBlob(blob, `gallery_${galleryData.gallery_id}.json`);
+      } else {
+        alert(`${format.toUpperCase()} export is not yet implemented.`);
+      }
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ==========================================================================
+    // Initialization
+    // ==========================================================================
+
+    // Get gallery ID from URL or use demo
+    const urlParams = new URLSearchParams(window.location.search);
+    const galleryId = urlParams.get('id') || 'demo';
+
+    loadGallery(galleryId);
+  </script>
+</body>
+</html>

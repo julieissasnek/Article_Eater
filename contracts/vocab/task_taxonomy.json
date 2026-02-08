@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_id": "ae.task_taxonomy.v1",
+  "title": "Task Taxonomy for CNfA Knowledge System",
+  "version": "1.0.0",
+  "created": "2026-02-03",
+  "description": "MVP task taxonomy per panel consultation (Klein, Ericsson, Kahneman, Kaplan, Simon, Suchman). 6 base categories × 3 skill levels = 18 effective categories.",
+
+  "dimensions": {
+    "cognitive_demand": {
+      "description": "Primary cognitive load type (maps roughly to Kahneman's System 1/2)",
+      "values": {
+        "high_demand": {
+          "name": "High Demand",
+          "description": "Focused attention, analytical, effortful processing (System 2)",
+          "examples": ["proofreading", "complex analysis", "problem-solving", "learning new material", "vigilance tasks"],
+          "environmental_needs": "Low distraction, sustained time, minimal interruption",
+          "arousal_optimum": "moderate-low"
+        },
+        "low_demand": {
+          "name": "Low Demand",
+          "description": "Routine, automatic, well-practiced tasks (System 1)",
+          "examples": ["data entry", "familiar procedures", "routine monitoring", "habitual tasks"],
+          "environmental_needs": "Can tolerate more ambient complexity",
+          "arousal_optimum": "moderate-high"
+        },
+        "restorative": {
+          "name": "Restorative",
+          "description": "Recovery, break, restoration of attentional resources (per Kaplan ART)",
+          "examples": ["break", "nature walk", "contemplation", "informal social", "daydreaming"],
+          "environmental_needs": "Soft fascination, being away, extent, compatibility",
+          "arousal_optimum": "low"
+        }
+      }
+    },
+
+    "social_structure": {
+      "description": "Social configuration of work",
+      "values": {
+        "solitary": {
+          "name": "Solitary",
+          "description": "Individual work without interaction",
+          "examples": ["solo reading", "individual analysis", "personal reflection"],
+          "environmental_needs": "Acoustic privacy, visual privacy optional"
+        },
+        "collaborative": {
+          "name": "Collaborative",
+          "description": "Work involving others (dyadic through large group)",
+          "examples": ["meetings", "brainstorming", "consultation", "teaching", "presentation"],
+          "subtypes": {
+            "dyadic": "Two-person interaction",
+            "small_group": "3-8 persons",
+            "large_group": "9+ persons"
+          },
+          "environmental_needs": "Shared visual access, acoustic containment, flexible furniture"
+        }
+      }
+    }
+  },
+
+  "modifiers": {
+    "skill_level": {
+      "description": "Performer's expertise level (per Ericsson). Affects environmental tolerance.",
+      "source": "Ericsson panel input",
+      "values": {
+        "novice": {
+          "name": "Novice",
+          "description": "New to task, requires conscious attention to all aspects",
+          "environmental_sensitivity": "high",
+          "distraction_tolerance": "low",
+          "notes": "Benefits from structured environment, clear cues, minimal complexity"
+        },
+        "intermediate": {
+          "name": "Intermediate",
+          "description": "Some automaticity, but still effortful in places",
+          "environmental_sensitivity": "moderate",
+          "distraction_tolerance": "moderate"
+        },
+        "expert": {
+          "name": "Expert",
+          "description": "High automaticity, can chunk and filter effectively",
+          "environmental_sensitivity": "low",
+          "distraction_tolerance": "high",
+          "notes": "Can maintain focus in noisier environments due to attentional chunking"
+        }
+      },
+      "default": "intermediate"
+    },
+
+    "time_pressure": {
+      "description": "Temporal urgency of task (per Klein NDM research)",
+      "source": "Klein panel input",
+      "values": {
+        "self_paced": {
+          "name": "Self-Paced",
+          "description": "No external time constraints"
+        },
+        "externally_paced": {
+          "name": "Externally Paced",
+          "description": "Deadlines or rhythm set by others/system"
+        },
+        "time_critical": {
+          "name": "Time Critical",
+          "description": "Immediate decisions required, high stakes timing",
+          "examples": ["emergency response", "surgery", "live performance"],
+          "notes": "Interacts strongly with environmental stressors"
+        }
+      },
+      "default": "self_paced"
+    },
+
+    "regulatory_state": {
+      "description": "Person's current resource state (per R. Kaplan ART)",
+      "source": "R. Kaplan panel input",
+      "values": {
+        "depleted": {
+          "name": "Depleted",
+          "description": "Attentional resources exhausted, needs restoration",
+          "environmental_needs": "Restorative environment critical"
+        },
+        "resourced": {
+          "name": "Resourced",
+          "description": "Adequate attentional resources available",
+          "environmental_needs": "Standard recommendations apply"
+        },
+        "overloaded": {
+          "name": "Overloaded",
+          "description": "Currently exceeding capacity, needs simplification",
+          "environmental_needs": "Reduce complexity, remove stressors"
+        }
+      },
+      "default": "resourced",
+      "notes": "Same environment serves different functions based on person's state"
+    }
+  },
+
+  "flags": {
+    "ecological_validity": {
+      "description": "How close to real-world conditions (per Suchman)",
+      "source": "Suchman panel input",
+      "values": {
+        "lab_task": {
+          "name": "Laboratory Task",
+          "description": "Controlled experimental setting",
+          "transfer_warning": "Findings may not transfer to real-world contexts"
+        },
+        "real_world_analog": {
+          "name": "Real-World Analog",
+          "description": "Realistic setting but still somewhat controlled",
+          "examples": ["office study", "classroom observation", "hospital ward"]
+        },
+        "in_situ": {
+          "name": "In Situ",
+          "description": "Naturalistic field study in actual use context",
+          "examples": ["ethnographic observation", "field experiment"]
+        }
+      },
+      "default": "lab_task"
+    },
+
+    "task_specificity": {
+      "description": "How specific is the finding to this exact task (per Ericsson, Klein)",
+      "values": {
+        "instrument_specific": {
+          "name": "Instrument Specific",
+          "description": "Finding applies only to this specific task/instrument",
+          "generalization": "Do not generalize without evidence"
+        },
+        "category_general": {
+          "name": "Category General",
+          "description": "Finding likely applies to similar tasks in same category",
+          "generalization": "Cautious generalization within category"
+        },
+        "task_general": {
+          "name": "Task General",
+          "description": "Finding appears task-independent",
+          "generalization": "Broader generalization warranted if mechanism understood"
+        }
+      },
+      "default": "instrument_specific"
+    }
+  },
+
+  "common_experimental_tasks": {
+    "_comment": "Mapping from named instruments to taxonomy categories. High-confidence inference.",
+
+    "d2_test": {
+      "canonical_name": "d2 Test of Attention",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "sustained_vigilance",
+      "typical_duration": "4-8 minutes",
+      "inference_confidence": 0.95
+    },
+    "stroop_task": {
+      "canonical_name": "Stroop Color-Word Task",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "inhibitory_control",
+      "inference_confidence": 0.95
+    },
+    "remote_associates_test": {
+      "canonical_name": "Remote Associates Test (RAT)",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "convergent_creative_retrieval",
+      "notes": "Often mislabeled as 'creativity' but is convergent, not divergent",
+      "inference_confidence": 0.95
+    },
+    "alternative_uses_task": {
+      "canonical_name": "Alternative Uses Task (AUT)",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "divergent_generation",
+      "notes": "True divergent creativity task",
+      "inference_confidence": 0.95
+    },
+    "n_back": {
+      "canonical_name": "N-Back Task",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "working_memory_updating",
+      "inference_confidence": 0.95
+    },
+    "digit_span": {
+      "canonical_name": "Digit Span Task",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "working_memory_capacity",
+      "inference_confidence": 0.95
+    },
+    "continuous_performance_test": {
+      "canonical_name": "Continuous Performance Test (CPT)",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "sustained_attention_vigilance",
+      "inference_confidence": 0.95
+    },
+    "ravens_progressive_matrices": {
+      "canonical_name": "Raven's Progressive Matrices",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "fluid_reasoning",
+      "inference_confidence": 0.95
+    },
+    "trail_making_test": {
+      "canonical_name": "Trail Making Test (TMT)",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "cognitive_flexibility",
+      "inference_confidence": 0.95
+    },
+    "proofreading_task": {
+      "canonical_name": "Proofreading Task",
+      "cognitive_demand": "high_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "focused_attention_error_detection",
+      "inference_confidence": 0.90
+    },
+    "brainstorming": {
+      "canonical_name": "Group Brainstorming",
+      "cognitive_demand": "high_demand",
+      "social_structure": "collaborative",
+      "cognitive_process": "divergent_generation",
+      "inference_confidence": 0.85
+    },
+    "panas": {
+      "canonical_name": "Positive and Negative Affect Schedule",
+      "cognitive_demand": "low_demand",
+      "social_structure": "solitary",
+      "cognitive_process": "self_report",
+      "notes": "Measurement instrument, not task per se",
+      "inference_confidence": 0.80
+    },
+    "nature_walk": {
+      "canonical_name": "Nature Walk / Outdoor Walk",
+      "cognitive_demand": "restorative",
+      "social_structure": "solitary",
+      "cognitive_process": "restoration",
+      "inference_confidence": 0.90
+    },
+    "break_rest": {
+      "canonical_name": "Rest Break",
+      "cognitive_demand": "restorative",
+      "social_structure": "solitary",
+      "cognitive_process": "restoration",
+      "inference_confidence": 0.85
+    }
+  },
+
+  "keyword_patterns": {
+    "_comment": "Regex patterns for inferring task type from descriptions. Medium confidence.",
+
+    "high_demand_patterns": [
+      "proofread|proofreading",
+      "analyz|analysis|analytical",
+      "problem.?solv",
+      "concentrat|focus",
+      "study|studying|learn",
+      "complex.?task",
+      "cognitive.?task",
+      "attention.?task",
+      "memory.?task",
+      "vigilance"
+    ],
+    "low_demand_patterns": [
+      "routine",
+      "data entry",
+      "familiar.?task",
+      "simple.?task",
+      "repetitive"
+    ],
+    "restorative_patterns": [
+      "break|rest|pause",
+      "walk|walking",
+      "relax|relaxation",
+      "recover|restoration",
+      "nature.?view|view.?nature"
+    ],
+    "collaborative_patterns": [
+      "group|team",
+      "collaborat|cooperat",
+      "meeting|discussion",
+      "brainstorm",
+      "present|presentation"
+    ]
+  },
+
+  "category_combinations": {
+    "_comment": "The 6 base categories (3 cognitive × 2 social)",
+    "categories": [
+      {"id": "high_demand.solitary", "name": "Focused Individual Work", "examples": ["analysis", "study", "proofreading"]},
+      {"id": "high_demand.collaborative", "name": "Demanding Group Work", "examples": ["brainstorming", "problem-solving meeting", "design review"]},
+      {"id": "low_demand.solitary", "name": "Routine Individual Work", "examples": ["data entry", "filing", "familiar procedures"]},
+      {"id": "low_demand.collaborative", "name": "Routine Group Work", "examples": ["status meetings", "casual coordination"]},
+      {"id": "restorative.solitary", "name": "Individual Restoration", "examples": ["break", "nature walk", "meditation"]},
+      {"id": "restorative.collaborative", "name": "Social Restoration", "examples": ["casual conversation", "coffee break with colleagues"]}
+    ]
+  },
+
+  "meta": {
+    "panel_consultation": "docs/PANEL_CONSULTATION_TASK_CONTEXT_2026_02_03.md",
+    "integration_plan": "docs/TASK_CONTEXT_INTEGRATION_PLAN_2026_02_03.md",
+    "design_principles": [
+      "Start simple, iterate (Simon)",
+      "Track uncertainty on all inferences (Simon, Kahneman)",
+      "Skill level affects environmental tolerance (Ericsson)",
+      "Context shapes task meaning (Klein, Suchman)",
+      "Flag ecological validity (Suchman)",
+      "Person is agent, not passive receiver (Kaplan)"
+    ]
+  }
+}

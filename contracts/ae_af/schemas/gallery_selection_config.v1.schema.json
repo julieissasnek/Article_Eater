@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/gallery_selection_config.v1.schema.json",
+  "title": "GallerySelectionConfig v1",
+  "description": "Configuration for deterministic, auditable gallery selection",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "config_id",
+    "feature_threshold_tau",
+    "near_miss_band",
+    "slot_targets",
+    "diversity",
+    "facet_balance",
+    "failure_risk",
+    "pair_mining",
+    "determinism"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "gallery_selection_config.v1" },
+    "config_id": { "type": "string", "minLength": 8 },
+
+    "persona_profile": {
+      "type": "string",
+      "enum": ["architect", "student", "researcher", "default"],
+      "default": "default"
+    },
+
+    "feature_threshold_tau": { "type": "number", "minimum": 0, "maximum": 1 },
+    "near_miss_band": { "type": "number", "minimum": 0, "maximum": 0.5 },
+
+    "slot_targets": {
+      "type": "object",
+      "required": ["central_positive", "central_negative", "near_miss"],
+      "properties": {
+        "central_positive": { "$ref": "#/$defs/slot_target" },
+        "central_negative": { "$ref": "#/$defs/slot_target" },
+        "near_miss": { "$ref": "#/$defs/slot_target" },
+        "likely_failure": { "$ref": "#/$defs/slot_target" },
+        "context_shift": { "$ref": "#/$defs/slot_target" }
+      },
+      "additionalProperties": false
+    },
+
+    "diversity": {
+      "type": "object",
+      "required": ["dedupe_key", "max_per_dedupe_key", "clustering"],
+      "properties": {
+        "dedupe_key": {
+          "type": "string",
+          "enum": ["project_id", "source_id", "study_id", "none"]
+        },
+        "max_per_dedupe_key": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "clustering": {
+          "type": "object",
+          "required": ["method", "k", "min_cluster_distance"],
+          "properties": {
+            "method": { "type": "string", "enum": ["kmeans", "hdbscan", "none"] },
+            "k": { "type": "integer", "minimum": 1, "maximum": 200 },
+            "min_cluster_distance": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+
+    "facet_balance": {
+      "type": "object",
+      "required": ["enabled", "facets"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "facets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["facet_name", "weight", "max_skew"],
+            "properties": {
+              "facet_name": {
+                "type": "string",
+                "enum": ["building_type", "culture_region", "modality", "indoor_outdoor", "task_proxy"]
+              },
+              "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+              "max_skew": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        }
+      }
+    },
+
+    "failure_risk": {
+      "type": "object",
+      "required": ["enabled", "moderators"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "moderators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["moderator_id", "weight", "risk_threshold"],
+            "properties": {
+              "moderator_id": { "type": "string" },
+              "weight": { "type": "number", "minimum": 0, "maximum": 5 },
+              "risk_threshold": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "method": {
+          "type": "string",
+          "enum": ["rule_based", "logistic", "unknown"],
+          "default": "rule_based"
+        }
+      }
+    },
+
+    "pair_mining": {
+      "type": "object",
+      "required": ["enabled", "similarity_metric", "confusion", "controlled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "similarity_metric": { "type": "string", "enum": ["cosine_embedding", "tag_jaccard", "hybrid"] },
+
+        "confusion": {
+          "type": "object",
+          "required": ["min_similarity", "max_pairs"],
+          "properties": {
+            "min_similarity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "max_pairs": { "type": "integer", "minimum": 0, "maximum": 200 }
+          }
+        },
+
+        "controlled": {
+          "type": "object",
+          "required": ["match_facets", "max_pairs"],
+          "properties": {
+            "match_facets": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["building_type", "culture_region", "modality", "task_proxy", "indoor_outdoor"]
+              }
+            },
+            "max_pairs": { "type": "integer", "minimum": 0, "maximum": 200 },
+            "max_feature_diff_for_controls": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+
+    "determinism": {
+      "type": "object",
+      "required": ["random_seed", "stable_sort_keys"],
+      "properties": {
+        "random_seed": { "type": "integer" },
+        "stable_sort_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["feature_score", "failure_risk", "diversity_rank", "image_id"]
+          }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "slot_target": {
+      "type": "object",
+      "required": ["min", "target", "max", "fallback_policy"],
+      "properties": {
+        "min": { "type": "integer", "minimum": 0, "maximum": 50 },
+        "target": { "type": "integer", "minimum": 0, "maximum": 50 },
+        "max": { "type": "integer", "minimum": 0, "maximum": 50 },
+        "fallback_policy": {
+          "type": "string",
+          "enum": ["shrink_slot", "borrow_from_near_miss", "borrow_from_context_shift", "emit_insufficient_coverage"]
+        }
+      }
+    }
+  }
+}

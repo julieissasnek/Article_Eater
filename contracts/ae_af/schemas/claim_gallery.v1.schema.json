@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/claim_gallery.v1.schema.json",
+  "title": "ClaimGallery v1",
+  "description": "Visual evidence gallery for a claim, showing positive, negative, and near-miss exemplars",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "gallery_id",
+    "claim",
+    "evidence_quality",
+    "scope",
+    "slots",
+    "generated_at",
+    "provenance_summary"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "claim_gallery.v1" },
+    "gallery_id": { "type": "string", "minLength": 8 },
+    "generated_at": { "type": "string", "format": "date-time" },
+
+    "claim": {
+      "type": "object",
+      "required": ["claim_id", "statement", "feature", "outcome"],
+      "properties": {
+        "claim_id": { "type": "string" },
+        "statement": { "type": "string", "minLength": 10 },
+
+        "feature": {
+          "type": "object",
+          "required": ["feature_id", "feature_name"],
+          "properties": {
+            "feature_id": { "type": "string" },
+            "feature_name": { "type": "string" },
+            "feature_definition": { "type": "string" },
+            "feature_aliases": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+
+        "outcome": {
+          "type": "object",
+          "required": ["outcome_id", "outcome_name"],
+          "properties": {
+            "outcome_id": { "type": "string" },
+            "outcome_name": { "type": "string" },
+            "outcome_definition": { "type": "string" },
+            "valence": {
+              "type": "string",
+              "enum": ["higher_is_better", "higher_is_worse", "neutral_or_contextual", "unknown"]
+            }
+          }
+        },
+
+        "moderators_expected": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["moderator_id", "moderator_name"],
+            "properties": {
+              "moderator_id": { "type": "string" },
+              "moderator_name": { "type": "string" },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "evidence_quality": {
+      "type": "object",
+      "required": ["design_strength", "consistency", "portability"],
+      "properties": {
+        "design_strength": { "type": "number", "minimum": 0, "maximum": 1 },
+        "consistency": { "type": "number", "minimum": 0, "maximum": 1 },
+        "portability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "notes": { "type": "string" },
+        "top_citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["citation_id", "title"],
+            "properties": {
+              "citation_id": { "type": "string" },
+              "title": { "type": "string" },
+              "doi": { "type": "string" },
+              "year": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+
+    "scope": {
+      "type": "object",
+      "required": ["population", "setting", "task_context", "measurement_context"],
+      "properties": {
+        "population": { "type": "string" },
+        "setting": { "type": "string" },
+        "task_context": { "type": "string" },
+        "measurement_context": { "type": "string" },
+        "duration": { "type": "string" },
+        "exclusions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "slots": {
+      "type": "object",
+      "required": ["central_positive", "central_negative", "near_miss"],
+      "properties": {
+        "central_positive": { "$ref": "#/$defs/image_list" },
+        "central_negative": { "$ref": "#/$defs/image_list" },
+        "near_miss": { "$ref": "#/$defs/image_list" },
+        "likely_failure": { "$ref": "#/$defs/image_list" },
+        "context_shift": { "$ref": "#/$defs/image_list" },
+        "confusion_set": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/image_pair" }
+        },
+        "controlled_comparison": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/image_pair" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "provenance_summary": {
+      "type": "object",
+      "required": ["image_sources", "license_notes", "selection_method"],
+      "properties": {
+        "image_sources": { "type": "array", "items": { "type": "string" } },
+        "license_notes": { "type": "string" },
+        "selection_method": { "type": "string" },
+        "model_versions": { "type": "array", "items": { "type": "string" } },
+        "config_id": { "type": "string" },
+        "snapshot_hash": { "type": "string" }
+      }
+    }
+  },
+
+  "$defs": {
+    "image_list": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "$ref": "#/$defs/image_entry" }
+    },
+
+    "image_pair": {
+      "type": "object",
+      "required": ["a", "b", "pair_type", "pair_explanation"],
+      "properties": {
+        "pair_type": {
+          "type": "string",
+          "enum": ["confusable_but_different", "controlled_difference", "near_boundary_flip"]
+        },
+        "pair_explanation": { "type": "string", "minLength": 10 },
+        "a": { "$ref": "#/$defs/image_entry" },
+        "b": { "$ref": "#/$defs/image_entry" }
+      }
+    },
+
+    "image_entry": {
+      "type": "object",
+      "required": [
+        "image_id",
+        "uri_or_path",
+        "selection_reason",
+        "construct_confidence",
+        "outcome_evidence",
+        "tags",
+        "provenance"
+      ],
+      "properties": {
+        "image_id": { "type": "string" },
+        "uri_or_path": { "type": "string" },
+        "thumbnail_uri": { "type": "string" },
+
+        "selection_reason": { "type": "string", "minLength": 10 },
+
+        "construct_confidence": {
+          "type": "object",
+          "required": ["score", "basis"],
+          "properties": {
+            "score": { "type": "number", "minimum": 0, "maximum": 1 },
+            "basis": {
+              "type": "string",
+              "enum": ["human_label", "model_prediction", "hybrid"]
+            },
+            "explanatory_cues": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+
+        "outcome_evidence": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "measured_on_this_image",
+                "measured_on_similar_context",
+                "literature_link_only",
+                "unknown"
+              ]
+            },
+            "measured_outcomes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["outcome_id", "measure", "direction"],
+                "properties": {
+                  "outcome_id": { "type": "string" },
+                  "measure": { "type": "string" },
+                  "direction": {
+                    "type": "string",
+                    "enum": ["increase", "decrease", "no_effect", "mixed", "unknown"]
+                  }
+                }
+              }
+            },
+            "citations": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+
+        "tags": {
+          "type": "object",
+          "properties": {
+            "feature_tags": { "type": "array", "items": { "type": "string" } },
+            "context_tags": { "type": "array", "items": { "type": "string" } },
+            "moderator_flags": { "type": "array", "items": { "type": "string" } },
+            "building_type": { "type": "string" },
+            "culture_region": { "type": "string" }
+          }
+        },
+
+        "provenance": {
+          "type": "object",
+          "required": ["source", "license", "attribution"],
+          "properties": {
+            "source": { "type": "string" },
+            "license": { "type": "string" },
+            "attribution": { "type": "string" },
+            "study_id": { "type": "string" },
+            "paper_doi": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

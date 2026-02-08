@@ -171,11 +171,27 @@ def cmd_eat(args) -> int:
         return 2
 
     try:
+        # Sprint 2.0.3: Build web options dict from CLI flags
+        web_options = {
+            "enabled": getattr(args, "web_enabled", True),
+            "seek_equilibrium": getattr(args, "web_equilibrium", True),
+            "max_iterations": getattr(args, "web_max_iterations", 10),
+            "convergence_threshold": getattr(args, "web_convergence_threshold", 0.001),
+        }
+        export_options = {
+            "manifest": getattr(args, "export_manifest", True),
+            "bn_state": getattr(args, "export_bn", True),
+            "cluster_stats": getattr(args, "export_cluster_stats", True),
+            "bn_edges": getattr(args, "export_bn_edges", True),
+        }
+
         summary = run_from_contract_bundle(
             in_dir=in_dir,
             out_dir=out_dir,
             profile=args.profile,
             hitl=args.hitl,
+            web_options=web_options,
+            export_options=export_options,
         )
     except Exception as exc:
         paper = _load_json(paper_path)
@@ -214,6 +230,83 @@ def main() -> int:
     eat.add_argument("--out", dest="out_dir", required=True)
     eat.add_argument("--profile", choices=["fast", "standard", "deep"], default="standard")
     eat.add_argument("--hitl", choices=["off", "auto", "required"], default="auto")
+
+    # Sprint 2.0.3: Web of Belief output flags
+    web_group = eat.add_argument_group("Web of Belief Options")
+    web_group.add_argument(
+        "--web", "--enable-web",
+        dest="web_enabled", action="store_true", default=True,
+        help="Enable Web of Belief integration (default: enabled)"
+    )
+    web_group.add_argument(
+        "--no-web", "--disable-web",
+        dest="web_enabled", action="store_false",
+        help="Disable Web of Belief integration"
+    )
+    web_group.add_argument(
+        "--web-equilibrium",
+        dest="web_equilibrium", action="store_true", default=True,
+        help="Seek equilibrium in web (default: enabled)"
+    )
+    web_group.add_argument(
+        "--no-web-equilibrium",
+        dest="web_equilibrium", action="store_false",
+        help="Skip equilibrium seeking (faster)"
+    )
+    web_group.add_argument(
+        "--web-max-iterations",
+        dest="web_max_iterations", type=int, default=10,
+        help="Max iterations for equilibrium (default: 10)"
+    )
+    web_group.add_argument(
+        "--web-convergence-threshold",
+        dest="web_convergence_threshold", type=float, default=0.001,
+        help="Convergence threshold for equilibrium (default: 0.001)"
+    )
+
+    # Sprint 2.0.3: Export control flags
+    export_group = eat.add_argument_group("Export Options")
+    export_group.add_argument(
+        "--export-manifest",
+        dest="export_manifest", action="store_true", default=True,
+        help="Generate manifest.json with checksums (default: enabled)"
+    )
+    export_group.add_argument(
+        "--no-export-manifest",
+        dest="export_manifest", action="store_false",
+        help="Skip manifest generation"
+    )
+    export_group.add_argument(
+        "--export-bn",
+        dest="export_bn", action="store_true", default=True,
+        help="Export incremental BN state (default: enabled)"
+    )
+    export_group.add_argument(
+        "--no-export-bn",
+        dest="export_bn", action="store_false",
+        help="Skip BN state export"
+    )
+    export_group.add_argument(
+        "--export-cluster-stats",
+        dest="export_cluster_stats", action="store_true", default=True,
+        help="Export coherence cluster statistics (default: enabled)"
+    )
+    export_group.add_argument(
+        "--no-export-cluster-stats",
+        dest="export_cluster_stats", action="store_false",
+        help="Skip cluster stats export"
+    )
+    export_group.add_argument(
+        "--export-bn-edges",
+        dest="export_bn_edges", action="store_true", default=True,
+        help="Export BN edges with uncertainty bounds (default: enabled)"
+    )
+    export_group.add_argument(
+        "--no-export-bn-edges",
+        dest="export_bn_edges", action="store_false",
+        help="Skip BN edges export"
+    )
+
     eat.set_defaults(func=cmd_eat)
 
     args = ap.parse_args()

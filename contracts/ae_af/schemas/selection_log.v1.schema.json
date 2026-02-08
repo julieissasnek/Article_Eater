@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/selection_log.v1.schema.json",
+  "title": "SelectionLog v1",
+  "description": "Audit log explaining why each image was selected or excluded from a gallery",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "log_id",
+    "build_meta",
+    "slots",
+    "warnings",
+    "stats"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "selection_log.v1" },
+    "log_id": { "type": "string", "minLength": 8 },
+
+    "build_meta": {
+      "type": "object",
+      "required": ["claim_id", "snapshot_id", "snapshot_hash", "config_id", "random_seed", "built_at"],
+      "properties": {
+        "claim_id": { "type": "string" },
+        "snapshot_id": { "type": "string" },
+        "snapshot_hash": { "type": "string" },
+        "config_id": { "type": "string" },
+        "random_seed": { "type": "integer" },
+        "built_at": { "type": "string", "format": "date-time" },
+        "builder_version": { "type": "string" },
+        "persona_profile": { "type": "string" }
+      }
+    },
+
+    "slots": {
+      "type": "object",
+      "properties": {
+        "central_positive": { "$ref": "#/$defs/slot_log" },
+        "central_negative": { "$ref": "#/$defs/slot_log" },
+        "near_miss": { "$ref": "#/$defs/slot_log" },
+        "likely_failure": { "$ref": "#/$defs/slot_log" },
+        "context_shift": { "$ref": "#/$defs/slot_log" }
+      },
+      "additionalProperties": false
+    },
+
+    "pair_mining_log": {
+      "type": "object",
+      "properties": {
+        "confusion_pairs_found": { "type": "integer" },
+        "controlled_pairs_found": { "type": "integer" },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "detail"],
+        "properties": {
+          "code": { "type": "string" },
+          "detail": { "type": "string" },
+          "slot": { "type": "string" },
+          "severity": { "type": "string", "enum": ["info", "warning", "error"] }
+        }
+      }
+    },
+
+    "stats": {
+      "type": "object",
+      "required": ["total_candidates", "total_selected", "slots_coverage"],
+      "properties": {
+        "total_candidates": { "type": "integer" },
+        "total_selected": { "type": "integer" },
+        "slots_coverage": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "target": { "type": "integer" },
+              "actual": { "type": "integer" },
+              "sufficient": { "type": "boolean" }
+            }
+          }
+        },
+        "diversity_summary": {
+          "type": "object",
+          "properties": {
+            "unique_projects": { "type": "integer" },
+            "unique_sources": { "type": "integer" },
+            "unique_studies": { "type": "integer" }
+          }
+        },
+        "facet_distribution": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": { "type": "integer" }
+          }
+        },
+        "pct_measured_outcomes": { "type": "number" },
+        "insufficient_coverage": { "type": "boolean" }
+      }
+    }
+  },
+
+  "$defs": {
+    "slot_log": {
+      "type": "object",
+      "required": ["tau", "candidate_count", "selected", "excluded_top"],
+      "properties": {
+        "tau": { "type": "number" },
+        "band": { "type": "number" },
+        "candidate_count": { "type": "integer" },
+
+        "selected": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/selection_entry" }
+        },
+
+        "excluded_top": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/exclusion_entry" }
+        },
+
+        "diversity_outcome": {
+          "type": "object",
+          "properties": {
+            "clusters_represented": { "type": "integer" },
+            "dedupe_applied": { "type": "boolean" },
+            "facet_skew": { "type": "object", "additionalProperties": { "type": "number" } }
+          }
+        }
+      }
+    },
+
+    "selection_entry": {
+      "type": "object",
+      "required": ["image_id", "rank", "feature_score", "reason_codes", "reason_text"],
+      "properties": {
+        "image_id": { "type": "string" },
+        "rank": { "type": "integer" },
+        "feature_score": { "type": "number" },
+        "diversity_cluster": { "type": "string" },
+        "dedupe_key": { "type": "string" },
+        "moderator_risk": { "type": "number" },
+        "reason_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reason_text": { "type": "string" }
+      }
+    },
+
+    "exclusion_entry": {
+      "type": "object",
+      "required": ["image_id", "excluded_because"],
+      "properties": {
+        "image_id": { "type": "string" },
+        "feature_score": { "type": "number" },
+        "excluded_because": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

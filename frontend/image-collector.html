@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Collector - Article Eater V22</title>
+    <link rel="stylesheet" href="/css/gallery-streamlit.css">
+    <style>
+        /* Image Collector Specific Styles */
+        .collector-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .collector-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gallery-border);
+        }
+
+        .collector-header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--gallery-text-primary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .collector-header p {
+            color: var(--gallery-text-secondary);
+            margin: 0;
+        }
+
+        /* Two-column layout */
+        .collector-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .collector-sidebar {
+            background: var(--gallery-bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gallery-text-primary);
+            margin: 0 0 0.75rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Preset buttons */
+        .preset-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .preset-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--gallery-bg-primary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+        }
+
+        .preset-btn:hover {
+            background: var(--gallery-bg-hover);
+            border-color: var(--gallery-primary);
+        }
+
+        .preset-btn.active {
+            background: var(--gallery-primary-bg);
+            border-color: var(--gallery-primary);
+        }
+
+        .preset-btn .preset-icon {
+            font-size: 1.25rem;
+        }
+
+        .preset-btn .preset-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gallery-text-primary);
+        }
+
+        .preset-btn .preset-count {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--gallery-text-muted);
+            background: var(--gallery-bg-tertiary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        /* Search form */
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--gallery-text-secondary);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--gallery-border);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: var(--gallery-bg-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gallery-primary);
+            box-shadow: 0 0 0 3px var(--gallery-primary-bg);
+        }
+
+        .search-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gallery-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--gallery-primary-dark);
+        }
+
+        .search-btn:disabled {
+            background: var(--gallery-text-muted);
+            cursor: not-allowed;
+        }
+
+        .search-btn .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Query chips */
+        .query-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .query-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--gallery-bg-tertiary);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--gallery-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .query-chip:hover {
+            background: var(--gallery-primary-bg);
+            color: var(--gallery-primary);
+        }
+
+        .query-chip.selected {
+            background: var(--gallery-primary);
+            color: white;
+        }
+
+        /* Main content area */
+        .collector-main {
+            min-height: 400px;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--gallery-bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gallery-text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gallery-text-muted);
+        }
+
+        /* Results grid */
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .results-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gallery-text-primary);
+            margin: 0;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            background: var(--gallery-bg-secondary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--gallery-bg-tertiary);
+        }
+
+        .action-btn.primary {
+            background: var(--gallery-primary);
+            color: white;
+            border-color: var(--gallery-primary);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Image card */
+        .image-card {
+            position: relative;
+            background: var(--gallery-bg-primary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.15s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-card.selected {
+            border-color: var(--gallery-primary);
+            box-shadow: 0 0 0 3px var(--gallery-primary-bg);
+        }
+
+        .image-card .image-wrapper {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-card .select-overlay {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 2px solid var(--gallery-border);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .image-card.selected .select-overlay {
+            background: var(--gallery-primary);
+            border-color: var(--gallery-primary);
+            color: white;
+        }
+
+        .image-card .image-info {
+            padding: 0.75rem;
+        }
+
+        .image-card .image-query {
+            font-size: 0.75rem;
+            color: var(--gallery-text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .image-card .image-source {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.625rem;
+            color: var(--gallery-text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .image-card .tag-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag-pill {
+            padding: 0.125rem 0.5rem;
+            background: var(--gallery-bg-tertiary);
+            border-radius: 10px;
+            font-size: 0.625rem;
+            color: var(--gallery-text-secondary);
+        }
+
+        /* Download progress */
+        .download-progress {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--gallery-bg-primary);
+            border: 1px solid var(--gallery-border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            min-width: 300px;
+            z-index: 1000;
+        }
+
+        .download-progress.hidden {
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .progress-count {
+            font-size: 0.75rem;
+            color: var(--gallery-text-muted);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--gallery-bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: var(--gallery-primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gallery-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--gallery-text-secondary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+        }
+
+        .toast {
+            padding: 0.75rem 1.5rem;
+            background: var(--gallery-text-primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            animation: slideUp 0.3s ease;
+        }
+
+        .toast.success {
+            background: var(--gallery-positive);
+        }
+
+        .toast.error {
+            background: var(--gallery-negative);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="collector-container">
+        <header class="collector-header">
+            <h1>Image Collector</h1>
+            <p>Build your image pool for gallery evidence. Search Creative Commons images from Unsplash, Pexels, and Pixabay.</p>
+        </header>
+
+        <div class="collector-layout">
+            <!-- Sidebar -->
+            <aside class="collector-sidebar">
+                <div class="sidebar-section">
+                    <h3>Search Images</h3>
+                    <p style="font-size: 0.75rem; color: var(--gallery-text-muted); margin-bottom: 1rem;">
+                        Enter any search terms. Without API keys, demo images are shown.
+                    </p>
+                    <form class="search-form" id="searchForm">
+                        <div class="form-group">
+                            <label for="searchQuery">Your Search Query</label>
+                            <input type="text" id="searchQuery" placeholder="e.g., modern office interior, cozy library" style="font-size: 1rem; padding: 0.75rem;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="searchSource">Source</label>
+                            <select id="searchSource">
+                                <option value="unsplash">Unsplash</option>
+                                <option value="pexels">Pexels</option>
+                                <option value="pixabay">Pixabay</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="searchCount">Number of Images</label>
+                            <select id="searchCount">
+                                <option value="5">5 images</option>
+                                <option value="10" selected>10 images</option>
+                                <option value="20">20 images</option>
+                                <option value="30">30 images</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="search-btn" id="searchBtn" style="font-size: 1rem; padding: 1rem;">
+                            <span class="btn-text">SEARCH & DOWNLOAD</span>
+                        </button>
+                    </form>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--gallery-border); margin: 1.5rem 0;">
+
+                <div class="sidebar-section">
+                    <h3>Quick Presets (Optional)</h3>
+                    <p style="font-size: 0.75rem; color: var(--gallery-text-muted); margin-bottom: 0.75rem;">
+                        These add pre-tagged queries for environmental psychology concepts.
+                    </p>
+                    <div class="preset-grid" id="presetGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section" id="presetQueriesSection" style="display: none;">
+                    <h3>Preset Queries</h3>
+                    <div class="query-chips" id="queryChips">
+                        <!-- Populated when preset selected -->
+                    </div>
+                    <button class="search-btn" style="margin-top: 1rem; width: 100%;" id="downloadPresetBtn">
+                        Download Selected Queries
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main content -->
+            <main class="collector-main">
+                <!-- Stats bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalImages">0</span>
+                        <span class="stat-label">Total Images</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="taggedImages">0</span>
+                        <span class="stat-label">Tagged</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="queriesUsed">0</span>
+                        <span class="stat-label">Queries</span>
+                    </div>
+                </div>
+
+                <!-- Results header -->
+                <div class="results-header">
+                    <h2>Image Pool</h2>
+                    <div class="results-actions">
+                        <button class="action-btn" id="selectAllBtn">Select All</button>
+                        <button class="action-btn" id="deselectAllBtn">Deselect All</button>
+                        <button class="action-btn" id="deleteSelectedBtn" style="background: var(--gallery-negative); color: white; border-color: var(--gallery-negative);">Delete Selected</button>
+                        <button class="action-btn primary" id="openInspectorBtn" style="background: var(--gallery-primary); color: white;">Open Inspector</button>
+                    </div>
+                </div>
+
+                <!-- Results grid -->
+                <div class="results-grid" id="resultsGrid">
+                    <div class="empty-state">
+                        <div class="empty-icon">&#128247;</div>
+                        <h3>No images yet</h3>
+                        <p>Select a preset or search to start building your image pool</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Download progress (C1 fix: show current query) -->
+    <div class="download-progress hidden" id="downloadProgress">
+        <div class="progress-header">
+            <span class="progress-title" id="progressTitle">Downloading images...</span>
+            <span class="progress-count" id="progressCount">0 / 0</span>
+        </div>
+        <div class="progress-query" id="progressQuery" style="font-size:0.75rem; color:var(--gallery-text-secondary); margin:0.25rem 0;"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // =============================================================================
+        // State
+        // =============================================================================
+        let presets = {};
+        let images = [];
+        let selectedImages = new Set();
+        let activePreset = null;
+        let selectedQueries = new Set();
+
+        // =============================================================================
+        // API Functions
+        // =============================================================================
+        async function fetchPresets() {
+            try {
+                const resp = await fetch('/api/v1/image-pool/presets');
+                presets = await resp.json();
+                renderPresets();
+            } catch (e) {
+                console.error('Failed to fetch presets:', e);
+                showToast('Failed to load presets', 'error');
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const resp = await fetch('/api/v1/image-pool/stats');
+                const stats = await resp.json();
+                document.getElementById('totalImages').textContent = stats.total_images || 0;
+                document.getElementById('taggedImages').textContent = stats.tagged_images || 0;
+                document.getElementById('queriesUsed').textContent = Object.keys(stats.by_query || {}).length;
+            } catch (e) {
+                console.error('Failed to fetch stats:', e);
+            }
+        }
+
+        async function fetchImages() {
+            try {
+                const resp = await fetch('/api/v1/image-pool/images?limit=200');
+                const data = await resp.json();
+                images = data.images || [];
+                renderImages();
+            } catch (e) {
+                console.error('Failed to fetch images:', e);
+            }
+        }
+
+        async function searchImages(query, source, count, featureTags = []) {
+            const resp = await fetch('/api/v1/image-pool/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    query,
+                    source,
+                    count: parseInt(count),
+                    feature_tags: featureTags
+                })
+            });
+
+            if (!resp.ok) {
+                throw new Error('Search failed');
+            }
+
+            return await resp.json();
+        }
+
+        // =============================================================================
+        // Render Functions
+        // =============================================================================
+        function renderPresets() {
+            const grid = document.getElementById('presetGrid');
+            const icons = {
+                refuge: '&#127969;',      // House
+                prospect: '&#127748;',    // Sunrise
+                biophilia: '&#127793;',   // Plant
+                wayfinding: '&#128204;',  // Pin
+                complexity: '&#127912;',  // Palette
+                coherence: '&#9632;',     // Square
+                mystery: '&#128270;',     // Magnifier
+                office_types: '&#128188;', // Briefcase
+                building_types: '&#127970;', // Building
+                lighting: '&#128161;'     // Bulb
+            };
+
+            grid.innerHTML = Object.entries(presets).map(([key, preset]) => `
+                <button class="preset-btn ${activePreset === key ? 'active' : ''}"
+                        onclick="selectPreset('${key}')">
+                    <span class="preset-icon">${icons[key] || '&#128247;'}</span>
+                    <span class="preset-label">${preset.label}</span>
+                    <span class="preset-count">${preset.queries.length}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderImages() {
+            const grid = document.getElementById('resultsGrid');
+
+            if (images.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">&#128247;</div>
+                        <h3>No images yet</h3>
+                        <p>Select a preset or search to start building your image pool</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = images.map(img => `
+                <div class="image-card ${selectedImages.has(img.image_id) ? 'selected' : ''}"
+                     data-id="${img.image_id}">
+                    <div class="image-wrapper">
+                        <img src="/api/v1/image-pool/thumbnail/${img.image_id}"
+                             alt="${img.query_used}"
+                             loading="lazy"
+                             onerror="this.src='https://via.placeholder.com/300x200?text=Loading...'">
+                        <div class="select-overlay" onclick="toggleSelect('${img.image_id}')">
+                            ${selectedImages.has(img.image_id) ? '&#10003;' : ''}
+                        </div>
+                    </div>
+                    <div class="image-info">
+                        <div class="image-query">${img.query_used || 'Unknown query'}</div>
+                        <div class="image-source">
+                            <span>${img.source}</span>
+                            <span>&bull;</span>
+                            <span>${img.width}x${img.height}</span>
+                        </div>
+                        ${img.feature_tags && img.feature_tags.length > 0 ? `
+                            <div class="tag-pills">
+                                ${img.feature_tags.slice(0, 3).map(t => `<span class="tag-pill">${t}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderQueryChips() {
+            const section = document.getElementById('presetQueriesSection');
+            const chips = document.getElementById('queryChips');
+
+            if (!activePreset || !presets[activePreset]) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            const preset = presets[activePreset];
+
+            chips.innerHTML = preset.queries.map(q => `
+                <span class="query-chip ${selectedQueries.has(q) ? 'selected' : ''}"
+                      onclick="toggleQuery('${q}')">${q}</span>
+            `).join('');
+        }
+
+        // =============================================================================
+        // Event Handlers
+        // =============================================================================
+        function selectPreset(key) {
+            activePreset = key;
+            selectedQueries = new Set(presets[key].queries); // Select all by default
+            renderPresets();
+            renderQueryChips();
+        }
+
+        function toggleQuery(query) {
+            if (selectedQueries.has(query)) {
+                selectedQueries.delete(query);
+            } else {
+                selectedQueries.add(query);
+            }
+            renderQueryChips();
+        }
+
+        function toggleSelect(imageId) {
+            if (selectedImages.has(imageId)) {
+                selectedImages.delete(imageId);
+            } else {
+                selectedImages.add(imageId);
+            }
+            renderImages();
+        }
+
+        function selectAll() {
+            images.forEach(img => selectedImages.add(img.image_id));
+            renderImages();
+        }
+
+        function deselectAll() {
+            selectedImages.clear();
+            renderImages();
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function showProgress(current, total, queryName = '') {
+            const progress = document.getElementById('downloadProgress');
+            const count = document.getElementById('progressCount');
+            const fill = document.getElementById('progressFill');
+            const queryEl = document.getElementById('progressQuery');
+
+            progress.classList.remove('hidden');
+            count.textContent = `${current} / ${total}`;
+            fill.style.width = `${(current / total) * 100}%`;
+
+            // C1 fix: Show current query name
+            if (queryName) {
+                queryEl.textContent = `Current: "${queryName}"`;
+            } else {
+                queryEl.textContent = '';
+            }
+        }
+
+        function hideProgress() {
+            document.getElementById('downloadProgress').classList.add('hidden');
+        }
+
+        // =============================================================================
+        // Search & Download
+        // =============================================================================
+        async function handleSearch(e) {
+            e.preventDefault();
+
+            const query = document.getElementById('searchQuery').value.trim();
+            const source = document.getElementById('searchSource').value;
+            const count = document.getElementById('searchCount').value;
+
+            if (!query) {
+                showToast('Please enter a search query', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('searchBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div><span>Searching...</span>';
+
+            try {
+                showProgress(0, 1);
+                const result = await searchImages(query, source, count);
+                showProgress(1, 1);
+
+                showToast(`Downloaded ${result.downloaded} images`, 'success');
+                await fetchStats();
+                await fetchImages();
+            } catch (e) {
+                showToast('Search failed: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-text">Search & Download</span>';
+                hideProgress();
+            }
+        }
+
+        async function downloadPreset() {
+            if (!activePreset || selectedQueries.size === 0) {
+                showToast('Please select queries to download', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('downloadPresetBtn');
+            btn.disabled = true;
+            btn.textContent = 'Downloading...';
+
+            const source = document.getElementById('searchSource').value;
+            const count = document.getElementById('searchCount').value;
+            const queries = Array.from(selectedQueries);
+            const featureTags = presets[activePreset].feature_tags || [];
+
+            let downloaded = 0;
+            let skipped = 0;
+            showProgress(0, queries.length, queries[0]);
+
+            for (let i = 0; i < queries.length; i++) {
+                showProgress(i, queries.length, queries[i]);  // C1 fix: show current query
+                try {
+                    const result = await searchImages(queries[i], source, count, featureTags);
+                    downloaded += result.downloaded;
+                    skipped += (parseInt(count) - result.downloaded);  // C2 fix: track skipped
+                } catch (e) {
+                    console.error(`Failed to download "${queries[i]}":`, e);
+                }
+                showProgress(i + 1, queries.length, i < queries.length - 1 ? queries[i + 1] : 'Complete!');
+            }
+
+            // C2 fix: Show skipped count
+            const skippedMsg = skipped > 0 ? ` (${skipped} already in pool)` : '';
+            showToast(`Downloaded ${downloaded} images from ${queries.length} queries${skippedMsg}`, 'success');
+            await fetchStats();
+            await fetchImages();
+
+            btn.disabled = false;
+            btn.textContent = 'Download Selected Queries';
+            hideProgress();
+        }
+
+        function openInspector() {
+            window.location.href = '/image-inspector';
+        }
+
+        // =============================================================================
+        // Delete selected images
+        // =============================================================================
+        async function deleteSelected() {
+            if (selectedImages.size === 0) {
+                alert('Please select images first by clicking on them');
+                return;
+            }
+
+            if (!confirm(`Delete ${selectedImages.size} selected images?\n\nThis cannot be undone.`)) {
+                return;
+            }
+
+            let deleted = 0;
+            let failed = 0;
+
+            for (const imageId of selectedImages) {
+                try {
+                    const resp = await fetch(`/api/v1/image-pool/images/${imageId}`, { method: 'DELETE' });
+                    if (resp.ok) deleted++;
+                    else failed++;
+                } catch (e) {
+                    failed++;
+                }
+            }
+
+            selectedImages.clear();
+            showToast(`Deleted ${deleted} images${failed > 0 ? ` (${failed} failed)` : ''}`, failed > 0 ? 'error' : 'success');
+
+            await fetchImages();
+            await fetchStats();
+        }
+
+        // =============================================================================
+        // Init
+        // =============================================================================
+        document.getElementById('searchForm').addEventListener('submit', handleSearch);
+        document.getElementById('selectAllBtn').addEventListener('click', selectAll);
+        document.getElementById('deselectAllBtn').addEventListener('click', deselectAll);
+        document.getElementById('deleteSelectedBtn').addEventListener('click', deleteSelected);
+        document.getElementById('downloadPresetBtn').addEventListener('click', downloadPreset);
+        document.getElementById('openInspectorBtn').addEventListener('click', openInspector);
+
+        // Load initial data
+        fetchPresets();
+        fetchStats();
+        fetchImages();
+    </script>
+</body>
+</html>

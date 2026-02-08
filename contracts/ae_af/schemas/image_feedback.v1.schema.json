@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/image_feedback.v1.schema.json",
+  "title": "ImageFeedback v1",
+  "description": "User feedback for active learning on image classification",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "feedback_id",
+    "timestamp",
+    "actor",
+    "target",
+    "event_type",
+    "before",
+    "after",
+    "confidence",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "image_feedback.v1" },
+    "feedback_id": { "type": "string", "minLength": 10 },
+    "timestamp": { "type": "string", "format": "date-time" },
+
+    "actor": {
+      "type": "object",
+      "required": ["actor_id", "role"],
+      "properties": {
+        "actor_id": { "type": "string" },
+        "role": {
+          "type": "string",
+          "enum": ["student", "architect", "researcher", "maintainer", "admin", "unknown"]
+        },
+        "session_id": { "type": "string" }
+      }
+    },
+
+    "target": {
+      "type": "object",
+      "required": ["gallery_id", "claim_id", "image_id", "slot_role"],
+      "properties": {
+        "gallery_id": { "type": "string" },
+        "claim_id": { "type": "string" },
+        "image_id": { "type": "string" },
+        "slot_role": {
+          "type": "string",
+          "enum": [
+            "central_positive",
+            "central_negative",
+            "near_miss",
+            "likely_failure",
+            "context_shift",
+            "confusion_set",
+            "controlled_comparison",
+            "unknown"
+          ]
+        },
+        "web_snapshot_id": { "type": "string" }
+      }
+    },
+
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "construct_label",
+        "slot_reassignment",
+        "moderator_annotation",
+        "rationale_correction",
+        "provenance_issue",
+        "duplicate_or_redundant"
+      ]
+    },
+
+    "before": { "$ref": "#/$defs/state_patch" },
+    "after": { "$ref": "#/$defs/state_patch" },
+
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "reason": {
+      "type": "object",
+      "required": ["free_text"],
+      "properties": {
+        "free_text": { "type": "string", "minLength": 3 },
+        "cue_terms": { "type": "array", "items": { "type": "string" } },
+        "moderator_flags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "value"],
+        "properties": {
+          "type": { "type": "string", "enum": ["note", "url", "screenshot_ref"] },
+          "value": { "type": "string" }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "state_patch": {
+      "type": "object",
+      "properties": {
+        "construct_confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "construct_label": { "type": "string", "enum": ["present", "absent", "uncertain", "unknown"] },
+        "slot_role": {
+          "type": "string",
+          "enum": [
+            "central_positive",
+            "central_negative",
+            "near_miss",
+            "likely_failure",
+            "context_shift",
+            "confusion_set",
+            "controlled_comparison",
+            "unknown"
+          ]
+        },
+        "moderator_flags": { "type": "array", "items": { "type": "string" } },
+        "selection_reason": { "type": "string" },
+        "provenance_ok": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

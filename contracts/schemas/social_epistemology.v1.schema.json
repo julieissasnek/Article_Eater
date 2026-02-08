@@ -1,0 +1,380 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/social_epistemology.v1.schema.json",
+  "title": "Social Epistemology Schema",
+  "description": "Schema for social epistemology constructs in Article Eater Sprint 2.5",
+  "version": "1.0.0",
+  "created": "2026-02-08",
+
+  "definitions": {
+    "CommunityType": {
+      "type": "string",
+      "description": "How the community is primarily defined",
+      "enum": [
+        "journal_cluster",
+        "citation_network",
+        "theory_commitment",
+        "methodological",
+        "institutional",
+        "paradigm"
+      ]
+    },
+
+    "CommunityLevel": {
+      "type": "string",
+      "description": "Hierarchical level of community (per SE-5 panel decision)",
+      "enum": ["field", "paradigm", "subfield", "lab"]
+    },
+
+    "ContestationType": {
+      "type": "string",
+      "description": "Type of disagreement between communities (per SE-2 panel)",
+      "enum": [
+        "empirical",
+        "methodological",
+        "theoretical",
+        "scope",
+        "value",
+        "incommensurable"
+      ]
+    },
+
+    "DisagreementResolution": {
+      "type": "string",
+      "description": "How to handle community disagreement (per SE-2 panel)",
+      "enum": ["average", "report_separately", "flag_incommensurable"]
+    },
+
+    "CommunityHistoryEvent": {
+      "type": "object",
+      "description": "Significant event in community history (per SE-4 panel)",
+      "required": ["event_id", "timestamp", "event_type"],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "description": "Unique identifier for the event"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "event_type": {
+          "type": "string",
+          "enum": ["credence_shift", "theory_adoption", "method_change", "paradigm_shift"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "affected_beliefs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "magnitude": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "causal_tags": {
+          "type": "array",
+          "description": "Per Knorr Cetina: annotate causes of transitions",
+          "items": {
+            "type": "string",
+            "enum": ["new_evidence", "methodology_change", "generational", "funding_shift", "replication_failure", "theoretical_advance"]
+          }
+        },
+        "triggering_papers": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "CommunityMetrics": {
+      "type": "object",
+      "description": "Metrics for community credibility (per SE-3 panel)",
+      "properties": {
+        "institutional_power": {
+          "type": "number",
+          "description": "0-1, tracked but NOT used for credence weighting",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "domain_track_records": {
+          "type": "object",
+          "description": "Domain-specific accuracy records",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "recency_weighted_accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "contestation_level": {
+          "type": "number",
+          "description": "Reduces track record weight during disputes",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+
+    "EpistemicCommunity": {
+      "type": "object",
+      "description": "A community sharing epistemic standards and practices (per Longino, Kuhn)",
+      "required": ["community_id", "name", "community_type", "level"],
+      "properties": {
+        "community_id": {
+          "type": "string",
+          "pattern": "^comm:[a-z0-9_]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "community_type": {
+          "$ref": "#/definitions/CommunityType"
+        },
+        "level": {
+          "$ref": "#/definitions/CommunityLevel"
+        },
+        "foundational_works": {
+          "type": "array",
+          "description": "DOIs of exemplary papers (per Kuhn: paradigm-defining)",
+          "items": { "type": "string" }
+        },
+        "core_theories": {
+          "type": "array",
+          "description": "Theory IDs the community commits to",
+          "items": { "type": "string" }
+        },
+        "preferred_methods": {
+          "type": "array",
+          "description": "Methodological preferences (per Knorr Cetina)",
+          "items": { "type": "string" }
+        },
+        "characteristic_vocabulary": {
+          "type": "array",
+          "description": "Shared technical terms (per Collins: mutual intelligibility)",
+          "items": { "type": "string" }
+        },
+        "member_authors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "associated_journals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "associated_institutions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "parent_community_id": {
+          "type": ["string", "null"],
+          "description": "For hierarchy: Lab -> Subfield -> Field"
+        },
+        "child_community_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "metrics": {
+          "$ref": "#/definitions/CommunityMetrics"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "history_events": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/CommunityHistoryEvent" }
+        }
+      }
+    },
+
+    "BeliefProvenance": {
+      "type": "object",
+      "description": "Social origins of a belief",
+      "required": ["belief_id"],
+      "properties": {
+        "belief_id": {
+          "type": "string"
+        },
+        "producing_communities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "producing_labs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "producing_authors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "methods_used": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "instruments_used": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "community_credences": {
+          "type": "object",
+          "description": "Community-relative credences (per SE-2)",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "endorsing_communities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "contesting_communities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "contestation_type": {
+          "$ref": "#/definitions/ContestationType"
+        },
+        "contestation_details": {
+          "type": ["string", "null"]
+        },
+        "aggregation_approach": {
+          "$ref": "#/definitions/DisagreementResolution"
+        },
+        "aggregated_credence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+
+    "Contestation": {
+      "type": "object",
+      "description": "A specific disagreement between communities",
+      "required": [
+        "contestation_id",
+        "belief_id",
+        "contesting_community_id",
+        "target_community_id",
+        "contestation_type"
+      ],
+      "properties": {
+        "contestation_id": {
+          "type": "string",
+          "pattern": "^contest:[a-z0-9_]+$"
+        },
+        "belief_id": {
+          "type": "string"
+        },
+        "contesting_community_id": {
+          "type": "string"
+        },
+        "target_community_id": {
+          "type": "string"
+        },
+        "contestation_type": {
+          "$ref": "#/definitions/ContestationType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "contesting_papers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "target_papers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "is_resolved": {
+          "type": "boolean",
+          "default": false
+        },
+        "resolution_date": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "resolution_description": {
+          "type": ["string", "null"]
+        },
+        "agreed_resolution_criteria": {
+          "type": ["string", "null"],
+          "description": "Per Collins: can they agree on what would settle it?"
+        },
+        "experimenter_regress": {
+          "type": "boolean",
+          "description": "True if no agreed criteria exists (deep disagreement)",
+          "default": false
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+
+    "MethodologicalProfile": {
+      "type": "object",
+      "description": "Profile of methods supporting a belief (per Longino: objectivity requires diversity)",
+      "required": ["belief_id"],
+      "properties": {
+        "belief_id": {
+          "type": "string"
+        },
+        "methods": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "instruments": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "populations": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "diversity_index": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "vulnerabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "communities": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/EpistemicCommunity" }
+    },
+    "provenances": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/BeliefProvenance" }
+    },
+    "contestations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Contestation" }
+    },
+    "methodological_profiles": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MethodologicalProfile" }
+    }
+  }
+}

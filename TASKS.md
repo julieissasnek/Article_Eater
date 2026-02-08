@@ -411,7 +411,7 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 |----|------|----------|--------------|--------|
 | 2.0.1 | Wire `extraction_to_web.py` into `pipeline.py` | 2h | Sprint 1.5 | ✓ DONE |
 | 2.0.2 | Implement output serialization | 3h | — | ✓ DONE |
-| 2.0.3 | Add CLI flags for web outputs | 2h | — | Pending |
+| 2.0.3 | Add CLI flags for web outputs | 2h | — | ✓ DONE |
 | 2.0.4 | Test with sample papers | 4h | All above | Pending |
 | 2.0.5 | Error handling and logging | 2h | All above | Pending |
 
@@ -436,6 +436,14 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 - Schema versions for all output types
 - 20 new tests (`test_output_serializer.py`)
 - New pipeline outputs: `manifest.json`, `cluster_stats.json`, `bn_edges.json`
+
+**Sprint 2.0.3 Completion (2026-02-08)**:
+- Added Web of Belief CLI flags: `--web/--no-web`, `--web-equilibrium/--no-web-equilibrium`, `--web-max-iterations`, `--web-convergence-threshold`
+- Added Export control CLI flags: `--export-manifest/--no-export-manifest`, `--export-bn/--no-export-bn`, `--export-cluster-stats/--no-export-cluster-stats`, `--export-bn-edges/--no-export-bn-edges`
+- Updated `run_from_contract_bundle()` and `_integrate_into_web_of_belief()` to accept `web_options` and `export_options`
+- Web integration can now be completely disabled via `--no-web`
+- Environment variables overridden by CLI flags
+- 9 new tests (`test_cli_web_flags.py`)
 
 ### Sprint 3.0: Full Integration
 
@@ -522,6 +530,7 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-08 | **SPRINT 2.0.3 COMPLETE**: CLI flags for web outputs. Added `--web/--no-web`, `--web-equilibrium/--no-web-equilibrium`, `--web-max-iterations`, `--web-convergence-threshold` for Web of Belief control. Added `--export-manifest`, `--export-bn`, `--export-cluster-stats`, `--export-bn-edges` (all with `--no-*` variants) for export control. Updated pipeline functions to accept `web_options` and `export_options` dicts. 9 tests (`test_cli_web_flags.py`). |
 | 2026-02-08 | **SPRINT 2.0.2 COMPLETE**: Output Serialization. Created `src/services/output_serializer.py` (~500 lines) with manifest generation, SHA256 checksums, TD module exports (theory inference audit, scope conditions, temporal expressions, cluster stats, BN edges with credible intervals). Schema versions for all outputs. Pipeline now generates `manifest.json`, `cluster_stats.json`, `bn_edges.json`. 20 tests (`test_output_serializer.py`). |
 | 2026-02-08 | **SPRINT 2.0.1 COMPLETE**: Pipeline Integration wiring. Wired TD-C (Scalable Coherence) and TD-E (Incremental BN) into `app/tasks/pipeline.py`. Added CoherenceManager for O(n log n) coherence computation. Added IncrementalBNBuilder for Bayesian edge parameter updates. New output: `bn_incremental_state.json`. Enhanced `coherence_summary.json` with TD statistics (`scalable_coherence_used`, `incremental_bn_used`, `n_bn_updates`, `n_bn_edges`). Created `tests/test_pipeline_td_wiring.py` (13 tests). |
 | 2026-02-08 | **SPRINT TD-D COMPLETE**: Temporal Parsing. Created `src/services/temporal_parser.py` (~900 lines) with Duration/Frequency/TemporalExpression dataclasses, pattern-based extraction for durations (simple, range, compound), frequencies (daily/weekly/etc), and temporal relations (before/after/during). Integrated with scope_extractor.py for enhanced duration extraction. ExposureType classification (acute/subacute/chronic/residential). 67 tests passing. **ALL TECHNICAL DEBT COMPLETE.** |

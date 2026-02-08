@@ -72,6 +72,48 @@ try:
 except ImportError:
     CREDIBILITY_FEEDBACK_AVAILABLE = False
 
+# Sprint TD-C: Scalable Coherence (O(n log n) coherence computation)
+try:
+    from src.services.scalable_coherence import (
+        CoherenceManager,
+        ClusterManager,
+        ConstraintNetwork,
+        ClusterType,
+    )
+    SCALABLE_COHERENCE_AVAILABLE = True
+except ImportError:
+    SCALABLE_COHERENCE_AVAILABLE = False
+
+# Sprint TD-E: Incremental BN Learning (conjugate prior updates)
+try:
+    from src.services.incremental_bn import (
+        IncrementalBNBuilder,
+        BetaBernoulliEdge,
+        ActiveLearningScheduler,
+        EdgeType,
+    )
+    INCREMENTAL_BN_AVAILABLE = True
+except ImportError:
+    INCREMENTAL_BN_AVAILABLE = False
+
+# Sprint 2.0.2: Output Serialization
+try:
+    from src.services.output_serializer import (
+        PipelineOutputs,
+        export_all_outputs,
+        serialize_theory_inference,
+        serialize_scope_conditions,
+        serialize_temporal_expressions,
+        serialize_cluster_stats,
+        serialize_bn_edges,
+        generate_manifest,
+        OutputFile,
+        SCHEMA_VERSIONS,
+    )
+    OUTPUT_SERIALIZER_AVAILABLE = True
+except ImportError:
+    OUTPUT_SERIALIZER_AVAILABLE = False
+
 DB = os.environ.get("AE_DB", "ae.db")
 BN_EXPORT_VERSION = "0.2"
 BN_EXPORT_GENERATOR = "article_eater_rulegraph_v2"
@@ -297,7 +339,9 @@ def _integrate_into_web_of_belief(
     rules: List[Dict[str, Any]],
     out_dir: Path,
     run_id: str,
-    paper_id: str
+    paper_id: str,
+    web_options: Optional[Dict[str, Any]] = None,
+    export_options: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
     Integrate extracted claims and rules into a Quinean Web of Belief.
@@ -311,15 +355,28 @@ def _integrate_into_web_of_belief(
     - Decision 2.5: Configurable equilibrium parameters, convergence logging
     - Decision 2.6: Write error-state files on failure
 
+    Sprint 2.0.3: Added web_options and export_options from CLI flags.
+
     Outputs written to out_dir:
     - web_state.json: Serialized web of belief state (full, for Sprint 5 merge)
     - stubs.jsonl: Beliefs without theory connections
     - tensions.jsonl: Beliefs in tension with the web
     - coherence_summary.json: Web coherence metrics and equilibrium log
+    - manifest.json: Output manifest with checksums (if export_options.manifest)
+    - cluster_stats.json: Coherence cluster statistics (if export_options.cluster_stats)
+    - bn_edges.json: BN edge parameters with uncertainty (if export_options.bn_edges)
 
     Returns:
         Dict with integration summary for inclusion in result.json
     """
+    # Sprint 2.0.3: Default options
+    web_options = web_options or {}
+    export_options = export_options or {
+        "manifest": True,
+        "bn_state": True,
+        "cluster_stats": True,
+        "bn_edges": True,
+    }
     # Decision 2.2: Structured error capture
     def make_error_result(failure_stage: str, error_type: str, error_message: str, recoverable: bool = False):
         return {
@@ -332,6 +389,18 @@ def _integrate_into_web_of_belief(
             "n_stubs": 0,
             "n_tensions": 0,
             "coherence": None
+        }
+
+    # Sprint 2.0.3: Check if web integration is disabled via CLI flag
+    if not web_options.get("enabled", True):
+        _web_logger.info(f"[{paper_id}] Web integration skipped: disabled via --no-web flag")
+        return {
+            "web_integration": "skipped",
+            "reason": "disabled_via_cli",
+            "n_beliefs": 0,
+            "n_constraints": 0,
+            "n_stubs": 0,
+            "n_tensions": 0,
         }
 
     # Check if web of belief is available
@@ -355,6 +424,24 @@ def _integrate_into_web_of_belief(
         _web_logger.warning(f"[{paper_id}] Web integration failed at initialization: {e}")
         _write_error_state_files(out_dir, run_id, paper_id, "initialization", type(e).__name__, str(e), recoverable=True)
         return make_error_result("initialization", type(e).__name__, str(e), recoverable=True)
+
+    # Stage 1.1: Initialize scalable coherence manager (TD-C)
+    coherence_manager = None
+    if SCALABLE_COHERENCE_AVAILABLE:
+        try:
+            coherence_manager = CoherenceManager()
+            _web_logger.debug(f"[{paper_id}] Using scalable coherence (O(n log n))")
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Scalable coherence init failed, using default: {e}")
+
+    # Stage 1.2: Initialize incremental BN builder (TD-E)
+    bn_builder = None
+    if INCREMENTAL_BN_AVAILABLE:
+        try:
+            bn_builder = IncrementalBNBuilder()
+            _web_logger.debug(f"[{paper_id}] Using incremental BN learning")
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Incremental BN init failed: {e}")
 
     # Stage 1.5: Credibility Testing (Sprint B - TODO 1)
     credibility_report = None
@@ -461,8 +548,40 @@ def _integrate_into_web_of_belief(
             equilibrium_iterations=0
         )
 
+        # TD-C: Sync beliefs and constraints to scalable coherence manager
+        if coherence_manager:
+            try:
+                for belief_id, belief in web.beliefs.items():
+                    coherence_manager.on_belief_added(
+                        belief_id=belief_id,
+                        theory_id=belief.theory_id,
+                        level=belief.level.value if hasattr(belief.level, 'value') else str(belief.level),
+                        domain=getattr(belief, 'domain', None)
+                    )
+                for constraint_id, constraint in web.constraints.items():
+                    coherence_manager.on_constraint_added(
+                        constraint_id=constraint_id,
+                        source_id=constraint.source_id,
+                        target_id=constraint.target_id,
+                        constraint_type=constraint.constraint_type.value if hasattr(constraint.constraint_type, 'value') else str(constraint.constraint_type),
+                        strength=constraint.strength
+                    )
+                _web_logger.debug(f"[{paper_id}] Synced {len(web.beliefs)} beliefs to coherence manager")
+            except Exception as e:
+                _web_logger.warning(f"[{paper_id}] Coherence manager sync failed: {e}")
+                coherence_manager = None  # Fall back to default
+
+        # Helper to compute coherence using scalable manager if available
+        def _compute_coherence() -> float:
+            if coherence_manager:
+                try:
+                    return coherence_manager.compute_coherence()
+                except Exception:
+                    pass
+            return web.coherence_score() if hasattr(web, 'coherence_score') else 0.0
+
         # Record initial coherence
-        initial_coherence = web.coherence_score() if hasattr(web, 'coherence_score') else 0.0
+        initial_coherence = _compute_coherence()
         equilibrium_log.append({"iteration": 0, "coherence": initial_coherence})
 
         # Decision 2.5: Manual equilibrium with convergence detection
@@ -473,7 +592,7 @@ def _integrate_into_web_of_belief(
 
             for i in range(1, WEB_EQUILIBRIUM_MAX_ITERATIONS + 1):
                 web.seek_equilibrium(max_iterations=1)
-                current_coherence = web.coherence_score() if hasattr(web, 'coherence_score') else 0.0
+                current_coherence = _compute_coherence()
                 equilibrium_log.append({"iteration": i, "coherence": current_coherence})
 
                 delta = abs(current_coherence - prev_coherence)
@@ -525,6 +644,46 @@ def _integrate_into_web_of_belief(
             _web_logger.warning(f"[{paper_id}] Bridge detection failed (non-fatal): {e}")
             # Bridge detection failure is non-fatal; continue with web integration
 
+    # Stage 2.7: Incremental BN Parameter Updates (TD-E)
+    bn_updates = 0
+    if bn_builder and rules:
+        try:
+            for rule in rules:
+                # Extract rule components for BN edge
+                lhs = rule.get("lhs", [])
+                rhs = rule.get("rhs", [])
+                polarity = rule.get("polarity", "unknown")
+                strength = rule.get("strength", {})
+                ae_confidence = rule.get("ae_confidence", 0.5)
+
+                # Create edges from lhs to rhs
+                for lhs_item in lhs:
+                    for rhs_item in rhs:
+                        source = lhs_item.get("var", "") if isinstance(lhs_item, dict) else str(lhs_item)
+                        target = rhs_item.get("var", "") if isinstance(rhs_item, dict) else str(rhs_item)
+
+                        if source and target:
+                            # Determine if evidence supports or contradicts the edge
+                            supports = polarity not in ("negative", "null")
+
+                            # Use ae_confidence as evidence weight
+                            weight = ae_confidence if ae_confidence else 0.5
+
+                            # Update edge parameters
+                            bn_builder.observe_evidence(
+                                source=source,
+                                target=target,
+                                supports=supports,
+                                weight=weight,
+                                paper_id=paper_id
+                            )
+                            bn_updates += 1
+
+            _web_logger.info(f"[{paper_id}] BN parameters: {bn_updates} edge updates")
+
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Incremental BN update failed (non-fatal): {e}")
+
     # Stage 3: Serialization
     try:
         # Decision 2.4: Full belief and constraint serialization
@@ -572,6 +731,18 @@ def _integrate_into_web_of_belief(
             if anomalies:
                 export_anomalies_jsonl(anomalies, out_dir / "anomalies.jsonl")
 
+        # TD-E: Export incremental BN state (controlled by --export-bn)
+        n_bn_edges = 0
+        if bn_builder:
+            try:
+                bn_state = bn_builder.to_dict()
+                n_bn_edges = len(bn_state.get("edges", {}))
+                if export_options.get("bn_state", True):
+                    _write_json(out_dir / "bn_incremental_state.json", bn_state)
+                    _web_logger.debug(f"[{paper_id}] Exported BN state: {n_bn_edges} edges")
+            except Exception as e:
+                _web_logger.warning(f"[{paper_id}] BN state export failed: {e}")
+
         # Write coherence summary with equilibrium log (Decision 2.5)
         coherence_summary = {
             "schema": "ae.coherence_summary.v1",
@@ -596,9 +767,98 @@ def _integrate_into_web_of_belief(
             "converged_at_iteration": converged_at,
             # Sprint 3: Bridge statistics
             "n_bridges": n_bridges,
-            "n_bridge_anomalies": len(anomalies)
+            "n_bridge_anomalies": len(anomalies),
+            # TD-C/TD-E: Scalability statistics
+            "scalable_coherence_used": coherence_manager is not None,
+            "incremental_bn_used": bn_builder is not None,
+            "n_bn_updates": bn_updates,
+            "n_bn_edges": n_bn_edges
         }
         _write_json(out_dir / "coherence_summary.json", coherence_summary)
+
+        # Sprint 2.0.2/2.0.3: Enhanced output serialization with TD module exports
+        # Controlled by export_options from CLI flags
+        output_files = {}
+        if OUTPUT_SERIALIZER_AVAILABLE:
+            try:
+                # Export cluster statistics (TD-C) - controlled by --export-cluster-stats
+                if export_options.get("cluster_stats", True):
+                    cluster_stats = serialize_cluster_stats(coherence_manager, run_id, paper_id)
+                    _write_json(out_dir / "cluster_stats.json", cluster_stats)
+                    output_files["cluster_stats"] = OutputFile(
+                        filename="cluster_stats.json",
+                        schema=SCHEMA_VERSIONS["cluster_stats"],
+                        description="Coherence cluster statistics and cache performance",
+                        record_count=len(cluster_stats.get("cluster_details", [])),
+                    )
+
+                # Export BN edges with uncertainty (TD-E) - controlled by --export-bn-edges
+                if export_options.get("bn_edges", True):
+                    bn_edges = serialize_bn_edges(bn_builder, run_id, paper_id)
+                    _write_json(out_dir / "bn_edges.json", bn_edges)
+                    output_files["bn_edges"] = OutputFile(
+                        filename="bn_edges.json",
+                        schema=SCHEMA_VERSIONS["bn_edges"],
+                        description="BN edge parameters with uncertainty bounds",
+                        record_count=bn_edges.get("n_edges", 0),
+                    )
+
+                # Register existing outputs in manifest
+                output_files["web_state"] = OutputFile(
+                    filename="web_state.json",
+                    schema=SCHEMA_VERSIONS.get("web_state", "ae.web_state.v1"),
+                    description="Full web of belief state",
+                    record_count=len(web.beliefs),
+                )
+                output_files["coherence_summary"] = OutputFile(
+                    filename="coherence_summary.json",
+                    schema=SCHEMA_VERSIONS.get("coherence_summary", "ae.coherence_summary.v1"),
+                    description="Coherence computation summary with equilibrium log",
+                    record_count=1,
+                )
+                output_files["stubs"] = OutputFile(
+                    filename="stubs.jsonl",
+                    schema=SCHEMA_VERSIONS.get("stub", "ae.stub.v1"),
+                    description="Findings that couldn't be mapped to beliefs",
+                    record_count=n_stubs,
+                )
+                output_files["tensions"] = OutputFile(
+                    filename="tensions.jsonl",
+                    schema=SCHEMA_VERSIONS.get("tension", "ae.tension.v1"),
+                    description="Detected coherence tensions",
+                    record_count=n_tensions,
+                )
+                if bridge_registry and BRIDGE_WARRANTS_AVAILABLE:
+                    output_files["bridges"] = OutputFile(
+                        filename="bridges.jsonl",
+                        schema=SCHEMA_VERSIONS.get("bridge", "ae.bridge.v1"),
+                        description="Bridge warrants between domains",
+                        record_count=n_bridges,
+                    )
+                    if anomalies:
+                        output_files["anomalies"] = OutputFile(
+                            filename="anomalies.jsonl",
+                            schema=SCHEMA_VERSIONS.get("anomaly", "ae.anomaly.v1"),
+                            description="Anomalies from failed bridge integration",
+                            record_count=len(anomalies),
+                        )
+                # BN incremental state - controlled by --export-bn
+                if bn_builder and export_options.get("bn_state", True):
+                    output_files["bn_incremental_state"] = OutputFile(
+                        filename="bn_incremental_state.json",
+                        schema="ae.bn_incremental_state.v1",
+                        description="Incremental BN parameter state",
+                        record_count=n_bn_edges,
+                    )
+
+                # Generate manifest - controlled by --export-manifest
+                if export_options.get("manifest", True):
+                    manifest = generate_manifest(out_dir, run_id, paper_id, output_files)
+                    _write_json(out_dir / "manifest.json", manifest)
+                    _web_logger.debug(f"[{paper_id}] Manifest written: {len(output_files)} files")
+
+            except Exception as e:
+                _web_logger.warning(f"[{paper_id}] Enhanced output serialization failed (non-fatal): {e}")
 
         return {
             "web_integration": "success",
@@ -613,7 +873,15 @@ def _integrate_into_web_of_belief(
             "converged_at_iteration": converged_at,
             # Sprint 3: Bridge statistics
             "n_bridges": n_bridges,
-            "n_bridge_anomalies": len(anomalies)
+            "n_bridge_anomalies": len(anomalies),
+            # TD-C/TD-E: Scalability statistics
+            "scalable_coherence_used": coherence_manager is not None,
+            "incremental_bn_used": bn_builder is not None,
+            "n_bn_updates": bn_updates,
+            "n_bn_edges": n_bn_edges,
+            # Sprint 2.0.2: Output manifest
+            "manifest_generated": OUTPUT_SERIALIZER_AVAILABLE and len(output_files) > 0,
+            "n_output_files": len(output_files) if OUTPUT_SERIALIZER_AVAILABLE else 0,
         }
 
     except Exception as e:
@@ -739,15 +1007,47 @@ def _review_item(run_id: str, paper_id: str, item_id: str, severity: str, questi
 
 
 def _run_from_contract_bundle_impl(
-    *, in_dir: Path, out_dir: Path, profile: str, hitl: str
+    *,
+    in_dir: Path,
+    out_dir: Path,
+    profile: str,
+    hitl: str,
+    web_options: Optional[Dict[str, Any]] = None,
+    export_options: Optional[Dict[str, Any]] = None,
 ) -> dict:
     """
     Read AF-style bundle in in_dir, run AE extraction, write AE outputs to out_dir,
     and return a summary dict (counts, warnings, etc).
+
+    Sprint 2.0.3: Now accepts web_options and export_options from CLI flags.
+
+    web_options:
+        enabled: bool - Enable/disable web of belief integration
+        seek_equilibrium: bool - Whether to seek equilibrium
+        max_iterations: int - Max iterations for equilibrium
+        convergence_threshold: float - Convergence threshold
+
+    export_options:
+        manifest: bool - Generate manifest.json
+        bn_state: bool - Export bn_incremental_state.json
+        cluster_stats: bool - Export cluster_stats.json
+        bn_edges: bool - Export bn_edges.json
     """
     in_dir = Path(in_dir).resolve()
     out_dir = Path(out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Sprint 2.0.3: Apply CLI options to environment variables
+    web_options = web_options or {}
+    export_options = export_options or {}
+
+    # Override environment variables with CLI options
+    if "seek_equilibrium" in web_options:
+        os.environ["AE_WEB_SEEK_EQUILIBRIUM"] = str(web_options["seek_equilibrium"]).lower()
+    if "max_iterations" in web_options:
+        os.environ["AE_WEB_EQUILIBRIUM_MAX_ITERATIONS"] = str(web_options["max_iterations"])
+    if "convergence_threshold" in web_options:
+        os.environ["AE_WEB_CONVERGENCE_THRESHOLD"] = str(web_options["convergence_threshold"])
 
     run_id = f"ae.run.{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
     audits: List[Dict[str, Any]] = []
@@ -960,12 +1260,15 @@ def _run_from_contract_bundle_impl(
         )
 
     # Sprint 2: Web of Belief integration
+    # Sprint 2.0.3: Pass through web_options and export_options from CLI
     web_integration_result = _integrate_into_web_of_belief(
         claims=claims,
         rules=rules,
         out_dir=out_dir,
         run_id=run_id,
-        paper_id=paper_id
+        paper_id=paper_id,
+        web_options=web_options,
+        export_options=export_options,
     )
     audits.append(
         _audit_event(
@@ -1162,7 +1465,22 @@ def _try_call_extractor(fulltext: str, meta: Dict[str, Any], profile: str) -> Di
         return {"_error": "extractor_call_failed: %s: %s" % (last.__class__.__name__, str(last))}
     return {"_error": "no_extractor_entrypoint_found"}
 
-def run_from_contract_bundle(*, in_dir: Path, out_dir: Path, profile: str, hitl: str) -> Dict[str, Any]:
+def run_from_contract_bundle(
+    *,
+    in_dir: Path,
+    out_dir: Path,
+    profile: str,
+    hitl: str,
+    web_options: Optional[Dict[str, Any]] = None,
+    export_options: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     """Compat wrapper used by CLI; delegates to implementation with contract outputs."""
-    return _run_from_contract_bundle_impl(in_dir=in_dir, out_dir=out_dir, profile=profile, hitl=hitl)
+    return _run_from_contract_bundle_impl(
+        in_dir=in_dir,
+        out_dir=out_dir,
+        profile=profile,
+        hitl=hitl,
+        web_options=web_options,
+        export_options=export_options,
+    )
 # --- CHATGPT_PATCH_AE_AF_WIRING_V1 END ---
