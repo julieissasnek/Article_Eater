@@ -102,6 +102,139 @@ class ConflictType(Enum):
 
 
 # =============================================================================
+# SPRINT 2.6 TRACK B: QUALITY-WEIGHTED ENTRENCHMENT (P-QW Panel)
+# =============================================================================
+
+# Q4: Revised component weights per panel (Cartwright, Bates, Mayo)
+# Old weights: sample_size=0.2, methodology=0.3, journal=0.1, preregistered=0.15
+# New weights: more emphasis on methodology, reduced institution weight
+QUALITY_WEIGHTS: Dict[str, float] = {
+    'methodology': 0.28,      # Up from 0.3 (most important content signal)
+    'citations': 0.18,        # New explicit weight
+    'institution': 0.12,      # Q2: Reduced from 0.15
+    'author_quality': 0.18,   # Author h-index/reputation
+    'preregistration': 0.10,  # Slightly down from 0.15
+    'sample_size': 0.10,      # Slightly down from 0.2
+    'ecological_validity': 0.04,  # Q4: New optional component per R. Kaplan
+}
+
+# Q2: Institution tier list (Tier 1 = top programs for CNfA)
+# Per R. Kaplan: Added Wageningen, Uppsala, JCU
+INSTITUTION_TIERS: Dict[str, int] = {
+    # Tier 1: Top environmental psychology / cognitive science programs
+    "mit": 1,
+    "michigan": 1,
+    "stanford": 1,
+    "berkeley": 1,
+    "yale": 1,
+    "harvard": 1,
+    "ucsd": 1,
+    "wageningen": 1,  # Q2: Added per R. Kaplan
+    "uppsala": 1,      # Q2: Added per R. Kaplan
+    "jcu": 1,          # Q2: James Cook University, added per R. Kaplan
+    # Tier 2: Strong programs
+    "cornell": 2,
+    "uchicago": 2,
+    "penn": 2,
+    "columbia": 2,
+    "duke": 2,
+    "uiuc": 2,
+    "wisconsin": 2,
+    # Tier 3: Good programs
+    # (Default for known universities not in Tier 1-2)
+}
+DEFAULT_INSTITUTION_TIER = 3
+MAX_INSTITUTION_TIER = 5  # Tier for unknown institutions
+
+
+def citation_velocity(
+    citation_count: int,
+    publication_year: int,
+    current_year: int = 2026
+) -> float:
+    """
+    Compute citation velocity (Q5: citations per year since publication).
+
+    Per Cartwright/Mayo: Replace raw career stage adjustment with citation
+    velocity, which directly addresses temporal accumulation effects.
+
+    Args:
+        citation_count: Total citations
+        publication_year: Year paper was published
+        current_year: Current year (default 2026)
+
+    Returns:
+        Citations per year
+    """
+    years = max(1, current_year - publication_year)
+    return citation_count / years
+
+
+def quality_to_entrenchment(overall_quality: float) -> float:
+    """
+    Convert paper quality to belief entrenchment (Q6: piecewise linear with floor).
+
+    Per Pearl/Mayo: Low-quality papers get floor entrenchment (0.10).
+    Above threshold, linear mapping to 0.70.
+
+    Args:
+        overall_quality: Overall quality score [0, 1]
+
+    Returns:
+        Entrenchment value [0.10, 0.70]
+    """
+    if overall_quality < 0.3:
+        return 0.10  # Floor for low-quality papers
+    else:
+        # Linear from 0.15 at quality=0.3 to 0.70 at quality=1.0
+        return 0.15 + (overall_quality - 0.3) * (0.70 - 0.15) / (1.0 - 0.3)
+
+
+def get_institution_tier(institution: str) -> int:
+    """
+    Get institution tier from name (Q2).
+
+    Args:
+        institution: Institution name or identifier
+
+    Returns:
+        Tier (1 = top, higher = lower prestige)
+    """
+    if not institution:
+        return MAX_INSTITUTION_TIER
+
+    # Normalize: lowercase, strip common suffixes
+    normalized = institution.lower().strip()
+    for suffix in [" university", " college", " institute", "university of ", "u ", "uc"]:
+        normalized = normalized.replace(suffix, "")
+    normalized = normalized.strip()
+
+    return INSTITUTION_TIERS.get(normalized, DEFAULT_INSTITUTION_TIER)
+
+
+def institution_tier_to_score(tier: int) -> float:
+    """
+    Convert institution tier to quality score component.
+
+    Args:
+        tier: Institution tier (1 = top)
+
+    Returns:
+        Score [0, 1] where 1 = Tier 1
+    """
+    if tier <= 1:
+        return 1.0
+    elif tier == 2:
+        return 0.75
+    elif tier == 3:
+        return 0.5
+    elif tier == 4:
+        return 0.25
+    else:
+        return 0.1
+
+
+# =============================================================================
 # COHERENCE DASHBOARD (Expert Panel 5.5)
 # =============================================================================
 
@@ -342,6 +475,11 @@ CREATE TABLE IF NOT EXISTS paper_quality (
     preregistered INTEGER DEFAULT 0,
     replication_status TEXT DEFAULT 'original',  -- 'original', 'successful_replication', 'failed_replication'
     overall_quality REAL,         -- composite score
+    -- Sprint 2.6 Track B: P-QW Panel additions
+    institution TEXT,             -- Q2: institution for tier lookup
+    author_h_index INTEGER,       -- Q4: author quality metric
+    publication_year INTEGER,     -- Q5: for citation velocity
+    ecological_validity_score REAL,  -- Q4: new component
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
@@ -803,39 +941,86 @@ class WebPersistenceService:
         journal_impact_factor: Optional[float] = None,
         citation_count: Optional[int] = None,
         preregistered: bool = False,
-        replication_status: str = "original"
+        replication_status: str = "original",
+        # Sprint 2.6 Track B: New P-QW panel fields
+        institution: Optional[str] = None,
+        author_h_index: Optional[int] = None,
+        publication_year: Optional[int] = None,
+        ecological_validity_score: Optional[float] = None,
     ) -> float:
         """
         Save paper quality metrics and compute overall quality.
+
+        Sprint 2.6 Track B (P-QW Panel) updates:
+        - Q2: Institution tier weighting (reduced to 0.12)
+        - Q4: Revised component weights
+        - Q5: Citation velocity instead of raw citation count
+        - Q6: Piecewise quality→entrenchment available via quality_to_entrenchment()
 
         Returns the computed overall quality score.
         """
         now = self._utc_now()
 
-        # Compute overall quality as weighted average
-        # Per expert panel: successful replications get ~2x weight
+        # Sprint 2.6 Track B: Use new QUALITY_WEIGHTS per P-QW Q4
         weights = []
         scores = []
 
-        if sample_size_score is not None:
-            weights.append(0.2)
-            scores.append(sample_size_score)
-
+        # Methodology (Q4: 0.28)
         if methodology_score is not None:
-            weights.append(0.3)
+            weights.append(QUALITY_WEIGHTS['methodology'])
             scores.append(methodology_score)
 
-        if journal_impact_factor is not None:
-            # Normalize JIF (assuming max ~50)
-            normalized_jif = min(1.0, journal_impact_factor / 50.0)
-            weights.append(0.1)
-            scores.append(normalized_jif)
+        # Citations - use citation velocity if publication_year available (Q5)
+        if citation_count is not None:
+            if publication_year is not None:
+                # Q5: Use citation velocity instead of raw count
+                velocity = citation_velocity(citation_count, publication_year)
+                # Normalize velocity (assuming ~50 citations/year is excellent)
+                normalized_velocity = min(1.0, velocity / 50.0)
+                weights.append(QUALITY_WEIGHTS['citations'])
+                scores.append(normalized_velocity)
+            else:
+                # Fallback: normalize raw citation count
+                normalized_citations = min(1.0, citation_count / 500.0)
+                weights.append(QUALITY_WEIGHTS['citations'])
+                scores.append(normalized_citations)
 
+        # Institution (Q2: reduced to 0.12)
+        if institution is not None:
+            tier = get_institution_tier(institution)
+            inst_score = institution_tier_to_score(tier)
+            weights.append(QUALITY_WEIGHTS['institution'])
+            scores.append(inst_score)
+
+        # Author quality via h-index
+        if author_h_index is not None:
+            # Normalize h-index (assuming h=50 is excellent)
+            normalized_h = min(1.0, author_h_index / 50.0)
+            weights.append(QUALITY_WEIGHTS['author_quality'])
+            scores.append(normalized_h)
+
+        # Preregistration (Q4: 0.10)
         if preregistered:
-            weights.append(0.15)
+            weights.append(QUALITY_WEIGHTS['preregistration'])
             scores.append(1.0)
 
-        # Replication status adjustment
+        # Sample size (Q4: 0.10)
+        if sample_size_score is not None:
+            weights.append(QUALITY_WEIGHTS['sample_size'])
+            scores.append(sample_size_score)
+
+        # Ecological validity (Q4: new, 0.04)
+        if ecological_validity_score is not None:
+            weights.append(QUALITY_WEIGHTS['ecological_validity'])
+            scores.append(ecological_validity_score)
+
+        # Journal impact factor (legacy support, uses citations weight if no citations)
+        if journal_impact_factor is not None and citation_count is None:
+            normalized_jif = min(1.0, journal_impact_factor / 50.0)
+            weights.append(QUALITY_WEIGHTS['citations'])
+            scores.append(normalized_jif)
+
+        # Replication status adjustment (unchanged)
         replication_multiplier = 1.0
         if replication_status == "successful_replication":
             replication_multiplier = 2.0
@@ -854,12 +1039,16 @@ class WebPersistenceService:
                 INSERT OR REPLACE INTO paper_quality (
                     paper_id, sample_size_score, methodology_score,
                     journal_impact_factor, citation_count, preregistered,
-                    replication_status, overall_quality, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    replication_status, overall_quality,
+                    institution, author_h_index, publication_year, ecological_validity_score,
+                    created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 paper_id, sample_size_score, methodology_score,
                 journal_impact_factor, citation_count, 1 if preregistered else 0,
-                replication_status, overall_quality, now, now
+                replication_status, overall_quality,
+                institution, author_h_index, publication_year, ecological_validity_score,
+                now, now
             ))
 
         return overall_quality

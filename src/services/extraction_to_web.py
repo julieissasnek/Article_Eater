@@ -78,6 +78,14 @@ from src.services.theory_matcher import (
     get_theory_matcher,
 )
 
+# Import scope extractor (TD-B: Scope Extraction)
+from src.services.scope_extractor import (
+    ScopeExtractor,
+    ExtractedScope,
+    extract_scope_from_claim,
+    get_scope_extractor,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -208,6 +216,18 @@ class MappingResult:
     theory_review_reason: Optional[str] = None
     disambiguation_applied: bool = False
 
+    # Sprint 2.6 Track A: P-TC Panel Decisions (Task Context)
+    # D1: How task type was determined
+    inference_basis: str = "unknown"  # "stated", "inferred", "unknown"
+    # D3: Flag for low-confidence keyword inference
+    review_recommended: bool = False
+    # D4: Whether ecological validity was presumed (not explicitly stated)
+    presumed_lab: bool = False
+    # D6: Effective demand computed from skill × cognitive_demand
+    effective_demand: Optional[str] = None  # "very_high", "high", "moderate", "low", "very_low"
+    # D7: Pure psych/neuro paper without architectural application
+    mechanism_only: bool = False
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'success': self.success,
@@ -225,7 +245,13 @@ class MappingResult:
             'theory_confidence': self.theory_confidence,
             'needs_theory_review': self.needs_theory_review,
             'theory_review_reason': self.theory_review_reason,
-            'disambiguation_applied': self.disambiguation_applied
+            'disambiguation_applied': self.disambiguation_applied,
+            # Sprint 2.6 Track A: P-TC Panel fields
+            'inference_basis': self.inference_basis,
+            'review_recommended': self.review_recommended,
+            'presumed_lab': self.presumed_lab,
+            'effective_demand': self.effective_demand,
+            'mechanism_only': self.mechanism_only,
         }
 
 
@@ -704,6 +730,23 @@ def claim_to_belief(
         environment_id = _extract_environment_id(claim)
         outcome_id = _extract_outcome_id(claim)
 
+        # Sprint 2.6 Track A: Task context extraction (P-TC Panel)
+        task_context = extract_task_context(claim)
+        result.inference_basis = task_context.inference_basis
+        result.review_recommended = task_context.review_recommended or result.needs_theory_review
+
+        # D4: Presumed lab when ecological validity not explicitly stated
+        result.presumed_lab = not scope.scope_specified
+
+        # D6: Compute effective demand (default skill_level = intermediate)
+        result.effective_demand = compute_effective_demand(
+            task_context.cognitive_demand,
+            claim.get("study", {}).get("skill_level", "intermediate")
+        )
+
+        # D7: Check if mechanism-only paper
+        result.mechanism_only = is_mechanism_only(claim)
+
         # Create the Belief
         belief = Belief(
             belief_id=claim_id,
@@ -995,6 +1038,9 @@ def _extract_scope(claim: Dict[str, Any]) -> ScopeConditions:
     """
     Extract scope conditions from claim's study metadata.
 
+    TD-B Enhancement: Uses enhanced scope extraction from statement text
+    when structured metadata is sparse.
+
     Maps ae.claim.v1 study fields to ScopeConditions:
     - study.sample.population → population
     - study.sample.country → geography
@@ -1013,18 +1059,49 @@ def _extract_scope(claim: Dict[str, Any]) -> ScopeConditions:
     if settings and isinstance(settings, list) and len(settings) > 0:
         setting_value = settings[0].get("id") or settings[0].get("notes")
 
+    # Start with structured metadata
+    population = sample.get("population")
+    geography = sample.get("country")
+    measurement = study.get("design")
+
+    # TD-B: Enhance with NLP extraction from statement text
+    # Only if structured data is sparse
+    has_structured = bool(population) or bool(setting_value) or bool(geography)
+
+    if not has_structured:
+        # Use enhanced scope extraction from claim text
+        try:
+            extracted = extract_scope_from_claim(claim)
+
+            # Fill in missing fields from extraction
+            if not population and extracted.population:
+                population = extracted.population
+            if not setting_value and extracted.setting:
+                setting_value = extracted.setting
+            if not geography and extracted.geography:
+                geography = extracted.geography
+            if not measurement and extracted.methodology:
+                measurement = extracted.methodology
+
+            # Log extraction
+            if extracted.explicit_fields:
+                logger.debug(f"TD-B: Extracted scope fields: {extracted.explicit_fields}")
+
+        except Exception as e:
+            logger.warning(f"TD-B: Scope extraction failed: {e}")
+
     # Determine if scope was explicitly specified
     # Scope is specified if we have population OR setting OR country
-    has_population = bool(sample.get("population"))
+    has_population = bool(population)
     has_setting = bool(setting_value)
-    has_geography = bool(sample.get("country"))
+    has_geography = bool(geography)
     scope_specified = has_population or has_setting or has_geography
 
     return ScopeConditions(
-        population=sample.get("population"),
+        population=population,
         setting=setting_value,
-        geography=sample.get("country"),
-        measurement=study.get("design"),  # Map design to measurement context
+        geography=geography,
+        measurement=measurement,
         scope_specified=scope_specified
     )
 
@@ -1057,16 +1134,214 @@ def _extract_outcome_id(claim: Dict[str, Any]) -> Optional[str]:
     return None
 
 
+# =============================================================================
+# SPRINT 2.6 TRACK A: TASK CONTEXT EXTRACTION (P-TC Panel Decisions)
+# =============================================================================
+
+# Common experimental task keywords for instrument detection (D2: 0.95 confidence)
+COMMON_INSTRUMENTS: Dict[str, Dict[str, Any]] = {
+    "d2 test": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "stroop": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "n-back": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "digit span": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "trail making": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "raven": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "remote associates": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "alternative uses": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "continuous performance": {"cognitive_demand": "high_demand", "confidence": 0.95},
+    "panas": {"cognitive_demand": "low_demand", "confidence": 0.80},
+    "nature walk": {"cognitive_demand": "restorative", "confidence": 0.90},
+}
+
+# Keyword patterns for task inference (D3: 0.5-0.7 confidence)
+TASK_KEYWORD_PATTERNS: Dict[str, List[Tuple[str, float]]] = {
+    "high_demand": [
+        (r"proofread|proofreading", 0.70),
+        (r"analyz|analysis|analytical", 0.60),
+        (r"problem.?solv", 0.65),
+        (r"concentrat|focus", 0.55),
+        (r"study|studying|learn", 0.50),
+        (r"complex.?task", 0.65),
+        (r"cognitive.?task", 0.70),
+        (r"attention.?task", 0.70),
+        (r"memory.?task", 0.70),
+        (r"vigilance", 0.70),
+    ],
+    "low_demand": [
+        (r"routine", 0.60),
+        (r"data entry", 0.70),
+        (r"familiar.?task", 0.60),
+        (r"simple.?task", 0.55),
+        (r"repetitive", 0.60),
+    ],
+    "restorative": [
+        (r"break|rest|pause", 0.65),
+        (r"walk|walking", 0.60),
+        (r"relax|relaxation", 0.70),
+        (r"recover|restoration", 0.70),
+        (r"nature.?view|view.?nature", 0.70),
+    ],
+}
+
+# Effective demand matrix (D6: skill × cognitive_demand interaction per Ericsson)
+EFFECTIVE_DEMAND_MATRIX: Dict[Tuple[str, str], str] = {
+    # (cognitive_demand, skill_level) → effective_demand
+    ("high_demand", "novice"): "very_high",
+    ("high_demand", "intermediate"): "high",
+    ("high_demand", "expert"): "moderate",
+    ("low_demand", "novice"): "moderate",
+    ("low_demand", "intermediate"): "low",
+    ("low_demand", "expert"): "very_low",
+    ("restorative", "novice"): "low",
+    ("restorative", "intermediate"): "very_low",
+    ("restorative", "expert"): "very_low",
+}
+
+
+@dataclass
+class TaskContextResult:
+    """Result of task context extraction (Sprint 2.6 Track A)."""
+    cognitive_demand: str = "high_demand"  # Default per D1
+    social_structure: str = "solitary"  # Default per D1
+    inference_basis: str = "unknown"  # "stated", "inferred", "unknown"
+    inference_confidence: float = 0.0
+    review_recommended: bool = False  # True if confidence < 0.7
+    matched_instrument: Optional[str] = None
+    matched_pattern: Optional[str] = None
+
+
+def extract_task_context(claim: Dict[str, Any]) -> TaskContextResult:
+    """
+    Extract task context from claim (Sprint 2.6 Track A: P-TC D1, D2, D3).
+
+    Inference priority:
+    1. Named instruments (D2: 0.95 confidence)
+    2. Keyword patterns (D3: 0.5-0.7 confidence)
+    3. Default to high_demand.solitary with inference_basis="unknown" (D1)
+
+    Args:
+        claim: Claim dictionary
+
+    Returns:
+        TaskContextResult with inferred task context and metadata
+    """
+    result = TaskContextResult()
+    statement = claim.get("statement", "").lower()
+    study = claim.get("study", {})
+    task_desc = study.get("task", {}).get("description", "").lower()
+    combined_text = f"{statement} {task_desc}"
+
+    # Step 1: Try to match named instruments (D2: high confidence)
+    for instrument, config in COMMON_INSTRUMENTS.items():
+        if instrument in combined_text:
+            result.cognitive_demand = config["cognitive_demand"]
+            result.inference_confidence = config["confidence"]
+            result.inference_basis = "stated"
+            result.matched_instrument = instrument
+            result.review_recommended = False  # High confidence, no review needed
+            logger.debug(f"Task context: matched instrument '{instrument}' → {config['cognitive_demand']}")
+            return result
+
+    # Step 2: Try keyword patterns (D3: medium confidence)
+    best_match: Optional[Tuple[str, str, float]] = None  # (demand, pattern, confidence)
+
+    for demand_type, patterns in TASK_KEYWORD_PATTERNS.items():
+        for pattern, confidence in patterns:
+            if re.search(pattern, combined_text, re.IGNORECASE):
+                if best_match is None or confidence > best_match[2]:
+                    best_match = (demand_type, pattern, confidence)
+
+    if best_match:
+        result.cognitive_demand = best_match[0]
+        result.inference_confidence = best_match[2]
+        result.inference_basis = "inferred"
+        result.matched_pattern = best_match[1]
+        # D3: Flag for review if confidence < 0.7
+        result.review_recommended = best_match[2] < 0.7
+        logger.debug(f"Task context: matched pattern '{best_match[1]}' → {best_match[0]} (confidence={best_match[2]:.2f})")
+        return result
+
+    # Step 3: Default (D1: high_demand.solitary when unknown)
+    result.cognitive_demand = "high_demand"
+    result.social_structure = "solitary"
+    result.inference_basis = "unknown"
+    result.inference_confidence = 0.0
+    result.review_recommended = True  # Unknown context warrants review
+    logger.debug("Task context: no match, defaulting to high_demand.solitary")
+    return result
+
+
+def compute_effective_demand(
+    cognitive_demand: str,
+    skill_level: str = "intermediate"
+) -> str:
+    """
+    Compute effective demand from skill × cognitive_demand (D6: Ericsson panel input).
+
+    Args:
+        cognitive_demand: "high_demand", "low_demand", or "restorative"
+        skill_level: "novice", "intermediate", or "expert"
+
+    Returns:
+        Effective demand: "very_high", "high", "moderate", "low", or "very_low"
+    """
+    return EFFECTIVE_DEMAND_MATRIX.get(
+        (cognitive_demand, skill_level),
+        "moderate"  # Default fallback
+    )
+
+
+def is_mechanism_only(claim: Dict[str, Any]) -> bool:
+    """
+    Check if claim is mechanism-only (D7: pure psych/neuro without architectural application).
+
+    A claim is mechanism-only if:
+    - It has mechanistic content (claim_type or statement suggests mechanism)
+    - It has NO environment factors
+    - It has NO architectural outcomes
+
+    Args:
+        claim: Claim dictionary
+
+    Returns:
+        True if mechanism-only paper, False otherwise
+    """
+    claim_type = claim.get("claim_type", "")
+    statement = claim.get("statement", "").lower()
+    constructs = claim.get("constructs", {})
+
+    # Check for mechanistic indicators
+    is_mechanistic = claim_type == "mechanistic" or any(
+        kw in statement for kw in ["mediates", "mechanism", "pathway", "neural", "cortisol", "HPA"]
+    )
+
+    if not is_mechanistic:
+        return False
+
+    # Check for absence of architectural context
+    env_factors = constructs.get("environment_factors", [])
+    outcomes = constructs.get("outcomes", [])
+
+    # Mechanism-only if no environment factors and no design-relevant outcomes
+    has_env = bool(env_factors)
+    has_design_outcomes = any(
+        o.get("id", "").startswith(("behav.", "perf.", "design."))
+        for o in outcomes if isinstance(o, dict)
+    )
+
+    return not has_env and not has_design_outcomes
+
+
 def load_outcome_lookup(path: Optional[Path] = None) -> Dict[str, Any]:
     """Load the outcome taxonomy lookup."""
     if path is None:
         # Default path relative to this file
         path = Path(__file__).parent.parent.parent / "contracts" / "outcome_vocab" / "outcome_lookup.json"
-    
+
     if path.exists():
         with open(path) as f:
             return json.load(f)
-    
+
     logger.warning(f"Outcome lookup not found at {path}")
     return {}
 

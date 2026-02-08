@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_id": "ae.institution_tiers.v1",
+  "title": "Institution Tier List for CNfA Quality Weighting",
+  "version": "1.0.0",
+  "created": "2026-02-08",
+  "description": "Institution tier assignments for paper quality weighting per P-QW Panel (Q2). Tier 1 = top programs, higher tiers = lower prestige weight.",
+
+  "panel_consultation": {
+    "panel": "P-QW",
+    "date": "2026-02-08",
+    "key_decision": "Q2",
+    "reviewers": ["Pearl", "Cartwright", "Simon", "Bates", "R. Kaplan", "Mayo"],
+    "weight_assigned": 0.12,
+    "notes": "Reduced from 0.15 per Cartwright. R. Kaplan added Wageningen, Uppsala, JCU."
+  },
+
+  "tier_definitions": {
+    "1": {
+      "name": "Tier 1 - Top Programs",
+      "description": "World-leading programs in environmental psychology, cognitive science, or neuroarchitecture",
+      "quality_score": 1.0
+    },
+    "2": {
+      "name": "Tier 2 - Strong Programs",
+      "description": "Well-established research programs with significant output",
+      "quality_score": 0.75
+    },
+    "3": {
+      "name": "Tier 3 - Good Programs",
+      "description": "Solid research programs (default for known universities)",
+      "quality_score": 0.5
+    },
+    "4": {
+      "name": "Tier 4 - Emerging Programs",
+      "description": "Newer or smaller programs",
+      "quality_score": 0.25
+    },
+    "5": {
+      "name": "Tier 5 - Unknown",
+      "description": "Institution not recognized (default for unknown)",
+      "quality_score": 0.1
+    }
+  },
+
+  "institutions": {
+    "tier_1": [
+      {"id": "mit", "name": "Massachusetts Institute of Technology", "notes": "CogSci, Media Lab"},
+      {"id": "michigan", "name": "University of Michigan", "notes": "Kaplan lab, environmental psychology"},
+      {"id": "stanford", "name": "Stanford University", "notes": "Psychology, design"},
+      {"id": "berkeley", "name": "UC Berkeley", "notes": "Psychology, architecture"},
+      {"id": "yale", "name": "Yale University", "notes": "Psychology, environment"},
+      {"id": "harvard", "name": "Harvard University", "notes": "Psychology, design"},
+      {"id": "ucsd", "name": "UC San Diego", "notes": "CogSci (Kirsh lab)"},
+      {"id": "wageningen", "name": "Wageningen University", "notes": "Environmental psychology (NL) - Added per R. Kaplan Q2"},
+      {"id": "uppsala", "name": "Uppsala University", "notes": "Environmental aesthetics (Sweden) - Added per R. Kaplan Q2"},
+      {"id": "jcu", "name": "James Cook University", "notes": "Tropical environmental psychology (Australia) - Added per R. Kaplan Q2"},
+      {"id": "cornell", "name": "Cornell University", "notes": "Design, environmental psychology"},
+      {"id": "cmu", "name": "Carnegie Mellon University", "notes": "CogSci, HCI"}
+    ],
+    "tier_2": [
+      {"id": "uchicago", "name": "University of Chicago"},
+      {"id": "penn", "name": "University of Pennsylvania"},
+      {"id": "columbia", "name": "Columbia University"},
+      {"id": "duke", "name": "Duke University"},
+      {"id": "uiuc", "name": "University of Illinois Urbana-Champaign"},
+      {"id": "wisconsin", "name": "University of Wisconsin-Madison"},
+      {"id": "northwestern", "name": "Northwestern University"},
+      {"id": "nyu", "name": "New York University"},
+      {"id": "ubc", "name": "University of British Columbia"},
+      {"id": "toronto", "name": "University of Toronto"},
+      {"id": "edinburgh", "name": "University of Edinburgh"},
+      {"id": "ucl", "name": "University College London"},
+      {"id": "oxford", "name": "University of Oxford"},
+      {"id": "cambridge", "name": "University of Cambridge"},
+      {"id": "eth", "name": "ETH Zurich"},
+      {"id": "delft", "name": "TU Delft"}
+    ],
+    "tier_3": [
+      "_comment: Default tier for recognized universities not in Tier 1-2"
+    ]
+  },
+
+  "aliases": {
+    "_comment": "Common variations of institution names for lookup normalization",
+    "mit": ["massachusetts institute of technology", "m.i.t."],
+    "michigan": ["university of michigan", "umich", "u-m", "um"],
+    "stanford": ["stanford university", "stanford"],
+    "berkeley": ["uc berkeley", "ucb", "university of california berkeley", "cal"],
+    "ucsd": ["uc san diego", "university of california san diego"],
+    "wageningen": ["wageningen university", "wur", "wageningen ur"],
+    "uppsala": ["uppsala university", "uu"],
+    "jcu": ["james cook university", "james cook"]
+  },
+
+  "usage": {
+    "lookup_function": "get_institution_tier(institution: str) -> int",
+    "score_function": "institution_tier_to_score(tier: int) -> float",
+    "location": "src/services/web_persistence.py",
+    "weight_in_quality": "QUALITY_WEIGHTS['institution'] = 0.12"
+  },
+
+  "review_schedule": {
+    "frequency": "annual",
+    "last_reviewed": "2026-02-08",
+    "next_review": "2027-02-08",
+    "notes": "Check for new strong programs in environmental psychology, neuroarchitecture"
+  }
+}
