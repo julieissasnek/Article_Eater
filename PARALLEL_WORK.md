@@ -124,6 +124,67 @@ This file coordinates parallel Claude Code sessions to prevent conflicts.
 
 ---
 
+### Lane G: Fix Failing Tests
+**Scope**: Fix the 12 failing infrastructure/placeholder tests
+**Owner**: UNCLAIMED
+**Files OWNED (exclusive write access)**:
+- `tests/test_theory_system.py`
+- Any test files with failures
+
+**Files SHARED (read-only)**:
+- All service files (for context)
+
+**Tasks**:
+- Identify root cause of 12 failures
+- Fix or skip infrastructure tests appropriately
+- Ensure clean test run
+
+---
+
+### Lane H: Commit Uncommitted TD Work
+**Scope**: Stage and commit TD-C, TD-D, and other parallel session files
+**Owner**: UNCLAIMED
+**Files OWNED (exclusive write access)**:
+- Git staging only (no file edits)
+
+**Files to commit**:
+- `src/services/scalable_coherence.py` (TD-C)
+- `src/services/temporal_parser.py` (TD-D)
+- `src/services/incremental_bn.py` (TD-E)
+- `src/services/scope_extractor.py` (TD-B)
+- `tests/test_scalable_coherence.py`
+- `tests/test_temporal_parser.py`
+- `tests/test_incremental_bn.py`
+- `tests/test_scope_extractor.py`
+
+**Tasks**:
+- Git add all TD files
+- Create comprehensive commit message
+- Verify clean git status
+
+---
+
+### Lane I: Sprint 2.0 Pipeline Integration
+**Scope**: Wire extraction_to_web.py into app/tasks/pipeline.py
+**Owner**: UNCLAIMED
+**Files OWNED (exclusive write access)**:
+- `app/tasks/pipeline.py`
+- `tests/test_pipeline_integration.py` — NEW FILE
+
+**Files SHARED (read-only)**:
+- `src/services/extraction_to_web.py`
+- `src/services/web_of_belief.py`
+- `src/services/web_persistence.py`
+
+**Tasks**:
+- 2.0.1 Wire extraction_to_web into pipeline
+- 2.0.2 Implement output serialization
+- 2.0.3 Add CLI flags for web outputs
+- 2.0.4 Test with sample papers
+- 2.0.5 Error handling and logging
+
+---
+
 ## Active Claims
 
 **IMPORTANT**: Edit this section to claim/release lanes.
@@ -136,6 +197,9 @@ This file coordinates parallel Claude Code sessions to prevent conflicts.
 | D | — | — | — | COMPLETED: TODO 2 Interpretive Intelligence (2026-02-08). Added MECHANISM + DISAGREEMENT patterns. |
 | E | — | — | — | COMPLETED: TODO 3 VOI-Driven Search (2026-02-08). Cross-field vocabulary, 92 tests. |
 | F | — | — | — | COMPLETED: P-TC and P-QW panels convened (2026-02-08) |
+| G | — | — | — | COMPLETED: Fixed 11 failing tests (2026-02-08). Syntax error in rulegraph_v2_builder.py fixed, future sprint tests skipped. |
+| H | — | — | — | AVAILABLE for Term 2 |
+| I | — | — | — | AVAILABLE for Term 3 |
 
 ---
 

@@ -12,7 +12,7 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Complet
 2. ~~**Panel Convening**~~ ✓ COMPLETE — P-TC (7 decisions), P-QW (6 decisions)
 3. ~~**Strategic TODOs 1-3**~~ ✓ COMPLETE — Credibility, Interpretive, VOI
 4. **Sprint 2.6 Panel Implementation** — P-TC Track A (7 tasks), P-QW Track B (7 tasks)
-5. **Technical Debt** — TD-D (Temporal) only remaining [TD-A, TD-B, TD-C, TD-E COMPLETE]
+5. ~~**Technical Debt**~~ ✓ ALL COMPLETE [TD-A, TD-B, TD-C, TD-D, TD-E]
 
 ---
 
@@ -28,6 +28,9 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Complet
 | **D** | TODO 2: Interpretive Intelligence | `interpretive_intelligence.py` | ✓ COMPLETE |
 | **E** | TODO 3: VOI Search | `voi_search.py` | ✓ COMPLETE |
 | **F** | Panel Convening (P-TC, P-QW) | `docs/PANEL_*.md` | ✓ COMPLETE |
+| **G** | Fix Failing Tests | `test_theory_system.py`, `rulegraph_v2_builder.py` | ✓ COMPLETE |
+| **H** | Commit TD Work | TD-C, TD-D, TD-E files | AVAILABLE |
+| **I** | Sprint 2.0 Pipeline Integration | `app/tasks/pipeline.py` | AVAILABLE |
 
 **Recommended parallel pairs** (minimal conflicts):
 - Lane A + Lane E (Schema + VOI)
@@ -370,13 +373,16 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 **Files created**: `src/services/scalable_coherence.py` (~1000 lines), `tests/test_scalable_coherence.py` (64 tests)
 
-**Sprint TD-D: Temporal** (TD-4) — ENHANCEMENT
-| Task | Description |
-|------|-------------|
-| TD-D.1 | Add spaCy temporal patterns |
-| TD-D.2 | Implement duration normalization |
-| TD-D.3 | Add temporal relation extraction |
-| TD-D.4 | Integrate with scope extraction |
+**Sprint TD-D: Temporal** (TD-4) — ✓ COMPLETE (2026-02-08)
+| Task | Description | Status |
+|------|-------------|--------|
+| TD-D.1 | Add temporal patterns (duration, frequency, relations) | ✓ |
+| TD-D.2 | Implement duration normalization (to minutes) | ✓ |
+| TD-D.3 | Add temporal relation extraction (before/after/during) | ✓ |
+| TD-D.4 | Integrate with scope extraction | ✓ |
+| TD-D.5 | Write tests (67 passing) | ✓ |
+
+**Files created**: `src/services/temporal_parser.py` (~900 lines), `tests/test_temporal_parser.py` (67 tests)
 
 **Sprint TD-E: Incremental BN Learning** — ✓ COMPLETE (2026-02-08)
 | Task | Description | Status |
@@ -399,13 +405,37 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 ### Sprint 2.0: Pipeline Integration
 
-| ID | Task | Estimate | Dependencies |
-|----|------|----------|--------------|
-| 2.0.1 | Wire `extraction_to_web.py` into `pipeline.py` | 2h | Sprint 1.5 |
-| 2.0.2 | Implement output serialization | 3h | — |
-| 2.0.3 | Add CLI flags for web outputs | 2h | — |
-| 2.0.4 | Test with sample papers | 4h | All above |
-| 2.0.5 | Error handling and logging | 2h | All above |
+**Status**: IN PROGRESS
+
+| ID | Task | Estimate | Dependencies | Status |
+|----|------|----------|--------------|--------|
+| 2.0.1 | Wire `extraction_to_web.py` into `pipeline.py` | 2h | Sprint 1.5 | ✓ DONE |
+| 2.0.2 | Implement output serialization | 3h | — | ✓ DONE |
+| 2.0.3 | Add CLI flags for web outputs | 2h | — | Pending |
+| 2.0.4 | Test with sample papers | 4h | All above | Pending |
+| 2.0.5 | Error handling and logging | 2h | All above | Pending |
+
+**Sprint 2.0.1 Completion (2026-02-08)**:
+- Wired TD-C (Scalable Coherence) into pipeline.py
+- Wired TD-E (Incremental BN Learning) into pipeline.py
+- Added CoherenceManager for O(n log n) coherence computation
+- Added IncrementalBNBuilder for Bayesian parameter updates
+- Added `bn_incremental_state.json` output file
+- Added TD statistics to coherence_summary.json
+- 13 new integration tests (`test_pipeline_td_wiring.py`)
+
+**Sprint 2.0.2 Completion (2026-02-08)**:
+- Created `src/services/output_serializer.py` (~500 lines)
+- Manifest generation with SHA256 checksums for all outputs
+- Theory inference export (TD-A audit trail)
+- Scope condition export (TD-B)
+- Temporal expression export (TD-D)
+- Cluster statistics export (TD-C)
+- BN edge export with 95% credible intervals (TD-E)
+- Enhanced belief serialization with all TD module data
+- Schema versions for all output types
+- 20 new tests (`test_output_serializer.py`)
+- New pipeline outputs: `manifest.json`, `cluster_stats.json`, `bn_edges.json`
 
 ### Sprint 3.0: Full Integration
 
@@ -492,6 +522,9 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-08 | **SPRINT 2.0.2 COMPLETE**: Output Serialization. Created `src/services/output_serializer.py` (~500 lines) with manifest generation, SHA256 checksums, TD module exports (theory inference audit, scope conditions, temporal expressions, cluster stats, BN edges with credible intervals). Schema versions for all outputs. Pipeline now generates `manifest.json`, `cluster_stats.json`, `bn_edges.json`. 20 tests (`test_output_serializer.py`). |
+| 2026-02-08 | **SPRINT 2.0.1 COMPLETE**: Pipeline Integration wiring. Wired TD-C (Scalable Coherence) and TD-E (Incremental BN) into `app/tasks/pipeline.py`. Added CoherenceManager for O(n log n) coherence computation. Added IncrementalBNBuilder for Bayesian edge parameter updates. New output: `bn_incremental_state.json`. Enhanced `coherence_summary.json` with TD statistics (`scalable_coherence_used`, `incremental_bn_used`, `n_bn_updates`, `n_bn_edges`). Created `tests/test_pipeline_td_wiring.py` (13 tests). |
+| 2026-02-08 | **SPRINT TD-D COMPLETE**: Temporal Parsing. Created `src/services/temporal_parser.py` (~900 lines) with Duration/Frequency/TemporalExpression dataclasses, pattern-based extraction for durations (simple, range, compound), frequencies (daily/weekly/etc), and temporal relations (before/after/during). Integrated with scope_extractor.py for enhanced duration extraction. ExposureType classification (acute/subacute/chronic/residential). 67 tests passing. **ALL TECHNICAL DEBT COMPLETE.** |
 | 2026-02-08 | **RUTHLESS REVIEW INFRASTRUCTURE**: Created `bin/ruthless_review.sh` bundle creator, `bin/scheduled_health_check.sh` for cron/launchd scheduling, 60+ expert panel prompt (Torvalds, Carmack, Knuth, Pearl, Quine, Feynman, etc.). Health check tracks regression history in `logs/test_history.csv`. |
 | 2026-02-08 | **SPRINT TD-C COMPLETE**: Scalable Coherence. Created `src/services/scalable_coherence.py` (~1000 lines) with ClusterManager (theory-based clustering), ConstraintNetwork (O(1) lookups), CoherenceCache (LRU with invalidation), CoherenceManager (hierarchical computation). Intra-cluster dense, inter-cluster sparse. Benchmark: 5000 beliefs, 25000 constraints in <500ms (target met). 64 tests passing. Drop-in replacement for O(n²) coherence computation. |
 | 2026-02-08 | **SPRINT 2.6 COMPLETE**: Panel Decision Implementation. Track A (P-TC): Added `inference_basis`, `review_recommended`, `presumed_lab`, `effective_demand`, `mechanism_only` to MappingResult. New functions: `extract_task_context()`, `compute_effective_demand()`, `is_mechanism_only()`. Track B (P-QW): Updated QUALITY_WEIGHTS (Meth 0.28, Cite 0.18, Inst 0.12, etc.), added `citation_velocity()`, `quality_to_entrenchment()` piecewise mapping, `get_institution_tier()`. Created `contracts/vocab/institution_tiers.json`. 62 web_persistence tests passing. |

@@ -14,20 +14,27 @@ from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 
 from src.contracts.schemas import (
-from lib.outcome_resolver import resolve_or_queue
-
-def _resolve_outcome_id(raw_id, paper_id=None):
-    """Resolve outcome ID through Outcome_Contractor."""
-    try:
-        result = resolve_or_queue(str(raw_id), paper_id=paper_id)
-        return result['canonical_id']
-    except Exception:
-        return str(raw_id)
-
-
     SevenPanelV2Bundle,
     PanelHeterogeneity,
 )
+
+# Optional: Outcome resolver integration (if lib.outcome_resolver is available)
+try:
+    from lib.outcome_resolver import resolve_or_queue
+    _HAS_OUTCOME_RESOLVER = True
+except ImportError:
+    _HAS_OUTCOME_RESOLVER = False
+
+
+def _resolve_outcome_id(raw_id, paper_id=None):
+    """Resolve outcome ID through Outcome_Contractor if available."""
+    if _HAS_OUTCOME_RESOLVER:
+        try:
+            result = resolve_or_queue(str(raw_id), paper_id=paper_id)
+            return result['canonical_id']
+        except Exception:
+            pass
+    return str(raw_id)
 
 
 def _now_iso() -> str:
