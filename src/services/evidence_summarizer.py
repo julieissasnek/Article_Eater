@@ -336,17 +336,50 @@ class EvidenceSummarizer:
     4. Caveats are first-class citizens
     """
 
+    # Per P-S3-C Panel (Cartwright): Level-dependent credence thresholds
+    # Theoretical claims require stricter standards; empirical data is more lenient
+    LEVEL_CREDENCE_THRESHOLDS = {
+        "theoretical": {"low": 0.5, "high": 0.8},
+        "intermediate": {"low": 0.4, "high": 0.7},
+        "empirical": {"low": 0.3, "high": 0.6},
+        "observational": {"low": 0.2, "high": 0.5},
+    }
+
     def __init__(
         self,
         min_sources_for_synthesis: int = 2,
         high_heterogeneity_threshold: float = 0.5,
         high_credence_threshold: float = 0.7,
-        low_credence_threshold: float = 0.4
+        low_credence_threshold: float = 0.4,
+        use_level_dependent_thresholds: bool = True
     ):
+        """
+        Initialize evidence summarizer.
+
+        Per P-S3-C Panel (Cartwright, Higgins):
+        - use_level_dependent_thresholds: If True, credence thresholds vary by
+          epistemic level (theoretical vs empirical)
+        """
         self.min_sources_for_synthesis = min_sources_for_synthesis
         self.high_heterogeneity_threshold = high_heterogeneity_threshold
         self.high_credence_threshold = high_credence_threshold
         self.low_credence_threshold = low_credence_threshold
+        self.use_level_dependent_thresholds = use_level_dependent_thresholds
+
+    def _get_thresholds_for_level(self, level: Optional[str] = None) -> Dict[str, float]:
+        """
+        Get credence thresholds appropriate for epistemic level.
+
+        Per P-S3-C Panel (Cartwright): Different standards for different levels.
+        """
+        if not self.use_level_dependent_thresholds or level is None:
+            return {"low": self.low_credence_threshold, "high": self.high_credence_threshold}
+
+        level_str = level.value if hasattr(level, 'value') else str(level).lower()
+        return self.LEVEL_CREDENCE_THRESHOLDS.get(
+            level_str,
+            {"low": self.low_credence_threshold, "high": self.high_credence_threshold}
+        )
 
     def summarize_belief(
         self,
@@ -562,8 +595,18 @@ class EvidenceSummarizer:
 
         return summary
 
-    def _assess_strength(self, summary: EvidenceSummary) -> EvidenceStrength:
-        """Assess overall evidence strength."""
+    def _assess_strength(
+        self,
+        summary: EvidenceSummary,
+        epistemic_level: Optional[str] = None
+    ) -> EvidenceStrength:
+        """
+        Assess overall evidence strength.
+
+        Per P-S3-C Panel (Cartwright, Mayo):
+        - Use level-dependent thresholds (theoretical requires stricter standards)
+        - Account for uncertainty in credence (effective credence = mean - 0.5*uncertainty)
+        """
         if not summary.synthesis:
             return EvidenceStrength.INSUFFICIENT
 
@@ -573,12 +616,21 @@ class EvidenceSummarizer:
         if synth.consistency == "conflicting":
             return EvidenceStrength.MIXED
 
-        # Check credence and source count
-        if synth.pooled_credence >= self.high_credence_threshold:
+        # Per P-S3-C Panel (Mayo): Use effective credence accounting for uncertainty
+        uncertainty = synth.pooled_uncertainty or 0.0
+        effective_credence = synth.pooled_credence - (uncertainty * 0.5)
+
+        # Per P-S3-C Panel (Cartwright): Get level-appropriate thresholds
+        thresholds = self._get_thresholds_for_level(epistemic_level)
+        high_threshold = thresholds["high"]
+        low_threshold = thresholds["low"]
+
+        # Assess strength using effective credence and level-dependent thresholds
+        if effective_credence >= high_threshold:
             if synth.n_sources >= 3:
                 return EvidenceStrength.STRONG
             return EvidenceStrength.MODERATE
-        elif synth.pooled_credence >= self.low_credence_threshold:
+        elif effective_credence >= low_threshold:
             return EvidenceStrength.MODERATE
         else:
             return EvidenceStrength.WEAK

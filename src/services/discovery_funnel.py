@@ -79,11 +79,46 @@ class RetrievalStatus(Enum):
 
 
 class ClosureType(Enum):
-    """How well a paper closed a gap."""
-    FULL = "full"           # Gap completely closed
-    PARTIAL = "partial"     # VOI reduced but gap remains
-    NONE = "none"           # No impact on gap
-    NEGATIVE = "negative"   # Increased uncertainty
+    """
+    How well a paper closed a gap.
+
+    Per P-S3-E Panel (Pearl): Quantitative thresholds for classification.
+    """
+    FULL = "full"           # Gap essentially closed (VOI < 0.1)
+    PARTIAL = "partial"     # VOI reduced ≥30%
+    NONE = "none"           # Minor change (< 30% reduction, not negative)
+    NEGATIVE = "negative"   # VOI increased (uncertainty grew)
+
+
+def classify_closure(voi_before: float, voi_after: float) -> ClosureType:
+    """
+    Classify gap closure based on VOI change.
+
+    Per P-S3-E Panel (Pearl): Use quantitative thresholds.
+
+    Args:
+        voi_before: VOI before paper ingestion
+        voi_after: VOI after paper ingestion
+
+    Returns:
+        ClosureType classification
+    """
+    # Handle edge cases
+    if voi_before <= 0:
+        return ClosureType.NONE
+
+    reduction = voi_before - voi_after
+    reduction_pct = reduction / voi_before
+
+    # Per Panel: Clear quantitative boundaries
+    if voi_after < 0.1:  # Gap essentially closed
+        return ClosureType.FULL
+    elif reduction_pct >= 0.3:  # ≥30% reduction
+        return ClosureType.PARTIAL
+    elif reduction_pct >= -0.1:  # Minor change either way
+        return ClosureType.NONE
+    else:  # VOI increased more than 10%
+        return ClosureType.NEGATIVE
 
 
 # =============================================================================
