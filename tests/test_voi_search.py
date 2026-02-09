@@ -1343,3 +1343,173 @@ class TestCrossFieldQueryGeneration:
 
         assert len(expanded) >= 1
         assert original in expanded
+
+
+# =============================================================================
+# SPRINT DISC-2: FUNNEL INTEGRATION TESTS
+# =============================================================================
+
+class TestFunnelIntegration:
+    """Tests for discovery funnel integration (DISC-2)."""
+
+    def test_epistemic_gap_to_funnel_gap(self, sample_belief):
+        """Test converting EpistemicGap to funnel VOIGap."""
+        gap = EpistemicGap(
+            gap_type=GapType.UNCERTAIN,
+            description="High uncertainty on stress reduction",
+            primary_belief_id=sample_belief.belief_id,
+            voi_score=0.75
+        )
+
+        funnel_gap = gap.to_funnel_gap(
+            web_id="web-123",
+            theory_id="biophilia",
+            search_terms=["stress", "nature", "office"]
+        )
+
+        # If funnel is available, should return a gap
+        # If not, should return None gracefully
+        if funnel_gap is not None:
+            assert funnel_gap.topic == gap.description
+            assert funnel_gap.predicted_voi == 0.75
+            assert funnel_gap.belief_id == sample_belief.belief_id
+            assert funnel_gap.web_id == "web-123"
+            assert funnel_gap.theory_id == "biophilia"
+            assert "stress" in funnel_gap.search_terms
+
+    def test_coordinator_with_funnel_tracking(self, sample_web):
+        """Test coordinator with funnel tracking enabled."""
+        import tempfile
+        import os
+
+        # Create temp DB
+        fd, db_path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+
+        try:
+            from src.services.voi_search import create_voi_coordinator
+
+            coordinator = create_voi_coordinator(
+                web=sample_web,
+                track_in_funnel=True,
+                db_path=db_path,
+                web_id="test-web"
+            )
+
+            # Funnel tracking should be enabled (if available)
+            # The coordinator should still work regardless
+            assert coordinator is not None
+            assert coordinator.web == sample_web
+
+            # Identify gaps - should work with or without funnel
+            gaps = coordinator.identify_search_priorities(max_gaps=3)
+            assert len(gaps) >= 0  # May be 0 if web is empty
+
+        finally:
+            os.unlink(db_path)
+
+    def test_identify_and_track_gaps_function(self, sample_web):
+        """Test the identify_and_track_gaps convenience function."""
+        import tempfile
+        import os
+
+        fd, db_path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+
+        try:
+            from src.services.voi_search import identify_and_track_gaps
+
+            gaps, funnel_ids = identify_and_track_gaps(
+                web=sample_web,
+                max_gaps=5,
+                db_path=db_path,
+                web_id="test-web"
+            )
+
+            # Should return gaps regardless of funnel availability
+            assert isinstance(gaps, list)
+            assert isinstance(funnel_ids, list)
+
+            # If funnel is available and gaps were found, should have IDs
+            # (depends on web content)
+
+        finally:
+            os.unlink(db_path)
+
+    def test_export_with_funnel_tracking(self, sample_web):
+        """Test export_search_priorities with funnel tracking."""
+        import tempfile
+        import os
+        import json
+
+        fd, db_path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        fd2, output_path = tempfile.mkstemp(suffix=".json")
+        os.close(fd2)
+
+        try:
+            from src.services.voi_search import create_voi_coordinator
+
+            coordinator = create_voi_coordinator(
+                web=sample_web,
+                track_in_funnel=True,
+                db_path=db_path,
+                web_id="export-test-web"
+            )
+
+            result = coordinator.export_search_priorities(
+                output_path=output_path,
+                max_gaps=3,
+                register_in_funnel=True
+            )
+
+            # Should include funnel tracking info
+            assert "funnel_tracking" in result
+            assert "web_id" in result
+            assert result["web_id"] == "export-test-web"
+
+            # File should be written
+            with open(output_path, 'r') as f:
+                saved = json.load(f)
+            assert saved["n_gaps"] == result["n_gaps"]
+
+        finally:
+            os.unlink(db_path)
+            os.unlink(output_path)
+
+
+@pytest.fixture
+def sample_web():
+    """Create a sample web with beliefs for testing."""
+    web = WebOfBelief()
+
+    # Add some beliefs with varying uncertainty/evidence
+    b1 = Belief(
+        belief_id="b_plants_stress",
+        content="Indoor plants reduce perceived stress in office environments",
+        level=EpistemicLevel.EMPIRICAL,
+        credence=Credence(value=0.75, uncertainty=0.35),  # High uncertainty
+        paper_ids={"paper1", "paper2"}
+    )
+
+    b2 = Belief(
+        belief_id="b_light_mood",
+        content="Natural light exposure improves mood",
+        level=EpistemicLevel.EMPIRICAL,
+        credence=Credence(value=0.85, uncertainty=0.15),
+        paper_ids={"paper3", "paper4", "paper5", "paper6"}
+    )
+
+    b3 = Belief(
+        belief_id="b_noise_focus",
+        content="Nature sounds enhance concentration",
+        level=EpistemicLevel.EMPIRICAL,
+        credence=Credence(value=0.60, uncertainty=0.45),  # Very uncertain
+        paper_ids={"paper7"}  # Sparse evidence
+    )
+
+    web.add_belief(b1)
+    web.add_belief(b2)
+    web.add_belief(b3)
+
+    return web

@@ -24,6 +24,7 @@ Updated: February 8, 2026 (Lane E: Cross-field vocabulary)
 
 import logging
 import random
+import uuid
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple, Set
 from enum import Enum
@@ -32,6 +33,18 @@ from pathlib import Path
 import yaml
 
 from src.services.web_of_belief import WebOfBelief, Belief, Credence
+
+# Optional import for discovery funnel integration
+try:
+    from src.services.discovery_funnel import (
+        DiscoveryFunnelService,
+        VOIGap,
+        GapType as FunnelGapType,
+        GapStatus,
+    )
+    FUNNEL_AVAILABLE = True
+except ImportError:
+    FUNNEL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -259,6 +272,45 @@ class EpistemicGap:
             "description": self.description,
             "voi_score": self.voi_score
         }
+
+    def to_funnel_gap(
+        self,
+        web_id: Optional[str] = None,
+        theory_id: Optional[str] = None,
+        search_terms: Optional[List[str]] = None
+    ) -> Optional["VOIGap"]:
+        """
+        Convert to discovery funnel VOIGap.
+
+        Args:
+            web_id: Web of belief ID
+            theory_id: Theory this gap relates to
+            search_terms: Suggested search terms
+
+        Returns:
+            VOIGap object if funnel is available, None otherwise
+        """
+        if not FUNNEL_AVAILABLE:
+            logger.debug("Discovery funnel not available, skipping gap registration")
+            return None
+
+        # Map gap types
+        gap_type_map = {
+            GapType.UNCERTAIN: FunnelGapType.WEAK_SUPPORT,
+            GapType.UNEXPLORED: FunnelGapType.MISSING_EVIDENCE,
+        }
+
+        return VOIGap(
+            gap_id=str(uuid.uuid4()),
+            topic=self.description,
+            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MISSING_EVIDENCE),
+            predicted_voi=self.voi_score,
+            belief_id=self.primary_belief_id,
+            theory_id=theory_id,
+            web_id=web_id,
+            search_terms=search_terms or [],
+            identified_by="voi_search",
+        )
 
 
 @dataclass
@@ -789,6 +841,9 @@ class VOISearchCoordinator:
     Main coordinator for VOI-driven search.
 
     Orchestrates gap detection, query generation, and search execution.
+
+    With discovery funnel integration (DISC-2), gaps can be automatically
+    registered in the funnel for tracking through the full discovery pipeline.
     """
 
     def __init__(
@@ -796,20 +851,102 @@ class VOISearchCoordinator:
         web: WebOfBelief,
         gap_detector: Optional[GapDetector] = None,
         source_selector: Optional[SourceSelector] = None,
-        query_generator: Optional[QueryGenerator] = None
+        query_generator: Optional[QueryGenerator] = None,
+        funnel_service: Optional["DiscoveryFunnelService"] = None,
+        track_in_funnel: bool = False,
+        web_id: Optional[str] = None
     ):
+        """
+        Initialize VOI search coordinator.
+
+        Args:
+            web: Web of belief to analyze
+            gap_detector: Gap detection service
+            source_selector: Source selection service
+            query_generator: Query generation service
+            funnel_service: Optional discovery funnel service for tracking
+            track_in_funnel: Whether to register gaps in the funnel
+            web_id: Web ID for funnel tracking
+        """
         self.web = web
         self.gap_detector = gap_detector or GapDetector()
         self.source_selector = source_selector or SourceSelector()
         self.query_generator = query_generator or QueryGenerator()
 
-    def identify_search_priorities(self, max_gaps: int = 5) -> List[EpistemicGap]:
+        # Discovery funnel integration
+        self.funnel_service = funnel_service
+        self.track_in_funnel = track_in_funnel and FUNNEL_AVAILABLE
+        self.web_id = web_id
+
+        if self.track_in_funnel and not self.funnel_service:
+            logger.warning("track_in_funnel=True but no funnel_service provided")
+
+    def identify_search_priorities(
+        self,
+        max_gaps: int = 5,
+        register_in_funnel: Optional[bool] = None
+    ) -> List[EpistemicGap]:
         """
         Identify highest-priority gaps for search.
 
-        Returns gaps sorted by VOI score.
+        Args:
+            max_gaps: Maximum gaps to return
+            register_in_funnel: Override track_in_funnel setting
+
+        Returns:
+            List of EpistemicGap objects sorted by VOI score
         """
-        return self.gap_detector.detect_gaps(self.web, max_gaps)
+        gaps = self.gap_detector.detect_gaps(self.web, max_gaps)
+
+        # Register gaps in funnel if enabled
+        should_register = register_in_funnel if register_in_funnel is not None else self.track_in_funnel
+        if should_register and self.funnel_service:
+            self._register_gaps_in_funnel(gaps)
+
+        return gaps
+
+    def _register_gaps_in_funnel(self, gaps: List[EpistemicGap]) -> List[str]:
+        """
+        Register gaps in the discovery funnel.
+
+        Args:
+            gaps: List of epistemic gaps to register
+
+        Returns:
+            List of funnel gap IDs
+        """
+        if not self.funnel_service or not FUNNEL_AVAILABLE:
+            return []
+
+        registered_ids = []
+        for gap in gaps:
+            # Get belief for context
+            belief = self.web.beliefs.get(gap.primary_belief_id)
+            theory_id = getattr(belief, 'theory_id', None) if belief else None
+
+            # Generate search terms from the gap
+            search_terms = self.query_generator.generate_queries(gap, belief, max_queries=3)
+
+            # Convert to funnel gap
+            funnel_gap = gap.to_funnel_gap(
+                web_id=self.web_id,
+                theory_id=theory_id,
+                search_terms=search_terms
+            )
+
+            if funnel_gap:
+                # Get sources for target_sources field
+                sources = self.source_selector.select_sources(gap, belief)
+                funnel_gap.target_sources = sources
+
+                try:
+                    self.funnel_service.create_gap(funnel_gap)
+                    registered_ids.append(funnel_gap.gap_id)
+                    logger.info(f"Registered gap in funnel: {funnel_gap.gap_id} - {funnel_gap.topic[:50]}...")
+                except Exception as e:
+                    logger.error(f"Failed to register gap in funnel: {e}")
+
+        return registered_ids
 
     def create_search_session(self, gap: EpistemicGap) -> SearchSession:
         """
@@ -843,7 +980,8 @@ class VOISearchCoordinator:
     def export_search_priorities(
         self,
         output_path: Optional[str] = None,
-        max_gaps: int = 10
+        max_gaps: int = 10,
+        register_in_funnel: Optional[bool] = None
     ) -> Dict[str, Any]:
         """
         Export search priorities for external processing.
@@ -851,14 +989,18 @@ class VOISearchCoordinator:
         Args:
             output_path: Optional path to write JSON
             max_gaps: Maximum gaps to include
+            register_in_funnel: Whether to register gaps in discovery funnel
 
         Returns:
             Dict with gaps and search plans
         """
-        gaps = self.identify_search_priorities(max_gaps)
+        # Pass register_in_funnel to identify_search_priorities
+        gaps = self.identify_search_priorities(max_gaps, register_in_funnel=register_in_funnel)
 
         result = {
             'n_gaps': len(gaps),
+            'funnel_tracking': self.track_in_funnel and self.funnel_service is not None,
+            'web_id': self.web_id,
             'gaps': [],
         }
 
@@ -1499,9 +1641,34 @@ def export_todo3_summary(
 # FACTORY FUNCTIONS
 # =============================================================================
 
-def create_voi_coordinator(web: WebOfBelief) -> VOISearchCoordinator:
-    """Create a VOI search coordinator."""
-    return VOISearchCoordinator(web)
+def create_voi_coordinator(
+    web: WebOfBelief,
+    track_in_funnel: bool = False,
+    db_path: str = "ae.db",
+    web_id: Optional[str] = None
+) -> VOISearchCoordinator:
+    """
+    Create a VOI search coordinator with optional funnel tracking.
+
+    Args:
+        web: Web of belief to analyze
+        track_in_funnel: Whether to register gaps in discovery funnel
+        db_path: Database path for funnel service
+        web_id: Web ID for funnel tracking
+
+    Returns:
+        Configured VOISearchCoordinator
+    """
+    funnel_service = None
+    if track_in_funnel and FUNNEL_AVAILABLE:
+        funnel_service = DiscoveryFunnelService(db_path)
+
+    return VOISearchCoordinator(
+        web=web,
+        funnel_service=funnel_service,
+        track_in_funnel=track_in_funnel,
+        web_id=web_id
+    )
 
 
 def detect_gaps(web: WebOfBelief, max_gaps: int = 10) -> List[EpistemicGap]:
@@ -1518,3 +1685,49 @@ def calculate_voi(
     """Calculate VOI for a specific gap."""
     calculator = VOICalculator()
     return calculator.calculate_voi(gap_type, belief, web)
+
+
+def identify_and_track_gaps(
+    web: WebOfBelief,
+    max_gaps: int = 10,
+    db_path: str = "ae.db",
+    web_id: Optional[str] = None
+) -> Tuple[List[EpistemicGap], List[str]]:
+    """
+    Identify gaps and register them in the discovery funnel.
+
+    This is the primary integration point between VOI search and
+    the discovery funnel. Gaps are identified, scored, and registered
+    for tracking through the full discovery pipeline.
+
+    Args:
+        web: Web of belief to analyze
+        max_gaps: Maximum gaps to identify
+        db_path: Database path for funnel service
+        web_id: Web ID for funnel tracking
+
+    Returns:
+        Tuple of (list of EpistemicGap, list of funnel gap IDs)
+    """
+    if not FUNNEL_AVAILABLE:
+        # Fall back to basic gap detection without funnel
+        detector = GapDetector()
+        gaps = detector.detect_gaps(web, max_gaps)
+        return gaps, []
+
+    coordinator = create_voi_coordinator(
+        web=web,
+        track_in_funnel=True,
+        db_path=db_path,
+        web_id=web_id
+    )
+
+    gaps = coordinator.identify_search_priorities(max_gaps, register_in_funnel=True)
+
+    # Get the funnel gap IDs that were registered
+    funnel_ids = []
+    if coordinator.funnel_service:
+        funnel_gaps = coordinator.funnel_service.list_gaps(limit=max_gaps)
+        funnel_ids = [g.gap_id for g in funnel_gaps]
+
+    return gaps, funnel_ids
