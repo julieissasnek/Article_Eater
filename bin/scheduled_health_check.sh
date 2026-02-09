@@ -65,10 +65,13 @@ TEST_DURATION=$((TEST_END - TEST_START))
 
 echo "$TEST_OUTPUT" >> "$LOG_FILE"
 
-# Parse test results
-PASSED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ passed' | grep -oE '[0-9]+' | head -1 || echo "0")
-FAILED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ failed' | grep -oE '[0-9]+' | head -1 || echo "0")
-ERRORS=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ error' | grep -oE '[0-9]+' | head -1 || echo "0")
+# Parse test results (ensure defaults if grep returns empty)
+PASSED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ passed' | grep -oE '[0-9]+' | head -1)
+PASSED=${PASSED:-0}
+FAILED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ failed' | grep -oE '[0-9]+' | head -1)
+FAILED=${FAILED:-0}
+ERRORS=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ error' | grep -oE '[0-9]+' | head -1)
+ERRORS=${ERRORS:-0}
 TOTAL=$((PASSED + FAILED + ERRORS))
 
 echo "Results: $PASSED passed, $FAILED failed, $ERRORS errors (${TEST_DURATION}s)" | tee -a "$LOG_FILE"
@@ -89,12 +92,14 @@ echo "[2/4] Checking for regressions..." | tee -a "$LOG_FILE"
 PREV_LINE=$(tail -2 "$HISTORY_FILE" | head -1)
 if [ -n "$PREV_LINE" ] && [ "$PREV_LINE" != "date,timestamp,passed,failed,errors,duration_s" ]; then
     PREV_PASSED=$(echo "$PREV_LINE" | cut -d',' -f3)
+    PREV_PASSED=${PREV_PASSED:-0}
     PREV_FAILED=$(echo "$PREV_LINE" | cut -d',' -f4)
+    PREV_FAILED=${PREV_FAILED:-0}
 
-    if [ "$PASSED" -lt "$PREV_PASSED" ]; then
+    if [ "${PASSED:-0}" -lt "${PREV_PASSED:-0}" ]; then
         echo "WARNING: Regression detected! Passed tests decreased: $PREV_PASSED -> $PASSED" | tee -a "$LOG_FILE"
         REGRESSION=true
-    elif [ "$FAILED" -gt "$PREV_FAILED" ]; then
+    elif [ "${FAILED:-0}" -gt "${PREV_FAILED:-0}" ]; then
         echo "WARNING: Regression detected! Failed tests increased: $PREV_FAILED -> $FAILED" | tee -a "$LOG_FILE"
         REGRESSION=true
     else
@@ -143,7 +148,7 @@ echo "" | tee -a "$LOG_FILE"
 echo "[4/4] Summary..." | tee -a "$LOG_FILE"
 
 # Determine overall health
-if [ "$FAILED" -gt 0 ] || [ "$ERRORS" -gt 0 ] || [ "$MISSING_FILES" -gt 0 ]; then
+if [ "${FAILED:-0}" -gt 0 ] || [ "${ERRORS:-0}" -gt 0 ] || [ "${MISSING_FILES:-0}" -gt 0 ]; then
     HEALTH="UNHEALTHY"
     EXIT_CODE=1
 elif [ "$REGRESSION" = true ]; then
@@ -192,11 +197,11 @@ cat > "${LOG_DIR}/latest_status.json" << EOF
     "date": "$DATE",
     "timestamp": "$TIMESTAMP",
     "health": "$HEALTH",
-    "passed": $PASSED,
-    "failed": $FAILED,
-    "errors": $ERRORS,
-    "duration_s": $TEST_DURATION,
-    "regression": $REGRESSION
+    "passed": ${PASSED:-0},
+    "failed": ${FAILED:-0},
+    "errors": ${ERRORS:-0},
+    "duration_s": ${TEST_DURATION:-0},
+    "regression": ${REGRESSION:-false}
 }
 EOF
 

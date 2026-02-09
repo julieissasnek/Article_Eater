@@ -78,11 +78,11 @@ This prevents duplicate work across parallel terminals.
 |----|------|----------|--------|
 | BIB-1 | Design paper.json schema extensions for BibTeX fields | 1h | ✓ DONE (included in BIB-2) |
 | BIB-2 | Add BibTeX parser utility | 2h | ✓ DONE |
-| BIB-3 | AF: Add BibTeX upload option alongside PDF | 3h | Pending |
+| BIB-3 | AF: Add BibTeX upload option alongside PDF | 3h | ✓ DONE |
 | BIB-4 | AF: Create bulk Zotero import UI | 4h | ✓ DONE (Streamlit page) |
 | BIB-5 | Auto-match algorithm (title similarity, DOI, filename) | 3h | ✓ DONE |
-| BIB-6 | AE: Ensure abstract extraction works when fulltext missing | 2h | Pending |
-| BIB-7 | Ingest matched PDFs into AE pipeline | 3h | Pending |
+| BIB-6 | AE: Ensure abstract extraction works when fulltext missing | 2h | ✓ DONE |
+| BIB-7 | Ingest matched PDFs into AE pipeline | 3h | ✓ DONE |
 
 ---
 
@@ -92,7 +92,7 @@ This prevents duplicate work across parallel terminals.
 **Source**: `/Users/davidusa/REPOS/Outcome_Contractor/article_finder/exemplary_extraction_tables.md`
 **Context**: Each article type needs complete field specs, rule mappings, validation rules, and AI prompts.
 
-### Status: 5 Complete, 4 Partial, 7 Missing
+### Status: 13 Complete, 3 Partial
 
 | # | Article Type | Status | Notes |
 |---|--------------|--------|-------|
@@ -100,15 +100,15 @@ This prevents duplicate work across parallel terminals.
 | 2 | Quasi-Experiment | ✅ Complete | Full spec 2026-02-03 |
 | 3 | Cross-Sectional Survey | ✅ Complete | Full spec 2026-02-03 |
 | 4 | Longitudinal Study | ✅ Complete | Full spec 2026-02-08 (panel additions) |
-| 5 | Observational Field Study | ❌ Missing | |
-| 6 | Phenomenological Study | ❌ Missing | Qualitative |
-| 7 | Ethnographic Study | ❌ Missing | Qualitative |
-| 8 | Grounded Theory Study | ❌ Missing | Qualitative |
-| 9 | Case Study | ❌ Missing | |
-| 10 | Interview Study | ❌ Missing | Qualitative |
-| 11 | Mixed Methods | ❌ Missing | |
+| 5 | Observational Field Study | ✅ Complete | Full spec 2026-02-09 |
+| 6 | Phenomenological Study | ✅ Complete | Full spec 2026-02-09 (qualitative) |
+| 7 | Ethnographic Study | ✅ Complete | Full spec 2026-02-09 (qualitative) |
+| 8 | Grounded Theory Study | ✅ Complete | Full spec 2026-02-09 (qualitative) |
+| 9 | Case Study | ✅ Complete | Full spec 2026-02-09 |
+| 10 | Interview Study | ✅ Complete | Full spec 2026-02-09 (qualitative) |
+| 11 | Mixed Methods | ✅ Complete | Full spec 2026-02-09 |
 | 12 | Meta-Analysis | ✅ Complete | Full spec 2026-02-08 (panel additions) |
-| 13 | Systematic Review | ⚠️ Partial | |
+| 13 | Systematic Review | ✅ Complete | v1.1 2026-02-09 (panel additions) |
 | 14 | Narrative Review | ⚠️ Partial | |
 | 15 | Theoretical | ⚠️ Partial | |
 | 16 | Thought Piece | ⚠️ Partial | |
@@ -147,8 +147,8 @@ This prevents duplicate work across parallel terminals.
 **Immediate Action Items**:
 - [x] Add new rule types to schema — DONE 2026-02-09 (ae.rule.v2.schema.json, ae.claim.v2.schema.json)
 - [x] Add argument_schemes vocabulary — DONE 2026-02-09 (contracts/vocab/argument_schemes.json)
-- [ ] Update RCT/Quasi-Exp/Cross-Sectional with panel additions
-- [ ] Create stimulus documentation template with domain features
+- [x] Update RCT/Quasi-Exp/Cross-Sectional with panel additions — DONE 2026-02-09 (EXTRACTION_TEMPLATE_PANEL_ADDITIONS_2026_02_09.md)
+- [x] Create stimulus documentation template with domain features — DONE 2026-02-09 (STIMULUS_DOCUMENTATION_TEMPLATE_2026_02_09.md)
 - [x] Complete Longitudinal Study spec (high causal value per Pearl) — DONE 2026-02-08
 - [x] Complete Meta-Analysis spec (high synthesis value) — DONE 2026-02-08
 
@@ -211,6 +211,33 @@ This prevents duplicate work across parallel terminals.
   - Manual linking for unmatched items
   - Export as paper.json bundles, match reports, or CSV
 - 41 tests in `tests/test_bibtex_utils.py`
+
+**BIB-6 Completion (2026-02-09)**:
+- Added abstract fallback to `app/tasks/pipeline.py` (lines 1223-1242)
+  - When PDF extraction fails or yields < 100 chars, tries paper.json abstract
+  - Logs fallback usage with audit event
+- Updated `contracts/ae_af/schemas/ae.paper.v1.schema.json`
+  - Added optional `abstract` field with description
+
+**BIB-3 Completion (2026-02-09)**:
+- Updated `app/routes/annotator.py` with BibTeX upload endpoints
+  - `POST /upload-with-bibtex`: Upload PDF + optional BibTeX file or text
+  - `POST /upload-bibtex-batch`: Upload BibTeX file to register multiple papers
+- BibTeX metadata creates proper paper.json for AE pipeline
+- Integrates with existing BibTeX parser from bibtex_utils.py
+- PDF + metadata stored together, ready for ingestion
+
+**BIB-7 Completion (2026-02-09)**:
+- Created `src/services/bibtex_ingestion.py` (~350 lines)
+  - `BibTeXIngestionService`: Ingests matched PDFs into AE pipeline
+  - `_create_input_bundle()`: Creates paper.json + PDF bundles
+  - Also writes abstract.txt as additional fallback
+  - Batch processing with progress tracking
+- Convenience functions: `ingest_matched_papers()`, `ingest_single_paper()`
+- Updated `streamlit_app/pages/1_bibtex_import.py`
+  - Added "Run Pipeline" section with output dir and profile selection
+  - Direct ingestion from UI without export step
+- 14 tests in `tests/test_bibtex_ingestion.py`
 
 ---
 
@@ -881,7 +908,9 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
-| 2026-02-09 | **SCHEMA-1 COMPLETE**: Added panel-recommended schema extensions. Created `ae.rule.v2.schema.json` with new rule_types (rebuttal, presumption, association, contrast) and fields (causal_level, argument_scheme, critical_questions, contrast_class, difference_maker, enabling_conditions, bridge_type). Created `ae.claim.v2.schema.json` with causal_level, extraction_difficulty, source_zone, contrast_class. Created `contracts/vocab/argument_schemes.json` with 10 Walton schemes mapped to causal levels. Updated ACTIVE_TASKS.md with full pending task breakdown (24 tasks across 5 priority tiers). |
+| 2026-02-09 | **ALL QUALITATIVE TEMPLATES COMPLETE**: Created 4 qualitative extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_PHENOMENOLOGICAL_2026_02_09.md` — Husserl/Heidegger/IPA/embodied approaches, causal_level explicitly null (brackets causation), experiential rule type. (2) `EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md` — classical/focused/critical/autoethnographic types, cultural/norm/contextual rules, emic vs etic perspectives. (3) `EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md` — Glaserian/Straussian/Constructivist traditions, theoretical/process/conditional rules, abductive_argument scheme. (4) `EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md` — descriptive/exploratory/explanatory types, perspective/reported_association/preference rules, self-report limitations documented. **Extraction Table Status**: Now 13/16 complete (only 3 partial remain). |
+| 2026-02-09 | **EXTRACTION TEMPLATES COMPLETE**: Created 4 new extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_OBSERVATIONAL_FIELD_2026_02_09.md` — naturalistic observation, association-only causal level, argument_from_sign scheme. (2) `EXTRACTION_TEMPLATE_CASE_STUDY_2026_02_09.md` — intrinsic/instrumental/critical/exemplary types, presumption rules, argument_from_example scheme. (3) `EXTRACTION_TEMPLATE_MIXED_METHODS_2026_02_09.md` — convergent/sequential designs, integration assessment, convergence-adjusted confidence. (4) Updated `EXTRACTION_TEMPLATE_SYSTEMATIC_REVIEW` to v1.1 with panel additions. Also fixed health check script integer comparison bug. |
+| 2026-02-09 | **SCHEMA-1/2/3 COMPLETE**: (1) Schema extensions: Created `ae.rule.v2.schema.json` with new rule_types (rebuttal, presumption, association, contrast) and fields (causal_level, argument_scheme, critical_questions, contrast_class, difference_maker, enabling_conditions, bridge_type). Created `ae.claim.v2.schema.json` with causal_level, extraction_difficulty, source_zone. Created `contracts/vocab/argument_schemes.json` with 10 Walton schemes. (2) Panel additions doc: Created `EXTRACTION_TEMPLATE_PANEL_ADDITIONS_2026_02_09.md` specifying how to integrate Pearl causal levels, Walton argument schemes, Lipton contrast classes, Hearst/Teufel extraction metadata into existing templates. (3) Stimulus template: Created `STIMULUS_DOCUMENTATION_TEMPLATE_2026_02_09.md` with full CNfA domain features (ART, Prospect-Refuge, Biophilia, SRT markers) and ae.stimulus.v1 schema. |
 | 2026-02-08 | **TBL-3 COMPLETE**: PDF Table Extraction. Created `src/services/table_extractor.py` (~750 lines). `AITableExtractor`: LLM-based extraction with structured prompts for STUDY_CHARACTERISTICS, RESULTS, QUALITY_ASSESSMENT, DEMOGRAPHICS table types. `PdfPlumberTableExtractor`: Geometric fallback. `HybridTableExtractor`: Combines both. Conversion functions to `ArticleMetadata` and `RCTStudyFact` types. 46 tests (`test_table_extractor.py`). Export engine already has table generators (ArticleMetadataTableGenerator, RCTTableGenerator) — now connected to extraction. |
 | 2026-02-08 | **V23.0.0 BREAKING CHANGE: Emergent Entrenchment**: Removed `entrenchment` as settable field from `Belief` class. Added `WebOfBelief.get_entrenchment(belief_id)` method computing entrenchment via Thagard formula (40% connectivity + 30% level_weight + 30% coherence_contrib). Lazy caching with invalidation on constraint changes. Updated 8 files to use new method. Panel consultation: Quine, Haack, Thagard, Cartwright, Parnas, Simon. Philosophy clarified as foundherentism (Haack 1993), not pure Quinean coherentism. Fixed P1 bugs from ChatGPT ruthless review: constraint index purge, boundary status staleness, decision semantics (ACCEPT default). Created `tests/test_scalable_coherence_benchmark.py` (8 tests). Panel doc: `docs/PANEL_CONSULTATION_ENTRENCHMENT_2026-02-08.md`. |
 | 2026-02-08 | **SPRINT 2.0.3 COMPLETE**: CLI flags for web outputs. Added `--web/--no-web`, `--web-equilibrium/--no-web-equilibrium`, `--web-max-iterations`, `--web-convergence-threshold` for Web of Belief control. Added `--export-manifest`, `--export-bn`, `--export-cluster-stats`, `--export-bn-edges` (all with `--no-*` variants) for export control. Updated pipeline functions to accept `web_options` and `export_options` dicts. 9 tests (`test_cli_web_flags.py`). |

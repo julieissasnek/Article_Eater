@@ -28,7 +28,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| SCHEMA-2 | Update RCT/Quasi-Exp/Cross-Sectional specs with panel additions | Terminal-3 | 2026-02-09 09:15 | In Progress | Depends on SCHEMA-1 ✓ |
+| — | — | — | — | — | — |
 
 ---
 
@@ -37,29 +37,14 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 ### High Priority (Infrastructure)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
-| SCHEMA-2 | Update RCT/Quasi-Exp/Cross-Sectional specs with panel additions | P1 | SCHEMA-1 ✓ |
-| SCHEMA-3 | Create stimulus documentation template with domain features | P1 | SCHEMA-1 ✓ |
-| BIB-6 | AE: Ensure abstract extraction works when fulltext missing | P1 | — |
-| BIB-7 | Ingest matched PDFs into AE pipeline | P1 | BIB-6 |
+| — | All BIB tasks complete | — | — |
 
-### Medium Priority (Extraction Tables - 7 Missing)
+### Medium Priority (Extraction Tables - 3 Partial Remaining)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
-| EXT-5 | Observational Field Study extraction spec | P2 | SCHEMA-1 |
-| EXT-9 | Case Study extraction spec | P2 | SCHEMA-1 |
-| EXT-11 | Mixed Methods extraction spec | P2 | SCHEMA-1 |
-| EXT-6 | Phenomenological Study extraction spec (qualitative) | P2 | SCHEMA-1 |
-| EXT-7 | Ethnographic Study extraction spec (qualitative) | P2 | SCHEMA-1 |
-| EXT-8 | Grounded Theory Study extraction spec (qualitative) | P2 | SCHEMA-1 |
-| EXT-10 | Interview Study extraction spec (qualitative) | P2 | SCHEMA-1 |
-
-### Medium Priority (Extraction Tables - 4 Partial)
-| Task ID | Description | Priority | Dependencies |
-|---------|-------------|----------|--------------|
-| EXT-13 | Complete Systematic Review spec | P2 | SCHEMA-1 |
-| EXT-14 | Complete Narrative Review spec | P2 | SCHEMA-1 |
-| EXT-15 | Complete Theoretical spec | P2 | SCHEMA-1 |
-| EXT-16 | Complete Thought Piece spec | P2 | SCHEMA-1 |
+| EXT-14 | Complete Narrative Review spec | P2 | SCHEMA-1 ✓ |
+| EXT-15 | Complete Theoretical spec | P2 | SCHEMA-1 ✓ |
+| EXT-16 | Complete Thought Piece spec | P2 | SCHEMA-1 ✓ |
 
 ### Sprint 3.0 Extensions
 | Task ID | Description | Priority | Dependencies |
@@ -73,7 +58,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 ### BibTeX Integration (AF-AE)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
-| BIB-3 | AF: Add BibTeX upload option alongside PDF | P2 | — |
+| — | All BIB tasks complete | — | — |
 
 ---
 
@@ -82,6 +67,17 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
 | SCHEMA-1 | Add new rule types + causal/argument fields | Terminal-3 | 09:15 | Created ae.rule.v2.schema.json, ae.claim.v2.schema.json, argument_schemes.json |
+| SCHEMA-2 | Update extraction specs with panel additions | Terminal-3 | 09:30 | Created EXTRACTION_TEMPLATE_PANEL_ADDITIONS_2026_02_09.md |
+| SCHEMA-3 | Create stimulus documentation template | Terminal-3 | 09:45 | Created STIMULUS_DOCUMENTATION_TEMPLATE_2026_02_09.md |
+| BUG-1 | Fix health check script integer comparison | Terminal-3 | 10:00 | Fixed ${VAR:-0} defaults in scheduled_health_check.sh |
+| EXT-13 | Complete Systematic Review spec | Terminal-3 | 10:15 | Updated to v1.1 with panel additions |
+| EXT-5 | Observational Field Study spec | Terminal-3 | 10:30 | Created EXTRACTION_TEMPLATE_OBSERVATIONAL_FIELD_2026_02_09.md |
+| EXT-9 | Case Study spec | Terminal-3 | 10:45 | Created EXTRACTION_TEMPLATE_CASE_STUDY_2026_02_09.md |
+| EXT-11 | Mixed Methods spec | Terminal-3 | 11:00 | Created EXTRACTION_TEMPLATE_MIXED_METHODS_2026_02_09.md |
+| EXT-6 | Phenomenological Study spec | Terminal-3 | 11:15 | Created EXTRACTION_TEMPLATE_PHENOMENOLOGICAL_2026_02_09.md |
+| EXT-7 | Ethnographic Study spec | Terminal-3 | 11:30 | Created EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md |
+| EXT-8 | Grounded Theory Study spec | Terminal-3 | 11:45 | Created EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md |
+| EXT-10 | Interview Study spec | Terminal-3 | 12:00 | Created EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md |
 
 ## Completed (2026-02-08)
 
@@ -129,4 +125,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 09:00*
+*Last coordination check: 2026-02-09 12:00*
