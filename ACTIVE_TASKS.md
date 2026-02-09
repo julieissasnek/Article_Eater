@@ -28,7 +28,8 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| — | — | — | — | — | — |
+| 3.0.2-C | Scope-aware output generation | Terminal-3 | 12:50 | In Progress | Cartwright scope metadata |
+| 3.0.2-E | LLM integration | Terminal-3 | 12:50 | Pending | Haiku→Sonnet→Opus tiering |
 
 ---
 
@@ -39,12 +40,8 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 |---------|-------------|----------|--------------|
 | — | All BIB tasks complete | — | — |
 
-### Medium Priority (Extraction Tables - 3 Partial Remaining)
-| Task ID | Description | Priority | Dependencies |
-|---------|-------------|----------|--------------|
-| EXT-14 | Complete Narrative Review spec | P2 | SCHEMA-1 ✓ |
-| EXT-15 | Complete Theoretical spec | P2 | SCHEMA-1 ✓ |
-| EXT-16 | Complete Thought Piece spec | P2 | SCHEMA-1 ✓ |
+### Extraction Tables - ALL COMPLETE ✅
+All 16 extraction templates finished on 2026-02-09.
 
 ### Sprint 3.0 Extensions
 | Task ID | Description | Priority | Dependencies |
@@ -78,6 +75,9 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | EXT-7 | Ethnographic Study spec | Terminal-3 | 11:30 | Created EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md |
 | EXT-8 | Grounded Theory Study spec | Terminal-3 | 11:45 | Created EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md |
 | EXT-10 | Interview Study spec | Terminal-3 | 12:00 | Created EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md |
+| EXT-14 | Narrative Review spec | Terminal-3 | 12:15 | Created EXTRACTION_TEMPLATE_NARRATIVE_REVIEW_2026_02_09.md |
+| EXT-15 | Theoretical spec | Terminal-3 | 12:30 | Created EXTRACTION_TEMPLATE_THEORETICAL_2026_02_09.md |
+| EXT-16 | Thought Piece spec | Terminal-3 | 12:45 | Created EXTRACTION_TEMPLATE_THOUGHT_PIECE_2026_02_09.md |
 
 ## Completed (2026-02-08)
 
@@ -125,4 +125,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 12:00*
+*Last coordination check: 2026-02-09 12:45*

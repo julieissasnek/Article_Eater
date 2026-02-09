@@ -8,8 +8,12 @@ Per expert panel:
 - Hybrid approach: rule-based first, LLM fallback for unparseable (Q1)
 - Show vocabulary expansion transparently (Bates, Q3)
 
-Date: January 21, 2026
-Phase C Sprint C1
+Sprint 3.0.2 additions (per Pearl):
+- Causal level detection: associational, interventional, counterfactual
+- Query type must distinguish question semantics from causal semantics
+
+Date: January 21, 2026 (original)
+Updated: February 9, 2026 (Sprint 3.0.2-A)
 """
 
 import re
@@ -56,11 +60,39 @@ class QueryType(Enum):
     UNKNOWN = "unknown"
 
 
+class CausalLevel(Enum):
+    """
+    Causal level of a query (per Pearl's ladder of causation).
+
+    This is orthogonal to QueryType—a WHAT_IS query can be at any causal level:
+    - "What is correlated with stress?" → ASSOCIATIONAL
+    - "What would happen if we added plants?" → INTERVENTIONAL
+    - "Would stress have reduced without the windows?" → COUNTERFACTUAL
+    """
+    # Rung 1: Observation/correlation
+    ASSOCIATIONAL = "associational"      # "What is correlated with X?"
+
+    # Rung 2: Intervention
+    INTERVENTIONAL = "interventional"    # "What would happen if we do X?"
+
+    # Rung 3: Counterfactual
+    COUNTERFACTUAL = "counterfactual"    # "Would Y have happened if we hadn't done X?"
+
+    # Descriptive/definitional (not causal)
+    DESCRIPTIVE = "descriptive"          # "What is biophilia?"
+
+    # Unable to determine
+    UNKNOWN = "unknown"
+
+
 @dataclass
 class QueryIntent:
     """Parsed query intent."""
     query_type: QueryType
     confidence: float  # 0-1 confidence in parse
+
+    # Causal level per Pearl (Sprint 3.0.2)
+    causal_level: CausalLevel = CausalLevel.UNKNOWN
 
     # Extracted entities
     subject: Optional[str] = None          # Main topic/variable
@@ -82,6 +114,7 @@ class QueryIntent:
     def to_dict(self) -> Dict[str, Any]:
         return {
             'query_type': self.query_type.value,
+            'causal_level': self.causal_level.value,
             'confidence': self.confidence,
             'subject': self.subject,
             'object': self.object,
@@ -312,8 +345,11 @@ class QueryParser:
 
         # If no matches, return UNKNOWN
         if not matches:
+            # Still try to detect causal level even if query type is unknown
+            causal_level = self._detect_causal_level(query, QueryType.UNKNOWN)
             unknown_intent = QueryIntent(
                 query_type=QueryType.UNKNOWN,
+                causal_level=causal_level,
                 confidence=0.0,
                 original_query=query,
                 normalized_query=normalized,
@@ -387,12 +423,16 @@ class QueryParser:
         # Calculate confidence based on match quality
         confidence = self._calculate_confidence(normalized, match, query_type)
 
+        # Detect causal level (Sprint 3.0.2-A per Pearl)
+        causal_level = self._detect_causal_level(original, query_type)
+
         # Expand vocabulary
         subject_expansions = expand_term(subject) if subject else []
         object_expansions = expand_term(obj) if obj else []
 
         return QueryIntent(
             query_type=query_type,
+            causal_level=causal_level,
             confidence=confidence,
             subject=subject,
             object=obj,
@@ -460,6 +500,92 @@ class QueryParser:
         ]
         return clarifications
 
+    def _detect_causal_level(self, query: str, query_type: QueryType) -> CausalLevel:
+        """
+        Detect the causal level of a query per Pearl's ladder of causation.
+
+        Rung 1 (Associational): Observing correlations
+        Rung 2 (Interventional): What happens if we act
+        Rung 3 (Counterfactual): What would have happened
+
+        Per Pearl (Sprint 3.0 panel): The query engine must distinguish these
+        fundamentally different question types.
+        """
+        query_lower = query.lower()
+
+        # Counterfactual indicators (Rung 3)
+        counterfactual_patterns = [
+            r'would\s+(?:have|not\s+have)',
+            r'if\s+(?:we|they|it)\s+had(?:n\'t|n\'t|\s+not)',
+            r'had\s+(?:we|they|it)\s+(?:not\s+)?',
+            r'what\s+if\s+(?:we|they|it)\s+had',
+            r'without\s+(?:the|that|this)',
+            r'in\s+the\s+absence\s+of',
+            r'suppose\s+(?:we|they|it)\s+had(?:n\'t)?',
+            r'imagine\s+(?:we|they|it)\s+had(?:n\'t)?',
+        ]
+        for pattern in counterfactual_patterns:
+            if re.search(pattern, query_lower):
+                return CausalLevel.COUNTERFACTUAL
+
+        # Interventional indicators (Rung 2)
+        interventional_patterns = [
+            r'what\s+(?:would|will)\s+happen\s+if',
+            r'if\s+(?:we|I|you)\s+(?:add|remove|change|implement|install|use)',
+            r'(?:should|would)\s+(?:we|I|you)\s+(?:add|use|implement)',
+            r'what\s+(?:is|are)\s+the\s+effect(?:s)?\s+of\s+(?:adding|removing|using)',
+            r'(?:does|do|will|would)\s+(?:adding|removing|using|implementing)',
+            r'if\s+(?:we|I|you)\s+(?:were\s+to|did)',
+            r'(?:by|through)\s+(?:adding|removing|implementing)',
+        ]
+        for pattern in interventional_patterns:
+            if re.search(pattern, query_lower):
+                return CausalLevel.INTERVENTIONAL
+
+        # Descriptive/definitional queries
+        descriptive_patterns = [
+            r'^what\s+is\s+(?:the\s+definition\s+of\s+)?[a-z]+\??$',
+            r'^define\s+',
+            r'^what\s+does\s+.+\s+mean',
+            r'^explain\s+(?:what\s+)?[a-z]+\s+(?:is|means)',
+        ]
+        for pattern in descriptive_patterns:
+            if re.search(pattern, query_lower):
+                return CausalLevel.DESCRIPTIVE
+
+        # Query types that are typically associational
+        associational_types = {
+            QueryType.WHAT_IS,
+            QueryType.DOES_X_AFFECT_Y,
+            QueryType.HOW_MUCH,
+            QueryType.WHAT_EVIDENCE,
+            QueryType.COMPARE,
+            QueryType.HOW_CONFIDENT,
+            QueryType.WHAT_CONTRADICTS,
+        }
+
+        # Default: check for general correlational language
+        associational_patterns = [
+            r'(?:is|are)\s+(?:there\s+)?(?:a\s+)?(?:correlation|relationship|association|link)',
+            r'(?:what|which)\s+(?:is|are)\s+(?:associated|correlated|linked|related)',
+            r'does\s+.+\s+(?:correlate|relate|associate)\s+with',
+            r'evidence\s+(?:for|that|about)',
+            r'what\s+(?:do\s+)?(?:we\s+)?know\s+about',
+        ]
+        for pattern in associational_patterns:
+            if re.search(pattern, query_lower):
+                return CausalLevel.ASSOCIATIONAL
+
+        # If query type is typically associational, default to that
+        if query_type in associational_types:
+            return CausalLevel.ASSOCIATIONAL
+
+        # Scope/gap queries are typically at associational level
+        if query_type in {QueryType.WHEN_DOES, QueryType.FOR_WHOM, QueryType.WHAT_DONT_KNOW}:
+            return CausalLevel.ASSOCIATIONAL
+
+        return CausalLevel.UNKNOWN
+
     def get_search_terms(self, intent: QueryIntent) -> List[str]:
         """
         Get search terms for querying the web of belief.
@@ -501,3 +627,29 @@ def get_query_type(query: str) -> QueryType:
     """Get just the query type for a query."""
     result = parse_query(query)
     return result.primary.query_type
+
+
+def get_causal_level(query: str) -> CausalLevel:
+    """
+    Get the causal level for a query (per Pearl).
+
+    Returns:
+        CausalLevel: ASSOCIATIONAL, INTERVENTIONAL, COUNTERFACTUAL, or DESCRIPTIVE
+    """
+    result = parse_query(query)
+    return result.primary.causal_level
+
+
+def classify_query(query: str) -> Dict[str, str]:
+    """
+    Classify a query by both type and causal level.
+
+    Returns:
+        Dict with 'query_type', 'causal_level', and 'confidence'
+    """
+    result = parse_query(query)
+    return {
+        'query_type': result.primary.query_type.value,
+        'causal_level': result.primary.causal_level.value,
+        'confidence': result.primary.confidence
+    }

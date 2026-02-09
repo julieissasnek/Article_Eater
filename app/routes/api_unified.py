@@ -26,8 +26,39 @@ from enum import Enum
 import logging
 import json
 import io
+import sqlite3
+import os
 
 logger = logging.getLogger(__name__)
+
+# Import actual services
+from app.routes.web_of_belief import get_web, set_web
+from src.services.web_of_belief import WebOfBelief, Belief, Credence
+
+# Try to import social epistemology for community registry
+try:
+    from src.services.social_epistemology import CommunityRegistry, EpistemicCommunity
+    _community_registry: Optional[CommunityRegistry] = None
+except ImportError:
+    CommunityRegistry = None
+    EpistemicCommunity = None
+    _community_registry = None
+
+def get_community_registry() -> Optional["CommunityRegistry"]:
+    """Get or create the community registry singleton."""
+    global _community_registry
+    if CommunityRegistry is None:
+        return None
+    if _community_registry is None:
+        _community_registry = CommunityRegistry()
+    return _community_registry
+
+# Database path
+def _get_db_path() -> str:
+    return os.environ.get("AE_DB_PATH") or os.environ.get("AE_DB") or "ae.db"
+
+def _get_db_connection():
+    return sqlite3.connect(_get_db_path(), timeout=30.0)
 
 # Create routers for each resource
 beliefs_router = APIRouter(prefix="/beliefs", tags=["beliefs"])
@@ -242,52 +273,62 @@ async def list_beliefs(
     - min_credence: Minimum credence threshold
     - search: Full-text search in belief content
     """
-    # TODO: Integrate with actual WebOfBelief
-    # For now, return demo data
-    demo_beliefs = [
-        BeliefSummary(
-            id="B001",
-            content="Natural environments restore directed attention capacity",
-            credence=0.85,
-            uncertainty=0.08,
-            status=BeliefStatus.ACCEPTED,
-            level=EpistemicLevel.THEORETICAL,
-            theory="ART",
-            sources_count=12,
-            constraints_count=8
-        ),
-        BeliefSummary(
-            id="B002",
-            content="Plants in offices reduce self-reported stress by 15-25%",
-            credence=0.72,
-            uncertainty=0.12,
-            status=BeliefStatus.ACCEPTED,
-            level=EpistemicLevel.EMPIRICAL,
-            theory="Biophilia",
-            sources_count=8,
-            constraints_count=5
-        ),
-        BeliefSummary(
-            id="B003",
-            content="Window views to nature improve patient recovery",
-            credence=0.65,
-            uncertainty=0.15,
-            status=BeliefStatus.CONTESTED,
-            level=EpistemicLevel.EMPIRICAL,
-            theory="SRT",
-            sources_count=6,
-            constraints_count=12
-        ),
-    ]
+    web = get_web()
+    all_beliefs = list(web.beliefs.values())
+
+    # Apply filters
+    filtered = all_beliefs
+
+    if status:
+        status_values = [s.value for s in status]
+        filtered = [b for b in filtered if b.status.value.upper() in status_values]
+
+    if level:
+        level_values = [l.value for l in level]
+        filtered = [b for b in filtered if b.level and b.level.value.upper() in level_values]
+
+    if theory:
+        filtered = [b for b in filtered if theory.lower() in (b.theory_id or "").lower()]
+
+    if min_credence > 0:
+        filtered = [b for b in filtered if b.credence.value >= min_credence]
+
+    if search:
+        search_lower = search.lower()
+        filtered = [b for b in filtered if search_lower in b.content.lower()]
+
+    total = len(filtered)
+
+    # Paginate
+    paginated = filtered[offset:offset + limit]
+
+    # Convert to response format
+    belief_summaries = []
+    for b in paginated:
+        # Count constraints
+        n_constraints = sum(1 for c in web.constraints.values()
+                          if c.source_id == b.belief_id or c.target_id == b.belief_id)
+
+        belief_summaries.append(BeliefSummary(
+            id=b.belief_id,
+            content=b.content,
+            credence=b.credence.value,
+            uncertainty=b.credence.uncertainty,
+            status=BeliefStatus(b.status.value.upper()) if b.status else BeliefStatus.STUB,
+            level=EpistemicLevel(b.level.value.upper()) if b.level else EpistemicLevel.EMPIRICAL,
+            theory=b.theory_id,
+            sources_count=len(b.paper_ids) if b.paper_ids else 0,
+            constraints_count=n_constraints
+        ))
 
     return BeliefListResponse(
-        beliefs=demo_beliefs,
-        total=len(demo_beliefs),
+        beliefs=belief_summaries,
+        total=total,
         limit=limit,
         offset=offset,
         _links={
             "self": f"/api/v1/beliefs/?limit={limit}&offset={offset}",
-            "next": f"/api/v1/beliefs/?limit={limit}&offset={offset + limit}" if offset + limit < len(demo_beliefs) else None
+            "next": f"/api/v1/beliefs/?limit={limit}&offset={offset + limit}" if offset + limit < total else None
         }
     )
 
@@ -295,46 +336,104 @@ async def list_beliefs(
 @beliefs_router.get("/{belief_id}", response_model=BeliefDetail)
 async def get_belief(belief_id: str):
     """Get detailed information about a specific belief."""
-    # TODO: Integrate with actual WebOfBelief
-    if belief_id == "B001":
-        return BeliefDetail(
-            id="B001",
-            content="Natural environments restore directed attention capacity",
-            credence=0.85,
-            uncertainty=0.08,
-            status=BeliefStatus.ACCEPTED,
-            level=EpistemicLevel.THEORETICAL,
-            theory="ART",
-            sources_count=12,
-            constraints_count=8,
-            scope_conditions={
-                "population": "Adults, primarily Western",
-                "setting": "Laboratory and field studies",
-                "methodology": "Attention tests, self-report"
-            },
-            sources=["Kaplan & Kaplan 1989", "Berman et al. 2008", "Hartig et al. 2014"],
-            supporting_constraints=["C001", "C002", "C003"],
-            opposing_constraints=[],
-            communities=["ART", "Environmental Psychology"],
-            entrenchment=0.78
-        )
-    raise HTTPException(status_code=404, detail=f"Belief {belief_id} not found")
+    web = get_web()
+
+    if belief_id not in web.beliefs:
+        raise HTTPException(status_code=404, detail=f"Belief {belief_id} not found")
+
+    b = web.beliefs[belief_id]
+
+    # Get constraints
+    supporting = []
+    opposing = []
+    for c in web.constraints.values():
+        if c.source_id == belief_id or c.target_id == belief_id:
+            if c.polarity.value == "POSITIVE":
+                supporting.append(c.constraint_id)
+            else:
+                opposing.append(c.constraint_id)
+
+    # Get entrenchment
+    entrenchment = web.get_entrenchment(belief_id)
+
+    # Build scope conditions dict
+    scope_dict = None
+    if b.scope:
+        scope_dict = {
+            "population": b.scope.population,
+            "setting": b.scope.setting,
+            "duration": b.scope.duration,
+        }
+
+    # Get community associations
+    communities = []
+    if hasattr(b, 'community_associations') and b.community_associations:
+        communities = list(b.community_associations.keys())
+
+    return BeliefDetail(
+        id=b.belief_id,
+        content=b.content,
+        credence=b.credence.value,
+        uncertainty=b.credence.uncertainty,
+        status=BeliefStatus(b.status.value.upper()) if b.status else BeliefStatus.STUB,
+        level=EpistemicLevel(b.level.value.upper()) if b.level else EpistemicLevel.EMPIRICAL,
+        theory=b.theory_id,
+        sources_count=len(b.paper_ids) if b.paper_ids else 0,
+        constraints_count=len(supporting) + len(opposing),
+        scope_conditions=scope_dict,
+        sources=b.paper_ids or [],
+        supporting_constraints=supporting,
+        opposing_constraints=opposing,
+        communities=communities,
+        entrenchment=entrenchment,
+        created_at=None,
+        updated_at=None
+    )
 
 
 @beliefs_router.post("/", response_model=BeliefDetail, status_code=201)
 async def create_belief(belief: BeliefCreate):
-    """Create a new belief."""
-    # TODO: Integrate with actual WebOfBelief
+    """Create a new belief in the Web of Belief."""
+    from src.services.web_of_belief import BeliefStatus as WoBStatus, EpistemicLevel as WoBLevel, ScopeConditions
+
+    web = get_web()
+
+    # Generate a unique belief ID
     new_id = f"B{datetime.now().strftime('%Y%m%d%H%M%S')}"
-    return BeliefDetail(
-        id=new_id,
+
+    # Map API enums to WebOfBelief enums
+    wob_status = WoBStatus(belief.status.value.lower())
+    wob_level = WoBLevel(belief.level.value.lower())
+
+    # Create the belief in the web
+    new_belief = web.add_belief(
+        belief_id=new_id,
         content=belief.content,
         credence=belief.credence,
-        status=belief.status,
-        level=belief.level,
-        theory=belief.theory,
-        sources_count=len(belief.sources),
-        constraints_count=0
+        status=wob_status,
+        level=wob_level,
+        theory_id=belief.theory,
+        paper_ids=belief.sources if belief.sources else None
+    )
+
+    return BeliefDetail(
+        id=new_belief.belief_id,
+        content=new_belief.content,
+        credence=new_belief.credence.value,
+        uncertainty=new_belief.credence.uncertainty,
+        status=BeliefStatus(new_belief.status.value.upper()),
+        level=EpistemicLevel(new_belief.level.value.upper()) if new_belief.level else EpistemicLevel.EMPIRICAL,
+        theory=new_belief.theory_id,
+        sources_count=len(new_belief.paper_ids) if new_belief.paper_ids else 0,
+        constraints_count=0,
+        scope_conditions=None,
+        sources=new_belief.paper_ids or [],
+        supporting_constraints=[],
+        opposing_constraints=[],
+        communities=[],
+        entrenchment=web.get_entrenchment(new_belief.belief_id),
+        created_at=None,
+        updated_at=None
     )
 
 
@@ -355,24 +454,85 @@ async def delete_belief(belief_id: str):
 @beliefs_router.get("/{belief_id}/constraints")
 async def get_belief_constraints(belief_id: str):
     """Get all constraints involving this belief."""
+    web = get_web()
+
+    if belief_id not in web.beliefs:
+        raise HTTPException(status_code=404, detail=f"Belief {belief_id} not found")
+
+    # Find all constraints where this belief is source or target
+    supporting = []
+    opposing = []
+    for c in web.constraints.values():
+        if c.source_id == belief_id or c.target_id == belief_id:
+            other_id = c.target_id if c.source_id == belief_id else c.source_id
+            constraint_info = {
+                "id": c.constraint_id,
+                "other_belief": other_id,
+                "polarity": c.polarity.value.upper(),
+                "strength": c.strength,
+                "direction": "outgoing" if c.source_id == belief_id else "incoming"
+            }
+            if c.polarity.value.upper() == "POSITIVE":
+                supporting.append(constraint_info)
+            else:
+                opposing.append(constraint_info)
+
     return {
         "belief_id": belief_id,
-        "constraints": [
-            {"id": "C001", "target": "B002", "polarity": "POSITIVE", "strength": 0.82},
-            {"id": "C002", "target": "B003", "polarity": "POSITIVE", "strength": 0.65},
-        ]
+        "supporting": supporting,
+        "opposing": opposing,
+        "total": len(supporting) + len(opposing)
     }
 
 
 @beliefs_router.get("/{belief_id}/evidence")
 async def get_belief_evidence(belief_id: str):
     """Get evidence sources for this belief."""
+    web = get_web()
+
+    if belief_id not in web.beliefs:
+        raise HTTPException(status_code=404, detail=f"Belief {belief_id} not found")
+
+    belief = web.beliefs[belief_id]
+    paper_ids = belief.paper_ids or []
+
+    # Try to get paper details from database
+    evidence = []
+    if paper_ids:
+        try:
+            conn = _get_db_connection()
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+
+            for pid in paper_ids:
+                cursor.execute("""
+                    SELECT article_id, title, authors, year, venue
+                    FROM articles WHERE article_id = ?
+                """, (pid,))
+                row = cursor.fetchone()
+                if row:
+                    authors = json.loads(row['authors']) if row['authors'] else []
+                    evidence.append({
+                        "paper_id": row['article_id'],
+                        "title": row['title'],
+                        "authors": authors,
+                        "year": row['year'],
+                        "venue": row['venue']
+                    })
+                else:
+                    # Paper not in DB, just return the ID
+                    evidence.append({"paper_id": pid, "title": None})
+
+            conn.close()
+        except Exception as e:
+            logger.warning(f"Could not fetch paper details: {e}")
+            # Fall back to just paper IDs
+            evidence = [{"paper_id": pid, "title": None} for pid in paper_ids]
+
     return {
         "belief_id": belief_id,
-        "evidence": [
-            {"source": "Kaplan & Kaplan 1989", "type": "book", "contribution": "Foundational theory"},
-            {"source": "Berman et al. 2008", "type": "article", "contribution": "Empirical validation"},
-        ]
+        "evidence_count": len(evidence),
+        "evidence": evidence
     }
 
 
@@ -383,7 +543,7 @@ async def get_belief_evidence(belief_id: str):
 @queries_router.post("/", response_model=QueryResponse)
 async def execute_query(request: QueryRequest, background_tasks: BackgroundTasks):
     """
-    Execute a natural language query.
+    Execute a natural language query with progressive disclosure (per Simon).
 
     Modes:
     - quick: Headline only (fastest, cheapest)
@@ -395,41 +555,57 @@ async def execute_query(request: QueryRequest, background_tasks: BackgroundTasks
     2. Evidence retrieval (no LLM)
     3. Response synthesis (capable model)
     """
-    query_id = f"Q{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    from src.services.query_response import generate_progressive_response, ResponseMode
 
-    # TODO: Integrate with LLM Query Bridge
-    # For now, return demo response
-    return QueryResponse(
-        query_id=query_id,
-        status="complete",
-        query=request.query,
-        query_type="WHAT",
-        causal_level="associational",
-        headline="Plants are associated with stress reduction in office settings (credence: 0.72 ± 0.12)",
-        summary={
-            "finding": "Multiple studies show 15-25% reduction in self-reported stress",
-            "confidence": "moderate",
-            "key_evidence": ["Lohr 1996", "Bringslimark 2007", "Fjeld 2000"]
-        },
-        practical_implications=[
-            "Minimum 1 plant per 10m² workspace",
-            "Visible greenery more effective than hidden",
-            "Real plants preferred over artificial"
-        ],
-        scope_conditions={
-            "population": "Office workers, primarily Western countries",
-            "setting": "Indoor office environments",
-            "methodology": "Self-report surveys, some cortisol measurements",
-            "limitations": "Limited hospital data, no long-term studies"
-        },
-        caveats=[
-            "Limited evidence for hospital settings",
-            "Cultural variations understudied"
-        ],
-        key_sources=["Lohr et al. (1996)", "Bringslimark et al. (2007)"],
-        processing_time_ms=150,
-        cost_estimate=0.02
-    )
+    # Map request mode to ResponseMode
+    mode_map = {
+        "quick": ResponseMode.HEADLINE,
+        "standard": ResponseMode.SUMMARY,
+        "deep": ResponseMode.DETAIL
+    }
+    response_mode = mode_map.get(request.mode, ResponseMode.SUMMARY)
+
+    # Get Web of Belief
+    web = get_web()
+
+    # Generate progressive response
+    try:
+        progressive = generate_progressive_response(
+            web=web,
+            query=request.query,
+            mode=response_mode,
+            include_practitioner_implications=request.include_practitioner_implications
+        )
+
+        return QueryResponse(
+            query_id=progressive.query_id,
+            status="complete",
+            query=request.query,
+            query_type=progressive.summary.get('finding', 'UNKNOWN')[:20] if progressive.summary else "UNKNOWN",
+            causal_level=progressive.causal_level,
+            headline=progressive.headline,
+            summary=progressive.summary,
+            detail=progressive.detail,
+            practical_implications=progressive.practical_implications,
+            scope_conditions=progressive.scope_conditions,
+            caveats=progressive.caveats,
+            key_sources=progressive.key_sources,
+            processing_time_ms=progressive.processing_time_ms,
+            cost_estimate=progressive.cost_estimate
+        )
+    except Exception as e:
+        logger.warning(f"Query processing error: {e}")
+        # Fallback to minimal response
+        return QueryResponse(
+            query_id=f"Q{datetime.now().strftime('%Y%m%d%H%M%S')}",
+            status="error",
+            query=request.query,
+            query_type="UNKNOWN",
+            causal_level="unknown",
+            headline=f"Error processing query: {str(e)[:50]}",
+            processing_time_ms=0,
+            cost_estimate=0.0
+        )
 
 
 @queries_router.get("/{query_id}/results", response_model=QueryResponse)
@@ -520,9 +696,26 @@ async def download_export_file(export_id: str, filename: str):
 # Communities Endpoints
 # =============================================================================
 
-@communities_router.get("/", response_model=List[CommunityResponse])
+@communities_router.get("/")
 async def list_communities():
     """List all epistemic communities."""
+    registry = get_community_registry()
+
+    # If registry is available and has communities, use it
+    if registry and registry.communities:
+        communities = []
+        for c in registry.communities.values():
+            communities.append(CommunityResponse(
+                id=c.community_id,
+                name=c.name,
+                description=getattr(c, 'description', None),
+                beliefs_count=0,  # Would need to query WebOfBelief
+                average_credence=0.0,
+                key_researchers=[]
+            ))
+        return communities
+
+    # Fallback to seed data for known CNfA communities
     return [
         CommunityResponse(
             id="art",
@@ -562,6 +755,22 @@ async def list_communities():
 @communities_router.get("/{community_id}", response_model=CommunityResponse)
 async def get_community(community_id: str):
     """Get details for a specific community."""
+    registry = get_community_registry()
+
+    # Try registry first
+    if registry:
+        c = registry.get_community(community_id)
+        if c:
+            return CommunityResponse(
+                id=c.community_id,
+                name=c.name,
+                description=getattr(c, 'description', None),
+                beliefs_count=0,
+                average_credence=0.0,
+                key_researchers=[]
+            )
+
+    # Fallback to seed data
     communities = await list_communities()
     for c in communities:
         if c.id == community_id:
@@ -576,11 +785,27 @@ async def get_community_beliefs(
     offset: int = Query(default=0, ge=0)
 ):
     """Get beliefs associated with a community."""
-    # TODO: Integrate with actual data
+    web = get_web()
+
+    # Find beliefs associated with this community
+    community_beliefs = []
+    for b in web.beliefs.values():
+        if hasattr(b, 'community_associations') and b.community_associations:
+            if community_id in b.community_associations:
+                community_beliefs.append({
+                    "id": b.belief_id,
+                    "content": b.content,
+                    "credence": b.credence.value,
+                    "community_credence": b.community_associations.get(community_id, b.credence.value)
+                })
+
+    total = len(community_beliefs)
+    paginated = community_beliefs[offset:offset + limit]
+
     return {
         "community_id": community_id,
-        "beliefs": [],
-        "total": 0,
+        "beliefs": paginated,
+        "total": total,
         "limit": limit,
         "offset": offset
     }
@@ -596,80 +821,185 @@ async def list_constraints(
     offset: int = Query(default=0, ge=0),
     polarity: Optional[str] = Query(default=None, pattern="^(POSITIVE|NEGATIVE)$")
 ):
-    """List epistemic constraints."""
+    """List epistemic constraints from WebOfBelief."""
+    web = get_web()
+
+    all_constraints = list(web.constraints.values())
+
+    # Filter by polarity if specified
+    if polarity:
+        all_constraints = [c for c in all_constraints
+                         if c.polarity.value.upper() == polarity]
+
+    total = len(all_constraints)
+
+    # Paginate
+    paginated = all_constraints[offset:offset + limit]
+
+    # Convert to response format
+    constraint_responses = []
+    for c in paginated:
+        constraint_responses.append(ConstraintResponse(
+            id=c.constraint_id,
+            from_belief=c.source_id,
+            to_belief=c.target_id,
+            polarity=c.polarity.value.upper(),
+            strength=c.strength,
+            reason=c.reason if hasattr(c, 'reason') else None
+        ))
+
     return {
-        "constraints": [
-            ConstraintResponse(
-                id="C001",
-                from_belief="B001",
-                to_belief="B002",
-                polarity="POSITIVE",
-                strength=0.82,
-                reason="ART supports plant stress reduction"
-            ),
-            ConstraintResponse(
-                id="C002",
-                from_belief="B002",
-                to_belief="B005",
-                polarity="NEGATIVE",
-                strength=0.89,
-                reason="Real vs artificial plants conflict"
-            ),
-        ],
-        "total": 2,
+        "constraints": constraint_responses,
+        "total": total,
         "limit": limit,
-        "offset": offset
+        "offset": offset,
+        "_links": {
+            "self": f"/api/v1/constraints/?limit={limit}&offset={offset}",
+            "next": f"/api/v1/constraints/?limit={limit}&offset={offset + limit}" if offset + limit < total else None
+        }
     }
 
 
 @constraints_router.get("/{constraint_id}", response_model=ConstraintResponse)
 async def get_constraint(constraint_id: str):
     """Get details for a specific constraint."""
-    # TODO: Integrate with actual data
-    raise HTTPException(status_code=404, detail=f"Constraint {constraint_id} not found")
+    web = get_web()
+
+    if constraint_id not in web.constraints:
+        raise HTTPException(status_code=404, detail=f"Constraint {constraint_id} not found")
+
+    c = web.constraints[constraint_id]
+
+    return ConstraintResponse(
+        id=c.constraint_id,
+        from_belief=c.source_id,
+        to_belief=c.target_id,
+        polarity=c.polarity.value.upper(),
+        strength=c.strength,
+        reason=c.reason if hasattr(c, 'reason') else None
+    )
 
 
 # =============================================================================
 # Papers Endpoints
 # =============================================================================
 
-@papers_router.get("/", response_model=List[PaperResponse])
+@papers_router.get("/")
 async def list_papers(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     status: Optional[str] = Query(default=None)
 ):
-    """List source papers."""
-    return [
-        PaperResponse(
-            id="P001",
-            title="The Experience of Nature: A Psychological Perspective",
-            authors=["Kaplan, R.", "Kaplan, S."],
-            year=1989,
-            beliefs_extracted=23,
-            status="complete"
-        ),
-        PaperResponse(
-            id="P002",
-            title="View Through a Window May Influence Recovery from Surgery",
-            authors=["Ulrich, R.S."],
-            year=1984,
-            journal="Science",
-            doi="10.1126/science.6143402",
-            beliefs_extracted=8,
-            status="complete"
-        ),
-    ]
+    """List source papers from the database."""
+    try:
+        conn = _get_db_connection()
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        # Build query with optional status filter
+        if status:
+            cursor.execute("""
+                SELECT article_id, title, authors, year, venue, doi
+                FROM articles
+                WHERE status = ?
+                ORDER BY year DESC
+                LIMIT ? OFFSET ?
+            """, (status, limit, offset))
+        else:
+            cursor.execute("""
+                SELECT article_id, title, authors, year, venue, doi
+                FROM articles
+                ORDER BY year DESC
+                LIMIT ? OFFSET ?
+            """, (limit, offset))
+
+        rows = cursor.fetchall()
+
+        # Get total count
+        if status:
+            cursor.execute("SELECT COUNT(*) FROM articles WHERE status = ?", (status,))
+        else:
+            cursor.execute("SELECT COUNT(*) FROM articles")
+        total = cursor.fetchone()[0]
+
+        conn.close()
+
+        # Convert to response format
+        papers = []
+        for row in rows:
+            authors = json.loads(row['authors']) if row['authors'] else []
+            papers.append(PaperResponse(
+                id=row['article_id'],
+                title=row['title'] or "Untitled",
+                authors=authors,
+                year=row['year'] or 0,
+                journal=row['venue'],
+                doi=row['doi'],
+                beliefs_extracted=0,  # Could be counted from findings table
+                status="complete"
+            ))
+
+        return {
+            "papers": papers,
+            "total": total,
+            "limit": limit,
+            "offset": offset,
+            "_links": {
+                "self": f"/api/v1/papers/?limit={limit}&offset={offset}",
+                "next": f"/api/v1/papers/?limit={limit}&offset={offset + limit}" if offset + limit < total else None
+            }
+        }
+
+    except Exception as e:
+        logger.warning(f"Database query failed: {e}")
+        # Return empty list if database not available
+        return {
+            "papers": [],
+            "total": 0,
+            "limit": limit,
+            "offset": offset,
+            "_links": {"self": f"/api/v1/papers/?limit={limit}&offset={offset}"}
+        }
 
 
 @papers_router.get("/{paper_id}", response_model=PaperResponse)
 async def get_paper(paper_id: str):
-    """Get details for a specific paper."""
-    papers = await list_papers()
-    for p in papers:
-        if p.id == paper_id:
-            return p
-    raise HTTPException(status_code=404, detail=f"Paper {paper_id} not found")
+    """Get details for a specific paper from the database."""
+    try:
+        conn = _get_db_connection()
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT article_id, title, authors, year, venue, doi
+            FROM articles
+            WHERE article_id = ?
+        """, (paper_id,))
+
+        row = cursor.fetchone()
+        conn.close()
+
+        if not row:
+            raise HTTPException(status_code=404, detail=f"Paper {paper_id} not found")
+
+        authors = json.loads(row['authors']) if row['authors'] else []
+
+        return PaperResponse(
+            id=row['article_id'],
+            title=row['title'] or "Untitled",
+            authors=authors,
+            year=row['year'] or 0,
+            journal=row['venue'],
+            doi=row['doi'],
+            beliefs_extracted=0,
+            status="complete"
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.warning(f"Database query failed: {e}")
+        raise HTTPException(status_code=404, detail=f"Paper {paper_id} not found")
 
 
 # =============================================================================
@@ -678,32 +1008,106 @@ async def get_paper(paper_id: str):
 
 @admin_router.get("/stats", response_model=SystemStats)
 async def get_system_stats():
-    """Get system-wide statistics."""
+    """Get system-wide statistics from WebOfBelief and database."""
+    web = get_web()
+
+    # Get counts from WebOfBelief
+    all_beliefs = list(web.beliefs.values())
+    total_beliefs = len(all_beliefs)
+    total_constraints = len(web.constraints)
+
+    # Count contested and stub beliefs
+    contested = sum(1 for b in all_beliefs if b.status and b.status.value.upper() == "CONTESTED")
+    stubs = sum(1 for b in all_beliefs if b.status and b.status.value.upper() == "STUB")
+
+    # Calculate average credence
+    if total_beliefs > 0:
+        avg_credence = sum(b.credence.value for b in all_beliefs) / total_beliefs
+    else:
+        avg_credence = 0.0
+
+    # Get community count
+    total_communities = len(web.communities) if hasattr(web, 'communities') else 0
+
+    # Get overall coherence
+    try:
+        overall_coherence = web.compute_coherence()
+    except Exception:
+        overall_coherence = 0.0
+
+    # Get paper count from database
+    total_papers = 0
+    try:
+        conn = _get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM articles")
+        total_papers = cursor.fetchone()[0]
+        conn.close()
+    except Exception:
+        pass  # Database may not be available
+
     return SystemStats(
-        total_beliefs=1247,
-        total_constraints=3891,
-        total_papers=312,
-        total_communities=4,
-        overall_coherence=0.72,
-        average_credence=0.68,
-        contested_beliefs=231,
-        stub_beliefs=142,
+        total_beliefs=total_beliefs,
+        total_constraints=total_constraints,
+        total_papers=total_papers,
+        total_communities=total_communities,
+        overall_coherence=overall_coherence,
+        average_credence=round(avg_credence, 3),
+        contested_beliefs=contested,
+        stub_beliefs=stubs,
         last_updated=datetime.now().isoformat()
     )
 
 
 @admin_router.get("/health", response_model=HealthResponse)
 async def get_health():
-    """Get system health status."""
+    """Get system health status with real connectivity checks."""
+    import time
+
+    checks = {}
+    overall_status = "healthy"
+
+    # Check database connectivity
+    try:
+        start = time.time()
+        conn = _get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1")
+        cursor.fetchone()
+        conn.close()
+        latency_ms = int((time.time() - start) * 1000)
+        checks["database"] = {"status": "ok", "latency_ms": latency_ms}
+    except Exception as e:
+        checks["database"] = {"status": "error", "error": str(e)}
+        overall_status = "degraded"
+
+    # Check WebOfBelief availability
+    try:
+        web = get_web()
+        belief_count = len(web.beliefs)
+        checks["web_of_belief"] = {"status": "ok", "beliefs_loaded": belief_count}
+    except Exception as e:
+        checks["web_of_belief"] = {"status": "error", "error": str(e)}
+        overall_status = "degraded"
+
+    # Check community registry
+    try:
+        registry = get_community_registry()
+        if registry:
+            checks["community_registry"] = {"status": "ok", "communities": len(registry.communities)}
+        else:
+            checks["community_registry"] = {"status": "unavailable", "reason": "Module not loaded"}
+    except Exception as e:
+        checks["community_registry"] = {"status": "error", "error": str(e)}
+
+    # LLM service check (placeholder - would need actual API key check)
+    checks["llm_service"] = {"status": "ok", "provider": "anthropic", "note": "Not verified"}
+
     return HealthResponse(
-        status="healthy",
+        status=overall_status,
         api_version="v1",
-        uptime_seconds=3600,
-        checks={
-            "database": {"status": "ok", "latency_ms": 5},
-            "llm_service": {"status": "ok", "provider": "anthropic"},
-            "cache": {"status": "ok", "hit_rate": 0.85},
-        }
+        uptime_seconds=0,  # Would need process start time tracking
+        checks=checks
     )
 
 

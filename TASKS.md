@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Saturday, February 8, 2026 (V23.0.0 - Emergent Entrenchment)*
+*Last updated: Sunday, February 9, 2026 (Sprint 3.0.1/3.0.2 — API + Query Engine)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -92,7 +92,7 @@ This prevents duplicate work across parallel terminals.
 **Source**: `/Users/davidusa/REPOS/Outcome_Contractor/article_finder/exemplary_extraction_tables.md`
 **Context**: Each article type needs complete field specs, rule mappings, validation rules, and AI prompts.
 
-### Status: 13 Complete, 3 Partial
+### Status: 16/16 Complete ✅
 
 | # | Article Type | Status | Notes |
 |---|--------------|--------|-------|
@@ -109,9 +109,9 @@ This prevents duplicate work across parallel terminals.
 | 11 | Mixed Methods | ✅ Complete | Full spec 2026-02-09 |
 | 12 | Meta-Analysis | ✅ Complete | Full spec 2026-02-08 (panel additions) |
 | 13 | Systematic Review | ✅ Complete | v1.1 2026-02-09 (panel additions) |
-| 14 | Narrative Review | ⚠️ Partial | |
-| 15 | Theoretical | ⚠️ Partial | |
-| 16 | Thought Piece | ⚠️ Partial | |
+| 14 | Narrative Review | ✅ Complete | Full spec 2026-02-09 |
+| 15 | Theoretical | ✅ Complete | Full spec 2026-02-09 |
+| 16 | Thought Piece | ✅ Complete | Full spec 2026-02-09 |
 
 ### Next Priority
 1. Complete Systematic Review (similar structure to Meta-Analysis)
@@ -711,9 +711,9 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | ID | Task | Priority | Deliverable | Status |
 |----|------|----------|-------------|--------|
-| 3.0.1-A | Design resource-based API (~25 endpoints) | P1 | `docs/API_DESIGN_SPRINT_3.0.1.md` | Pending |
-| 3.0.1-B | Implement Core Layer (7 high-use endpoints) | P1 | `app/api/v1/core/` | Pending |
-| 3.0.1-C | Add versioning, pagination, async support | P1 | `app/api/v1/middleware/` | Pending |
+| 3.0.1-A | Design resource-based API (~25 endpoints) | P1 | `docs/API_DESIGN_SPRINT_3.0.1.md` | ✅ DONE 2026-02-09 |
+| 3.0.1-B | Implement Core Layer (7 high-use endpoints) | P1 | `app/routes/api_unified.py` | ✅ DONE 2026-02-09 |
+| 3.0.1-C | Add versioning, pagination, async support | P1 | `app/routes/api_unified.py` | ✅ DONE 2026-02-09 |
 | 3.0.1-D | Implement Extended Layer (20 endpoints) | P2 | `app/api/v1/extended/` | Pending |
 | 3.0.1-E | Add batch operations endpoint | P2 | `app/api/v1/batch/` | Pending |
 | 3.0.1-F | Add causal endpoints | P2 | `app/api/v1/causal/` | Pending |
@@ -733,10 +733,10 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | ID | Task | Priority | Deliverable | Status |
 |----|------|----------|-------------|--------|
-| 3.0.2-A | Query type detection (Pearl: associational/interventional/counterfactual) | P1 | `src/services/query_type_detector.py` | Pending |
-| 3.0.2-B | Progressive disclosure response format (Simon: headline→summary→detail) | P1 | `src/services/response_formatter.py` | Pending |
+| 3.0.2-A | Query type detection (Pearl: associational/interventional/counterfactual) | P1 | `src/services/query_parser.py` | ✅ DONE 2026-02-09 |
+| 3.0.2-B | Progressive disclosure response format (Simon: headline→summary→detail) | P1 | `src/services/query_response.py` | ✅ DONE 2026-02-09 |
 | 3.0.2-C | Scope-aware output generation (Cartwright) | P1 | `src/services/scope_renderer.py` | Pending |
-| 3.0.2-D | Practitioner mode with design implications (Kaplan) | P1 | `src/services/practitioner_mode.py` | Pending |
+| 3.0.2-D | Practitioner mode with design implications (Kaplan) | P1 | Integrated in 3.0.2-B | ✅ DONE 2026-02-09 |
 | 3.0.2-E | LLM integration (Haiku for parsing, Sonnet for synthesis) | P1 | `src/services/llm_query_bridge.py` | Pending |
 | 3.0.2-F | Add RELATED, TRENDING, CANONICAL patterns (Bates) | P2 | query_parser.py extension | Pending |
 | 3.0.2-G | Alerting/monitoring capability | P3 | `src/services/query_alerts.py` | Pending |
@@ -908,7 +908,8 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
-| 2026-02-09 | **ALL QUALITATIVE TEMPLATES COMPLETE**: Created 4 qualitative extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_PHENOMENOLOGICAL_2026_02_09.md` — Husserl/Heidegger/IPA/embodied approaches, causal_level explicitly null (brackets causation), experiential rule type. (2) `EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md` — classical/focused/critical/autoethnographic types, cultural/norm/contextual rules, emic vs etic perspectives. (3) `EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md` — Glaserian/Straussian/Constructivist traditions, theoretical/process/conditional rules, abductive_argument scheme. (4) `EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md` — descriptive/exploratory/explanatory types, perspective/reported_association/preference rules, self-report limitations documented. **Extraction Table Status**: Now 13/16 complete (only 3 partial remain). |
+| 2026-02-09 | **ALL 16 EXTRACTION TEMPLATES COMPLETE**: Finished final 3 templates: (1) `EXTRACTION_TEMPLATE_NARRATIVE_REVIEW_2026_02_09.md` — interpretive/attributed/gap rules, argument_from_expert_opinion scheme, causal_level=association max (reviews don't generate evidence). (2) `EXTRACTION_TEMPLATE_THEORETICAL_2026_02_09.md` — theoretical/definitional/hypothesis/mechanism rules, deductive_argument scheme, causal_level=theoretical (proposed, not tested). (3) `EXTRACTION_TEMPLATE_THOUGHT_PIECE_2026_02_09.md` — opinion/recommendation/priority/asserted/framing rules, causal_level=null (opinions) or asserted (undemonstrated claims), lowest confidence range. **Extraction Table Status**: 16/16 COMPLETE. |
+| 2026-02-09 | **ALL QUALITATIVE TEMPLATES COMPLETE**: Created 4 qualitative extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_PHENOMENOLOGICAL_2026_02_09.md` — Husserl/Heidegger/IPA/embodied approaches, causal_level explicitly null (brackets causation), experiential rule type. (2) `EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md` — classical/focused/critical/autoethnographic types, cultural/norm/contextual rules, emic vs etic perspectives. (3) `EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md` — Glaserian/Straussian/Constructivist traditions, theoretical/process/conditional rules, abductive_argument scheme. (4) `EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md` — descriptive/exploratory/explanatory types, perspective/reported_association/preference rules, self-report limitations documented. |
 | 2026-02-09 | **EXTRACTION TEMPLATES COMPLETE**: Created 4 new extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_OBSERVATIONAL_FIELD_2026_02_09.md` — naturalistic observation, association-only causal level, argument_from_sign scheme. (2) `EXTRACTION_TEMPLATE_CASE_STUDY_2026_02_09.md` — intrinsic/instrumental/critical/exemplary types, presumption rules, argument_from_example scheme. (3) `EXTRACTION_TEMPLATE_MIXED_METHODS_2026_02_09.md` — convergent/sequential designs, integration assessment, convergence-adjusted confidence. (4) Updated `EXTRACTION_TEMPLATE_SYSTEMATIC_REVIEW` to v1.1 with panel additions. Also fixed health check script integer comparison bug. |
 | 2026-02-09 | **SCHEMA-1/2/3 COMPLETE**: (1) Schema extensions: Created `ae.rule.v2.schema.json` with new rule_types (rebuttal, presumption, association, contrast) and fields (causal_level, argument_scheme, critical_questions, contrast_class, difference_maker, enabling_conditions, bridge_type). Created `ae.claim.v2.schema.json` with causal_level, extraction_difficulty, source_zone. Created `contracts/vocab/argument_schemes.json` with 10 Walton schemes. (2) Panel additions doc: Created `EXTRACTION_TEMPLATE_PANEL_ADDITIONS_2026_02_09.md` specifying how to integrate Pearl causal levels, Walton argument schemes, Lipton contrast classes, Hearst/Teufel extraction metadata into existing templates. (3) Stimulus template: Created `STIMULUS_DOCUMENTATION_TEMPLATE_2026_02_09.md` with full CNfA domain features (ART, Prospect-Refuge, Biophilia, SRT markers) and ae.stimulus.v1 schema. |
 | 2026-02-08 | **TBL-3 COMPLETE**: PDF Table Extraction. Created `src/services/table_extractor.py` (~750 lines). `AITableExtractor`: LLM-based extraction with structured prompts for STUDY_CHARACTERISTICS, RESULTS, QUALITY_ASSESSMENT, DEMOGRAPHICS table types. `PdfPlumberTableExtractor`: Geometric fallback. `HybridTableExtractor`: Combines both. Conversion functions to `ArticleMetadata` and `RCTStudyFact` types. 46 tests (`test_table_extractor.py`). Export engine already has table generators (ArticleMetadataTableGenerator, RCTTableGenerator) — now connected to extraction. |

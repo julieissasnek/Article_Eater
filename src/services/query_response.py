@@ -9,8 +9,15 @@ Per expert panel:
 - Abstract-only caution badges (Cartwright, I3)
 - Show vocabulary expansion transparently (Bates, Q3)
 
-Date: January 21, 2026
-Phase C Sprint C2
+Sprint 3.0.2-B additions (per Simon):
+- Progressive disclosure response format:
+  1. Headline: One-sentence answer
+  2. Summary: Key evidence and confidence
+  3. Detail: Full trace on demand
+  4. Deep Dive: Complete epistemology for researchers
+
+Date: January 21, 2026 (original)
+Updated: February 9, 2026 (Sprint 3.0.2-B)
 """
 
 from dataclasses import dataclass, field
@@ -38,6 +45,81 @@ class ResponseType(Enum):
     GAP_REPORT = "gap_report"            # What we don't know
     SCOPE_REPORT = "scope_report"        # When/for whom something works
     CLARIFICATION_NEEDED = "clarification" # Need more info
+
+
+class ResponseMode(Enum):
+    """
+    Progressive disclosure level (per Simon, Sprint 3.0.2-B).
+
+    Let users drill down; don't front-load complexity.
+    """
+    HEADLINE = "headline"    # One-sentence answer (fastest, simplest)
+    SUMMARY = "summary"      # Key evidence and confidence
+    DETAIL = "detail"        # Full trace with citations
+    DEEP_DIVE = "deep_dive"  # Complete epistemology for researchers
+
+
+@dataclass
+class ProgressiveResponse:
+    """
+    Response with progressive disclosure levels (per Simon).
+
+    Each level includes more detail:
+    - headline: "Plants reduce stress (credence: 0.72 ± 0.12)"
+    - summary: Key evidence, confidence, scope conditions
+    - detail: Full evidence list, methodological notes, caveats
+    - deep_dive: Complete epistemology trace, constraint network, community-relative credences
+    """
+    # Core response metadata
+    query_id: str
+    query_text: str
+    causal_level: str  # from Pearl: associational/interventional/counterfactual
+
+    # Progressive disclosure levels
+    headline: str                              # One sentence
+    summary: Optional[Dict[str, Any]] = None   # Key evidence + confidence
+    detail: Optional[Dict[str, Any]] = None    # Full trace
+    deep_dive: Optional[Dict[str, Any]] = None # Complete epistemology
+
+    # Practitioner mode additions (per Kaplan)
+    practical_implications: Optional[List[str]] = None
+    scope_conditions: Optional[Dict[str, str]] = None
+    caveats: Optional[List[str]] = None
+    key_sources: Optional[List[str]] = None
+
+    # Metadata
+    mode: ResponseMode = ResponseMode.SUMMARY
+    processing_time_ms: int = 0
+    cost_estimate: float = 0.0
+
+    def to_dict(self, include_level: ResponseMode = None) -> Dict[str, Any]:
+        """Convert to dict with appropriate detail level."""
+        level = include_level or self.mode
+        result = {
+            'query_id': self.query_id,
+            'query_text': self.query_text,
+            'causal_level': self.causal_level,
+            'headline': self.headline,
+            'mode': level.value,
+            'processing_time_ms': self.processing_time_ms,
+            'cost_estimate': self.cost_estimate
+        }
+
+        # Add progressively based on level
+        if level in (ResponseMode.SUMMARY, ResponseMode.DETAIL, ResponseMode.DEEP_DIVE):
+            result['summary'] = self.summary
+            result['practical_implications'] = self.practical_implications
+            result['scope_conditions'] = self.scope_conditions
+            result['caveats'] = self.caveats
+            result['key_sources'] = self.key_sources
+
+        if level in (ResponseMode.DETAIL, ResponseMode.DEEP_DIVE):
+            result['detail'] = self.detail
+
+        if level == ResponseMode.DEEP_DIVE:
+            result['deep_dive'] = self.deep_dive
+
+        return result
 
 
 @dataclass
@@ -845,3 +927,211 @@ def generate_response(web: WebOfBelief, query: str) -> QueryResponse:
     parse_result = parse_query(query)
     generator = QueryResponseGenerator(web)
     return generator.generate(parse_result)
+
+
+def generate_progressive_response(
+    web: WebOfBelief,
+    query: str,
+    mode: ResponseMode = ResponseMode.SUMMARY,
+    include_practitioner_implications: bool = True
+) -> ProgressiveResponse:
+    """
+    Generate a response with progressive disclosure (per Simon, Sprint 3.0.2-B).
+
+    Args:
+        web: The Web of Belief to query
+        query: Natural language query
+        mode: How much detail to include (HEADLINE, SUMMARY, DETAIL, DEEP_DIVE)
+        include_practitioner_implications: Include practical implications (per Kaplan)
+
+    Returns:
+        ProgressiveResponse with appropriate level of detail
+    """
+    import time
+    from src.services.query_parser import parse_query, CausalLevel
+    import uuid
+
+    start_time = time.time()
+
+    # Parse the query
+    parse_result = parse_query(query)
+    intent = parse_result.primary
+
+    # Generate full response
+    generator = QueryResponseGenerator(web)
+    full_response = generator.generate(parse_result)
+
+    # Build headline (one sentence)
+    headline = _build_headline(full_response, intent)
+
+    # Build summary section
+    summary = None
+    if mode in (ResponseMode.SUMMARY, ResponseMode.DETAIL, ResponseMode.DEEP_DIVE):
+        summary = {
+            'finding': full_response.summary,
+            'confidence': full_response.confidence_level,
+            'evidence_count': len(full_response.evidence_items),
+            'is_contested': full_response.is_contested,
+            'key_evidence': [e.content[:100] for e in full_response.evidence_items[:3]]
+        }
+
+    # Build detail section
+    detail = None
+    if mode in (ResponseMode.DETAIL, ResponseMode.DEEP_DIVE):
+        detail = {
+            'evidence_items': [e.to_dict() for e in full_response.evidence_items],
+            'total_supporting': full_response.total_supporting,
+            'total_contradicting': full_response.total_contradicting,
+            'abstract_only_warning': full_response.abstract_only_warning,
+            'contested_evidence': full_response.contested_evidence.to_dict() if full_response.contested_evidence else None,
+            'follow_ups': [f.to_dict() for f in full_response.follow_ups],
+            'vocabulary_expansions': full_response.vocabulary_used
+        }
+
+    # Build deep dive section (complete epistemology)
+    deep_dive = None
+    if mode == ResponseMode.DEEP_DIVE:
+        deep_dive = {
+            'query_intent': intent.to_dict(),
+            'scope_conditions': full_response.scope_conditions,
+            'enabling_conditions': full_response.enabling_conditions,
+            'response_type': full_response.response_type.value,
+            'full_evidence_trace': [
+                {
+                    'belief_id': e.belief_id,
+                    'content': e.content,
+                    'credence': e.credence,
+                    'source_depth': e.source_depth,
+                    'paper_ids': e.paper_ids,
+                    'is_causal': e.is_causal,
+                    'needs_caution': e.needs_caution,
+                    'entrenchment': web.get_entrenchment(e.belief_id) if e.belief_id in web.beliefs else 0.0
+                }
+                for e in full_response.evidence_items
+            ]
+        }
+
+    # Practitioner implications (per Kaplan)
+    practical_implications = None
+    scope_conditions = None
+    caveats = None
+    key_sources = None
+
+    if include_practitioner_implications:
+        practical_implications = _generate_practical_implications(full_response, intent)
+        scope_conditions = _build_scope_dict(full_response)
+        caveats = _generate_caveats(full_response)
+        key_sources = [e.paper_ids[0] if e.paper_ids else f"belief:{e.belief_id}"
+                       for e in full_response.evidence_items[:5]]
+
+    processing_time = int((time.time() - start_time) * 1000)
+
+    return ProgressiveResponse(
+        query_id=f"Q{uuid.uuid4().hex[:12]}",
+        query_text=query,
+        causal_level=intent.causal_level.value if hasattr(intent, 'causal_level') else 'unknown',
+        headline=headline,
+        summary=summary,
+        detail=detail,
+        deep_dive=deep_dive,
+        practical_implications=practical_implications,
+        scope_conditions=scope_conditions,
+        caveats=caveats,
+        key_sources=key_sources,
+        mode=mode,
+        processing_time_ms=processing_time,
+        cost_estimate=0.0  # Would be set by LLM bridge if LLM was used
+    )
+
+
+def _build_headline(response: QueryResponse, intent) -> str:
+    """Build one-sentence headline from response."""
+    if not response.evidence_items:
+        return f"No direct evidence found for: {intent.subject or 'your query'}"
+
+    top_evidence = response.evidence_items[0]
+    credence = top_evidence.credence
+
+    # Confidence qualifier
+    if credence >= 0.8:
+        qualifier = "strong evidence"
+    elif credence >= 0.6:
+        qualifier = "moderate evidence"
+    elif credence >= 0.4:
+        qualifier = "limited evidence"
+    else:
+        qualifier = "weak evidence"
+
+    subject = intent.subject or "the topic"
+    content_short = top_evidence.content[:80]
+    if len(top_evidence.content) > 80:
+        content_short += "..."
+
+    if response.is_contested:
+        return f"{content_short} ({qualifier}, contested, credence: {credence:.2f})"
+    else:
+        return f"{content_short} ({qualifier}, credence: {credence:.2f})"
+
+
+def _generate_practical_implications(response: QueryResponse, intent) -> List[str]:
+    """Generate practical implications per Kaplan."""
+    implications = []
+
+    if not response.evidence_items:
+        return ["Insufficient evidence for practical recommendations"]
+
+    # Generate implications based on evidence
+    for evidence in response.evidence_items[:3]:
+        if evidence.credence >= 0.6:
+            # High-confidence implications
+            content = evidence.content.lower()
+            if 'reduce' in content or 'decrease' in content:
+                implications.append(f"Consider implementing: {evidence.content[:60]}...")
+            elif 'increase' in content or 'improve' in content:
+                implications.append(f"Evidence supports: {evidence.content[:60]}...")
+
+    if not implications:
+        implications.append("Review detailed evidence before making design decisions")
+
+    if response.abstract_only_warning:
+        implications.append("⚠️ Some evidence is abstract-only; verify with full studies")
+
+    if response.is_contested:
+        implications.append("⚠️ Evidence is contested; consider multiple perspectives")
+
+    return implications
+
+
+def _build_scope_dict(response: QueryResponse) -> Optional[Dict[str, str]]:
+    """Build scope conditions dict for response."""
+    if not response.scope_conditions:
+        return None
+
+    scope = {}
+    if 'populations' in response.scope_conditions:
+        scope['population'] = ', '.join(response.scope_conditions['populations'])
+    if 'settings' in response.scope_conditions:
+        scope['setting'] = ', '.join(response.scope_conditions['settings'])
+    if 'durations' in response.scope_conditions:
+        scope['duration'] = ', '.join(response.scope_conditions['durations'])
+
+    return scope if scope else None
+
+
+def _generate_caveats(response: QueryResponse) -> List[str]:
+    """Generate caveats based on response quality indicators."""
+    caveats = []
+
+    if response.abstract_only_warning:
+        caveats.append("Some findings based on abstracts only; full-text verification needed")
+
+    if response.is_contested:
+        caveats.append("Evidence shows disagreement among researchers")
+
+    if response.total_contradicting > response.total_supporting:
+        caveats.append("More contradicting than supporting evidence found")
+
+    if len(response.evidence_items) < 3:
+        caveats.append("Limited evidence base; more research may be needed")
+
+    return caveats if caveats else ["No significant caveats identified"]
