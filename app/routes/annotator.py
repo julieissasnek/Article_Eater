@@ -14,11 +14,11 @@ Date: January 23, 2026
 Version: V22.0.0 (Post-Quinean)
 """
 
-from fastapi import APIRouter, HTTPException, Query, UploadFile, File
+from fastapi import APIRouter, HTTPException, Query, UploadFile, File, Form
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import json
 import logging
@@ -26,6 +26,14 @@ import sqlite3
 import os
 
 logger = logging.getLogger(__name__)
+
+# BIB-3: Import BibTeX parser
+try:
+    from src.services.bibtex_utils import parse_bibtex_string, BibTeXEntry
+    BIBTEX_AVAILABLE = True
+except ImportError:
+    BIBTEX_AVAILABLE = False
+    logger.warning("BibTeX utilities not available")
 
 router = APIRouter(tags=["annotator"])  # Prefix is added when mounted in main.py
 
@@ -668,6 +676,203 @@ async def list_uploaded_pdfs():
     # Sort by upload time, newest first
     pdfs.sort(key=lambda x: x["uploaded_at"], reverse=True)
     return pdfs
+
+
+# =============================================================================
+# BIB-3: BibTeX Upload Endpoints
+# =============================================================================
+
+@router.post("/upload-with-bibtex")
+async def upload_pdf_with_bibtex(
+    pdf_file: UploadFile = File(..., description="PDF file to upload"),
+    bibtex_file: UploadFile = File(None, description="Optional BibTeX file with metadata"),
+    bibtex_text: str = Form(None, description="Optional BibTeX text (alternative to file)"),
+):
+    """
+    Upload a PDF file with optional BibTeX metadata.
+
+    BIB-3: This endpoint allows uploading a PDF alongside its BibTeX entry,
+    which provides full metadata (title, authors, abstract, DOI, etc.) for
+    proper AE pipeline processing.
+
+    The BibTeX can be provided either as a file upload or as text in a form field.
+    If both are provided, the file takes precedence.
+
+    Returns the article ID, path, and extracted metadata.
+    """
+    if not BIBTEX_AVAILABLE:
+        raise HTTPException(
+            status_code=501,
+            detail="BibTeX utilities not available. Install bibtex_utils module."
+        )
+
+    # Validate PDF file
+    if not pdf_file.filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
+
+    # Get BibTeX content
+    bibtex_content = None
+    if bibtex_file:
+        bibtex_content = (await bibtex_file.read()).decode('utf-8', errors='ignore')
+    elif bibtex_text:
+        bibtex_content = bibtex_text
+
+    # Parse BibTeX if provided
+    bibtex_entry = None
+    if bibtex_content:
+        try:
+            entries = parse_bibtex_string(bibtex_content)
+            if entries:
+                bibtex_entry = entries[0]  # Use first entry
+                logger.info(f"Parsed BibTeX entry: {bibtex_entry.cite_key}")
+        except Exception as e:
+            logger.warning(f"Failed to parse BibTeX: {e}")
+            # Continue without BibTeX - just upload PDF
+
+    # Create upload directory
+    PDF_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Read PDF content
+    pdf_content = await pdf_file.read()
+    pdf_hash = hashlib.sha256(pdf_content).hexdigest()
+
+    # Generate filename
+    if bibtex_entry and bibtex_entry.cite_key:
+        safe_filename = _safe_filename(bibtex_entry.cite_key) + ".pdf"
+    else:
+        safe_filename = _safe_filename(pdf_file.filename)
+
+    # Add hash suffix for uniqueness
+    unique_filename = f"{safe_filename[:-4]}_{pdf_hash[:8]}.pdf"
+    file_path = PDF_UPLOAD_DIR / unique_filename
+
+    # Save PDF
+    try:
+        with open(file_path, "wb") as f:
+            f.write(pdf_content)
+        logger.info(f"Uploaded PDF: {unique_filename} ({len(pdf_content)} bytes)")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save PDF: {e}")
+
+    # Build response with metadata
+    if bibtex_entry:
+        # Use BibTeX metadata
+        article_id = bibtex_entry.cite_key or f"pdf_{pdf_hash[:12]}"
+        title = bibtex_entry.title or _clean_title(pdf_file.filename)
+        year = bibtex_entry.year
+        authors = bibtex_entry.authors or ([bibtex_entry.author] if bibtex_entry.author else [])
+        abstract = bibtex_entry.abstract
+        doi = bibtex_entry.doi
+        venue = bibtex_entry.journal or bibtex_entry.booktitle
+
+        # Create paper.json for AE pipeline
+        paper_json = bibtex_entry.to_paper_json(paper_id=article_id)
+        paper_json["files"] = {
+            "pdf_sha256": pdf_hash,
+            "pdf_bytes": len(pdf_content),
+        }
+        paper_json["source"] = {
+            "finder_run_id": f"bibtex_upload_{datetime.now().strftime('%Y%m%d')}",
+            "ingest_method": "bibtex_upload",
+            "retrieved_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+        # Save paper.json alongside PDF
+        paper_json_path = file_path.with_suffix('.json')
+        with open(paper_json_path, 'w', encoding='utf-8') as f:
+            json.dump(paper_json, f, indent=2, ensure_ascii=False)
+
+        metadata_source = "bibtex"
+    else:
+        # Fall back to filename-based metadata
+        article_id = _filename_to_id(pdf_file.filename)
+        title = _clean_title(pdf_file.filename)
+        year = _extract_year(pdf_file.filename)
+        authors = []
+        abstract = None
+        doi = None
+        venue = None
+        metadata_source = "filename"
+
+    # Register in database
+    try:
+        _register_pdf_in_db(article_id, title, year, str(file_path))
+    except Exception as db_err:
+        logger.warning(f"Could not register in DB (non-fatal): {db_err}")
+
+    return {
+        "status": "success",
+        "article_id": article_id,
+        "filename": unique_filename,
+        "path": str(file_path),
+        "pdf_sha256": pdf_hash,
+        "size_bytes": len(pdf_content),
+        "metadata_source": metadata_source,
+        "metadata": {
+            "title": title,
+            "year": year,
+            "authors": authors,
+            "abstract": abstract[:200] + "..." if abstract and len(abstract) > 200 else abstract,
+            "doi": doi,
+            "venue": venue,
+        },
+        "paper_json_path": str(paper_json_path) if bibtex_entry else None,
+    }
+
+
+@router.post("/upload-bibtex-batch")
+async def upload_bibtex_batch(
+    bibtex_file: UploadFile = File(..., description="BibTeX file with multiple entries"),
+):
+    """
+    Upload a BibTeX file to register multiple papers.
+
+    This endpoint parses a BibTeX file and creates metadata records for each entry.
+    PDFs can then be matched to these entries using the BibTeX import wizard.
+
+    Returns the list of parsed entries with their citation keys.
+    """
+    if not BIBTEX_AVAILABLE:
+        raise HTTPException(
+            status_code=501,
+            detail="BibTeX utilities not available."
+        )
+
+    content = (await bibtex_file.read()).decode('utf-8', errors='ignore')
+
+    try:
+        entries = parse_bibtex_string(content)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to parse BibTeX: {e}")
+
+    if not entries:
+        raise HTTPException(status_code=400, detail="No valid BibTeX entries found")
+
+    # Save entries for later matching
+    BIBTEX_CACHE_DIR = PDF_UPLOAD_DIR.parent / "bibtex_cache"
+    BIBTEX_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    cache_file = BIBTEX_CACHE_DIR / f"entries_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    entries_data = [e.to_dict() for e in entries]
+    with open(cache_file, 'w', encoding='utf-8') as f:
+        json.dump(entries_data, f, indent=2, ensure_ascii=False)
+
+    return {
+        "status": "success",
+        "n_entries": len(entries),
+        "cache_file": str(cache_file),
+        "entries": [
+            {
+                "cite_key": e.cite_key,
+                "title": e.title,
+                "year": e.year,
+                "authors": e.authors[:3] if e.authors else [],
+                "has_abstract": bool(e.abstract),
+                "has_doi": bool(e.doi),
+            }
+            for e in entries
+        ]
+    }
 
 
 # =============================================================================
