@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3 P1 Complete — Network + Admin Dashboard)*
+*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3 COMPLETE — All Visualization Tasks)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -887,9 +887,9 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | 3.0.3-C | Claim network graph (D3.js/vis.js via components) | P1 | `streamlit_app/components/network.py` | ✅ DONE 2026-02-09 |
 | 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P1 | `streamlit_app/pages/5_admin.py` | ✅ DONE 2026-02-09 |
 | 3.0.3-E | Overview-zoom-filter-details interaction (Shneiderman) | P1 | JS interaction layer | ✅ DONE 2026-02-09 |
-| 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | `src/services/graph_export.py` | Pending |
-| 3.0.3-G | Community structure visualization | P2 | `streamlit_app/pages/communities.py` | Pending |
-| 3.0.3-H | Interactive HTML export (standalone) | P2 | HTML generator | Pending |
+| 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | `src/services/graph_export.py` | ✅ DONE 2026-02-09 |
+| 3.0.3-G | Community structure visualization | P2 | `streamlit_app/pages/3_communities.py` | ✅ DONE 2026-02-09 |
+| 3.0.3-H | Interactive HTML export (standalone) | P2 | `src/services/graph_export.py` | ✅ DONE 2026-02-09 |
 
 **3.0.3-A/B Implementation Notes (2026-02-09)**:
 - Created `streamlit_app/query_service.py` (~500 lines) — Direct query service layer
@@ -934,6 +934,21 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 - Constraint Viewer with real constraints and statistics (positive/negative counts)
 - Community Browser with CommunityRegistry data and sample beliefs
 - Paper Browser with SQLite database queries
+
+**3.0.3-F/G/H Implementation Notes (2026-02-09)**:
+- Created `src/services/graph_export.py` (~1100 lines) — Multi-format graph export
+- **GraphML export**: Full support for Gephi, Cytoscape, yEd, NetworkX, igraph
+- **GEXF export**: Gephi native format with visual attributes (color by status, size by credence)
+- **JSON export**: D3.js/vis.js compatible with metrics
+- **DOT export**: Graphviz format with color coding
+- **Interactive HTML export**: Self-contained vis.js visualization with:
+  - Sidebar filters (search, credence slider, status checkboxes)
+  - Layout algorithm selector (force-directed, Barnes-Hut, repulsion)
+  - Node click info panel
+  - Legend and navigation controls
+- Updated `streamlit_app/pages/3_communities.py` with network visualization tab
+- Community network shows: theory nodes, contestation edges (dashed red), shared belief edges (green)
+- Real data from CommunityRegistry with fallback to defaults
 
 ---
 

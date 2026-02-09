@@ -44,9 +44,6 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
 | 3.0.1-D | Extended API layer (20 endpoints) | P2 | 3.0.1-B ✓ |
-| 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | network_service ✓ |
-| 3.0.3-G | Community structure visualization | P2 | — |
-| 3.0.3-H | Interactive HTML export (standalone) | P2 | network_service ✓ |
 | 3.0.4-D | BibTeX generator with full metadata | P2 | bibtex_utils ✓ |
 | 3.0.4-E | Purpose-driven export bundles (Munzner) | P2 | export_formats ✓ |
 
@@ -59,6 +56,9 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | 3.0.3-C | Claim network graph component | Terminal-1 | 18:30 | components/network.py (~300 lines), 2_explore.py updated |
 | 3.0.3-D | Admin dashboard wired to real data | Terminal-1 | 18:45 | 5_admin.py with WebOfBelief/API integration |
 | 3.0.3-E | Network visualization (vis.js) | Terminal-3 | 17:00 | network_service.py (~1000 lines), 44 tests |
+| 3.0.3-F | GraphML/GEXF/DOT export | Terminal-1 | 19:15 | graph_export.py (~1100 lines) |
+| 3.0.3-G | Community network visualization | Terminal-1 | 19:20 | 3_communities.py network tab |
+| 3.0.3-H | Interactive HTML export | Terminal-1 | 19:30 | graph_export.py to_html() method |
 | 3.0.4-F | Report generation (PDF/Markdown) | Terminal-3 | 17:00 | report_generator.py (~958 lines), 46 tests |
 | 3.0.5-G | Export audit trail | Terminal-3 | 17:00 | export_audit.py (~650 lines), 34 tests |
 | ENT-1-5 | Entrenchment historical replay | Terminal-3 | 17:00 | entrenchment_replay.py, API routes, monitor UI, 16 tests |
@@ -115,4 +115,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 18:45*
+*Last coordination check: 2026-02-09 19:30*
