@@ -1,0 +1,125 @@
+{
+  "schema": "ae.vocab.argument_schemes.v1",
+  "description": "Walton's argumentation schemes adapted for scientific claims. Each scheme has a pattern and critical questions that probe its validity.",
+  "source": "Walton, D., Reed, C., & Macagno, F. (2008). Argumentation Schemes. Cambridge University Press.",
+  "created": "2026-02-09",
+  "schemes": {
+    "argument_from_expert_opinion": {
+      "pattern": "E is an expert in domain D. E asserts that A is true. Therefore, A is true.",
+      "critical_questions": [
+        "Is E a genuine expert in D?",
+        "Is A within E's area of expertise?",
+        "What did E assert that implies A?",
+        "Is E a reliable source (no bias, no conflicting interests)?",
+        "Is A consistent with what other experts say?",
+        "Is E's assertion based on evidence?"
+      ],
+      "relevance": "Meta-analyses, review articles, theoretical papers"
+    },
+    "argument_from_sign": {
+      "pattern": "A is true in this case. B is generally indicated by A. Therefore, B is true.",
+      "critical_questions": [
+        "Is A true in this case?",
+        "Are there other plausible explanations for A?",
+        "Is B the best explanation for A?",
+        "How reliable is the sign relation between A and B?"
+      ],
+      "relevance": "Observational studies, correlational findings"
+    },
+    "causal_argument": {
+      "pattern": "Generally, if A occurs, then B will occur. In this case A occurred. Therefore, B occurred (or will occur).",
+      "critical_questions": [
+        "Is there a causal law linking A to B?",
+        "Did A actually occur?",
+        "Are there other factors that could prevent B even if A occurs?",
+        "Is the causal chain from A to B interrupted?"
+      ],
+      "relevance": "RCTs, quasi-experiments, mechanistic studies"
+    },
+    "argument_from_analogy": {
+      "pattern": "Case C1 has property P. Case C1 is similar to case C2. Therefore, case C2 also has property P.",
+      "critical_questions": [
+        "Are there relevant differences between C1 and C2?",
+        "Is the similarity sufficient to support the conclusion?",
+        "Are there other cases similar to C1 that lack P?",
+        "Is the analogy superficial or deep?"
+      ],
+      "relevance": "Cross-domain transfer, animal studies to human"
+    },
+    "argument_from_correlation_to_cause": {
+      "pattern": "A and B are correlated. Therefore, A causes B.",
+      "critical_questions": [
+        "Is there a third factor C that causes both A and B?",
+        "Is the correlation spurious?",
+        "Is the temporal order correct (A before B)?",
+        "Is there a plausible mechanism linking A to B?",
+        "Does manipulating A change B?"
+      ],
+      "relevance": "Cross-sectional surveys, observational studies"
+    },
+    "argument_from_position_to_know": {
+      "pattern": "S is in position to know whether A. S asserts that A. Therefore, A is true.",
+      "critical_questions": [
+        "Is S actually in position to know A?",
+        "Is S being truthful?",
+        "Does S have a track record of reliability on such matters?"
+      ],
+      "relevance": "Self-report measures, phenomenological studies"
+    },
+    "argument_from_commitment": {
+      "pattern": "S committed to proposition A. Therefore, A is true (or S should act consistently with A).",
+      "critical_questions": [
+        "Did S actually commit to A?",
+        "Is S's commitment consistent with their other commitments?",
+        "Has S retracted the commitment?"
+      ],
+      "relevance": "Theoretical consistency checks"
+    },
+    "argument_from_inconsistency": {
+      "pattern": "A is committed to A. A is also committed to not-A or something inconsistent with A. Therefore, A's position is problematic.",
+      "critical_questions": [
+        "Is there really an inconsistency?",
+        "Can the inconsistency be resolved by refining the claims?",
+        "Is the inconsistency fundamental or superficial?"
+      ],
+      "relevance": "Theory-evidence conflicts, replication failures"
+    },
+    "practical_reasoning": {
+      "pattern": "I have goal G. Action A would bring about G. Therefore, I should do A.",
+      "critical_questions": [
+        "Are there other ways to achieve G?",
+        "Does A have negative side effects?",
+        "Is G a worthwhile goal?",
+        "Can I actually do A?"
+      ],
+      "relevance": "Design recommendations, intervention studies"
+    },
+    "argument_from_negative_consequences": {
+      "pattern": "If A is done, bad consequences will follow. Therefore, A should not be done.",
+      "critical_questions": [
+        "How likely are the negative consequences?",
+        "How severe are the consequences?",
+        "Are there ways to mitigate the consequences?",
+        "Do the negative consequences outweigh positive ones?"
+      ],
+      "relevance": "Risk assessment, boundary conditions"
+    }
+  },
+  "causal_level_mapping": {
+    "association": {
+      "description": "Pearl Rung 1: Seeing. Observational correlation. P(Y|X).",
+      "typical_schemes": ["argument_from_sign", "argument_from_correlation_to_cause"],
+      "inference_strength": "weak"
+    },
+    "intervention": {
+      "description": "Pearl Rung 2: Doing. Experimental manipulation. P(Y|do(X)).",
+      "typical_schemes": ["causal_argument", "practical_reasoning"],
+      "inference_strength": "moderate"
+    },
+    "counterfactual": {
+      "description": "Pearl Rung 3: Imagining. What-if reasoning. P(Y_x|X', Y').",
+      "typical_schemes": ["argument_from_analogy", "causal_argument"],
+      "inference_strength": "strong (if valid)"
+    }
+  }
+}

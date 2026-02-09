@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/ae.claim.v2.schema.json",
+  "schema_id": "ae.claim.v2",
+  "title": "AE Claim Record (v2)",
+  "description": "Extended claim schema with panel-recommended additions (2026-02-08): Pearl causal levels, Lipton contrast classes, extraction metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "claim_id",
+    "paper_id",
+    "claim_type",
+    "statement",
+    "constructs",
+    "study",
+    "statistics",
+    "evidence",
+    "constraints",
+    "ae_confidence"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ae.claim.v2"
+    },
+    "claim_id": {
+      "type": "string"
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "causal",
+        "associational",
+        "null",
+        "moderated",
+        "mechanistic",
+        "descriptive",
+        "rebuttal",
+        "presumption"
+      ],
+      "description": "Extended with Walton argument types"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constructs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment_factors",
+        "outcomes",
+        "mediators",
+        "moderators"
+      ],
+      "properties": {
+        "environment_factors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/construct_item"
+          }
+        },
+        "outcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/construct_item"
+          }
+        },
+        "mediators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/construct_item"
+          }
+        },
+        "moderators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/moderator_item"
+          }
+        }
+      }
+    },
+    "study": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "design",
+        "sample",
+        "task",
+        "setting"
+      ],
+      "properties": {
+        "design": {
+          "type": "string"
+        },
+        "sample": {
+          "$ref": "#/$defs/sample"
+        },
+        "task": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task_item"
+          }
+        },
+        "setting": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/setting_item"
+          }
+        }
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect_size",
+        "p_value",
+        "ci95"
+      ],
+      "properties": {
+        "effect_size": {
+          "$ref": "#/$defs/effect_size"
+        },
+        "p_value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "ci95": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_item"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ae_confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "causal_level": {
+      "type": "string",
+      "enum": [
+        "association",
+        "intervention",
+        "counterfactual"
+      ],
+      "description": "Pearl's causal hierarchy. Determines what kind of inference is licensed."
+    },
+    "contrast_class": {
+      "type": ["string", "null"],
+      "description": "Lipton: The foil in 'Why X rather than Y?' Defines the explanation's scope."
+    },
+    "difference_maker": {
+      "type": ["string", "null"],
+      "description": "Lipton: The factor that distinguishes fact from foil."
+    },
+    "extraction_difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "moderate",
+        "hard"
+      ],
+      "description": "Hearst: How hard was this claim to extract? Affects confidence calibration."
+    },
+    "source_zone": {
+      "type": "string",
+      "enum": [
+        "abstract",
+        "introduction",
+        "methods",
+        "results",
+        "discussion",
+        "conclusion",
+        "table",
+        "figure"
+      ],
+      "description": "Teufel: Which section of the paper did this claim come from? Affects interpretation."
+    },
+    "argument_scheme": {
+      "type": ["string", "null"],
+      "description": "Walton: The argumentation scheme used (e.g., 'argument_from_sign', 'causal_argument')"
+    },
+    "critical_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Walton: Critical questions that probe the argument's strength"
+    }
+  },
+  "$defs": {
+    "construct_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "direction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "moderator_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "n",
+        "population",
+        "age_mean",
+        "country"
+      ],
+      "properties": {
+        "n": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "population": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "age_mean": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "task_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "inference_basis": {
+          "type": "string",
+          "enum": ["stated", "inferred", "unknown"],
+          "description": "P-TC D1: Was task context explicitly stated or inferred?"
+        },
+        "presumed_lab": {
+          "type": "boolean",
+          "description": "P-TC D4: True if task assumed to be lab-based without explicit statement"
+        }
+      }
+    },
+    "setting_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "effect_size": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "value"
+      ],
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "span",
+            "table_cell",
+            "figure_ref",
+            "manual_note"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "end": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "table_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "row": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "col": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "figure_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

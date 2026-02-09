@@ -1,9 +1,10 @@
-# SYSTEMATIC REVIEW EXTRACTION TEMPLATE v1.0
+# SYSTEMATIC REVIEW EXTRACTION TEMPLATE v1.1
 
-**Version**: 1.0.0
-**Date**: February 3, 2026
+**Version**: 1.1.0
+**Date**: February 9, 2026 (panel additions)
+**Original**: February 3, 2026
 **Derived From**: Complete Requirements Specification (96 questions)
-**Panel Review**: Pearl, Cartwright, Simon, Bates, Kaplan
+**Panel Review**: Pearl, Cartwright, Simon, Bates, Kaplan + Walton, Lipton, Hearst, Teufel (2026-02-08)
 
 ---
 
@@ -1168,7 +1169,7 @@ conflicts:
     resolution: "quality_based|subgroup|not_resolved"
 
 # ============================================
-# RULES GENERATED
+# RULES GENERATED (v2 with panel additions)
 # ============================================
 rules:
   # Edge rules from consistent findings
@@ -1191,12 +1192,37 @@ rules:
       setting: []
     ae_confidence:
 
+    # === PANEL ADDITIONS (2026-02-09) ===
+    # Pearl: Causal level (SR inherits LOWEST level from included studies)
+    causal_level: "association|intervention"  # rarely counterfactual for SR
+
+    # Walton: Argument scheme for synthesis claims
+    argument_scheme: "argument_from_expert_opinion"  # synthesis = expert aggregation
+    critical_questions:
+      - "Are included studies homogeneous?"
+      - "Is there publication bias?"
+      - "Is the search comprehensive?"
+    critical_questions_addressed: []
+
+    # Lipton: Contrast class (what is the foil for SR findings?)
+    contrast_class: ""  # e.g., "exposed vs not exposed"
+    difference_maker: ""  # e.g., "nature exposure"
+
+    # Hearst/Teufel: Extraction metadata
+    extraction_difficulty: "easy|moderate|hard"
+    source_zone: "results|discussion|abstract"
+
   # Constraint rules from gaps
   - rule_id: ""
     rule_type: "constraint"
     constraint_type: "gap"
     description: ""
     priority: ""
+
+    # Panel addition: VOI signal
+    voi_signal:
+      research_needed: ""
+      would_answer: ""
 
 # ============================================
 # QUALITY

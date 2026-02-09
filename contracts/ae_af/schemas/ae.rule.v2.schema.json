@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/ae.rule.v2.schema.json",
+  "schema_id": "ae.rule.v2",
+  "title": "AE Rule Candidate Record (v2)",
+  "description": "Extended rule schema with panel-recommended additions (2026-02-08): Walton argument schemes, Pearl causal levels, Lipton contrast classes, Cartwright enabling conditions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "rule_id",
+    "paper_id",
+    "rule_type",
+    "lhs",
+    "rhs",
+    "polarity",
+    "strength",
+    "applicability",
+    "evidence_links",
+    "bn_mapping",
+    "ae_confidence"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ae.rule.v2"
+    },
+    "rule_id": {
+      "type": "string"
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "rule_type": {
+      "type": "string",
+      "enum": [
+        "edge",
+        "cpd_hint",
+        "prior",
+        "constraint",
+        "interaction",
+        "rebuttal",
+        "presumption",
+        "association",
+        "contrast"
+      ],
+      "description": "Extended with Walton (rebuttal, presumption), Pearl (association), Lipton (contrast)"
+    },
+    "lhs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/var_state"
+      }
+    },
+    "rhs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/var_state"
+      }
+    },
+    "polarity": {
+      "type": "string",
+      "enum": [
+        "positive",
+        "negative",
+        "null",
+        "u_shaped",
+        "unknown"
+      ]
+    },
+    "strength": {
+      "$ref": "#/$defs/strength"
+    },
+    "applicability": {
+      "$ref": "#/$defs/applicability"
+    },
+    "evidence_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "bn_mapping": {
+      "$ref": "#/$defs/bn_mapping"
+    },
+    "ae_confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "causal_level": {
+      "type": "string",
+      "enum": [
+        "association",
+        "intervention",
+        "counterfactual"
+      ],
+      "description": "Pearl's causal hierarchy (Ladder of Causation). Association = observational correlation. Intervention = do(X) effect. Counterfactual = what-if reasoning."
+    },
+    "argument_scheme": {
+      "type": ["string", "null"],
+      "description": "Walton's argumentation scheme (e.g., 'argument_from_expert_opinion', 'argument_from_analogy', 'causal_argument')"
+    },
+    "critical_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Walton's critical questions for the argument scheme. Unanswered questions weaken the argument."
+    },
+    "contrast_class": {
+      "type": ["string", "null"],
+      "description": "Lipton: What is the foil? 'Why X rather than Y?' The contrast class defines the explanation's scope."
+    },
+    "difference_maker": {
+      "type": ["string", "null"],
+      "description": "Lipton: The factor that makes the difference between the fact and the foil."
+    },
+    "enabling_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Cartwright: Conditions that must hold for the causal capacity to manifest. Without these, the rule may not apply."
+    },
+    "bridge_type": {
+      "type": ["string", "null"],
+      "enum": [
+        null,
+        "mechanism",
+        "functional",
+        "analogical",
+        "constitutive"
+      ],
+      "description": "Cartwright: Type of bridge warrant connecting domains. See ae.bridge.v1 schema."
+    }
+  },
+  "$defs": {
+    "var_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "var",
+        "state"
+      ],
+      "properties": {
+        "var": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "strength": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "population",
+        "setting",
+        "boundary_conditions"
+      ],
+      "properties": {
+        "population": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "setting": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "boundary_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "bn_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_suggestions",
+        "discretization_hint"
+      ],
+      "properties": {
+        "node_suggestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "discretization_hint": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
