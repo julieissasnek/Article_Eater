@@ -37,7 +37,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 ### High Priority (Infrastructure)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
-| DISC-1 | Article Discovery Tracking + PDF Retrieval Monitoring | P1 | VOI Search |
+| DISC-2 | Add gap tracking to VOI search output | P1 | DISC-1 ✓ |
 | ENT-6 | Replay DB strategy (safe runner) | P1 | ENT-1-5 ✓ |
 
 ### Sprint 3.0 Extensions (P2/P3)
@@ -53,6 +53,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| DISC-1 | Discovery funnel schema + service | Terminal-1 | 20:00 | 006_discovery_funnel.sql, discovery_funnel.py (~900 lines), 31 tests |
 | 3.0.3-C | Claim network graph component | Terminal-1 | 18:30 | components/network.py (~300 lines), 2_explore.py updated |
 | 3.0.3-D | Admin dashboard wired to real data | Terminal-1 | 18:45 | 5_admin.py with WebOfBelief/API integration |
 | 3.0.3-E | Network visualization (vis.js) | Terminal-3 | 17:00 | network_service.py (~1000 lines), 44 tests |

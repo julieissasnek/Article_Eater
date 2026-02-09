@@ -95,8 +95,8 @@ Funnel Metrics Dashboard
 
 | ID | Task | Estimate | Status | Dependencies |
 |----|------|----------|--------|--------------|
-| DISC-1 | Design discovery_funnel schema (SQLite tables) | 2h | ☐ TODO | — |
-| DISC-2 | Add gap tracking to VOI search output | 2h | ☐ TODO | voi_search.py |
+| DISC-1 | Design discovery_funnel schema (SQLite tables) | 2h | ✓ DONE | — |
+| DISC-2 | Add gap tracking to VOI search output | 2h | ☐ TODO | DISC-1 ✓ |
 | DISC-3 | Add search execution logging | 3h | ☐ TODO | Article Finder |
 | DISC-4 | Add PDF retrieval tracking with failure categorization | 3h | ☐ TODO | — |
 | DISC-5 | Add ingestion success/failure tracking | 2h | ☐ TODO | pipeline.py |
