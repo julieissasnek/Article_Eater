@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3-A/B — Streamlit Interface)*
+*Last updated: Sunday, February 9, 2026 (Sprint 3.0 Phase 2 Complete)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -30,8 +30,109 @@ This prevents duplicate work across parallel terminals.
 4. ~~**Sprint 2.6 Panel Implementation**~~ ✓ COMPLETE — P-TC Track A, P-QW Track B
 5. ~~**Technical Debt**~~ ✓ ALL COMPLETE [TD-A, TD-B, TD-C, TD-D, TD-E]
 6. ~~**Sprint 2.0.4-2.0.5**~~ ✓ COMPLETE — Pipeline testing and error handling
-7. **AF-AE Integration: BibTeX Metadata for User-Uploaded PDFs** — NEW (see below)
-8. **Entrenchment Historical Replay + Monitor** — NEW (see below)
+7. ~~**AF-AE Integration: BibTeX Metadata**~~ ✓ COMPLETE (BIB-1 through BIB-7)
+8. ~~**Entrenchment Historical Replay + Monitor**~~ ✓ COMPLETE (ENT-1 through ENT-5)
+9. ~~**Sprint 3.0 Phase 1-2**~~ ✓ COMPLETE — API, Query Engine, Export, Visualization
+10. **Article Discovery + PDF Retrieval Monitoring** — NEW P1 (see below)
+
+---
+
+## Pending: Article Discovery + PDF Retrieval Monitoring
+
+**Added**: 2026-02-09
+**Priority**: P1
+**Context**: VOI gaps are predictions about where articles *should* exist. We need to track the full discovery funnel: gap identification → article search → PDF retrieval → successful ingestion. This closes the loop between what the system predicts it needs and what it actually acquires.
+
+### Problem Statement
+
+1. VOI search identifies high-value gaps in the web of belief
+2. These gaps predict topics/questions where articles *should* exist
+3. Article Finder searches for articles matching these gaps
+4. PDF retrieval may succeed or fail (paywalls, missing files, format issues)
+5. Ingestion may succeed or fail (corrupt PDFs, extraction errors)
+6. **Currently no tracking of this funnel** — we don't know our success rate
+
+### Design Goals
+
+1. **Gap-to-Article Mapping**: Track which gaps led to which article searches
+2. **Search Effectiveness**: Did searches find relevant articles?
+3. **PDF Acquisition Rate**: What % of identified articles yield usable PDFs?
+4. **Ingestion Success Rate**: What % of PDFs successfully enter the pipeline?
+5. **Gap Closure Rate**: Did the acquired articles actually address the gaps?
+
+### Proposed Architecture
+
+```
+VOI Gap Identification
+    │
+    ├── gap_id, topic, predicted_value, search_terms
+    │
+    ▼
+Article Search Execution
+    │
+    ├── search_id, gap_id, query, source (Scholar, Semantic Scholar, etc.)
+    ├── n_results, relevance_scores
+    │
+    ▼
+PDF Retrieval Attempts
+    │
+    ├── article_id, retrieval_method (direct, Sci-Hub, library, request)
+    ├── status (success, paywall, not_found, timeout, format_error)
+    │
+    ▼
+Pipeline Ingestion
+    │
+    ├── paper_id, extraction_status, n_claims, n_rules
+    ├── gap_addressed (did this paper reduce the gap VOI?)
+    │
+    ▼
+Funnel Metrics Dashboard
+    │
+    └── Success rates at each stage, bottleneck identification
+```
+
+### Tasks
+
+| ID | Task | Estimate | Status | Dependencies |
+|----|------|----------|--------|--------------|
+| DISC-1 | Design discovery_funnel schema (SQLite tables) | 2h | ☐ TODO | — |
+| DISC-2 | Add gap tracking to VOI search output | 2h | ☐ TODO | voi_search.py |
+| DISC-3 | Add search execution logging | 3h | ☐ TODO | Article Finder |
+| DISC-4 | Add PDF retrieval tracking with failure categorization | 3h | ☐ TODO | — |
+| DISC-5 | Add ingestion success/failure tracking | 2h | ☐ TODO | pipeline.py |
+| DISC-6 | Compute gap closure rate (VOI before/after) | 3h | ☐ TODO | DISC-2, DISC-5 |
+| DISC-7 | Build funnel metrics API endpoints | 3h | ☐ TODO | DISC-1 through DISC-6 |
+| DISC-8 | Build funnel dashboard (Streamlit) | 4h | ☐ TODO | DISC-7 |
+| DISC-9 | Add alerts for low success rates | 2h | ☐ TODO | DISC-7 |
+
+### Key Metrics to Track
+
+| Metric | Formula | Target |
+|--------|---------|--------|
+| Search Hit Rate | articles_found / gaps_searched | > 80% |
+| PDF Acquisition Rate | pdfs_obtained / articles_identified | > 60% |
+| Ingestion Success Rate | papers_ingested / pdfs_obtained | > 90% |
+| Gap Closure Rate | gaps_with_reduced_voi / gaps_addressed | > 50% |
+| End-to-End Rate | gaps_closed / gaps_searched | > 25% |
+
+### Failure Categories (DISC-4)
+
+| Category | Description | Mitigation |
+|----------|-------------|------------|
+| PAYWALL | Article behind paywall | Try Sci-Hub, library access, author request |
+| NOT_FOUND | PDF doesn't exist at URL | Try alternate sources |
+| FORMAT_ERROR | PDF corrupted or non-standard | Manual download, OCR |
+| TIMEOUT | Retrieval timed out | Retry with backoff |
+| RATE_LIMITED | Source rate limiting | Queue with delays |
+| ACCESS_DENIED | IP blocked or auth required | Rotate sources |
+
+### Panel Consultation Recommended
+
+For DISC-1 schema design, consult:
+- **Bates** (information seeking behavior)
+- **Kleinberg** (network flow, funnel analysis)
+- **Simon** (satisficing in search)
+- **Pearl** (causal attribution of success/failure)
 
 ---
 
