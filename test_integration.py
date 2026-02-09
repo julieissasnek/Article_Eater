@@ -13,11 +13,12 @@ from datetime import datetime
 API_BASE_URL = "http://localhost:8000"
 FRONTEND_URL = "http://localhost:8080"
 
-# Colors for output
+# Colors for output (using cyan instead of blue for accessibility on dark terminals)
 GREEN = '\033[92m'
 RED = '\033[91m'
 YELLOW = '\033[93m'
-BLUE = '\033[94m'
+CYAN = '\033[96m'
+BLUE = CYAN  # Alias for accessibility
 RESET = '\033[0m'
 
 def log_test(test_name, passed, details=""):

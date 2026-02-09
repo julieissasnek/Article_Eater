@@ -936,6 +936,8 @@ from .routes.galleries import router as galleries_router
 from .routes.annotator import router as annotator_router
 # Image pool management (2026-01-28)
 from .routes.image_pool import router as image_pool_router
+# Paper lifecycle tracking (2026-02-09)
+from .routes.lifecycle import router as lifecycle_router
 
 try:
     ensure_db()
@@ -956,6 +958,8 @@ app.include_router(galleries_router, tags=['galleries'])
 app.include_router(annotator_router, prefix='/api/v1/annotator', tags=['annotator'])
 # Image pool management (2026-01-28)
 app.include_router(image_pool_router, tags=['image-pool'])
+# Paper lifecycle tracking (2026-02-09)
+app.include_router(lifecycle_router, prefix='/api/v1', tags=['lifecycle'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)

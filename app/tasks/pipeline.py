@@ -54,6 +54,19 @@ except ImportError:
 # Initialize main pipeline logger
 _pipeline_logger = get_logger("pipeline")
 
+# Paper Lifecycle Tracking (unified pipeline health monitoring)
+try:
+    from src.services.paper_lifecycle import (
+        PaperLifecycleService,
+        LifecycleStage,
+        StageStatus,
+        get_lifecycle_service,
+    )
+    LIFECYCLE_TRACKING_AVAILABLE = True
+except ImportError:
+    LIFECYCLE_TRACKING_AVAILABLE = False
+    _pipeline_logger.debug("Paper lifecycle tracking not available")
+
 # Sprint 2: Web of Belief integration (Post-Quinean)
 # These imports enable coherentist analysis of extracted findings
 try:
@@ -1175,6 +1188,23 @@ def _run_from_contract_bundle_impl(
     error_collector.paper_id = paper_id  # Update collector with actual paper_id
     _pipeline_logger.info(f"Processing paper: {paper_id}", extra={"paper_id": paper_id, "run_id": run_id})
 
+    # Paper Lifecycle Tracking: Start extraction stage
+    lifecycle_service = None
+    if LIFECYCLE_TRACKING_AVAILABLE:
+        try:
+            lifecycle_service = get_lifecycle_service()
+            lifecycle_service.transition(
+                paper_id=paper_id,
+                stage=LifecycleStage.EXTRACTING,
+                status=StageStatus.IN_PROGRESS,
+                run_id=run_id,
+                triggered_by="pipeline",
+                details={"profile": profile, "hitl": hitl},
+            )
+            _pipeline_logger.debug(f"Lifecycle: {paper_id} -> EXTRACTING", extra={"paper_id": paper_id})
+        except Exception as lifecycle_err:
+            _pipeline_logger.warning(f"Lifecycle tracking init failed: {lifecycle_err}", extra={"paper_id": paper_id})
+
     try:
         pdf_sha256 = _sha256_file(pdf_path) if pdf_path.exists() else "0" * 64
         paper_json_sha256 = _sha256_file(paper_path)
@@ -1221,11 +1251,44 @@ def _run_from_contract_bundle_impl(
             error_collector.record(e, ErrorSeverity.BLOCKING, "extraction")
         text = ""
 
+    # BIB-6: Fallback to paper.json abstract when fulltext extraction fails or yields minimal text
+    MIN_TEXT_LENGTH = 100  # Minimum useful text length for extraction
+    text_source = "fulltext" if fulltext_path.exists() else ("abstract_file" if abstract_path.exists() else "pdf")
+
+    if not text or len(text.strip()) < MIN_TEXT_LENGTH:
+        paper_abstract = paper.get("abstract", "")
+        if paper_abstract and len(paper_abstract.strip()) >= MIN_TEXT_LENGTH:
+            _pipeline_logger.info(
+                f"Using abstract from paper.json as fallback ({len(paper_abstract)} chars)",
+                extra={"paper_id": paper_id, "text_length": len(paper_abstract)}
+            )
+            text = paper_abstract
+            text_source = "paper_json_abstract"
+            audits.append(_audit_event(
+                run_id, paper_id, "extract", "fallback",
+                {"source": "paper_json_abstract", "length": len(paper_abstract)}
+            ))
+        elif paper_abstract:
+            _pipeline_logger.debug(
+                f"paper.json abstract too short ({len(paper_abstract)} chars < {MIN_TEXT_LENGTH})",
+                extra={"paper_id": paper_id}
+            )
+
     if text:
         _pipeline_logger.info(
             f"Extracted {len(text)} characters of text",
             extra={"paper_id": paper_id, "text_length": len(text)}
         )
+        # Lifecycle tracking: record text extraction details
+        if lifecycle_service:
+            try:
+                lifecycle_service.update_paper_metrics(
+                    paper_id=paper_id,
+                    text_source=text_source,
+                    text_length=len(text),
+                )
+            except Exception as lifecycle_err:
+                _pipeline_logger.debug(f"Lifecycle metrics update failed: {lifecycle_err}")
     else:
         _pipeline_logger.warning(f"No text extracted from input bundle", extra={"paper_id": paper_id})
         audits.append(_audit_event(run_id, paper_id, "extract", "fail", {"reason": "no_text_extracted"}))
@@ -1450,6 +1513,18 @@ def _run_from_contract_bundle_impl(
         rules = db_rules
         audits.append(_audit_event(run_id, paper_id, "rules", "source", {"source": "db", "n_rules": len(rules)}))
 
+    # Lifecycle tracking: record extraction counts
+    if lifecycle_service:
+        try:
+            lifecycle_service.update_paper_metrics(
+                paper_id=paper_id,
+                n_claims=len(claims),
+                n_rules=len(rules),
+                n_findings=len(findings),
+            )
+        except Exception as lifecycle_err:
+            _pipeline_logger.debug(f"Lifecycle metrics update failed: {lifecycle_err}")
+
     bn_export = None
     if rules:
         bn_export = _bn_export_from_rules(rules, paper_id)
@@ -1550,10 +1625,54 @@ def _run_from_contract_bundle_impl(
                     "table_extraction",
                 )
             audits.append(_audit_event(run_id, paper_id, "table_extraction", "fail", {"reason": str(table_err)}))
+
+    # Lifecycle tracking: record table extraction counts
+    if lifecycle_service and (extracted_tables or table_claims):
+        try:
+            lifecycle_service.update_paper_metrics(
+                paper_id=paper_id,
+                n_tables_extracted=len(extracted_tables),
+                n_table_claims=len(table_claims),
+            )
+        except Exception as lifecycle_err:
+            _pipeline_logger.debug(f"Lifecycle table metrics update failed: {lifecycle_err}")
     elif not TABLE_EXTRACTION_AVAILABLE:
         _pipeline_logger.debug("Table extraction skipped: module not available", extra={"paper_id": paper_id})
     elif not pdf_path.exists():
         _pipeline_logger.debug("Table extraction skipped: no PDF file", extra={"paper_id": paper_id})
+
+    # Lifecycle tracking: Mark extraction complete, start synthesis
+    if lifecycle_service:
+        try:
+            # Complete extraction stage
+            lifecycle_service.complete_stage(
+                paper_id=paper_id,
+                stage=LifecycleStage.EXTRACTING,
+                status=StageStatus.SUCCESS,
+                n_claims=len(claims),
+                n_rules=len(rules),
+                text_source=text_source,
+                text_length=len(text) if text else 0,
+            )
+            # Transition to EXTRACTED
+            lifecycle_service.transition(
+                paper_id=paper_id,
+                stage=LifecycleStage.EXTRACTED,
+                status=StageStatus.SUCCESS,
+                run_id=run_id,
+                triggered_by="pipeline",
+            )
+            # Start synthesis stage
+            lifecycle_service.transition(
+                paper_id=paper_id,
+                stage=LifecycleStage.SYNTHESIZING,
+                status=StageStatus.IN_PROGRESS,
+                run_id=run_id,
+                triggered_by="pipeline",
+            )
+            _pipeline_logger.debug(f"Lifecycle: {paper_id} -> SYNTHESIZING", extra={"paper_id": paper_id})
+        except Exception as lifecycle_err:
+            _pipeline_logger.warning(f"Lifecycle extraction->synthesis transition failed: {lifecycle_err}")
 
     # Sprint 2: Web of Belief integration
     # Sprint 2.0.3: Pass through web_options and export_options from CLI
@@ -1575,6 +1694,50 @@ def _run_from_contract_bundle_impl(
             web_integration_result,
         )
     )
+
+    # Lifecycle tracking: Complete synthesis stage
+    if lifecycle_service:
+        try:
+            web_status = web_integration_result.get("web_integration", "unknown")
+            if web_status == "success":
+                lifecycle_service.complete_stage(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.SYNTHESIZING,
+                    status=StageStatus.SUCCESS,
+                    coherence_score=web_integration_result.get("coherence_after"),
+                )
+                lifecycle_service.transition(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.SYNTHESIZED,
+                    status=StageStatus.SUCCESS,
+                    run_id=run_id,
+                    triggered_by="pipeline",
+                    coherence_score=web_integration_result.get("coherence_after"),
+                )
+                # Update paper metrics with web integration results
+                lifecycle_service.update_paper_metrics(
+                    paper_id=paper_id,
+                    coherence_score=web_integration_result.get("coherence_after"),
+                    n_beliefs_added=web_integration_result.get("n_beliefs", 0),
+                    n_stubs_created=web_integration_result.get("n_stubs", 0),
+                    n_tensions_detected=web_integration_result.get("n_tensions", 0),
+                )
+                _pipeline_logger.debug(f"Lifecycle: {paper_id} -> SYNTHESIZED", extra={"paper_id": paper_id})
+            elif web_status == "skipped":
+                lifecycle_service.complete_stage(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.SYNTHESIZING,
+                    status=StageStatus.SKIPPED,
+                )
+            else:
+                lifecycle_service.complete_stage(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.SYNTHESIZING,
+                    status=StageStatus.FAILED,
+                    error_message=web_integration_result.get("error_message", "Web integration failed"),
+                )
+        except Exception as lifecycle_err:
+            _pipeline_logger.warning(f"Lifecycle synthesis completion failed: {lifecycle_err}")
 
     status = "SUCCESS" if claims else ("FAIL" if not text else "PARTIAL_SUCCESS")
     blocking = []
@@ -1710,6 +1873,44 @@ def _run_from_contract_bundle_impl(
                 error_collector.to_jsonl(out_dir / "errors.jsonl")
             except Exception:
                 pass
+
+    # Lifecycle tracking: Final status update
+    if lifecycle_service:
+        try:
+            if status == "SUCCESS":
+                # Archive successfully processed papers
+                lifecycle_service.transition(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.ARCHIVED,
+                    status=StageStatus.SUCCESS,
+                    run_id=run_id,
+                    triggered_by="pipeline",
+                    details={"profile": profile, "n_claims": len(claims), "n_rules": len(rules)},
+                )
+                lifecycle_service.update_paper_metrics(
+                    paper_id=paper_id,
+                    has_blocking_issues=0,
+                )
+                _pipeline_logger.debug(f"Lifecycle: {paper_id} -> ARCHIVED", extra={"paper_id": paper_id})
+            elif status == "FAIL":
+                lifecycle_service.transition(
+                    paper_id=paper_id,
+                    stage=LifecycleStage.FAILED,
+                    status=StageStatus.FAILED,
+                    run_id=run_id,
+                    triggered_by="pipeline",
+                    error_message="; ".join(blocking) if blocking else "Processing failed",
+                    blocking_reason=blocking[0] if blocking else None,
+                )
+                lifecycle_service.update_paper_metrics(
+                    paper_id=paper_id,
+                    has_blocking_issues=1,
+                    n_failures=1,  # Note: this should increment, but for simplicity set to 1
+                )
+                _pipeline_logger.debug(f"Lifecycle: {paper_id} -> FAILED", extra={"paper_id": paper_id})
+            # PARTIAL_SUCCESS stays at current stage (SYNTHESIZED or EXTRACTED)
+        except Exception as lifecycle_err:
+            _pipeline_logger.warning(f"Lifecycle final status update failed: {lifecycle_err}")
 
     return {
         "run_id": run_id,

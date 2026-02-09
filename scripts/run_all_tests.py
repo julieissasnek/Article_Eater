@@ -23,7 +23,8 @@ class Colors:
     GREEN = '\033[92m'
     RED = '\033[91m'
     YELLOW = '\033[93m'
-    BLUE = '\033[94m'
+    CYAN = '\033[96m'  # Use cyan instead of blue (accessible on dark backgrounds)
+    BLUE = '\033[96m'  # Alias to cyan for accessibility
     RESET = '\033[0m'
     BOLD = '\033[1m'
 

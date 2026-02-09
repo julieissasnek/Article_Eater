@@ -342,7 +342,7 @@ if not df_queue.empty:
     def color_status(val: str) -> str:
         """Light background colours by status."""
         if val == "running":
-            return "background-color: #e6f3ff"  # light blue
+            return "background-color: #fff3cd"  # light amber (accessible)
         if val == "failed":
             return "background-color: #ffe6e6"  # light red
         if val == "complete":
@@ -572,6 +572,185 @@ if output_path.exists() and output_path.is_dir() and 'selected_file' in dir() an
         st.info("No claims.jsonl found in the same directory")
 else:
     st.caption("Select a tables file above to view associated claims")
+
+# ---------------------------------------------------------------------
+# 5. PAPER LIFECYCLE (Unified Pipeline Health)
+# ---------------------------------------------------------------------
+st.subheader("5. Paper Lifecycle")
+
+# Check if lifecycle tables exist
+try:
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='paper_lifecycle'")
+        has_lifecycle_table = cur.fetchone() is not None
+
+        if has_lifecycle_table:
+            # Stage Distribution
+            st.write("**Stage Distribution**")
+            try:
+                df_stages = pd.read_sql_query(
+                    """
+                    SELECT
+                        lifecycle_stage as stage,
+                        COUNT(*) as count
+                    FROM articles
+                    WHERE lifecycle_stage IS NOT NULL
+                    GROUP BY lifecycle_stage
+                    ORDER BY
+                        CASE lifecycle_stage
+                            WHEN 'discovered' THEN 1
+                            WHEN 'searched' THEN 2
+                            WHEN 'retrieved' THEN 3
+                            WHEN 'stored' THEN 4
+                            WHEN 'typed' THEN 5
+                            WHEN 'extracting' THEN 6
+                            WHEN 'extracted' THEN 7
+                            WHEN 'synthesizing' THEN 8
+                            WHEN 'synthesized' THEN 9
+                            WHEN 'archived' THEN 10
+                            WHEN 'failed' THEN 11
+                            ELSE 12
+                        END
+                    """,
+                    conn,
+                )
+                if not df_stages.empty:
+                    # Display as horizontal bar chart
+                    st.bar_chart(df_stages.set_index('stage')['count'])
+
+                    # Also show as metrics row
+                    cols = st.columns(min(len(df_stages), 6))
+                    for idx, row in df_stages.iterrows():
+                        col_idx = idx % len(cols)
+                        with cols[col_idx]:
+                            stage_name = row['stage'].capitalize() if row['stage'] else "Unknown"
+                            st.metric(stage_name, row['count'])
+                else:
+                    st.info("No lifecycle data yet. Papers will appear here after processing.")
+            except Exception as e:
+                st.warning(f"Could not load stage distribution: {e}")
+
+            st.markdown("---")
+
+            # Blocked Papers
+            st.write("**Blocked Papers**")
+            try:
+                df_blocked = pd.read_sql_query(
+                    """
+                    SELECT
+                        article_id as paper_id,
+                        title,
+                        lifecycle_stage as stage,
+                        lifecycle_blocked_reason as reason,
+                        lifecycle_updated_at as blocked_since
+                    FROM articles
+                    WHERE lifecycle_blocked_reason IS NOT NULL
+                    ORDER BY lifecycle_updated_at DESC
+                    LIMIT 10
+                    """,
+                    conn,
+                )
+                if not df_blocked.empty:
+                    st.warning(f"**{len(df_blocked)}** papers are currently blocked")
+
+                    def color_blocked(val):
+                        return "background-color: #ffe6e6"
+
+                    st.dataframe(
+                        df_blocked.style.applymap(color_blocked, subset=['reason']),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+                else:
+                    st.success("No blocked papers")
+            except Exception as e:
+                st.caption(f"Could not load blocked papers: {e}")
+
+            st.markdown("---")
+
+            # Recent Lifecycle Activity
+            st.write("**Recent Lifecycle Activity**")
+            try:
+                df_activity = pd.read_sql_query(
+                    """
+                    SELECT
+                        paper_id,
+                        stage,
+                        status,
+                        started_at,
+                        duration_seconds,
+                        n_claims,
+                        n_rules,
+                        error_message
+                    FROM paper_lifecycle
+                    ORDER BY started_at DESC
+                    LIMIT 15
+                    """,
+                    conn,
+                )
+                if not df_activity.empty:
+                    def color_status(val):
+                        if val == 'success':
+                            return "background-color: #e6ffe6"
+                        if val == 'failed':
+                            return "background-color: #ffe6e6"
+                        if val == 'in_progress':
+                            return "background-color: #fff3cd"  # light amber (accessible)
+                        return ""
+
+                    st.dataframe(
+                        df_activity.style.applymap(color_status, subset=['status']),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+                else:
+                    st.info("No lifecycle activity recorded yet")
+            except Exception as e:
+                st.caption(f"Could not load lifecycle activity: {e}")
+
+            st.markdown("---")
+
+            # Pipeline Health Summary
+            st.write("**Pipeline Health (Last 7 Days)**")
+            try:
+                # Success rate by stage
+                df_health = pd.read_sql_query(
+                    """
+                    SELECT
+                        stage,
+                        SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as successes,
+                        COUNT(*) as total,
+                        ROUND(AVG(duration_seconds), 2) as avg_duration_s
+                    FROM paper_lifecycle
+                    WHERE started_at >= datetime('now', '-7 days')
+                    GROUP BY stage
+                    ORDER BY stage
+                    """,
+                    conn,
+                )
+                if not df_health.empty:
+                    # Calculate success rate
+                    df_health['success_rate'] = (df_health['successes'] / df_health['total'] * 100).round(1)
+                    df_health['success_rate'] = df_health['success_rate'].astype(str) + '%'
+
+                    st.dataframe(
+                        df_health[['stage', 'total', 'successes', 'success_rate', 'avg_duration_s']],
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+                else:
+                    st.info("No processing activity in the last 7 days")
+            except Exception as e:
+                st.caption(f"Could not load health summary: {e}")
+
+        else:
+            st.info(
+                "Paper lifecycle tracking is not yet enabled. "
+                "Run the 018_paper_lifecycle.sql migration to enable."
+            )
+except Exception as e:
+    st.error(f"Error loading lifecycle data: {e}")
 
 # ---------------------------------------------------------------------
 # FOOTER

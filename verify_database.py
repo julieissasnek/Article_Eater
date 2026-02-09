@@ -10,19 +10,18 @@ from datetime import datetime
 
 DB_PATH = "ae.db"
 
-# Colors
-BLUE = '\033[94m'
+# Colors (using cyan instead of blue for accessibility on dark terminals)
+CYAN = '\033[96m'
 GREEN = '\033[92m'
 YELLOW = '\033[93m'
-CYAN = '\033[96m'
 RESET = '\033[0m'
 BOLD = '\033[1m'
 
 def print_header(title):
     """Print section header"""
-    print(f"\n{BLUE}{'='*70}{RESET}")
-    print(f"{BLUE}{BOLD}{title}{RESET}")
-    print(f"{BLUE}{'='*70}{RESET}\n")
+    print(f"\n{CYAN}{'='*70}{RESET}")
+    print(f"{CYAN}{BOLD}{title}{RESET}")
+    print(f"{CYAN}{'='*70}{RESET}\n")
 
 def print_article(row):
     """Pretty print an article"""
