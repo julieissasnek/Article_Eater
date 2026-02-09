@@ -96,11 +96,11 @@ Funnel Metrics Dashboard
 | ID | Task | Estimate | Status | Dependencies |
 |----|------|----------|--------|--------------|
 | DISC-1 | Design discovery_funnel schema (SQLite tables) | 2h | ✓ DONE | — |
-| DISC-2 | Add gap tracking to VOI search output | 2h | ☐ TODO | DISC-1 ✓ |
+| DISC-2 | Add gap tracking to VOI search output | 2h | ✓ DONE | DISC-1 ✓ |
 | DISC-3 | Add search execution logging | 3h | ☐ TODO | Article Finder |
 | DISC-4 | Add PDF retrieval tracking with failure categorization | 3h | ☐ TODO | — |
 | DISC-5 | Add ingestion success/failure tracking | 2h | ☐ TODO | pipeline.py |
-| DISC-6 | Compute gap closure rate (VOI before/after) | 3h | ☐ TODO | DISC-2, DISC-5 |
+| DISC-6 | Compute gap closure rate (VOI before/after) | 3h | ☐ TODO | DISC-2 ✓, DISC-5 |
 | DISC-7 | Build funnel metrics API endpoints | 3h | ☐ TODO | DISC-1 through DISC-6 |
 | DISC-8 | Build funnel dashboard (Streamlit) | 4h | ☐ TODO | DISC-7 |
 | DISC-9 | Add alerts for low success rates | 2h | ☐ TODO | DISC-7 |
