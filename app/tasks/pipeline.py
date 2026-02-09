@@ -1188,6 +1188,26 @@ def _run_from_contract_bundle_impl(
     error_collector.paper_id = paper_id  # Update collector with actual paper_id
     _pipeline_logger.info(f"Processing paper: {paper_id}", extra={"paper_id": paper_id, "run_id": run_id})
 
+    # Record publication metadata for scholarly timeline replay (best effort)
+    try:
+        from src.services.web_persistence import WebPersistenceService
+        pub_year = paper.get("year")
+        pub_date = paper.get("publication_date") or paper.get("published_at")
+        first_seen = paper.get("source", {}).get("retrieved_at")
+        db_path = _resolve_db_path()
+        WebPersistenceService(str(db_path)).upsert_paper_publication(
+            paper_id=paper_id,
+            publication_year=pub_year,
+            publication_date=pub_date,
+            first_seen_at=first_seen,
+            source="paper_json"
+        )
+    except Exception as metadata_err:
+        _pipeline_logger.debug(
+            f"[{paper_id}] Publication metadata not recorded: {metadata_err}",
+            extra={"paper_id": paper_id, "run_id": run_id}
+        )
+
     # Paper Lifecycle Tracking: Start extraction stage
     lifecycle_service = None
     if LIFECYCLE_TRACKING_AVAILABLE:

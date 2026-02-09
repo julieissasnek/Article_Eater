@@ -42,6 +42,7 @@ class BibTeXEntry:
     author: Optional[str] = None  # Raw author string
     authors: List[str] = field(default_factory=list)  # Parsed author list
     year: Optional[int] = None
+    publication_date: Optional[str] = None  # YYYY-MM-DD when available
     abstract: Optional[str] = None
     doi: Optional[str] = None
 
@@ -77,6 +78,7 @@ class BibTeXEntry:
             "author": self.author,
             "authors": self.authors,
             "year": self.year,
+            "publication_date": self.publication_date,
             "abstract": self.abstract,
             "doi": self.doi,
             "journal": self.journal,
@@ -119,6 +121,7 @@ class BibTeXEntry:
             "authors": self.authors,
             "author_string": author_str,
             "year": self.year,
+            "publication_date": self.publication_date,
             "abstract": self.abstract,
             "doi": self.doi,
             "venue": venue,
@@ -339,6 +342,9 @@ class BibTeXParser:
             except ValueError:
                 pass
 
+        # Parse publication date (optional)
+        entry.publication_date = self._parse_publication_date(fields, entry.year)
+
         # Parse authors
         if entry.author:
             entry.authors = self._parse_authors(entry.author)
@@ -349,6 +355,91 @@ class BibTeXParser:
             entry.keywords = [k.strip() for k in re.split(r'[,;]', keywords_str) if k.strip()]
 
         return entry
+
+    def _parse_publication_date(
+        self,
+        fields: Dict[str, str],
+        year: Optional[int]
+    ) -> Optional[str]:
+        """Parse publication date as YYYY-MM-DD when available."""
+        date_str = fields.get("date")
+        if date_str:
+            cleaned = self._clean_latex(date_str).strip()
+            for fmt in (
+                "%Y-%m-%d",
+                "%Y/%m/%d",
+                "%Y.%m.%d",
+                "%d-%m-%Y",
+                "%d/%m/%Y",
+                "%d.%m.%Y",
+                "%Y %b %d",
+                "%Y %B %d",
+                "%d %b %Y",
+                "%d %B %Y",
+            ):
+                try:
+                    parsed = datetime.strptime(cleaned, fmt)
+                    return parsed.date().isoformat()
+                except ValueError:
+                    continue
+
+        month_str = fields.get("month")
+        day_str = fields.get("day")
+        if year and month_str and day_str:
+            month_num = self._parse_month(month_str)
+            try:
+                day_num = int(re.sub(r"\D", "", day_str)[:2])
+            except ValueError:
+                day_num = 0
+            if month_num and day_num:
+                try:
+                    parsed = datetime(year, month_num, day_num)
+                    return parsed.date().isoformat()
+                except ValueError:
+                    return None
+
+        return None
+
+    def _parse_month(self, month_str: str) -> Optional[int]:
+        """Parse BibTeX month field to a numeric value."""
+        if not month_str:
+            return None
+        normalized = self._clean_latex(month_str).strip().lower()
+        normalized = re.sub(r"[{}\s\.]", "", normalized)
+
+        if normalized.isdigit():
+            val = int(normalized)
+            if 1 <= val <= 12:
+                return val
+            return None
+
+        month_map = {
+            "jan": 1,
+            "january": 1,
+            "feb": 2,
+            "february": 2,
+            "mar": 3,
+            "march": 3,
+            "apr": 4,
+            "april": 4,
+            "may": 5,
+            "jun": 6,
+            "june": 6,
+            "jul": 7,
+            "july": 7,
+            "aug": 8,
+            "august": 8,
+            "sep": 9,
+            "sept": 9,
+            "september": 9,
+            "oct": 10,
+            "october": 10,
+            "nov": 11,
+            "november": 11,
+            "dec": 12,
+            "december": 12,
+        }
+        return month_map.get(normalized)
 
     def _parse_fields(self, content: str) -> Dict[str, str]:
         """Parse field = value pairs from entry content."""

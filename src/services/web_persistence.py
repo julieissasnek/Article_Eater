@@ -34,7 +34,7 @@ import logging
 import math
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple, Iterable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from enum import Enum
@@ -419,6 +419,67 @@ CREATE TABLE IF NOT EXISTS paper_integrations (
 CREATE INDEX IF NOT EXISTS idx_paper_integrations_web ON paper_integrations(web_id);
 CREATE INDEX IF NOT EXISTS idx_paper_integrations_paper ON paper_integrations(paper_id);
 
+-- Paper publication metadata (for scholarly timeline replay)
+CREATE TABLE IF NOT EXISTS paper_publication (
+    paper_id TEXT PRIMARY KEY,
+    publication_year INTEGER,
+    publication_date TEXT,  -- ISO date (YYYY-MM-DD) when available
+    first_seen_at TEXT,  -- system ingestion timestamp
+    source TEXT,  -- metadata source (paper_json, bibtex, manual)
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_paper_publication_year ON paper_publication(publication_year);
+
+-- Entrenchment snapshots (system vs scholarly timelines)
+CREATE TABLE IF NOT EXISTS entrenchment_snapshots (
+    snapshot_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    web_id TEXT NOT NULL,
+    belief_id TEXT NOT NULL,
+    paper_id TEXT,
+    timeline_type TEXT NOT NULL,  -- "system" or "scholarly"
+    as_of_date TEXT NOT NULL,
+    entrenchment REAL NOT NULL,
+    connectivity REAL,
+    level_weight REAL,
+    coherence_contrib REAL,
+    constraint_count INTEGER,
+    status TEXT,
+    credence_value REAL,
+    credence_uncertainty REAL,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY (web_id) REFERENCES web_metadata(web_id),
+    FOREIGN KEY (belief_id) REFERENCES beliefs(belief_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_entrenchment_snapshots_web ON entrenchment_snapshots(web_id);
+CREATE INDEX IF NOT EXISTS idx_entrenchment_snapshots_belief ON entrenchment_snapshots(belief_id);
+CREATE INDEX IF NOT EXISTS idx_entrenchment_snapshots_timeline ON entrenchment_snapshots(timeline_type);
+CREATE INDEX IF NOT EXISTS idx_entrenchment_snapshots_asof ON entrenchment_snapshots(as_of_date);
+
+-- Entrenchment events (delta tracking)
+CREATE TABLE IF NOT EXISTS entrenchment_events (
+    event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    web_id TEXT NOT NULL,
+    belief_id TEXT NOT NULL,
+    paper_id TEXT,
+    timeline_type TEXT NOT NULL,
+    occurred_at TEXT NOT NULL,
+    delta REAL,
+    event_type TEXT NOT NULL,
+    reason TEXT,
+    source_paper_id TEXT,
+    constraint_id TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY (web_id) REFERENCES web_metadata(web_id),
+    FOREIGN KEY (belief_id) REFERENCES beliefs(belief_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_entrenchment_events_web ON entrenchment_events(web_id);
+CREATE INDEX IF NOT EXISTS idx_entrenchment_events_belief ON entrenchment_events(belief_id);
+CREATE INDEX IF NOT EXISTS idx_entrenchment_events_timeline ON entrenchment_events(timeline_type);
+
 -- Coherence history for tracking evolution
 CREATE TABLE IF NOT EXISTS coherence_history (
     history_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -629,6 +690,391 @@ class WebPersistenceService:
     def _utc_now(self) -> str:
         """Get current UTC timestamp."""
         return datetime.now(timezone.utc).isoformat()
+
+    # =========================================================================
+    # PAPER PUBLICATION METADATA (for scholarly timeline)
+    # =========================================================================
+
+    def upsert_paper_publication(
+        self,
+        paper_id: str,
+        publication_year: Optional[int] = None,
+        publication_date: Optional[str] = None,
+        first_seen_at: Optional[str] = None,
+        source: Optional[str] = None
+    ) -> None:
+        """Insert or update paper publication metadata."""
+        now = self._utc_now()
+        with self._get_connection() as conn:
+            conn.execute("""
+                INSERT INTO paper_publication (
+                    paper_id, publication_year, publication_date,
+                    first_seen_at, source, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(paper_id) DO UPDATE SET
+                    publication_year = COALESCE(excluded.publication_year, paper_publication.publication_year),
+                    publication_date = COALESCE(excluded.publication_date, paper_publication.publication_date),
+                    first_seen_at = COALESCE(paper_publication.first_seen_at, excluded.first_seen_at),
+                    source = COALESCE(excluded.source, paper_publication.source),
+                    updated_at = excluded.updated_at
+            """, (
+                paper_id,
+                publication_year,
+                publication_date,
+                first_seen_at,
+                source,
+                now,
+                now
+            ))
+
+    def get_paper_publication(self, paper_id: str) -> Optional[Dict[str, Any]]:
+        """Fetch stored publication metadata for a paper."""
+        with self._get_connection() as conn:
+            row = conn.execute("""
+                SELECT paper_id, publication_year, publication_date, first_seen_at, source
+                FROM paper_publication
+                WHERE paper_id = ?
+            """, (paper_id,)).fetchone()
+            return dict(row) if row else None
+
+    def list_paper_publications(
+        self,
+        paper_ids: Optional[List[str]] = None
+    ) -> List[Dict[str, Any]]:
+        """List publication metadata ordered by scholarly time."""
+        with self._get_connection() as conn:
+            params: Tuple[Any, ...] = ()
+            where_clause = ""
+            if paper_ids:
+                placeholders = ", ".join(["?"] * len(paper_ids))
+                where_clause = f"WHERE paper_id IN ({placeholders})"
+                params = tuple(paper_ids)
+
+            rows = conn.execute(f"""
+                SELECT paper_id, publication_year, publication_date, first_seen_at, source
+                FROM paper_publication
+                {where_clause}
+                ORDER BY
+                    COALESCE(
+                        publication_date,
+                        printf('%04d-01-01', publication_year),
+                        '9999-12-31'
+                    ),
+                    paper_id
+            """, params).fetchall()
+
+            return [dict(row) for row in rows]
+
+    # =========================================================================
+    # ENTRENCHMENT TRACKING
+    # =========================================================================
+
+    def record_entrenchment_snapshots(
+        self,
+        web_id: str,
+        web: WebOfBelief,
+        belief_ids: Iterable[str],
+        paper_id: Optional[str],
+        timeline_type: str,
+        as_of_date: Optional[str] = None,
+        event_type: str = "snapshot",
+        reason: Optional[str] = None
+    ) -> None:
+        """
+        Record entrenchment snapshots for a set of beliefs.
+
+        timeline_type: "system" or "scholarly"
+        """
+        belief_ids = list(belief_ids)
+        if not belief_ids:
+            return
+
+        as_of = as_of_date or self._utc_now()
+        created_at = self._utc_now()
+
+        with self._get_connection() as conn:
+            for belief_id in belief_ids:
+                belief = web.beliefs.get(belief_id)
+                if not belief:
+                    continue
+
+                components = web.get_entrenchment_components(belief_id)
+                entrenchment = components["entrenchment"]
+
+                prev = conn.execute("""
+                    SELECT entrenchment
+                    FROM entrenchment_snapshots
+                    WHERE web_id = ? AND belief_id = ? AND timeline_type = ?
+                    ORDER BY as_of_date DESC, snapshot_id DESC
+                    LIMIT 1
+                """, (web_id, belief_id, timeline_type)).fetchone()
+
+                delta = None
+                if prev:
+                    delta = entrenchment - (prev["entrenchment"] or 0.0)
+
+                conn.execute("""
+                    INSERT INTO entrenchment_snapshots (
+                        web_id, belief_id, paper_id, timeline_type, as_of_date,
+                        entrenchment, connectivity, level_weight, coherence_contrib,
+                        constraint_count, status, credence_value, credence_uncertainty,
+                        created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    web_id,
+                    belief_id,
+                    paper_id,
+                    timeline_type,
+                    as_of,
+                    entrenchment,
+                    components["connectivity"],
+                    components["level_weight"],
+                    components["coherence_contrib"],
+                    components["constraint_count"],
+                    belief.status.value if hasattr(belief.status, "value") else str(belief.status),
+                    belief.credence.value,
+                    belief.credence.uncertainty,
+                    created_at
+                ))
+
+                if delta is not None:
+                    conn.execute("""
+                        INSERT INTO entrenchment_events (
+                            web_id, belief_id, paper_id, timeline_type,
+                            occurred_at, delta, event_type, reason,
+                            source_paper_id, constraint_id, created_at
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        web_id,
+                        belief_id,
+                        paper_id,
+                        timeline_type,
+                        as_of,
+                        delta,
+                        event_type,
+                        reason,
+                        paper_id,
+                        None,
+                        created_at
+                    ))
+
+    def get_entrenchment_history(
+        self,
+        belief_id: str,
+        web_id: Optional[str] = None,
+        timeline_type: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        limit: int = 100
+    ) -> List[Dict[str, Any]]:
+        """
+        Get entrenchment history for a belief.
+
+        Args:
+            belief_id: The belief to query
+            web_id: Optional web ID filter
+            timeline_type: "system" or "scholarly" filter
+            start_date: Optional start date (ISO format)
+            end_date: Optional end date (ISO format)
+            limit: Maximum records to return
+
+        Returns:
+            List of entrenchment snapshot records ordered by date
+        """
+        with self._get_connection() as conn:
+            query = "SELECT * FROM entrenchment_snapshots WHERE belief_id = ?"
+            params: List[Any] = [belief_id]
+
+            if web_id:
+                query += " AND web_id = ?"
+                params.append(web_id)
+
+            if timeline_type:
+                query += " AND timeline_type = ?"
+                params.append(timeline_type)
+
+            if start_date:
+                query += " AND as_of_date >= ?"
+                params.append(start_date)
+
+            if end_date:
+                query += " AND as_of_date <= ?"
+                params.append(end_date)
+
+            query += " ORDER BY as_of_date ASC, snapshot_id ASC LIMIT ?"
+            params.append(limit)
+
+            rows = conn.execute(query, params).fetchall()
+            return [dict(row) for row in rows]
+
+    def get_entrenchment_events(
+        self,
+        belief_id: Optional[str] = None,
+        web_id: Optional[str] = None,
+        timeline_type: Optional[str] = None,
+        event_type: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        limit: int = 100
+    ) -> List[Dict[str, Any]]:
+        """
+        Get entrenchment change events.
+
+        Args:
+            belief_id: Optional belief ID filter
+            web_id: Optional web ID filter
+            timeline_type: "system" or "scholarly" filter
+            event_type: Event type filter (e.g., "snapshot", "historical_replay")
+            start_date: Optional start date
+            end_date: Optional end date
+            limit: Maximum records
+
+        Returns:
+            List of entrenchment event records
+        """
+        with self._get_connection() as conn:
+            query = "SELECT * FROM entrenchment_events WHERE 1=1"
+            params: List[Any] = []
+
+            if belief_id:
+                query += " AND belief_id = ?"
+                params.append(belief_id)
+
+            if web_id:
+                query += " AND web_id = ?"
+                params.append(web_id)
+
+            if timeline_type:
+                query += " AND timeline_type = ?"
+                params.append(timeline_type)
+
+            if event_type:
+                query += " AND event_type = ?"
+                params.append(event_type)
+
+            if start_date:
+                query += " AND occurred_at >= ?"
+                params.append(start_date)
+
+            if end_date:
+                query += " AND occurred_at <= ?"
+                params.append(end_date)
+
+            query += " ORDER BY occurred_at DESC, event_id DESC LIMIT ?"
+            params.append(limit)
+
+            rows = conn.execute(query, params).fetchall()
+            return [dict(row) for row in rows]
+
+    def get_latest_entrenchment(
+        self,
+        belief_id: str,
+        web_id: Optional[str] = None,
+        timeline_type: str = "system"
+    ) -> Optional[Dict[str, Any]]:
+        """Get the most recent entrenchment snapshot for a belief."""
+        with self._get_connection() as conn:
+            query = """
+                SELECT * FROM entrenchment_snapshots
+                WHERE belief_id = ? AND timeline_type = ?
+            """
+            params: List[Any] = [belief_id, timeline_type]
+
+            if web_id:
+                query += " AND web_id = ?"
+                params.append(web_id)
+
+            query += " ORDER BY as_of_date DESC, snapshot_id DESC LIMIT 1"
+
+            row = conn.execute(query, params).fetchone()
+            return dict(row) if row else None
+
+    def compare_timeline_entrenchment(
+        self,
+        belief_id: str,
+        web_id: Optional[str] = None,
+        as_of_date: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Compare entrenchment between system and scholarly timelines.
+
+        Returns dict with both timeline values and divergence metrics.
+        """
+        system = self.get_latest_entrenchment(belief_id, web_id, "system")
+        scholarly = self.get_latest_entrenchment(belief_id, web_id, "scholarly")
+
+        system_val = system["entrenchment"] if system else None
+        scholarly_val = scholarly["entrenchment"] if scholarly else None
+
+        divergence = None
+        if system_val is not None and scholarly_val is not None:
+            divergence = abs(system_val - scholarly_val)
+
+        return {
+            "belief_id": belief_id,
+            "system_entrenchment": system_val,
+            "scholarly_entrenchment": scholarly_val,
+            "divergence": divergence,
+            "system_snapshot": system,
+            "scholarly_snapshot": scholarly
+        }
+
+    def get_entrenchment_trajectory(
+        self,
+        belief_id: str,
+        timeline_type: str = "system",
+        web_id: Optional[str] = None,
+        limit: int = 50
+    ) -> Dict[str, Any]:
+        """
+        Get entrenchment trajectory with trend analysis.
+
+        Returns trajectory data including volatility metrics.
+        """
+        history = self.get_entrenchment_history(
+            belief_id=belief_id,
+            web_id=web_id,
+            timeline_type=timeline_type,
+            limit=limit
+        )
+
+        if not history:
+            return {
+                "belief_id": belief_id,
+                "timeline_type": timeline_type,
+                "data_points": [],
+                "volatility": None,
+                "trend": None,
+                "latest": None
+            }
+
+        values = [h["entrenchment"] for h in history if h["entrenchment"] is not None]
+
+        volatility = None
+        trend = None
+        if len(values) >= 2:
+            # Calculate volatility (standard deviation of changes)
+            deltas = [values[i] - values[i-1] for i in range(1, len(values))]
+            if deltas:
+                mean_delta = sum(deltas) / len(deltas)
+                variance = sum((d - mean_delta) ** 2 for d in deltas) / len(deltas)
+                volatility = variance ** 0.5
+
+            # Simple linear trend (positive = increasing, negative = decreasing)
+            trend = (values[-1] - values[0]) / len(values) if len(values) > 1 else 0
+
+        return {
+            "belief_id": belief_id,
+            "timeline_type": timeline_type,
+            "data_points": [
+                {"date": h["as_of_date"], "entrenchment": h["entrenchment"]}
+                for h in history
+            ],
+            "volatility": volatility,
+            "trend": trend,
+            "latest": values[-1] if values else None,
+            "n_snapshots": len(history)
+        }
 
     # =========================================================================
     # WEB METADATA OPERATIONS
@@ -1952,7 +2398,11 @@ class WebPersistenceService:
         self,
         paper_web: WebOfBelief,
         paper_id: str,
-        bridge_registry: Optional['BridgeRegistry'] = None
+        bridge_registry: Optional['BridgeRegistry'] = None,
+        publication_year: Optional[int] = None,
+        publication_date: Optional[str] = None,
+        first_seen_at: Optional[str] = None,
+        metadata_source: Optional[str] = None
     ) -> IntegrationReport:
         """
         Integrate a paper's web into the master accumulated web.
@@ -1968,7 +2418,32 @@ class WebPersistenceService:
             IntegrationReport summarizing what happened
         """
         master_id = self.create_or_get_master_web()
+        now = self._utc_now()
         report = IntegrationReport(paper_id=paper_id)
+
+        # Record publication metadata for scholarly replay (best effort)
+        existing_pub = self.get_paper_publication(paper_id)
+        if existing_pub:
+            if publication_year is None:
+                publication_year = existing_pub.get("publication_year")
+            if publication_date is None:
+                publication_date = existing_pub.get("publication_date")
+            if first_seen_at is None:
+                first_seen_at = existing_pub.get("first_seen_at")
+            if metadata_source is None:
+                metadata_source = existing_pub.get("source")
+
+        if publication_year is None:
+            quality = self.get_paper_quality(paper_id)
+            if quality:
+                publication_year = quality.get("publication_year")
+        self.upsert_paper_publication(
+            paper_id=paper_id,
+            publication_year=publication_year,
+            publication_date=publication_date,
+            first_seen_at=first_seen_at or now,
+            source=metadata_source
+        )
 
         # Load current master web
         master_web, master_bridges = self.load_web(master_id)
@@ -2023,6 +2498,23 @@ class WebPersistenceService:
 
             # Record local coherence per theory (Expert Panel 5.5)
             self._record_local_coherence(master_id, master_web)
+
+            # Entrenchment snapshots for beliefs tied to this paper (system timeline)
+            belief_ids = [
+                b.belief_id for b in master_web.beliefs.values()
+                if paper_id in getattr(b, "paper_ids", [])
+            ]
+            if belief_ids:
+                self.record_entrenchment_snapshots(
+                    web_id=master_id,
+                    web=master_web,
+                    belief_ids=belief_ids,
+                    paper_id=paper_id,
+                    timeline_type="system",
+                    as_of_date=now,
+                    event_type="integration",
+                    reason="paper_integration"
+                )
 
         # Log integration
         self._log_integration(

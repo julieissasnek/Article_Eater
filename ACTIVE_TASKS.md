@@ -28,8 +28,10 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| 3.0.2-C | Scope-aware output generation | Terminal-3 | 12:50 | In Progress | Cartwright scope metadata |
-| 3.0.2-E | LLM integration | Terminal-3 | 12:50 | Pending | Haiku→Sonnet→Opus tiering |
+| 3.0.3-E | Network visualization (vis.js) | Terminal-3 | 10:00 | In Progress | Starting with viz |
+| 3.0.4-F | Report generation (PDF/Markdown) | Terminal-3 | 10:00 | Pending | After viz |
+| 3.0.5-G | Export audit trail | Terminal-3 | 10:00 | Pending | After reports |
+| ENT-1-5 | Entrenchment historical replay | Terminal-3 | 10:00 | Pending | After Sprint 3.0 |
 
 ---
 
@@ -63,6 +65,9 @@ All 16 extraction templates finished on 2026-02-09.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| ENT-TRACK-3 | BibTeX date test + scholarly replay stub | Codex-CLI | 2026-02-09 16:25 | Added date parsing test + replay scaffold |
+| ENT-TRACK-2 | DB migrations + capture hooks for entrenchment tracker | Codex-CLI | 2026-02-09 15:45 | Added entrenchment tables, capture hooks, version bump |
+| ENT-TRACK-1 | Entrenchment tracker schema + scholarly-time replay TODO | Codex-CLI | 2026-02-09 15:20 | Added ENT-1..ENT-5 tasks in TASKS.md |
 | SCHEMA-1 | Add new rule types + causal/argument fields | Terminal-3 | 09:15 | Created ae.rule.v2.schema.json, ae.claim.v2.schema.json, argument_schemes.json |
 | SCHEMA-2 | Update extraction specs with panel additions | Terminal-3 | 09:30 | Created EXTRACTION_TEMPLATE_PANEL_ADDITIONS_2026_02_09.md |
 | SCHEMA-3 | Create stimulus documentation template | Terminal-3 | 09:45 | Created STIMULUS_DOCUMENTATION_TEMPLATE_2026_02_09.md |
@@ -78,6 +83,9 @@ All 16 extraction templates finished on 2026-02-09.
 | EXT-14 | Narrative Review spec | Terminal-3 | 12:15 | Created EXTRACTION_TEMPLATE_NARRATIVE_REVIEW_2026_02_09.md |
 | EXT-15 | Theoretical spec | Terminal-3 | 12:30 | Created EXTRACTION_TEMPLATE_THEORETICAL_2026_02_09.md |
 | EXT-16 | Thought Piece spec | Terminal-3 | 12:45 | Created EXTRACTION_TEMPLATE_THOUGHT_PIECE_2026_02_09.md |
+| 3.0.2-C | Scope-aware output generation | Terminal-3 | 13:15 | Created scope_renderer.py (~550 lines), 31 tests passing |
+| 3.0.2-E | LLM integration - WebOfBelief integration | Terminal-4 | 13:30 | Enhanced llm_query_bridge.py: WebOfBelief retrieve_evidence() (~100 lines), GoogleProvider (~50 lines), deep_synthesis with BEST tier (~100 lines). Created test_llm_query_bridge.py (34 tests passing). |
+| 3.0.2-F | RELATED, TRENDING, CANONICAL patterns | Terminal-3 | 14:00 | Bates berrypicking extensions: _retrieve_related() (serendipitous via constraints/theories), _retrieve_trending() (recent papers), _retrieve_canonical() (entrenched/foundational). Synthesis methods for each. 48 tests passing. |
 
 ## Completed (2026-02-08)
 
@@ -125,4 +133,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 12:45*
+*Last coordination check: 2026-02-09 14:00*

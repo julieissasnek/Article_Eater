@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrenchment Monitor - Article Eater</title>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .timeline-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .timeline-card h3 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .timeline-card.system h3 { color: #3b82f6; }
+    .timeline-card.scholarly h3 { color: #10b981; }
+
+    .divergence-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .divergence-low { background: #d1fae5; color: #065f46; }
+    .divergence-medium { background: #fef3c7; color: #92400e; }
+    .divergence-high { background: #fee2e2; color: #991b1b; }
+
+    .belief-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .belief-table th,
+    .belief-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .belief-table th {
+      background: #f9fafb;
+      font-weight: 600;
+    }
+
+    .entrenchment-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .entrenchment-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .entrenchment-fill.system { background: #3b82f6; }
+    .entrenchment-fill.scholarly { background: #10b981; }
+
+    .trend-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .trend-up { color: #10b981; }
+    .trend-down { color: #ef4444; }
+    .trend-stable { color: #6b7280; }
+
+    .volatility-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .volatility-low { background: #d1fae5; color: #065f46; }
+    .volatility-medium { background: #fef3c7; color: #92400e; }
+    .volatility-high { background: #fee2e2; color: #991b1b; }
+
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+    }
+
+    .filters-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .health-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .health-metric {
+      text-align: center;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 6px;
+    }
+
+    .health-metric .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .health-metric .label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-logo">Article Eater</div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="entrenchment-monitor.html" class="nav-link active">
+            <span class="nav-icon">Entrenchment</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="evidence-explorer.html" class="nav-link">
+            <span class="nav-icon">Evidence</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1>Entrenchment Monitor</h1>
+          <p class="text-gray-600">Track belief entrenchment across system and scholarly timelines</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="refreshData()">
+            <span>Refresh</span>
+          </button>
+          <button class="btn btn-primary" onclick="exportReport()">
+            <span>Export Report</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Belief</label>
+          <select id="beliefFilter" onchange="updateViews()">
+            <option value="">Select a belief...</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Date Range</label>
+          <select id="dateRange" onchange="updateViews()">
+            <option value="7d">Last 7 days</option>
+            <option value="30d" selected>Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+            <option value="1y">Last year</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Theory</label>
+          <select id="theoryFilter" onchange="filterByTheory()">
+            <option value="">All theories</option>
+            <option value="SRT">SRT (Stress Recovery)</option>
+            <option value="ART">ART (Attention Restoration)</option>
+            <option value="PROSPECT">Prospect-Refuge</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Health Metrics Summary -->
+      <div class="health-card" style="margin-bottom: 1.5rem;">
+        <h3>Web Health Metrics</h3>
+        <div class="health-grid">
+          <div class="health-metric">
+            <div class="value" id="totalBeliefs">--</div>
+            <div class="label">Total Beliefs</div>
+          </div>
+          <div class="health-metric">
+            <div class="value" id="avgEntrenchment">--</div>
+            <div class="label">Avg Entrenchment</div>
+          </div>
+          <div class="health-metric">
+            <div class="value" id="avgVolatility">--</div>
+            <div class="label">Avg Volatility</div>
+          </div>
+          <div class="health-metric">
+            <div class="value" id="divergenceScore">--</div>
+            <div class="label">Timeline Divergence</div>
+          </div>
+          <div class="health-metric">
+            <div class="value" id="stagnantCount">--</div>
+            <div class="label">Stagnant Beliefs</div>
+          </div>
+          <div class="health-metric">
+            <div class="value" id="conflictLoad">--</div>
+            <div class="label">Conflict Load</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Timeline View -->
+      <div class="timeline-container">
+        <div class="timeline-card system">
+          <h3>System Timeline (Ingestion Order)</h3>
+          <p class="text-gray-600">Entrenchment as papers were processed</p>
+          <div class="chart-container">
+            <canvas id="systemChart"></canvas>
+          </div>
+        </div>
+
+        <div class="timeline-card scholarly">
+          <h3>Scholarly Timeline (Publication Order)</h3>
+          <p class="text-gray-600">Entrenchment in historical publication sequence</p>
+          <div class="chart-container">
+            <canvas id="scholarlyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divergence Analysis -->
+      <div class="health-card" style="margin-bottom: 1.5rem;">
+        <h3>Timeline Divergence Analysis</h3>
+        <div id="divergenceIndicator" class="divergence-indicator divergence-low">
+          <span>Divergence: Low</span>
+          <span>System and scholarly timelines are well-aligned</span>
+        </div>
+        <p class="text-gray-600">
+          Beliefs may show different entrenchment values between timelines when earlier papers
+          (by publication date) are processed after later papers (by ingestion date).
+        </p>
+      </div>
+
+      <!-- Belief Comparison Table -->
+      <div class="health-card">
+        <h3>Belief Entrenchment Comparison</h3>
+        <table class="belief-table">
+          <thead>
+            <tr>
+              <th>Belief</th>
+              <th>Theory</th>
+              <th>System Entrenchment</th>
+              <th>Scholarly Entrenchment</th>
+              <th>Divergence</th>
+              <th>Volatility</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="beliefTableBody">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Chart instances
+    let systemChart = null;
+    let scholarlyChart = null;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      loadData();
+    });
+
+    function initCharts() {
+      const chartConfig = {
+        type: 'line',
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 1,
+              title: { display: true, text: 'Entrenchment' }
+            },
+            x: {
+              title: { display: true, text: 'Date' }
+            }
+          },
+          plugins: {
+            legend: { display: true, position: 'top' }
+          }
+        }
+      };
+
+      systemChart = new Chart(
+        document.getElementById('systemChart'),
+        {
+          ...chartConfig,
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'Selected Belief',
+              data: [],
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              fill: true,
+              tension: 0.3
+            }]
+          }
+        }
+      );
+
+      scholarlyChart = new Chart(
+        document.getElementById('scholarlyChart'),
+        {
+          ...chartConfig,
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'Selected Belief',
+              data: [],
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              fill: true,
+              tension: 0.3
+            }]
+          }
+        }
+      );
+    }
+
+    async function loadData() {
+      try {
+        // Load beliefs for filter dropdown
+        const beliefsRes = await fetch('/api/v1/beliefs');
+        if (beliefsRes.ok) {
+          const beliefs = await beliefsRes.json();
+          populateBeliefFilter(beliefs.beliefs || []);
+        }
+
+        // Load health metrics
+        await loadHealthMetrics();
+
+        // Load belief comparison table
+        await loadBeliefComparison();
+
+      } catch (error) {
+        console.error('Error loading data:', error);
+        showDemoData();
+      }
+    }
+
+    function populateBeliefFilter(beliefs) {
+      const select = document.getElementById('beliefFilter');
+      beliefs.forEach(b => {
+        const option = document.createElement('option');
+        option.value = b.belief_id;
+        option.textContent = `${b.belief_id}: ${(b.content || '').substring(0, 50)}...`;
+        select.appendChild(option);
+      });
+    }
+
+    async function loadHealthMetrics() {
+      try {
+        const res = await fetch('/api/v1/entrenchment/health');
+        if (res.ok) {
+          const data = await res.json();
+          updateHealthMetrics(data);
+        }
+      } catch (e) {
+        // Use demo data
+        updateHealthMetrics({
+          total_beliefs: 42,
+          avg_entrenchment: 0.65,
+          avg_volatility: 0.08,
+          timeline_divergence: 0.12,
+          stagnant_count: 5,
+          conflict_load: 0.15
+        });
+      }
+    }
+
+    function updateHealthMetrics(data) {
+      document.getElementById('totalBeliefs').textContent = data.total_beliefs || '--';
+      document.getElementById('avgEntrenchment').textContent =
+        data.avg_entrenchment ? data.avg_entrenchment.toFixed(2) : '--';
+      document.getElementById('avgVolatility').textContent =
+        data.avg_volatility ? data.avg_volatility.toFixed(3) : '--';
+      document.getElementById('divergenceScore').textContent =
+        data.timeline_divergence ? data.timeline_divergence.toFixed(2) : '--';
+      document.getElementById('stagnantCount').textContent = data.stagnant_count || '--';
+      document.getElementById('conflictLoad').textContent =
+        data.conflict_load ? data.conflict_load.toFixed(2) : '--';
+    }
+
+    async function loadBeliefComparison() {
+      try {
+        const res = await fetch('/api/v1/entrenchment/comparison');
+        if (res.ok) {
+          const data = await res.json();
+          populateBeliefTable(data.beliefs || []);
+        }
+      } catch (e) {
+        // Use demo data
+        populateBeliefTable([
+          {
+            belief_id: 'belief:emp:001',
+            content: 'Natural light reduces stress',
+            theory: 'SRT',
+            system_entrenchment: 0.72,
+            scholarly_entrenchment: 0.68,
+            divergence: 0.04,
+            volatility: 0.05,
+            trend: 'up'
+          },
+          {
+            belief_id: 'belief:emp:002',
+            content: 'Green views improve recovery',
+            theory: 'SRT',
+            system_entrenchment: 0.85,
+            scholarly_entrenchment: 0.82,
+            divergence: 0.03,
+            volatility: 0.02,
+            trend: 'stable'
+          },
+          {
+            belief_id: 'belief:emp:003',
+            content: 'Mystery increases engagement',
+            theory: 'ART',
+            system_entrenchment: 0.45,
+            scholarly_entrenchment: 0.55,
+            divergence: 0.10,
+            volatility: 0.12,
+            trend: 'up'
+          }
+        ]);
+      }
+    }
+
+    function populateBeliefTable(beliefs) {
+      const tbody = document.getElementById('beliefTableBody');
+      tbody.innerHTML = '';
+
+      beliefs.forEach(b => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <strong>${b.belief_id}</strong><br>
+            <small class="text-gray-600">${(b.content || '').substring(0, 40)}...</small>
+          </td>
+          <td>${b.theory || '--'}</td>
+          <td>
+            <div class="entrenchment-bar">
+              <div class="entrenchment-fill system" style="width: ${(b.system_entrenchment || 0) * 100}%"></div>
+            </div>
+            <small>${(b.system_entrenchment || 0).toFixed(2)}</small>
+          </td>
+          <td>
+            <div class="entrenchment-bar">
+              <div class="entrenchment-fill scholarly" style="width: ${(b.scholarly_entrenchment || 0) * 100}%"></div>
+            </div>
+            <small>${(b.scholarly_entrenchment || 0).toFixed(2)}</small>
+          </td>
+          <td>${(b.divergence || 0).toFixed(2)}</td>
+          <td>
+            <span class="volatility-badge ${getVolatilityClass(b.volatility)}">
+              ${(b.volatility || 0).toFixed(3)}
+            </span>
+          </td>
+          <td>
+            <span class="trend-indicator ${getTrendClass(b.trend)}">
+              ${getTrendIcon(b.trend)} ${b.trend || 'stable'}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function getVolatilityClass(volatility) {
+      if (!volatility || volatility < 0.05) return 'volatility-low';
+      if (volatility < 0.1) return 'volatility-medium';
+      return 'volatility-high';
+    }
+
+    function getTrendClass(trend) {
+      if (trend === 'up') return 'trend-up';
+      if (trend === 'down') return 'trend-down';
+      return 'trend-stable';
+    }
+
+    function getTrendIcon(trend) {
+      if (trend === 'up') return 'Trending Up';
+      if (trend === 'down') return 'Trending Down';
+      return 'Stable';
+    }
+
+    async function updateViews() {
+      const beliefId = document.getElementById('beliefFilter').value;
+      if (!beliefId) return;
+
+      try {
+        // Load trajectory for selected belief
+        const sysRes = await fetch(`/api/v1/entrenchment/trajectory/${beliefId}?timeline=system`);
+        const schRes = await fetch(`/api/v1/entrenchment/trajectory/${beliefId}?timeline=scholarly`);
+
+        if (sysRes.ok && schRes.ok) {
+          const sysData = await sysRes.json();
+          const schData = await schRes.json();
+          updateCharts(sysData, schData);
+        }
+      } catch (e) {
+        console.error('Error loading trajectory:', e);
+      }
+    }
+
+    function updateCharts(systemData, scholarlyData) {
+      systemChart.data.labels = (systemData.data_points || []).map(p => p.date);
+      systemChart.data.datasets[0].data = (systemData.data_points || []).map(p => p.entrenchment);
+      systemChart.update();
+
+      scholarlyChart.data.labels = (scholarlyData.data_points || []).map(p => p.date);
+      scholarlyChart.data.datasets[0].data = (scholarlyData.data_points || []).map(p => p.entrenchment);
+      scholarlyChart.update();
+    }
+
+    function showDemoData() {
+      // Show demo chart data
+      const demoLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const demoSystemData = [0.5, 0.55, 0.6, 0.58, 0.65, 0.72];
+      const demoScholarlyData = [0.45, 0.5, 0.55, 0.6, 0.62, 0.68];
+
+      systemChart.data.labels = demoLabels;
+      systemChart.data.datasets[0].data = demoSystemData;
+      systemChart.update();
+
+      scholarlyChart.data.labels = demoLabels;
+      scholarlyChart.data.datasets[0].data = demoScholarlyData;
+      scholarlyChart.update();
+    }
+
+    function refreshData() {
+      loadData();
+    }
+
+    function exportReport() {
+      // TODO: Implement export
+      alert('Export functionality will generate a PDF report of entrenchment analysis.');
+    }
+
+    function filterByTheory() {
+      loadBeliefComparison();
+    }
+  </script>
+</body>
+</html>

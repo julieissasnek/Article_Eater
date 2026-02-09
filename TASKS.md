@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Sprint 3.0.1/3.0.2 — API + Query Engine)*
+*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3-A/B — Streamlit Interface)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -31,6 +31,36 @@ This prevents duplicate work across parallel terminals.
 5. ~~**Technical Debt**~~ ✓ ALL COMPLETE [TD-A, TD-B, TD-C, TD-D, TD-E]
 6. ~~**Sprint 2.0.4-2.0.5**~~ ✓ COMPLETE — Pipeline testing and error handling
 7. **AF-AE Integration: BibTeX Metadata for User-Uploaded PDFs** — NEW (see below)
+8. **Entrenchment Historical Replay + Monitor** — NEW (see below)
+
+---
+
+## Completed: Entrenchment Historical Replay + Monitor
+
+**Added**: 2026-02-09
+**Completed**: 2026-02-09
+**Context**: Distinguish entrenchment history inside the system (ingestion-time) vs scholarly history (publication-time). Admins can replay the web in true historical order and see how entrenchment evolves.
+
+### Completed Tasks
+
+| ID | Task | Completed | Outcome |
+|----|------|-----------|---------|
+| ENT-1 | Add publication_year/date to paper model | 2026-02-09 | Already in schema + DB (`paper_publication` table) |
+| ENT-2 | Build scholarly-time replay pipeline | 2026-02-09 | `src/services/entrenchment_replay.py` - Fixed attribute naming conflict |
+| ENT-3 | Store entrenchment snapshots for both timelines | 2026-02-09 | Added query methods to `web_persistence.py`: `get_entrenchment_history()`, `get_entrenchment_events()`, `get_latest_entrenchment()`, `compare_timeline_entrenchment()`, `get_entrenchment_trajectory()` |
+| ENT-4 | Admin monitor UI: dual timeline | 2026-02-09 | Created `frontend/entrenchment-monitor.html` + `app/routes/entrenchment.py` API endpoints |
+| ENT-5 | Health metrics: volatility, stagnation | 2026-02-09 | Health metrics in entrenchment API: volatility, stagnation count, timeline divergence, conflict load |
+
+### Follow-up Tasks (Phase 2)
+
+**Context**: Replay should not mutate the live master web. Provide a safe runner that copies the DB and runs scholarly replay against the copy by default.
+
+| ID | Task | Status |
+|----|------|--------|
+| ENT-6 | Decide replay DB strategy + add runner that copies live DB (no mutation) | ☐ TODO |
+
+### Tests
+- `tests/test_entrenchment_tracker.py`: 16 tests covering paper publication, replay pipeline, snapshots, health metrics
 
 ---
 
@@ -735,10 +765,10 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 |----|------|----------|-------------|--------|
 | 3.0.2-A | Query type detection (Pearl: associational/interventional/counterfactual) | P1 | `src/services/query_parser.py` | ✅ DONE 2026-02-09 |
 | 3.0.2-B | Progressive disclosure response format (Simon: headline→summary→detail) | P1 | `src/services/query_response.py` | ✅ DONE 2026-02-09 |
-| 3.0.2-C | Scope-aware output generation (Cartwright) | P1 | `src/services/scope_renderer.py` | Pending |
+| 3.0.2-C | Scope-aware output generation (Cartwright) | P1 | `src/services/scope_renderer.py` | ✅ DONE 2026-02-09 |
 | 3.0.2-D | Practitioner mode with design implications (Kaplan) | P1 | Integrated in 3.0.2-B | ✅ DONE 2026-02-09 |
-| 3.0.2-E | LLM integration (Haiku for parsing, Sonnet for synthesis) | P1 | `src/services/llm_query_bridge.py` | Pending |
-| 3.0.2-F | Add RELATED, TRENDING, CANONICAL patterns (Bates) | P2 | query_parser.py extension | Pending |
+| 3.0.2-E | LLM integration (Haiku for parsing, Sonnet for synthesis) | P1 | `src/services/llm_query_bridge.py` | ✅ DONE 2026-02-09 |
+| 3.0.2-F | Add RELATED, TRENDING, CANONICAL patterns (Bates) | P2 | `src/services/llm_query_bridge.py` | ✅ DONE 2026-02-09 |
 | 3.0.2-G | Alerting/monitoring capability | P3 | `src/services/query_alerts.py` | Pending |
 
 **Query Types** (10 patterns):
@@ -751,14 +781,24 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | ID | Task | Priority | Deliverable | Status |
 |----|------|----------|-------------|--------|
-| 3.0.3-A | Core Streamlit app with user type selection | P1 | `streamlit_app/main.py` | Pending |
-| 3.0.3-B | Query interface with common questions per user type | P1 | `streamlit_app/pages/query.py` | Pending |
+| 3.0.3-A | Core Streamlit app with user type selection | P1 | `streamlit_app/main.py` | ✅ DONE 2026-02-09 |
+| 3.0.3-B | Query interface with common questions per user type | P1 | `streamlit_app/pages/query.py` | ✅ DONE 2026-02-09 |
 | 3.0.3-C | Claim network graph (D3.js/vis.js via components) | P1 | `streamlit_app/components/network.py` | Pending |
 | 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P1 | `streamlit_app/pages/admin.py` | Pending |
 | 3.0.3-E | Overview-zoom-filter-details interaction (Shneiderman) | P1 | JS interaction layer | Pending |
 | 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | `src/services/graph_export.py` | Pending |
 | 3.0.3-G | Community structure visualization | P2 | `streamlit_app/pages/communities.py` | Pending |
 | 3.0.3-H | Interactive HTML export (standalone) | P2 | HTML generator | Pending |
+
+**3.0.3-A/B Implementation Notes (2026-02-09)**:
+- Created `streamlit_app/query_service.py` (~500 lines) — Direct query service layer
+- Updated `streamlit_app/api_client.py` — Added direct mode fallback
+- Existing `main.py` already had user type selection (Cooper personas)
+- Existing `pages/1_query.py` already had common questions interface
+- Direct service uses `query_parser.py` for rule-based intent detection
+- Supports quick/standard/deep response modes
+- Scope-aware output with Cartwright-style conditions
+- 35 tests passing (`tests/test_streamlit_query_service.py`)
 
 **User Types with Common Questions** (Cooper personas):
 
@@ -776,12 +816,12 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | ID | Task | Priority | Deliverable | Status |
 |----|------|----------|-------------|--------|
-| 3.0.4-A | Evidence summary generator with scope metadata (Cartwright) | P1 | `src/services/evidence_summarizer.py` | Pending |
-| 3.0.4-B | Pipeline-friendly formats (JSONL, Parquet) (Zaharia) | P1 | `src/services/export_formats.py` | Pending |
-| 3.0.4-C | Verification checklists (Gawande) | P1 | `src/services/export_checklists.py` | Pending |
+| 3.0.4-A | Evidence summary generator with scope metadata (Cartwright) | P1 | `src/services/evidence_summarizer.py` | ✅ DONE 2026-02-09 |
+| 3.0.4-B | Pipeline-friendly formats (JSONL, Parquet) (Zaharia) | P1 | `src/services/export_formats.py` | ✅ DONE 2026-02-09 |
+| 3.0.4-C | Verification checklists (Gawande) | P1 | `src/services/export_checklists.py` | ✅ DONE 2026-02-09 |
 | 3.0.4-D | BibTeX generator with full metadata | P2 | `src/services/bibtex_generator.py` | Pending |
 | 3.0.4-E | Purpose-driven export bundles (Munzner) | P2 | `src/services/export_bundles.py` | Pending |
-| 3.0.4-F | Report generation (PDF/Markdown) | P3 | `src/services/report_generator.py` | Pending |
+| 3.0.4-F | Report generation (PDF/Markdown) | P3 | `src/services/report_generator.py` | ✅ DONE (Sprint 3.0.5-G) |
 
 ---
 
@@ -908,6 +948,12 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-09 | **Entrenchment Tracker Updates**: Added entrenchment tracker schema + migrations, publication metadata capture, replay scaffold, BibTeX publication_date parsing + test, and pipeline metadata upsert. Added `publication_date` to AE paper schema + example. New tables in `web_persistence.py`, new `entrenchment_replay.py`, and `migrations/005_add_entrenchment_tracker.sql`. Version bumped to 23.0.5. Tests: `pytest tests/test_bibtex_utils.py`. |
+| 2026-02-09 | **Sprint 3.0.3-A/B COMPLETE**: Streamlit Interface. (1) Created `streamlit_app/query_service.py` (~500 lines) - DirectQueryService for local query execution without API server. Uses query_parser.py for rule-based intent detection. Supports quick/standard/deep response modes. Scope-aware output. (2) Updated `streamlit_app/api_client.py` with direct mode fallback - automatically uses local services when API unavailable. Added `prefer_direct` option. (3) Verified existing `main.py` has user type selection (5 Cooper personas), existing `pages/1_query.py` has common questions interface. 35 tests passing (`tests/test_streamlit_query_service.py`). |
+| 2026-02-09 | **Sprint 3.0.4-A/B/C COMPLETE**: (1) Evidence Summarizer: Created `src/services/evidence_summarizer.py` (~600 lines) - Cartwright-style scope metadata, transferability assessment, caveats, synthesis. 35 tests. (2) Export Formats: Created `src/services/export_formats.py` (~650 lines) - JSONL, CSV, TSV, JSON, Parquet (with pyarrow fallback), streaming exporter. 38 tests. (3) Verification Checklists: Created `src/services/export_checklists.py` (~650 lines) - Gawande-style checklists for evidence verification, extraction quality, methodology review, scope assessment, paper intake, pre-export. 37 tests. Total: 110 new tests. |
+| 2026-02-09 | **3.0.3-E through 3.0.5-G + ENT-1 through ENT-5 COMPLETE**: (1) Network Visualization: Created `src/services/network_service.py` (~600 lines) - vis.js integration, force-directed layouts, clustering modes, graph metrics. 44 tests. (2) Report Generation: Created `src/services/report_generator.py` (~700 lines) - Markdown/HTML/PDF/JSON exports. 46 tests. (3) Export Audit: Created `src/services/export_audit.py` (~650 lines) - SQLite audit trail, content hashing, provenance tracking. 34 tests. (4) Entrenchment: Paper publication already in DB; Fixed `entrenchment_replay.py` (attribute naming); Added 5 entrenchment query methods to `web_persistence.py`; Created `frontend/entrenchment-monitor.html` + `app/routes/entrenchment.py` API; Health metrics (volatility, stagnation, divergence). 16 tests. |
+| 2026-02-09 | **3.0.2-C + 3.0.2-F COMPLETE**: Scope-aware output + Bates patterns. (1) Created `src/services/scope_renderer.py` (~550 lines): ScopeRenderer with extract_scope_from_belief(), assess_transferability(), render_scoped_evidence(), render_scoped_response(). ScopeCondition, TransferabilityAssessment, ScopedEvidence, ScopedResponse dataclasses. Population conflict detection, lab→field warnings. 31 tests passing. (2) Enhanced `src/services/llm_query_bridge.py` with Bates berrypicking patterns: _retrieve_related() (serendipitous discovery via constraints/shared theories), _retrieve_trending() (recent papers/credence changes), _retrieve_canonical() (entrenched/foundational beliefs). Specialized synthesis methods: _synthesize_related(), _synthesize_trending(), _synthesize_canonical() with custom prompts. 48 tests passing (14 new Bates tests). |
+| 2026-02-09 | **3.0.2-E COMPLETE**: LLM Integration with WebOfBelief. Enhanced `src/services/llm_query_bridge.py` (~850 lines total): (1) `retrieve_evidence()` — WebOfBelief integration with entity matching, scope filtering, credence sorting, entrenched belief boosting (~100 lines). (2) `GoogleProvider` — Gemini model support (~50 lines). (3) `_deep_synthesis()` — Full BEST tier model usage for complex reasoning with detailed JSON output structure (~100 lines). Created `tests/test_llm_query_bridge.py` (34 tests) covering: model configuration, providers, orchestration, intent detection, evidence retrieval with mock WebOfBelief, response synthesis, full pipeline, edge cases. All 34 tests passing. |
 | 2026-02-09 | **ALL 16 EXTRACTION TEMPLATES COMPLETE**: Finished final 3 templates: (1) `EXTRACTION_TEMPLATE_NARRATIVE_REVIEW_2026_02_09.md` — interpretive/attributed/gap rules, argument_from_expert_opinion scheme, causal_level=association max (reviews don't generate evidence). (2) `EXTRACTION_TEMPLATE_THEORETICAL_2026_02_09.md` — theoretical/definitional/hypothesis/mechanism rules, deductive_argument scheme, causal_level=theoretical (proposed, not tested). (3) `EXTRACTION_TEMPLATE_THOUGHT_PIECE_2026_02_09.md` — opinion/recommendation/priority/asserted/framing rules, causal_level=null (opinions) or asserted (undemonstrated claims), lowest confidence range. **Extraction Table Status**: 16/16 COMPLETE. |
 | 2026-02-09 | **ALL QUALITATIVE TEMPLATES COMPLETE**: Created 4 qualitative extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_PHENOMENOLOGICAL_2026_02_09.md` — Husserl/Heidegger/IPA/embodied approaches, causal_level explicitly null (brackets causation), experiential rule type. (2) `EXTRACTION_TEMPLATE_ETHNOGRAPHIC_2026_02_09.md` — classical/focused/critical/autoethnographic types, cultural/norm/contextual rules, emic vs etic perspectives. (3) `EXTRACTION_TEMPLATE_GROUNDED_THEORY_2026_02_09.md` — Glaserian/Straussian/Constructivist traditions, theoretical/process/conditional rules, abductive_argument scheme. (4) `EXTRACTION_TEMPLATE_INTERVIEW_STUDY_2026_02_09.md` — descriptive/exploratory/explanatory types, perspective/reported_association/preference rules, self-report limitations documented. |
 | 2026-02-09 | **EXTRACTION TEMPLATES COMPLETE**: Created 4 new extraction templates with v2 panel additions: (1) `EXTRACTION_TEMPLATE_OBSERVATIONAL_FIELD_2026_02_09.md` — naturalistic observation, association-only causal level, argument_from_sign scheme. (2) `EXTRACTION_TEMPLATE_CASE_STUDY_2026_02_09.md` — intrinsic/instrumental/critical/exemplary types, presumption rules, argument_from_example scheme. (3) `EXTRACTION_TEMPLATE_MIXED_METHODS_2026_02_09.md` — convergent/sequential designs, integration assessment, convergence-adjusted confidence. (4) Updated `EXTRACTION_TEMPLATE_SYSTEMATIC_REVIEW` to v1.1 with panel additions. Also fixed health check script integer comparison bug. |

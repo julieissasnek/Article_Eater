@@ -960,6 +960,9 @@ app.include_router(annotator_router, prefix='/api/v1/annotator', tags=['annotato
 app.include_router(image_pool_router, tags=['image-pool'])
 # Paper lifecycle tracking (2026-02-09)
 app.include_router(lifecycle_router, prefix='/api/v1', tags=['lifecycle'])
+# Entrenchment monitoring (ENT-4/ENT-5, 2026-02-09)
+from app.routes.entrenchment import router as entrenchment_router
+app.include_router(entrenchment_router, prefix='/api/v1', tags=['entrenchment'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)

@@ -1,8 +1,9 @@
 """
 Article Eater V23 — API Client
-Sprint 3.0.1 — 2026-02-08
+Sprint 3.0.3 — 2026-02-09
 
 Client for connecting Streamlit interface to FastAPI backend.
+Supports both API mode (server running) and direct mode (local services).
 """
 
 import os
@@ -17,6 +18,14 @@ from requests.exceptions import RequestException, Timeout
 from config import API_BASE_URL, API_VERSION
 
 logger = logging.getLogger(__name__)
+
+# Try to import direct query service for fallback
+try:
+    from query_service import get_query_service, DirectQueryService
+    DIRECT_SERVICE_AVAILABLE = True
+except ImportError:
+    DIRECT_SERVICE_AVAILABLE = False
+    logger.warning("Direct query service not available")
 
 
 class QueryType(Enum):
@@ -93,13 +102,63 @@ class SystemStats:
 
 
 class ArticleEaterClient:
-    """Client for Article Eater API."""
+    """
+    Client for Article Eater API.
 
-    def __init__(self, base_url: str = API_BASE_URL, timeout: int = 30):
+    Supports two modes:
+    - API mode: Connects to running FastAPI server
+    - Direct mode: Uses local query services (no server required)
+
+    Automatically falls back to direct mode if API unavailable.
+    """
+
+    def __init__(
+        self,
+        base_url: str = API_BASE_URL,
+        timeout: int = 30,
+        prefer_direct: bool = False
+    ):
         self.base_url = base_url.rstrip("/")
         self.api_version = API_VERSION
         self.timeout = timeout
         self.session = requests.Session()
+        self.prefer_direct = prefer_direct
+        self._direct_service: Optional[Any] = None
+        self._api_available: Optional[bool] = None
+
+        # Initialize direct service if available and preferred
+        if prefer_direct and DIRECT_SERVICE_AVAILABLE:
+            self._init_direct_service()
+
+    def _init_direct_service(self):
+        """Initialize direct query service."""
+        if DIRECT_SERVICE_AVAILABLE and self._direct_service is None:
+            self._direct_service = get_query_service()
+            logger.info("Initialized direct query service")
+
+    def _check_api_available(self) -> bool:
+        """Check if API server is available."""
+        if self._api_available is not None:
+            return self._api_available
+
+        try:
+            response = self.session.get(
+                f"{self.base_url}/health",
+                timeout=2
+            )
+            self._api_available = response.status_code == 200
+        except Exception:
+            self._api_available = False
+
+        return self._api_available
+
+    def _use_direct_mode(self) -> bool:
+        """Determine if should use direct mode."""
+        if self.prefer_direct:
+            return DIRECT_SERVICE_AVAILABLE
+        if not self._check_api_available():
+            return DIRECT_SERVICE_AVAILABLE
+        return False
 
     def _url(self, endpoint: str) -> str:
         """Construct full API URL."""
@@ -144,7 +203,18 @@ class ArticleEaterClient:
     # =========================================================================
 
     def execute_query(self, request: QueryRequest) -> QueryResult:
-        """Execute a natural language query."""
+        """
+        Execute a natural language query.
+
+        Uses direct mode if:
+        - prefer_direct is True
+        - API server is unavailable
+        """
+        # Try direct mode first if preferred or API unavailable
+        if self._use_direct_mode():
+            return self._execute_direct_query(request)
+
+        # Try API
         try:
             data = self._post("query/search", asdict(request))
             return QueryResult(
@@ -159,8 +229,41 @@ class ArticleEaterClient:
                 key_sources=data.get("key_sources"),
             )
         except RequestException:
+            # Fall back to direct mode
+            if DIRECT_SERVICE_AVAILABLE:
+                return self._execute_direct_query(request)
             # Return placeholder for offline/demo mode
             return self._demo_query_result(request.query)
+
+    def _execute_direct_query(self, request: QueryRequest) -> QueryResult:
+        """Execute query using direct service."""
+        if self._direct_service is None:
+            self._init_direct_service()
+
+        if self._direct_service is None:
+            return self._demo_query_result(request.query)
+
+        # Execute through direct service
+        result = self._direct_service.execute_query(
+            query=request.query,
+            mode=request.mode,
+            include_scope=request.include_scope,
+            include_practitioner=request.include_practitioner_implications,
+            max_evidence=request.max_evidence
+        )
+
+        # Convert to QueryResult format
+        return QueryResult(
+            query=result.query,
+            query_type=result.query_type.upper(),
+            headline=result.headline,
+            summary=result.summary,
+            detail=result.detail,
+            practical_implications=result.practical_implications,
+            scope_conditions=result.scope_conditions,
+            caveats=result.caveats,
+            key_sources=result.key_sources,
+        )
 
     def parse_query(self, query: str) -> Dict:
         """Parse a natural language query into structured form."""
@@ -265,11 +368,38 @@ class ArticleEaterClient:
 
     def get_stats(self) -> SystemStats:
         """Get system-wide statistics."""
+        # Try direct mode first if preferred or API unavailable
+        if self._use_direct_mode():
+            return self._get_direct_stats()
+
         try:
             data = self._get("admin/stats")
             return SystemStats(**data)
         except RequestException:
+            # Fall back to direct mode
+            if DIRECT_SERVICE_AVAILABLE:
+                return self._get_direct_stats()
             return self._demo_stats()
+
+    def _get_direct_stats(self) -> SystemStats:
+        """Get stats using direct service."""
+        if self._direct_service is None:
+            self._init_direct_service()
+
+        if self._direct_service is None:
+            return self._demo_stats()
+
+        stats = self._direct_service.get_stats()
+        return SystemStats(
+            total_beliefs=stats.total_beliefs,
+            total_constraints=stats.total_constraints,
+            total_papers=stats.total_papers,
+            total_communities=stats.total_communities,
+            overall_coherence=stats.overall_coherence,
+            average_credence=stats.average_credence,
+            contested_beliefs=stats.contested_beliefs,
+            stub_beliefs=stats.stub_beliefs
+        )
 
     def get_health(self) -> Dict:
         """Get system health status."""

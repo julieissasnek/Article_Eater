@@ -80,6 +80,23 @@ SAMPLE_BIBTEX_WITH_LATEX = """
 }
 """
 
+SAMPLE_BIBTEX_WITH_DATE = """
+@article{smith2021date,
+    author = {Smith, John},
+    title = {Date Field Parsing},
+    year = {2021},
+    date = {2021-05-12},
+}
+
+@article{jones2020monthday,
+    author = {Jones, Amy},
+    title = {Month Day Parsing},
+    year = {2020},
+    month = {Feb},
+    day = {3},
+}
+"""
+
 
 # =============================================================================
 # PARSER TESTS
@@ -150,6 +167,17 @@ class TestBibTeXParser:
         assert "ü" in entry.authors[0] or "u" in entry.authors[0]  # Müller or Muller
         # Braces around LaTeX should be removed
         assert "{" not in entry.title
+
+    def test_parse_publication_date(self):
+        """Test parsing publication date fields."""
+        entries = parse_bibtex_string(SAMPLE_BIBTEX_WITH_DATE)
+        assert len(entries) == 2
+
+        smith = next(e for e in entries if e.cite_key == "smith2021date")
+        jones = next(e for e in entries if e.cite_key == "jones2020monthday")
+
+        assert smith.publication_date == "2021-05-12"
+        assert jones.publication_date == "2020-02-03"
 
     def test_parse_file(self):
         """Test parsing from file."""

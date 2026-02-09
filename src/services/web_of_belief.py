@@ -1220,9 +1220,29 @@ class WebOfBelief:
         - Simon: Coherence contribution is expensive, use simplified proxy
         - Cartwright: Allow soft hierarchy but not hard foundationalism
         """
+        components = self._compute_entrenchment_components(belief_id)
+        return components["entrenchment"]
+
+    def get_entrenchment_components(self, belief_id: str) -> Dict[str, Any]:
+        """
+        Return entrenchment component breakdown for monitoring.
+
+        V23.0.0: Entrenchment is emergent. This exposes the inputs used
+        in the Thagard formula for admin diagnostics and timeline tracking.
+        """
+        return self._compute_entrenchment_components(belief_id)
+
+    def _compute_entrenchment_components(self, belief_id: str) -> Dict[str, Any]:
+        """Compute component parts for entrenchment."""
         belief = self.beliefs.get(belief_id)
         if not belief:
-            return 0.0
+            return {
+                "entrenchment": 0.0,
+                "connectivity": 0.0,
+                "level_weight": 0.0,
+                "coherence_contrib": 0.0,
+                "constraint_count": 0,
+            }
 
         # Factor 1: Connectivity (40%)
         # Number of constraints involving this belief, saturating at 10
@@ -1257,7 +1277,13 @@ class WebOfBelief:
             0.3 * coherence_contrib
         )
 
-        return max(0.0, min(1.0, entrenchment))
+        return {
+            "entrenchment": max(0.0, min(1.0, entrenchment)),
+            "connectivity": connectivity,
+            "level_weight": level_weight,
+            "coherence_contrib": coherence_contrib,
+            "constraint_count": constraint_count,
+        }
 
     def _invalidate_entrenchment_cache(self) -> None:
         """Invalidate entrenchment cache (call when constraints change)."""
