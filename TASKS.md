@@ -29,7 +29,188 @@ This prevents duplicate work across parallel terminals.
 3. ~~**Strategic TODOs 1-3**~~ ✓ COMPLETE — Credibility, Interpretive, VOI
 4. ~~**Sprint 2.6 Panel Implementation**~~ ✓ COMPLETE — P-TC Track A, P-QW Track B
 5. ~~**Technical Debt**~~ ✓ ALL COMPLETE [TD-A, TD-B, TD-C, TD-D, TD-E]
-6. **Sprint 2.0.4-2.0.5** — Pipeline testing and error handling (SEE ACTIVE_TASKS.md)
+6. ~~**Sprint 2.0.4-2.0.5**~~ ✓ COMPLETE — Pipeline testing and error handling
+7. **AF-AE Integration: BibTeX Metadata for User-Uploaded PDFs** — NEW (see below)
+
+---
+
+## Pending: AF-AE BibTeX Integration
+
+**Added**: 2026-02-08
+**Context**: Article Finder accepts user-uploaded PDFs that lack BibTeX metadata. Without metadata (title, authors, abstract, DOI, year), Article Eater cannot properly extract rules or track provenance.
+
+### Problem Statement
+
+1. AF hunts articles (has metadata) but also accepts direct PDF uploads (no metadata)
+2. User has Zotero library with BibTeX export capability
+3. Need to link uploaded PDFs to their BibTeX records
+4. Need this metadata for AE rule extraction and provenance tracking
+
+### Design Options
+
+| Option | Where | Approach | Pros | Cons |
+|--------|-------|----------|------|------|
+| **A. AF Upload Enhancement** | Article Finder | Add BibTeX upload alongside PDF, match by filename or user selection | Clean separation, metadata lives with source | Requires AF changes |
+| **B. AE Metadata Augmentation** | Article Eater | Accept BibTeX bundle in input_bundle, enrich paper.json | AE already handles bundles | Metadata should live upstream |
+| **C. Zotero Connector** | New service | Watch Zotero export folder, auto-match PDFs by hash/filename | Automated, works with existing workflow | New service to maintain |
+| **D. Manual Linking UI** | AF or Streamlit | Upload BibTeX, show unlinked PDFs, user manually matches | Handles edge cases | Manual work |
+
+### Recommended Approach: Hybrid A + D
+
+1. **AF Enhancement**: Add optional BibTeX upload with PDF
+   - Parse BibTeX, extract fields for `paper.json`
+   - Fields needed: `title`, `authors`, `abstract`, `year`, `doi`, `journal`, `volume`, `pages`
+
+2. **Bulk Zotero Import** (for existing library):
+   - User exports Zotero collection as BibTeX
+   - AF/Streamlit UI shows unlinked PDFs and BibTeX entries
+   - User matches them (or auto-match by title similarity)
+   - Matched entries create proper `paper.json` metadata
+
+3. **AE Contract Update**:
+   - `paper.json` already has fields for this
+   - Ensure `abstract` is used for extraction when fulltext unavailable
+   - Add `bibtex_source` field to provenance
+
+### Tasks
+
+| ID | Task | Estimate | Status |
+|----|------|----------|--------|
+| BIB-1 | Design paper.json schema extensions for BibTeX fields | 1h | ✓ DONE (included in BIB-2) |
+| BIB-2 | Add BibTeX parser utility | 2h | ✓ DONE |
+| BIB-3 | AF: Add BibTeX upload option alongside PDF | 3h | Pending |
+| BIB-4 | AF: Create bulk Zotero import UI | 4h | ✓ DONE (Streamlit page) |
+| BIB-5 | Auto-match algorithm (title similarity, DOI, filename) | 3h | ✓ DONE |
+| BIB-6 | AE: Ensure abstract extraction works when fulltext missing | 2h | Pending |
+| BIB-7 | Ingest matched PDFs into AE pipeline | 3h | Pending |
+
+---
+
+## Pending: Extraction Tables (16 Types)
+
+**Added**: 2026-02-08 (from WHERE_WE_STAND.md #12)
+**Source**: `/Users/davidusa/REPOS/Outcome_Contractor/article_finder/exemplary_extraction_tables.md`
+**Context**: Each article type needs complete field specs, rule mappings, validation rules, and AI prompts.
+
+### Status: 5 Complete, 4 Partial, 7 Missing
+
+| # | Article Type | Status | Notes |
+|---|--------------|--------|-------|
+| 1 | Randomized Experiment | ✅ Complete | Full spec 2026-02-03 |
+| 2 | Quasi-Experiment | ✅ Complete | Full spec 2026-02-03 |
+| 3 | Cross-Sectional Survey | ✅ Complete | Full spec 2026-02-03 |
+| 4 | Longitudinal Study | ✅ Complete | Full spec 2026-02-08 (panel additions) |
+| 5 | Observational Field Study | ❌ Missing | |
+| 6 | Phenomenological Study | ❌ Missing | Qualitative |
+| 7 | Ethnographic Study | ❌ Missing | Qualitative |
+| 8 | Grounded Theory Study | ❌ Missing | Qualitative |
+| 9 | Case Study | ❌ Missing | |
+| 10 | Interview Study | ❌ Missing | Qualitative |
+| 11 | Mixed Methods | ❌ Missing | |
+| 12 | Meta-Analysis | ✅ Complete | Full spec 2026-02-08 (panel additions) |
+| 13 | Systematic Review | ⚠️ Partial | |
+| 14 | Narrative Review | ⚠️ Partial | |
+| 15 | Theoretical | ⚠️ Partial | |
+| 16 | Thought Piece | ⚠️ Partial | |
+
+### Next Priority
+1. Complete Systematic Review (similar structure to Meta-Analysis)
+2. Complete remaining synthesis types (Narrative Review)
+3. Complete qualitative types (starting with Case Study)
+
+### Each Type Needs
+1. Complete field list (required/optional)
+2. Mapping to rule types (which fields → which rules)
+3. Validation rules (what makes extraction adequate)
+4. AI prompt specifications
+5. Edge cases (missing data, ambiguous findings)
+
+### Panel Consultation Completed: 2026-02-08
+
+**Panelists**: Walton (argumentation), Pearl (causation), Cartwright (philosophy of science), Lipton (explanation), Hearst (NLP extraction), Teufel (scientific discourse), R. Kaplan (domain)
+
+**Document**: `/Users/davidusa/REPOS/Outcome_Contractor/docs/PANEL_CONSULTATION_EXTRACTION_TABLES_2026_02_08.md`
+
+**Key Additions from Panel**:
+
+| Addition | Source | Priority |
+|----------|--------|----------|
+| New rule types: REBUTTAL, PRESUMPTION, ASSOCIATION, CONTRAST | Walton, Pearl, Lipton | High |
+| `causal_level` (association/intervention/counterfactual) | Pearl | High |
+| `argument_scheme` + `critical_questions[]` | Walton | High |
+| `contrast_class` + `difference_maker` | Lipton | High |
+| `enabling_conditions[]` + `bridge_type` | Cartwright | Medium |
+| `extraction_difficulty` + `source_zone` per field | Hearst, Teufel | Medium |
+| Domain features (ART, Appleton, etc.) | Kaplan | High for CNfA |
+| Stimulus documentation template | All | High |
+
+**Immediate Action Items**:
+- [x] Add new rule types to schema — DONE 2026-02-09 (ae.rule.v2.schema.json, ae.claim.v2.schema.json)
+- [x] Add argument_schemes vocabulary — DONE 2026-02-09 (contracts/vocab/argument_schemes.json)
+- [ ] Update RCT/Quasi-Exp/Cross-Sectional with panel additions
+- [ ] Create stimulus documentation template with domain features
+- [x] Complete Longitudinal Study spec (high causal value per Pearl) — DONE 2026-02-08
+- [x] Complete Meta-Analysis spec (high synthesis value) — DONE 2026-02-08
+
+---
+
+## Pending: Extracted Tables Database (PDF Tables)
+
+**Added**: 2026-02-08
+**Context**: Track tables extracted from PDFs (results tables, demographics, etc.)
+
+| ID | Task | Status |
+|----|------|--------|
+| TBL-1 | Add `extracted_tables` schema to AF database | ✓ DONE |
+| TBL-2 | Add CRUD methods to Database class | ✓ DONE |
+| TBL-3 | Add table extraction code (AI/API primary, pdfplumber fallback) | ✓ DONE |
+| TBL-4 | Integrate with AE claim extraction | ✓ DONE |
+| TBL-5 | Add table review UI | ✓ DONE |
+
+**TBL-3 Completion (2026-02-08)**:
+- Created `src/services/table_extractor.py` (~750 lines)
+- `AITableExtractor`: LLM-based extraction with structured prompts for 4 table types
+  - STUDY_CHARACTERISTICS, RESULTS, QUALITY_ASSESSMENT, DEMOGRAPHICS
+- `PdfPlumberTableExtractor`: Geometric extraction fallback
+- `HybridTableExtractor`: Combines AI + pdfplumber
+- `ExtractedTable` dataclass with to_dict(), to_markdown() methods
+- Conversion functions: `extracted_table_to_article_metadata()`, `extracted_table_to_rct_facts()`
+- Factory function: `get_table_extractor(method, api_client, model)`
+- 46 tests in `tests/test_table_extractor.py`
+
+**TBL-4 Completion (2026-02-09)**:
+- Created `src/services/table_to_claims.py` (~480 lines)
+  - `TableClaim`: Claim dataclass for table-derived claims
+  - `TableClaimGenerator`: Converts tables to claims by type
+  - `PipelineTableIntegrator`: Integrates with pipeline
+  - `extract_tables_for_pipeline()`: Convenience function
+  - Export functions for tables.jsonl
+- Integrated into `app/tasks/pipeline.py`:
+  - Table extraction after BN export, before web integration
+  - Claim merging with deduplication
+  - Added to result dict: `n_tables`, `n_table_claims`
+  - Added artifact: `tables_jsonl`
+
+**TBL-5 Completion (2026-02-09)**:
+- Added table review section to `scripts/ae_streamlit_control_room.py`
+  - Output directory browser for tables.jsonl files
+  - Table selector with metadata display
+  - DataFrame visualization of table content
+  - Raw JSON view in expander
+  - Table-derived claims display from claims.jsonl
+
+**BIB-2 Completion (2026-02-08)**:
+- Created `src/services/bibtex_utils.py` (~700 lines, no external deps)
+- `BibTeXParser`: Full BibTeX parsing with nested braces, LaTeX cleanup
+- `BibTeXEntry`: Data class with `to_paper_json()` conversion
+- `PDFBibTeXMatcher`: Multi-strategy matching (DOI, arXiv, title, author-year)
+- `normalize_text()`, `title_similarity()`: Fuzzy matching utilities
+- Created `streamlit_app/pages/1_bibtex_import.py` (~450 lines)
+  - Upload BibTeX and PDFs
+  - Auto-match with confidence scores
+  - Manual linking for unmatched items
+  - Export as paper.json bundles, match reports, or CSV
+- 41 tests in `tests/test_bibtex_utils.py`
 
 ---
 
@@ -422,7 +603,7 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 ### Sprint 2.0: Pipeline Integration
 
-**Status**: IN PROGRESS
+**Status**: ✓ COMPLETE (2026-02-08)
 
 | ID | Task | Estimate | Dependencies | Status |
 |----|------|----------|--------------|--------|
@@ -430,7 +611,21 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | 2.0.2 | Implement output serialization | 3h | — | ✓ DONE |
 | 2.0.3 | Add CLI flags for web outputs | 2h | — | ✓ DONE |
 | 2.0.4 | Test with sample papers | 4h | All above | ✓ DONE |
-| 2.0.5 | Error handling and logging | 2h | All above | Pending |
+| 2.0.5 | Error handling and logging | 2h | All above | ✓ DONE |
+
+**Sprint 2.0.5 Completion (2026-02-08)**:
+- Created `src/services/pipeline_logging.py` (~400 lines)
+- Custom exception hierarchy: PipelineError, ExtractionError, LLMError, ConfigurationError, WebIntegrationError, SerializationError, DatabaseError, ValidationError, RetryableError
+- ErrorCollector class for structured error tracking with severity levels (FATAL, BLOCKING, DEGRADED, WARNING, INFO)
+- ErrorRecord dataclass for serializable error records
+- `with_retry` decorator for transient failure recovery with exponential backoff
+- `pipeline_stage` context manager for stage-level error handling
+- Structured JSON logging with configurable format (structured/simple)
+- Environment variable configuration: AE_LOG_LEVEL, AE_LOG_FORMAT, AE_LOG_FILE
+- Enhanced pipeline.py with try/except blocks for validation, extraction, and serialization stages
+- New output file: `errors.jsonl` written when errors are collected
+- 32 new tests (`test_pipeline_logging.py`)
+- All 1346 tests passing
 
 **Sprint 2.0.1 Completion (2026-02-08)**:
 - Wired TD-C (Scalable Coherence) into pipeline.py
@@ -478,12 +673,137 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 ### Sprint 3.0: Full Integration
 
-| ID | Task | Dependencies |
-|----|------|--------------|
-| 3.0.1 | Unified API | 2.0, 2.5 |
-| 3.0.2 | Query engine (NL → structured) | 2.5 |
-| 3.0.3 | Visualization (web, community graphs) | 2.5 |
-| 3.0.4 | Export (BibTeX, summaries) | 2.0 |
+**Status**: IN PROGRESS
+**Panel**: P-S3 (21 experts consulted — see `docs/SPRINT_3.0_PLAN.md`)
+**Interface**: Streamlit (primary) + FastAPI (backend)
+**Philosophy**: User-type-driven design with pre-populated common questions
+
+---
+
+#### Sprint 3.0.1: Unified API (Foundation)
+
+| ID | Task | Priority | Deliverable | Status |
+|----|------|----------|-------------|--------|
+| 3.0.1-A | Design resource-based API (~25 endpoints) | P1 | `docs/API_DESIGN_SPRINT_3.0.1.md` | Pending |
+| 3.0.1-B | Implement Core Layer (7 high-use endpoints) | P1 | `app/api/v1/core/` | Pending |
+| 3.0.1-C | Add versioning, pagination, async support | P1 | `app/api/v1/middleware/` | Pending |
+| 3.0.1-D | Implement Extended Layer (20 endpoints) | P2 | `app/api/v1/extended/` | Pending |
+| 3.0.1-E | Add batch operations endpoint | P2 | `app/api/v1/batch/` | Pending |
+| 3.0.1-F | Add causal endpoints | P2 | `app/api/v1/causal/` | Pending |
+
+**Core 7 Endpoints** (per Simon's layered API):
+1. `/api/v1/beliefs/` — Belief CRUD + search
+2. `/api/v1/queries/` — Natural language query execution
+3. `/api/v1/export/` — Evidence summaries, BibTeX, bundles
+4. `/api/v1/communities/` — Community-relative operations
+5. `/api/v1/constraints/` — Epistemic constraints
+6. `/api/v1/papers/` — Paper/source management
+7. `/api/v1/admin/` — System state, health, statistics
+
+---
+
+#### Sprint 3.0.2: Query Engine (Intelligence)
+
+| ID | Task | Priority | Deliverable | Status |
+|----|------|----------|-------------|--------|
+| 3.0.2-A | Query type detection (Pearl: associational/interventional/counterfactual) | P1 | `src/services/query_type_detector.py` | Pending |
+| 3.0.2-B | Progressive disclosure response format (Simon: headline→summary→detail) | P1 | `src/services/response_formatter.py` | Pending |
+| 3.0.2-C | Scope-aware output generation (Cartwright) | P1 | `src/services/scope_renderer.py` | Pending |
+| 3.0.2-D | Practitioner mode with design implications (Kaplan) | P1 | `src/services/practitioner_mode.py` | Pending |
+| 3.0.2-E | LLM integration (Haiku for parsing, Sonnet for synthesis) | P1 | `src/services/llm_query_bridge.py` | Pending |
+| 3.0.2-F | Add RELATED, TRENDING, CANONICAL patterns (Bates) | P2 | query_parser.py extension | Pending |
+| 3.0.2-G | Alerting/monitoring capability | P3 | `src/services/query_alerts.py` | Pending |
+
+**Query Types** (10 patterns):
+- WHAT, WHY, COMPARE, GAPS, CONTRADICT, CONTINGENT, HOW_CONFIDENT
+- NEW: RELATED, TRENDING, CANONICAL (Bates recommendation)
+
+---
+
+#### Sprint 3.0.3: Streamlit Interface (Understanding)
+
+| ID | Task | Priority | Deliverable | Status |
+|----|------|----------|-------------|--------|
+| 3.0.3-A | Core Streamlit app with user type selection | P1 | `streamlit_app/main.py` | Pending |
+| 3.0.3-B | Query interface with common questions per user type | P1 | `streamlit_app/pages/query.py` | Pending |
+| 3.0.3-C | Claim network graph (D3.js/vis.js via components) | P1 | `streamlit_app/components/network.py` | Pending |
+| 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P1 | `streamlit_app/pages/admin.py` | Pending |
+| 3.0.3-E | Overview-zoom-filter-details interaction (Shneiderman) | P1 | JS interaction layer | Pending |
+| 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | `src/services/graph_export.py` | Pending |
+| 3.0.3-G | Community structure visualization | P2 | `streamlit_app/pages/communities.py` | Pending |
+| 3.0.3-H | Interactive HTML export (standalone) | P2 | HTML generator | Pending |
+
+**User Types with Common Questions** (Cooper personas):
+
+| User Type | Persona | Example Questions (5-10) |
+|-----------|---------|-------------------------|
+| **Practitioner/Designer** | Marcus Williams | "What reduces stress in hospitals?", "Evidence for plants in offices?", "Windows vs skylights for wellbeing?", "Practical recommendations for waiting rooms", "Dosage for biophilic elements?" |
+| **Senior Researcher** | Dr. Sarah Chen | "Gaps in biophilic design research?", "Methodological concerns in findings?", "Mechanisms explaining nature-health links?", "ART vs SRT evidence quality?", "Impact if Ulrich 1984 retracted?" |
+| **Graduate Student** | Jordan Taylor | "How does ART theory work?", "Key papers on biophilia?", "What's contested in this field?", "Where should I focus my thesis?", "Explain the evidence hierarchy" |
+| **Systematic Reviewer** | — | "All evidence for outcome X", "Studies with RCT methodology", "Export citations for stress reduction", "Cross-study comparison table" |
+| **Quick Lookup** | — | "Credence for claim X?", "What supports Y?", "Is Z established or contested?" |
+
+---
+
+#### Sprint 3.0.4: Export (Delivery)
+
+| ID | Task | Priority | Deliverable | Status |
+|----|------|----------|-------------|--------|
+| 3.0.4-A | Evidence summary generator with scope metadata (Cartwright) | P1 | `src/services/evidence_summarizer.py` | Pending |
+| 3.0.4-B | Pipeline-friendly formats (JSONL, Parquet) (Zaharia) | P1 | `src/services/export_formats.py` | Pending |
+| 3.0.4-C | Verification checklists (Gawande) | P1 | `src/services/export_checklists.py` | Pending |
+| 3.0.4-D | BibTeX generator with full metadata | P2 | `src/services/bibtex_generator.py` | Pending |
+| 3.0.4-E | Purpose-driven export bundles (Munzner) | P2 | `src/services/export_bundles.py` | Pending |
+| 3.0.4-F | Report generation (PDF/Markdown) | P3 | `src/services/report_generator.py` | Pending |
+
+---
+
+#### Sprint 3.0.5: Admin & System Inspection
+
+| ID | Task | Priority | Deliverable | Status |
+|----|------|----------|-------------|--------|
+| 3.0.5-A | Admin dashboard in Streamlit | P1 | `streamlit_app/pages/admin.py` | Pending |
+| 3.0.5-B | Belief inspector (browse, search, filter) | P1 | Admin component | Pending |
+| 3.0.5-C | Constraint viewer (network visualization) | P1 | Admin component | Pending |
+| 3.0.5-D | Community browser (members, credences) | P1 | Admin component | Pending |
+| 3.0.5-E | System statistics (counts, coherence, health) | P1 | Admin component | Pending |
+| 3.0.5-F | Paper/source browser | P2 | Admin component | Pending |
+| 3.0.5-G | Export audit trail | P2 | Admin component | Pending |
+
+---
+
+#### Implementation Order (Recommended)
+
+```
+Phase 1: Foundation (3.0.1-A, 3.0.1-B, 3.0.1-C)
+         Core API with 7 endpoints, versioning, async
+         ↓
+Phase 2: Intelligence (3.0.2-A through 3.0.2-E)
+         Query engine with LLM integration
+         ↓
+Phase 3: Interface (3.0.3-A through 3.0.3-E, 3.0.5-A through 3.0.5-E)
+         Streamlit app + Admin dashboard + User types
+         ↓
+Phase 4: Delivery (3.0.4-A through 3.0.4-C)
+         Core export capabilities
+         ↓
+Phase 5: Enhancement (remaining P2/P3 tasks)
+         Extended API, advanced viz, reports
+```
+
+---
+
+#### AI Integration Architecture
+
+**Model Tiering** (per Amodei cost optimization):
+- **Template match**: $0 (no LLM) — "What is the credence for X?"
+- **Haiku**: $0.005 — Query parsing, intent classification
+- **Sonnet**: $0.02 — Complex synthesis, comparisons
+- **Opus**: $0.10 — Deep explanations, reports
+
+**Target**: 80% of queries at $0-0.01, 15% at $0.02, 5% at $0.10
+
+---
 
 ### Strategic TODOs (from STRATEGIC_TODOS_2026_01_20.md)
 
@@ -561,6 +881,8 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-09 | **SCHEMA-1 COMPLETE**: Added panel-recommended schema extensions. Created `ae.rule.v2.schema.json` with new rule_types (rebuttal, presumption, association, contrast) and fields (causal_level, argument_scheme, critical_questions, contrast_class, difference_maker, enabling_conditions, bridge_type). Created `ae.claim.v2.schema.json` with causal_level, extraction_difficulty, source_zone, contrast_class. Created `contracts/vocab/argument_schemes.json` with 10 Walton schemes mapped to causal levels. Updated ACTIVE_TASKS.md with full pending task breakdown (24 tasks across 5 priority tiers). |
+| 2026-02-08 | **TBL-3 COMPLETE**: PDF Table Extraction. Created `src/services/table_extractor.py` (~750 lines). `AITableExtractor`: LLM-based extraction with structured prompts for STUDY_CHARACTERISTICS, RESULTS, QUALITY_ASSESSMENT, DEMOGRAPHICS table types. `PdfPlumberTableExtractor`: Geometric fallback. `HybridTableExtractor`: Combines both. Conversion functions to `ArticleMetadata` and `RCTStudyFact` types. 46 tests (`test_table_extractor.py`). Export engine already has table generators (ArticleMetadataTableGenerator, RCTTableGenerator) — now connected to extraction. |
 | 2026-02-08 | **V23.0.0 BREAKING CHANGE: Emergent Entrenchment**: Removed `entrenchment` as settable field from `Belief` class. Added `WebOfBelief.get_entrenchment(belief_id)` method computing entrenchment via Thagard formula (40% connectivity + 30% level_weight + 30% coherence_contrib). Lazy caching with invalidation on constraint changes. Updated 8 files to use new method. Panel consultation: Quine, Haack, Thagard, Cartwright, Parnas, Simon. Philosophy clarified as foundherentism (Haack 1993), not pure Quinean coherentism. Fixed P1 bugs from ChatGPT ruthless review: constraint index purge, boundary status staleness, decision semantics (ACCEPT default). Created `tests/test_scalable_coherence_benchmark.py` (8 tests). Panel doc: `docs/PANEL_CONSULTATION_ENTRENCHMENT_2026-02-08.md`. |
 | 2026-02-08 | **SPRINT 2.0.3 COMPLETE**: CLI flags for web outputs. Added `--web/--no-web`, `--web-equilibrium/--no-web-equilibrium`, `--web-max-iterations`, `--web-convergence-threshold` for Web of Belief control. Added `--export-manifest`, `--export-bn`, `--export-cluster-stats`, `--export-bn-edges` (all with `--no-*` variants) for export control. Updated pipeline functions to accept `web_options` and `export_options` dicts. 9 tests (`test_cli_web_flags.py`). |
 | 2026-02-08 | **SPRINT 2.0.2 COMPLETE**: Output Serialization. Created `src/services/output_serializer.py` (~500 lines) with manifest generation, SHA256 checksums, TD module exports (theory inference audit, scope conditions, temporal expressions, cluster stats, BN edges with credible intervals). Schema versions for all outputs. Pipeline now generates `manifest.json`, `cluster_stats.json`, `bn_edges.json`. 20 tests (`test_output_serializer.py`). |

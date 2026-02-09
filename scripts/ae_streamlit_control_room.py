@@ -431,6 +431,149 @@ col2.metric("🔍 Findings", count_findings)
 col3.metric("❌ Job Errors", count_errors)
 
 # ---------------------------------------------------------------------
+# 4. TABLE REVIEW (TBL-5: Extracted Tables from PDFs)
+# ---------------------------------------------------------------------
+st.subheader("4. Extracted Tables")
+
+# Output directory selector
+output_base = st.text_input(
+    "Output Directory",
+    value=str(Path.home() / "ae_outputs"),
+    help="Base directory where pipeline outputs are stored"
+)
+
+output_path = Path(output_base).expanduser()
+if output_path.exists() and output_path.is_dir():
+    # Find all tables.jsonl files in subdirectories
+    tables_files = list(output_path.rglob("tables.jsonl"))
+
+    if tables_files:
+        # Sort by modification time, most recent first
+        tables_files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+
+        # Create dropdown of available table files
+        file_options = [str(f.relative_to(output_path)) for f in tables_files[:20]]
+        selected_file = st.selectbox(
+            "Select tables file",
+            options=file_options,
+            help="Choose a tables.jsonl file to review"
+        )
+
+        if selected_file:
+            tables_path = output_path / selected_file
+            try:
+                import json
+                tables_data = []
+                with open(tables_path, 'r') as f:
+                    for line in f:
+                        if line.strip():
+                            tables_data.append(json.loads(line))
+
+                if tables_data:
+                    st.write(f"Found **{len(tables_data)}** tables in this file")
+
+                    # Table selector
+                    table_options = [
+                        f"{t.get('table_id', 'unknown')}: {t.get('title', 'Untitled')} (Page {t.get('page_number', '?')})"
+                        for t in tables_data
+                    ]
+                    selected_table_idx = st.selectbox(
+                        "Select table to review",
+                        options=range(len(table_options)),
+                        format_func=lambda i: table_options[i]
+                    )
+
+                    if selected_table_idx is not None:
+                        table = tables_data[selected_table_idx]
+
+                        # Display table metadata
+                        col_meta1, col_meta2 = st.columns(2)
+                        with col_meta1:
+                            st.write("**Table ID:**", table.get('table_id', 'unknown'))
+                            st.write("**Type:**", table.get('table_type', 'unknown'))
+                            st.write("**Page:**", table.get('page_number', 'unknown'))
+                        with col_meta2:
+                            st.write("**Confidence:**", f"{table.get('confidence', 0):.2f}")
+                            st.write("**Method:**", table.get('extraction_method', 'unknown'))
+                            st.write("**Title:**", table.get('title', 'Untitled'))
+
+                        # Display table content as DataFrame
+                        headers = table.get('headers', [])
+                        rows = table.get('rows', [])
+
+                        if headers and rows:
+                            # Ensure all rows have same number of columns as headers
+                            normalized_rows = []
+                            for row in rows:
+                                if len(row) < len(headers):
+                                    row = row + [''] * (len(headers) - len(row))
+                                elif len(row) > len(headers):
+                                    row = row[:len(headers)]
+                                normalized_rows.append(row)
+
+                            df_table = pd.DataFrame(normalized_rows, columns=headers)
+                            st.dataframe(df_table, use_container_width=True, hide_index=True)
+                        else:
+                            st.info("No structured data available for this table")
+
+                        # Show raw JSON in expander
+                        with st.expander("Raw table data"):
+                            st.json(table)
+                else:
+                    st.info("No tables found in this file")
+            except Exception as e:
+                st.error(f"Error reading tables file: {e}")
+    else:
+        st.info("No tables.jsonl files found in output directory")
+else:
+    st.warning(f"Output directory not found: {output_path}")
+
+# Also check for table claims if available
+st.markdown("---")
+st.write("**Table-derived Claims**")
+
+if output_path.exists() and output_path.is_dir() and 'selected_file' in dir() and selected_file:
+    # Look for claims from same output directory
+    claims_path = tables_path.parent / "claims.jsonl"
+    if claims_path.exists():
+        try:
+            import json
+            table_claims = []
+            with open(claims_path, 'r') as f:
+                for line in f:
+                    if line.strip():
+                        claim = json.loads(line)
+                        # Check if claim is from a table source
+                        source = claim.get('source', {})
+                        if source.get('type') == 'table':
+                            table_claims.append(claim)
+
+            if table_claims:
+                st.write(f"Found **{len(table_claims)}** claims derived from tables")
+
+                # Display as DataFrame
+                claims_display = []
+                for c in table_claims[:20]:  # Limit to 20
+                    claims_display.append({
+                        "claim_id": c.get('claim_id', 'unknown'),
+                        "type": c.get('claim_type', 'unknown'),
+                        "content": c.get('claim_text', c.get('content', ''))[:100] + '...' if len(c.get('claim_text', c.get('content', ''))) > 100 else c.get('claim_text', c.get('content', '')),
+                        "table_id": c.get('source', {}).get('table_id', 'unknown'),
+                        "confidence": c.get('confidence', 0),
+                    })
+
+                df_claims = pd.DataFrame(claims_display)
+                st.dataframe(df_claims, use_container_width=True, hide_index=True)
+            else:
+                st.info("No table-derived claims found in claims.jsonl")
+        except Exception as e:
+            st.error(f"Error reading claims: {e}")
+    else:
+        st.info("No claims.jsonl found in the same directory")
+else:
+    st.caption("Select a tables file above to view associated claims")
+
+# ---------------------------------------------------------------------
 # FOOTER
 # ---------------------------------------------------------------------
 st.caption(

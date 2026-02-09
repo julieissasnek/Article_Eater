@@ -15,6 +15,45 @@ from app.services.extract_7panel import extract_findings_from_text
 from app.pdf_ingest import extract_pdf_text
 from lib.outcome_resolver import resolve_or_queue
 
+# Sprint 2.0.5: Structured error handling and logging
+try:
+    from src.services.pipeline_logging import (
+        configure_logging,
+        get_logger,
+        PipelineError,
+        ExtractionError,
+        LLMError,
+        ConfigurationError,
+        WebIntegrationError,
+        SerializationError,
+        DatabaseError,
+        ValidationError,
+        RetryableError,
+        ErrorSeverity,
+        ErrorCollector,
+        pipeline_stage,
+        with_retry,
+    )
+    PIPELINE_LOGGING_AVAILABLE = True
+except ImportError:
+    PIPELINE_LOGGING_AVAILABLE = False
+    # Fallback stubs if logging module not available
+    import logging
+    def get_logger(name: str) -> logging.Logger:
+        return logging.getLogger(f"ae.{name}")
+    class ErrorCollector:
+        def __init__(self, run_id, paper_id=None):
+            self.errors = []
+        def record(self, *args, **kwargs):
+            pass
+        def to_jsonl(self, path):
+            return 0
+        def get_summary(self):
+            return {"total_errors": 0}
+
+# Initialize main pipeline logger
+_pipeline_logger = get_logger("pipeline")
+
 # Sprint 2: Web of Belief integration (Post-Quinean)
 # These imports enable coherentist analysis of extracted findings
 try:
@@ -113,6 +152,24 @@ try:
     OUTPUT_SERIALIZER_AVAILABLE = True
 except ImportError:
     OUTPUT_SERIALIZER_AVAILABLE = False
+
+# TBL-4: Table Extraction integration (Sprint 3.0)
+try:
+    from src.services.table_to_claims import (
+        PipelineTableIntegrator,
+        TableExtractionResult,
+        TableClaim,
+        extract_tables_for_pipeline,
+        export_tables_jsonl,
+        export_table_claims_jsonl,
+    )
+    from src.services.table_extractor import (
+        ExtractedTable,
+        ExtractionMethod,
+    )
+    TABLE_EXTRACTION_AVAILABLE = True
+except ImportError:
+    TABLE_EXTRACTION_AVAILABLE = False
 
 DB = os.environ.get("AE_DB", "ae.db")
 BN_EXPORT_VERSION = "0.2"
@@ -1020,6 +1077,7 @@ def _run_from_contract_bundle_impl(
     and return a summary dict (counts, warnings, etc).
 
     Sprint 2.0.3: Now accepts web_options and export_options from CLI flags.
+    Sprint 2.0.5: Enhanced error handling and structured logging.
 
     web_options:
         enabled: bool - Enable/disable web of belief integration
@@ -1041,6 +1099,14 @@ def _run_from_contract_bundle_impl(
     web_options = web_options or {}
     export_options = export_options or {}
 
+    # Sprint 2.0.5: Initialize run metadata early for error collection
+    run_id = f"ae.run.{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
+    paper_id = "unknown"  # Will be updated after reading paper.json
+
+    # Sprint 2.0.5: Initialize error collector
+    error_collector = ErrorCollector(run_id, paper_id)
+    _pipeline_logger.info(f"Starting pipeline run: {run_id}", extra={"run_id": run_id})
+
     # Override environment variables with CLI options
     if "seek_equilibrium" in web_options:
         os.environ["AE_WEB_SEEK_EQUILIBRIUM"] = str(web_options["seek_equilibrium"]).lower()
@@ -1049,31 +1115,119 @@ def _run_from_contract_bundle_impl(
     if "convergence_threshold" in web_options:
         os.environ["AE_WEB_CONVERGENCE_THRESHOLD"] = str(web_options["convergence_threshold"])
 
-    run_id = f"ae.run.{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
     audits: List[Dict[str, Any]] = []
     review_items: List[Dict[str, Any]] = []
 
+    # Sprint 2.0.5: Wrap input validation in try/except
     pdf_path = in_dir / "paper.pdf"
     paper_path = in_dir / "paper.json"
-    paper = json.loads(paper_path.read_text(encoding="utf-8"))
+
+    try:
+        if not paper_path.exists():
+            error_msg = f"Missing required file: {paper_path}"
+            _pipeline_logger.error(error_msg)
+            if PIPELINE_LOGGING_AVAILABLE:
+                error_collector.record(
+                    ValidationError(error_msg, paper_id=paper_id, recoverable=False),
+                    ErrorSeverity.FATAL,
+                    "validation",
+                )
+            return {
+                "run_id": run_id,
+                "paper_id": paper_id,
+                "status": "FAIL",
+                "n_claims": 0,
+                "n_rules": 0,
+                "blocking_issues": ["missing_paper_json"],
+                "error": error_msg,
+            }
+        paper = json.loads(paper_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        error_msg = f"Invalid JSON in paper.json: {e}"
+        _pipeline_logger.error(error_msg)
+        if PIPELINE_LOGGING_AVAILABLE:
+            error_collector.record(e, ErrorSeverity.FATAL, "validation", {"file": str(paper_path)})
+        return {
+            "run_id": run_id,
+            "paper_id": paper_id,
+            "status": "FAIL",
+            "n_claims": 0,
+            "n_rules": 0,
+            "blocking_issues": ["invalid_paper_json"],
+            "error": error_msg,
+        }
+    except Exception as e:
+        error_msg = f"Failed to read paper.json: {e}"
+        _pipeline_logger.error(error_msg, exc_info=True)
+        if PIPELINE_LOGGING_AVAILABLE:
+            error_collector.record(e, ErrorSeverity.FATAL, "validation", {"file": str(paper_path)})
+        return {
+            "run_id": run_id,
+            "paper_id": paper_id,
+            "status": "FAIL",
+            "n_claims": 0,
+            "n_rules": 0,
+            "blocking_issues": ["read_error"],
+            "error": error_msg,
+        }
 
     paper_id = paper.get("paper_id", "unknown")
-    pdf_sha256 = _sha256_file(pdf_path) if pdf_path.exists() else "0" * 64
-    paper_json_sha256 = _sha256_file(paper_path)
+    error_collector.paper_id = paper_id  # Update collector with actual paper_id
+    _pipeline_logger.info(f"Processing paper: {paper_id}", extra={"paper_id": paper_id, "run_id": run_id})
+
+    try:
+        pdf_sha256 = _sha256_file(pdf_path) if pdf_path.exists() else "0" * 64
+        paper_json_sha256 = _sha256_file(paper_path)
+    except Exception as e:
+        _pipeline_logger.warning(f"Failed to compute file hash: {e}", extra={"paper_id": paper_id})
+        pdf_sha256 = "0" * 64
+        paper_json_sha256 = "0" * 64
 
     audits.append(_audit_event(run_id, paper_id, "ingest", "start", {"profile": profile, "hitl": hitl}))
 
+    # Sprint 2.0.5: Text extraction with comprehensive error handling
     text = ""
     fulltext_path = in_dir / "fulltext.txt"
     abstract_path = in_dir / "abstract.txt"
-    if fulltext_path.exists():
-        text = fulltext_path.read_text(encoding="utf-8", errors="ignore")
-    elif abstract_path.exists():
-        text = abstract_path.read_text(encoding="utf-8", errors="ignore")
-    elif pdf_path.exists():
-        text = extract_pdf_text(pdf_path) or ""
 
-    if not text:
+    try:
+        if fulltext_path.exists():
+            _pipeline_logger.debug(f"Reading fulltext from {fulltext_path}", extra={"paper_id": paper_id})
+            text = fulltext_path.read_text(encoding="utf-8", errors="ignore")
+        elif abstract_path.exists():
+            _pipeline_logger.debug(f"Reading abstract from {abstract_path}", extra={"paper_id": paper_id})
+            text = abstract_path.read_text(encoding="utf-8", errors="ignore")
+        elif pdf_path.exists():
+            _pipeline_logger.debug(f"Extracting text from PDF: {pdf_path}", extra={"paper_id": paper_id})
+            try:
+                text = extract_pdf_text(pdf_path) or ""
+            except Exception as pdf_err:
+                _pipeline_logger.warning(
+                    f"PDF extraction failed: {pdf_err}",
+                    extra={"paper_id": paper_id},
+                    exc_info=True
+                )
+                if PIPELINE_LOGGING_AVAILABLE:
+                    error_collector.record(
+                        ExtractionError(f"PDF extraction failed: {pdf_err}", paper_id=paper_id, recoverable=True),
+                        ErrorSeverity.DEGRADED,
+                        "extraction",
+                        {"pdf_path": str(pdf_path)},
+                    )
+                text = ""
+    except Exception as e:
+        _pipeline_logger.error(f"Text extraction failed: {e}", extra={"paper_id": paper_id}, exc_info=True)
+        if PIPELINE_LOGGING_AVAILABLE:
+            error_collector.record(e, ErrorSeverity.BLOCKING, "extraction")
+        text = ""
+
+    if text:
+        _pipeline_logger.info(
+            f"Extracted {len(text)} characters of text",
+            extra={"paper_id": paper_id, "text_length": len(text)}
+        )
+    else:
+        _pipeline_logger.warning(f"No text extracted from input bundle", extra={"paper_id": paper_id})
         audits.append(_audit_event(run_id, paper_id, "extract", "fail", {"reason": "no_text_extracted"}))
         review_items.append(
             _review_item(
@@ -1086,10 +1240,14 @@ def _run_from_contract_bundle_impl(
             )
         )
 
+    # Sprint 2.0.5: LLM extraction with enhanced error handling and logging
     topic = paper.get("title") or paper.get("doi") or "unknown"
     findings = []
     llm_blocked = False
+    llm_error_details = None
+
     if text:
+        # Check for LLM configuration
         has_llm_key = bool(
             os.environ.get("GOOGLE_API_KEY")
             or os.environ.get("OPENAI_API_KEY")
@@ -1099,6 +1257,20 @@ def _run_from_contract_bundle_impl(
         )
         if not has_llm_key:
             llm_blocked = True
+            _pipeline_logger.warning(
+                "LLM extraction skipped: no API key configured",
+                extra={"paper_id": paper_id}
+            )
+            if PIPELINE_LOGGING_AVAILABLE:
+                error_collector.record(
+                    ConfigurationError(
+                        "LLM API key missing; configure GOOGLE_API_KEY or OPENAI_API_KEY",
+                        paper_id=paper_id,
+                        recoverable=True
+                    ),
+                    ErrorSeverity.BLOCKING,
+                    "configuration",
+                )
             audits.append(_audit_event(run_id, paper_id, "extract", "skip", {"reason": "llm_not_configured"}))
             review_items.append(
                 _review_item(
@@ -1111,10 +1283,43 @@ def _run_from_contract_bundle_impl(
                 )
             )
         else:
+            _pipeline_logger.info(
+                f"Starting LLM extraction for topic: {topic[:50]}...",
+                extra={"paper_id": paper_id, "topic": topic}
+            )
+            extraction_start = time.time()
+
             try:
                 findings = extract_findings_from_text(text, topic=topic, is_admin=False)
+                extraction_time = time.time() - extraction_start
+                _pipeline_logger.info(
+                    f"LLM extraction complete: {len(findings)} findings in {extraction_time:.2f}s",
+                    extra={
+                        "paper_id": paper_id,
+                        "n_findings": len(findings),
+                        "extraction_time_s": extraction_time
+                    }
+                )
             except Exception as exc:
+                extraction_time = time.time() - extraction_start
                 llm_blocked = True
+                llm_error_details = {
+                    "error_type": type(exc).__name__,
+                    "error_message": str(exc),
+                    "extraction_time_s": extraction_time,
+                }
+                _pipeline_logger.error(
+                    f"LLM extraction failed after {extraction_time:.2f}s: {exc}",
+                    extra={"paper_id": paper_id, **llm_error_details},
+                    exc_info=True
+                )
+                if PIPELINE_LOGGING_AVAILABLE:
+                    error_collector.record(
+                        LLMError(f"LLM extraction failed: {exc}", paper_id=paper_id, recoverable=True),
+                        ErrorSeverity.BLOCKING,
+                        "llm_extraction",
+                        llm_error_details,
+                    )
                 audits.append(_audit_event(run_id, paper_id, "extract", "fail", {"reason": str(exc)}))
                 review_items.append(
                     _review_item(
@@ -1259,6 +1464,97 @@ def _run_from_contract_bundle_impl(
             )
         )
 
+    # TBL-4: Table extraction and claim generation
+    table_extraction_result = None
+    extracted_tables = []
+    table_claims = []
+
+    if TABLE_EXTRACTION_AVAILABLE and pdf_path.exists():
+        _pipeline_logger.info(f"Starting table extraction from PDF", extra={"paper_id": paper_id})
+        table_start = time.time()
+
+        try:
+            # Get API client if available for AI extraction
+            api_client = None
+            try:
+                import anthropic
+                api_key = os.environ.get("ANTHROPIC_API_KEY")
+                if api_key:
+                    api_client = anthropic.Anthropic(api_key=api_key)
+            except ImportError:
+                pass
+
+            # Determine extraction method
+            extraction_method = ExtractionMethod.AI_API if api_client else ExtractionMethod.PDFPLUMBER
+
+            # Extract tables and generate claims
+            integrator = PipelineTableIntegrator(
+                api_client=api_client,
+                extraction_method=extraction_method
+            )
+            table_extraction_result = integrator.extract_and_convert(pdf_path, paper_id)
+            extracted_tables = table_extraction_result.tables
+            table_claims = table_extraction_result.claims
+
+            table_time = time.time() - table_start
+            _pipeline_logger.info(
+                f"Table extraction complete: {len(extracted_tables)} tables, {len(table_claims)} claims in {table_time:.2f}s",
+                extra={
+                    "paper_id": paper_id,
+                    "n_tables": len(extracted_tables),
+                    "n_table_claims": len(table_claims),
+                    "extraction_time_s": table_time,
+                }
+            )
+
+            # Merge table claims with text claims
+            if table_claims:
+                original_claim_count = len(claims)
+                claims = integrator.merge_with_text_claims(
+                    table_claims,
+                    claims
+                )
+                _pipeline_logger.info(
+                    f"Merged {len(claims) - original_claim_count} table claims (deduped from {len(table_claims)})",
+                    extra={"paper_id": paper_id}
+                )
+
+            # Export tables to JSONL
+            if extracted_tables:
+                tables_path = out_dir / "tables.jsonl"
+                export_tables_jsonl(extracted_tables, tables_path)
+                audits.append(
+                    _audit_event(
+                        run_id,
+                        paper_id,
+                        "table_extraction",
+                        "done",
+                        {
+                            "path": "tables.jsonl",
+                            "n_tables": len(extracted_tables),
+                            "n_table_claims": len(table_claims),
+                        },
+                    )
+                )
+
+        except Exception as table_err:
+            _pipeline_logger.warning(
+                f"Table extraction failed: {table_err}",
+                extra={"paper_id": paper_id},
+                exc_info=True
+            )
+            if PIPELINE_LOGGING_AVAILABLE:
+                error_collector.record(
+                    ExtractionError(f"Table extraction failed: {table_err}", paper_id=paper_id, recoverable=True),
+                    ErrorSeverity.WARNING,
+                    "table_extraction",
+                )
+            audits.append(_audit_event(run_id, paper_id, "table_extraction", "fail", {"reason": str(table_err)}))
+    elif not TABLE_EXTRACTION_AVAILABLE:
+        _pipeline_logger.debug("Table extraction skipped: module not available", extra={"paper_id": paper_id})
+    elif not pdf_path.exists():
+        _pipeline_logger.debug("Table extraction skipped: no PDF file", extra={"paper_id": paper_id})
+
     # Sprint 2: Web of Belief integration
     # Sprint 2.0.3: Pass through web_options and export_options from CLI
     web_integration_result = _integrate_into_web_of_belief(
@@ -1321,6 +1617,9 @@ def _run_from_contract_bundle_impl(
             "n_effect_sizes": len([c for c in claims if c["statistics"]["effect_size"]["value"] is not None]),
             "n_population_records": len([c for c in claims if c["study"]["sample"]["n"] is not None]),
             "n_environment_factors": sum(len(c["constructs"]["environment_factors"]) for c in claims),
+            # TBL-4: Table extraction summary
+            "n_tables": len(extracted_tables),
+            "n_table_claims": len(table_claims),
         },
         "artifacts": {
             "claims_jsonl": "claims.jsonl",
@@ -1335,6 +1634,8 @@ def _run_from_contract_bundle_impl(
             # Sprint 3: Bridge warrant outputs
             "bridges_jsonl": "bridges.jsonl" if web_integration_result.get("n_bridges", 0) > 0 else None,
             "anomalies_jsonl": "anomalies.jsonl" if web_integration_result.get("n_bridge_anomalies", 0) > 0 else None,
+            # TBL-4: Table extraction outputs
+            "tables_jsonl": "tables.jsonl" if extracted_tables else None,
         },
         "quality": {
             "confidence": decision["confidence"],
@@ -1365,12 +1666,50 @@ def _run_from_contract_bundle_impl(
     audits.append(_audit_event(run_id, paper_id, "extract", "done", {"n_claims": len(claims), "n_rules": len(rules)}))
     audits.append(_audit_event(run_id, paper_id, "finalize", "done", {"status": status}))
 
-    _write_json(out_dir / "result.json", result)
-    _write_jsonl(out_dir / "claims.jsonl", claims)
-    _write_jsonl(out_dir / "rules.jsonl", rules)
-    _write_json(out_dir / "provenance.json", provenance)
-    _write_jsonl(out_dir / "audit.log.jsonl", audits)
-    _write_jsonl(out_dir / "review_items.jsonl", review_items)
+    # Sprint 2.0.5: Serialize outputs with error handling
+    try:
+        _write_json(out_dir / "result.json", result)
+        _write_jsonl(out_dir / "claims.jsonl", claims)
+        _write_jsonl(out_dir / "rules.jsonl", rules)
+        _write_json(out_dir / "provenance.json", provenance)
+        _write_jsonl(out_dir / "audit.log.jsonl", audits)
+        _write_jsonl(out_dir / "review_items.jsonl", review_items)
+
+        # Sprint 2.0.5: Write error log if any errors were collected
+        if PIPELINE_LOGGING_AVAILABLE and error_collector.errors:
+            n_errors = error_collector.to_jsonl(out_dir / "errors.jsonl")
+            error_summary = error_collector.get_summary()
+            _pipeline_logger.info(
+                f"Pipeline completed with {n_errors} errors",
+                extra={"paper_id": paper_id, "error_summary": error_summary}
+            )
+            # Add error summary to result
+            result["error_summary"] = error_summary
+            # Re-write result.json with error summary
+            _write_json(out_dir / "result.json", result)
+        else:
+            _pipeline_logger.info(
+                f"Pipeline completed successfully: {len(claims)} claims, {len(rules)} rules",
+                extra={"paper_id": paper_id}
+            )
+
+    except Exception as e:
+        _pipeline_logger.error(
+            f"Failed to write output files: {e}",
+            extra={"paper_id": paper_id},
+            exc_info=True
+        )
+        if PIPELINE_LOGGING_AVAILABLE:
+            error_collector.record(
+                SerializationError(f"Output serialization failed: {e}", paper_id=paper_id),
+                ErrorSeverity.DEGRADED,
+                "serialization",
+            )
+            # Try to write at least the error log
+            try:
+                error_collector.to_jsonl(out_dir / "errors.jsonl")
+            except Exception:
+                pass
 
     return {
         "run_id": run_id,
@@ -1384,6 +1723,12 @@ def _run_from_contract_bundle_impl(
         "n_beliefs": web_integration_result.get("n_beliefs", 0),
         "n_stubs": web_integration_result.get("n_stubs", 0),
         "coherence": web_integration_result.get("coherence_after"),
+        # TBL-4: Table extraction summary
+        "n_tables": len(extracted_tables),
+        "n_table_claims": len(table_claims),
+        # Sprint 2.0.5: Error summary
+        "n_errors": len(error_collector.errors) if PIPELINE_LOGGING_AVAILABLE else 0,
+        "has_blocking_errors": error_collector.has_blocking_errors() if PIPELINE_LOGGING_AVAILABLE else False,
     }
 
 # --- CHATGPT_PATCH_AE_AF_WIRING_V1 BEGIN ---
