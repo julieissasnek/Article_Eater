@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3 COMPLETE — All Visualization Tasks)*
+*Last updated: Sunday, February 9, 2026 (Panel Consultations Complete — P-VOI + Sprint 3.0)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -33,7 +33,31 @@ This prevents duplicate work across parallel terminals.
 7. ~~**AF-AE Integration: BibTeX Metadata**~~ ✓ COMPLETE (BIB-1 through BIB-7)
 8. ~~**Entrenchment Historical Replay + Monitor**~~ ✓ COMPLETE (ENT-1 through ENT-5)
 9. ~~**Sprint 3.0 Phase 1-2**~~ ✓ COMPLETE — API, Query Engine, Export, Visualization
-10. **Article Discovery + PDF Retrieval Monitoring** — NEW P1 (see below)
+10. ~~**Panel Consultations Sprint 3.0**~~ ✓ COMPLETE (2026-02-09)
+11. **Article Discovery + PDF Retrieval Monitoring** — IN PROGRESS (DISC-1, DISC-2 complete)
+
+---
+
+## Completed: Panel Consultations (2026-02-09)
+
+**Panel P-VOI**: Value of Information - Theoretical Grounding
+- Panelists: Howard, Pearl, Simon, Thagard, Haack, Bates
+- Key outcomes:
+  - Clarified VOI semantics (Expected Epistemic Gain, not classical VOI)
+  - Separated structural VOI from epistemic VOI (Pearl)
+  - Added gap type priority weights (Thagard)
+  - Made epsilon-greedy ADAPTIVE based on search success (Simon)
+
+**Panels P-S3-A through P-S3-E**: Sprint 3.0 Decisions
+- 27 decisions reviewed across 10 modules
+- Panelists: Amodei, Liang, Kleinberg, Higgins, Cartwright, Mayo, Munzner, van Fraassen
+- Key implementations:
+  - Level-dependent credence thresholds (Cartwright)
+  - Effective credence accounting for uncertainty (Mayo)
+  - Closure type quantification (Pearl)
+
+See: `docs/PANEL_CONSULTATION_P-VOI_2026-02-09.md`
+See: `docs/PANEL_CONSULTATION_SPRINT_3.0_CONSOLIDATED_2026-02-09.md`
 
 ---
 
