@@ -38,16 +38,17 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
 | DISC-1 | Article Discovery Tracking + PDF Retrieval Monitoring | P1 | VOI Search |
+| ENT-6 | Replay DB strategy (safe runner) | P1 | ENT-1-5 ✓ |
 
 ### Sprint 3.0 Extensions (P2/P3)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
 | 3.0.1-D | Extended API layer (20 endpoints) | P2 | 3.0.1-B ✓ |
-| 3.0.3-C | Claim network graph (Streamlit component) | P2 | network_service ✓ |
-| 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P2 | — |
+| 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | network_service ✓ |
+| 3.0.3-G | Community structure visualization | P2 | — |
+| 3.0.3-H | Interactive HTML export (standalone) | P2 | network_service ✓ |
 | 3.0.4-D | BibTeX generator with full metadata | P2 | bibtex_utils ✓ |
 | 3.0.4-E | Purpose-driven export bundles (Munzner) | P2 | export_formats ✓ |
-| 3.0.5-A-F | Admin dashboard components | P2 | — |
 
 ---
 
@@ -55,6 +56,8 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| 3.0.3-C | Claim network graph component | Terminal-1 | 18:30 | components/network.py (~300 lines), 2_explore.py updated |
+| 3.0.3-D | Admin dashboard wired to real data | Terminal-1 | 18:45 | 5_admin.py with WebOfBelief/API integration |
 | 3.0.3-E | Network visualization (vis.js) | Terminal-3 | 17:00 | network_service.py (~1000 lines), 44 tests |
 | 3.0.4-F | Report generation (PDF/Markdown) | Terminal-3 | 17:00 | report_generator.py (~958 lines), 46 tests |
 | 3.0.5-G | Export audit trail | Terminal-3 | 17:00 | export_audit.py (~650 lines), 34 tests |
@@ -112,4 +115,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 17:15*
+*Last coordination check: 2026-02-09 18:45*

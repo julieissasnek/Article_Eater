@@ -1,10 +1,15 @@
 """
 Article Eater V23 — Explore Page
-Sprint 3.0.3 — 2026-02-08
+Sprint 3.0.3-C — 2026-02-09
 
 Visual exploration of the belief network.
 Implements Shneiderman's Visual Information Seeking Mantra:
 "Overview first, zoom and filter, then details on demand"
+
+Uses NetworkService for full vis.js integration with:
+- Force-directed / hierarchical layouts
+- Clustering by theory / level / status / community
+- Interactive filtering and node selection
 """
 
 import streamlit as st
@@ -15,6 +20,7 @@ from typing import Optional, List, Dict, Any
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from config import (
     PAGE_TITLE, COLORS, BELIEF_STATUS, EPISTEMIC_LEVELS,
@@ -22,6 +28,15 @@ from config import (
 )
 from api_client import get_client, BeliefSummary
 from styles import apply_shared_styles
+
+# Import network components
+from components.network import (
+    render_claim_network,
+    render_network_controls,
+    render_network_metrics,
+    render_node_focus_view,
+    get_beliefs_from_web
+)
 
 st.set_page_config(
     page_title=f"{PAGE_TITLE} — Explore",
@@ -92,185 +107,102 @@ def render_sidebar_filters():
     }
 
 
-def generate_graph_data(beliefs: List[BeliefSummary]) -> Dict[str, Any]:
-    """Generate vis.js compatible graph data."""
-    nodes = []
-    edges = []
-
-    for belief in beliefs:
-        # Determine node color based on status
-        status_info = BELIEF_STATUS.get(belief.status, {"color": "#ADB5BD"})
-
-        # Determine node size based on credence
-        size = 10 + (belief.credence * 30)
-
-        nodes.append({
+def convert_beliefs_to_dicts(beliefs: List[BeliefSummary]) -> List[Dict[str, Any]]:
+    """Convert BeliefSummary objects to dictionaries for NetworkService."""
+    return [
+        {
             "id": belief.id,
-            "label": belief.content[:40] + "..." if len(belief.content) > 40 else belief.content,
-            "title": f"{belief.content}\n\nCredence: {belief.credence:.2f}\nStatus: {belief.status}\nLevel: {belief.level}",
-            "color": status_info["color"],
-            "size": size,
-            "level": belief.level,
+            "content": belief.content,
             "credence": belief.credence,
             "status": belief.status,
+            "level": belief.level,
             "theory": belief.theory
-        })
+        }
+        for belief in beliefs
+    ]
 
-    # Generate sample edges (would come from actual constraint data)
-    # For demo, create some connections between beliefs
-    if len(nodes) >= 2:
-        edges.append({
-            "from": nodes[0]["id"],
-            "to": nodes[1]["id"],
-            "color": COLORS["success"],
-            "width": 2,
-            "title": "Positive constraint (0.82)"
-        })
-    if len(nodes) >= 3:
-        edges.append({
-            "from": nodes[0]["id"],
-            "to": nodes[2]["id"],
-            "color": COLORS["success"],
-            "width": 1.5,
-            "title": "Positive constraint (0.65)"
-        })
-    if len(nodes) >= 4:
-        edges.append({
-            "from": nodes[2]["id"],
-            "to": nodes[3]["id"],
-            "color": COLORS["danger"],
-            "width": 2,
-            "title": "Negative constraint (0.78)"
-        })
 
-    return {"nodes": nodes, "edges": edges}
+def get_constraints_from_api(belief_ids: List[str]) -> List[Dict[str, Any]]:
+    """Get constraints from API for the given belief IDs."""
+    client = get_client()
+    all_constraints = []
+
+    # Get constraints for each belief
+    # Note: In production, we'd have a bulk endpoint for this
+    belief_id_set = set(belief_ids)
+
+    for belief_id in belief_ids[:20]:  # Limit API calls
+        try:
+            constraints = client.get_belief_constraints(belief_id)
+            for c in constraints:
+                # Only include constraints where both endpoints are visible
+                target = c.get("target_id", "")
+                if target in belief_id_set:
+                    all_constraints.append({
+                        "source_id": belief_id,
+                        "target_id": target,
+                        "polarity": c.get("polarity", "NEUTRAL"),
+                        "weight": c.get("weight", 0.5),
+                        "reason": c.get("reason", "")
+                    })
+        except Exception:
+            pass  # Skip on error
+
+    return all_constraints
 
 
 def render_network_visualization(beliefs: List[BeliefSummary], options: Dict):
-    """Render the network visualization using vis.js via HTML component."""
+    """Render the network visualization using NetworkService component."""
     st.markdown("## Network Visualization")
 
     if not beliefs:
         st.warning("No beliefs match the current filters.")
         return
 
-    graph_data = generate_graph_data(beliefs)
+    # Convert to dictionaries for NetworkService
+    belief_dicts = convert_beliefs_to_dicts(beliefs)
+    belief_ids = [b.id for b in beliefs]
 
-    # Create vis.js visualization as HTML
-    vis_html = f"""
-    <html>
-    <head>
-        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-        <style>
-            #network {{
-                width: 100%;
-                height: 500px;
-                border: 1px solid {COLORS['border']};
-                border-radius: 8px;
-                background: {COLORS['background']};
-            }}
-            .legend {{
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: {COLORS['card_bg']};
-                padding: 10px;
-                border-radius: 8px;
-                border: 1px solid {COLORS['border']};
-                font-size: 12px;
-                color: {COLORS['text']};
-            }}
-            .legend-item {{
-                display: flex;
-                align-items: center;
-                margin: 5px 0;
-            }}
-            .legend-color {{
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                margin-right: 8px;
-            }}
-        </style>
-    </head>
-    <body>
-        <div id="network"></div>
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background: {BELIEF_STATUS['ACCEPTED']['color']}"></div>
-                <span>Accepted</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: {BELIEF_STATUS['CONTESTED']['color']}"></div>
-                <span>Contested</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: {BELIEF_STATUS['STUB']['color']}"></div>
-                <span>Stub</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: {BELIEF_STATUS['REJECTED']['color']}"></div>
-                <span>Rejected</span>
-            </div>
-        </div>
-        <script>
-            var nodes = new vis.DataSet({json.dumps(graph_data['nodes'])});
-            var edges = new vis.DataSet({json.dumps(graph_data['edges'])});
+    # Get constraints from API or WebOfBelief
+    constraints = get_constraints_from_api(belief_ids)
 
-            var container = document.getElementById('network');
-            var data = {{ nodes: nodes, edges: edges }};
-            var options = {{
-                nodes: {{
-                    shape: 'dot',
-                    font: {{
-                        size: {'14' if options['show_labels'] else '0'},
-                        face: 'Georgia'
-                    }},
-                    borderWidth: 2
-                }},
-                edges: {{
-                    arrows: {{ to: {{ enabled: true, scaleFactor: 0.5 }} }},
-                    smooth: {{ type: 'curvedCW', roundness: 0.2 }}
-                }},
-                physics: {{
-                    enabled: true,
-                    solver: 'forceAtlas2Based',
-                    forceAtlas2Based: {{
-                        gravitationalConstant: -50,
-                        centralGravity: 0.01,
-                        springLength: 100,
-                        springConstant: 0.08
-                    }},
-                    stabilization: {{
-                        iterations: 100
-                    }}
-                }},
-                interaction: {{
-                    hover: true,
-                    tooltipDelay: 100,
-                    navigationButtons: true,
-                    keyboard: true
-                }}
-            }};
+    # Also try to get from WebOfBelief directly if available
+    if not constraints:
+        try:
+            _, web_constraints = get_beliefs_from_web()
+            # Filter to relevant constraints
+            belief_id_set = set(belief_ids)
+            constraints = [
+                c for c in web_constraints
+                if c.get("source_id") in belief_id_set and c.get("target_id") in belief_id_set
+            ]
+        except Exception:
+            pass
 
-            var network = new vis.Network(container, data, options);
+    # Map cluster_by option
+    cluster_map = {
+        "None": None,
+        "Theory": "theory",
+        "Level": "level",
+        "Community": "community"
+    }
+    cluster_by = cluster_map.get(options.get("cluster_by", "None"))
 
-            network.on('click', function(params) {{
-                if (params.nodes.length > 0) {{
-                    var nodeId = params.nodes[0];
-                    // Would communicate back to Streamlit
-                    console.log('Selected node:', nodeId);
-                }}
-            }});
-        </script>
-    </body>
-    </html>
-    """
+    # Render using component
+    metrics = render_claim_network(
+        beliefs=belief_dicts,
+        constraints=constraints,
+        height=550,
+        layout="force",
+        cluster_by=cluster_by,
+        show_legend=True,
+        key="main_network"
+    )
 
-    st.components.v1.html(vis_html, height=550)
-
-    # Node count info
-    st.caption(f"Showing {len(graph_data['nodes'])} beliefs, {len(graph_data['edges'])} constraints")
+    # Show metrics in expander
+    if metrics:
+        with st.expander("Graph Metrics", expanded=False):
+            render_network_metrics(metrics)
 
 
 def render_overview_stats(beliefs: List[BeliefSummary]):

@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Sprint 3.0 Phase 2 Complete)*
+*Last updated: Sunday, February 9, 2026 (Sprint 3.0.3 P1 Complete — Network + Admin Dashboard)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -884,9 +884,9 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 |----|------|----------|-------------|--------|
 | 3.0.3-A | Core Streamlit app with user type selection | P1 | `streamlit_app/main.py` | ✅ DONE 2026-02-09 |
 | 3.0.3-B | Query interface with common questions per user type | P1 | `streamlit_app/pages/query.py` | ✅ DONE 2026-02-09 |
-| 3.0.3-C | Claim network graph (D3.js/vis.js via components) | P1 | `streamlit_app/components/network.py` | Pending |
-| 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P1 | `streamlit_app/pages/admin.py` | Pending |
-| 3.0.3-E | Overview-zoom-filter-details interaction (Shneiderman) | P1 | JS interaction layer | Pending |
+| 3.0.3-C | Claim network graph (D3.js/vis.js via components) | P1 | `streamlit_app/components/network.py` | ✅ DONE 2026-02-09 |
+| 3.0.3-D | Admin dashboard (beliefs, constraints, system state) | P1 | `streamlit_app/pages/5_admin.py` | ✅ DONE 2026-02-09 |
+| 3.0.3-E | Overview-zoom-filter-details interaction (Shneiderman) | P1 | JS interaction layer | ✅ DONE 2026-02-09 |
 | 3.0.3-F | GraphML export for Gephi/Cytoscape | P2 | `src/services/graph_export.py` | Pending |
 | 3.0.3-G | Community structure visualization | P2 | `streamlit_app/pages/communities.py` | Pending |
 | 3.0.3-H | Interactive HTML export (standalone) | P2 | HTML generator | Pending |
@@ -910,6 +910,30 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | **Graduate Student** | Jordan Taylor | "How does ART theory work?", "Key papers on biophilia?", "What's contested in this field?", "Where should I focus my thesis?", "Explain the evidence hierarchy" |
 | **Systematic Reviewer** | — | "All evidence for outcome X", "Studies with RCT methodology", "Export citations for stress reduction", "Cross-study comparison table" |
 | **Quick Lookup** | — | "Credence for claim X?", "What supports Y?", "Is Z established or contested?" |
+
+**3.0.3-C/E Implementation Notes (2026-02-09)**:
+- Created `streamlit_app/components/network.py` (~300 lines) — Reusable network component
+- Wraps `src/services/network_service.py` (~1050 lines) with comprehensive vis.js integration
+- `render_claim_network()` — Main visualization function with layout/clustering options
+- `render_network_controls()` — Sidebar widgets for layout algorithm, clustering, max nodes
+- `render_network_metrics()` — Graph metrics display (nodes, edges, density, degree)
+- `render_node_focus_view()` — Focus on node neighborhood (2-hop by default)
+- `get_beliefs_from_web()` — Direct WebOfBelief data retrieval
+- Updated `pages/2_explore.py` to use component with real constraint data
+- Shneiderman's mantra implemented: Overview (full graph) → Zoom (pan/zoom controls) → Filter (sidebar filters) → Details (node click shows constraints/evidence)
+- Layout algorithms: force-directed (default), Barnes-Hut, repulsion, hierarchical
+- Clustering modes: theory, level, status, community
+- Node color by status, size by credence, edge color by polarity
+
+**3.0.3-D Implementation Notes (2026-02-09)**:
+- Updated `streamlit_app/pages/5_admin.py` to use real data from WebOfBelief and API
+- Added data access functions: `get_system_stats()`, `get_health_status()`, `get_real_beliefs()`, `get_real_constraints()`, `get_real_communities()`, `get_real_papers()`
+- System Overview now shows real counts from WebOfBelief
+- Health checks verify: API server, SQLite database, WebOfBelief status, LLM configuration
+- Belief Browser with live filtering by status, level, credence, and search
+- Constraint Viewer with real constraints and statistics (positive/negative counts)
+- Community Browser with CommunityRegistry data and sample beliefs
+- Paper Browser with SQLite database queries
 
 ---
 
