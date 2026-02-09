@@ -28,7 +28,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| — | — | — | — | — | — |
+| DISC-3 | Add search execution logging | Terminal-1 | 21:00 | IN_PROGRESS | Article Finder integration |
 
 ---
 
@@ -43,9 +43,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 ### Sprint 3.0 Extensions (P2/P3)
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
-| 3.0.1-D | Extended API layer (20 endpoints) | P2 | 3.0.1-B ✓ |
-| 3.0.4-D | BibTeX generator with full metadata | P2 | bibtex_utils ✓ |
-| 3.0.4-E | Purpose-driven export bundles (Munzner) | P2 | export_formats ✓ |
+| — | All Sprint 3.0 P2 tasks complete | — | — |
 
 ---
 
@@ -53,6 +51,10 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| 3.0.2-G | Alerting/monitoring capability | Terminal-5 | 23:30 | query_alerts.py (~1400 lines), 80 tests, panel review |
+| 3.0.1-D | Extended API layer (20 endpoints) | Terminal-5 | 22:45 | api_extended.py (~950 lines), 37 tests |
+| 3.0.4-E | Purpose-driven export bundles (Munzner) | Terminal-5 | 22:15 | export_bundles.py (~1000 lines), 54 tests |
+| 3.0.4-D | BibTeX generator with full metadata | Terminal-5 | 21:45 | bibtex_generator.py (~700 lines), 83 tests |
 | DISC-2 | Wire VOI search to emit gaps | Terminal-1 | 20:30 | voi_search.py funnel integration, 4 tests |
 | DISC-1 | Discovery funnel schema + service | Terminal-1 | 20:00 | 006_discovery_funnel.sql, discovery_funnel.py (~900 lines), 31 tests |
 | 3.0.3-C | Claim network graph component | Terminal-1 | 18:30 | components/network.py (~300 lines), 2_explore.py updated |
@@ -117,4 +119,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 19:30*
+*Last coordination check: 2026-02-09 23:30*

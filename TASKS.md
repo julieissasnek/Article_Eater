@@ -894,7 +894,7 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | 3.0.2-D | Practitioner mode with design implications (Kaplan) | P1 | Integrated in 3.0.2-B | ✅ DONE 2026-02-09 |
 | 3.0.2-E | LLM integration (Haiku for parsing, Sonnet for synthesis) | P1 | `src/services/llm_query_bridge.py` | ✅ DONE 2026-02-09 |
 | 3.0.2-F | Add RELATED, TRENDING, CANONICAL patterns (Bates) | P2 | `src/services/llm_query_bridge.py` | ✅ DONE 2026-02-09 |
-| 3.0.2-G | Alerting/monitoring capability | P3 | `src/services/query_alerts.py` | Pending |
+| 3.0.2-G | Alerting/monitoring capability | P3 | `src/services/query_alerts.py` | ✅ DONE 2026-02-09 (panel review) |
 
 **Query Types** (10 patterns):
 - WHAT, WHY, COMPARE, GAPS, CONTRADICT, CONTINGENT, HOW_CONFIDENT
