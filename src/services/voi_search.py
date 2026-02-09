@@ -243,26 +243,53 @@ def get_cross_field_vocabulary() -> CrossFieldVocabulary:
 
 class GapType(Enum):
     """
-    Two gap types initially (per Lampson).
+    Gap types for VOI-driven search.
 
-    Add CAUSAL, SCOPE, etc. when we have ≥10 cases each.
+    Per P-VOI Panel (2026-02-09):
+    - Expanded from original 2 types (Lampson) to 4 types
+    - CONTRADICTION has highest priority (active harm to coherence)
+    - WEAK_SUPPORT and MISSING_EVIDENCE are structural gaps
+    - BOUNDARY_UNCLEAR is scope clarification
     """
-    UNCERTAIN = "uncertain"       # High uncertainty on existing belief
-    UNEXPLORED = "unexplored"     # Topic area with sparse coverage
+    UNCERTAIN = "uncertain"           # High uncertainty on existing belief
+    UNEXPLORED = "unexplored"         # Topic area with sparse coverage
+    CONTRADICTION = "contradiction"   # Active conflict needing resolution
+    BOUNDARY_UNCLEAR = "boundary"     # Scope conditions unclear
+
+
+# Per P-VOI Panel (Thagard): Gap types have different VOI priorities
+# Contradictions actively hurt coherence until resolved
+GAP_TYPE_PRIORITY_WEIGHTS = {
+    GapType.CONTRADICTION: 1.0,      # Highest priority - active harm
+    GapType.UNCERTAIN: 0.7,          # High uncertainty needs resolution
+    GapType.UNEXPLORED: 0.5,         # Missing evidence
+    GapType.BOUNDARY_UNCLEAR: 0.4,   # Scope clarification
+}
 
 
 @dataclass
 class EpistemicGap:
     """
-    Minimal gap structure.
-
     Represents a knowledge gap that could be addressed by searching
     for additional literature.
+
+    VOI Semantics (per P-VOI Panel 2026-02-09):
+    - 'voi_score' means Expected Epistemic Gain (EEG), not classical VOI
+    - Computed as weighted combination of structural and epistemic factors
+    - Bounded/satisficing computation, not theoretical maximum
+
+    Per Howard: The "decision" being informed is "which paper to read next"
+    Per Pearl: Structural and epistemic VOI should be tracked separately
+    Per Thagard: Gap type determines priority weighting
     """
     gap_type: GapType
     description: str
     primary_belief_id: str
-    voi_score: float  # Value of information (0-1)
+    voi_score: float  # Expected Epistemic Gain (0-1) - legacy name for compatibility
+
+    # Per P-VOI Panel: Separate structural from epistemic VOI
+    structural_voi: float = 0.0   # Value from filling structural gap (counterfactual coherence)
+    epistemic_voi: float = 0.0    # Value from reducing uncertainty
 
     def to_search_context(self) -> Dict[str, Any]:
         """Context for query generation."""
@@ -400,51 +427,108 @@ class VOICalculator:
     """
     Calculate Value of Information for epistemic gaps.
 
-    Per Pearl: VOI should reflect how much the gap's resolution
-    would reduce uncertainty in the overall web.
+    Per P-VOI Panel (2026-02-09):
+    - VOI = Expected Epistemic Gain (EEG), bounded/satisficing computation
+    - Separates structural VOI (counterfactual coherence) from epistemic VOI (uncertainty)
+    - Gap type determines α weighting between structural and epistemic
+    - Centrality affects propagation factor for structural changes
+
+    Panelists: Howard, Pearl, Simon, Thagard, Haack, Bates
     """
 
-    # Weights for VOI components
-    UNCERTAINTY_WEIGHT = 0.4
-    CENTRALITY_WEIGHT = 0.3
-    SPARSITY_WEIGHT = 0.3
+    # Per P-VOI Panel: Alpha determines structural vs epistemic weighting
+    # Based on gap type - structural gaps weight structural VOI higher
+    ALPHA_BY_GAP_TYPE = {
+        GapType.UNEXPLORED: 0.7,        # Missing evidence = structural
+        GapType.UNCERTAIN: 0.4,         # Uncertainty = epistemic
+        GapType.CONTRADICTION: 0.5,     # Equal weight - both matter
+        GapType.BOUNDARY_UNCLEAR: 0.3,  # Scope = more epistemic
+    }
 
     def calculate_voi(
         self,
         gap_type: GapType,
         belief: Belief,
         web: Optional[WebOfBelief] = None
-    ) -> float:
+    ) -> Tuple[float, float, float]:
         """
         Calculate VOI score for a gap.
 
+        Per P-VOI Panel (Pearl):
+        - Structural VOI = counterfactual coherence improvement
+        - Epistemic VOI = uncertainty reduction × belief importance
+        - Combined with α weighting based on gap type
+
         Args:
-            gap_type: Type of gap (uncertain vs unexplored)
+            gap_type: Type of gap
             belief: The belief associated with the gap
             web: Optional web for centrality calculation
 
         Returns:
-            VOI score between 0 and 1
+            Tuple of (combined_voi, structural_voi, epistemic_voi)
         """
-        components = []
+        # Calculate structural VOI (per Pearl)
+        structural_voi = self._structural_voi(gap_type, belief, web)
 
-        # Uncertainty component
-        uncertainty_score = self._uncertainty_component(belief)
-        components.append(uncertainty_score * self.UNCERTAINTY_WEIGHT)
+        # Calculate epistemic VOI
+        epistemic_voi = self._epistemic_voi(belief)
 
+        # Combine with alpha weighting (per panel)
+        alpha = self.ALPHA_BY_GAP_TYPE.get(gap_type, 0.5)
+        base_voi = alpha * structural_voi + (1 - alpha) * epistemic_voi
+
+        # Apply gap type priority weight (per Thagard)
+        priority_weight = GAP_TYPE_PRIORITY_WEIGHTS.get(gap_type, 0.5)
+        combined_voi = min(base_voi * priority_weight, 1.0)
+
+        return combined_voi, structural_voi, epistemic_voi
+
+    def _structural_voi(
+        self,
+        gap_type: GapType,
+        belief: Belief,
+        web: Optional[WebOfBelief] = None
+    ) -> float:
+        """
+        Structural VOI: value from filling a structural gap.
+
+        Per Pearl: Counterfactual coherence improvement.
+        Approximated by centrality × sparsity (how much would filling help).
+        """
         # Centrality component (how connected is this belief?)
         if web:
-            centrality_score = self._centrality_component(belief, web)
-            components.append(centrality_score * self.CENTRALITY_WEIGHT)
+            centrality = self._centrality_component(belief, web)
         else:
-            # Default centrality if no web provided
-            components.append(0.5 * self.CENTRALITY_WEIGHT)
+            centrality = 0.5  # Default if no web
 
         # Sparsity component (how little evidence do we have?)
-        sparsity_score = self._sparsity_component(gap_type, belief)
-        components.append(sparsity_score * self.SPARSITY_WEIGHT)
+        sparsity = self._sparsity_component(gap_type, belief)
 
-        return min(sum(components), 1.0)
+        # Structural VOI = how much impact would filling this have?
+        # High centrality + high sparsity = high structural value
+        return (centrality * 0.6 + sparsity * 0.4)
+
+    def _epistemic_voi(self, belief: Belief) -> float:
+        """
+        Epistemic VOI: value from reducing uncertainty.
+
+        Per Panel: uncertainty_reduction × belief_importance
+        """
+        uncertainty = self._uncertainty_component(belief)
+
+        # Belief importance based on epistemic level
+        level_importance = {
+            "theoretical": 0.9,
+            "intermediate": 0.7,
+            "empirical": 0.5,
+            "observational": 0.4,
+        }
+        importance = level_importance.get(
+            getattr(belief, 'level', 'empirical'),
+            0.5
+        )
+
+        return uncertainty * importance
 
     def _uncertainty_component(self, belief: Belief) -> float:
         """Score based on credence uncertainty."""
@@ -804,27 +888,33 @@ class GapDetector:
         for belief_id, belief in web.beliefs.items():
             # Check for uncertain gap
             if belief.credence.uncertainty > self.UNCERTAINTY_THRESHOLD:
-                voi = self.voi_calculator.calculate_voi(
+                # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
+                combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
                     GapType.UNCERTAIN, belief, web
                 )
                 gaps.append(EpistemicGap(
                     gap_type=GapType.UNCERTAIN,
                     description=f"High uncertainty ({belief.credence.uncertainty:.0%}) on: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
-                    voi_score=voi
+                    voi_score=combined_voi,
+                    structural_voi=structural_voi,
+                    epistemic_voi=epistemic_voi
                 ))
 
             # Check for unexplored gap
             n_papers = len(belief.paper_ids) if belief.paper_ids else 0
             if n_papers < self.MIN_SUPPORTING_STUDIES:
-                voi = self.voi_calculator.calculate_voi(
+                # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
+                combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
                     GapType.UNEXPLORED, belief, web
                 )
                 gaps.append(EpistemicGap(
                     gap_type=GapType.UNEXPLORED,
                     description=f"Only {n_papers} supporting studies for: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
-                    voi_score=voi
+                    voi_score=combined_voi,
+                    structural_voi=structural_voi,
+                    epistemic_voi=epistemic_voi
                 ))
 
         # Sort by VOI and return top gaps
@@ -1029,42 +1119,82 @@ class SearchStrategy(Enum):
 
 class StrategySelector:
     """
-    Strategy selection with decaying exploration.
+    Strategy selection with adaptive exploration.
 
-    Per Simon: Start with exploration, gradually shift to exploitation
-    as we learn which strategies work best for each gap type.
+    Per P-VOI Panel (Simon, 2026-02-09):
+    - Epsilon decay should be SUCCESS-ADAPTIVE, not fixed decay
+    - Exploration increases when searches fail (need to try new approaches)
+    - Exploration decreases when searches succeed (exploit what works)
+    - This is bounded rationality: adjust strategy based on feedback
     """
 
     def __init__(
         self,
         initial_epsilon: float = 0.3,
         min_epsilon: float = 0.05,
-        decay: float = 0.99
+        max_epsilon: float = 0.5,
+        success_threshold_low: float = 0.2,
+        success_threshold_high: float = 0.6,
+        lookback_window: int = 5
     ):
         """
-        Initialize strategy selector.
+        Initialize strategy selector with adaptive epsilon.
+
+        Per P-VOI Panel (Simon): Adaptive exploration based on recent success.
 
         Args:
             initial_epsilon: Initial exploration rate (0-1)
-            min_epsilon: Minimum exploration rate
-            decay: Decay factor per search
+            min_epsilon: Minimum exploration rate (never go below)
+            max_epsilon: Maximum exploration rate (never go above)
+            success_threshold_low: Below this, increase exploration
+            success_threshold_high: Above this, decrease exploration
+            lookback_window: Number of recent searches to consider
         """
         self.initial_epsilon = initial_epsilon
         self.min_epsilon = min_epsilon
-        self.decay = decay
+        self.max_epsilon = max_epsilon
+        self.success_threshold_low = success_threshold_low
+        self.success_threshold_high = success_threshold_high
+        self.lookback_window = lookback_window
+
+        self._current_epsilon = initial_epsilon
         self.total_searches = 0
 
         # Track strategy performance by gap type
         self._strategy_successes: Dict[Tuple[GapType, SearchStrategy], int] = {}
         self._strategy_attempts: Dict[Tuple[GapType, SearchStrategy], int] = {}
 
+        # Per P-VOI Panel: Track recent search outcomes for adaptive epsilon
+        self._recent_outcomes: List[bool] = []
+
     @property
     def epsilon(self) -> float:
-        """Current epsilon (decays with experience)."""
-        return max(
-            self.initial_epsilon * (self.decay ** self.total_searches),
-            self.min_epsilon
-        )
+        """Current epsilon (adapts based on recent success)."""
+        return self._current_epsilon
+
+    def _update_epsilon(self) -> None:
+        """
+        Update epsilon based on recent search success.
+
+        Per P-VOI Panel (Simon):
+        - If recent success rate < 0.2: explore more (try new strategies)
+        - If recent success rate > 0.6: exploit more (use what works)
+        - Otherwise: maintain current balance
+        """
+        if len(self._recent_outcomes) < 3:
+            return  # Not enough data yet
+
+        recent_success_rate = sum(self._recent_outcomes[-self.lookback_window:]) / \
+                              min(len(self._recent_outcomes), self.lookback_window)
+
+        if recent_success_rate < self.success_threshold_low:
+            # Searches failing - explore more
+            self._current_epsilon = min(self._current_epsilon * 1.2, self.max_epsilon)
+            logger.debug(f"Epsilon increased to {self._current_epsilon:.3f} (success rate: {recent_success_rate:.2f})")
+        elif recent_success_rate > self.success_threshold_high:
+            # Searches succeeding - exploit more
+            self._current_epsilon = max(self._current_epsilon * 0.95, self.min_epsilon)
+            logger.debug(f"Epsilon decreased to {self._current_epsilon:.3f} (success rate: {recent_success_rate:.2f})")
 
     def select_strategy(self, gap: EpistemicGap) -> SearchStrategy:
         """
@@ -1109,6 +1239,8 @@ class StrategySelector:
         """
         Record search outcome for learning.
 
+        Per P-VOI Panel (Simon): Also updates adaptive epsilon.
+
         Args:
             gap_type: Type of gap searched
             strategy: Strategy used
@@ -1120,6 +1252,14 @@ class StrategySelector:
         self._strategy_attempts[key] = self._strategy_attempts.get(key, 0) + 1
         if success:
             self._strategy_successes[key] = self._strategy_successes.get(key, 0) + 1
+
+        # Per P-VOI Panel: Track for adaptive epsilon
+        self._recent_outcomes.append(success)
+        if len(self._recent_outcomes) > self.lookback_window * 2:
+            self._recent_outcomes = self._recent_outcomes[-self.lookback_window:]
+
+        # Update epsilon based on recent success
+        self._update_epsilon()
 
     def get_stats(self) -> Dict[str, Any]:
         """Get strategy performance statistics."""
@@ -1682,9 +1822,15 @@ def calculate_voi(
     belief: Belief,
     web: Optional[WebOfBelief] = None
 ) -> float:
-    """Calculate VOI for a specific gap."""
+    """
+    Calculate VOI for a specific gap.
+
+    Per P-VOI Panel (2026-02-09): Returns the combined Expected Epistemic Gain.
+    For separated structural/epistemic VOI, use VOICalculator directly.
+    """
     calculator = VOICalculator()
-    return calculator.calculate_voi(gap_type, belief, web)
+    combined, _, _ = calculator.calculate_voi(gap_type, belief, web)
+    return combined
 
 
 def identify_and_track_gaps(

@@ -157,8 +157,10 @@ class TestGapType:
         assert GapType.UNEXPLORED.value == "unexplored"
 
     def test_gap_type_values(self):
-        """Test gap type string values."""
-        assert len(GapType) == 2
+        """Test gap type string values - expanded per P-VOI Panel."""
+        assert len(GapType) == 4  # Per P-VOI Panel: UNCERTAIN, UNEXPLORED, CONTRADICTION, BOUNDARY_UNCLEAR
+        assert GapType.CONTRADICTION.value == "contradiction"
+        assert GapType.BOUNDARY_UNCLEAR.value == "boundary"
 
 
 # =============================================================================
@@ -307,29 +309,36 @@ class TestVOICalculator:
     def test_calculate_voi_uncertain(self, uncertain_belief):
         """Test VOI calculation for uncertain gap."""
         calc = VOICalculator()
-        voi = calc.calculate_voi(GapType.UNCERTAIN, uncertain_belief)
+        # Per P-VOI Panel: calculate_voi returns (combined, structural, epistemic)
+        combined, structural, epistemic = calc.calculate_voi(GapType.UNCERTAIN, uncertain_belief)
 
-        assert 0 <= voi <= 1
-        # High uncertainty should give higher VOI
-        assert voi > 0.3
+        assert 0 <= combined <= 1
+        assert 0 <= structural <= 1
+        assert 0 <= epistemic <= 1
+        # High uncertainty should give higher epistemic VOI
+        assert epistemic >= 0.2
 
     def test_calculate_voi_unexplored(self, unexplored_belief):
         """Test VOI calculation for unexplored gap."""
         calc = VOICalculator()
-        voi = calc.calculate_voi(GapType.UNEXPLORED, unexplored_belief)
+        # Per P-VOI Panel: calculate_voi returns (combined, structural, epistemic)
+        combined, structural, epistemic = calc.calculate_voi(GapType.UNEXPLORED, unexplored_belief)
 
-        assert 0 <= voi <= 1
-        # Unexplored should have high sparsity component
-        assert voi > 0.3
+        assert 0 <= combined <= 1
+        # Unexplored should have high structural VOI (sparsity)
+        assert structural > 0.3
 
     def test_voi_with_web_centrality(self, web_with_gaps):
         """Test VOI calculation with web for centrality."""
         calc = VOICalculator()
         belief = web_with_gaps.beliefs["b_uncertain"]
 
-        voi = calc.calculate_voi(GapType.UNCERTAIN, belief, web_with_gaps)
+        # Per P-VOI Panel: calculate_voi returns (combined, structural, epistemic)
+        combined, structural, epistemic = calc.calculate_voi(GapType.UNCERTAIN, belief, web_with_gaps)
 
-        assert 0 <= voi <= 1
+        assert 0 <= combined <= 1
+        assert 0 <= structural <= 1
+        assert 0 <= epistemic <= 1
 
     def test_higher_uncertainty_higher_voi(self):
         """Test that higher uncertainty gives higher VOI."""
@@ -695,27 +704,59 @@ class TestStrategySelector:
         selector = StrategySelector(initial_epsilon=0.5)
         assert selector.epsilon == 0.5
 
-    def test_epsilon_decay(self):
-        """Test that epsilon decays with searches."""
-        selector = StrategySelector(initial_epsilon=0.3, decay=0.9)
+    def test_epsilon_adaptive_success(self):
+        """Test that epsilon decreases with successful searches (per P-VOI Panel)."""
+        selector = StrategySelector(
+            initial_epsilon=0.3,
+            min_epsilon=0.05,
+            success_threshold_high=0.6
+        )
 
         initial_epsilon = selector.epsilon
 
-        # Simulate some searches
+        # Simulate many successful searches (>60% success rate)
         for _ in range(10):
             selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, True)
 
+        # Per P-VOI Panel (Simon): Success should DECREASE epsilon (exploit more)
         assert selector.epsilon < initial_epsilon
+
+    def test_epsilon_adaptive_failure(self):
+        """Test that epsilon increases with failed searches (per P-VOI Panel)."""
+        selector = StrategySelector(
+            initial_epsilon=0.2,
+            max_epsilon=0.5,
+            success_threshold_low=0.2
+        )
+
+        initial_epsilon = selector.epsilon
+
+        # Simulate many failed searches (<20% success rate)
+        for _ in range(10):
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, False)
+
+        # Per P-VOI Panel (Simon): Failure should INCREASE epsilon (explore more)
+        assert selector.epsilon > initial_epsilon
 
     def test_epsilon_minimum(self):
         """Test that epsilon doesn't go below minimum."""
-        selector = StrategySelector(initial_epsilon=0.3, min_epsilon=0.1, decay=0.5)
+        selector = StrategySelector(initial_epsilon=0.3, min_epsilon=0.1)
 
-        # Many searches
+        # Many successful searches (drives epsilon down)
         for _ in range(100):
             selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, True)
 
         assert selector.epsilon >= selector.min_epsilon
+
+    def test_epsilon_maximum(self):
+        """Test that epsilon doesn't go above maximum (per P-VOI Panel)."""
+        selector = StrategySelector(initial_epsilon=0.3, max_epsilon=0.5)
+
+        # Many failed searches (drives epsilon up)
+        for _ in range(100):
+            selector.record_search(GapType.UNCERTAIN, SearchStrategy.KEYWORD, False)
+
+        assert selector.epsilon <= selector.max_epsilon
 
     def test_select_strategy_returns_valid(self):
         """Test that strategy selection returns a valid strategy."""
