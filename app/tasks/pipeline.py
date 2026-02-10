@@ -148,6 +148,18 @@ try:
 except ImportError:
     INCREMENTAL_BN_AVAILABLE = False
 
+# Sprint ECB: Epistemic-Causal Bridge (Quinean→Pearlian integration)
+try:
+    from src.services.epistemic_causal_bridge import (
+        EpistemicCausalBridge,
+        ContrastClass,
+        PopulationContext,
+        QuineanCounterfactualResult,
+    )
+    CAUSAL_BRIDGE_AVAILABLE = True
+except ImportError:
+    CAUSAL_BRIDGE_AVAILABLE = False
+
 # Sprint 2.0.2: Output Serialization
 try:
     from src.services.output_serializer import (
@@ -754,6 +766,48 @@ def _integrate_into_web_of_belief(
         except Exception as e:
             _web_logger.warning(f"[{paper_id}] Incremental BN update failed (non-fatal): {e}")
 
+    # Stage 2.8: Epistemic-Causal Bridge (Sprint ECB)
+    # Build causal layer from epistemic web if enabled
+    causal_bridge = None
+    causal_models_built = False
+    causal_model_summary = {}
+
+    # Check if causal bridge is disabled via CLI
+    causal_enabled = web_options.get("causal_enabled", True)
+
+    if CAUSAL_BRIDGE_AVAILABLE and causal_enabled and len(web.beliefs) > 0:
+        try:
+            # Create bridge from the web of belief
+            causal_bridge = EpistemicCausalBridge(web)
+
+            # Build causal models from high-credence beliefs
+            credence_threshold = web_options.get("causal_credence_threshold", 0.5)
+            model = causal_bridge.build_causal_models(credence_threshold=credence_threshold)
+
+            if model and model.theory_models:
+                causal_models_built = True
+                causal_model_summary = {
+                    "n_theories": len(model.theory_models),
+                    "theories": list(model.theory_models.keys()),
+                    "n_variables": len(model.get_all_variables()) if hasattr(model, 'get_all_variables') else 0,
+                    "credence_threshold": credence_threshold,
+                }
+                _web_logger.info(
+                    f"[{paper_id}] Causal bridge built: {causal_model_summary['n_theories']} theories, "
+                    f"{causal_model_summary['n_variables']} variables"
+                )
+            else:
+                _web_logger.debug(f"[{paper_id}] Causal bridge: no models built (insufficient beliefs)")
+
+        except Exception as e:
+            _web_logger.warning(f"[{paper_id}] Causal bridge construction failed (non-fatal): {e}")
+            # Causal bridge failure is non-fatal; continue with serialization
+
+    elif not causal_enabled:
+        _web_logger.debug(f"[{paper_id}] Causal bridge skipped: disabled via --no-causal flag")
+    elif not CAUSAL_BRIDGE_AVAILABLE:
+        _web_logger.debug(f"[{paper_id}] Causal bridge skipped: module not available")
+
     # Stage 3: Serialization
     try:
         # Decision 2.4: Full belief and constraint serialization
@@ -785,6 +839,12 @@ def _integrate_into_web_of_belief(
                 "seek_equilibrium": WEB_SEEK_EQUILIBRIUM,
                 "max_iterations": WEB_EQUILIBRIUM_MAX_ITERATIONS,
                 "convergence_threshold": WEB_EQUILIBRIUM_CONVERGENCE_THRESHOLD
+            },
+            # Sprint ECB: Causal bridge metadata
+            "causal_bridge": {
+                "built": causal_models_built,
+                "enabled": causal_enabled,
+                "summary": causal_model_summary if causal_models_built else None,
             }
         }
         _write_json(out_dir / "web_state.json", web_state)

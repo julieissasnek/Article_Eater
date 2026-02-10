@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 9, 2026 (Panel Consultations Complete — P-VOI + Sprint 3.0)*
+*Last updated: Monday, February 10, 2026 (Sprint ECB: Epistemic-Causal Bridge Repair)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -34,7 +34,160 @@ This prevents duplicate work across parallel terminals.
 8. ~~**Entrenchment Historical Replay + Monitor**~~ ✓ COMPLETE (ENT-1 through ENT-5)
 9. ~~**Sprint 3.0 Phase 1-2**~~ ✓ COMPLETE — API, Query Engine, Export, Visualization
 10. ~~**Panel Consultations Sprint 3.0**~~ ✓ COMPLETE (2026-02-09)
-11. **Article Discovery + PDF Retrieval Monitoring** — IN PROGRESS (DISC-1, DISC-2 complete)
+11. **Sprint ECB: Epistemic-Causal Bridge Repair** — IN PROGRESS (see below)
+12. **Article Discovery + PDF Retrieval Monitoring** — PAUSED (DISC-1, DISC-2 complete)
+
+---
+
+## Sprint ECB: Epistemic-Causal Bridge Repair
+
+**Added**: 2026-02-10
+**Priority**: P0 (System Coherence Critical)
+**Panel**: P-ECB-R (Haack, Pearl, van Fraassen, Simon, Cartwright, Parnas, Brooks)
+**Target Version**: V23.1.0
+**Context**: System coherence concerns identified. Epistemic-causal bridge has two implementations, duplicate classes, and is not wired into pipeline. Panel approved comprehensive repair.
+
+### Problem Statement
+
+1. **Two implementations exist**: Repo file ≠ external research file (tests use wrong one)
+2. **Duplicate class definitions**: Bridge defines `Belief`, `Credence`, etc. that duplicate `web_of_belief.py`
+3. **Not used in pipeline**: `app/tasks/pipeline.py` makes zero bridge calls
+4. **No feedback loop**: Counterfactual results don't update the web
+5. **Van Fraassen contrast classes disconnected**: Elaborate but not integrated
+
+### Panel Recommendations (P-ECB-R)
+
+| Expert | Key Recommendation |
+|--------|-------------------|
+| **Haack** | Equations need TWO weights: supportiveness (entrenchment) + security (experiential grounding) |
+| **Pearl** | Separate DAG structure from parameters; track associational/interventional/counterfactual |
+| **van Fraassen** | If contrast doesn't transfer, return undefined; route gaps to VOI |
+| **Simon** | Target ~500 lines (down from 2400); ruthless simplification |
+| **Cartwright** | Enabling conditions GATE computation; capacities don't manifest without conditions |
+| **Parnas** | Delete duplicates; single source of truth; add error handling |
+| **Brooks** | Checkpoint each sprint; don't add features while simplifying |
+
+### Archived Features (For Future Reintegration)
+
+| Feature | Archive Location | Future TODO |
+|---------|-----------------|-------------|
+| Individual Differences | `quarantine/2026-02-10/individual_differences.py` | IND-1 through IND-4 |
+| Cultural Meanings | `quarantine/2026-02-10/cultural_meaning.py` | CULT-1 through CULT-5 |
+| Argument Attack Analysis | `quarantine/2026-02-10/argument_attack.py` | ATK-1 through ATK-4 |
+| Elaborate Generalization | `quarantine/2026-02-10/generalization_elaborate.py` | GEN-1 through GEN-4 |
+
+See: `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md`
+
+---
+
+### Sprint ECB-1: Cleanup and Consolidation ✓ COMPLETE
+
+**Goal**: Single source of truth, remove dead code
+**Completed**: 2026-02-10
+**Outcome**: 68+89 tests pass, duplicates marked DEPRECATED, features archived
+
+| ID | Task | Description | Status |
+|----|------|-------------|--------|
+| ECB-1.0 | Diff implementations | Compare repo vs external file, document differences | ✓ DONE — Only 43 lines differ (all V23.0.0 entrenchment) |
+| ECB-1.1 | Archive features | Move IndividualDiff, CulturalMeaning, ArgumentAttack to quarantine with headers | ✓ DONE — 4 files + README |
+| ECB-1.2 | Mark duplicates DEPRECATED | EpistemicLevel, BeliefStatus, Credence, Belief with clear warnings | ✓ DONE — Kept for stub/demo, marked for ECB-2 removal |
+| ECB-1.3 | Update test imports | Fix `test_epistemic_causal_integration.py` to use repo module | ✓ DONE — Removed external path, 68 tests pass |
+| ECB-1.4 | Verify tests pass | Run bridge, persistence, warrants tests | ✓ DONE — 68+89 tests pass |
+
+**Checkpoint**: All tests pass ✓, file compiles ✓, pipeline unchanged ✓
+
+**Notes**:
+- Duplicate classes MARKED as DEPRECATED rather than deleted (per Brooks: "Don't break while simplifying")
+- Stub WebOfBelief kept for demo functions (marked for removal in ECB-2)
+- V23.0.0 entrenchment code preserved intact (web_of_belief.py untouched)
+
+---
+
+### Sprint ECB-2: Core Integration ✓ COMPLETE
+
+**Goal**: Working bridge wired into pipeline
+**Completed**: 2026-02-10
+**Outcome**: Bridge wired into pipeline.py, CLI flags added, feedback loop implemented
+
+| ID | Task | Description | Status |
+|----|------|-------------|--------|
+| ECB-2.1 | Simplify class | Reduced 2462→2020 lines (~500 target deferred to incremental cleanup) | ✓ DONE |
+| ECB-2.2 | Add enabling conditions | `StructuralEquation.enabling_conditions` + `is_applicable(context)` → (bool, reason) | ✓ DONE |
+| ECB-2.3 | Wire into pipeline | Stage 2.8 in pipeline.py, `--no-causal` and `--causal-credence-threshold` CLI flags | ✓ DONE |
+| ECB-2.4 | Add feedback loop | `update_web_from_result()` with proportional delta (Simon), conditional tracking | ✓ DONE |
+
+**Checkpoint**: Pipeline runs with bridge ✓, 68 tests pass ✓
+
+**Notes**:
+- Bridge builds causal models from high-credence beliefs
+- CLI: `--no-causal` disables, `--causal-credence-threshold` configures belief threshold
+- Feedback loop updates uncertainty proportionally to sensitivity
+- Demo functions archived to quarantine/2026-02-10/demo_and_stub_web.py
+
+---
+
+### Sprint ECB-3: Van Fraassen and Polish ✓ COMPLETE
+
+**Goal**: Full contrast class rigor, feedback loop working
+**Completed**: 2026-02-10
+**Dependencies**: ECB-2 complete
+
+| ID | Task | Description | Status |
+|----|------|-------------|--------|
+| ECB-3.1 | Contrast transfer rules | `ContrastTransferType` enum, configurable thresholds via `AE_CONTRAST_THRESHOLD_*` | ✓ DONE |
+| ECB-3.2 | Return undefined | `is_defined=False` + `reason_undefined` when contrast transfer fails | ✓ DONE |
+| ECB-3.3 | Gap identification | 5 gap types: missing_contrast, low_coverage, theory_conflict, baseline_unknown, blocked_beliefs | ✓ DONE |
+| ECB-3.4 | Security weight | `compute_security()` and `compute_model_security()` with Haack weights | ✓ DONE |
+| ECB-3.5 | Update ARCHITECTURE.md | Causal layer diagram, transfer rules, gap types, security weights documented | ✓ DONE |
+| ECB-3.6 | Error handling pass | `BridgeError` hierarchy, graceful empty web handling, validation | ✓ DONE |
+
+**Checkpoint**: 68 integration tests pass ✓, 153 related tests pass ✓, docs updated ✓
+
+**Panel Consultation**: P-ECB-R reviewed all decisions
+- D1-D6 approved with minor notes
+- Future work: meaning equivalence flag, enabling_unclear gap type, theory conflict decomposition
+- See: `docs/PANEL_CONSULTATION_ECB-3_2026-02-10.md`
+
+---
+
+### Future Archived Feature Reintegration TODOs
+
+**Individual Differences** (after core bridge stable):
+| ID | Task | Priority |
+|----|------|----------|
+| IND-1 | Literature review: individual difference moderators in CNfA | P2 |
+| IND-2 | Populate IndividualDifferenceFactor with literature data | P2 |
+| IND-3 | Add CNS questionnaire to Streamlit UI | P3 |
+| IND-4 | Validate personalized predictions | P3 |
+
+**Cultural Meanings** (after contrast transfer working):
+| ID | Task | Priority |
+|----|------|----------|
+| CULT-1 | Literature review: cultural variation in nature concepts | P2 |
+| CULT-2 | Design cultural meaning schema with anthropology input | P2 |
+| CULT-3 | Populate for major cultural contexts | P3 |
+| CULT-4 | Implement meaning similarity metric | P3 |
+| CULT-5 | Add cultural context to PopulationContext | P3 |
+
+**Argument Attack Analysis** (after contrast extraction working):
+| ID | Task | Priority |
+|----|------|----------|
+| ATK-1 | Integrate attack analysis with coherence violation detection | P2 |
+| ATK-2 | Add attack detection to claim extraction pipeline | P3 |
+| ATK-3 | Train classifier for shift type identification | P3 |
+| ATK-4 | UI for reviewing detected attacks | P3 |
+
+---
+
+### Sprint ECB Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `docs/PANEL_P-ECB-R_CONTEXT_2026-02-10.md` | Full panel context |
+| `docs/PANEL_P-ECB-R_RESPONSES_2026-02-10.md` | Expert responses |
+| `docs/PANEL_P-ECB-R_PLAN_REVIEW_2026-02-10.md` | Plan review with updates |
+| `docs/IMPLEMENTATION_PLAN_BRIDGE_REPAIR_2026-02-10.md` | Detailed implementation plan |
+| `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md` | Archived features documentation |
 
 ---
 
@@ -1112,6 +1265,7 @@ crontab -e
 
 | Date | Session Notes |
 |------|---------------|
+| 2026-02-10 | **Sprint ECB: Epistemic-Causal Bridge Repair PLANNED**. David raised system coherence concerns. Investigation revealed: (1) Two implementations exist (repo vs external research file), (2) Tests use wrong file, (3) Pipeline doesn't use bridge, (4) Duplicate class definitions, (5) No feedback loop. Convened Panel P-ECB-R (Haack, Pearl, van Fraassen, Simon, Cartwright, Parnas, Brooks). Created 5 docs: context, responses, plan review, implementation plan, archived features. Defined 3 sprints: ECB-1 (cleanup), ECB-2 (core integration), ECB-3 (van Fraassen + polish). Archived features documented for future reintegration: Individual Differences (IND-1 to IND-4), Cultural Meanings (CULT-1 to CULT-5), Argument Attack (ATK-1 to ATK-4). Target: ~500 lines (down from 2400). Version target: V23.1.0. |
 | 2026-02-09 | **Entrenchment Tracker Updates**: Added entrenchment tracker schema + migrations, publication metadata capture, replay scaffold, BibTeX publication_date parsing + test, and pipeline metadata upsert. Added `publication_date` to AE paper schema + example. New tables in `web_persistence.py`, new `entrenchment_replay.py`, and `migrations/005_add_entrenchment_tracker.sql`. Version bumped to 23.0.5. Tests: `pytest tests/test_bibtex_utils.py`. |
 | 2026-02-09 | **Sprint 3.0.3-A/B COMPLETE**: Streamlit Interface. (1) Created `streamlit_app/query_service.py` (~500 lines) - DirectQueryService for local query execution without API server. Uses query_parser.py for rule-based intent detection. Supports quick/standard/deep response modes. Scope-aware output. (2) Updated `streamlit_app/api_client.py` with direct mode fallback - automatically uses local services when API unavailable. Added `prefer_direct` option. (3) Verified existing `main.py` has user type selection (5 Cooper personas), existing `pages/1_query.py` has common questions interface. 35 tests passing (`tests/test_streamlit_query_service.py`). |
 | 2026-02-09 | **Sprint 3.0.4-A/B/C COMPLETE**: (1) Evidence Summarizer: Created `src/services/evidence_summarizer.py` (~600 lines) - Cartwright-style scope metadata, transferability assessment, caveats, synthesis. 35 tests. (2) Export Formats: Created `src/services/export_formats.py` (~650 lines) - JSONL, CSV, TSV, JSON, Parquet (with pyarrow fallback), streaming exporter. 38 tests. (3) Verification Checklists: Created `src/services/export_checklists.py` (~650 lines) - Gawande-style checklists for evidence verification, extraction quality, methodology review, scope assessment, paper intake, pre-export. 37 tests. Total: 110 new tests. |

@@ -1,8 +1,15 @@
 # Article Eater - Integrated Architecture
 
+*Last updated: 2026-02-10 (Sprint ECB-3)*
+
 ## Module Overview
 
-The system now has components from two development streams that complement each other:
+The system has four architectural layers:
+
+1. **Extraction Layer** — PDF → structured claims
+2. **Epistemic Layer** — Quinean coherentist belief management
+3. **Causal Layer** — Pearlian causal inference via epistemic-causal bridge
+4. **Output Layer** — Queries, reports, and research recommendations
 
 ### Core Epistemic Architecture (Quinean Coherentist)
 
@@ -13,6 +20,29 @@ The system now has components from two development streams that complement each 
 | `abstraction_levels.py` | Theory nesting | Theories grounded in deeper theories, criterial rules, model zoom |
 | `evidence_integration.py` | Integration layer | PDF extraction → epistemic state updates |
 | `dual_epistemology.py` | Comparative analysis | Foundationalist vs coherentist contrast |
+
+### Epistemic-Causal Bridge (Sprint 1.5 + ECB Repair)
+
+| Module | Purpose | Key Features |
+|--------|---------|--------------|
+| `epistemic_causal_bridge.py` | Quinean→Pearlian bridge | Multi-theory causal models, counterfactuals, van Fraassen contrast classes |
+
+**Key Classes:**
+- `EpistemicCausalBridge` — Main orchestration class
+- `ContrastClass` — Van Fraassen contrast specification
+- `PopulationContext` — Baseline-dependent meaning
+- `MultiTheoryModel` — Per-theory structural equations
+- `QuineanCounterfactualResult` — Counterfactual with epistemic annotations
+
+**Sprint ECB-3 Features (2026-02-10):**
+
+| Feature | Description | Panel Source |
+|---------|-------------|--------------|
+| Contrast Transfer Rules | DIRECT, BASELINE_SHIFT, POPULATION_SHIFT, MEANING_SHIFT classification | van Fraassen, Simon |
+| Undefined Results | Returns `is_defined=False` when contrast classes don't transfer | van Fraassen |
+| Gap Identification | Detects epistemic gaps, routes to VOI search | Simon |
+| Security Weight | Haack's foundherentist grounding measure | Haack |
+| Configurable Thresholds | `AE_CONTRAST_THRESHOLD_*` environment variables | Simon |
 
 ### Extraction Pipeline
 
@@ -54,11 +84,34 @@ The system now has components from two development streams that complement each 
                     └────────────┬──────────────┘
                                  │
                     ┌────────────▼──────────────┐
-                    │    COMPARISON LAYER       │
-                    │  dual_epistemology.py     │
+                    │      CAUSAL LAYER         │
+                    │  epistemic_causal_bridge  │
                     │                           │
-                    │  "Same data, different    │
-                    │   philosophical lenses"   │
+                    │ ┌── VAN FRAASSEN ───────┐ │
+                    │ │ Contrast classes      │ │
+                    │ │ Population contexts   │ │
+                    │ │ Transfer rules        │ │
+                    │ └───────────────────────┘ │
+                    │                           │
+                    │ ┌── PEARLIAN ───────────┐ │
+                    │ │ MultiTheoryModel      │ │
+                    │ │ StructuralEquation    │ │
+                    │ │ Counterfactuals       │ │
+                    │ └───────────────────────┘ │
+                    │                           │
+                    │ ┌── HAACK ──────────────┐ │
+                    │ │ Security weights      │ │
+                    │ │ Foundherentist ground │ │
+                    │ └───────────────────────┘ │
+                    └────────────┬──────────────┘
+                                 │
+                    ┌────────────▼──────────────┐
+                    │   GAP IDENTIFICATION      │
+                    │                           │
+                    │  Epistemic gaps route to  │
+                    │  VOI search / discovery   │
+                    │  funnel for prioritized   │
+                    │  evidence gathering       │
                     └────────────┬──────────────┘
                                  │
                     ┌────────────▼──────────────┐
@@ -66,9 +119,64 @@ The system now has components from two development streams that complement each 
                     │  - Theory credences       │
                     │  - Research priorities    │
                     │  - Stubs identified       │
-                    │  - Divergence analysis    │
+                    │  - Counterfactual results │
+                    │  - Epistemic gaps (VOI)   │
+                    │  - Security assessments   │
                     └───────────────────────────┘
 ```
+
+## Causal Layer Details (ECB-3)
+
+### Contrast Transfer Classification
+
+When generalizing findings across populations, the bridge classifies transfer type:
+
+| Type | Similarity | Action | Defined? |
+|------|------------|--------|----------|
+| DIRECT | ≥0.9 | No adjustment | Yes |
+| BASELINE_SHIFT | ≥0.7 | Adjust for ceiling/floor | Yes |
+| POPULATION_SHIFT | ≥0.5 | Increased uncertainty | Yes |
+| MEANING_SHIFT | <0.5 | **Refuse to transfer** | No |
+
+Thresholds are configurable via environment variables:
+- `AE_CONTRAST_THRESHOLD_DIRECT` (default: 0.9)
+- `AE_CONTRAST_THRESHOLD_BASELINE` (default: 0.7)
+- `AE_CONTRAST_THRESHOLD_POPULATION` (default: 0.5)
+
+### Gap Types
+
+The bridge identifies five types of epistemic gaps:
+
+| Gap Type | Description | Priority |
+|----------|-------------|----------|
+| `missing_contrast` | No explicit contrast class in source beliefs | 0.7 |
+| `low_coverage` | Target population has limited evidence | 0.8 × (1 - coverage) |
+| `theory_conflict` | Theories disagree on estimate | 0.6 × range |
+| `baseline_unknown` | Missing baseline data for target | 0.5 |
+| `blocked_beliefs` | Enabling conditions unmet | 0.4 |
+
+Gaps are returned in `QuineanCounterfactualResult.gaps` for pipeline routing to VOI search.
+
+### Security Weight (Haack)
+
+Security measures foundherentist grounding:
+
+```python
+base_security = {
+    'observational': 0.9,  # Direct experience
+    'empirical': 0.7,      # Systematic observation
+    'intermediate': 0.5,   # Mixed
+    'theoretical': 0.3     # Abstract
+}
+
+# Bonuses
++ 0.15 for explicit contrast class (from paper methods)
++ 0.05 for inferred contrast class
++ 0.10 for entrenched status
++ 0.05 for established status
+```
+
+Higher security = more empirically grounded, better methodology.
 
 ## Recommended Use of Each Extraction Method
 

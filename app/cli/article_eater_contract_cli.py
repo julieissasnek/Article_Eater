@@ -177,6 +177,9 @@ def cmd_eat(args) -> int:
             "seek_equilibrium": getattr(args, "web_equilibrium", True),
             "max_iterations": getattr(args, "web_max_iterations", 10),
             "convergence_threshold": getattr(args, "web_convergence_threshold", 0.001),
+            # Sprint ECB: Causal bridge options
+            "causal_enabled": getattr(args, "causal_enabled", True),
+            "causal_credence_threshold": getattr(args, "causal_credence_threshold", 0.5),
         }
         export_options = {
             "manifest": getattr(args, "export_manifest", True),
@@ -262,6 +265,24 @@ def main() -> int:
         "--web-convergence-threshold",
         dest="web_convergence_threshold", type=float, default=0.001,
         help="Convergence threshold for equilibrium (default: 0.001)"
+    )
+
+    # Sprint ECB: Causal bridge options
+    causal_group = eat.add_argument_group("Causal Bridge Options (Sprint ECB)")
+    causal_group.add_argument(
+        "--causal", "--enable-causal",
+        dest="causal_enabled", action="store_true", default=True,
+        help="Enable Epistemic-Causal Bridge (default: enabled)"
+    )
+    causal_group.add_argument(
+        "--no-causal", "--disable-causal",
+        dest="causal_enabled", action="store_false",
+        help="Disable Epistemic-Causal Bridge"
+    )
+    causal_group.add_argument(
+        "--causal-credence-threshold",
+        dest="causal_credence_threshold", type=float, default=0.5,
+        help="Minimum credence for beliefs included in causal models (default: 0.5)"
     )
 
     # Sprint 2.0.3: Export control flags

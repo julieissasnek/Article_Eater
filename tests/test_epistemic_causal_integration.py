@@ -3,7 +3,7 @@ Tests for Sprint 1.5: Epistemic-Causal Integration
 
 This module tests the integration between:
 1. The existing WebOfBelief (src/services/web_of_belief.py)
-2. The new EpistemicCausalBridge (epistemic_causal_integration.py)
+2. The EpistemicCausalBridge (src/services/epistemic_causal_bridge.py)
 
 Test Strategy:
 - Type compatibility: Verify the bridge accepts the existing WebOfBelief
@@ -14,16 +14,15 @@ Test Strategy:
 
 Sprint 1.5.9 Deliverable
 Date: February 8, 2026
+
+ECB-1.3 Update (2026-02-10):
+- Fixed imports to use canonical repo module (src/services/epistemic_causal_bridge.py)
+- Removed external path dependency (/Users/davidusa/REPOS/research/...)
 """
 
 import pytest
-import sys
 from pathlib import Path
 from datetime import datetime, timezone
-
-# Add the epistemic layer source to path
-EPIST_LAYER_PATH = Path("/Users/davidusa/REPOS/research/claude_epist_layer adds K to causal BN")
-sys.path.insert(0, str(EPIST_LAYER_PATH))
 
 from src.services.web_of_belief import (
     WebOfBelief,
@@ -39,8 +38,9 @@ from src.services.web_of_belief import (
     create_neuroarchitecture_web,
 )
 
-# Import from the epistemic causal integration module
-import epistemic_causal_integration as eci
+# Import from the canonical epistemic causal bridge module
+# (ECB-1.3: Changed from external epistemic_causal_integration.py)
+import src.services.epistemic_causal_bridge as eci
 
 
 # =============================================================================

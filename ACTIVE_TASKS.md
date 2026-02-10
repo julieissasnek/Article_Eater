@@ -28,13 +28,26 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| DISC-3 | Add search execution logging | Terminal-1 | 21:00 | IN_PROGRESS | Article Finder integration |
+| — | — | — | — | — | All ECB sprints complete |
 
 ---
 
 ## Available Tasks (Not Claimed)
 
-### High Priority (Infrastructure)
+### Sprint ECB-3: Van Fraassen and Polish ✓ COMPLETE
+All tasks completed. See TASKS.md for details.
+
+### Future ECB Work (Panel Recommendations)
+| Task ID | Description | Priority | Source |
+|---------|-------------|----------|--------|
+| ECB-F1 | Add meaning_equivalent flag for functional equivalence | P2 | van Fraassen |
+| ECB-F2 | Add enabling_unclear gap type | P2 | Cartwright |
+| ECB-F3 | Decompose theory_conflict into structural/parametric | P2 | Pearl |
+| ECB-F4 | Track contrast class source (methods vs inferred) | P3 | Haack |
+| ECB-F5 | Deprecate transfer_type_str in favor of enum | P3 | Parnas |
+| ECB-F6 | Add explicit tests for ECB-3 boundary values | P1 | Brooks |
+
+### Other Infrastructure
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
 | DISC-3 | Add search execution logging to Article Finder | P1 | DISC-2 ✓ |
@@ -47,7 +60,16 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 ---
 
-## Completed Today (2026-02-09)
+## Completed Today (2026-02-10)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| ECB-3 | Sprint ECB-3: Van Fraassen and Polish | Terminal-1 | Evening | ContrastTransferType enum, gap identification (5 types), Haack security weight, error handling, 68+153 tests pass, panel review |
+| ECB-2 | Sprint ECB-2: Core Integration | Terminal-1 | Afternoon | Pipeline wired (Stage 2.8), CLI flags (--no-causal), feedback loop, 68 tests pass |
+| ECB-1 | Sprint ECB-1: Cleanup and Consolidation | Terminal-1 | Morning | Duplicates marked DEPRECATED, features archived to quarantine, test imports fixed, 68+89 tests pass |
+| ECB-PLAN | Sprint ECB Planning | Terminal-1 | 12:00 | Panel P-ECB-R convened, 5 docs created, 3 sprints defined |
+
+## Completed Yesterday (2026-02-09)
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
@@ -119,4 +141,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-09 23:30*
+*Last coordination check: 2026-02-10 12:00*

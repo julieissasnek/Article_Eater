@@ -42,9 +42,37 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # PART 1: FOUNDATIONAL ENUMS AND TYPES
 # =============================================================================
+#
+# DEPRECATION NOTICE (ECB-1.2, 2026-02-10):
+# -----------------------------------------
+# The classes below (EpistemicLevel, BeliefStatus, ConstraintType, Credence, Belief)
+# are DUPLICATES of canonical definitions in web_of_belief.py.
+#
+# CANONICAL LOCATION: src/services/web_of_belief.py
+#
+# These duplicates exist only for:
+# 1. The minimal WebOfBelief stub (line ~2090) used by demo functions
+# 2. Backward compatibility during Sprint ECB simplification
+#
+# IMPORTANT: When EpistemicCausalBridge is instantiated with a real WebOfBelief
+# from web_of_belief.py, the canonical Belief/Credence classes are used via
+# the passed web object. These local duplicates are NOT used in production.
+#
+# V23.0.0 NOTE: The canonical Belief class in web_of_belief.py has emergent
+# entrenchment (computed via web.get_entrenchment()), while these duplicates
+# still have a stored entrenchment field. The stub WebOfBelief's get_entrenchment()
+# method handles this difference.
+#
+# TODO (Sprint ECB-2): Remove these duplicates after updating demo functions
+# to use the canonical classes from web_of_belief.py.
+# =============================================================================
 
 class EpistemicLevel(Enum):
-    """Levels in the Quinean web, from center to periphery."""
+    """
+    DEPRECATED: Use web_of_belief.EpistemicLevel instead.
+
+    Levels in the Quinean web, from center to periphery.
+    """
     THEORETICAL = "theoretical"
     INTERMEDIATE = "intermediate"
     EMPIRICAL = "empirical"
@@ -52,7 +80,11 @@ class EpistemicLevel(Enum):
 
 
 class BeliefStatus(Enum):
-    """Status of a belief in the web."""
+    """
+    DEPRECATED: Use web_of_belief.BeliefStatus instead.
+
+    Status of a belief in the web.
+    """
     STUB = "stub"
     TENTATIVE = "tentative"
     ESTABLISHED = "established"
@@ -61,7 +93,12 @@ class BeliefStatus(Enum):
 
 
 class ConstraintType(Enum):
-    """Types of epistemic constraint."""
+    """
+    DEPRECATED: Use web_of_belief.ConstraintType instead.
+
+    Types of epistemic constraint.
+    Note: web_of_belief.ConstraintType has additional types: BRIDGES, STRONG_TENSION, SHARED_EVIDENCE
+    """
     SUPPORTS = "supports"
     CONTRADICTS = "contradicts"
     PARTIAL_SUPPORT = "partial_support"
@@ -80,35 +117,57 @@ class ContrastType(Enum):
     POPULATION = "population"        # This population vs. that population
 
 
-class AttackType(Enum):
-    """Types of argument attack."""
-    CONFOUNDER = "confounder"
-    BOUNDARY_CONDITION = "boundary_condition"
-    OVERGENERALIZATION = "overgeneralization"
-    MECHANISM = "mechanism"
-    MEASUREMENT = "measurement"
-    REPLICATION = "replication"
-    DOSE_RESPONSE = "dose_response"
-    TEMPORAL = "temporal"
+class ContrastTransferType(Enum):
+    """
+    Types of contrast class transfer (van Fraassen, Panel P-ECB-R).
+
+    ECB-3.1: Determines how to handle generalization across populations/contexts.
+
+    - DIRECT: Source and target contrast classes are equivalent (similarity ≥ 0.9)
+    - BASELINE_SHIFT: Same construct but different baseline levels (similarity ≥ 0.7)
+    - POPULATION_SHIFT: Different population, similar construct (similarity ≥ 0.5)
+    - MEANING_SHIFT: Construct meaning differs—MUST NOT TRANSFER (similarity < 0.5)
+    - UNDEFINED: Cannot assess transfer (missing contrast class info)
+    """
+    DIRECT = "direct"                # Ideal case, no adjustment needed
+    BASELINE_SHIFT = "baseline_shift"  # Common in cross-population, adjust for ceiling/floor
+    POPULATION_SHIFT = "population_shift"  # Different group, similar construct
+    MEANING_SHIFT = "meaning_shift"    # Different construct—result is undefined
+    UNDEFINED = "undefined"            # Cannot assess
 
 
-class ContrastShiftType(Enum):
-    """How an attack shifts the contrast class."""
-    PRESERVING = "preserving"        # Same contrast, disputes finding
-    POPULATION_SHIFT = "population"  # Different population
-    BASELINE_SHIFT = "baseline"      # Different baseline level
-    MEANING_SHIFT = "meaning"        # Different cultural/contextual meaning
-    ALTERNATIVE_SHIFT = "alternative"  # Different comparison condition
-    COMPLEX_SHIFT = "complex"        # Multiple shifts
+# ECB-3.1: Configurable thresholds for contrast transfer (van Fraassen, Simon)
+# Override via environment variables: AE_CONTRAST_THRESHOLD_DIRECT, etc.
+import os
+
+CONTRAST_TRANSFER_THRESHOLDS = {
+    ContrastTransferType.DIRECT: float(os.environ.get('AE_CONTRAST_THRESHOLD_DIRECT', '0.9')),
+    ContrastTransferType.BASELINE_SHIFT: float(os.environ.get('AE_CONTRAST_THRESHOLD_BASELINE', '0.7')),
+    ContrastTransferType.POPULATION_SHIFT: float(os.environ.get('AE_CONTRAST_THRESHOLD_POPULATION', '0.5')),
+    # Below POPULATION_SHIFT threshold → MEANING_SHIFT (no transfer)
+}
+
+
+# NOTE: AttackType and ContrastShiftType enums were ARCHIVED with ArgumentAttack
+# See: quarantine/2026-02-10/epistemic_causal_bridge_features/argument_attack.py
 
 
 # =============================================================================
-# PART 2: CORE EPISTEMIC STRUCTURES
+# PART 2: CORE EPISTEMIC STRUCTURES (DEPRECATED)
+# =============================================================================
+#
+# DEPRECATION NOTICE: See PART 1 header for details.
+# CANONICAL LOCATION: src/services/web_of_belief.py
+# TODO (Sprint ECB-2): Remove after demo function updates.
 # =============================================================================
 
 @dataclass
 class Credence:
-    """Credence with meta-uncertainty."""
+    """
+    DEPRECATED: Use web_of_belief.Credence instead.
+
+    Credence with meta-uncertainty.
+    """
     value: float
     uncertainty: float
     n_supporting: int = 0
@@ -148,17 +207,27 @@ class Credence:
 
 @dataclass
 class Belief:
-    """A belief in the Quinean web with contrast class metadata."""
+    """
+    DEPRECATED: Use web_of_belief.Belief instead.
+
+    A belief in the Quinean web with contrast class metadata.
+
+    WARNING: This class uses stored entrenchment (entrenchment: float).
+    The canonical Belief class in web_of_belief.py uses EMERGENT entrenchment
+    computed via web.get_entrenchment(belief_id) per V23.0.0.
+
+    This duplicate is only used by the minimal WebOfBelief stub and demo functions.
+    """
     belief_id: str
     content: str
     level: EpistemicLevel
     status: BeliefStatus = BeliefStatus.STUB
     credence: Credence = field(default_factory=lambda: Credence(0.5, 0.4))
-    entrenchment: float = 0.5
-    
+    entrenchment: float = 0.5  # DEPRECATED: V23.0.0 uses emergent entrenchment
+
     # Theory attachment (multi-theory)
     theory_ids: Dict[str, float] = field(default_factory=dict)
-    
+
     # Source information
     paper_ids: List[str] = field(default_factory=list)
     
@@ -346,127 +415,13 @@ class BeliefScope:
 
 
 # =============================================================================
-# PART 4: INDIVIDUAL DIFFERENCES
+# PART 4: CAUSAL LAYER STRUCTURES
 # =============================================================================
-
-@dataclass
-class IndividualDifferenceProfile:
-    """Individual difference profile for personalized inference."""
-    
-    # Trait factors
-    chronotype: Optional[float] = None  # MEQ score
-    nature_connectedness: Optional[float] = None  # CNS score
-    big_five: Dict[str, float] = field(default_factory=dict)
-    
-    # State factors
-    current_stress: Optional[float] = None
-    current_fatigue: Optional[float] = None
-    baseline_mood: Optional[float] = None
-    
-    # History/context
-    typical_nature_exposure: Optional[float] = None  # hours/week
-    typical_sunlight_exposure: Optional[float] = None
-    urbanicity: Optional[float] = None
-    
-    # Cultural
-    cultural_background: Optional[str] = None
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {k: v for k, v in self.__dict__.items() if v is not None}
-
-
-@dataclass
-class IndividualDifferenceFactor:
-    """Specification of how an individual difference affects inference."""
-    factor_id: str
-    construct: str
-    measures: List[str]
-    
-    # Effect on baseline
-    effect_on_baseline: Dict[str, str]
-    
-    # Effect on intervention response
-    effect_on_response: Dict[str, str]
-    
-    # Research references
-    key_references: List[str] = field(default_factory=list)
-    
-    # Cultural interactions
-    cultural_interactions: Dict[str, str] = field(default_factory=dict)
-    
-    def compute_modifier(
-        self,
-        individual_value: float,
-        belief: Belief,
-        context: PopulationContext
-    ) -> Tuple[float, str]:
-        """Compute effect modifier for an individual."""
-        # Default implementation - subclasses can override
-        # Returns (multiplier, explanation)
-        return (1.0, "No specific modifier computed")
-
-
-# =============================================================================
-# PART 5: ARGUMENT STRUCTURE
-# =============================================================================
-
-@dataclass
-class ArgumentAttack:
-    """
-    An argument attack with contrast class analysis.
-    
-    Key insight: Many attacks are contrast shifts, not refutations.
-    """
-    attack_id: str
-    source_paper_id: str
-    target_belief_id: str
-    attack_type: AttackType
-    
-    # The attack claim
-    attack_claim: str
-    attack_credence: float
-    
-    # Contrast class analysis
-    original_contrast: Optional[ContrastClass] = None
-    shifted_contrast: Optional[ContrastClass] = None
-    shift_type: ContrastShiftType = ContrastShiftType.PRESERVING
-    
-    # Outcome specification
-    outcome_under_original: Optional[str] = None
-    outcome_under_shifted: Optional[str] = None
-    
-    # Resolution
-    resolution: Optional[str] = None
-    resolution_credence: Optional[float] = None
-    
-    def is_contrast_preserving(self) -> bool:
-        return self.shift_type == ContrastShiftType.PRESERVING
-    
-    def is_contrast_shifting(self) -> bool:
-        return self.shift_type != ContrastShiftType.PRESERVING
-
-
-@dataclass
-class AttackContrastAnalysis:
-    """Analysis of how an attack relates to contrast class."""
-    attack_id: str
-    analysis_type: str  # "preserving" or "shifting"
-    
-    original_contrast: ContrastClass
-    attack_contrast: ContrastClass
-    
-    shift_type: Optional[ContrastShiftType] = None
-    
-    implication: str = ""
-    resolution_approach: str = ""
-    
-    # Both may be valid for shifting attacks
-    original_validity: str = ""
-    attack_validity: str = ""
-
-
-# =============================================================================
-# PART 6: CAUSAL LAYER STRUCTURES
+#
+# NOTE: Individual Differences (PART 4) and Argument Structure (PART 5) were
+# ARCHIVED to quarantine/2026-02-10/epistemic_causal_bridge_features/
+# See: individual_differences.py, argument_attack.py
+# Future TODOs: IND-1 to IND-4, ATK-1 to ATK-4
 # =============================================================================
 
 @dataclass
@@ -483,26 +438,94 @@ class Variable:
 class StructuralEquation:
     """
     A structural equation: Y = f(parents, U).
-    
+
     Extended with epistemic metadata from the Quinean layer.
+
+    ECB-2.2 (Cartwright): Enabling conditions GATE computation.
+    Capacities don't manifest without their enabling conditions being met.
     """
     equation_id: str
     outcome_var: str
     parent_vars: List[str]
-    
+
     # Functional form
     functional_form: str  # "linear", "threshold", "u_shaped", etc.
     parameters: Dict[str, float] = field(default_factory=dict)
-    
+
     # Epistemic metadata (from Quinean layer)
     supporting_beliefs: List[str] = field(default_factory=list)
     credence: float = 0.5
     uncertainty: float = 0.3
     entrenchment: float = 0.3
-    
+
     # Theory attachment
     theory_id: Optional[str] = None
-    
+
+    # ECB-2.2: Enabling conditions (Cartwright)
+    # If set, the equation only applies when conditions are met
+    enabling_conditions: Optional[Any] = None  # EnablingConditions from web_of_belief
+
+    def is_applicable(self, context: Optional[Dict[str, Any]] = None) -> Tuple[bool, str]:
+        """
+        Check if this equation is applicable given the context.
+
+        ECB-2.2 (Cartwright): Enabling conditions gate computation.
+
+        Args:
+            context: Dict with keys like 'exposure_duration', 'baseline_state',
+                    'concurrent_factors', 'blocking_factors' etc.
+
+        Returns:
+            (is_applicable, reason): Tuple of bool and explanation string.
+            If True, reason describes why it's applicable.
+            If False, reason describes which condition is unmet.
+        """
+        if self.enabling_conditions is None:
+            return (True, "No enabling conditions specified")
+
+        if context is None:
+            return (False, "Context required but not provided")
+
+        ec = self.enabling_conditions
+
+        # Check minimum exposure
+        if hasattr(ec, 'minimum_exposure') and ec.minimum_exposure:
+            exposure = context.get('exposure_duration')
+            if exposure is None:
+                return (False, f"Minimum exposure required: {ec.minimum_exposure}")
+            # Simple string comparison for now; could parse numeric thresholds
+            # This is a placeholder - real implementation would parse ">30 minutes" etc.
+
+        # Check baseline state
+        if hasattr(ec, 'baseline_state') and ec.baseline_state:
+            baseline = context.get('baseline_state')
+            if baseline != ec.baseline_state:
+                return (False, f"Baseline state required: {ec.baseline_state}, got: {baseline}")
+
+        # Check concurrent factors (must be present)
+        if hasattr(ec, 'concurrent_factors') and ec.concurrent_factors:
+            present = set(context.get('concurrent_factors', []))
+            required = set(ec.concurrent_factors)
+            missing = required - present
+            if missing:
+                return (False, f"Missing concurrent factors: {missing}")
+
+        # Check blocking factors (must be absent)
+        if hasattr(ec, 'blocking_factors') and ec.blocking_factors:
+            present = set(context.get('blocking_factors', []))
+            blockers = set(ec.blocking_factors)
+            blocking = present & blockers
+            if blocking:
+                return (False, f"Blocking factors present: {blocking}")
+
+        # Check threshold
+        if hasattr(ec, 'threshold') and ec.threshold:
+            threshold_val = context.get('threshold_value')
+            if threshold_val is None:
+                return (False, f"Threshold required: {ec.threshold}")
+
+        return (True, "All enabling conditions met")
+
     def compute(self, parent_values: Dict[str, float], noise: float = 0.0) -> float:
         """Compute outcome given parent values."""
         if self.functional_form == "linear":
@@ -678,44 +701,67 @@ class ScopeAssessment:
 
 @dataclass
 class ContrastAssessment:
-    """Van Fraassen assessment of contrast class transfer."""
-    source_contrast: ContrastClass
-    target_contrast: ContrastClass
-    
+    """
+    Van Fraassen assessment of contrast class transfer.
+
+    ECB-3.1/3.2: Enhanced with typed transfer classification and undefined handling.
+    """
+    source_contrast: Optional[ContrastClass]
+    target_contrast: Optional[ContrastClass]
+
     contrast_preserved: bool
     contrast_similarity: float
-    
+
     baseline_differences: Dict[str, Tuple[str, str]]  # var -> (source, target)
     meaning_differences: Dict[str, Tuple[str, str]]   # construct -> (source, target)
-    
-    transfer_type: str
+
+    # ECB-3.1: Typed transfer classification
+    transfer_type: ContrastTransferType
+    transfer_type_str: str  # Backward compatibility: "direct", "baseline_adjusted", etc.
     adjustment_factor: float
     warnings: List[str]
+
+    # ECB-3.2: Undefined handling (van Fraassen)
+    is_defined: bool = True
+    reason_undefined: Optional[str] = None
 
 
 @dataclass
 class QuineanCounterfactualResult:
-    """Complete counterfactual result with Quinean annotations."""
+    """
+    Complete counterfactual result with Quinean annotations.
+
+    ECB-3.2: Results may be undefined if contrast classes don't transfer.
+    """
     query: CounterfactualQuery
-    
+
     # Standard result
     point_estimate: float
     confidence_interval: Tuple[float, float]
-    
+
     # Theory-relative breakdown
     by_theory: Dict[str, TheoryCounterfactual]
-    
+
     # Quinean assessments
     robustness: RobustnessAnalysis
     coherence: CoherenceAssessment
     scope: ScopeAssessment
     contrast: ContrastAssessment
-    
+
     # Overall quality
     epistemic_quality: float
-    
+
     # Warnings
     warnings: List[str]
+
+    # ECB-3.2: Undefined handling (van Fraassen)
+    # Result is undefined when contrast classes don't transfer
+    is_defined: bool = True
+    reason_undefined: Optional[str] = None
+
+    # ECB-3.3: Epistemic gaps identified during analysis
+    # Pipeline routes these to VOI search or discovery funnel
+    gaps: List[EpistemicGap] = field(default_factory=list)
     
     def summary(self) -> str:
         lines = [
@@ -809,6 +855,46 @@ class EpistemicCounterfactualResult:
 # =============================================================================
 
 @dataclass
+class EpistemicGap:
+    """
+    An epistemic gap identified during causal analysis (ECB-3.3).
+
+    Gaps are situations where we lack the evidence needed for confident inference.
+    The bridge identifies gaps; the pipeline routes them to VOI search.
+
+    Panel P-ECB-R (Simon): Bridge returns gaps in standard format.
+    Pipeline decides where to route them.
+    """
+    gap_id: str
+    gap_type: str  # "missing_contrast", "low_coverage", "theory_conflict", "baseline_unknown"
+    description: str
+    priority: float  # 0.0-1.0, higher = more important to fill
+    context: Dict[str, Any] = field(default_factory=dict)
+
+    # Suggested research direction
+    suggested_query: Optional[str] = None
+    target_population: Optional[str] = None
+    target_variable: Optional[str] = None
+
+    def to_voi_request(self) -> Dict[str, Any]:
+        """
+        Convert gap to VOI search request format.
+
+        Returns dict suitable for VOI search funnel.
+        """
+        return {
+            'gap_id': self.gap_id,
+            'gap_type': self.gap_type,
+            'priority': self.priority,
+            'query': self.suggested_query or self.description,
+            'target_population': self.target_population,
+            'target_variable': self.target_variable,
+            'source': 'epistemic_causal_bridge',
+            'context': self.context
+        }
+
+
+@dataclass
 class GeneralizationAssessment:
     """Assessment of belief generalization across contexts."""
     belief_id: str
@@ -854,22 +940,64 @@ class GeneralizationAssessment:
 # PART 10: THE EPISTEMIC-CAUSAL BRIDGE
 # =============================================================================
 
+class BridgeError(Exception):
+    """Base exception for epistemic-causal bridge errors (ECB-3.6)."""
+    pass
+
+
+class EmptyWebError(BridgeError):
+    """Raised when the web has no beliefs."""
+    pass
+
+
+class MissingTheoryError(BridgeError):
+    """Raised when a requested theory is not in the web."""
+    pass
+
+
+class MalformedBeliefError(BridgeError):
+    """
+    Raised when a belief is missing required attributes.
+
+    Note: Reserved for future use when belief validation is implemented.
+    Kept for API completeness per error hierarchy design.
+    """
+    pass
+
+
 class EpistemicCausalBridge:
     """
     Bridge between Quinean epistemic layer and Pearlian causal layer.
-    
+
     This is the core integration class that implements:
     1. Extraction of causal models from epistemic web
     2. Epistemic constraints on counterfactual inference
     3. Van Fraassen contrast class handling
     4. Generalization with individual/cultural differences
+
+    ECB-3.6: Explicit error handling for edge cases.
     """
-    
+
     def __init__(self, web: 'WebOfBelief'):
+        """
+        Initialize the bridge with a web of belief.
+
+        Args:
+            web: WebOfBelief instance (from web_of_belief.py)
+
+        Raises:
+            TypeError: If web is None or not a WebOfBelief-like object
+        """
+        if web is None:
+            raise TypeError("web cannot be None")
+        if not hasattr(web, 'beliefs') or not hasattr(web, 'constraints'):
+            raise TypeError("web must have 'beliefs' and 'constraints' attributes")
+
         self.web = web
         self.multi_theory_model: Optional[MultiTheoryModel] = None
         self.population_contexts: Dict[str, PopulationContext] = {}
-        self.individual_factors: Dict[str, IndividualDifferenceFactor] = {}
+        # NOTE: individual_factors dict removed - feature archived to quarantine/
+        self._blocked_beliefs: List[Dict[str, Any]] = []  # P-EC-R9: Track blocked beliefs
     
     # =========================================================================
     # MODEL CONSTRUCTION
@@ -882,21 +1010,56 @@ class EpistemicCausalBridge:
     ) -> MultiTheoryModel:
         """
         Build causal models from the epistemic web.
-        
+
         Key principle: The causal layer is derived from the epistemic layer.
         High-credence beliefs become structural equations; constraints become edges.
+
+        Args:
+            credence_threshold: Minimum credence for beliefs to be included (0.0-1.0)
+            include_theories: Specific theories to include (None = all)
+
+        Returns:
+            MultiTheoryModel with theory-relative causal models
+
+        Raises:
+            EmptyWebError: If web has no beliefs
+            MissingTheoryError: If a specified theory is not found
+            ValueError: If credence_threshold is out of range
+
+        ECB-3.6: Explicit error handling.
         """
+        # Validate inputs
+        if not 0.0 <= credence_threshold <= 1.0:
+            raise ValueError(f"credence_threshold must be 0.0-1.0, got {credence_threshold}")
+
+        # Handle empty web gracefully (ECB-3.6)
+        if not self.web.beliefs:
+            logger.warning("Building causal models from empty web of belief")
+            self.multi_theory_model = MultiTheoryModel(domain=getattr(self.web, 'domain', 'unknown'))
+            return self.multi_theory_model
+
+        # Get theories
         theories = include_theories or list(self.web.theory_ids)
-        
+
+        # Validate requested theories exist
+        if include_theories:
+            missing = set(include_theories) - set(self.web.theory_ids)
+            if missing:
+                raise MissingTheoryError(f"Theories not found in web: {missing}")
+
         self.multi_theory_model = MultiTheoryModel(domain=self.web.domain)
-        
+
         for theory_id in theories:
-            theory_beliefs = self._get_theory_beliefs(theory_id, credence_threshold)
-            
-            if theory_beliefs:
-                model = self._build_theory_model(theory_id, theory_beliefs)
-                self.multi_theory_model.add_theory_model(model)
-        
+            try:
+                theory_beliefs = self._get_theory_beliefs(theory_id, credence_threshold)
+
+                if theory_beliefs:
+                    model = self._build_theory_model(theory_id, theory_beliefs)
+                    self.multi_theory_model.add_theory_model(model)
+            except Exception as e:
+                # Log but don't fail entire build for one theory
+                logger.warning(f"Failed to build model for theory '{theory_id}': {e}")
+
         return self.multi_theory_model
     
     def _get_theory_beliefs(
@@ -1172,7 +1335,7 @@ class EpistemicCausalBridge:
     ) -> QuineanCounterfactualResult:
         """
         Compute counterfactual with full Quinean analysis.
-        
+
         Steps:
         1. Compute counterfactual under each theory
         2. Weight by theory credence
@@ -1181,10 +1344,51 @@ class EpistemicCausalBridge:
         5. Evaluate scope (is this within evidential support?)
         6. Assess contrast transfer (van Fraassen)
         7. Apply adjustments and generate warnings
+
+        Args:
+            intervention: Dict of variable -> value for do() operation
+            outcome: Name of outcome variable
+            evidence: Optional conditioning evidence
+            contrast_class: Optional explicit contrast class
+            target_population: Optional target population for generalization
+            target_individual: Optional individual difference profile
+
+        Returns:
+            QuineanCounterfactualResult with full epistemic annotations
+
+        Raises:
+            ValueError: If intervention is empty or outcome is empty
+            EmptyWebError: If web has no beliefs
+
+        ECB-3.6: Explicit error handling.
         """
-        
+        # Validate inputs
+        if not intervention:
+            raise ValueError("intervention cannot be empty")
+        if not outcome:
+            raise ValueError("outcome cannot be empty string")
+
+        # Handle empty web gracefully (ECB-3.6)
+        if not self.web.beliefs:
+            logger.warning("Computing counterfactual with empty web of belief")
+            return self._make_undefined_result(
+                intervention, outcome, evidence, contrast_class,
+                "Empty web of belief"
+            )
+
+        # Build models if not already done
         if self.multi_theory_model is None:
-            self.build_causal_models()
+            try:
+                self.build_causal_models()
+            except EmptyWebError:
+                raise
+            except Exception as e:
+                logger.warning(f"Failed to build causal models: {e}")
+                # Return minimal result with undefined status
+                return self._make_undefined_result(
+                    intervention, outcome, evidence, contrast_class,
+                    f"Failed to build causal models: {e}"
+                )
         
         query = CounterfactualQuery(
             query_id=f"cf_{datetime.now().isoformat()}",
@@ -1247,7 +1451,19 @@ class EpistemicCausalBridge:
             0.25 * scope.scope_score +
             0.25 * contrast.contrast_similarity
         )
-        
+
+        # ECB-3.2: Propagate undefined status from contrast assessment
+        is_defined = contrast.is_defined
+        reason_undefined = contrast.reason_undefined
+
+        # If result is undefined, epistemic quality is set to 0
+        if not is_defined:
+            epistemic_quality = 0.0
+            warnings.insert(0, f"RESULT UNDEFINED: {reason_undefined}")
+
+        # ECB-3.3: Identify epistemic gaps for VOI routing
+        gaps = self._identify_gaps(query, theory_results, scope, contrast)
+
         return QuineanCounterfactualResult(
             query=query,
             point_estimate=adjusted_estimate,
@@ -1258,9 +1474,86 @@ class EpistemicCausalBridge:
             scope=scope,
             contrast=contrast,
             epistemic_quality=epistemic_quality,
-            warnings=warnings
+            warnings=warnings,
+            is_defined=is_defined,
+            reason_undefined=reason_undefined,
+            gaps=gaps
         )
-    
+
+    def _make_undefined_result(
+        self,
+        intervention: Dict[str, float],
+        outcome: str,
+        evidence: Optional[Dict[str, float]],
+        contrast_class: Optional[ContrastClass],
+        reason: str
+    ) -> QuineanCounterfactualResult:
+        """
+        Create an undefined counterfactual result (ECB-3.6).
+
+        Used when the counterfactual cannot be computed due to errors.
+        """
+        query = CounterfactualQuery(
+            query_id=f"cf_undefined_{datetime.now().isoformat()}",
+            intervention=intervention,
+            outcome_var=outcome,
+            evidence=evidence or {},
+            contrast_class=contrast_class
+        )
+
+        # Create minimal assessments
+        robustness = RobustnessAnalysis(
+            robustness_score=0.0,
+            min_revision_cost=0.0,
+            sensitive_beliefs=[],
+            path_entrenchment=0.0
+        )
+        coherence = CoherenceAssessment(
+            is_coherent=False,
+            coherence_score=0.0,
+            violations=[],
+            required_co_revisions=[]
+        )
+        scope = ScopeAssessment(
+            in_scope=False,
+            scope_score=0.0,
+            population_match=0.0,
+            setting_match=0.0,
+            baseline_match=0.0,
+            extrapolation_warnings=[reason],
+            suggested_penalty=1.0
+        )
+        contrast = ContrastAssessment(
+            source_contrast=None,
+            target_contrast=None,
+            contrast_preserved=False,
+            contrast_similarity=0.0,
+            baseline_differences={},
+            meaning_differences={},
+            transfer_type=ContrastTransferType.UNDEFINED,
+            transfer_type_str="undefined",
+            adjustment_factor=0.0,
+            warnings=[reason],
+            is_defined=False,
+            reason_undefined=reason
+        )
+
+        return QuineanCounterfactualResult(
+            query=query,
+            point_estimate=0.0,
+            confidence_interval=(0.0, 0.0),
+            by_theory={},
+            robustness=robustness,
+            coherence=coherence,
+            scope=scope,
+            contrast=contrast,
+            epistemic_quality=0.0,
+            warnings=[f"RESULT UNDEFINED: {reason}"],
+            is_defined=False,
+            reason_undefined=reason,
+            gaps=[]
+        )
+
     def _compute_theory_counterfactual(
         self,
         query: CounterfactualQuery,
@@ -1583,34 +1876,39 @@ class EpistemicCausalBridge:
         query: CounterfactualQuery,
         theory_results: Dict[str, TheoryCounterfactual]
     ) -> ContrastAssessment:
-        """Assess contrast class transfer (van Fraassen)."""
-        
+        """
+        Assess contrast class transfer (van Fraassen).
+
+        ECB-3.1: Uses configurable thresholds to classify transfer type.
+        ECB-3.2: Returns is_defined=False for MEANING_SHIFT (non-transferable).
+        """
+
         warnings = []
-        
+
         # Get source contrast from supporting beliefs
         source_contrast = self._extract_source_contrast(theory_results)
-        
+
         # Build target contrast from query
         target_contrast = self._build_target_contrast(query)
-        
+
         # Compare contrasts
         contrast_preserved = self._contrasts_equivalent(source_contrast, target_contrast)
         contrast_similarity = self._compute_contrast_similarity(source_contrast, target_contrast)
-        
+
         # Identify differences
         baseline_diffs = {}
         meaning_diffs = {}
-        
+
         if source_contrast and target_contrast:
             # Compare baselines
             if source_contrast.population_context and target_contrast.population_context:
                 src_ctx = source_contrast.population_context
                 tgt_ctx = target_contrast.population_context
-                
+
                 for var in set(src_ctx.baselines.keys()) | set(tgt_ctx.baselines.keys()):
                     src_base = src_ctx.baselines.get(var)
                     tgt_base = tgt_ctx.baselines.get(var)
-                    
+
                     if src_base and tgt_base:
                         if src_base.characterization != tgt_base.characterization:
                             baseline_diffs[var] = (
@@ -1621,7 +1919,23 @@ class EpistemicCausalBridge:
                                 f"Baseline for '{var}' differs: "
                                 f"{src_base.characterization} → {tgt_base.characterization}"
                             )
-        
+
+                # Check for meaning differences (cultural meaning of constructs)
+                for construct in set(src_ctx.cultural_meanings.keys()) | set(tgt_ctx.cultural_meanings.keys()):
+                    src_meaning = src_ctx.cultural_meanings.get(construct)
+                    tgt_meaning = tgt_ctx.cultural_meanings.get(construct)
+
+                    if src_meaning and tgt_meaning:
+                        if src_meaning.meaning != tgt_meaning.meaning:
+                            meaning_diffs[construct] = (
+                                src_meaning.meaning,
+                                tgt_meaning.meaning
+                            )
+                            warnings.append(
+                                f"Meaning of '{construct}' differs: "
+                                f"'{src_meaning.meaning}' → '{tgt_meaning.meaning}'"
+                            )
+
         # Compute adjustment factor
         if baseline_diffs:
             # Each baseline difference reduces effect
@@ -1630,17 +1944,23 @@ class EpistemicCausalBridge:
                 adjustment *= self._baseline_adjustment_factor(src, tgt)
         else:
             adjustment = 1.0
-        
-        # Determine transfer type
-        if contrast_preserved:
-            transfer_type = "direct"
-        elif baseline_diffs and not meaning_diffs:
-            transfer_type = "baseline_adjusted"
-        elif meaning_diffs:
-            transfer_type = "uncertain"
-        else:
-            transfer_type = "analogous"
-        
+
+        # ECB-3.1: Determine transfer type using configurable thresholds
+        transfer_type, transfer_type_str, is_defined, reason_undefined = (
+            self._classify_contrast_transfer(
+                contrast_similarity=contrast_similarity,
+                contrast_preserved=contrast_preserved,
+                baseline_diffs=baseline_diffs,
+                meaning_diffs=meaning_diffs,
+                source_contrast=source_contrast,
+                target_contrast=target_contrast
+            )
+        )
+
+        # Add warning for undefined results
+        if not is_defined:
+            warnings.append(f"Result undefined: {reason_undefined}")
+
         return ContrastAssessment(
             source_contrast=source_contrast,
             target_contrast=target_contrast,
@@ -1649,8 +1969,98 @@ class EpistemicCausalBridge:
             baseline_differences=baseline_diffs,
             meaning_differences=meaning_diffs,
             transfer_type=transfer_type,
+            transfer_type_str=transfer_type_str,
             adjustment_factor=adjustment,
-            warnings=warnings
+            warnings=warnings,
+            is_defined=is_defined,
+            reason_undefined=reason_undefined
+        )
+
+    def _classify_contrast_transfer(
+        self,
+        contrast_similarity: float,
+        contrast_preserved: bool,
+        baseline_diffs: Dict[str, Tuple[str, str]],
+        meaning_diffs: Dict[str, Tuple[str, str]],
+        source_contrast: Optional[ContrastClass],
+        target_contrast: Optional[ContrastClass]
+    ) -> Tuple[ContrastTransferType, str, bool, Optional[str]]:
+        """
+        Classify the type of contrast transfer (ECB-3.1).
+
+        Returns:
+            (transfer_type, transfer_type_str, is_defined, reason_undefined)
+
+        Van Fraassen (Panel P-ECB-R): Four transfer types based on similarity thresholds.
+        Thresholds are configurable via CONTRAST_TRANSFER_THRESHOLDS.
+        """
+
+        # Handle missing contrast info
+        if source_contrast is None and target_contrast is None:
+            return (
+                ContrastTransferType.UNDEFINED,
+                "undefined",
+                True,  # Undefined contrast ≠ undefined result (we just don't know)
+                None
+            )
+
+        if source_contrast is None:
+            return (
+                ContrastTransferType.UNDEFINED,
+                "undefined",
+                True,
+                None
+            )
+
+        # Get thresholds
+        direct_thresh = CONTRAST_TRANSFER_THRESHOLDS[ContrastTransferType.DIRECT]
+        baseline_thresh = CONTRAST_TRANSFER_THRESHOLDS[ContrastTransferType.BASELINE_SHIFT]
+        population_thresh = CONTRAST_TRANSFER_THRESHOLDS[ContrastTransferType.POPULATION_SHIFT]
+
+        # Meaning differences take precedence—if constructs mean different things,
+        # result is undefined regardless of similarity score
+        if meaning_diffs:
+            constructs = list(meaning_diffs.keys())
+            reason = f"contrast_mismatch:meaning_differs:{','.join(constructs)}"
+            return (
+                ContrastTransferType.MEANING_SHIFT,
+                "meaning_shift",
+                False,  # Result is undefined
+                reason
+            )
+
+        # Classify by similarity threshold
+        if contrast_similarity >= direct_thresh:
+            return (
+                ContrastTransferType.DIRECT,
+                "direct",
+                True,
+                None
+            )
+
+        if contrast_similarity >= baseline_thresh:
+            return (
+                ContrastTransferType.BASELINE_SHIFT,
+                "baseline_adjusted",
+                True,
+                None
+            )
+
+        if contrast_similarity >= population_thresh:
+            return (
+                ContrastTransferType.POPULATION_SHIFT,
+                "population_shift",
+                True,
+                None
+            )
+
+        # Below population threshold → MEANING_SHIFT (construct may differ)
+        reason = f"contrast_mismatch:similarity_too_low:{contrast_similarity:.2f}<{population_thresh}"
+        return (
+            ContrastTransferType.MEANING_SHIFT,
+            "meaning_shift",
+            False,  # Result is undefined
+            reason
         )
     
     def _extract_source_contrast(
@@ -1792,7 +2202,126 @@ class EpistemicCausalBridge:
         width *= (1 + (1 - contrast.contrast_similarity) * 0.5)
         
         return (center - width / 2, center + width / 2)
-    
+
+    # =========================================================================
+    # GAP IDENTIFICATION (ECB-3.3)
+    # =========================================================================
+
+    def _identify_gaps(
+        self,
+        query: CounterfactualQuery,
+        theory_results: Dict[str, TheoryCounterfactual],
+        scope: ScopeAssessment,
+        contrast: ContrastAssessment
+    ) -> List[EpistemicGap]:
+        """
+        Identify epistemic gaps during counterfactual analysis (ECB-3.3).
+
+        Panel P-ECB-R (Simon): Bridge identifies gaps, pipeline routes them.
+        Gaps are returned in standard format for VOI search or discovery funnel.
+
+        Gap types:
+        - missing_contrast: No contrast class specified for source beliefs
+        - low_coverage: Target population has limited evidence coverage
+        - theory_conflict: Theories disagree significantly on estimate
+        - baseline_unknown: Missing baseline data for target population
+        - blocked_beliefs: Beliefs excluded due to unmet enabling conditions
+        """
+        gaps = []
+        gap_counter = 0
+
+        def make_gap_id() -> str:
+            nonlocal gap_counter
+            gap_counter += 1
+            return f"gap_{query.query_id}_{gap_counter}"
+
+        # Gap 1: Missing contrast class
+        if contrast.source_contrast is None:
+            gaps.append(EpistemicGap(
+                gap_id=make_gap_id(),
+                gap_type="missing_contrast",
+                description="Source beliefs lack explicit contrast class specification",
+                priority=0.7,
+                context={
+                    'intervention_vars': list(query.intervention.keys()),
+                    'outcome_var': query.outcome_var
+                },
+                suggested_query=f"What is the contrast class for effects on {query.outcome_var}?",
+                target_variable=query.outcome_var
+            ))
+
+        # Gap 2: Low population coverage
+        if scope.population_match < 0.5 and query.target_population:
+            gaps.append(EpistemicGap(
+                gap_id=make_gap_id(),
+                gap_type="low_coverage",
+                description=f"Limited evidence for population: {query.target_population}",
+                priority=0.8 * (1 - scope.population_match),
+                context={
+                    'target_population': query.target_population,
+                    'current_coverage': scope.population_match
+                },
+                suggested_query=f"Studies of {query.outcome_var} in {query.target_population}",
+                target_population=query.target_population,
+                target_variable=query.outcome_var
+            ))
+
+        # Gap 3: Theory conflict
+        if len(theory_results) > 1:
+            estimates = [tcf.estimate for tcf in theory_results.values()]
+            estimate_range = max(estimates) - min(estimates)
+            if estimate_range > 0.3:
+                theory_ids = list(theory_results.keys())
+                gaps.append(EpistemicGap(
+                    gap_id=make_gap_id(),
+                    gap_type="theory_conflict",
+                    description=f"Theories disagree significantly (range: {estimate_range:.2f})",
+                    priority=0.6 * estimate_range,
+                    context={
+                        'theories': theory_ids,
+                        'estimates': {tid: tcf.estimate for tid, tcf in theory_results.items()},
+                        'range': estimate_range
+                    },
+                    suggested_query=f"Critical test between {' and '.join(theory_ids[:2])}"
+                ))
+
+        # Gap 4: Unknown baseline for target population
+        if contrast.target_contrast and contrast.target_contrast.population_context:
+            ctx = contrast.target_contrast.population_context
+            # Check which intervention variables lack baseline data
+            for var in query.intervention.keys():
+                if var not in ctx.baselines:
+                    gaps.append(EpistemicGap(
+                        gap_id=make_gap_id(),
+                        gap_type="baseline_unknown",
+                        description=f"No baseline data for '{var}' in {ctx.population_id}",
+                        priority=0.5,
+                        context={
+                            'variable': var,
+                            'population': ctx.population_id
+                        },
+                        suggested_query=f"Baseline {var} levels in {ctx.population_id}",
+                        target_population=ctx.population_id,
+                        target_variable=var
+                    ))
+
+        # Gap 5: Blocked beliefs (from enabling conditions check)
+        blocked = self.get_blocked_beliefs()
+        if blocked:
+            gaps.append(EpistemicGap(
+                gap_id=make_gap_id(),
+                gap_type="blocked_beliefs",
+                description=f"{len(blocked)} beliefs blocked due to unmet enabling conditions",
+                priority=0.4,
+                context={
+                    'blocked_beliefs': blocked[:5],  # First 5 for context
+                    'total_blocked': len(blocked)
+                },
+                suggested_query="Verify enabling conditions for causal mechanisms"
+            ))
+
+        return gaps
+
     # =========================================================================
     # EPISTEMIC COUNTERFACTUALS
     # =========================================================================
@@ -2066,316 +2595,264 @@ class EpistemicCausalBridge:
     def register_population_context(self, context: PopulationContext):
         """Register a population context for generalization."""
         self.population_contexts[context.population_id] = context
-    
-    def register_individual_factor(self, factor: IndividualDifferenceFactor):
-        """Register an individual difference factor."""
-        self.individual_factors[factor.factor_id] = factor
 
+    # NOTE: register_individual_factor() was ARCHIVED with IndividualDifferenceFactor
+    # See: quarantine/2026-02-10/epistemic_causal_bridge_features/individual_differences.py
+    # Future TODOs: IND-1 to IND-4
 
-# =============================================================================
-# PART 11: MINIMAL CONSTRAINT AND WEB STRUCTURES (for completeness)
-# =============================================================================
+    # =========================================================================
+    # SECURITY WEIGHT (ECB-3.4 - Haack Foundherentism)
+    # =========================================================================
 
-@dataclass
-class Constraint:
-    """Constraint between beliefs."""
-    constraint_id: str
-    source_id: str
-    target_id: str
-    constraint_type: ConstraintType
-    strength: float = 0.5
-    bidirectional: bool = True
-
-
-class WebOfBelief:
-    """
-    Minimal web of belief implementation for this module.
-    
-    Full implementation in web_of_belief.py
-    """
-    
-    def __init__(self, domain: str = "default"):
-        self.domain = domain
-        self.beliefs: Dict[str, Belief] = {}
-        self.constraints: Dict[str, Constraint] = {}
-        self.theory_ids: Set[str] = set()
-        self._coherence: float = 0.5
-    
-    def add_belief(self, belief: Belief):
-        self.beliefs[belief.belief_id] = belief
-        for tid in belief.theory_ids:
-            self.theory_ids.add(tid)
-    
-    def add_constraint(self, constraint: Constraint):
-        self.constraints[constraint.constraint_id] = constraint
-    
-    def coherence_score(self) -> float:
-        return self._coherence
-    
-    def marginal_theory_probability(self, theory_id: str) -> float:
-        # Simplified: average credence of theory's beliefs
-        theory_beliefs = [
-            b for b in self.beliefs.values()
-            if theory_id in b.theory_ids
-        ]
-        if not theory_beliefs:
-            return 0.5
-        return sum(b.credence.value for b in theory_beliefs) / len(theory_beliefs)
-
-    def get_entrenchment(self, belief_id: str) -> float:
+    def compute_security(
+        self,
+        belief_ids: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
         """
-        Get entrenchment for a belief.
+        Compute Haack's "security" weight for beliefs in the causal model (ECB-3.4).
 
-        V23.0.0: Entrenchment is emergent in the main WebOfBelief.
-        This minimal implementation uses the stored value for simplicity.
+        Foundherentism (Haack, 1993): Justification has both coherentist and
+        foundational aspects. "Security" measures how well-grounded a belief is
+        in direct experience (empirical level) and explicit methodology
+        (contrast class specification).
+
+        Panel P-ECB-R (Haack):
+        - Empirical beliefs have higher base security than theoretical
+        - Explicit contrast classes (from paper methods) increase security
+        - Security feeds into overall epistemic quality
+
+        Args:
+            belief_ids: Optional list of belief IDs to compute security for.
+                       If None, computes for all beliefs in the web.
+
+        Returns:
+            Dict with:
+                - belief_securities: Dict[belief_id, security_score]
+                - mean_security: Overall mean security
+                - empirical_ratio: Proportion of empirical beliefs
+                - explicit_contrast_ratio: Proportion with explicit contrast classes
         """
-        if belief_id not in self.beliefs:
-            return 0.5
-        return self.beliefs[belief_id].entrenchment
+        if belief_ids is None:
+            belief_ids = list(self.web.beliefs.keys())
 
-    def seek_equilibrium(self, max_iterations: int = 10):
-        """Simplified equilibrium seeking."""
-        for _ in range(max_iterations):
-            # Propagate through constraints
-            for constraint in self.constraints.values():
-                if constraint.source_id not in self.beliefs:
-                    continue
-                if constraint.target_id not in self.beliefs:
-                    continue
-                
-                source = self.beliefs[constraint.source_id]
-                target = self.beliefs[constraint.target_id]
-                
-                if constraint.constraint_type == ConstraintType.SUPPORTS:
-                    # Pull toward agreement
-                    delta = (source.credence.value - target.credence.value) * 0.1 * constraint.strength
-                    target.credence = Credence(
-                        value=target.credence.value + delta,
-                        uncertainty=target.credence.uncertainty
-                    )
-                
-                elif constraint.constraint_type == ConstraintType.CONTRADICTS:
-                    # Push apart
-                    if source.credence.value > 0.5 and target.credence.value > 0.5:
-                        # Both high - lower the less entrenched one
-                        # V23.0.0: Use get_entrenchment for consistency with main implementation
-                        if self.get_entrenchment(source.belief_id) < self.get_entrenchment(target.belief_id):
-                            source.credence = Credence(
-                                value=source.credence.value * 0.95,
-                                uncertainty=source.credence.uncertainty
-                            )
-                        else:
-                            target.credence = Credence(
-                                value=target.credence.value * 0.95,
-                                uncertainty=target.credence.uncertainty
-                            )
-        
-        # Update coherence estimate
-        self._update_coherence()
-    
-    def _update_coherence(self):
-        if not self.constraints:
-            self._coherence = 0.5
-            return
-        
-        total = 0.0
-        count = 0
-        
-        for c in self.constraints.values():
-            if c.source_id not in self.beliefs or c.target_id not in self.beliefs:
+        belief_securities = {}
+        empirical_count = 0
+        explicit_contrast_count = 0
+
+        for belief_id in belief_ids:
+            if belief_id not in self.web.beliefs:
                 continue
-            
-            s_cred = self.beliefs[c.source_id].credence.value
-            t_cred = self.beliefs[c.target_id].credence.value
-            
-            if c.constraint_type == ConstraintType.SUPPORTS:
-                # Coherent if similar
-                total += 1 - abs(s_cred - t_cred)
-            elif c.constraint_type == ConstraintType.CONTRADICTS:
-                # Coherent if different
-                total += abs(s_cred - t_cred)
-            else:
-                total += 0.5
-            
-            count += 1
-        
-        self._coherence = total / count if count > 0 else 0.5
 
+            belief = self.web.beliefs[belief_id]
 
-# =============================================================================
-# PART 12: EXAMPLE USAGE AND DEMO
-# =============================================================================
+            # Base security from epistemic level (foundational aspect)
+            level_val = belief.level.value if hasattr(belief.level, 'value') else belief.level
+            level_weights = {
+                'observational': 0.9,   # Direct experience
+                'empirical': 0.7,       # Systematic observation
+                'intermediate': 0.5,    # Mixed
+                'theoretical': 0.3,     # Abstract
+            }
+            base_security = level_weights.get(level_val, 0.5)
 
-def create_demo_system() -> EpistemicCausalBridge:
-    """Create a demo system with example data."""
-    
-    # Create web
-    web = WebOfBelief(domain="neuroarchitecture")
-    
-    # Add theoretical beliefs
-    art_core = Belief(
-        belief_id="ART_core",
-        content="Natural environments restore directed attention",
-        level=EpistemicLevel.THEORETICAL,
-        status=BeliefStatus.ESTABLISHED,
-        credence=Credence(0.72, 0.2),
-        entrenchment=0.8,
-        theory_ids={"ART": 1.0},
-        tags=["outcome:attention", "exposure:nature"]
-    )
-    web.add_belief(art_core)
-    
-    srt_core = Belief(
-        belief_id="SRT_core",
-        content="Natural environments reduce physiological stress",
-        level=EpistemicLevel.THEORETICAL,
-        status=BeliefStatus.ESTABLISHED,
-        credence=Credence(0.75, 0.18),
-        entrenchment=0.75,
-        theory_ids={"SRT": 1.0},
-        tags=["outcome:stress", "exposure:nature"]
-    )
-    web.add_belief(srt_core)
-    
-    # Add empirical beliefs with contrast class
-    sunlight_mood = Belief(
-        belief_id="sunlight_mood",
-        content="Bright light exposure improves mood",
-        level=EpistemicLevel.EMPIRICAL,
-        status=BeliefStatus.ESTABLISHED,
-        credence=Credence(0.68, 0.22),
-        entrenchment=0.55,
-        theory_ids={"SRT": 0.7},
-        tags=["outcome:mood", "exposure:light"],
-        contrast_class=ContrastClass(
-            contrast_id="cc_sunlight",
-            focal=ConditionSpec("light", "bright", "Bright light exposure"),
-            contrasts=[ConditionSpec("light", "dim", "Dim indoor light")],
-            contrast_type=ContrastType.NULL,
-            population_context=PopulationContext(
-                population_id="Nordic_winter_SAD",
-                region="Scandinavia",
-                baselines={
-                    "light_exposure": BaselineSpec(
-                        variable="daily_lux_hours",
-                        typical_value=500,
-                        variance=200,
-                        characterization="very_low"
-                    )
-                }
-            )
+            # Track empirical ratio
+            if level_val in ('observational', 'empirical'):
+                empirical_count += 1
+
+            # Explicit contrast class bonus (Haack refinement)
+            contrast_bonus = 0.0
+            if hasattr(belief, 'contrast_class') and belief.contrast_class:
+                if belief.contrast_class.explicit:
+                    contrast_bonus = 0.15  # From explicit paper methods
+                    explicit_contrast_count += 1
+                else:
+                    contrast_bonus = 0.05  # Inferred contrast class
+
+            # Status-based adjustment (established beliefs more secure)
+            status_val = belief.status.value if hasattr(belief.status, 'value') else belief.status
+            status_modifiers = {
+                'entrenched': 0.10,
+                'established': 0.05,
+                'tentative': 0.0,
+                'stub': -0.10,
+                'anomalous': -0.15,
+            }
+            status_modifier = status_modifiers.get(status_val, 0.0)
+
+            # Compute final security (capped at 0.95)
+            security = min(0.95, base_security + contrast_bonus + status_modifier)
+            security = max(0.05, security)  # Floor at 0.05
+
+            belief_securities[belief_id] = security
+
+        # Compute aggregates
+        n_beliefs = len(belief_securities)
+        mean_security = (
+            sum(belief_securities.values()) / n_beliefs
+            if n_beliefs > 0 else 0.5
         )
-    )
-    web.add_belief(sunlight_mood)
-    
-    # Add constraints
-    web.add_constraint(Constraint(
-        constraint_id="c1",
-        source_id="sunlight_mood",
-        target_id="SRT_core",
-        constraint_type=ConstraintType.INSTANTIATES,
-        strength=0.6
-    ))
-    
-    # Create bridge
-    bridge = EpistemicCausalBridge(web)
-    
-    # Register population contexts
-    bridge.register_population_context(PopulationContext(
-        population_id="Nordic_winter",
-        region="Scandinavia",
-        baselines={
-            "light_exposure": BaselineSpec(
-                variable="daily_lux_hours",
-                typical_value=500,
-                variance=200,
-                characterization="very_low"
-            ),
-            "nature_exposure": BaselineSpec(
-                variable="daily_nature_minutes",
-                typical_value=30,
-                variance=20,
-                characterization="low"
-            )
-        },
-        cultural_meanings={
-            "nature": CulturalMeaning(
-                culture="Nordic",
-                meaning="friluftsliv",
-                associations=["identity", "routine", "allemansrätten"],
-                valence="positive_normal",
-                behavioral_implications="integrated_daily"
-            )
+        empirical_ratio = empirical_count / n_beliefs if n_beliefs > 0 else 0.0
+        explicit_contrast_ratio = explicit_contrast_count / n_beliefs if n_beliefs > 0 else 0.0
+
+        return {
+            'belief_securities': belief_securities,
+            'mean_security': mean_security,
+            'empirical_ratio': empirical_ratio,
+            'explicit_contrast_ratio': explicit_contrast_ratio,
+            'n_beliefs_assessed': n_beliefs
         }
-    ))
-    
-    bridge.register_population_context(PopulationContext(
-        population_id="Miami_outdoor",
-        region="Florida",
-        baselines={
-            "light_exposure": BaselineSpec(
-                variable="daily_lux_hours",
-                typical_value=5000,
-                variance=1000,
-                characterization="high"
-            ),
-            "nature_exposure": BaselineSpec(
-                variable="daily_nature_minutes",
-                typical_value=60,
-                variance=40,
-                characterization="moderate"
-            )
-        },
-        cultural_meanings={
-            "sunlight": CulturalMeaning(
-                culture="Floridian",
-                meaning="ambient_abundant",
-                associations=["beach", "outdoor_lifestyle"],
-                valence="positive_normal",
-                behavioral_implications="not_scarce"
-            )
+
+    def compute_model_security(self) -> float:
+        """
+        Compute overall security of the causal model.
+
+        Uses beliefs that support the structural equations in the model.
+        Higher security = more empirically grounded, better methodology.
+
+        Returns:
+            Security score 0.0-1.0
+        """
+        if self.multi_theory_model is None:
+            return 0.5  # No model built yet
+
+        # Collect supporting beliefs from all equations
+        supporting_belief_ids = set()
+        for model in self.multi_theory_model.theory_models.values():
+            for eq in model.equations.values():
+                supporting_belief_ids.update(eq.supporting_beliefs)
+
+        if not supporting_belief_ids:
+            return 0.5  # No supporting beliefs
+
+        security_result = self.compute_security(list(supporting_belief_ids))
+        return security_result['mean_security']
+
+    # =========================================================================
+    # FEEDBACK LOOP (ECB-2.4)
+    # =========================================================================
+
+    def update_web_from_result(
+        self,
+        result: QuineanCounterfactualResult,
+        update_mode: str = "uncertainty_only"
+    ) -> Dict[str, Any]:
+        """
+        Update the web of belief based on counterfactual analysis results.
+
+        ECB-2.4: Implements the feedback loop from causal layer back to epistemic layer.
+        Counterfactual analysis reveals which beliefs are robust/sensitive; this
+        information should flow back to update our epistemic assessments.
+
+        Args:
+            result: The QuineanCounterfactualResult from a counterfactual query.
+            update_mode: How to update the web:
+                - "uncertainty_only": Only increase uncertainty for sensitive beliefs
+                - "full": Also adjust credences based on coherence violations
+                - "track_only": Just track the findings, no updates
+
+        Returns:
+            Dict with update summary:
+                - n_beliefs_updated: Number of beliefs modified
+                - updates: List of changes made
+                - tracked_sensitivities: Beliefs identified as sensitive
+
+        Panel Reference (P-ECB-R):
+        - Simon: Proportional delta (small incremental updates)
+        - Haack: Security weight updates (experiential grounding)
+        """
+        updates = []
+        tracked_sensitivities = []
+
+        # Extract sensitive beliefs from robustness analysis
+        if hasattr(result, 'robustness') and result.robustness:
+            for sensitive in result.robustness.sensitive_beliefs:
+                belief_id = sensitive.get('belief_id')
+                sensitivity = sensitive.get('sensitivity', 0.5)
+                tracked_sensitivities.append({
+                    'belief_id': belief_id,
+                    'sensitivity': sensitivity,
+                    'query': result.query.describe() if result.query else 'unknown'
+                })
+
+                if update_mode == "track_only":
+                    continue
+
+                # Get the belief from the web
+                if belief_id and belief_id in self.web.beliefs:
+                    belief = self.web.beliefs[belief_id]
+
+                    # Increase uncertainty proportionally to sensitivity
+                    # Higher sensitivity = less certain about this belief
+                    if update_mode in ("uncertainty_only", "full"):
+                        old_uncertainty = belief.credence.uncertainty
+                        # Proportional increase: max 20% increase per query
+                        delta = sensitivity * 0.2 * (1 - old_uncertainty)
+                        new_uncertainty = min(0.95, old_uncertainty + delta)
+
+                        # Update the credence object
+                        if new_uncertainty > old_uncertainty:
+                            belief.credence.uncertainty = new_uncertainty
+                            updates.append({
+                                'belief_id': belief_id,
+                                'type': 'uncertainty_increase',
+                                'old_value': old_uncertainty,
+                                'new_value': new_uncertainty,
+                                'reason': f'sensitive to counterfactual (sensitivity={sensitivity:.2f})'
+                            })
+
+        # Handle coherence violations (full mode only)
+        if update_mode == "full" and hasattr(result, 'coherence') and result.coherence:
+            for violation in result.coherence.violations:
+                for belief_id in violation.involved_beliefs:
+                    if belief_id in self.web.beliefs:
+                        belief = self.web.beliefs[belief_id]
+                        # Increase uncertainty for beliefs involved in coherence violations
+                        old_uncertainty = belief.credence.uncertainty
+                        delta = violation.severity * 0.1 * (1 - old_uncertainty)
+                        new_uncertainty = min(0.95, old_uncertainty + delta)
+
+                        if new_uncertainty > old_uncertainty:
+                            belief.credence.uncertainty = new_uncertainty
+                            updates.append({
+                                'belief_id': belief_id,
+                                'type': 'coherence_violation',
+                                'old_value': old_uncertainty,
+                                'new_value': new_uncertainty,
+                                'reason': f'coherence violation: {violation.description[:50]}'
+                            })
+
+        # Log the feedback
+        logger.debug(
+            f"Feedback loop: {len(updates)} updates, "
+            f"{len(tracked_sensitivities)} sensitivities tracked"
+        )
+
+        return {
+            'n_beliefs_updated': len(updates),
+            'updates': updates,
+            'tracked_sensitivities': tracked_sensitivities,
+            'update_mode': update_mode,
         }
-    ))
-    
-    return bridge
 
 
-if __name__ == "__main__":
-    # Demo
-    print("=" * 60)
-    print("EPISTEMIC-CAUSAL INTEGRATION DEMO")
-    print("=" * 60)
-    
-    bridge = create_demo_system()
-    bridge.build_causal_models(credence_threshold=0.4)
-    
-    print("\n1. COUNTERFACTUAL QUERY")
-    print("-" * 40)
-    
-    result = bridge.counterfactual(
-        intervention={"light": 10000},
-        outcome="mood",
-        target_population="Nordic_winter"
-    )
-    print(result.summary())
-    
-    print("\n2. GENERALIZATION ASSESSMENT")
-    print("-" * 40)
-    
-    gen_result = bridge.assess_generalization(
-        belief_id="sunlight_mood",
-        target_population="Miami_outdoor"
-    )
-    print(gen_result.summary())
-    
-    print("\n3. EPISTEMIC COUNTERFACTUAL")
-    print("-" * 40)
-    
-    ep_result = bridge.epistemic_counterfactual({
-        "new_study": {
-            "new_belief": "Light therapy ineffective for non-SAD populations",
-            "credence": 0.65,
-            "contradicts": ["sunlight_mood"]
-        }
-    })
-    print(ep_result.summary())
+# =============================================================================
+# PART 11: NOTES ON IMPORTS
+# =============================================================================
+#
+# The EpistemicCausalBridge is designed to work with the canonical classes from
+# src/services/web_of_belief.py:
+#
+#   from src.services.web_of_belief import (
+#       WebOfBelief, Belief, Constraint, Credence,
+#       EpistemicLevel, BeliefStatus, ConstraintType
+#   )
+#
+# The bridge accepts a WebOfBelief instance and works with its Belief/Constraint
+# objects. The local duplicate classes (marked DEPRECATED above) exist only for
+# backward compatibility and should not be used in new code.
+#
+# V23.0.0: Entrenchment is now emergent. Use web.get_entrenchment(belief_id)
+# rather than accessing belief.entrenchment directly.
+#
+# For usage examples, see tests/test_epistemic_causal_integration.py
+# =============================================================================
