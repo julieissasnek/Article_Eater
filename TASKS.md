@@ -150,6 +150,498 @@ See: `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md`
 
 ---
 
+### Pending: Panel-Recommended ECB Enhancements
+
+**Added**: 2026-02-10
+**Source**: Full panel review of Sprints ECB-1, ECB-2, and ECB-3
+**Panel**: Pearl, van Fraassen, Haack, Simon, Cartwright, Parnas, Brooks
+**Documentation**: `docs/PANEL_CONSULTATION_ECB_FULL_REVIEW_2026-02-10.md`
+
+These enhancements address limitations identified during comprehensive panel review of all ECB repair work. Each improves the epistemic-causal bridge's ability to handle real-world complexity.
+
+| ID | Task | Priority | Panel Source | Status |
+|----|------|----------|--------------|--------|
+| ECB-F1 | Meaning equivalence flag | P2 | van Fraassen | ☐ TODO |
+| ECB-F2 | Add `enabling_unclear` gap type | P2 | Cartwright | ☐ TODO |
+| ECB-F3 | Decompose theory conflict | P2 | Pearl | ☐ TODO |
+| ECB-F4 | Track contrast class source | P3 | Haack | ☐ TODO |
+| ECB-F5 | Deprecate `transfer_type_str` | P3 | Parnas | ☐ TODO |
+| ECB-F6 | ECB-3 boundary value tests | P1 | Brooks | ☐ TODO |
+| ECB-F7 | Prominent causal failure warning | P1 | Pearl | ☐ TODO |
+| ECB-F8 | Flag causal-empirical beliefs | P2 | Pearl | ☐ TODO |
+| ECB-F9 | Contrast-gated feedback | P1 | van Fraassen | ☐ TODO |
+| ECB-F10 | Observational grounding | P2 | Haack | ☐ TODO |
+| ECB-F11 | Configurable feedback rate | P2 | Simon | ☐ TODO |
+| ECB-F12 | Complete enabling condition checks | P2 | Cartwright | ☐ TODO |
+| ECB-F13 | Excluded belief registry | P2 | Cartwright | ☐ TODO |
+| ECB-F14 | Lazy bridge import | P1 | Parnas | ☐ TODO |
+| ECB-F15 | CLI shorthand flags | P3 | Parnas | ☐ TODO |
+| ECB-F16 | User documentation sprint | P1 | Brooks | ☐ TODO |
+| ECB-F17 | Stub contrast warning | P3 | van Fraassen | ☐ TODO |
+| ECB-F18 | DEPRECATED removal deadline | P2 | Parnas | ☐ TODO |
+
+#### ECB-F1: Meaning Equivalence Flag (van Fraassen)
+
+**What**: Add `meaning_equivalent: bool` to `ContrastAssessment` that can override MEANING_SHIFT classification.
+
+**Why**: Currently, if two populations use different words for the same construct (e.g., "nature" vs "green space"), we classify this as MEANING_SHIFT and refuse to transfer. But sometimes meanings differ lexically yet are *functionally equivalent*—the construct produces the same behavioral/psychological effects. This flag allows domain experts to mark such cases as transferable despite surface meaning differences.
+
+**Implementation**:
+```python
+@dataclass
+class ContrastAssessment:
+    ...
+    meaning_equivalent: bool = False  # If True, override MEANING_SHIFT → POPULATION_SHIFT
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:ContrastAssessment`
+
+---
+
+#### ECB-F2: Add `enabling_unclear` Gap Type (Cartwright)
+
+**What**: Add sixth gap type `enabling_unclear` distinct from `blocked_beliefs`.
+
+**Why**: There's a crucial difference between:
+- `blocked_beliefs`: We KNOW the enabling conditions but they're UNMET
+- `enabling_unclear`: We DON'T KNOW what the enabling conditions ARE
+
+The second is a deeper epistemic gap—we can't even evaluate whether the mechanism will manifest. This matters for research prioritization: understanding enabling conditions should precede testing them.
+
+**Implementation**:
+```python
+# In _identify_gaps():
+if has_causal_claim_without_conditions(belief):
+    gaps.append(EpistemicGap(
+        gap_id=make_gap_id(),
+        gap_type="enabling_unclear",
+        description=f"Enabling conditions unknown for: {belief.belief_id}",
+        priority=0.6,  # Higher than blocked_beliefs (0.4)
+        suggested_query=f"What conditions enable {mechanism}?"
+    ))
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:_identify_gaps()`
+
+---
+
+#### ECB-F3: Decompose Theory Conflict (Pearl)
+
+**What**: Split `theory_conflict` gap into `structural_conflict` and `parametric_conflict`.
+
+**Why**: Pearl noted that theory disagreements come in two flavors:
+- **Structural**: Theories propose different DAGs (different causal relationships)
+- **Parametric**: Theories agree on DAG but disagree on coefficients
+
+These require different resolutions:
+- Structural conflicts need experiments that distinguish causal pathways
+- Parametric conflicts need more precise measurement of effect sizes
+
+**Implementation**:
+```python
+class TheoryConflictType(Enum):
+    STRUCTURAL = "structural"    # Different DAGs
+    PARAMETRIC = "parametric"    # Same DAG, different coefficients
+    MIXED = "mixed"              # Both
+
+# Detect by comparing edges across theory models
+if theory_models have different edges:
+    conflict_type = STRUCTURAL
+elif theory_models have same edges but different parameters:
+    conflict_type = PARAMETRIC
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:_identify_gaps()`
+
+---
+
+#### ECB-F4: Track Contrast Class Source (Haack)
+
+**What**: Track whether contrast class was explicitly stated in paper methods vs inferred from results.
+
+**Why**: Haack's foundherentism weights experiential grounding. A contrast class stated in the Methods section ("we compared forest exposure to urban control") has higher epistemic security than one inferred from Results ("effect size suggests the contrast was..."). This should affect the security weight bonus.
+
+**Implementation**:
+```python
+@dataclass
+class ContrastClass:
+    ...
+    source: str = "inferred"  # Already exists
+    source_location: Optional[str] = None  # NEW: "methods", "results", "discussion"
+
+# In compute_security():
+if contrast_class.source_location == "methods":
+    contrast_bonus = 0.20  # Higher
+else:
+    contrast_bonus = 0.10  # Lower
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:ContrastClass`, `compute_security()`
+
+---
+
+#### ECB-F5: Deprecate `transfer_type_str` (Parnas)
+
+**What**: Remove backward-compatibility `transfer_type_str: str` field, use only `transfer_type: ContrastTransferType` enum.
+
+**Why**: Parnas correctly identified this as technical debt. Dual representations complicate the interface and invite bugs where code checks one but not the other. The enum should be the single source of truth.
+
+**Implementation**:
+1. Deprecation warning in V23.1
+2. Remove in V24.0
+3. Update all callers to use `.transfer_type.value` if string needed
+
+**Location**: `src/services/epistemic_causal_bridge.py:ContrastAssessment`
+
+---
+
+#### ECB-F6: ECB-3 Boundary Value Tests (Brooks)
+
+**What**: Add explicit tests for ECB-3 features at boundary values.
+
+**Why**: Brooks noted the new code is tested only implicitly. We need explicit tests for:
+- Contrast similarity at exact thresholds (0.49 vs 0.50 vs 0.51)
+- Gap identification with edge cases (empty gaps, all gaps)
+- Security weight bounds (min 0.05, max 0.95)
+- Error handling (None inputs, empty dicts)
+
+**Implementation**:
+```python
+# tests/test_ecb3_boundaries.py
+class TestContrastThresholdBoundaries:
+    def test_similarity_at_direct_threshold(self):
+        # 0.90 should be DIRECT, 0.89 should be BASELINE_SHIFT
+
+    def test_similarity_at_population_threshold(self):
+        # 0.50 should be POPULATION_SHIFT, 0.49 should be MEANING_SHIFT
+
+class TestSecurityWeightBounds:
+    def test_minimum_security_floor(self):
+        # Even worst case should be >= 0.05
+
+    def test_maximum_security_cap(self):
+        # Even best case should be <= 0.95
+```
+
+**Location**: `tests/test_ecb3_boundaries.py` (new file)
+
+---
+
+#### ECB-F7: Prominent Causal Failure Warning (Pearl)
+
+**What**: Add prominent warning to output when causal layer fails to build.
+
+**Why**: Currently, if `build_causal_models()` fails, the pipeline continues with `enabled: False` in the output. Users might not notice this flag and draw conclusions without understanding that causal annotations are missing. Pearl: *"They might not notice the `enabled: False` flag and draw conclusions without understanding limitations."*
+
+**Implementation**:
+```python
+# In pipeline.py _build_causal_layer():
+except Exception as e:
+    logger.warning(f"Causal bridge failed: {e}")
+    result['causal_layer'] = {
+        'enabled': False,
+        'error': str(e),
+        'WARNING': 'CAUSAL LAYER UNAVAILABLE - Results lack causal annotations'
+    }
+    # Also add to top-level warnings list
+    result.setdefault('warnings', []).append(
+        'CAUSAL LAYER FAILED: Results do not include causal inference annotations'
+    )
+```
+
+**Location**: `app/tasks/pipeline.py:_build_causal_layer()`
+
+---
+
+#### ECB-F8: Flag Causal-Empirical Beliefs (Pearl)
+
+**What**: Automatically flag empirical beliefs that contain causal language ("causes", "leads to", "results in").
+
+**Why**: Beliefs classified as EMPIRICAL should describe observations, not causal structure. When an empirical belief says "X causes Y," it's making a structural claim despite being classified as observational. These hybrid beliefs deserve epistemological review—they may be misclassified or may reveal implicit causal assumptions. Pearl: *"Empirical beliefs with CAUSAL language should be flagged for review."*
+
+**Implementation**:
+```python
+CAUSAL_PATTERNS = ['causes', 'leads to', 'results in', 'produces', 'triggers']
+
+def flag_causal_empirical(belief: Belief) -> Optional[str]:
+    if belief.level in (EpistemicLevel.EMPIRICAL, EpistemicLevel.OBSERVATIONAL):
+        content = belief.content.lower()
+        for pattern in CAUSAL_PATTERNS:
+            if pattern in content:
+                return f"REVIEW: Empirical belief contains causal language '{pattern}'"
+    return None
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py` (new function), called during `build_causal_models()`
+
+---
+
+#### ECB-F9: Contrast-Gated Feedback (van Fraassen)
+
+**What**: Gate the feedback loop so it only updates belief credences when contrast transfer is valid.
+
+**Why**: Currently, if a counterfactual has HIGH robustness but LOW contrast similarity, we still update credences. But low contrast similarity means the finding may not apply at all—we're reinforcing beliefs based on potentially non-transferable results. van Fraassen: *"Don't reinforce beliefs based on results that may not transfer."*
+
+**Implementation**:
+```python
+def update_web_from_result(self, result: QuineanCounterfactualResult):
+    # Gate: Only update if contrast transfer is valid
+    if not result.is_defined:
+        logger.info(f"Skipping feedback: result undefined ({result.reason_undefined})")
+        return {'updates': [], 'reason': 'result_undefined'}
+
+    if result.contrast.transfer_type == ContrastTransferType.MEANING_SHIFT:
+        logger.info("Skipping feedback: contrast transfer is MEANING_SHIFT")
+        return {'updates': [], 'reason': 'meaning_shift'}
+
+    # Proceed with feedback only for valid transfers
+    ...
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:update_web_from_result()`
+
+---
+
+#### ECB-F10: Observational Grounding (Haack)
+
+**What**: Include observational beliefs in `compute_security()` even when excluded from structure building.
+
+**Why**: Haack's foundherentism says observational beliefs have the HIGHEST security—they're directly experiential. Currently, `_get_theory_beliefs()` filters them out for structure building (correct), but `compute_security()` should still count them because they GROUND the model even if they don't shape it. Haack: *"You're ignoring your most grounded evidence."*
+
+**Implementation**:
+```python
+def compute_security(self, belief_ids: Optional[List[str]] = None) -> Dict[str, Any]:
+    # Include ALL beliefs in security computation, not just structural ones
+    if belief_ids is None:
+        # Use all beliefs, including observational
+        belief_ids = list(self.web.beliefs.keys())
+
+    # Observational beliefs get highest base security
+    level_weights = {
+        'observational': 0.9,   # Highest - direct experience
+        'empirical': 0.7,       # Systematic observation
+        'intermediate': 0.5,    # Mixed
+        'theoretical': 0.3,     # Abstract
+    }
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:compute_security()`
+
+---
+
+#### ECB-F11: Configurable Feedback Rate (Simon)
+
+**What**: Make the feedback loop learning rate configurable via environment variable.
+
+**Why**: The current 0.2 cap prevents overreaction to single queries, but different domains warrant different learning rates. High-stakes domains (medical) should update slowly; exploratory domains could update faster. Simon: *"Should the cap be configurable? Different domains may warrant different learning rates."*
+
+**Implementation**:
+```python
+import os
+
+# Configurable feedback rate (default 0.2 = 20% max change per query)
+FEEDBACK_MAX_DELTA = float(os.environ.get('AE_FEEDBACK_MAX_DELTA', '0.2'))
+
+def update_web_from_result(self, result: QuineanCounterfactualResult):
+    ...
+    # Use configurable rate instead of hardcoded 0.2
+    delta = sensitivity * FEEDBACK_MAX_DELTA * (1 - old_uncertainty)
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py` (module-level constant + update_web_from_result)
+
+---
+
+#### ECB-F12: Complete Enabling Condition Checks (Cartwright)
+
+**What**: Implement threshold, dosage, and temporal condition checking in `is_applicable()`.
+
+**Why**: The current implementation only checks `blocking_factors` and `concurrent_factors`. But real mechanisms have more nuanced enabling conditions: thresholds ("only above 30 minutes exposure"), dosage ("only at high intensity"), temporal windows ("only during recovery period"). Cartwright: *"What about threshold conditions, dosage conditions, temporal conditions?"*
+
+**Implementation**:
+```python
+@dataclass
+class EnablingConditions:
+    blocking_factors: List[str] = field(default_factory=list)
+    concurrent_factors: List[str] = field(default_factory=list)
+    # NEW: Threshold conditions
+    thresholds: Dict[str, Tuple[float, str]] = field(default_factory=dict)  # var -> (min_value, unit)
+    # NEW: Dosage conditions
+    dosage_requirements: Dict[str, str] = field(default_factory=dict)  # var -> level ("low"|"medium"|"high")
+    # NEW: Temporal windows
+    temporal_windows: Dict[str, Tuple[str, str]] = field(default_factory=dict)  # phase -> (start, end)
+
+def is_applicable(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+    # Check thresholds
+    for var, (min_val, unit) in self.thresholds.items():
+        if var in context and context[var] < min_val:
+            return (False, f"threshold_unmet:{var}<{min_val}{unit}")
+
+    # Check dosage
+    for var, required_level in self.dosage_requirements.items():
+        if var in context and not meets_dosage(context[var], required_level):
+            return (False, f"dosage_insufficient:{var}!={required_level}")
+
+    # Check temporal window
+    for phase, (start, end) in self.temporal_windows.items():
+        if 'current_phase' in context and not in_window(context['current_phase'], start, end):
+            return (False, f"temporal_mismatch:{phase}")
+    ...
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py:EnablingConditions`, `StructuralEquation.is_applicable()`
+
+---
+
+#### ECB-F13: Excluded Belief Registry (Cartwright)
+
+**What**: Track beliefs excluded from causal models with reasons.
+
+**Why**: When building causal models, we filter out empirical/observational beliefs and low-credence beliefs. This is correct, but we lose track of what was excluded and why. Cartwright: *"The filtering should TRACK which empirical beliefs were excluded and why. This is data, not noise."*
+
+**Implementation**:
+```python
+@dataclass
+class ExcludedBelief:
+    belief_id: str
+    reason: str  # "low_credence", "empirical_level", "enabling_blocked", etc.
+    details: Dict[str, Any] = field(default_factory=dict)
+
+class EpistemicCausalBridge:
+    def __init__(self, web):
+        ...
+        self._excluded_beliefs: List[ExcludedBelief] = []
+
+    def _get_theory_beliefs(self, theory_id, credence_threshold):
+        for belief in candidates:
+            if belief.credence.value < credence_threshold:
+                self._excluded_beliefs.append(ExcludedBelief(
+                    belief.belief_id, "low_credence",
+                    {'credence': belief.credence.value, 'threshold': credence_threshold}
+                ))
+            elif belief.level in (EpistemicLevel.EMPIRICAL, EpistemicLevel.OBSERVATIONAL):
+                self._excluded_beliefs.append(ExcludedBelief(
+                    belief.belief_id, "empirical_level",
+                    {'level': belief.level.value}
+                ))
+            ...
+
+    def get_excluded_beliefs(self) -> List[ExcludedBelief]:
+        return self._excluded_beliefs
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py` (new class + tracking in _get_theory_beliefs)
+
+---
+
+#### ECB-F14: Lazy Bridge Import (Parnas)
+
+**What**: Import the bridge module only when needed to isolate import failures.
+
+**Why**: Currently, the pipeline imports from epistemic_causal_bridge at the top of the file. If that module fails to load (syntax error, missing dependency), the entire pipeline fails. Lazy import isolates the failure. Parnas: *"If that module fails to load, the entire pipeline fails."*
+
+**Implementation**:
+```python
+# In pipeline.py - BEFORE:
+from src.services.epistemic_causal_bridge import EpistemicCausalBridge
+
+# AFTER:
+def _build_causal_layer(web, options):
+    try:
+        from src.services.epistemic_causal_bridge import EpistemicCausalBridge
+    except ImportError as e:
+        logger.error(f"Failed to import epistemic_causal_bridge: {e}")
+        return {'enabled': False, 'error': f'import_failed: {e}'}
+
+    bridge = EpistemicCausalBridge(web)
+    ...
+```
+
+**Location**: `app/tasks/pipeline.py` (change top-level import to lazy import)
+
+---
+
+#### ECB-F15: CLI Shorthand Flags (Parnas)
+
+**What**: Add shorthand flags for frequently-used long options.
+
+**Why**: `--causal-credence-threshold` is verbose for power users. Parnas: *"Consider also accepting `--cct` as shorthand."*
+
+**Implementation**:
+```python
+# In article_eater_contract_cli.py
+parser.add_argument(
+    '--causal-credence-threshold', '--cct',
+    type=float,
+    default=0.5,
+    help='Minimum credence for causal model beliefs (default 0.5)'
+)
+```
+
+**Location**: `app/cli/article_eater_contract_cli.py`
+
+---
+
+#### ECB-F16: User Documentation Sprint (Brooks)
+
+**What**: Create user-facing documentation for causal features.
+
+**Why**: The bridge repair focused on the MODULE, not the USER EXPERIENCE. Brooks: *"I don't see user documentation, example notebooks, or integration tests with real data."*
+
+**Deliverables**:
+1. `docs/USER_GUIDE_CAUSAL_BRIDGE.md` — How to use causal features
+2. `notebooks/causal_counterfactual_examples.ipynb` — Example queries
+3. `tests/integration/test_causal_real_data.py` — Real-world validation
+4. CLI examples in README
+
+**Location**: `docs/`, `notebooks/`, `tests/integration/`
+
+---
+
+#### ECB-F17: Stub Contrast Warning (van Fraassen)
+
+**What**: Add warning to stub WebOfBelief documentation about contrast class limitations.
+
+**Why**: The demo stub doesn't model contrast classes properly. Tests using the stub may give false confidence about contrast handling. van Fraassen: *"Any tests using the stub may give false confidence."*
+
+**Implementation**:
+```python
+# In quarantine/2026-02-10/epistemic_causal_bridge_features/demo_and_stub_web.py
+class WebOfBelief:
+    """
+    MINIMAL STUB for demonstration/testing only.
+
+    WARNING: This stub does NOT properly model contrast classes.
+    - Beliefs created here lack contrast_class field
+    - Tests using this stub do NOT validate contrast handling
+    - Use the real WebOfBelief from web_of_belief.py for production
+    """
+```
+
+**Location**: `quarantine/2026-02-10/epistemic_causal_bridge_features/demo_and_stub_web.py`
+
+---
+
+#### ECB-F18: DEPRECATED Removal Deadline (Parnas)
+
+**What**: Add `# REMOVE_BY: V24.0` comments to DEPRECATED code.
+
+**Why**: DEPRECATED code should have a removal deadline. Without it, developers don't know if it's safe to remove or still in transition. Parnas: *"DEPRECATED code should be removed in V24.0. Add a `# REMOVE_BY: V24.0` comment."*
+
+**Implementation**:
+```python
+class EpistemicLevel(Enum):
+    """
+    DEPRECATED: Use web_of_belief.EpistemicLevel instead.
+    REMOVE_BY: V24.0
+    ...
+    """
+```
+
+**Location**: `src/services/epistemic_causal_bridge.py` (all DEPRECATED classes)
+
+---
+
 ### Future Archived Feature Reintegration TODOs
 
 **Individual Differences** (after core bridge stable):
