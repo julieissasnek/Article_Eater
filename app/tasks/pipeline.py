@@ -149,16 +149,9 @@ except ImportError:
     INCREMENTAL_BN_AVAILABLE = False
 
 # Sprint ECB: Epistemic-Causal Bridge (Quinean→Pearlian integration)
-try:
-    from src.services.epistemic_causal_bridge import (
-        EpistemicCausalBridge,
-        ContrastClass,
-        PopulationContext,
-        QuineanCounterfactualResult,
-    )
-    CAUSAL_BRIDGE_AVAILABLE = True
-except ImportError:
-    CAUSAL_BRIDGE_AVAILABLE = False
+# ECB-F14 (Parnas): Lazy import to isolate failures - module imported inside function
+# The CAUSAL_BRIDGE_AVAILABLE flag is set dynamically when first needed
+CAUSAL_BRIDGE_AVAILABLE = None  # Will be set on first use
 
 # Sprint 2.0.2: Output Serialization
 try:
@@ -768,15 +761,36 @@ def _integrate_into_web_of_belief(
 
     # Stage 2.8: Epistemic-Causal Bridge (Sprint ECB)
     # Build causal layer from epistemic web if enabled
+    # ECB-F14 (Parnas): Lazy import to isolate module failures
+    # ECB-F7 (Pearl): Prominent warning when causal layer fails
     causal_bridge = None
     causal_models_built = False
     causal_model_summary = {}
+    causal_layer_warning = None  # ECB-F7: Track failure for prominent warning
 
     # Check if causal bridge is disabled via CLI
     causal_enabled = web_options.get("causal_enabled", True)
 
+    # ECB-F14: Lazy import - only import when actually needed
+    global CAUSAL_BRIDGE_AVAILABLE
+    if CAUSAL_BRIDGE_AVAILABLE is None:
+        try:
+            from src.services.epistemic_causal_bridge import (
+                EpistemicCausalBridge,
+                ContrastClass,
+                PopulationContext,
+                QuineanCounterfactualResult,
+            )
+            CAUSAL_BRIDGE_AVAILABLE = True
+        except ImportError as import_err:
+            _web_logger.warning(f"Causal bridge module import failed: {import_err}")
+            CAUSAL_BRIDGE_AVAILABLE = False
+
     if CAUSAL_BRIDGE_AVAILABLE and causal_enabled and len(web.beliefs) > 0:
         try:
+            # Import again in local scope (already cached by Python)
+            from src.services.epistemic_causal_bridge import EpistemicCausalBridge
+
             # Create bridge from the web of belief
             causal_bridge = EpistemicCausalBridge(web)
 
@@ -800,13 +814,20 @@ def _integrate_into_web_of_belief(
                 _web_logger.debug(f"[{paper_id}] Causal bridge: no models built (insufficient beliefs)")
 
         except Exception as e:
-            _web_logger.warning(f"[{paper_id}] Causal bridge construction failed (non-fatal): {e}")
-            # Causal bridge failure is non-fatal; continue with serialization
+            # ECB-F7 (Pearl): Prominent warning - don't silently degrade
+            causal_layer_warning = f"CAUSAL LAYER FAILED: {e}"
+            _web_logger.warning(f"[{paper_id}] {causal_layer_warning}")
+            causal_model_summary = {
+                "enabled": False,
+                "error": str(e),
+                "WARNING": "CAUSAL LAYER UNAVAILABLE - Results lack causal annotations"
+            }
 
     elif not causal_enabled:
         _web_logger.debug(f"[{paper_id}] Causal bridge skipped: disabled via --no-causal flag")
     elif not CAUSAL_BRIDGE_AVAILABLE:
-        _web_logger.debug(f"[{paper_id}] Causal bridge skipped: module not available")
+        causal_layer_warning = "CAUSAL LAYER UNAVAILABLE: Module import failed"
+        _web_logger.warning(f"[{paper_id}] {causal_layer_warning}")
 
     # Stage 3: Serialization
     try:
@@ -845,7 +866,11 @@ def _integrate_into_web_of_belief(
                 "built": causal_models_built,
                 "enabled": causal_enabled,
                 "summary": causal_model_summary if causal_models_built else None,
-            }
+                # ECB-F7 (Pearl): Prominent warning when causal layer fails
+                "warning": causal_layer_warning,
+            },
+            # ECB-F7: Top-level warnings for visibility
+            "warnings": [causal_layer_warning] if causal_layer_warning else [],
         }
         _write_json(out_dir / "web_state.json", web_state)
 

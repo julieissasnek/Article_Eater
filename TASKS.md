@@ -166,19 +166,26 @@ These enhancements address limitations identified during comprehensive panel rev
 | ECB-F3 | Decompose theory conflict | P2 | Pearl | ☐ TODO |
 | ECB-F4 | Track contrast class source | P3 | Haack | ☐ TODO |
 | ECB-F5 | Deprecate `transfer_type_str` | P3 | Parnas | ☐ TODO |
-| ECB-F6 | ECB-3 boundary value tests | P1 | Brooks | ☐ TODO |
-| ECB-F7 | Prominent causal failure warning | P1 | Pearl | ☐ TODO |
+| ECB-F6 | ECB-3 boundary value tests | P1 | Brooks | ✓ DONE |
+| ECB-F7 | Prominent causal failure warning | P1 | Pearl | ✓ DONE |
 | ECB-F8 | Flag causal-empirical beliefs | P2 | Pearl | ☐ TODO |
-| ECB-F9 | Contrast-gated feedback | P1 | van Fraassen | ☐ TODO |
+| ECB-F9 | Contrast-gated feedback | P1 | van Fraassen | ✓ DONE |
 | ECB-F10 | Observational grounding | P2 | Haack | ☐ TODO |
 | ECB-F11 | Configurable feedback rate | P2 | Simon | ☐ TODO |
 | ECB-F12 | Complete enabling condition checks | P2 | Cartwright | ☐ TODO |
 | ECB-F13 | Excluded belief registry | P2 | Cartwright | ☐ TODO |
-| ECB-F14 | Lazy bridge import | P1 | Parnas | ☐ TODO |
+| ECB-F14 | Lazy bridge import | P1 | Parnas | ✓ DONE |
 | ECB-F15 | CLI shorthand flags | P3 | Parnas | ☐ TODO |
-| ECB-F16 | User documentation sprint | P1 | Brooks | ☐ TODO |
+| ECB-F16 | User documentation sprint | P1 | Brooks | ✓ DONE |
 | ECB-F17 | Stub contrast warning | P3 | van Fraassen | ☐ TODO |
 | ECB-F18 | DEPRECATED removal deadline | P2 | Parnas | ☐ TODO |
+
+**P1 Features Complete** (2026-02-10):
+- ECB-F6: 29 boundary value tests in `tests/test_ecb3_boundaries.py`
+- ECB-F7: Prominent warning in `web_state.json` when causal layer fails
+- ECB-F9: Feedback loop gated on `is_defined` and contrast transfer type
+- ECB-F14: Lazy import in `pipeline.py` isolates module failures
+- ECB-F16: User guide at `docs/USER_GUIDE_CAUSAL_BRIDGE.md`
 
 #### ECB-F1: Meaning Equivalence Flag (van Fraassen)
 

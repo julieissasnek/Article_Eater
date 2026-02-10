@@ -2759,7 +2759,35 @@ class EpistemicCausalBridge:
         Panel Reference (P-ECB-R):
         - Simon: Proportional delta (small incremental updates)
         - Haack: Security weight updates (experiential grounding)
+        - van Fraassen: Only update when contrast transfer is valid (ECB-F9)
         """
+        # ECB-F9 (van Fraassen): Gate feedback on contrast transfer validity
+        # Don't reinforce beliefs based on results that may not transfer
+        if not result.is_defined:
+            logger.info(
+                f"Feedback skipped: result undefined ({result.reason_undefined})"
+            )
+            return {
+                'n_beliefs_updated': 0,
+                'updates': [],
+                'tracked_sensitivities': [],
+                'gated': True,
+                'gate_reason': f'result_undefined: {result.reason_undefined}'
+            }
+
+        if hasattr(result, 'contrast') and result.contrast:
+            if result.contrast.transfer_type == ContrastTransferType.MEANING_SHIFT:
+                logger.info(
+                    "Feedback skipped: contrast transfer is MEANING_SHIFT"
+                )
+                return {
+                    'n_beliefs_updated': 0,
+                    'updates': [],
+                    'tracked_sensitivities': [],
+                    'gated': True,
+                    'gate_reason': 'meaning_shift: contrast classes do not transfer'
+                }
+
         updates = []
         tracked_sensitivities = []
 

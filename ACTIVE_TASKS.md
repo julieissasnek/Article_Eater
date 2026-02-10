@@ -28,7 +28,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| — | — | — | — | — | All ECB sprints complete |
+| — | — | — | — | — | P1 features complete |
 
 ---
 
@@ -64,6 +64,7 @@ All tasks completed. See TASKS.md for details.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| ECB-P1 | P1 Features (F6, F7, F9, F14, F16) | Terminal-1 | Evening | 29 boundary tests, prominent warning, contrast-gated feedback, lazy import, user guide |
 | ECB-3 | Sprint ECB-3: Van Fraassen and Polish | Terminal-1 | Evening | ContrastTransferType enum, gap identification (5 types), Haack security weight, error handling, 68+153 tests pass, panel review |
 | ECB-2 | Sprint ECB-2: Core Integration | Terminal-1 | Afternoon | Pipeline wired (Stage 2.8), CLI flags (--no-causal), feedback loop, 68 tests pass |
 | ECB-1 | Sprint ECB-1: Cleanup and Consolidation | Terminal-1 | Morning | Duplicates marked DEPRECATED, features archived to quarantine, test imports fixed, 68+89 tests pass |
