@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/ae.query_response.v1.schema.json",
+  "schema_id": "ae.query_response.v1",
+  "title": "AE Query Response (v1)",
+  "description": "Schema for query responses from the Article Eater Query Engine. MVP-0 contract. Implements progressive disclosure (per Simon).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "query_id",
+    "status",
+    "headline"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ae.query_response.v1"
+    },
+    "query_id": {
+      "type": "string",
+      "description": "Matches query_id from request"
+    },
+    "status": {
+      "type": "string",
+      "description": "Response status",
+      "enum": ["success", "partial", "no_results", "error", "clarification_needed"]
+    },
+    "response_mode": {
+      "type": "string",
+      "description": "Progressive disclosure level returned",
+      "enum": ["headline", "summary", "detail", "deep_dive"]
+    },
+    "headline": {
+      "type": "string",
+      "description": "One-sentence answer (always provided)"
+    },
+    "summary": {
+      "type": ["object", "null"],
+      "description": "Summary level response (if mode >= summary)",
+      "$ref": "#/$defs/summary_response"
+    },
+    "detail": {
+      "type": ["object", "null"],
+      "description": "Detailed response with full evidence (if mode >= detail)",
+      "$ref": "#/$defs/detail_response"
+    },
+    "deep_dive": {
+      "type": ["object", "null"],
+      "description": "Complete epistemology for researchers (if mode = deep_dive)",
+      "$ref": "#/$defs/deep_dive_response"
+    },
+    "follow_ups": {
+      "type": "array",
+      "description": "Exactly 3 follow-up suggestions: deeper, broader, uncertainty (per Simon)",
+      "items": {
+        "$ref": "#/$defs/follow_up"
+      },
+      "minItems": 0,
+      "maxItems": 3
+    },
+    "gaps": {
+      "type": ["object", "null"],
+      "description": "Gap report if include_gaps was true in request",
+      "$ref": "#/$defs/gap_summary"
+    },
+    "clarification": {
+      "type": ["object", "null"],
+      "description": "Clarification options if status is clarification_needed",
+      "$ref": "#/$defs/clarification"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "processing_time_ms": {
+          "type": "integer",
+          "description": "Processing time in milliseconds"
+        },
+        "n_beliefs_searched": {
+          "type": "integer",
+          "description": "Number of beliefs searched"
+        },
+        "n_beliefs_matched": {
+          "type": "integer",
+          "description": "Number of beliefs matching query"
+        },
+        "parse_confidence": {
+          "type": "number",
+          "description": "Confidence in query parse (0-1)"
+        },
+        "causal_level": {
+          "type": "string",
+          "description": "Detected causal level (per Pearl)",
+          "enum": ["associational", "interventional", "counterfactual", "descriptive", "unknown"]
+        },
+        "query_type": {
+          "type": "string",
+          "description": "Detected query type"
+        },
+        "vocabulary_expansions": {
+          "type": "object",
+          "description": "Terms expanded via vocabulary bridge (per Bates)",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "type": ["object", "null"],
+      "description": "Error details if status is error",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "summary_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer_confidence": {
+          "type": "number",
+          "description": "Overall confidence in answer (0-1)",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "answer_uncertainty": {
+          "type": "number",
+          "description": "Uncertainty in answer",
+          "minimum": 0.0
+        },
+        "key_evidence": {
+          "type": "array",
+          "description": "Top 3-5 supporting beliefs",
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          }
+        },
+        "scope_conditions": {
+          "type": "object",
+          "description": "When/for whom this answer applies",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "practical_implications": {
+          "type": "array",
+          "description": "Actionable takeaways (per Kaplan)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "caveats": {
+          "type": "array",
+          "description": "Important caveats and limitations",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "detail_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "all_evidence": {
+          "type": "array",
+          "description": "Complete list of matching beliefs",
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          }
+        },
+        "theories_involved": {
+          "type": "array",
+          "description": "Theories contributing to answer",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "theory_id": {
+                "type": "string"
+              },
+              "theory_name": {
+                "type": "string"
+              },
+              "contribution": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "methodological_notes": {
+          "type": "array",
+          "description": "Notes on evidence quality and methods",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abstract_only_warnings": {
+          "type": "array",
+          "description": "Beliefs based only on abstracts (per Cartwright)",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "deep_dive_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "constraint_network": {
+          "type": "object",
+          "description": "Constraint relationships between beliefs",
+          "additionalProperties": true
+        },
+        "entrenchment_scores": {
+          "type": "object",
+          "description": "Entrenchment (centrality) of relevant beliefs",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "community_credences": {
+          "type": "object",
+          "description": "Community-relative credences",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "counterfactual_analysis": {
+          "type": ["object", "null"],
+          "description": "Results from epistemic-causal bridge (if applicable)"
+        }
+      }
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["belief_id", "content", "credence"],
+      "properties": {
+        "belief_id": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "description": "Belief content text"
+        },
+        "credence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "uncertainty": {
+          "type": "number"
+        },
+        "source_depth": {
+          "type": "string",
+          "enum": ["full_text", "abstract", "metadata", "inferred"],
+          "description": "Extraction depth"
+        },
+        "paper_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "is_causal": {
+          "type": "boolean",
+          "description": "Whether this is a causal claim"
+        },
+        "needs_caution": {
+          "type": "boolean",
+          "description": "True if abstract-only causal claim (per Cartwright)"
+        }
+      }
+    },
+    "follow_up": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "type"],
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "Suggested follow-up question"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["deeper", "broader", "uncertainty"],
+          "description": "Type of follow-up (per Simon: exactly 3 types)"
+        },
+        "executable_query": {
+          "type": "string",
+          "description": "Query text that can be submitted directly"
+        }
+      }
+    },
+    "gap_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "n_gaps": {
+          "type": "integer"
+        },
+        "top_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "gap_type": {
+                "type": "string",
+                "enum": ["uncertain", "unexplored", "missing_contrast", "low_coverage", "theory_conflict"]
+              },
+              "description": {
+                "type": "string"
+              },
+              "priority": {
+                "type": "number"
+              },
+              "suggested_search": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "clarification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "description": "Why clarification is needed"
+        },
+        "options": {
+          "type": "array",
+          "description": "Possible interpretations",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "query_text": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

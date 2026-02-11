@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/ae.gap_report.v1.schema.json",
+  "schema_id": "ae.gap_report.v1",
+  "title": "AE Gap Report (v1)",
+  "description": "Schema for knowledge gap reports from the Article Eater system. MVP-0 contract. Identifies what we don't know and suggests research directions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "report_id",
+    "generated_at",
+    "summary",
+    "gaps"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ae.gap_report.v1"
+    },
+    "report_id": {
+      "type": "string",
+      "description": "Unique identifier for this report"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this report was generated"
+    },
+    "context": {
+      "type": ["object", "null"],
+      "description": "Context that scoped this gap analysis",
+      "additionalProperties": false,
+      "properties": {
+        "query_id": {
+          "type": ["string", "null"],
+          "description": "Query that prompted this analysis"
+        },
+        "topic": {
+          "type": ["string", "null"],
+          "description": "Topic area analyzed"
+        },
+        "theory_filter": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "type": ["string", "null"],
+          "description": "Population/setting scope"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "description": "Summary statistics about gaps",
+      "additionalProperties": false,
+      "required": ["n_gaps", "n_high_priority", "coverage_score"],
+      "properties": {
+        "n_gaps": {
+          "type": "integer",
+          "description": "Total number of gaps identified"
+        },
+        "n_high_priority": {
+          "type": "integer",
+          "description": "Number of high-priority gaps (priority > 0.7)"
+        },
+        "coverage_score": {
+          "type": "number",
+          "description": "Overall coverage score (0-1, higher = fewer gaps)",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "gap_type_counts": {
+          "type": "object",
+          "description": "Count of gaps by type",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "most_impacted_theories": {
+          "type": "array",
+          "description": "Theories most affected by gaps",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "List of identified knowledge gaps",
+      "items": {
+        "$ref": "#/$defs/gap"
+      }
+    },
+    "suggested_searches": {
+      "type": "array",
+      "description": "Suggested literature searches to fill gaps",
+      "items": {
+        "$ref": "#/$defs/suggested_search"
+      }
+    },
+    "coverage_heatmap": {
+      "type": ["object", "null"],
+      "description": "Coverage heatmap data for visualization",
+      "$ref": "#/$defs/coverage_heatmap"
+    },
+    "metadata": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "n_beliefs_analyzed": {
+          "type": "integer"
+        },
+        "n_theories_analyzed": {
+          "type": "integer"
+        },
+        "analysis_time_ms": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gap_id", "gap_type", "description", "priority"],
+      "properties": {
+        "gap_id": {
+          "type": "string",
+          "description": "Unique identifier for this gap"
+        },
+        "gap_type": {
+          "type": "string",
+          "description": "Type of knowledge gap",
+          "enum": [
+            "uncertain",
+            "unexplored",
+            "missing_contrast",
+            "low_coverage",
+            "theory_conflict",
+            "baseline_unknown",
+            "blocked_beliefs"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the gap"
+        },
+        "priority": {
+          "type": "number",
+          "description": "Priority score (0-1, higher = more important)",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "voi_score": {
+          "type": ["number", "null"],
+          "description": "Value of Information score (if computed)",
+          "minimum": 0.0
+        },
+        "affected_beliefs": {
+          "type": "array",
+          "description": "Belief IDs affected by this gap",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_theories": {
+          "type": "array",
+          "description": "Theories affected by this gap",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolution_approach": {
+          "type": ["string", "null"],
+          "description": "Suggested approach to resolve this gap"
+        },
+        "related_gaps": {
+          "type": "array",
+          "description": "IDs of related gaps",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": ["object", "null"],
+          "description": "Evidence that revealed this gap",
+          "additionalProperties": false,
+          "properties": {
+            "source_type": {
+              "type": "string",
+              "enum": ["query_miss", "contrast_analysis", "coverage_scan", "conflict_detection", "counterfactual"]
+            },
+            "details": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "suggested_search": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["search_id", "query", "expected_fill"],
+      "properties": {
+        "search_id": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string",
+          "description": "Suggested search query"
+        },
+        "target_gaps": {
+          "type": "array",
+          "description": "Gap IDs this search aims to fill",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_fill": {
+          "type": "number",
+          "description": "Expected fraction of gaps this would fill (0-1)",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "search_domain": {
+          "type": ["string", "null"],
+          "description": "Suggested search domain (e.g., 'PubMed', 'Semantic Scholar')"
+        },
+        "vocabulary_expansions": {
+          "type": "array",
+          "description": "Cross-field vocabulary terms to include",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "coverage_heatmap": {
+      "type": "object",
+      "description": "Coverage data for heatmap visualization",
+      "additionalProperties": false,
+      "properties": {
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "x_axis": {
+              "type": "string",
+              "description": "X-axis dimension (e.g., 'environment_type')"
+            },
+            "y_axis": {
+              "type": "string",
+              "description": "Y-axis dimension (e.g., 'outcome_type')"
+            }
+          }
+        },
+        "cells": {
+          "type": "array",
+          "description": "Heatmap cells with coverage values",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "string"
+              },
+              "y": {
+                "type": "string"
+              },
+              "coverage": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "n_beliefs": {
+                "type": "integer"
+              },
+              "gap_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
