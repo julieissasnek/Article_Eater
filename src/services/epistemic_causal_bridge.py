@@ -65,11 +65,13 @@ logger = logging.getLogger(__name__)
 #
 # TODO (Sprint ECB-2): Remove these duplicates after updating demo functions
 # to use the canonical classes from web_of_belief.py.
+# REMOVE_BY: V24.0 (per Parnas, Panel P-ECB-R)
 # =============================================================================
 
 class EpistemicLevel(Enum):
     """
     DEPRECATED: Use web_of_belief.EpistemicLevel instead.
+    REMOVE_BY: V24.0
 
     Levels in the Quinean web, from center to periphery.
     """
@@ -82,6 +84,7 @@ class EpistemicLevel(Enum):
 class BeliefStatus(Enum):
     """
     DEPRECATED: Use web_of_belief.BeliefStatus instead.
+    REMOVE_BY: V24.0
 
     Status of a belief in the web.
     """
@@ -95,6 +98,7 @@ class BeliefStatus(Enum):
 class ConstraintType(Enum):
     """
     DEPRECATED: Use web_of_belief.ConstraintType instead.
+    REMOVE_BY: V24.0
 
     Types of epistemic constraint.
     Note: web_of_belief.ConstraintType has additional types: BRIDGES, STRONG_TENSION, SHARED_EVIDENCE
@@ -159,12 +163,14 @@ CONTRAST_TRANSFER_THRESHOLDS = {
 # DEPRECATION NOTICE: See PART 1 header for details.
 # CANONICAL LOCATION: src/services/web_of_belief.py
 # TODO (Sprint ECB-2): Remove after demo function updates.
+# REMOVE_BY: V24.0 (per Parnas, Panel P-ECB-R)
 # =============================================================================
 
 @dataclass
 class Credence:
     """
     DEPRECATED: Use web_of_belief.Credence instead.
+    REMOVE_BY: V24.0
 
     Credence with meta-uncertainty.
     """
@@ -209,6 +215,7 @@ class Credence:
 class Belief:
     """
     DEPRECATED: Use web_of_belief.Belief instead.
+    REMOVE_BY: V24.0
 
     A belief in the Quinean web with contrast class metadata.
 
@@ -295,6 +302,104 @@ class BaselineSpec:
             return abs(self_idx - other_idx) / (len(levels) - 1)
         except ValueError:
             return 0.5
+
+
+@dataclass
+class TemporalSpec:
+    """
+    Structured temporal specification for enabling conditions (PA-6).
+
+    PA-6 (Pearl, Cartwright): Replace ambiguous scalar temporal_lag with
+    explicit {magnitude, unit, direction} to eliminate sign convention confusion.
+
+    PA-3 (Pearl): Store internally in seconds for precision; provide display helpers.
+    """
+    magnitude: float  # Numeric value
+    unit: str = "seconds"  # "seconds", "minutes", "hours", "days"
+    direction: str = "precedes"  # "precedes" or "follows"
+
+    # PA-3: Internal storage in seconds
+    @property
+    def seconds(self) -> float:
+        """Get magnitude normalized to seconds."""
+        multipliers = {
+            'second': 1, 'seconds': 1, 'sec': 1, 's': 1,
+            'minute': 60, 'minutes': 60, 'min': 60, 'm': 60,
+            'hour': 3600, 'hours': 3600, 'hr': 3600, 'h': 3600,
+            'day': 86400, 'days': 86400, 'd': 86400,
+        }
+        return self.magnitude * multipliers.get(self.unit.lower(), 1)
+
+    def display(self, target_unit: Optional[str] = None) -> str:
+        """
+        Get human-readable display string.
+
+        Args:
+            target_unit: Optional unit to convert to ('seconds', 'minutes', 'hours', 'days')
+                        If None, uses the most natural unit.
+        """
+        if target_unit:
+            divisors = {'seconds': 1, 'minutes': 60, 'hours': 3600, 'days': 86400}
+            value = self.seconds / divisors.get(target_unit, 1)
+            return f"{value:.1f} {target_unit} ({self.direction})"
+
+        # Auto-select most natural unit
+        secs = self.seconds
+        if secs < 60:
+            return f"{secs:.0f} seconds ({self.direction})"
+        elif secs < 3600:
+            return f"{secs/60:.1f} minutes ({self.direction})"
+        elif secs < 86400:
+            return f"{secs/3600:.1f} hours ({self.direction})"
+        else:
+            return f"{secs/86400:.1f} days ({self.direction})"
+
+    @classmethod
+    def parse(cls, condition: str) -> Optional['TemporalSpec']:
+        """
+        Parse a temporal condition string into TemporalSpec.
+
+        Handles formats like:
+        - "exposure precedes outcome by >1 hour"
+        - ">30 minutes"
+        - "2 hours"
+        """
+        import re
+
+        # Detect direction
+        direction = "precedes"
+        if 'follows' in condition.lower():
+            direction = "follows"
+        elif 'precedes' in condition.lower():
+            direction = "precedes"
+
+        # Extract numeric value and unit
+        pattern = r'[><=]*\s*(\d+(?:\.\d+)?)\s*(second|minute|hour|day|sec|min|hr|s|m|h|d)s?'
+        match = re.search(pattern, condition.lower())
+        if not match:
+            return None
+
+        magnitude = float(match.group(1))
+        unit = match.group(2)
+
+        # Normalize unit names
+        unit_map = {
+            'second': 'seconds', 'sec': 'seconds', 's': 'seconds',
+            'minute': 'minutes', 'min': 'minutes', 'm': 'minutes',
+            'hour': 'hours', 'hr': 'hours', 'h': 'hours',
+            'day': 'days', 'd': 'days',
+        }
+        unit = unit_map.get(unit, 'seconds')
+
+        return cls(magnitude=magnitude, unit=unit, direction=direction)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'magnitude': self.magnitude,
+            'unit': self.unit,
+            'direction': self.direction,
+            'seconds': self.seconds
+        }
 
 
 @dataclass
@@ -470,10 +575,12 @@ class StructuralEquation:
         Check if this equation is applicable given the context.
 
         ECB-2.2 (Cartwright): Enabling conditions gate computation.
+        D2.5 (Panel): Complete threshold/dosage/temporal checks.
 
         Args:
             context: Dict with keys like 'exposure_duration', 'baseline_state',
-                    'concurrent_factors', 'blocking_factors' etc.
+                    'concurrent_factors', 'blocking_factors', 'threshold_value',
+                    'dosage_frequency', 'temporal_lag' etc.
 
         Returns:
             (is_applicable, reason): Tuple of bool and explanation string.
@@ -488,13 +595,23 @@ class StructuralEquation:
 
         ec = self.enabling_conditions
 
-        # Check minimum exposure
+        # Check minimum exposure with threshold parsing (D2.5)
         if hasattr(ec, 'minimum_exposure') and ec.minimum_exposure:
             exposure = context.get('exposure_duration')
             if exposure is None:
                 return (False, f"Minimum exposure required: {ec.minimum_exposure}")
-            # Simple string comparison for now; could parse numeric thresholds
-            # This is a placeholder - real implementation would parse ">30 minutes" etc.
+            # Parse threshold expression like ">30 minutes", ">=60", etc.
+            satisfied, reason, operator_inferred = self._check_threshold_condition(
+                ec.minimum_exposure, exposure, 'exposure_duration'
+            )
+            # PA-1 (Cartwright): Warn when operator is inferred
+            if operator_inferred:
+                logger.warning(
+                    f"Operator inferred as '>=' for condition '{ec.minimum_exposure}'. "
+                    "Consider using explicit operator (>, >=, <, <=, =)."
+                )
+            if not satisfied:
+                return (False, reason)
 
         # Check baseline state
         if hasattr(ec, 'baseline_state') and ec.baseline_state:
@@ -518,13 +635,216 @@ class StructuralEquation:
             if blocking:
                 return (False, f"Blocking factors present: {blocking}")
 
-        # Check threshold
+        # Check threshold with proper parsing (D2.5)
         if hasattr(ec, 'threshold') and ec.threshold:
             threshold_val = context.get('threshold_value')
             if threshold_val is None:
                 return (False, f"Threshold required: {ec.threshold}")
+            satisfied, reason, operator_inferred = self._check_threshold_condition(
+                ec.threshold, threshold_val, 'threshold_value'
+            )
+            # PA-1 (Cartwright): Warn when operator is inferred
+            if operator_inferred:
+                logger.warning(
+                    f"Operator inferred as '>=' for condition '{ec.threshold}'. "
+                    "Consider using explicit operator (>, >=, <, <=, =)."
+                )
+            if not satisfied:
+                return (False, reason)
+
+        # Check dosage requirements (D2.5 - Cartwright)
+        if hasattr(ec, 'dosage') and ec.dosage:
+            dosage_freq = context.get('dosage_frequency')
+            if dosage_freq is None:
+                return (False, f"Dosage requirement: {ec.dosage}")
+            # PA-2 (Cartwright): Use explicit acceptable patterns if provided
+            required_dosage = ec.dosage.lower()
+            actual_dosage = str(dosage_freq).lower()
+            acceptable = getattr(ec, 'dosage_satisfies', None) or []
+            if not self._dosage_satisfies(required_dosage, actual_dosage, acceptable):
+                return (False, f"Dosage insufficient: requires {ec.dosage}, got {dosage_freq}")
+
+        # Check temporal order/window (D2.5 - Cartwright)
+        if hasattr(ec, 'temporal_order') and ec.temporal_order:
+            temporal_lag = context.get('temporal_lag')
+            if temporal_lag is None:
+                return (False, f"Temporal order required: {ec.temporal_order}")
+            check_result = self._check_temporal_condition(ec.temporal_order, temporal_lag)
+            if not check_result[0]:
+                return check_result
 
         return (True, "All enabling conditions met")
+
+    def _check_threshold_condition(
+        self, condition: str, value: Any, var_name: str
+    ) -> Tuple[bool, str, bool]:
+        """
+        Parse and check threshold conditions like ">30 minutes", ">=300 lux".
+
+        D2.5 (Cartwright): Proper threshold parsing for enabling conditions.
+        PA-1 (Cartwright): Returns operator_inferred flag when operator is assumed.
+
+        Supports: >, >=, <, <=, = operators with optional unit suffixes.
+
+        Returns:
+            Tuple of (satisfied, reason, operator_inferred)
+            - satisfied: Whether the condition is met
+            - reason: Human-readable explanation
+            - operator_inferred: True if operator was not explicit in condition
+        """
+        import re
+        # Pattern: optional operator, number, optional unit
+        pattern = r'^([><=]+)?\s*(\d+(?:\.\d+)?)\s*(.*)$'
+        match = re.match(pattern, condition.strip())
+
+        if not match:
+            # Fall back to string comparison if not parseable
+            return (True, f"Threshold condition '{condition}' not parseable, allowing", False)
+
+        explicit_operator = match.group(1)
+        operator_inferred = explicit_operator is None
+        operator = explicit_operator or '>='  # PA-1: Default to >=, but flag it
+        threshold_num = float(match.group(2))
+        # unit = match.group(3)  # For future unit conversion
+
+        # Convert value to float if possible
+        try:
+            if isinstance(value, (int, float)):
+                actual_val = float(value)
+            elif isinstance(value, str):
+                # Extract numeric part from value string
+                val_match = re.search(r'(\d+(?:\.\d+)?)', value)
+                if val_match:
+                    actual_val = float(val_match.group(1))
+                else:
+                    return (False, f"Cannot parse numeric value from: {value}", operator_inferred)
+            else:
+                return (False, f"Cannot compare threshold with type: {type(value)}", operator_inferred)
+        except (ValueError, TypeError):
+            return (False, f"Cannot convert {value} to number for threshold check", operator_inferred)
+
+        # Apply operator
+        if operator == '>':
+            satisfied = actual_val > threshold_num
+        elif operator == '>=':
+            satisfied = actual_val >= threshold_num
+        elif operator == '<':
+            satisfied = actual_val < threshold_num
+        elif operator == '<=':
+            satisfied = actual_val <= threshold_num
+        elif operator == '=' or operator == '==':
+            satisfied = abs(actual_val - threshold_num) < 0.001
+        else:
+            # Unknown operator, be permissive
+            return (True, f"Unknown operator '{operator}', allowing", operator_inferred)
+
+        if satisfied:
+            return (True, f"{var_name} {actual_val} satisfies {condition}", operator_inferred)
+        else:
+            return (False, f"{var_name} {actual_val} does not satisfy {condition}", operator_inferred)
+
+    def _dosage_satisfies(
+        self,
+        required: str,
+        actual: str,
+        acceptable_patterns: Optional[List[str]] = None
+    ) -> bool:
+        """
+        Check if actual dosage frequency satisfies requirement.
+
+        PA-2 (Cartwright): Use explicit acceptable patterns instead of implicit hierarchy.
+        The implicit hierarchy (continuous > daily > weekly) was domain-specific and
+        potentially dangerous for medical dosage semantics.
+
+        Args:
+            required: The required dosage pattern (e.g., "daily")
+            actual: The actual dosage pattern provided
+            acceptable_patterns: Explicit list of patterns that satisfy the requirement.
+                               If provided, actual must match one of these.
+                               If None, falls back to exact match.
+
+        Returns:
+            True if actual dosage satisfies the requirement
+        """
+        actual_lower = actual.lower().strip()
+        required_lower = required.lower().strip()
+
+        # PA-2: If explicit acceptable patterns provided, use them
+        if acceptable_patterns:
+            for pattern in acceptable_patterns:
+                if pattern.lower().strip() in actual_lower or actual_lower in pattern.lower().strip():
+                    return True
+            return False
+
+        # Fallback: exact match (or substring match for flexibility)
+        return required_lower in actual_lower or actual_lower in required_lower
+
+    def _check_temporal_condition(
+        self, condition: str, temporal_lag: Any
+    ) -> Tuple[bool, str]:
+        """
+        Check temporal order conditions like "exposure precedes outcome by >1 hour".
+
+        D2.5 (Cartwright): Temporal window checking.
+        PA-3 (Pearl): Normalize to seconds internally for precision.
+        PA-6 (Pearl, Cartwright): Handle TemporalSpec objects with explicit direction.
+        """
+        # PA-6: Handle TemporalSpec objects directly
+        if isinstance(temporal_lag, TemporalSpec):
+            required = TemporalSpec.parse(condition)
+            if required is None:
+                return (True, f"Temporal condition '{condition}' not parseable, allowing")
+
+            # Check direction compatibility
+            if required.direction != temporal_lag.direction:
+                return (False, f"Direction mismatch: required {required.direction}, got {temporal_lag.direction}")
+
+            # PA-3: Compare in seconds for precision
+            if temporal_lag.seconds >= required.seconds:
+                return (True, f"Temporal requirement satisfied: {temporal_lag.display()} >= {required.display()}")
+            else:
+                return (False, f"Temporal requirement not met: {temporal_lag.display()} < {required.display()}")
+
+        # Legacy handling for scalar/string temporal_lag
+        required = TemporalSpec.parse(condition)
+
+        if required is None:
+            # Can't parse, check if lag is positive (precedes)
+            if 'precedes' in condition.lower():
+                try:
+                    lag_val = float(temporal_lag) if not isinstance(temporal_lag, (int, float)) else temporal_lag
+                    if lag_val > 0:
+                        return (True, "Temporal precedence satisfied")
+                    else:
+                        return (False, f"Temporal order violated: lag={temporal_lag}, expected positive")
+                except (ValueError, TypeError):
+                    return (False, f"Cannot parse temporal lag: {temporal_lag}")
+            return (True, f"Temporal condition '{condition}' not parseable, allowing")
+
+        # PA-3: Normalize to seconds for precision
+        required_seconds = required.seconds
+
+        # Convert actual lag to seconds
+        try:
+            if isinstance(temporal_lag, (int, float)):
+                # Assume scalar is in seconds (PA-3: internal normalization)
+                actual_seconds = float(temporal_lag)
+            elif isinstance(temporal_lag, str):
+                actual = TemporalSpec.parse(temporal_lag)
+                if actual:
+                    actual_seconds = actual.seconds
+                else:
+                    return (False, f"Cannot parse temporal lag: {temporal_lag}")
+            else:
+                return (False, f"Cannot handle temporal lag type: {type(temporal_lag)}")
+        except (ValueError, TypeError):
+            return (False, f"Cannot convert temporal lag to seconds: {temporal_lag}")
+
+        # Check if actual satisfies required
+        if actual_seconds >= required_seconds:
+            return (True, f"Temporal requirement satisfied: {actual_seconds:.0f}s >= {required_seconds:.0f}s")
+        else:
+            return (False, f"Temporal requirement not met: {actual_seconds:.0f}s < {required_seconds:.0f}s")
 
     def compute(self, parent_values: Dict[str, float], noise: float = 0.0) -> float:
         """Compute outcome given parent values."""
@@ -895,6 +1215,44 @@ class EpistemicGap:
 
 
 @dataclass
+class ExcludedBelief:
+    """
+    Record of a belief excluded from causal model building (D2.6b).
+
+    Panel P-ECB-R: Track WHY beliefs are excluded, not just that they are.
+    This enables:
+    - Debugging of unexpectedly empty models
+    - Identification of beliefs that "almost" qualify
+    - Guidance for credence threshold tuning
+
+    Exclusion reasons:
+    - below_threshold: Credence below credence_threshold
+    - wrong_level: Not THEORETICAL or INTERMEDIATE
+    - not_in_theory: Doesn't belong to the target theory
+    - enabling_unmet: Enabling conditions not satisfied
+    - missing_contrast: No contrast class (for some analyses)
+    """
+    belief_id: str
+    theory_id: str
+    reason: str  # Exclusion reason code
+    details: str  # Human-readable explanation
+    credence: Optional[float] = None
+    level: Optional[str] = None
+    threshold_used: Optional[float] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'belief_id': self.belief_id,
+            'theory_id': self.theory_id,
+            'reason': self.reason,
+            'details': self.details,
+            'credence': self.credence,
+            'level': self.level,
+            'threshold_used': self.threshold_used,
+        }
+
+
+@dataclass
 class GeneralizationAssessment:
     """Assessment of belief generalization across contexts."""
     belief_id: str
@@ -997,7 +1355,10 @@ class EpistemicCausalBridge:
         self.multi_theory_model: Optional[MultiTheoryModel] = None
         self.population_contexts: Dict[str, PopulationContext] = {}
         # NOTE: individual_factors dict removed - feature archived to quarantine/
-        self._blocked_beliefs: List[Dict[str, Any]] = []  # P-EC-R9: Track blocked beliefs
+        self._blocked_beliefs: List[Dict[str, Any]] = []  # P-EC-R9: Track blocked beliefs (deprecated)
+        # PA-5 (Simon): Two-tier tracking - excluded (actionable) vs skipped (noise)
+        self._excluded_beliefs: List[ExcludedBelief] = []  # Beliefs that passed theory filter but failed other checks
+        self._skipped_beliefs: List[ExcludedBelief] = []   # Beliefs not in target theory (separate for less noise)
     
     # =========================================================================
     # MODEL CONSTRUCTION
@@ -1031,6 +1392,9 @@ class EpistemicCausalBridge:
         # Validate inputs
         if not 0.0 <= credence_threshold <= 1.0:
             raise ValueError(f"credence_threshold must be 0.0-1.0, got {credence_threshold}")
+
+        # D2.6b: Clear exclusion tracking from previous builds
+        self.clear_exclusion_tracking()
 
         # Handle empty web gracefully (ECB-3.6)
         if not self.web.beliefs:
@@ -1078,6 +1442,9 @@ class EpistemicCausalBridge:
         beliefs in counterfactual computation. Beliefs with unmet enabling
         conditions are tracked but excluded from causal models.
 
+        PA-5 (Simon): Two-tier tracking - "not_in_theory" goes to skipped
+        (noise), other exclusions go to excluded (actionable diagnostics).
+
         Args:
             theory_id: The theory to get beliefs for
             credence_threshold: Minimum credence to include
@@ -1096,20 +1463,43 @@ class EpistemicCausalBridge:
                 belongs_to_theory = False
 
             if not belongs_to_theory:
+                # PA-5 (Simon): Track to _skipped (not _excluded) to reduce noise
+                self._track_skipped_belief(
+                    b, theory_id, 'not_in_theory',
+                    f"Belief does not belong to theory '{theory_id}'",
+                    credence_threshold
+                )
                 continue
 
             # Check credence threshold
             if b.credence.value < credence_threshold:
+                # D2.6b: Track exclusion (actionable - user can tune threshold)
+                self._track_excluded_belief(
+                    b, theory_id, 'below_threshold',
+                    f"Credence {b.credence.value:.3f} < threshold {credence_threshold}",
+                    credence_threshold
+                )
                 continue
 
             # Check level (handle both enum and string)
             level_val = b.level.value if hasattr(b.level, 'value') else b.level
             if level_val not in ['theoretical', 'intermediate']:
+                # D2.6b: Track exclusion
+                self._track_excluded_belief(
+                    b, theory_id, 'wrong_level',
+                    f"Level '{level_val}' not in [theoretical, intermediate]",
+                    credence_threshold
+                )
                 continue
 
             # P-EC-R9: Check enabling conditions
             if check_enabling and not self._check_enabling_conditions(b):
-                self._track_blocked_belief(b, theory_id)
+                # D2.6b: Track exclusion (enhanced from _track_blocked_belief)
+                self._track_excluded_belief(
+                    b, theory_id, 'enabling_unmet',
+                    "Enabling conditions not satisfied",
+                    credence_threshold
+                )
                 continue
 
             result.append(b)
@@ -1162,17 +1552,82 @@ class EpistemicCausalBridge:
         # A more sophisticated implementation would check against query context
         return True
 
-    def _track_blocked_belief(self, belief: Belief, theory_id: str) -> None:
-        """Track beliefs blocked due to unmet enabling conditions."""
-        if not hasattr(self, '_blocked_beliefs'):
-            self._blocked_beliefs = []
+    def _track_excluded_belief(
+        self,
+        belief: Belief,
+        theory_id: str,
+        reason: str,
+        details: str,
+        threshold_used: float
+    ) -> None:
+        """
+        Track beliefs excluded from causal model building (D2.6b).
 
-        self._blocked_beliefs.append({
-            'belief_id': belief.belief_id,
-            'theory_id': theory_id,
-            'reason': 'unmet_enabling_conditions',
-            'enabling_conditions': self._serialize_enabling_conditions(belief)
-        })
+        Args:
+            belief: The excluded belief
+            theory_id: Theory being built
+            reason: Exclusion reason code
+            details: Human-readable explanation
+            threshold_used: Credence threshold used for this build
+        """
+        if not hasattr(self, '_excluded_beliefs'):
+            self._excluded_beliefs: List[ExcludedBelief] = []
+
+        level_val = belief.level.value if hasattr(belief.level, 'value') else str(belief.level)
+
+        excluded = ExcludedBelief(
+            belief_id=belief.belief_id,
+            theory_id=theory_id,
+            reason=reason,
+            details=details,
+            credence=belief.credence.value if hasattr(belief.credence, 'value') else belief.credence,
+            level=level_val,
+            threshold_used=threshold_used
+        )
+        self._excluded_beliefs.append(excluded)
+
+    def _track_skipped_belief(
+        self,
+        belief: Belief,
+        theory_id: str,
+        reason: str,
+        details: str,
+        threshold_used: float
+    ) -> None:
+        """
+        Track beliefs skipped (not in target theory) separately from excluded (PA-5).
+
+        PA-5 (Simon): "not_in_theory" goes to skipped registry to reduce noise
+        in the primary exclusion diagnostics.
+        """
+        if not hasattr(self, '_skipped_beliefs'):
+            self._skipped_beliefs: List[ExcludedBelief] = []
+
+        level_val = belief.level.value if hasattr(belief.level, 'value') else str(belief.level)
+
+        skipped = ExcludedBelief(
+            belief_id=belief.belief_id,
+            theory_id=theory_id,
+            reason=reason,
+            details=details,
+            credence=belief.credence.value if hasattr(belief.credence, 'value') else belief.credence,
+            level=level_val,
+            threshold_used=threshold_used
+        )
+        self._skipped_beliefs.append(skipped)
+
+    def _track_blocked_belief(self, belief: Belief, theory_id: str) -> None:
+        """
+        Track beliefs blocked due to unmet enabling conditions.
+
+        DEPRECATED: Use _track_excluded_belief instead.
+        Kept for backwards compatibility; forwards to new method.
+        """
+        self._track_excluded_belief(
+            belief, theory_id, 'enabling_unmet',
+            "Enabling conditions not satisfied (legacy tracking)",
+            threshold_used=0.5  # Default when not known
+        )
 
     def _serialize_enabling_conditions(self, belief: Belief) -> Optional[Dict[str, Any]]:
         """Serialize enabling conditions for logging."""
@@ -1190,8 +1645,139 @@ class EpistemicCausalBridge:
         }
 
     def get_blocked_beliefs(self) -> List[Dict[str, Any]]:
-        """Get list of beliefs blocked due to unmet enabling conditions."""
-        return getattr(self, '_blocked_beliefs', [])
+        """
+        Get list of beliefs blocked due to unmet enabling conditions.
+
+        DEPRECATED: Use get_excluded_beliefs() instead for full exclusion info.
+        This method returns only enabling_unmet exclusions for backwards compat.
+        """
+        excluded = getattr(self, '_excluded_beliefs', [])
+        return [
+            e.to_dict() for e in excluded
+            if isinstance(e, ExcludedBelief) and e.reason == 'enabling_unmet'
+        ]
+
+    def get_excluded_beliefs(
+        self,
+        reason: Optional[str] = None,
+        theory_id: Optional[str] = None
+    ) -> List[ExcludedBelief]:
+        """
+        Get beliefs excluded from causal model building (D2.6b).
+
+        PA-5 (Simon): This returns only actionable exclusions (passed theory
+        filter but failed on credence/level/enabling). For beliefs not in
+        target theory, use get_skipped_beliefs().
+
+        Args:
+            reason: Optional filter by exclusion reason
+                   ('below_threshold', 'wrong_level', 'enabling_unmet')
+            theory_id: Optional filter by theory
+
+        Returns:
+            List of ExcludedBelief records
+        """
+        excluded = getattr(self, '_excluded_beliefs', [])
+        result = []
+        for e in excluded:
+            if not isinstance(e, ExcludedBelief):
+                continue
+            if reason is not None and e.reason != reason:
+                continue
+            if theory_id is not None and e.theory_id != theory_id:
+                continue
+            result.append(e)
+        return result
+
+    def get_skipped_beliefs(
+        self,
+        theory_id: Optional[str] = None
+    ) -> List[ExcludedBelief]:
+        """
+        Get beliefs skipped because they don't belong to target theory (PA-5).
+
+        PA-5 (Simon): Separated from get_excluded_beliefs() to reduce noise.
+        These are beliefs that were never candidates for the target theory,
+        not failures that users should debug.
+
+        Args:
+            theory_id: Optional filter by theory
+
+        Returns:
+            List of ExcludedBelief records (all with reason='not_in_theory')
+        """
+        skipped = getattr(self, '_skipped_beliefs', [])
+        result = []
+        for e in skipped:
+            if not isinstance(e, ExcludedBelief):
+                continue
+            if theory_id is not None and e.theory_id != theory_id:
+                continue
+            result.append(e)
+        return result
+
+    def get_exclusion_summary(
+        self,
+        near_threshold_gap: float = 0.15
+    ) -> Dict[str, Any]:
+        """
+        Get summary of excluded beliefs by reason (D2.6b).
+
+        Useful for debugging unexpectedly empty causal models.
+
+        Args:
+            near_threshold_gap: Gap threshold for flagging "near" beliefs.
+                               PA-4 (Simon): Default 0.15 catches more actionable cases.
+                               Beliefs within this gap of the credence threshold are
+                               flagged to help tune threshold settings.
+
+        Returns:
+            Dict with:
+                - total_excluded: Count of actionable exclusions
+                - total_skipped: Count of not-in-theory beliefs (PA-5)
+                - by_reason: Count per reason (excludes 'not_in_theory')
+                - by_theory: Count per theory
+                - near_threshold: Beliefs within near_threshold_gap of threshold
+                - near_threshold_gap: The gap value used
+        """
+        excluded = getattr(self, '_excluded_beliefs', [])
+        skipped = getattr(self, '_skipped_beliefs', [])
+
+        by_reason: Dict[str, int] = {}
+        by_theory: Dict[str, int] = {}
+        near_threshold: List[Dict[str, Any]] = []
+
+        for e in excluded:
+            if not isinstance(e, ExcludedBelief):
+                continue
+
+            by_reason[e.reason] = by_reason.get(e.reason, 0) + 1
+            by_theory[e.theory_id] = by_theory.get(e.theory_id, 0) + 1
+
+            # PA-4 (Simon): Track beliefs that almost qualified
+            if e.reason == 'below_threshold' and e.credence is not None and e.threshold_used is not None:
+                gap = e.threshold_used - e.credence
+                if gap <= near_threshold_gap:
+                    near_threshold.append({
+                        'belief_id': e.belief_id,
+                        'credence': e.credence,
+                        'threshold': e.threshold_used,
+                        'gap': gap
+                    })
+
+        return {
+            'total_excluded': len(excluded),
+            'total_skipped': len(skipped),  # PA-5: Separate count for noise
+            'by_reason': by_reason,
+            'by_theory': by_theory,
+            'near_threshold': near_threshold,
+            'near_threshold_gap': near_threshold_gap
+        }
+
+    def clear_exclusion_tracking(self) -> None:
+        """Clear the excluded and skipped beliefs registries (for new builds)."""
+        self._excluded_beliefs = []
+        self._skipped_beliefs = []  # PA-5
     
     def _build_theory_model(
         self,

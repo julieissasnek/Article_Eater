@@ -39,6 +39,35 @@ This prevents duplicate work across parallel terminals.
 
 ---
 
+## Implementation Decisions - Panel Review P-ECB-R2 ✓ COMPLETE
+
+*Added: 2026-02-11, Resolved: 2026-02-11*
+
+Panel P-ECB-R2 (Cartwright, Simon, Pearl) reviewed 6 implementation decisions. All recommendations implemented.
+
+| ID | Decision | Panel Verdict | Resolution |
+|----|----------|---------------|------------|
+| PA-1 | Threshold parsing defaults to `>=` | **Approved with Enhancement** | Added `operator_inferred` flag; logs warning when operator assumed |
+| PA-2 | Dosage hierarchy | **Revised** | Removed implicit hierarchy; added `dosage_satisfies` field to EnablingConditions |
+| PA-3 | Temporal normalization to minutes | **Revised** | Changed to seconds internally; added TemporalSpec.display() helper |
+| PA-4 | "Near threshold" = 0.1 gap | **Approved with Modification** | Changed default to 0.15; made configurable via parameter |
+| PA-5 | Tracking non-theory beliefs | **Revised** | Two-tier tracking: _excluded (actionable) vs _skipped (noise) |
+| PA-6 | Positive temporal_lag = precedes | **Revised** | Added TemporalSpec dataclass with explicit {magnitude, unit, direction} |
+
+### Key Changes Made
+
+**PA-1**: `_check_threshold_condition()` now returns 3-tuple with `operator_inferred` flag; logs warning when assuming `>=`.
+
+**PA-2**: Added `dosage_satisfies: List[str]` field to `EnablingConditions` in `web_of_belief.py`. Removed implicit hierarchy from `_dosage_satisfies()`.
+
+**PA-3 & PA-6**: Added `TemporalSpec` dataclass with `{magnitude, unit, direction}`. Internal normalization to seconds. Display helpers preserve readability.
+
+**PA-4**: `get_exclusion_summary(near_threshold_gap=0.15)` now configurable, default changed from 0.1 to 0.15.
+
+**PA-5**: Added `_skipped_beliefs` registry for "not_in_theory" exclusions. New method `get_skipped_beliefs()`. Summary includes `total_skipped` count.
+
+---
+
 ## Sprint ECB: Epistemic-Causal Bridge Repair
 
 **Added**: 2026-02-10
@@ -172,13 +201,13 @@ These enhancements address limitations identified during comprehensive panel rev
 | ECB-F9 | Contrast-gated feedback | P1 | van Fraassen | ✓ DONE |
 | ECB-F10 | Observational grounding | P2 | Haack | ☐ TODO |
 | ECB-F11 | Configurable feedback rate | P2 | Simon | ☐ TODO |
-| ECB-F12 | Complete enabling condition checks | P2 | Cartwright | ☐ TODO |
-| ECB-F13 | Excluded belief registry | P2 | Cartwright | ☐ TODO |
+| ECB-F12 | Complete enabling condition checks | P2 | Cartwright | ✓ DONE |
+| ECB-F13 | Excluded belief registry | P2 | Cartwright | ✓ DONE |
 | ECB-F14 | Lazy bridge import | P1 | Parnas | ✓ DONE |
-| ECB-F15 | CLI shorthand flags | P3 | Parnas | ☐ TODO |
+| ECB-F15 | CLI shorthand flags | P3 | Parnas | ✓ DONE |
 | ECB-F16 | User documentation sprint | P1 | Brooks | ✓ DONE |
-| ECB-F17 | Stub contrast warning | P3 | van Fraassen | ☐ TODO |
-| ECB-F18 | DEPRECATED removal deadline | P2 | Parnas | ☐ TODO |
+| ECB-F17 | Stub contrast warning | P3 | van Fraassen | ✓ DONE |
+| ECB-F18 | DEPRECATED removal deadline | P2 | Parnas | ✓ DONE |
 
 **P1 Features Complete** (2026-02-10):
 - ECB-F6: 29 boundary value tests in `tests/test_ecb3_boundaries.py`
@@ -186,6 +215,13 @@ These enhancements address limitations identified during comprehensive panel rev
 - ECB-F9: Feedback loop gated on `is_defined` and contrast transfer type
 - ECB-F14: Lazy import in `pipeline.py` isolates module failures
 - ECB-F16: User guide at `docs/USER_GUIDE_CAUSAL_BRIDGE.md`
+
+**Panel Action Items Complete** (2026-02-10):
+- ECB-F12: Complete enabling condition checks (threshold parsing, dosage, temporal windows)
+- ECB-F13: `ExcludedBelief` dataclass, `get_excluded_beliefs()`, `get_exclusion_summary()`
+- ECB-F15: `--cct` shorthand for `--causal-credence-threshold`
+- ECB-F17: Van Fraassen contrast class warning in archived stub
+- ECB-F18: `REMOVE_BY: V24.0` comments on all DEPRECATED classes
 
 #### ECB-F1: Meaning Equivalence Flag (van Fraassen)
 

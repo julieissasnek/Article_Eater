@@ -30,6 +30,18 @@ NOTES:
 - Demo creates beliefs with explicit entrenchment=0.8 (violates V23.0.0)
 - PopulationContext examples show Nordic vs Miami contrast (good test case)
 
+WARNING - CONTRAST CLASS LIMITATIONS (van Fraassen, Panel P-ECB-R):
+=====================================================================
+This stub does NOT properly model contrast classes:
+- Beliefs created here lack the contrast_class field
+- The stub WebOfBelief doesn't track contrast metadata
+- Tests using this stub do NOT validate contrast handling
+- Contrast transfer classification (DIRECT, BASELINE_SHIFT, etc.) is not testable
+
+Any tests using this stub may give FALSE CONFIDENCE about contrast handling.
+Use the real WebOfBelief from web_of_belief.py for production and for any
+tests that need to validate van Fraassen contrast class functionality.
+
 See: docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md for context.
 """
 

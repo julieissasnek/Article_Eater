@@ -64,6 +64,8 @@ All tasks completed. See TASKS.md for details.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| ECB-R2 | Panel P-ECB-R2 Implementation (PA-1 to PA-6) | Terminal-1 | Evening | operator_inferred, dosage_satisfies, TemporalSpec, configurable near_threshold, two-tier tracking |
+| ECB-PA | Panel Action Items (D1.1, D1.3, D2.3, D2.5, D2.6) | Terminal-1 | Evening | REMOVE_BY comments, stub warning, --cct flag, complete enabling checks, excluded belief registry |
 | ECB-P1 | P1 Features (F6, F7, F9, F14, F16) | Terminal-1 | Evening | 29 boundary tests, prominent warning, contrast-gated feedback, lazy import, user guide |
 | ECB-3 | Sprint ECB-3: Van Fraassen and Polish | Terminal-1 | Evening | ContrastTransferType enum, gap identification (5 types), Haack security weight, error handling, 68+153 tests pass, panel review |
 | ECB-2 | Sprint ECB-2: Core Integration | Terminal-1 | Afternoon | Pipeline wired (Stage 2.8), CLI flags (--no-causal), feedback loop, 68 tests pass |

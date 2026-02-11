@@ -277,6 +277,11 @@ class EnablingConditions:
     # R1 additions (Cartwright)
     temporal_order: Optional[str] = None       # e.g., "exposure precedes outcome by >1 hour"
     dose_response: Optional[bool] = None       # Does effect scale with dosage?
+    # PA-2 (Cartwright): Explicit list of acceptable dosage patterns
+    # Instead of implicit hierarchy (daily > weekly), explicitly list what satisfies.
+    # e.g., ["daily", "continuous", "twice_daily"] means these patterns satisfy "daily".
+    # If None, falls back to exact match checking.
+    dosage_satisfies: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -285,7 +290,8 @@ class EnablingConditions:
             'concurrent_factors': self.concurrent_factors.copy(),
             'blocking_factors': self.blocking_factors.copy(),
             'threshold': self.threshold,
-            'dosage': self.dosage
+            'dosage': self.dosage,
+            'dosage_satisfies': self.dosage_satisfies.copy(),  # PA-2
         }
 
     @classmethod
@@ -296,7 +302,8 @@ class EnablingConditions:
             concurrent_factors=d.get('concurrent_factors', []),
             blocking_factors=d.get('blocking_factors', []),
             threshold=d.get('threshold'),
-            dosage=d.get('dosage')
+            dosage=d.get('dosage'),
+            dosage_satisfies=d.get('dosage_satisfies', []),  # PA-2
         )
 
     def is_empty(self) -> bool:

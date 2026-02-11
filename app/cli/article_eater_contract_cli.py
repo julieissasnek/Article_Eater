@@ -280,7 +280,7 @@ def main() -> int:
         help="Disable Epistemic-Causal Bridge"
     )
     causal_group.add_argument(
-        "--causal-credence-threshold",
+        "--causal-credence-threshold", "--cct",  # ECB-F15 (Parnas): shorthand for power users
         dest="causal_credence_threshold", type=float, default=0.5,
         help="Minimum credence for beliefs included in causal models (default: 0.5)"
     )
