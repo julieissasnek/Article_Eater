@@ -63,31 +63,34 @@ All implementation decisions during integration sprints are logged here for pane
 
 ### D2-1: VOI Calculation Formula
 **Context**: How to compute Value of Information for gap prioritization?
-**Decision**: [PENDING]
+**Decision**: Simple heuristic (coverage × uncertainty). For mechanism gaps: 0.5 + 0.1 × n_empirical_beliefs. For boundary gaps: 0.4 + 0.4 × (1 - coverage_ratio). Full Bayesian VOI deferred to future sprint.
 **Alternatives**:
-- Entropy reduction
-- Decision impact (downstream beliefs affected)
-- Simple heuristic (coverage × uncertainty)
-- Full Bayesian VOI
+- Entropy reduction — Too complex for MVP
+- Decision impact (downstream beliefs affected) — Requires full graph analysis
+- Simple heuristic (coverage × uncertainty) — SELECTED
+- Full Bayesian VOI — Deferred
 **Risk Level**: Medium
+**Status**: PENDING_REVIEW
 
 ### D2-2: Path Length for Mediation Gaps
 **Context**: How long a path A→...→Y triggers a mediation gap check?
-**Decision**: [PENDING]
+**Decision**: 2-hop only (A→X→Y). Longer paths would create combinatorial explosion and less actionable gaps.
 **Alternatives**:
-- 2-hop only (A→X→Y)
-- Up to 3-hop
-- Any path length
+- 2-hop only (A→X→Y) — SELECTED
+- Up to 3-hop — Too many false positives
+- Any path length — Computationally expensive
 **Risk Level**: Low
+**Status**: PENDING_REVIEW
 
 ### D2-3: Scope Condition Comparison
 **Context**: How to detect "narrow" scope conditions for boundary gaps?
-**Decision**: [PENDING]
+**Decision**: Compare against hardcoded KNOWN_SETTINGS and KNOWN_POPULATIONS sets. Simple but effective for MVP. Sets include: office, healthcare, educational, residential, retail, industrial, hospitality, outdoor, transportation; adults, children, elderly, workers, patients, students.
 **Alternatives**:
-- Compare against known universe of settings/populations
-- Compare against beliefs in same domain
-- Hardcoded list of expected coverage
+- Compare against known universe of settings/populations — SELECTED
+- Compare against beliefs in same domain — More dynamic but complex
+- Hardcoded list of expected coverage — Same as selected
 **Risk Level**: Low
+**Status**: PENDING_REVIEW
 
 ---
 
