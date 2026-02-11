@@ -60,7 +60,15 @@ All tasks completed. See TASKS.md for details.
 
 ---
 
-## Completed Today (2026-02-10)
+## Completed Today (2026-02-11)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| ATK-1 | Wire ArgumentAttack into tensions.jsonl | Terminal-1 | 00:45 | Enhanced get_tensions(), structured evidence in output |
+| ATK-3 | Shift classification heuristics | Terminal-1 | 00:45 | StructuredAttackDetector (6 methods), ShiftClassifier (text fallback), 24 tests pass |
+| DIAGRAM | Architecture diagram generation | Terminal-1 | 00:30 | docs/diagrams/architecture_layers_2026-02-11.png |
+
+## Completed Yesterday (2026-02-10)
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|

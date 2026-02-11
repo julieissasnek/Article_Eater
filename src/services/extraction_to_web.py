@@ -1388,32 +1388,66 @@ def get_stub_report(web: WebOfBelief) -> Dict[str, Any]:
 
 
 # =============================================================================
-# TENSION DETECTION
+# TENSION DETECTION (ATK-1 Enhanced)
 # =============================================================================
 
-def get_tensions(web: WebOfBelief) -> List[Dict[str, Any]]:
-    """Get beliefs in tension with the web."""
+# Try to import argument attack analysis (ATK-1, ATK-3)
+try:
+    from src.services.argument_attack import enhance_tension_with_attack_analysis
+    ARGUMENT_ATTACK_AVAILABLE = True
+except ImportError:
+    ARGUMENT_ATTACK_AVAILABLE = False
+
+
+def get_tensions(web: WebOfBelief, include_attack_analysis: bool = True) -> List[Dict[str, Any]]:
+    """
+    Get beliefs in tension with the web.
+
+    ATK-1: Enhanced with argument attack analysis when available.
+    Detects whether tensions are true contradictions or contrast shifts.
+
+    Args:
+        web: The WebOfBelief to analyze
+        include_attack_analysis: Whether to include ATK analysis (default True)
+
+    Returns:
+        List of tension dicts, optionally enhanced with attack analysis
+    """
     tensions = []
-    
+
     anomalies = [b for b in web.beliefs.values() if b.is_anomalous()]
-    
+
     for anomaly in anomalies:
         # Find which beliefs it contradicts
-        contradicting = []
+        contradicting_ids = []
+        contradicting_beliefs = []
         for constraint in web.constraints.values():
             if constraint.source_id == anomaly.belief_id or constraint.target_id == anomaly.belief_id:
                 if constraint.constraint_type == ConstraintType.CONTRADICTS:
                     other_id = constraint.target_id if constraint.source_id == anomaly.belief_id else constraint.source_id
                     if other_id in web.beliefs:
-                        contradicting.append(web.beliefs[other_id].content[:50])
-        
-        tensions.append({
+                        contradicting_ids.append(web.beliefs[other_id].content[:50])
+                        contradicting_beliefs.append(web.beliefs[other_id])
+
+        # Build base tension record
+        tension = {
             "belief_id": anomaly.belief_id,
             "content": anomaly.content[:100],
             "credence": anomaly.credence.value,
-            "contradicts": contradicting
-        })
-    
+            "contradicts": contradicting_ids
+        }
+
+        # ATK-1: Enhance with attack analysis if available
+        if include_attack_analysis and ARGUMENT_ATTACK_AVAILABLE and contradicting_beliefs:
+            tension = enhance_tension_with_attack_analysis(
+                tension=tension,
+                anomaly_belief=anomaly,
+                contradicting_beliefs=contradicting_beliefs,
+                web=web
+            )
+
+        tensions.append(tension)
+
     return tensions
 
 
