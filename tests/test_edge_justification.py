@@ -308,7 +308,8 @@ class TestEdgeJustificationService:
                 paper_ids=['paper_001']
             )
         }
-        mock_web._constraint_index = {}
+        mock_web._constraints_by_belief = {}
+        mock_web.constraints = {}
 
         service = EdgeJustificationService(web=mock_web)
         result = service.get_justification('daylight', 'stress')
@@ -334,7 +335,8 @@ class TestEdgeJustificationService:
         """Test that to_dict produces valid JSON-compatible dict."""
         mock_web = Mock()
         mock_web.beliefs = {}
-        mock_web._constraint_index = {}
+        mock_web._constraints_by_belief = {}
+        mock_web.constraints = {}
 
         service = EdgeJustificationService(web=mock_web)
         result = service.get_justification('daylight', 'stress')

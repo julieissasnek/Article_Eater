@@ -208,13 +208,15 @@ class EdgeJustificationService:
         """Lazy-load the web of belief."""
         if self._web is None:
             if self._accumulator is not None:
-                self._web = self._accumulator.web
+                # get_master_web() returns (WebOfBelief, BridgeRegistry) tuple
+                self._web, _ = self._accumulator.get_master_web()
             else:
                 # Try to import and get the global web
                 try:
                     from src.services.web_accumulator import get_accumulator
                     self._accumulator = get_accumulator()
-                    self._web = self._accumulator.web
+                    # get_master_web() returns (WebOfBelief, BridgeRegistry) tuple
+                    self._web, _ = self._accumulator.get_master_web()
                 except Exception as e:
                     logger.warning(f"Could not load web: {e}")
                     return None
@@ -422,40 +424,91 @@ class EdgeJustificationService:
         # Check constraints for negative relationships
         for belief in supporting:
             # Look for constraints with negative weight
-            constraints = self.web._constraint_index.get(belief.belief_id, [])
-            for constraint in constraints:
+            constraint_ids = self.web._constraints_by_belief.get(belief.belief_id, [])
+            for constraint_id in constraint_ids:
+                constraint = self.web.constraints.get(constraint_id)
+                if constraint is None:
+                    continue
+
                 other_id = constraint.target_id if constraint.source_id == belief.belief_id else constraint.source_id
                 if other_id in supporting_ids:
                     continue  # Already in supporting
 
-                # Decision D1-3: Conflict threshold is -0.3
-                if constraint.weight < -0.3:
+                # Decision D1-3: Conflict threshold - using strength < 0.3 for CONTRADICTS type
+                # or constraint type is CONTRADICTS
+                from src.services.web_of_belief import ConstraintType
+                if constraint.constraint_type == ConstraintType.CONTRADICTS or constraint.strength < 0.3:
                     other = self.web.beliefs.get(other_id)
                     if other:
                         conflicts.append(ConflictSummary(
                             belief_id=other_id,
-                            credence=other.credence.value,
+                            credence=other.credence.value if hasattr(other.credence, 'value') else other.credence,
                             conflict_type=ConflictType.WEAKENS,
                             content_summary=other.content[:200],
-                            conflict_detail=f"Negative constraint weight: {constraint.weight:.2f}"
+                            conflict_detail=f"Constraint type: {constraint.constraint_type.value}, strength: {constraint.strength:.2f}"
                         ))
 
         return conflicts
+
+    def _cluster_beliefs_by_paper(self, beliefs: List[Any]) -> Dict[str, List[Any]]:
+        """
+        Panel D0a (Pearl): Cluster beliefs by source paper to prevent double-counting.
+
+        Beliefs from the same paper are not independent evidence.
+        We cluster them and take the max credence per cluster.
+        """
+        clusters: Dict[str, List[Any]] = {}
+        no_paper_cluster = []
+
+        for belief in beliefs:
+            paper_ids = belief.paper_ids if hasattr(belief, 'paper_ids') and belief.paper_ids else []
+
+            if paper_ids:
+                # Use first paper as primary cluster key
+                primary_paper = paper_ids[0]
+                if primary_paper not in clusters:
+                    clusters[primary_paper] = []
+                clusters[primary_paper].append(belief)
+            else:
+                no_paper_cluster.append(belief)
+
+        # Put beliefs without papers in their own "clusters" (each is independent)
+        for i, belief in enumerate(no_paper_cluster):
+            clusters[f"_no_paper_{i}"] = [belief]
+
+        return clusters
 
     def _aggregate_credence(self, beliefs: List[Any]) -> Tuple[float, float]:
         """
         Aggregate credences from multiple beliefs.
 
         Decision D1-2: Using inverse-variance weighted average (DerSimonian-Laird style)
+        Panel D0a (Pearl): Cluster by source paper first to prevent same-study domination.
         """
         if not beliefs:
             return 0.0, 1.0
 
-        # Simple inverse-variance weighting
+        # Panel D0a: Cluster beliefs by paper first
+        clusters = self._cluster_beliefs_by_paper(beliefs)
+
+        # For each cluster, take the belief with highest credence
+        # (multiple findings from same paper shouldn't multiply evidence)
+        cluster_representatives = []
+        for paper_id, paper_beliefs in clusters.items():
+            # Select representative: highest credence belief from this paper
+            best_belief = max(
+                paper_beliefs,
+                key=lambda b: b.credence.value if hasattr(b.credence, 'value') else b.credence
+            )
+            cluster_representatives.append(best_belief)
+
+        logger.debug(f"Clustered {len(beliefs)} beliefs into {len(cluster_representatives)} independent sources")
+
+        # Now aggregate across independent clusters
         weights = []
         credences = []
 
-        for b in beliefs:
+        for b in cluster_representatives:
             cred = b.credence.value if hasattr(b.credence, 'value') else b.credence
             unc = b.credence.uncertainty if hasattr(b.credence, 'uncertainty') else 0.3
 

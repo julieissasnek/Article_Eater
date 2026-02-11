@@ -170,7 +170,8 @@ class GapPredictor:
             try:
                 from src.services.web_accumulator import get_accumulator
                 acc = get_accumulator()
-                self._web = acc.web
+                # get_master_web() returns (WebOfBelief, BridgeRegistry) tuple
+                self._web, _ = acc.get_master_web()
             except Exception as e:
                 logger.warning(f"Could not load web: {e}")
         return self._web
@@ -190,6 +191,83 @@ class GapPredictor:
         """Generate next gap ID."""
         self._gap_counter += 1
         return f"gap_{self._gap_counter:04d}"
+
+    # Panel D0d (Pearl): Compute graph centrality for VOI weighting
+    def _compute_centrality_cache(self) -> Dict[str, float]:
+        """
+        Compute centrality scores for all nodes in the belief graph.
+        Panel D0d (Pearl): Central nodes have higher VOI for gap resolution.
+
+        Uses degree centrality as a simple but effective measure.
+        """
+        if self.web is None:
+            return {}
+
+        centrality: Dict[str, float] = {}
+
+        # Build adjacency from constraints
+        adjacency: Dict[str, Set[str]] = {}
+
+        # Handle case where web.constraints might not exist or is a mock
+        try:
+            constraints = self.web.constraints
+            if not hasattr(constraints, 'values'):
+                constraints = {}
+        except (AttributeError, TypeError):
+            constraints = {}
+
+        for constraint in constraints.values():
+            if constraint.source_id not in adjacency:
+                adjacency[constraint.source_id] = set()
+            if constraint.target_id not in adjacency:
+                adjacency[constraint.target_id] = set()
+            adjacency[constraint.source_id].add(constraint.target_id)
+            adjacency[constraint.target_id].add(constraint.source_id)
+
+        # Also count beliefs by environment/outcome
+        env_counts: Dict[str, int] = {}
+        out_counts: Dict[str, int] = {}
+        for belief in self.web.beliefs.values():
+            if belief.environment_id:
+                env_counts[belief.environment_id] = env_counts.get(belief.environment_id, 0) + 1
+            if belief.outcome_id:
+                out_counts[belief.outcome_id] = out_counts.get(belief.outcome_id, 0) + 1
+
+        # Compute degree centrality for beliefs
+        max_degree = 1
+        for belief_id, neighbors in adjacency.items():
+            max_degree = max(max_degree, len(neighbors))
+
+        for belief_id in self.web.beliefs:
+            degree = len(adjacency.get(belief_id, set()))
+            centrality[belief_id] = degree / max_degree if max_degree > 0 else 0
+
+        # Also compute centrality for environment/outcome IDs
+        total_env = sum(env_counts.values()) or 1
+        total_out = sum(out_counts.values()) or 1
+        for env_id, count in env_counts.items():
+            centrality[f"env:{env_id}"] = count / total_env
+        for out_id, count in out_counts.items():
+            centrality[f"out:{out_id}"] = count / total_out
+
+        return centrality
+
+    def _get_centrality(self, node_id: str) -> float:
+        """Get centrality score for a node (cached)."""
+        if not hasattr(self, '_centrality_cache'):
+            self._centrality_cache = self._compute_centrality_cache()
+        return self._centrality_cache.get(node_id, 0.3)  # Default moderate centrality
+
+    def _get_env_out_centrality(self, env_id: Optional[str], out_id: Optional[str]) -> float:
+        """Get combined centrality for an env→out relationship."""
+        if not hasattr(self, '_centrality_cache'):
+            self._centrality_cache = self._compute_centrality_cache()
+
+        env_cent = self._centrality_cache.get(f"env:{env_id}", 0.3) if env_id else 0.3
+        out_cent = self._centrality_cache.get(f"out:{out_id}", 0.3) if out_id else 0.3
+
+        # Combined centrality (average)
+        return (env_cent + out_cent) / 2
 
     # =========================================================================
     # Main Entry Points
@@ -285,13 +363,22 @@ class GapPredictor:
         return gaps
 
     def _compute_mediation_voi(self, a: str, x: str, y: str) -> float:
-        """Compute VOI for a mediation gap."""
-        # Higher VOI if both A→X and X→Y have high credence
-        # (because then A→Y is likely important)
-        base_voi = 0.6
+        """
+        Compute VOI for a mediation gap.
+        Panel D0d (Pearl): Incorporate graph centrality into VOI.
+        """
+        # Base VOI
+        base_voi = 0.5
 
-        # Could enhance with actual credence lookup
-        return base_voi
+        # Panel D0d: Weight by centrality of the outcome Y
+        # Gaps affecting central nodes are more valuable to resolve
+        y_centrality = self._get_env_out_centrality(None, y)
+        a_centrality = self._get_env_out_centrality(a, None)
+
+        # Combined VOI: base + centrality bonus
+        voi = base_voi + 0.3 * y_centrality + 0.2 * a_centrality
+
+        return min(voi, 1.0)
 
     # =========================================================================
     # Mechanism Gap Detection
@@ -344,10 +431,27 @@ class GapPredictor:
         return gaps
 
     def _compute_mechanism_voi(self, empirical_beliefs: List[Any]) -> float:
-        """Compute VOI for mechanism gap."""
-        # Higher VOI if more empirical beliefs (well-established relationship)
+        """
+        Compute VOI for mechanism gap.
+        Panel D0d (Pearl): Incorporate graph centrality into VOI.
+        """
+        # Base VOI: Higher if more empirical beliefs (well-established relationship)
         n_beliefs = len(empirical_beliefs)
-        return min(0.5 + 0.1 * n_beliefs, 0.9)
+        base_voi = min(0.4 + 0.1 * n_beliefs, 0.7)
+
+        # Panel D0d: Add centrality bonus
+        # Average centrality of affected beliefs
+        if empirical_beliefs and self.web:
+            centralities = [
+                self._get_centrality(b.belief_id)
+                for b in empirical_beliefs
+            ]
+            avg_centrality = sum(centralities) / len(centralities)
+            voi = base_voi + 0.3 * avg_centrality
+        else:
+            voi = base_voi
+
+        return min(voi, 0.95)
 
     # =========================================================================
     # Boundary Gap Detection
