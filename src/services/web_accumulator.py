@@ -13,6 +13,11 @@ This module provides:
 The heavy lifting is done by WebPersistenceService - this is a thin wrapper
 that makes it easy to use for the MVP demo.
 
+Data Authority (per Panel Review 2026-02-11):
+- SQLite (via WebPersistenceService) is the AUTHORITATIVE source of truth
+- JSON export is a best-effort snapshot for inspection/debugging
+- events.jsonl is append-only audit log for debugging/replay
+
 Usage:
     from src.services.web_accumulator import WebAccumulator
 
