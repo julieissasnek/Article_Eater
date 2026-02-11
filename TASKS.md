@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Monday, February 10, 2026 (Sprint ECB: Epistemic-Causal Bridge Repair)*
+*Last updated: Wednesday, February 11, 2026 (Added DISC-10: CNFA Benchmark Questions)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -102,10 +102,48 @@ Panel P-ECB-R2 (Cartwright, Simon, Pearl) reviewed 6 implementation decisions. A
 |---------|-----------------|-------------|
 | Individual Differences | `quarantine/2026-02-10/individual_differences.py` | IND-1 through IND-4 |
 | Cultural Meanings | `quarantine/2026-02-10/cultural_meaning.py` | CULT-1 through CULT-5 |
-| Argument Attack Analysis | `quarantine/2026-02-10/argument_attack.py` | ATK-1 through ATK-4 |
+| Argument Attack Analysis | **REINTEGRATED** → `src/services/argument_attack.py` | ~~ATK-1~~ ✓ ~~ATK-3~~ ✓ ATK-2 ATK-4 pending |
 | Elaborate Generalization | `quarantine/2026-02-10/generalization_elaborate.py` | GEN-1 through GEN-4 |
 
 See: `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md`
+
+---
+
+### Sprint ATK: Argument Attack Reintegration ✓ PARTIAL COMPLETE
+
+**Added**: 2026-02-11
+**Completed**: ATK-1, ATK-3
+**Remaining**: ATK-2 (NLP detection), ATK-4 (UI)
+
+| ID | Task | Description | Status |
+|----|------|-------------|--------|
+| ATK-1 | Wire into tensions.jsonl | Enhance `get_tensions()` with attack analysis, output to `tensions.jsonl` | ✓ DONE |
+| ATK-2 | Claim extraction detection | Add attack patterns to claim extraction (NLP) | PENDING |
+| ATK-3 | Shift classification | Rule-based heuristics for classifying contrast shifts | ✓ DONE |
+| ATK-4 | Review UI | Streamlit page for attack review | PENDING |
+
+**Implementation Summary (2026-02-11)**:
+
+1. **New module**: `src/services/argument_attack.py` (~600 lines)
+   - `AttackType` enum (8 types: CONFOUNDER, BOUNDARY_CONDITION, etc.)
+   - `ContrastShiftType` enum (6 types: PRESERVING, POPULATION_SHIFT, etc.)
+   - `ArgumentAttack` dataclass with full contrast class analysis
+   - `ShiftClassifier` for text-based heuristics (fallback)
+   - `StructuredAttackDetector` for metadata-based detection (no NLP needed)
+
+2. **Structured detection** (per user insight: "many attacks fall into categories easy to identify without NLP"):
+   - `detect_population_mismatch()` — PopulationContext comparison
+   - `detect_baseline_shift()` — Baseline characterization differences
+   - `detect_contrast_condition_mismatch()` — Different comparison conditions
+   - `detect_dosage_mismatch()` — EnablingConditions.dosage_satisfies
+   - `detect_measurement_mismatch()` — Outcome tag differences
+   - `detect_theory_conflict()` — Different theoretical frameworks
+
+3. **Tension integration**: `extraction_to_web.get_tensions()` now calls `enhance_tension_with_attack_analysis()` when available
+
+4. **Tests**: 24 tests in `tests/test_argument_attack.py` — all passing
+
+**Key insight**: Many apparent contradictions are contrast shifts, not true refutations. This system distinguishes them.
 
 ---
 
@@ -816,6 +854,36 @@ Funnel Metrics Dashboard
 | DISC-7 | Build funnel metrics API endpoints | 3h | ☐ TODO | DISC-1 through DISC-6 |
 | DISC-8 | Build funnel dashboard (Streamlit) | 4h | ☐ TODO | DISC-7 |
 | DISC-9 | Add alerts for low success rates | 2h | ☐ TODO | DISC-7 |
+| DISC-10 | Generate 30-40 CNFA benchmark questions | 4h | ☐ DEFERRED | Populated corpus |
+
+### DISC-10: CNFA Benchmark Questions
+
+**Added**: 2026-02-11
+**Status**: DEFERRED — Waiting for populated PDF corpus
+**Dependency**: Web of Belief must have sufficient ingested papers (target: 50+ papers)
+
+**Purpose**: Generate 30-40 research questions grounded in actual CNfA literature to:
+1. Benchmark query engine accuracy against known answers
+2. Seed Streamlit UI with realistic user questions
+3. Drive VOI-based gap identification with validated queries
+4. Test reasoning system on our own corpus (not external RAG tools)
+
+**Question Categories** (proposed):
+| Category | Count | Example |
+|----------|-------|---------|
+| Mechanism | 8 | "What physiological mechanisms explain stress reduction from nature views?" |
+| Effect size | 8 | "How large is the effect of indoor plants on workplace productivity?" |
+| Boundary/scope | 6 | "Does biophilic design work differently for children vs adults?" |
+| Controversy/gap | 6 | "What methodological concerns exist in ART research?" |
+| Design implication | 6 | "What evidence supports specific plant densities for offices?" |
+| Theory comparison | 4 | "How do ART and SRT predictions differ for urban parks?" |
+
+**Output Format**: `data/cnfa_benchmark_questions.yaml` with:
+- Question text, category, related theories, difficulty level
+- Expected answer type (quantitative, qualitative, list)
+- Search terms for VOI integration
+
+**API Note**: External tools (Elicit, Consensus, Scite, Semantic Scholar) have APIs available but we intentionally defer to build internal reasoning capability first.
 
 ### Key Metrics to Track
 
