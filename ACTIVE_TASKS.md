@@ -40,7 +40,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Lane | Description | Terminal | Status | Dependencies |
 |------|-------------|----------|--------|--------------|
-| MVP-0 | Contracts & Schemas | T2 | READY | None |
+| MVP-0 | Contracts & Schemas | T2 | ✓ COMPLETE | None |
 | MVP-1 | Persistent Web State | T1 | ✓ COMPLETE | None |
 | MVP-GUI | Streamlit Scaffold | T3 | READY | None |
 
@@ -49,14 +49,14 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 | Lane | Description | Terminal | Status | Dependencies |
 |------|-------------|----------|--------|--------------|
 | MVP-2 | Batch Processing | T1 | ✓ COMPLETE | MVP-1 ✓ |
-| MVP-3 | Query Engine | T2 | READY | MVP-0, MVP-1 ✓ |
+| MVP-3 | Query Engine | T2 | ✓ COMPLETE | MVP-0 ✓, MVP-1 ✓ |
 
 ### Phase C: Final Integration
 
 | Lane | Description | Terminal | Status | Dependencies |
 |------|-------------|----------|--------|--------------|
-| MVP-GUI | Wire Backends | T3 | BLOCKED | MVP-1, MVP-3 |
-| MVP-5 | Polish & Demo | T3 | BLOCKED | All lanes |
+| MVP-GUI | Wire Backends | T3 | READY | MVP-1 ✓, MVP-3 ✓ |
+| MVP-5 | Polish & Demo | T3 | BLOCKED | MVP-GUI |
 
 ---
 
@@ -92,6 +92,8 @@ All tasks completed. See TASKS.md for details.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| MVP-0 | Contracts & Schemas | Terminal-2 | — | 3 schemas + docs/MVP_CONTRACTS.md |
+| MVP-3 | Query Engine | Terminal-2 | — | query_engine.py (711 lines), CLI, 44 tests, panel review |
 | ATK-1 | Wire ArgumentAttack into tensions.jsonl | Terminal-1 | 00:45 | Enhanced get_tensions(), structured evidence in output |
 | ATK-3 | Shift classification heuristics | Terminal-1 | 00:45 | StructuredAttackDetector (6 methods), ShiftClassifier (text fallback), 24 tests pass |
 | DIAGRAM | Architecture diagram generation | Terminal-1 | 00:30 | docs/diagrams/architecture_layers_2026-02-11.png |
