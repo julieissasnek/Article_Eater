@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.local/schemas/integration.edge_justification.v1",
+  "title": "Edge Justification Schema",
+  "description": "Links a BN edge to its epistemic justification from the Web of Belief",
+  "version": "1.0.0",
+
+  "definitions": {
+    "BeliefSummary": {
+      "type": "object",
+      "required": ["belief_id", "credence", "content_summary"],
+      "properties": {
+        "belief_id": {
+          "type": "string",
+          "description": "Unique identifier for the belief"
+        },
+        "credence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Belief credence (0-1)"
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Uncertainty in the credence"
+        },
+        "content_summary": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Brief summary of belief content"
+        },
+        "paper_id": {
+          "type": "string",
+          "description": "Source paper identifier"
+        },
+        "paper_citation": {
+          "type": "string",
+          "description": "Human-readable citation (e.g., 'Ulrich 1984')"
+        },
+        "epistemic_level": {
+          "type": "string",
+          "enum": ["THEORETICAL", "EMPIRICAL", "OBSERVATIONAL", "METHODOLOGICAL"],
+          "description": "Epistemic level of the belief"
+        },
+        "theory_tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Associated theories (e.g., 'ART', 'SRT')"
+        }
+      }
+    },
+
+    "ConflictSummary": {
+      "type": "object",
+      "required": ["belief_id", "credence", "conflict_type"],
+      "properties": {
+        "belief_id": {
+          "type": "string"
+        },
+        "credence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "conflict_type": {
+          "type": "string",
+          "enum": ["CONTRADICTS", "WEAKENS", "BOUNDARY_VIOLATION", "DIRECTION_CONFLICT"],
+          "description": "Type of conflict with the edge"
+        },
+        "content_summary": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "conflict_detail": {
+          "type": "string",
+          "description": "Explanation of the conflict"
+        }
+      }
+    },
+
+    "ProvenanceSummary": {
+      "type": "object",
+      "properties": {
+        "n_papers": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of distinct papers supporting this edge"
+        },
+        "primary_papers": {
+          "type": "array",
+          "items": {"type": "string"},
+          "maxItems": 5,
+          "description": "Top papers by relevance"
+        },
+        "date_range": {
+          "type": "object",
+          "properties": {
+            "earliest": {"type": "integer"},
+            "latest": {"type": "integer"}
+          }
+        },
+        "study_types": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Types of studies (experimental, observational, meta-analysis)"
+        }
+      }
+    },
+
+    "EdgeJustification": {
+      "type": "object",
+      "required": ["edge_id", "source_node", "target_node", "aggregate_credence"],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "integration.edge_justification.v1"
+        },
+        "edge_id": {
+          "type": "string",
+          "description": "BN edge identifier (e.g., 'daylight_stress')"
+        },
+        "source_node": {
+          "type": "string",
+          "description": "BN source node ID"
+        },
+        "target_node": {
+          "type": "string",
+          "description": "BN target node ID"
+        },
+        "aggregate_credence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weighted credence from supporting beliefs"
+        },
+        "aggregate_uncertainty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Uncertainty in the aggregate"
+        },
+        "justification_status": {
+          "type": "string",
+          "enum": ["STRONG", "MODERATE", "WEAK", "UNJUSTIFIED", "CONTESTED"],
+          "description": "Overall justification strength"
+        },
+        "supporting_beliefs": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/BeliefSummary"},
+          "description": "Beliefs that support this edge"
+        },
+        "conflicting_beliefs": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/ConflictSummary"},
+          "description": "Beliefs that conflict with this edge"
+        },
+        "net_support": {
+          "type": "number",
+          "description": "Net support score (can be negative if conflicts dominate)"
+        },
+        "key_theories": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Theories that bear on this edge"
+        },
+        "causal_direction_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence that causal direction is correct"
+        },
+        "provenance": {
+          "$ref": "#/definitions/ProvenanceSummary"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "$ref": "#/definitions/EdgeJustification"
+}

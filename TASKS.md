@@ -24,32 +24,81 @@ This prevents duplicate work across parallel terminals.
 
 ## Current Priority Order
 
-### ⭐ MVP INTEGRATION (TOP PRIORITY) — Added 2026-02-11
+### ✓ MVP INTEGRATION — COMPLETE (2026-02-11)
 
 **Goal**: Working demo that answers "What affects attention in offices?" with confidence and sources.
 
-**Phase A (PARALLEL — 3 terminals can start now):**
-| Lane | Terminal | Description | Status |
-|------|----------|-------------|--------|
-| MVP-0 | T2 | Contracts & Schemas | READY |
-| MVP-1 | T1 | Persistent Web State | READY |
-| MVP-GUI | T3 | Streamlit Scaffold | READY |
+| Lane | Description | Status | Panel |
+|------|-------------|--------|-------|
+| MVP-0 | Contracts & Schemas | ✓ COMPLETE | PANEL_MVP0_CONTRACTS |
+| MVP-1 | Persistent Web State | ✓ COMPLETE | PANEL_MVP1_DECISIONS |
+| MVP-2 | Batch Processing Script | ✓ COMPLETE | PANEL_MVP2_DECISIONS |
+| MVP-3 | Query Engine + CLI | ✓ COMPLETE | PANEL_MVP3_QUERY_ENGINE |
+| MVP-GUI | Streamlit UI | ✓ COMPLETE | PANEL_MVP_GUI_DECISIONS |
+| MVP-5 | Demo & Docs | ✓ COMPLETE | (documentation only) |
 
-**Phase B (after MVP-1 complete):**
-| Lane | Terminal | Description | Status |
-|------|----------|-------------|--------|
-| MVP-2 | T1 | Batch Processing Script | BLOCKED |
-| MVP-3 | T2 | Query Engine + CLI | BLOCKED |
+---
 
-**Phase C (final integration):**
-| Lane | Terminal | Description | Status |
-|------|----------|-------------|--------|
-| MVP-GUI | T3 | Wire Backends | BLOCKED |
-| MVP-5 | T3 | Polish & Demo | BLOCKED |
+### ⭐ INTEGRATION SPRINTS (TOP PRIORITY) — Added 2026-02-11
 
-**See**: `PARALLEL_WORK.md` for detailed lane specs and file ownership.
+**Goal**: Full 12-layer integration between Epistemic Web and Bayesian Network.
+
+**Architecture Doc**: `docs/INTEGRATION_ARCHITECTURE_WEB_BN_2026-02-11.md`
+**Implementation Plan**: `docs/IMPLEMENTATION_PLAN_INTEGRATION_2026-02-11.md`
+**Decisions Log**: `docs/DECISIONS_INTEGRATION_SPRINTS_2026-02-11.md`
+
+**Sprint Schedule:**
+
+| Sprint | Description | Depends On | Status |
+|--------|-------------|------------|--------|
+| INT-1 | Edge Justification Foundation | - | IN_PROGRESS |
+| INT-2 | Gap Prediction Engine | INT-1 | PENDING |
+| INT-3 | BN Frontend — Evidence Panel | INT-1 | PENDING |
+| INT-4 | Epistemic Web Component | INT-1 | PENDING |
+| INT-5 | Cross-Layer Query API | INT-1 | PENDING |
+| INT-6 | User Modes & Testing | INT-2,3,4,5 | PENDING |
+
+**Sprint Details:**
+
+#### INT-1: Edge Justification Foundation
+- [ ] Create `integration.edge_justification.v1.schema.json`
+- [ ] Implement `EdgeJustificationService`
+- [ ] Add `/api/v1/integration/edge/{id}/justification` endpoint
+- [ ] Write tests
+
+#### INT-2: Gap Prediction Engine
+- [ ] Implement `GapPredictor` class
+- [ ] Mediation, mechanism, boundary, direction gap detection
+- [ ] VOI calculation for prioritization
+- [ ] Write tests
+
+#### INT-3: BN Frontend — Evidence Panel (BN_graphical repo)
+- [ ] Modify `CausalGraphView.tsx` — edge opacity from credence
+- [ ] Create `EvidencePanel.tsx`
+- [ ] Add edge click interaction
+- [ ] Write component tests
+
+#### INT-4: Epistemic Web Component (BN_graphical repo)
+- [ ] Create `WebView.tsx` with React Flow
+- [ ] Node shapes by epistemic level
+- [ ] Clustering by theory
+- [ ] Filter controls
+- [ ] Write component tests
+
+#### INT-5: Cross-Layer Query API
+- [ ] Implement `CrossLayerQueryService`
+- [ ] Provenance, theory, community, causal, gap endpoints
+- [ ] Write tests
+
+#### INT-6: User Modes & Integration Testing
+- [ ] Mode switcher UI (Knowledge/Prediction/Expert)
+- [ ] End-to-end integration tests
+- [ ] Documentation updates
+
+**Parallelization Note**: After INT-1 completes, INT-2/3/4/5 can run in parallel.
+
+**See**: `docs/PARALLEL_WORK.md` for file ownership.
 **See**: `docs/SYSTEM_INVENTORY_2026-02-11.md` for full repo documentation.
-**See**: `docs/PANEL_P-INT_MVP_INTEGRATION_2026-02-11.md` for panel recommendations.
 
 ---
 

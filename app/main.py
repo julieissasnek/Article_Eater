@@ -963,6 +963,9 @@ app.include_router(lifecycle_router, prefix='/api/v1', tags=['lifecycle'])
 # Entrenchment monitoring (ENT-4/ENT-5, 2026-02-09)
 from app.routes.entrenchment import router as entrenchment_router
 app.include_router(entrenchment_router, prefix='/api/v1', tags=['entrenchment'])
+# Web-BN Integration (INT-1, 2026-02-11)
+from app.routes.integration import router as integration_router
+app.include_router(integration_router, tags=['integration'])
 
 # v20.0.1: enable interactions router
 app.include_router(interactions.router)
