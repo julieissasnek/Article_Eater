@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Wednesday, February 11, 2026 (Added DISC-11, DISC-12: Batch Ingest + Sketch→Refine)*
+*Last updated: Wednesday, February 11, 2026 (Added TBL-7: Model Comparison Benchmark)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -1219,6 +1219,180 @@ For DISC-1 schema design, consult:
 | TBL-3 | Add table extraction code (AI/API primary, pdfplumber fallback) | ✓ DONE |
 | TBL-4 | Integrate with AE claim extraction | ✓ DONE |
 | TBL-5 | Add table review UI | ✓ DONE |
+| TBL-6 | Tiered model extraction (Haiku→Sonnet for complex fields) | ☐ TODO |
+| TBL-7 | Model comparison benchmark (multi-provider + Codex) | ☐ TODO |
+
+### TBL-6: Tiered Model Table Extraction
+
+**Added**: 2026-02-11
+**Status**: TODO
+**Priority**: P2 (quality improvement)
+**Pattern**: Mirrors 3.0.2-E (Haiku for parsing, Sonnet for synthesis)
+
+**Purpose**: Use cheaper/faster models for simple fields, smarter models for complex interpretation. Optimizes cost while improving quality on nuanced extractions.
+
+**Two-Pass Architecture**:
+```
+Pass 1: STRUCTURE (Haiku - $0.005/table)
+├── Detect table boundaries and headers
+├── Extract simple fields: citation, N, year, country, study type
+├── Flag complex cells needing interpretation
+└── Output: Partially filled table + complexity flags
+
+Pass 2: INTERPRET (Sonnet - only flagged cells)
+├── Effect size interpretation: magnitude + clinical significance
+├── Confidence interval: precision assessment
+├── Quality assessment: structured RoB domains
+├── Methodology notes: standardized categories
+└── Output: Complete table with nuanced interpretations
+```
+
+**Field Classification**:
+| Complexity | Fields | Model | Cost |
+|------------|--------|-------|------|
+| Simple | Citation, N, Year, Country | Haiku | $0.001 |
+| Semi-structured | Study design, Setting, Population | Haiku | $0.002 |
+| Complex | Effect size meaning, CI interpretation, Quality judgment | Sonnet | $0.01 |
+| Ambiguous | Conflicting results, Non-standard stats | Opus | $0.05 |
+
+**Implementation**:
+```python
+# src/services/table_extractor.py - extend with:
+
+class TieredTableExtractor(TableExtractorBase):
+    """Two-pass extraction: Haiku for structure, Sonnet for interpretation."""
+
+    def __init__(
+        self,
+        api_client,
+        structure_model: str = "claude-3-haiku-20240307",
+        interpret_model: str = "claude-sonnet-4-20250514"
+    ):
+        self.structure_extractor = AITableExtractor(api_client, structure_model)
+        self.interpret_extractor = AITableExtractor(api_client, interpret_model)
+```
+
+**When to Use**:
+- ✅ Results tables (effect sizes, CIs, p-values)
+- ✅ Quality assessment tables (RoB judgments)
+- ✅ Complex methodology tables
+- ❌ Demographics tables (mostly numbers)
+- ❌ Simple characteristics tables
+
+**Cost Projection**:
+| Table Type | Haiku Only | Tiered | Quality Gain |
+|------------|-----------|--------|--------------|
+| Demographics | $0.005 | $0.005 | None |
+| Study characteristics | $0.005 | $0.006 | Low |
+| Results | $0.005 | $0.015 | High |
+| Quality assessment | $0.005 | $0.020 | High |
+
+### TBL-7: Model Comparison Benchmark (Multi-Provider + Codex)
+
+**Added**: 2026-02-11
+**Status**: TODO
+**Priority**: P1 (must complete before TBL-6 implementation)
+**Dependency**: TBL-6 should wait for TBL-7 validation results
+
+**Purpose**: Establish gold standard benchmark for table extraction quality across AI providers. Determine whether cheaper models produce equivalent results, identify divergence patterns, and develop optimized prompts.
+
+**Core Question**: Do Haiku/GPT-4-mini/Gemini Flash produce extraction quality comparable to Sonnet/Opus, or do we need the tiered approach from TBL-6?
+
+**AI Providers to Test**:
+| Provider | Models | Cost Tier | Notes |
+|----------|--------|-----------|-------|
+| **Anthropic** | claude-3-haiku, claude-sonnet-4, claude-opus-4 | Low/Med/High | Primary |
+| **OpenAI** | gpt-4o-mini, gpt-4o, gpt-4-turbo | Low/Med/High | Comparison |
+| **Google** | gemini-1.5-flash, gemini-1.5-pro | Low/High | Comparison |
+| **Codex** | codex-mini, codex-standard | Med | When user running via Codex |
+
+**Codex Support**: The benchmark must detect when running inside Codex and allow the current Codex model to be tested alongside API-based models. This enables real-time comparison without API costs.
+
+**Gold Standard Test Set**:
+1. **Curate 20 representative tables** from diverse papers:
+   - 5 demographics tables (simple)
+   - 5 study characteristics tables (semi-structured)
+   - 5 results tables with effect sizes (complex)
+   - 5 quality assessment tables (complex)
+
+2. **Create human-verified ground truth** for each table:
+   - Correct field values
+   - Edge case annotations
+   - Ambiguity notes
+
+3. **Store in**: `gold_standard/table_extraction/v1.0/`
+
+**Evaluation Metrics**:
+| Metric | Weight | Description |
+|--------|--------|-------------|
+| **Field-level accuracy** | 40% | Exact match for simple fields |
+| **Semantic accuracy** | 30% | Meaning-equivalent for interpreted fields |
+| **Structural accuracy** | 20% | Row/column alignment |
+| **Edge case handling** | 10% | Missing data, unusual formats |
+
+**Benchmark Script**:
+```python
+# scripts/table_extraction_benchmark.py
+
+class TableExtractionBenchmark:
+    """Multi-provider table extraction benchmark."""
+
+    def __init__(self, gold_standard_dir: str):
+        self.gold_standard = self._load_gold_standard(gold_standard_dir)
+        self.results = {}
+
+    def detect_codex_environment(self) -> bool:
+        """Detect if running inside Codex."""
+        return os.environ.get("CODEX_MODEL") is not None
+
+    def register_providers(self):
+        """Register available AI providers."""
+        providers = {
+            "anthropic": ["haiku", "sonnet", "opus"],
+            "openai": ["gpt-4o-mini", "gpt-4o"],
+            "google": ["gemini-1.5-flash", "gemini-1.5-pro"],
+        }
+        if self.detect_codex_environment():
+            providers["codex"] = ["current"]
+        return providers
+
+    def run_benchmark(self, provider: str, model: str, table: Table) -> ExtractionResult:
+        """Extract table with specified provider/model."""
+        pass
+
+    def score_extraction(self, result: ExtractionResult, ground_truth: Table) -> Score:
+        """Score extraction against ground truth."""
+        pass
+
+    def generate_report(self) -> BenchmarkReport:
+        """Generate comparison report across all providers."""
+        pass
+```
+
+**Expected Outputs**:
+1. **Accuracy matrix** — Provider × Table Type × Model Tier
+2. **Divergence report** — Where models disagree and why
+3. **Cost-quality tradeoff** — Pareto frontier visualization
+4. **Prompt optimization notes** — What works better for which model
+5. **Recommendation** — Whether TBL-6 tiered approach is justified
+
+**Implementation Steps**:
+1. Create gold standard table corpus (20 tables)
+2. Build benchmark harness with provider abstraction
+3. Add Codex detection and passthrough
+4. Run initial benchmark across all providers
+5. Analyze divergence patterns
+6. Document prompt engineering findings
+7. Generate cost-quality recommendation for TBL-6
+
+**Success Criteria**:
+- [ ] 20 gold standard tables with ground truth
+- [ ] Benchmark runs on all listed providers
+- [ ] Codex passthrough works when in Codex environment
+- [ ] Report identifies model tiers with statistically significant quality differences
+- [ ] Clear recommendation for TBL-6 implementation
+
+---
 
 **TBL-3 Completion (2026-02-08)**:
 - Created `src/services/table_extractor.py` (~750 lines)
