@@ -324,11 +324,11 @@ Say: "Start MVP-GUI scaffolding with mock data. This is Terminal 3 of the UI Tra
 
 | Lane | Terminal | Session ID | Claimed At | Status | Notes |
 |------|----------|------------|------------|--------|-------|
-| MVP-0 | T2 | TERMINAL-2 | 2026-02-11 | IN PROGRESS | Contracts & Schemas |
+| MVP-0 | T2 | TERMINAL-2 | 2026-02-11 | ✓ COMPLETE | 3 schemas + docs |
 | MVP-1 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | 10 tests pass |
 | MVP-2 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | 14 tests pass |
-| MVP-3 | T2 | UNCLAIMED | — | BLOCKED | Needs MVP-0 + MVP-1 |
-| MVP-GUI | T3 | UNCLAIMED | — | READY | UI scaffold - T3 starts here |
+| MVP-3 | T2 | TERMINAL-2 | 2026-02-11 | IN PROGRESS | Query Engine |
+| MVP-GUI | T1 | MAIN-TERMINAL | 2026-02-11 | IN PROGRESS | UI scaffold |
 | MVP-5 | T3 | UNCLAIMED | — | BLOCKED | Needs all lanes |
 
 ---
