@@ -13,11 +13,12 @@ Per panel recommendations (P-VIS, P-LAYER):
 - Shneiderman: Overview first, details on demand
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -276,7 +277,6 @@ class GapReportResponse(BaseModel):
 
 @router.get(
     "/gaps",
-    response_model=GapReportResponse,
     summary="Find all knowledge gaps",
     description="""
     Analyzes the epistemic web to predict knowledge gaps.
@@ -292,7 +292,8 @@ class GapReportResponse(BaseModel):
 )
 async def find_gaps(
     max_gaps: int = Query(50, description="Maximum number of gaps to return"),
-    gap_type: Optional[str] = Query(None, description="Filter by gap type")
+    gap_type: Optional[str] = Query(None, description="Filter by gap type"),
+    pretty: bool = Query(True, description="Pretty-print JSON output")
 ):
     """Find knowledge gaps in the epistemic web."""
     try:
@@ -307,7 +308,14 @@ async def find_gaps(
             report.n_gaps = len(report.gaps)
             report.n_high_priority = sum(1 for g in report.gaps if g.priority.value == 'high')
 
-        return report.to_dict()
+        data = report.to_dict()
+
+        if pretty:
+            return Response(
+                content=json.dumps(data, indent=2, ensure_ascii=False),
+                media_type="application/json"
+            )
+        return data
 
     except Exception as e:
         logger.error(f"Error finding gaps: {e}")

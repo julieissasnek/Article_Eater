@@ -61,6 +61,7 @@ class PredictedGap:
     - Affected BN edges/beliefs
     - VOI score for prioritization
     - Suggested search queries
+    - Human-readable explanation
     """
     gap_id: str
     gap_type: GapType
@@ -77,6 +78,9 @@ class PredictedGap:
     suggested_search: str = ""
     resolution_approach: str = ""
 
+    # Human-readable explanation
+    explanation: str = ""
+
     # Metadata
     confidence: float = 0.7
     generated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
@@ -86,6 +90,7 @@ class PredictedGap:
             'gap_id': self.gap_id,
             'gap_type': self.gap_type.value,
             'description': self.description,
+            'explanation': self.explanation,
             'priority': self.priority.value,
             'voi_score': self.voi_score,
             'affected_edge': self.affected_edge,
@@ -382,10 +387,27 @@ class GapPredictor:
                         if y not in a_targets:
                             # Mediation gap found
                             voi = self._compute_mediation_voi(a, x, y)
+                            a_name = a.split('.')[-1]
+                            x_name = x.split('.')[-1]
+                            y_name = y.split('.')[-1]
+
+                            # Human-readable explanation
+                            explanation = (
+                                f"We know that '{a_name}' affects '{x_name}', and '{x_name}' affects '{y_name}'. "
+                                f"This suggests '{a_name}' might also directly influence '{y_name}', but we have no "
+                                f"evidence for this direct relationship. This is important because: (1) the effect "
+                                f"might be fully mediated through {x_name} with no direct path, or (2) there may be "
+                                f"an independent direct effect we're missing. Understanding whether the effect is "
+                                f"direct, mediated, or both helps design better interventions. "
+                                f"To resolve: search for studies that test {a_name}'s effect on {y_name} while "
+                                f"controlling for {x_name}."
+                            )
+
                             gaps.append(PredictedGap(
                                 gap_id=self._next_gap_id(),
                                 gap_type=GapType.MEDIATION,
                                 description=f"Path {a}→{x}→{y} exists, but direct {a}→{y} is missing",
+                                explanation=explanation,
                                 priority=GapPriority.HIGH if voi > 0.7 else GapPriority.MEDIUM,
                                 voi_score=voi,
                                 implied_by=[f"{a}→{x}", f"{x}→{y}"],
@@ -451,10 +473,24 @@ class GapPredictor:
                 env_name = env_id.split('.')[-1]
                 out_name = out_id.split('.')[-1]
 
+                # Human-readable explanation
+                explanation = (
+                    f"We have {len(empirical)} empirical finding(s) showing that '{env_name}' affects "
+                    f"'{out_name}', but we lack a theoretical explanation of WHY or HOW this happens. "
+                    f"Empirical findings tell us THAT something works; theory tells us WHY. Without "
+                    f"understanding the mechanism, we cannot predict when the effect will hold, design "
+                    f"effective interventions, or know if the finding will generalize. For example, if "
+                    f"plants reduce stress, is it because of visual complexity, air quality, biophilic "
+                    f"association, or color? Each mechanism suggests different design implications. "
+                    f"To resolve: look for theoretical frameworks (e.g., ART, SRT, Biophilia) that explain "
+                    f"this relationship."
+                )
+
                 gaps.append(PredictedGap(
                     gap_id=self._next_gap_id(),
                     gap_type=GapType.MECHANISM,
                     description=f"The {env_name}→{out_name} relationship has empirical support but no mechanistic explanation",
+                    explanation=explanation,
                     priority=GapPriority.MEDIUM,
                     voi_score=voi,
                     affected_beliefs=[b.belief_id for b in empirical],
@@ -545,10 +581,23 @@ class GapPredictor:
                 missing_list = list(missing_settings)[:3]
                 voi = self._compute_boundary_voi(len(covered_settings), len(missing_settings))
 
+                # Human-readable explanation
+                covered_list = list(covered_settings)[:3]
+                explanation = (
+                    f"We have evidence that '{env_name}' affects '{out_name}' in some settings "
+                    f"(e.g., {', '.join(covered_list)}), but no studies have examined this relationship "
+                    f"in {', '.join(missing_list)} settings. This matters because effects found in one "
+                    f"context may not generalize to others. For example, the impact of {env_name} on "
+                    f"{out_name} might differ between a hospital and an office due to different "
+                    f"occupant expectations, activities, and environmental baselines. "
+                    f"To close this gap, look for studies conducted specifically in {missing_list[0]} environments."
+                )
+
                 gaps.append(PredictedGap(
                     gap_id=self._next_gap_id(),
                     gap_type=GapType.BOUNDARY,
                     description=f"{env_name}→{out_name}: No evidence for settings: {', '.join(missing_list)}",
+                    explanation=explanation,
                     priority=GapPriority.LOW if voi < 0.5 else GapPriority.MEDIUM,
                     voi_score=voi,
                     affected_beliefs=[b.belief_id for b in beliefs],
@@ -596,10 +645,23 @@ class GapPredictor:
                 a_name = a.split('.')[-1]
                 b_name = b.split('.')[-1]
 
+                # Human-readable explanation
+                explanation = (
+                    f"We have evidence suggesting both that '{a_name}' affects '{b_name}' AND that "
+                    f"'{b_name}' affects '{a_name}'. This creates causal ambiguity. The true relationship "
+                    f"could be: (1) A causes B (reverse findings are spurious), (2) B causes A (forward "
+                    f"findings are spurious), (3) Bidirectional causation (feedback loop), or (4) Common "
+                    f"cause (both are effects of an unmeasured third variable). Resolving direction is "
+                    f"critical for intervention design—you can only manipulate causes, not effects. "
+                    f"To resolve: look for longitudinal studies (temporal precedence), experimental "
+                    f"manipulations, or natural experiments that can establish causal direction."
+                )
+
                 gaps.append(PredictedGap(
                     gap_id=self._next_gap_id(),
                     gap_type=GapType.DIRECTION,
                     description=f"Causal direction unclear: Both {a_name}→{b_name} and {b_name}→{a_name} have support",
+                    explanation=explanation,
                     priority=GapPriority.HIGH,
                     voi_score=0.8,
                     suggested_search=f"{a_name} {b_name} causal direction temporal",
@@ -642,10 +704,30 @@ class GapPredictor:
                 env_name = env_id.split('.')[-1]
                 out_name = out_id.split('.')[-1]
 
+                # Get theory names if available
+                theory_names = []
+                for b in theoretical:
+                    if hasattr(b, 'theory_id') and b.theory_id:
+                        theory_names.append(b.theory_id.split('.')[-1])
+
+                theory_str = ', '.join(set(theory_names)) if theory_names else "theoretical frameworks"
+
+                # Human-readable explanation
+                explanation = (
+                    f"According to {theory_str}, '{env_name}' should affect '{out_name}'. However, "
+                    f"we have no empirical studies that have actually tested this prediction. "
+                    f"Theories without empirical validation remain speculative—they may be correct, but "
+                    f"we cannot have confidence in applying them to design decisions. This gap represents "
+                    f"a testable hypothesis: the theory makes a prediction that hasn't been verified. "
+                    f"To resolve: search for controlled experiments, field studies, or systematic "
+                    f"observations that measure whether {env_name} actually affects {out_name} as predicted."
+                )
+
                 gaps.append(PredictedGap(
                     gap_id=self._next_gap_id(),
                     gap_type=GapType.VALIDATION,
                     description=f"Theory predicts {env_name}→{out_name}, but no empirical validation found",
+                    explanation=explanation,
                     priority=GapPriority.MEDIUM,
                     voi_score=0.65,
                     affected_beliefs=[b.belief_id for b in theoretical],
@@ -675,10 +757,21 @@ class GapPredictor:
 
             for j in justifications:
                 if j.justification_status.value == 'unjustified':
+                    # Human-readable explanation
+                    explanation = (
+                        f"The Bayesian Network assumes that '{j.source_node}' causally influences "
+                        f"'{j.target_node}', but we have found no scientific evidence supporting this "
+                        f"relationship. This is a HIGH priority gap because any predictions involving "
+                        f"this edge are currently based on assumption rather than evidence. "
+                        f"To resolve this gap, search for peer-reviewed studies that examine how "
+                        f"{j.source_node} affects {j.target_node} in built environments."
+                    )
+
                     gaps.append(PredictedGap(
                         gap_id=self._next_gap_id(),
                         gap_type=GapType.UNJUSTIFIED_EDGE,
                         description=f"BN edge {j.source_node}→{j.target_node} has no supporting beliefs",
+                        explanation=explanation,
                         priority=GapPriority.HIGH,
                         voi_score=0.85,
                         affected_edge=j.edge_id,
