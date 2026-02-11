@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Wednesday, February 11, 2026 (Added DISC-10: CNFA Benchmark Questions)*
+*Last updated: Wednesday, February 11, 2026 (Added DISC-11, DISC-12: Batch Ingest + Sketch→Refine)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -855,6 +855,148 @@ Funnel Metrics Dashboard
 | DISC-8 | Build funnel dashboard (Streamlit) | 4h | ☐ TODO | DISC-7 |
 | DISC-9 | Add alerts for low success rates | 2h | ☐ TODO | DISC-7 |
 | DISC-10 | Generate 30-40 CNFA benchmark questions | 4h | ☐ DEFERRED | Populated corpus |
+| DISC-11 | Batch PDF ingestion wrapper | 3h | ☐ TODO | — |
+| DISC-12 | Abstract-based web bootstrapping (sketch → refine) | 4h | ☐ TODO | DISC-11 |
+
+### DISC-11: Batch PDF Ingestion Wrapper
+
+**Added**: 2026-02-11
+**Status**: TODO
+**Priority**: P1 (enables corpus building)
+
+**Purpose**: Enable "point at a PDF folder and go" ingestion. Currently the pipeline expects a structured input directory with `paper.json` metadata. This wrapper automates the setup.
+
+**Proposed Implementation**:
+```python
+# scripts/batch_ingest.py
+
+def batch_ingest(
+    pdf_dir: Path,
+    output_dir: Path,
+    bibtex_file: Optional[Path] = None,
+    use_semantic_scholar: bool = True,
+    parallel: int = 4
+):
+    """
+    Batch ingest all PDFs in a directory.
+
+    1. For each PDF:
+       a. Try to match with BibTeX entry (by filename, DOI, title)
+       b. If no BibTeX, query Semantic Scholar by title (from PDF first page)
+       c. If no metadata found, extract from PDF header
+       d. Create paper.json
+       e. Call run_pipeline()
+       f. Track success/failure (DISC-5 integration)
+
+    2. Generate ingestion report:
+       - Success/failure counts
+       - Papers needing manual metadata
+       - Duplicate detection
+    """
+```
+
+**Components to Wire**:
+- `app/pdf_ingest.py:extract_pdf_text()` — Already exists
+- `src/services/bibtex_ingestion.py` — Already exists (BIB-1-7)
+- `app/tasks/pipeline.py:run_pipeline()` — Already exists
+- Semantic Scholar API — Free, 100 RPS with key
+
+**CLI Interface**:
+```bash
+./bin/batch_ingest --pdf-dir ./corpus/pdfs --bibtex ./corpus/references.bib --out ./output
+```
+
+---
+
+### DISC-12: Abstract-Based Web Bootstrapping (Sketch → Refine)
+
+**Added**: 2026-02-11
+**Status**: TODO
+**Priority**: P1 (enables rapid prototyping)
+**Philosophy**: Foundherentist — beliefs are revisable as better evidence arrives
+
+**Purpose**: Bootstrap the Web of Belief quickly using abstracts and metadata, then incrementally refine with gold-standard full-text extraction. This creates a "sketch" of the knowledge graph that improves over time.
+
+**Strategy**:
+```
+Phase 1: SKETCH (fast, imperfect)
+├── Input: Abstracts + BibTeX metadata
+├── Method: LLM extraction with relaxed confidence
+├── Output: Candidate beliefs with source_depth=ABSTRACT
+├── Credence: Lower (0.4-0.6), higher uncertainty (0.3)
+└── Goal: Coverage over precision
+
+Phase 2: REFINE (incremental, gold-standard)
+├── Input: Full PDF text
+├── Method: Full extraction pipeline
+├── Output: Gold-standard beliefs with source_depth=FULL_TEXT
+├── Action: Replace/merge with sketch beliefs
+└── Goal: Precision over coverage
+```
+
+**Key Design Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| D1: Mark sketch beliefs | `source_depth=ABSTRACT`, `is_sketch=True` | Cartwright: track provenance |
+| D2: Sketch credence | 0.5 ± 0.3 (high uncertainty) | Simon: satisfice early, refine later |
+| D3: Replacement strategy | Merge if consistent, replace if contradictory | Quine: revise at periphery |
+| D4: Preserve sketch history | Keep original as constraint source | Haack: track epistemic journey |
+
+**Implementation**:
+```python
+# src/services/sketch_extractor.py
+
+class SketchExtractor:
+    """Extract candidate beliefs from abstracts using LLM."""
+
+    def extract_from_abstract(
+        self,
+        abstract: str,
+        metadata: PaperMetadata
+    ) -> List[SketchBelief]:
+        """
+        Use LLM to extract candidate beliefs from abstract.
+
+        Prompt focuses on:
+        - Main finding (effect direction, rough magnitude)
+        - Population/setting
+        - Theory referenced (ART, SRT, etc.)
+        - Methodology type
+
+        Returns beliefs marked as sketch with high uncertainty.
+        """
+
+    def refine_with_full_text(
+        self,
+        sketch_beliefs: List[SketchBelief],
+        full_extraction: ExtractionResult
+    ) -> List[Belief]:
+        """
+        Replace/merge sketch beliefs with gold-standard extraction.
+
+        - If gold confirms sketch: increase credence, reduce uncertainty
+        - If gold contradicts sketch: replace with gold
+        - If gold adds new: add alongside sketch
+        - Keep sketch as historical constraint
+        """
+```
+
+**Benefits**:
+1. **Faster time-to-value**: Get a working web in hours, not weeks
+2. **VOI search enabled early**: Identify gaps before full corpus processing
+3. **DISC-10 unblocked**: Can generate benchmark questions against sketch
+4. **Gradual quality improvement**: Each PDF processed improves the web
+5. **Explicit uncertainty**: Users see which beliefs are sketches vs gold
+
+**Metrics**:
+| Metric | Formula | Target |
+|--------|---------|--------|
+| Sketch Coverage | sketched_papers / total_papers | 100% |
+| Refinement Rate | refined_beliefs / sketch_beliefs | Increasing over time |
+| Sketch→Gold Agreement | gold_confirms_sketch / refined_beliefs | > 70% |
+
+---
 
 ### DISC-10: CNFA Benchmark Questions
 
