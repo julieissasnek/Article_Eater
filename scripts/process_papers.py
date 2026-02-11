@@ -103,7 +103,14 @@ class ProcessingConfig:
 
         # Processing options
         config.profile = data.get('profile', 'standard')
-        config.hitl = data.get('hitl', 'auto')
+        # Handle YAML boolean conversion: off -> False, on -> True in YAML
+        hitl_value = data.get('hitl', 'auto')
+        if hitl_value is False:
+            config.hitl = 'off'
+        elif hitl_value is True:
+            config.hitl = 'on'
+        else:
+            config.hitl = str(hitl_value) if hitl_value else 'auto'
         config.limit = data.get('limit')
         config.skip_already_processed = data.get('skip_already_processed', True)
 

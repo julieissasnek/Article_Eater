@@ -599,15 +599,32 @@ def _compute_histogram(values: List[float], bins: int = 10) -> List[Dict[str, An
 
     min_val = min(values)
     max_val = max(values)
-    bin_width = (max_val - min_val) / bins if max_val > min_val else 1
+
+    # Handle case where all values are identical
+    if max_val == min_val:
+        # Put all values in the middle bin
+        middle_bin = bins // 2
+        histogram = []
+        for i in range(bins):
+            histogram.append({
+                "bin": i,
+                "start": round(min_val - 0.5 + i * (1.0 / bins), 3),
+                "end": round(min_val - 0.5 + (i + 1) * (1.0 / bins), 3),
+                "count": len(values) if i == middle_bin else 0
+            })
+        return histogram
+
+    bin_width = (max_val - min_val) / bins
 
     histogram = []
     for i in range(bins):
         bin_start = min_val + i * bin_width
         bin_end = bin_start + bin_width
-        count = sum(1 for v in values if bin_start <= v < bin_end)
-        if i == bins - 1:  # Include max in last bin
-            count += sum(1 for v in values if v == max_val)
+        if i == bins - 1:
+            # Last bin includes max value (use <= instead of <)
+            count = sum(1 for v in values if bin_start <= v <= bin_end)
+        else:
+            count = sum(1 for v in values if bin_start <= v < bin_end)
         histogram.append({
             "bin": i,
             "start": round(bin_start, 3),
@@ -1179,7 +1196,8 @@ async def create_snapshot(description: Optional[str] = None):
     state_json = json.dumps(state, sort_keys=True)
     state_hash = hashlib.sha256(state_json.encode()).hexdigest()[:12]
 
-    snapshot_id = f"snap_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    # Use microseconds for uniqueness when creating multiple snapshots quickly
+    snapshot_id = f"snap_{datetime.now().strftime('%Y%m%d%H%M%S%f')}"
 
     snapshot = {
         "id": snapshot_id,
