@@ -43,6 +43,8 @@ except Exception as e:
 
 # Mock data for demo
 if use_mock:
+    st.warning("⚠️ **Demo Mode**: Using sample data. Process papers to see live statistics.", icon="⚠️")
+
     class MockStats:
         total_papers_processed = 47
         total_beliefs = 312

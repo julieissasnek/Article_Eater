@@ -36,17 +36,18 @@ try:
         domains = ["attention", "stress", "productivity", "creativity", "wellbeing"]
         real_gaps = []
 
-        for domain in domains:
-            response = engine.query(f"what affects {domain}", include_gaps=True)
-            if "gaps" in response and response["gaps"].get("top_gaps"):
-                for gap in response["gaps"]["top_gaps"]:
-                    real_gaps.append({
-                        "domain": domain,
-                        "coverage": 1.0 - gap.get("priority", 0.5),
-                        "gap": gap.get("description", "Unknown gap"),
-                        "suggested_search": gap.get("suggested_search", f"{domain} research"),
-                        "priority": "HIGH" if gap.get("priority", 0.5) > 0.7 else "MEDIUM" if gap.get("priority", 0.5) > 0.4 else "LOW"
-                    })
+        with st.spinner(f"Analyzing {len(domains)} domains for gaps..."):
+            for domain in domains:
+                response = engine.query(f"what affects {domain}", include_gaps=True)
+                if "gaps" in response and response["gaps"].get("top_gaps"):
+                    for gap in response["gaps"]["top_gaps"]:
+                        real_gaps.append({
+                            "domain": domain,
+                            "coverage": 1.0 - gap.get("priority", 0.5),
+                            "gap": gap.get("description", "Unknown gap"),
+                            "suggested_search": gap.get("suggested_search", f"{domain} research"),
+                            "priority": "HIGH" if gap.get("priority", 0.5) > 0.7 else "MEDIUM" if gap.get("priority", 0.5) > 0.4 else "LOW"
+                        })
 
         if real_gaps:
             use_mock = False
@@ -57,6 +58,7 @@ except Exception as e:
 
 # Mock gap data for demo
 if use_mock:
+    st.warning("⚠️ **Demo Mode**: Using sample data. Process papers to see live gap analysis.", icon="⚠️")
     gaps = [
     {
         "domain": "attention",

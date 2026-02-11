@@ -224,7 +224,7 @@ if search_button and query:
         st.warning(f"Query returned: {real_response.get('status', 'unknown')} - {real_response.get('headline', '')}")
     else:
         results = get_mock_results(query)
-        st.info("Using mock data (query engine not available)")
+        st.warning("⚠️ **Demo Mode**: Using sample data. Process papers to enable live queries.", icon="⚠️")
 
     if not results:
         st.warning("No matching beliefs found. Try different keywords.")
