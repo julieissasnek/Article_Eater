@@ -20,8 +20,44 @@ st.markdown("Identify areas where more research is needed.")
 
 st.markdown("---")
 
+# Try to load real gaps from QueryEngine
+use_mock = True
+real_gaps = None
+
+try:
+    from src.services.query_engine import QueryEngine
+    engine = QueryEngine()
+
+    # Get stats and identify gaps across domains
+    stats = engine.get_stats()
+
+    if stats.get("n_beliefs", 0) > 0:
+        # Query for gaps in each domain
+        domains = ["attention", "stress", "productivity", "creativity", "wellbeing"]
+        real_gaps = []
+
+        for domain in domains:
+            response = engine.query(f"what affects {domain}", include_gaps=True)
+            if "gaps" in response and response["gaps"].get("top_gaps"):
+                for gap in response["gaps"]["top_gaps"]:
+                    real_gaps.append({
+                        "domain": domain,
+                        "coverage": 1.0 - gap.get("priority", 0.5),
+                        "gap": gap.get("description", "Unknown gap"),
+                        "suggested_search": gap.get("suggested_search", f"{domain} research"),
+                        "priority": "HIGH" if gap.get("priority", 0.5) > 0.7 else "MEDIUM" if gap.get("priority", 0.5) > 0.4 else "LOW"
+                    })
+
+        if real_gaps:
+            use_mock = False
+            st.success(f"Loaded {len(real_gaps)} gaps from live analysis")
+
+except Exception as e:
+    st.info(f"Using mock data: {e}")
+
 # Mock gap data for demo
-gaps = [
+if use_mock:
+    gaps = [
     {
         "domain": "attention",
         "coverage": 0.72,
@@ -58,6 +94,8 @@ gaps = [
         "priority": "MEDIUM"
     }
 ]
+else:
+    gaps = real_gaps
 
 # Coverage overview
 st.markdown("### Domain Coverage")

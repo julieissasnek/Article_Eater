@@ -9,7 +9,7 @@ import streamlit as st
 from pathlib import Path
 import sys
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 # Add project root to path
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
@@ -159,30 +159,72 @@ def get_mock_results(query: str) -> List[MockBelief]:
     return [r[1] for r in results[:max_results]]
 
 # Try to use real query engine if available
-def try_real_query(query: str) -> Optional[List]:
+def try_real_query(query: str, mode: str = "summary", include_gaps: bool = False) -> Optional[Dict]:
     """Try to use the real query engine."""
     try:
         from src.services.query_engine import QueryEngine
         engine = QueryEngine()
-        return engine.query(query)
-    except ImportError:
+        return engine.query(query, response_mode=mode, include_gaps=include_gaps)
+    except ImportError as e:
+        st.warning(f"QueryEngine not available: {e}")
         return None
-    except Exception:
+    except Exception as e:
+        st.error(f"Query error: {e}")
         return None
+
+
+def format_real_results(response: Dict) -> List[MockBelief]:
+    """Convert real query response to display format."""
+    results = []
+
+    # Get evidence from summary or detail
+    evidence = []
+    if "summary" in response and response["summary"]:
+        evidence = response["summary"].get("key_evidence", [])
+    if "detail" in response and response["detail"]:
+        evidence = response["detail"].get("all_evidence", evidence)
+
+    for ev in evidence:
+        results.append(MockBelief(
+            belief_id=ev.get("belief_id", "unknown"),
+            content=ev.get("content", ""),
+            credence=ev.get("credence", 0.5),
+            level=ev.get("source_depth", "UNKNOWN").upper(),
+            domain=ev.get("domain", "general"),
+            paper_ids=ev.get("paper_ids", []),
+            n_supporting=len(ev.get("paper_ids", []))
+        ))
+
+    return results
 
 # Results display
 if search_button and query:
     st.markdown("### Results")
 
     # Try real query first
-    real_results = try_real_query(query)
+    real_response = try_real_query(query, mode="detail", include_gaps=True)
 
-    if real_results is not None:
-        results = real_results
-        st.success("Using live query engine")
+    if real_response is not None and real_response.get("status") == "success":
+        results = format_real_results(real_response)
+        st.success(f"Live query engine: {real_response.get('headline', '')[:100]}")
+
+        # Show follow-ups if available
+        if "follow_ups" in real_response:
+            with st.expander("Suggested follow-up questions"):
+                for fu in real_response.get("follow_ups", []):
+                    st.markdown(f"- **{fu.get('type', '')}**: {fu.get('question', '')}")
+
+        # Show gaps if available
+        if "gaps" in real_response and real_response["gaps"].get("n_gaps", 0) > 0:
+            with st.expander(f"Knowledge gaps ({real_response['gaps']['n_gaps']})"):
+                for gap in real_response["gaps"].get("top_gaps", []):
+                    st.warning(f"**{gap.get('gap_type', '')}**: {gap.get('description', '')}")
+    elif real_response is not None:
+        results = []
+        st.warning(f"Query returned: {real_response.get('status', 'unknown')} - {real_response.get('headline', '')}")
     else:
         results = get_mock_results(query)
-        st.info("Using mock data (query engine not yet available)")
+        st.info("Using mock data (query engine not available)")
 
     if not results:
         st.warning("No matching beliefs found. Try different keywords.")

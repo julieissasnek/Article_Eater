@@ -20,6 +20,12 @@ st.set_page_config(page_title="Status | Article Eater MVP", page_icon="📊", la
 st.title("📊 Accumulated Web Status")
 st.markdown("Real-time statistics from the web of belief accumulator.")
 
+# Refresh button
+col1, col2 = st.columns([4, 1])
+with col2:
+    if st.button("🔄 Refresh"):
+        st.rerun()
+
 st.markdown("---")
 
 # Try to load real data
