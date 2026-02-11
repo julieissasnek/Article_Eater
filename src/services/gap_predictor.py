@@ -193,20 +193,31 @@ class GapPredictor:
         return f"gap_{self._gap_counter:04d}"
 
     # Panel D0d (Pearl): Compute graph centrality for VOI weighting
+    # Panel Review 2026-02-11: Weight connections by epistemic level (Pearl)
+    LEVEL_WEIGHTS: Dict[str, float] = {
+        'THEORETICAL': 1.5,      # Connections to theory matter most
+        'INTERMEDIATE': 1.2,    # Bridging beliefs
+        'EMPIRICAL': 1.0,       # Standard weight
+        'OBSERVATIONAL': 0.8,   # Direct observations
+    }
+
     def _compute_centrality_cache(self) -> Dict[str, float]:
         """
         Compute centrality scores for all nodes in the belief graph.
         Panel D0d (Pearl): Central nodes have higher VOI for gap resolution.
 
-        Uses degree centrality as a simple but effective measure.
+        Panel Review 2026-02-11 (Pearl): Weight connections by epistemic level
+        of connected nodes. Connections to theoretical beliefs contribute more
+        than connections to observational ones.
         """
         if self.web is None:
+            logger.debug("Empty web in centrality computation")  # Haack: log empty cases
             return {}
 
         centrality: Dict[str, float] = {}
 
-        # Build adjacency from constraints
-        adjacency: Dict[str, Set[str]] = {}
+        # Build adjacency from constraints with level-weighted edges
+        adjacency: Dict[str, List[Tuple[str, float]]] = {}  # node -> [(neighbor, weight)]
 
         # Handle case where web.constraints might not exist or is a mock
         try:
@@ -216,13 +227,31 @@ class GapPredictor:
         except (AttributeError, TypeError):
             constraints = {}
 
+        if not constraints:
+            logger.debug("No constraints in web for centrality computation")  # Haack
+
         for constraint in constraints.values():
-            if constraint.source_id not in adjacency:
-                adjacency[constraint.source_id] = set()
-            if constraint.target_id not in adjacency:
-                adjacency[constraint.target_id] = set()
-            adjacency[constraint.source_id].add(constraint.target_id)
-            adjacency[constraint.target_id].add(constraint.source_id)
+            source_id = constraint.source_id
+            target_id = constraint.target_id
+
+            # Get epistemic level weights for connected beliefs (Pearl)
+            source_belief = self.web.beliefs.get(source_id)
+            target_belief = self.web.beliefs.get(target_id)
+
+            source_level = str(getattr(source_belief, 'level', 'EMPIRICAL')).upper()
+            target_level = str(getattr(target_belief, 'level', 'EMPIRICAL')).upper()
+
+            source_weight = self.LEVEL_WEIGHTS.get(source_level, 1.0)
+            target_weight = self.LEVEL_WEIGHTS.get(target_level, 1.0)
+
+            if source_id not in adjacency:
+                adjacency[source_id] = []
+            if target_id not in adjacency:
+                adjacency[target_id] = []
+
+            # Weight edge by the level of the connected node (Pearl)
+            adjacency[source_id].append((target_id, target_weight))
+            adjacency[target_id].append((source_id, source_weight))
 
         # Also count beliefs by environment/outcome
         env_counts: Dict[str, int] = {}
@@ -233,14 +262,18 @@ class GapPredictor:
             if belief.outcome_id:
                 out_counts[belief.outcome_id] = out_counts.get(belief.outcome_id, 0) + 1
 
-        # Compute degree centrality for beliefs
-        max_degree = 1
-        for belief_id, neighbors in adjacency.items():
-            max_degree = max(max_degree, len(neighbors))
+        # Compute weighted degree centrality for beliefs (Pearl)
+        max_weighted_degree = 1.0
+        weighted_degrees: Dict[str, float] = {}
+
+        for belief_id, edges in adjacency.items():
+            weighted_degree = sum(weight for _, weight in edges)
+            weighted_degrees[belief_id] = weighted_degree
+            max_weighted_degree = max(max_weighted_degree, weighted_degree)
 
         for belief_id in self.web.beliefs:
-            degree = len(adjacency.get(belief_id, set()))
-            centrality[belief_id] = degree / max_degree if max_degree > 0 else 0
+            weighted_degree = weighted_degrees.get(belief_id, 0)
+            centrality[belief_id] = weighted_degree / max_weighted_degree if max_weighted_degree > 0 else 0
 
         # Also compute centrality for environment/outcome IDs
         total_env = sum(env_counts.values()) or 1
@@ -378,7 +411,8 @@ class GapPredictor:
         # Combined VOI: base + centrality bonus
         voi = base_voi + 0.3 * y_centrality + 0.2 * a_centrality
 
-        return min(voi, 1.0)
+        # Simon: Cap VOI at 0.95 - no gap has perfect certainty of resolution value
+        return min(voi, 0.95)
 
     # =========================================================================
     # Mechanism Gap Detection
