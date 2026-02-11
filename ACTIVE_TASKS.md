@@ -28,7 +28,35 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| — | — | — | — | — | P1 features complete |
+| — | — | — | — | — | See MVP lanes below |
+
+---
+
+## MVP Integration Tasks (PRIORITY)
+
+**See `PARALLEL_WORK.md` for full lane details and file ownership.**
+
+### Phase A: Can Start Immediately (3 parallel terminals)
+
+| Lane | Description | Terminal | Status | Dependencies |
+|------|-------------|----------|--------|--------------|
+| MVP-0 | Contracts & Schemas | T2 | READY | None |
+| MVP-1 | Persistent Web State | T1 | ✓ COMPLETE | None |
+| MVP-GUI | Streamlit Scaffold | T3 | READY | None |
+
+### Phase B: After MVP-1 Complete (2 can run parallel)
+
+| Lane | Description | Terminal | Status | Dependencies |
+|------|-------------|----------|--------|--------------|
+| MVP-2 | Batch Processing | T1 | ✓ COMPLETE | MVP-1 ✓ |
+| MVP-3 | Query Engine | T2 | READY | MVP-0, MVP-1 ✓ |
+
+### Phase C: Final Integration
+
+| Lane | Description | Terminal | Status | Dependencies |
+|------|-------------|----------|--------|--------------|
+| MVP-GUI | Wire Backends | T3 | BLOCKED | MVP-1, MVP-3 |
+| MVP-5 | Polish & Demo | T3 | BLOCKED | All lanes |
 
 ---
 
@@ -152,4 +180,4 @@ Terminals should self-identify using a consistent ID pattern:
 
 ---
 
-*Last coordination check: 2026-02-10 12:00*
+*Last coordination check: 2026-02-11 (MVP lanes defined)*

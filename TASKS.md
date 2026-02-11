@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Wednesday, February 11, 2026 (Added TBL-7: Model Comparison Benchmark)*
+*Last updated: Tuesday, February 11, 2026 (MVP Integration lanes defined — see PARALLEL_WORK.md)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -24,6 +24,37 @@ This prevents duplicate work across parallel terminals.
 
 ## Current Priority Order
 
+### ⭐ MVP INTEGRATION (TOP PRIORITY) — Added 2026-02-11
+
+**Goal**: Working demo that answers "What affects attention in offices?" with confidence and sources.
+
+**Phase A (PARALLEL — 3 terminals can start now):**
+| Lane | Terminal | Description | Status |
+|------|----------|-------------|--------|
+| MVP-0 | T2 | Contracts & Schemas | READY |
+| MVP-1 | T1 | Persistent Web State | READY |
+| MVP-GUI | T3 | Streamlit Scaffold | READY |
+
+**Phase B (after MVP-1 complete):**
+| Lane | Terminal | Description | Status |
+|------|----------|-------------|--------|
+| MVP-2 | T1 | Batch Processing Script | BLOCKED |
+| MVP-3 | T2 | Query Engine + CLI | BLOCKED |
+
+**Phase C (final integration):**
+| Lane | Terminal | Description | Status |
+|------|----------|-------------|--------|
+| MVP-GUI | T3 | Wire Backends | BLOCKED |
+| MVP-5 | T3 | Polish & Demo | BLOCKED |
+
+**See**: `PARALLEL_WORK.md` for detailed lane specs and file ownership.
+**See**: `docs/SYSTEM_INVENTORY_2026-02-11.md` for full repo documentation.
+**See**: `docs/PANEL_P-INT_MVP_INTEGRATION_2026-02-11.md` for panel recommendations.
+
+---
+
+### Previous Sprints (Completed)
+
 1. ~~**Sprint 2.5 Social Epistemology**~~ ✓ COMPLETE
 2. ~~**Panel Convening**~~ ✓ COMPLETE — P-TC (7 decisions), P-QW (6 decisions)
 3. ~~**Strategic TODOs 1-3**~~ ✓ COMPLETE — Credibility, Interpretive, VOI
@@ -34,8 +65,12 @@ This prevents duplicate work across parallel terminals.
 8. ~~**Entrenchment Historical Replay + Monitor**~~ ✓ COMPLETE (ENT-1 through ENT-5)
 9. ~~**Sprint 3.0 Phase 1-2**~~ ✓ COMPLETE — API, Query Engine, Export, Visualization
 10. ~~**Panel Consultations Sprint 3.0**~~ ✓ COMPLETE (2026-02-09)
-11. **Sprint ECB: Epistemic-Causal Bridge Repair** — IN PROGRESS (see below)
+
+### Paused/Deferred
+
+11. **Sprint ECB: Epistemic-Causal Bridge Repair** — PAUSED (post-MVP)
 12. **Article Discovery + PDF Retrieval Monitoring** — PAUSED (DISC-1, DISC-2 complete)
+13. **VOI Discovery & PDF Retrieval Infrastructure** — PAUSED (INFRA-1 through INFRA-15)
 
 ---
 
@@ -1055,6 +1090,100 @@ For DISC-1 schema design, consult:
 - **Kleinberg** (network flow, funnel analysis)
 - **Simon** (satisficing in search)
 - **Pearl** (causal attribution of success/failure)
+
+---
+
+## Pending: VOI Discovery & PDF Retrieval Infrastructure
+
+**Added**: 2026-02-11
+**Priority**: P0 (Blocking DISC-3 through DISC-9)
+**Context**: Assessment of 2026-02-11 revealed that while VOI gap detection is 95% complete, the infrastructure to actually find and retrieve papers is critically incomplete. The system can identify what it needs but cannot acquire it.
+
+### Problem Statement
+
+1. **VOI search generates queries but doesn't execute them** — `voi_search.py` (1880 lines) identifies gaps and generates search terms, but no orchestrator calls external APIs
+2. **Only Semantic Scholar stub exists** — 31 lines of code, no relevance scoring, deduplication, or multi-source coordination
+3. **Zero PDF retrieval methods implemented** — Discovery funnel defines 6 methods (DIRECT_LINK, UNPAYWALL, SCIHUB, LIBRARY, AUTHOR_REQUEST, MANUAL) but none are coded
+4. **Zotero is filesystem-only** — Can list PDFs in `~/Zotero/storage` but cannot query `zotero.sqlite` for metadata (titles, DOIs, tags)
+5. **PDF sectioning is fragile** — Regex-based heuristics fail on non-standard paper formats
+
+### Current State Summary
+
+| Component | Lines of Code | Completeness | Notes |
+|-----------|---------------|--------------|-------|
+| Gap Detection (`voi_search.py`) | 1880 | 95% | Works well |
+| Query Generation | ~200 | 85% | Cross-field vocab expansion done |
+| Search Execution | 0 | 0% | **MISSING** |
+| Semantic Scholar API | 31 | 10% | Stub only |
+| PubMed/ERIC/CrossRef APIs | 0 | 0% | **NOT STARTED** |
+| Unpaywall Integration | 0 | 0% | **NOT STARTED** |
+| Sci-Hub Integration | 0 | 0% | **NOT STARTED** |
+| Library Proxy Support | 0 | 0% | **NOT STARTED** |
+| Zotero Metadata Access | 0 | 0% | **NOT STARTED** |
+| PDF Sectioning | ~100 | 40% | Fragile regex |
+
+### Tasks
+
+| ID | Task | Description | Priority | Dependencies |
+|----|------|-------------|----------|--------------|
+| INFRA-1 | Implement VOI search executor | Orchestrator that takes gap → queries → calls APIs → returns ranked results | P0 | — |
+| INFRA-2 | Extend Semantic Scholar integration | Add relevance scoring, deduplication, pagination, rate limiting | P1 | INFRA-1 |
+| INFRA-3 | Add Unpaywall API integration | DOI → open access PDF URL resolution | P1 | — |
+| INFRA-4 | Add CrossRef API integration | DOI validation, metadata enrichment, reference extraction | P2 | — |
+| INFRA-5 | Add PubMed API integration | Biomedical literature search via E-utilities | P2 | INFRA-1 |
+| INFRA-6 | Add ERIC API integration | Education literature search | P3 | INFRA-1 |
+| INFRA-7 | Implement PDF direct download | Fetch PDFs from publisher URLs, handle redirects | P1 | — |
+| INFRA-8 | Implement Unpaywall PDF retrieval | Use INFRA-3 to get OA links, download PDFs | P1 | INFRA-3 |
+| INFRA-9 | Implement library proxy support | Route requests through institutional proxy (CalTech, etc.) | P2 | — |
+| INFRA-10 | Add Zotero database access | Query `zotero.sqlite` for metadata (DOIs, titles, tags, collections) | P1 | — |
+| INFRA-11 | Add Zotero sync capability | Bi-directional: import Zotero metadata, export AE findings | P3 | INFRA-10 |
+| INFRA-12 | Improve PDF sectioning | Replace regex with SciSpacy or BERT-based section classification | P2 | — |
+| INFRA-13 | Add OCR support | Handle scanned/image-based PDFs via Tesseract or similar | P3 | — |
+| INFRA-14 | Multi-source search coordinator | Parallel queries across sources, deduplication, relevance fusion | P1 | INFRA-1, INFRA-2, INFRA-5 |
+| INFRA-15 | Citation network traversal | Given paper, find citing/cited papers for gap closure | P2 | INFRA-2, INFRA-4 |
+
+### Implementation Order (Recommended)
+
+**Phase 1: Core Search (Unblocks DISC-3)**
+1. INFRA-1 (VOI search executor)
+2. INFRA-2 (Semantic Scholar extension)
+3. INFRA-14 (Multi-source coordinator - basic version)
+
+**Phase 2: PDF Acquisition (Unblocks DISC-4)**
+4. INFRA-3 (Unpaywall API)
+5. INFRA-7 (Direct download)
+6. INFRA-8 (Unpaywall retrieval)
+7. INFRA-10 (Zotero database access)
+
+**Phase 3: Extended Sources**
+8. INFRA-4 (CrossRef)
+9. INFRA-5 (PubMed)
+10. INFRA-9 (Library proxy)
+
+**Phase 4: Quality Improvements**
+11. INFRA-12 (Better PDF sectioning)
+12. INFRA-15 (Citation traversal)
+13. INFRA-6 (ERIC)
+14. INFRA-11 (Zotero sync)
+15. INFRA-13 (OCR)
+
+### API Keys & Configuration Required
+
+| Service | Env Variable | Status |
+|---------|--------------|--------|
+| Semantic Scholar | `SEMANTIC_SCHOLAR_API_KEY` | ✓ Configured |
+| Unpaywall | `UNPAYWALL_EMAIL` | ☐ Need to add |
+| CrossRef | `CROSSREF_MAILTO` | ☐ Need to add (polite pool) |
+| PubMed | `NCBI_API_KEY` | ☐ Optional (higher rate limits) |
+| ERIC | — | ☐ Free, no key needed |
+
+### Panel Consultation Recommended
+
+For INFRA-1 and INFRA-14 (search orchestration), consult:
+- **Bates** (berrypicking, information foraging)
+- **Simon** (satisficing, bounded rationality in search)
+- **Pearl** (relevance as causal contribution to gap closure)
+- **Cartwright** (source reliability, evidence quality)
 
 ---
 
@@ -2224,3 +2353,246 @@ crontab -e
 ---
 
 *Tasks are project state, not ephemeral notes. Completed tasks document what we've done.*
+
+---
+
+## Abstract → Rule Extraction Pipeline (2026-02-11)
+
+*Added: 2026-02-11*
+
+### Completed: Batch 3 Processing
+
+| Metric | Value |
+|--------|-------|
+| Papers queried | 64 |
+| Rules extracted | 39 (batch 3) |
+| Total rules from abstracts | 87 (batches 1-3) |
+| High-confidence rules | ~23 |
+| Marginal/problematic rules | ~11 |
+
+### Problems Identified
+
+1. **Topic imbalance**: Acoustic 32 rules, Restoration 1 rule (sampling bias)
+2. **Relevance leakage**: ~25-30% of extracted rules are NOT CNfA-relevant
+   - Methodology papers (no human outcomes)
+   - Clinical/medical (not environmental)
+   - Digital interfaces (not built environment)
+   - Materials science, animal studies
+
+### Root Causes
+
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| Topic imbalance | Used \`source\` field instead of stratified sampling | Add \`topic_category\` column, use ROW_NUMBER() PARTITION BY |
+| Relevance leakage | Keywords alone don't catch false positives | Multi-tier confidence scoring (E+O keywords in abstract) |
+| False positives | "mood" matches linguistics, "attention" matches CV | Require BOTH environment AND outcome keywords |
+
+### Implemented Fixes
+
+1. Added \`topic_category\` column to AF papers table
+2. Created multi-tier confidence scoring query
+3. Documented criteria in \`Article_Eater_PostQuinean_v1/docs/ABSTRACT_EXTRACTION_CRITERIA_2026-02-11.md\`
+
+### Pending Tasks
+
+| ID | Task | Priority |
+|----|------|----------|
+| DISC-13 | Implement \`extraction_priority\` column in AF database | P1 |
+| DISC-14 | Create stratified sampling function for balanced topic coverage | P1 |
+| DISC-15 | Add pre-extraction relevance filter (Tier 1 = high confidence pool) | P2 |
+| DISC-16 | Process Tier 1 papers (300 high-confidence CNfA papers) | P2 |
+
+
+---
+
+## Zotero Import Fix (2026-02-11) ✓ COMPLETE
+
+### Problem
+- 1,672 PDFs in Zotero library
+- Only 2 papers marked as zotero_import in AF database
+- Matching bug: fuzzy title matching too loose (80% of shorter title)
+
+### Fixes Applied
+1. **Tightened `_titles_similar()`** in `ingest/zotero_bridge.py`:
+   - Raised threshold to 85%
+   - Require bidirectional match (both titles must match)
+   - Minimum 5 words required for fuzzy matching
+2. **Added `create_new` mode**:
+   - Automatically creates new AF papers for unmatched Zotero items
+   - Default: True
+
+### Results
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Papers in AF | 15,036 | 15,933 (+897) |
+| Papers with PDFs | 81 | 1,093 |
+| PDFs in storage | ~10 | 1,017 |
+
+### Key Papers Now in Database
+- Heschong 1999 - Daylighting in Schools
+- Vartanian 2014 - Ceiling height effects
+- Taylor 2017 - Fractal Fluency for Biophilic
+- Multiple wood/materials papers
+- Baron 1992 - Indoor lighting on cognition
+
+
+---
+
+## Citation/Refinement Tracking in Epistemic Web (Future Sprint)
+
+*Added: 2026-02-11*
+*Priority: P2 (after core extraction pipeline stabilizes)*
+
+### Problem Statement
+
+The epistemic web currently lacks mechanisms to track when later papers refine, replicate, or extend findings from earlier papers. This matters for:
+
+1. **Credence weighting**: Replications shouldn't double-count as independent evidence
+2. **Theoretical refinement**: Track Lakatos-style progressive research programs
+3. **Recency weighting**: Later refinements may be more precise
+4. **Avoiding double-counting**: Same finding from multiple papers should consolidate
+
+### Current State
+
+- `Belief.paper_ids`: Lists papers supporting a belief (but doesn't distinguish relationship type)
+- `ConstraintType`: SUPPORTS, CONTRADICTS, EXPLAINS, INSTANTIATES, BRIDGES, SHARED_EVIDENCE
+- No paper-to-paper citation links
+- No refinement/replication/extension tracking
+
+### Proposed New ConstraintTypes
+
+| Type | Meaning | Credence Effect |
+|------|---------|-----------------|
+| REFINES | Later narrows/qualifies earlier (same direction, more precise) | Update SE, don't double-count |
+| REPLICATES | Same finding reproduced | Strengthen credence, weighted merge |
+| EXTENDS | Adds moderators, new population, boundary conditions | Preserve both, link |
+| SUPERSEDES | Replaces/obsoletes earlier (methodology improvement) | Shift weight to later |
+| CITES | Paper B cites Paper A (neutral link for tracking) | No direct credence effect |
+
+### Implementation Requirements
+
+1. **Schema changes**:
+   - Add new ConstraintTypes to `web_of_belief.py`
+   - Add `citation_links` table: (citing_paper_id, cited_paper_id, link_type, confidence)
+   
+2. **Extraction logic**:
+   - Detect when Paper B references Paper A's findings
+   - Classify relationship type (refine vs. replicate vs. contradict)
+   - May require citation parsing from PDFs
+   
+3. **Credence computation**:
+   - Modify inverse-variance weighting to handle replications
+   - Implement refinement chain tracking
+   - Add recency bonus for superseding findings
+
+4. **UI/Reporting**:
+   - Show refinement chains in belief inspection
+   - Flag when findings have been superseded
+
+### Dependencies
+
+- Requires robust paper_id matching across extractions
+- May need citation extraction from PDFs (GROBID or similar)
+- Would benefit from DOI-based citation graph (OpenAlex, Semantic Scholar)
+
+### Estimated Effort
+
+Medium-large sprint (comparable to Sprint 5 persistence work)
+
+### Related
+
+- Sprint 8 SHARED_EVIDENCE already handles same-study beliefs
+- Social epistemology module tracks community-level credence
+- Could integrate with external citation databases
+
+
+### Detailed Context and Rationale
+
+#### Why This Matters for CNfA
+
+Consider this scenario:
+1. **Ulrich (1984)**: "View of nature → faster recovery from surgery"
+2. **Ulrich et al. (1991)**: "Exposure to natural environments → stress recovery (physiological markers)"
+3. **Hartig et al. (2003)**: "Walking in nature → attention restoration + blood pressure reduction"
+4. **Berman et al. (2008)**: "Even photos of nature → cognitive improvement (but smaller effect than real nature)"
+
+These are NOT independent findings - they form a **refinement chain** within SRT/ART. Currently we'd treat them as separate beliefs, potentially over-counting the evidence. We should instead recognize:
+- Ulrich 1984 → Ulrich 1991 (EXTENDS: adds physiological markers)
+- Ulrich 1991 → Hartig 2003 (REPLICATES + EXTENDS: adds attention, active vs. passive exposure)
+- All → Berman 2008 (REFINES: photos work but effect is attenuated)
+
+#### Example from HBE/Mehrabian-Russell
+
+1. **Mehrabian & Russell (1974)**: PAD model - environments → pleasure/arousal/dominance → approach/avoidance
+2. **Donovan & Rossiter (1982)**: Applied M-R to retail - confirmed in stores
+3. **Russell & Pratt (1980)**: Refined to focus on P-A (dropped Dominance for most applications)
+4. **Bakker et al. (2014)**: Meta-review showing Dominance still matters but is under-studied
+
+Without refinement tracking, we might:
+- Double-count M-R 1974 and Donovan 1982 (same finding, different context)
+- Miss that Russell 1980 REFINES the original (P-A more predictive than full PAD)
+- Not know that Bakker 2014 SUPERSEDES the "dominance is unimportant" belief
+
+#### Connection to Foundherentist Epistemology
+
+In V23.0.0's foundherentist framework, entrenchment is emergent from:
+- 40% connectivity (constraint count)
+- 30% epistemic level weight
+- 30% coherence contribution
+
+**Citation/refinement tracking affects all three**:
+1. **Connectivity**: Refinement links add constraints
+2. **Level**: Original theoretical claims vs. later empirical refinements
+3. **Coherence**: Replication increases coherence; contradiction decreases it
+
+Without this, the web can't properly represent how scientific knowledge accumulates through progressive refinement rather than just accumulation of independent findings.
+
+#### Quine/Haack Perspective
+
+From a Quinean view, when observation conflicts with theory, ANY node in the web can be revised. But we should prefer revising:
+- Peripheral beliefs over central ones (entrenchment)
+- Recent findings over well-replicated ones (unless methodology improved)
+- Specific findings over general theories (unless theory is falsified)
+
+**Citation tracking enables this**: If Paper B says "contrary to Paper A, we found X", we can:
+1. Check if B is a methodological improvement over A
+2. See if other papers support A or B
+3. Revise the belief most consistent with web coherence
+
+#### Connection to Sprint 8 (SHARED_EVIDENCE)
+
+Sprint 8 added `SHARED_EVIDENCE` constraint type to prevent double-counting when the same study supports multiple beliefs. Citation tracking is the **inter-paper** version of this - preventing double-counting when the same finding appears in multiple papers through replication or citation.
+
+The current system handles:
+- ✓ Same study, multiple claims (SHARED_EVIDENCE)
+- ✗ Same finding, multiple papers (needs REPLICATES)
+- ✗ Refined finding, multiple papers (needs REFINES)
+- ✗ Obsoleted finding (needs SUPERSEDES)
+
+#### Data Sources for Implementation
+
+| Source | What It Provides | API Available |
+|--------|------------------|---------------|
+| OpenAlex | Citation links, reference lists | Yes (free) |
+| Semantic Scholar | Citation context, influence scores | Yes (free) |
+| Crossref | DOI-based citations | Yes (free) |
+| GROBID | Extract citations from PDFs | Local service |
+
+Recommended approach: Use OpenAlex/Semantic Scholar APIs to get citation links between papers we have, then classify relationship types based on citation context.
+
+#### Interaction with Extraction Pipeline
+
+When extracting rules from Paper B:
+1. Check if Paper B cites any papers in our database
+2. If yes, classify the citation relationship
+3. When creating beliefs, check for existing beliefs from cited papers
+4. If related belief exists, create REFINES/REPLICATES/EXTENDS constraint instead of new independent belief
+
+This requires the extraction prompt to identify:
+- "Consistent with [Author Year], we found..."  → REPLICATES
+- "Extending [Author Year], we also found..." → EXTENDS
+- "Contrary to [Author Year], our results show..." → CONTRADICTS
+- "[Author Year] found X in [context]; we found X holds in [new context]" → EXTENDS
+- "While [Author Year] reported [effect], our more controlled study found [refined effect]" → REFINES or SUPERSEDES
+

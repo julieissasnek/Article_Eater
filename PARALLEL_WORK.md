@@ -1,6 +1,6 @@
 # PARALLEL_WORK.md
 
-*Last updated: Saturday, February 8, 2026*
+*Last updated: Tuesday, February 11, 2026*
 
 This file coordinates parallel Claude Code sessions to prevent conflicts.
 
@@ -15,173 +15,306 @@ This file coordinates parallel Claude Code sessions to prevent conflicts.
 
 ---
 
-## Work Lanes
+## MVP Integration Work Lanes (Priority)
 
-### Lane A: Sprint 2.5 Schema Design
-**Scope**: Design social epistemology schema and data structures
+### Lane MVP-0: Contracts & Schemas
+**Scope**: Define JSON schemas for MVP interfaces
 **Owner**: UNCLAIMED
+**Parallelizable with**: MVP-1, MVP-GUI (all independent)
 **Files OWNED (exclusive write access)**:
-- `src/services/social_epistemology.py` — NEW FILE
-- `contracts/schemas/social_epistemology.schema.json` — NEW FILE
-- `docs/SPRINT_2.5_DESIGN.md` — NEW FILE
-
-**Files SHARED (read-only)**:
-- `src/services/web_of_belief.py` — Reference existing Belief class
+- `contracts/ae_af/schemas/query_request.v1.schema.json` — NEW
+- `contracts/ae_af/schemas/query_response.v1.schema.json` — NEW
+- `contracts/ae_af/schemas/gap_report.v1.schema.json` — NEW
+- `docs/MVP_CONTRACTS.md` — NEW
 
 **Tasks**:
-- 2.5.1 Design community schema
-- 2.5.2 Design `EpistemicCommunity` class
-- 2.5.3 Design `BeliefProvenance` class
-- Answer Panel Questions SE-1 through SE-5
+- [ ] Verify `af_paper.v1.json` exists and is correct
+- [ ] Verify `ae_rule.v1.json` exists and is correct
+- [ ] Define `query_request.v1.json` schema
+- [ ] Define `query_response.v1.json` schema
+- [ ] Define `gap_report.v1.json` schema
 
 ---
 
-### Lane B: Sprint 2.5 Implementation
-**Scope**: Implement social epistemology classes and integrate with WebOfBelief
+### Lane MVP-1: Persistent Web State
+**Scope**: Implement save/load for accumulated web across runs
 **Owner**: UNCLAIMED
+**Parallelizable with**: MVP-0, MVP-GUI (all independent)
+**Depends on**: None (can start immediately)
 **Files OWNED (exclusive write access)**:
-- `src/services/social_epistemology.py` — Implementation (after Lane A designs)
-- `tests/test_social_epistemology.py` — NEW FILE
+- `data/accumulated_web.json` — NEW (persistent state file)
+- `data/events.jsonl` — NEW (event log)
+- `src/services/web_accumulator.py` — NEW
+- `tests/test_web_accumulator.py` — NEW
+
+**Files SHARED (read-only)**:
+- `src/services/web_persistence.py` — Reference existing logic
+- `src/services/web_of_belief.py` — Reference WebOfBelief class
+
+**Tasks**:
+- [ ] Create `WebAccumulator` class with load/save methods
+- [ ] Implement event sourcing (append-only events.jsonl)
+- [ ] Implement merge logic for combining per-run web_state with accumulated
+- [ ] Test: save web → restart → load → verify state intact
+
+---
+
+### Lane MVP-2: Batch Processing Script
+**Scope**: Create script to process N papers end-to-end
+**Owner**: UNCLAIMED
+**Parallelizable with**: MVP-GUI (independent)
+**Depends on**: MVP-1 (needs accumulator for persistence)
+**Files OWNED (exclusive write access)**:
+- `scripts/process_papers.py` — NEW (main batch script)
+- `scripts/process_config.yaml` — NEW (configuration)
+- `tests/test_batch_processing.py` — NEW
+
+**Files SHARED (read-only)**:
+- `app/tasks/pipeline.py` — Call existing extraction
+- `src/services/web_accumulator.py` — Use for persistence (from MVP-1)
 
 **Files SHARED (coordinate changes)**:
-- `src/services/web_of_belief.py` — Extend Belief class with provenance
+- Article Finder: `eater_interface/invoker.py` — May need minor updates
 
 **Tasks**:
-- 2.5.4 Implement `CommunityRelativeCredence`
-- 2.5.5 Implement `ContestationTracker`
-- 2.5.6 Implement `MethodologicalDiversityAssessor`
-- 2.5.7 Integrate with existing Belief class
-- 2.5.8 Tests
-
-**Dependencies**: Lane A must complete schema design first
+- [ ] Create batch processor that iterates over paper list
+- [ ] Wire: AF query → job bundle → AE extraction → web accumulation
+- [ ] Add progress tracking (papers processed, rules extracted, beliefs added)
+- [ ] Implement circuit breaker (skip after 3 failures)
+- [ ] Process 100 test papers end-to-end
 
 ---
 
-### Lane C: Credibility Testing (TODO 1)
-**Scope**: Enhance credibility testing module
+### Lane MVP-3: Query Engine
+**Scope**: Build query interface for asking questions of the web
 **Owner**: UNCLAIMED
+**Parallelizable with**: MVP-GUI (can coordinate on interface)
+**Depends on**: MVP-1 (needs persistent web to query)
 **Files OWNED (exclusive write access)**:
-- `src/services/credibility_testing.py`
-- `tests/test_credibility_testing.py`
-- `docs/implementation_plans/TODO1_*.md`
+- `src/services/query_engine.py` — NEW
+- `src/cli/query.py` — NEW (CLI entry point)
+- `tests/test_query_engine.py` — NEW
 
 **Files SHARED (read-only)**:
-- `src/services/web_of_belief.py`
-- `src/services/extraction_to_web.py`
-
-**Tasks**: See `docs/STRATEGIC_TODOS_2026_01_20.md` TODO 1
-
----
-
-### Lane D: Interpretive Intelligence (TODO 2)
-**Scope**: Enhance interpretive intelligence module
-**Owner**: UNCLAIMED
-**Files OWNED (exclusive write access)**:
-- `src/services/interpretive_intelligence.py`
-- `tests/test_interpretive_intelligence.py`
-- `docs/implementation_plans/TODO2_*.md`
-- `contracts/vocab/vocabulary_bridge.yaml`
-
-**Files SHARED (read-only)**:
-- `src/services/web_of_belief.py`
-- `src/services/bridge_warrants.py`
-
-**Tasks**: See `docs/STRATEGIC_TODOS_2026_01_20.md` TODO 2
-
----
-
-### Lane E: VOI-Driven Search (TODO 3)
-**Scope**: Enhance VOI search module
-**Owner**: UNCLAIMED
-**Files OWNED (exclusive write access)**:
-- `src/services/voi_search.py`
-- `tests/test_voi_search.py`
-- `docs/implementation_plans/TODO3_*.md`
-- `contracts/vocab/cross_field_vocabulary.yaml` — NEW FILE
-
-**Files SHARED (read-only)**:
-- `src/services/web_of_belief.py`
-- `src/services/paper_fetcher.py`
-
-**Tasks**: See `docs/STRATEGIC_TODOS_2026_01_20.md` TODO 3
-
----
-
-### Lane F: Panel Convening (P-TC, P-QW)
-**Scope**: Convene pending expert panels
-**Owner**: UNCLAIMED
-**Files OWNED (exclusive write access)**:
-- `docs/PANEL_P-TC_*.md` — NEW FILES
-- `docs/PANEL_P-QW_*.md` — NEW FILES
-
-**Files SHARED (read-only)**:
-- `TASKS.md` — Read decisions, update after panel
-- All service files (for context)
+- `src/services/web_of_belief.py` — Use WebOfBelief queries
+- `src/services/voi_search.py` — Use for gap identification
+- `src/services/web_accumulator.py` — Load persistent web (from MVP-1)
 
 **Tasks**:
-- Convene P-TC panel (7 decisions)
-- Convene P-QW panel (6 decisions)
+- [ ] Create `QueryEngine` class with `query(question) -> QueryResult`
+- [ ] Implement `identify_gaps() -> GapReport`
+- [ ] Parse natural language questions to belief queries
+- [ ] Return beliefs with confidence scores and source citations
+- [ ] CLI: `python -m src.cli.query "What affects attention?"`
 
 ---
 
-### Lane G: Fix Failing Tests
-**Scope**: Fix the 12 failing infrastructure/placeholder tests
+### Lane MVP-GUI: Streamlit Interface
+**Scope**: Build minimal GUI for demo
 **Owner**: UNCLAIMED
+**Parallelizable with**: MVP-0, MVP-1 (all independent until integration)
+**Depends on**: MVP-3 for query integration (but can build UI scaffolding first)
 **Files OWNED (exclusive write access)**:
-- `tests/test_theory_system.py`
-- Any test files with failures
+- `streamlit_app/mvp/` — NEW directory
+- `streamlit_app/mvp/app.py` — NEW (main app)
+- `streamlit_app/mvp/pages/1_status.py` — NEW
+- `streamlit_app/mvp/pages/2_query.py` — NEW
+- `streamlit_app/mvp/pages/3_gaps.py` — NEW
 
 **Files SHARED (read-only)**:
-- All service files (for context)
+- `src/services/query_engine.py` — Call for queries (from MVP-3)
+- `src/services/web_accumulator.py` — Get status (from MVP-1)
 
 **Tasks**:
-- Identify root cause of 12 failures
-- Fix or skip infrastructure tests appropriately
-- Ensure clean test run
+- [ ] Create Streamlit app structure (3 pages)
+- [ ] Status page: papers processed, rules, beliefs counts
+- [ ] Query page: text input, results with confidence bars
+- [ ] Gaps page: coverage heatmap, suggested searches
 
 ---
 
-### Lane H: Commit Uncommitted TD Work
-**Scope**: Stage and commit TD-C, TD-D, and other parallel session files
+### Lane MVP-5: Polish & Demo
+**Scope**: Error handling, logging, demo script
 **Owner**: UNCLAIMED
+**Parallelizable with**: None (final integration)
+**Depends on**: MVP-1, MVP-2, MVP-3, MVP-GUI (all must be functional)
 **Files OWNED (exclusive write access)**:
-- Git staging only (no file edits)
-
-**Files to commit**:
-- `src/services/scalable_coherence.py` (TD-C)
-- `src/services/temporal_parser.py` (TD-D)
-- `src/services/incremental_bn.py` (TD-E)
-- `src/services/scope_extractor.py` (TD-B)
-- `tests/test_scalable_coherence.py`
-- `tests/test_temporal_parser.py`
-- `tests/test_incremental_bn.py`
-- `tests/test_scope_extractor.py`
+- `docs/DEMO_SCRIPT.md` — NEW
+- `docs/MVP_USER_GUIDE.md` — NEW
+- Various files for error handling improvements
 
 **Tasks**:
-- Git add all TD files
-- Create comprehensive commit message
-- Verify clean git status
+- [ ] Add timeouts on LLM calls
+- [ ] Add circuit breakers
+- [ ] Comprehensive logging
+- [ ] Write 10-minute demo script
+- [ ] Documentation for demo
 
 ---
 
-### Lane I: Sprint 2.0 Pipeline Integration
-**Scope**: Wire extraction_to_web.py into app/tasks/pipeline.py
-**Owner**: UNCLAIMED
-**Files OWNED (exclusive write access)**:
-- `app/tasks/pipeline.py`
-- `tests/test_pipeline_integration.py` — NEW FILE
+## Parallel Execution Plan
 
-**Files SHARED (read-only)**:
-- `src/services/extraction_to_web.py`
-- `src/services/web_of_belief.py`
-- `src/services/web_persistence.py`
+### Phase A: Foundation (Can all run in parallel)
+```
+┌─────────────────────────────────────────────────────────┐
+│                   PARALLEL PHASE A                       │
+├─────────────────┬─────────────────┬─────────────────────┤
+│   Lane MVP-0    │   Lane MVP-1    │    Lane MVP-GUI     │
+│   (Contracts)   │  (Persistence)  │   (UI Scaffolding)  │
+│                 │                 │                      │
+│  • Schemas      │  • Accumulator  │  • App structure    │
+│  • Verify       │  • Events log   │  • Page layouts     │
+│    existing     │  • Merge logic  │  • Mock data        │
+└─────────────────┴─────────────────┴─────────────────────┘
+         │                 │                   │
+         └────────────────┬┴───────────────────┘
+                          │
+                          ▼
+```
 
-**Tasks**:
-- 2.0.1 Wire extraction_to_web into pipeline
-- 2.0.2 Implement output serialization
-- 2.0.3 Add CLI flags for web outputs
-- 2.0.4 Test with sample papers
-- 2.0.5 Error handling and logging
+### Phase B: Processing (Sequential after MVP-1)
+```
+┌─────────────────────────────────────────────────────────┐
+│                   PHASE B (after MVP-1)                  │
+├─────────────────────────┬───────────────────────────────┤
+│      Lane MVP-2         │         Lane MVP-3            │
+│   (Batch Processing)    │       (Query Engine)          │
+│                         │                               │
+│  Depends on: MVP-1      │    Depends on: MVP-1          │
+│  • Batch script         │    • Query parser             │
+│  • AF→AE wiring         │    • Gap identification       │
+│  • Progress tracking    │    • CLI interface            │
+└─────────────────────────┴───────────────────────────────┘
+         │                           │
+         └───────────┬───────────────┘
+                     │
+                     ▼
+```
+
+### Phase C: Integration & Polish (After B)
+```
+┌─────────────────────────────────────────────────────────┐
+│              PHASE C (after MVP-2, MVP-3)               │
+├─────────────────────────────────────────────────────────┤
+│                    Lane MVP-GUI                          │
+│              (Wire to real backends)                     │
+│                                                          │
+│  • Connect Status to WebAccumulator                      │
+│  • Connect Query to QueryEngine                          │
+│  • Connect Gaps to VOI search                            │
+└─────────────────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                    Lane MVP-5                            │
+│                  (Polish & Demo)                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## What YOU (David) Can Do In Parallel
+
+While Claude works on one lane, you can:
+
+### Independent Work (No Coordination Needed)
+1. **Test paper selection**: Pick 100 on-topic papers from AF for batch processing test
+2. **Demo scenario design**: Write the questions you want to demonstrate
+3. **Foundational book abstracts**: Continue adding extended_notes to HBE books
+4. **Zotero organization**: Continue HBE bibliography cleanup
+
+### Coordination Work (Check with Claude first)
+1. **Schema review**: Review contracts as MVP-0 produces them
+2. **UI feedback**: Review Streamlit pages as MVP-GUI produces them
+3. **Test queries**: Try queries against QueryEngine once MVP-3 is ready
+
+---
+
+## Terminal Assignments (Pre-Allocated)
+
+Each terminal maintains context from related work. Start terminals in order shown.
+
+### Terminal 1: Data & Processing Track
+**Focus**: Backend persistence and batch processing
+**Order**: MVP-1 → MVP-2
+**Why**: MVP-2 uses the accumulator built in MVP-1; context carries forward
+
+| Step | Lane | Description | Depends On |
+|------|------|-------------|------------|
+| 1.1 | MVP-1 | Persistent Web State (accumulator, events) | None - START HERE |
+| 1.2 | MVP-2 | Batch Processing Script | MVP-1 complete |
+
+### Terminal 2: Contracts & Query Track
+**Focus**: Schemas and query engine
+**Order**: MVP-0 → MVP-3
+**Why**: MVP-0 defines schemas that MVP-3 implements; context carries forward
+
+| Step | Lane | Description | Depends On |
+|------|------|-------------|------------|
+| 2.1 | MVP-0 | Contracts & Schemas | None - START HERE |
+| 2.2 | MVP-3 | Query Engine | MVP-0 + MVP-1 complete |
+
+### Terminal 3: UI & Demo Track
+**Focus**: User interface and final polish
+**Order**: MVP-GUI → MVP-5
+**Why**: MVP-GUI scaffolding informs MVP-5 demo script; context carries forward
+
+| Step | Lane | Description | Depends On |
+|------|------|-------------|------------|
+| 3.1 | MVP-GUI | Streamlit Interface (scaffolding first) | None - START HERE |
+| 3.2 | MVP-GUI | Streamlit Integration (wire backends) | MVP-1, MVP-3 complete |
+| 3.3 | MVP-5 | Polish & Demo Script | All lanes complete |
+
+---
+
+## Execution Timeline
+
+```
+TIME ──────────────────────────────────────────────────────────────────────────>
+
+TERMINAL 1 (Data):
+├─────────────────────────┼─────────────────────────────┼
+│      MVP-1              │          MVP-2              │  DONE
+│  (Persistence ~3hr)     │   (Batch Processing ~4hr)   │
+└─────────────────────────┴─────────────────────────────┘
+                          ↑
+                    MVP-1 must finish
+
+TERMINAL 2 (Query):
+├─────────────────────────┼───────────────────────────────────────┼
+│      MVP-0              │              MVP-3                    │  DONE
+│   (Contracts ~2hr)      │        (Query Engine ~4hr)            │
+└─────────────────────────┴───────────────────────────────────────┘
+                          ↑
+                    MVP-0 + MVP-1 must finish
+
+TERMINAL 3 (UI):
+├─────────────────────────┼───────────────────────────────┼───────────────┼
+│    MVP-GUI scaffold     │    MVP-GUI integration        │    MVP-5      │ DONE
+│     (mock data ~2hr)    │    (wire backends ~2hr)       │  (polish ~2hr)│
+└─────────────────────────┴───────────────────────────────┴───────────────┘
+                                      ↑                           ↑
+                              MVP-1 + MVP-3 must finish     ALL must finish
+```
+
+---
+
+## Quick Start Commands
+
+### To Start Terminal 1 (Data Track):
+```
+Say: "Start MVP-1: Persistent Web State. This is Terminal 1 of the Data Track."
+```
+
+### To Start Terminal 2 (Query Track):
+```
+Say: "Start MVP-0: Contracts & Schemas. This is Terminal 2 of the Query Track."
+```
+
+### To Start Terminal 3 (UI Track):
+```
+Say: "Start MVP-GUI scaffolding with mock data. This is Terminal 3 of the UI Track."
+```
 
 ---
 
@@ -189,79 +322,63 @@ This file coordinates parallel Claude Code sessions to prevent conflicts.
 
 **IMPORTANT**: Edit this section to claim/release lanes.
 
-| Lane | Session ID | Claimed At | Expected Duration | Notes |
-|------|------------|------------|-------------------|-------|
-| A | — | — | — | COMPLETED: Sprint 2.5 Schema Design (2026-02-08). P-SE panel consulted. |
-| B | — | — | — | COMPLETED: Sprint 2.5 Implementation (2026-02-08). social_epistemology.py (~1300 lines), 54 tests. |
-| C | — | — | — | COMPLETED: TODO 1 Credibility Testing (2026-02-08). Feedback module, semantic coherence, pipeline. |
-| D | — | — | — | COMPLETED: TODO 2 Interpretive Intelligence (2026-02-08). Added MECHANISM + DISAGREEMENT patterns. |
-| E | — | — | — | COMPLETED: TODO 3 VOI-Driven Search (2026-02-08). Cross-field vocabulary, 92 tests. |
-| F | — | — | — | COMPLETED: P-TC and P-QW panels convened (2026-02-08) |
-| G | — | — | — | COMPLETED: Fixed 11 failing tests (2026-02-08). Syntax error in rulegraph_v2_builder.py fixed, future sprint tests skipped. |
-| H | — | — | — | AVAILABLE for Term 2 |
-| I | — | — | — | AVAILABLE for Term 3 |
+| Lane | Terminal | Session ID | Claimed At | Status | Notes |
+|------|----------|------------|------------|--------|-------|
+| MVP-0 | T2 | TERMINAL-2 | 2026-02-11 | IN PROGRESS | Contracts & Schemas |
+| MVP-1 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | 10 tests pass |
+| MVP-2 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | 14 tests pass |
+| MVP-3 | T2 | UNCLAIMED | — | BLOCKED | Needs MVP-0 + MVP-1 |
+| MVP-GUI | T3 | UNCLAIMED | — | READY | UI scaffold - T3 starts here |
+| MVP-5 | T3 | UNCLAIMED | — | BLOCKED | Needs all lanes |
 
 ---
 
-## Lane Coordination Protocol
+## Completed Lanes (Previous Work)
 
-### Shared File: `web_of_belief.py`
+| Lane | Description | Completed | Outcome |
+|------|-------------|-----------|---------|
+| A | Sprint 2.5 Schema Design | 2026-02-08 | P-SE panel consulted |
+| B | Sprint 2.5 Implementation | 2026-02-08 | social_epistemology.py (~1300 lines) |
+| C | TODO 1 Credibility Testing | 2026-02-08 | Feedback module, semantic coherence |
+| D | TODO 2 Interpretive Intelligence | 2026-02-08 | MECHANISM + DISAGREEMENT patterns |
+| E | TODO 3 VOI-Driven Search | 2026-02-08 | Cross-field vocabulary, 92 tests |
+| F | P-TC and P-QW panels | 2026-02-08 | Panel consultations complete |
+| G | Fixed failing tests | 2026-02-08 | 11 tests fixed |
 
-This is the core engine and CANNOT be exclusively owned. Coordination rules:
+---
 
-1. **Read access**: All lanes can read
-2. **Write access**: Must coordinate via this file
-3. **Pending changes queue**:
+## File Ownership Matrix (MVP)
 
-| Requester | Change Description | Affected Lines/Methods | Status |
-|-----------|-------------------|------------------------|--------|
-| Lane B | Add `provenance` field to Belief | Belief class | ✓ COMPLETE |
-| Lane B | Add community-relative credence support | New methods | ✓ COMPLETE |
-| Lane B | Add `community_associations` field | Belief class | ✓ COMPLETE |
-| Lane B | Add social_epistemology optional import | Import section | ✓ COMPLETE |
+| File | MVP-0 | MVP-1 | MVP-2 | MVP-3 | MVP-GUI | MVP-5 |
+|------|-------|-------|-------|-------|---------|-------|
+| `contracts/ae_af/schemas/*.json` | **WRITE** | read | read | read | read | read |
+| `data/accumulated_web.json` | — | **WRITE** | read | read | read | read |
+| `data/events.jsonl` | — | **WRITE** | write | read | read | read |
+| `src/services/web_accumulator.py` | — | **WRITE** | read | read | read | read |
+| `scripts/process_papers.py` | — | — | **WRITE** | — | — | read |
+| `src/services/query_engine.py` | — | — | — | **WRITE** | read | read |
+| `src/cli/query.py` | — | — | — | **WRITE** | — | read |
+| `streamlit_app/mvp/*` | — | — | — | read | **WRITE** | read |
+| `docs/DEMO_SCRIPT.md` | — | — | — | — | — | **WRITE** |
 
-**All Lane B changes complete** — web_of_belief.py now supports Sprint 2.5 social epistemology features.
+Legend: **WRITE** = exclusive, read = read-only, — = no access needed
 
-### Existing Types (Already Implemented in Sprint 1.6)
+---
 
-These types already exist in `web_of_belief.py`:
+## Quick Start for New Terminal
 
-```python
-# Already implemented - DO NOT duplicate
+```bash
+# 1. Check what's claimed
+cat PARALLEL_WORK.md | grep -A 10 "Active Claims"
 
-class InferenceType(Enum):
-    INDUCTIVE = "inductive"
-    DEDUCTIVE = "deductive"
-    ABDUCTIVE = "abductive"
-    MIXED = "mixed"
-    UNKNOWN = "unknown"
+# 2. Pick an unclaimed lane from Phase A (MVP-0, MVP-1, or MVP-GUI)
 
-class BeliefKind(Enum):
-    MECHANISTIC = "mechanistic"
-    EVIDENTIAL = "evidential"
-    THEORETICAL = "theoretical"
-    METHODOLOGICAL = "methodological"
-    BRIDGE = "bridge"
-```
+# 3. Edit this file to claim it:
+# | MVP-X | CLAUDE-$(date +%s) | $(date) | ~N hours | Working on X |
 
-### Proposed New Types (Sprint 2.5)
+# 4. Start work on that lane's tasks
 
-If you need to add types/enums that other lanes might use, add them here first:
-
-```python
-# Proposed for Sprint 2.5 - Lane A to design, Lane B to implement
-
-class CommunityType(Enum):
-    JOURNAL_CLUSTER = "journal_cluster"
-    CITATION_NETWORK = "citation_network"
-    THEORY_COMMITMENT = "theory_commitment"
-    METHODOLOGICAL = "methodological"
-
-class ContestationType(Enum):
-    EMPIRICAL = "empirical"        # Different data interpretations
-    METHODOLOGICAL = "methodological"  # Different methods
-    THEORETICAL = "theoretical"    # Different frameworks
-    SCOPE = "scope"               # Different generalization claims
+# 5. When done, update ACTIVE_TASKS.md and clear your claim here
 ```
 
 ---
@@ -271,53 +388,11 @@ class ContestationType(Enum):
 If two sessions need the same file:
 
 1. **Check this file first** — see who has the claim
-2. **Coordinate via TASKS.md** — leave a note in Session Log
+2. **Coordinate via ACTIVE_TASKS.md** — leave a note
 3. **Serialize if necessary** — one finishes, then the other starts
 4. **Create interface files** — if extending, add a new file that imports from shared
 
 ---
 
-## Session Handoff Protocol
-
-When finishing a lane:
-
-1. **Mark tasks complete** in TASKS.md
-2. **Clear your claim** in Active Claims table above
-3. **Document any unfinished work** in TASKS.md Pending section
-4. **Note any discoveries** that affect other lanes
-
----
-
-## Quick Reference: File Ownership Matrix
-
-| File | Lane A | Lane B | Lane C | Lane D | Lane E | Lane F |
-|------|--------|--------|--------|--------|--------|--------|
-| `social_epistemology.py` (new) | WRITE | WRITE* | — | — | — | — |
-| `web_of_belief.py` | read | coord | read | read | read | read |
-| `credibility_testing.py` | — | — | WRITE | read | — | — |
-| `interpretive_intelligence.py` | — | — | read | WRITE | — | — |
-| `voi_search.py` | — | — | — | — | WRITE | — |
-| `TASKS.md` | update | update | update | update | update | WRITE |
-| Panel docs | — | — | — | — | — | WRITE |
-
-Legend: WRITE = exclusive, WRITE* = after Lane A completes, read = read-only, coord = coordinate changes, — = no access needed
-
----
-
-## Recommended Parallel Combinations
-
-These lane pairs work well together (minimal conflicts):
-
-- **Lane A + Lane E** — Schema Design + VOI Search (independent)
-- **Lane A + Lane C** — Schema Design + Credibility (independent)
-- **Lane C + Lane F** — Credibility + Panels (independent)
-- **Lane D + Lane E** — Interpretive + VOI (independent)
-- **Lane C + Lane D** — Credibility + Interpretive (minimal overlap)
-
-Avoid running simultaneously:
-- **Lane A + Lane B** — Lane B depends on Lane A completing first
-- **Lane B + Lane C/D/E** — Lane B modifies `web_of_belief.py`
-
----
-
 *Created: February 8, 2026*
+*Updated: February 11, 2026 (MVP Integration Lanes)*

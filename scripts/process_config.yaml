@@ -1,0 +1,75 @@
+# MVP-2: Batch Processing Configuration
+# ======================================
+#
+# This configuration file controls how papers are processed through
+# the Article Eater pipeline and accumulated into the web of belief.
+#
+# Usage:
+#   python scripts/process_papers.py --config scripts/process_config.yaml
+
+# Input Sources
+# -------------
+
+# Directory containing job bundles (directories with paper.pdf + paper.json)
+# Each bundle must have at minimum:
+#   - paper.pdf (the PDF to process)
+#   - paper.json (metadata in ae.paper.v1 schema)
+bundles_dir: ~/article_eater_jobs
+
+# Optional: File containing paper IDs to process (one per line)
+# Papers will be matched to bundles by ID
+# paper_list_file: ~/papers_to_process.txt
+
+# Processing Options
+# ------------------
+
+# Processing profile: fast, standard, or deep
+# - fast: Quick extraction, less thorough
+# - standard: Balanced speed and quality (default)
+# - deep: Thorough extraction, slower
+profile: standard
+
+# Human-in-the-loop mode: off, auto, or required
+# - off: No human review
+# - auto: Human review only if uncertainty is high (default)
+# - required: Always require human review
+hitl: auto
+
+# Maximum number of papers to process (null for unlimited)
+limit: null
+
+# Skip papers that have already been processed into the accumulated web
+skip_already_processed: true
+
+# Output Options
+# --------------
+
+# Base directory for pipeline output (null for default: alongside bundles)
+# Each paper creates a subdirectory with extraction results
+# output_dir: ~/article_eater_outputs
+
+# Path to accumulator SQLite database (null for default: data/web_persistence.db)
+# accumulator_db: ~/accumulated_web.db
+
+# Path to accumulated web JSON export (null for default: data/accumulated_web.json)
+# accumulator_json: ~/accumulated_web.json
+
+# Circuit Breaker
+# ---------------
+# Prevents runaway failures by pausing after consecutive errors
+
+# Number of consecutive failures before pausing
+max_consecutive_failures: 3
+
+# Whether to pause (true) or continue (false) when circuit breaker triggers
+pause_on_circuit_break: true
+
+# Progress Tracking
+# -----------------
+
+# File to save progress updates (written every 10 papers)
+# Contains JSON with counts and per-paper results
+progress_file: data/batch_progress.json
+
+# Enable verbose logging
+verbose: false
