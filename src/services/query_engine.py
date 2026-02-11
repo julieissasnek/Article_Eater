@@ -201,8 +201,9 @@ class QueryEngine:
         # Parse the query
         parse_result = self._parser.parse(query_text)
 
-        if parse_result.needs_clarification:
-            return self._clarification_response(query_id, query_text, parse_result)
+        # D7 Repair (Simon): Attempt search even for ambiguous queries
+        # Return partial results with clarification, don't block
+        needs_clarification = parse_result.needs_clarification
 
         # Search the web
         matched_beliefs = self._search_web(
@@ -218,6 +219,9 @@ class QueryEngine:
         response_mode = ResponseMode(request.get("response_mode", "summary"))
 
         if not matched_beliefs:
+            # No results - check if clarification would help
+            if needs_clarification:
+                return self._clarification_response(query_id, query_text, parse_result)
             return self._no_results_response(
                 query_id, query_text, parse_result, processing_time_ms,
                 include_gaps=request.get("include_gaps", False)
@@ -233,6 +237,21 @@ class QueryEngine:
             include_gaps=request.get("include_gaps", False),
             processing_time_ms=processing_time_ms
         )
+
+        # D7: If clarification was needed but we found results, mark as partial
+        if needs_clarification:
+            response["status"] = "partial"
+            response["clarification"] = {
+                "reason": "Query was ambiguous - showing best matches",
+                "options": [
+                    {
+                        "label": opt,
+                        "description": f"Search for {opt}",
+                        "query_text": opt
+                    }
+                    for opt in parse_result.clarification_options[:4]
+                ]
+            }
 
         return response
 
@@ -289,7 +308,7 @@ class QueryEngine:
             # Apply context filters
             if context:
                 if context.get("theory_filter"):
-                    if not any(t in belief.theory_ids for t in context["theory_filter"]):
+                    if belief.theory_id not in context["theory_filter"]:
                         continue
 
         # Sort by score (descending), then credence (descending)
@@ -432,10 +451,10 @@ class QueryEngine:
             })
 
             # Track theories
-            for theory_id in belief.theory_ids:
-                if theory_id not in theories:
-                    theories[theory_id] = {"theory_id": theory_id, "contribution": 0}
-                theories[theory_id]["contribution"] += 1
+            if belief.theory_id:
+                if belief.theory_id not in theories:
+                    theories[belief.theory_id] = {"theory_id": belief.theory_id, "contribution": 0}
+                theories[belief.theory_id]["contribution"] += 1
 
             # Track abstract-only causal claims
             if self._is_causal_claim(belief):
@@ -542,9 +561,16 @@ class QueryEngine:
                 "suggested_search": f"{obj} research studies"
             })
 
-        # Check for high-uncertainty beliefs
+        # D3 Repair (Cartwright): Weight uncertainty by epistemic level
+        # THEORETICAL uncertainty × 1.5, EMPIRICAL × 1.0
+        def weighted_uncertainty(belief: Belief) -> float:
+            base = belief.credence.uncertainty
+            if belief.level == EpistemicLevel.THEORETICAL:
+                return base * 1.5
+            return base
+
         uncertain_beliefs = [b for b in self.web.beliefs.values()
-                            if b.credence.uncertainty > 0.3 and
+                            if weighted_uncertainty(b) > 0.3 and
                             (subject.lower() in b.content.lower() or
                              (obj and obj.lower() in b.content.lower()))]
 
@@ -564,7 +590,28 @@ class QueryEngine:
         }
 
     def _is_causal_claim(self, belief: Belief) -> bool:
-        """Check if belief is a causal claim."""
+        """
+        Check if belief is a causal claim.
+
+        D8 Repair (Pearl): Use causal_direction field, not keywords.
+        Keywords are fallback only for UNKNOWN direction.
+        """
+        from src.services.web_of_belief import CausalDirection
+
+        # Primary check: use causal_direction field (per Pearl panel)
+        if hasattr(belief, 'causal_direction'):
+            causal_directions = {
+                CausalDirection.FORWARD,
+                CausalDirection.REVERSE,
+                CausalDirection.BIDIRECTIONAL,
+                CausalDirection.MEDIATED
+            }
+            if belief.causal_direction in causal_directions:
+                return True
+            if belief.causal_direction == CausalDirection.CORRELATIONAL:
+                return False  # Explicitly correlational, not causal
+
+        # Fallback: keyword matching only for UNKNOWN direction
         causal_keywords = ['cause', 'effect', 'increase', 'decrease', 'improve',
                           'reduce', 'lead to', 'result in', 'affect']
         content_lower = belief.content.lower()
