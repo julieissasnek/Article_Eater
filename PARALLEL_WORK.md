@@ -329,7 +329,7 @@ Say: "Start MVP-GUI scaffolding with mock data. This is Terminal 3 of the UI Tra
 | MVP-2 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | 14 tests pass |
 | MVP-3 | T2 | TERMINAL-2 | 2026-02-11 | IN PROGRESS | Query Engine |
 | MVP-GUI | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | Scaffold + wiring |
-| MVP-5 | T3 | UNCLAIMED | — | BLOCKED | Needs all lanes |
+| MVP-5 | T1 | MAIN-TERMINAL | 2026-02-11 | ✓ COMPLETE | Demo + docs |
 
 ---
 
