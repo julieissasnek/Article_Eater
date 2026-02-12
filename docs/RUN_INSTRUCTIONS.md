@@ -70,16 +70,16 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/query` | GET/POST | Query the web of belief |
-| `/report/{type}` | GET | Generate reports |
-| `/ingest` | POST | Ingest new papers |
-| `/health` | GET | Health check |
+| `/api/v1/query` | GET/POST | Query the web of belief |
+| `/api/v1/reports/{type}` | GET | Generate reports |
+| `/api/v1/ingestion/paper` | POST | Ingest new papers + beliefs |
+| `/healthz` | GET | Health check |
 
 ## 5. Running Tests
 
 ```bash
 # All tests
-pytest -q
+pytest -q  # discovery is constrained to tests/ via pytest.ini
 
 # Core service tests only (no external dependencies)
 pytest tests/test_causal_classifier.py tests/test_reporting.py \
@@ -88,6 +88,8 @@ pytest tests/test_causal_classifier.py tests/test_reporting.py \
 # With coverage
 pytest --cov=src --cov-report=html
 ```
+
+Admin/profile key routes require `X-Admin-Token` (`AE_ADMIN_TOKEN`) in request headers.
 
 ## 6. Production Verification
 

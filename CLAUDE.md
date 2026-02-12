@@ -154,10 +154,10 @@ OUTPUT
 
 ### Write Endpoint Authorization
 
-Write endpoints (`/api/v1/ingestion/*`, `/profile/api-keys/*`) are **intentionally unguarded** because:
-1. The server binds to localhost by default
-2. This is an academic research tool, not a public service
-3. Authentication overhead would impede rapid iteration during research
+Write endpoint policy currently differs by surface:
+1. `/api/v1/ingestion/*` is still local-first and unauthenticated.
+2. Key/profile/admin routes (`/profile/api-keys/*`, `/profile/keys`, `/profile`, `/admin/stats`) require `X-Admin-Token` (`AE_ADMIN_TOKEN`).
+3. Public/network deployment still requires full auth hardening across all write/admin surfaces.
 
 ### Production Exposure Warning
 
@@ -246,7 +246,7 @@ See root `/Users/davidusa/REPOS/CLAUDE.md` for full check-in/check-out protocol.
 
 ```bash
 # Run tests
-pytest -q                                    # Quick test run
+pytest -q                                    # Quick test run (discovery constrained to tests/ via pytest.ini)
 pytest tests/test_extraction_to_web.py -v   # Specific test file
 
 # Linting (ruff configured in pyproject.toml)
