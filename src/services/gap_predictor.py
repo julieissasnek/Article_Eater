@@ -197,6 +197,148 @@ class GapPredictor:
         self._gap_counter += 1
         return f"gap_{self._gap_counter:04d}"
 
+    def _normalized_level(self, belief: Any) -> str:
+        """Return a normalized epistemic level label for robust comparisons."""
+        level = getattr(belief, 'level', None)
+        if level is None:
+            return ""
+
+        # Enum-backed beliefs should compare by `.value` (e.g., "empirical"),
+        # not `str(enum)` (e.g., "EpistemicLevel.EMPIRICAL").
+        if hasattr(level, 'value'):
+            return str(level.value).upper()
+        return str(level).upper()
+
+    # =========================================================================
+    # GR-2: Local Corpus Check (Gap Resolution Improvement 2026-02-12)
+    # =========================================================================
+
+    def find_local_evidence_for_gap(self, gap: PredictedGap) -> Dict[str, List[Dict]]:
+        """
+        Before suggesting external search, check local corpus for evidence.
+
+        Checks:
+        1. Extracted findings in data/extracted_findings/
+        2. Existing beliefs that match via keywords but not canonical IDs
+        3. Unprocessed abstracts in data/abstracts/
+
+        Args:
+            gap: The PredictedGap to find evidence for
+
+        Returns:
+            Dict with keys: 'extracted_findings', 'keyword_matched_beliefs', 'unprocessed'
+        """
+        from pathlib import Path
+        import json
+
+        result = {
+            'extracted_findings': [],
+            'keyword_matched_beliefs': [],
+            'unprocessed_abstracts': []
+        }
+
+        # Get keywords from gap description and affected edge
+        keywords = self._extract_gap_keywords(gap)
+        logger.info(f"Searching local corpus for gap {gap.gap_id} with keywords: {keywords}")
+
+        # 1. Check extracted findings
+        findings_dir = Path("data/extracted_findings")
+        if findings_dir.exists():
+            for jsonl_file in findings_dir.glob("*.jsonl"):
+                try:
+                    with open(jsonl_file, 'r') as f:
+                        for line in f:
+                            finding = json.loads(line.strip())
+                            content = finding.get('content', '') + ' ' + finding.get('finding', '')
+                            if self._content_matches_keywords(content, keywords):
+                                result['extracted_findings'].append({
+                                    'source_file': str(jsonl_file.name),
+                                    'finding': finding
+                                })
+                except Exception as e:
+                    logger.warning(f"Error reading {jsonl_file}: {e}")
+
+        # 2. Check existing beliefs via keyword matching
+        if self.web and self.web.beliefs:
+            for belief in self.web.beliefs.values():
+                if self._content_matches_keywords(belief.content, keywords):
+                    # Check if this belief is NOT already linked to the gap's edge
+                    edge_id = gap.affected_edge
+                    is_already_supporting = False
+
+                    if edge_id and hasattr(belief, 'environment_id') and hasattr(belief, 'outcome_id'):
+                        # Simple check - if belief already supports this edge, skip
+                        edge_parts = edge_id.split('_')
+                        if len(edge_parts) >= 2:
+                            env_part = edge_parts[0]
+                            out_part = edge_parts[-1]
+                            if (belief.environment_id and env_part in belief.environment_id.lower()) or \
+                               (belief.outcome_id and out_part in belief.outcome_id.lower()):
+                                is_already_supporting = True
+
+                    if not is_already_supporting:
+                        result['keyword_matched_beliefs'].append({
+                            'belief_id': belief.belief_id,
+                            'content': belief.content[:200] + '...' if len(belief.content) > 200 else belief.content,
+                            'environment_id': getattr(belief, 'environment_id', None),
+                            'outcome_id': getattr(belief, 'outcome_id', None),
+                            'note': 'May need canonical ID update to match edge'
+                        })
+
+        # 3. Check unprocessed abstracts
+        abstracts_dir = Path("data/abstracts")
+        if abstracts_dir.exists():
+            for json_file in abstracts_dir.glob("*.json"):
+                try:
+                    with open(json_file, 'r') as f:
+                        abstract_data = json.load(f)
+                        abstract_text = abstract_data.get('abstract', '')
+                        if self._content_matches_keywords(abstract_text, keywords):
+                            result['unprocessed_abstracts'].append({
+                                'source_file': str(json_file.name),
+                                'doi': abstract_data.get('doi'),
+                                'title': abstract_data.get('title'),
+                                'preview': abstract_text[:300] + '...' if len(abstract_text) > 300 else abstract_text
+                            })
+                except Exception as e:
+                    logger.warning(f"Error reading {json_file}: {e}")
+
+        total_found = (len(result['extracted_findings']) +
+                      len(result['keyword_matched_beliefs']) +
+                      len(result['unprocessed_abstracts']))
+        logger.info(f"Found {total_found} potential local evidence items for gap {gap.gap_id}")
+
+        return result
+
+    def _extract_gap_keywords(self, gap: PredictedGap) -> List[str]:
+        """Extract search keywords from a gap."""
+        keywords = []
+
+        # From affected edge
+        if gap.affected_edge:
+            parts = gap.affected_edge.replace('_', ' ').split()
+            keywords.extend(parts)
+
+        # From description
+        desc_words = gap.description.lower().split()
+        for word in desc_words:
+            if len(word) > 4 and word not in ['that', 'this', 'with', 'from', 'have', 'been']:
+                keywords.append(word)
+
+        # From suggested search
+        if gap.suggested_search:
+            keywords.extend(gap.suggested_search.split()[:5])
+
+        return list(set(keywords))[:10]  # Dedupe and limit
+
+    def _content_matches_keywords(self, content: str, keywords: List[str], min_matches: int = 2) -> bool:
+        """Check if content contains enough keywords."""
+        if not content:
+            return False
+        content_lower = content.lower()
+        matches = sum(1 for kw in keywords if kw.lower() in content_lower)
+        return matches >= min_matches
+
     # Panel D0d (Pearl): Compute graph centrality for VOI weighting
     # Panel Review 2026-02-11: Weight connections by epistemic level (Pearl)
     LEVEL_WEIGHTS: Dict[str, float] = {
@@ -463,10 +605,8 @@ class GapPredictor:
 
         # Check each pair for mechanism gaps
         for (env_id, out_id), beliefs in pairs.items():
-            empirical = [b for b in beliefs if hasattr(b, 'level') and
-                        str(b.level).upper() in ['EMPIRICAL', 'OBSERVATIONAL']]
-            theoretical = [b for b in beliefs if hasattr(b, 'level') and
-                          str(b.level).upper() == 'THEORETICAL']
+            empirical = [b for b in beliefs if self._normalized_level(b) in ['EMPIRICAL', 'OBSERVATIONAL']]
+            theoretical = [b for b in beliefs if self._normalized_level(b) == 'THEORETICAL']
 
             if empirical and not theoretical:
                 voi = self._compute_mechanism_voi(empirical)
@@ -695,10 +835,8 @@ class GapPredictor:
 
         # Check for theoretical-only relationships
         for (env_id, out_id), beliefs in pairs.items():
-            theoretical = [b for b in beliefs if hasattr(b, 'level') and
-                          str(b.level).upper() == 'THEORETICAL']
-            empirical = [b for b in beliefs if hasattr(b, 'level') and
-                        str(b.level).upper() in ['EMPIRICAL', 'OBSERVATIONAL']]
+            theoretical = [b for b in beliefs if self._normalized_level(b) == 'THEORETICAL']
+            empirical = [b for b in beliefs if self._normalized_level(b) in ['EMPIRICAL', 'OBSERVATIONAL']]
 
             if theoretical and not empirical:
                 env_name = env_id.split('.')[-1]

@@ -38,9 +38,19 @@ except ImportError:
 router = APIRouter(tags=["annotator"])  # Prefix is added when mounted in main.py
 
 # Paths
-AF_DATA_PATH = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data")
-AE_DB_PATH = Path("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/ae.db")
-ANNOTATIONS_DIR = Path("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/annotations")
+_AE_REPO_ROOT = Path(__file__).resolve().parents[2]
+AF_DATA_PATH = Path(
+    os.environ.get(
+        "AF_DATA_PATH",
+        str(_AE_REPO_ROOT.parent / "Article_Finder_v3_2_3" / "data")
+    )
+).expanduser()
+AE_DB_PATH = Path(
+    os.environ.get("AE_DB_PATH", str(_AE_REPO_ROOT / "ae.db"))
+).expanduser()
+ANNOTATIONS_DIR = Path(
+    os.environ.get("AE_ANNOTATIONS_DIR", str(_AE_REPO_ROOT / "data" / "annotations"))
+).expanduser()
 
 
 # =============================================================================

@@ -51,6 +51,10 @@ def test_critical_routes_mounted():
         "Expected paths containing '/ingestion' but found none. "
         "Check that ingestion_router is included with include_router()."
     )
+    assert "/api/v1/ingestion/paper" in paths, (
+        "Canonical ingestion path missing. Expected '/api/v1/ingestion/paper'. "
+        "Route prefix composition may be incorrect."
+    )
 
     # Web of belief routes must be mounted
     web_paths = [p for p in paths if "/web" in p]

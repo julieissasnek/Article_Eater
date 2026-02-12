@@ -25,7 +25,7 @@ from src.services.web_of_belief import (
 )
 
 
-router = APIRouter(prefix="/api/ingestion", tags=["ingestion"])
+router = APIRouter(prefix="/ingestion", tags=["ingestion"])
 
 
 # =============================================================================
@@ -41,6 +41,8 @@ class SourceDepthEnum(str, Enum):
 
 class EpistemicLevelEnum(str, Enum):
     """Epistemic level options."""
+    OBSERVATIONAL = "observational"
+    # Backward-compatible alias accepted by older clients.
     OBSERVATION = "observation"
     EMPIRICAL = "empirical"
     THEORETICAL = "theoretical"
@@ -335,8 +337,18 @@ def _add_belief_to_web(
     content_hash = hashlib.md5(belief_input.content.encode()).hexdigest()[:8]
     belief_id = f"b_{content_hash}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
 
-    # Convert enums
-    level = EpistemicLevel(belief_input.level.value)
+    # Convert enums. Accept legacy "observation" while mapping to canonical
+    # WebOfBelief value "observational".
+    level_value = belief_input.level.value
+    if level_value == EpistemicLevelEnum.OBSERVATION.value:
+        level_value = EpistemicLevel.OBSERVATIONAL.value
+    try:
+        level = EpistemicLevel(level_value)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Invalid epistemic level '{belief_input.level.value}'"
+        ) from exc
     source_depth = SourceDepth(belief_input.source_depth.value)
 
     # Build paper_ids list

@@ -1,8 +1,6 @@
 from fastapi import FastAPI, Request, Response, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from pathlib import Path
-from .routes import interactions
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import interactions
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -10,6 +8,7 @@ import time, logging, sqlite3, json, os
 from datetime import datetime
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 from .policy import get_policy
+from src.security.admin_guard import admin_required
 
 # Import auth and websocket modules
 try:
@@ -222,10 +221,6 @@ class ProfileUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[str] = None
     preferences: Optional[Dict[str, Any]] = None
-
-class APIKeyAdd(BaseModel):
-    provider: str
-    key: str
 
 # ============================================================================
 # HEALTH & METRICS
@@ -754,7 +749,7 @@ async def get_usage():
 # PROFILE ENDPOINTS
 # ============================================================================
 @app.get("/profile")
-async def get_profile():
+async def get_profile(ok: bool = Depends(admin_required)):
     """Get user profile"""
     # In production, get from authenticated user
     return {
@@ -766,46 +761,17 @@ async def get_profile():
     }
 
 @app.patch("/profile")
-async def update_profile(profile: ProfileUpdate):
+async def update_profile(profile: ProfileUpdate, ok: bool = Depends(admin_required)):
     """Update user profile"""
     # In production, update authenticated user's profile
     logger.info(f"Profile update requested: {profile.dict(exclude_none=True)}")
     return {"message": "Profile updated successfully"}
 
-@app.get("/profile/api-keys")
-async def list_api_keys():
-    """List user's API keys (masked)"""
-    # In production, fetch from encrypted storage
-    return [
-        {
-            "provider": "openai",
-            "masked_key": "sk-proj-abc...xyz",
-            "added_at": "2025-09-20T10:00:00Z",
-            "last_used": datetime.now().isoformat(),
-            "usage_count": 127,
-            "status": "active"
-        }
-    ]
-
-@app.post("/profile/api-keys")
-async def add_api_key(key_data: APIKeyAdd):
-    """Add a new API key"""
-    # In production, encrypt and store
-    logger.info(f"API key added for provider: {key_data.provider}")
-    return {"message": "API key added successfully", "provider": key_data.provider}
-
-@app.delete("/profile/api-keys/{provider}")
-async def delete_api_key(provider: str):
-    """Delete an API key"""
-    # In production, remove from storage
-    logger.info(f"API key deleted for provider: {provider}")
-    return {"message": "API key deleted successfully"}
-
 # ============================================================================
 # ADMIN ENDPOINTS (optional)
 # ============================================================================
 @app.get("/admin/stats")
-async def get_admin_stats():
+async def get_admin_stats(ok: bool = Depends(admin_required)):
     """Get system-wide statistics (admin only)"""
     try:
         conn = get_db()
@@ -966,9 +932,6 @@ app.include_router(entrenchment_router, prefix='/api/v1', tags=['entrenchment'])
 # Web-BN Integration (INT-1, 2026-02-11)
 from app.routes.integration import router as integration_router
 app.include_router(integration_router, tags=['integration'])
-
-# v20.0.1: enable interactions router
-app.include_router(interactions.router)
 
 app.include_router(interactions_router)
 app.include_router(profile_router)

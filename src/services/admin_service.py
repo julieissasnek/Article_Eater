@@ -137,17 +137,6 @@ def get_prompts(ok: bool = Depends(admin_required)):
             items.append({'name': p.name, 'content': c})
     return {'prompts': items}
 
-@router.post('/prompts/update')
-def update_prompt(payload: dict, ok: bool = Depends(admin_required)):
-    name = payload.get('prompt_name'); content = payload.get('content','')
-    if not name or any(x in name for x in ['/', '\\']): raise HTTPException(status_code=400, detail='Invalid name')
-    PROMPTS_DIR.mkdir(parents=True, exist_ok=True)
-    arch = Path('archive/admin_edits')/datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S')
-    arch.mkdir(parents=True, exist_ok=True)
-    bak = (PROMPTS_DIR/name); (arch/f"{name}.bak").write_text(bak.read_text(encoding='utf-8', errors='ignore') if bak.exists() else '', encoding='utf-8')
-    (PROMPTS_DIR/name).write_text(content, encoding='utf-8')
-    return {'status':'ok','saved':name}
-
 @router.get('/confidence', response_class=JSONResponse)
 def get_confidence(ok: bool = Depends(admin_required)):
     if not CONF_PATH.exists():
@@ -171,7 +160,8 @@ def update_prompt(payload: dict, ok: bool = Depends(admin_required)):
       - name: filename (e.g. 'ruthless_prompt.md')
       - content: prompt text
     """
-    name = (payload or {}).get('name')
+    # Support both legacy `prompt_name` and current `name`.
+    name = (payload or {}).get('name') or (payload or {}).get('prompt_name')
     content = (payload or {}).get('content') or ''
     if not name:
         raise HTTPException(status_code=400, detail='name is required')
