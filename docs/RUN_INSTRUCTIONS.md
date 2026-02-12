@@ -91,6 +91,12 @@ pytest --cov=src --cov-report=html
 
 Admin/profile key routes require `X-Admin-Token` (`AE_ADMIN_TOKEN`) in request headers.
 
+Also guarded:
+- `/admin`
+- `/admin/stats`
+- `/usage/admin/summary`
+- `/api/v1/web/admin/*`
+
 ## 6. Production Verification
 
 ```bash
@@ -100,6 +106,18 @@ Admin/profile key routes require `X-Admin-Token` (`AE_ADMIN_TOKEN`) in request h
 # Check governance compliance
 python scripts/check_governance.py
 ```
+
+## 6.1 BN Frontend Verification (cross-repo)
+
+```bash
+cd /Users/davidusa/REPOS/BN_graphical/frontend-v2
+npm ci
+npm run build
+```
+
+If Vite/Rollup reports missing native optional dependencies (for example
+`@rollup/rollup-darwin-arm64`), run `npm ci` again in `frontend-v2` to
+rebuild `node_modules` for the current platform and architecture.
 
 ## 7. Output Files
 

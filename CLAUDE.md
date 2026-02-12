@@ -156,7 +156,7 @@ OUTPUT
 
 Write endpoint policy currently differs by surface:
 1. `/api/v1/ingestion/*` is still local-first and unauthenticated.
-2. Key/profile/admin routes (`/profile/api-keys/*`, `/profile/keys`, `/profile`, `/admin/stats`) require `X-Admin-Token` (`AE_ADMIN_TOKEN`).
+2. Key/profile/admin routes (`/profile/api-keys/*`, `/profile/keys`, `/profile`, `/admin`, `/admin/stats`, `/usage/admin/summary`, `/api/v1/web/admin/*`) require `X-Admin-Token` (`AE_ADMIN_TOKEN`).
 3. Public/network deployment still requires full auth hardening across all write/admin surfaces.
 
 ### Production Exposure Warning

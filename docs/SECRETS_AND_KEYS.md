@@ -77,8 +77,9 @@ Code reference: `src/security/admin_guard.py`.
   - If `AE_ADMIN_TOKEN` is empty, or the header is missing/mismatched,
     the request fails with `401 admin token required`.
   - On success, an audit record is appended to `logs/admin_audit.log`.
-  - Guarded surfaces include admin routes and profile surfaces
-    (`/profile/api-keys`, `/profile/keys`, `/profile`).
+  - Guarded surfaces include admin/profile routes:
+    (`/profile/api-keys`, `/profile/keys`, `/profile`, `/admin`,
+    `/admin/stats`, `/usage/admin/summary`, `/api/v1/web/admin/*`).
 
 ### Recommended practice
 
@@ -151,8 +152,9 @@ Before running Article Eater in a shared environment:
    - `/ui/config` shows `engine_use_mocks: false` in production.
    - Admin endpoints (e.g., RuleGraph v2 tools) are only reachable when
      sending the correct `X-Admin-Token` header.
-   - Profile endpoints (`/profile`, `/profile/api-keys`, `/profile/keys`) reject
-     requests without `X-Admin-Token`.
+   - Profile/admin endpoints (`/profile`, `/profile/api-keys`, `/profile/keys`,
+     `/admin`, `/admin/stats`, `/usage/admin/summary`, `/api/v1/web/admin/*`)
+     reject requests without `X-Admin-Token`.
 
 ## 5. .env vs .env.example
 ...
