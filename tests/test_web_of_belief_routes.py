@@ -425,9 +425,19 @@ class TestCategoriesEndpoint:
 class TestAdminEndpoints:
     """Tests for admin endpoints."""
 
-    def test_load_demo(self, client):
-        """Test loading demo data."""
+    def test_load_demo_requires_admin_token(self, client, monkeypatch):
+        """Admin demo loader must reject unauthenticated requests."""
+        monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
         response = client.post("/api/v1/web/admin/load-demo")
+        assert response.status_code == 401
+
+    def test_load_demo(self, client, monkeypatch):
+        """Test loading demo data."""
+        monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
+        response = client.post(
+            "/api/v1/web/admin/load-demo",
+            headers={"X-Admin-Token": "test-token"},
+        )
         assert response.status_code == 200
 
         data = response.json()
@@ -439,14 +449,18 @@ class TestAdminEndpoints:
         data = response.json()
         assert data["count"] > 0
 
-    def test_clear_web(self, client, demo_web):
+    def test_clear_web(self, client, demo_web, monkeypatch):
         """Test clearing web."""
+        monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
         # Verify we have data
         response = client.get("/api/v1/web/top-beliefs")
         assert response.json()["count"] > 0
 
         # Clear
-        response = client.delete("/api/v1/web/admin/clear")
+        response = client.delete(
+            "/api/v1/web/admin/clear",
+            headers={"X-Admin-Token": "test-token"},
+        )
         assert response.status_code == 200
 
         # Verify cleared
@@ -484,10 +498,14 @@ class TestEdgeCases:
 class TestIntegration:
     """Integration tests for full workflow."""
 
-    def test_load_explore_detail_workflow(self, client):
+    def test_load_explore_detail_workflow(self, client, monkeypatch):
         """Test typical user workflow: load demo → explore → get detail."""
+        monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
         # Load demo
-        response = client.post("/api/v1/web/admin/load-demo")
+        response = client.post(
+            "/api/v1/web/admin/load-demo",
+            headers={"X-Admin-Token": "test-token"},
+        )
         assert response.status_code == 200
 
         # Get graph
@@ -501,10 +519,14 @@ class TestIntegration:
         assert response.status_code == 200
         assert response.json()["belief_id"] == first_node_id
 
-    def test_search_and_detail_workflow(self, client):
+    def test_search_and_detail_workflow(self, client, monkeypatch):
         """Test search → detail workflow."""
+        monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
         # Load demo
-        client.post("/api/v1/web/admin/load-demo")
+        client.post(
+            "/api/v1/web/admin/load-demo",
+            headers={"X-Admin-Token": "test-token"},
+        )
 
         # Search
         response = client.get("/api/v1/web/search?q=daylight")

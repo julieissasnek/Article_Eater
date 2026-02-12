@@ -944,7 +944,7 @@ app.include_router(admin_router, prefix='/api/admin', tags=['admin'])
 from fastapi.responses import HTMLResponse
 from pathlib import Path as _Path
 @app.get('/admin', response_class=HTMLResponse)
-def admin_page():
+def admin_page(ok: bool = Depends(admin_required)):
     p = _Path('src/gui/templates/admin.html')
     return p.read_text(encoding='utf-8', errors='ignore') if p.exists() else '<h1>Admin Control Room</h1>'
 

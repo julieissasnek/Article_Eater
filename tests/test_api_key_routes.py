@@ -132,3 +132,15 @@ def test_profile_stub_routes_require_admin_token(monkeypatch):
 
         r = client.patch("/profile", headers=headers, json={"name": "Updated Name"})
         assert r.status_code == 200
+
+
+def test_admin_page_requires_admin_token(monkeypatch):
+    monkeypatch.setenv("AE_ADMIN_TOKEN", "test-token")
+    headers = {"X-Admin-Token": "test-token"}
+
+    with TestClient(app) as client:
+        r = client.get("/admin")
+        assert r.status_code == 401
+
+        r = client.get("/admin", headers=headers)
+        assert r.status_code == 200

@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from ..db import connect
 from ..middleware.costs import record_cost_event
+from src.security.admin_guard import admin_required
 
 router = APIRouter(prefix="/usage", tags=["usage"])
 
@@ -13,7 +14,7 @@ async def usage_me(request: Request, user_id: str = "anon"):
     return {"user": user_id, "events": [{"ts": r[0], "provider": r[1], "model": r[2], "in": r[3], "out": r[4], "cost": r[5]} for r in rows]}
 
 @router.get("/admin/summary")
-async def usage_admin_summary():
+async def usage_admin_summary(ok: bool = Depends(admin_required)):
     con = connect(); cur = con.cursor()
     cur.execute("SELECT provider, model, COUNT(*), SUM(tokens_in), SUM(tokens_out), SUM(cost_usd) FROM api_usage_events GROUP BY provider, model ORDER BY 1,2" )
     rows = cur.fetchall(); con.close()

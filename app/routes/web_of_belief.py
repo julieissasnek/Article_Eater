@@ -17,6 +17,7 @@ from pydantic import BaseModel
 from src.services.web_of_belief import WebOfBelief, Belief
 from src.services.graph_api import GraphAPIService, GraphExport, NodeDetail, SearchResults
 from src.services.stability_engine import StabilityEngine, StabilityReport
+from src.security.admin_guard import admin_required
 
 
 # =============================================================================
@@ -344,7 +345,7 @@ async def get_categories() -> Dict[str, Any]:
 # =============================================================================
 
 @router.post("/admin/load-demo")
-async def load_demo_data() -> Dict[str, Any]:
+async def load_demo_data(ok: bool = Depends(admin_required)) -> Dict[str, Any]:
     """
     Load demonstration data for Evidence Explorer.
     Creates sample beliefs with various states for testing.
@@ -470,7 +471,7 @@ async def load_demo_data() -> Dict[str, Any]:
 
 
 @router.delete("/admin/clear")
-async def clear_web() -> Dict[str, Any]:
+async def clear_web(ok: bool = Depends(admin_required)) -> Dict[str, Any]:
     """Clear the web of belief (for testing)."""
     global _web_instance
     _web_instance = WebOfBelief()
