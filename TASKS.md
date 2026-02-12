@@ -1,8 +1,47 @@
 # TASKS.md
 
-*Last updated: Tuesday, February 11, 2026 (MVP Integration lanes defined — see PARALLEL_WORK.md)*
+*Last updated: Thursday, February 12, 2026*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
+
+---
+
+## ⭐ CODEX TASK LIST (TOP PRIORITY) — Added 2026-02-12
+
+**Task List ID**: `CODEX-TASKS-2026-02-12`
+**Location**: `docs/CODEX_TASK_LIST_2026-02-12.md`
+**Restart Handoff**: `docs/CODEX_CONTINUATION_HANDOFF_2026-02-12.md` (read first when resuming after context compaction/restart)
+
+| Task | Description | Status |
+|------|-------------|--------|
+| TASK-0 | Ruthless System Evaluation | COMPLETE (2026-02-12) |
+| TASK-1 | Fix Critical Issues | COMPLETE (2026-02-12, code-level) |
+| TASK-2 | Fix Major Issues | IN PROGRESS (2026-02-12) |
+| TASK-3 | Integration Test Suite | COMPLETE (2026-02-12) |
+| TASK-4 | Documentation Audit | COMPLETE (2026-02-12) |
+| TASK-5 | Performance Profiling | COMPLETE (2026-02-12) |
+| TASK-6 | Security Hardening | COMPLETE (2026-02-12) |
+
+**Start Command**: Point Codex to `docs/CODEX_TASK_LIST_2026-02-12.md` and tell it to begin.
+
+---
+
+## ⭐ CHATGPT TASK LIST — Added 2026-02-12
+
+**Task List ID**: `CHAT-TASKS-2026-02-12`
+**Location**: `docs/CHAT_TASK_LIST_2026-02-12.md`
+
+Long-running evidence processing tasks for ChatGPT:
+- T1: Abstract Processing (42h)
+- T2: Table Extraction (17h)
+- T3: Citation Pruning (33h)
+- T4: Canonical ID Mapping (17h)
+- T5: Belief Generation (25h)
+- T6: Scope Extraction (17h)
+- T7: Theory Linkage (15h)
+- T8: Conflict Detection (7h)
+
+**Execution Order**: T3 → T1 → T4 → T5 → T6 → T2 → T7 → T8
 
 ---
 
@@ -51,49 +90,57 @@ This prevents duplicate work across parallel terminals.
 
 | Sprint | Description | Depends On | Status |
 |--------|-------------|------------|--------|
-| INT-1 | Edge Justification Foundation | - | IN_PROGRESS |
-| INT-2 | Gap Prediction Engine | INT-1 | PENDING |
-| INT-3 | BN Frontend — Evidence Panel | INT-1 | PENDING |
-| INT-4 | Epistemic Web Component | INT-1 | PENDING |
-| INT-5 | Cross-Layer Query API | INT-1 | PENDING |
-| INT-6 | User Modes & Testing | INT-2,3,4,5 | PENDING |
+| INT-1 | Edge Justification Foundation | - | ✓ COMPLETE |
+| INT-2 | Gap Prediction Engine | INT-1 | ✓ COMPLETE |
+| INT-3 | BN Frontend — Evidence Panel | INT-1 | ✓ COMPLETE |
+| INT-4 | Epistemic Web Component | INT-1 | ✓ COMPLETE |
+| INT-5 | Cross-Layer Query API | INT-1 | ✓ COMPLETE |
+| INT-6 | User Modes & Testing | INT-2,3,4,5 | ✓ COMPLETE |
 
 **Sprint Details:**
 
-#### INT-1: Edge Justification Foundation
-- [ ] Create `integration.edge_justification.v1.schema.json`
-- [ ] Implement `EdgeJustificationService`
-- [ ] Add `/api/v1/integration/edge/{id}/justification` endpoint
-- [ ] Write tests
+#### INT-1: Edge Justification Foundation ✓ COMPLETE (2026-02-11)
+- [x] Create `integration.edge_justification.v1.schema.json`
+- [x] Implement `EdgeJustificationService` (`src/services/edge_justification.py`)
+- [x] Add `/api/v1/integration/edge/{id}/justification` endpoint
+- [x] Write tests (`tests/test_edge_justification.py`)
 
-#### INT-2: Gap Prediction Engine
-- [ ] Implement `GapPredictor` class
-- [ ] Mediation, mechanism, boundary, direction gap detection
-- [ ] VOI calculation for prioritization
-- [ ] Write tests
+#### INT-2: Gap Prediction Engine ✓ COMPLETE (2026-02-11)
+- [x] Implement `GapPredictor` class (`src/services/gap_predictor.py`)
+- [x] Mediation, mechanism, boundary, direction gap detection
+- [x] VOI calculation for prioritization
+- [x] Write tests (`tests/test_gap_predictor.py`)
 
-#### INT-3: BN Frontend — Evidence Panel (BN_graphical repo)
-- [ ] Modify `CausalGraphView.tsx` — edge opacity from credence
-- [ ] Create `EvidencePanel.tsx`
-- [ ] Add edge click interaction
-- [ ] Write component tests
+#### INT-3: BN Frontend — Evidence Panel ✓ COMPLETE (2026-02-11, BN_graphical repo)
+- [x] Modify `CausalGraphView.tsx` — edge opacity from credence
+- [x] Create `EvidencePanel.tsx` with justification details
+- [x] Add edge click interaction
+- [x] Color edges by justification status (strong/moderate/weak/unjustified/contested)
 
-#### INT-4: Epistemic Web Component (BN_graphical repo)
-- [ ] Create `WebView.tsx` with React Flow
-- [ ] Node shapes by epistemic level
-- [ ] Clustering by theory
-- [ ] Filter controls
-- [ ] Write component tests
+#### INT-4: Epistemic Web Component ✓ COMPLETE (2026-02-11, BN_graphical repo)
+- [x] Create `WebView.tsx` with React Flow
+- [x] Node colors by epistemic level (theoretical/intermediate/empirical/observational)
+- [x] Edge colors by constraint type (supports/explains/contradicts/instantiates)
+- [x] Filter controls by level
+- [x] Add `/api/v1/integration/web/state` endpoint
 
-#### INT-5: Cross-Layer Query API
-- [ ] Implement `CrossLayerQueryService`
-- [ ] Provenance, theory, community, causal, gap endpoints
-- [ ] Write tests
+#### INT-5: Cross-Layer Query API ✓ COMPLETE (2026-02-11)
+- [x] Implement `CrossLayerQueryService` (`src/services/cross_layer_query.py`)
+- [x] Theory support queries, empirical grounding, environment-outcome lookup
+- [x] Cross-layer conflict detection, belief chains
+- [x] Layer statistics endpoint
+- [x] Write tests (`tests/test_cross_layer_query.py` — 16 tests passing)
 
-#### INT-6: User Modes & Integration Testing
-- [ ] Mode switcher UI (Knowledge/Prediction/Expert)
-- [ ] End-to-end integration tests
-- [ ] Documentation updates
+#### INT-6: User Modes & Integration Testing ✓ COMPLETE (2026-02-11)
+- [x] Mode switcher UI (Knowledge/Prediction/Expert)
+  - Created `ModeContext.tsx` with feature matrix per mode
+  - Created `ModeSwitcher.tsx` component with full and compact variants
+  - Updated `ExplorerPage.tsx` for mode-aware rendering
+- [x] Panel review for all INT sprints (see `docs/DECISIONS_INT_3_6_PANEL_REVIEW_2026-02-11.md`)
+  - 14 decisions reviewed by Pearl, Simon, Shneiderman, Cartwright, Haack
+  - 8 approved, 4 approved with enhancements, 2 require revision
+- [ ] End-to-end integration tests (deferred to follow-up sprint)
+- [ ] Documentation updates (deferred to follow-up sprint)
 
 **Parallelization Note**: After INT-1 completes, INT-2/3/4/5 can run in parallel.
 
@@ -1246,6 +1293,7 @@ For INFRA-1 and INFRA-14 (search orchestration), consult:
 
 | ID | Task | Completed | Outcome |
 |----|------|-----------|---------|
+| RULES-1 | Convert 31 findings to ae.rule.v2 format | 2026-02-11 | Created `scripts/convert_findings_to_rules.py`, output to `data/rules.jsonl` (31 rules) |
 | ENT-1 | Add publication_year/date to paper model | 2026-02-09 | Already in schema + DB (`paper_publication` table) |
 | ENT-2 | Build scholarly-time replay pipeline | 2026-02-09 | `src/services/entrenchment_replay.py` - Fixed attribute naming conflict |
 | ENT-3 | Store entrenchment snapshots for both timelines | 2026-02-09 | Added query methods to `web_persistence.py`: `get_entrenchment_history()`, `get_entrenchment_events()`, `get_latest_entrenchment()`, `compare_timeline_entrenchment()`, `get_entrenchment_trajectory()` |
@@ -2644,4 +2692,3 @@ This requires the extraction prompt to identify:
 - "Contrary to [Author Year], our results show..." → CONTRADICTS
 - "[Author Year] found X in [context]; we found X holds in [new context]" → EXTENDS
 - "While [Author Year] reported [effect], our more controlled study found [refined effect]" → REFINES or SUPERSEDES
-

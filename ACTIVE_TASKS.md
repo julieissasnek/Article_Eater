@@ -28,7 +28,7 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| — | — | — | — | — | See MVP lanes below |
+| CODEX-TASKS-2026-02-12/TASK-1..6 | Critical/Major fixes + integration + hardening | Codex-Terminal | 2026-02-12 00:50 GMT | IN PROGRESS | TASK-0/1/3/4/5/6 complete; TASK-2 still in progress. See docs/CODEX_CONTINUATION_HANDOFF_2026-02-12.md |
 
 ---
 
@@ -87,6 +87,17 @@ All tasks completed. See TASKS.md for details.
 | — | All Sprint 3.0 P2 tasks complete | — | — |
 
 ---
+
+## Completed Today (2026-02-12)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| CODEX-TASKS-2026-02-12/TASK-0 | Ruthless System Evaluation | Codex-Terminal | 2026-02-12 01:23 GMT | `docs/CODEX_EVALUATION_REPORT_2026-02-12.md` |
+| CODEX-TASKS-2026-02-12/TASK-1 | Fix Critical Issues | Codex-Terminal | 2026-02-12 01:45 GMT | Ingestion path+enum+gap predictor fixes; profile key hardening; BN TS compile fixed (`npx tsc -b`) |
+| CODEX-TASKS-2026-02-12/TASK-3 | Integration Test Suite | Codex-Terminal | 2026-02-12 01:40 GMT | Added `tests/test_full_integration.py` (3 tests passing) |
+| CODEX-TASKS-2026-02-12/TASK-4 | Documentation Audit | Codex-Terminal | 2026-02-12 03:20 GMT | Updated `CLAUDE.md`, `docs/SECRETS_AND_KEYS.md`, `docs/RUN_INSTRUCTIONS.md`, and continuation handoff |
+| CODEX-TASKS-2026-02-12/TASK-5 | Performance Profiling | Codex-Terminal | 2026-02-12 01:52 GMT | Added `docs/PERFORMANCE_REPORT_2026-02-12.md` |
+| CODEX-TASKS-2026-02-12/TASK-6 | Security Hardening | Codex-Terminal | 2026-02-12 03:15 GMT | Guarded `/admin`, `/usage/admin/summary`, and `/api/v1/web/admin/*`; added auth tests |
 
 ## Completed Today (2026-02-11)
 
