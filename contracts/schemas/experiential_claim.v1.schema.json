@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/experiential_claim.v1.schema.json",
+  "title": "ExperientialClaim",
+  "description": "A claim directly grounded in experience/observation. Per Haack's foundherentism: these form the anchors that prevent pure coherentism from floating free of reality. Not foundational in the classical sense (they can be revised), but they provide grounding.",
+  "type": "object",
+  "required": ["claim_id", "content", "observation_type", "directness"],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "description": "Unique identifier for this experiential claim",
+      "pattern": "^exp\\.[a-z0-9_]+$",
+      "examples": ["exp.ulrich_1984_recovery_time", "exp.kaplan_1989_preference_score"]
+    },
+    "content": {
+      "type": "string",
+      "description": "The content of the experiential claim - what was observed",
+      "minLength": 10,
+      "maxLength": 1000,
+      "examples": ["Patients with window views of trees had shorter hospital stays (7.96 days) compared to patients with views of a brick wall (8.70 days)"]
+    },
+    "observation_type": {
+      "type": "string",
+      "enum": ["MEASUREMENT", "BEHAVIORAL", "SELF_REPORT", "PHYSIOLOGICAL", "ENVIRONMENTAL", "DEMOGRAPHIC"],
+      "description": "Type of observation"
+    },
+    "directness": {
+      "type": "string",
+      "enum": ["DIRECT_OBSERVATION", "INSTRUMENT_MEDIATED", "INFERENCE_CLOSE", "INFERENCE_DISTANT"],
+      "description": "How directly observed. DIRECT = seen/heard. INSTRUMENT_MEDIATED = via measurement device. INFERENCE_CLOSE = one inference step from observation. INFERENCE_DISTANT = multiple inference steps."
+    },
+    "observer": {
+      "type": "object",
+      "description": "Who made the observation",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["RESEARCHER", "PARTICIPANT", "INSTRUMENT", "THIRD_PARTY"],
+          "description": "Type of observer"
+        },
+        "expertise": {
+          "type": "string",
+          "description": "Relevant expertise of observer"
+        },
+        "training": {
+          "type": "string",
+          "description": "Training for this observation type"
+        },
+        "reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Observer reliability (e.g., inter-rater reliability)"
+        }
+      }
+    },
+    "conditions": {
+      "type": "object",
+      "description": "Conditions under which observation was made",
+      "properties": {
+        "setting": {
+          "type": "string",
+          "description": "Physical setting"
+        },
+        "time_period": {
+          "type": "string",
+          "description": "When observation was made"
+        },
+        "sample": {
+          "type": "object",
+          "properties": {
+            "size": { "type": "integer", "minimum": 1 },
+            "description": { "type": "string" },
+            "selection_method": { "type": "string" }
+          }
+        },
+        "controls": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Control conditions or variables"
+        },
+        "potential_confounds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Potential confounding factors"
+        }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "description": "Measurement details for quantitative observations",
+      "properties": {
+        "instrument": {
+          "type": "string",
+          "description": "Measurement instrument used"
+        },
+        "scale": {
+          "type": "string",
+          "description": "Measurement scale (nominal, ordinal, interval, ratio)"
+        },
+        "units": {
+          "type": "string",
+          "description": "Units of measurement"
+        },
+        "precision": {
+          "type": "number",
+          "description": "Measurement precision"
+        },
+        "validity": {
+          "type": "object",
+          "properties": {
+            "face_validity": { "type": "boolean" },
+            "construct_validity": { "type": "number" },
+            "criterion_validity": { "type": "number" }
+          }
+        },
+        "reliability": {
+          "type": "object",
+          "properties": {
+            "test_retest": { "type": "number" },
+            "internal_consistency": { "type": "number" },
+            "inter_rater": { "type": "number" }
+          }
+        }
+      }
+    },
+    "quantitative_result": {
+      "type": "object",
+      "description": "Quantitative result if applicable",
+      "properties": {
+        "value": { "type": "number" },
+        "statistic_type": {
+          "type": "string",
+          "enum": ["MEAN", "MEDIAN", "PROPORTION", "CORRELATION", "DIFFERENCE", "EFFECT_SIZE"]
+        },
+        "confidence_interval": {
+          "type": "object",
+          "properties": {
+            "lower": { "type": "number" },
+            "upper": { "type": "number" },
+            "level": { "type": "number", "default": 0.95 }
+          }
+        },
+        "p_value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sample_size": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "description": "Reference to the source document",
+      "properties": {
+        "doi": { "type": "string" },
+        "citation": { "type": "string" },
+        "page": { "type": "string" },
+        "table_figure": { "type": "string" }
+      }
+    },
+    "grounding_strength": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "How strongly this anchors to reality. 1.0 = rock-solid direct observation. Lower values for inference-mediated or contested observations."
+    },
+    "revisability": {
+      "type": "string",
+      "enum": ["VERY_LOW", "LOW", "MODERATE", "HIGH"],
+      "description": "Per Haack: even experiential claims are revisable, but some are more stable than others. VERY_LOW = would require extraordinary evidence to revise."
+    },
+    "contested": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this experiential claim is contested by other observations"
+    },
+    "contesting_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of experiential claims that contest this one"
+    }
+  },
+  "additionalProperties": false
+}

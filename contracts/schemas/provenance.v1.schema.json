@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/provenance.v1.schema.json",
+  "title": "Provenance",
+  "description": "Provenance tracking for beliefs: sources, grounding chain, and experiential basis. Per Haack's foundherentism - beliefs must be grounded in experience AND cohere with other beliefs.",
+  "type": "object",
+  "required": ["sources", "grounding_score"],
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Source" },
+      "minItems": 1,
+      "description": "Sources from which this belief derives. At least one source required."
+    },
+    "grounding_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Haack grounding score [0,1]. Higher = more directly grounded in experience. 1.0 = direct observation. 0.0 = purely theoretical with no experiential chain."
+    },
+    "grounding_chain": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Chain of belief IDs from this belief to its experiential grounding. Empty for directly observed beliefs."
+    },
+    "experiential_claims": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ExperientialClaimRef" },
+      "description": "References to experiential claims that ground this belief"
+    },
+    "directness": {
+      "type": "string",
+      "enum": ["DIRECT", "ONE_HOP", "MULTI_HOP", "THEORETICAL"],
+      "description": "How directly this belief connects to experience. DIRECT = observational. ONE_HOP = inferred from observation. MULTI_HOP = longer inference chain. THEORETICAL = no direct chain."
+    },
+    "coherence_contribution": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "How much this belief contributes to web coherence. Purely theoretical beliefs can have high coherence contribution even with low grounding."
+    },
+    "justification_status": {
+      "type": "string",
+      "enum": ["WELL_JUSTIFIED", "GROUNDED_ONLY", "COHERENT_ONLY", "UNJUSTIFIED"],
+      "description": "Haack justification status. WELL_JUSTIFIED = both grounded AND coherent. GROUNDED_ONLY = grounded but low coherence. COHERENT_ONLY = coherent but poorly grounded (WARNING). UNJUSTIFIED = neither."
+    },
+    "crossword_position": {
+      "type": "object",
+      "description": "Position in Haack's crossword metaphor - how this belief interlocks with others",
+      "properties": {
+        "supports": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Belief IDs this belief provides evidence for (like letters in crossing words)"
+        },
+        "supported_by": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Belief IDs that provide evidence for this belief"
+        },
+        "integration_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How well integrated into the crossword (many interlocking beliefs = higher)"
+        }
+      }
+    },
+    "extraction_metadata": {
+      "type": "object",
+      "description": "Metadata from Article Eater extraction process",
+      "properties": {
+        "extracted_from": {
+          "type": "string",
+          "description": "Paper DOI or ID from which this was extracted"
+        },
+        "extraction_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extraction_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_method": {
+          "type": "string"
+        },
+        "human_verified": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Source": {
+      "type": "object",
+      "required": ["source_type", "reference"],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": ["PAPER", "OBSERVATION", "INFERENCE", "THEORY", "EXPERT_JUDGMENT", "META_ANALYSIS"],
+          "description": "Type of source"
+        },
+        "reference": {
+          "type": "string",
+          "description": "Reference string (DOI, citation, or description)"
+        },
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.\\d{4,}/.*$",
+          "description": "DOI if available"
+        },
+        "reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Source reliability score"
+        },
+        "study_type": {
+          "type": "string",
+          "enum": ["EXPERIMENTAL", "OBSERVATIONAL", "META_ANALYSIS", "THEORETICAL", "REVIEW"],
+          "description": "Study design type for empirical sources"
+        },
+        "sample_size": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Sample size if applicable"
+        },
+        "effect_size": {
+          "type": "number",
+          "description": "Reported effect size if applicable"
+        },
+        "confidence_interval": {
+          "type": "object",
+          "properties": {
+            "lower": { "type": "number" },
+            "upper": { "type": "number" },
+            "level": { "type": "number", "default": 0.95 }
+          }
+        }
+      }
+    },
+    "ExperientialClaimRef": {
+      "type": "object",
+      "required": ["claim_id"],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "description": "Reference to an ExperientialClaim"
+        },
+        "connection_strength": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How strongly this belief connects to that experiential claim"
+        }
+      }
+    }
+  }
+}

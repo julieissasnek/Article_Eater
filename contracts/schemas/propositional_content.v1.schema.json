@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/propositional_content.v1.schema.json",
+  "title": "PropositionalContent",
+  "description": "Content of a belief as a structured proposition. Designed per Liskov panel review for clean separation of content from epistemic status.",
+  "type": "object",
+  "required": ["proposition_id", "canonical_form", "content_type"],
+  "properties": {
+    "proposition_id": {
+      "type": "string",
+      "description": "Unique identifier for this proposition. Format: domain.subject.predicate or edge notation (A→B)",
+      "pattern": "^[a-z_]+\\.[a-z_]+\\.[a-z_]+$|^[a-z_]+→[a-z_]+$",
+      "examples": ["env.daylight→med.alertness", "theory.biophilia.effect"]
+    },
+    "canonical_form": {
+      "type": "string",
+      "description": "Human-readable canonical statement of the proposition",
+      "minLength": 10,
+      "maxLength": 500,
+      "examples": ["Increased daylight exposure leads to higher alertness levels"]
+    },
+    "content_type": {
+      "type": "string",
+      "enum": ["causal_claim", "correlational_claim", "definitional", "observational", "theoretical"],
+      "description": "Type of propositional content - affects how it can be evaluated and combined"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Domain of discourse (e.g., environmental_psychology, neuroscience)",
+      "examples": ["environmental_psychology", "cognitive_science"]
+    },
+    "variables": {
+      "type": "object",
+      "description": "Variables referenced in the proposition",
+      "properties": {
+        "antecedent": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Antecedent/cause variables"
+        },
+        "consequent": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Consequent/effect variables"
+        },
+        "mediators": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Mediating variables if any"
+        },
+        "moderators": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Moderating variables if any"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "description": "Scope conditions for the proposition (per Pearl transportability)",
+      "properties": {
+        "population": {
+          "type": "string",
+          "description": "Target population"
+        },
+        "context": {
+          "type": "string",
+          "description": "Context/setting constraints"
+        },
+        "temporal": {
+          "type": "string",
+          "description": "Temporal scope"
+        },
+        "exceptions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Known exceptions or boundary conditions"
+        }
+      }
+    },
+    "polarity": {
+      "type": "string",
+      "enum": ["positive", "negative", "neutral"],
+      "default": "positive",
+      "description": "Whether this is stated positively or as negation"
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Alternative phrasings that refer to the same proposition"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/epistemic_status.v1.schema.json",
+  "title": "EpistemicStatus",
+  "description": "Epistemic status of a belief combining Spohn's ranking theory with Pollock's warrant semantics. Per ARCH-4 panel consultation (Spohn, Pollock, Haack, 2026-02-12).",
+  "type": "object",
+  "required": ["rank", "neg_rank", "warrant_status"],
+  "properties": {
+    "rank": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Spohn rank κ(B): degree of disbelief in B. 0 = not disbelieved (believed). Higher = more disbelieved. IMPORTANT: This is degree of DISBELIEF, not belief. κ(B)=0 means B is believed.",
+      "examples": [0, 1, 2, 5]
+    },
+    "neg_rank": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Spohn rank κ(¬B): degree of disbelief in negation of B. When neg_rank > rank, B is believed. When rank > neg_rank, B is disbelieved.",
+      "examples": [0, 3, 5]
+    },
+    "firmness": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Derived: firmness of belief = |rank - neg_rank|. Higher = more firmly held (either believed or disbelieved).",
+      "readOnly": true
+    },
+    "believed": {
+      "type": "boolean",
+      "description": "Derived: true if neg_rank > rank (B is believed). Convenience field.",
+      "readOnly": true
+    },
+    "warrant_status": {
+      "type": "string",
+      "enum": ["WARRANTED", "DEFEATED", "SUSPENDED", "UNGROUNDED"],
+      "description": "Pollock warrant status. WARRANTED = justified and undefeated. DEFEATED = has undefeated defeater. SUSPENDED = in a defeat cycle (neither warranted nor defeated). UNGROUNDED = lacks grounding chain to experience."
+    },
+    "defeat_info": {
+      "type": "object",
+      "description": "Details about defeat status (present when warrant_status is DEFEATED or SUSPENDED)",
+      "properties": {
+        "defeater_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of beliefs that defeat this one"
+        },
+        "defeat_type": {
+          "type": "string",
+          "enum": ["REBUTTING", "UNDERCUTTING", "BOTH"],
+          "description": "Type of defeat: REBUTTING attacks conclusion, UNDERCUTTING attacks inference link"
+        },
+        "attack_point": {
+          "type": "string",
+          "description": "For undercutting defeat: what inference link is attacked"
+        },
+        "cycle_members": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "For SUSPENDED status: IDs of beliefs in the defeat cycle"
+        }
+      }
+    },
+    "prima_facie_warranted": {
+      "type": "boolean",
+      "description": "Whether this belief is prima facie warranted (before considering defeaters). Per Pollock: observational beliefs and beliefs supported by warranted beliefs are prima facie warranted."
+    },
+    "reinstatement_chain": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "If reinstated after defeat, the chain of belief IDs showing how reinstatement occurred"
+    },
+    "rank_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "old_rank": { "type": "integer" },
+          "new_rank": { "type": "integer" },
+          "old_neg_rank": { "type": "integer" },
+          "new_neg_rank": { "type": "integer" },
+          "reason": { "type": "string" },
+          "evidence_id": { "type": "string" }
+        }
+      },
+      "description": "History of rank changes for debugging and explanation"
+    },
+    "last_computed": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this epistemic status was last computed/updated"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "SpohnConditionalization": {
+      "description": "Formula for rank update on new evidence E with firmness n: κ_new(B) = min(κ(B|E), κ(B|¬E) + n). Conditional rank: κ(B|E) = κ(B∧E) - κ(E). See Spohn (2012) Laws of Belief.",
+      "type": "null"
+    },
+    "PollockDefeat": {
+      "description": "Defeat semantics per Pollock (1987, 1995): A defeater for B is a reason to doubt B (rebutting) or to doubt the inference to B (undercutting). Reinstatement: if the defeater is itself defeated, B may be reinstated.",
+      "type": "null"
+    }
+  }
+}
