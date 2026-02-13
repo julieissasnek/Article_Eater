@@ -539,6 +539,20 @@ class Belief:
     provenance: Optional[Any] = None  # BeliefProvenance, typed as Any to avoid circular import
     community_associations: Dict[str, float] = field(default_factory=dict)  # community_id → strength
 
+    # =========================================================================
+    # ARCH-4 V24.0.0: Formal Epistemic Calculus (composition fields)
+    # =========================================================================
+    # These fields enable gradual migration to the new data model:
+    # - PropositionalContent (what is believed)
+    # - EpistemicStatus (Spohn ranks + Pollock warrant)
+    # - Provenance (Haack grounding + sources)
+    #
+    # Legacy fields (content, credence, etc.) are preserved for backward compat.
+    # Use to_v2() and from_v2() for conversion.
+    content_v2: Optional[Any] = None  # PropositionalContent
+    status_v2: Optional[Any] = None   # EpistemicStatus
+    provenance_v2: Optional[Any] = None  # Provenance (ARCH-4 version, not Sprint 2.5)
+
     def is_stub(self) -> bool:
         return self.status == BeliefStatus.STUB
 
@@ -827,7 +841,182 @@ class Belief:
             result['provenance'] = self.provenance.to_dict()
         if self.community_associations:
             result['community_associations'] = self.community_associations.copy()
+        # ARCH-4 v2 composition fields
+        if self.content_v2 and hasattr(self.content_v2, 'to_dict'):
+            result['content_v2'] = self.content_v2.to_dict()
+        if self.status_v2 and hasattr(self.status_v2, 'to_dict'):
+            result['status_v2'] = self.status_v2.to_dict()
+        if self.provenance_v2 and hasattr(self.provenance_v2, 'to_dict'):
+            result['provenance_v2'] = self.provenance_v2.to_dict()
         return result
+
+    # =========================================================================
+    # ARCH-4 V24.0.0: V2 FORMAT CONVERSION METHODS
+    # =========================================================================
+
+    def to_v2(self) -> Dict[str, Any]:
+        """
+        Convert this belief to v2 format (PropositionalContent + EpistemicStatus + Provenance).
+
+        Returns a dict with:
+        - content: PropositionalContent as dict
+        - status: EpistemicStatus as dict
+        - provenance: Provenance (ARCH-4) as dict
+        - id: belief_id (preserved)
+
+        Note: Imports models dynamically to avoid circular imports.
+        """
+        # Dynamic import to avoid circular dependency
+        from src.models.propositional_content import PropositionalContent, ContentType
+        from src.models.epistemic_status import EpistemicStatus, RankPair, WarrantStatus
+        from src.models.provenance import Provenance, Directness, JustificationStatus
+
+        # Convert content
+        content_type_map = {
+            EpistemicLevel.THEORETICAL: ContentType.THEORETICAL,
+            EpistemicLevel.INTERMEDIATE: ContentType.CAUSAL_CLAIM,
+            EpistemicLevel.EMPIRICAL: ContentType.CORRELATIONAL_CLAIM,
+            EpistemicLevel.OBSERVATIONAL: ContentType.OBSERVATIONAL,
+        }
+        content_v2 = PropositionalContent(
+            proposition_id=self.belief_id,
+            canonical_form=self.content,
+            content_type=content_type_map.get(self.level, ContentType.CAUSAL_CLAIM),
+            domain=self.domain or None
+        )
+
+        # Convert status (credence → ranks)
+        ranks = RankPair.from_credence(self.credence.value, self.credence.uncertainty)
+        warrant = WarrantStatus.WARRANTED if self.status != BeliefStatus.STUB else WarrantStatus.UNGROUNDED
+        status_v2 = EpistemicStatus(
+            ranks=ranks,
+            warrant_status=warrant,
+            prima_facie_warranted=(self.level == EpistemicLevel.OBSERVATIONAL)
+        )
+
+        # Convert provenance
+        directness_map = {
+            EpistemicLevel.OBSERVATIONAL: Directness.DIRECT,
+            EpistemicLevel.EMPIRICAL: Directness.ONE_HOP,
+            EpistemicLevel.INTERMEDIATE: Directness.MULTI_HOP,
+            EpistemicLevel.THEORETICAL: Directness.THEORETICAL,
+        }
+        grounding_map = {
+            EpistemicLevel.OBSERVATIONAL: 1.0,
+            EpistemicLevel.EMPIRICAL: 0.7,
+            EpistemicLevel.INTERMEDIATE: 0.4,
+            EpistemicLevel.THEORETICAL: 0.2,
+        }
+        provenance_v2 = Provenance(
+            grounding_score=grounding_map.get(self.level, 0.2),
+            directness=directness_map.get(self.level, Directness.THEORETICAL),
+            justification_status=JustificationStatus.WELL_JUSTIFIED
+        )
+
+        return {
+            'id': self.belief_id,
+            'content': content_v2.to_dict(),
+            'status': status_v2.to_dict(),
+            'provenance': provenance_v2.to_dict(),
+            '_legacy': self.to_dict()  # Preserve for rollback
+        }
+
+    @classmethod
+    def from_v2(cls, data: Dict[str, Any]) -> 'Belief':
+        """
+        Create Belief from v2 format data.
+
+        Expects dict with content, status, provenance in v2 format.
+        Falls back to _legacy field if present.
+        """
+        # If legacy data is present, use it for the core belief
+        if '_legacy' in data:
+            belief = cls.from_dict(data['_legacy'])
+        else:
+            # Create from v2 data
+            from src.models.propositional_content import PropositionalContent
+            from src.models.epistemic_status import EpistemicStatus
+            from src.models.provenance import Provenance, Directness
+
+            content = PropositionalContent.from_dict(data['content'])
+            status = EpistemicStatus.from_dict(data['status'])
+            prov = Provenance.from_dict(data['provenance'])
+
+            # Map directness back to level
+            directness_to_level = {
+                Directness.DIRECT: EpistemicLevel.OBSERVATIONAL,
+                Directness.ONE_HOP: EpistemicLevel.EMPIRICAL,
+                Directness.MULTI_HOP: EpistemicLevel.INTERMEDIATE,
+                Directness.THEORETICAL: EpistemicLevel.THEORETICAL,
+            }
+
+            # Convert ranks back to credence
+            if status.ranks.neg_rank > status.ranks.rank:
+                credence_value = 0.5 + (status.ranks.neg_rank - status.ranks.rank) / 10
+            elif status.ranks.rank > status.ranks.neg_rank:
+                credence_value = 0.5 - (status.ranks.rank - status.ranks.neg_rank) / 10
+            else:
+                credence_value = 0.5
+            credence_value = max(0.05, min(0.95, credence_value))
+
+            # Uncertainty from firmness
+            firmness = status.ranks.firmness
+            uncertainty = max(0.1, 1.0 - firmness / 5)
+
+            belief = cls(
+                belief_id=data.get('id', content.proposition_id),
+                content=content.canonical_form,
+                level=directness_to_level.get(prov.directness, EpistemicLevel.EMPIRICAL),
+                status=BeliefStatus.ESTABLISHED,
+                credence=Credence(value=credence_value, uncertainty=uncertainty),
+                domain=content.domain or ''
+            )
+
+        # Store v2 data for later use
+        if 'content' in data:
+            from src.models.propositional_content import PropositionalContent
+            belief.content_v2 = PropositionalContent.from_dict(data['content'])
+        if 'status' in data:
+            from src.models.epistemic_status import EpistemicStatus
+            belief.status_v2 = EpistemicStatus.from_dict(data['status'])
+        if 'provenance' in data:
+            from src.models.provenance import Provenance
+            belief.provenance_v2 = Provenance.from_dict(data['provenance'])
+
+        return belief
+
+    def has_v2_data(self) -> bool:
+        """Check if this belief has v2 composition data."""
+        return self.content_v2 is not None or self.status_v2 is not None or self.provenance_v2 is not None
+
+    def get_rank_pair(self) -> Optional['RankPair']:
+        """Get Spohn rank pair from v2 status, or compute from credence."""
+        if self.status_v2 is not None:
+            return self.status_v2.ranks
+
+        # Compute from legacy credence
+        from src.models.epistemic_status import RankPair
+        return RankPair.from_credence(self.credence.value, self.credence.uncertainty)
+
+    def get_warrant_status(self) -> Optional['WarrantStatus']:
+        """Get Pollock warrant status from v2 status."""
+        if self.status_v2 is not None:
+            return self.status_v2.warrant_status
+        return None
+
+    def get_grounding_score(self) -> float:
+        """Get Haack grounding score from v2 provenance, or estimate from level."""
+        if self.provenance_v2 is not None:
+            return self.provenance_v2.grounding_score
+
+        # Estimate from level
+        grounding_map = {
+            EpistemicLevel.OBSERVATIONAL: 1.0,
+            EpistemicLevel.EMPIRICAL: 0.7,
+            EpistemicLevel.INTERMEDIATE: 0.4,
+            EpistemicLevel.THEORETICAL: 0.2,
+        }
+        return grounding_map.get(self.level, 0.3)
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> 'Belief':
@@ -877,6 +1066,29 @@ class Belief:
         # Parse community associations (Sprint 2.5 addition)
         community_associations = d.get('community_associations', {})
 
+        # Parse v2 composition fields (ARCH-4 addition)
+        content_v2 = None
+        status_v2 = None
+        provenance_v2 = None
+        if 'content_v2' in d and d['content_v2']:
+            try:
+                from src.models.propositional_content import PropositionalContent
+                content_v2 = PropositionalContent.from_dict(d['content_v2'])
+            except Exception:
+                pass  # Graceful degradation
+        if 'status_v2' in d and d['status_v2']:
+            try:
+                from src.models.epistemic_status import EpistemicStatus
+                status_v2 = EpistemicStatus.from_dict(d['status_v2'])
+            except Exception:
+                pass
+        if 'provenance_v2' in d and d['provenance_v2']:
+            try:
+                from src.models.provenance import Provenance
+                provenance_v2 = Provenance.from_dict(d['provenance_v2'])
+            except Exception:
+                pass
+
         credence_data = d.get('credence', {})
         if isinstance(credence_data, dict):
             credence = Credence(
@@ -915,7 +1127,11 @@ class Belief:
             belief_kind=belief_kind,
             # Sprint 2.5 additions
             provenance=provenance,
-            community_associations=community_associations
+            community_associations=community_associations,
+            # ARCH-4 v2 composition fields
+            content_v2=content_v2,
+            status_v2=status_v2,
+            provenance_v2=provenance_v2
         )
 
 

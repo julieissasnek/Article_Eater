@@ -341,6 +341,7 @@ CREATE TABLE IF NOT EXISTS beliefs (
     evidence_cluster_id TEXT,  -- Sprint 8: Groups beliefs from same study
     tags TEXT,  -- JSON array
     paper_ids TEXT,  -- JSON array
+    epistemic_v2 TEXT,  -- ARCH-4 V24: JSON-serialized v2 epistemic fields (content_v2, status_v2, provenance_v2)
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
     FOREIGN KEY (web_id) REFERENCES web_metadata(web_id)
@@ -1151,6 +1152,18 @@ class WebPersistenceService:
         if hasattr(belief, 'scope') and belief.scope is not None:
             scope_json = json.dumps(belief.scope.to_dict())
 
+        # ARCH-4 V24: Serialize v2 epistemic fields as JSON
+        epistemic_v2_json = None
+        v2_data = {}
+        if hasattr(belief, 'content_v2') and belief.content_v2 is not None:
+            v2_data['content_v2'] = belief.content_v2.to_dict() if hasattr(belief.content_v2, 'to_dict') else belief.content_v2
+        if hasattr(belief, 'status_v2') and belief.status_v2 is not None:
+            v2_data['status_v2'] = belief.status_v2.to_dict() if hasattr(belief.status_v2, 'to_dict') else belief.status_v2
+        if hasattr(belief, 'provenance_v2') and belief.provenance_v2 is not None:
+            v2_data['provenance_v2'] = belief.provenance_v2.to_dict() if hasattr(belief.provenance_v2, 'to_dict') else belief.provenance_v2
+        if v2_data:
+            epistemic_v2_json = json.dumps(v2_data)
+
         with self._get_connection() as conn:
             conn.execute("""
                 INSERT OR REPLACE INTO beliefs (
@@ -1159,8 +1172,8 @@ class WebPersistenceService:
                     credence_n_contradicting, credence_n_observations,
                     theory_id, entrenchment, domain, attribute_id, outcome_type,
                     scope, environment_id, outcome_id, evidence_cluster_id,
-                    tags, paper_ids, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    tags, paper_ids, epistemic_v2, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 belief.belief_id,
                 web_id,
@@ -1183,6 +1196,7 @@ class WebPersistenceService:
                 getattr(belief, 'evidence_cluster_id', None),  # Sprint 8
                 json.dumps(getattr(belief, 'tags', [])),
                 json.dumps(getattr(belief, 'paper_ids', [])),
+                epistemic_v2_json,  # ARCH-4 V24: v2 epistemic fields
                 belief.created_at.isoformat() if hasattr(belief, 'created_at') and belief.created_at else now,
                 now
             ))
@@ -1235,6 +1249,22 @@ class WebPersistenceService:
         # Add structured attributes for identity matching (Expert Panel 5.2)
         belief.attribute_id = row['attribute_id'] if 'attribute_id' in row.keys() else None
         belief.outcome_type = row['outcome_type'] if 'outcome_type' in row.keys() else None
+
+        # ARCH-4 V24: Deserialize v2 epistemic fields
+        if 'epistemic_v2' in row.keys() and row['epistemic_v2']:
+            try:
+                v2_data = json.loads(row['epistemic_v2'])
+                if 'content_v2' in v2_data:
+                    from src.models.propositional_content import PropositionalContent
+                    belief.content_v2 = PropositionalContent.from_dict(v2_data['content_v2'])
+                if 'status_v2' in v2_data:
+                    from src.models.epistemic_status import EpistemicStatus
+                    belief.status_v2 = EpistemicStatus.from_dict(v2_data['status_v2'])
+                if 'provenance_v2' in v2_data:
+                    from src.models.provenance import Provenance
+                    belief.provenance_v2 = Provenance.from_dict(v2_data['provenance_v2'])
+            except Exception:
+                pass  # Graceful degradation if v2 parsing fails
 
         return belief
 
