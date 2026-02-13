@@ -202,10 +202,12 @@ def ensure_db() -> None:
     )
 
     # ------------------------------------------------------------------
-    # 4. Legacy seven_panel summary (kept for compatibility)
+    # 4. Article Essence Extraction (renamed from seven_panel 2026-02-11)
     # ------------------------------------------------------------------
+    # Note: Columns kept for backward compatibility but table renamed
+    # to reflect that extraction now supports 16+ article types
     cur.execute(
-        """CREATE TABLE IF NOT EXISTS seven_panel(
+        """CREATE TABLE IF NOT EXISTS article_essence(
         article_id TEXT PRIMARY KEY,
         hypothesis TEXT,
         population_context TEXT,
@@ -213,7 +215,9 @@ def ensure_db() -> None:
         findings_effect TEXT,
         limitations_confounds TEXT,
         design_type TEXT,
-        stats_effect_sizes TEXT
+        stats_effect_sizes TEXT,
+        article_type TEXT,
+        extraction_template TEXT
     )"""
     )
 

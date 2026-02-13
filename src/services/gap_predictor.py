@@ -339,13 +339,307 @@ class GapPredictor:
         matches = sum(1 for kw in keywords if kw.lower() in content_lower)
         return matches >= min_matches
 
+    # =========================================================================
+    # Mayo Panel Fix: Defeater Search (2026-02-12)
+    # Panel: "Confirmation bias is structural. You search for 'supporting beliefs'
+    # for edges. This is confirmation seeking. A proper system would search for
+    # potential DEFEATERS."
+    # =========================================================================
+
+    # Keywords that suggest contradictory evidence or failed replication
+    DEFEATER_INDICATORS = {
+        'no_effect': ['no effect', 'no significant', 'not significant', 'failed to find',
+                      'did not find', 'null result', 'no relationship', 'no correlation',
+                      'no association', 'null hypothesis', 'failed to replicate'],
+        'contrary': ['contrary to', 'in contrast to', 'however', 'conversely',
+                     'opposing', 'contradicts', 'inconsistent with', 'challenges'],
+        'limitation': ['limitation', 'confound', 'bias', 'artifact', 'methodological',
+                       'small sample', 'underpowered', 'publication bias'],
+        'replication': ['failed replication', 'replication failure', 'did not replicate',
+                        'could not replicate', 'replication crisis'],
+        'boundary': ['only under', 'only when', 'limited to', 'does not generalize',
+                     'boundary condition', 'moderator', 'interaction effect']
+    }
+
+    def find_defeaters_for_belief(self, belief_id: str) -> Dict[str, Any]:
+        """
+        Search for potential defeaters (disconfirming evidence) for a belief.
+
+        Panel Review 2026-02-12 (Mayo): Addresses confirmation bias by actively
+        searching for evidence AGAINST beliefs rather than only seeking support.
+
+        Types of defeaters sought:
+        1. Null results: Studies that found no effect
+        2. Contrary findings: Studies with opposite conclusions
+        3. Methodological critiques: Questions about the evidence base
+        4. Replication failures: Studies that failed to replicate the finding
+        5. Boundary conditions: Limitations on generalizability
+
+        Args:
+            belief_id: ID of the belief to find defeaters for
+
+        Returns:
+            Dict containing:
+            - belief_summary: The belief being examined
+            - potential_defeaters: List of potential contradicting evidence
+            - defeater_categories: Breakdown by type
+            - confidence_adjustment: Suggested credence adjustment if defeaters found
+            - recommendation: What to do with findings
+        """
+        from pathlib import Path
+        import json
+
+        result = {
+            'belief_id': belief_id,
+            'belief_summary': None,
+            'potential_defeaters': [],
+            'defeater_categories': {
+                'null_results': [],
+                'contrary_findings': [],
+                'methodological_critiques': [],
+                'replication_failures': [],
+                'boundary_conditions': []
+            },
+            'confidence_adjustment': 0.0,
+            'recommendation': ''
+        }
+
+        # Get the belief
+        if not self.web or belief_id not in self.web.beliefs:
+            logger.warning(f"Belief {belief_id} not found in web")
+            result['recommendation'] = 'Belief not found - cannot search for defeaters'
+            return result
+
+        belief = self.web.beliefs[belief_id]
+        result['belief_summary'] = {
+            'content': belief.content[:300] + '...' if len(belief.content) > 300 else belief.content,
+            'credence': belief.credence.value if hasattr(belief.credence, 'value') else belief.credence,
+            'environment_id': getattr(belief, 'environment_id', None),
+            'outcome_id': getattr(belief, 'outcome_id', None)
+        }
+
+        # Extract core concepts from the belief for targeted defeater search
+        search_concepts = self._extract_defeater_search_concepts(belief)
+        logger.info(f"Searching for defeaters for belief {belief_id}: concepts={search_concepts}")
+
+        # 1. Check existing beliefs for contradictions
+        contradicting_beliefs = self._find_contradicting_beliefs(belief, search_concepts)
+        for cb in contradicting_beliefs:
+            category = self._categorize_defeater(cb['content'])
+            result['defeater_categories'][category].append(cb)
+            result['potential_defeaters'].append(cb)
+
+        # 2. Check extracted findings for contradictions
+        findings_dir = Path("data/extracted_findings")
+        if findings_dir.exists():
+            for jsonl_file in findings_dir.glob("*.jsonl"):
+                try:
+                    with open(jsonl_file, 'r') as f:
+                        for line in f:
+                            finding = json.loads(line.strip())
+                            content = finding.get('content', '') + ' ' + finding.get('finding', '')
+                            if self._is_potential_defeater(content, search_concepts):
+                                defeater_info = {
+                                    'source': 'extracted_finding',
+                                    'source_file': str(jsonl_file.name),
+                                    'content': content[:300] + '...' if len(content) > 300 else content,
+                                    'defeater_type': self._identify_defeater_type(content)
+                                }
+                                category = self._categorize_defeater(content)
+                                result['defeater_categories'][category].append(defeater_info)
+                                result['potential_defeaters'].append(defeater_info)
+                except Exception as e:
+                    logger.warning(f"Error reading {jsonl_file}: {e}")
+
+        # 3. Check unprocessed abstracts
+        abstracts_dir = Path("data/abstracts")
+        if abstracts_dir.exists():
+            for json_file in abstracts_dir.glob("*.json"):
+                try:
+                    with open(json_file, 'r') as f:
+                        abstract_data = json.load(f)
+                        abstract_text = abstract_data.get('abstract', '')
+                        if self._is_potential_defeater(abstract_text, search_concepts):
+                            defeater_info = {
+                                'source': 'unprocessed_abstract',
+                                'source_file': str(json_file.name),
+                                'doi': abstract_data.get('doi'),
+                                'title': abstract_data.get('title'),
+                                'content': abstract_text[:300] + '...' if len(abstract_text) > 300 else abstract_text,
+                                'defeater_type': self._identify_defeater_type(abstract_text)
+                            }
+                            category = self._categorize_defeater(abstract_text)
+                            result['defeater_categories'][category].append(defeater_info)
+                            result['potential_defeaters'].append(defeater_info)
+                except Exception as e:
+                    logger.warning(f"Error reading {json_file}: {e}")
+
+        # Calculate confidence adjustment based on defeaters found
+        n_defeaters = len(result['potential_defeaters'])
+        if n_defeaters == 0:
+            result['confidence_adjustment'] = 0.0
+            result['recommendation'] = 'No defeaters found. Consider external search for contrary evidence.'
+        elif n_defeaters <= 2:
+            result['confidence_adjustment'] = -0.1
+            result['recommendation'] = f'Found {n_defeaters} potential defeater(s). Review and consider widening uncertainty.'
+        elif n_defeaters <= 5:
+            result['confidence_adjustment'] = -0.2
+            result['recommendation'] = f'Found {n_defeaters} potential defeaters. Significant uncertainty warranted.'
+        else:
+            result['confidence_adjustment'] = -0.3
+            result['recommendation'] = f'Found {n_defeaters} potential defeaters. This belief is contested - major revision needed.'
+
+        logger.info(f"Defeater search complete for {belief_id}: found {n_defeaters} potential defeaters")
+        return result
+
+    def _extract_defeater_search_concepts(self, belief) -> List[str]:
+        """Extract key concepts from a belief for defeater search."""
+        concepts = []
+
+        # Environment and outcome IDs
+        if hasattr(belief, 'environment_id') and belief.environment_id:
+            concepts.append(belief.environment_id.split('.')[-1])  # Get leaf concept
+        if hasattr(belief, 'outcome_id') and belief.outcome_id:
+            concepts.append(belief.outcome_id.split('.')[-1])
+
+        # Key nouns from content (simple extraction)
+        content_words = belief.content.lower().split()
+        important_words = [w for w in content_words
+                          if len(w) > 5 and w not in ['which', 'where', 'these', 'those', 'about']]
+        concepts.extend(important_words[:5])
+
+        return list(set(concepts))
+
+    def _find_contradicting_beliefs(self, target_belief, search_concepts: List[str]) -> List[Dict]:
+        """Find existing beliefs that might contradict the target."""
+        contradictions = []
+
+        if not self.web or not self.web.beliefs:
+            return contradictions
+
+        target_env = getattr(target_belief, 'environment_id', None)
+        target_out = getattr(target_belief, 'outcome_id', None)
+
+        for belief_id, belief in self.web.beliefs.items():
+            if belief_id == target_belief.belief_id:
+                continue
+
+            # Check for same env/outcome with different direction or effect
+            belief_env = getattr(belief, 'environment_id', None)
+            belief_out = getattr(belief, 'outcome_id', None)
+
+            same_domain = False
+            if target_env and belief_env and target_out and belief_out:
+                if target_env == belief_env and target_out == belief_out:
+                    same_domain = True
+
+            # Check for defeater language in content
+            if same_domain or self._content_matches_keywords(belief.content, search_concepts, min_matches=2):
+                if self._has_defeater_language(belief.content):
+                    contradictions.append({
+                        'source': 'existing_belief',
+                        'belief_id': belief_id,
+                        'content': belief.content[:300] + '...' if len(belief.content) > 300 else belief.content,
+                        'same_domain': same_domain,
+                        'defeater_type': self._identify_defeater_type(belief.content)
+                    })
+
+        return contradictions
+
+    def _is_potential_defeater(self, content: str, search_concepts: List[str]) -> bool:
+        """Check if content might be a defeater for given concepts."""
+        if not content:
+            return False
+
+        # Must mention the concepts AND have defeater language
+        matches_concepts = self._content_matches_keywords(content, search_concepts, min_matches=1)
+        has_defeater = self._has_defeater_language(content)
+
+        return matches_concepts and has_defeater
+
+    def _has_defeater_language(self, content: str) -> bool:
+        """Check if content contains language suggesting contradiction/limitation."""
+        if not content:
+            return False
+
+        content_lower = content.lower()
+        for category_indicators in self.DEFEATER_INDICATORS.values():
+            for indicator in category_indicators:
+                if indicator in content_lower:
+                    return True
+        return False
+
+    def _identify_defeater_type(self, content: str) -> str:
+        """Identify the type of defeater based on content."""
+        content_lower = content.lower()
+
+        for category, indicators in self.DEFEATER_INDICATORS.items():
+            for indicator in indicators:
+                if indicator in content_lower:
+                    return category
+
+        return 'general'
+
+    def _categorize_defeater(self, content: str) -> str:
+        """Map defeater type to result category."""
+        defeater_type = self._identify_defeater_type(content)
+        mapping = {
+            'no_effect': 'null_results',
+            'contrary': 'contrary_findings',
+            'limitation': 'methodological_critiques',
+            'replication': 'replication_failures',
+            'boundary': 'boundary_conditions',
+            'general': 'contrary_findings'
+        }
+        return mapping.get(defeater_type, 'contrary_findings')
+
+    def find_all_defeaters(self, limit: int = 10) -> Dict[str, Any]:
+        """
+        Find potential defeaters for the most confident beliefs.
+
+        Panel Review 2026-02-12 (Mayo): "For each belief, actively seek
+        disconfirming evidence."
+
+        Prioritizes highly-confident beliefs since those are where
+        overconfidence is most dangerous.
+
+        Args:
+            limit: Maximum number of beliefs to check
+
+        Returns:
+            Dict with defeater analysis for top beliefs
+        """
+        if not self.web or not self.web.beliefs:
+            return {'beliefs_checked': 0, 'results': []}
+
+        # Sort beliefs by credence (most confident first)
+        sorted_beliefs = sorted(
+            self.web.beliefs.values(),
+            key=lambda b: b.credence.value if hasattr(b.credence, 'value') else b.credence,
+            reverse=True
+        )[:limit]
+
+        results = []
+        for belief in sorted_beliefs:
+            defeater_result = self.find_defeaters_for_belief(belief.belief_id)
+            if defeater_result['potential_defeaters']:  # Only include if defeaters found
+                results.append(defeater_result)
+
+        return {
+            'beliefs_checked': len(sorted_beliefs),
+            'beliefs_with_defeaters': len(results),
+            'results': results
+        }
+
     # Panel D0d (Pearl): Compute graph centrality for VOI weighting
-    # Panel Review 2026-02-11: Weight connections by epistemic level (Pearl)
+    # Panel Review 2026-02-12 (Haack): Equal weights - entrenchment emerges from
+    # connections, not from type labels. The 1.5/0.8 ratio was crypto-foundationalism.
+    # Per foundherentism: ANY belief can be revised; entrenchment is structural.
     LEVEL_WEIGHTS: Dict[str, float] = {
-        'THEORETICAL': 1.5,      # Connections to theory matter most
-        'INTERMEDIATE': 1.2,    # Bridging beliefs
-        'EMPIRICAL': 1.0,       # Standard weight
-        'OBSERVATIONAL': 0.8,   # Direct observations
+        'THEORETICAL': 1.0,      # Equal weight - no privilege for theory
+        'INTERMEDIATE': 1.0,     # Equal weight
+        'EMPIRICAL': 1.0,        # Equal weight
+        'OBSERVATIONAL': 1.0,    # Equal weight - observations anchor to reality
     }
 
     def _compute_centrality_cache(self) -> Dict[str, float]:

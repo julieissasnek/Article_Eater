@@ -4,10 +4,22 @@
     "non_admin_fallback_allowed": false,
     "require_llm_for_panels": true,
     "rule_candidacy": true,
-    "seven_panel": true
+    "article_essence_extraction": true
   },
   "engine": {
     "use_mocks": false
+  },
+  "llm_defaults": {
+    "article_essence_extraction": {
+      "model": "gemini-1.5-pro",
+      "temperature": 0.1,
+      "max_tokens": 8000
+    },
+    "triage": {
+      "model": "haiku",
+      "temperature": 0.0,
+      "max_tokens": 1024
+    }
   },
   "preferred_providers": [
     "gemini",

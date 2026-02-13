@@ -104,10 +104,13 @@ class ProcessingConfig:
         # Processing options
         config.profile = data.get('profile', 'standard')
         # Handle YAML boolean conversion: off -> False, on -> True in YAML
+        # Per Parnas: log when conversion occurs to aid debugging
         hitl_value = data.get('hitl', 'auto')
         if hitl_value is False:
+            logger.debug("YAML 'hitl: off' parsed as boolean False, converting to string 'off'")
             config.hitl = 'off'
         elif hitl_value is True:
+            logger.debug("YAML 'hitl: on' parsed as boolean True, converting to string 'on'")
             config.hitl = 'on'
         else:
             config.hitl = str(hitl_value) if hitl_value else 'auto'

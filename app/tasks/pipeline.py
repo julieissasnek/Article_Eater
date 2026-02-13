@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from app.services.semantic_scholar import search as s2_search
 from app.services.embeddings import embed_text, cosine
-from app.services.extract_7panel import extract_findings_from_text
+from app.services.extract_article_essence import extract_findings_from_text
 from app.pdf_ingest import extract_pdf_text
 from lib.outcome_resolver import resolve_or_queue
 
@@ -2083,10 +2083,10 @@ def _safe_import(module_name: str):
         return None
 
 def _try_call_extractor(fulltext: str, meta: Dict[str, Any], profile: str) -> Dict[str, Any]:
-    mod = _safe_import("app.services.extract_7panel")
+    mod = _safe_import("app.services.extract_article_essence")
     if mod is None:
-        return {"_error": "extract_7panel_import_failed"}
-    candidates = ["extract_7panel","extract","run_extract","run","main_extract"]
+        return {"_error": "extract_article_essence_import_failed"}
+    candidates = ["extract_findings_from_text", "extract_article_essence", "extract", "run_extract", "run", "main_extract"]
     last = None
     for name in candidates:
         fn = getattr(mod, name, None)

@@ -397,8 +397,12 @@ class Credence:
         )
     
     def is_well_established(self) -> bool:
-        """Whether we have good evidence for this credence."""
-        return self.n_observations >= 3 and self.uncertainty < 0.2
+        """Whether we have good evidence for this credence.
+
+        Panel Review 2026-02-12 (Kahneman): Raised uncertainty threshold from 0.2
+        to 0.35 to match the new uncertainty floor and prevent false confidence.
+        """
+        return self.n_observations >= 3 and self.uncertainty < 0.35
     
     def update(
         self,
@@ -426,9 +430,12 @@ class Credence:
         posterior_odds = prior_odds * lr
         new_value = posterior_odds / (1 + posterior_odds)
         
-        # Uncertainty decreases with evidence (but never to zero)
+        # Uncertainty decreases with evidence (but never to overconfident levels)
+        # Panel Review 2026-02-12 (Kahneman): Raised floor from 0.05 to 0.25
+        # to prevent overconfidence. Real uncertainty is MUCH larger than typical
+        # point estimates suggest.
         new_uncertainty = self.uncertainty * (0.95 ** (weight * 0.5))
-        new_uncertainty = max(0.05, new_uncertainty)  # Floor
+        new_uncertainty = max(0.25, new_uncertainty)  # Floor - prevent overconfidence
         
         return Credence(
             value=new_value,
@@ -479,7 +486,9 @@ class Belief:
     status: BeliefStatus = BeliefStatus.STUB
 
     # Epistemic standing
-    credence: Credence = field(default_factory=lambda: Credence(0.5, 0.4))
+    # Panel Review 2026-02-12 (Kahneman): Default uncertainty raised from 0.4 to 0.5
+    # to reflect epistemic humility. Initial beliefs should have wide intervals.
+    credence: Credence = field(default_factory=lambda: Credence(0.5, 0.5))
 
     # V23.0.0 BREAKING CHANGE: Entrenchment is now EMERGENT, not stored.
     # Per panel consultation (2026-02-08): Settable entrenchment violates
@@ -872,13 +881,14 @@ class Belief:
         if isinstance(credence_data, dict):
             credence = Credence(
                 value=credence_data.get('credence', credence_data.get('value', 0.5)),
-                uncertainty=credence_data.get('uncertainty', 0.4),
+                # Panel Review 2026-02-12 (Kahneman): Default uncertainty 0.5, not 0.4
+                uncertainty=credence_data.get('uncertainty', 0.5),
                 n_supporting=credence_data.get('n_supporting', 0),
                 n_contradicting=credence_data.get('n_contradicting', 0),
                 n_observations=credence_data.get('n_observations', 0)
             )
         else:
-            credence = Credence(0.5, 0.4)
+            credence = Credence(0.5, 0.5)  # Panel Review 2026-02-12: wider uncertainty
 
         return cls(
             belief_id=d.get('belief_id', ''),
@@ -1362,12 +1372,13 @@ class WebOfBelief:
         # Stubs naturally have low entrenchment due to:
         # - Few constraints (low connectivity)
         # - STUB status (negative coherence contribution)
+        # Panel Review 2026-02-12 (Kahneman): wider default uncertainty (0.5)
         belief = Belief(
             belief_id=belief_id,
             content=content,
             level=level,
             status=BeliefStatus.STUB,
-            credence=Credence(initial_credence, 0.4),
+            credence=Credence(initial_credence, 0.5),
             paper_ids=[paper_id],
             tags=tags or []
         )

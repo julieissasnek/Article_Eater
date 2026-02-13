@@ -374,6 +374,174 @@ async def find_gaps_by_type(gap_type: str):
 
 
 # =============================================================================
+# Gap Local Evidence Check (GR-2: Gap Resolution Improvement 2026-02-12)
+# =============================================================================
+
+@router.get(
+    "/gaps/edge/{edge_id}/local-evidence",
+    summary="Find local evidence that might address a gap",
+    description="""
+    Before suggesting external search, check local corpus for evidence:
+    1. Extracted findings not yet converted to beliefs
+    2. Existing beliefs that might match via keywords
+    3. Unprocessed abstracts that might contain relevant evidence
+
+    This helps avoid redundant external searches when evidence exists locally.
+    """
+)
+async def find_local_evidence_for_edge(
+    edge_id: str,
+    pretty: bool = Query(True, description="Pretty-print JSON output")
+):
+    """Find local evidence for an unjustified BN edge."""
+    try:
+        from src.services.gap_predictor import get_gap_predictor, PredictedGap, GapType, GapPriority
+
+        predictor = get_gap_predictor()
+
+        # Create a gap object for the edge
+        parts = edge_id.split('_')
+        source = parts[0] if parts else edge_id
+        target = parts[-1] if len(parts) > 1 else ''
+
+        gap = PredictedGap(
+            gap_id=f"query_{edge_id}",
+            gap_type=GapType.UNJUSTIFIED_EDGE,
+            description=f"BN edge {source}→{target} needs evidence",
+            affected_edge=edge_id,
+            suggested_search=f"{source} {target} effect relationship"
+        )
+
+        # Find local evidence
+        evidence = predictor.find_local_evidence_for_gap(gap)
+
+        # Add summary
+        result = {
+            "edge_id": edge_id,
+            "source_node": source,
+            "target_node": target,
+            "local_evidence_found": (
+                len(evidence['extracted_findings']) > 0 or
+                len(evidence['keyword_matched_beliefs']) > 0 or
+                len(evidence['unprocessed_abstracts']) > 0
+            ),
+            "summary": {
+                "extracted_findings": len(evidence['extracted_findings']),
+                "keyword_matched_beliefs": len(evidence['keyword_matched_beliefs']),
+                "unprocessed_abstracts": len(evidence['unprocessed_abstracts'])
+            },
+            "evidence": evidence,
+            "recommendation": (
+                "Local evidence found - consider reviewing before external search"
+                if evidence['extracted_findings'] or evidence['keyword_matched_beliefs']
+                else "No local evidence found - external search recommended"
+            )
+        }
+
+        if pretty:
+            return Response(
+                content=json.dumps(result, indent=2, ensure_ascii=False),
+                media_type="application/json"
+            )
+        return result
+
+    except Exception as e:
+        logger.error(f"Error finding local evidence for {edge_id}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error: {str(e)}"
+        )
+
+
+# =============================================================================
+# Defeater Search Endpoints (Panel Review 2026-02-12)
+# Mayo: "Confirmation bias is structural. A proper system would search for
+# potential DEFEATERS."
+# =============================================================================
+
+@router.get(
+    "/defeaters/belief/{belief_id}",
+    summary="Find defeaters for a belief",
+    description="""
+    Search for potential defeaters (disconfirming evidence) for a specific belief.
+
+    Panel Review 2026-02-12 (Mayo): Addresses confirmation bias by actively
+    searching for evidence AGAINST beliefs rather than only seeking support.
+
+    Types of defeaters sought:
+    1. Null results: Studies that found no effect
+    2. Contrary findings: Studies with opposite conclusions
+    3. Methodological critiques: Questions about the evidence base
+    4. Replication failures: Studies that failed to replicate the finding
+    5. Boundary conditions: Limitations on generalizability
+    """
+)
+async def find_defeaters_for_belief(
+    belief_id: str,
+    pretty: bool = Query(True, description="Pretty-print JSON output")
+):
+    """Find potential defeaters (disconfirming evidence) for a belief."""
+    try:
+        from src.services.gap_predictor import get_gap_predictor
+
+        predictor = get_gap_predictor()
+        result = predictor.find_defeaters_for_belief(belief_id)
+
+        if pretty:
+            return Response(
+                content=json.dumps(result, indent=2, ensure_ascii=False, default=str),
+                media_type="application/json"
+            )
+        return result
+
+    except Exception as e:
+        logger.error(f"Error finding defeaters for {belief_id}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error: {str(e)}"
+        )
+
+
+@router.get(
+    "/defeaters/top",
+    summary="Find defeaters for most confident beliefs",
+    description="""
+    Search for potential defeaters for the most confident beliefs in the web.
+
+    Panel Review 2026-02-12 (Mayo): Prioritizes highly-confident beliefs since
+    those are where overconfidence is most dangerous.
+
+    This helps identify beliefs that may need credence adjustment or further
+    investigation despite high current confidence.
+    """
+)
+async def find_all_defeaters(
+    limit: int = Query(10, description="Maximum number of beliefs to check"),
+    pretty: bool = Query(True, description="Pretty-print JSON output")
+):
+    """Find potential defeaters for the most confident beliefs."""
+    try:
+        from src.services.gap_predictor import get_gap_predictor
+
+        predictor = get_gap_predictor()
+        result = predictor.find_all_defeaters(limit=limit)
+
+        if pretty:
+            return Response(
+                content=json.dumps(result, indent=2, ensure_ascii=False, default=str),
+                media_type="application/json"
+            )
+        return result
+
+    except Exception as e:
+        logger.error(f"Error finding defeaters: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error: {str(e)}"
+        )
+
+
+# =============================================================================
 # Web of Belief State Endpoint (INT-4)
 # =============================================================================
 

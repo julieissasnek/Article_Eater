@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Thursday, February 12, 2026*
+*Last updated: Thursday, February 12, 2026 (ARCH-4 Sprint Plan Complete)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -146,6 +146,296 @@ This prevents duplicate work across parallel terminals.
 
 **See**: `docs/PARALLEL_WORK.md` for file ownership.
 **See**: `docs/SYSTEM_INVENTORY_2026-02-11.md` for full repo documentation.
+
+---
+
+### ⭐ Panel Review Fixes (2026-02-12) — Claude Code Session
+
+**Context**: Ruthless panel review (`docs/PANEL_RUTHLESS_REVIEW_2026-02-12.md`) identified critical issues.
+**Overall Score**: 4/10 - "Ambitious but confused"
+
+| Fix | Description | Status | Panel Reference |
+|-----|-------------|--------|-----------------|
+| FIX-1 | Widen credence intervals (floor 0.05→0.25) | ✓ COMPLETE | Kahneman: overconfidence |
+| FIX-2 | Remove crypto-foundationalist level weights | ✓ COMPLETE | Haack: 1.5/0.8 smuggles foundationalism |
+| FIX-3 | Add defeater search to gap predictor | ✓ COMPLETE | Mayo: confirmation bias is structural |
+
+**Changes Made (2026-02-12)**:
+1. `src/services/web_of_belief.py`:
+   - Raised uncertainty floor from 0.05 to 0.25 (lines 430-431)
+   - Changed `is_well_established()` threshold from 0.2 to 0.35
+   - Changed default uncertainty from 0.4 to 0.5 in Belief class
+2. `src/services/gap_predictor.py`:
+   - Changed LEVEL_WEIGHTS to all 1.0 (lines 346-351) - removes crypto-foundationalism
+   - Added `find_defeaters_for_belief()` method (~150 lines)
+   - Added `find_all_defeaters()` method for batch defeater search
+   - Added DEFEATER_INDICATORS dictionary for defeater language detection
+3. `app/routes/integration.py`:
+   - Added `/api/v1/integration/defeaters/belief/{belief_id}` endpoint
+   - Added `/api/v1/integration/defeaters/top` endpoint
+
+**Tests**: All 2518 tests passing after changes.
+
+---
+
+### ⭐ Panel Review — Larger Architectural Changes (2026-02-12)
+
+These require significant design decisions and implementation effort.
+
+#### ARCH-1: Causal Inference — Do-Calculus Decision ⚠️ NEEDS DECISION
+
+**Panel Critique (Pearl)**: "No do-operator implementation. Your 'epistemic_causal_bridge.py' claims to bridge Quinean to Pearlian, but I see no actual do-calculus. Where is do(X=x)? Where are the truncated factorizations? You have causal VOCABULARY without causal SEMANTICS... This is 'causal inference theater.'"
+
+**The Question**: Should we implement real do-calculus?
+
+| Option | Description | Effort | Trade-off |
+|--------|-------------|--------|-----------|
+| A. Implement do-calculus | Full Pearl machinery: do-operator, truncated factorizations, identification algorithms | HIGH (~2-3 sprints) | Rigorous but complex; requires structural equations for every relationship |
+| B. Remove causal claims | Rename to "evidence aggregation"; remove causal language from code/docs | LOW (1 sprint) | Honest but less ambitious; still useful for evidence tracking |
+| C. Clarify scope | Keep current code but document it as "causal hypothesis tracking" not "causal inference" | LOW (days) | Middle ground; acknowledges limitation without major refactor |
+| D. Partial implementation | Implement do-operator for simple cases (no confounders) | MEDIUM (1 sprint) | Some rigor without full complexity |
+
+**Recommendation**: Option C or D. Full do-calculus (Option A) requires:
+- Structural equations for every BN edge
+- Identification algorithms (backdoor, frontdoor criteria)
+- Confounding adjustment
+- This is a research project in itself
+
+**Status**: NEEDS DECISION
+**Assigned**: Professor Kirsh
+
+---
+
+#### ARCH-2: Transportability / Scope Extrapolation
+
+**Panel Critique (Cartwright)**: "Scope is tracked but not USED. You record that a belief applies to 'office workers in open-plan offices' but then treat it as evidence for general claims about daylight→productivity. Where is the extrapolation logic? What licenses generalizing from offices to hospitals?"
+
+| Task | Description | Status |
+|------|-------------|--------|
+| ARCH-2a | Implement transportability analysis (Pearl/Bareinboim) | PENDING |
+| ARCH-2b | Add similarity metrics between settings | PENDING |
+| ARCH-2c | Flag extrapolations with confidence penalties | PENDING |
+| ARCH-2d | Require explicit transport assumptions | PENDING |
+
+**Effort**: MEDIUM (1-2 sprints)
+**Depends On**: ARCH-1 decision (if we go full Pearl, transportability follows naturally)
+
+---
+
+#### ARCH-3: Replication & Publication Bias (Meehl)
+
+**Panel Critique (Meehl)**: "No replication tracking. Same finding from same lab twice isn't independent replication. You need to track: independent labs, different methods, different populations. Your accumulation treats all studies as independent."
+
+| Task | Description | Status |
+|------|-------------|--------|
+| ARCH-3a | Add lab/institution tracking to beliefs | PENDING |
+| ARCH-3b | Implement independence scoring (lab × method × population) | PENDING |
+| ARCH-3c | Add crud factor adjustment for soft psychology | PENDING |
+| ARCH-3d | Implement publication bias correction (funnel plot analysis) | PENDING |
+| ARCH-3e | Model effect size decay (decline effect) | PENDING |
+| ARCH-3f | Weight early findings LESS (regression to mean expectation) | PENDING |
+
+**Effort**: MEDIUM (1-2 sprints)
+**Dependencies**: Requires metadata extraction from papers (lab, methods)
+
+---
+
+#### ARCH-4: Formal Epistemic Calculus (Panel-Developed Plan)
+
+**Panel Consultation**: `docs/PANEL_ARCH4_EPISTEMIC_CALCULUS_2026-02-12.md` ⭐ START HERE
+
+**Panel**: Spohn (ranking), Pollock (defeat), Haack (foundherentism), Pearl (causal bridge), Lamport (TLA+), Liskov (architecture)
+
+**Key Insight**: Do-calculus is for causal inference. The epistemic layer needs its own calculus:
+- **Ranking Theory** (Spohn) — Ordinal ranks for entrenchment, formal revision rules
+- **Defeasible Logic** (Pollock) — Non-monotonic inference with defeaters, reinstatement
+- **Foundherentist Structure** (Haack) — Grounding + coherence, not just one metric
+
+**Agreed Architecture** (from panel synthesis):
+```
+RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
+                              │
+                              ▼
+                EPISTEMIC-CAUSAL BRIDGE (Pearl)
+                              │
+                              ▼
+                    CAUSAL LAYER (BN)
+```
+
+**Agreed Invariants** (5 formal properties to verify):
+- INV-1: Consistency — ¬(warranted(B) ∧ warranted(rebutter(B)))
+- INV-2: Groundedness — warranted → grounded ∨ supported_by_warranted
+- INV-3: RankCoherence — supports(A,B) ∧ warranted(A) → rank(B) ≤ rank(A) + δ
+- INV-4: DefeatAsymmetry — defeats(D,B) → rank(D) < rank(B)
+- INV-5: BridgeCoherence — edge_confident(X,Y) → warranted(belief supporting X→Y)
+
+**Implementation Phases** (panel-approved):
+
+| Phase | Description | Sprint | Panel Reviewer |
+|-------|-------------|--------|----------------|
+| P1 | Data Model Refactoring (Belief → Content+Status+Provenance) | 1 | Liskov |
+| P2 | Ranking Service (Spohn conditionalization, defeat-adjusted ranks) | 1 | Spohn |
+| P3 | Warrant Service (defeat, reinstatement, warrant status) | 1 | Pollock |
+| P4 | Grounding Service (experiential basis, foundherentist justification) | 1 | Haack |
+| P5 | Epistemic-Causal Bridge (edge confidence, structure uncertainty) | 1 | Pearl |
+| P6 | Formal Verification (TLA+ spec, model checking) | 1 | Lamport |
+
+**Phase 1: Data Model Refactoring**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P1.1 | Split Belief into Content + Status + Provenance | PENDING |
+| P1.2 | Create RankPair dataclass (rank, neg_rank) | PENDING |
+| P1.3 | Create GroundingStatus enum and ExperientialClaim | PENDING |
+| P1.4 | Update WebOfBelief to use new model | PENDING |
+| P1.5 | Migration script for existing data | PENDING |
+
+**Phase 2: Ranking Service (Spohn)**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P2.1 | Create RankingService class | PENDING |
+| P2.2 | Implement base rank computation from evidence | PENDING |
+| P2.3 | Implement Spohn conditionalization | PENDING |
+| P2.4 | Implement defeat-adjusted ranks | PENDING |
+| P2.5 | Property-based tests for rank coherence | PENDING |
+| P2.6 | Panel review: Spohn | PENDING |
+
+**Phase 3: Warrant Service (Pollock)**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P3.1 | Create WarrantService class | PENDING |
+| P3.2 | Implement prima facie warrant | PENDING |
+| P3.3 | Implement rebutting defeat | PENDING |
+| P3.4 | Implement undercutting defeat | PENDING |
+| P3.5 | Implement reinstatement (recursive) | PENDING |
+| P3.6 | Property-based tests for consistency invariant | PENDING |
+| P3.7 | Panel review: Pollock | PENDING |
+
+**Phase 4: Grounding Service (Haack)**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P4.1 | Create GroundingService class | PENDING |
+| P4.2 | Implement experiential basis tracking | PENDING |
+| P4.3 | Implement grounding metric computation | PENDING |
+| P4.4 | Refactor coherence contribution | PENDING |
+| P4.5 | Combine into foundherentist justification status | PENDING |
+| P4.6 | Panel review: Haack | PENDING |
+
+**Phase 5: Epistemic-Causal Bridge (Pearl)**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P5.1 | Create GraphConfidenceService | PENDING |
+| P5.2 | Implement edge confidence from warrant + rank | PENDING |
+| P5.3 | Implement structure uncertainty quantification | PENDING |
+| P5.4 | Add identifiability check (basic) | PENDING |
+| P5.5 | Panel review: Pearl | PENDING |
+
+**Phase 6: Formal Verification (Lamport)**
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P6.1 | Write TLA+ specification | PENDING |
+| P6.2 | Model check safety properties | PENDING |
+| P6.3 | Model check liveness properties | PENDING |
+| P6.4 | Document refinement relation to code | PENDING |
+| P6.5 | Final panel review: All | PENDING |
+
+**Key Documents**:
+- Sprint plan: `docs/ARCH4_SPRINT_PLAN_2026-02-12.md` ⭐ EXECUTION PLAN
+- Panel consultation: `docs/PANEL_ARCH4_EPISTEMIC_CALCULUS_2026-02-12.md`
+- Draft spec: `docs/EPISTEMIC_CALCULUS_SPEC_2026-02-12.md`
+
+**Key References**:
+- Spohn, W. (2012). *The Laws of Belief: Ranking Theory and Its Philosophical Applications*
+- Pollock, J. (1995). *Cognitive Carpentry: A Blueprint for How to Build a Person*
+- Pollock, J. (1987). "Defeasible Reasoning" — Cognitive Science 11(4)
+
+**Effort**: 6 sprints (panel-approved phasing)
+**Dependencies**: None — can run in parallel with other ARCH tasks
+**Panel Sign-Off**: Spohn ✓, Pollock ✓, Haack ✓, Pearl ✓, Lamport ✓, Liskov ✓
+
+---
+
+#### ARCH-5: God Object Decomposition (Liskov)
+
+**Panel Critique (Liskov)**: "Belief class is a god object. It has 20+ fields, optional everything, no clear invariants. What makes a Belief a Belief? Module boundaries are unclear. `web_of_belief.py` is 1900 lines. `epistemic_causal_bridge.py` is 2000 lines. These aren't modules - they're monoliths."
+
+| Task | Description | Status |
+|------|-------------|--------|
+| ARCH-5a | Split Belief into focused types (TheoreticalBelief, EmpiricalBelief, etc.) | PENDING |
+| ARCH-5b | Extract coherence computation to separate module | PENDING |
+| ARCH-5c | Extract entrenchment computation to separate module | PENDING |
+| ARCH-5d | Break web_of_belief.py into <500 line modules | PENDING |
+| ARCH-5e | Break epistemic_causal_bridge.py into focused modules | PENDING |
+| ARCH-5f | Define clear module interfaces | PENDING |
+
+**Effort**: MEDIUM-HIGH (1-2 sprints, careful refactoring)
+**Risk**: Breaking changes; needs comprehensive test coverage first
+
+---
+
+#### ARCH-6: Severe Testing (Mayo)
+
+**Panel Critique (Mayo)**: "No severe tests. Your beliefs gain credence by accumulation, not by passing severe tests. A belief that's 'consistent with 10 studies' might not have been severely tested by ANY of them."
+
+| Task | Description | Status |
+|------|-------------|--------|
+| ARCH-6a | Track study design quality (RCT vs observational) | PENDING |
+| ARCH-6b | Compute "severity" of each supporting study | PENDING |
+| ARCH-6c | Require at least one severe test for high credence | PENDING |
+| ARCH-6d | Distinguish "consistent with" from "severely tested by" | PENDING |
+
+**Effort**: MEDIUM (1 sprint)
+**Requires**: Study design metadata extraction
+
+---
+
+### Priority Recommendation
+
+1. **ARCH-4** (Formal Epistemic Calculus) — ⭐ PANEL-APPROVED PLAN READY
+2. **ARCH-1** (Do-Calculus Decision) — Must decide before other causal work
+3. **ARCH-3** (Replication/Bias) — High impact on credence accuracy
+4. **ARCH-6** (Severe Testing) — Addresses confirmation bias structurally
+5. **ARCH-5** (Decomposition) — Technical debt, enables other work
+6. **ARCH-2** (Transportability) — Depends on ARCH-1
+
+**Recommendation**: Start ARCH-4 Phase 1 immediately. It has:
+- Full panel consultation complete
+- 6-phase implementation plan
+- Panel reviewers assigned to each phase
+- Clear invariants and success criteria
+
+**Parallel Tracks**:
+- **Causal Track**: ARCH-1 → ARCH-2 (Pearl/Cartwright concerns)
+- **Epistemic Track**: ARCH-4 → ARCH-6 → ARCH-3 (Spohn/Pollock/Meehl concerns)
+- **Engineering Track**: ARCH-5 (Liskov concerns) — can run anytime
+
+**The Big Picture**:
+```
+EPISTEMIC LAYER                    CAUSAL LAYER
+(Spohn + Pollock)                  (Pearl)
+     │                                  │
+     ▼                                  ▼
+┌─────────────────┐              ┌─────────────────┐
+│ Ranking Theory  │              │  Do-Calculus    │
+│ (entrenchment)  │              │  (intervention) │
+├─────────────────┤              ├─────────────────┤
+│ Defeasible Logic│──────────────│  BN Structure   │
+│ (defeat/warrant)│   bridges    │  (DAG edges)    │
+└─────────────────┘              └─────────────────┘
+         │                                  │
+         └──────────┬───────────────────────┘
+                    ▼
+         ┌─────────────────────┐
+         │ Epistemic-Causal    │
+         │ Bridge (confidence  │
+         │ in causal claims)   │
+         └─────────────────────┘
+```
 
 ---
 
