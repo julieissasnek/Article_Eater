@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Thursday, February 12, 2026 (ARCH-4 Sprint Plan Complete)*
+*Last updated: Thursday, February 13, 2026 (ARCH-4 Sprint 1.1 COMPLETE)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -282,13 +282,23 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 
 **Phase 1: Data Model Refactoring**
 
+**Sprint 1.1: Design & Contracts** — ✓ COMPLETE (2026-02-13)
+- Schemas: `contracts/schemas/propositional_content.v1.schema.json`
+- Schemas: `contracts/schemas/epistemic_status.v1.schema.json`
+- Schemas: `contracts/schemas/provenance.v1.schema.json`
+- Schemas: `contracts/schemas/experiential_claim.v1.schema.json`
+- Migration doc: `docs/ARCH4_MIGRATION_STRATEGY.md`
+- Panel review: `docs/PANEL_REVIEW_SPRINT_1_1_SCHEMAS_2026-02-13.md`
+
+**Sprint 1.2: Implementation & Migration** — PENDING
+
 | Task | Description | Status |
 |------|-------------|--------|
-| P1.1 | Split Belief into Content + Status + Provenance | PENDING |
-| P1.2 | Create RankPair dataclass (rank, neg_rank) | PENDING |
-| P1.3 | Create GroundingStatus enum and ExperientialClaim | PENDING |
-| P1.4 | Update WebOfBelief to use new model | PENDING |
-| P1.5 | Migration script for existing data | PENDING |
+| P1.1 | Split Belief into Content + Status + Provenance | ✓ SCHEMA COMPLETE |
+| P1.2 | Create RankPair dataclass (rank, neg_rank) | ✓ SCHEMA COMPLETE |
+| P1.3 | Create GroundingStatus enum and ExperientialClaim | ✓ SCHEMA COMPLETE |
+| P1.4 | Update WebOfBelief to use new model | PENDING (Sprint 1.2) |
+| P1.5 | Migration script for existing data | PENDING (Sprint 1.2) |
 
 **Phase 2: Ranking Service (Spohn)**
 
