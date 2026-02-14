@@ -71,6 +71,11 @@ class BridgeType(Enum):
     CAPACITY = "capacity"          # Entity has stable capacity (not mechanism-based)
     EMPIRICAL_COVARIANCE = "empirical_covariance"  # Sprint 8: Co-tested in same study
 
+    # Sprint T2-1.7: Epistemic bridge warrant subtypes
+    EPISTEMIC_COHERENCE_WARRANT = "epistemic_coherence_warrant"      # Accepted via web coherence
+    ARGUMENTATIVE_WARRANT = "argumentative_warrant"                  # Survived adversarial scrutiny
+    EPISTEMIC_VIGILANCE_WARRANT = "epistemic_vigilance_warrant"      # Evaluated via source quality
+
 
 class BridgeStatus(Enum):
     """Status of a bridge warrant in its lifecycle."""
@@ -101,6 +106,10 @@ DEFAULT_BRIDGE_CONFIDENCE: Dict[BridgeType, float] = {
     BridgeType.FUNCTIONAL: 0.50,    # Functions via different mechanisms
     BridgeType.ANALOGICAL: 0.35,    # Suggestive but often fail
     BridgeType.EMPIRICAL_COVARIANCE: 0.60,  # Sprint 8: Co-tested in same study
+    # Sprint T2-1.7: Epistemic bridge warrant default confidences
+    BridgeType.EPISTEMIC_COHERENCE_WARRANT: 0.55,    # Coherence alone is moderate confidence
+    BridgeType.ARGUMENTATIVE_WARRANT: 0.70,          # Survived scrutiny = higher confidence
+    BridgeType.EPISTEMIC_VIGILANCE_WARRANT: 0.65,    # Source quality check = good confidence
 }
 
 

@@ -118,6 +118,16 @@ class ConstraintType(Enum):
     STRONG_TENSION = "strong_tension"  # Sprint 3: Strong tension from failed bridge
     SHARED_EVIDENCE = "shared_evidence"  # Sprint 8: Same study supports both beliefs
 
+    # Sprint T2-1.3: Epistemic link types
+    EPISTEMIC_DERIVATION = "epistemic_derivation"        # Tier 1 → Tier 2 template
+    EPISTEMIC_CROSS_TEMPLATE = "epistemic_cross_template"  # Between Tier 2 templates
+    EPISTEMIC_MEDIATION = "epistemic_mediation"          # Claim mediated by interpretation
+    COHERENCE_SUPPORT = "coherence_support"              # A increases coherence of B
+    COHERENCE_TENSION = "coherence_tension"              # A decreases coherence of B
+    ARGUMENTATIVE_SUPPORT = "argumentative_support"      # Finding supports via argument
+    ARGUMENTATIVE_CHALLENGE = "argumentative_challenge"  # Finding challenges via argument
+    GENERALIZABILITY_WARRANT = "generalizability_warrant"  # Type A → Type B (Sprint T2-4b)
+
 
 # =============================================================================
 # INFERENCE TYPE (Sprint 1.6 - P-EC Panel: Synergies)
@@ -197,6 +207,105 @@ class SourceDepth(Enum):
     FULL_TEXT = "full_text"      # Complete paper analyzed
     ABSTRACT = "abstract"        # Only abstract available
     METADATA = "metadata"        # Only title/keywords/structured data
+
+
+# =============================================================================
+# EPISTEMIC TIER 2: NODE DOMAIN (Sprint T2-1.1)
+# =============================================================================
+
+class NodeDomain(str, Enum):
+    """
+    Knowledge domain for nodes in the web.
+
+    Sprint T2-1.1: Enable epistemic meta-level nodes that reason about
+    the web itself (coherence, source quality, reflexive monitoring).
+
+    Existing domains are CNFA research areas. EPISTEMIC is the meta-level
+    domain for beliefs ABOUT beliefs and the web structure.
+    """
+    BASIC_SCIENCE = "basic_science"              # Neuroscience, physiology
+    ENVIRONMENTAL_PSYCHOLOGY = "environmental_psychology"  # ART, SRT, Biophilia
+    METHODOLOGY = "methodology"                  # Research methods, validity
+    CNFA = "cnfa"                                # Cognitive neuroscience of architecture
+    EPISTEMIC = "epistemic"                      # Meta-level: beliefs about beliefs
+
+
+# =============================================================================
+# EPISTEMIC TIER 2: NODE SUBTYPES (Sprint T2-1.2)
+# =============================================================================
+
+class EpistemicNodeSubtype(str, Enum):
+    """
+    Subtypes for EPISTEMIC domain nodes.
+
+    Sprint T2-1.2: Four templates for epistemic reasoning:
+    - E1: Coherence and belief maintenance (Quinean web dynamics)
+    - E2: Social epistemics (community credence, contestation)
+    - E3: Epistemic emotions (curiosity, certainty, doubt signals)
+    - E4: Reflective equilibrium (theory-evidence balance)
+    """
+    E1_COHERENCE_BELIEF_MAINTENANCE = "e1_coherence_belief_maintenance"
+    E2_SOCIAL_EPISTEMICS = "e2_social_epistemics"
+    E3_EPISTEMIC_EMOTIONS = "e3_epistemic_emotions"
+    E4_REFLECTIVE_EQUILIBRIUM = "e4_reflective_equilibrium"
+
+
+# =============================================================================
+# EPISTEMIC TIER 2: PATHWAY TYPE (Sprint T2-1.4)
+# =============================================================================
+
+class PathwayType(str, Enum):
+    """
+    Effect pathway classification for causal edges.
+
+    Sprint T2-1.4: Distinguish how environmental features affect outcomes:
+    - SUBPERSONAL: Direct physiological effects (no interpretation needed)
+    - PERSONAL_EPISTEMIC: Fully interpretation-mediated (requires cognition)
+    - MIXED: Both pathways active (e.g., lighting affects circadian AND mood)
+
+    Critical for validity assessment: photo studies cannot capture subpersonal
+    pathways (no thermal, acoustic, circadian channels).
+    """
+    SUBPERSONAL = "subpersonal"              # Direct physiological, no interpretation
+    PERSONAL_EPISTEMIC = "personal_epistemic"  # Fully interpretation-mediated
+    MIXED = "mixed"                          # Both channels active
+
+
+# =============================================================================
+# EPISTEMIC TIER 2: REPLICATION STATUS (Sprint T2-1.5)
+# =============================================================================
+
+class ReplicationStatus(str, Enum):
+    """
+    Replication status of empirical claims.
+
+    Sprint T2-1.5: Track whether findings have been independently replicated.
+    Critical for source quality assessment and structural bias detection.
+    """
+    REPLICATED = "replicated"                    # Successfully replicated by independent lab
+    PARTIALLY_REPLICATED = "partially_replicated"  # Some but not all conditions replicated
+    UNREPLICATED = "unreplicated"                # Not yet attempted
+    FAILED_REPLICATION = "failed_replication"    # Attempted and failed
+
+
+# =============================================================================
+# EPISTEMIC TIER 2: PREDICTION ERROR SUBTYPE (Sprint T2-1.6)
+# =============================================================================
+
+class PESubtype(str, Enum):
+    """
+    Subtypes of prediction error in environmental cognition.
+
+    Sprint T2-1.6: When environment violates expectations, what type of
+    prediction was violated?
+
+    - FUNCTIONAL_PE: Affordance mismatch (what the space is for)
+    - NAVIGATIONAL_PE: Spatial model mismatch (where things are)
+    - SOCIAL_PE: Social script mismatch (who belongs, appropriate behavior)
+    """
+    FUNCTIONAL_PE = "functional_pe"      # Affordance mismatch
+    NAVIGATIONAL_PE = "navigational_pe"  # Spatial model mismatch
+    SOCIAL_PE = "social_pe"              # Social script mismatch
 
 
 # =============================================================================
@@ -552,6 +661,33 @@ class Belief:
     content_v2: Optional[Any] = None  # PropositionalContent
     status_v2: Optional[Any] = None   # EpistemicStatus
     provenance_v2: Optional[Any] = None  # Provenance (ARCH-4 version, not Sprint 2.5)
+
+    # =========================================================================
+    # EPISTEMIC TIER 2: Extended Fields (Sprints T2-1.8, T2-1.10, T2-4b)
+    # =========================================================================
+
+    # Task 1.8: Epistemic template fields (only for EPISTEMIC domain nodes)
+    node_domain: Optional['NodeDomain'] = None               # Typed domain (replaces string 'domain')
+    epistemic_subtype: Optional['EpistemicNodeSubtype'] = None  # E1-E4 template type
+    derivation_path: Optional[List[str]] = None              # Tier 1 framework IDs this derives from
+    core_claims: Optional[List[dict]] = None                 # [{text, citation, status}]
+    bayesian_coherentist_mode: Optional[float] = None        # 0.0=Bayesian, 1.0=coherentist (E1 only)
+    empirical_status: Optional[str] = None                   # well_established|supported|contested|speculative
+    normative_weight: Optional[float] = None                 # 0.0=descriptive, 1.0=normative
+    key_references: Optional[List[dict]] = None              # [{citation, year, google_scholar_count}]
+
+    # Task 1.10: Argumentative fields (for all claim nodes)
+    argument_for: Optional[str] = None            # Theoretical position this supports
+    argument_against: Optional[str] = None        # Theoretical position this challenges
+    adversarial_scrutiny_survived: Optional[bool] = None  # Tested by rival group?
+    replication_type: Optional[str] = None        # original|direct_replication|conceptual_replication|meta_analysis
+    pe_subtype: Optional['PESubtype'] = None      # If claim involves prediction error
+
+    # Task 4b: Claim type bifurcation and ecological validity
+    claim_type: Optional[str] = None              # ClaimType: evaluative_response | functional_effect
+    effect_pathway: Optional['PathwayType'] = None  # How effect operates
+    task_ecological_validity: Optional[float] = None  # [0, 1] composite validity score
+    replication_status: Optional['ReplicationStatus'] = None  # Replication tracking
 
     def is_stub(self) -> bool:
         return self.status == BeliefStatus.STUB
@@ -1253,6 +1389,9 @@ class Constraint:
     causal_evidence: Optional[str] = None  # "experimental", "longitudinal", "cross_sectional", "theoretical"
     mediator: Optional[str] = None  # For MEDIATED: what's the M?
 
+    # Sprint T2-1.9: Effect pathway (for BN edges)
+    pathway_type: Optional['PathwayType'] = None  # subpersonal | personal_epistemic | mixed
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'constraint_id': self.constraint_id,
@@ -1264,7 +1403,8 @@ class Constraint:
             'causal_direction': self.causal_direction.value,
             'causal_evidence': self.causal_evidence,
             'mediator': self.mediator,
-            'evidence_ids': self.evidence_ids.copy()
+            'evidence_ids': self.evidence_ids.copy(),
+            'pathway_type': self.pathway_type.value if self.pathway_type else None
         }
 
     @classmethod
@@ -1274,6 +1414,14 @@ class Constraint:
             causal_direction = CausalDirection(causal_dir)
         except ValueError:
             causal_direction = CausalDirection.UNKNOWN
+
+        # Parse pathway_type
+        pathway_type = None
+        if d.get('pathway_type'):
+            try:
+                pathway_type = PathwayType(d['pathway_type'])
+            except ValueError:
+                pathway_type = None
 
         return cls(
             constraint_id=d.get('constraint_id', f"c:{d.get('source')}:{d.get('target')}"),
@@ -1285,7 +1433,8 @@ class Constraint:
             evidence_ids=d.get('evidence_ids', []),
             causal_direction=causal_direction,
             causal_evidence=d.get('causal_evidence'),
-            mediator=d.get('mediator')
+            mediator=d.get('mediator'),
+            pathway_type=pathway_type
         )
 
 
