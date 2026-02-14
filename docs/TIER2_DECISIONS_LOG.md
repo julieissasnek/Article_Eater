@@ -142,6 +142,82 @@ Each decision is tracked with:
 
 ---
 
+## Sprint 2 Decisions
+
+### D2.1: Create separate `src/epistemic/` module for BN infrastructure
+- **Context**: Need to add epistemic BN nodes, edges, and monitors
+- **Alternatives**: Add to `epistemic_causal_bridge.py`
+- **Rationale**: Clean separation; epistemic_causal_bridge.py already 132KB; new module enables future isolation
+- **Risk**: Low — new module, no existing code affected
+- **Dependencies**: None
+- **Panelist Concerns**: Simon (modularity)
+
+### D2.2: EpistemicVariable dataclass with `supporting_belief_pattern` regex field
+- **Context**: Need to connect BN variables to web of belief nodes
+- **Alternatives**: Hard-coded mapping table
+- **Rationale**: Pattern matching allows flexible, extensible belief-to-variable mapping
+- **Risk**: Medium — regex patterns may need tuning for coverage
+- **Dependencies**: D2.1
+- **Panelist Concerns**: Haack (belief-variable grounding)
+
+### D2.3: Create stub nodes for external BN connections
+- **Context**: Environmental edges target `overall_wellbeing`, `wayfinding_success`, `allostatic_regulation` which may not exist yet
+- **Alternatives**: Skip edges until full BN integration
+- **Rationale**: Stub nodes enable testing edge wiring now; will be replaced by actual nodes later
+- **Risk**: Low — stubs are placeholders; clearly marked for replacement
+- **Dependencies**: D2.1
+- **Panelist Concerns**: None (engineering decision)
+
+### D2.4: PE edges have negative weight (reduce epistemic affect)
+- **Context**: Prediction errors are negative signals in predictive processing
+- **Alternatives**: All positive weights, handle sign in structural equations
+- **Rationale**: Explicit negative weight makes causal direction clear in edge definition
+- **Risk**: Medium — weight signs must be respected in downstream computations
+- **Dependencies**: D2.1
+- **Panelist Concerns**: Pearl (structural equation semantics)
+
+### D2.5: All epistemic edges default to `personal_epistemic` pathway type
+- **Context**: Epistemic variables are interpretation-mediated by definition
+- **Alternatives**: Mixed pathway; case-by-case tagging
+- **Rationale**: Epistemic processing inherently requires conscious interpretation
+- **Risk**: Low — consistent default; exceptions can override
+- **Dependencies**: D1.9 (pathway_type on Edge)
+- **Panelist Concerns**: Haack (subpersonal vs. personal distinction)
+
+### D2.6: Edge weights as explicit floats in EpistemicEdge dataclass
+- **Context**: Need edge strength for structural equations
+- **Alternatives**: Separate weight table; infer from variable types
+- **Rationale**: Co-locate weight with edge for clarity; easier to audit and adjust
+- **Risk**: Medium — weights are approximations; need calibration against data
+- **Dependencies**: D2.1
+- **Panelist Concerns**: Pearl (weight calibration), Cartwright (effect size)
+
+### D2.7: Define local PathwayType enum in bn_edges.py
+- **Context**: Needed for PATHWAY_DEFAULTS lookup table
+- **Alternatives**: Import from web_of_belief.py
+- **Rationale**: Avoid circular import issues; enum is simple and self-contained
+- **Risk**: Low — duplicate definition but values are identical
+- **Dependencies**: D1.9
+- **Panelist Concerns**: None (engineering decision)
+
+### D2.8: Default source quality weights (rigor=0.40, independence=0.25, replication=0.20, commitment=0.15)
+- **Context**: Need to weight source quality components
+- **Alternatives**: Equal weights; literature-derived weights
+- **Rationale**: Methodological rigor most impactful; commitment penalty smallest (nuanced)
+- **Risk**: Medium — weights are approximations; may need domain-specific adjustment
+- **Dependencies**: D2.1
+- **Panelist Concerns**: Cartwright (weight justification), Haack (commitment vs. quality)
+
+### D2.9: Theoretical commitment inverted in source quality (high commitment = lower quality)
+- **Context**: A priori theoretical commitment can bias study design
+- **Alternatives**: Positive influence; separate bias metric
+- **Rationale**: Confirmation bias literature supports penalty for high commitment
+- **Risk**: Medium — oversimplifies; some commitment enables hypothesis testing
+- **Dependencies**: D2.8
+- **Panelist Concerns**: Longino (social epistemics), Pollock (theory-ladenness)
+
+---
+
 ## Open Questions
 
 *Questions requiring panel consultation*
