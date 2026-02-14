@@ -312,6 +312,50 @@ Each decision is tracked with:
 
 ---
 
+## Sprint 4 Decisions
+
+### D4.1: ArgumentativeMetadata dataclass with extended fields
+- **Context**: Task 4.1 needs to capture argumentative structure
+- **Alternatives**: Simple dict; minimal fields only
+- **Rationale**: Dataclass provides type safety; extended fields enable rich analysis
+- **Risk**: Low — extraction metadata only; doesn't affect core logic
+- **Dependencies**: None
+- **Panelist Concerns**: Pollock (defeat reasoning), Walton (argumentation schemes)
+
+### D4.2: Regex-based theory reference extraction
+- **Context**: Need to identify which theories a paper supports/challenges
+- **Alternatives**: LLM-based extraction; hardcoded theory list
+- **Rationale**: Regex is fast, interpretable, and can be incrementally improved
+- **Risk**: Medium — may miss novel phrasings; can be tuned
+- **Dependencies**: None
+- **Panelist Concerns**: None (engineering decision)
+
+### D4.3: SourceQualityMetadata with StudyDesign enum
+- **Context**: Task 4.2 needs structured study design classification
+- **Alternatives**: Free-text; simplified binary (good/bad)
+- **Rationale**: Enum provides consistent hierarchy aligned with Cochrane GRADE
+- **Risk**: Low — extraction metadata only
+- **Dependencies**: None
+- **Panelist Concerns**: Cartwright (evidence hierarchy)
+
+### D4.4: Keyword-based pathway classification with mixed default
+- **Context**: Task 4.3 needs to classify effect pathways
+- **Alternatives**: LLM classification; require explicit annotation
+- **Rationale**: Fast, interpretable, defaults to MIXED when uncertain (conservative)
+- **Risk**: Low — classification can be overridden manually
+- **Dependencies**: D1.4 (PathwayType enum)
+- **Panelist Concerns**: None (conservative default handles uncertainty)
+
+### D4.5: PE indicators required before subtype classification
+- **Context**: Task 4.4 must distinguish PE claims from non-PE claims
+- **Alternatives**: Classify all claims into PE subtypes
+- **Rationale**: Only claims with explicit PE indicators get subtype; others return None
+- **Risk**: Low — prevents false positives
+- **Dependencies**: D1.6 (PESubtype enum)
+- **Panelist Concerns**: None (conservative approach)
+
+---
+
 ## Open Questions
 
 *Questions requiring panel consultation*
