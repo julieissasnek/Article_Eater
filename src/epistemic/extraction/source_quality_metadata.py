@@ -352,6 +352,51 @@ def _extract_funding(text: str) -> Optional[str]:
     return None
 
 
+# =============================================================================
+# QUALITY SCORING
+# =============================================================================
+
+# Study design scores (higher = better internal validity)
+DESIGN_SCORES = {
+    StudyDesign.RCT: 1.0,
+    StudyDesign.QUASI_EXPERIMENTAL: 0.7,
+    StudyDesign.WITHIN_SUBJECTS: 0.6,
+    StudyDesign.CORRELATIONAL: 0.4,
+    StudyDesign.CASE_STUDY: 0.2,
+    StudyDesign.QUALITATIVE: 0.3,
+    StudyDesign.DESCRIPTIVE: 0.2,
+    StudyDesign.UNKNOWN: 0.3,
+}
+
+
+def compute_design_score(study_design: str) -> float:
+    """
+    Compute internal validity score based on study design.
+
+    Args:
+        study_design: Study design string or StudyDesign enum value
+
+    Returns:
+        Score in [0, 1] where 1 = highest internal validity (RCT)
+    """
+    # Handle string input
+    if isinstance(study_design, str):
+        try:
+            design = StudyDesign(study_design)
+        except ValueError:
+            # Try case-insensitive match
+            for sd in StudyDesign:
+                if sd.value.lower() == study_design.lower():
+                    design = sd
+                    break
+            else:
+                design = StudyDesign.UNKNOWN
+    else:
+        design = study_design
+
+    return DESIGN_SCORES.get(design, 0.3)
+
+
 def extract_source_quality_metadata(
     paper_text: str,
     title: Optional[str] = None,
