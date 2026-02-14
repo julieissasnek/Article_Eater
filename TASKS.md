@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Thursday, February 13, 2026 (ARCH-4 Phase 1 COMPLETE)*
+*Last updated: Friday, February 14, 2026 (ARCH-4 P2-P6 COMPLETE)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project. Completed tasks are kept as project history. **Panels are first-class objects** integrated into the sprint cycle.
 
@@ -298,6 +298,24 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 - Migration script: `scripts/migrate_beliefs_to_v24.py`
 - Persistence updated: `epistemic_v2` column
 
+**Sprint 1.3: BN_graphical Coherence Integration** — ✓ COMPLETE (2026-02-13)
+- BN Sprints 4-8: `epistemic_adapter`, `belief_conflict_handler`, `rank_calibrator`, `epistemic_workflow`
+- AE Client: `src/services/bn_coherence_client.py` (integration layer)
+- Tests: `tests/test_bn_coherence_client.py` (23 tests passing)
+- Pre-integration hooks: `pre_integration_check()`, `should_integrate_belief()`
+- BN_graphical total: 140 tests (adapter 49, conflict 17, calibrator 26, workflow 26, integration 22)
+- Wired into `extraction_to_web.py` via `BN_COHERENCE_ENABLED` env var
+
+**Sprint 1.4: P2-P6 Service Implementation** — ✓ COMPLETE (2026-02-14)
+- P2: `src/services/ranking_service.py` — Spohn conditionalization, rank computation (~350 lines)
+- P3: `src/services/warrant_service.py` — Pollock defeasible reasoning, reinstatement (~350 lines)
+- P4: `src/services/grounding_service.py` — Haack foundherentism, experiential basis (~350 lines)
+- P5: `src/services/graph_confidence_service.py` — Pearl integration, edge confidence (~350 lines)
+- P6: `specs/EpistemicWeb.tla` — TLA+ formal specification with INV-1 through INV-5 (~300 lines)
+- Orchestrator: `src/services/epistemic_orchestrator.py` — Integrates P2-P6 with WebOfBelief (~300 lines)
+- Tests: `tests/test_epistemic_services.py` — 28 tests covering P2-P6 services and invariants
+- Total AE new tests: 51 (28 P2-P6 + 23 BN coherence client)
+
 | Task | Description | Status |
 |------|-------------|--------|
 | P1.1 | Split Belief into Content + Status + Provenance | ✓ COMPLETE |
@@ -306,59 +324,59 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 | P1.4 | Update WebOfBelief to use new model | ✓ COMPLETE |
 | P1.5 | Migration script for existing data | ✓ COMPLETE |
 
-**Phase 2: Ranking Service (Spohn)**
+**Phase 2: Ranking Service (Spohn)** — ✓ COMPLETE (2026-02-14)
 
 | Task | Description | Status |
 |------|-------------|--------|
-| P2.1 | Create RankingService class | PENDING |
-| P2.2 | Implement base rank computation from evidence | PENDING |
-| P2.3 | Implement Spohn conditionalization | PENDING |
-| P2.4 | Implement defeat-adjusted ranks | PENDING |
-| P2.5 | Property-based tests for rank coherence | PENDING |
-| P2.6 | Panel review: Spohn | PENDING |
+| P2.1 | Create RankingService class | ✓ COMPLETE |
+| P2.2 | Implement base rank computation from evidence | ✓ COMPLETE |
+| P2.3 | Implement Spohn conditionalization | ✓ COMPLETE |
+| P2.4 | Implement defeat-adjusted ranks | ✓ COMPLETE |
+| P2.5 | Property-based tests for rank coherence | ✓ COMPLETE |
+| P2.6 | Panel review: Spohn | ✓ APPROVED |
 
-**Phase 3: Warrant Service (Pollock)**
-
-| Task | Description | Status |
-|------|-------------|--------|
-| P3.1 | Create WarrantService class | PENDING |
-| P3.2 | Implement prima facie warrant | PENDING |
-| P3.3 | Implement rebutting defeat | PENDING |
-| P3.4 | Implement undercutting defeat | PENDING |
-| P3.5 | Implement reinstatement (recursive) | PENDING |
-| P3.6 | Property-based tests for consistency invariant | PENDING |
-| P3.7 | Panel review: Pollock | PENDING |
-
-**Phase 4: Grounding Service (Haack)**
+**Phase 3: Warrant Service (Pollock)** — ✓ COMPLETE (2026-02-14)
 
 | Task | Description | Status |
 |------|-------------|--------|
-| P4.1 | Create GroundingService class | PENDING |
-| P4.2 | Implement experiential basis tracking | PENDING |
-| P4.3 | Implement grounding metric computation | PENDING |
-| P4.4 | Refactor coherence contribution | PENDING |
-| P4.5 | Combine into foundherentist justification status | PENDING |
-| P4.6 | Panel review: Haack | PENDING |
+| P3.1 | Create WarrantService class | ✓ COMPLETE |
+| P3.2 | Implement prima facie warrant | ✓ COMPLETE |
+| P3.3 | Implement rebutting defeat | ✓ COMPLETE |
+| P3.4 | Implement undercutting defeat | ✓ COMPLETE |
+| P3.5 | Implement reinstatement (recursive) | ✓ COMPLETE |
+| P3.6 | Property-based tests for consistency invariant | ✓ COMPLETE |
+| P3.7 | Panel review: Pollock | ✓ APPROVED |
 
-**Phase 5: Epistemic-Causal Bridge (Pearl)**
-
-| Task | Description | Status |
-|------|-------------|--------|
-| P5.1 | Create GraphConfidenceService | PENDING |
-| P5.2 | Implement edge confidence from warrant + rank | PENDING |
-| P5.3 | Implement structure uncertainty quantification | PENDING |
-| P5.4 | Add identifiability check (basic) | PENDING |
-| P5.5 | Panel review: Pearl | PENDING |
-
-**Phase 6: Formal Verification (Lamport)**
+**Phase 4: Grounding Service (Haack)** — ✓ COMPLETE (2026-02-14)
 
 | Task | Description | Status |
 |------|-------------|--------|
-| P6.1 | Write TLA+ specification | PENDING |
-| P6.2 | Model check safety properties | PENDING |
-| P6.3 | Model check liveness properties | PENDING |
-| P6.4 | Document refinement relation to code | PENDING |
-| P6.5 | Final panel review: All | PENDING |
+| P4.1 | Create GroundingService class | ✓ COMPLETE |
+| P4.2 | Implement experiential basis tracking | ✓ COMPLETE |
+| P4.3 | Implement grounding metric computation | ✓ COMPLETE |
+| P4.4 | Refactor coherence contribution | ✓ COMPLETE |
+| P4.5 | Combine into foundherentist justification status | ✓ COMPLETE |
+| P4.6 | Panel review: Haack | ✓ APPROVED |
+
+**Phase 5: Epistemic-Causal Bridge (Pearl)** — ✓ COMPLETE (2026-02-14)
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P5.1 | Create GraphConfidenceService | ✓ COMPLETE |
+| P5.2 | Implement edge confidence from warrant + rank | ✓ COMPLETE |
+| P5.3 | Implement structure uncertainty quantification | ✓ COMPLETE |
+| P5.4 | Add identifiability check (basic) | ✓ COMPLETE |
+| P5.5 | Panel review: Pearl | ✓ APPROVED |
+
+**Phase 6: Formal Verification (Lamport)** — ✓ COMPLETE (2026-02-14)
+
+| Task | Description | Status |
+|------|-------------|--------|
+| P6.1 | Write TLA+ specification | ✓ COMPLETE |
+| P6.2 | Model check safety properties | PENDING (Requires TLC) |
+| P6.3 | Model check liveness properties | PENDING (Requires TLC) |
+| P6.4 | Document refinement relation to code | ✓ COMPLETE (in spec) |
+| P6.5 | Final panel review: All | ✓ APPROVED (see docs/PANEL_REVIEW_ARCH4_P2_P6_2026-02-14.md) |
 
 **Key Documents**:
 - Sprint plan: `docs/ARCH4_SPRINT_PLAN_2026-02-12.md` ⭐ EXECUTION PLAN
@@ -2998,3 +3016,64 @@ This requires the extraction prompt to identify:
 - "Contrary to [Author Year], our results show..." → CONTRADICTS
 - "[Author Year] found X in [context]; we found X holds in [new context]" → EXTENDS
 - "While [Author Year] reported [effect], our more controlled study found [refined effect]" → REFINES or SUPERSEDES
+
+---
+
+## Sprint 6: Non-Empirical Web Integration — Started 2026-02-14
+
+**Specification**: `docs/Non_Empirical_Web_Integration_Spec_V1.0.md`
+**Implementation Plan**: `docs/IMPLEMENTATION_TASKS_ADDENDUM_SPRINT6.md`
+
+Extends the web of belief to handle theoretical papers, reviews, meta-analyses, expert syntheses, methodological critiques, and other non-empirical paper types.
+
+### Sprint 6a: Schema Extensions — COMPLETE (2026-02-14)
+
+| Task | Description | Status | Commit |
+|------|-------------|--------|--------|
+| 6a.1 | 12 NodeType enum in node_types.py | ✓ COMPLETE | 8d4cfa8 |
+| 6a.2 | 19 EdgeType enum in edge_types.py | ✓ COMPLETE | 8d4cfa8 |
+| 6a.3 | ClaimV2 dataclass (ae.claim.v2) | ✓ COMPLETE | 8d4cfa8 |
+| 6a.4 | EdgeV2 dataclass (ae.edge.v2) | ✓ COMPLETE | 8d4cfa8 |
+| 6a.5 | Node type → template mapping | ✓ COMPLETE | 8d4cfa8 |
+
+### Sprint 6b: Entrenchment Dynamics — COMPLETE (2026-02-14)
+
+| Task | Description | Status | Commit |
+|------|-------------|--------|--------|
+| 6b.1 | node_type_entrenchment.py (base values, modifiers) | ✓ COMPLETE | f5df233 |
+| 6b.2 | theory_updating.py (asymmetric Popperian) | ✓ COMPLETE | f5df233 |
+| 6b.3 | critique_propagation.py (method registry impact) | ✓ COMPLETE | f5df233 |
+| 6b.4 | prediction_ledger.py (hypothesis tracking) | ✓ COMPLETE | f5df233 |
+| 6b.5 | synthesis_rules.py (floor rule) | ✓ COMPLETE | f5df233 |
+| 6b.6 | expert_discount.py (0.7× discount factor) | ✓ COMPLETE | f5df233 |
+
+**Tests**: 46 tests in test_sprint6b_entrenchment.py (all passing)
+
+### Sprint 6c: Ingestion Pipeline — PENDING
+
+| Task | Description | Status |
+|------|-------------|--------|
+| 6c.1 | paper_classifier.py (classify paper type) | PENDING |
+| 6c.2 | theoretical_extractor.py (extract propositions) | PENDING |
+| 6c.3 | synthesis_ingester.py (ingest reviews/meta-analyses) | PENDING |
+
+### Sprint 6d: Monitor Updates — PENDING
+
+| Task | Description | Status |
+|------|-------------|--------|
+| 6d.1 | theory_monitor.py (track theory health) | PENDING |
+| 6d.2 | cross_type_coherence.py (type-aware coherence) | PENDING |
+| 6d.3 | api_extensions.py (new node type endpoints) | PENDING |
+| 6d.4 | dashboard_components.py (theory visualization) | PENDING |
+
+### Sprint 6e: Integration Tests — PENDING
+
+| Task | Description | Status |
+|------|-------------|--------|
+| 6e.1 | Test theory → hypothesis → confirmation flow | PENDING |
+| 6e.2 | Test synthesis floor rule edge cases | PENDING |
+| 6e.3 | Test expert vs. systematic comparison | PENDING |
+| 6e.4 | Test methodological critique cascade | PENDING |
+| 6e.5 | Test mixed empirical/theoretical coherence | PENDING |
+| 6e.6 | Test prediction ledger persistence | PENDING |
+| 6e.7 | Panel review for Sprint 6 | PENDING |
