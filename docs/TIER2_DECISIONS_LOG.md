@@ -218,6 +218,58 @@ Each decision is tracked with:
 
 ---
 
+## Sprint 3 Decisions
+
+### D3.1: Coherence drift threshold = 0.1 (10% change)
+- **Context**: Need to distinguish meaningful vs. noise changes in entrenchment
+- **Alternatives**: 0.05 (more sensitive), 0.2 (less sensitive)
+- **Rationale**: 10% is significant enough to warrant attention but not so small as to flood with false positives
+- **Risk**: Medium — may need tuning based on actual web behavior
+- **Dependencies**: None
+- **Panelist Concerns**: Haack (coherence significance)
+
+### D3.2: Asymmetry ratio threshold = 3.0
+- **Context**: When is entrenchment disproportionate to direct evidence?
+- **Alternatives**: 2.0 (strict), 5.0 (lenient)
+- **Rationale**: 3x entrenchment vs. evidence suggests coherence-driven credence
+- **Risk**: Medium — depends on how entrenchment and evidence are normalized
+- **Dependencies**: D2.8 (source quality weights)
+- **Panelist Concerns**: Spohn (rank calibration)
+
+### D3.3: Independence computed as 1 - (largest_cluster / total)
+- **Context**: Need simple metric for lab independence
+- **Alternatives**: Network-based clustering; author co-citation analysis
+- **Rationale**: Simple heuristic that captures dominant-lab problem
+- **Risk**: Low — easy to refine later; captures main concern
+- **Dependencies**: None
+- **Panelist Concerns**: Longino (social epistemics)
+
+### D3.4: Diversity normalized to min(total, 5) paradigms/methods
+- **Context**: How to normalize diversity across different evidence counts
+- **Alternatives**: Fixed normalization (e.g., always divide by 5)
+- **Rationale**: Accounts for small evidence bases; 5 distinct approaches is rich
+- **Risk**: Low — normalization constant can be adjusted
+- **Dependencies**: None
+- **Panelist Concerns**: None (engineering decision)
+
+### D3.5: Adversarial precision_boost = 1.5x counter-evidence weight
+- **Context**: How much to amplify skeptical review
+- **Alternatives**: 2.0x (aggressive), 1.2x (mild)
+- **Rationale**: 50% boost simulates "careful skeptic" not "hostile critic"
+- **Risk**: Medium — affects which beliefs appear vulnerable
+- **Dependencies**: None
+- **Panelist Concerns**: Pollock (defeat sensitivity)
+
+### D3.6: Vulnerability score = (pre - post) / pre
+- **Context**: Need to quantify how much entrenchment dropped
+- **Alternatives**: Absolute difference; log ratio
+- **Rationale**: Proportional drop is more interpretable than absolute
+- **Risk**: Low — straightforward metric
+- **Dependencies**: D3.5
+- **Panelist Concerns**: None (engineering decision)
+
+---
+
 ## Open Questions
 
 *Questions requiring panel consultation*
