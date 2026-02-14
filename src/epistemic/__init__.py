@@ -5,6 +5,7 @@ This module provides epistemic infrastructure for the Article Eater system:
 - BN node definitions for epistemic variables
 - BN edge definitions for causal relationships
 - Reflexive monitoring capabilities (Sprint 3)
+- Node/edge type taxonomy for non-empirical papers (Sprint 6)
 """
 
 from src.epistemic.bn_nodes import (
@@ -67,6 +68,39 @@ from src.epistemic.warrant_scaling import (
     BASE_VIGILANCE_WARRANT,
 )
 
+# Sprint 6: Non-Empirical Web Integration
+from src.epistemic.node_types import (
+    NodeType,
+    NodeTypeFamily,
+    NodeTypeProperties,
+    get_node_type_family,
+    get_node_type_properties,
+    is_bn_eligible,
+    get_evidence_node_types,
+    get_structural_node_types,
+    get_interpretive_node_types,
+)
+
+from src.epistemic.edge_types import (
+    EdgeType,
+    EdgeTypeCategory,
+    EdgeCompatibility,
+    get_edge_category,
+    get_valid_source_types,
+    get_valid_target_types,
+    validate_edge_connection,
+    get_theoretical_edges,
+    get_review_synthesis_edges,
+)
+
+from src.epistemic.contracts import ClaimV2, EdgeV2
+
+from src.epistemic.validation import (
+    NODE_TYPE_TEMPLATE_MAP,
+    validate_node_for_template,
+    get_valid_node_types_for_template,
+)
+
 __all__ = [
     # Node definitions
     "EpistemicVariable",
@@ -121,4 +155,31 @@ __all__ = [
     "BASE_COHERENCE_WARRANT",
     "BASE_ARGUMENTATIVE_WARRANT",
     "BASE_VIGILANCE_WARRANT",
+    # Sprint 6: Node type taxonomy
+    "NodeType",
+    "NodeTypeFamily",
+    "NodeTypeProperties",
+    "get_node_type_family",
+    "get_node_type_properties",
+    "is_bn_eligible",
+    "get_evidence_node_types",
+    "get_structural_node_types",
+    "get_interpretive_node_types",
+    # Sprint 6: Edge type taxonomy
+    "EdgeType",
+    "EdgeTypeCategory",
+    "EdgeCompatibility",
+    "get_edge_category",
+    "get_valid_source_types",
+    "get_valid_target_types",
+    "validate_edge_connection",
+    "get_theoretical_edges",
+    "get_review_synthesis_edges",
+    # Sprint 6: Contracts
+    "ClaimV2",
+    "EdgeV2",
+    # Sprint 6: Validation
+    "NODE_TYPE_TEMPLATE_MAP",
+    "validate_node_for_template",
+    "get_valid_node_types_for_template",
 ]
