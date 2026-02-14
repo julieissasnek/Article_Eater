@@ -45,12 +45,26 @@ from src.epistemic.bn_edges import (
 
 from src.epistemic.source_quality import (
     compute_source_quality,
+    compute_source_quality_context,
     compute_source_quality_detailed,
     SourceQualityResult,
+    StudyType,
     DEFAULT_SOURCE_QUALITY_WEIGHTS,
+    COMMITMENT_PENALTY_MULTIPLIER,
     classify_quality,
     high_quality_threshold,
     moderate_quality_threshold,
+)
+
+from src.epistemic.warrant_scaling import (
+    compute_coherence_warrant,
+    get_coherence_warrant_for_belief,
+    compute_argumentative_warrant,
+    compute_vigilance_warrant,
+    compute_total_warrant,
+    BASE_COHERENCE_WARRANT,
+    BASE_ARGUMENTATIVE_WARRANT,
+    BASE_VIGILANCE_WARRANT,
 )
 
 __all__ = [
@@ -89,10 +103,22 @@ __all__ = [
     "validate_all_edges_tagged",
     # Source quality computation
     "compute_source_quality",
+    "compute_source_quality_context",
     "compute_source_quality_detailed",
     "SourceQualityResult",
+    "StudyType",
     "DEFAULT_SOURCE_QUALITY_WEIGHTS",
+    "COMMITMENT_PENALTY_MULTIPLIER",
     "classify_quality",
     "high_quality_threshold",
     "moderate_quality_threshold",
+    # Warrant scaling (panel-approved)
+    "compute_coherence_warrant",
+    "get_coherence_warrant_for_belief",
+    "compute_argumentative_warrant",
+    "compute_vigilance_warrant",
+    "compute_total_warrant",
+    "BASE_COHERENCE_WARRANT",
+    "BASE_ARGUMENTATIVE_WARRANT",
+    "BASE_VIGILANCE_WARRANT",
 ]

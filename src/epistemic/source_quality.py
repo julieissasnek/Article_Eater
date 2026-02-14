@@ -1,30 +1,61 @@
 """
-Source Quality Computation (Sprint T2-2.5).
+Source Quality Computation (Sprint T2-2.5, Panel-Revised).
 
 Computes composite source quality scores from component metrics.
 Source quality is a weighted combination of:
 - Methodological rigor
-- Theoretical commitment (inverted - high commitment = lower quality)
-- Independence of evidence
+- Theoretical commitment (context-dependent penalty per D-PANEL.4)
+- Independence of evidence (elevated per D-PANEL.3)
 - Replication status
 
 References:
 - Epistemic vigilance: Sperber et al. (2010)
 - Methodological quality: Cochrane GRADE framework
+- Panel consensus: 2026-02-14 (Cartwright, Longino, Pollock)
 """
 
 from dataclasses import dataclass, field
 from typing import Dict, Optional
+from enum import Enum
 
 
 # =============================================================================
-# DEFAULT WEIGHTS
+# STUDY TYPE ENUM (D-PANEL.4)
+# =============================================================================
+
+class StudyType(str, Enum):
+    """
+    Study type for context-dependent commitment penalty.
+
+    Per panel consensus (Longino, Pollock): Confirmatory studies designed
+    to support a specific prediction deserve full penalty. Exploratory
+    studies and replications deserve reduced or no penalty.
+    """
+    CONFIRMATORY = "confirmatory"      # Full penalty (1.0x)
+    EXPLORATORY = "exploratory"        # Reduced penalty (0.5x)
+    REPLICATION = "replication"        # No penalty (0.0x)
+    META_ANALYSIS = "meta_analysis"    # No penalty (0.0x)
+    UNKNOWN = "unknown"                # Default to full penalty (1.0x)
+
+
+# Commitment penalty multipliers by study type
+COMMITMENT_PENALTY_MULTIPLIER: Dict[StudyType, float] = {
+    StudyType.CONFIRMATORY: 1.0,    # Full penalty for confirmatory
+    StudyType.EXPLORATORY: 0.5,     # Half penalty for exploratory
+    StudyType.REPLICATION: 0.0,     # No penalty for replications
+    StudyType.META_ANALYSIS: 0.0,   # No penalty for meta-analyses
+    StudyType.UNKNOWN: 1.0,         # Default to full penalty
+}
+
+
+# =============================================================================
+# DEFAULT WEIGHTS (D-PANEL.3: Revised per Cartwright)
 # =============================================================================
 
 DEFAULT_SOURCE_QUALITY_WEIGHTS: Dict[str, float] = {
-    "rigor": 0.40,           # Methodological rigor most important
+    "rigor": 0.35,           # Reduced from 0.40 per panel
     "commitment": 0.15,       # Theoretical commitment penalty
-    "independence": 0.25,     # Independence of evidence
+    "independence": 0.30,     # Elevated from 0.25 per Cartwright (replication crisis)
     "replication": 0.20,      # Replication status
 }
 
@@ -95,6 +126,74 @@ def compute_source_quality(
     )
 
     # Ensure result is in [0, 1] (should be if weights sum to 1)
+    return max(0.0, min(1.0, quality))
+
+
+def compute_source_quality_context(
+    methodological_rigor: float,
+    theoretical_commitment: float,
+    independence_of_evidence: float,
+    replication_status: float,
+    study_type: StudyType = StudyType.UNKNOWN,
+    weights: Optional[Dict[str, float]] = None
+) -> float:
+    """
+    Compute source quality with context-dependent commitment penalty.
+
+    Per panel consensus (D-PANEL.4): The commitment penalty varies by study type.
+    Confirmatory studies get full penalty, exploratory studies get half,
+    and replications/meta-analyses get no penalty.
+
+    Args:
+        methodological_rigor: Study design quality. Range [0, 1].
+        theoretical_commitment: Degree of a priori bias. Range [0, 1].
+        independence_of_evidence: Independence from same-lab cluster. Range [0, 1].
+        replication_status: Replication success. Range [0, 1].
+        study_type: Type of study for context-dependent penalty.
+        weights: Optional weight dictionary.
+
+    Returns:
+        Composite source quality score in [0, 1].
+
+    Example:
+        >>> # Confirmatory study with high commitment: full penalty
+        >>> compute_source_quality_context(0.8, 0.8, 0.7, 0.7, StudyType.CONFIRMATORY)
+        0.72  # Reduced by commitment
+
+        >>> # Replication with high commitment: no penalty
+        >>> compute_source_quality_context(0.8, 0.8, 0.7, 0.7, StudyType.REPLICATION)
+        0.74  # No commitment penalty
+    """
+    if weights is None:
+        weights = DEFAULT_SOURCE_QUALITY_WEIGHTS
+
+    # Validate inputs
+    for name, value in [
+        ("methodological_rigor", methodological_rigor),
+        ("theoretical_commitment", theoretical_commitment),
+        ("independence_of_evidence", independence_of_evidence),
+        ("replication_status", replication_status),
+    ]:
+        if not 0.0 <= value <= 1.0:
+            raise ValueError(f"{name} must be in [0, 1], got {value}")
+
+    # Get commitment penalty multiplier for this study type
+    penalty_mult = COMMITMENT_PENALTY_MULTIPLIER.get(study_type, 1.0)
+
+    # Apply context-dependent commitment penalty
+    # Full inversion: (1 - commitment) gives full credit for low commitment
+    # With multiplier: reduces the penalty for exploratory/replication studies
+    adjusted_commitment = theoretical_commitment * penalty_mult
+    commitment_score = 1.0 - adjusted_commitment
+
+    # Compute weighted sum
+    quality = (
+        weights["rigor"] * methodological_rigor +
+        weights["commitment"] * commitment_score +
+        weights["independence"] * independence_of_evidence +
+        weights["replication"] * replication_status
+    )
+
     return max(0.0, min(1.0, quality))
 
 

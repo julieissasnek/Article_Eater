@@ -270,6 +270,48 @@ Each decision is tracked with:
 
 ---
 
+## Panel-Approved Revisions (2026-02-14)
+
+*Consensus from simulated panel deliberation on Sprints 1-3 decisions*
+
+### D-PANEL.1: Coherence warrant scales with link count
+- **Context**: Panel review of D1.5 (EPISTEMIC_COHERENCE_WARRANT = 0.55)
+- **Panel consensus**: Haack and Spohn agreed that coherence strength should scale with the number of supporting links
+- **Decision**: Base 0.55 + sqrt-scaled boost, capped at 0.75
+- **Implementation**: `compute_coherence_warrant(link_count)` returns 0.55 + min(0.15, 0.05 * sqrt(link_count))
+- **Risk**: Low — enhancement to existing value; fully backward compatible
+- **Dependencies**: D1.5 (supersedes fixed value)
+- **Panelist Concerns**: Haack (cumulative coherence), Spohn (rank-sum)
+
+### D-PANEL.2: Vigilance warrant scales with source quality
+- **Context**: Panel review of D1.7 (EPISTEMIC_VIGILANCE_WARRANT = 0.65 fixed)
+- **Panel consensus**: Cartwright argued fixed value is inappropriate; warrant should reflect actual source quality
+- **Decision**: Linear scaling from 0.50 (quality=0) to 0.75 (quality=1)
+- **Implementation**: `compute_vigilance_warrant(source_quality)` returns 0.50 + 0.25 * source_quality
+- **Risk**: Low — enhancement to existing value; fully backward compatible
+- **Dependencies**: D1.7 (supersedes fixed value), D2.8 (uses source quality computation)
+- **Panelist Concerns**: Cartwright (evidence calibration)
+
+### D-PANEL.3: Revised source quality weights
+- **Context**: Panel review of D2.8 (original: rigor=0.40, independence=0.25)
+- **Panel consensus**: Cartwright argued independence underweighted given replication crisis; Haack concurred
+- **Decision**: Rebalance weights: rigor=0.35, independence=0.30, replication=0.20, commitment=0.15
+- **Implementation**: Updated DEFAULT_SOURCE_QUALITY_WEIGHTS in source_quality.py
+- **Risk**: Medium — affects existing source quality scores; all claims may need recalculation
+- **Dependencies**: D2.8 (supersedes original weights)
+- **Panelist Concerns**: Cartwright (replication crisis), Haack (weight balance)
+
+### D-PANEL.4: Context-dependent commitment penalty
+- **Context**: Panel review of D2.9 (commitment always inverted)
+- **Panel consensus**: Longino and Pollock agreed confirmatory vs. exploratory distinction matters
+- **Decision**: Full penalty for confirmatory studies (1.0x), half penalty for exploratory (0.5x), no penalty for replications/meta-analyses (0.0x)
+- **Implementation**: StudyType enum with COMMITMENT_PENALTY_MULTIPLIER lookup; `compute_source_quality_context()` function
+- **Risk**: Medium — requires study type classification; backward compatible via UNKNOWN type
+- **Dependencies**: D2.9 (extends inversion logic)
+- **Panelist Concerns**: Longino (social epistemics), Pollock (theory-ladenness)
+
+---
+
 ## Open Questions
 
 *Questions requiring panel consultation*
