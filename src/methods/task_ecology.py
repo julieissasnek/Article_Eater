@@ -75,6 +75,43 @@ TASK_AUTHENTICITY_SCORES: Dict[TaskClass, float] = {
 
 
 # =============================================================================
+# GENERALIZABILITY WARRANT WEIGHTS (D-PANEL.10)
+# =============================================================================
+
+# Modality-conditional weights for Type A → Type B claim generalization
+# These weights reflect how well findings from each presentation modality
+# generalize to real-world functional effects
+GENERALIZABILITY_WEIGHTS: Dict[str, float] = {
+    "real_building_controlled": 0.9,   # Nearly direct transfer
+    "vr_cave": 0.7,                    # Good ecological validity (Fich et al.)
+    "vr_hmd_room_scale": 0.6,          # Locomotion preserved
+    "vr_hmd_stationary": 0.5,          # Visual immersion only
+    "photographs_2d": 0.35,            # Limited to visual preference
+}
+
+# Default for unknown modalities
+DEFAULT_GENERALIZABILITY_WEIGHT: float = 0.5
+
+
+def get_generalizability_weight(modality_id: Optional[str]) -> float:
+    """
+    Get the generalizability warrant weight for a presentation modality.
+
+    Per D-PANEL.10, Type A → Type B claim generalization depends on
+    how well the presentation modality captures real-world experience.
+
+    Args:
+        modality_id: The presentation modality method_id (e.g., "photographs_2d")
+
+    Returns:
+        Generalizability weight in [0.35, 0.9]
+    """
+    if modality_id is None:
+        return DEFAULT_GENERALIZABILITY_WEIGHT
+    return GENERALIZABILITY_WEIGHTS.get(modality_id, DEFAULT_GENERALIZABILITY_WEIGHT)
+
+
+# =============================================================================
 # STATE CHARACTERIZATION
 # =============================================================================
 

@@ -356,6 +356,129 @@ Each decision is tracked with:
 
 ---
 
+## Sprint 4b Decisions
+
+### D4b.1: Task-Ecological Validity Component Weights
+- **Context**: Task 4b.3 needs to weight five ecology components
+- **Decision**: task=0.30, state=0.20, attention=0.20, temporal=0.15, social=0.15
+- **Alternatives**: Equal weights (0.20 each); higher task weight (0.40)
+- **Rationale**: Task authenticity most directly captures passive observer fallacy; others are important but secondary
+- **Risk**: Medium — directly affects ecological validity scores
+- **Dependencies**: None
+- **Panelist Concerns**: Kaplan (task weight), Haack (state weight)
+
+### D4b.2: Task Authenticity Score Hierarchy
+- **Context**: Task 4b.3 needs to score task types
+- **Decision**: EXPLICIT_EVALUATION=0.2, LAB=0.4, SIMULATED=0.6, REAL=0.8, NATURAL=1.0
+- **Alternatives**: Different spacing; higher floor
+- **Rationale**: 0.2 floor prevents zero scores; 0.2 increments provide clear hierarchy
+- **Risk**: Medium — affects validity calculations
+- **Dependencies**: D4b.1
+- **Panelist Concerns**: Kaplan (explicit evaluation score)
+
+### D4b.3: Construct Validity Maps with Hardcoded Values
+- **Context**: Task 4b.2 needs validity scores for 19 instruments
+- **Decision**: Hardcoded values based on literature (Stamps 1990, etc.)
+- **Alternatives**: Dynamic learning; expert elicitation per-claim
+- **Rationale**: Literature-backed values enable immediate use; can be refined
+- **Risk**: High — values directly determine validity scores
+- **Dependencies**: D4b.1, D4b.2
+- **Panelist Concerns**: Longino (provisional status), Cartwright (citation requirements)
+
+### D4b.4: Auto-Challenge Types and Triggers
+- **Context**: Task 4b.6 needs to flag methodological issues
+- **Decision**: Five challenge types: temporal, channel, VR, single-modality, attention
+- **Alternatives**: More challenge types; no auto-challenges
+- **Rationale**: These five capture most common CNFA methodological issues
+- **Risk**: Medium — false positives/negatives possible
+- **Dependencies**: D4b.3 (channel requirements)
+- **Panelist Concerns**: Cartwright (temporal), Pollock (confidence levels)
+
+### D4b.5: Channel Requirements for Constructs
+- **Context**: Task 4b.6 needs to know what channels constructs require
+- **Decision**: Explicit mapping (wayfinding→locomotion, thermal_comfort→thermal, etc.)
+- **Alternatives**: No channel requirements; learn from data
+- **Rationale**: Domain expertise captured in explicit rules
+- **Risk**: Medium — incorrect mappings cause wrong challenges
+- **Dependencies**: D4b.4
+- **Panelist Concerns**: Kaplan (stress_response requirements)
+
+### D4b.6: Generalizability Warrant for Type A → Type B
+- **Context**: Claim type bifurcation needs linking warrant
+- **Decision**: GENERALIZABILITY_WARRANT with modality-dependent weight (0.35-0.9)
+- **Alternatives**: Fixed 0.5 weight; no warrant
+- **Rationale**: Generalization depends on ecological fidelity of presentation
+- **Risk**: Medium — affects Type B claim confidence
+- **Dependencies**: D1.8 (GENERALIZABILITY_WARRANT enum value)
+- **Panelist Concerns**: Longino (modality weights), Pearl (warrant weight)
+
+---
+
+## Panel-Approved Revisions (Sprint 4/4b — 2026-02-14)
+
+*Consensus from simulated panel deliberation on Sprints 4 and 4b decisions*
+
+### D-PANEL.5: Tiered Adversarial Detection
+- **Context**: Panel review of D4.3 (single indicator triggers)
+- **Panel consensus**: Longino argued single weak indicator is too permissive
+- **Decision**: Strong indicators (any one sufficient): registered_report, multi-lab, adversarial_collaboration. Weak indicators (require two): independent_lab, different_tradition, critics
+- **Risk**: Low — more conservative detection
+- **Dependencies**: D4.3 (refines trigger logic)
+- **Status**: Deferred to Sprint 5
+
+### D-PANEL.6: State Characterization Warning
+- **Context**: Panel review of D4b.1 (task ecology weights)
+- **Panel consensus**: Haack argued completely unmeasured state (all 0.0) should be flagged
+- **Decision**: Add state_characterization_warning when all six state dimensions are 0.0
+- **Risk**: Low — warning only, no score change
+- **Dependencies**: D4b.1
+- **Status**: Deferred to Sprint 5
+
+### D-PANEL.7: Photographs Wayfinding Validity Reduced
+- **Context**: Panel review of D4b.3 (construct validity maps)
+- **Panel consensus**: Kaplan argued 0.20 is too generous for photos→wayfinding
+- **Decision**: Change photographs_2d wayfinding validity from 0.20 to 0.10
+- **Implementation**: Updated seed_data.py
+- **Risk**: Low — single value change
+- **Dependencies**: D4b.3
+- **Status**: IMPLEMENTED
+
+### D-PANEL.8: Challenge Confidence Levels
+- **Context**: Panel review of D4b.4 (auto-challenges)
+- **Panel consensus**: Pollock argued challenges should have confidence levels
+- **Decision**: Add challenge_confidence field (temporal=0.9, channel=0.7, VR=0.8, single=0.6, attention=0.7)
+- **Risk**: Low — additive metadata
+- **Dependencies**: D4b.4
+- **Status**: Deferred to Sprint 5
+
+### D-PANEL.9: Acute/Chronic Stress Split
+- **Context**: Panel review of D4b.5 (channel requirements)
+- **Panel consensus**: Kaplan argued stress_response with no channel requirements is oversimplified
+- **Decision**: Split into acute_stress_response (no channels) and chronic_stress_effects (requires prolonged exposure)
+- **Risk**: Medium — requires construct renaming
+- **Dependencies**: D4b.5
+- **Status**: Deferred to Sprint 5
+
+### D-PANEL.10: Modality-Conditional Generalizability Weights
+- **Context**: Panel review of D4b.6 (generalizability warrant)
+- **Panel consensus**: Longino and Pearl argued weight should vary by modality
+- **Decision**: real_building=0.9, vr_cave=0.7, vr_room_scale=0.6, vr_stationary=0.5, photos=0.35
+- **Implementation**: Added GENERALIZABILITY_WEIGHTS dict and get_generalizability_weight() to task_ecology.py
+- **Risk**: Low — enhancement to existing logic
+- **Dependencies**: D4b.6
+- **Status**: IMPLEMENTED
+
+### D-PANEL.11: Default Construct Validity Changed to 0.3
+- **Context**: Panel review of D4b.3 (missing construct entries)
+- **Panel consensus**: 0.0 is too harsh; 0.5 is too generous; 0.3 reflects conservative uncertainty
+- **Decision**: Change default in get_construct_validity() from 0.0 to 0.3
+- **Implementation**: Updated registry.py
+- **Risk**: Low — affects unmapped constructs only
+- **Dependencies**: D4b.3
+- **Status**: IMPLEMENTED
+
+---
+
 ## Open Questions
 
 *Questions requiring panel consultation*

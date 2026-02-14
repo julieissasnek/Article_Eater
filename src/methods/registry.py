@@ -114,8 +114,13 @@ class MethodEntry:
         }
 
     def get_construct_validity(self, construct: str) -> float:
-        """Get validity score for a specific construct, 0.0 if not mapped."""
-        return self.construct_validity_map.get(construct, 0.0)
+        """
+        Get validity score for a specific construct.
+
+        Per D-PANEL.11: Returns 0.3 for unmapped constructs (conservative uncertainty)
+        rather than 0.0 (which assumes no validity) or 0.5 (which assumes neutrality).
+        """
+        return self.construct_validity_map.get(construct, 0.3)
 
     def has_vr_confounds(self) -> bool:
         """Check if this method has VR-specific confounds."""

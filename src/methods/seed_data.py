@@ -359,7 +359,7 @@ SEED_ENTRIES = [
         construct_validity_map={
             "visual_preference": 0.86,  # Stamps (1990) r=0.86 with in-situ
             "aesthetic_judgment": 0.80,
-            "wayfinding": 0.20,
+            "wayfinding": 0.10,  # D-PANEL.7: Photos provide near-zero wayfinding information
             "stress_response": 0.30,
             "spatial_cognition": 0.25,
             "attention_restoration": 0.40,

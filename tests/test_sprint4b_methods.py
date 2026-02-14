@@ -117,7 +117,7 @@ class TestTask4b1MethodRegistry:
         )
 
         assert entry.get_construct_validity("stress") == 0.85
-        assert entry.get_construct_validity("unknown") == 0.0
+        assert entry.get_construct_validity("unknown") == 0.3  # D-PANEL.11: conservative uncertainty
 
 
 class TestTask4b2SeedEntries:
