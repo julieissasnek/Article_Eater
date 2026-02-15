@@ -1,0 +1,518 @@
+--- a/src/services/voi_search.py
++++ b/src/services/voi_search.py
+@@ -37,7 +37,7 @@
+ # Import canonical gap types from single source of truth
+ # Per Canonical Decisions Record (02-15_09), Decision 1
+ from src.epistemic.gap_types import (
+-    GapType as CanonicalGapType,
++    GapType,
+     GapPriority,
+     GAP_TYPE_WEIGHTS,
+     convert_legacy_gap_type,
+@@ -57,7 +57,6 @@
+ 
+ logger = logging.getLogger(__name__)
+ 
+-
+ # =============================================================================
+ # CROSS-FIELD VOCABULARY (Sprint K - Lane E)
+ # =============================================================================
+@@ -233,10 +232,8 @@
+                 return concept_name
+         return None
+ 
+-
+ # Singleton instance for convenience
+ _vocabulary_instance: Optional[CrossFieldVocabulary] = None
+-
+ 
+ def get_cross_field_vocabulary() -> CrossFieldVocabulary:
+     """Get or create singleton vocabulary instance."""
+@@ -245,50 +242,18 @@
+         _vocabulary_instance = CrossFieldVocabulary()
+     return _vocabulary_instance
+ 
+-
+ # =============================================================================
+ # CORE DATA STRUCTURES (per Lampson)
+ # =============================================================================
+-
+-class GapType(Enum):
+-    """
+-    LEGACY gap types for VOI-driven search.
+-
+-    NOTE: This is a legacy enum. Per Canonical Decisions Record (02-15_09),
+-    the canonical GapType is in src/epistemic/gap_types.py. This local enum
+-    is retained for backwards compatibility. Use to_canonical() to convert.
+-
+-    Mapping to canonical:
+-    - UNCERTAIN -> VALIDATION
+-    - UNEXPLORED -> MECHANISM
+-    - CONTRADICTION -> DIRECTION
+-    - BOUNDARY_UNCLEAR -> BOUNDARY
+-    """
+-    UNCERTAIN = "uncertain"           # High uncertainty on existing belief
+-    UNEXPLORED = "unexplored"         # Topic area with sparse coverage
+-    CONTRADICTION = "contradiction"   # Active conflict needing resolution
+-    BOUNDARY_UNCLEAR = "boundary"     # Scope conditions unclear
+-
+-    def to_canonical(self) -> CanonicalGapType:
+-        """Convert this legacy GapType to the canonical GapType."""
+-        mapping = {
+-            GapType.UNCERTAIN: CanonicalGapType.VALIDATION,
+-            GapType.UNEXPLORED: CanonicalGapType.MECHANISM,
+-            GapType.CONTRADICTION: CanonicalGapType.DIRECTION,
+-            GapType.BOUNDARY_UNCLEAR: CanonicalGapType.BOUNDARY,
+-        }
+-        return mapping.get(self, CanonicalGapType.MECHANISM)
+-
+ 
+ # Per P-VOI Panel (Thagard): Gap types have different VOI priorities
+ # Contradictions actively hurt coherence until resolved
+ GAP_TYPE_PRIORITY_WEIGHTS = {
+-    GapType.CONTRADICTION: 1.0,      # Highest priority - active harm
+-    GapType.UNCERTAIN: 0.7,          # High uncertainty needs resolution
+-    GapType.UNEXPLORED: 0.5,         # Missing evidence
+-    GapType.BOUNDARY_UNCLEAR: 0.4,   # Scope clarification
++    GapType.DIRECTION: 1.0,      # Highest priority - active harm
++    GapType.VALIDATION: 0.7,          # High uncertainty needs resolution
++    GapType.MECHANISM: 0.5,         # Missing evidence
++    GapType.BOUNDARY: 0.4,   # Scope clarification
+ }
+-
+ 
+ @dataclass
+ class EpistemicGap:
+@@ -346,14 +311,14 @@
+ 
+         # Map gap types
+         gap_type_map = {
+-            GapType.UNCERTAIN: FunnelGapType.WEAK_SUPPORT,
+-            GapType.UNEXPLORED: FunnelGapType.MISSING_EVIDENCE,
++            GapType.VALIDATION: FunnelGapType.VALIDATION,
++            GapType.MECHANISM: FunnelGapType.MECHANISM,
+         }
+ 
+         return VOIGap(
+             gap_id=str(uuid.uuid4()),
+             topic=self.description,
+-            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MISSING_EVIDENCE),
++            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MECHANISM),
+             predicted_voi=self.voi_score,
+             belief_id=self.primary_belief_id,
+             theory_id=theory_id,
+@@ -361,7 +326,6 @@
+             search_terms=search_terms or [],
+             identified_by="voi_search",
+         )
+-
+ 
+ @dataclass
+ class SearchRecommendation:
+@@ -387,7 +351,6 @@
+             'expected_credibility_profile': self.expected_credibility_profile
+         }
+ 
+-
+ @dataclass
+ class SearchResult:
+     """Result from a single search query."""
+@@ -406,7 +369,6 @@
+             'execution_time_ms': self.execution_time_ms
+         }
+ 
+-
+ @dataclass
+ class SearchSession:
+     """
+@@ -441,7 +403,6 @@
+             'results': [r.to_dict() for r in self.results]
+         }
+ 
+-
+ # =============================================================================
+ # VOI SCORING (per Pearl)
+ # =============================================================================
+@@ -462,10 +423,10 @@
+     # Per P-VOI Panel: Alpha determines structural vs epistemic weighting
+     # Based on gap type - structural gaps weight structural VOI higher
+     ALPHA_BY_GAP_TYPE = {
+-        GapType.UNEXPLORED: 0.7,        # Missing evidence = structural
+-        GapType.UNCERTAIN: 0.4,         # Uncertainty = epistemic
+-        GapType.CONTRADICTION: 0.5,     # Equal weight - both matter
+-        GapType.BOUNDARY_UNCLEAR: 0.3,  # Scope = more epistemic
++        GapType.MECHANISM: 0.7,        # Missing evidence = structural
++        GapType.VALIDATION: 0.4,         # Uncertainty = epistemic
++        GapType.DIRECTION: 0.5,     # Equal weight - both matter
++        GapType.BOUNDARY: 0.3,  # Scope = more epistemic
+     }
+ 
+     def calculate_voi(
+@@ -572,7 +533,7 @@
+ 
+     def _sparsity_component(self, gap_type: GapType, belief: Belief) -> float:
+         """Score based on evidence sparsity."""
+-        if gap_type == GapType.UNEXPLORED:
++        if gap_type == GapType.MECHANISM:
+             # Unexplored gaps have high sparsity by definition
+             return 0.8
+ 
+@@ -587,7 +548,6 @@
+         else:
+             return 0.2
+ 
+-
+ # =============================================================================
+ # SOURCE SELECTION (per Giles)
+ # =============================================================================
+@@ -602,7 +562,6 @@
+     "environmental_psychology": ["semantic_scholar", "pubmed", "psycinfo"],
+     "default": ["semantic_scholar"]
+ }
+-
+ 
+ class SourceSelector:
+     """
+@@ -673,7 +632,6 @@
+         except ValueError:
+             return 999  # Not in list
+ 
+-
+ # =============================================================================
+ # QUERY GENERATION
+ # =============================================================================
+@@ -737,14 +695,14 @@
+                     queries.append(" ".join(belief_terms[:2] + scope_terms))
+ 
+         # Add gap-type specific queries
+-        if gap.gap_type == GapType.UNCERTAIN:
++        if gap.gap_type == GapType.VALIDATION:
+             # For uncertain gaps, look for replication/meta-analysis
+             if belief:
+                 key_terms = self._extract_terms(belief.content)[:3]
+                 queries.append(" ".join(key_terms + ["meta-analysis"]))
+                 queries.append(" ".join(key_terms + ["replication"]))
+ 
+-        elif gap.gap_type == GapType.UNEXPLORED:
++        elif gap.gap_type == GapType.MECHANISM:
+             # For unexplored, look for any evidence
+             if belief:
+                 key_terms = self._extract_terms(belief.content)[:3]
+@@ -873,7 +831,6 @@
+ 
+         return expanded
+ 
+-
+ # =============================================================================
+ # GAP DETECTOR (Enhanced from TODO 2)
+ # =============================================================================
+@@ -913,10 +870,10 @@
+             if belief.credence.uncertainty > self.UNCERTAINTY_THRESHOLD:
+                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
+                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
+-                    GapType.UNCERTAIN, belief, web
++                    GapType.VALIDATION, belief, web
+                 )
+                 gaps.append(EpistemicGap(
+-                    gap_type=GapType.UNCERTAIN,
++                    gap_type=GapType.VALIDATION,
+                     description=f"High uncertainty ({belief.credence.uncertainty:.0%}) on: {belief.content[:50]}...",
+                     primary_belief_id=belief_id,
+                     voi_score=combined_voi,
+@@ -929,10 +886,10 @@
+             if n_papers < self.MIN_SUPPORTING_STUDIES:
+                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
+                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
+-                    GapType.UNEXPLORED, belief, web
++                    GapType.MECHANISM, belief, web
+                 )
+                 gaps.append(EpistemicGap(
+-                    gap_type=GapType.UNEXPLORED,
++                    gap_type=GapType.MECHANISM,
+                     description=f"Only {n_papers} supporting studies for: {belief.content[:50]}...",
+                     primary_belief_id=belief_id,
+                     voi_score=combined_voi,
+@@ -943,7 +900,6 @@
+         # Sort by VOI and return top gaps
+         gaps.sort(key=lambda g: g.voi_score, reverse=True)
+         return gaps[:max_gaps]
+-
+ 
+ # =============================================================================
+ # MAIN SEARCH COORDINATOR
+@@ -1128,7 +1084,6 @@
+ 
+         return result
+ 
+-
+ # =============================================================================
+ # SPRINT I: STRATEGY SELECTION (per Simon)
+ # =============================================================================
+@@ -1138,7 +1093,6 @@
+     KEYWORD = "keyword"       # Standard keyword search
+     CITATION = "citation"     # Citation-based search (find citing papers)
+     SEMANTIC = "semantic"     # Semantic similarity search
+-
+ 
+ class StrategySelector:
+     """
+@@ -1303,7 +1257,6 @@
+ 
+         return stats
+ 
+-
+ # =============================================================================
+ # SPRINT I: STOPPING RULES (per Simon)
+ # =============================================================================
+@@ -1315,7 +1268,6 @@
+     reason: str
+     relevant_found: int
+     queries_executed: int
+-
+ 
+ def should_stop_searching(
+     gap: EpistemicGap,
+@@ -1383,7 +1335,6 @@
+         relevant_found=n_relevant,
+         queries_executed=queries_executed
+     )
+-
+ 
+ # =============================================================================
+ # SPRINT I: NULL RESULT DETECTION (per Cartwright)
+@@ -1497,7 +1448,6 @@
+                 boost += 0.2
+ 
+         return min(boost, 2.5)  # Cap at 2.5x
+-
+ 
+ # =============================================================================
+ # SPRINT J: TODO 1 INTEGRATION (Credibility Expectations)
+@@ -1630,7 +1580,6 @@
+ 
+         return adjusted
+ 
+-
+ # =============================================================================
+ # SPRINT J: PIPELINE INTEGRATION
+ # =============================================================================
+@@ -1653,7 +1602,6 @@
+     """
+     coordinator = VOISearchCoordinator(web)
+     return coordinator.export_search_priorities(output_path, max_gaps)
+-
+ 
+ def estimate_search_value(
+     web: WebOfBelief,
+@@ -1712,7 +1660,6 @@
+         'recommendation': recommendation
+     }
+ 
+-
+ def prioritize_recommendations(
+     recommendations: List[SearchRecommendation],
+     gap: EpistemicGap,
+@@ -1754,7 +1701,6 @@
+     scored.sort(key=lambda x: x[1], reverse=True)
+ 
+     return [rec for rec, _ in scored]
+-
+ 
+ def export_todo3_summary(
+     web: WebOfBelief,
+@@ -1799,7 +1745,6 @@
+ 
+     return summary
+ 
+-
+ # =============================================================================
+ # FACTORY FUNCTIONS
+ # =============================================================================
+@@ -1833,12 +1778,10 @@
+         web_id=web_id
+     )
+ 
+-
+ def detect_gaps(web: WebOfBelief, max_gaps: int = 10) -> List[EpistemicGap]:
+     """Quick function to detect gaps in a web."""
+     detector = GapDetector()
+     return detector.detect_gaps(web, max_gaps)
+-
+ 
+ def calculate_voi(
+     gap_type: GapType,
+@@ -1854,7 +1797,6 @@
+     calculator = VOICalculator()
+     combined, _, _ = calculator.calculate_voi(gap_type, belief, web)
+     return combined
+-
+ 
+ def identify_and_track_gaps(
+     web: WebOfBelief,
+--- a/src/services/discovery_funnel.py
++++ b/src/services/discovery_funnel.py
+@@ -34,7 +34,7 @@
+ # Import canonical gap types from single source of truth
+ # Per Canonical Decisions Record (02-15_09), Decision 1
+ from src.epistemic.gap_types import (
+-    GapType as CanonicalGapType,
++    GapType,
+     GapPriority,
+     GAP_TYPE_WEIGHTS,
+     convert_legacy_gap_type,
+@@ -42,40 +42,9 @@
+ 
+ logger = logging.getLogger(__name__)
+ 
+-
+ # =============================================================================
+ # ENUMS
+ # =============================================================================
+-
+-class GapType(Enum):
+-    """
+-    LEGACY gap types for discovery funnel.
+-
+-    NOTE: This is a legacy enum. Per Canonical Decisions Record (02-15_09),
+-    the canonical GapType is in src/epistemic/gap_types.py. This local enum
+-    is retained for backwards compatibility. Use to_canonical() to convert.
+-
+-    Mapping to canonical:
+-    - MISSING_EVIDENCE -> MECHANISM
+-    - WEAK_SUPPORT -> VALIDATION
+-    - CONTRADICTION -> DIRECTION
+-    - BOUNDARY_UNCLEAR -> BOUNDARY
+-    """
+-    MISSING_EVIDENCE = "missing_evidence"       # No empirical support
+-    WEAK_SUPPORT = "weak_support"               # Low credence, needs more
+-    CONTRADICTION = "contradiction"             # Conflicting beliefs
+-    BOUNDARY_UNCLEAR = "boundary_unclear"       # Scope conditions unknown
+-
+-    def to_canonical(self) -> CanonicalGapType:
+-        """Convert this legacy GapType to the canonical GapType."""
+-        mapping = {
+-            GapType.MISSING_EVIDENCE: CanonicalGapType.MECHANISM,
+-            GapType.WEAK_SUPPORT: CanonicalGapType.VALIDATION,
+-            GapType.CONTRADICTION: CanonicalGapType.DIRECTION,
+-            GapType.BOUNDARY_UNCLEAR: CanonicalGapType.BOUNDARY,
+-        }
+-        return mapping.get(self, CanonicalGapType.MECHANISM)
+-
+ 
+ class GapStatus(Enum):
+     """Status of a VOI gap."""
+@@ -84,7 +53,6 @@
+     FOUND = "found"             # Articles found, awaiting retrieval
+     CLOSED = "closed"           # Gap addressed
+     STALE = "stale"             # Gap no longer relevant
+-
+ 
+ class RetrievalMethod(Enum):
+     """Methods for PDF retrieval."""
+@@ -94,7 +62,6 @@
+     LIBRARY = "library"                 # Library proxy
+     AUTHOR_REQUEST = "author_request"   # Email to author
+     MANUAL = "manual"                   # Manual download
+-
+ 
+ class RetrievalStatus(Enum):
+     """Status of a PDF retrieval attempt."""
+@@ -108,7 +75,6 @@
+     CORRUPT = "corrupt"
+     SIZE_EXCEEDED = "size_exceeded"
+ 
+-
+ class ClosureType(Enum):
+     """
+     How well a paper closed a gap.
+@@ -119,7 +85,6 @@
+     PARTIAL = "partial"     # VOI reduced ≥30%
+     NONE = "none"           # Minor change (< 30% reduction, not negative)
+     NEGATIVE = "negative"   # VOI increased (uncertainty grew)
+-
+ 
+ def classify_closure(voi_before: float, voi_after: float) -> ClosureType:
+     """
+@@ -151,7 +116,6 @@
+     else:  # VOI increased more than 10%
+         return ClosureType.NEGATIVE
+ 
+-
+ # =============================================================================
+ # DATA CLASSES
+ # =============================================================================
+@@ -193,7 +157,7 @@
+         if not self.identified_at:
+             self.identified_at = datetime.now(timezone.utc).isoformat()
+         if isinstance(self.gap_type, str):
+-            self.gap_type = GapType(self.gap_type)
++            self.gap_type = convert_legacy_gap_type(self.gap_type)
+         if isinstance(self.status, str):
+             self.status = GapStatus(self.status)
+ 
+@@ -221,7 +185,6 @@
+             "closed_at": self.closed_at,
+         }
+ 
+-
+ @dataclass
+ class GapSearch:
+     """A search execution linked to a gap."""
+@@ -283,7 +246,6 @@
+             "error_message": self.error_message,
+             "api_credits_used": self.api_credits_used,
+         }
+-
+ 
+ @dataclass
+ class PDFRetrievalAttempt:
+@@ -368,7 +330,6 @@
+             "source_domain": self.source_domain,
+         }
+ 
+-
+ @dataclass
+ class GapClosure:
+     """Assessment of whether a paper closed a gap."""
+@@ -423,7 +384,6 @@
+             "paper_ingested_at": self.paper_ingested_at,
+             "assessed_at": self.assessed_at,
+         }
+-
+ 
+ @dataclass
+ class FunnelMetrics:
+@@ -494,7 +454,6 @@
+             "end_to_end_rate": self.end_to_end_rate,
+         }
+ 
+-
+ # =============================================================================
+ # SERVICE CLASS
+ # =============================================================================
+@@ -626,7 +585,7 @@
+         return VOIGap(
+             gap_id=row["gap_id"],
+             topic=row["topic"],
+-            gap_type=GapType(row["gap_type"]),
++            gap_type=convert_legacy_gap_type(row["gap_type"]),
+             predicted_voi=row["predicted_voi"],
+             status=GapStatus(row["status"]),
+             belief_id=row["belief_id"],
+@@ -1014,7 +973,6 @@
+         }
+         return recommendations.get(failure_type, "Review failure logs")
+ 
+-
+ # =============================================================================
+ # CONVENIENCE FUNCTIONS
+ # =============================================================================
+@@ -1027,7 +985,7 @@
+     return VOIGap(
+         gap_id=str(uuid.uuid4()),
+         topic=voi_result.get("topic", voi_result.get("description", "Unknown gap")),
+-        gap_type=GapType(voi_result.get("gap_type", "missing_evidence")),
++        gap_type=convert_legacy_gap_type(voi_result.get("gap_type", "missing_evidence")),
+         predicted_voi=voi_result.get("voi", voi_result.get("expected_value", 0.5)),
+         belief_id=voi_result.get("belief_id"),
+         constraint_id=voi_result.get("constraint_id"),
