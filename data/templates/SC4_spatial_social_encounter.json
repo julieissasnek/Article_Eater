@@ -1,0 +1,121 @@
+{
+  "id": "SPATIAL_SOCIAL_ENCOUNTER_001",
+  "display_id": "SC4",
+  "name": "Spatial Configuration as Determinant of Social Encounter Frequency and Quality",
+  "short_description": "Spatial integration determines encounter frequency; context determines encounter valence; visual connectivity determines social monitoring load; edges enable social choice",
+  "structural_pattern": "Spatial configuration creates conditions for social encounter by determining WHO encounters WHOM, HOW OFTEN, and in WHAT CONTEXT. Space Syntax integration predicts co-presence: high-integration spaces are where paths converge, making encounter likely. Social encounters are PE events: encountering another person means encountering an agent whose behavior must be predicted. EXPECTED encounters in high-integration social spaces → low social PE → pleasant, bonding. UNEXPECTED encounters in low-integration spaces → high social PE → T5 threat assessment → anxiety. Visual connectivity (who can see whom) affects social monitoring and perceived privacy. Edge conditions (boundaries between public paths and semi-private zones) create OPTIONAL social encounter: places where a person can choose to engage or withdraw.",
+  "higher_order_principle": "The social dimension of spatial prediction. As SC1 describes how configuration determines NAVIGATIONAL prediction, SC4 describes how it determines SOCIAL prediction: probability, context, and valence of encountering other people. Open-plan offices are the canonical negative case: high visual co-presence + no edges → chronic elevated social PE → attention fatigue, paradoxically reduced meaningful interaction.",
+  "framework_ids": ["space_syntax", "social_neuroscience", "environmental_psychology", "behavioral_architecture"],
+  "domain": "spatial_configuration",
+  "attribute_domain": "A3",
+  "encounter_valence_conditions": {
+    "expected_social_space": "High-integration social space (break room, lobby) → low social PE → positive valence",
+    "unexpected_isolated_space": "Low-integration space (dead-end, parking garage) → high social PE → T5 threat → anxiety"
+  },
+  "open_plan_problem": {
+    "high_visual_connectivity": "Constant social monitoring → social brain always active",
+    "no_edge_conditions": "No withdrawal option → forced exposure",
+    "result": "Chronic elevated social PE → distraction, reduced deep work, withdrawal into headphones/screens"
+  },
+  "causal_links": [
+    {
+      "from_entity": "spatial_integration",
+      "to_entity": "social_encounter_frequency",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "behavioral",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "One of the best-validated Space Syntax findings: integration predicts pedestrian density, which predicts encounter frequency. (Hillier, 1996)"
+    },
+    {
+      "from_entity": "spatial_context_of_encounter",
+      "to_entity": "social_PE_valence",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Expected encounters in social spaces → positive. Unexpected encounters in non-social spaces → T5 threat. (Gehl, 1971/2011)"
+    },
+    {
+      "from_entity": "visual_connectivity_between_occupants",
+      "to_entity": "social_monitoring_load",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Open-plan environments maintain social brain in continuous monitoring mode. Cumulative social PE load → T25 attentional fatigue. (Kim & de Dear, 2013)"
+    },
+    {
+      "from_entity": "edge_condition_richness",
+      "to_entity": "social_choice_availability",
+      "activity": "enables",
+      "from_level": "environmental",
+      "to_level": "behavioral",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Edges (alcoves, window seats, setbacks) allow occupants to CHOOSE engagement or withdrawal. Optional activities increase with edge quality. (Gehl, 2010)"
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all multi-occupant buildings and urban spaces",
+    "Effect strongest in buildings where social interaction is primary function (offices, schools, hospitals)",
+    "Cultural norms modulate social encounter preferences",
+    "Digital communication reduces dependency on spatial co-presence but embodied encounter remains psychologically distinct"
+  ],
+  "moderators": [
+    "Occupant density: spatial configuration creates CONDITIONS; density determines whether encounters occur",
+    "Cultural norms: social distance preferences, greeting rituals, eye-contact norms",
+    "Organizational hierarchy: encounters between status levels may carry higher social PE",
+    "Time of day: social expectations differ (corridor at 2pm vs. 2am)",
+    "Control: voluntary social spaces (café) vs. forced social spaces (open-plan desk)"
+  ],
+  "interactions": [
+    {
+      "template_id": "SPATIAL_INTEGRATION_NAV_PE_001",
+      "display_id": "SC1",
+      "nature": "SC1 determines WHERE people move; SC4 determines WHERE people MEET. Integration predicts both."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "display_id": "T5",
+      "nature": "Unexpected social encounters in low-integration spaces activate T5 threat assessment."
+    },
+    {
+      "template_id": "DT_DIRECTED_ATTENTION_001",
+      "display_id": "T25",
+      "nature": "Chronic social monitoring in high-visibility environments taxes directed attention → T25 fatigue."
+    },
+    {
+      "template_id": "ISOVIST_VISUAL_PREDICTION_001",
+      "display_id": "SC2",
+      "nature": "SC2 isovist area determines visual access between occupants → visual component of social monitoring load."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Hillier, B. (1996). Space is the machine. Cambridge University Press.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Gehl, J. (1971/2011). Life between buildings. Island Press.",
+      "google_scholar_count": 4000
+    },
+    {
+      "citation": "Gehl, J. (2010). Cities for people. Island Press.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Kim, J., & de Dear, R. (2013). Workspace satisfaction: The privacy-communication trade-off in open-plan offices. Journal of Environmental Psychology, 36, 18–26.",
+      "google_scholar_count": 1000
+    },
+    {
+      "citation": "Hillier, B., & Hanson, J. (1984). The social logic of space. Cambridge University Press.",
+      "google_scholar_count": 5000
+    }
+  ],
+  "source_panel": "38_Panel_SC_I_Spatial_Config.md"
+}

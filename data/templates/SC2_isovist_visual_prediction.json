@@ -1,0 +1,112 @@
+{
+  "id": "ISOVIST_VISUAL_PREDICTION_001",
+  "display_id": "SC2",
+  "name": "Isovist Properties as Visual Prediction Range and Spatial Monitoring Capacity",
+  "short_description": "Isovist at any point defines visual prediction range; occluding edges generate spatial inference demand; isovist drift rate determines temporal PE density",
+  "structural_pattern": "The isovist at any point in a building — the total volume of space visible from that point — defines the visual prediction range: the region within which the brain can base spatial predictions on direct sensory evidence rather than inference. Large isovist area → wide prediction range → confident spatial model, effective threat assessment (T5). Small isovist area → narrow prediction range → high spatial uncertainty. Occluding edges at the isovist boundary define limits of perception and onset of prediction. As the occupant moves, the isovist changes continuously (isovist drift). Smooth drift produces continuous, moderate spatial PE; sharp drift (turning corners, doorways) produces discontinuous PE. Prospect-refuge theory maps directly onto isovist properties: prospect = large forward isovist; refuge = small isovist at back and overhead.",
+  "higher_order_principle": "The visual instantiation of spatial prediction. SC1 describes navigational prediction structure (topological); SC2 describes perceptual prediction structure at each point (geometric). They are complementary: a navigator uses both the local isovist and the cognitive map to form spatial predictions.",
+  "framework_ids": ["space_syntax", "visual_graph_analysis", "prospect_refuge_theory", "predictive_processing", "threat_monitoring"],
+  "domain": "spatial_configuration",
+  "attribute_domain": "A3",
+  "isovist_properties": {
+    "area": "Total visible floor area from a point → prediction range",
+    "perimeter": "Boundary length → spatial complexity",
+    "occluding_edges": "Non-visible boundaries → spatial inference demand",
+    "drift_rate": "Rate of isovist change along movement path → temporal PE density"
+  },
+  "causal_links": [
+    {
+      "from_entity": "isovist_area",
+      "to_entity": "visual_prediction_confidence",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Larger isovist = more visual evidence = more confident spatial prediction. Occupant preference for spaces with visual access (Ulrich, 1984; Stamps, 2005)."
+    },
+    {
+      "from_entity": "isovist_occluding_edges",
+      "to_entity": "spatial_inference_demand",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Each occluding edge defines a boundary beyond which the brain must PREDICT rather than perceive. Sharp concavities (blind corners) generate strongest uncertainty."
+    },
+    {
+      "from_entity": "isovist_drift_rate",
+      "to_entity": "spatial_PE_temporal_density",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_to": "weak",
+      "maturity": "preliminary",
+      "evidence_base": "Rapid isovist change (turning corners) produces high temporal density of PE events. Slow change (gentle curves) produces low density. Ellard: GSR tracks isovist transitions."
+    },
+    {
+      "from_entity": "prospect_refuge_balance",
+      "to_entity": "safety_and_restoration",
+      "activity": "promotes",
+      "from_level": "environmental",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Evolved preference for visual monitoring capacity (prospect) + concealment (refuge). Reduces allostatic load (T29) and supports attentional restoration (T25)."
+    }
+  ],
+  "scope_conditions": [
+    "Applies at all spatial scales: room, building, urban",
+    "Isovist properties are computed from occupant's eye position — changes with posture and height",
+    "Transparent materials (glass) extend visual isovists beyond physical boundaries",
+    "Darkness reduces effective isovist to illuminated region — connects to L-templates"
+  ],
+  "moderators": [
+    "Familiarity: known environments reduce isovist importance because cognitive map supplements visual prediction",
+    "Time of day: darkness reduces effective isovist area",
+    "Crowding: other people's bodies create additional moving occluding edges",
+    "Transparency: glass walls extend visual isovists"
+  ],
+  "interactions": [
+    {
+      "template_id": "SPATIAL_INTEGRATION_NAV_PE_001",
+      "display_id": "SC1",
+      "nature": "SC1 = topological prediction (cognitive map). SC2 = geometric prediction (visual field). Together describe complete spatial prediction system."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "display_id": "T5",
+      "nature": "Isovist area determines environmental monitoring capacity → T5 threat assessment. Small isovist → reduced monitoring → elevated threat."
+    },
+    {
+      "template_id": "LUM_CONTRAST_PE_001",
+      "display_id": "L1",
+      "nature": "Isovist analysis assumes visibility, which depends on light. L1 determines what the visual system can actually resolve within the isovist."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Benedikt, M. L. (1979). To take hold of space: Isovists and isovist fields. Environment and Planning B, 6(1), 47–65.",
+      "google_scholar_count": 1500
+    },
+    {
+      "citation": "Turner, A., et al. (2001). From isovists to visibility graphs. Environment and Planning B, 28(1), 103–121.",
+      "google_scholar_count": 1200
+    },
+    {
+      "citation": "Appleton, J. (1975). The experience of landscape. Wiley.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Stamps, A. E. (2005). Enclosure and safety in urbanscapes. Environment and Behavior, 37(1), 102–133.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Ulrich, R. S. (1984). View through a window may influence recovery from surgery. Science, 224(4647), 420–421.",
+      "google_scholar_count": 6000
+    }
+  ],
+  "source_panel": "38_Panel_SC_I_Spatial_Config.md"
+}

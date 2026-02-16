@@ -1,0 +1,133 @@
+{
+  "id": "SPATIAL_INTEGRATION_NAV_PE_001",
+  "display_id": "SC1",
+  "name": "Spatial Integration as Navigational Prediction and the Configuration of Wayfinding PE",
+  "short_description": "Space Syntax integration determines cognitive map reliability; intelligibility determines visual-global prediction accuracy; navigational PE follows Goldilocks zone",
+  "structural_pattern": "Spatial configuration determines the structure and reliability of the brain's cognitive map (hippocampal place cell ensembles, entorhinal grid cells, border cells). Space Syntax integration — the measure of how topologically connected a space is to all other spaces — operationalizes navigational predictability: high-integration spaces are those the brain can predict reaching from many starting points via few direction changes. Movement through a building follows lines of maximum integration because this minimizes navigational PE. Moderate integration → confident wayfinding → positive affect; very high integration → oversimplified → boredom; low integration → high navigational PE → stress, disorientation. Intelligibility (correlation between local visual connectivity and global integration) determines how well visual predictions match global structure.",
+  "higher_order_principle": "The navigational instantiation of the Goldilocks zone. Too little spatial complexity → no navigational prediction, no engagement. Moderate complexity with high intelligibility → confident wayfinding with active cognitive map engagement → spatial pleasure. Excessive complexity with low intelligibility → navigational PE exceeds cognitive map capacity → T14 navigational stress.",
+  "framework_ids": ["space_syntax", "predictive_processing", "hippocampal_spatial_cognition", "wayfinding"],
+  "domain": "spatial_configuration",
+  "attribute_domain": "A3",
+  "space_syntax_metrics": {
+    "integration": "Topological connectivity to all other spaces — predicts movement density",
+    "intelligibility": "Correlation between local connectivity and global integration — predicts cognitive map accuracy",
+    "depth": "Number of turns required to reach from integration core — predicts navigational difficulty"
+  },
+  "vertical_pe_hierarchy": {
+    "elevators": "Maximum spatial discontinuity — highest vertical PE",
+    "stairs": "Intermittent spatial sampling — moderate vertical PE",
+    "ramps": "Continuous path integration — lowest vertical PE"
+  },
+  "causal_links": [
+    {
+      "from_entity": "spatial_integration",
+      "to_entity": "hippocampal_place_cell_ensemble_reliability",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "High-integration spaces activate reliable, distinct place cell ensembles because they are reached by many convergent routes. Space Syntax integration predicts movement density (Hillier, 1996)."
+    },
+    {
+      "from_entity": "spatial_intelligibility",
+      "to_entity": "visual_global_prediction_accuracy",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "High intelligibility means visual local information accurately predicts global position → confident cognitive map → low PE. (Dalton, 2003)"
+    },
+    {
+      "from_entity": "decision_point_distinctiveness",
+      "to_entity": "navigational_PE_at_choice_points",
+      "activity": "modulates",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Distinctive sensory features at decision points anchor the cognitive map. Wayfinding errors cluster at landmark-poor decision points. (Hölscher et al., 2006)"
+    },
+    {
+      "from_entity": "vertical_transition_type",
+      "to_entity": "spatial_coordinate_disruption",
+      "activity": "modulates",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_to": "weak",
+      "maturity": "preliminary",
+      "evidence_base": "Grid cells degrade in vertical dimension (Hayman et al., 2011). Elevators completely remove navigator from spatial network → maximum coordinate disruption."
+    },
+    {
+      "from_entity": "navigational_PE_magnitude",
+      "to_entity": "emotional_response_to_wayfinding",
+      "activity": "determines",
+      "from_level": "cognitive",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Low PE → spatial confidence → positive affect. Moderate PE → spatial engagement → interest. High PE (without agency) → T14 navigational stress → anxiety."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all buildings with non-trivial spatial configuration — multiple rooms, corridors, levels, or choice points",
+    "Effect is strongest for first-time visitors navigating without signage; reduces with familiarity",
+    "Signage and digital wayfinding reduce navigational PE independently of spatial configuration",
+    "Culture and experience modulate baseline expectations"
+  ],
+  "moderators": [
+    "Familiarity: repeated visits build the cognitive map and reduce PE",
+    "Spatial ability: individual differences in spatial cognition modulate PE magnitude",
+    "Signage: reduces PE independently of spatial configuration",
+    "Agency: chosen vs. forced navigation modulates emotional response",
+    "Age: hippocampal decline increases navigational PE in elderly populations",
+    "Floor plan distinctiveness across levels"
+  ],
+  "interactions": [
+    {
+      "template_id": "XF_NAVIGATION_STRESS_CYCLE_002",
+      "display_id": "T14",
+      "nature": "T14 describes stress response to navigational failure. SC1 specifies spatial conditions that produce the PE that T14 responds to."
+    },
+    {
+      "template_id": "SN_LAYOUT_COGNITIVE_MAP_001",
+      "display_id": "T3",
+      "nature": "T3 describes cognitive map formation. SC1 specifies how spatial configuration determines the quality of that map."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "display_id": "T5",
+      "nature": "Low integration and low intelligibility increase spatial uncertainty → may activate T5 threat pathway."
+    },
+    {
+      "template_id": "DT_DIRECTED_ATTENTION_001",
+      "display_id": "T25",
+      "nature": "Complex, low-intelligibility configurations tax directed attention → T25 attention fatigue."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Hillier, B., & Hanson, J. (1984). The social logic of space. Cambridge University Press.",
+      "google_scholar_count": 5000
+    },
+    {
+      "citation": "Hillier, B. (1996). Space is the machine. Cambridge University Press.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "O'Keefe, J., & Nadel, L. (1978). The hippocampus as a cognitive map. Oxford University Press.",
+      "google_scholar_count": 10000
+    },
+    {
+      "citation": "Hafting, T., et al. (2005). Microstructure of a spatial map in the entorhinal cortex. Nature, 436, 801–806.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Hölscher, C., et al. (2006). Up the down staircase: Wayfinding strategies in multi-level buildings. Journal of Environmental Psychology, 26(4), 284–299.",
+      "google_scholar_count": 300
+    }
+  ],
+  "source_panel": "38_Panel_SC_I_Spatial_Config.md"
+}

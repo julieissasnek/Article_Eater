@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-7: L1-L5 Light + MAT1-MAT5 Materials = 73 templates)*
+*Last updated: Sunday, February 16, 2026 (CC-8: L1-L5 + MAT1-MAT5 + SC1-SC4 = 77 templates)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -183,7 +183,7 @@ For each Tier 1 framework:
 
 | Target | Current | Status | Notes |
 |--------|---------|--------|-------|
-| 63 templates | 73 templates | ✅ 100% COMPLETE | `data/templates/*.json` + L1-L5 + MAT1-MAT5 |
+| 63 templates | 77 templates | ✅ 100% COMPLETE | `data/templates/*.json` + L1-L5 + MAT1-MAT5 + SC1-SC4 |
 
 **Completed**: 2026-02-16
 - Registry functional at `src/theory/templateRegistry.ts`
@@ -227,7 +227,25 @@ For each Tier 1 framework:
 | `MATERIAL_CULTURAL_CONDITIONING_001` | MAT5 | Material-Cultural Conditioning | preliminary |
 
 **Coverage Impact**: A1 (Materials & Surfaces) significantly strengthened
-**Template Count**: 68 → 73 total templates
+
+### CC-8: Spatial Configuration Templates (from Panel 38)
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | 4 new templates encoded from `docs/38_Panel_SC_I_Spatial_Config.md` |
+
+**Completed**: 2026-02-16
+**Panel Document**: Doc 38 — Panel SC-I: Spatial Configuration
+**Templates Created**:
+| ID | Display | Name | Maturity |
+|----|---------|------|----------|
+| `SPATIAL_INTEGRATION_NAV_PE_001` | SC1 | Spatial Integration & Navigational PE | supported |
+| `ISOVIST_VISUAL_PREDICTION_001` | SC2 | Isovist Dynamics & Visual Prediction | supported |
+| `ARCH_PROMENADE_PE_ORCHESTRATION_001` | SC3 | Architectural Promenade | supported |
+| `SPATIAL_SOCIAL_ENCOUNTER_001` | SC4 | Spatial Configuration & Social Encounter | supported |
+
+**Coverage Impact**: A3 (Spatial Configuration) upgraded from ★★ Partial → ★★★★ Strong
+**Template Count**: 73 → 77 total templates
 
 ### CC-2: ReductionClaim Encoding
 
