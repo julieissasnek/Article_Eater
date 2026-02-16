@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-11/CC-12/CC-14/CC-15/CC-16 complete — 139 templates, L1-L5 + MAT1-MAT5 calibrated)*
+*Last updated: Sunday, February 16, 2026 (CC-11 through CC-17 complete — 139 templates calibrated, template query service created)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -52,6 +52,36 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 **Commits**: `f3faf4a` (SOC, COL), `d624bba` (OLF1), `b2e2b0d` (VIEW1)
 
 **Total templates: 129** (139 including framework + interaction reference fixes)
+
+### CC-17: Template Query Service (Functional Integration)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ✅ COMPLETE | HIGH | Prototype query service that answers design questions |
+
+**Problem Identified**: Templates encode rich mechanistic knowledge but were disconnected from query system. Query engine worked with WebOfBelief (article extractions) but not templates.
+
+**Solution**: Created `src/services/template_query_service.py` that:
+- Searches templates by keyword relevance
+- Extracts HOW (causal pathway), WHY (higher-order principle), WHEN (scope conditions), FOR WHOM (moderators)
+- Synthesizes human-readable answers with confidence ratings
+- Identifies research gaps from maturity ratings
+
+**Example Query**: "When do high ceilings increase creativity and for whom?"
+- Finds VF3 (Spatial Proportions and Cognitive Processing Mode)
+- Returns mechanism: ceiling_height → enclosure_affect → cognitive_processing_style
+- Returns scope: tasks with variable processing requirements, offices/schools/libraries
+- Returns moderators: task type, cultural expectations, duration
+
+**Architecture Note**: This is Layer 1 of a three-layer integration:
+1. **Templates** (this service) — MECHANISTIC VOCABULARY, WHY it works
+2. **Article Network** — EMPIRICAL EVIDENCE, specific effect sizes
+3. **Bayesian Network** — CONFIDENCE CALIBRATION, posterior beliefs
+
+Full integration would query all three layers and synthesize.
+
+**Files Created**:
+- `src/services/template_query_service.py`
 
 ### CC-16: Panel MAT-II Materials Calibration (Doc 51)
 
