@@ -1,116 +1,117 @@
 {
-    "template_id": "CROSS_WM_GAMMA_BETA_DYNAMICS_001",
-    "display_id": "T47",
-    "name": "WM Gamma/Beta Dynamics in Environmental Processing",
-    "structural_pattern": "OSCILLATORY_GATING",
-    "higher_order_principle": "WM representations maintained by prefrontal gamma bursts (~60-100 Hz, content encoding) and cleared by beta bursts (~15-30 Hz, gating/clearing). Environmental information load modulates gamma burst frequency; distraction degrades beta gating efficiency. Both are measurable via non-invasive EEG in ecological settings.",
-    "transferable_to": [
-        "open-plan office design (distraction → degraded beta gating)",
-        "hospital design (information-dense environments → gamma overload)",
-        "classroom design (optimizing information presentation rate for WM capacity)",
-        "control room design (sustained monitoring demands on WM dynamics)"
-    ],
-    "framework_ids": [
-        "MS",
-        "DT"
-    ],
-    "causal_links": [
-        {
-            "from_variable": "environmental_information_load",
-            "to_variable": "gamma_burst_frequency",
-            "activity": "encode_items_to_WM",
-            "from_level": "environmental",
-            "to_level": "subcortical",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Lundqvist et al., 2016",
-            "parameters": {
-                "frequency_range_Hz": "60-100",
-                "burst_duration_ms": "50-150",
-                "capacity_limit": "3-5 items (gamma bursts per cycle)"
-            }
-        },
-        {
-            "from_variable": "environmental_distraction_level",
-            "to_variable": "beta_gating_efficiency",
-            "activity": "degrade_clearing_mechanism",
-            "from_level": "environmental",
-            "to_level": "subcortical",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Miller, Lundqvist, & Bastos, 2018",
-            "parameters": {
-                "frequency_range_Hz": "15-30",
-                "effect": "distractors trigger gamma bursts that compete with maintained items; insufficient beta fails to clear them"
-            }
-        },
-        {
-            "from_variable": "gamma_burst_frequency",
-            "to_variable": "prefrontal_metabolic_cost",
-            "activity": "scale_energy_consumption",
-            "from_level": "subcortical",
-            "to_level": "subcortical",
-            "bridging_quality": "MEDIUM",
-            "maturity": "how-plausibly",
-            "key_evidence": "Lundqvist et al., 2016; metabolic cost inferred from fMRI BOLD and computational models",
-            "parameters": {
-                "note": "More gamma bursts per second → higher PFC metabolic demand → faster cognitive fatigue"
-            }
-        },
-        {
-            "from_variable": "beta_gating_efficiency",
-            "to_variable": "wm_task_accuracy",
-            "activity": "determine_maintenance_fidelity",
-            "from_level": "subcortical",
-            "to_level": "behavioral",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Lundqvist et al., 2016; Miller et al., 2018",
-            "parameters": {
-                "measurable_via": "mobile_EEG_beta_power_over_PFC",
-                "prediction": "lower beta power in open-plan vs enclosed offices"
-            }
-        }
-    ],
-    "scope_conditions": [
-        "Applies to environments requiring active maintenance of information in WM",
-        "Gamma/beta dynamics require intact prefrontal-parietal network",
-        "Ecological measurement via mobile EEG is feasible but requires careful artifact rejection",
-        "Capacity limits are relatively fixed — architectural design should work within them, not assume they can be expanded"
-    ],
-    "moderators": [
-        "acoustic_environment (speech distractors are especially potent at disrupting beta gating)",
-        "visual_complexity (high visual information density increases gamma load)",
-        "individual_WM_capacity (varies with age, training, and PFC integrity)",
-        "circadian_phase (gamma/beta dynamics degrade with sleep deprivation; links CB)"
-    ],
-    "interactions": [
-        {
-            "template": "T36 (MS_WORKING_MEMORY_LOAD_001)",
-            "type": "MECHANISM",
-            "description": "T36 treats WM load as a capacity-based abstraction. T47 provides the oscillatory mechanism: load = gamma burst frequency; overload = gamma exceeds beta clearing rate."
-        },
-        {
-            "template": "T44 (CROSS_HIERARCHICAL_CONTROL_001)",
-            "type": "SUBSTRATE",
-            "description": "The gamma/beta dynamics implement the lowest level of the control hierarchy (T44 Level 1). Higher control levels recruit additional PFC regions with their own oscillatory dynamics."
-        },
-        {
-            "template": "T29 (ALLOSTATIC_MASTER_001)",
-            "type": "OUTPUT",
-            "description": "Chronic gamma overload (environmentally induced) contributes to allostatic burden. T47 provides a specific, measurable pathway from environment to metabolic cost."
-        },
-        {
-            "template": "T45 (CROSS_PROACTIVE_REACTIVE_001)",
-            "type": "MODE",
-            "description": "Proactive control (T45) maintains goal representations via sustained gamma activity; reactive control triggers transient gamma bursts. Different metabolic signatures at the oscillatory level."
-        }
-    ],
-    "overall_maturity": "how-plausibly",
-    "key_references": [
-        "Lundqvist, Rose, Herman, Brincat, Buschman, & Miller (2016) Neuron",
-        "Miller, Lundqvist, & Bastos (2018) Neuron",
-        "Bastos et al. (2018) eLife",
-        "Kornblith, Buschman, & Miller (2016) Cerebral Cortex"
-    ]
+  "template_id": "CROSS_WM_GAMMA_BETA_DYNAMICS_001",
+  "display_id": "T47",
+  "name": "WM Gamma/Beta Dynamics in Environmental Processing",
+  "structural_pattern": "OSCILLATORY_GATING",
+  "higher_order_principle": "WM representations maintained by prefrontal gamma bursts (~60-100 Hz, content encoding) and cleared by beta bursts (~15-30 Hz, gating/clearing). Environmental information load modulates gamma burst frequency; distraction degrades beta gating efficiency. Both are measurable via non-invasive EEG in ecological settings.",
+  "transferable_to": [
+    "open-plan office design (distraction \u2192 degraded beta gating)",
+    "hospital design (information-dense environments \u2192 gamma overload)",
+    "classroom design (optimizing information presentation rate for WM capacity)",
+    "control room design (sustained monitoring demands on WM dynamics)"
+  ],
+  "framework_ids": [
+    "MS",
+    "DT"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "environmental_information_load",
+      "to_variable": "gamma_burst_frequency",
+      "activity": "encode_items_to_WM",
+      "from_level": "environmental",
+      "to_level": "subcortical",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Lundqvist et al., 2016",
+      "parameters": {
+        "frequency_range_Hz": "60-100",
+        "burst_duration_ms": "50-150",
+        "capacity_limit": "3-5 items (gamma bursts per cycle)"
+      }
+    },
+    {
+      "from_variable": "environmental_distraction_level",
+      "to_variable": "beta_gating_efficiency",
+      "activity": "degrade_clearing_mechanism",
+      "from_level": "environmental",
+      "to_level": "subcortical",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Miller, Lundqvist, & Bastos, 2018",
+      "parameters": {
+        "frequency_range_Hz": "15-30",
+        "effect": "distractors trigger gamma bursts that compete with maintained items; insufficient beta fails to clear them"
+      }
+    },
+    {
+      "from_variable": "gamma_burst_frequency",
+      "to_variable": "prefrontal_metabolic_cost",
+      "activity": "scale_energy_consumption",
+      "from_level": "subcortical",
+      "to_level": "subcortical",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "key_evidence": "Lundqvist et al., 2016; metabolic cost inferred from fMRI BOLD and computational models",
+      "parameters": {
+        "note": "More gamma bursts per second \u2192 higher PFC metabolic demand \u2192 faster cognitive fatigue"
+      }
+    },
+    {
+      "from_variable": "beta_gating_efficiency",
+      "to_variable": "wm_task_accuracy",
+      "activity": "determine_maintenance_fidelity",
+      "from_level": "subcortical",
+      "to_level": "behavioral",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Lundqvist et al., 2016; Miller et al., 2018",
+      "parameters": {
+        "measurable_via": "mobile_EEG_beta_power_over_PFC",
+        "prediction": "lower beta power in open-plan vs enclosed offices"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Applies to environments requiring active maintenance of information in WM",
+    "Gamma/beta dynamics require intact prefrontal-parietal network",
+    "Ecological measurement via mobile EEG is feasible but requires careful artifact rejection",
+    "Capacity limits are relatively fixed \u2014 architectural design should work within them, not assume they can be expanded"
+  ],
+  "moderators": [
+    "acoustic_environment (speech distractors are especially potent at disrupting beta gating)",
+    "visual_complexity (high visual information density increases gamma load)",
+    "individual_WM_capacity (varies with age, training, and PFC integrity)",
+    "circadian_phase (gamma/beta dynamics degrade with sleep deprivation; links CB)"
+  ],
+  "interactions": [
+    {
+      "template": "T36 (MS_WORKING_MEMORY_LOAD_001)",
+      "type": "MECHANISM",
+      "description": "T36 treats WM load as a capacity-based abstraction. T47 provides the oscillatory mechanism: load = gamma burst frequency; overload = gamma exceeds beta clearing rate."
+    },
+    {
+      "template": "T44 (CROSS_HIERARCHICAL_CONTROL_001)",
+      "type": "SUBSTRATE",
+      "description": "The gamma/beta dynamics implement the lowest level of the control hierarchy (T44 Level 1). Higher control levels recruit additional PFC regions with their own oscillatory dynamics."
+    },
+    {
+      "template": "T29 (ALLOSTATIC_MASTER_001)",
+      "type": "OUTPUT",
+      "description": "Chronic gamma overload (environmentally induced) contributes to allostatic burden. T47 provides a specific, measurable pathway from environment to metabolic cost."
+    },
+    {
+      "template": "T45 (CROSS_PROACTIVE_REACTIVE_001)",
+      "type": "MODE",
+      "description": "Proactive control (T45) maintains goal representations via sustained gamma activity; reactive control triggers transient gamma bursts. Different metabolic signatures at the oscillatory level."
+    }
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    "Lundqvist, Rose, Herman, Brincat, Buschman, & Miller (2016) Neuron",
+    "Miller, Lundqvist, & Bastos (2018) Neuron",
+    "Bastos et al. (2018) eLife",
+    "Kornblith, Buschman, & Miller (2016) Cerebral Cortex"
+  ],
+  "short_description": "WM representations maintained by prefrontal gamma bursts (~60-100 Hz, content encoding) and cleared by beta bursts (~15-30 Hz, gating/clearing)"
 }

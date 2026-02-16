@@ -1,100 +1,101 @@
 {
-    "template_id": "CROSS_HIERARCHICAL_CONTROL_001",
-    "display_id": "T44",
-    "name": "Hierarchical Control Gradient in Architectural Demands",
-    "structural_pattern": "STRATIFICATION",
-    "higher_order_principle": "PFC rostro-caudal gradient of policy abstraction: posterior PFC handles concrete sensorimotor mappings; mid-lateral PFC handles contextual rules; anterior PFC handles temporally extended abstract task sets. Architectural environments systematically engage different levels based on behavioral policy complexity.",
-    "transferable_to": [
-        "hospital design (simple corridors vs context-dependent wayfinding)",
-        "office design (focused execution vs multi-project workspace management)",
-        "educational facilities (structured vs self-directed learning environments)",
-        "mixed-use buildings (frequent policy switching across zones)"
-    ],
-    "framework_ids": [
-        "PP",
-        "DT",
-        "MS"
-    ],
-    "causal_links": [
-        {
-            "from_variable": "architectural_policy_complexity",
-            "to_variable": "pfc_hierarchy_level_engaged",
-            "activity": "recruit_appropriate_control_level",
-            "from_level": "environmental",
-            "to_level": "subpersonal",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Badre, 2008; Badre & Nee, 2018",
-            "parameters": {
-                "level_1": "premotor (sensorimotor)",
-                "level_2": "mid_lateral_PFC (contextual rules)",
-                "level_3": "anterior_PFC (abstract policies)",
-                "level_4": "frontopolar (meta-cognitive / relational)"
-            }
-        },
-        {
-            "from_variable": "pfc_hierarchy_level_engaged",
-            "to_variable": "metabolic_demand_pfc",
-            "activity": "scale_resource_consumption",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Badre & Nee, 2018; Koechlin & Summerfield, 2007",
-            "parameters": {
-                "cost_scaling": "approximately_linear_with_level",
-                "note": "Higher levels activate lower levels recursively → cumulative cost"
-            }
-        },
-        {
-            "from_variable": "metabolic_demand_pfc",
-            "to_variable": "sustained_task_performance",
-            "activity": "deplete_or_sustain_control",
-            "from_level": "subpersonal",
-            "to_level": "behavioral",
-            "bridging_quality": "MEDIUM",
-            "maturity": "established",
-            "key_evidence": "Shenhav, Botvinick, & Cohen, 2013",
-            "parameters": {
-                "note": "EVC theory: anterior cingulate computes expected value of control and may disengage when cost exceeds expected benefit"
-            }
-        }
-    ],
-    "scope_conditions": [
-        "Applies to environments requiring maintained behavioral policies (not passive observation)",
-        "Hierarchy is engaged sequentially bottom-up; higher levels subsume lower",
-        "Individual differences in PFC maturation (adolescents) and decline (aging) shift capacity at each level",
-        "Disrupted in patients with frontal lobe lesions — architectural accessibility implications"
-    ],
-    "moderators": [
-        "signage_clarity (clear signage reduces required policy level by offloading contextual rules)",
-        "layout_predictability (predictable layouts reduce the level of abstraction required)",
-        "task_switching_frequency (frequent zone changes between task demands increase level 3-4 engagement)",
-        "user_expertise (experts develop compiled routines that reduce level of engagement)"
-    ],
-    "interactions": [
-        {
-            "template": "T38 (CROSS_COGNITIVE_LOAD_001)",
-            "type": "SPECIFICATION",
-            "description": "T44 specifies the mechanism that T38 abstracts. T38 says architectural complexity costs energy; T44 says specifically which PFC levels and at what scaling."
-        },
-        {
-            "template": "T4 (PP_ATTENTIONAL_DEMAND_001)",
-            "type": "INPUT",
-            "description": "Attentional demand (T4) feeds the lowest level of the control hierarchy; higher levels are engaged only when attentional demands require rule-governed or abstract policy responses."
-        },
-        {
-            "template": "T27 (DT_DMN_TPN_DYNAMICS_001)",
-            "type": "CONTEXT",
-            "description": "DT captures the binary toggle into task-positive mode; T44 captures the graded hierarchy within that mode."
-        }
-    ],
-    "overall_maturity": "how-plausibly",
-    "key_references": [
-        "Badre (2008) Trends in Cognitive Sciences",
-        "Badre & Nee (2018) Trends in Cognitive Sciences",
-        "Koechlin & Summerfield (2007) Trends in Cognitive Sciences",
-        "Shenhav, Botvinick, & Cohen (2013) Neuron",
-        "Botvinick & Cohen (2014) Cognitive Science"
-    ]
+  "template_id": "CROSS_HIERARCHICAL_CONTROL_001",
+  "display_id": "T44",
+  "name": "Hierarchical Control Gradient in Architectural Demands",
+  "structural_pattern": "STRATIFICATION",
+  "higher_order_principle": "PFC rostro-caudal gradient of policy abstraction: posterior PFC handles concrete sensorimotor mappings; mid-lateral PFC handles contextual rules; anterior PFC handles temporally extended abstract task sets. Architectural environments systematically engage different levels based on behavioral policy complexity.",
+  "transferable_to": [
+    "hospital design (simple corridors vs context-dependent wayfinding)",
+    "office design (focused execution vs multi-project workspace management)",
+    "educational facilities (structured vs self-directed learning environments)",
+    "mixed-use buildings (frequent policy switching across zones)"
+  ],
+  "framework_ids": [
+    "PP",
+    "DT",
+    "MS"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "architectural_policy_complexity",
+      "to_variable": "pfc_hierarchy_level_engaged",
+      "activity": "recruit_appropriate_control_level",
+      "from_level": "environmental",
+      "to_level": "subpersonal",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Badre, 2008; Badre & Nee, 2018",
+      "parameters": {
+        "level_1": "premotor (sensorimotor)",
+        "level_2": "mid_lateral_PFC (contextual rules)",
+        "level_3": "anterior_PFC (abstract policies)",
+        "level_4": "frontopolar (meta-cognitive / relational)"
+      }
+    },
+    {
+      "from_variable": "pfc_hierarchy_level_engaged",
+      "to_variable": "metabolic_demand_pfc",
+      "activity": "scale_resource_consumption",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Badre & Nee, 2018; Koechlin & Summerfield, 2007",
+      "parameters": {
+        "cost_scaling": "approximately_linear_with_level",
+        "note": "Higher levels activate lower levels recursively \u2192 cumulative cost"
+      }
+    },
+    {
+      "from_variable": "metabolic_demand_pfc",
+      "to_variable": "sustained_task_performance",
+      "activity": "deplete_or_sustain_control",
+      "from_level": "subpersonal",
+      "to_level": "behavioral",
+      "bridging_quality": "MEDIUM",
+      "maturity": "established",
+      "key_evidence": "Shenhav, Botvinick, & Cohen, 2013",
+      "parameters": {
+        "note": "EVC theory: anterior cingulate computes expected value of control and may disengage when cost exceeds expected benefit"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Applies to environments requiring maintained behavioral policies (not passive observation)",
+    "Hierarchy is engaged sequentially bottom-up; higher levels subsume lower",
+    "Individual differences in PFC maturation (adolescents) and decline (aging) shift capacity at each level",
+    "Disrupted in patients with frontal lobe lesions \u2014 architectural accessibility implications"
+  ],
+  "moderators": [
+    "signage_clarity (clear signage reduces required policy level by offloading contextual rules)",
+    "layout_predictability (predictable layouts reduce the level of abstraction required)",
+    "task_switching_frequency (frequent zone changes between task demands increase level 3-4 engagement)",
+    "user_expertise (experts develop compiled routines that reduce level of engagement)"
+  ],
+  "interactions": [
+    {
+      "template": "T38 (CROSS_COGNITIVE_LOAD_001)",
+      "type": "SPECIFICATION",
+      "description": "T44 specifies the mechanism that T38 abstracts. T38 says architectural complexity costs energy; T44 says specifically which PFC levels and at what scaling."
+    },
+    {
+      "template": "T4 (PP_ATTENTIONAL_DEMAND_001)",
+      "type": "INPUT",
+      "description": "Attentional demand (T4) feeds the lowest level of the control hierarchy; higher levels are engaged only when attentional demands require rule-governed or abstract policy responses."
+    },
+    {
+      "template": "T27 (DT_DMN_TPN_DYNAMICS_001)",
+      "type": "CONTEXT",
+      "description": "DT captures the binary toggle into task-positive mode; T44 captures the graded hierarchy within that mode."
+    }
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    "Badre (2008) Trends in Cognitive Sciences",
+    "Badre & Nee (2018) Trends in Cognitive Sciences",
+    "Koechlin & Summerfield (2007) Trends in Cognitive Sciences",
+    "Shenhav, Botvinick, & Cohen (2013) Neuron",
+    "Botvinick & Cohen (2014) Cognitive Science"
+  ],
+  "short_description": "PFC rostro-caudal gradient of policy abstraction: posterior PFC handles concrete sensorimotor mappings; mid-lateral PFC handles contextual rules; anterior PFC handles temporally extended abstract t..."
 }
