@@ -1,0 +1,132 @@
+{
+  "id": "MOTOR_PREDICTION_ARCH_001",
+  "display_id": "TP1",
+  "name": "Motor Prediction and Proprioceptive PE in Architectural Movement",
+  "short_description": "Motor prediction during architectural movement; body-scaled affordances define PE boundaries; locomotor, postural, and manipulative channels of motor PE",
+  "structural_pattern": "Every sensory experience in a building is preceded by and embedded in a motor act. The motor system generates predictions for each action: forces required, sensory feedback expected, timing of contact. When the building matches the prediction (standard step height ~178mm, door weight 15–20N, floor friction μ > 0.5), movement is fluent and unconscious. When the building violates the prediction, motor PE is immediate and visceral. Three channels of motor PE: LOCOMOTOR (step height, ramp slope, surface friction, corridor width, doorway width — body-scaled affordance thresholds define boundaries: optimal step ≈ 0.25 × leg length; maximum comfortable step ≈ 0.88 × leg length; doorway passage ≥ 1.3 × shoulder width), POSTURAL (floor level, surface compliance, visual vertical alignment, dynamic visual fields — tilted floors and walls produce sustained visual-vestibular conflict experienced as postural unease), MANIPULATIVE (door handles, railings, switches, faucets — weight, friction, travel distance, resistance must match the motor model).",
+  "higher_order_principle": "The body-as-prediction-system in architectural space. The motor system is the fastest and most consequential prediction system (motor PE can cause falls and injuries). Architecture that respects motor predictions produces a physically fluent experience where the body moves unconsciously and attention is free for visual, social, and cognitive engagement. Architecture that violates motor predictions demands conscious bodily attention at the expense of other engagement. Deliberate motor PE (Eisenman's tilted floors, Ando's steep stairs) can produce powerful bodily awareness when it serves an architectural intention.",
+  "framework_ids": ["motor_control", "forward_models", "ecological_perception", "affordance_theory", "predictive_processing"],
+  "domain": "temporal",
+  "attribute_domain": "A10",
+  "motor_pe_channels": {
+    "locomotor": {
+      "variables": ["step_height", "ramp_slope", "surface_friction", "surface_compliance", "corridor_width", "doorway_width"],
+      "optimal_step_height": "≈ 0.25 × leg length",
+      "maximum_comfortable_step": "≈ 0.88 × leg length",
+      "doorway_passage": "≥ 1.3 × shoulder width",
+      "outcome": "Architecture within optimal range → motor grace; at boundaries → motor effort; beyond → failure or avoidance"
+    },
+    "postural": {
+      "variables": ["floor_level", "surface_compliance", "visual_vertical_alignment", "dynamic_visual_fields"],
+      "mechanism": "Visual-vestibular conflict from tilted walls/floors produces sustained postural correction",
+      "outcome": "Level floors with true verticals → postural silence; tilted elements → chronic postural unease"
+    },
+    "manipulative": {
+      "variables": ["door_handles", "railings", "switches", "faucets", "furniture"],
+      "parameters": ["weight", "friction", "travel_distance", "resistance"],
+      "outcome": "Mismatch produces manipulative PE disrupting interaction fluency"
+    }
+  },
+  "body_scaled_affordances": {
+    "step_height_optimal": "0.25 × leg_length",
+    "step_height_maximum": "0.88 × leg_length",
+    "doorway_comfortable": "≥ 1.3 × shoulder_width",
+    "corridor_two_person_passing": "≥ 2.6 × shoulder_width",
+    "ramp_comfortable_walking": "≤ 1:12 (8%)"
+  },
+  "causal_links": [
+    {
+      "from_entity": "step_height_deviation_from_body_scaled_optimum",
+      "to_entity": "locomotor_PE",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "motor",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Body-scaled affordances are well-quantified (Warren, 1984). Step height, ramp slope, doorway width have documented optimal ranges and boundary thresholds. Deviation from optimum produces graded motor PE."
+    },
+    {
+      "from_entity": "visual_vertical_alignment",
+      "to_entity": "postural_PE",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "motor",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Visual-vestibular conflict from tilted walls, sloped floors, and moving visual fields produces sustained postural correction. Documented in posturography studies (Latash, 2008). Architectural implications not specifically parameterized."
+    },
+    {
+      "from_entity": "motor_PE_magnitude",
+      "to_entity": "conscious_bodily_awareness",
+      "activity": "elevates",
+      "from_level": "motor",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Low motor PE → unconscious movement → attention free. High motor PE → conscious bodily attention → reduced capacity for visual, social, cognitive engagement. Connects to T25 (directed attention): motor PE consumes attentional resources."
+    },
+    {
+      "from_entity": "motor_fluency_quality",
+      "to_entity": "bodily_pleasure_or_distress",
+      "activity": "determines",
+      "from_level": "motor",
+      "to_level": "affective",
+      "bridging_to": "weak",
+      "maturity": "preliminary",
+      "evidence_base": "Fluent, well-predicted movement produces kinesthetic pleasure (the grace of ascending a well-proportioned staircase). Effortful, poorly-predicted movement produces kinesthetic distress. Parallels processing fluency → affect in vision (Reber et al., 2004)."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all buildings where occupants move — virtually all buildings",
+    "Effect strength depends on movement mode: walking engages locomotor + postural; seated work engages primarily postural + manipulative",
+    "Building codes define safety boundaries; TP1 addresses the full quality range within and beyond code compliance",
+    "Accessibility: populations with motor impairments have different affordance thresholds; TP1 parameters are population-specific"
+  ],
+  "moderators": [
+    "Body dimensions: affordance thresholds are body-scaled, so children, wheelchair users, elderly with reduced mobility have different optimal ranges",
+    "Footwear: shoes modify floor-surface interaction (friction, compliance, thermal)",
+    "Fatigue: motor prediction degrades with fatigue, making architectural motor PE more consequential late in a visit",
+    "Attention: distracted occupants are more susceptible to motor PE (texting while walking on stairs)"
+  ],
+  "interactions": [
+    {
+      "template_id": "EC_AFFORDANCE_POSTURAL_001",
+      "display_id": "T8",
+      "nature": "T8 describes affordance perception. TP1 extends to motor prediction and PE during actual movement through architectural space."
+    },
+    {
+      "template_id": "INTEROCEPTIVE_AFFECT_001",
+      "display_id": "T12",
+      "nature": "Motor PE feeds proprioceptive signals to the interoceptive system (T12). Postural comfort/discomfort is an interoceptive signal."
+    },
+    {
+      "template_id": "ARCH_PROMENADE_PE_ORCHESTRATION_001",
+      "display_id": "SC3",
+      "nature": "SC3 describes the multi-modal PE sequence. TP1 adds the proprioceptive-motor channel: each threshold involves a motor transition (different floor, different spatial demand, different gait)."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Wolpert, D. M., Ghahramani, Z., & Jordan, M. I. (1995). An internal model for sensorimotor integration. Science, 269(5232), 1880–1882.",
+      "google_scholar_count": 2500
+    },
+    {
+      "citation": "Warren, W. H. (1984). Perceiving affordances: Visual guidance of stair climbing. Journal of Experimental Psychology: Human Perception and Performance, 10(5), 683–703.",
+      "google_scholar_count": 1000
+    },
+    {
+      "citation": "Latash, M. L. (2008). Synergy. Oxford University Press.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "Wolpert, D. M., & Flanagan, J. R. (2001). Motor prediction. Current Biology, 11(18), R729–R732.",
+      "google_scholar_count": 1500
+    },
+    {
+      "citation": "Warren, W. H., & Fajen, B. R. (2004). Behavioral dynamics of visually guided locomotion. In Coordination: Neural, Behavioral, and Social Dynamics (pp. 45–75). Springer.",
+      "google_scholar_count": 500
+    }
+  ],
+  "source_panel": "42_Panel_TP_I_Temporal.md"
+}

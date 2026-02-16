@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-8: L1-L5 + MAT1-MAT5 + SC1-SC4 = 77 templates)*
+*Last updated: Sunday, February 16, 2026 (CC-10: L1-L5 + MAT1-MAT5 + SC1-SC4 + VF1-VF3 + TP1-TP4 = 84 templates)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -246,6 +246,44 @@ For each Tier 1 framework:
 
 **Coverage Impact**: A3 (Spatial Configuration) upgraded from ★★ Partial → ★★★★ Strong
 **Template Count**: 73 → 77 total templates
+
+### CC-9: Visual Form Templates (from Panel 39 — PREVIOUSLY OVERLOOKED)
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | 3 new templates encoded from `docs/39_Panel_VF_I_Visual_Form.md` |
+
+**Completed**: 2026-02-16
+**Panel Document**: Doc 39 — Panel VF-I: Visual Form, Contour, and Architectural Pattern
+**NOTE**: This panel was OVERLOOKED in previous encoding passes despite being ready.
+**Templates Created**:
+| ID | Display | Name | Maturity |
+|----|---------|------|----------|
+| `CONTOUR_PE_CURVATURE_001` | VF1 | Contour PE — Curvature and Angularity | supported |
+| `VISUAL_RHYTHM_SCALING_001` | VF2 | Visual Rhythm and Scaling Hierarchy | preliminary |
+| `SPATIAL_PROPORTIONS_PROCESSING_001` | VF3 | Spatial Proportions and Cognitive Processing Mode | supported |
+
+**Coverage Impact**: A6 (Visual Pattern & Form) upgraded from ★★★ Moderate → ★★★★ Strong
+**Template Count**: 77 → 80 total templates
+
+### CC-10: Temporal Dynamics Templates (from Panel 42)
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | 4 new templates encoded from `docs/42_Panel_TP_I_Temporal.md` |
+
+**Completed**: 2026-02-16
+**Panel Document**: Doc 42 — Panel TP-I: Temporal Dynamics, Movement, and Architectural Time
+**Templates Created**:
+| ID | Display | Name | Maturity |
+|----|---------|------|----------|
+| `MOTOR_PREDICTION_ARCH_001` | TP1 | Motor Prediction and Proprioceptive PE | supported |
+| `THRESHOLD_EPISODIC_BOUNDARY_001` | TP2 | Threshold as Episodic Boundary (Doorway Effect) | supported |
+| `MATERIAL_AGING_TEMPORAL_DEPTH_001` | TP3 | Material Aging and Temporal Depth | preliminary |
+| `TEMPORAL_HIERARCHY_ARCH_PE_001` | TP4 | Temporal Hierarchy of Architectural PE | preliminary |
+
+**Coverage Impact**: A10 (Temporal Experience & Movement) upgraded from ★★ Partial → ★★★★ Strong
+**Template Count**: 80 → 84 total templates
 
 ### CC-2: ReductionClaim Encoding
 
