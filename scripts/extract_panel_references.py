@@ -40,6 +40,11 @@ PANEL_FILES = [
     "38_Panel_SC_I_Spatial_Config.md",
     "39_Panel_VF_I_Visual_Form.md",
     "42_Panel_TP_I_Temporal.md",
+    # New panels (Feb 16, 2026)
+    "44_Panel_SOC_I_Social_Config.md",
+    "45_Panel_COL_I_Color.md",
+    "46_Panel_OLF_I_Olfaction.md",
+    "02-16_01_Panel_VIEW_I_Nature_View_V1_0.md",
 ]
 
 # Map filenames to doc numbers for citing_panels field
@@ -62,6 +67,10 @@ DOC_NUMBER_MAP = {
     "38_Panel_SC": "38",
     "39_Panel_VF": "39",
     "42_Panel_TP": "42",
+    "44_Panel_SOC": "44",
+    "45_Panel_COL": "45",
+    "46_Panel_OLF": "46",
+    "02-16_01_Panel_VIEW": "47",
 }
 
 def get_doc_number(filename: str) -> str:
