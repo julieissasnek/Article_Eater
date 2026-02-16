@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-10: L1-L5 + MAT1-MAT5 + SC1-SC4 + VF1-VF3 + TP1-TP4 = 84 templates)*
+*Last updated: Sunday, February 16, 2026 (CC-13: Master Reference Inventory complete — 228 unique references)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -13,6 +13,45 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 | RRA-S2 | Spec vs Reality gaps (Section 2 ruthless audit) | CRITICAL | ✅ COMPLETE | Reported in `docs/REPO_AUDIT_REPORT_2026-02-15.md` (Section 2 addendum) |
 | RRA-S3 | Variable vocabulary audit (Section 3) | CRITICAL | ✅ COMPLETE | Cross-repo unified table: `docs/UNIFIED_VARIABLE_VOCAB_TABLE_CROSS_REPOS_2026-02-15.md` + `.csv` |
 | RRA-S4 | Template completeness audit (Section 4) | CRITICAL | ✅ COMPLETE | Template 1-40 completeness matrix in `docs/REPO_AUDIT_REPORT_2026-02-15.md` |
+
+---
+
+## 📋 PENDING TEMPLATE ENCODING TASKS — 2026-02-16
+
+### CC-11: Missing Music Templates (M8-M17)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ⏳ PENDING | MEDIUM | 9 templates from Panels 29 and 30 |
+
+**Panel 29 (MII - Rhythm, Groove, Motor)**: M8, M9, M10, M11 (4 templates)
+**Panel 30 (MIII - Musical Emotion)**: M13, M14, M15, M16, M17 (5 templates)
+
+### CC-12: Missing Neuroscience Templates (Panels IV, V, EI)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ⏳ PENDING | MEDIUM | ~16 templates from 02-15_ panels |
+
+**Panel IV (Cognitive Control/Reward)**: NM_REWARD_PREDICTION_ERROR, NM_WANTING_LIKING, CROSS_MB_MF_ARBITRATION, CROSS_HIERARCHICAL_CONTROL, CROSS_WM_GAMMA_BETA (~5 templates)
+**Panel V (Social Brain)**: CROSS_SOCIAL_AFFORDANCE_READING, CROSS_SOCIAL_MIRROR_PRESENCE, NM_SOCIAL_ISOLATION_ALLOSTATIC, CROSS_TPJ_SPATIAL_SOCIAL_BRIDGE, NM_SOCIAL_ENRICHMENT (~5 templates)
+**Panel EI (Memory Encoding)**: ED_HIPPOCAMPAL_ENCODING, ED_PATTERN_SEP_COMP, ED_RECONSOLIDATION, ED_SCHEMA_ENCODING, ED_SYSTEMS_CONSOLIDATION, ED_PE_ENCODING_PRINCIPLE (6 templates)
+
+### CC-13: Master Reference Inventory (Doc 43)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ✅ COMPLETE | HIGH | 228 unique references extracted and deduplicated |
+
+**Purpose**: Consolidated, deduplicated master list of all APA references from panel documents
+**Output**: `docs/43_Master_Reference_Inventory.json`
+**Script**: `scripts/extract_panel_references.py`
+**Statistics**:
+- 473 raw references extracted from 18 panel documents
+- 228 unique references after deduplication (by first_author + year + title_keyword)
+- 50 near-duplicates flagged for manual review
+- 18 references cited across multiple panels
+**Source Panels**: Docs 14, 18-23, 25, 27-30, 33, 34, 37-39, 42
 
 ---
 
