@@ -1,0 +1,148 @@
+{
+  "id": "CT_AFFECTIVE_TOUCH_001",
+  "display_id": "MAT1",
+  "name": "C-Tactile Affective Touch Pathway in Architectural Material Experience",
+  "short_description": "Architectural surfaces engage dual somatosensory pathways; CT afferents evaluate body-surface contact for optimal temperature, velocity, and roughness",
+  "structural_pattern": "Architectural surfaces that make contact with the body engage two parallel somatosensory pathways. The discriminative pathway (Aβ afferents → S1) extracts spatial and temporal properties (texture, shape, compliance). The affective pathway (CT afferents → posterior insula) evaluates whether the contact is within the biologically optimal range for pleasant touch: velocity 1–10 cm/s, surface temperature within ±2°C of skin temperature (~32°C), and moderate surface roughness (Ra 10–100 μm). Materials with low thermal effusivity (e < 800 W·s^½·m⁻²·K⁻¹) maintain skin-temperature contact and activate the CT pathway positively. Materials with high thermal effusivity (e > 3,000) rapidly draw heat from the skin and produce neutral or aversive affective signals.",
+  "higher_order_principle": "Dual-channel sensory evaluation applied to touch. Just as the visual system has parallel image-forming and non-visual (ipRGC) pathways (L-I panel), the somatosensory system has parallel discriminative and affective pathways. Architecture engages both, but traditional material specification addresses only the discriminative dimension.",
+  "framework_ids": [
+    "affective_neuroscience",
+    "somatosensory_processing",
+    "predictive_processing",
+    "biophilic_design"
+  ],
+  "domain": "materials",
+  "attribute_domain": "A1",
+  "ct_optimal_parameters": {
+    "velocity_range": "1-10 cm/s",
+    "temperature_range": "skin temp ±2°C (~30-34°C)",
+    "roughness_range": "Ra 10-100 μm"
+  },
+  "thermal_effusivity_categories": {
+    "ct_positive": {
+      "range": "< 800 W·s^½·m⁻²·K⁻¹",
+      "examples": [
+        "wood (~400)",
+        "cork (~200)",
+        "fabric"
+      ]
+    },
+    "ct_neutral": {
+      "range": "800-3000 W·s^½·m⁻²·K⁻¹",
+      "examples": [
+        "stone (~2000)",
+        "concrete (~1500)"
+      ]
+    },
+    "ct_aversive": {
+      "range": "> 3000 W·s^½·m⁻²·K⁻¹",
+      "examples": [
+        "metal (~12000)",
+        "glass (~8000)"
+      ]
+    }
+  },
+  "causal_links": [
+    {
+      "from_entity": "material_thermal_effusivity",
+      "to_entity": "skin_surface_contact_temperature",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Physics: contact temperature = f(skin temp, surface temp, relative effusivity). Wood (e~400): contact temp stays near skin temp. Metal (e~12,000): contact temp drops rapidly toward surface temp."
+    },
+    {
+      "from_entity": "skin_surface_contact_temperature",
+      "to_entity": "CT_afferent_firing_rate",
+      "activity": "modulates",
+      "from_level": "physiological",
+      "to_level": "neural",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "CT afferents fire maximally at skin temperature ±2°C. Contact with low-effusivity materials (wood) maintains this range → high CT firing. (Morrison et al., 2010; Ackerley et al., 2014)"
+    },
+    {
+      "from_entity": "surface_roughness_and_contact_velocity",
+      "to_entity": "CT_afferent_firing_rate",
+      "activity": "modulates",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "CT optimal velocity: 1–10 cm/s. Moderate roughness (Ra 10–100 μm) at CT-optimal velocity → maximal pleasant signal. (Löken et al., 2009)"
+    },
+    {
+      "from_entity": "CT_afferent_firing_rate",
+      "to_entity": "posterior_insular_cortex_activation",
+      "activity": "drives",
+      "from_level": "neural",
+      "to_level": "neural",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "CT afferents project via lamina I to posterior insula, bypassing S1. Demonstrated by Olausson et al. (2002)."
+    },
+    {
+      "from_entity": "posterior_insular_activation",
+      "to_entity": "interoceptive_comfort_signal",
+      "activity": "contributes_to",
+      "from_level": "neural",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Posterior insula integrates CT signals with other interoceptive inputs. CT activation contributes positive valence to overall interoceptive assessment."
+    }
+  ],
+  "scope_conditions": [
+    "Applies only to body-surface contact zones: handrails, seating, flooring, countertops, walls within reach",
+    "CT pathway engagement requires direct skin contact — clothing, shoes, and gloves block CT activation",
+    "Velocity-dependent: stationary contact engages thermal dimension only; moving contact engages texture-velocity interaction",
+    "Modulated by body region: CT afferent density varies (highest in forearm, face; lower in palm, sole)"
+  ],
+  "moderators": [
+    "Ambient temperature: in cold environments, high-effusivity materials produce larger contact temperature drop",
+    "Prior haptic experience: repeated contact habituates discriminative response but CT affective response habituates more slowly",
+    "Age: CT afferent density may decline with age",
+    "Expectation: visual prediction of material warmth (AX5) modulates surprise but not CT firing rate"
+  ],
+  "interactions": [
+    {
+      "template_id": "IC_INTEROCEPTIVE_AFFECT_001",
+      "display_id": "T12",
+      "nature": "MAT1 provides specific afferent pathway (CT → posterior insula) for one component of interoceptive comfort"
+    },
+    {
+      "template_id": "CROSSMODAL_CONGRUENCE_001",
+      "display_id": "AX5",
+      "nature": "Visual appearance generates haptic prediction. MAT1 describes what happens when actual haptic contact occurs."
+    },
+    {
+      "template_id": "EC_AFFORDANCE_POSTURAL_001",
+      "display_id": "T8",
+      "nature": "T8 describes postural affordances; MAT1 adds the affective dimension of the surface that affords contact."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "McGlone, F., Wessberg, J., & Olausson, H. (2014). Discriminative and affective touch: Sensing and feeling. Neuron, 82(4), 737–755.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "Olausson, H., et al. (2002). Unmyelinated tactile afferents signal touch and project to insular cortex. Nature Neuroscience, 5(9), 900–904.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Löken, L. S., et al. (2009). Coding of pleasant touch by unmyelinated afferents in humans. Nature Neuroscience, 12(5), 547–548.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Morrison, I., Löken, L. S., & Olausson, H. (2010). The skin as a social organ. Experimental Brain Research, 204(3), 305–314.",
+      "google_scholar_count": 300
+    }
+  ],
+  "source_panel": "37_Panel_MAT_I_Materials.md",
+  "template_id": "CT_AFFECTIVE_TOUCH_001",
+  "overall_maturity": "supported"
+}

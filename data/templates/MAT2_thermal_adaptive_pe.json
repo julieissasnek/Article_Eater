@@ -1,0 +1,134 @@
+{
+  "id": "THERMAL_ADAPTIVE_PE_001",
+  "display_id": "MAT2",
+  "name": "Thermal Comfort as Adaptive Prediction Error and Metabolic Regulation",
+  "short_description": "Body generates thermal prediction from recent exposure; deviation produces thermal PE along comfort continuum; chronic thermoneutral exposure reduces metabolic flexibility",
+  "structural_pattern": "The body generates a thermal prediction based on recent exposure history (hours to days), seasonal acclimatization (weeks), and contextual expectation (building type, outdoor conditions). Actual thermal experience is compared against this adaptive prediction. The deviation — thermal PE — determines comfort and behavioral response along a continuum: zero thermal PE → thermal neutrality; moderate thermal PE (localized warmth, cool breeze) → thermal delight; high thermal PE → discomfort; extreme thermal PE → thermal stress. Buildings that suppress ALL thermal variation narrow the adaptive prediction, reduce thermal tolerance, eliminate thermal delight, and may contribute to metabolic dysfunction through chronic thermal under-stimulation.",
+  "higher_order_principle": "Goldilocks-zone PE applied to thermoregulation, with adaptive prediction replacing fixed setpoint. The inverted-U function from T2/L1 is instantiated in thermal experience, but the zero point shifts with recent history — computationally homologous to L2 (circadian PE).",
+  "framework_ids": [
+    "predictive_processing",
+    "allostatic_regulation",
+    "adaptive_thermal_comfort",
+    "metabolic_health"
+  ],
+  "domain": "materials",
+  "attribute_domain": "A1",
+  "thermal_delight_zone": {
+    "description": "Moderate deviation from adaptive prediction",
+    "range": "±2-4°C from adaptive setpoint",
+    "examples": [
+      "fireplace warmth",
+      "cool stone floor",
+      "gentle breeze"
+    ]
+  },
+  "thermal_discomfort_threshold": "±6°C from adaptive prediction",
+  "causal_links": [
+    {
+      "from_entity": "recent_thermal_exposure_history",
+      "to_entity": "adaptive_thermal_prediction",
+      "activity": "calibrates",
+      "from_level": "environmental",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "de Dear & Brager (1998, 2002): comfort temperature tracks outdoor running mean. ASHRAE Standard 55 adaptive model formalizes this relationship."
+    },
+    {
+      "from_entity": "actual_operative_temperature",
+      "to_entity": "thermal_PE",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Thermal PE = actual temp − adaptive prediction. Measured by thermal sensation votes and physiological indicators."
+    },
+    {
+      "from_entity": "moderate_thermal_PE",
+      "to_entity": "thermal_delight_and_engagement",
+      "activity": "produces",
+      "from_level": "physiological",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Heschong's phenomenological evidence + alliesthesia research (Cabanac, 1971): a stimulus that corrects homeostatic deviation is experienced as pleasant."
+    },
+    {
+      "from_entity": "chronic_thermoneutral_exposure",
+      "to_entity": "reduced_metabolic_flexibility",
+      "activity": "impairs",
+      "from_level": "environmental",
+      "to_level": "physiological",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "van Marken Lichtenbelt et al. (2009): chronic TNZ exposure → reduced BAT activity, reduced non-shivering thermogenesis, decreased insulin sensitivity."
+    },
+    {
+      "from_entity": "building_ventilation_strategy",
+      "to_entity": "adaptive_prediction_variance",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Naturally ventilated buildings → wider temperature range → wider adaptive prediction → greater thermal tolerance (de Dear & Brager, 1998)."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all occupied buildings, most pronounced in extended-occupancy spaces",
+    "Adaptive prediction requires exposure duration — visitors have less adapted predictions than regular occupants",
+    "Metabolic benefits require repeated mild cold exposure over weeks",
+    "Radiant asymmetry enables thermal delight within a single space"
+  ],
+  "moderators": [
+    "Clothing: heavy clothing attenuates thermal PE magnitude",
+    "Activity level: metabolically active occupants generate internal heat",
+    "Perceived control: occupants with control tolerate wider ranges (Brager & de Dear, 2003)",
+    "Age: older adults have narrower thermoregulatory capacity",
+    "Season: adaptive prediction tracks outdoor running mean"
+  ],
+  "interactions": [
+    {
+      "template_id": "ALLOSTATIC_MASTER_001",
+      "display_id": "T29",
+      "nature": "T29 captures chronic allostatic overload. MAT2 extends to capture chronic allostatic UNDERLOAD from thermal monotony."
+    },
+    {
+      "template_id": "CT_AFFECTIVE_TOUCH_001",
+      "display_id": "MAT1",
+      "nature": "MAT1 = contact temperature PE. MAT2 = ambient thermal PE. Both contribute to overall thermal experience."
+    },
+    {
+      "template_id": "CIRCADIAN_ARCH_REG_001",
+      "display_id": "L2",
+      "nature": "L2 and MAT2 are structural analogs: both biological prediction systems that require periodic PE to maintain calibration."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "de Dear, R. J., & Brager, G. S. (1998). Developing an adaptive model of thermal comfort and preference. ASHRAE Transactions, 104(1), 145–167.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Heschong, L. (1979). Thermal delight in architecture. MIT Press.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "van Marken Lichtenbelt, W. D., et al. (2009). Cold-activated brown adipose tissue in healthy men. NEJM, 360(15), 1500–1508.",
+      "google_scholar_count": 2000
+    },
+    {
+      "citation": "Fanger, P. O. (1970). Thermal comfort. Danish Technical Press.",
+      "google_scholar_count": 8000
+    },
+    {
+      "citation": "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103–1107.",
+      "google_scholar_count": 2000
+    }
+  ],
+  "source_panel": "37_Panel_MAT_I_Materials.md",
+  "template_id": "THERMAL_ADAPTIVE_PE_001",
+  "overall_maturity": "supported"
+}

@@ -1,0 +1,116 @@
+{
+  "id": "LUM_CONTRAST_PE_001",
+  "display_id": "L1",
+  "name": "Luminance Contrast Prediction Error and Aesthetic Response",
+  "short_description": "Visual system generates luminance predictions; contrast-driven PE produces aesthetic and emotional responses along Goldilocks continuum",
+  "structural_pattern": "The visual system generates predictions about luminance distribution based on spatial context, prior experience with similar spaces, and the current adaptation state. Actual luminance distributions are compared against these predictions via magnocellular-pathway processing in early visual cortex (V1/V2). The magnitude and spatial structure of the resulting prediction error determines aesthetic and emotional response along a continuum: very low PE (uniform lighting, no contrast) → boredom, flatness; moderate PE (interesting contrast, spatial depth revealed by light and shadow) → aesthetic pleasure, engagement; high PE (dramatic chiaroscuro, luminance ratios exceeding adaptation range) → intensity, drama, potential awe; extreme PE (blinding glare, total darkness where light expected) → discomfort, aversion.",
+  "higher_order_principle": "Goldilocks-zone PE applied specifically to the luminance domain. The inverted-U function observed for visual complexity (T2) and auditory information content (M1) is instantiated in luminance contrast processing, with the additional feature that the upper PE range connects to the awe pathway (AX3) through Plummer's high-contrast light types (shaft, chiaroscuro, aureole).",
+  "framework_ids": [
+    "predictive_processing",
+    "neuroaesthetics",
+    "architectural_phenomenology"
+  ],
+  "domain": "light_luminance",
+  "attribute_domain": "A4",
+  "causal_links": [
+    {
+      "from_entity": "luminance_contrast_ratio",
+      "to_entity": "V1_V2_prediction_error_signal",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Luminance contrast drives feedforward magnocellular signals compared against top-down predictions in V1/V2. Well-characterized electrophysiologically (Muckli & Petro, 2013)."
+    },
+    {
+      "from_entity": "V1_V2_prediction_error_signal",
+      "to_entity": "aesthetic_engagement",
+      "activity": "modulates_inverted_U",
+      "from_level": "neural",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Moderate luminance PE → positive aesthetic evaluation (analogous to T2 complexity Goldilocks). Specific to luminance channel; interacts with but is separable from chromatic and spatial-frequency complexity."
+    },
+    {
+      "from_entity": "luminance_PE_magnitude",
+      "to_entity": "awe_response",
+      "activity": "triggers_above_threshold",
+      "from_level": "neural",
+      "to_level": "affective",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "When luminance PE exceeds Goldilocks zone but remains assimilable (dramatic shaft, chiaroscuro), engages AX3 awe pathway. Plummer's shaft and chiaroscuro types are the architectural configurations most likely to reach this range."
+    },
+    {
+      "from_entity": "luminance_PE_magnitude",
+      "to_entity": "visual_discomfort_glare",
+      "activity": "triggers_above_tolerance",
+      "from_level": "neural",
+      "to_level": "affective",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Extreme luminance PE (direct glare, disability glare) exceeds comfortable processing and triggers aversion, visual fatigue, avoidance behavior. Quantifiable via Unified Glare Rating (UGR) and Daylight Glare Probability (DGP)."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to any architectural space with luminance variation",
+    "Luminance contrast must be defined at the spatial scale relevant to the visual field — both local (object/background) and global (room-level light distribution)",
+    "Temporal dynamics matter: static contrast habituates; changing contrast (sunlight movement) sustains PE",
+    "Adaptation state of the eye moderates the effective contrast"
+  ],
+  "moderators": [
+    "Prior spatial expectations (entering a cathedral vs. a corridor sets different luminance predictions)",
+    "Cultural conditioning (sacred spaces are expected to have dramatic light; offices are expected to have uniform light)",
+    "Individual photosensitivity (migraine-prone individuals have lower glare tolerance)",
+    "Time of day and circadian phase (dark-adapted eyes are more sensitive to contrast)",
+    "Viewing direction relative to light source (direct view of source vs. reflected light)"
+  ],
+  "light_types_taxonomy": {
+    "shaft": "Beam of light entering through an aperture into a darker space — high localized PE",
+    "wash": "Even, gentle illumination of a surface by indirect light — low PE, visual calm",
+    "glow": "Luminosity appearing to emanate from within a surface — violates point-source prediction",
+    "dapple": "Complex, semi-random pattern of light and shadow — moderate fractal PE",
+    "aureole": "Halo of light surrounding a brighter source — figure-ground separation through contrast",
+    "chiaroscuro": "Dramatic interplay of light and deep shadow — high PE, strong depth cues"
+  },
+  "interactions": [
+    {
+      "template_id": "PP_COMPLEXITY_GOLDILOCKS_002",
+      "display_id": "T2",
+      "nature": "Luminance contrast contributes to overall visual complexity. L1 and T2 operate on partially overlapping but distinguishable dimensions."
+    },
+    {
+      "template_id": "AX3",
+      "nature": "High luminance PE → awe pathway. L1 provides the luminance-specific input to the awe mechanism; AX3 describes the downstream response."
+    },
+    {
+      "template_id": "PP_SPECTRAL_MATCH_001",
+      "display_id": "T1",
+      "nature": "Dappled light (Plummer's taxonomy) has 1/f spatial luminance spectra → T1 fractal fluency. The dapple is where luminance PE and spectral match converge."
+    }
+  ],
+  "maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Muckli, L., & Petro, L. S. (2013). Network interactions: Non-geniculate input to V1. Current Opinion in Neurobiology, 23(2), 195–201.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Plummer, H. (2009). The architecture of natural light. Thames & Hudson.",
+      "google_scholar_count": 200
+    },
+    {
+      "citation": "Veitch, J. A., & Newsham, G. R. (1998). Lighting quality and energy-efficiency effects on task performance, mood, health, satisfaction, and comfort. Journal of the Illuminating Engineering Society, 27(1), 107–129.",
+      "google_scholar_count": 600
+    },
+    {
+      "citation": "Wienold, J., & Christoffersen, J. (2006). Evaluation methods and development of a new glare prediction model for daylight environments with the use of CCD cameras. Energy and Buildings, 38(7), 743–757.",
+      "google_scholar_count": 500
+    }
+  ],
+  "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "template_id": "LUM_CONTRAST_PE_001",
+  "overall_maturity": "supported"
+}

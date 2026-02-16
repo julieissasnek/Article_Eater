@@ -1,0 +1,129 @@
+{
+  "id": "CCT_TEMPORAL_ECOLOGICAL_001",
+  "display_id": "L4",
+  "name": "Light Color Temperature as Temporal and Ecological Prediction Signal",
+  "short_description": "CCT serves as temporal and ecological prediction signal; congruence produces fluency, violation produces PE with circadian, cognitive, and affective consequences",
+  "structural_pattern": "The correlated color temperature (CCT) of ambient light serves as both a temporal prediction signal and an ecological prediction signal. The brain maintains expectations about light color based on time of day (warm/low-CCT light predicts morning, evening, or firelight; cool/high-CCT light predicts midday or overcast conditions) and ecological context (warm light predicts interior/intimate/safe; cool light predicts exterior/open/exposed). When architectural lighting CCT matches the temporal and ecological context, predictions are confirmed, processing is fluent, and the affective response is congruent. When CCT violates context (blue-white 6500K light in an evening residential space; dim warm 2700K light during morning work hours), the result is temporal-ecological PE that manifests as discomfort, incongruity, or circadian disruption. Additionally, CCT modulates arousal and processing style: cool/bright light → precision-weighted processing (analytical, detail-focused); warm/dim light → relaxed prediction weighting (creative, relational).",
+  "higher_order_principle": "Cross-modal prediction congruence (AX5) applied to the temporal and ecological dimensions of light. CCT is a prediction cue that the brain uses to infer time, context, and appropriate behavioral mode. Congruence = fluency; violation = PE with downstream circadian, cognitive, and affective consequences.",
+  "framework_ids": [
+    "predictive_processing",
+    "circadian_neuroscience",
+    "ecological_psychology"
+  ],
+  "domain": "light_luminance",
+  "attribute_domain": "A4",
+  "cct_ranges": {
+    "warm_firelight": "~2000K - intimate, evening, rest",
+    "warm_incandescent": "~2700-3000K - evening, residential",
+    "neutral": "~4000-4500K - balanced, transitional",
+    "cool_daylight": "~5000-6500K - midday, alertness, activity",
+    "overcast_sky": "~6500K+ - exterior, exposed"
+  },
+  "causal_links": [
+    {
+      "from_entity": "light_CCT",
+      "to_entity": "temporal_context_prediction",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "CCT implicitly communicates time of day. ~2000-3000K = sunrise/sunset/firelight (evening, rest). ~5000-6500K = midday/overcast (alertness, activity). Violation (cool light at night) produces temporal incongruity."
+    },
+    {
+      "from_entity": "CCT_temporal_congruence",
+      "to_entity": "circadian_impact",
+      "activity": "modulates",
+      "from_level": "cognitive",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Not merely symbolic: blue-enriched (high-CCT) light at evening directly suppresses melatonin onset via L2 pathway. The circadian system responds to spectral content, not perceived color warmth. Temporal incongruity is both psychologically uncomfortable and physiologically disruptive."
+    },
+    {
+      "from_entity": "light_CCT",
+      "to_entity": "arousal_and_processing_style",
+      "activity": "modulates",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Cool/bright → heightened arousal → narrower prediction intervals → analytical processing (Steidle & Werth, 2013; Feldman & Friston, 2010 precision weighting). Warm/dim → lowered arousal → wider prediction intervals → creative/relational processing."
+    },
+    {
+      "from_entity": "CCT_ecological_match",
+      "to_entity": "color_constancy_and_surface_appearance",
+      "activity": "supports_or_distorts",
+      "from_level": "environmental",
+      "to_level": "sensory",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Surfaces are expected to appear under daylight-like spectra (Hurlbert, 2007). Extreme CCT departures distort surface colors beyond color constancy range → chromatic PE (Conway, 2009). Used deliberately by Turrell and theatrical lighting designers for perceptual transformation effects."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to any architecturally-lit space",
+    "Strongest effects when CCT is clearly incongruent with temporal or social context",
+    "Tunable/dynamic CCT systems can match natural daylight variation and minimize temporal PE",
+    "Cultural modulation: warm-light preference is near-universal but the exact preferred CCT varies by culture and context"
+  ],
+  "moderators": [
+    "Illuminance level: CCT effects interact with brightness (warm dim light is cozy; warm bright light is unusual)",
+    "Context expectations: a restaurant at 2700K is expected; a hospital operating room at 2700K violates expectations",
+    "Time of day: same CCT has different effects depending on circadian phase",
+    "Individual chronotype and light sensitivity"
+  ],
+  "processing_style_effects": {
+    "cool_bright": {
+      "arousal": "heightened",
+      "prediction_intervals": "narrow",
+      "processing_style": "analytical, detail-focused",
+      "optimal_tasks": "precision work, analysis, editing"
+    },
+    "warm_dim": {
+      "arousal": "lowered",
+      "prediction_intervals": "wide",
+      "processing_style": "creative, relational",
+      "optimal_tasks": "brainstorming, synthesis, social interaction"
+    }
+  },
+  "interactions": [
+    {
+      "template_id": "CIRCADIAN_ARCH_REG_001",
+      "display_id": "L2",
+      "nature": "L4 specifies the spectral/CCT dimension that feeds into L2's circadian entrainment pathway. CCT is the perceptually accessible proxy for the melanopic content that L2 operates on."
+    },
+    {
+      "template_id": "AX5",
+      "nature": "L4 is a specific instance of cross-modal prediction congruence: visual CCT cue predicts temporal context; congruence = fluency; violation = PE."
+    },
+    {
+      "template_id": "LUM_CONTRAST_PE_001",
+      "display_id": "L1",
+      "nature": "L1 operates on luminance distribution (light-dark); L4 operates on chromaticity (warm-cool). Independent channels that jointly determine the visual character of architectural light."
+    }
+  ],
+  "maturity": "supported",
+  "maturity_note": "supported_with_dissent - Core CCT-mood and CCT-cognition findings replicated but with inconsistencies. The ecological-prediction framing is theoretically motivated but not uniquely supported over arousal accounts.",
+  "key_references": [
+    {
+      "citation": "Steidle, A., & Werth, L. (2013). Freedom from constraints: Darkness and dim illumination promote creativity. Journal of Environmental Psychology, 35, 67–80.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Feldman, H., & Friston, K. J. (2010). Attention, uncertainty, and free-energy. Frontiers in Human Neuroscience, 4, 215.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Hurlbert, A. (2007). Colour constancy. Current Biology, 17(21), R906–R907.",
+      "google_scholar_count": 100
+    },
+    {
+      "citation": "Conway, B. R. (2009). Color vision, cones, and color-coding in the cortex. The Neuroscientist, 15(3), 274–290.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "template_id": "CCT_TEMPORAL_ECOLOGICAL_001",
+  "overall_maturity": "supported"
+}

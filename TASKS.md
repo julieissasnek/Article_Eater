@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Saturday, February 15, 2026 (Sprint 9 Research Queue + VOI Collector contracts added)*
+*Last updated: Sunday, February 16, 2026 (CC-7: L1-L5 Light + MAT1-MAT5 Materials = 73 templates)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -183,12 +183,51 @@ For each Tier 1 framework:
 
 | Target | Current | Status | Notes |
 |--------|---------|--------|-------|
-| 63 templates | 63 templates | ✅ 100% COMPLETE | `data/templates/*.json` |
+| 63 templates | 73 templates | ✅ 100% COMPLETE | `data/templates/*.json` + L1-L5 + MAT1-MAT5 |
 
 **Completed**: 2026-02-16
 - Registry functional at `src/theory/templateRegistry.ts`
 - Templates cover all 10 Tier 1 frameworks + auxiliary mechanisms
 - Templates indexed: T1-T30, M1-M12, AX1-AX12, SN1-2, PP4, IC2, NM2-3, DT1, CB2, EC2, MS2, DP2, MSI2, SRT1
+
+### CX-5: Light & Luminance Templates (from Panel 34)
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | 5 new templates encoded from `docs/panels/34_Panel_LI_Light_Luminance.md` |
+
+**Completed**: 2026-02-16
+**Panel Document**: Doc 34 — Panel L-I: Light & Luminance in Architectural Experience
+**Templates Created**:
+| ID | Display | Name | Maturity |
+|----|---------|------|----------|
+| `LUM_CONTRAST_PE_001` | L1 | Luminance Contrast PE | supported |
+| `CIRCADIAN_ARCH_REG_001` | L2 | Circadian Architectural Regulation | established |
+| `DAYLIGHT_MULTICHANNEL_001` | L3 | Daylight Multi-Channel Convergence | supported |
+| `CCT_TEMPORAL_ECOLOGICAL_001` | L4 | CCT as Temporal-Ecological Signal | supported (with dissent) |
+| `DYNAMIC_LIGHT_TEMPORAL_001` | L5 | Dynamic Light Temporal PE | preliminary |
+
+**Coverage Impact**: A4 (Light & Luminance) upgraded from ★ Minimal → ★★★ Moderate
+
+### CC-7: Materials Templates (from Panel 37)
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | 5 new templates encoded from `docs/panels/37_Panel_MAT_I_Materials.md` |
+
+**Completed**: 2026-02-16
+**Panel Document**: Doc 37 — Panel MAT-I: Materials, Surfaces, & Haptic Properties
+**Templates Created**:
+| ID | Display | Name | Maturity |
+|----|---------|------|----------|
+| `CT_AFFECTIVE_TOUCH_001` | MAT1 | C-Tactile Affective Touch Pathway | supported |
+| `THERMAL_ADAPTIVE_PE_001` | MAT2 | Thermal Comfort as Adaptive PE | supported |
+| `MATERIAL_IDENTITY_INTEGRATION_001` | MAT3 | Multi-Modal Material Identity Integration | supported |
+| `NATURAL_MATERIAL_CONVERGENCE_001` | MAT4 | Natural Material Convergence (Wood Template) | supported |
+| `MATERIAL_CULTURAL_CONDITIONING_001` | MAT5 | Material-Cultural Conditioning | preliminary |
+
+**Coverage Impact**: A1 (Materials & Surfaces) significantly strengthened
+**Template Count**: 68 → 73 total templates
 
 ### CC-2: ReductionClaim Encoding
 

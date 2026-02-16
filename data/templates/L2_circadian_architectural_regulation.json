@@ -1,0 +1,128 @@
+{
+  "id": "CIRCADIAN_ARCH_REG_001",
+  "display_id": "L2",
+  "name": "Circadian Architectural Regulation via Non-Visual Photoreception",
+  "short_description": "Building design mediates ipRGC → SCN pathway; appropriate light timing produces circadian alignment, inappropriate light causes temporal PE and allostatic load",
+  "structural_pattern": "Building design determines the spectral power distribution, intensity, timing, duration, and spatial distribution of light reaching the occupant's eyes. This light is transduced by melanopsin-expressing intrinsically photosensitive retinal ganglion cells (ipRGCs), which project via the retinohypothalamic tract to the suprachiasmatic nucleus (SCN). The SCN, as the master circadian pacemaker, generates temporal predictions (a ~24h oscillation) and uses the light signal to entrain this oscillation to the environmental day-night cycle. Appropriate light (high melanopic irradiance during the biological day, dim warm light during biological evening) produces small temporal PE and efficient circadian function. Inappropriate light produces temporal PE — misalignment between the SCN's predicted phase and the light signal — resulting in circadian disruption with cascading health, cognitive, and affective consequences via the allostatic pathway (T29).",
+  "higher_order_principle": "Temporal prediction error at the circadian timescale. The SCN generates a 24-hour prediction; light calibrates it. Chronic mismatch = chronic temporal PE = allostatic load. This is the circadian instantiation of the same prediction-error-correction principle that operates at perceptual, attentional, and allostatic timescales.",
+  "framework_ids": [
+    "circadian_neuroscience",
+    "predictive_processing",
+    "allostatic_regulation",
+    "architectural_health"
+  ],
+  "domain": "light_luminance",
+  "attribute_domain": "A4",
+  "causal_links": [
+    {
+      "from_entity": "architectural_light_design",
+      "to_entity": "corneal_melanopic_irradiance",
+      "activity": "determines",
+      "from_level": "environmental",
+      "to_level": "environmental",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Window size, orientation, glazing transmittance, room depth, surface reflectance, electric lighting spectrum and intensity, and shading/control strategy jointly determine the melanopic irradiance at the occupant's cornea. Quantifiable via Circadian Stimulus (CS) metric or melanopic Equivalent Daylight Illuminance (mEDI) per CIE S 026."
+    },
+    {
+      "from_entity": "corneal_melanopic_irradiance",
+      "to_entity": "ipRGC_activation",
+      "activity": "drives",
+      "from_level": "environmental",
+      "to_level": "sensory",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "Dose-response relationship characterized by Brainard et al. (2001). Nonlinear, with sigmoidal saturation. Dependent on wavelength (peak ~480nm), irradiance, duration, timing relative to circadian phase, and prior photic history."
+    },
+    {
+      "from_entity": "ipRGC_activation",
+      "to_entity": "SCN_phase_entrainment",
+      "activity": "calibrates",
+      "from_level": "sensory",
+      "to_level": "neural",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "ipRGC signal via retinohypothalamic tract to SCN. Phase response curve determines direction and magnitude of phase shift: morning light advances the clock; evening light delays it. (Khalsa et al., 2003, ~800 citations)."
+    },
+    {
+      "from_entity": "SCN_phase_entrainment",
+      "to_entity": "melatonin_cortisol_rhythm",
+      "activity": "regulates",
+      "from_level": "neural",
+      "to_level": "physiological",
+      "bridging_to": "strong",
+      "maturity": "established",
+      "evidence_base": "SCN → pineal (melatonin: onset ~2h before habitual bedtime, peak during sleep, suppressed by light). SCN → adrenal (cortisol: peak ~30min after waking, declining through day). Rhythm alignment = health; misalignment = disruption."
+    },
+    {
+      "from_entity": "circadian_alignment",
+      "to_entity": "cognitive_affective_health_outcomes",
+      "activity": "supports_or_undermines",
+      "from_level": "physiological",
+      "to_level": "cognitive",
+      "bridging_to": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Aligned circadian function supports: sleep quality, daytime alertness, mood stability, metabolic health, immune function, cognitive performance. Misalignment impairs all of these. Chronic misalignment → allostatic load (T29)."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all occupied buildings — every building is a circadian instrument whether designed as one or not",
+    "Strongest effects for occupants with limited outdoor light exposure (deep-plan offices, healthcare, residential care, schools)",
+    "Timing effects are phase-dependent: same light has different circadian impact depending on when in the 24h cycle it is experienced",
+    "Individual differences in chronotype (morningness-eveningness) moderate the optimal timing of circadian light"
+  ],
+  "moderators": [
+    "Age: aging reduces ipRGC density and lens transmittance → elderly need more light for equivalent circadian stimulus",
+    "Chronotype: evening chronotypes are more vulnerable to insufficient morning light",
+    "Season and latitude: high-latitude winters provide insufficient daylight for circadian entrainment → architectural compensation needed",
+    "Building type: healthcare and shift-work environments have the most severe circadian challenges",
+    "Prior photic history: a dim morning reduces the circadian system's sensitivity to subsequent light"
+  ],
+  "metrics": {
+    "circadian_stimulus": "CS ranges 0 to 0.7, effectiveness at activating circadian system",
+    "melanopic_EDI": "mEDI per CIE S 026:2018, melanopic equivalent daylight illuminance"
+  },
+  "interactions": [
+    {
+      "template_id": "ALLOSTATIC_MASTER_001",
+      "display_id": "T29",
+      "nature": "Circadian disruption is a major input to allostatic load. L2 specifies the light pathway; T29 specifies the downstream allostatic consequences."
+    },
+    {
+      "template_id": "LUM_CONTRAST_PE_001",
+      "display_id": "L1",
+      "nature": "L1 and L2 are independent pathways operating on the same physical stimulus (light). L1 = visual-aesthetic processing of luminance patterns. L2 = non-visual circadian processing of spectral irradiance."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "display_id": "T5",
+      "nature": "Darkness functions as a threat signal (T5) AND as a circadian signal (L2). These are distinguishable: darkness at night is circadianly appropriate but may still trigger threat."
+    }
+  ],
+  "maturity": "established",
+  "key_references": [
+    {
+      "citation": "Berson, D. M., Dunn, F. A., & Takao, M. (2002). Phototransduction by retinal ganglion cells that set the circadian clock. Science, 295(5557), 1070–1073.",
+      "google_scholar_count": 3500
+    },
+    {
+      "citation": "Brainard, G. C., Hanifin, J. P., Greeson, J. M., et al. (2001). Action spectrum for melatonin regulation in humans: Evidence for a novel circadian photoreceptor. Journal of Neuroscience, 21(16), 6405–6412.",
+      "google_scholar_count": 2200
+    },
+    {
+      "citation": "Rea, M. S., & Figueiro, M. G. (2018). Light as a circadian stimulus for architectural lighting. Lighting Research & Technology, 50(4), 497–510.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Knutsson, A. (2003). Health disorders of shift workers. Occupational Medicine, 53(2), 103–108.",
+      "google_scholar_count": 1200
+    },
+    {
+      "citation": "Foster, R. G., & Kreitzman, L. (2017). Circadian rhythms: A very short introduction. Oxford University Press.",
+      "google_scholar_count": 200
+    }
+  ],
+  "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "template_id": "CIRCADIAN_ARCH_REG_001",
+  "overall_maturity": "established"
+}
