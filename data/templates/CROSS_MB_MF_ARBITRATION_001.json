@@ -1,0 +1,105 @@
+{
+    "template_id": "CROSS_MB_MF_ARBITRATION_001",
+    "display_id": "T43",
+    "name": "Model-Based / Model-Free Navigation Arbitration",
+    "structural_pattern": "COMPETITION",
+    "higher_order_principle": "Spatial behavior alternates between model-based planning (hippocampal cognitive map, flexible, costly) and model-free habits (dorsolateral striatum, cheap, inflexible). Prefrontal-striatal circuit arbitrates based on environmental volatility, stakes, and available cognitive resources.",
+    "transferable_to": [
+        "hospital wayfinding (habitual staff routes vs novel patient navigation)",
+        "campus design (learned desire paths vs intentional circulation)",
+        "emergency egress (overlearned exit routes vs novel escape planning)",
+        "retail layout changes (disrupting habits to force model-based exploration)"
+    ],
+    "framework_ids": [
+        "SN",
+        "DP",
+        "NM"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "environmental_volatility",
+            "to_variable": "arbitration_signal",
+            "activity": "estimate_relative_reliability",
+            "from_level": "environmental",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Daw et al., 2005; Lee, Shimojo, & O'Doherty, 2014",
+            "parameters": {
+                "arbitration_region": "inferior_frontal_gyrus",
+                "volatility_threshold": "context_dependent"
+            }
+        },
+        {
+            "from_variable": "arbitration_signal",
+            "to_variable": "navigation_strategy",
+            "activity": "select_behavioral_controller",
+            "from_level": "subpersonal",
+            "to_level": "behavioral",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Daw et al., 2011",
+            "parameters": {
+                "model_based_substrate": "hippocampus_vmPFC",
+                "model_free_substrate": "dorsolateral_striatum",
+                "switch_cost_ms": "200-500"
+            }
+        },
+        {
+            "from_variable": "cognitive_resource_availability",
+            "to_variable": "arbitration_signal",
+            "activity": "modulate_model_based_weight",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Otto, Gershman, Markman, & Daw, 2013",
+            "parameters": {
+                "note": "Cognitive load biases toward model-free; WM capacity predicts MB use"
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Applies when both habitual and planned routes are available",
+        "Model-based dominates in novel environments or after layout changes",
+        "Model-free dominates under time pressure, cognitive load, or stress",
+        "Arbitration itself has a metabolic cost mediated by PFC engagement"
+    ],
+    "moderators": [
+        "familiarity (extensive experience → stronger model-free habits)",
+        "stakes (emergency → model-free unless trained otherwise)",
+        "individual_WM_capacity (higher WM → more model-based; links T36)",
+        "age (aging biases toward model-free; Eppinger, Walter, Heekeren, & Li, 2013)",
+        "stress_hormones (cortisol biases toward model-free; Schwabe & Wolf, 2009)"
+    ],
+    "interactions": [
+        {
+            "template": "T3 (SN_COGNITIVE_MAP_001)",
+            "type": "SUBSTRATE",
+            "description": "T3 provides the model-based planning system. When arbitration selects model-based, T3's cognitive map is the computational resource used for navigation."
+        },
+        {
+            "template": "T37 (DP_ECOLOGICAL_RATIONALITY_001)",
+            "type": "PARALLEL",
+            "description": "T37 formalizes when heuristics outperform deliberation. T43 formalizes the neural mechanism that implements this arbitration specifically for spatial behavior."
+        },
+        {
+            "template": "T41 (NM_RPE_001)",
+            "type": "INPUT",
+            "description": "RPE signals (T41) update the cached values used by the model-free system and provide the outcome feedback that drives learning in both systems."
+        },
+        {
+            "template": "T38 (CROSS_COGNITIVE_LOAD_001)",
+            "type": "MODULATOR",
+            "description": "Cognitive load (T38) biases arbitration toward model-free by consuming the PFC resources model-based planning requires."
+        }
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        "Daw, Niv, & Dayan (2005) Nature Neuroscience",
+        "Daw, Gershman, Seymour, Dayan, & Dolan (2011) Neuron",
+        "Lee, Shimojo, & O'Doherty (2014) Neuron",
+        "Otto, Gershman, Markman, & Daw (2013) Psychological Science",
+        "Schwabe & Wolf (2009) Journal of Neuroscience"
+    ]
+}

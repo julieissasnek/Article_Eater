@@ -1,0 +1,90 @@
+{
+  "template_id": "AUD_SCENE_ANALYSIS_001",
+  "display_id": "T31",
+  "name": "Auditory Scene Analysis Demand",
+  "structural_pattern": "RESOURCE_COMPETITION",
+  "higher_order_principle": "Complex acoustic environments with multiple concurrent sources (speech, noise, machinery) impose computational load on the auditory system to parse and segregate streams (auditory scene analysis). This consumes cognitive resources, depleting the capacity available for concurrent tasks like reading, conversation, or creative thinking.",
+  "transferable_to": [
+    "open-plan offices (speech distraction)",
+    "healthcare (alarm fatigue and ward noise)",
+    "educational settings (classroom acoustics)",
+    "urban public spaces (soundscape parsing)"
+  ],
+  "framework_ids": [
+    "PP",
+    "MSI"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "acoustic_complexity",
+      "to_variable": "auditory_scene_analysis_demand",
+      "activity": "impose_segregation_load",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Bregman (1990); McDermott (2009)",
+      "parameters": {
+        "segregation_limit": "3-5 concurrent sources",
+        "synchrony_threshold": "<30ms for grouping",
+        "spatial_release_threshold": ">15 degrees azimuth"
+      }
+    },
+    {
+      "from_variable": "auditory_scene_analysis_demand",
+      "to_variable": "cortical_processing_load",
+      "activity": "recruit_neural_resources",
+      "from_level": "cognitive",
+      "to_level": "neural",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Generic neuroimaging (fMRI BOLD scaling)",
+      "parameters": {
+        "bold_scaling": "~5% increase per additional source up to capacity"
+      }
+    },
+    {
+      "from_variable": "cortical_processing_load",
+      "to_variable": "concurrent_task_performance",
+      "activity": "divert_attentional_resources",
+      "from_level": "neural",
+      "to_level": "behavioral",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Szalma & Hancock (2011)",
+      "parameters": {
+        "speech_in_noise_drop": "95% at +15dB SNR -> 50% at 0dB SNR",
+        "wm_decrement": "~10-20% in 60dB noise vs 35dB quiet"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Applies to environments with multiple concurrent sound sources",
+    "Fails when sources are spectrotemporally identical (cannot segregate)",
+    "Fails when reverberation > 2s (temporal smearing)",
+    "Degraded in hearing-impaired and older (>60y) populations"
+  ],
+  "moderators": [
+    "source_predictability (predictable noise is less disruptive)",
+    "meaningfulness (intelligible speech is maximally disruptive)",
+    "individual_sensitivity (introverts/HSP ~2x more affected)"
+  ],
+  "interactions": [
+    {
+      "template": "NM_THREAT_HPA_001",
+      "type": "CASCADING",
+      "description": "If ASA fails to segregate a source, or if a source is identified as threatening, it triggers the HPA axis (T5)."
+    },
+    {
+      "template": "HC_WORKING_MEMORY_LOAD_001",
+      "type": "RESOURCE_SHARING",
+      "description": "ASA demand draws from the same general cognitive resource pool as Working Memory (T36)."
+    }
+  ],
+  "overall_maturity": "established",
+  "key_references": [
+    "Bregman, A. S. (1990). Auditory Scene Analysis.",
+    "McDermott, J. H. (2009). The cocktail party problem. Current Biology.",
+    "Szalma, J. L., & Hancock, P. A. (2011). Noise effects on human performance. Psychological Bulletin."
+  ]
+}

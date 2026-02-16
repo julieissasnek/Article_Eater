@@ -1,0 +1,94 @@
+{
+    "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+    "display_id": "T32",
+    "name": "Subcortical Auditory Encoding Plasticity",
+    "structural_pattern": "ADAPTATION",
+    "higher_order_principle": "Chronic exposure to acoustic environments shapes the precision of subcortical auditory encoding (brainstem frequency following response). Degraded environments (noise, reverb) reduce encoding precision; rich environments (music, clear speech) enhance it, with downstream effects on speech perception and cognitive health.",
+    "transferable_to": [
+        "school design (acoustic impact on developmental plasticity)",
+        "elder care facilities (preserving speech comprehension)",
+        "open-plan offices (chronic noise exposure)",
+        "urban soundscape planning"
+    ],
+    "framework_ids": [
+        "NM",
+        "CB"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "acoustic_exposure_profile",
+            "to_variable": "subcortical_encoding_precision",
+            "activity": "induce_plasticity",
+            "from_level": "environmental",
+            "to_level": "subcortical",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Kraus & Chandrasekaran, 2010; Skoe & Kraus, 2010",
+            "parameters": {
+                "timescale": "weeks_to_months",
+                "good_environment": "noise <40dBA, RT60 0.4-0.8s, SNR >+15dB",
+                "degraded_environment": "noise >55dBA, RT60 >1.5s, SNR <+5dB"
+            }
+        },
+        {
+            "from_variable": "subcortical_encoding_precision",
+            "to_variable": "speech_in_noise_perception",
+            "activity": "determine_signal_fidelity",
+            "from_level": "subcortical",
+            "to_level": "behavioral",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Kraus, 2010",
+            "parameters": {
+                "delay_metric": "0.5-1ms delay in neural timing predicts impairment"
+            }
+        },
+        {
+            "from_variable": "speech_in_noise_perception",
+            "to_variable": "social_cognitive_outcome",
+            "activity": "facilitate_interaction",
+            "from_level": "behavioral",
+            "to_level": "behavioral",
+            "bridging_quality": "MEDIUM",
+            "maturity": "established",
+            "key_evidence": "Inferred from epidemiological data",
+            "parameters": {
+                "outcomes": [
+                    "academic_performance",
+                    "social_withdrawal",
+                    "cognitive_load"
+                ]
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Requires chronic exposure (days/weeks)",
+        "Plasticity is greatest in childhood and older adulthood",
+        "Musical training protects against degradation",
+        "measurable via Auditory Brainstem Response (ABR)"
+    ],
+    "moderators": [
+        "age (young children and elderly most vulnerable)",
+        "musical_training (protective buffer)",
+        "hearing_status (peripheral hearing loss exacerbates)",
+        "linguistic_background (bilingualism may enhance encoding)"
+    ],
+    "interactions": [
+        {
+            "template": "T31 (AUD_SCENE_ANALYSIS_001)",
+            "type": "FOUNDATION",
+            "description": "Subcortical encoding (T32) determines the fidelity of the input passed to cortical scene analysis (T31). Poor encoding increases cortical load."
+        },
+        {
+            "template": "T29 (ALLOSTATIC_MASTER_001)",
+            "type": "INPUT",
+            "description": "Chronic difficulty in speech perception driven by poor encoding acts as a constant allostatic load."
+        }
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        "Kraus & Chandrasekaran (2010) Nature Reviews Neuroscience",
+        "Skoe & Kraus (2010) Ear and Hearing",
+        "Anderson & Kraus (2010) Hearing Research"
+    ]
+}

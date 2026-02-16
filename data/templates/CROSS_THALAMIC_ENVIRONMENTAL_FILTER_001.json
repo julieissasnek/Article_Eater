@@ -1,0 +1,89 @@
+{
+  "template_id": "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001",
+  "display_id": "T46",
+  "name": "Thalamic Environmental Filtering (Pulvinar)",
+  "structural_pattern": "GATING",
+  "higher_order_principle": "The pulvinar nucleus acts as a dynamic filter on environmental information reaching cortex, implementing attentional modes (focused 'spotlight' vs distributed 'floodlight') that are selected by spatial configuration (e.g., corridor vs atrium) and modulated by top-down goals.",
+  "transferable_to": [
+    "corridor vs atrium design",
+    "safety-critical monitoring environments",
+    "focused work zones",
+    "retail browsing vs purchase"
+  ],
+  "framework_ids": [
+    "MSI",
+    "PP"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "spatial_configuration",
+      "to_variable": "pulvinar_filtering_mode",
+      "activity": "select_attentional_mode",
+      "from_level": "environmental",
+      "to_level": "subcortical",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "key_evidence": "Saalmann & Kastner (2011)",
+      "parameters": {
+        "spotlight_trigger": "narrow_FOV, proximal_goal",
+        "floodlight_trigger": "wide_FOV, ambient_monitoring",
+        "modulation_band": "alpha (8-12 Hz) synchronization"
+      }
+    },
+    {
+      "from_variable": "pulvinar_filtering_mode",
+      "to_variable": "cortical_information_access",
+      "activity": "gate_sensory_throughput",
+      "from_level": "subcortical",
+      "to_level": "neural",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Saalmann et al. (2012)",
+      "parameters": {
+        "mechanism": "alpha-band pulvinar-cortex sync",
+        "effect": "spotlight narrows representation; floodlight broadens"
+      }
+    },
+    {
+      "from_variable": "cortical_information_access",
+      "to_variable": "environmental_awareness_type",
+      "activity": "shape_perceptual_experience",
+      "from_level": "neural",
+      "to_level": "phenomenological",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "key_evidence": "Inferred from Saalmann & Kastner",
+      "parameters": {
+        "spotlight_experience": "focused, detailed, tunnel-like",
+        "floodlight_experience": "ambient, panoramic, peripheral"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Applies to sighted individuals in illuminated environments",
+    "Top-down goals can override spatial layout cues",
+    "Pulvinar integrates cross-modal info, not just visual"
+  ],
+  "moderators": [
+    "threat_level (threat biases toward floodlight/monitoring)",
+    "reward_location (known reward biases toward spotlight)",
+    "developmental_status (children may default to floodlight due to immature pulvinar)"
+  ],
+  "interactions": [
+    {
+      "template": "PP_ATTENTIONAL_DEMAND_001",
+      "type": "MECHANISM",
+      "description": "T46 specifies the thalamic mechanism determining HOW attention (T4) is deployed."
+    },
+    {
+      "template": "NM_CHOLINERGIC_GATING_001",
+      "type": "COMPLEMENT",
+      "description": "Pulvinar gates at the relay level; Acetylcholine (T26) modulates gain at the cortical level."
+    }
+  ],
+  "overall_maturity": "established",
+  "key_references": [
+    "Saalmann, Y. B., & Kastner, S. (2011). Cognitive and perceptual functions of the visual thalamus. Neuron.",
+    "Saalmann, Y. B., et al. (2012). The pulvinar regulates information transmission between cortical areas. Science."
+  ]
+}

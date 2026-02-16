@@ -1,0 +1,96 @@
+{
+    "template_id": "NM_REWARD_PREDICTION_ERROR_001",
+    "display_id": "T41",
+    "name": "Environmental Reward Prediction Error",
+    "structural_pattern": "MEDIATION",
+    "higher_order_principle": "Midbrain dopamine neurons compute temporal difference between expected and received environmental reward; phasic RPE updates cached place/route values and modulates exploratory versus exploitative behavior.",
+    "transferable_to": [
+        "wayfinding reward at destination",
+        "view reward upon vista opening",
+        "thermal comfort upon entering conditioned space",
+        "social reward upon encountering others in shared space"
+    ],
+    "framework_ids": [
+        "NM"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "environmental_outcome",
+            "to_variable": "reward_prediction_error",
+            "activity": "compute_temporal_difference",
+            "from_level": "environmental",
+            "to_level": "subcortical",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Schultz, Dayan, & Montague, 1997",
+            "parameters": {
+                "response_latency_ms": "50-100",
+                "signal_duration_ms": "200-500",
+                "magnitude_range": "±3 SD of baseline firing"
+            }
+        },
+        {
+            "from_variable": "reward_prediction_error",
+            "to_variable": "cached_place_value",
+            "activity": "update_value_estimate",
+            "from_level": "subcortical",
+            "to_level": "subcortical",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "O'Doherty et al., 2004",
+            "parameters": {
+                "learning_rate_alpha": "0.1-0.4",
+                "discount_factor_gamma": "0.9-0.99"
+            }
+        },
+        {
+            "from_variable": "cached_place_value",
+            "to_variable": "exploration_exploitation_balance",
+            "activity": "modulate_behavioral_policy",
+            "from_level": "subcortical",
+            "to_level": "behavioral",
+            "bridging_quality": "MEDIUM",
+            "maturity": "established",
+            "key_evidence": "Daw et al., 2006",
+            "parameters": {
+                "softmax_temperature_range": "0.1-5.0"
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Applies when environmental outcomes deviate from expectation",
+        "Requires intact VTA/substantia nigra dopaminergic system",
+        "Magnitude scales with unexpectedness, not absolute reward value",
+        "Habituates: repeated identical outcomes → RPE → 0"
+    ],
+    "moderators": [
+        "prior_expectation_precision (higher precision → larger RPE for violations)",
+        "metabolic_state (hunger, thermal discomfort amplify reward signals)",
+        "context_novelty (novel environments have less precise priors → smaller RPE)",
+        "individual_dopaminergic_tone (genetic/pharmacological variation)"
+    ],
+    "interactions": [
+        {
+            "template": "PP_PREDICTION_ERROR_001 (T1)",
+            "type": "SHARED_MECHANISM",
+            "description": "Perceptual PE (T1) and reward PE (T41) share the temporal difference computation but operate in different domains — sensory vs motivational. Double dissociation demonstrated in neuroimaging."
+        },
+        {
+            "template": "NM_DOPAMINERGIC_NOVELTY_001 (T17)",
+            "type": "EXTENSION",
+            "description": "T17 captures tonic dopamine's role in novelty-seeking; T41 captures phasic dopamine's role in outcome evaluation. They are complementary phases of the same neuromodulatory system."
+        },
+        {
+            "template": "IC_INTEROCEPTIVE_AFFECT_001 (T12)",
+            "type": "INPUT",
+            "description": "Interoceptive signals (thermal comfort, proprioceptive ease) provide the 'received reward' input to the RPE computation."
+        }
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        "Schultz, Dayan, & Montague (1997) Science",
+        "O'Doherty et al. (2004) Science",
+        "Daw, O'Doherty, Dayan, Seymour, & Dolan (2006) Nature",
+        "Berridge & Robinson (2016) American Psychologist"
+    ]
+}

@@ -1,0 +1,75 @@
+{
+    "template_id": "HC_WORKING_MEMORY_LOAD_001",
+    "display_id": "T36",
+    "name": "Working Memory Load and Environmental Complexity",
+    "structural_pattern": "CAPACITY_LIMIT",
+    "higher_order_principle": "Working memory (WM) has a strict capacity limit (~3-4 items). Environmental features (navigation decisions, instructions, monitoring) consume this capacity. When load exceeds capacity, top-down control breaks down, leading to errors, confusion, and stress.",
+    "transferable_to": [
+        "complex wayfinding scenarios (airports, hospitals)",
+        "emergency egress (high load + stress)",
+        "information-rich environments (museums, control rooms)",
+        "accessible design (accounting for reduced WM in aging/disability)"
+    ],
+    "framework_ids": [
+        "HC",
+        "EF"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "environmental_information_demand",
+            "to_variable": "wm_load",
+            "activity": "occupy_slots",
+            "from_level": "environmental",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Cowan, 2001; Buschman & Miller, 2010",
+            "parameters": {
+                "capacity_limit": "3-4 items",
+                "load_per_decision": "~1 item"
+            }
+        },
+        {
+            "from_variable": "wm_load",
+            "to_variable": "task_performance_error",
+            "activity": "exceed_capacity",
+            "from_level": "subpersonal",
+            "to_level": "behavioral",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Luck & Vogel, 2013",
+            "parameters": {
+                "error_rate": "linear increase 1-3 items, catastrophic >4",
+                "subjective_state": "confusion, frustration"
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Applies to active tasks, not passive dwelling",
+        "Capacity is reduced by stress, fatigue, age",
+        "Capacity usage is competitive between task and environment"
+    ],
+    "moderators": [
+        "cognitive_offloading (signage/landmarks free up WM slots)",
+        "stress (cortisol reduces effective capacity)",
+        "age (capacity declines with age)"
+    ],
+    "interactions": [
+        {
+            "template": "EC_COGNITIVE_OFFLOADING_002",
+            "type": "REMEDY",
+            "description": "Offloading information into the environment (signs, maps) reduces internal WM load."
+        },
+        {
+            "template": "T47 (WM_GAMMA_BETA)",
+            "type": "MECHANISM",
+            "description": "T47 provides the neural implementation (oscillatory dynamics) for the capacity limits described here."
+        }
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        "Cowan (2001) BBS",
+        "Buschman & Miller (2010) Frontiers in Human Neuroscience",
+        "Luck & Vogel (2013) Trends in Cognitive Sciences"
+    ]
+}

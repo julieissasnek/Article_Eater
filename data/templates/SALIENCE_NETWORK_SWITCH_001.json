@@ -1,0 +1,44 @@
+{
+    "template_id": "SALIENCE_NETWORK_SWITCH_001",
+    "display_id": "T68",
+    "name": "Salience Network Gating of DMN/TPN Switching",
+    "description": "The anterior insula and dACC act as a gatekeeper switch between the Default Mode Network (DMN) and Task Positive Network (TPN). The switch is triggered when aggregate salience (sensory, interoceptive, threat) exceeds a dynamic threshold. Soft fascination and restoration occur when the environment provides enough stimulation to sustain interest but keeps aggregate salience below the switching threshold.",
+    "framework_ids": [
+        "SN",
+        "NM",
+        "DT"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "aggregate_salience",
+            "to_variable": "anterior_insula_activity",
+            "activity": "enhances",
+            "from_level": "sensory",
+            "to_level": "neural",
+            "bridging_quality": "strong",
+            "maturity": "established"
+        },
+        {
+            "from_variable": "anterior_insula_activity",
+            "to_variable": "DMN_suppression",
+            "activity": "enhances",
+            "from_level": "neural",
+            "to_level": "neural",
+            "bridging_quality": "strong",
+            "maturity": "established"
+        }
+    ],
+    "associated_variables": [
+        "aggregate_salience",
+        "anterior_insula_activity",
+        "switching_threshold",
+        "network_switching_cost"
+    ],
+    "overall_maturity": "established",
+    "key_references": [
+        "Sridharan, Levitin, & Menon (2008)",
+        "Menon (2011)",
+        "Uddin (2015)",
+        "Panel D-1b"
+    ]
+}

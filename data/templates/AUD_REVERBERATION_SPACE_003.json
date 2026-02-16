@@ -1,0 +1,87 @@
+{
+  "template_id": "AUD_REVERBERATION_SPACE_003",
+  "display_id": "T33",
+  "name": "Auditory Spatial Perception and Enclosure",
+  "structural_pattern": "INFERENCE",
+  "higher_order_principle": "The auditory system infers room geometry (volume, surface distance) from impulse response statistics (early reflections, late reverberation). This auditory spatial model combines with visual information to create the sense of enclosure. Congruence between auditory and visual spatial cues promotes comfort; incongruence produces unease.",
+  "transferable_to": [
+    "concert halls",
+    "virtual reality acoustics",
+    "cathedrals vs classrooms",
+    "restaurant acoustic design"
+  ],
+  "framework_ids": [
+    "SN",
+    "MSI"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "room_geometry_and_materials",
+      "to_variable": "impulse_response_statistics",
+      "activity": "generate_acoustic_signature",
+      "from_level": "environmental",
+      "to_level": "environmental",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Physics of sound",
+      "parameters": {
+        "early_reflections": "<50ms (boundaries)",
+        "late_reverberation": ">80ms (volume)",
+        "rt60_range": "0.3s (small) to >3s (cathedral)"
+      }
+    },
+    {
+      "from_variable": "impulse_response_statistics",
+      "to_variable": "auditory_spatial_model",
+      "activity": "infer_spatial_properties",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Traer & McDermott (2016); Kolarik et al. (2016)",
+      "parameters": {
+        "blind_room_sizing": "Humans can estimate room size from sound alone with high accuracy"
+      }
+    },
+    {
+      "from_variable": "auditory_visual_congruence",
+      "to_variable": "spatial_certainty_and_comfort",
+      "activity": "modulate_affective_response",
+      "from_level": "cognitive",
+      "to_level": "phenomenological",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "key_evidence": "Inferred from multisensory lit",
+      "parameters": {
+        "mismatch_threshold": "RT60 diff > 0.3s from expectation",
+        "anechoic_discomfort": "RT60 < 0.1s causes disorientation/loss of enclosure"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Requires at least some sound source to excite the room (silence = no data)",
+    "Fails in anechoic chambers (sensory deprivation)",
+    "Auditory spatial cues are less precise than visual but omnidirectional"
+  ],
+  "moderators": [
+    "visual_dominance (vision often calibrates sound, but large mismatches break fusion)",
+    "familiarity (expectations about how a 'library' or 'station' should sound)"
+  ],
+  "interactions": [
+    {
+      "template": "SN_LAYOUT_COGNITIVE_MAP_001",
+      "type": "AUGMENTATION",
+      "description": "Auditory cues provide boundary information that refines the visual cognitive map (T3)."
+    },
+    {
+      "template": "MSI_CONGRUENCY_PRINCIPLE_001",
+      "type": "INSTANCE",
+      "description": "Room acoustic congruence is a specific instance of the general multisensory congruency principle (T39)."
+    }
+  ],
+  "overall_maturity": "established",
+  "key_references": [
+    "Traer, J., & McDermott, J. H. (2016). Statistics of natural reverberation. PNAS.",
+    "Kolarik, A. J., et al. (2016). Auditory distance perception. Attention, Perception, & Psychophysics."
+  ]
+}

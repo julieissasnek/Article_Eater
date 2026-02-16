@@ -1,0 +1,102 @@
+{
+  "template_id": "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+  "display_id": "T45",
+  "name": "Proactive-Reactive Control Mode and Architectural Predictability",
+  "structural_pattern": "BIFURCATION",
+  "higher_order_principle": "Predictable environments enable proactive control (sustained lateral PFC, anticipatory goal maintenance, metabolically steady). Unpredictable environments force reactive control (transient ACC conflict detection, stimulus-driven retrieval, metabolically bursty). Populations with reduced proactive capacity bear disproportionate cost in unpredictable buildings.",
+  "transferable_to": [
+    "healthcare design (predictable layouts for cognitively impaired)",
+    "educational design (structured vs discovery-based learning)",
+    "workplace design (open-plan interruption forcing reactive mode)",
+    "wayfinding systems (clear signage enabling proactive planning)"
+  ],
+  "framework_ids": [
+    "PP",
+    "DT",
+    "NM"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "architectural_predictability",
+      "to_variable": "control_mode_selection",
+      "activity": "bias_toward_proactive_or_reactive",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Braver (2012)",
+      "parameters": {
+        "proactive_substrate": "sustained_lateral_PFC_DLPFC",
+        "reactive_substrate": "transient_ACC_plus_lateral_PFC",
+        "switch_latency_ms": "500-1500"
+      }
+    },
+    {
+      "from_variable": "control_mode_selection",
+      "to_variable": "metabolic_temporal_profile",
+      "activity": "determine_energy_expenditure_pattern",
+      "from_level": "cognitive",
+      "to_level": "physiological",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "key_evidence": "Braver (2012); Botvinick & Cohen (2014)",
+      "parameters": {
+        "proactive_profile": "steady_moderate_sustained",
+        "reactive_profile": "bursty_high_peak_then_low",
+        "integrated_cost_comparison": "reactive > proactive for extended tasks"
+      }
+    },
+    {
+      "from_variable": "individual_proactive_capacity",
+      "to_variable": "control_mode_selection",
+      "activity": "modulate_mode_accessibility",
+      "from_level": "cognitive",
+      "to_level": "cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "key_evidence": "Braver et al. (2007)",
+      "parameters": {
+        "reduced_in": [
+          "aging",
+          "high_stress",
+          "ADHD",
+          "schizophrenia",
+          "low_WM_capacity"
+        ]
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Applies to environments requiring sustained goal-directed behavior",
+    "Proactive mode requires intact PFC and sufficient WM capacity",
+    "Predictability assessed at architectural scale (layout, signage)"
+  ],
+  "moderators": [
+    "environmental_legibility (clear structure supports proactive)",
+    "interruption_frequency (frequent interruptions force reactive)",
+    "circadian_phase (proactive degrades with misalignment)",
+    "acute_stress (cortisol biases toward reactive)"
+  ],
+  "interactions": [
+    {
+      "template": "CROSS_HIERARCHICAL_CONTROL_001",
+      "type": "ORTHOGONAL",
+      "description": "T44 involves level of control; T45 involves temporal mode of control."
+    },
+    {
+      "template": "ALLOSTATIC_MASTER_001",
+      "type": "OUTPUT",
+      "description": "Chronic reactive mode leads to allostatic overload (bursty metabolic spikes)."
+    },
+    {
+      "template": "CROSS_COGNITIVE_LOAD_001",
+      "type": "REFINEMENT",
+      "description": "T45 refines T38: same complexity causes different load profile depending on mode."
+    }
+  ],
+  "overall_maturity": "established",
+  "key_references": [
+    "Braver, T. S. (2012). The variable nature of cognitive control. Trends in Cognitive Sciences.",
+    "Botvinick, M., & Cohen, J. D. (2014). The computational and neural basis of cognitive control."
+  ]
+}
