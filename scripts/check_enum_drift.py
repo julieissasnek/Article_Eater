@@ -72,7 +72,7 @@ def collect_python_enum_observations(repo_name: str, repo_root: Path) -> List[Ob
     observations: List[Observation] = []
     for py_file in repo_root.rglob("*.py"):
         if any(
-            part in {".git", ".venv", "venv", "site-packages", "__pycache__"}
+            part in {".git", ".venv", "venv", "site-packages", "__pycache__", "ruthless_bundle_2026-02-08"}
             for part in py_file.parts
         ):
             continue

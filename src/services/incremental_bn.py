@@ -49,12 +49,12 @@ class EdgeType(Enum):
 
 
 class EvidenceType(Enum):
-    """Type of evidence for edge."""
+    """Type of evidence for edge. Canonical values per contracts/vocab/canonical_enums.json."""
     EXPERIMENTAL = "experimental"   # RCT, controlled experiment
-    OBSERVATIONAL = "observational" # Cross-sectional, survey
+    OBSERVATIONAL = "observational" # Cross-sectional, survey (also default for unknown)
     META_ANALYSIS = "meta_analysis" # Aggregated studies
     THEORETICAL = "theoretical"     # Derived from theory
-    UNKNOWN = "unknown"
+    # DEPRECATED: "unknown" mapped to "observational" per Sprint 1.5 enum consolidation (2026-02-16)
 
 
 # =============================================================================

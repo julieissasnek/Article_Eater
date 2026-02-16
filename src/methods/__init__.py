@@ -21,11 +21,13 @@ from src.methods.registry import (
 from src.methods.task_ecology import (
     TaskClass,
     EffectPathway,
-    ClaimType,
+    ClaimBifurcationType,
     StateCharacterization,
     TASK_AUTHENTICITY_SCORES,
     compute_task_ecological_validity,
 )
+# Backward compatibility alias (deprecated as of Sprint 1.5, 2026-02-16)
+ClaimType = ClaimBifurcationType
 
 from src.methods.validity_scorer import (
     compute_claim_validity,
@@ -47,7 +49,8 @@ __all__ = [
     # Task ecology
     "TaskClass",
     "EffectPathway",
-    "ClaimType",
+    "ClaimBifurcationType",
+    "ClaimType",  # Deprecated alias for ClaimBifurcationType
     "StateCharacterization",
     "TASK_AUTHENTICITY_SCORES",
     "compute_task_ecological_validity",

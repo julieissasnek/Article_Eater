@@ -20,7 +20,7 @@ from src.methods.registry import MethodRegistry, MethodEntry
 from src.methods.method_identifier import MethodIdentificationResult
 from src.methods.task_ecology import (
     TaskClass,
-    ClaimType,
+    ClaimBifurcationType,
     EffectPathway,
     compute_task_ecological_validity,
     classify_claim_type,
@@ -180,7 +180,7 @@ def _generate_auto_challenges(
     claim_text: str,
     construct: str,
     methods_info: MethodIdentificationResult,
-    claim_type: ClaimType,
+    claim_type: ClaimBifurcationType,
     registry: Optional[MethodRegistry] = None
 ) -> List[str]:
     """

@@ -40,25 +40,40 @@ class TaskClass(str, Enum):
 
 class EffectPathway(str, Enum):
     """
-    How the environmental effect operates.
+    How the environmental effect operates (Canonical Decision 4).
+
+    Canonical values per contracts/vocab/canonical_enums.json:
+    - SUBPERSONAL: Non-conscious mechanisms (physiological, implicit priming)
+    - PERSONAL_EPISTEMIC: Requires conscious engagement or evaluation
+    - MIXED: Both pathways plausibly active
 
     Determines what methods are appropriate for measurement.
     """
-    EXPLICIT = "explicit"                         # Requires conscious awareness
-    IMPLICIT_COGNITIVE = "implicit_cognitive"     # Below awareness, cognitive
-    IMPLICIT_PHYSIOLOGICAL = "implicit_physiological"  # Below awareness, physiological
+    SUBPERSONAL = "subpersonal"                   # Below awareness, physiological/implicit
+    PERSONAL_EPISTEMIC = "personal_epistemic"     # Requires conscious awareness/evaluation
     MIXED = "mixed"                               # Both pathways active
+    # DEPRECATED aliases (Sprint 1.5, 2026-02-16):
+    # - "explicit" → "personal_epistemic"
+    # - "implicit_cognitive" → "personal_epistemic"
+    # - "implicit_physiological" → "subpersonal"
 
 
-class ClaimType(str, Enum):
+class ClaimBifurcationType(str, Enum):
     """
-    Bifurcation of claim types per Missing Fourth Channel.
+    Type A / Type B claim bifurcation per Missing Fourth Channel.
+
+    NOTE: This is NOT the same as epistemic ClaimType (causal, associational, etc.).
+    This enum captures the evaluative-vs-functional distinction specific to CNFA
+    ecological validity assessment.
 
     Type A claims (evaluative) are well-supported by standard CNFA paradigm.
     Type B claims (functional) require ecological evidence.
+
+    Renamed from ClaimType → ClaimBifurcationType in Sprint 1.5 (2026-02-16)
+    to avoid collision with canonical ClaimType in contracts/vocab/canonical_enums.json.
     """
-    EVALUATIVE_RESPONSE = "evaluative_response"   # "People prefer X"
-    FUNCTIONAL_EFFECT = "functional_effect"       # "X reduces stress"
+    EVALUATIVE_RESPONSE = "evaluative_response"   # "People prefer X" (Type A)
+    FUNCTIONAL_EFFECT = "functional_effect"       # "X reduces stress" (Type B)
 
 
 # =============================================================================
@@ -337,7 +352,7 @@ def classify_claim_type(claim_text: str) -> ClaimType:
         "aesthetic", "appealing", "rate", "perceive as", "judge"
     ]
     if any(kw in text_lower for kw in evaluative_keywords):
-        return ClaimType.EVALUATIVE_RESPONSE
+        return ClaimBifurcationType.EVALUATIVE_RESPONSE
 
     # Type B indicators (functional)
     functional_keywords = [
@@ -346,7 +361,7 @@ def classify_claim_type(claim_text: str) -> ClaimType:
         "stress", "recovery", "productivity", "wellbeing"
     ]
     if any(kw in text_lower for kw in functional_keywords):
-        return ClaimType.FUNCTIONAL_EFFECT
+        return ClaimBifurcationType.FUNCTIONAL_EFFECT
 
     # Default to evaluative (more conservative)
-    return ClaimType.EVALUATIVE_RESPONSE
+    return ClaimBifurcationType.EVALUATIVE_RESPONSE
