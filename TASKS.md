@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-11/CC-12/CC-14/CC-15 complete — 139 templates, L1-L5 calibrated)*
+*Last updated: Sunday, February 16, 2026 (CC-11/CC-12/CC-14/CC-15/CC-16 complete — 139 templates, L1-L5 + MAT1-MAT5 calibrated)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -52,6 +52,28 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 **Commits**: `f3faf4a` (SOC, COL), `d624bba` (OLF1), `b2e2b0d` (VIEW1)
 
 **Total templates: 129** (139 including framework + interaction reference fixes)
+
+### CC-16: Panel MAT-II Materials Calibration (Doc 51)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ✅ COMPLETE | HIGH | Calibration parameters added to MAT1-MAT5 templates |
+
+**Panel MAT-II is a "deepening" panel** — adds calibration parameters to existing MAT1-MAT5 templates, not new templates.
+
+**Calibration Updates**:
+- **MAT1** (CT-Affective Touch): CT-afferent dose-response boundaries (pleasurable 28-36°C, optimal velocity 1-10 cm/s), thermal effusivity classification, preattentive processing evidence
+- **MAT2** (Thermal Adaptive PE): Goldilocks boundaries (neutral ±1°C, positive PE ±1-3°C, tolerance ±3-5°C, discomfort >±5°C), adaptive neutral formula T_n = 0.31×T_outdoor + 17.8°C, alliesthesia principle
+- **MAT3** (Cross-Modal Congruence): 2×2×2 factorial experiment protocol, predicted effect sizes (d ≈ 0.4-1.2), prior-precision model (haptic > visual)
+- **MAT4** (Natural Material Convergence): Channel weights (0.30/0.20/0.10/0.15/0.25 ±0.08-0.12), super-additivity 20-30%, time structure, preliminary stone/concrete/metal profiles
+- **MAT5** (Cultural Conditioning): Multiplicative moderator model, cross-cultural prediction framework, olfactory cultural variation
+
+**Files Modified**:
+- `data/templates/MAT1_affective_touch_pathway.json`
+- `data/templates/MAT2_thermal_adaptive_pe.json`
+- `data/templates/MAT3_material_identity_integration.json`
+- `data/templates/MAT4_natural_material_convergence.json`
+- `data/templates/MAT5_material_cultural_conditioning.json`
 
 ### CC-15: Panel L-II Light Calibration (Doc 49)
 

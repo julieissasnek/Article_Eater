@@ -23,6 +23,54 @@
     ]
   },
   "thermal_discomfort_threshold": "±6°C from adaptive prediction",
+  "calibration_parameters": {
+    "adaptive_neutral_formula": {
+      "formula": "T_n = 0.31 × T_running_mean_outdoor + 17.8°C",
+      "source": "de Dear & Brager (1998), ASHRAE Standard 55",
+      "example": "At outdoor running mean of 25°C → T_n ≈ 25.6°C",
+      "note": "PE is deviation from this adaptive neutral, not a fixed setpoint"
+    },
+    "thermal_pe_goldilocks_boundaries": {
+      "neutral_zone": {
+        "deviation": "±1°C from T_n",
+        "pe_magnitude": "Near-zero",
+        "affective_valence": "Neutral",
+        "architectural_implication": "Standard HVAC target"
+      },
+      "positive_pe_alliesthesia": {
+        "deviation": "±1–3°C from T_n",
+        "pe_magnitude": "Moderate",
+        "affective_valence": "Positive IF directionally corrective",
+        "architectural_implication": "Design for controlled thermal variation",
+        "key_insight": "Produces PLEASURE only when deviation is DIRECTIONALLY CORRECTIVE — cooling when prior state was warm, warming when prior state was cold"
+      },
+      "tolerance_zone": {
+        "deviation": "±3–5°C from T_n",
+        "pe_magnitude": "Moderate-high",
+        "affective_valence": "Neutral to mildly negative",
+        "architectural_implication": "Acceptable in naturally ventilated buildings"
+      },
+      "discomfort_zone": {
+        "deviation": "> ±5°C from T_n",
+        "pe_magnitude": "High",
+        "affective_valence": "Negative",
+        "architectural_implication": "Design failure"
+      }
+    },
+    "alliesthesia_principle": {
+      "definition": "Pleasure of thermal sensation depends on DIRECTION of deviation from prior state, not absolute temperature",
+      "example": "Entering cool room from hot outdoors feels pleasurable; same cool room from cold outdoors feels unpleasant",
+      "pe_interpretation": "Alliesthesia IS prediction error operating in the thermal domain",
+      "source": "de Dear (2011), Cabanac (1971)"
+    },
+    "design_implications": {
+      "strict_neutrality": "Building maintaining strict thermal neutrality (deviation ≈ 0) eliminates thermal PE entirely — no discomfort but also no thermal pleasure",
+      "thermal_diversity": "Building with controlled thermal DRIFT or thermally diverse zones (cool stone corridor, warm wood-paneled library) creates opportunities for positive thermal PE at transitions",
+      "naturally_ventilated": "Naturally ventilated buildings → wider temperature range → wider adaptive prediction → greater thermal tolerance"
+    },
+    "calibration_source": "Panel MAT-II (Doc 51) — de Dear thermal Goldilocks formalization"
+  },
+  "calibration_status": "substantially_calibrated",
   "causal_links": [
     {
       "from_entity": "recent_thermal_exposure_history",
@@ -129,6 +177,7 @@
     }
   ],
   "source_panel": "37_Panel_MAT_I_Materials.md",
+  "calibration_panel": "51_Panel_MATII_Materials_Calibration_V1_0.md",
   "template_id": "THERMAL_ADAPTIVE_PE_001",
   "overall_maturity": "supported"
 }

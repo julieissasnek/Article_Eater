@@ -42,6 +42,76 @@
       ]
     }
   },
+  "calibration_parameters": {
+    "ct_afferent_dose_response": {
+      "source": "McGlone (Panel MAT-II)",
+      "contact_temperature_zones": {
+        "pleasurable_range": {
+          "range": "28–36°C",
+          "description": "Centered on skin temperature ~32°C",
+          "ct_response": "Maximal CT-afferent firing, positive affective signal"
+        },
+        "neutral_range": {
+          "range": "24–28°C and 36–38°C",
+          "description": "Outside optimal but not aversive",
+          "ct_response": "Reduced CT-afferent firing"
+        },
+        "aversive_range": {
+          "range": "< 24°C or > 38°C",
+          "description": "Outside CT-afferent optimal range",
+          "ct_response": "Minimal CT-afferent firing, cold/heat-sensitive fiber activation"
+        }
+      },
+      "optimal_stroke_velocity": {
+        "range": "1–10 cm/s",
+        "peak": "~3 cm/s",
+        "evidence": "Löken et al. (2009)"
+      }
+    },
+    "thermal_effusivity_classification": {
+      "note": "Refined from Panel MAT-II using standard SI units (J m⁻² K⁻¹ s⁻¹/²)",
+      "warm_pleasant": {
+        "effusivity": "< 500",
+        "contact_sensation": "Warm, maintained near skin temp",
+        "pe_type": "Positive (CT-afferent activation)",
+        "materials": ["Wood", "Cork", "Fabric", "Leather"]
+      },
+      "neutral": {
+        "effusivity": "500–1,500",
+        "contact_sensation": "Cool initially, moderating",
+        "pe_type": "Low PE",
+        "materials": ["Plaster", "Drywall", "Most plastics"]
+      },
+      "cool_alerting": {
+        "effusivity": "1,500–3,000",
+        "contact_sensation": "Cool, sustained",
+        "pe_type": "Moderate negative (or positive in hot climates)",
+        "materials": ["Stone", "Ceramic tile", "Concrete"]
+      },
+      "cold_aversive": {
+        "effusivity": "> 7,000",
+        "contact_sensation": "Cold, sustained",
+        "pe_type": "High negative",
+        "materials": ["Metal (steel, aluminum)"]
+      }
+    },
+    "climate_dependent_valence": {
+      "note": "In hot climates, contact with high-effusivity materials is DESIRED (positive alliesthesia)",
+      "implication": "Cool-alerting zone can be positive in hot climates, negative in cold climates"
+    },
+    "preattentive_processing": {
+      "evidence": "CT afferents project to posterior insular cortex (affective) NOT somatosensory cortex S1 (discriminative)",
+      "implication": "Affective touch information enters brain through pathway associated with emotional processing, not conscious tactile perception",
+      "architectural_implication": "Material selection affects occupant wellbeing CONTINUOUSLY, even during non-deliberate contact"
+    },
+    "neuroimaging_validation_needed": {
+      "experiment": "Touching architectural surfaces at varying temperatures while fMRI/EEG measures cortical activation",
+      "prediction": "Surfaces producing 28–36°C contact activate posterior insular cortex; outside this range activates somatosensory cortex",
+      "status": "NOT YET CONDUCTED"
+    },
+    "calibration_source": "Panel MAT-II (Doc 51) — McGlone CT-afferent boundaries"
+  },
+  "calibration_status": "partially_calibrated",
   "causal_links": [
     {
       "from_entity": "material_thermal_effusivity",
@@ -143,5 +213,6 @@
     }
   ],
   "source_panel": "37_Panel_MAT_I_Materials.md",
+  "calibration_panel": "51_Panel_MATII_Materials_Calibration_V1_0.md",
   "overall_maturity": "supported"
 }

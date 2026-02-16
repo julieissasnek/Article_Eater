@@ -112,6 +112,49 @@
       "nature": "MAT1 provides affective dimension of haptic contact. MAT3 provides predictive dimension: brain predicts CT response based on visual material identity."
     }
   ],
+  "calibration_parameters": {
+    "congruence_experiment_protocol": {
+      "design": "2×2×2 factorial: visual (wood vs. laminate-printed-wood) × haptic (real wood texture vs. smooth laminate) × thermal (wood-temperature vs. metal-temperature surface)",
+      "conditions": {
+        "fully_congruent": "Visual wood + haptic wood + thermal wood → predicted HIGHEST pleasantness, FASTEST classification",
+        "fully_incongruent": "Visual wood + haptic laminate + thermal metal → predicted LOWEST pleasantness, SLOWEST classification, HIGHEST skin conductance",
+        "partial_incongruence": [
+          "Visual wood + haptic laminate + thermal wood → isolates haptic-texture contribution",
+          "Visual wood + haptic wood + thermal metal → isolates thermal contribution",
+          "Visual laminate + haptic wood + thermal wood → isolates visual contribution"
+        ]
+      },
+      "dependent_measures": [
+        "Explicit: pleasantness, naturalness, quality rating (VAS scales)",
+        "Implicit: reaction time to material identification ('Is this real wood?')",
+        "Physiological: skin conductance response at moment of touch (PE signal)",
+        "Behavioral: willingness to touch duration (how long participants maintain contact)"
+      ]
+    },
+    "predicted_effect_sizes": {
+      "full_congruence_vs_full_incongruence": "d ≈ 0.8–1.2 on pleasantness",
+      "visual_incongruence_main_effect": "d ≈ 0.4–0.6",
+      "haptic_incongruence_main_effect": "d ≈ 0.6–0.8 (predicted LARGER than visual because haptic is confirmatory channel)",
+      "thermal_incongruence_main_effect": "d ≈ 0.3–0.5",
+      "skin_conductance_latency": "< 500ms for incongruent touch"
+    },
+    "prior_precision_model": {
+      "prediction": "Haptic incongruence produces LARGER penalty than visual incongruence",
+      "rationale": "Vision-touch has highest prior precision for material evaluation — we use visual appearance to predict tactile properties more than any other cross-modal pairing",
+      "source": "Spence (2011)"
+    },
+    "material_identity_strength": {
+      "note": "Incongruence penalty is LARGER for materials with strong identity (wood, stone) than weak identity (generic plastic, painted drywall)",
+      "rationale": "Strong-identity materials generate more precise prior predictions"
+    },
+    "fake_material_avoidance": {
+      "guideline": "If MAT3 congruence penalty confirmed at d ≈ 0.8+, case against visual-only material imitation (wood-grain laminate) is empirically grounded",
+      "implication": "Design should prefer authentic multi-modal materials over single-channel imitations"
+    },
+    "experiment_status": "Protocol specified, awaiting execution",
+    "calibration_source": "Panel MAT-II (Doc 51) — Spence cross-modal congruence design"
+  },
+  "calibration_status": "protocol_specified",
   "maturity": "supported",
   "key_references": [
     {
@@ -132,5 +175,6 @@
     }
   ],
   "source_panel": "37_Panel_MAT_I_Materials.md",
+  "calibration_panel": "51_Panel_MATII_Materials_Calibration_V1_0.md",
   "overall_maturity": "supported"
 }

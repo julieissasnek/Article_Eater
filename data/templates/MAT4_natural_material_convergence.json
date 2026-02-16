@@ -45,6 +45,125 @@
     }
   ],
   "wood_optimal_ratio": "~45% wood surface ratio (Tsunetsugu et al., 2007) — inverted-U function",
+  "calibration_parameters": {
+    "wood_channel_weights": {
+      "note": "Expert-estimated weights from Panel MAT-II — preliminary, awaiting 2×2×2 factorial validation",
+      "visual_grain_fractal": {
+        "weight": 0.30,
+        "uncertainty": "±0.08",
+        "mechanism": "Natural grain patterns with fractal dimension D≈1.3 → processing fluency (T1)",
+        "evidence": "Strongest empirical base; operates continuously; most easily replicated by imitation (wood-grain laminates)",
+        "source": "Taylor et al. (2011); Nyrud & Bringslimark (2010); Miyazaki visual-only d≈0.3–0.5"
+      },
+      "haptic_thermal": {
+        "weight": 0.20,
+        "uncertainty": "±0.10",
+        "mechanism": "Low effusivity → skin-temp maintenance → CT-afferent activation (MAT1)",
+        "evidence": "Strong theoretical basis from CT-afferent literature; intermittent contact pattern (~5–10% of waking time)",
+        "source": "McGlone et al. (2014); Sakuragawa et al. (2005)"
+      },
+      "acoustic_absorption": {
+        "weight": 0.10,
+        "uncertainty": "±0.08",
+        "mechanism": "Moderate absorption (α≈0.05–0.15) → warm, intimate room acoustics (AX1)",
+        "evidence": "Real but small relative to dedicated acoustic treatments; contribution primarily through ABSENCE of harsh reflections"
+      },
+      "olfactory_vocs": {
+        "weight": 0.15,
+        "uncertainty": "±0.10",
+        "mechanism": "Terpenes → olfactory-limbic → reduced sympathetic activity (OLF1)",
+        "evidence": "Miyazaki estimates 25–35% contribution during first 5 minutes; d≈0.4–0.7 on autonomic measures",
+        "time_dependency": "HIGH at arrival (first 5 min), near-ZERO after 15–20 min due to adaptation",
+        "note": "TIME-AVERAGED weight; resets at each transition (OLF1 transition function)",
+        "source": "Ikei et al. (2017); Dalton (2000) on olfactory adaptation"
+      },
+      "biophilic_cultural": {
+        "weight": 0.25,
+        "uncertainty": "±0.12",
+        "mechanism": "Natural signatures match brain's ecological heuristics; cultural familiarity (MAT5)",
+        "evidence": "Most uncertain channel; culturally dependent",
+        "cultural_variation": "Higher in strong wood traditions (Japan, Scandinavia); lower where stone/earth is dominant natural material",
+        "source": "Kellert (2008); Majid cross-cultural research"
+      },
+      "total": 1.00
+    },
+    "super_additivity": {
+      "estimate": "20–30%",
+      "meaning": "Full wood convergence effect exceeds sum of individual channel contributions by 20–30%",
+      "comparison": "Higher than L3 daylight (15–25%) because material convergence involves more independent sensory modalities",
+      "falsification": "If < 10%, convergence model adds little; if > 40%, interaction terms dominate"
+    },
+    "time_structure": {
+      "visual": "Continuous (100% of waking time eyes open in space)",
+      "haptic": "Intermittent (contact with handrails, desks, doors ~5–10% of time)",
+      "olfactory": "Transitional (high at arrival, adapts to near-zero after 15–20 min)",
+      "acoustic": "Continuous (ambient room acoustics)",
+      "cultural": "Continuous (background association)"
+    },
+    "non_wood_material_profiles": {
+      "note": "PRELIMINARY expert judgment from Panel MAT-II; not empirically calibrated",
+      "stone": {
+        "visual": 0.35,
+        "haptic_thermal": 0.30,
+        "acoustic": 0.20,
+        "olfactory": 0.05,
+        "cultural_geological": 0.10,
+        "super_additivity": "10–15%",
+        "notes": {
+          "visual": "Mineral texture, geological layering, color variation (crystalline rather than organic structure)",
+          "haptic_thermal": "High effusivity creates sustained coolness; CLIMATE-DEPENDENT valence (positive in hot, negative in cold)",
+          "acoustic": "High reflectivity creates characteristic reverberation; LARGER contribution than wood",
+          "olfactory": "Near-zero except damp stone (geosmin)",
+          "cultural": "Permanence, earth, geological time, monumentality"
+        }
+      },
+      "concrete": {
+        "visual": 0.40,
+        "haptic_thermal": 0.20,
+        "acoustic": 0.15,
+        "olfactory": 0.05,
+        "cultural_modern": 0.20,
+        "super_additivity": "10–15%",
+        "notes": {
+          "visual": "Surface texture (formwork marks, aggregate exposure); DOMINANT channel — quality varies enormously with craftsmanship",
+          "haptic_thermal": "Moderate effusivity (b≈1,500–2,000); texture highly variable",
+          "acoustic": "Reflective; mass provides insulation",
+          "olfactory": "Near-zero in cured state (exception: Zumthor's Bruder Klaus Chapel char-olfactory)",
+          "cultural": "HIGHLY POLARIZING: modernity, brutalism, institutional austerity vs. artisanal craft"
+        }
+      },
+      "metal": {
+        "visual": 0.35,
+        "haptic_thermal": 0.25,
+        "acoustic": 0.25,
+        "olfactory": 0.05,
+        "cultural_industrial": 0.10,
+        "super_additivity": "15–20%",
+        "notes": {
+          "visual": "Reflectivity, color (steel gray, copper green, brass gold); specular vs. matte",
+          "haptic_thermal": "Very high effusivity (b>7,000) creates strong cold sensation; typically AVERSIVE in cold conditions",
+          "acoustic": "Distinctive resonance; STRONGEST acoustic identity of any material class",
+          "olfactory": "Near-zero except oxidizing metals (metallic/blood-like notes)",
+          "cultural": "Technology, precision, industry, modernity; less polarizing than concrete"
+        }
+      }
+    },
+    "channel_factorial_experiment": {
+      "design": "2×2×2 (visual wood vs non-wood × haptic wood vs non-wood × olfactory wood vs non-wood)",
+      "controls": "Acoustic and ambient thermal held constant",
+      "predictions": [
+        "Each channel produces main effect on autonomic parasympathetic activation (visual d≈0.3–0.5, haptic d≈0.3–0.6, olfactory d≈0.4–0.7)",
+        "Three-channel combination exceeds sum by 20–30% (super-additivity test)",
+        "Visual × haptic interaction is largest two-way interaction (highest prior precision)",
+        "Olfactory shows TIME × CHANNEL interaction: large at 0–5 min, near-zero at 20+ min"
+      ],
+      "falsification": "If no super-additivity observed, convergence model is wrong; if olfactory shows no time-dependent adaptation, OLF1 transition model needs revision",
+      "status": "NOT YET CONDUCTED — highest priority experiment",
+      "source": "Panel MAT-II (Doc 51) — Miyazaki factorial design"
+    },
+    "calibration_source": "Panel MAT-II (Doc 51) — Spence, Miyazaki, Pallasmaa channel estimation"
+  },
+  "calibration_status": "partially_calibrated",
   "causal_links": [
     {
       "from_entity": "natural_material_visual_grain",
@@ -162,5 +281,6 @@
     }
   ],
   "source_panel": "37_Panel_MAT_I_Materials.md",
+  "calibration_panel": "51_Panel_MATII_Materials_Calibration_V1_0.md",
   "overall_maturity": "supported"
 }
