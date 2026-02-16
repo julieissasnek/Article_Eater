@@ -178,6 +178,50 @@ class TestTheoryModels:
         assert TestingStatus.UNTESTED.value == "untested"
         assert SupportLevel.SUPPORTED.value == "supported"
 
+    # Sprint 1.1 / Task 1.1: Argumentation scheme fields
+    def test_theory_claim_argumentation_fields(self):
+        """Test that TheoryClaim has argument_scheme and critical_questions fields."""
+        claim = TheoryClaim(
+            claim_id="claim:test",
+            theory_id="theory:test",
+            statement="Expert X claims that architecture affects stress.",
+            argument_scheme="argument from expert opinion",
+            critical_questions=[
+                "Is the source a credible expert?",
+                "Is this within their field of expertise?",
+                "Is there consensus among experts?",
+            ],
+            critical_questions_addressed=["Is the source a credible expert?"],
+            critical_questions_unaddressed=[
+                "Is this within their field of expertise?",
+                "Is there consensus among experts?",
+            ],
+        )
+
+        assert claim.argument_scheme == "argument from expert opinion"
+        assert len(claim.critical_questions) == 3
+        assert len(claim.critical_questions_addressed) == 1
+        assert len(claim.critical_questions_unaddressed) == 2
+
+        # Test to_dict includes new fields
+        d = claim.to_dict()
+        assert d["argument_scheme"] == "argument from expert opinion"
+        assert "critical_questions" in d
+        assert len(d["critical_questions_unaddressed"]) == 2
+
+    def test_theory_claim_backward_compatibility(self):
+        """Test that existing claims without argumentation fields still work."""
+        claim = TheoryClaim(
+            claim_id="claim:old",
+            theory_id="theory:old",
+            statement="Simple claim without argumentation metadata.",
+        )
+
+        assert claim.argument_scheme is None
+        assert claim.critical_questions == []
+        assert claim.critical_questions_addressed == []
+        assert claim.critical_questions_unaddressed == []
+
 
 # ============================================================
 # REGISTRY TESTS
@@ -221,12 +265,14 @@ class TestTheoryRegistry:
     
     def test_list_theories_with_filter(self, bootstrapped_registry):
         """Test filtering theories by level."""
-        principles = bootstrapped_registry.list_theories(level=TheoryLevel.PRINCIPLE)
-        theories = bootstrapped_registry.list_theories(level=TheoryLevel.THEORY)
-        
-        # Fractal Fluency is a principle, others are theories
-        assert len(principles) >= 1
-        assert len(theories) >= 5
+        # Updated per Canonical Decisions: FRAMEWORK_THEORY (Tier 1), DOMAIN_THEORY (Tier 2)
+        frameworks = bootstrapped_registry.list_theories(level=TheoryLevel.FRAMEWORK_THEORY)
+        domain_theories = bootstrapped_registry.list_theories(level=TheoryLevel.DOMAIN_THEORY)
+
+        # 10 Tier 1 frameworks (PP, SN, DP, DT, NM, IC, MS, EC, CB, MSI)
+        # 5 Tier 2 domain theories (ART, SRT, Biophilia, Fractal Fluency, Allostatic Load)
+        assert len(frameworks) >= 10, f"Expected >= 10 frameworks, got {len(frameworks)}"
+        assert len(domain_theories) >= 5, f"Expected >= 5 domain theories, got {len(domain_theories)}"
     
     def test_update_theory_confidence(self, registry, sample_theory):
         """Test updating theory confidence with audit trail."""

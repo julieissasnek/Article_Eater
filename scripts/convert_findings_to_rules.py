@@ -292,7 +292,11 @@ def finding_to_rule(finding: dict, rule_index: int) -> dict:
         "contrast_class": None,
         "difference_maker": None,
         "enabling_conditions": [],
-        "bridge_type": None
+        "bridge_type": None,
+        # Provenance markers: these rules are abstract-derived and provisional
+        "evidence_level": "abstract_finding_rule",
+        "provenance_tier": "abstract_provisional",
+        "requires_pdf_confirmation": True,
     }
 
     return rule

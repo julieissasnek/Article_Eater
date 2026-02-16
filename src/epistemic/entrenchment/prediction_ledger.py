@@ -65,6 +65,21 @@ class PredictionLedgerEntry:
             return None
         return self.confirmation_count / self.total_tests
 
+    def get_status(self) -> str:
+        """
+        Get the hypothesis status based on confirmations/disconfirmations.
+
+        Returns:
+            One of: untested, confirmed, disconfirmed, mixed
+        """
+        if self.total_tests == 0:
+            return "untested"
+        if self.disconfirmation_count == 0:
+            return "confirmed"
+        if self.confirmation_count == 0:
+            return "disconfirmed"
+        return "mixed"
+
     def add_confirmation(self, study_id: str) -> bool:
         """
         Add a confirming study.
@@ -226,6 +241,10 @@ class PredictionLedger:
         hypothesis_ids = self._by_theory.get(theory_id, [])
         return [self._entries[hid] for hid in hypothesis_ids if hid in self._entries]
 
+    def get_all_entries(self) -> List[PredictionLedgerEntry]:
+        """Get all entries in the ledger."""
+        return list(self._entries.values())
+
     def compute_theory_track_record(self, theory_id: str) -> Dict:
         """
         Compute aggregate track record for a theory.
@@ -245,7 +264,8 @@ class PredictionLedger:
                 "total_confirmations": 0,
                 "total_disconfirmations": 0,
                 "success_rate": None,
-                "status": "no_predictions"
+                "status": "no_predictions",
+                "hypotheses": []
             }
 
         total_conf = sum(h.confirmation_count for h in hypotheses)
@@ -258,7 +278,8 @@ class PredictionLedger:
             "total_confirmations": total_conf,
             "total_disconfirmations": total_disconf,
             "success_rate": total_conf / total_tests if total_tests > 0 else None,
-            "status": self._assess_theory_status(total_conf, total_disconf)
+            "status": self._assess_theory_status(total_conf, total_disconf),
+            "hypotheses": [h.hypothesis_id for h in hypotheses]
         }
 
     def _assess_theory_status(self, confirmations: int, disconfirmations: int) -> str:

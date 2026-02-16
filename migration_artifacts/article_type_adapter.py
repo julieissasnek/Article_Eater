@@ -85,6 +85,9 @@ LOSSY_AE_MAPPINGS: Dict[str, List[str]] = {
     "cross_sectional_survey",
     "longitudinal_study",
     "observational_field_study"
+  ],
+  "conceptual_framework": [
+    "theoretical"  # Collides with AE "theoretical" → same Outcome value
   ]
 }
 
@@ -120,9 +123,9 @@ def test_migration_lossless() -> None:
 
     # Strict round-trip for non-lossy mappings
     for ae, outcomes in AE_TO_OUTCOME.items():
-        if len(outcomes) == 1:
+        if len(outcomes) == 1 and ae not in LOSSY_AE_MAPPINGS:
             back = outcome_article_to_ae_template(outcomes[0])
-            assert back == ae
+            assert back == ae, f"Round-trip failed: {ae} -> {outcomes[0]} -> {back}"
 
 
 if __name__ == "__main__":

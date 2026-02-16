@@ -95,21 +95,12 @@ class BeliefStatus(Enum):
     ANOMALOUS = "anomalous"
 
 
-class ConstraintType(Enum):
-    """
-    DEPRECATED: Use web_of_belief.ConstraintType instead.
-    REMOVE_BY: V24.0
-
-    Types of epistemic constraint.
-    Note: web_of_belief.ConstraintType has additional types: BRIDGES, STRONG_TENSION, SHARED_EVIDENCE
-    """
-    SUPPORTS = "supports"
-    CONTRADICTS = "contradicts"
-    PARTIAL_SUPPORT = "partial_support"
-    EXPLAINS = "explains"
-    INSTANTIATES = "instantiates"
-    ANALOGOUS = "analogous"
-    INDEPENDENT = "independent"
+# =============================================================================
+# DEPRECATED: ConstraintType → Use EdgeType from src.epistemic.edge_types
+# Sprint 1.2: Merged into canonical EdgeType per Opus decisions (2026-02-15)
+# REMOVE_BY: V25.0
+# =============================================================================
+from src.epistemic.edge_types import EdgeType as ConstraintType
 
 
 class ContrastType(Enum):

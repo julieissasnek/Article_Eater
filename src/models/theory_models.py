@@ -18,11 +18,43 @@ import json
 # ============================================================
 
 class TheoryLevel(Enum):
-    """Hierarchical level of theoretical abstraction."""
-    META_PRINCIPLE = "meta_principle"  # Most abstract (e.g., "moderate stimulation is optimal")
-    THEORY = "theory"  # Unified explanatory framework (e.g., Predictive Processing)
-    PRINCIPLE = "principle"  # Domain-specific regularity (e.g., "nature exposure reduces stress")
-    MECHANISM = "mechanism"  # Pathway specification (e.g., "daylight → circadian → mood")
+    """
+    Hierarchical level of theoretical abstraction.
+
+    Corrected 2026-02-14 per THEORY_TIER_ARCHITECTURE_V1.0:
+
+    TIER 1 - FRAMEWORK_THEORY: Neurally grounded, cross-domain frameworks that any
+    environmental effect must operate through. Three criteria:
+      1. Mechanistic specificity (connects to neural implementation)
+      2. Cross-domain generativity (predictions across domains)
+      3. Convergent multi-method support (fMRI, EEG, lesion, computational, behavioral)
+
+    TIER 2 - DOMAIN_THEORY: Phenomenological descriptions that organize effects within
+    one domain. Valuable as organizing schemas but *explained by* Tier 1, not explanatory
+    themselves. ART, SRT, Biophilia belong here.
+
+    TIER 2b - METHODOLOGICAL: Not theories about environments but about *how to study*
+    environments (measurement theory, experimental design, statistical methodology).
+
+    MECHANISM: Pathway specification linking environmental features to outcomes via
+    specific neural/cognitive processes.
+    """
+    # Tier 1: Neurally grounded framework theories
+    FRAMEWORK_THEORY = "framework_theory"  # e.g., Predictive Processing, Embodied Cognition
+
+    # Tier 2: Domain-specific phenomenological theories (demoted from old "theory" level)
+    DOMAIN_THEORY = "domain_theory"  # e.g., ART, SRT, Biophilia — explained BY Tier 1
+
+    # Tier 2b: Methodological frameworks
+    METHODOLOGICAL = "methodological"  # e.g., measurement validity, experimental design
+
+    # Pathway specifications
+    MECHANISM = "mechanism"  # e.g., "complexity → prediction error → cortisol pathway"
+
+    # Legacy values for backwards compatibility (will be migrated)
+    META_PRINCIPLE = "meta_principle"  # DEPRECATED: use FRAMEWORK_THEORY
+    THEORY = "theory"  # DEPRECATED: use FRAMEWORK_THEORY or DOMAIN_THEORY
+    PRINCIPLE = "principle"  # DEPRECATED: use DOMAIN_THEORY
 
 
 class Necessity(Enum):
@@ -31,7 +63,8 @@ class Necessity(Enum):
     AUXILIARY = "auxiliary"  # Elaborates but not essential
 
 
-class Testability(Enum):
+class Testability(str, Enum):
+    __test__ = False
     """How directly testable a claim is."""
     DIRECTLY_TESTABLE = "directly_testable"
     INDIRECTLY_TESTABLE = "indirectly_testable"
@@ -95,14 +128,16 @@ class SupportLevel(Enum):
     UNTESTED = "untested"
 
 
-class TestType(Enum):
+class TestType(str, Enum):
+    __test__ = False
     """How a study relates to testing a prediction."""
     DIRECT = "direct"  # Designed to test this prediction
     INDIRECT = "indirect"  # Bears on prediction but not designed for it
     INCIDENTAL = "incidental"  # Implications not recognized by authors
 
 
-class TestResult(Enum):
+class TestResult(str, Enum):
+    __test__ = False
     """Outcome of an empirical test."""
     SUPPORTS = "supports"
     PARTIAL = "partial"
@@ -110,7 +145,8 @@ class TestResult(Enum):
     CONTRADICTS = "contradicts"
 
 
-class TestStrength(Enum):
+class TestStrength(str, Enum):
+    __test__ = False
     """Methodological strength of a test."""
     STRONG = "strong"
     MODERATE = "moderate"
@@ -168,7 +204,15 @@ class TheoryClaim:
     necessity: Necessity = Necessity.CORE
     testability: Testability = Testability.DIRECTLY_TESTABLE
     created_at: Optional[str] = None
-    
+
+    # Argumentation scheme fields (Sprint 1.1 / Task 1.1)
+    # Per Canonical Decisions Record (02-15_09), supports CRITICAL_QUESTION
+    # and ARGUMENT_ATTACK gap types
+    argument_scheme: Optional[str] = None  # e.g., "argument from expert opinion"
+    critical_questions: List[str] = field(default_factory=list)  # CQs for this scheme
+    critical_questions_addressed: List[str] = field(default_factory=list)
+    critical_questions_unaddressed: List[str] = field(default_factory=list)
+
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d['necessity'] = self.necessity.value

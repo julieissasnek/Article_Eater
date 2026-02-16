@@ -22,8 +22,19 @@ Every claim in the web of belief is assessed on four channels:
 
 ### Three Tiers
 
-- **Tier 1**: Theoretical frameworks (ART, SRT, Biophilia, Predictive Processing, etc.) — context for interpretation
-- **Tier 2**: Epistemic infrastructure (quality assessment, coherence computation, reflexive monitoring)
+- **Tier 1**: Theoretical frameworks (10 canonical frameworks per Decision 3):
+  1. PP — Predictive Processing
+  2. SN — Spatial Navigation / Cognitive Mapping
+  3. DP — Dual-Process Evaluation
+  4. DT — DMN/TPN Dynamics
+  5. NM — Neuromodulatory Systems
+  6. IC — Interoceptive / Constructionist Affect
+  7. MS — Memory Systems
+  8. EC — Embodied Cognition
+  9. CB — Chronobiological Regulation
+  10. MSI — Multisensory Integration
+- **Tier 2 Domain Theories**: ART, SRT, Biophilia, Restorative Environments — narrower scope theories that bridge frameworks to phenomena
+- **Tier 2 Epistemic**: Epistemic infrastructure (quality assessment, coherence computation, reflexive monitoring)
 - **Tier 2b**: Methodological validity framework (measurement instruments, presentation modalities, task-ecological validity)
 - **Tier 3**: Extracted empirical claims (the actual nodes in the Bayesian network)
 
@@ -50,10 +61,10 @@ Two distinct claim types:
 Connected by GENERALIZABILITY_WARRANT links (default weight 0.5).
 
 ### Effect Pathways (NEW IN V2.0)
-- EXPLICIT: Effect requires conscious awareness (person notices and evaluates the architecture)
-- IMPLICIT_COGNITIVE: Effect operates through cognitive pathways below awareness (legible layout frees resources)
-- IMPLICIT_PHYSIOLOGICAL: Effect operates through physiological pathways (natural light regulates circadian rhythm)
-- MIXED: Both pathways plausibly active
+Per Canonical Decision 4 (`SUBPERSONAL / PERSONAL_EPISTEMIC / MIXED`):
+- **SUBPERSONAL**: Effect operates through non-conscious mechanisms (physiological regulation, implicit priming, automatic processing). Example: natural light regulates circadian rhythm without awareness.
+- **PERSONAL_EPISTEMIC**: Effect requires conscious engagement or evaluation (person notices, judges, or reasons about the architecture). Example: aesthetic preference based on proportions.
+- **MIXED**: Both pathways plausibly active. Example: wayfinding involves both automatic cognitive mapping and conscious decision-making.
 
 ### Method Registry (NEW IN V2.0)
 A growing, queryable data structure profiling every measurement instrument and presentation modality encountered in the literature. Each entry contains temporal dynamics, confound structure, construct validity maps, and VR-specific threats. The registry is NOT static — it learns as new papers are processed. New/unknown methods are flagged as UNCHARACTERIZED for expert profiling.

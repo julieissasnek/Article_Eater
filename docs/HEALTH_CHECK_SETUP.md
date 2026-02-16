@@ -19,7 +19,14 @@
 
 # Full options
 ./bin/scheduled_health_check.sh --notify --bundle
+
+# Run Web/BN health gates directly
+python3 scripts/check_web_bn_health.py
+python3 scripts/check_web_bn_health.py --json
 ```
+
+Web/BN gate thresholds are configured in:
+- `config/web_bn_health_thresholds.json`
 
 ---
 

@@ -13,10 +13,10 @@ the web of belief more than a glorified effect-size database."
 Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §5, Appendix A
 """
 
-from enum import Enum
 from dataclasses import dataclass, field
-from typing import List, Optional, Set, Dict
+from enum import Enum
 import re
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from src.epistemic.node_types import NodeType
 
@@ -138,6 +138,7 @@ class ClassificationSignals:
     """
     title: str = ""
     abstract: str = ""
+    venue: str = ""
     section_headings: List[str] = field(default_factory=list)
     keywords: List[str] = field(default_factory=list)
     has_methods_section: bool = False
@@ -299,6 +300,11 @@ class ClassificationResult:
     is_synthesis: bool
     is_theoretical: bool
     is_qualitative: bool
+    runner_up_family: Optional[TemplateFamily] = None
+    margin: float = 0.0
+    needs_manual_review: bool = False
+    score_breakdown: Dict[str, float] = field(default_factory=dict)
+    diagnostics: List[str] = field(default_factory=list)
 
 
 class PaperClassifier:
@@ -338,9 +344,13 @@ class PaperClassifier:
         """
         scores: Dict[TemplateFamily, float] = {f: 0.0 for f in TemplateFamily}
         matched_signals: Dict[TemplateFamily, List[str]] = {f: [] for f in TemplateFamily}
+        diagnostics: List[str] = []
 
-        # 1. Score based on title patterns
-        text = f"{signals.title} {signals.abstract}"
+        text = " ".join([signals.title, signals.abstract, signals.venue, " ".join(signals.keywords)]).strip()
+        text_lower = text.lower()
+        title_lower = signals.title.lower()
+
+        # 1. Score based on title/abstract patterns
         for family, patterns in self._title_patterns.items():
             for pattern in patterns:
                 if pattern.search(text):
@@ -355,7 +365,115 @@ class PaperClassifier:
                     scores[family] += 1.5
                     matched_signals[family].append(f"section:{pattern.pattern}")
 
-        # 3. Score based on structural features
+        # 3. Lexical indicators with phrase-boundary matching.
+        empirical_method_hits, empirical_method_terms = self._count_phrase_hits(
+            text_lower,
+            [
+                "participants",
+                "methods",
+                "procedure",
+                "sample size",
+                "intervention",
+                "control group",
+                "randomized",
+                "randomised",
+                "between-subject",
+                "within-subject",
+                "trial",
+                "experiment",
+                "experimental",
+                "cross-sectional",
+                "cohort",
+            ],
+        )
+        quantitative_hits, quantitative_terms = self._count_phrase_hits(
+            text_lower,
+            [
+                "p <",
+                "p=",
+                "95% ci",
+                "confidence interval",
+                "effect size",
+                "cohen",
+                "anova",
+                "regression",
+                "odds ratio",
+                "beta",
+            ],
+        )
+        review_hits, review_terms = self._count_phrase_hits(
+            text_lower,
+            [
+                "systematic review",
+                "scoping review",
+                "narrative review",
+                "literature review",
+                "meta-analysis",
+                "meta analysis",
+                "review of",
+                "evidence synthesis",
+            ],
+        )
+        theoretical_hits, theoretical_terms = self._count_phrase_hits(
+            text_lower,
+            [
+                "toward a theory",
+                "theory of",
+                "theory for",
+                "theoretical framework",
+                "conceptual model",
+                "mechanistic account",
+                "proposition",
+                "taxonomy",
+                "typology",
+            ],
+        )
+        qualitative_hits, qualitative_terms = self._count_phrase_hits(
+            text_lower,
+            [
+                "interview",
+                "focus group",
+                "ethnograph",
+                "grounded theory",
+                "phenomenolog",
+                "participant observation",
+            ],
+        )
+
+        if empirical_method_hits >= 2:
+            scores[TemplateFamily.EMPIRICAL_V2] += 1.8
+            matched_signals[TemplateFamily.EMPIRICAL_V2].append(
+                f"empirical_method_hits:{','.join(empirical_method_terms[:4])}"
+            )
+        if empirical_method_hits >= 1 and quantitative_hits >= 1:
+            scores[TemplateFamily.EMPIRICAL_V2] += 1.2
+            matched_signals[TemplateFamily.EMPIRICAL_V2].append(
+                f"empirical_quant_combo:{','.join(quantitative_terms[:3])}"
+            )
+        if quantitative_hits >= 1:
+            scores[TemplateFamily.OBSERVATIONAL_FIELD] += 0.8
+
+        if review_hits:
+            scores[TemplateFamily.NARRATIVE_REVIEW] += 1.2
+            matched_signals[TemplateFamily.NARRATIVE_REVIEW].append(
+                f"review_hits:{','.join(review_terms[:3])}"
+            )
+        if review_hits and not empirical_method_hits:
+            scores[TemplateFamily.SYSTEMATIC_REVIEW] += 0.8
+        if qualitative_hits >= 2:
+            scores[TemplateFamily.INTERVIEW_STUDY] += 1.0
+            matched_signals[TemplateFamily.INTERVIEW_STUDY].append(
+                f"qual_hits:{','.join(qualitative_terms[:3])}"
+            )
+        if theoretical_hits >= 1:
+            scores[TemplateFamily.THEORETICAL] += 1.2
+            matched_signals[TemplateFamily.THEORETICAL].append(
+                f"theory_hits:{','.join(theoretical_terms[:3])}"
+            )
+        if "conceptual framework" in text_lower or "taxonomy" in text_lower:
+            scores[TemplateFamily.CONCEPTUAL_FRAMEWORK] += 1.5
+
+        # 4. Structural features from parsed signals
         if signals.has_forest_plot or signals.has_included_studies_table:
             scores[TemplateFamily.META_ANALYSIS] += 3.0
             matched_signals[TemplateFamily.META_ANALYSIS].append("has_forest_plot_or_studies_table")
@@ -373,41 +491,67 @@ class PaperClassifier:
                 scores[TemplateFamily.OBSERVATIONAL_FIELD] += 1.0
 
         if not signals.has_methods_section and not signals.has_results_section:
-            # Likely theoretical or review
-            scores[TemplateFamily.THEORETICAL] += 0.5
+            scores[TemplateFamily.THEORETICAL] += 0.3
             scores[TemplateFamily.NARRATIVE_REVIEW] += 0.5
-            scores[TemplateFamily.THOUGHT_PIECE] += 0.5
+            scores[TemplateFamily.THOUGHT_PIECE] += 0.3
 
-        # 4. Score based on reference count
+        # 5. Conflict resolution / penalties
+        has_review_title = self._phrase_present(title_lower, "review")
+        has_empirical_core = (
+            signals.has_methods_section
+            or signals.has_results_section
+            or empirical_method_hits >= 2
+            or (empirical_method_hits >= 1 and quantitative_hits >= 1)
+        )
+        if has_review_title and not has_empirical_core:
+            scores[TemplateFamily.NARRATIVE_REVIEW] += 1.3
+            scores[TemplateFamily.EMPIRICAL_V2] -= 1.0
+            diagnostics.append("title_review_without_empirical_core")
+
+        if "review of experiments" in text_lower or "review of experimental" in text_lower:
+            scores[TemplateFamily.NARRATIVE_REVIEW] += 1.6
+            scores[TemplateFamily.EMPIRICAL_V2] -= 1.2
+            diagnostics.append("review_of_experiments_not_primary_empirical")
+
+        if has_empirical_core and theoretical_hits:
+            scores[TemplateFamily.THEORETICAL] -= 0.8
+            diagnostics.append("theory_mentions_deweighted_due_to_empirical_core")
+
+        # 6. Score based on reference count
         if signals.n_references > 100:
             scores[TemplateFamily.SYSTEMATIC_REVIEW] += 1.0
             scores[TemplateFamily.META_ANALYSIS] += 0.5
             matched_signals[TemplateFamily.SYSTEMATIC_REVIEW].append("high_ref_count")
-        elif signals.n_references < 20:
+        elif 0 < signals.n_references < 20:
             scores[TemplateFamily.THOUGHT_PIECE] += 0.5
             scores[TemplateFamily.CASE_STUDY] += 0.5
 
-        # 5. Find winner
-        best_family = max(scores, key=scores.get)
-        best_score = scores[best_family]
+        # 7. Find winner and runner-up
+        ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+        best_family, best_score = ranked[0]
+        runner_up_family, runner_up_score = ranked[1] if len(ranked) > 1 else (TemplateFamily.UNKNOWN, 0.0)
+        margin = float(best_score - runner_up_score)
 
-        # If no strong signal, check if it's a standard empirical paper
-        if best_score < 1.0:
-            if signals.has_methods_section and signals.has_results_section:
+        if best_score < 0.8:
+            if has_empirical_core:
                 best_family = TemplateFamily.EMPIRICAL_V2
                 best_score = 1.0
-                matched_signals[best_family].append("default_empirical")
+                matched_signals[best_family].append("default_empirical_from_structural_core")
+                margin = max(margin, 0.2)
             else:
                 best_family = TemplateFamily.UNKNOWN
                 best_score = 0.0
+                margin = 0.0
 
-        # Compute confidence (normalize score)
-        confidence = min(1.0, best_score / 5.0)
+        confidence = min(1.0, max(0.0, (best_score + max(margin, 0.0)) / 5.5))
+        needs_manual_review = bool(
+            best_family == TemplateFamily.UNKNOWN
+            or confidence < 0.55
+            or margin < 0.35
+        )
 
-        # Get producible node types
         node_types = TEMPLATE_NODE_TYPES.get(best_family, set())
 
-        # Determine paper characteristics
         is_empirical = best_family in {
             TemplateFamily.EMPIRICAL_V2,
             TemplateFamily.OBSERVATIONAL_FIELD,
@@ -434,17 +578,23 @@ class PaperClassifier:
             template_family=best_family,
             confidence=confidence,
             producible_node_types=node_types,
-            signals_matched=matched_signals[best_family],
+            signals_matched=matched_signals.get(best_family, []),
             is_empirical=is_empirical,
             is_synthesis=is_synthesis,
             is_theoretical=is_theoretical,
             is_qualitative=is_qualitative,
+            runner_up_family=runner_up_family if runner_up_family != TemplateFamily.UNKNOWN else None,
+            margin=margin,
+            needs_manual_review=needs_manual_review,
+            score_breakdown={k.value: float(v) for k, v in ranked},
+            diagnostics=diagnostics,
         )
 
     def classify_from_text(
         self,
         title: str,
         abstract: str,
+        venue: str = "",
         section_headings: Optional[List[str]] = None,
         keywords: Optional[List[str]] = None,
     ) -> ClassificationResult:
@@ -460,13 +610,20 @@ class PaperClassifier:
         Returns:
             ClassificationResult
         """
+        inferred = self._infer_structural_signals(title=title, abstract=abstract, venue=venue)
         signals = ClassificationSignals(
             title=title,
             abstract=abstract,
-            section_headings=section_headings or [],
+            venue=venue,
+            section_headings=section_headings or inferred["section_headings"],
             keywords=keywords or [],
-            has_methods_section=self._has_section(section_headings or [], ["method", "materials"]),
-            has_results_section=self._has_section(section_headings or [], ["result", "finding"]),
+            has_methods_section=self._has_section(section_headings or [], ["method", "materials"]) or inferred["has_methods_section"],
+            has_results_section=self._has_section(section_headings or [], ["result", "finding"]) or inferred["has_results_section"],
+            has_quantitative_results=inferred["has_quantitative_results"],
+            has_effect_sizes=inferred["has_effect_sizes"],
+            has_included_studies_table=inferred["has_included_studies_table"],
+            has_forest_plot=inferred["has_forest_plot"],
+            has_prisma_diagram=inferred["has_prisma_diagram"],
         )
         return self.classify(signals)
 
@@ -474,6 +631,65 @@ class PaperClassifier:
         """Check if any heading matches any pattern."""
         headings_lower = " ".join(h.lower() for h in headings)
         return any(p in headings_lower for p in patterns)
+
+    def _phrase_present(self, text: str, phrase: str) -> bool:
+        escaped = re.escape(phrase).replace(r"\ ", r"\s+")
+        return re.search(rf"(?<!\w){escaped}(?!\w)", text, flags=re.IGNORECASE) is not None
+
+    def _count_phrase_hits(self, text: str, phrases: List[str]) -> Tuple[int, List[str]]:
+        hits: List[str] = []
+        for phrase in phrases:
+            if self._phrase_present(text, phrase):
+                hits.append(phrase)
+        return len(hits), hits
+
+    def _infer_structural_signals(self, title: str, abstract: str, venue: str) -> Dict[str, Any]:
+        combined = " ".join([title, abstract, venue]).lower()
+        sections = []
+        if re.search(r"\bmethods?\b", combined):
+            sections.append("methods")
+        if re.search(r"\bresults?\b|\bfindings?\b", combined):
+            sections.append("results")
+        if re.search(r"\bdiscussion\b", combined):
+            sections.append("discussion")
+        if re.search(r"\bconclusion(s)?\b", combined):
+            sections.append("conclusion")
+
+        has_methods = bool(
+            re.search(
+                r"\b(methods?|participants?|procedure|sample|randomi[sz]ed|intervention|control group)\b",
+                combined,
+            )
+        )
+        has_results = bool(
+            re.search(
+                r"\b(results?|findings?|observed|demonstrated|showed|significant)\b",
+                combined,
+            )
+        )
+        has_quant = bool(
+            re.search(
+                r"(\bp\s*[<=>]\s*0?\.\d+)|(\b95%\s*ci\b)|(\bci\b)|(\banova\b)|(\bregression\b)|(\bodds ratio\b)",
+                combined,
+            )
+        )
+        has_effect = bool(
+            re.search(
+                r"\b(effect size|cohen'?s?\s*d|hedges'\s*g|odds ratio|risk ratio|beta coefficient)\b",
+                combined,
+            )
+        )
+
+        return {
+            "section_headings": sections,
+            "has_methods_section": has_methods,
+            "has_results_section": has_results,
+            "has_quantitative_results": has_quant,
+            "has_effect_sizes": has_effect,
+            "has_included_studies_table": bool(re.search(r"\bincluded studies\b", combined)),
+            "has_forest_plot": bool(re.search(r"\bforest plot\b", combined)),
+            "has_prisma_diagram": bool(re.search(r"\bprisma\b", combined)),
+        }
 
 
 # =============================================================================
@@ -570,6 +786,7 @@ def get_classifier() -> PaperClassifier:
 def classify_paper(
     title: str,
     abstract: str,
+    venue: str = "",
     section_headings: Optional[List[str]] = None,
     keywords: Optional[List[str]] = None,
 ) -> ClassificationResult:
@@ -588,6 +805,7 @@ def classify_paper(
     return get_classifier().classify_from_text(
         title=title,
         abstract=abstract,
+        venue=venue,
         section_headings=section_headings,
         keywords=keywords,
     )

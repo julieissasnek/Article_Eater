@@ -92,6 +92,37 @@ class TestPaperClassifier:
         assert result.template_family == TemplateFamily.EMPIRICAL_V2
         assert result.is_empirical
 
+    def test_review_of_experiments_not_forced_to_empirical(self):
+        """A review paper mentioning experiments should stay review-family."""
+        result = classify_paper(
+            title="A review of experiments on biophilic design in workplaces",
+            abstract="This review synthesizes experiments and applications across offices."
+        )
+        assert result.template_family in {
+            TemplateFamily.NARRATIVE_REVIEW,
+            TemplateFamily.SYSTEMATIC_REVIEW,
+        }
+
+    def test_trial_substring_in_industrial_not_empirical(self):
+        """Substring hits like 'industrial' must not trigger trial-based empirical classification."""
+        result = classify_paper(
+            title="Sources and effects of low-frequency noise",
+            abstract="We review road traffic, aircraft, and industrial machinery noise.",
+        )
+        assert result.template_family != TemplateFamily.EMPIRICAL_V2
+
+    def test_empirical_with_theory_mentions_not_misclassified(self):
+        """Empirical abstract mentioning theory should remain empirical when methods/results are present."""
+        result = classify_paper(
+            title="Effects of virtual environments on cognition",
+            abstract=(
+                "We conducted a randomized experiment with 120 participants. "
+                "Methods and results are reported with p < 0.05 and effect sizes. "
+                "Findings are interpreted using cognitive load theory."
+            ),
+        )
+        assert result.template_family == TemplateFamily.EMPIRICAL_V2
+
     def test_template_node_types_mapping(self):
         """Each template family has defined node types."""
         for family in TemplateFamily:

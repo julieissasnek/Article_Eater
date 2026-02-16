@@ -367,6 +367,7 @@ Return as JSON with structure:
 
         # Detect tables in content
         detected = self._detect_tables_in_content(content)
+        seen_fingerprints = set()
 
         for table_info in detected:
             extracted = self._extract_single_table(
@@ -376,6 +377,14 @@ Return as JSON with structure:
                 str(pdf_path)
             )
             if extracted:
+                fingerprint = (
+                    extracted.page_number,
+                    tuple(h.strip().lower() for h in extracted.headers),
+                    tuple(tuple(c.strip().lower() for c in row) for row in extracted.rows[:10]),
+                )
+                if fingerprint in seen_fingerprints:
+                    continue
+                seen_fingerprints.add(fingerprint)
                 tables.append(extracted)
 
         return tables
@@ -452,10 +461,12 @@ Return as JSON with structure:
         detected = []
 
         for page_num, page_content in enumerate(content, 1):
+            seen_match_bins = set()
             # Look for table indicators
             table_patterns = [
-                r"Table\s+\d+[.:]\s*(.+?)(?=\n|$)",  # Table 1: Title
-                r"\bTable\s+\d+\b",  # Just "Table 1"
+                r"Table\s*\d+[.:]\s*(.+?)(?=\n|$)",  # Table 1: Title OR Table1: Title
+                r"\bTable\s*\d+\b",  # Just "Table 1" OR "Table1"
+                r"\bTable\s*[IVXLC]+\b",  # Roman numeral tables (e.g., Table IV)
                 r"(?:Study|Author|Citation)\s*\|",  # Markdown-like tables
                 r"^\s*\w+\s+\w+\s+\w+\s*\n\s*[-=]+",  # Underlined headers
             ]
@@ -463,6 +474,10 @@ Return as JSON with structure:
             for pattern in table_patterns:
                 matches = re.finditer(pattern, page_content, re.IGNORECASE | re.MULTILINE)
                 for match in matches:
+                    match_bin = match.start() // 40
+                    if match_bin in seen_match_bins:
+                        continue
+                    seen_match_bins.add(match_bin)
                     # Extract surrounding context (table content)
                     start = max(0, match.start() - 100)
                     end = min(len(page_content), match.end() + 2000)
@@ -721,27 +736,75 @@ Return only valid JSON, no other text."""
         Fallback rule-based extraction when AI is not available.
         Uses regex and heuristics to parse table structure.
         """
-        lines = content.strip().split('\n')
+        lines = [ln.strip() for ln in content.strip().split('\n') if ln.strip()]
         if len(lines) < 2:
             return None
 
-        headers = []
+        parsed_rows: List[List[str]] = []
+        seen_row_keys = set()
+        for line in lines:
+            # Skip table caption lines to avoid polluting row extraction.
+            if re.match(r"^\s*table\s*[0-9ivxlc]+\b", line, flags=re.IGNORECASE):
+                continue
+
+            if "|" in line:
+                parts = [p.strip() for p in line.split("|") if p.strip()]
+            elif re.search(r"\t|\s{2,}", line):
+                parts = [p.strip() for p in re.split(r"\t|\s{2,}", line) if p.strip()]
+            else:
+                # Fallback for compacted PDF text where columns collapse to single spaces.
+                m = re.match(r"^(.+?)\s+([-+]?\d[\d\.\,\-%\(\)]*(?:\s+.+)?)$", line)
+                parts = [m.group(1).strip(), m.group(2).strip()] if m else []
+
+            if len(parts) >= 2:
+                # Keep compact table-like rows, reject long prose fragments.
+                if len(line) > 140:
+                    continue
+                if sum(len(p.split()) for p in parts) > 18:
+                    continue
+                if any(len(p) > 80 for p in parts):
+                    continue
+                if len(parts[0].split()) > 10:
+                    continue
+                if len(parts[1].split()) > 10:
+                    continue
+                joined = " ".join(parts).lower()
+                if re.search(r"\b(vol\.?|no\.?|copyright|issn|doi|page)\b", joined):
+                    continue
+                if "see table" in joined:
+                    continue
+                row_key = tuple(p.strip().lower() for p in parts)
+                if row_key in seen_row_keys:
+                    continue
+                seen_row_keys.add(row_key)
+                parsed_rows.append(parts[:8])
+                if len(parsed_rows) >= 25:
+                    break
+
+        if not parsed_rows:
+            return None
+
+        max_cols = max(len(r) for r in parsed_rows)
+        has_header = False
+        first_row = parsed_rows[0]
+        if first_row and not any(re.search(r"\d", cell) for cell in first_row):
+            has_header = True
+
+        if has_header:
+            headers = first_row + [f"col_{i}" for i in range(len(first_row) + 1, max_cols + 1)]
+            data_rows = parsed_rows[1:]
+        else:
+            headers = [f"col_{i}" for i in range(1, max_cols + 1)]
+            data_rows = parsed_rows
+
         rows = []
-
-        # Try to identify header row
-        for i, line in enumerate(lines[:5]):
-            # Header often has column labels separated by multiple spaces or tabs
-            parts = re.split(r'\s{2,}|\t', line.strip())
-            if len(parts) >= 3:
-                headers = parts
-                # Remaining lines are data rows
-                for data_line in lines[i+1:]:
-                    row_parts = re.split(r'\s{2,}|\t', data_line.strip())
-                    if len(row_parts) >= 2:
-                        rows.append(row_parts)
-                break
-
-        if not headers and not rows:
+        for row in data_rows:
+            if not any(c.strip() for c in row):
+                continue
+            if not any(re.search(r"\d", c) for c in row):
+                continue
+            rows.append(row + [""] * (max_cols - len(row)))
+        if not rows:
             return None
 
         return ExtractedTable(
@@ -810,6 +873,10 @@ class PdfPlumberTableExtractor(TableExtractorBase):
                         for row in tbl[1:]:
                             rows.append([str(cell or "") for cell in row])
 
+                        # Skip degenerate tables where cells are effectively empty.
+                        if not any(cell.strip() for cell in headers + [c for r in rows for c in r]):
+                            continue
+
                         # Guess table type from content
                         all_content = " ".join(headers + [c for r in rows for c in r])
                         table_type = self._guess_type_from_content(all_content)
@@ -828,6 +895,11 @@ class PdfPlumberTableExtractor(TableExtractorBase):
 
         except Exception as e:
             logger.error(f"pdfplumber extraction error: {e}")
+
+        # Fallback to text heuristics when geometric detection fails.
+        if not tables:
+            heuristic = AITableExtractor(api_client=None)
+            tables = heuristic.extract_tables(pdf_path, pages)
 
         return tables
 

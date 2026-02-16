@@ -56,7 +56,7 @@ source venv/bin/activate 2>/dev/null || {
 # 1. Run Test Suite
 # =============================================================================
 echo "" | tee -a "$LOG_FILE"
-echo "[1/4] Running test suite..." | tee -a "$LOG_FILE"
+echo "[1/5] Running test suite..." | tee -a "$LOG_FILE"
 
 TEST_START=$(date +%s)
 TEST_OUTPUT=$(python -m pytest tests/ --tb=no -q 2>&1) || true
@@ -86,7 +86,7 @@ echo "$DATE,$TIMESTAMP,$PASSED,$FAILED,$ERRORS,$TEST_DURATION" >> "$HISTORY_FILE
 # 2. Check for Regressions
 # =============================================================================
 echo "" | tee -a "$LOG_FILE"
-echo "[2/4] Checking for regressions..." | tee -a "$LOG_FILE"
+echo "[2/5] Checking for regressions..." | tee -a "$LOG_FILE"
 
 # Get previous run stats
 PREV_LINE=$(tail -2 "$HISTORY_FILE" | head -1)
@@ -115,7 +115,7 @@ fi
 # 3. Check Key Files Exist
 # =============================================================================
 echo "" | tee -a "$LOG_FILE"
-echo "[3/4] Checking key files..." | tee -a "$LOG_FILE"
+echo "[3/5] Checking key files..." | tee -a "$LOG_FILE"
 
 KEY_FILES=(
     "src/services/web_of_belief.py"
@@ -142,13 +142,30 @@ else
 fi
 
 # =============================================================================
-# 4. Generate Summary
+# 4. Web/BN Health Gates
 # =============================================================================
 echo "" | tee -a "$LOG_FILE"
-echo "[4/4] Summary..." | tee -a "$LOG_FILE"
+echo "[4/5] Checking Web/BN health gates..." | tee -a "$LOG_FILE"
+
+GRAPH_HEALTH_OUTPUT=$(python scripts/check_web_bn_health.py 2>&1) || true
+echo "$GRAPH_HEALTH_OUTPUT" | tee -a "$LOG_FILE"
+
+if echo "$GRAPH_HEALTH_OUTPUT" | grep -q "minimum_viable: PASS"; then
+    GRAPH_HEALTH_OK=true
+    echo "Web/BN minimum health gates: PASS" | tee -a "$LOG_FILE"
+else
+    GRAPH_HEALTH_OK=false
+    echo "WARNING: Web/BN minimum health gates: FAIL" | tee -a "$LOG_FILE"
+fi
+
+# =============================================================================
+# 5. Generate Summary
+# =============================================================================
+echo "" | tee -a "$LOG_FILE"
+echo "[5/5] Summary..." | tee -a "$LOG_FILE"
 
 # Determine overall health
-if [ "${FAILED:-0}" -gt 0 ] || [ "${ERRORS:-0}" -gt 0 ] || [ "${MISSING_FILES:-0}" -gt 0 ]; then
+if [ "${FAILED:-0}" -gt 0 ] || [ "${ERRORS:-0}" -gt 0 ] || [ "${MISSING_FILES:-0}" -gt 0 ] || [ "$GRAPH_HEALTH_OK" = false ]; then
     HEALTH="UNHEALTHY"
     EXIT_CODE=1
 elif [ "$REGRESSION" = true ]; then
@@ -163,6 +180,7 @@ echo "" | tee -a "$LOG_FILE"
 echo "=============================================" | tee -a "$LOG_FILE"
 echo "HEALTH STATUS: $HEALTH" | tee -a "$LOG_FILE"
 echo "Tests: $PASSED passed, $FAILED failed, $ERRORS errors" | tee -a "$LOG_FILE"
+echo "Web/BN minimum gates: $([ "$GRAPH_HEALTH_OK" = true ] && echo PASS || echo FAIL)" | tee -a "$LOG_FILE"
 echo "Duration: ${TEST_DURATION}s" | tee -a "$LOG_FILE"
 echo "=============================================" | tee -a "$LOG_FILE"
 

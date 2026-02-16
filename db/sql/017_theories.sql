@@ -44,7 +44,10 @@ CREATE TABLE IF NOT EXISTS theories (
     -- Structure
     domain TEXT NOT NULL,  -- JSON array of domain_ids this theory addresses
     scope_description TEXT,
-    level TEXT NOT NULL CHECK(level IN ('meta_principle', 'theory', 'principle', 'mechanism')),
+    level TEXT NOT NULL CHECK(level IN (
+        'framework_theory', 'domain_theory', 'methodological', 'mechanism',
+        'meta_principle', 'theory', 'principle'  -- Legacy values for backwards compatibility
+    )),
     
     -- Confidence assessment
     overall_confidence REAL CHECK(overall_confidence BETWEEN 0.0 AND 1.0),

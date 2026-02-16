@@ -104,16 +104,22 @@ class TableClaimGenerator:
 
     def generate_claims(self, table: ExtractedTable) -> List[TableClaim]:
         """Generate claims from an extracted table based on its type."""
+        claims: List[TableClaim]
         if table.table_type == TableType.RESULTS:
-            return self._claims_from_results(table)
+            claims = self._claims_from_results(table)
         elif table.table_type == TableType.STUDY_CHARACTERISTICS:
-            return self._claims_from_characteristics(table)
+            claims = self._claims_from_characteristics(table)
         elif table.table_type == TableType.DEMOGRAPHICS:
-            return self._claims_from_demographics(table)
+            claims = self._claims_from_demographics(table)
         elif table.table_type == TableType.QUALITY_ASSESSMENT:
-            return self._claims_from_quality(table)
+            claims = self._claims_from_quality(table)
         else:
+            claims = self._claims_from_generic(table)
+
+        # Fallback for partially parsed tables that do not satisfy typed converters.
+        if not claims:
             return self._claims_from_generic(table)
+        return claims
 
     def _claims_from_results(self, table: ExtractedTable) -> List[TableClaim]:
         """Generate finding/effect claims from results table."""
@@ -401,6 +407,16 @@ class PipelineTableIntegrator:
                     error_msg = f"Failed to generate claims from table {table.table_id}: {e}"
                     logger.warning(error_msg)
                     errors.append(error_msg)
+
+            # Deduplicate near-identical claims emitted from overlapping table detections.
+            deduped: Dict[Tuple[str, str], TableClaim] = {}
+            for claim in claims:
+                norm_text = re.sub(r"\s+", " ", claim.content.strip().lower())
+                key = (claim.claim_type, norm_text)
+                existing = deduped.get(key)
+                if not existing or claim.confidence > existing.confidence:
+                    deduped[key] = claim
+            claims = list(deduped.values())
 
         except Exception as e:
             error_msg = f"Table extraction failed for {pdf_path}: {e}"

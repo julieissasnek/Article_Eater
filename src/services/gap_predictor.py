@@ -23,8 +23,11 @@ import logging
 from dataclasses import dataclass, field, asdict
 from typing import List, Dict, Optional, Any, Set, Tuple
 from datetime import datetime, timezone
-from enum import Enum
 import math
+
+# Import canonical gap types from single source of truth
+# Per Canonical Decisions Record (02-15_09), Decision 1
+from src.epistemic.gap_types import GapType, GapPriority, GAP_TYPE_WEIGHTS
 
 logger = logging.getLogger(__name__)
 
@@ -32,23 +35,6 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Data Structures
 # =============================================================================
-
-class GapType(Enum):
-    """Types of knowledge gaps that can be predicted."""
-    MEDIATION = "mediation"        # A→X→Y exists but direct A→Y missing
-    MECHANISM = "mechanism"        # Empirical but no theoretical explanation
-    BOUNDARY = "boundary"          # Narrow scope conditions
-    DIRECTION = "direction"        # Conflicting causal directions
-    INTERACTION = "interaction"    # Independent effects, no interaction
-    VALIDATION = "validation"      # Theoretical but no empirical support
-    UNJUSTIFIED_EDGE = "unjustified_edge"  # BN edge without belief support
-
-
-class GapPriority(Enum):
-    """Priority levels for gaps."""
-    HIGH = "high"
-    MEDIUM = "medium"
-    LOW = "low"
 
 
 @dataclass
@@ -763,6 +749,9 @@ class GapPredictor:
         all_gaps.extend(self.find_direction_gaps())
         all_gaps.extend(self.find_validation_gaps())
         all_gaps.extend(self.find_unjustified_edge_gaps())
+        # Sprint 10: Argument-level gap detection
+        all_gaps.extend(self.find_critical_question_gaps())
+        all_gaps.extend(self.find_argument_attack_gaps())
 
         # Sort by VOI score and limit
         all_gaps.sort(key=lambda g: -g.voi_score)
@@ -1214,6 +1203,53 @@ class GapPredictor:
             logger.warning(f"Error checking unjustified edges: {e}")
 
         return gaps
+
+    # =========================================================================
+    # Sprint 10: Argument-Level Gap Detection (STUB)
+    # =========================================================================
+
+    def find_critical_question_gaps(self) -> List[PredictedGap]:
+        """
+        Find gaps where Walton critical questions are unaddressed.
+
+        Sprint 10: STUB — Not yet implemented.
+
+        This will check ClaimV2.argument_scheme and ClaimV2.critical_questions_addressed
+        to identify claims that use an argumentation scheme but haven't addressed
+        the scheme's critical questions.
+
+        Example: An "argument from expert opinion" that hasn't addressed:
+        - Is the source a credible expert?
+        - Is this within their field of expertise?
+        - Is there consensus among experts?
+
+        Requires: ClaimV2 fields to be populated by extraction pipeline.
+        Currently blocked by: Extraction pipeline not populating these fields.
+        """
+        # TODO: Implement when ClaimV2 argument fields are populated
+        logger.debug("find_critical_question_gaps: STUB - not yet implemented (Sprint 10)")
+        return []
+
+    def find_argument_attack_gaps(self) -> List[PredictedGap]:
+        """
+        Find gaps where known argument attack types apply.
+
+        Sprint 10: STUB — Not yet implemented.
+
+        This will check beliefs against known attack types from argument_attack.py:
+        - CONFOUNDER: Unmeasured variable explains relationship
+        - BOUNDARY_CONDITION: Effect only holds under specific conditions
+        - MEASUREMENT: Measurement validity concerns
+        - REVERSE_CAUSATION: Direction might be reversed
+        - SELECTION_BIAS: Sample not representative
+        - PUBLICATION_BIAS: Only positive results published
+
+        Requires: AttackType patterns to be matched against belief content.
+        Currently blocked by: Need contrast class analysis from argument_attack.py
+        """
+        # TODO: Implement when AttackType matching is available
+        logger.debug("find_argument_attack_gaps: STUB - not yet implemented (Sprint 10)")
+        return []
 
 
 # =============================================================================

@@ -86,7 +86,20 @@ from src.services.scope_extractor import (
     get_scope_extractor,
 )
 
+# BN Coherence Integration (ARCH-4 Sprint 1.3)
+from src.services.bn_coherence_client import (
+    BNCoherenceClient,
+    CoherenceCheckStatus,
+    check_beliefs_coherence,
+    pre_integration_check,
+    should_integrate_belief,
+)
+
 logger = logging.getLogger(__name__)
+
+# Coherence check configuration
+BN_COHERENCE_ENABLED = os.environ.get("AE_BN_COHERENCE_ENABLED", "true").lower() == "true"
+BN_COHERENCE_BLOCK_CONFLICTS = os.environ.get("AE_BN_COHERENCE_BLOCK_CONFLICTS", "false").lower() == "true"
 
 
 # =============================================================================
@@ -274,7 +287,10 @@ class IntegrationReport:
     
     coherence_before: Optional[float] = None
     coherence_after: Optional[float] = None
-    
+
+    # BN coherence check stats (ARCH-4 Sprint 1.3)
+    bn_coherence_stats: Dict[str, int] = field(default_factory=dict)
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'summary': {
@@ -293,9 +309,10 @@ class IntegrationReport:
             'coherence': {
                 'before': self.coherence_before,
                 'after': self.coherence_after,
-                'delta': (self.coherence_after - self.coherence_before) 
+                'delta': (self.coherence_after - self.coherence_before)
                          if self.coherence_before and self.coherence_after else None
             },
+            'bn_coherence': self.bn_coherence_stats,
             'warnings': self.warnings,
             'errors': self.errors
         }
@@ -918,14 +935,74 @@ def integrate_extraction(
     # Track claim-to-belief mapping for rule resolution
     claim_to_belief_map: Dict[str, str] = {}
     
+    # Initialize BN coherence client if enabled
+    bn_client = None
+    if BN_COHERENCE_ENABLED:
+        bn_client = BNCoherenceClient()
+        if bn_client.is_available:
+            logger.info("BN coherence checking enabled")
+        else:
+            logger.warning("BN coherence requested but BN_graphical not available")
+
+    # Track coherence check stats
+    coherence_stats = {
+        "checked": 0,
+        "passed": 0,
+        "conflicts": 0,
+        "blocked": 0
+    }
+
     # Process claims
     for claim in claims:
         report.n_claims_processed += 1
         result = claim_to_belief(claim, web, outcome_lookup)
-        
+
         if result.success and result.entity:
             belief = result.entity
-            
+
+            # BN Coherence Check (ARCH-4 Sprint 1.3)
+            should_add = True
+            if bn_client and bn_client.is_available:
+                coherence_stats["checked"] += 1
+
+                # Convert belief to dict for coherence check
+                belief_dict = {
+                    "belief_id": belief.belief_id,
+                    "content": belief.content,
+                    "confidence": belief.credence.value,
+                    "level": belief.level.value if hasattr(belief.level, 'value') else str(belief.level)
+                }
+
+                # Get existing beliefs for conflict detection
+                existing_beliefs = {
+                    bid: {
+                        "belief_id": bid,
+                        "content": b.content,
+                        "confidence": b.credence.value,
+                        "level": b.level.value if hasattr(b.level, 'value') else str(b.level)
+                    }
+                    for bid, b in web.beliefs.items()
+                }
+
+                check_result = bn_client.check_single_belief(belief_dict, existing_beliefs)
+
+                if check_result.has_conflicts:
+                    coherence_stats["conflicts"] += 1
+                    conflict_ids = [c.get("conflict_id", "unknown") for c in check_result.conflicts]
+                    logger.warning(f"Belief '{belief.belief_id}' has conflicts: {conflict_ids}")
+
+                    if BN_COHERENCE_BLOCK_CONFLICTS:
+                        should_add = False
+                        coherence_stats["blocked"] += 1
+                        report.warnings.append(
+                            f"Belief '{belief.belief_id}' blocked due to conflicts: {conflict_ids}"
+                        )
+                else:
+                    coherence_stats["passed"] += 1
+
+            if not should_add:
+                continue
+
             # Add to web
             try:
                 web.add_belief(belief)
@@ -988,7 +1065,15 @@ def integrate_extraction(
         report.coherence_after = web.coherence_score()
     except Exception:
         report.coherence_after = 0.0
-    
+
+    # Record BN coherence stats
+    report.bn_coherence_stats = coherence_stats
+    if coherence_stats.get("checked", 0) > 0:
+        logger.info(
+            f"BN coherence: {coherence_stats['passed']}/{coherence_stats['checked']} passed, "
+            f"{coherence_stats['conflicts']} conflicts, {coherence_stats['blocked']} blocked"
+        )
+
     return report
 
 

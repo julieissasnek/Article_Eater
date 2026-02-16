@@ -106,27 +106,17 @@ class BeliefStatus(Enum):
     ANOMALOUS = "anomalous"        # In tension with the web
 
 
-class ConstraintType(Enum):
-    """Types of constraint relationships between beliefs."""
-    SUPPORTS = "supports"          # Positive coherence
-    CONTRADICTS = "contradicts"    # Negative coherence
-    EXPLAINS = "explains"          # Theoretical → empirical
-    INSTANTIATES = "instantiates"  # Empirical → theoretical
-    ANALOGOUS = "analogous"        # Similar structure
-    INDEPENDENT = "independent"    # No direct constraint
-    BRIDGES = "bridges"            # Sprint 3: Bridge warrant connection
-    STRONG_TENSION = "strong_tension"  # Sprint 3: Strong tension from failed bridge
-    SHARED_EVIDENCE = "shared_evidence"  # Sprint 8: Same study supports both beliefs
-
-    # Sprint T2-1.3: Epistemic link types
-    EPISTEMIC_DERIVATION = "epistemic_derivation"        # Tier 1 → Tier 2 template
-    EPISTEMIC_CROSS_TEMPLATE = "epistemic_cross_template"  # Between Tier 2 templates
-    EPISTEMIC_MEDIATION = "epistemic_mediation"          # Claim mediated by interpretation
-    COHERENCE_SUPPORT = "coherence_support"              # A increases coherence of B
-    COHERENCE_TENSION = "coherence_tension"              # A decreases coherence of B
-    ARGUMENTATIVE_SUPPORT = "argumentative_support"      # Finding supports via argument
-    ARGUMENTATIVE_CHALLENGE = "argumentative_challenge"  # Finding challenges via argument
-    GENERALIZABILITY_WARRANT = "generalizability_warrant"  # Type A → Type B (Sprint T2-4b)
+# =============================================================================
+# DEPRECATED: ConstraintType → Use EdgeType from src.epistemic.edge_types
+# Sprint 1.2: Merged into canonical EdgeType per Opus decisions (2026-02-15)
+# REMOVE_BY: V25.0
+# =============================================================================
+# Import canonical EdgeType and alias as ConstraintType for backward compatibility
+from src.epistemic.edge_types import (
+    EdgeType as ConstraintType,
+    EdgeType,
+    convert_legacy_constraint_type,
+)
 
 
 # =============================================================================

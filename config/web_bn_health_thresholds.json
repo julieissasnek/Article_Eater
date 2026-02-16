@@ -1,0 +1,25 @@
+{
+  "minimum_viable": [
+    {"metric": "web.beliefs", "op": ">=", "value": 1000, "description": "Sufficient web size"},
+    {"metric": "web.constraints", "op": ">=", "value": 8000, "description": "Sufficient web relation count"},
+    {"metric": "web.isolated_pct", "op": "<=", "value": 25.0, "description": "Isolation not excessive"},
+    {"metric": "web.explains_count", "op": ">=", "value": 100, "description": "Explanatory relations present"},
+    {"metric": "web.contradicts_count", "op": ">=", "value": 20, "description": "Contradiction relations present"},
+    {"metric": "web.bridges", "op": ">=", "value": 100, "description": "Bridge layer active"},
+    {"metric": "web.bridge_with_source_pct", "op": ">=", "value": 80.0, "description": "Bridge provenance linked"},
+    {"metric": "bn.nodes", "op": ">=", "value": 500, "description": "BN node coverage"},
+    {"metric": "bn.edges", "op": ">=", "value": 1000, "description": "BN edge coverage"},
+    {"metric": "bn.dangling_edges", "op": "==", "value": 0, "description": "BN integrity (no dangling refs)"},
+    {"metric": "bn.has_cycle", "op": "==", "value": 0, "description": "BN must remain acyclic"},
+    {"metric": "bn.unresolved_pct", "op": "<=", "value": 95.0, "description": "Canonical mapping above floor"}
+  ],
+  "target": [
+    {"metric": "web.isolated_pct", "op": "<=", "value": 10.0, "description": "Strong web integration"},
+    {"metric": "web.contradicts_count", "op": ">=", "value": 200, "description": "Substantial contradiction coverage"},
+    {"metric": "web.contradicts_share_pct", "op": ">=", "value": 2.0, "description": "Contradiction share not negligible"},
+    {"metric": "web.bridges", "op": ">=", "value": 1500, "description": "Deep bridge coverage"},
+    {"metric": "bn.edges", "op": ">=", "value": 5000, "description": "Dense BN evidence graph"},
+    {"metric": "bn.unresolved_pct", "op": "<=", "value": 30.0, "description": "Mostly canonical BN nodes"},
+    {"metric": "bn.largest_component_pct", "op": ">=", "value": 50.0, "description": "BN not heavily fragmented"}
+  ]
+}

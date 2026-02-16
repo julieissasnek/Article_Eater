@@ -34,12 +34,20 @@ import yaml
 
 from src.services.web_of_belief import WebOfBelief, Belief, Credence
 
+# Import canonical gap types from single source of truth
+# Per Canonical Decisions Record (02-15_09), Decision 1
+from src.epistemic.gap_types import (
+    GapType,
+    GapPriority,
+    GAP_TYPE_WEIGHTS,
+    convert_legacy_gap_type,
+)
+
 # Optional import for discovery funnel integration
 try:
     from src.services.discovery_funnel import (
         DiscoveryFunnelService,
         VOIGap,
-        GapType as FunnelGapType,
         GapStatus,
     )
     FUNNEL_AVAILABLE = True
@@ -241,29 +249,14 @@ def get_cross_field_vocabulary() -> CrossFieldVocabulary:
 # CORE DATA STRUCTURES (per Lampson)
 # =============================================================================
 
-class GapType(Enum):
-    """
-    Gap types for VOI-driven search.
-
-    Per P-VOI Panel (2026-02-09):
-    - Expanded from original 2 types (Lampson) to 4 types
-    - CONTRADICTION has highest priority (active harm to coherence)
-    - WEAK_SUPPORT and MISSING_EVIDENCE are structural gaps
-    - BOUNDARY_UNCLEAR is scope clarification
-    """
-    UNCERTAIN = "uncertain"           # High uncertainty on existing belief
-    UNEXPLORED = "unexplored"         # Topic area with sparse coverage
-    CONTRADICTION = "contradiction"   # Active conflict needing resolution
-    BOUNDARY_UNCLEAR = "boundary"     # Scope conditions unclear
-
-
 # Per P-VOI Panel (Thagard): Gap types have different VOI priorities
 # Contradictions actively hurt coherence until resolved
+# NOTE: Uses canonical GapType from src/epistemic/gap_types.py
 GAP_TYPE_PRIORITY_WEIGHTS = {
-    GapType.CONTRADICTION: 1.0,      # Highest priority - active harm
-    GapType.UNCERTAIN: 0.7,          # High uncertainty needs resolution
-    GapType.UNEXPLORED: 0.5,         # Missing evidence
-    GapType.BOUNDARY_UNCLEAR: 0.4,   # Scope clarification
+    GapType.DIRECTION: 1.0,      # Highest priority - active harm (was CONTRADICTION)
+    GapType.VALIDATION: 0.7,     # High uncertainty needs resolution (was UNCERTAIN)
+    GapType.MECHANISM: 0.5,      # Missing evidence (was UNEXPLORED)
+    GapType.BOUNDARY: 0.4,       # Scope clarification (was BOUNDARY_UNCLEAR)
 }
 
 
@@ -321,16 +314,16 @@ class EpistemicGap:
             logger.debug("Discovery funnel not available, skipping gap registration")
             return None
 
-        # Map gap types
+        # Map gap types - both now use canonical GapType
         gap_type_map = {
-            GapType.UNCERTAIN: FunnelGapType.WEAK_SUPPORT,
-            GapType.UNEXPLORED: FunnelGapType.MISSING_EVIDENCE,
+            GapType.VALIDATION: GapType.VALIDATION,
+            GapType.MECHANISM: GapType.MECHANISM,
         }
 
         return VOIGap(
             gap_id=str(uuid.uuid4()),
             topic=self.description,
-            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MISSING_EVIDENCE),
+            gap_type=gap_type_map.get(self.gap_type, GapType.MECHANISM),
             predicted_voi=self.voi_score,
             belief_id=self.primary_belief_id,
             theory_id=theory_id,
@@ -438,11 +431,12 @@ class VOICalculator:
 
     # Per P-VOI Panel: Alpha determines structural vs epistemic weighting
     # Based on gap type - structural gaps weight structural VOI higher
+    # NOTE: Uses canonical GapType values per Canonical Decisions Record
     ALPHA_BY_GAP_TYPE = {
-        GapType.UNEXPLORED: 0.7,        # Missing evidence = structural
-        GapType.UNCERTAIN: 0.4,         # Uncertainty = epistemic
-        GapType.CONTRADICTION: 0.5,     # Equal weight - both matter
-        GapType.BOUNDARY_UNCLEAR: 0.3,  # Scope = more epistemic
+        GapType.MECHANISM: 0.7,        # Missing evidence = structural
+        GapType.VALIDATION: 0.4,       # Uncertainty = epistemic
+        GapType.DIRECTION: 0.5,        # Equal weight - both matter
+        GapType.BOUNDARY: 0.3,         # Scope = more epistemic
     }
 
     def calculate_voi(
@@ -549,8 +543,8 @@ class VOICalculator:
 
     def _sparsity_component(self, gap_type: GapType, belief: Belief) -> float:
         """Score based on evidence sparsity."""
-        if gap_type == GapType.UNEXPLORED:
-            # Unexplored gaps have high sparsity by definition
+        if gap_type == GapType.MECHANISM:
+            # Mechanism gaps have high sparsity by definition (was UNEXPLORED)
             return 0.8
 
         # For uncertain gaps, base on number of supporting papers
@@ -714,15 +708,15 @@ class QueryGenerator:
                     queries.append(" ".join(belief_terms[:2] + scope_terms))
 
         # Add gap-type specific queries
-        if gap.gap_type == GapType.UNCERTAIN:
-            # For uncertain gaps, look for replication/meta-analysis
+        if gap.gap_type == GapType.VALIDATION:
+            # For validation gaps (was UNCERTAIN), look for replication/meta-analysis
             if belief:
                 key_terms = self._extract_terms(belief.content)[:3]
                 queries.append(" ".join(key_terms + ["meta-analysis"]))
                 queries.append(" ".join(key_terms + ["replication"]))
 
-        elif gap.gap_type == GapType.UNEXPLORED:
-            # For unexplored, look for any evidence
+        elif gap.gap_type == GapType.MECHANISM:
+            # For mechanism gaps (was UNEXPLORED), look for any evidence
             if belief:
                 key_terms = self._extract_terms(belief.content)[:3]
                 queries.append(" ".join(key_terms + ["systematic review"]))
@@ -886,14 +880,14 @@ class GapDetector:
         gaps = []
 
         for belief_id, belief in web.beliefs.items():
-            # Check for uncertain gap
+            # Check for validation gap (was "uncertain gap")
             if belief.credence.uncertainty > self.UNCERTAINTY_THRESHOLD:
                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
-                    GapType.UNCERTAIN, belief, web
+                    GapType.VALIDATION, belief, web
                 )
                 gaps.append(EpistemicGap(
-                    gap_type=GapType.UNCERTAIN,
+                    gap_type=GapType.VALIDATION,
                     description=f"High uncertainty ({belief.credence.uncertainty:.0%}) on: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
                     voi_score=combined_voi,
@@ -901,15 +895,15 @@ class GapDetector:
                     epistemic_voi=epistemic_voi
                 ))
 
-            # Check for unexplored gap
+            # Check for mechanism gap (was "unexplored gap")
             n_papers = len(belief.paper_ids) if belief.paper_ids else 0
             if n_papers < self.MIN_SUPPORTING_STUDIES:
                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
-                    GapType.UNEXPLORED, belief, web
+                    GapType.MECHANISM, belief, web
                 )
                 gaps.append(EpistemicGap(
-                    gap_type=GapType.UNEXPLORED,
+                    gap_type=GapType.MECHANISM,
                     description=f"Only {n_papers} supporting studies for: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
                     voi_score=combined_voi,

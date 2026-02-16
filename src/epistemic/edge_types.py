@@ -1,15 +1,25 @@
 """
-Edge Type Taxonomy for Non-Empirical Web Integration (Sprint 6a / Task 6a.2).
+Edge Type Taxonomy — Canonical Source of Truth (Sprint 1.2).
 
-Defines 19 new edge types for connecting non-empirical node types.
-Extends the existing ConstraintType enum with specialized edge types for:
-- Review/synthesis connections
-- Theoretical relationships
-- Conceptual links
-- Critique propagation
-- Attribution tracking
+Per Opus decisions (2026-02-15):
+- Merges ConstraintType INTO EdgeType (all values kept distinct)
+- EPISTEMIC_DERIVATION vs COHERENCE_SUPPORT: distinct (derivation = inferential, coherence = holistic)
+- SUPPORTS/CONTRADICTS vs CONFIRMS/DISCONFIRMS_PREDICTION: distinct (pre-CMR vs post-CMR)
+- BN edge types remain separate (different semantic layer)
+
+Categories:
+1. Constraint Edges (from ConstraintType) — basic epistemic relations
+2. Coherence Edges — Quinean web coherence relations
+3. Epistemic Edges — theory tier relations (CMR pipeline)
+4. Argumentative Edges — argumentation-based relations
+5. Review/Synthesis Edges — meta-analysis relations
+6. Theoretical Edges — theory-prediction relations
+7. Conceptual Edges — definitional relations
+8. Critique Edges — validity challenge relations
+9. Attribution Edges — citation relations
 
 Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §3.2
+Reference: Canonical Decisions Record (02-15_09)
 """
 
 from enum import Enum
@@ -19,75 +29,116 @@ from dataclasses import dataclass
 
 class EdgeTypeCategory(str, Enum):
     """Categories of edge types."""
+    CONSTRAINT = "constraint"        # Basic epistemic relations
+    COHERENCE = "coherence"          # Quinean web relations
+    EPISTEMIC = "epistemic"          # Theory tier / CMR relations
+    ARGUMENTATIVE = "argumentative"  # Argumentation-based
     REVIEW_SYNTHESIS = "review_synthesis"
     THEORETICAL = "theoretical"
     CONCEPTUAL = "conceptual"
     CRITIQUE = "critique"
     ATTRIBUTION = "attribution"
-    LEGACY = "legacy"  # Existing ConstraintType values
 
 
 class EdgeType(str, Enum):
     """
-    Edge types for web of belief connections.
+    Canonical edge types for web of belief connections.
 
-    Per Non_Empirical_Web_Integration_Spec_V1.0.md §3.2.
+    Sprint 1.2: Merged ConstraintType + EdgeType per Opus decisions.
 
-    Review/Synthesis Edges:
-        INCLUDES_IN_SYNTHESIS: Meta-analysis includes a study
-        SYNTHESIZES_AS: Evidence direction across N studies
-        IDENTIFIES_MODERATOR: Effect is moderated by X
-        CONTRADICTS_SYNTHESIS: New study contradicts meta-analytic conclusion
+    Categories (per Opus 2026-02-15):
+    1. CONSTRAINT: Basic epistemic relations (pre-CMR, from papers)
+    2. COHERENCE: Quinean web coherence (holistic, bidirectional)
+    3. EPISTEMIC: Theory tier relations (CMR pipeline, directional)
+    4. ARGUMENTATIVE: Argumentation-based relations
+    5. REVIEW_SYNTHESIS: Meta-analysis relations
+    6. THEORETICAL: Theory-prediction relations (post-CMR)
+    7. CONCEPTUAL: Definitional relations
+    8. CRITIQUE: Validity challenge relations
+    9. ATTRIBUTION: Citation relations
 
-    Theoretical Edges:
-        THEORETICALLY_PREDICTS: Theory T predicts finding H
-        CONFIRMS_PREDICTION: Study confirms hypothesis
-        DISCONFIRMS_PREDICTION: Study disconfirms hypothesis
-        PROPOSES_MECHANISM: Theory proposes mechanism M
-        SUBSUMES_THEORY: Theory A subsumes Theory B
-        THEORY_TENSION: Theories make incompatible predictions
-
-    Conceptual Edges:
-        DEFINES_CONSTRUCT: Definition of a construct
-        MUST_DISTINGUISH: Two things must not be conflated
-        REDEFINES: Newer definition supersedes older
-        ORGANIZES: Taxonomy organizes constructs
-
-    Critique Edges:
-        CHALLENGES_METHOD: Method has validity problem
-        CHALLENGES_PARADIGM: All studies using paradigm P are vulnerable
-        PROPOSES_BETTER_METHOD: Method B addresses problems of Method A
-
-    Attribution Edges:
-        ATTRIBUTES_FINDING: Review cites Study S as showing X
-        INTERPRETS_AS: Reviewer interprets evidence as meaning X
+    Key distinctions (per Opus):
+    - SUPPORTS vs CONFIRMS_PREDICTION: pre-CMR vs post-CMR
+    - COHERENCE_SUPPORT vs EPISTEMIC_DERIVATION: holistic vs inferential
     """
-    # === Review/Synthesis Edges ===
+
+    # =========================================================================
+    # CONSTRAINT EDGES (from ConstraintType) — basic epistemic relations
+    # Pre-CMR, extracted from papers, no prediction ID
+    # =========================================================================
+    SUPPORTS = "supports"              # Positive evidential support
+    CONTRADICTS = "contradicts"        # Negative evidential relation
+    EXPLAINS = "explains"              # Theoretical → empirical
+    INSTANTIATES = "instantiates"      # Empirical → theoretical
+    ANALOGOUS = "analogous"            # Similar structure
+    INDEPENDENT = "independent"        # No direct constraint
+
+    # =========================================================================
+    # COHERENCE EDGES — Quinean web relations
+    # Holistic, bidirectional, defeasible (per Opus)
+    # =========================================================================
+    COHERENCE_SUPPORT = "coherence_support"    # A increases coherence of B
+    COHERENCE_TENSION = "coherence_tension"    # A decreases coherence of B
+
+    # =========================================================================
+    # EPISTEMIC EDGES — Theory tier / CMR pipeline relations
+    # Directional, inferential, with specific provenance chain (per Opus)
+    # =========================================================================
+    EPISTEMIC_DERIVATION = "epistemic_derivation"          # Tier 1 → Tier 2 template
+    EPISTEMIC_CROSS_TEMPLATE = "epistemic_cross_template"  # Between Tier 2 templates
+    EPISTEMIC_MEDIATION = "epistemic_mediation"            # Claim mediated by interpretation
+
+    # =========================================================================
+    # BRIDGE/WARRANT EDGES — Cross-layer connections
+    # =========================================================================
+    BRIDGES = "bridges"                              # Bridge warrant connection
+    STRONG_TENSION = "strong_tension"                # Strong tension from failed bridge
+    SHARED_EVIDENCE = "shared_evidence"              # Same study supports both beliefs
+    GENERALIZABILITY_WARRANT = "generalizability_warrant"  # Type A → Type B (Sprint T2-4b)
+
+    # =========================================================================
+    # ARGUMENTATIVE EDGES — Argumentation-based relations
+    # =========================================================================
+    ARGUMENTATIVE_SUPPORT = "argumentative_support"      # Finding supports via argument
+    ARGUMENTATIVE_CHALLENGE = "argumentative_challenge"  # Finding challenges via argument
+
+    # =========================================================================
+    # REVIEW/SYNTHESIS EDGES — Meta-analysis relations
+    # =========================================================================
     INCLUDES_IN_SYNTHESIS = "includes_in_synthesis"
     SYNTHESIZES_AS = "synthesizes_as"
     IDENTIFIES_MODERATOR = "identifies_moderator"
     CONTRADICTS_SYNTHESIS = "contradicts_synthesis"
 
-    # === Theoretical Edges ===
+    # =========================================================================
+    # THEORETICAL EDGES — Theory-prediction relations
+    # Post-CMR, carries prediction ID and template chain (per Opus)
+    # =========================================================================
     THEORETICALLY_PREDICTS = "theoretically_predicts"
-    CONFIRMS_PREDICTION = "confirms_prediction"
-    DISCONFIRMS_PREDICTION = "disconfirms_prediction"
+    CONFIRMS_PREDICTION = "confirms_prediction"      # Post-CMR: observation confirms prediction
+    DISCONFIRMS_PREDICTION = "disconfirms_prediction"  # Post-CMR: observation disconfirms
     PROPOSES_MECHANISM = "proposes_mechanism"
     SUBSUMES_THEORY = "subsumes_theory"
     THEORY_TENSION = "theory_tension"
 
-    # === Conceptual Edges ===
+    # =========================================================================
+    # CONCEPTUAL EDGES — Definitional relations
+    # =========================================================================
     DEFINES_CONSTRUCT = "defines_construct"
     MUST_DISTINGUISH = "must_distinguish"
     REDEFINES = "redefines"
     ORGANIZES = "organizes"
 
-    # === Critique Edges ===
+    # =========================================================================
+    # CRITIQUE EDGES — Validity challenge relations
+    # =========================================================================
     CHALLENGES_METHOD = "challenges_method"
     CHALLENGES_PARADIGM = "challenges_paradigm"
     PROPOSES_BETTER_METHOD = "proposes_better_method"
 
-    # === Attribution Edges ===
+    # =========================================================================
+    # ATTRIBUTION EDGES — Citation relations
+    # =========================================================================
     ATTRIBUTES_FINDING = "attributes_finding"
     INTERPRETS_AS = "interprets_as"
 
@@ -213,13 +264,152 @@ EDGE_COMPATIBILITY: Dict[EdgeType, EdgeCompatibility] = {
         valid_target_types=[],  # Targets interpretation
         category=EdgeTypeCategory.ATTRIBUTION
     ),
+
+    # === MERGED FROM ConstraintType (Sprint 1.2) ===
+
+    # Constraint Edges (basic epistemic relations)
+    EdgeType.SUPPORTS: EdgeCompatibility(
+        valid_source_types=["empirical_finding", "synthesis_conclusion"],
+        valid_target_types=["theoretical_proposition", "derived_hypothesis"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.CONTRADICTS: EdgeCompatibility(
+        valid_source_types=["empirical_finding", "synthesis_conclusion"],
+        valid_target_types=["theoretical_proposition", "derived_hypothesis"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.EXPLAINS: EdgeCompatibility(
+        valid_source_types=["theoretical_proposition"],
+        valid_target_types=["empirical_finding"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.INSTANTIATES: EdgeCompatibility(
+        valid_source_types=["empirical_finding"],
+        valid_target_types=["theoretical_proposition"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.ANALOGOUS: EdgeCompatibility(
+        valid_source_types=[],  # Any node type
+        valid_target_types=[],  # Any node type
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.INDEPENDENT: EdgeCompatibility(
+        valid_source_types=[],
+        valid_target_types=[],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+
+    # Coherence Edges (Quinean web relations)
+    EdgeType.COHERENCE_SUPPORT: EdgeCompatibility(
+        valid_source_types=[],  # Any belief
+        valid_target_types=[],  # Any belief
+        category=EdgeTypeCategory.COHERENCE
+    ),
+    EdgeType.COHERENCE_TENSION: EdgeCompatibility(
+        valid_source_types=[],
+        valid_target_types=[],
+        category=EdgeTypeCategory.COHERENCE
+    ),
+
+    # Epistemic Edges (CMR pipeline relations)
+    EdgeType.EPISTEMIC_DERIVATION: EdgeCompatibility(
+        valid_source_types=["theoretical_proposition", "template_chain"],
+        valid_target_types=["derived_hypothesis"],
+        category=EdgeTypeCategory.EPISTEMIC
+    ),
+    EdgeType.EPISTEMIC_CROSS_TEMPLATE: EdgeCompatibility(
+        valid_source_types=["template_chain"],
+        valid_target_types=["template_chain"],
+        category=EdgeTypeCategory.EPISTEMIC
+    ),
+    EdgeType.EPISTEMIC_MEDIATION: EdgeCompatibility(
+        valid_source_types=[],
+        valid_target_types=[],
+        category=EdgeTypeCategory.EPISTEMIC
+    ),
+
+    # Bridge/Warrant Edges
+    EdgeType.BRIDGES: EdgeCompatibility(
+        valid_source_types=["bridge_warrant"],
+        valid_target_types=["theoretical_proposition", "empirical_finding"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.STRONG_TENSION: EdgeCompatibility(
+        valid_source_types=["empirical_finding"],
+        valid_target_types=["bridge_warrant"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.SHARED_EVIDENCE: EdgeCompatibility(
+        valid_source_types=["empirical_finding"],
+        valid_target_types=["empirical_finding"],
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+    EdgeType.GENERALIZABILITY_WARRANT: EdgeCompatibility(
+        valid_source_types=["empirical_finding"],  # Type A claim
+        valid_target_types=["empirical_finding"],  # Type B claim
+        category=EdgeTypeCategory.CONSTRAINT
+    ),
+
+    # Argumentative Edges
+    EdgeType.ARGUMENTATIVE_SUPPORT: EdgeCompatibility(
+        valid_source_types=["empirical_finding"],
+        valid_target_types=["theoretical_proposition", "derived_hypothesis"],
+        category=EdgeTypeCategory.ARGUMENTATIVE
+    ),
+    EdgeType.ARGUMENTATIVE_CHALLENGE: EdgeCompatibility(
+        valid_source_types=["empirical_finding", "methodological_critique"],
+        valid_target_types=["theoretical_proposition", "derived_hypothesis"],
+        category=EdgeTypeCategory.ARGUMENTATIVE
+    ),
 }
 
 
 def get_edge_category(edge_type: EdgeType) -> EdgeTypeCategory:
     """Get the category for an edge type."""
     compat = EDGE_COMPATIBILITY.get(edge_type)
-    return compat.category if compat else EdgeTypeCategory.LEGACY
+    return compat.category if compat else EdgeTypeCategory.CONSTRAINT
+
+
+# =============================================================================
+# LEGACY ALIAS: ConstraintType → EdgeType
+# For backward compatibility during migration
+# =============================================================================
+
+# Alias for code that still imports ConstraintType
+ConstraintType = EdgeType
+
+# Mapping from old ConstraintType names to EdgeType (for string conversion)
+LEGACY_CONSTRAINT_TYPE_MAP = {
+    "supports": EdgeType.SUPPORTS,
+    "contradicts": EdgeType.CONTRADICTS,
+    "explains": EdgeType.EXPLAINS,
+    "instantiates": EdgeType.INSTANTIATES,
+    "analogous": EdgeType.ANALOGOUS,
+    "independent": EdgeType.INDEPENDENT,
+    "bridges": EdgeType.BRIDGES,
+    "strong_tension": EdgeType.STRONG_TENSION,
+    "shared_evidence": EdgeType.SHARED_EVIDENCE,
+    "epistemic_derivation": EdgeType.EPISTEMIC_DERIVATION,
+    "epistemic_cross_template": EdgeType.EPISTEMIC_CROSS_TEMPLATE,
+    "epistemic_mediation": EdgeType.EPISTEMIC_MEDIATION,
+    "coherence_support": EdgeType.COHERENCE_SUPPORT,
+    "coherence_tension": EdgeType.COHERENCE_TENSION,
+    "argumentative_support": EdgeType.ARGUMENTATIVE_SUPPORT,
+    "argumentative_challenge": EdgeType.ARGUMENTATIVE_CHALLENGE,
+    "generalizability_warrant": EdgeType.GENERALIZABILITY_WARRANT,
+}
+
+
+def convert_legacy_constraint_type(value: str) -> EdgeType:
+    """Convert a legacy ConstraintType string to EdgeType."""
+    key = value.strip().lower()
+    if key in LEGACY_CONSTRAINT_TYPE_MAP:
+        return LEGACY_CONSTRAINT_TYPE_MAP[key]
+    # Try direct EdgeType conversion
+    try:
+        return EdgeType(key)
+    except ValueError:
+        return EdgeType.SUPPORTS  # Default fallback
 
 
 def get_valid_source_types(edge_type: EdgeType) -> List[str]:
@@ -285,3 +475,60 @@ def get_review_synthesis_edges() -> List[EdgeType]:
         EdgeType.IDENTIFIES_MODERATOR,
         EdgeType.CONTRADICTS_SYNTHESIS,
     ]
+
+
+# =============================================================================
+# SCHEMA_PENDING_CMR_SPEC: FINDING–MECHANISM LINKS
+# =============================================================================
+#
+# This section is a PLACEHOLDER for Sprint 7: Theory Architecture.
+#
+# WHAT THIS WILL CONTAIN:
+# Links connecting empirical findings to theoretical mechanisms. When a study
+# finds that "nature exposure reduces stress" (Tier 3 finding), these links
+# specify WHICH Tier 1 mechanism explains HOW:
+#   - Predictive Processing: nature statistics match evolved priors → uncertainty reduction
+#   - Neuromodulatory: parasympathetic activation via vagal pathway
+#   - DMN/TPN: nature allows DMN activation due to low attentional demand
+#
+# WHY THIS IS PENDING:
+# The schema for these links will be determined by the Compositional Mechanistic
+# Reasoning (CMR) specification, which is being developed separately. CMR will define:
+#   - Template library: canonical compositional reasoning patterns
+#   - Prediction grammar: how to compose mechanism claims into testable predictions
+#   - Link structure: what fields each finding–mechanism link requires
+#
+# DEPENDENCIES:
+# Sprint 7 requires BOTH:
+#   1. Sprint 6 complete (node types, edge types) — provides web infrastructure
+#   2. CMR specification ready — provides template library and grammar
+#
+# DO NOT IMPLEMENT until both dependencies are met.
+#
+# PLANNED STRUCTURE (TENTATIVE — subject to CMR spec):
+#
+# @dataclass
+# class FindingMechanismLink:
+#     """Link between an empirical finding and a theoretical mechanism."""
+#     link_id: str
+#     finding_id: str  # Tier 3 finding being explained
+#     mechanism_id: str  # Tier 1 mechanism doing the explaining
+#     framework_id: str  # Which Tier 1 framework this mechanism belongs to
+#     composition_template: str  # CMR template ID — PENDING CMR SPEC
+#     prediction_grammar: dict  # How this generates predictions — PENDING CMR SPEC
+#     confidence: float  # How confident is this mechanistic explanation
+#     evidence_type: str  # What kind of evidence supports this link
+#
+# class MechanismLinkType(str, Enum):
+#     """Types of finding–mechanism relationships."""
+#     DIRECTLY_EXPLAINS = "directly_explains"  # Mechanism M explains finding F
+#     PARTIALLY_EXPLAINS = "partially_explains"  # M explains aspect of F
+#     MODULATES = "modulates"  # M modulates magnitude/direction of F
+#     MEDIATES = "mediates"  # M is on causal pathway for F
+#     CONTRADICTS = "contradicts"  # M predicts opposite of F
+#
+# FINDING_MECHANISM_LINKS: Dict[str, FindingMechanismLink] = {}
+#
+# =============================================================================
+# END SCHEMA_PENDING_CMR_SPEC
+# =============================================================================

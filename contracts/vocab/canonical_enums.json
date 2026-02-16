@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-02-15",
+  "decision_reference": "docs/02-15_09_Canonical_Decisions_Record_V1_0.md",
+  "notes": [
+    "Decision 1 text says '8 values' but enumerates 9; canonical list follows the enumerated/source-of-truth values.",
+    "Deprecated aliases are accepted only for compatibility and should be eliminated over time."
+  ],
+  "enums": {
+    "GapType": {
+      "canonical_values": [
+        "mediation",
+        "mechanism",
+        "boundary",
+        "direction",
+        "interaction",
+        "validation",
+        "unjustified_edge",
+        "critical_question",
+        "argument_attack"
+      ],
+      "deprecated_aliases": {
+        "contradiction": "direction",
+        "uncertain": "validation",
+        "unexplored": "mechanism",
+        "boundary_unclear": "boundary",
+        "missing_evidence": "mechanism",
+        "weak_support": "validation"
+      },
+      "source_of_truth": "src/epistemic/gap_types.py"
+    },
+    "ClaimType": {
+      "canonical_values": [
+        "causal",
+        "associational",
+        "null",
+        "moderated",
+        "mechanistic",
+        "descriptive",
+        "rebuttal",
+        "presumption"
+      ],
+      "deprecated_aliases": {
+        "effect": "causal",
+        "mechanism": "mechanistic",
+        "null_result": "null",
+        "boundary": "moderated",
+        "replication": "descriptive"
+      },
+      "source_of_truth": "contracts/ae_af/schemas/ae.claim.v2.schema.json#/properties/claim_type/enum"
+    },
+    "EvidenceType": {
+      "canonical_values": [
+        "experimental",
+        "observational",
+        "correlational",
+        "meta_analysis",
+        "theoretical",
+        "replication_success",
+        "replication_failure",
+        "neuroscientific",
+        "neuroimaging",
+        "computational_model"
+      ],
+      "deprecated_aliases": {
+        "empirical": "observational",
+        "unknown": "observational",
+        "theory": "theoretical",
+        "computational": "computational_model"
+      },
+      "source_of_truth": "contracts/vocab/canonical_enums.json#/enums/EvidenceType"
+    },
+    "PathwayType": {
+      "canonical_values": [
+        "subpersonal",
+        "personal_epistemic",
+        "mixed"
+      ],
+      "deprecated_aliases": {
+        "explicit": "personal_epistemic",
+        "implicit_cognitive": "personal_epistemic",
+        "implicit_physiological": "subpersonal"
+      },
+      "source_of_truth": "src/services/web_of_belief.py#PathwayType"
+    },
+    "ConfidenceIntervalShape": {
+      "canonical_values": [
+        "ci_lower_ci_upper_object"
+      ],
+      "canonical_wire_shape": {
+        "ci_lower": "float",
+        "ci_upper": "float"
+      },
+      "deprecated_aliases": {
+        "confidence_interval_array": "ci_lower_ci_upper_object",
+        "ci95_array": "ci_lower_ci_upper_object",
+        "effect_ci_tuple": "ci_lower_ci_upper_object"
+      },
+      "source_of_truth": "contracts/vocab/canonical_enums.json#/enums/ConfidenceIntervalShape"
+    },
+    "ArticleTypeCrosswalk": {
+      "canonical_values": [
+        "empirical_v2",
+        "observational_field",
+        "case_study",
+        "meta_analysis",
+        "systematic_review",
+        "narrative_review",
+        "theoretical",
+        "conceptual_framework",
+        "interview_study",
+        "ethnographic",
+        "grounded_theory",
+        "phenomenological",
+        "mixed_methods",
+        "thought_piece",
+        "unknown"
+      ],
+      "deprecated_aliases": {
+        "randomized_experiment": "empirical_v2",
+        "quasi_experiment": "empirical_v2",
+        "cross_sectional_survey": "observational_field",
+        "longitudinal_study": "observational_field",
+        "observational_field_study": "observational_field",
+        "phenomenological_study": "phenomenological",
+        "ethnographic_study": "ethnographic",
+        "grounded_theory_study": "grounded_theory"
+      },
+      "crosswalk": {
+        "outcome_to_ae": {
+          "randomized_experiment": "empirical_v2",
+          "quasi_experiment": "empirical_v2",
+          "cross_sectional_survey": "observational_field",
+          "longitudinal_study": "observational_field",
+          "observational_field_study": "observational_field",
+          "phenomenological_study": "phenomenological",
+          "ethnographic_study": "ethnographic",
+          "grounded_theory_study": "grounded_theory",
+          "case_study": "case_study",
+          "interview_study": "interview_study",
+          "mixed_methods": "mixed_methods",
+          "meta_analysis": "meta_analysis",
+          "systematic_review": "systematic_review",
+          "narrative_review": "narrative_review",
+          "theoretical": "theoretical",
+          "thought_piece": "thought_piece",
+          "unknown": "unknown"
+        },
+        "ae_to_outcome": {
+          "empirical_v2": [
+            "randomized_experiment",
+            "quasi_experiment"
+          ],
+          "observational_field": [
+            "cross_sectional_survey",
+            "longitudinal_study",
+            "observational_field_study"
+          ],
+          "case_study": [
+            "case_study"
+          ],
+          "meta_analysis": [
+            "meta_analysis"
+          ],
+          "systematic_review": [
+            "systematic_review"
+          ],
+          "narrative_review": [
+            "narrative_review"
+          ],
+          "theoretical": [
+            "theoretical"
+          ],
+          "conceptual_framework": [
+            "theoretical"
+          ],
+          "interview_study": [
+            "interview_study"
+          ],
+          "ethnographic": [
+            "ethnographic_study"
+          ],
+          "grounded_theory": [
+            "grounded_theory_study"
+          ],
+          "phenomenological": [
+            "phenomenological_study"
+          ],
+          "mixed_methods": [
+            "mixed_methods"
+          ],
+          "thought_piece": [
+            "thought_piece"
+          ],
+          "unknown": [
+            "unknown"
+          ]
+        }
+      },
+      "source_of_truth": "src/epistemic/extraction/paper_classifier.py#TemplateFamily"
+    }
+  }
+}

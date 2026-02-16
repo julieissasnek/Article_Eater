@@ -1126,10 +1126,10 @@ TASK_AUTHENTICITY_SCORES = {
 }
 
 class EffectPathway(str, Enum):
-    EXPLICIT = "explicit"
-    IMPLICIT_COGNITIVE = "implicit_cognitive"
-    IMPLICIT_PHYSIOLOGICAL = "implicit_physiological"
-    MIXED = "mixed"
+    """Per Canonical Decision 4: SUBPERSONAL / PERSONAL_EPISTEMIC / MIXED"""
+    SUBPERSONAL = "subpersonal"               # direct physiological, no interpretation
+    PERSONAL_EPISTEMIC = "personal_epistemic" # fully interpretation-mediated
+    MIXED = "mixed"                           # both channels active
 
 class ClaimType(str, Enum):
     EVALUATIVE_RESPONSE = "evaluative_response"   # Type A: "people prefer X"

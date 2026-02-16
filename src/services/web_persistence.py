@@ -1308,7 +1308,7 @@ class WebPersistenceService:
 
     def _row_to_constraint(self, row: sqlite3.Row) -> Constraint:
         """Convert database row to Constraint object."""
-        return Constraint(
+        constraint = Constraint(
             constraint_id=row['constraint_id'],
             source_id=row['source_id'],
             target_id=row['target_id'],
@@ -1317,6 +1317,12 @@ class WebPersistenceService:
             bidirectional=bool(row['bidirectional']),
             evidence_ids=json.loads(row['evidence_ids']) if row['evidence_ids'] else []
         )
+        # Preserve audit metadata so round-trips do not erase provenance fields.
+        if 'warrant_type' in row.keys() and row['warrant_type'] is not None:
+            constraint.warrant_type = row['warrant_type']  # type: ignore[attr-defined]
+        if 'provenance' in row.keys() and row['provenance'] is not None:
+            constraint.provenance = row['provenance']  # type: ignore[attr-defined]
+        return constraint
 
     def get_constraints_for_web(self, web_id: str) -> List[Constraint]:
         """Get all constraints for a web."""

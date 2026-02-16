@@ -31,20 +31,21 @@ from typing import Dict, List, Optional, Any, Tuple
 from contextlib import contextmanager
 from pathlib import Path
 
+# Import canonical gap types from single source of truth
+# Per Canonical Decisions Record (02-15_09), Decision 1
+from src.epistemic.gap_types import (
+    GapType,
+    GapPriority,
+    GAP_TYPE_WEIGHTS,
+    convert_legacy_gap_type,
+)
+
 logger = logging.getLogger(__name__)
 
 
 # =============================================================================
 # ENUMS
 # =============================================================================
-
-class GapType(Enum):
-    """Types of gaps in the web of belief."""
-    MISSING_EVIDENCE = "missing_evidence"       # No empirical support
-    WEAK_SUPPORT = "weak_support"               # Low credence, needs more
-    CONTRADICTION = "contradiction"             # Conflicting beliefs
-    BOUNDARY_UNCLEAR = "boundary_unclear"       # Scope conditions unknown
-
 
 class GapStatus(Enum):
     """Status of a VOI gap."""
@@ -162,7 +163,7 @@ class VOIGap:
         if not self.identified_at:
             self.identified_at = datetime.now(timezone.utc).isoformat()
         if isinstance(self.gap_type, str):
-            self.gap_type = GapType(self.gap_type)
+            self.gap_type = convert_legacy_gap_type(self.gap_type)
         if isinstance(self.status, str):
             self.status = GapStatus(self.status)
 
@@ -595,7 +596,7 @@ class DiscoveryFunnelService:
         return VOIGap(
             gap_id=row["gap_id"],
             topic=row["topic"],
-            gap_type=GapType(row["gap_type"]),
+            gap_type=convert_legacy_gap_type(row["gap_type"]),
             predicted_voi=row["predicted_voi"],
             status=GapStatus(row["status"]),
             belief_id=row["belief_id"],
@@ -996,7 +997,7 @@ def create_gap_from_voi_result(
     return VOIGap(
         gap_id=str(uuid.uuid4()),
         topic=voi_result.get("topic", voi_result.get("description", "Unknown gap")),
-        gap_type=GapType(voi_result.get("gap_type", "missing_evidence")),
+        gap_type=convert_legacy_gap_type(voi_result.get("gap_type", "mechanism")),
         predicted_voi=voi_result.get("voi", voi_result.get("expected_value", 0.5)),
         belief_id=voi_result.get("belief_id"),
         constraint_id=voi_result.get("constraint_id"),
