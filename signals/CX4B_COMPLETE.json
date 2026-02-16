@@ -1,0 +1,16 @@
+{
+  "task_id": "CX4B",
+  "completed_by": "codex",
+  "timestamp": "2026-02-16T08:31:01Z",
+  "output_files": [
+    "src/types/extraction.ts",
+    "src/theory/api.ts",
+    "docs/extraction_theory_interface.md"
+  ],
+  "notes": "CX-4b revision applied per CC-5 findings: architectural_variable and direction are optional in ExtractedFinding; magnitude and effect_pathway are optional in TheoryMatchInput; mapper return changed to structured result { result, confidence, warnings }; api.ts naming drift aligned to current src/types contracts.",
+  "issues_found": [],
+  "changes_to_plan": [
+    "CC-6 should implement warning-first mapping behavior and avoid silent null-only failures.",
+    "Downstream consumers should gate low-confidence mappings based on confidence threshold and warnings."
+  ]
+}

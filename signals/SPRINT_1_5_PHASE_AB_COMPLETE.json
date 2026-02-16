@@ -1,0 +1,43 @@
+{
+  "task_id": "SPRINT_1.5_PHASE_AB",
+  "completed_by": "claude_code",
+  "timestamp": "2026-02-16T17:30:00Z",
+  "description": "Sprint 1.5 Phase A+B: AE internal enum drift fixes",
+  "output_files": [
+    "scripts/check_enum_drift.py",
+    "src/services/incremental_bn.py",
+    "src/methods/task_ecology.py",
+    "src/methods/__init__.py",
+    "src/methods/validity_scorer.py",
+    "contracts/ae_af/schemas/ae.claim.v2.schema.json"
+  ],
+  "drift_before": 13,
+  "drift_after": 7,
+  "issues_resolved": [
+    "GapType: ruthless_bundle excluded from drift check",
+    "EvidenceType: incremental_bn.py - removed UNKNOWN value",
+    "PathwayType: task_ecology.py - canonical values (subpersonal, personal_epistemic, mixed)",
+    "ClaimType→ClaimBifurcationType: renamed to avoid collision with epistemic ClaimType",
+    "ConfidenceIntervalShape: ae.claim.v2.schema.json migrated to {ci_lower, ci_upper} object"
+  ],
+  "issues_remaining": [
+    {"repo": "Article_Finder_v3_2_3", "category": "GapType", "issue": "unknown values: coverage, neural, theory"},
+    {"repo": "BN_graphical", "category": "ClaimType", "issue": "deprecated aliases: boundary, effect, mechanism, null_result, replication"},
+    {"repo": "BN_graphical", "category": "EvidenceType", "issue": "unknown values: direct, indirect, meta, review"},
+    {"repo": "BN_graphical", "category": "EvidenceType", "issue": "deprecated alias: empirical"},
+    {"repo": "BN_graphical", "category": "ConfidenceIntervalShape", "issue": "array format in schema"},
+    {"repo": "Outcome_Contractor", "category": "ArticleTypeCrosswalk", "issue": "8 deprecated aliases in contracts"},
+    {"repo": "Outcome_Contractor", "category": "ArticleTypeCrosswalk", "issue": "8 deprecated aliases in classifier"}
+  ],
+  "notes": "All AE-internal drift issues resolved. Remaining 7 issues are in external repos (Article_Finder, BN_graphical, Outcome_Contractor). Phase C requires either: (a) Codex to fix external repos, or (b) CC to make cross-repo fixes with coordination.",
+  "decisions_made": {
+    "D1.5.1": "ClaimType in task_ecology.py renamed to ClaimBifurcationType - it represents Type A/B CNFA bifurcation, not epistemic ClaimType",
+    "backward_compatibility": "Added ClaimType alias in src/methods/__init__.py for existing imports"
+  },
+  "changes_to_plan": [],
+  "next_steps": [
+    "Phase C requires external repo coordination",
+    "Codex can now see that AE-internal drift is resolved",
+    "Sprint 1.4 drift check will pass for AE repo; external repos still need work"
+  ]
+}

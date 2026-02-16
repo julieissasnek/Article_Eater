@@ -1,0 +1,104 @@
+{
+  "task_id": "CC5",
+  "completed_by": "claude_code",
+  "timestamp": "2026-02-16T18:15:00Z",
+  "description": "PDF & Abstract Table Audit — Extraction infrastructure assessment",
+  "output_files": [
+    "signals/CC5_COMPLETE.json"
+  ],
+  "audit_summary": {
+    "pdf_extraction_status": "FUNCTIONAL",
+    "abstract_parsing_status": "NOT_STRUCTURED",
+    "extraction_rate": "65%",
+    "false_positive_rate": "5-10%",
+    "theory_tier_ready": false
+  },
+  "critical_gaps": [
+    {
+      "id": "R1",
+      "field": "architectural_variable",
+      "status": "MISSING",
+      "impact": "Cannot map environmental features to outcomes",
+      "priority": "CRITICAL"
+    },
+    {
+      "id": "R2",
+      "field": "outcome_variable",
+      "status": "PARTIAL",
+      "impact": "Present as 'consequent' but not standardized",
+      "priority": "CRITICAL"
+    },
+    {
+      "id": "R3",
+      "field": "direction",
+      "status": "PARTIAL",
+      "impact": "In DB but not in extractor output",
+      "priority": "CRITICAL"
+    },
+    {
+      "id": "R4",
+      "field": "magnitude",
+      "status": "MISSING",
+      "impact": "No small/medium/large classification",
+      "priority": "CRITICAL"
+    },
+    {
+      "id": "R5",
+      "field": "effect_pathway",
+      "status": "MISSING",
+      "impact": "Cannot determine subpersonal vs personal_epistemic",
+      "priority": "CRITICAL"
+    }
+  ],
+  "existing_schema": {
+    "ExtractedTable": {
+      "fields": ["table_id", "page_number", "table_type", "title", "caption", "headers", "rows", "raw_cells", "confidence", "extraction_method", "source_file", "extraction_notes"],
+      "table_types": ["STUDY_CHARACTERISTICS", "RESULTS", "DEMOGRAPHICS", "INTERVENTION", "OUTCOMES", "QUALITY_ASSESSMENT", "UNKNOWN"]
+    },
+    "findings_table": {
+      "has_study_design": true,
+      "has_measure_direction": true,
+      "has_consequent": true,
+      "has_antecedents": true,
+      "has_architectural_variable": false,
+      "has_effect_pathway": false
+    }
+  },
+  "extraction_methods": {
+    "layer1": "AI/API (primary, confidence ~0.85)",
+    "layer2": "pdfplumber geometric (fallback, confidence ~0.75)",
+    "layer3": "rule-based heuristic (last resort, confidence ~0.50)"
+  },
+  "notes": "Extraction pipeline is production-ready for findings storage but INADEQUATE for theory-tier integration. Critical gap: architectural_variable extraction. Without it, BN cannot distinguish which environmental features drive which outcomes. Abstract parsing returns flat text, not structured claims.",
+  "issues_found": [
+    "No architectural_variable field in any layer",
+    "Abstract parsing not structured (flat text only)",
+    "Effect magnitude not classified from effect sizes",
+    "Effect pathway not inferred",
+    "Temporal dynamics extracted but not persisted to DB",
+    "Header matching fragile (substring only)",
+    "No row-level validation"
+  ],
+  "changes_to_plan": [
+    {
+      "affects": "CX-4",
+      "change": "Interface must handle MISSING architectural_variable gracefully",
+      "reason": "Current extraction does not produce this field"
+    },
+    {
+      "affects": "CX-4",
+      "change": "Consider optional fields for direction, magnitude, effect_pathway",
+      "reason": "These are partially available or inferrable but not guaranteed"
+    },
+    {
+      "affects": "AG-4",
+      "change": "Round-trip test Scenario 1 may need mock architectural_variable injection",
+      "reason": "Real extraction won't provide it without R1 implementation"
+    }
+  ],
+  "recommendations_for_cx4": {
+    "interface_design": "Design ExtractedFinding with architectural_variable as Optional<string> with mapping_confidence",
+    "fallback_strategy": "If architectural_variable missing, CX-4 interface should accept raw 'intervention' text for downstream LLM mapping",
+    "validation": "Add runtime warning when critical fields missing, don't hard-fail"
+  }
+}
