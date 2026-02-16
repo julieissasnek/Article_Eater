@@ -1,0 +1,86 @@
+{
+  "template_id": "OSCILLATORY_ENTRAINMENT_METRIC_001",
+  "display_id": "M8",
+  "name": "Oscillatory Entrainment and Metric Hierarchy",
+  "short_description": "Neural oscillators entrain to rhythmic structure at multiple hierarchically related frequencies, creating metric hierarchy through nonlinear mode-locking",
+  "structural_pattern": "periodic_auditory_input → oscillator_entrainment → mode_locking → metric_hierarchy_emergence",
+  "higher_order_principle": "The brain extracts metric structure from rhythm through nonlinear oscillatory dynamics — neural populations entrain at the fundamental frequency and harmonically related frequencies, spontaneously generating the metric hierarchy (downbeat > backbeat > subdivision). This is the rhythmic analog of harmonic prediction in pitch: periodic structure in time creates predictable expectations.",
+  "framework_ids": [
+    "PREDICTIVE_PROCESSING",
+    "MUSIC_COGNITION",
+    "EMBODIED_COGNITION"
+  ],
+  "domain": "music",
+  "neural_substrate": {
+    "auditory_cortex": "Delta-band (1-4 Hz) oscillations entrain to beat; theta-band (4-8 Hz) to subdivisions",
+    "motor_cortex_sma": "Beta-band (15-30 Hz) oscillations modulated by beat structure — power increase at expected beat times",
+    "basal_ganglia": "Mediates coupling between auditory and motor oscillators"
+  },
+  "oscillator_dynamics": {
+    "entrainment": "Oscillator adjusts frequency to match stimulus frequency within entrainment range",
+    "mode_locking": "Stable entrainment at integer frequency ratios: 1:1, 2:1, 3:1, 3:2, etc.",
+    "metric_hierarchy": "Amplitude of mode-locked oscillations determines metric position strength",
+    "phase_as_prediction": "Oscillator phase at any moment constitutes temporal prediction"
+  },
+  "causal_links": [
+    {
+      "from_entity": "periodic_auditory_structure",
+      "activity": "entrains",
+      "to_entity": "neural_oscillators",
+      "from_level": "environmental",
+      "to_level": "neural",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Large & Palmer (2002, ~700 citations); Large & Snyder (2009, ~300 citations); Fujioka et al. (2012, ~400 citations) — beta oscillations track beat structure"
+    },
+    {
+      "from_entity": "mode_locked_oscillations",
+      "activity": "generates",
+      "to_entity": "metric_hierarchy_representation",
+      "from_level": "neural",
+      "to_level": "cognitive",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Mode-locking at multiple frequency ratios produces hierarchical metric representation. Events at oscillatory peaks are expected; events at troughs are syncopated."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to rhythmic music with periodic structure",
+    "Preferred tempo range: ~60-150 BPM (1-2.5 Hz), peaking at ~120 BPM",
+    "Metric ambiguity arises when multiple mode-locking solutions are stable"
+  ],
+  "moderators": [
+    "Musical training enhances precision of oscillatory entrainment",
+    "Cultural exposure shapes which mode-locking ratios are stable",
+    "Individual differences in oscillator properties affect rhythm perception"
+  ],
+  "interactions": [
+    {
+      "template_id": "BG_BEAT_EXTRACTION_001",
+      "display_id": "M7",
+      "nature": "M7 (basal ganglia) extracts beat; M8 (oscillators) specifies the mechanism of extraction through entrainment"
+    },
+    {
+      "template_id": "GROOVE_MOTOR_PREDICTION_001",
+      "display_id": "M9",
+      "nature": "M8 provides the oscillatory basis for M9 groove — syncopation perturbs oscillators at subdivision level while beat-level remains stable"
+    }
+  ],
+  "overall_maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Large, E. W., & Palmer, C. (2002). Perceiving temporal regularity in music. Cognitive Science, 26(1), 1-37.",
+      "google_scholar_count": 700
+    },
+    {
+      "citation": "Large, E. W., & Snyder, J. S. (2009). Pulse and meter as neural resonance. Annals of the New York Academy of Sciences, 1169(1), 46-57.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Fujioka, T., Trainor, L. J., Large, E. W., & Ross, B. (2012). Internalized timing of isochronous sounds is represented in neuromagnetic beta oscillations. Journal of Neuroscience, 32(5), 1791-1802.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "29_Panel_MII_Rhythm_Groove_Motor_V1_0.md",
+  "version": "1.0.0"
+}

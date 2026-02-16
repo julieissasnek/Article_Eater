@@ -1,0 +1,132 @@
+{
+  "template_id": "ED_SYSTEMS_CONSOLIDATION_001",
+  "display_id": "ED5",
+  "name": "Systems Consolidation and Offline Replay",
+  "short_description": "After encoding, hippocampal traces are integrated with neocortex through offline replay during awake rest (SWRs + DMN) and sleep (SWR-spindle-slow oscillation coordination); post-learning rest is essential consolidation time",
+  "structural_pattern": "TRANSFER",
+  "higher_order_principle": "After encoding, hippocampal traces are gradually integrated with neocortical knowledge structures through offline replay — spontaneous reactivation of recently encoded traces during awake rest and sleep. Replay occurs during sharp-wave ripples (SWRs) in hippocampus, coordinated with thalamocortical spindles and cortical slow oscillations during sleep. Awake replay during rest periods is an immediate, DMN-mediated consolidation mechanism that is disrupted by immediate switching to new tasks.",
+  "framework_ids": ["MS", "DT"],
+  "domain": "memory_encoding",
+  "neural_substrate": {
+    "awake_replay": {
+      "timing": "occurs within minutes of encoding during rest",
+      "mechanism": "hippocampal SWRs reactivate recent traces",
+      "DMN_connection": "replay enhanced during DMN engagement (rest, mind-wandering)"
+    },
+    "sleep_replay": {
+      "SWS_mechanism": "hippocampal SWRs → thalamocortical spindles → cortical slow oscillations",
+      "coordination": "triple-nested oscillation coordinates hippocampal-to-cortical transfer",
+      "REM_role": "may support integration with existing schemas and emotional processing"
+    }
+  },
+  "causal_links": [
+    {
+      "from_entity": "recently_encoded_hippocampal_trace",
+      "to_entity": "awake_replay_during_rest",
+      "activity": "spontaneous_hippocampal_reactivation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Genzel et al., 2023; Foster & Wilson, 2006; Tambini et al., 2010",
+      "parameters": {
+        "timing": "occurs within minutes of encoding during rest",
+        "educational_implication": "POST-LEARNING REST is consolidation time, not wasted time. 10 minutes quiet rest after studying may significantly enhance retention. Back-to-back classes without breaks may disrupt this process."
+      }
+    },
+    {
+      "from_entity": "awake_replay",
+      "to_entity": "initial_hippocampal_cortical_binding",
+      "activity": "early_systems_consolidation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Tambini et al., 2010; Staresina et al., 2013",
+      "parameters": {
+        "mechanism": "repeated hippocampal reactivation strengthens hippocampal-cortical connections",
+        "note": "this is the EARLY phase — full integration requires sleep replay"
+      }
+    },
+    {
+      "from_entity": "sleep_replay_SWR_spindle_SO",
+      "to_entity": "hippocampal_cortical_transfer",
+      "activity": "sleep_dependent_systems_consolidation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Diekelmann & Born, 2010; Rasch & Born, 2013",
+      "parameters": {
+        "mechanism": "triple-nested oscillation coordinates hippocampal-to-cortical transfer",
+        "educational_implication": "sleep after learning is essential. Learning BEFORE sleep is consolidated better than learning early in the day."
+      }
+    },
+    {
+      "from_entity": "systems_consolidation",
+      "to_entity": "episodic_to_semantic_transformation",
+      "activity": "Moscovitch_trace_transformation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "PERSONAL_EPISTEMIC",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Moscovitch et al., 2016; Winocur & Moscovitch, 2011",
+      "parameters": {
+        "early": "detailed episodic trace (hippocampus-dependent) — 'I remember the lecture'",
+        "late": "gist-like semantic knowledge (cortex-supported) — 'I know mitosis involves...'",
+        "coexistence": "both can coexist — you can know the facts AND remember learning them",
+        "educational_note": "goal is usually SEMANTIC knowledge (transfer), but route goes THROUGH episodic encoding"
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Awake replay is disrupted by immediate cognitive engagement — distraction within ~10 minutes impairs consolidation",
+    "Sleep replay requires adequate sleep duration and SWS proportion",
+    "Episodic → semantic transformation takes weeks to months for declarative knowledge",
+    "Exercise AFTER learning may enhance consolidation by increasing BDNF"
+  ],
+  "moderators": [
+    "post_learning_rest_duration (longer rest → more consolidation opportunity)",
+    "interference_timing (immediate task-switching disrupts replay)",
+    "sleep_quality_and_duration (affects sleep-dependent consolidation)",
+    "exercise_timing (post-learning exercise may enhance consolidation)"
+  ],
+  "interactions": [
+    {
+      "template_id": "DT_DMN_MAINTENANCE_002",
+      "display_id": "T27",
+      "nature": "ED5's awake replay operates during DMN engagement (T27). Post-learning rest allows DMN-mediated consolidation."
+    },
+    {
+      "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+      "display_id": "ED1",
+      "nature": "ED5 consolidates the traces initially created by ED1's encoding process."
+    }
+  ],
+  "ecological_testability": "MEDIUM — awake replay effects testable by manipulating post-learning rest duration; sleep consolidation testable by nap studies; transformation measurable by detail vs. gist memory tests over time.",
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Diekelmann, S., & Born, J. (2010). The memory function of sleep. Nature Reviews Neuroscience, 11(2), 114–126.",
+      "google_scholar_count": 3500
+    },
+    {
+      "citation": "Rasch, B., & Born, J. (2013). About sleep's role in memory. Physiological Reviews, 93(2), 681–766.",
+      "google_scholar_count": 2500
+    },
+    {
+      "citation": "Tambini, A., Ketz, N., & Davachi, L. (2010). Enhanced brain correlations during rest are related to memory for recent experiences. Neuron, 65(2), 280–290.",
+      "google_scholar_count": 600
+    },
+    {
+      "citation": "Genzel, L., Wixted, J. T., & Charest, I. (2023). Memory consolidation. Oxford Handbook of Human Memory.",
+      "google_scholar_count": 50
+    },
+    {
+      "citation": "Moscovitch, M., Cabeza, R., Winocur, G., & Nadel, L. (2016). Episodic memory and beyond. Annual Review of Psychology, 67, 105–134.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0"
+}

@@ -1,0 +1,161 @@
+{
+  "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+  "display_id": "ED1",
+  "name": "Hippocampal Relational Binding and Encoding",
+  "short_description": "Hippocampus transforms experience into memory through relational binding; encoding strength driven by CA1 prediction error, modulated by emotional arousal, schema congruence, and attention",
+  "structural_pattern": "BINDING",
+  "higher_order_principle": "The hippocampus transforms experience into memory through relational binding — creating conjunctive representations that link the what (item information from LEC/perirhinal), where (spatial context from MEC/parahippocampal), and when (temporal context from MEC time cells) of an experience. Encoding strength is driven by prediction error (CA1 mismatch detection), modulated by emotional arousal (amygdala), schema congruence (vmPFC), and attention (prefrontal gating). Encoding that generates PE produces stronger, more durable memory traces than encoding that confirms predictions.",
+  "framework_ids": ["MS", "PP"],
+  "domain": "memory_encoding",
+  "neural_substrate": {
+    "input_pathways": {
+      "what": "LEC → perirhinal → item/object representations",
+      "where": "MEC → parahippocampal → spatial context, scene layout",
+      "when": "MEC time cells → temporal context, sequence position"
+    },
+    "processing_stages": {
+      "entorhinal_cortex": "receives convergent input from neocortical association areas",
+      "dentate_gyrus": "pattern separation — making similar inputs more dissimilar",
+      "CA3": "pattern completion — reactivating full pattern from partial cue",
+      "CA1": "mismatch detection between retrieved and current input"
+    },
+    "output": "conjunctive episodic trace binding all elements"
+  },
+  "causal_links": [
+    {
+      "from_entity": "experience_with_prediction_error",
+      "to_entity": "CA1_mismatch_detection",
+      "activity": "novelty_and_expectation_violation_detection",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Davachi, 2006; Kumaran & Maguire, 2006; Chen et al., 2015",
+      "parameters": {
+        "mechanism": "CA1 receives current input (entorhinal) and retrieved pattern (CA3). Mismatch = PE = encoding signal.",
+        "high_PE": "strongly engages encoding — novel, surprising, schema-violating information",
+        "low_PE": "weakly engages encoding — familiar, expected, schema-congruent information",
+        "educational_implication": "PASSIVE re-exposure generates LOW PE → POOR encoding. ACTIVE prediction/generation generates HIGH PE → STRONG encoding."
+      }
+    },
+    {
+      "from_entity": "multimodal_input",
+      "to_entity": "hippocampal_relational_binding",
+      "activity": "conjunctive_trace_formation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Davachi, 2006; Eichenbaum, 2000",
+      "parameters": {
+        "critical_property": "trace is CONTEXT-DEPENDENT — retrieval requires matching context cues"
+      }
+    },
+    {
+      "from_entity": "emotional_arousal",
+      "to_entity": "amygdala_encoding_modulation",
+      "activity": "emotional_enhancement_of_memory",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Phelps, 2004; LaBar & Cabeza, 2006; McGaugh, 2004",
+      "parameters": {
+        "mechanism": "amygdala → hippocampus direct projections enhance LTP",
+        "inverted_U": {
+          "low_arousal": "weak encoding (boredom, inattention)",
+          "moderate_arousal": "OPTIMAL encoding (curiosity, mild surprise, personal relevance)",
+          "high_arousal": "impaired HIPPOCAMPAL encoding but enhanced AMYGDALA encoding (fragmented, emotional-gist memory — the test anxiety pattern)"
+        }
+      }
+    },
+    {
+      "from_entity": "prior_knowledge_schema",
+      "to_entity": "schema_congruence_gating",
+      "activity": "vmPFC_schema_detection",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "van Kesteren et al., 2012; Tse et al., 2007",
+      "parameters": {
+        "schema_congruent": "vmPFC detects fit → partial hippocampal bypass → fast neocortical integration",
+        "schema_incongruent": "vmPFC detects violation → STRONG hippocampal encoding (PE signal)",
+        "schema_irrelevant": "no schema activated → weak encoding on all pathways"
+      }
+    },
+    {
+      "from_entity": "temporal_context",
+      "to_entity": "temporal_binding_in_episodic_trace",
+      "activity": "time_cell_contextual_tagging",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Ranganath & Hsieh, 2016; Howard & Kahana, 2002",
+      "parameters": {
+        "mechanism": "MEC time cells provide slowly drifting context signal. Items encoded close in time share similar context → become associated.",
+        "educational_implication": {
+          "spacing": "different temporal contexts → more retrieval routes → better retention",
+          "interleaving": "different category items in each temporal context → forces content-based rather than context-based discrimination"
+        }
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Encoding requires ATTENTION — hippocampal encoding is sharply reduced when attention is divided (Uncapher & Rugg, 2005)",
+    "Encoding is enhanced by GENERATION — producing an answer (even an incorrect one) generates stronger PE than passively receiving the answer",
+    "Encoding is enhanced by ELABORATION — connecting new information to existing knowledge creates more retrieval routes",
+    "Age modulates encoding: hippocampal encoding is robust from early childhood; prefrontal control matures slowly through adolescence"
+  ],
+  "moderators": [
+    "attention_state (divided attention dramatically impairs encoding)",
+    "emotional_arousal (inverted-U function)",
+    "schema_congruence (determines encoding pathway)",
+    "temporal_context (spacing and interleaving effects)",
+    "generation_vs_passive (generation enhances PE and encoding)"
+  ],
+  "interactions": [
+    {
+      "template_id": "ED_PATTERN_SEP_COMP_001",
+      "display_id": "ED2",
+      "nature": "ED1 creates bound traces; ED2's pattern separation ensures similar episodes are distinguishable."
+    },
+    {
+      "template_id": "ED_SCHEMA_ENCODING_001",
+      "display_id": "ED4",
+      "nature": "Schema congruence in ED1 determines which encoding pathway (ED4) is engaged."
+    },
+    {
+      "template_id": "PP_PREDICTION_ERROR_001",
+      "display_id": "T1",
+      "nature": "CA1 mismatch detection is a specific instance of the general prediction error mechanism in T1."
+    }
+  ],
+  "ecological_testability": "HIGH — subsequent memory paradigm (DM effect) measurable by fMRI; behavioral encoding strength measurable by delayed test; attention measurable by dual-task interference.",
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Davachi, L. (2006). Item, context and relational episodic encoding in humans. Current Opinion in Neurobiology, 16(6), 693–700.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Davachi, L., & DuBrow, S. (2015). How the hippocampus preserves order. Trends in Cognitive Sciences, 19(2), 92–99.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Eichenbaum, H. (2000). A cortical-hippocampal system for declarative memory. Nature Reviews Neuroscience, 1(1), 41–50.",
+      "google_scholar_count": 2000
+    },
+    {
+      "citation": "van Kesteren, M. T. R., Ruiter, D. J., Fernández, G., & Henson, R. N. (2012). How schema and novelty augment memory formation. Trends in Neurosciences, 35(4), 211–219.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Kumaran, D., & Maguire, E. A. (2006). An unexpected sequence of events: Mismatch detection in the human hippocampus. PLoS Biology, 4(12), e424.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0"
+}

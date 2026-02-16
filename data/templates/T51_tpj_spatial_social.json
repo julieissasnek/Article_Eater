@@ -1,0 +1,82 @@
+{
+  "template_id": "CROSS_TPJ_SPATIAL_SOCIAL_BRIDGE_001",
+  "display_id": "T51",
+  "name": "TPJ Spatial-Social Bridge",
+  "short_description": "Right TPJ performs both spatial reorienting (redirecting attention to unexpected locations) and mental state attribution (updating models of others' beliefs); shared computation is model updating in response to surprise",
+  "structural_pattern": "DUAL_FUNCTION",
+  "higher_order_principle": "Right TPJ performs both spatial reorienting (redirecting attention to unexpected locations) and mental state attribution (updating models of others' beliefs). The shared computation is model updating in response to surprise. Architectural environments that demand frequent spatial reorienting may enhance social cognitive engagement through shared TPJ recruitment.",
+  "framework_ids": ["SN", "PP"],
+  "domain": "social_cognition",
+  "neural_substrate": {
+    "structure": "right_TPJ, right_inferior_frontal_gyrus",
+    "trigger": "stimulus at unexpected location or with unexpected properties"
+  },
+  "testable_prediction": "After navigating a spatially complex building, performance on theory-of-mind tasks should improve relative to navigating a simple building.",
+  "causal_links": [
+    {
+      "from_entity": "spatial_surprise_frequency",
+      "to_entity": "tpj_activation_level",
+      "activity": "engage_model_updating_computation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Corbetta, Patel, & Shulman (2008)"
+    },
+    {
+      "from_entity": "tpj_activation_level",
+      "to_entity": "social_mentalizing_readiness",
+      "activity": "prime_social_model_updating",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "weak",
+      "maturity": "preliminary",
+      "evidence_base": "Saxe & Kanwisher (2003); Mitchell (2008) — overlap evidence debated"
+    }
+  ],
+  "scope_conditions": [
+    "Requires spatial surprise — predictable environments do not engage this mechanism",
+    "The spatial-social priming effect is a PREDICTION, not an established finding — maturity is preliminary",
+    "Effect may be small and overshadowed by cognitive fatigue from complex navigation",
+    "Overlap between spatial and social TPJ functions is debated in the literature"
+  ],
+  "moderators": [
+    "social_context (priming effect meaningful only if social interaction follows spatial navigation)",
+    "individual_TPJ_anatomy (degree of overlap varies across individuals)",
+    "cognitive_load (if navigation is exhausting, any priming benefit may be cancelled by fatigue)"
+  ],
+  "interactions": [
+    {
+      "template_id": "SN_COGNITIVE_MAP_001",
+      "display_id": "T3",
+      "nature": "Cognitive map failures (unexpected layout) trigger spatial reorienting, which engages TPJ."
+    },
+    {
+      "template_id": "CROSS_SOCIAL_AFFORDANCE_READING_001",
+      "display_id": "T48",
+      "nature": "TPJ activation from spatial surprise primes the mentalizing system used in T48 for social affordance reading."
+    },
+    {
+      "template_id": "PP_PREDICTION_ERROR_001",
+      "display_id": "T1",
+      "nature": "Both spatial reorienting and social mentalizing involve model updating in response to prediction error. T51 proposes these share computational substrate in TPJ."
+    }
+  ],
+  "overall_maturity": "preliminary",
+  "key_references": [
+    {
+      "citation": "Saxe, R., & Kanwisher, N. (2003). People thinking about thinking people: The role of the temporo-parietal junction in 'theory of mind'. NeuroImage, 19(4), 1835–1842.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Corbetta, M., Patel, G., & Shulman, G. L. (2008). The reorienting system of the human brain: From environment to theory of mind. Neuron, 58(3), 306–324.",
+      "google_scholar_count": 2500
+    },
+    {
+      "citation": "Mitchell, J. P. (2008). Activity in right temporo-parietal junction is not selective for theory-of-mind. Cerebral Cortex, 18(2), 262–271.",
+      "google_scholar_count": 500
+    }
+  ],
+  "source_panel": "02-15_20_Panel_V_Social_Brain_V1_0.md",
+  "version": "1.0.0"
+}

@@ -1,0 +1,138 @@
+{
+  "template_id": "ACOUSTIC_EMOTION_MAPPING_001",
+  "display_id": "M17",
+  "name": "Acoustic Feature → Emotion Mapping (Bottom-Up Pathway)",
+  "short_description": "Specific acoustic features (tempo, mode, loudness, timbre, register, contour) reliably predict emotional responses through bottom-up pathways; R² = 0.60-0.80 for perceived emotion; two-stage model: fast bottom-up default + slow top-down modulation",
+  "structural_pattern": "Specific acoustic and musical features reliably predict emotional responses through bottom-up pathways that are partially independent of prediction error, personal memory, and aesthetic evaluation. FEATURE-EMOTION MAPPINGS: (1) Tempo (strongest predictor) — Fast >120 BPM → happy/excited/energetic; Slow <76 BPM → sad/tender/peaceful. Cross-culturally robust, present in infants. (2) Mode — Major → happy/bright; Minor → sad/dark. More culture-dependent than tempo. (3) Loudness — Loud → power/arousal/anger; Soft → tenderness/sadness/intimacy. Large dynamic contrasts → excitement/surprise/awe. (4) Timbre — Bright/sharp → excitement/aggression; Warm/soft → tenderness/sadness; Harsh/noisy → tension/anger/fear. (5) Register — High → brightness/lightness/tension; Low → darkness/gravity/power. (6) Contour — Rising → tension/excitement; Falling → resolution/sadness; Arch → completion. TWO-STAGE MODEL: Stage 1 (bottom-up, fast) — acoustic features activate B, R, C mechanisms → default emotional characterization. Stage 2 (top-down, slow) — prediction error (M), memory (E), aesthetic judgment (A) → individual modulation.",
+  "higher_order_principle": "Acoustic features provide the bottom-up emotional coloring that is INDEPENDENT of prediction. A slow, minor-mode, soft passage will be perceived as sad regardless of whether specific notes were predicted or surprising. But the INTENSITY and SPECIFICITY of the emotional response depends on prediction error, personal memory, and aesthetic evaluation. Stage 1 accounts for 60-80% of perceived emotion variance (why sad music sounds different from happy music); Stage 2 accounts for individual variation (why the same piece moves one listener and not another).",
+  "framework_ids": [
+    "MUSIC_COGNITION",
+    "ACOUSTIC_COMMUNICATION",
+    "EMOTION_PERCEPTION"
+  ],
+  "domain": "music_emotion",
+  "feature_emotion_mappings": {
+    "tempo": {
+      "fast_above_120bpm": "Happy, excited, energetic",
+      "slow_below_76bpm": "Sad, tender, peaceful",
+      "cross_cultural": "Robust, present in infants",
+      "mechanism": "Rhythmic entrainment (R) + emotional contagion (C — resembles speech prosody)"
+    },
+    "mode": {
+      "major": "Happy, bright",
+      "minor": "Sad, dark",
+      "cultural_dependency": "More culture-dependent than tempo; debate about spectral basis"
+    },
+    "loudness": {
+      "loud": "Power, arousal, anger",
+      "soft": "Tenderness, sadness, intimacy",
+      "large_dynamic_contrasts": "Excitement, surprise, awe",
+      "mechanism": "Brainstem reflex (B) for extreme loudness; emotional contagion (C) for dynamics"
+    },
+    "timbre": {
+      "bright_sharp": "Excitement, aggression",
+      "warm_soft": "Tenderness, sadness, peacefulness",
+      "harsh_noisy": "Tension, anger, fear",
+      "mechanism": "Brainstem (roughness detection) + auditory cortex (spectral pattern categorization)"
+    },
+    "register": {
+      "high": "Brightness, lightness, tension",
+      "low": "Darkness, gravity, power",
+      "mechanism": "Acoustic (high frequency processing) + cross-modal (spatial height association)"
+    },
+    "contour": {
+      "rising": "Tension, excitement, questioning",
+      "falling": "Resolution, sadness, statement",
+      "arch": "Narrative arc, completion",
+      "mechanism": "Parallels speech prosody patterns across languages (emotional contagion C)"
+    }
+  },
+  "regression_model": {
+    "formula": "Perceived_emotion = β₁(tempo) + β₂(mode) + β₃(loudness) + β₄(timbre) + β₅(register) + β₆(contour) + ε",
+    "perceived_valence_r2": "0.60-0.80",
+    "perceived_arousal_r2": "0.70-0.85",
+    "felt_emotion": "Perceived_emotion × modulation(prediction_error, memory, absorption, aesthetic_judgment)",
+    "r2_gap": "Variance explained by top-down mechanisms = difference between perceived and felt emotion models"
+  },
+  "two_stage_model": {
+    "stage_1_bottom_up": {
+      "timing": "Fast",
+      "mechanisms": "B (brainstem reflex), R (rhythmic entrainment), C (emotional contagion)",
+      "output": "Default emotional characterization",
+      "explains": "Between-piece variance (why sad music sounds different from happy music)"
+    },
+    "stage_2_top_down": {
+      "timing": "Slow",
+      "mechanisms": "M (prediction error), E (memory), A (aesthetic judgment)",
+      "output": "Individual modulation",
+      "explains": "Between-listener variance (why same piece moves one listener but not another)"
+    }
+  },
+  "causal_links": [
+    {
+      "from_entity": "acoustic_features",
+      "to_entity": "perceived_emotion",
+      "activity": "predicts",
+      "from_level": "environmental",
+      "to_level": "cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Eerola & Vuoskoski (2011); Eerola et al. (2013) — regression models achieving R² = 0.60-0.80"
+    },
+    {
+      "from_entity": "top_down_mechanisms",
+      "to_entity": "felt_emotion",
+      "activity": "modulates",
+      "from_level": "cognitive",
+      "to_level": "affective",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Gap between perceived and felt emotion models; individual differences in emotional responses to same music"
+    }
+  ],
+  "scope_conditions": [
+    "Applies to music with identifiable acoustic features",
+    "The mappings are probabilistic, not deterministic — many counterexamples exist",
+    "Cultural calibration needed for mode (major/minor) effects",
+    "The two-stage model is theoretically motivated but not yet formally validated as process model"
+  ],
+  "moderators": [
+    "Musical training may shift sensitivity to different features",
+    "Cultural background affects mode perception",
+    "Individual differences affect Stage 2 modulation (empathy, absorption, openness)",
+    "Listening context affects top-down modulation"
+  ],
+  "interactions": [
+    {
+      "template_id": "BRECVEMA_AESTHETIC_001",
+      "display_id": "M12",
+      "nature": "M17's Stage 1 implements B, R, C mechanisms; Stage 2 implements M, E, A mechanisms"
+    },
+    {
+      "template_id": "PLEASURABLE_SADNESS_001",
+      "display_id": "M15",
+      "nature": "M17 explains why sad music SOUNDS sad (Stage 1); M15 explains why it can FEEL pleasurable (Stage 2)"
+    }
+  ],
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Eerola, T., & Vuoskoski, J. K. (2011). A comparison of the discrete and dimensional models of emotion in music. Psychology of Music, 39(1), 18–49.",
+      "google_scholar_count": 700
+    },
+    {
+      "citation": "Eerola, T., Friberg, A., & Bresin, R. (2013). Emotional expression in music: Contribution, linearity, and additivity of primary musical cues. Frontiers in Psychology, 4, 487.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Gabrielsson, A., & Lindström, E. (2010). The role of structure in the musical expression of emotions. In P. N. Juslin & J. A. Sloboda (Eds.), Handbook of music and emotion (pp. 367–400). OUP.",
+      "google_scholar_count": 400
+    },
+    {
+      "citation": "Bowling, D. L., Gill, K., Choi, J. D., Prinz, J., & Purves, D. (2010). Major and minor music compared to excited and subdued speech. JASA, 127(1), 491–503.",
+      "google_scholar_count": 200
+    }
+  ],
+  "source_panel": "30_Panel_MIII_Musical_Emotion_Mechanisms_V1_0.md",
+  "version": "1.0.0"
+}

@@ -1,0 +1,119 @@
+{
+  "template_id": "PROXEMIC_PE_ARCH_001",
+  "display_id": "SOC1",
+  "name": "Proxemic Prediction Error — How Architecture Mediates Interpersonal Distance and the PE Consequences of Mismatch",
+  "short_description": "Architecture determines interpersonal distance zones; mismatch between architecturally imposed and socially appropriate distance produces proxemic PE (too-close → inhibition; too-far → approach frustration)",
+  "structural_pattern": "The brain generates a prediction of appropriate interpersonal distance based on relationship type, interaction purpose, and cultural norms — Hall's (1966) four-zone model: intimate (0–45cm), personal (45–120cm), social (1.2–3.6m), public (>3.6m). Architecture determines which zones are available, comfortable, and forced. Proxemic PE arises when actual interpersonal distance (as mediated by architecture) deviates from predicted appropriate distance. TWO DIRECTIONS: Too-close PE (elevator, narrow corridor, open-plan) → behavioral inhibition (gaze aversion, body stiffening, withdrawal). Too-far PE (oversized meeting room, distant hospital visitor chair) → approach frustration (communication quality degrades). FURNITURE-SCALE MEDIATION (Sommer): Chair orientation, table distance, partition height determine fine-grained proxemic regime. Sociofugal arrangements suppress interaction; sociopetal arrangements facilitate interaction.",
+  "higher_order_principle": "Architecture is the primary mediator of interpersonal distance in built environments. The quality of social interaction depends on whether architectural and furniture design provides the proxemic zone appropriate for the intended interaction type. Proxemic PE is continuous, bidirectional, and architecturally controllable.",
+  "framework_ids": [
+    "proxemics",
+    "predictive_processing",
+    "approach_inhibition",
+    "environmental_psychology"
+  ],
+  "domain": "social_configuration",
+  "attribute_domain": "A8",
+  "halls_four_zones": {
+    "intimate": "0-45cm — thermal radiation, breathing audible, body odor present",
+    "personal": "45-120cm — normal speech, facial expression clear",
+    "social": "1.2-3.6m — raised speech, microexpressions difficult",
+    "public": ">3.6m — gross body posture and loud speech only"
+  },
+  "furniture_mediation": {
+    "sociofugal": "Parallel orientation, distant, fixed → suppresses interaction",
+    "sociopetal": "Facing orientation, close, moveable → facilitates interaction"
+  },
+  "causal_links": [
+    {
+      "from_entity": "architectural_interpersonal_distance",
+      "to_entity": "proxemic_PE",
+      "activity": "generates",
+      "from_level": "environmental",
+      "to_level": "social-cognitive",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Hall (1966, ~10,000 citations) established the zone model; subsequent research has replicated behavioral consequences of zone violations across cultures."
+    },
+    {
+      "from_entity": "proxemic_PE_direction",
+      "to_entity": "approach_or_inhibition_activation",
+      "activity": "determines",
+      "from_level": "social-cognitive",
+      "to_level": "affective",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Too-close PE → inhibition (Keltner et al., 2003); too-far PE → approach frustration. Neural substrates (approach: left PFC, dopaminergic; inhibition: right PFC, amygdala) well-documented."
+    },
+    {
+      "from_entity": "sustained_proxemic_PE",
+      "to_entity": "chronic_social_stress",
+      "activity": "produces",
+      "from_level": "social-cognitive",
+      "to_level": "physiological",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Evans & Cohen (1987) demonstrate cortisol elevation from chronic density stress. Proxemic mediation inferred from broader literature."
+    },
+    {
+      "from_entity": "furniture_orientation_and_distance",
+      "to_entity": "interaction_quality",
+      "activity": "modulates",
+      "from_level": "environmental",
+      "to_level": "behavioral",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Sommer (1969, ~3,000 citations) demonstrated furniture effects on interaction in multiple settings. Most directly actionable link."
+    }
+  ],
+  "scope_conditions": [
+    "Applies to all settings where two or more people occupy shared space",
+    "Zone distances are culturally calibrated — Hall's values are North American/Northern European defaults",
+    "Relationship type overrides zone defaults — intimate partners tolerate closer proximity",
+    "Digital mediation (video calls) creates separate proxemic regime not addressed here"
+  ],
+  "moderators": [
+    "Cultural calibration: contact cultures use closer default distances than non-contact cultures",
+    "Relationship type: closer relationships tolerate and expect closer proximity",
+    "Activity type: collaborative tasks benefit from personal zone; competitive/independent tasks benefit from social zone",
+    "Duration: brief violations produce transient PE; sustained violations produce chronic PE",
+    "Choice and control: chosen proximity produces less PE than forced proximity"
+  ],
+  "interactions": [
+    {
+      "template_id": "SPATIAL_SOCIAL_ENCOUNTER_001",
+      "display_id": "SC4",
+      "nature": "SC4 predicts WHERE encounters occur. SOC1 predicts the QUALITY of encounters based on proxemic regime."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "display_id": "T5",
+      "nature": "Sustained too-close proxemic PE activates the threat/HPA pathway (T5)."
+    },
+    {
+      "template_id": "MOTOR_PREDICTION_ARCH_001",
+      "display_id": "TP1",
+      "nature": "Proxemic violation in movement involves simultaneous motor PE (TP1) and social PE (SOC1)."
+    }
+  ],
+  "overall_maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Hall, E. T. (1966). The hidden dimension. Doubleday.",
+      "google_scholar_count": 10000
+    },
+    {
+      "citation": "Sommer, R. (1969). Personal space: The behavioral basis of design. Prentice-Hall.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Keltner, D., Gruenfeld, D. H., & Anderson, C. (2003). Power, approach, and inhibition. Psychological Review, 110(2), 265–284.",
+      "google_scholar_count": 1500
+    },
+    {
+      "citation": "Evans, G. W., & Cohen, S. (1987). Environmental stress. In D. Stokols & I. Altman (Eds.), Handbook of Environmental Psychology (pp. 571–610). Wiley.",
+      "google_scholar_count": 1500
+    }
+  ],
+  "source_panel": "44_Panel_SOC_I_Social_Config.md",
+  "version": "1.0.0"
+}

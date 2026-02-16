@@ -1,0 +1,96 @@
+{
+  "template_id": "CROSS_SOCIAL_AFFORDANCE_READING_001",
+  "display_id": "T48",
+  "name": "Social Affordance Reading and Mentalizing in Built Space",
+  "short_description": "Mentalizing network (dmPFC, TPJ, temporal poles) continuously reads social affordances in built environments — inferring occupancy norms, behavioral scripts, social hierarchies; demands scale with social complexity of space",
+  "structural_pattern": "MEDIATION",
+  "higher_order_principle": "The mentalizing network (dmPFC, TPJ, temporal poles) continuously reads social affordances in built environments — inferring occupancy norms, behavioral scripts, social hierarchies, and interaction possibilities. This processing uses DMN mentalizing subsystem resources and its demands scale with the social complexity of the space.",
+  "framework_ids": ["DT", "PP"],
+  "domain": "social_cognition",
+  "neural_substrate": {
+    "network": "dmPFC + TPJ + temporal_poles (DMN dorsal medial subsystem)",
+    "face_recognition_range_m": "<20",
+    "gaze_detection_range_m": "<40",
+    "body_posture_range_m": "<100",
+    "processing_latency_ms": "150-300 (Adolphs cascade)"
+  },
+  "dunbar_layer_modulation": {
+    "intimate_5": "deep_mentalizing, high_cognitive_cost",
+    "close_15": "active_mentalizing, moderate_cost",
+    "affiliate_50": "light_mentalizing, low_cost",
+    "network_150": "categorical_processing, minimal_mentalizing",
+    "crowd_500plus": "anonymous, heuristic_social_processing"
+  },
+  "causal_links": [
+    {
+      "from_entity": "social_cue_density",
+      "to_entity": "mentalizing_network_engagement",
+      "activity": "compute_social_affordances",
+      "from_level": "PERSONAL_EPISTEMIC",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Lieberman (2013); Saxe & Kanwisher (2003)"
+    },
+    {
+      "from_entity": "mentalizing_network_engagement",
+      "to_entity": "social_behavioral_decision",
+      "activity": "select_social_strategy",
+      "from_level": "SUBPERSONAL",
+      "to_level": "PERSONAL_EPISTEMIC",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Lieberman (2007); Gehl (1971) behavioral observations"
+    }
+  ],
+  "scope_conditions": [
+    "Applies when other people are present or their recent presence is inferable (traces, cues)",
+    "Mentalizing demands increase with social ambiguity — novel social situations require more dmPFC/TPJ",
+    "Cultural variation: social norms differ across cultures, modulating which cues are processed",
+    "Autism spectrum: reduced mentalizing network engagement changes relationship between social cues and behavioral decisions"
+  ],
+  "moderators": [
+    "group_size (Dunbar layers determine mentalizing mode)",
+    "familiarity (known people reduce mentalizing demand; strangers increase it)",
+    "social_anxiety (increases amygdala + mentalizing engagement, shifts toward avoidance)",
+    "architectural_legibility (clear social zoning reduces ambiguity, lowers mentalizing demand)"
+  ],
+  "interactions": [
+    {
+      "template_id": "DT_DMN_MAINTENANCE_002",
+      "display_id": "T27",
+      "nature": "Mentalizing uses DMN dorsal medial subsystem. Social affordance reading competes with self-referential processing for same neural resources."
+    },
+    {
+      "template_id": "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+      "display_id": "T45",
+      "nature": "Predictable social environments enable proactive social strategy; unpredictable social environments force reactive social processing."
+    },
+    {
+      "template_id": "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+      "display_id": "T49",
+      "nature": "T48 reads social affordances top-down (mentalizing). T49 processes social presence bottom-up (mirror/simulation). Both operate simultaneously."
+    }
+  ],
+  "overall_maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Lieberman, M. D. (2013). Social: Why Our Brains Are Wired to Connect. Crown.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Saxe, R., & Kanwisher, N. (2003). People thinking about thinking people: The role of the temporo-parietal junction in 'theory of mind'. NeuroImage, 19(4), 1835–1842.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Dunbar, R. I. M. (2010). How many friends does one person need? Harvard University Press.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "Gehl, J. (1971/2011). Life Between Buildings. Island Press.",
+      "google_scholar_count": 5000
+    }
+  ],
+  "source_panel": "02-15_20_Panel_V_Social_Brain_V1_0.md",
+  "version": "1.0.0"
+}

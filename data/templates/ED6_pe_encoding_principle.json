@@ -1,0 +1,135 @@
+{
+  "template_id": "ED_PE_ENCODING_PRINCIPLE_001",
+  "display_id": "ED6",
+  "name": "The Prediction Error Encoding Principle",
+  "short_description": "Prediction error is the master mechanism of learning: every effective instructional method works by generating PE (testing, generation, interleaving, active learning); passive methods fail because they generate no PE",
+  "structural_pattern": "ENHANCEMENT",
+  "higher_order_principle": "PREDICTION ERROR IS THE MASTER MECHANISM OF LEARNING. Every effective instructional method works by generating prediction errors that enhance hippocampal encoding. Every ineffective method fails because it generates no prediction errors. Testing (forces prediction → often wrong → PE), generation (produces candidate answer → often wrong → PE), interleaving (disrupts category-based prediction → PE), active learning (requires prediction → frequent PE), elaborative interrogation (asks 'why?' → forces causal prediction → PE when wrong). Passive methods (rereading, highlighting, listening) generate no predictions and therefore no PE and therefore no encoding signal.",
+  "framework_ids": ["MS", "PP"],
+  "domain": "memory_encoding",
+  "unifying_principle": {
+    "claim": "All effective learning methods share the common mechanism of generating prediction errors",
+    "passive_methods_fail_because": "they generate no predictions and therefore no PE",
+    "active_methods_succeed_because": "they force predictions that are often wrong, generating PE"
+  },
+  "causal_links": [
+    {
+      "from_entity": "instructional_method",
+      "to_entity": "prediction_error_generation",
+      "activity": "method_specific_PE_production",
+      "from_level": "PERSONAL_EPISTEMIC",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "supported",
+      "evidence_base": "Roediger & Karpicke, 2006; Bjork & Bjork, 2011; Freeman et al., 2014",
+      "parameters": {
+        "high_PE_methods": {
+          "testing_retrieval_practice": "student generates prediction (answer) → compared to correct answer → PE drives encoding [d = 0.5-0.7 vs. restudy]",
+          "generation": "student produces answer BEFORE being told → even wrong generation enhances subsequent encoding [Richland et al., 2009]",
+          "interleaving": "mixing categories disrupts category-level predictions → forces discriminative processing [d = 0.4 vs. blocking]",
+          "active_learning": "student makes predictions, tests them against reality → frequent PE [d = 0.5 vs. lecture, Freeman et al., 2014]",
+          "Socratic_questioning": "teacher asks questions that expose misconceptions → student's implicit prediction is wrong → PE"
+        },
+        "low_PE_methods": {
+          "rereading": "material matches what was read before → PE = 0 → minimal encoding",
+          "highlighting": "no prediction generated → PE = 0",
+          "passive_lecture": "student receives information without generating predictions → PE = 0",
+          "note_copying": "transcription without comprehension → no semantic prediction → PE = 0"
+        }
+      }
+    },
+    {
+      "from_entity": "prediction_error",
+      "to_entity": "hippocampal_encoding_enhancement",
+      "activity": "PE_driven_CA1_encoding_signal",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Davachi, 2006; Kumaran & Maguire, 2006; Greve et al., 2017",
+      "parameters": {
+        "mechanism": "CA1 mismatch detection → encoding signal → enhanced LTP → stronger trace",
+        "connects_to": "ED1 (hippocampal encoding) — PE is the primary driver; T1 (prediction error) — same fundamental mechanism"
+      }
+    },
+    {
+      "from_entity": "PE_magnitude",
+      "to_entity": "encoding_strength",
+      "activity": "dose_response_PE_encoding",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "implied by Bjork desirable difficulty framework; Metcalfe hypercorrection",
+      "parameters": {
+        "inverted_U_possibility": "Very large PE (incomprehensible material) may NOT enhance encoding because error is too large to resolve. Moderate PE (surprising but comprehensible) may be optimal.",
+        "Metcalfe_hypercorrection": "High-confidence errors produce largest PE when corrected → produce BEST learning. Confidence × error = large PE → large encoding enhancement."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "PE requires that a PREDICTION was generated — if learner is not engaged enough to predict, no PE occurs",
+    "PE must be RESOLVABLE — incomprehensible PE produces confusion, not learning",
+    "Social/emotional context modulates: PE as threat activates amygdala stress; PE in safe context activates hippocampal encoding",
+    "This principle unifies Bjork's desirable difficulties, Roediger's testing effect, Karpicke's retrieval-based learning, Freeman's active learning, and van Kesteren's schema-violation encoding under a SINGLE mechanism"
+  ],
+  "moderators": [
+    "prediction_generation (learner must actually make a prediction)",
+    "PE_resolvability (moderate PE optimal; too large is unresolvable)",
+    "confidence_level (high-confidence errors produce largest learning gains when corrected)",
+    "social_emotional_context (safe context enables encoding; threat context blocks it)"
+  ],
+  "goldilocks_zone": {
+    "too_little_PE": "material too easy, too familiar, passively delivered → no encoding signal → no learning",
+    "optimal_PE": "material surprising but comprehensible, active prediction, moderate difficulty → strong encoding → deep learning",
+    "too_much_PE": "material incomprehensible, unrelated to schemas, overwhelming → unresolvable PE → confusion, frustration"
+  },
+  "interactions": [
+    {
+      "template_id": "PP_PREDICTION_ERROR_001",
+      "display_id": "T1",
+      "nature": "ED6 applies the general prediction error mechanism (T1) specifically to learning and memory encoding."
+    },
+    {
+      "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+      "display_id": "ED1",
+      "nature": "PE (ED6) is the primary driver of hippocampal encoding (ED1)."
+    },
+    {
+      "template_id": "ED_RECONSOLIDATION_001",
+      "display_id": "ED3",
+      "nature": "Testing effect (ED3) is one specific manifestation of the PE encoding principle (ED6)."
+    },
+    {
+      "template_id": "ED_SCHEMA_ENCODING_001",
+      "display_id": "ED4",
+      "nature": "Schema violation (ED4) is a high-level form of PE (ED6) that drives strong encoding."
+    }
+  ],
+  "ecological_testability": "HIGH — PE operationally defined as discrepancy between student's prediction/answer and correct answer. Measurable in any classroom by having students predict before being told.",
+  "overall_maturity": "supported",
+  "key_references": [
+    {
+      "citation": "Roediger, H. L., & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.",
+      "google_scholar_count": 2500
+    },
+    {
+      "citation": "Bjork, R. A., & Bjork, E. L. (2011). Making things hard on yourself, but in a good way. In Gernsbacher et al. (Eds.), Psychology and the Real World.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "Freeman, S., et al. (2014). Active learning increases student performance in science. PNAS, 111(23), 8410–8415.",
+      "google_scholar_count": 4000
+    },
+    {
+      "citation": "Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.",
+      "google_scholar_count": 200
+    },
+    {
+      "citation": "Richland, L. E., Kornell, N., & Kao, L. S. (2009). The pretesting effect. Journal of Experimental Psychology: Applied, 15(3), 243–257.",
+      "google_scholar_count": 300
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0"
+}

@@ -1,0 +1,124 @@
+{
+  "template_id": "ED_RECONSOLIDATION_001",
+  "display_id": "ED3",
+  "name": "Reconsolidation and Retrieval-Mediated Learning",
+  "short_description": "Memory retrieval temporarily destabilizes traces (~5-6 hour window) during which they can be strengthened by effortful retrieval or updated with feedback; mechanism underlying testing effect",
+  "structural_pattern": "DESTABILIZATION_RESTABILIZATION",
+  "higher_order_principle": "Memory retrieval temporarily destabilizes the retrieved trace, opening a reconsolidation window (~5-6 hours) during which the trace can be modified: strengthened by effortful retrieval, updated with new information (feedback), or weakened by interference. This is the mechanism underlying the testing effect: retrieval DESTABILIZES → restabilization STRENGTHENS. It also explains why immediate feedback after testing is more effective than delayed feedback — the reconsolidation window is open.",
+  "framework_ids": ["MS"],
+  "domain": "memory_encoding",
+  "neural_substrate": {
+    "reconsolidation_window": "~5-6 hours after retrieval",
+    "requirement": "retrieval must ACTIVATE the trace (mere re-exposure may not trigger reconsolidation)",
+    "molecular": "restabilization requires protein synthesis, like initial consolidation"
+  },
+  "causal_links": [
+    {
+      "from_entity": "successful_or_attempted_retrieval",
+      "to_entity": "trace_destabilization",
+      "activity": "reconsolidation_window_opening",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Nader, Schafe, & LeDoux, 2000; Dudai, 2004, 2006",
+      "parameters": {
+        "duration": "~5-6 hours reconsolidation window",
+        "requirement": "retrieval must activate the trace fully"
+      }
+    },
+    {
+      "from_entity": "effortful_retrieval",
+      "to_entity": "enhanced_restabilization",
+      "activity": "desirable_difficulty_strengthening",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Bjork & Bjork, 2011; Karpicke, 2012",
+      "parameters": {
+        "mechanism": "Effortful retrieval (low RS) produces stronger reconsolidation due to deeper trace reactivation and more extensive PE signaling",
+        "easy_retrieval": "minimal destabilization → minimal strengthening → minimal learning",
+        "failed_retrieval": "trace not fully activated → but ATTEMPT generates PE that enhances subsequent encoding (pretesting effect)"
+      }
+    },
+    {
+      "from_entity": "feedback_during_reconsolidation_window",
+      "to_entity": "trace_updating",
+      "activity": "error_correction_via_reconsolidation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Dudai, 2006; Finn et al., 2014",
+      "parameters": {
+        "immediate_feedback": "delivered within window → INTEGRATED into destabilized trace → error corrected at trace level",
+        "delayed_feedback": "delivered after window closes → creates SEPARATE trace → both error and correction coexist"
+      }
+    },
+    {
+      "from_entity": "multiple_retrieval_events",
+      "to_entity": "multiple_hippocampal_traces",
+      "activity": "Moscovitch_multiple_trace_creation",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Nadel & Moscovitch, 1997; Moscovitch et al., 2016",
+      "parameters": {
+        "mechanism": "Each retrieval creates NEW hippocampal trace with CURRENT context → multiple traces with diverse associations → more retrieval routes → more robust memory",
+        "connects_to_Bjork": "Multiple traces = increased Storage Strength. Diverse contexts = increased accessibility across situations."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Very strong, well-consolidated memories may resist destabilization",
+    "Reconsolidation requires trace REACTIVATION, not just cue presentation",
+    "The 5-6 hour window is approximate and may vary with trace age and strength",
+    "Demonstrated in fear memory and increasingly in declarative memory"
+  ],
+  "moderators": [
+    "retrieval_effort (effortful retrieval produces stronger reconsolidation)",
+    "feedback_timing (immediate vs delayed relative to reconsolidation window)",
+    "trace_age_and_strength (older/stronger traces may resist destabilization)",
+    "context_diversity (retrievals in different contexts create more retrieval routes)"
+  ],
+  "interactions": [
+    {
+      "template_id": "ED_PATTERN_SEP_COMP_001",
+      "display_id": "ED2",
+      "nature": "Pattern completion (ED2) is the retrieval mechanism that triggers reconsolidation (ED3)."
+    },
+    {
+      "template_id": "ED_PE_ENCODING_PRINCIPLE_001",
+      "display_id": "ED6",
+      "nature": "The testing effect (ED3) is one manifestation of the PE encoding principle (ED6)."
+    }
+  ],
+  "ecological_testability": "MEDIUM — behavioral testing effect robust; reconsolidation-specific predictions (window duration) difficult to test in educational settings; feedback timing effects testable in classrooms.",
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Nader, K., Schafe, G. E., & LeDoux, J. E. (2000). Fear memories require protein synthesis in the amygdala for reconsolidation after retrieval. Nature, 406(6797), 722–726.",
+      "google_scholar_count": 3000
+    },
+    {
+      "citation": "Dudai, Y. (2004). The neurobiology of consolidations. Annual Review of Psychology, 55, 51–86.",
+      "google_scholar_count": 1500
+    },
+    {
+      "citation": "Dudai, Y. (2006). Reconsolidation: The advantage of being refocused. Current Opinion in Neurobiology, 16(2), 174–178.",
+      "google_scholar_count": 500
+    },
+    {
+      "citation": "Karpicke, J. D. (2012). Retrieval-based learning: Active retrieval promotes meaningful learning. Current Directions in Psychological Science, 21(3), 157–163.",
+      "google_scholar_count": 600
+    },
+    {
+      "citation": "Moscovitch, M., Cabeza, R., Winocur, G., & Nadel, L. (2016). Episodic memory and beyond: The hippocampus and neocortex in transformation. Annual Review of Psychology, 67, 105–134.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0"
+}

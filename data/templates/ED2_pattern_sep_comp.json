@@ -1,0 +1,114 @@
+{
+  "template_id": "ED_PATTERN_SEP_COMP_001",
+  "display_id": "ED2",
+  "name": "Hippocampal Pattern Separation and Completion",
+  "short_description": "Dentate gyrus performs pattern separation (making similar inputs distinct); CA3 performs pattern completion (reactivating full patterns from partial cues); balance determines discrimination vs generalization",
+  "structural_pattern": "BIFURCATION",
+  "higher_order_principle": "The dentate gyrus (DG) performs pattern separation — making similar inputs more distinct to prevent interference. CA3 performs pattern completion — reactivating full stored patterns from partial cues. These two operations are in dynamic tension: too much separation → memories are isolated and don't generalize; too much completion → similar memories interfere and blur together. The balance between separation and completion determines whether similar learning episodes are discriminated or confused.",
+  "framework_ids": ["MS"],
+  "domain": "memory_encoding",
+  "neural_substrate": {
+    "dentate_gyrus": {
+      "function": "pattern separation (orthogonalization)",
+      "mechanism": "sparse coding — few neurons active for any given input",
+      "effect": "even slightly different inputs activate non-overlapping DG populations"
+    },
+    "CA3": {
+      "function": "pattern completion (autoassociative retrieval)",
+      "mechanism": "recurrent connections allow partial cue to reactivate complete stored pattern",
+      "effect": "basis of memory retrieval from partial cues"
+    }
+  },
+  "causal_links": [
+    {
+      "from_entity": "similar_learning_episodes",
+      "to_entity": "DG_pattern_separation",
+      "activity": "orthogonalization_of_overlapping_inputs",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Yassa & Stark, 2011; Leutgeb et al., 2007",
+      "parameters": {
+        "mechanism": "DG sparse coding creates distinct CA3 patterns for similar experiences",
+        "educational_implication": "INTERLEAVING works because DG creates distinct codes for each category exemplar when they appear in varied contexts. BLOCKING fails because DG codes are similar within a block → interference."
+      }
+    },
+    {
+      "from_entity": "partial_retrieval_cue",
+      "to_entity": "CA3_pattern_completion",
+      "activity": "reactivation_of_full_pattern_from_partial_cue",
+      "from_level": "SUBPERSONAL",
+      "to_level": "SUBPERSONAL",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Rolls, 2013; Neunuebel & Knierim, 2014",
+      "parameters": {
+        "mechanism": "CA3 recurrent connections (autoassociative network) allow partial cue to reactivate complete stored pattern",
+        "educational_implication": "Retrieval practice EXERCISES the pattern completion pathway. Each successful retrieval strengthens the cue → pattern association."
+      }
+    },
+    {
+      "from_entity": "separation_completion_balance",
+      "to_entity": "discrimination_vs_generalization",
+      "activity": "adaptive_encoding_retrieval_tradeoff",
+      "from_level": "SUBPERSONAL",
+      "to_level": "PERSONAL_EPISTEMIC",
+      "bridging_quality": "moderate",
+      "maturity": "supported",
+      "evidence_base": "Yassa & Stark, 2011",
+      "parameters": {
+        "separation_dominant": "high discrimination (can distinguish similar items), low generalization",
+        "completion_dominant": "high generalization (sees patterns across cases), low discrimination (confuses similar items)",
+        "educational_note": "Novices need separation (distinguish concept A from B). Experts need completion (see pattern across examples). Interleaving promotes separation; blocked practice promotes completion."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Pattern separation is most critical when learning similar, confusable material",
+    "Pattern completion supports retrieval and generalization",
+    "Age affects balance: older adults show reduced pattern separation (increased false recognition of similar items)",
+    "Stress shifts balance toward pattern completion (reduced discrimination under stress)"
+  ],
+  "moderators": [
+    "material_similarity (high similarity → greater need for pattern separation)",
+    "learning_schedule (interleaving promotes separation; blocking promotes completion)",
+    "expertise_level (novices need separation; experts benefit from completion)",
+    "age (older adults show reduced pattern separation)",
+    "stress_level (stress impairs pattern separation)"
+  ],
+  "interactions": [
+    {
+      "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+      "display_id": "ED1",
+      "nature": "ED2 operates on the traces created by ED1's binding process."
+    },
+    {
+      "template_id": "ED_RECONSOLIDATION_001",
+      "display_id": "ED3",
+      "nature": "Retrieval via pattern completion (ED2) triggers reconsolidation (ED3)."
+    }
+  ],
+  "ecological_testability": "MEDIUM — discrimination/generalization measurable by behavioral tasks (mnemonic similarity task); neural separation/completion measurable by fMRI pattern analysis (representational similarity).",
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Yassa, M. A., & Stark, C. E. L. (2011). Pattern separation in the hippocampus. Trends in Neurosciences, 34(10), 515–525.",
+      "google_scholar_count": 1200
+    },
+    {
+      "citation": "Leutgeb, J. K., Leutgeb, S., Moser, M.-B., & Moser, E. I. (2007). Pattern separation in the dentate gyrus. Science, 315(5814), 961–966.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Rolls, E. T. (2013). The mechanisms for pattern completion and pattern separation in the hippocampus. Frontiers in Systems Neuroscience, 7, 74.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Neunuebel, J. P., & Knierim, J. J. (2014). CA3 retrieves coherent representations from degraded input. Neuron, 81(1), 140–152.",
+      "google_scholar_count": 200
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0"
+}
