@@ -82,6 +82,46 @@
     "circadian_stimulus": "CS ranges 0 to 0.7, effectiveness at activating circadian system",
     "melanopic_EDI": "mEDI per CIE S 026:2018, melanopic equivalent daylight illuminance"
   },
+  "calibration_parameters": {
+    "standard_dose_response": {
+      "population": "Adults 20–45",
+      "cs_threshold": "CS ≥ 0.3 for ≥ 2 hours during morning/early afternoon",
+      "medi_threshold": "M-EDI ≥ 250 lux at eye level",
+      "delivery_methods": [
+        "Window-adjacent workstation in well-daylit office",
+        "Ceiling-mounted 6500K LED panels at 500+ lux"
+      ]
+    },
+    "age_corrected_dose_response": {
+      "population": "Adults 65+",
+      "medi_threshold": "M-EDI ≥ 500 lux at eye level (approximately DOUBLE)",
+      "delivery_methods": [
+        "Supplementary high-CCT task lighting",
+        "Illuminated vertical surfaces at seated eye height",
+        "Significantly larger windows"
+      ],
+      "design_implication": "Standard ceiling-only overhead lighting is INSUFFICIENT for circadian needs in elderly populations"
+    },
+    "age_correction_function": {
+      "formula": "Required M-EDI(age) ≈ M-EDI(25) × (1 + 0.015 × (age − 25))",
+      "examples": {
+        "age_45": "~30% increase (1.3x)",
+        "age_65": "~60% increase (1.6x)",
+        "age_90": "~100% increase (2.0x)"
+      },
+      "precision": "±20% individual variation even within age cohorts",
+      "mechanism": "Progressive yellowing and thickening of crystalline lens attenuates short-wavelength light; by age 65, lens transmits ~50% of blue light compared to age 25",
+      "evidence_base": "Turner & Mainster (2008); Figueiro et al. (2014, 2017)"
+    },
+    "healthcare_design_implications": [
+      "Senior living facilities need HIGHER melanopic irradiance than standard recommendations",
+      "Hospitals with elderly patients require enhanced circadian lighting",
+      "Buildings with aging workforce need circadian-optimized design",
+      "Light at eye level (task lights, illuminated vertical surfaces) more effective than overhead"
+    ],
+    "calibration_source": "Panel L-II (Doc 49) — Figueiro age-correction formalization"
+  },
+  "calibration_status": "well_calibrated",
   "interactions": [
     {
       "template_id": "ALLOSTATIC_MASTER_001",
@@ -123,6 +163,7 @@
     }
   ],
   "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
   "template_id": "CIRCADIAN_ARCH_REG_001",
   "overall_maturity": "established"
 }

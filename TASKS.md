@@ -1,6 +1,6 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-11/CC-12/CC-14 complete — 129 templates total)*
+*Last updated: Sunday, February 16, 2026 (CC-11/CC-12/CC-14/CC-15 complete — 139 templates, L1-L5 calibrated)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 
@@ -51,7 +51,29 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 **Doc 47 (VIEW-I Nature View)**: VIEW1 (1 template) ✅
 **Commits**: `f3faf4a` (SOC, COL), `d624bba` (OLF1), `b2e2b0d` (VIEW1)
 
-**Total templates: 129**
+**Total templates: 129** (139 including framework + interaction reference fixes)
+
+### CC-15: Panel L-II Light Calibration (Doc 49)
+
+| Status | Priority | Notes |
+|--------|----------|-------|
+| ✅ COMPLETE | HIGH | Calibration parameters added to L1-L5 templates |
+
+**Panel L-II is a "deepening" panel** — adds calibration parameters to existing L1-L5 templates, not new templates.
+
+**Calibration Updates**:
+- **L1** (Luminance Contrast PE): CV-of-luminance Goldilocks boundaries (Rockcastle), photosensitivity correction (Wilkins ±30-50%)
+- **L2** (Circadian Regulation): Age-correction function M-EDI(age) ≈ M-EDI(25) × (1 + 0.015 × (age − 25)), dose-response thresholds
+- **L3** (Daylight Multi-Channel): Expert-estimated channel weights (~0.35/0.25/0.15/0.10/0.15), super-additivity 15-25%
+- **L4** (CCT Temporal Ecological): Dual interpretation (ecological vs arousal) — Steidle-Veitch debate, maturity → "supported_with_acknowledged_dissent"
+- **L5** (Dynamic Light): Maturity upgraded "preliminary" → "supported_preliminary", Chamilothori moving/static evidence
+
+**Files Modified**:
+- `data/templates/L1_luminance_contrast_pe.json`
+- `data/templates/L2_circadian_architectural_regulation.json`
+- `data/templates/L3_daylight_multichannel_convergence.json`
+- `data/templates/L4_cct_temporal_ecological.json`
+- `data/templates/L5_dynamic_light_temporal_pe.json`
 
 ### CC-13: Master Reference Inventory (Doc 43)
 

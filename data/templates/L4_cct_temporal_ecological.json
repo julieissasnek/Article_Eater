@@ -103,8 +103,45 @@
       "nature": "L1 operates on luminance distribution (light-dark); L4 operates on chromaticity (warm-cool). Independent channels that jointly determine the visual character of architectural light."
     }
   ],
-  "maturity": "supported",
-  "maturity_note": "supported_with_dissent - Core CCT-mood and CCT-cognition findings replicated but with inconsistencies. The ecological-prediction framing is theoretically motivated but not uniquely supported over arousal accounts.",
+  "maturity": "supported_with_acknowledged_dissent",
+  "maturity_note": "Ecological and arousal interpretations not yet empirically distinguished. Core CCT-mood and CCT-cognition findings replicated but with inconsistencies.",
+  "calibration_parameters": {
+    "dual_interpretation": {
+      "preferred_interpretation": "ecological_signal",
+      "alternative_interpretation": "arousal_mediation",
+      "panel_verdict": "RETAIN with acknowledged dual interpretation",
+      "reasoning": "Ecological-signal framing integrates naturally with PE framework and generates testable predictions that arousal account does not"
+    },
+    "ecological_signal_account": {
+      "proponent": "Steidle",
+      "mechanism": "Brain uses CCT as ecological TIME-OF-DAY signal triggering corresponding processing modes",
+      "evidence_for": [
+        "Dim/warm → creativity effect replicated in multiple laboratories",
+        "Effect operates through construal level (dim light promotes abstract, high-level construal)",
+        "Effect interacts with light COLOR, not just intensity — warm CCT at moderate illuminance promotes creativity more than cool CCT"
+      ],
+      "key_prediction": "Cool light at low illuminance is ecologically incongruent → should produce DISCOMFORT or cognitive interference"
+    },
+    "arousal_mediation_account": {
+      "proponent": "Veitch",
+      "mechanism": "CCT → arousal → processing mode (simple mediation without ecological prediction)",
+      "evidence_for": [
+        "Replication landscape uneven — variable effect sizes and published failures to replicate",
+        "Cool bright light is more arousing than warm dim light; arousal modulates processing style",
+        "Studies controlling illuminance while varying CCT alone generally find smaller or null effects"
+      ],
+      "key_objection": "Color constancy mechanisms compensate for illuminant changes — if system discounts CCT, cannot simultaneously use it as ecological signal"
+    },
+    "critical_experiment_to_resolve": {
+      "design": "Congruent (6500K morning → 3000K evening) vs Incongruent (3000K morning → 6500K evening) vs Constant (4500K throughout)",
+      "ecological_prediction": "Incongruent WORSE than constant (active violation > absence)",
+      "arousal_prediction": "Incongruent and constant equivalent (both lack arousal-modulation benefit)",
+      "status": "NOT YET CONDUCTED"
+    },
+    "evaluation_guidance": "Article Eater should evaluate CCT-cognition findings against BOTH interpretations and note which aspects of study design favor one account over the other",
+    "calibration_source": "Panel L-II (Doc 49) — Steidle-Veitch debate and panel verdict"
+  },
+  "calibration_status": "partially_calibrated_dual_interpretation",
   "key_references": [
     {
       "citation": "Steidle, A., & Werth, L. (2013). Freedom from constraints: Darkness and dim illumination promote creativity. Journal of Environmental Psychology, 35, 67–80.",
@@ -124,5 +161,6 @@
     }
   ],
   "source_panel": "34_Panel_LI_Light_Luminance.md",
-  "overall_maturity": "supported"
+  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
+  "overall_maturity": "supported_with_acknowledged_dissent"
 }

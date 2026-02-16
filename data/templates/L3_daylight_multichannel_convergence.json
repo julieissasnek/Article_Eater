@@ -123,6 +123,50 @@
       "evidence_base": "The convergence effect. Heschong (2002) 20% math improvement cannot be attributed to any single channel. The multiplicative convergence principle predicts that blocking any single channel substantially reduces the total effect."
     }
   ],
+  "calibration_parameters": {
+    "channel_weights": {
+      "note": "Expert-estimated weights from Panel L-II — VERY PRELIMINARY, not empirical values",
+      "circadian_L2": {
+        "weight": 0.35,
+        "evidence": "Figueiro's work shows circadian-optimized electric lighting recovers 40–60% of daylight effect on sleep and alertness"
+      },
+      "view_VIEW1": {
+        "weight": 0.25,
+        "evidence": "Heschong finding that view content predicts performance independently of illumination; nature view literature"
+      },
+      "luminance_contrast_L1": {
+        "weight": 0.15,
+        "evidence": "Daylit spaces have more varied and directional luminance distributions than most artificial lighting"
+      },
+      "ecological_CCT_L4": {
+        "weight": 0.10,
+        "evidence": "Contested mechanism — if merely arousal, this weight is absorbed into circadian and contrast channels"
+      },
+      "dynamic_variation_L5": {
+        "weight": 0.15,
+        "evidence": "Preliminary mechanism — estimated contribution based on occupant satisfaction gap"
+      }
+    },
+    "super_additivity": {
+      "estimate": "15–25%",
+      "meaning": "Full-daylight effect is ~15–25% larger than would be predicted by summing individual channels",
+      "note": "Consistent with convergence principle in VIEW1 and MAT4 but not directly measured"
+    },
+    "channel_separation_status": {
+      "view_separable_from_light": "Confirmed — Heschong (2002) view content predicts performance independently of illumination level",
+      "circadian_separable_from_visual": "Confirmed — Figueiro's work shows circadian-optimized electric lighting works in windowless environments (but smaller effects)",
+      "dynamics_separable_from_average_illuminance": "Partially confirmed — Chamilothori's moving vs static sunlight patches (but magnitude of L5 independent contribution unknown)",
+      "full_factorial_separation": "NOT YET CONDUCTED — highest priority for L-III"
+    },
+    "assessment_tools": {
+      "circadian_L2": "CBDM (climate-based daylight modeling)",
+      "view": "EN 17037",
+      "luminance_contrast_L1": "Luminance mapping (Evalglare, Radiance HDR)",
+      "integrated_multi_channel": "No integrated assessment tool yet exists"
+    },
+    "calibration_source": "Panel L-II (Doc 49) — Heschong, de Kort, Foster expert estimation"
+  },
+  "calibration_status": "partially_calibrated_expert_estimates",
   "scope_conditions": [
     "Applies to any building with windows providing daylight access",
     "Effect magnitude depends on daylight availability (climate, orientation, window-to-wall ratio, glazing type)",
@@ -183,5 +227,6 @@
     }
   ],
   "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
   "overall_maturity": "supported"
 }

@@ -75,6 +75,57 @@
     "aureole": "Halo of light surrounding a brighter source — figure-ground separation through contrast",
     "chiaroscuro": "Dramatic interplay of light and deep shadow — high PE, strong depth cues"
   },
+  "calibration_parameters": {
+    "cv_luminance_goldilocks_boundaries": {
+      "comfort_zone": {
+        "cv_range": "< 0.5",
+        "experiential_character": "Uniform, calm, readable",
+        "pe_level": "Low PE (prediction confirmed)",
+        "architectural_examples": "Office ceiling panels, overcast daylight, the wash",
+        "context_dependence": "Appropriate for sustained task environments",
+        "plummer_type": "wash"
+      },
+      "aesthetic_zone": {
+        "cv_range": "0.5–1.5",
+        "experiential_character": "Interesting, pleasant, engaging",
+        "pe_level": "Moderate PE (Goldilocks optimum)",
+        "architectural_examples": "Well-designed daylit spaces, the dapple, pendant lighting",
+        "context_dependence": "Ideal for mixed-use, educational, residential",
+        "plummer_type": "dapple"
+      },
+      "dramatic_zone": {
+        "cv_range": "1.5–3.0",
+        "experiential_character": "Powerful, impressive, intense",
+        "pe_level": "High PE (approaching accommodation)",
+        "architectural_examples": "Museums, sacred spaces, the shaft",
+        "context_dependence": "Appropriate for experiential/cultural spaces",
+        "plummer_types": ["shaft", "chiaroscuro"]
+      },
+      "discomfort_zone": {
+        "cv_range": "> 3.0",
+        "experiential_character": "Painful, aversive, fatiguing",
+        "pe_level": "Excessive PE (negative valence)",
+        "architectural_examples": "Unmanaged glare, bright window in dark room",
+        "context_dependence": "Avoid in all sustained-occupancy settings"
+      }
+    },
+    "photosensitivity_correction": {
+      "population_distribution": "15–20% of general population reports significant discomfort at median-comfortable levels",
+      "clinical_populations": "Migraine (~12% adults), photosensitive epilepsy (~3% epilepsy patients)",
+      "threshold_shift": "Shift ALL boundaries downward by 30–50% for photosensitive populations",
+      "design_recommendation": "Design for 85th percentile of sensitivity, not 50th",
+      "evidence_base": "Wilkins (1995); Wilkins et al. (1984)"
+    },
+    "caveats": [
+      "Boundaries shift ±30–50% for photosensitive populations",
+      "Boundaries are adaptation-state dependent",
+      "Spatial configuration matters: same CV can feel pleasant or unpleasant depending on spatial logic",
+      "These boundaries are from Western, predominantly office/educational settings — cross-cultural calibration needed"
+    ],
+    "measurement_tools": ["Evalglare", "Radiance HDR photography", "Luminance mapping"],
+    "calibration_source": "Panel L-II (Doc 49) — Rockcastle et al. preliminary boundaries"
+  },
+  "calibration_status": "partially_calibrated",
   "interactions": [
     {
       "template_id": "PP_COMPLEXITY_GOLDILOCKS_002",
@@ -111,5 +162,6 @@
     }
   ],
   "source_panel": "34_Panel_LI_Light_Luminance.md",
+  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
   "overall_maturity": "supported"
 }
