@@ -1,0 +1,64 @@
+{
+  "template_id": "DT_SALIENCE_NETWORK_001",
+  "display_id": "DT1",
+  "name": "Salient environmental event → anterior insula → network switching",
+  "structural_pattern": "salience_detection → network_orchestration → mode_transition",
+  "higher_order_principle": "The salience network detects what matters and coordinates brain-wide responses.",
+  "framework_ids": [
+    "DMN_TPN_DYNAMICS"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "salient_event",
+      "activity": "salience_detection",
+      "to_entity": "anterior_insula_activation",
+      "change_produced": "event flagged as significant",
+      "level": "environmental",
+      "bridging_to": "circuit",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Menon & Uddin 2010",
+      "scope_conditions": "Works for emotional, homeostatic, cognitive salience",
+      "interactions": []
+    },
+    {
+      "from_entity": "anterior_insula_activation",
+      "activity": "network_orchestration",
+      "to_entity": "DMN_TPN_state",
+      "change_produced": "coordinated network switching",
+      "level": "circuit",
+      "bridging_to": "systems",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Sridharan et al. 2008",
+      "scope_conditions": "Salience drives network selection",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Integrates interoceptive and exteroceptive salience",
+    "Dysfunction in anxiety disorders",
+    "Architecture can modulate salience detection"
+  ],
+  "moderators": [
+    "Baseline anxiety",
+    "Task demands",
+    "Individual salience sensitivity"
+  ],
+  "interactions": [
+    "DT_DMN_TPN_TOGGLE_007",
+    "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Menon_Uddin_2010",
+      "citation": "Menon & Uddin (2010)"
+    },
+    {
+      "id": "Sridharan_2008",
+      "citation": "Sridharan et al. (2008)"
+    }
+  ],
+  "version": "1.0.0"
+}

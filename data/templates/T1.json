@@ -1,0 +1,70 @@
+{
+  "template_id": "PP_SPECTRAL_MATCH_001",
+  "display_id": "T1",
+  "name": "Visual scene statistics → prediction error reduction",
+  "structural_pattern": "stimulus_efficiency → processing_cost_reduction → downstream_benefit",
+  "higher_order_principle": "Metabolic optimization — the visual system processes evolutionarily familiar statistics more efficiently",
+  "framework_ids": [
+    "PREDICTIVE_PROCESSING"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "visual_cortex_V1",
+      "activity": "efficient_coding_of_1/f_spectrum",
+      "to_entity": "prediction_error_signal",
+      "change_produced": "reduced prediction error magnitude",
+      "level": "circuit",
+      "bridging_to": "computational",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Rao & Ballard 1999; Olshausen & Field 1996",
+      "scope_conditions": "Requires intact early visual processing",
+      "interactions": [
+        "attention_modulation: top-down attention can override efficient coding",
+        "adaptation: prolonged exposure reduces the efficient coding advantage"
+      ]
+    },
+    {
+      "from_entity": "prediction_error_signal",
+      "activity": "precision_weighting",
+      "to_entity": "cortical_metabolic_demand",
+      "change_produced": "reduced metabolic cost",
+      "level": "computational",
+      "bridging_to": "cellular",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "evidence_base": "Laughlin 2001 (extrapolated)",
+      "scope_conditions": "Uncertain for very low contrast stimuli",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Requires intact early visual processing",
+    "Applies to scenes viewed for >200ms",
+    "Uncertain for very low contrast or peripheral stimulation"
+  ],
+  "moderators": [
+    "Top-down attention",
+    "Adaptation time"
+  ],
+  "interactions": [
+    "attention_modulation",
+    "adaptation"
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "id": "Olshausen_Field_1996",
+      "citation": "Olshausen & Field (1996)"
+    },
+    {
+      "id": "Rao_Ballard_1999",
+      "citation": "Rao & Ballard (1999)"
+    },
+    {
+      "id": "Bastos_2012",
+      "citation": "Bastos et al. (2012)"
+    }
+  ],
+  "version": "1.0.0"
+}

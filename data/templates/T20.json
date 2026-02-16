@@ -1,0 +1,72 @@
+{
+  "template_id": "THERMAL_COMFORT_020",
+  "display_id": "T20",
+  "name": "Thermal deviation → thermoregulatory load → cognitive/affective effects",
+  "structural_pattern": "physical_environment → homeostatic_regulation → functional_capacity",
+  "higher_order_principle": "Thermal discomfort consumes cognitive resources and biases affect.",
+  "framework_ids": [
+    "NEUROMODULATORY",
+    "EMBODIED_COGNITION"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "ambient_temperature_deviation",
+      "activity": "thermoregulatory_demand",
+      "to_entity": "autonomic_nervous_system_load",
+      "change_produced": "resource allocation to temperature regulation",
+      "level": "environmental",
+      "bridging_to": "physiological",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Parsons 2014",
+      "scope_conditions": "Deviation from individual comfort zone",
+      "interactions": []
+    },
+    {
+      "from_entity": "autonomic_nervous_system_load",
+      "activity": "resource_competition",
+      "to_entity": "cognitive_performance",
+      "change_produced": "reduced executive function capacity",
+      "level": "physiological",
+      "bridging_to": "cognitive",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "evidence_base": "Hancock & Vasmatzidis 2003",
+      "scope_conditions": "Effect size modest until extreme temperatures",
+      "interactions": [
+        "Acclimatization reduces effects"
+      ]
+    }
+  ],
+  "scope_conditions": [
+    "Individual differences in thermal sensitivity",
+    "Clothing and activity level matter",
+    "Adaptive opportunity moderates effects"
+  ],
+  "moderators": [
+    "Individual thermal preference",
+    "Metabolic rate",
+    "Acclimatization",
+    "Control over environment"
+  ],
+  "interactions": [
+    "NM_THREAT_HPA_001",
+    "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Parsons_2014",
+      "citation": "Parsons (2014)"
+    },
+    {
+      "id": "Hancock_2003",
+      "citation": "Hancock & Vasmatzidis (2003)"
+    },
+    {
+      "id": "Seppanen_2006",
+      "citation": "Seppänen et al. (2006)"
+    }
+  ],
+  "version": "1.0.0"
+}

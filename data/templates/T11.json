@@ -1,0 +1,71 @@
+{
+  "template_id": "CB_LIGHT_CIRCADIAN_011",
+  "display_id": "T11",
+  "name": "Light spectral composition → SCN entrainment → circadian phase",
+  "structural_pattern": "photic_input → central_pacemaker → physiological_rhythm",
+  "higher_order_principle": "Architectural lighting directly entrains the master circadian clock via ipRGCs.",
+  "framework_ids": [
+    "CHRONOBIOLOGICAL_REGULATION"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "blue_light_spectrum",
+      "activity": "ipRGC_activation",
+      "to_entity": "SCN_phase_response",
+      "change_produced": "circadian phase shift",
+      "level": "environmental",
+      "bridging_to": "circuit",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Berson et al. 2002; Lockley et al. 2003",
+      "scope_conditions": "Light >100 lux at eye, 460-480nm peak",
+      "interactions": []
+    },
+    {
+      "from_entity": "SCN_phase_response",
+      "activity": "melatonin_suppression",
+      "to_entity": "alertness_state",
+      "change_produced": "increased arousal and cognitive performance",
+      "level": "circuit",
+      "bridging_to": "psychological",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Cajochen et al. 2005",
+      "scope_conditions": "Evening/night exposure most impactful",
+      "interactions": [
+        "Prior light history affects sensitivity"
+      ]
+    }
+  ],
+  "scope_conditions": [
+    "Effect depends on time of day",
+    "Prior light exposure history matters",
+    "Individual chronotype differences"
+  ],
+  "moderators": [
+    "Age (ipRGC density declines)",
+    "Chronotype",
+    "Season",
+    "Lens yellowing"
+  ],
+  "interactions": [
+    "NM_THREAT_HPA_001 (cortisol has circadian rhythm)",
+    "MS_MEMORY_CONSOLIDATION_008"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Berson_2002",
+      "citation": "Berson et al. (2002)"
+    },
+    {
+      "id": "Lockley_2003",
+      "citation": "Lockley et al. (2003)"
+    },
+    {
+      "id": "Cajochen_2005",
+      "citation": "Cajochen et al. (2005)"
+    }
+  ],
+  "version": "1.0.0"
+}

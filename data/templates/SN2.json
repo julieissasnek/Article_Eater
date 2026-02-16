@@ -1,0 +1,64 @@
+{
+  "template_id": "SN_VISTA_SPACE_002",
+  "display_id": "SN2",
+  "name": "Vista space structure → panoramic scanning → spatial orientation",
+  "structural_pattern": "visible_space → exploration_behavior → orientation_maintenance",
+  "higher_order_principle": "Large visible spaces support orientation through continuous visual updating.",
+  "framework_ids": [
+    "SPATIAL_NAVIGATION"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "vista_space",
+      "activity": "panoramic_sampling",
+      "to_entity": "head_direction_updating",
+      "change_produced": "maintained orientation",
+      "level": "environmental",
+      "bridging_to": "circuit",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Taube 2007",
+      "scope_conditions": "Requires distal landmarks",
+      "interactions": []
+    },
+    {
+      "from_entity": "head_direction_updating",
+      "activity": "error_correction",
+      "to_entity": "path_integration_accuracy",
+      "change_produced": "reduced drift in spatial estimate",
+      "level": "circuit",
+      "bridging_to": "behavioral",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Etienne & Jeffery 2004",
+      "scope_conditions": "Visual input resets accumulating error",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Vista space > 30m radius typically",
+    "Requires stable distal cues",
+    "Corridors limit to figural space"
+  ],
+  "moderators": [
+    "Landmark reliability",
+    "Lighting conditions",
+    "Movement speed"
+  ],
+  "interactions": [
+    "SN_BOUNDARY_ENCODING_001",
+    "SN_SPATIAL_LEGIBILITY_004"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Taube_2007",
+      "citation": "Taube (2007)"
+    },
+    {
+      "id": "Montello_1993",
+      "citation": "Montello (1993)"
+    }
+  ],
+  "version": "1.0.0"
+}

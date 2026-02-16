@@ -1,0 +1,73 @@
+{
+  "template_id": "DAYLIGHT_VITAMIN_D_021",
+  "display_id": "T21",
+  "name": "Daylight access → vitamin D synthesis → health outcomes",
+  "structural_pattern": "light_exposure → biochemical_pathway → physiological_benefit",
+  "higher_order_principle": "Indoor environments must provide adequate UV-B for vitamin D synthesis.",
+  "framework_ids": [
+    "CHRONOBIOLOGICAL_REGULATION",
+    "NEUROMODULATORY"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "UV_B_exposure",
+      "activity": "skin_synthesis",
+      "to_entity": "vitamin_D_level",
+      "change_produced": "25(OH)D concentration increase",
+      "level": "environmental",
+      "bridging_to": "molecular",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Holick 2007",
+      "scope_conditions": "Skin exposure required; glass blocks UV-B",
+      "interactions": []
+    },
+    {
+      "from_entity": "vitamin_D_level",
+      "activity": "physiological_regulation",
+      "to_entity": "health_outcomes",
+      "change_produced": "bone health, immune function, mood",
+      "level": "molecular",
+      "bridging_to": "clinical",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "evidence_base": "Bouillon et al. 2019",
+      "scope_conditions": "Deficiency threshold ~20 ng/mL",
+      "interactions": [
+        "Dietary vitamin D can compensate"
+      ]
+    }
+  ],
+  "scope_conditions": [
+    "Glass blocks UV-B (windows insufficient)",
+    "Latitude and season affect synthesis",
+    "Skin pigmentation affects synthesis rate"
+  ],
+  "moderators": [
+    "Skin tone",
+    "Latitude",
+    "Season",
+    "Age",
+    "Clothing"
+  ],
+  "interactions": [
+    "CB_LIGHT_CIRCADIAN_011 (separate pathway)",
+    "NM_THREAT_HPA_001 (immune effects)"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Holick_2007",
+      "citation": "Holick (2007)"
+    },
+    {
+      "id": "Bouillon_2019",
+      "citation": "Bouillon et al. (2019)"
+    },
+    {
+      "id": "Webb_2006",
+      "citation": "Webb (2006)"
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,67 @@
+{
+  "template_id": "AX_VR_LIMITATION_012",
+  "display_id": "AX12",
+  "name": "VR presentation → missing channels → attenuated or confounded effects",
+  "structural_pattern": "simulation_medium → channel_limitation → altered_processing",
+  "higher_order_principle": "VR strips sensory channels critical for some architectural effects.",
+  "framework_ids": [
+    "METHODOLOGICAL"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "VR_presentation",
+      "activity": "channel_stripping",
+      "to_entity": "sensory_input",
+      "change_produced": "reduced multimodal information",
+      "level": "environmental",
+      "bridging_to": "sensory",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Kuliga et al. 2015",
+      "scope_conditions": "Varies by VR technology level",
+      "interactions": []
+    },
+    {
+      "from_entity": "sensory_input",
+      "activity": "altered_processing",
+      "to_entity": "measured_response",
+      "change_produced": "attenuated or confounded effect",
+      "level": "sensory",
+      "bridging_to": "physiological",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Albayrak-Kutlay et al. 2025",
+      "scope_conditions": "Cybersickness confounds physiological measures",
+      "interactions": [
+        "Self-report/physiology mismatch common"
+      ]
+    }
+  ],
+  "scope_conditions": [
+    "Missing: proprioception, thermal, olfactory, acoustic realism",
+    "Cybersickness mimics stress physiology",
+    "Preference ratings most valid; stress measures least valid",
+    "CAVE > HMD > desktop for validity"
+  ],
+  "moderators": [
+    "VR technology type",
+    "Duration of exposure",
+    "Individual cybersickness susceptibility"
+  ],
+  "interactions": [
+    "MSI_CROSSMODAL_BINDING_013",
+    "All templates with multimodal pathways"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Kuliga_2015",
+      "citation": "Kuliga et al. (2015)"
+    },
+    {
+      "id": "Albayrak_Kutlay_2025",
+      "citation": "Albayrak-Kutlay et al. (2025)"
+    }
+  ],
+  "version": "1.0.0"
+}

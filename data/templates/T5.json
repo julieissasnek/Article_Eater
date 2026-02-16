@@ -1,0 +1,64 @@
+{
+  "template_id": "NM_THREAT_HPA_001",
+  "display_id": "T5",
+  "name": "Environmental threat cues → amygdala → HPA axis → cortisol",
+  "structural_pattern": "threat_detection → stress_cascade → physiological_mobilization",
+  "higher_order_principle": "Threat detection is fast, subcortical, and robust to top-down inhibition.",
+  "framework_ids": [
+    "NEUROMODULATORY"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "environmental_threat_cues",
+      "activity": "subcortical_visual_processing",
+      "to_entity": "amygdala_activation",
+      "change_produced": "rapid threat tag",
+      "level": "ecological",
+      "bridging_to": "circuit",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "LeDoux 1996; Öhman & Mineka 2001",
+      "scope_conditions": "Low lighting, spatial entrapment, jagged forms",
+      "interactions": []
+    },
+    {
+      "from_entity": "amygdala_activation",
+      "activity": "HPA_axis_cascade",
+      "to_entity": "cortisol_secretion",
+      "change_produced": "systemic metabolic mobilization",
+      "level": "circuit",
+      "bridging_to": "molecular",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "McEwen 2007",
+      "scope_conditions": "Delay ~20 mins for cortisol peak",
+      "interactions": [
+        "Social buffering reduces response"
+      ]
+    }
+  ],
+  "scope_conditions": [
+    "Responds to perceived threat (subjective)",
+    "Familiarity modulates response"
+  ],
+  "moderators": [
+    "Prior trauma history",
+    "Social presence",
+    "Time of day (circadian cortisol baseline)"
+  ],
+  "interactions": [
+    "Interacts with PP_SPECTRAL_MATCH_001 (familiarity reduces threat)"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "LeDoux_1996",
+      "citation": "LeDoux (1996)"
+    },
+    {
+      "id": "McEwen_2007",
+      "citation": "McEwen (2007)"
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,68 @@
+{
+  "template_id": "AIR_QUALITY_COGNITION_022",
+  "display_id": "T22",
+  "name": "CO2 concentration → cognitive impairment → decision quality",
+  "structural_pattern": "air_quality → physiological_effect → cognitive_performance",
+  "higher_order_principle": "Elevated CO2 in poorly ventilated spaces impairs higher cognitive functions.",
+  "framework_ids": [
+    "NEUROMODULATORY"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "CO2_concentration",
+      "activity": "blood_gas_effect",
+      "to_entity": "cerebral_blood_flow",
+      "change_produced": "altered brain oxygenation",
+      "level": "environmental",
+      "bridging_to": "physiological",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Satish et al. 2012",
+      "scope_conditions": "Effect begins ~1000 ppm",
+      "interactions": []
+    },
+    {
+      "from_entity": "cerebral_blood_flow",
+      "activity": "cognitive_resource_limitation",
+      "to_entity": "decision_making_quality",
+      "change_produced": "reduced strategic thinking capacity",
+      "level": "physiological",
+      "bridging_to": "cognitive",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Allen et al. 2016",
+      "scope_conditions": "Decision-making and initiative most affected",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Effect threshold ~1000 ppm CO2",
+    "Linear dose-response above threshold",
+    "Recovery rapid upon ventilation"
+  ],
+  "moderators": [
+    "Baseline ventilation rate",
+    "Occupant density",
+    "Activity level"
+  ],
+  "interactions": [
+    "DT_DMN_TPN_TOGGLE_007",
+    "THERMAL_COMFORT_020 (ventilation affects both)"
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    {
+      "id": "Satish_2012",
+      "citation": "Satish et al. (2012)"
+    },
+    {
+      "id": "Allen_2016",
+      "citation": "Allen et al. (2016)"
+    },
+    {
+      "id": "Fisk_2013",
+      "citation": "Fisk et al. (2013)"
+    }
+  ],
+  "version": "1.0.0"
+}

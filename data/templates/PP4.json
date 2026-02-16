@@ -1,0 +1,65 @@
+{
+  "template_id": "PP_ACTIVE_INFERENCE_004",
+  "display_id": "PP4",
+  "name": "Expected free energy → action selection → environment modification",
+  "structural_pattern": "prediction_error → action_policy → world_change",
+  "higher_order_principle": "Organisms act to minimize expected prediction error, not just current error.",
+  "framework_ids": [
+    "PREDICTIVE_PROCESSING",
+    "EMBODIED_COGNITION"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "expected_free_energy",
+      "activity": "action_selection",
+      "to_entity": "behavioral_policy",
+      "change_produced": "environment-modifying action",
+      "level": "computational",
+      "bridging_to": "behavioral",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "evidence_base": "Friston et al. 2017",
+      "scope_conditions": "Applies to epistemic and pragmatic actions",
+      "interactions": []
+    },
+    {
+      "from_entity": "behavioral_policy",
+      "activity": "environment_modification",
+      "to_entity": "sensory_input",
+      "change_produced": "altered prediction error stream",
+      "level": "behavioral",
+      "bridging_to": "environmental",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "evidence_base": "Gibson 1979 (action-perception cycle)",
+      "scope_conditions": "Affordance-dependent",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Actions include eye movements, locomotion, manipulation",
+    "Explains exploration vs exploitation",
+    "Architecture constrains available actions"
+  ],
+  "moderators": [
+    "Environmental controllability",
+    "Action costs",
+    "Precision of expectations"
+  ],
+  "interactions": [
+    "AFFORDANCE_ACTION_026",
+    "AX_CONTROL_STRESS_004"
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "id": "Friston_2017",
+      "citation": "Friston et al. (2017)"
+    },
+    {
+      "id": "Pezzulo_2017",
+      "citation": "Pezzulo et al. (2017)"
+    }
+  ],
+  "version": "1.0.0"
+}

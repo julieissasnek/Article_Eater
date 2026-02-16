@@ -1,0 +1,51 @@
+{
+  "template_id": "AX_DOSE_RESPONSE_007",
+  "display_id": "AX7",
+  "name": "Exposure duration/intensity → dose-response relationship → effect magnitude",
+  "structural_pattern": "exposure_parameters → cumulative_effect → outcome_scaling",
+  "higher_order_principle": "Environmental effects scale with exposure intensity and duration.",
+  "framework_ids": [
+    "NEUROMODULATORY",
+    "RESTORATIVE_ENVIRONMENTS"
+  ],
+  "causal_links": [
+    {
+      "from_entity": "exposure_dose",
+      "activity": "cumulative_impact",
+      "to_entity": "effect_magnitude",
+      "change_produced": "scaled response",
+      "level": "environmental",
+      "bridging_to": "physiological",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "evidence_base": "White et al. 2019 (nature dose)",
+      "scope_conditions": "Threshold and ceiling effects common",
+      "interactions": []
+    }
+  ],
+  "scope_conditions": [
+    "Many effects show threshold (minimum dose needed)",
+    "Ceiling effects common (diminishing returns)",
+    "Some effects have optimal dose (inverted-U)"
+  ],
+  "moderators": [
+    "Baseline state",
+    "Individual sensitivity",
+    "Competing exposures"
+  ],
+  "interactions": [
+    "All templates with exposure-dependent effects"
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "id": "White_2019",
+      "citation": "White et al. (2019)"
+    },
+    {
+      "id": "Ulrich_1991",
+      "citation": "Ulrich et al. (1991)"
+    }
+  ],
+  "version": "1.0.0"
+}

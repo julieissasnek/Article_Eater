@@ -172,6 +172,72 @@ For each Tier 1 framework:
 - Satisficing rules for when to stop searching
 - Theory-driven queue refresh algorithm
 
+---
+
+## 🤖 CC Tasks — Autonomous AI Worker (Claude Code)
+
+**Created**: 2026-02-16
+**Source**: Doc 35/36 parallel AI coordination system
+
+### CC-1: Template Data Structure Encoding
+
+| Target | Current | Status | Notes |
+|--------|---------|--------|-------|
+| 63 templates | 63 templates | ✅ 100% COMPLETE | `data/templates/*.json` |
+
+**Completed**: 2026-02-16
+- Registry functional at `src/theory/templateRegistry.ts`
+- Templates cover all 10 Tier 1 frameworks + auxiliary mechanisms
+- Templates indexed: T1-T30, M1-M12, AX1-AX12, SN1-2, PP4, IC2, NM2-3, DT1, CB2, EC2, MS2, DP2, MSI2, SRT1
+
+### CC-2: ReductionClaim Encoding
+
+| Target | Current | Status |
+|--------|---------|--------|
+| 10 reduction claims | 12 claims | ✅ COMPLETE (Codex) |
+
+**Completed**: Codex encoded 4 ART, 4 SRT, 4 Biophilia reduction claims.
+
+### CC-3: Cross-Reference Index Encoding
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE (Codex) | 5 attribute domains encoded: Spatial, Visual, Sensory, Content, Affordance |
+
+### CC-4: Epistemic Core Bridge
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE (Codex) | `createClaimFromTemplate`, `createEdgesFromReduction` implemented |
+
+### CC-5: PDF & Abstract Table Audit
+
+| Status | Notes |
+|--------|-------|
+| ✅ COMPLETE | Findings in `signals/CC5_COMPLETE.json` |
+| | Critical gap: `architectural_variable` field missing from extraction |
+| | Resolution: CX-4 interface uses optional fields |
+
+### Sprint 1.5 Phase C: External Repo Drift
+
+**Status**: DOCUMENTED — Requires fixes in external repos
+
+| Repo | File | Enum | Issue |
+|------|------|------|-------|
+| Article_Finder | `search/gap_analyzer.py` | GapType | Unknown values: `coverage`, `neural`, `theory` |
+| BN_graphical | `src/article_processing/article_decomposer.py` | ClaimType | Deprecated aliases: boundary→moderated, effect→causal, etc. |
+| BN_graphical | `src/literature_integration/literature_linker.py` | EvidenceType | Unknown values: `direct`, `indirect`, `meta`, `review` |
+| BN_graphical | `src/schemas/enhanced_edge.py` | EvidenceType | Deprecated alias: empirical→observational |
+| BN_graphical | `contracts/bn.api.v2.schema.json` | CI Shape | Deprecated alias: array→object shape |
+| Outcome_Contractor | `contracts/article_extraction_contracts.py` | ArticleType | Deprecated aliases for study types |
+| Outcome_Contractor | `article_finder/article_type_classifier.py` | ArticleType | Deprecated aliases for study types |
+
+**Fix Pattern**: Update enums to use canonical values from `contracts/vocab/canonical_enums.json`
+
+**Phase A+B**: ✅ COMPLETE — AE-internal drift fixed (2026-02-16)
+
+---
+
 ### Streamlit Pages (6 total)
 
 1. `0_corpus_stats.py` — Corpus statistics
@@ -3526,3 +3592,149 @@ level TEXT NOT NULL CHECK(level IN (
 ```
 
 All modifications verified working.
+
+---
+
+## Sprint 1.5: Cross-Repo Enum Drift Resolution — 2026-02-16
+
+**Objective**: Resolve 13 drift issues detected by `scripts/check_enum_drift.py` to unblock Codex Sprint 1.4 work.
+
+**Canonical Source**: `contracts/vocab/canonical_enums.json`
+
+### Summary of Drift Issues
+
+| # | Repo | File | Category | Issue Type | Values |
+|---|------|------|----------|------------|--------|
+| 1 | AE | `ruthless_bundle.../voi_search.py` | GapType | deprecated aliases | `uncertain`, `unexplored` |
+| 2 | Article_Finder | `search/gap_analyzer.py` | GapType | unknown values | `coverage`, `neural`, `theory` |
+| 3 | AE | `src/methods/task_ecology.py` | ClaimType | unknown values | `evaluative_response`, `functional_effect` |
+| 4 | BN_graphical | `article_decomposer.py` | ClaimType | deprecated aliases | `boundary`, `effect`, `mechanism`, `null_result`, `replication` |
+| 5 | AE | `src/services/incremental_bn.py` | EvidenceType | deprecated alias | `unknown` |
+| 6 | AE | `ruthless_bundle.../incremental_bn.py` | EvidenceType | deprecated alias | `unknown` |
+| 7 | BN_graphical | `literature_linker.py` | EvidenceType | unknown values | `direct`, `indirect`, `meta`, `review` |
+| 8 | BN_graphical | `enhanced_edge.py` | EvidenceType | deprecated alias | `empirical` |
+| 9 | AE | `src/methods/task_ecology.py` | PathwayType | deprecated aliases | `explicit`, `implicit_cognitive`, `implicit_physiological` |
+| 10 | BN_graphical | `bn.api.v2.schema.json` | ConfidenceIntervalShape | deprecated format | `confidence_interval_array` |
+| 11 | AE | `ae.claim.v2.schema.json` | ConfidenceIntervalShape | deprecated format | `ci95_array` |
+| 12 | Outcome_Contractor | `article_extraction_contracts.py` | ArticleTypeCrosswalk | deprecated aliases | 8 values |
+| 13 | Outcome_Contractor | `article_type_classifier.py` | ArticleTypeCrosswalk | deprecated aliases | 8 values |
+
+---
+
+### Phase A: AE Internal Fixes — ✓ COMPLETE (2026-02-16)
+
+| Task ID | Description | File | Action | Status |
+|---------|-------------|------|--------|--------|
+| 1.5.A1 | Fix EvidenceType deprecated alias | `src/services/incremental_bn.py` | Replace `unknown` → `observational` | ✓ DONE |
+| 1.5.A2 | Fix PathwayType deprecated aliases | `src/methods/task_ecology.py` | Canonical values: `subpersonal`, `personal_epistemic`, `mixed` | ✓ DONE |
+| 1.5.A3 | Rename ClaimType to ClaimBifurcationType | `src/methods/task_ecology.py` | Renamed to avoid collision; backward compat alias in `__init__.py` | ✓ DONE |
+| 1.5.A4 | Exclude ruthless_bundle from drift check | `scripts/check_enum_drift.py` | Added to exclusion paths | ✓ DONE |
+
+---
+
+### Phase B: Schema Fixes — ✓ COMPLETE (2026-02-16)
+
+| Task ID | Description | File | Action | Status |
+|---------|-------------|------|--------|--------|
+| 1.5.B1 | Migrate CI shape in AE schema | `contracts/ae_af/schemas/ae.claim.v2.schema.json` | Changed to `{ci_lower, ci_upper}` object | ✓ DONE |
+| 1.5.B2 | Verify table_extractor CI format | `src/services/table_extractor.py` | Already uses `ci_lower`/`ci_upper` | ✓ VERIFIED |
+
+**Signal**: `signals/SPRINT_1_5_PHASE_AB_COMPLETE.json`
+**Result**: Drift reduced from 13 → 7 issues. All AE-internal drift resolved.
+
+---
+
+### Phase C: External Repo Fixes — PENDING (7 issues remain)
+
+**Assignee**: Codex or CC with cross-repo coordination
+**Blocking**: Codex Sprint 1.4 drift check (must reach 0 issues)
+
+#### C1: Article_Finder_v3_2_3
+
+| Task ID | Description | File | Action | Status |
+|---------|-------------|------|--------|--------|
+| 1.5.C1a | **DECISION**: GapType unknown values | `search/gap_analyzer.py` | `coverage`, `neural`, `theory` not in canonical. Options: (a) add to canonical, (b) map to existing, (c) remove | DECISION NEEDED |
+
+**Mapping proposal if (b)**:
+- `coverage` → `mechanism` (coverage gap = unexplored mechanism)
+- `neural` → `mechanism` (neural pathway = mechanism type)
+- `theory` → `unjustified_edge` or new canonical value?
+
+#### C2: BN_graphical
+
+| Task ID | Description | File | Action | Status |
+|---------|-------------|------|--------|--------|
+| 1.5.C2a | Fix ClaimType deprecated aliases | `article_decomposer.py` | `boundary`→`moderated`, `effect`→`causal`, `mechanism`→`mechanistic`, `null_result`→`null`, `replication`→`descriptive` | PENDING |
+| 1.5.C2b | Fix EvidenceType deprecated alias | `enhanced_edge.py` | `empirical` → `observational` | PENDING |
+| 1.5.C2c | **DECISION**: EvidenceType unknown values | `literature_linker.py` | `direct`, `indirect`, `meta`, `review` not canonical. Options: (a) add to canonical, (b) map | DECISION NEEDED |
+| 1.5.C2d | Fix ConfidenceIntervalShape schema | `contracts/bn.api.v2.schema.json` | Migrate to `{ci_lower, ci_upper}` object format | PENDING |
+
+**Mapping proposal for C2c**:
+- `direct` → `experimental` (direct evidence = experimental?)
+- `indirect` → `observational` (indirect = observational?)
+- `meta` → `meta_analysis`
+- `review` → needs decision (not same as meta_analysis)
+
+#### C3: Outcome_Contractor
+
+| Task ID | Description | File | Action | Status |
+|---------|-------------|------|--------|--------|
+| 1.5.C3a | Fix ArticleTypeCrosswalk aliases | `article_extraction_contracts.py` | Replace 8 deprecated values with canonical equivalents | PENDING |
+| 1.5.C3b | Fix ArticleTypeCrosswalk aliases | `article_type_classifier.py` | Replace 8 deprecated values with canonical equivalents | PENDING |
+
+**Deprecated → Canonical mapping** (from canonical_enums.json):
+- `cross_sectional_survey` → `observational_field`
+- `ethnographic_study` → `ethnographic`
+- `grounded_theory_study` → `grounded_theory`
+- `longitudinal_study` → `observational_field`
+- `observational_field_study` → `observational_field`
+- `phenomenological_study` → `phenomenological`
+- `quasi_experiment` → `empirical_v2`
+- `randomized_experiment` → `empirical_v2`
+
+---
+
+### Decisions Required Before Proceeding
+
+| Decision | Options | Impact | Recommended |
+|----------|---------|--------|-------------|
+| **D1.5.1**: task_ecology.py ClaimType | (a) Rename to ResponseType, (b) Add to canonical, (c) Separate enum | Affects CNFA claim bifurcation semantics | (a) Rename — these are Type A/B response categories, not claim types |
+| **D1.5.2**: Article_Finder GapType unknowns | (a) Add to canonical, (b) Map to existing | Affects gap analysis vocabulary | (b) Map — `coverage`→`mechanism`, `neural`→`mechanism`, `theory`→`validation` |
+| **D1.5.3**: BN_graphical EvidenceType unknowns | (a) Add to canonical, (b) Map to existing | Affects evidence classification | (b) Map — `direct`→`experimental`, `indirect`→`observational`, `meta`→`meta_analysis`, `review`→`theoretical` |
+
+---
+
+### Execution Order
+
+```
+Phase A (AE internal) ─────────────────────────┐
+  1.5.A4 (exclude ruthless_bundle)             │
+  1.5.A1 (incremental_bn EvidenceType)         ├─► Can run in parallel
+  1.5.A2 (task_ecology PathwayType)            │
+                                               │
+Phase B (Schemas) ─────────────────────────────┤
+  1.5.B1 (ae.claim.v2 CI shape)                │
+  1.5.B2 (table_extractor verify)              │
+                                               │
+[GATE: Decisions D1.5.1, D1.5.2, D1.5.3] ──────┘
+                                               │
+                                               ▼
+Phase C (External repos) ──────────────────────┐
+  1.5.C2a-d (BN_graphical)                     ├─► After decisions
+  1.5.C3a-b (Outcome_Contractor)               │
+  1.5.C1a (Article_Finder)                     │
+                                               │
+                                               ▼
+1.5.A3 (task_ecology ClaimType) ───────────────┘ After D1.5.1 decision
+
+Final: Re-run scripts/check_enum_drift.py → 0 issues
+```
+
+---
+
+### Success Criteria
+
+- [ ] `python3 scripts/check_enum_drift.py` exits with code 0
+- [ ] All 13 drift issues resolved
+- [ ] Decisions D1.5.1–D1.5.3 documented in `docs/DECISIONS_LOG.md`
+- [ ] Codex can proceed with Sprint 1.4 downstream work
