@@ -67,8 +67,8 @@
 | 11.30 | Completeness inventory | AVAILABLE | — | — | — | 11.22 DONE |
 | 11.31 | Sprint verification test suite (Part 1) | CLAIMED | Codex | 2026-02-17 17:09 UTC | — | 11.1 DONE |
 | 11.32 | Building eval provenance tests (Part 2a) | DONE | Codex | 2026-02-17 17:28 UTC | 2026-02-17 17:30 UTC | 11.1 DONE |
-| 11.33 | Paper eval provenance tests (Part 2b) | CLAIMED | Codex | 2026-02-17 17:30 UTC | — | 11.10 DONE |
+| 11.33 | Paper eval provenance tests (Part 2b) | DONE | Codex | 2026-02-17 17:30 UTC | 2026-02-17 17:32 UTC | 11.10 DONE |
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.33 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.33 done)*
