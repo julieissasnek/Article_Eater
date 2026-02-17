@@ -18,6 +18,15 @@ from src.cmr.wis import (
     goldilocks_to_wis,
     threshold_to_wis,
 )
+from src.cmr.models import (
+    Base,
+    CMRDomainScore,
+    CMREvaluation,
+    CMROverallScore,
+    CMRTemplateActivation,
+    ReductionClaim,
+    TemplateRecord,
+)
 
 __all__ = [
     "cohens_d_to_wis",
@@ -25,4 +34,11 @@ __all__ = [
     "threshold_to_wis",
     "aggregate_domain_wis",
     "aggregate_overall_wis",
+    "Base",
+    "TemplateRecord",
+    "CMREvaluation",
+    "CMRTemplateActivation",
+    "CMRDomainScore",
+    "CMROverallScore",
+    "ReductionClaim",
 ]
