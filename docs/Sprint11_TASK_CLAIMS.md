@@ -29,7 +29,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.5 | Re-run all worked examples | CLAIMED | Codex | 2026-02-17 20:23 CET | — | 11.1 DONE |
+| 11.5 | Re-run all worked examples | DONE | Codex | 2026-02-17 20:23 CET | 2026-02-17 20:27 CET | 11.1 DONE |
 | 11.6 | Paper claim extraction module | DONE | Codex | 2026-02-17 17:15 UTC | 2026-02-17 17:15 UTC | 11.1 DONE |
 | 11.7 | Template matching module | DONE | Codex | 2026-02-17 17:12 UTC | 2026-02-17 17:13 UTC | none |
 | 11.8 | Mechanism tracing module | DONE | Codex | 2026-02-17 17:13 UTC | 2026-02-17 17:13 UTC | 11.7 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:16 UTC by Codex (11.12 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.5 completed)*
