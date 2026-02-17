@@ -31,8 +31,24 @@ import json
 from pathlib import Path
 from datetime import datetime, timezone
 import math
+from itertools import product
 
 logger = logging.getLogger(__name__)
+
+try:
+    from pgmpy.models import DiscreteBayesianNetwork as _PgmpyBN  # pgmpy>=0.1.24
+except Exception:
+    try:
+        from pgmpy.models import BayesianNetwork as _PgmpyBN  # older pgmpy
+    except Exception:
+        _PgmpyBN = None
+
+try:
+    from pgmpy.factors.discrete import TabularCPD as _TabularCPD
+    from pgmpy.inference import VariableElimination as _VariableElimination
+except Exception:
+    _TabularCPD = None
+    _VariableElimination = None
 
 
 # =============================================================================
@@ -611,6 +627,151 @@ class IncrementalBNBuilder:
             'total_papers': len(all_papers)
         }
 
+    # ---------------------------------------------------------------------
+    # Optional pgmpy integration (P8.4)
+    # ---------------------------------------------------------------------
+    def _pgmpy_available(self) -> bool:
+        return _PgmpyBN is not None and _TabularCPD is not None and _VariableElimination is not None
+
+    @staticmethod
+    def _coerce_binary(value: Any) -> int:
+        """Coerce evidence values into binary {0,1}."""
+        if isinstance(value, bool):
+            return 1 if value else 0
+        if isinstance(value, (int, float)):
+            return 1 if float(value) >= 0.5 else 0
+        if isinstance(value, str):
+            v = value.strip().lower()
+            if v in {"1", "true", "yes", "present", "high", "on", "affected"}:
+                return 1
+        return 0
+
+    def build_pgmpy_model(self) -> Optional[Any]:
+        """
+        Build a pgmpy Bayesian network from current edges.
+
+        Returns None when pgmpy is unavailable or when the graph cannot be
+        converted into a valid DAG model.
+        """
+        if not self._pgmpy_available():
+            logger.debug("pgmpy unavailable; skipping BN model build")
+            return None
+
+        if not self.nodes:
+            return None
+
+        try:
+            edges = [(e.source, e.target) for e in self.edges.values() if e.source != e.target]
+            model = _PgmpyBN(edges) if edges else _PgmpyBN()
+            model.add_nodes_from(sorted(self.nodes))
+        except Exception as exc:
+            logger.warning("Failed to initialize pgmpy network: %s", exc)
+            return None
+
+        cpds: List[Any] = []
+        for node in sorted(self.nodes):
+            parents = list(model.get_parents(node))
+            n_parents = len(parents)
+            # Root prior defaults to uncertainty-neutral 0.5
+            if n_parents == 0:
+                cpd = _TabularCPD(variable=node, variable_card=2, values=[[0.5], [0.5]])
+                cpds.append(cpd)
+                continue
+
+            parent_card = [2] * n_parents
+            p1_values: List[float] = []
+            for assignment in product([0, 1], repeat=n_parents):
+                active_scores: List[float] = []
+                for idx, parent in enumerate(parents):
+                    if assignment[idx] == 1:
+                        edge = self.get_edge(parent, node)
+                        if edge:
+                            active_scores.append(edge.mean)
+                if active_scores:
+                    p1 = sum(active_scores) / len(active_scores)
+                else:
+                    p1 = 0.5
+                p1 = min(0.99, max(0.01, p1))
+                p1_values.append(p1)
+
+            p0_values = [1.0 - p for p in p1_values]
+            cpd = _TabularCPD(
+                variable=node,
+                variable_card=2,
+                values=[p0_values, p1_values],
+                evidence=parents,
+                evidence_card=parent_card,
+            )
+            cpds.append(cpd)
+
+        try:
+            model.add_cpds(*cpds)
+            if not model.check_model():
+                logger.warning("pgmpy model failed validation check")
+                return None
+            return model
+        except Exception as exc:
+            logger.warning("Failed to attach pgmpy CPDs: %s", exc)
+            return None
+
+    def query_posterior(self, target: str, evidence: Optional[Dict[str, Any]] = None) -> Optional[float]:
+        """
+        Query posterior P(target=1 | evidence) using pgmpy VariableElimination.
+        """
+        model = self.build_pgmpy_model()
+        if model is None:
+            return None
+        if target not in self.nodes:
+            return None
+
+        evidence_map = {
+            key: self._coerce_binary(value)
+            for key, value in (evidence or {}).items()
+            if key in self.nodes and key != target
+        }
+        try:
+            infer = _VariableElimination(model)
+            q = infer.query(variables=[target], evidence=evidence_map or None, show_progress=False)
+            vals = q.values
+            if len(vals) >= 2:
+                return float(vals[1])
+            return None
+        except Exception as exc:
+            logger.warning("pgmpy posterior query failed (%s): %s", target, exc)
+            return None
+
+    def is_d_separated(self, x: str, y: str, observed: Optional[List[str]] = None) -> Optional[bool]:
+        """
+        Check whether x and y are d-separated given observed nodes.
+        """
+        model = self.build_pgmpy_model()
+        if model is None or x not in self.nodes or y not in self.nodes:
+            return None
+        obs = [node for node in (observed or []) if node in self.nodes and node not in {x, y}]
+        try:
+            if hasattr(model, "is_dconnected"):
+                return not bool(model.is_dconnected(x, y, observed=obs))
+            if hasattr(model, "is_dconnected_to"):
+                return not bool(model.is_dconnected_to(x, y, observed=obs))
+        except Exception as exc:
+            logger.warning("pgmpy d-separation check failed (%s, %s): %s", x, y, exc)
+            return None
+        return None
+
+    def get_markov_blanket(self, node: str) -> Optional[List[str]]:
+        """
+        Get Markov blanket for a node via pgmpy model.
+        """
+        model = self.build_pgmpy_model()
+        if model is None or node not in self.nodes:
+            return None
+        try:
+            blanket = model.get_markov_blanket(node)
+            return sorted(list(blanket))
+        except Exception as exc:
+            logger.warning("pgmpy markov blanket failed (%s): %s", node, exc)
+            return None
+
     def save_state(self, path: Optional[Path] = None) -> None:
         """Save state to JSON file."""
         save_path = path or self.persistence_path
@@ -805,8 +966,35 @@ def get_uncertain_edges(min_uncertainty: float = 0.3) -> List[BetaBernoulliEdge]
     return builder.get_uncertain_edges(min_uncertainty)
 
 
-def get_edge_estimate(source: str, target: str) -> Optional[float]:
-    """Get current estimate for an edge."""
+def get_edge_estimate(source: str, target: str, use_pgmpy_fallback: bool = False) -> Optional[float]:
+    """
+    Get current estimate for an edge.
+
+    If direct edge estimate is missing and `use_pgmpy_fallback=True`, attempt
+    posterior inference P(target=1 | source=1) via optional pgmpy integration.
+    """
     builder = get_bn_builder()
     edge = builder.get_edge(source, target)
-    return edge.mean if edge else None
+    if edge:
+        return edge.mean
+    if use_pgmpy_fallback:
+        return builder.query_posterior(target, evidence={source: 1})
+    return None
+
+
+def query_posterior(target: str, evidence: Optional[Dict[str, Any]] = None) -> Optional[float]:
+    """Convenience wrapper for pgmpy posterior queries."""
+    builder = get_bn_builder()
+    return builder.query_posterior(target, evidence)
+
+
+def check_d_separation(x: str, y: str, observed: Optional[List[str]] = None) -> Optional[bool]:
+    """Convenience wrapper for pgmpy d-separation checks."""
+    builder = get_bn_builder()
+    return builder.is_d_separated(x, y, observed)
+
+
+def get_markov_blanket(node: str) -> Optional[List[str]]:
+    """Convenience wrapper for pgmpy Markov blanket retrieval."""
+    builder = get_bn_builder()
+    return builder.get_markov_blanket(node)

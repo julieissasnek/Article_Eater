@@ -1,0 +1,342 @@
+{
+  "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+  "display_id": "ED1",
+  "name": "Hippocampal Relational Binding and Encoding",
+  "short_description": "Hippocampus transforms experience into memory through relational binding; encoding strength driven by CA1 prediction error, modulated by emotional arousal, schema congruence, and attention",
+  "structural_pattern": "BINDING",
+  "higher_order_principle": "The hippocampus transforms experience into memory through relational binding — creating conjunctive representations that link the what (item information from LEC/perirhinal), where (spatial context from MEC/parahippocampal), and when (temporal context from MEC time cells) of an experience. Encoding strength is driven by prediction error (CA1 mismatch detection), modulated by emotional arousal (amygdala), schema congruence (vmPFC), and attention (prefrontal gating). Encoding that generates PE produces stronger, more durable memory traces than encoding that confirms predictions.",
+  "framework_ids": ["MS", "PP"],
+  "domain": "memory_encoding",
+  "neural_substrate": {
+    "input_pathways": {
+      "what": "LEC → perirhinal → item/object representations",
+      "where": "MEC → parahippocampal → spatial context, scene layout",
+      "when": "MEC time cells → temporal context, sequence position"
+    },
+    "processing_stages": {
+      "entorhinal_cortex": "receives convergent input from neocortical association areas",
+      "dentate_gyrus": "pattern separation — making similar inputs more dissimilar",
+      "CA3": "pattern completion — reactivating full pattern from partial cue",
+      "CA1": "mismatch detection between retrieved and current input"
+    },
+    "output": "conjunctive episodic trace binding all elements"
+  },
+  "causal_links": [
+    {
+      "from_entity": "experience_with_prediction_error",
+      "to_entity": "CA1_mismatch_detection",
+      "activity": "novelty_and_expectation_violation_detection",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Davachi, 2006; Kumaran & Maguire, 2006; Chen et al., 2015",
+      "parameters": {
+        "mechanism": "CA1 receives current input (entorhinal) and retrieved pattern (CA3). Mismatch = PE = encoding signal.",
+        "high_PE": "strongly engages encoding — novel, surprising, schema-violating information",
+        "low_PE": "weakly engages encoding — familiar, expected, schema-congruent information",
+        "educational_implication": "PASSIVE re-exposure generates LOW PE → POOR encoding. ACTIVE prediction/generation generates HIGH PE → STRONG encoding."
+      }
+    },
+    {
+      "from_entity": "multimodal_input",
+      "to_entity": "hippocampal_relational_binding",
+      "activity": "conjunctive_trace_formation",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Davachi, 2006; Eichenbaum, 2000",
+      "parameters": {
+        "critical_property": "trace is CONTEXT-DEPENDENT — retrieval requires matching context cues"
+      }
+    },
+    {
+      "from_entity": "emotional_arousal",
+      "to_entity": "amygdala_encoding_modulation",
+      "activity": "emotional_enhancement_of_memory",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Phelps, 2004; LaBar & Cabeza, 2006; McGaugh, 2004",
+      "parameters": {
+        "mechanism": "amygdala → hippocampus direct projections enhance LTP",
+        "inverted_U": {
+          "low_arousal": "weak encoding (boredom, inattention)",
+          "moderate_arousal": "OPTIMAL encoding (curiosity, mild surprise, personal relevance)",
+          "high_arousal": "impaired HIPPOCAMPAL encoding but enhanced AMYGDALA encoding (fragmented, emotional-gist memory — the test anxiety pattern)"
+        }
+      }
+    },
+    {
+      "from_entity": "prior_knowledge_schema",
+      "to_entity": "schema_congruence_gating",
+      "activity": "vmPFC_schema_detection",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "van Kesteren et al., 2012; Tse et al., 2007",
+      "parameters": {
+        "schema_congruent": "vmPFC detects fit → partial hippocampal bypass → fast neocortical integration",
+        "schema_incongruent": "vmPFC detects violation → STRONG hippocampal encoding (PE signal)",
+        "schema_irrelevant": "no schema activated → weak encoding on all pathways"
+      }
+    },
+    {
+      "from_entity": "temporal_context",
+      "to_entity": "temporal_binding_in_episodic_trace",
+      "activity": "time_cell_contextual_tagging",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "strong",
+      "maturity": "established",
+      "evidence_base": "Ranganath & Hsieh, 2016; Howard & Kahana, 2002",
+      "parameters": {
+        "mechanism": "MEC time cells provide slowly drifting context signal. Items encoded close in time share similar context → become associated.",
+        "educational_implication": {
+          "spacing": "different temporal contexts → more retrieval routes → better retention",
+          "interleaving": "different category items in each temporal context → forces content-based rather than context-based discrimination"
+        }
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Encoding requires ATTENTION — hippocampal encoding is sharply reduced when attention is divided (Uncapher & Rugg, 2005)",
+    "Encoding is enhanced by GENERATION — producing an answer (even an incorrect one) generates stronger PE than passively receiving the answer",
+    "Encoding is enhanced by ELABORATION — connecting new information to existing knowledge creates more retrieval routes",
+    "Age modulates encoding: hippocampal encoding is robust from early childhood; prefrontal control matures slowly through adolescence"
+  ],
+  "moderators": [
+    "attention_state (divided attention dramatically impairs encoding)",
+    "emotional_arousal (inverted-U function)",
+    "schema_congruence (determines encoding pathway)",
+    "temporal_context (spacing and interleaving effects)",
+    "generation_vs_passive (generation enhances PE and encoding)"
+  ],
+  "interactions": [
+    {
+      "template_id": "ED_PATTERN_SEP_COMP_001",
+      "display_id": "ED2",
+      "nature": "ED1 creates bound traces; ED2's pattern separation ensures similar episodes are distinguishable."
+    },
+    {
+      "template_id": "ED_SCHEMA_ENCODING_001",
+      "display_id": "ED4",
+      "nature": "Schema congruence in ED1 determines which encoding pathway (ED4) is engaged."
+    },
+    {
+      "template_id": "PP_PREDICTION_ERROR_001",
+      "display_id": "T1",
+      "nature": "CA1 mismatch detection is a specific instance of the general prediction error mechanism in T1."
+    }
+  ],
+  "ecological_testability": "HIGH — subsequent memory paradigm (DM effect) measurable by fMRI; behavioral encoding strength measurable by delayed test; attention measurable by dual-task interference.",
+  "overall_maturity": "established",
+  "key_references": [
+    {
+      "citation": "Davachi, L. (2006). Item, context and relational episodic encoding in humans. Current Opinion in Neurobiology, 16(6), 693–700.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Davachi, L., & DuBrow, S. (2015). How the hippocampus preserves order. Trends in Cognitive Sciences, 19(2), 92–99.",
+      "google_scholar_count": 300
+    },
+    {
+      "citation": "Eichenbaum, H. (2000). A cortical-hippocampal system for declarative memory. Nature Reviews Neuroscience, 1(1), 41–50.",
+      "google_scholar_count": 2000
+    },
+    {
+      "citation": "van Kesteren, M. T. R., Ruiter, D. J., Fernández, G., & Henson, R. N. (2012). How schema and novelty augment memory formation. Trends in Neurosciences, 35(4), 211–219.",
+      "google_scholar_count": 800
+    },
+    {
+      "citation": "Kumaran, D., & Maguire, E. A. (2006). An unexpected sequence of events: Mismatch detection in the human hippocampus. PLoS Biology, 4(12), e424.",
+      "google_scholar_count": 400
+    }
+  ],
+  "source_panel": "02-15_27_Panel_EI_Memory_Encoding_V1_0.md",
+  "version": "1.0.0",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
+}

@@ -91,6 +91,7 @@ All tasks completed. See TASKS.md for details.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| CMR-3.2 | Batch 2 Template Computations (20 templates) | CLAUDE-0217-CTX | 2026-02-17 UTC | 20 compute functions in template_computations.py, 52 tests, DECISIONS.md D3.2.1-D3.2.6 |
 | GEA-1 | Grounded expert retrieval + recursion hardening | Codex-Terminal | 2026-02-17 08:16 UTC | Alias-safe interaction traversal and `overall_maturity` confidence mapping |
 | GEA-2 | Grounded expert empirical evidence layer | Codex-Terminal | 2026-02-17 08:20 UTC | WebOfBelief SQLite empirical claim integration into grounded responses |
 | GEA-3 | Grounded expert BN calibration layer | Codex-Terminal | 2026-02-17 08:31 UTC | BN posterior calibration summary added to response model + output formatting; tests passing |
@@ -108,6 +109,12 @@ All tasks completed. See TASKS.md for details.
 | I9.3 | Queue to Zotero watcher integration | Codex-Terminal | 2026-02-17 09:50 UTC | Added BibTeX delta watcher + passive target matching and `sync_zotero_to_queue()` auto-report flow with tests. |
 | I9.4 | VOI collector registration | Codex-Terminal | 2026-02-17 09:56 UTC | Added collector profile models + queue registration/list/claim APIs with capacity checks, deadlines, and search guidance generation. |
 | I9.5 | Research opportunity registry | Codex-Terminal | 2026-02-17 10:10 UTC | Added opportunity lifecycle model + registry methods with auto-creation from `NOT_FOUND` outcomes and persisted state. |
+| I9.6 | Streamlit queue dashboard | Codex-Terminal | 2026-02-17 10:15 UTC | Added `streamlit_app/pages/6_research_queue.py` with queue metrics, assignment/status controls, collector forms, opportunity management, and automation triggers. |
+| I9.7 | Automated searcher bot | Codex-Terminal | 2026-02-17 10:16 UTC | Added Semantic Scholar-backed bot in `src/queue/automated_searcher.py` plus queue wrapper `run_automated_searcher()` and bot tests. |
+| V15-CX-1 | Update task board with Docs 64/65 | Codex-Terminal | 2026-02-17 10:22 UTC | Recorded Sprint V15 Doc 64 (VF-II) and Doc 65 (CREA-III) status + verification in `TASKS.md`. |
+| V15-CX-2 | Validate VF3 → CREA2B single-chain | Codex-Terminal | 2026-02-17 10:24 UTC | Confirmed `VF3 -> Affect -> CREA2B -> Divergent Thinking` linkage and no direct VF3→CREA2 interaction path (double-count guard). |
+| V15-CX-3 | Verify CREA2 interaction matrix sub-additivity lookup | Codex-Terminal | 2026-02-17 10:25 UTC | Confirmed all 7 combinations return expected sub-additivity (`A+B 0.84`, `A+C 0.76`, `B+C 0.80`, `A+B+C 0.70`, singleton 1.0). |
+| V15-CX-STAB | Restore V14 smoke gate compatibility post-CREA4 | Codex-Terminal | 2026-02-17 10:28 UTC | Backfilled missing V14 lifespan root fields on `CREA4`; `./bin/prod_smoke.sh` now passes. |
 
 ## Completed Today (2026-02-12)
 

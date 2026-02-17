@@ -1,0 +1,20 @@
+{
+  "task_id": "P8.5",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T09:13:15Z",
+  "output_files": [
+    "tests/test_bibtex_e2e_flow.py",
+    "docs/P8_5_ZOTERO_BIBTEX_EXTRACTION_E2E_2026-02-17.md",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Verified Zotero/BibTeX ingestion path via executable tests. Added a new integration test chaining parse_bibtex_string -> PDFBibTeXMatcher -> BibTeXIngestionService batch ingestion boundary. Confirmed 57 passing tests across BibTeX utils+ingestion suite.",
+  "issues_found": [
+    "Full offline pipeline smoke command currently fails in this runtime due to missing dependency `jsonschema`.",
+    "Live Zotero API/storage access was not exercised in this terminal run; verification used deterministic test harnesses and local service boundaries."
+  ],
+  "changes_to_plan": [
+    "Remaining Sprint 8 pending item is P8.4 (wire pgmpy BN inference).",
+    "If full offline smoke is required, install missing runtime dependency and re-run scripts/offline_pipeline_smoke.py."
+  ]
+}

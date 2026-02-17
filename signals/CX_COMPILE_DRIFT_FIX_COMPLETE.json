@@ -1,0 +1,18 @@
+{
+  "task_id": "CX_COMPILE_DRIFT_FIX",
+  "completed_by": "codex",
+  "timestamp": "2026-02-16T12:47:16.790257Z",
+  "output_files": [
+    "src/theory/bridge.ts",
+    "tests/integration_expert_workflow.ts",
+    "tests/theory/validation.test.ts",
+    "scripts/check_theory_drift.ts"
+  ],
+  "notes": "Compile/type drift repaired: Template/Attribute contracts aligned in bridge, tests, and theory drift script; tsc --noEmit passes",
+  "issues_found": [
+    "Data-level drift remains (invalid PERSONAL_EPISTEMIC level tokens in 4 templates; 4 SC templates missing overall_maturity in registry load)"
+  ],
+  "changes_to_plan": [
+    "Next task should normalize registry/template data drift, then rerun scripts/check_theory_drift.ts"
+  ]
+}

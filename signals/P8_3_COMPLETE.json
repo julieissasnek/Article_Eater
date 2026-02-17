@@ -1,0 +1,22 @@
+{
+  "task_id": "P8.3",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T09:06:40Z",
+  "output_files": [
+    "scripts/run_realtime_table_rule_intake.py",
+    "scripts/process_realtime_pdf_completion_queue.py",
+    "tests/test_p8_3_variable_resolution_fallbacks.py",
+    "docs/P8_3_LLM_FALLBACK_RESOLUTION_2026-02-17.md",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Implemented staged fallback mapping pipeline for env/out variables in both realtime ingestion scripts: exact lookup -> resolver -> optional constrained LLM fallback -> semantic fallback -> generic keyword -> unresolved. Added queueing safeguards and unit tests for fallback behavior.",
+  "issues_found": [
+    "With LLM fallback disabled (default), semantic fallback alone recovers only a small fraction of unresolved rows in current corpus; high unresolved rates remain largely driven by off-domain/noisy terms.",
+    "LLM fallback requires explicit runtime enablement (`AE_ENABLE_LLM_FALLBACK`) and API credentials (`OPENAI_API_KEY`)."
+  ],
+  "changes_to_plan": [
+    "Proceed to P8.6 metrics instrumentation to monitor new match-type distribution including `llm_lookup_fallback` and `semantic_lookup_fallback`.",
+    "Prioritize domain-gating and unresolved-term cleanup for larger unresolved-rate reduction beyond fallback policy changes."
+  ]
+}

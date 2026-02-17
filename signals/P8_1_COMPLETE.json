@@ -1,0 +1,19 @@
+{
+  "task_id": "P8.1",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T08:51:55Z",
+  "output_files": [
+    "docs/P8_1_VARIABLE_MAPPING_AUDIT_2026-02-17.md",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Audited variable mapping coverage on 12,596 production rows. Found full table->rule structural alignment (100% rowwise env/out node ID match), but unresolved canonical IDs remain high (env 27.6%, out 15.7%). Match-type distributions indicate heavy generic keyword fallback and weaker environment-side mapping quality.",
+  "issues_found": [
+    "Canonical mapping quality remains the bottleneck, not field presence or rule translation structure.",
+    "Large non-architecture corpus segment contributes disproportionately to unresolved rates (non-architecture env unresolved 35.8% vs architecture-like 21.0%)."
+  ],
+  "changes_to_plan": [
+    "Proceed to P8.2 (canonical env/out registry expansion) using unresolved clusters from this audit as seed targets.",
+    "Use P8.6 metrics instrumentation to track unresolved rates and resolution match-type distribution in CI/ops outputs."
+  ]
+}

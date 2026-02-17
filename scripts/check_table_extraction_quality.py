@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -24,6 +26,7 @@ DEFAULT_THRESHOLDS = {
     "min_article_type_metadata_coverage": 0.95,
     "max_article_type_low_confidence_rate": 0.65,
     "max_article_type_review_rate": 0.75,
+    "max_missing_resolution_match_type_rate": 0.10,
 }
 
 
@@ -34,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--audit-jsonl", default="data/production/realtime_extraction_audit.jsonl")
     p.add_argument("--manual-review-csv", default="data/review/table_quality_manual_queue.csv")
     p.add_argument("--article-type-review-csv", default="data/review/article_type_manual_queue.csv")
+    p.add_argument("--report-json", default="data/production/table_extraction_quality_report.json")
     p.add_argument("--thresholds", default="config/table_extraction_quality_thresholds.json")
     p.add_argument("--soft", action="store_true", help="Always exit 0")
     return p.parse_args()
@@ -119,6 +123,26 @@ def main() -> int:
     anchor_coverage = metric_ratio(anchored, len(confirmed_rows))
     unresolved_env_rate = metric_ratio(unresolved_env, len(confirmed_rows))
     unresolved_out_rate = metric_ratio(unresolved_out, len(confirmed_rows))
+    resolution_rows = [
+        r
+        for r in confirmed_rows
+        if str(r.get("environment_canonical_id", "")).strip()
+        or str(r.get("outcome_canonical_id", "")).strip()
+    ]
+    env_match_type_counts = Counter(
+        str(r.get("environment_resolution_match_type", "")).strip() or "missing"
+        for r in resolution_rows
+    )
+    out_match_type_counts = Counter(
+        str(r.get("outcome_resolution_match_type", "")).strip() or "missing"
+        for r in resolution_rows
+    )
+    env_llm_rate = metric_ratio(env_match_type_counts.get("llm_lookup_fallback", 0), len(resolution_rows))
+    out_llm_rate = metric_ratio(out_match_type_counts.get("llm_lookup_fallback", 0), len(resolution_rows))
+    env_semantic_rate = metric_ratio(env_match_type_counts.get("semantic_lookup_fallback", 0), len(resolution_rows))
+    out_semantic_rate = metric_ratio(out_match_type_counts.get("semantic_lookup_fallback", 0), len(resolution_rows))
+    env_missing_match_type_rate = metric_ratio(env_match_type_counts.get("missing", 0), len(resolution_rows))
+    out_missing_match_type_rate = metric_ratio(out_match_type_counts.get("missing", 0), len(resolution_rows))
 
     relation_types = {
         str(r.get("argument_relation_type", "")).strip()
@@ -167,7 +191,8 @@ def main() -> int:
         for r in typed_rows
         if str(r.get("article_type_needs_review", "")).strip().lower() in {"1", "true", "yes", "y"}
     )
-    article_type_metadata_coverage = metric_ratio(len(typed_metadata), len(queue_rows))
+    # Coverage should be measured on rows where article type is present.
+    article_type_metadata_coverage = metric_ratio(len(typed_metadata), len(typed_rows))
     article_type_low_confidence_rate = metric_ratio(low_conf_typed, len(typed_rows))
     article_type_review_rate = metric_ratio(needs_review_typed, len(typed_rows))
     article_type_manual_backlog = len(article_type_review_rows)
@@ -215,7 +240,7 @@ def main() -> int:
         failures.append(
             f"edge_type_tag_rate {edge_type_tag_rate:.4f} < {thresholds['min_edge_type_tag_rate']:.4f}"
         )
-    if queue_rows and article_type_metadata_coverage < thresholds["min_article_type_metadata_coverage"]:
+    if typed_rows and article_type_metadata_coverage < thresholds["min_article_type_metadata_coverage"]:
         failures.append(
             f"article_type_metadata_coverage {article_type_metadata_coverage:.4f} < {thresholds['min_article_type_metadata_coverage']:.4f}"
         )
@@ -227,6 +252,14 @@ def main() -> int:
         failures.append(
             f"article_type_review_rate {article_type_review_rate:.4f} > {thresholds['max_article_type_review_rate']:.4f}"
         )
+    if resolution_rows and env_missing_match_type_rate > thresholds["max_missing_resolution_match_type_rate"]:
+        failures.append(
+            f"environment_missing_match_type_rate {env_missing_match_type_rate:.4f} > {thresholds['max_missing_resolution_match_type_rate']:.4f}"
+        )
+    if resolution_rows and out_missing_match_type_rate > thresholds["max_missing_resolution_match_type_rate"]:
+        failures.append(
+            f"outcome_missing_match_type_rate {out_missing_match_type_rate:.4f} > {thresholds['max_missing_resolution_match_type_rate']:.4f}"
+        )
 
     print("Extraction quality metrics:")
     print(f"  processed_pdfs: {processed}")
@@ -234,9 +267,18 @@ def main() -> int:
     print(f"  completed_pdf_no_claims: {no_claims}")
     print(f"  no_claims_rate: {no_claims_rate:.4f}")
     print(f"  confirmed_rows: {len(confirmed_rows)}")
+    print(f"  resolution_rows: {len(resolution_rows)}")
     print(f"  anchor_coverage: {anchor_coverage:.4f}")
     print(f"  unresolved_environment_rate: {unresolved_env_rate:.4f}")
     print(f"  unresolved_outcome_rate: {unresolved_out_rate:.4f}")
+    print(f"  environment_resolution_match_type_counts: {json.dumps(dict(env_match_type_counts), sort_keys=True)}")
+    print(f"  outcome_resolution_match_type_counts: {json.dumps(dict(out_match_type_counts), sort_keys=True)}")
+    print(f"  environment_llm_fallback_rate: {env_llm_rate:.4f}")
+    print(f"  outcome_llm_fallback_rate: {out_llm_rate:.4f}")
+    print(f"  environment_semantic_fallback_rate: {env_semantic_rate:.4f}")
+    print(f"  outcome_semantic_fallback_rate: {out_semantic_rate:.4f}")
+    print(f"  environment_missing_match_type_rate: {env_missing_match_type_rate:.4f}")
+    print(f"  outcome_missing_match_type_rate: {out_missing_match_type_rate:.4f}")
     print(f"  relation_type_diversity: {relation_type_diversity}")
     print(f"  taggable_rows: {len(taggable_rows)}")
     print(f"  node_type_tag_rate: {node_type_tag_rate:.4f}")
@@ -246,6 +288,7 @@ def main() -> int:
     print(f"  inter_article_paper_coverage: {inter_article_paper_coverage:.4f}")
     print(f"  manual_review_backlog: {manual_backlog}")
     print(f"  article_type_metadata_coverage: {article_type_metadata_coverage:.4f}")
+    print(f"  article_type_typed_rows: {len(typed_rows)}")
     print(f"  article_type_low_confidence_rate: {article_type_low_confidence_rate:.4f}")
     print(f"  article_type_review_rate: {article_type_review_rate:.4f}")
     print(f"  article_type_manual_backlog: {article_type_manual_backlog}")
@@ -256,6 +299,46 @@ def main() -> int:
             print(f"  FAIL {item}")
     else:
         print("quality_gate: PASS")
+
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "metrics": {
+            "processed_pdfs": processed,
+            "completed_pdf_extracted": extracted,
+            "completed_pdf_no_claims": no_claims,
+            "no_claims_rate": round(no_claims_rate, 4),
+            "confirmed_rows": len(confirmed_rows),
+            "resolution_rows": len(resolution_rows),
+            "anchor_coverage": round(anchor_coverage, 4),
+            "unresolved_environment_rate": round(unresolved_env_rate, 4),
+            "unresolved_outcome_rate": round(unresolved_out_rate, 4),
+            "environment_resolution_match_type_counts": dict(env_match_type_counts),
+            "outcome_resolution_match_type_counts": dict(out_match_type_counts),
+            "environment_llm_fallback_rate": round(env_llm_rate, 4),
+            "outcome_llm_fallback_rate": round(out_llm_rate, 4),
+            "environment_semantic_fallback_rate": round(env_semantic_rate, 4),
+            "outcome_semantic_fallback_rate": round(out_semantic_rate, 4),
+            "environment_missing_match_type_rate": round(env_missing_match_type_rate, 4),
+            "outcome_missing_match_type_rate": round(out_missing_match_type_rate, 4),
+            "relation_type_diversity": relation_type_diversity,
+            "node_type_tag_rate": round(node_type_tag_rate, 4),
+            "edge_type_tag_rate": round(edge_type_tag_rate, 4),
+            "theory_link_paper_coverage": round(theory_link_paper_coverage, 4),
+            "inter_article_paper_coverage": round(inter_article_paper_coverage, 4),
+            "manual_review_backlog": manual_backlog,
+            "article_type_metadata_coverage": round(article_type_metadata_coverage, 4),
+            "article_type_typed_rows": len(typed_rows),
+            "article_type_low_confidence_rate": round(article_type_low_confidence_rate, 4),
+            "article_type_review_rate": round(article_type_review_rate, 4),
+            "article_type_manual_backlog": article_type_manual_backlog,
+        },
+        "failures": failures,
+        "quality_gate": "FAIL" if failures else "PASS",
+    }
+    report_path = Path(args.report_json)
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    print(f"  report_json: {report_path}")
 
     if args.soft:
         return 0

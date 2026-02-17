@@ -1,0 +1,92 @@
+{
+    "claim_id": "RC_SRT_STRESS_RECOVERY",
+    "version": "1.0.0",
+    "created_date": "2026-02-17",
+    "created_by": "System (Gap Closure)",
+    "revision_history": [
+        {
+            "version": "1.0.0",
+            "date": "2026-02-17",
+            "reason": "Initial implementation to close SRT gap",
+            "author": "System",
+            "changes": "Created RC8"
+        }
+    ],
+    "tier2_theory": "Stress Recovery Theory (SRT)",
+    "tier2_construct": "Stress Recovery",
+    "construct_definition": "Physiological recovery from stress characterized by a shift from sympathetic arousal to parasympathetic dominance.",
+    "construct_validity": "HIGH",
+    "construct_validity_justification": "Supported by extensive psychophysiological evidence (Ulrich et al., 1991).",
+    "template_nodes": [
+        "NM_THREAT_HPA_001",
+        "NM_VAGAL_REGULATION_001",
+        "ALLOSTATIC_MASTER_001"
+    ],
+    "reduction_edges": [
+        {
+            "edge_id": "RC8_E1",
+            "from_node": "NM_THREAT_HPA_001",
+            "to_node": "Stress Recovery",
+            "edge_type": "INHIBITS",
+            "edge_confidence": {
+                "extraction_confidence": 0.9,
+                "statistical_confidence": 0.85,
+                "mechanism_confidence": 0.9,
+                "epistemic_confidence": 0.9
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [
+                "Ulrich et al., 1991"
+            ],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC8_E2",
+            "from_node": "NM_VAGAL_REGULATION_001",
+            "to_node": "Stress Recovery",
+            "edge_type": "PRODUCES",
+            "edge_confidence": {
+                "extraction_confidence": 0.9,
+                "statistical_confidence": 0.8,
+                "mechanism_confidence": 0.85,
+                "epistemic_confidence": 0.85
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [
+                "Gladwell et al., 2012"
+            ],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC8_E3",
+            "from_node": "ALLOSTATIC_MASTER_001",
+            "to_node": "Stress Recovery",
+            "edge_type": "CONSTITUTES",
+            "edge_confidence": {
+                "extraction_confidence": 0.8,
+                "statistical_confidence": 0.7,
+                "mechanism_confidence": 0.8,
+                "epistemic_confidence": 0.8
+            },
+            "testability": "INDIRECTLY_TESTABLE",
+            "key_evidence": [],
+            "evidence_links": []
+        }
+    ],
+    "compositional_adequacy": "FULLY_DECOMPOSABLE",
+    "compositional_notes": "Recovery is the sum of sympathetic withdrawal and parasympathetic activation.",
+    "schema_gaps": [],
+    "reducibility_judgment": "FULLY_REDUCIBLE",
+    "mechanism_narrative": "Nature exposure reduces HPA axis activity (T5) and enhances Vagal Tone (T65), leading to a rapid restoration of Allostatic Balance (T29).",
+    "boundary_variables": [
+        "heart_rate_variability",
+        "skin_conductance",
+        "cortisol_level"
+    ],
+    "valid_as_of_template_count": 77,
+    "overall_confidence": "HIGH",
+    "overall_maturity": "how-actually",
+    "key_references": [
+        "Ulrich, R. S., et al. (1991). Stress recovery during exposure to natural and urban environments. Journal of Environmental Psychology."
+    ]
+}

@@ -1,0 +1,108 @@
+{
+  "claim_id": "RC_ART_SOFT_FASCINATION",
+  "version": "1.0.0",
+  "created_date": "2026-02-15",
+  "created_by": "Panel T2-A (Migrated from M1)",
+  "revision_history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-15",
+      "reason": "Initial migration from Molecule M1",
+      "author": "System",
+      "changes": "Converted M1 structure to ReductionClaim DAG"
+    }
+  ],
+  "tier2_theory": "Attention Restoration Theory (ART)",
+  "tier2_construct": "Soft Fascination",
+  "construct_definition": "A quality of attention characterized by mild, effortless, involuntary engagement with moderately interesting stimuli, enabling DMN recovery.",
+  "construct_validity": "MEDIUM",
+  "construct_validity_justification": "Well-established in ART literature (Kaplan 1995), but neural operationalization (DMN vs TPN balance) varies.",
+  "template_nodes": [
+    "IC_ALLOSTATIC_ANTICIPATION_001",
+    "SALIENCE_NETWORK_SWITCH_001",
+    "NM_CORTISOL_HIPPOCAMPAL_005"
+  ],
+  "reduction_edges": [
+    {
+      "edge_id": "RE_ART_01",
+      "from_node": "art_soft_fascination",
+      "to_node": "SN_LAYOUT_COGNITIVE_MAP_001",
+      "edge_type": "PRODUCES",
+      "edge_confidence": {
+        "extraction_confidence": 0.9,
+        "statistical_confidence": 0.85,
+        "mechanism_confidence": 0.9,
+        "epistemic_confidence": 0.88
+      },
+      "testability": "DIRECTLY_TESTABLE",
+      "key_evidence": [],
+      "evidence_links": []
+    },
+    {
+      "edge_id": "RE_ART_02",
+      "from_node": "art_soft_fascination",
+      "to_node": "NM_CORTISOL_HIPPOCAMPAL_005",
+      "edge_type": "PRODUCES",
+      "edge_confidence": {
+        "extraction_confidence": 0.85,
+        "statistical_confidence": 0.8,
+        "mechanism_confidence": 0.85,
+        "epistemic_confidence": 0.83
+      },
+      "testability": "DIRECTLY_TESTABLE",
+      "key_evidence": [],
+      "evidence_links": []
+    },
+    {
+      "edge_id": "RE_ART_03",
+      "from_node": "IC_ALLOSTATIC_ANTICIPATION_001",
+      "to_node": "art_reflection",
+      "edge_type": "MODULATES",
+      "edge_confidence": {
+        "extraction_confidence": 0.8,
+        "statistical_confidence": 0.75,
+        "mechanism_confidence": 0.8,
+        "epistemic_confidence": 0.78
+      },
+      "testability": "INDIRECTLY_TESTABLE",
+      "key_evidence": [],
+      "evidence_links": []
+    },
+    {
+      "edge_id": "RE_ART_04",
+      "from_node": "IC_ALLOSTATIC_ANTICIPATION_001",
+      "to_node": "Soft Fascination",
+      "edge_type": "CONSTITUTES",
+      "mutual_manipulability_evidence": "Top-down suppression of DMN reduces restorative feel.",
+      "edge_confidence": {
+        "extraction_confidence": 0.9,
+        "statistical_confidence": 0.7,
+        "mechanism_confidence": 0.8,
+        "epistemic_confidence": 0.8
+      },
+      "testability": "DIRECTLY_TESTABLE",
+      "key_evidence": [
+        "Andrews-Hanna et al., 2014"
+      ],
+      "evidence_links": []
+    }
+  ],
+  "compositional_adequacy": "INTERACTION_DEPENDENT",
+  "compositional_notes": "Requires low salience (T68 inactive) to permit DMN (T27) persistence.",
+  "schema_gaps": [],
+  "irreducible_residual": "The phenomenological quality of effortless interest may go beyond simple DMN maintenance.",
+  "reducibility_judgment": "PARTIALLY_REDUCIBLE",
+  "mechanism_narrative": "Soft Fascination is the default state of DMN maintenance (T27) that emerges when the Salience Network (T68) is quiescent. High Auditory Demand (T31) would trigger Salience, breaking the state. High Processing Fluency (T67) inhibits Salience, protecting the state.",
+  "boundary_variables": [
+    "salience_threshold",
+    "dmn_connectivity",
+    "subjective_effort"
+  ],
+  "valid_as_of_template_count": 77,
+  "overall_confidence": "HIGH",
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    "Kaplan, S. (1995). The restorative benefits of nature.",
+    "Berman, M. G., et al. (2008). The cognitive benefits of interacting with nature."
+  ]
+}

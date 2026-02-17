@@ -1,0 +1,104 @@
+{
+    "claim_id": "RC_PVT_SOCIAL_ENGAGEMENT",
+    "version": "1.0.0",
+    "created_date": "2026-02-15",
+    "created_by": "Panel T2-A (Migrated from M5)",
+    "revision_history": [
+        {
+            "version": "1.0.0",
+            "date": "2026-02-15",
+            "reason": "Initial migration from Molecule M5",
+            "author": "System",
+            "changes": "Converted M5 structure to ReductionClaim DAG"
+        }
+    ],
+    "tier2_theory": "Polyvagal Theory (Porges)",
+    "tier2_construct": "Social Engagement System",
+    "construct_definition": "A physiological state dependent on the ventral vagus that supports connection, collaboration, and empathy.",
+    "construct_validity": "HIGH",
+    "construct_validity_justification": "Well-defined physiological state with clear anatomical basis (VVC).",
+    "template_nodes": [
+        "NM_VAGAL_REGULATION_001",
+        "NM_SAFETY_SIGNALING_001",
+        "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+        "CROSS_SOCIAL_AFFORDANCE_READING_001"
+    ],
+    "reduction_edges": [
+        {
+            "edge_id": "RC6_E1",
+            "from_node": "NM_SAFETY_SIGNALING_001",
+            "to_node": "NM_VAGAL_REGULATION_001",
+            "edge_type": "PRODUCES",
+            "edge_confidence": {
+                "extraction_confidence": 0.9,
+                "statistical_confidence": 0.8,
+                "mechanism_confidence": 0.9,
+                "epistemic_confidence": 0.9
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC6_E2",
+            "from_node": "NM_VAGAL_REGULATION_001",
+            "to_node": "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+            "edge_type": "ENABLES",
+            "edge_confidence": {
+                "extraction_confidence": 0.8,
+                "statistical_confidence": 0.7,
+                "mechanism_confidence": 0.8,
+                "epistemic_confidence": 0.8
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC6_E3",
+            "from_node": "NM_VAGAL_REGULATION_001",
+            "to_node": "CROSS_SOCIAL_AFFORDANCE_READING_001",
+            "edge_type": "ENABLES",
+            "edge_confidence": {
+                "extraction_confidence": 0.8,
+                "statistical_confidence": 0.7,
+                "mechanism_confidence": 0.8,
+                "epistemic_confidence": 0.8
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC6_E4",
+            "from_node": "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+            "to_node": "Social Engagement",
+            "edge_type": "CONSTITUTES",
+            "edge_confidence": {
+                "extraction_confidence": 0.9,
+                "statistical_confidence": 0.7,
+                "mechanism_confidence": 0.8,
+                "epistemic_confidence": 0.8
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [],
+            "evidence_links": []
+        }
+    ],
+    "compositional_adequacy": "FULLY_DECOMPOSABLE",
+    "compositional_notes": "Social engagement is the behavioral output of the safe/vagal state.",
+    "schema_gaps": [],
+    "reducibility_judgment": "FULLY_REDUCIBLE",
+    "mechanism_narrative": "Safety Signaling (T66) inhibits threat, allowing the Vagal Brake (T65) to engage. This physiological state actively enables the neural circuits for social connection (Mirroring, Face/Voice recognition).",
+    "boundary_variables": [
+        "heart_rate_variability",
+        "middle_ear_muscle_tone",
+        "facial_expressivity"
+    ],
+    "valid_as_of_template_count": 77,
+    "overall_confidence": "HIGH",
+    "overall_maturity": "established",
+    "key_references": [
+        "Porges, S. W. (2011). The Polyvagal Theory."
+    ]
+}

@@ -22,6 +22,9 @@ from src.services.incremental_bn import (
     observe_belief_in_bn,
     get_uncertain_edges,
     get_edge_estimate,
+    query_posterior,
+    check_d_separation,
+    get_markov_blanket,
 )
 
 
@@ -446,6 +449,35 @@ class TestConvenienceFunctions:
 
         estimate = get_edge_estimate("nonexistent", "edge")
         assert estimate is None
+
+    def test_pgmpy_wrappers_graceful_without_dependency(self):
+        """pgmpy wrappers should degrade gracefully when pgmpy is unavailable."""
+        import src.services.incremental_bn as module
+        module._bn_builder_instance = None
+
+        builder = get_bn_builder()
+        builder.observe_evidence("A", "B", supports=True)
+
+        # In this runtime pgmpy may be absent; wrappers must not crash.
+        posterior = query_posterior("B", {"A": 1})
+        dsep = check_d_separation("A", "B", [])
+        blanket = get_markov_blanket("B")
+
+        if module._PgmpyBN is None:
+            assert posterior is None
+            assert dsep is None
+            assert blanket is None
+
+    def test_get_edge_estimate_pgmpy_fallback_no_crash(self):
+        """Fallback inference path should return None or float, never raise."""
+        import src.services.incremental_bn as module
+        module._bn_builder_instance = None
+
+        builder = get_bn_builder()
+        builder.observe_evidence("X", "Y", supports=True)
+
+        estimate = get_edge_estimate("A_missing", "B_missing", use_pgmpy_fallback=True)
+        assert estimate is None or isinstance(estimate, float)
 
 
 # =============================================================================

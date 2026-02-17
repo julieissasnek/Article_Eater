@@ -1,0 +1,76 @@
+# CX V12 Schema Validation Report
+
+- Generated: 2026-02-17T01:01:03.096Z
+- Template files scanned: 215
+- Canonical display IDs covered: VIEW1, CREA1, CREA2, CREA3, TP1, TP2, TP3, TP4, SOC1, SOC2, SOC3
+- Duplicate display IDs in V12 scope: 5 (global duplicates: 50)
+- Calibration checks missing expected fields: 0
+- Calibration checks invalid values: 0
+- Root metadata missing assignments: 20
+
+## Calibration Checks
+
+| Check | Present | Valid | Invalid | Missing Expected |
+|---|---:|---:|---:|---:|
+| `view_channel_weights` | 1 | 1 | 0 | 0 |
+| `view_ch5_gate_range` | 1 | 1 | 0 | 0 |
+| `view_synthetic_efficacy` | 1 | 1 | 0 | 0 |
+| `view_vqi_range` | 1 | 1 | 0 | 0 |
+| `view_blue_bonus_multiplier` | 1 | 1 | 0 | 0 |
+| `crea1_phase_durations_s` | 1 | 1 | 0 | 0 |
+| `crea1_generative_extension_pct` | 1 | 1 | 0 | 0 |
+| `crea1_alpha_phase_marker` | 1 | 1 | 0 | 0 |
+| `crea2_pathway_d_values` | 1 | 1 | 0 | 0 |
+| `crea2_goldilocks_ceiling` | 1 | 1 | 0 | 0 |
+| `crea2_two_pathway_optimum` | 1 | 1 | 0 | 0 |
+| `crea2_convergent_tradeoff_d` | 1 | 1 | 0 | 0 |
+| `crea3_walk_duration_optimal_min` | 1 | 1 | 0 | 0 |
+| `crea3_post_walk_persistence_min` | 1 | 1 | 0 | 0 |
+
+## Root Metadata Projection Checks
+
+| Field | Present | Missing |
+|---|---:|---:|
+| `vqi_score` | 0 | 1 |
+| `vqi_channel_scores` | 0 | 1 |
+| `synthetic_efficacy` | 0 | 1 |
+| `blue_space_present` | 0 | 1 |
+| `blue_bonus_multiplier` | 0 | 1 |
+| `creativity_goldilocks_ceiling` | 0 | 3 |
+| `convergent_tradeoff_d` | 0 | 3 |
+| `baseline_creativity_multiplier` | 0 | 3 |
+| `mfi_range` | 0 | 1 |
+| `threshold_channel_count` | 0 | 1 |
+| `estimated_boundary_d` | 0 | 1 |
+| `aging_trajectory` | 0 | 1 |
+| `cultural_cluster` | 0 | 2 |
+
+## Duplicate Display IDs (V12 Scope)
+
+- `TP1`: canonical=`TP1_motor_prediction_proprioceptive.json`
+- `TP2`: canonical=`TP2_threshold_episodic_boundary.json`
+- `TP3`: canonical=`TP3_material_aging_temporal_depth.json`
+- `TP4`: canonical=`TP4_temporal_hierarchy.json`
+- `VIEW1`: canonical=`VIEW1_nature_view_convergence.json`
+
+## Findings
+
+- Root field `vqi_score` missing on expected templates VIEW1.
+- Root field `vqi_channel_scores` missing on expected templates VIEW1.
+- Root field `synthetic_efficacy` missing on expected templates VIEW1.
+- Root field `blue_space_present` missing on expected templates VIEW1.
+- Root field `blue_bonus_multiplier` missing on expected templates VIEW1.
+- Root field `creativity_goldilocks_ceiling` missing on expected templates CREA1, CREA2, CREA3.
+- Root field `convergent_tradeoff_d` missing on expected templates CREA1, CREA2, CREA3.
+- Root field `baseline_creativity_multiplier` missing on expected templates CREA1, CREA2, CREA3.
+- Root field `mfi_range` missing on expected templates TP1.
+- Root field `threshold_channel_count` missing on expected templates TP2.
+- Root field `estimated_boundary_d` missing on expected templates TP2.
+- Root field `aging_trajectory` missing on expected templates TP3.
+- Root field `cultural_cluster` missing on expected templates SOC1, SOC3.
+
+## Artifacts
+
+- JSON: `../../../../tmp/v12_schema_before.json`
+- Markdown: `--json-out`
+

@@ -3,8 +3,9 @@ from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
+from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any
-import time, logging, sqlite3, json, os
+import time, logging, sqlite3, json, os, asyncio
 from datetime import datetime
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 from .policy import get_policy
@@ -18,7 +19,7 @@ try:
         create_access_token, decode_access_token,
         init_auth_tables, log_audit
     )
-    from .websocket import manager, notify_job_status, notify_job_progress
+    from .websocket import manager, notify_job_status, notify_job_progress, heartbeat_task
 except ImportError:
     # Fallback for development
     import sys
@@ -29,7 +30,7 @@ except ImportError:
         create_access_token, decode_access_token,
         init_auth_tables, log_audit
     )
-    from websocket import manager, notify_job_status, notify_job_progress
+    from websocket import manager, notify_job_status, notify_job_progress, heartbeat_task
 
 # Logging configuration
 logging.basicConfig(level=logging.INFO)
@@ -62,6 +63,36 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 # FastAPI app with OpenAPI documentation
 from app.routes.interactions import router as interactions_router
 from app.routes.profile import router as profile_router
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Application startup/shutdown lifecycle hooks."""
+    logger.info("=" * 60)
+    logger.info("Article Eater API V22.0.0 (Post-Quinean) starting up...")
+    logger.info("=" * 60)
+    logger.info(f"Database: {DB_PATH}")
+    logger.info("CORS enabled for local development and production")
+    logger.info("Features: Authentication, WebSockets, Real-time updates")
+
+    auto_migrate_database()
+    heartbeat = asyncio.create_task(heartbeat_task())
+    logger.info("✓ WebSocket heartbeat started")
+    logger.info("=" * 60)
+    logger.info("✓ Startup complete - API ready")
+    logger.info("=" * 60)
+
+    try:
+        yield
+    finally:
+        heartbeat.cancel()
+        try:
+            await heartbeat
+        except asyncio.CancelledError:
+            pass
+        logger.info("Article Eater API shutting down...")
+
+
 app = FastAPI(
     title="Article Eater API",
     description="""
@@ -108,6 +139,7 @@ Production deployment will use JWT tokens.
         "name": "MIT License",
         "url": "https://opensource.org/licenses/MIT",
     },
+    lifespan=lifespan,
     openapi_tags=[
         {
             "name": "health",
@@ -857,36 +889,6 @@ def auto_migrate_database():
     except Exception as e:
         logger.error(f"Database auto-migration failed: {e}")
 
-# ============================================================================
-# STARTUP/SHUTDOWN EVENTS
-# ============================================================================
-@app.on_event("startup")
-async def startup_event():
-    """Run on application startup"""
-    logger.info("="*60)
-    logger.info("Article Eater API V22.0.0 (Post-Quinean) starting up...")
-    logger.info("="*60)
-    logger.info(f"Database: {DB_PATH}")
-    logger.info("CORS enabled for local development and production")
-    logger.info("Features: Authentication, WebSockets, Real-time updates")
-    
-    # Auto-migrate database
-    auto_migrate_database()
-    
-    # Start WebSocket heartbeat task
-    import asyncio
-    from .websocket import heartbeat_task
-    asyncio.create_task(heartbeat_task())
-    logger.info("✓ WebSocket heartbeat started")
-    
-    logger.info("="*60)
-    logger.info("✓ Startup complete - API ready")
-    logger.info("="*60)
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Run on application shutdown"""
-    logger.info("Article Eater API shutting down...")
 from .db import ensure_db
 from .routes.usage import router as usage_router
 from .routes.graph import router as graph_router

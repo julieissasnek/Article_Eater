@@ -1,12 +1,13 @@
 from fastapi import Header, HTTPException, status
-import os, datetime, json, pathlib
+import os, json, pathlib
+from datetime import datetime, timezone
 
 AUDIT = pathlib.Path("logs/admin_audit.log")
 AUDIT.parent.mkdir(parents=True, exist_ok=True)
 
 def _audit(action: str):
     try:
-        rec = {"ts": datetime.datetime.utcnow().isoformat()+"Z", "action": action}
+        rec = {"ts": datetime.now(timezone.utc).isoformat(), "action": action}
         AUDIT.write_text((AUDIT.read_text() if AUDIT.exists() else "") + json.dumps(rec)+"\n", encoding="utf-8")
     except Exception:
         pass

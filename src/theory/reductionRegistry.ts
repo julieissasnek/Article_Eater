@@ -36,7 +36,7 @@ export class ReductionRegistry {
                 const reduction = JSON.parse(content) as ReductionClaim;
 
                 if (this.validateReduction(reduction)) {
-                    this.reductions.set(reduction.reduction_id, reduction);
+                    this.reductions.set(reduction.claim_id, reduction);
                 } else {
                     console.warn(`Skipping invalid reduction claim: ${file}`);
                 }
@@ -54,15 +54,22 @@ export class ReductionRegistry {
      * @param reduction The reduction claim to validate
      */
     private validateReduction(reduction: ReductionClaim): boolean {
-        if (!reduction.reduction_id) {
-            console.error("Reduction missing reduction_id");
+        if (!reduction.claim_id) {
+            console.error("Reduction missing claim_id");
             return false;
         }
-        if (!reduction.tier2_theory) {
-            console.error(`Reduction ${reduction.reduction_id} missing tier2_theory`);
+
+        if (!reduction.tier2_theory || !reduction.tier2_construct) {
+            console.error(`Reduction ${reduction.claim_id} missing theory/construct identifiers`);
             return false;
         }
-        // Add more structural checks as needed
+
+        // Ensure required arrays exist
+        if (!reduction.reduction_edges || !Array.isArray(reduction.reduction_edges)) {
+            console.error(`Reduction ${reduction.claim_id} missing reduction_edges array`);
+            return false;
+        }
+
         return true;
     }
 

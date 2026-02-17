@@ -15,6 +15,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sqlite3
 import sys
@@ -22,6 +23,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
@@ -31,8 +33,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.services.table_extractor import ExtractionMethod  # noqa: E402
 from src.services.table_to_claims import PipelineTableIntegrator  # noqa: E402
 from src.epistemic.extraction.paper_classifier import classify_paper  # noqa: E402
-from lib.environment_resolver import resolve_environment  # noqa: E402
-from lib.outcome_resolver import resolve_outcome  # noqa: E402
+from lib.environment_resolver import resolve_environment, resolve_or_queue_environment  # noqa: E402
+from lib.outcome_resolver import queue_unknown_outcome, resolve_or_queue, resolve_outcome  # noqa: E402
 
 DEFAULT_AF_ROOT = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3")
 DEFAULT_AF_DB = DEFAULT_AF_ROOT / "data" / "article_finder.db"
@@ -617,6 +619,136 @@ def candidate_variants(raw_term: str) -> List[str]:
     return variants[:12]
 
 
+def semantic_lookup_fallback(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    min_score: float = 0.70,
+) -> Dict[str, Any]:
+    """Constrained semantic fallback over known lookup terms."""
+    raw = normalize(raw_term)
+    if not raw:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    raw_tokens = set(re.findall(r"[a-z0-9]{3,}", raw))
+    context = normalize(context_text)
+
+    best_term = ""
+    best_canonical = ""
+    best_score = 0.0
+
+    for term, canonical in lookup_map.items():
+        if not isinstance(term, str) or not isinstance(canonical, str):
+            continue
+        term_n = normalize(term)
+        term_tokens = set(re.findall(r"[a-z0-9]{3,}", term_n))
+        if not term_tokens:
+            continue
+
+        ratio = SequenceMatcher(None, raw, term_n).ratio()
+        overlap = len(raw_tokens & term_tokens) / max(1, len(term_tokens))
+        score = (0.65 * ratio) + (0.35 * overlap)
+        if term_n and term_n in context:
+            score += 0.05
+
+        if score > best_score:
+            best_score = score
+            best_term = term_n
+            best_canonical = canonical
+
+    if best_canonical and best_score >= min_score:
+        conf = max(0.40, min(0.74, round(best_score, 4)))
+        return {"canonical_id": best_canonical, "confidence": conf, "matched_term": best_term}
+    return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+
+def lookup_candidate_score(raw_term: str, lookup_term: str, context_text: str = "") -> float:
+    raw = normalize(raw_term)
+    term = normalize(lookup_term)
+    if not raw or not term:
+        return 0.0
+    raw_tokens = set(re.findall(r"[a-z0-9]{3,}", raw))
+    term_tokens = set(re.findall(r"[a-z0-9]{3,}", term))
+    if not term_tokens:
+        return 0.0
+    ratio = SequenceMatcher(None, raw, term).ratio()
+    overlap = len(raw_tokens & term_tokens) / max(1, len(term_tokens))
+    score = (0.65 * ratio) + (0.35 * overlap)
+    if term and term in normalize(context_text):
+        score += 0.05
+    return min(score, 1.0)
+
+
+def rank_lookup_candidates(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    limit: int = 20,
+) -> List[Tuple[str, str, float]]:
+    ranked: List[Tuple[str, str, float]] = []
+    for term, canonical in lookup_map.items():
+        if not isinstance(term, str) or not isinstance(canonical, str):
+            continue
+        score = lookup_candidate_score(raw_term, term, context_text=context_text)
+        if score <= 0.0:
+            continue
+        ranked.append((normalize(term), canonical, score))
+    ranked.sort(key=lambda item: item[2], reverse=True)
+    return ranked[: max(1, limit)]
+
+
+def llm_lookup_fallback(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    min_shortlist_score: float = 0.45,
+) -> Dict[str, Any]:
+    """Optional LLM fallback over constrained lookup shortlist."""
+    if os.getenv("AE_ENABLE_LLM_FALLBACK", "0").lower() not in {"1", "true", "yes"}:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+    if not os.getenv("OPENAI_API_KEY"):
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    ranked = rank_lookup_candidates(raw_term, context_text, lookup_map, limit=20)
+    if not ranked or ranked[0][2] < min_shortlist_score:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    candidates = [term for term, _canonical, _score in ranked]
+    term_to_canonical = {term: canonical for term, canonical, _score in ranked}
+    model = os.getenv("AE_LLM_FALLBACK_MODEL", "gpt-4o-mini")
+    prompt = (
+        "Choose one candidate term for ontology mapping.\n"
+        "Return ONLY the exact candidate term string from the list, or NONE.\n\n"
+        f"Raw phrase: {raw_term}\n"
+        f"Context: {context_text[:600]}\n"
+        f"Candidates: {json.dumps(candidates)}"
+    )
+    try:
+        from openai import OpenAI  # type: ignore
+
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are a precise ontology mapper. Do not explain."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0,
+            max_tokens=24,
+        )
+        chosen = (response.choices[0].message.content or "").strip().strip('"').strip("'")
+        if chosen in term_to_canonical:
+            return {
+                "canonical_id": term_to_canonical[chosen],
+                "confidence": 0.60,
+                "matched_term": chosen,
+            }
+    except Exception:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+
 def to_node_id(kind: str, canonical_id: str, raw_term: str) -> str:
     canonical_n = normalize(canonical_id)
     if canonical_n and not canonical_n.startswith("unresolved:"):
@@ -659,6 +791,12 @@ def resolve_env_outcome_from_claim(content: str, metadata: Dict[str, Any], paper
                 resolved_env_raw = variant
                 break
 
+    if not env_resolved and callable(resolve_or_queue_environment):
+        try:
+            env_resolved, _queued = resolve_or_queue_environment(env_raw)
+        except Exception:
+            env_resolved = None
+
     out_resolved = None
     resolved_out_raw = out_raw
     if callable(resolve_outcome):
@@ -667,6 +805,54 @@ def resolve_env_outcome_from_claim(content: str, metadata: Dict[str, Any], paper
             if out_resolved:
                 resolved_out_raw = variant
                 break
+
+    if not out_resolved and callable(resolve_or_queue):
+        try:
+            queued = resolve_or_queue(out_raw, paper_id=paper_id, context=text[:500])
+            if queued and not str(queued.get("canonical_id", "")).startswith("UNRESOLVED:"):
+                out_resolved = queued
+        except Exception:
+            out_resolved = None
+
+    if not env_resolved:
+        llm_env = llm_lookup_fallback(env_raw, text, ENV_LOOKUP_MAP)
+        if llm_env["canonical_id"]:
+            env_resolved = {
+                "tag_id": llm_env["canonical_id"],
+                "canonical_name": llm_env["canonical_id"],
+                "confidence": llm_env["confidence"],
+                "match_type": "llm_lookup_fallback",
+            }
+
+    if not env_resolved:
+        semantic_env = semantic_lookup_fallback(env_raw, text, ENV_LOOKUP_MAP)
+        if semantic_env["canonical_id"]:
+            env_resolved = {
+                "tag_id": semantic_env["canonical_id"],
+                "canonical_name": semantic_env["canonical_id"],
+                "confidence": semantic_env["confidence"],
+                "match_type": "semantic_lookup_fallback",
+            }
+
+    if not out_resolved:
+        llm_out = llm_lookup_fallback(out_raw, text, OUTCOME_LOOKUP_MAP)
+        if llm_out["canonical_id"]:
+            out_resolved = {
+                "canonical_id": llm_out["canonical_id"],
+                "name": llm_out["canonical_id"],
+                "confidence": llm_out["confidence"],
+                "match_type": "llm_lookup_fallback",
+            }
+
+    if not out_resolved:
+        semantic_out = semantic_lookup_fallback(out_raw, text, OUTCOME_LOOKUP_MAP)
+        if semantic_out["canonical_id"]:
+            out_resolved = {
+                "canonical_id": semantic_out["canonical_id"],
+                "name": semantic_out["canonical_id"],
+                "confidence": semantic_out["confidence"],
+                "match_type": "semantic_lookup_fallback",
+            }
 
     env_canonical = str(env_resolved.get("tag_id", "")) if env_resolved else f"UNRESOLVED:environment:{safe_var_name(env_raw)[:48]}"
     out_canonical = str(out_resolved.get("canonical_id", "")) if out_resolved else f"UNRESOLVED:outcome:{safe_var_name(out_raw)[:48]}"
@@ -680,6 +866,11 @@ def resolve_env_outcome_from_claim(content: str, metadata: Dict[str, Any], paper
         generic_out = detect_generic_class(text, GENERIC_OUTCOME_KEYWORDS)
         if generic_out:
             out_canonical = f"out.generic.{generic_out}"
+        elif callable(queue_unknown_outcome):
+            try:
+                queue_unknown_outcome(out_raw, paper_id=paper_id, context=text[:500])
+            except Exception:
+                pass
 
     return {
         "paper_id": paper_id,
@@ -1135,6 +1326,14 @@ def build_extraction_audit(
         if str(r.get("outcome_canonical_id", "")).upper().startswith("UNRESOLVED:")
     )
     section_counts = Counter(str(r.get("source_section", "") or "unknown") for r in confirmed_rows)
+    env_match_counts = Counter(
+        str(r.get("environment_resolution_match_type", "") or "missing").strip() or "missing"
+        for r in confirmed_rows
+    )
+    out_match_counts = Counter(
+        str(r.get("outcome_resolution_match_type", "") or "missing").strip() or "missing"
+        for r in confirmed_rows
+    )
     node_typed = sum(1 for r in confirmed_rows if str(r.get("node_type", "")).strip())
     relation_rows = [
         r
@@ -1146,6 +1345,10 @@ def build_extraction_audit(
     anchor_coverage = (anchored_rows / total_rows) if total_rows else 0.0
     unresolved_env_rate = (unresolved_env / total_rows) if total_rows else 0.0
     unresolved_out_rate = (unresolved_out / total_rows) if total_rows else 0.0
+    env_llm_rate = (env_match_counts.get("llm_lookup_fallback", 0) / total_rows) if total_rows else 0.0
+    out_llm_rate = (out_match_counts.get("llm_lookup_fallback", 0) / total_rows) if total_rows else 0.0
+    env_semantic_rate = (env_match_counts.get("semantic_lookup_fallback", 0) / total_rows) if total_rows else 0.0
+    out_semantic_rate = (out_match_counts.get("semantic_lookup_fallback", 0) / total_rows) if total_rows else 0.0
     node_type_tag_rate = (node_typed / total_rows) if total_rows else 0.0
     edge_type_tag_rate = (edge_typed / len(relation_rows)) if relation_rows else 1.0
     theory_links = int(discourse_summary.get("theory_links", 0))
@@ -1164,6 +1367,8 @@ def build_extraction_audit(
         warnings.append("no_inter_article_relations")
     if unresolved_env_rate > 0.6 or unresolved_out_rate > 0.6:
         warnings.append("high_unresolved_construct_rate")
+    if env_match_counts.get("missing", 0) > 0 or out_match_counts.get("missing", 0) > 0:
+        warnings.append("missing_resolution_match_type")
     if node_type_tag_rate < 0.95:
         warnings.append("low_node_type_tag_rate")
     if relation_rows and edge_type_tag_rate < 0.90:
@@ -1183,6 +1388,12 @@ def build_extraction_audit(
         "anchor_coverage": round(anchor_coverage, 4),
         "unresolved_environment_rate": round(unresolved_env_rate, 4),
         "unresolved_outcome_rate": round(unresolved_out_rate, 4),
+        "environment_resolution_match_type_counts": dict(env_match_counts),
+        "outcome_resolution_match_type_counts": dict(out_match_counts),
+        "environment_llm_fallback_rate": round(env_llm_rate, 4),
+        "outcome_llm_fallback_rate": round(out_llm_rate, 4),
+        "environment_semantic_fallback_rate": round(env_semantic_rate, 4),
+        "outcome_semantic_fallback_rate": round(out_semantic_rate, 4),
         "node_type_tag_rate": round(node_type_tag_rate, 4),
         "edge_type_tag_rate": round(edge_type_tag_rate, 4),
         "section_coverage_counts": dict(section_counts),

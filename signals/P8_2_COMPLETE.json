@@ -1,0 +1,21 @@
+{
+  "task_id": "P8.2",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T08:56:03Z",
+  "output_files": [
+    "scripts/build_canonical_env_out_registry.py",
+    "contracts/vocab/canonical_env_out_registry.json",
+    "docs/P8_2_CANONICAL_ENV_OUT_REGISTRY_2026-02-17.md",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Implemented canonical env/out registry generation and produced a normalized machine-readable artifact. Registry merges lookup contracts with production-observed node IDs and includes table-rule alignment diagnostics.",
+  "issues_found": [
+    "Initial registry pass exposed canonical format drift due to punctuation in lookup IDs vs runtime node-id normalization. Builder now normalizes lookup canonical IDs to node-id-safe forms.",
+    "Unresolved node rates remain non-trivial (env 3473 rows, out 1972 rows); this is a resolver quality issue for P8.3, not registry coverage."
+  ],
+  "changes_to_plan": [
+    "Proceed to P8.3 with constrained fallback resolution strategy and confidence/warning propagation.",
+    "Use canonical_env_out_registry.json as the gate for allowed env/out IDs in downstream validation metrics (P8.6)."
+  ]
+}

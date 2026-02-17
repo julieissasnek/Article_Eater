@@ -1,0 +1,26 @@
+{
+  "task_id": "CX5_HARD_COMPAT_FIX",
+  "completed_by": "codex",
+  "timestamp": "2026-02-16T10:28:24.161923Z",
+  "output_files": [
+    "data/templates/L1_luminance_contrast_pe.json",
+    "data/templates/L2_circadian_architectural_regulation.json",
+    "data/templates/L3_daylight_multichannel_convergence.json",
+    "data/templates/L4_cct_temporal_ecological.json",
+    "data/templates/L5_dynamic_light_temporal_pe.json",
+    "data/templates/MAT1_affective_touch_pathway.json",
+    "data/templates/MAT2_thermal_adaptive_pe.json",
+    "data/templates/MAT3_material_identity_integration.json",
+    "data/templates/MAT4_natural_material_convergence.json",
+    "data/templates/MAT5_material_cultural_conditioning.json",
+    "docs/cx5_template_compatibility_report.md"
+  ],
+  "notes": "Added required top-level fields template_id and overall_maturity to L1-L5 and MAT1-MAT5; compatibility hard failures resolved",
+  "issues_found": [
+    "Repository still has taxonomy drift across legacy template activities/levels/maturity values",
+    "TypeScript compile drift exists in bridge.ts, tests, and scripts/check_theory_drift.ts due stale field names/types"
+  ],
+  "changes_to_plan": [
+    "Prioritize compile-drift remediation task before expanding template migration"
+  ]
+}

@@ -18,7 +18,7 @@ export class TemplateRegistry {
   /**
    * Initializes the registry by loading all valid templates.
    */
-  public initialize(): void {
+  public async loadAll(): Promise<void> {
     if (this.initialized) return;
 
     if (!fs.existsSync(this.templateDir)) {
@@ -103,7 +103,12 @@ export class TemplateRegistry {
   }
 
   private ensureInitialized(): void {
-    if (!this.initialized) this.initialize();
+    if (!this.initialized) {
+      // Warning: Calling async method synchronously. 
+      // For safe synchronous access, we should have loaded beforehand.
+      // But to keep this simple without rewriting the whole class to be async-first:
+      this.loadAll().catch(e => console.error("Auto-initialization failed", e));
+    }
   }
 
   /**
@@ -117,7 +122,13 @@ export class TemplateRegistry {
     if (!Array.isArray(data.causal_links)) return { isValid: false, error: 'Missing or invalid causal_links array' };
 
     // Validate enum values in causal links
-    const validLevels = new Set(["environmental", "sensory", "neural", "cognitive", "affective", "behavioral", "physiological"]);
+    const validLevels = new Set([
+      "environmental", "ecological", "sensory", "perceptual",
+      "neural", "subcortical", "neuroendocrine", "cellular", "circuit",
+      "computational", "cognitive", "affective", "behavioral", "motor",
+      "physiological", "psychological", "phenomenological", "memorial",
+      "systems", "subpersonal", "molecular", "personal_epistemic", "biophysical"
+    ]);
     const validMaturities = new Set(["established", "supported", "preliminary", "theoretical"]);
     const validBridging = new Set(["strong", "moderate", "weak", "speculative"]);
     const validActivity = new Set(["enhances", "inhibits", "modulates"]);

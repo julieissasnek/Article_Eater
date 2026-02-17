@@ -1,8 +1,35 @@
 # TASKS.md
 
-*Last updated: Tuesday, February 17, 2026 (TASK-2 compatibility closure pass complete + full pytest green: 2935 passed, 9 skipped + ENT-6 safe replay runner completed + Sprint 8 P8.1-P8.6 completed + quality gate fix applied + Sprint 9 I9.1-I9.5 completed)*
+*Last updated: Monday, February 17, 2026 (Sprint 10 Task 3.2 Batch 2 Template Computations completed + pytest green: 3101 passed, 9 skipped)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
+
+---
+
+## 🚀 SPRINT 10: CMR PIPELINE FOUNDATION — 2026-02-17
+
+| Task | Agent | Priority | Status | Notes |
+|------|-------|----------|--------|-------|
+| 1.2 | Claude Code | HIGH | ✅ COMPLETE | Template DB Index: TemplateRecord model, migration, scanner, 22 tests passing |
+| 2.1 | Claude Code | HIGH | ✅ COMPLETE | Template Computation Functions Batch 1: 12 core templates (VF3, L1-3, CREA2, MAT1-2-4, SOC2, SC1-4, VIEW1), 55 tests passing |
+| 3.2 | Claude Code | HIGH | ✅ COMPLETE | Template Computation Functions Batch 2: 20 additional templates (L4-5, MAT3-5, TP1-4, SOC1-3, CREA1-4, SC2-3, COL1-2, VF1-2, OLF1), 52 tests passing |
+| 1.1 | Codex | HIGH | PENDING | Enum Drift Fix |
+| 1.3 | Codex | HIGH | PENDING | Load Staging Theory-Links |
+| 1.4 | Codex | HIGH | PENDING | WIS Conversion Module |
+
+**Sprint 10 Artifacts**:
+- `src/cmr/models.py` — SQLAlchemy models (TemplateRecord, CMREvaluation, etc.)
+- `src/cmr/template_scanner.py` — JSON template scanner and DB population
+- `src/cmr/template_computations.py` — 32 template compute functions (Batch 1 + Batch 2)
+- `migrations/007_create_templates_table.sql` — SQL migration
+- `tests/test_template_record.py` — 22 tests for template loading
+- `tests/test_template_computations.py` — 107 tests for compute functions
+- `docs/DECISIONS.md` — Implementation decisions log
+
+**Validation**:
+- `python -m pytest tests/test_template_record.py -v` (22 passed)
+- `python -m pytest tests/test_template_computations.py -v` (107 passed)
+- `python -m pytest tests/ --tb=no -q` (3101 passed, 9 skipped)
 
 ---
 
@@ -15,6 +42,27 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 | GEA-3 | BN confidence calibration layer | HIGH | ✅ COMPLETE | BN posterior summaries added to expert responses (`bn_calibration`, confidence statement, formatted output) |
 
 **Validation**: `./venv/bin/pytest -q tests/test_grounded_expert_agent.py` (4 passed)
+
+---
+
+## 🎯 SPRINT V15 CODEX VALIDATION — 2026-02-17
+
+| Task | Priority | Status | Notes |
+|------|----------|--------|-------|
+| V15-CX-1 | Update task board with Docs 64 and 65 | HIGH | ✅ COMPLETE | Task board now explicitly tracks Doc 64 (VF-II) and Doc 65 (CREA-III) integration and validation outcomes. |
+| V15-CX-2 | Validate VF3 → CREA2B single-chain computation | HIGH | ✅ COMPLETE | Verified `data/templates/VF3.json` keeps single chain `VF3 -> Affect -> CREA2B -> Divergent Thinking` and no direct VF3→CREA2 interaction path that would double-count effects. |
+| V15-CX-3 | Verify interaction matrix lookup/sub-additivity | HIGH | ✅ COMPLETE | Verified all 7 CREA2 matrix combinations and expected sub-additivity values (`A+B=0.84`, `A+C=0.76`, `B+C=0.80`, `A+B+C=0.70`; singletons `=1.0`). |
+| V15-CX-STAB | Restore V14 gate compatibility after CREA-III additions | HIGH | ✅ COMPLETE | Backfilled missing V14 lifespan root fields for `CREA4`; `./bin/prod_smoke.sh` now exits cleanly. |
+
+**Sprint Artifacts**:
+- `docs/Sprint_Prompt_V15_Post_VF_II_CREA_III.md`
+- `docs/64_Panel_VF_II_Visual_Form_Calibration_V1_0.md`
+- `docs/65_Panel_CREA_III_Creative_Deepening_V1_0.md`
+
+**Validation**:
+- `node scripts/validate_v14_lifespan_fields.js`
+- `node scripts/validate_v14_runtime_checks.js`
+- `./bin/prod_smoke.sh`
 
 ---
 
@@ -284,8 +332,8 @@ into a single actionable "What should I be looking for?" queue.
 | I9.3: Connect queue to Zotero watcher | MEDIUM | ✅ COMPLETE | BibTeX delta watcher in `src/queue/zotero_watcher.py`; passive match+auto-report via `sync_zotero_to_queue()` |
 | I9.4: Create VOI collector registration | MEDIUM | ✅ COMPLETE | Collector profile registration + `claim_target` + search guidance implemented in `src/queue/service.py` / `src/queue/models.py` |
 | I9.5: Add research opportunity registry | MEDIUM | ✅ COMPLETE | Added `ResearchOpportunity` model + registry lifecycle methods and persistence in `src/queue/service.py` |
-| I9.6: Build Streamlit queue dashboard | LOW | PENDING | Visualize queue, assign targets, track progress |
-| I9.7: Implement automated searcher bot | LOW | PENDING | Semantic Scholar API for bulk screening |
+| I9.6: Build Streamlit queue dashboard | LOW | ✅ COMPLETE | Added `streamlit_app/pages/6_research_queue.py` with queue metrics, assignment/actions, opportunity updates, and automation controls |
+| I9.7: Implement automated searcher bot | LOW | ✅ COMPLETE | Added `src/queue/automated_searcher.py` + `run_automated_searcher()` for Semantic Scholar-backed bulk screening and queue reporting |
 
 **Theory-Driven Gap Detection** (I9.2):
 ```

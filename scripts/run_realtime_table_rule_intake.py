@@ -14,9 +14,11 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sqlite3
 import sys
+from difflib import SequenceMatcher
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -350,6 +352,148 @@ def resolve_from_lookup(raw_term: str, lookup_map: Dict[str, str]) -> str:
     return ""
 
 
+def semantic_lookup_fallback(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    min_score: float = 0.70,
+) -> Dict[str, Any]:
+    """
+    Constrained semantic fallback when exact lookup misses.
+
+    This is a bounded fallback over known lookup terms only, reducing unresolved
+    IDs without inventing out-of-vocabulary canonical IDs.
+    """
+    raw = normalize(raw_term)
+    if not raw:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    raw_tokens = set(re.findall(r"[a-z0-9]{3,}", raw))
+    context = normalize(context_text)
+
+    best_term = ""
+    best_canonical = ""
+    best_score = 0.0
+
+    for term, canonical in lookup_map.items():
+        if not isinstance(term, str) or not isinstance(canonical, str):
+            continue
+        term_n = normalize(term)
+        term_tokens = set(re.findall(r"[a-z0-9]{3,}", term_n))
+        if not term_tokens:
+            continue
+
+        ratio = SequenceMatcher(None, raw, term_n).ratio()
+        overlap = len(raw_tokens & term_tokens) / max(1, len(term_tokens))
+        score = (0.65 * ratio) + (0.35 * overlap)
+        if term_n and term_n in context:
+            score += 0.05
+
+        if score > best_score:
+            best_score = score
+            best_term = term_n
+            best_canonical = canonical
+
+    if best_canonical and best_score >= min_score:
+        # Keep fallback confidence lower than exact resolver confidence.
+        conf = max(0.40, min(0.74, round(best_score, 4)))
+        return {
+            "canonical_id": best_canonical,
+            "confidence": conf,
+            "matched_term": best_term,
+        }
+    return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+
+def lookup_candidate_score(raw_term: str, lookup_term: str, context_text: str = "") -> float:
+    raw = normalize(raw_term)
+    term = normalize(lookup_term)
+    if not raw or not term:
+        return 0.0
+    raw_tokens = set(re.findall(r"[a-z0-9]{3,}", raw))
+    term_tokens = set(re.findall(r"[a-z0-9]{3,}", term))
+    if not term_tokens:
+        return 0.0
+    ratio = SequenceMatcher(None, raw, term).ratio()
+    overlap = len(raw_tokens & term_tokens) / max(1, len(term_tokens))
+    score = (0.65 * ratio) + (0.35 * overlap)
+    if term and term in normalize(context_text):
+        score += 0.05
+    return min(score, 1.0)
+
+
+def rank_lookup_candidates(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    limit: int = 20,
+) -> List[Tuple[str, str, float]]:
+    ranked: List[Tuple[str, str, float]] = []
+    for term, canonical in lookup_map.items():
+        if not isinstance(term, str) or not isinstance(canonical, str):
+            continue
+        score = lookup_candidate_score(raw_term, term, context_text=context_text)
+        if score <= 0.0:
+            continue
+        ranked.append((normalize(term), canonical, score))
+    ranked.sort(key=lambda item: item[2], reverse=True)
+    return ranked[: max(1, limit)]
+
+
+def llm_lookup_fallback(
+    raw_term: str,
+    context_text: str,
+    lookup_map: Dict[str, str],
+    min_shortlist_score: float = 0.45,
+) -> Dict[str, Any]:
+    """
+    Optional LLM fallback over a constrained shortlist of known lookup terms.
+    """
+    if os.getenv("AE_ENABLE_LLM_FALLBACK", "0").lower() not in {"1", "true", "yes"}:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+    if not os.getenv("OPENAI_API_KEY"):
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    ranked = rank_lookup_candidates(raw_term, context_text, lookup_map, limit=20)
+    if not ranked or ranked[0][2] < min_shortlist_score:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    candidates = [term for term, _canonical, _score in ranked]
+    term_to_canonical = {term: canonical for term, canonical, _score in ranked}
+    model = os.getenv("AE_LLM_FALLBACK_MODEL", "gpt-4o-mini")
+    prompt = (
+        "Choose the single best candidate term for ontology mapping.\n"
+        "Return ONLY the exact candidate term string from the list, or NONE.\n\n"
+        f"Raw phrase: {raw_term}\n"
+        f"Context: {context_text[:600]}\n"
+        f"Candidates: {json.dumps(candidates)}"
+    )
+    try:
+        from openai import OpenAI  # type: ignore
+
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are a precise ontology mapper. Do not explain."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0,
+            max_tokens=24,
+        )
+        chosen = (response.choices[0].message.content or "").strip().strip('"').strip("'")
+        if chosen in term_to_canonical:
+            return {
+                "canonical_id": term_to_canonical[chosen],
+                "confidence": 0.60,
+                "matched_term": chosen,
+            }
+    except Exception:
+        return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+    return {"canonical_id": "", "confidence": 0.0, "matched_term": ""}
+
+
 def to_node_id(kind: str, canonical_id: str, raw_term: str) -> str:
     canonical_n = normalize(canonical_id)
     if canonical_n and not canonical_n.startswith("unresolved:"):
@@ -373,11 +517,58 @@ def resolve_environment_factor(raw_term: str, context_text: str = "") -> Dict[st
             "resolved": True,
         }
 
-    # Queue unresolved term without re-running another expensive fuzzy pass.
-    try:
-        queue_unresolved_environment(raw)
-    except Exception:
-        pass
+    if callable(resolve_environment):
+        try:
+            for variant in candidate_variants(raw):
+                resolved = resolve_environment(variant, fuzzy_threshold=0.82)
+                if resolved:
+                    return {
+                        "raw_term": raw,
+                        "canonical_id": str(resolved.get("tag_id", "")),
+                        "canonical_name": str(resolved.get("canonical_name", resolved.get("tag_id", raw))),
+                        "confidence": float(resolved.get("confidence", 0.0)),
+                        "match_type": f"resolver_{resolved.get('match_type', 'fuzzy')}",
+                        "resolved": True,
+                    }
+        except Exception:
+            pass
+
+    if callable(resolve_or_queue_environment):
+        try:
+            resolved, _queued = resolve_or_queue_environment(raw)
+            if resolved:
+                return {
+                    "raw_term": raw,
+                    "canonical_id": str(resolved.get("tag_id", "")),
+                    "canonical_name": str(resolved.get("canonical_name", resolved.get("tag_id", raw))),
+                    "confidence": float(resolved.get("confidence", 0.0)),
+                    "match_type": f"resolver_{resolved.get('match_type', 'queued')}",
+                    "resolved": True,
+                }
+        except Exception:
+            pass
+
+    llm_guess = llm_lookup_fallback(raw, context_text, ENV_LOOKUP_MAP)
+    if llm_guess["canonical_id"]:
+        return {
+            "raw_term": raw,
+            "canonical_id": llm_guess["canonical_id"],
+            "canonical_name": llm_guess["canonical_id"],
+            "confidence": float(llm_guess["confidence"]),
+            "match_type": "llm_lookup_fallback",
+            "resolved": True,
+        }
+
+    semantic = semantic_lookup_fallback(raw, context_text, ENV_LOOKUP_MAP)
+    if semantic["canonical_id"]:
+        return {
+            "raw_term": raw,
+            "canonical_id": semantic["canonical_id"],
+            "canonical_name": semantic["canonical_id"],
+            "confidence": float(semantic["confidence"]),
+            "match_type": "semantic_lookup_fallback",
+            "resolved": True,
+        }
 
     generic = detect_generic_class(f"{raw} {context_text}", GENERIC_ENV_KEYWORDS)
     if generic:
@@ -389,6 +580,11 @@ def resolve_environment_factor(raw_term: str, context_text: str = "") -> Dict[st
             "match_type": "generic_keyword",
             "resolved": True,
         }
+
+    try:
+        queue_unresolved_environment(raw)
+    except Exception:
+        pass
 
     return {
         "raw_term": raw,
@@ -413,25 +609,63 @@ def resolve_outcome_factor(raw_term: str, paper_id: str, context_text: str = "")
             "resolved": True,
         }
 
+    if callable(resolve_outcome):
+        try:
+            for variant in candidate_variants(raw):
+                resolved = resolve_outcome(variant, fuzzy_threshold=0.82)
+                if resolved:
+                    return {
+                        "raw_term": raw,
+                        "canonical_id": str(resolved.get("canonical_id", "")),
+                        "canonical_name": str(resolved.get("name", raw)),
+                        "confidence": float(resolved.get("confidence", 0.0)),
+                        "match_type": f"resolver_{resolved.get('match_type', 'fuzzy')}",
+                        "resolved": True,
+                    }
+        except Exception:
+            pass
+
+    queued_unresolved = False
     if callable(resolve_or_queue):
         try:
-            if callable(queue_unknown_outcome):
-                queue_unknown_outcome(raw, paper_id=paper_id, context=None)
-            else:
-                queued = resolve_or_queue(raw, paper_id=paper_id)
-                if queued:
-                    canonical_id = str(queued.get("canonical_id", ""))
-                    unresolved = canonical_id.startswith("UNRESOLVED:")
+            queued = resolve_or_queue(raw, paper_id=paper_id)
+            if queued:
+                canonical_id = str(queued.get("canonical_id", ""))
+                unresolved = canonical_id.startswith("UNRESOLVED:")
+                if not unresolved:
                     return {
                         "raw_term": raw,
                         "canonical_id": canonical_id,
                         "canonical_name": queued.get("name", raw),
                         "confidence": float(queued.get("confidence", 0.0)),
-                        "match_type": str(queued.get("match_type", "queued")),
-                        "resolved": not unresolved,
+                        "match_type": str(queued.get("match_type", "resolver_queued")),
+                        "resolved": True,
                     }
+                queued_unresolved = True
         except Exception:
             pass
+
+    llm_guess = llm_lookup_fallback(raw, context_text, OUTCOME_LOOKUP_MAP)
+    if llm_guess["canonical_id"]:
+        return {
+            "raw_term": raw,
+            "canonical_id": llm_guess["canonical_id"],
+            "canonical_name": llm_guess["canonical_id"],
+            "confidence": float(llm_guess["confidence"]),
+            "match_type": "llm_lookup_fallback",
+            "resolved": True,
+        }
+
+    semantic = semantic_lookup_fallback(raw, context_text, OUTCOME_LOOKUP_MAP)
+    if semantic["canonical_id"]:
+        return {
+            "raw_term": raw,
+            "canonical_id": semantic["canonical_id"],
+            "canonical_name": semantic["canonical_id"],
+            "confidence": float(semantic["confidence"]),
+            "match_type": "semantic_lookup_fallback",
+            "resolved": True,
+        }
 
     generic = detect_generic_class(f"{raw} {context_text}", GENERIC_OUTCOME_KEYWORDS)
     if generic:
@@ -443,6 +677,12 @@ def resolve_outcome_factor(raw_term: str, paper_id: str, context_text: str = "")
             "match_type": "generic_keyword",
             "resolved": True,
         }
+
+    if not queued_unresolved and callable(queue_unknown_outcome):
+        try:
+            queue_unknown_outcome(raw, paper_id=paper_id, context=context_text[:500] if context_text else None)
+        except Exception:
+            pass
 
     return {
         "raw_term": raw,

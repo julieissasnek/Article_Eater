@@ -18,7 +18,7 @@ Per panel recommendations (P-LAYER):
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple, Any
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -406,7 +406,7 @@ class CrossLayerQueryService:
             beliefs=beliefs,
             connections=connections,
             layer_summary=layer_summary,
-            generated_at=datetime.utcnow().isoformat()
+            generated_at=datetime.now(timezone.utc).isoformat()
         )
 
     def find_environment_outcome_beliefs(
@@ -431,7 +431,7 @@ class CrossLayerQueryService:
                 beliefs=[],
                 connections=[],
                 layer_summary={},
-                generated_at=datetime.utcnow().isoformat()
+                generated_at=datetime.now(timezone.utc).isoformat()
             )
 
         beliefs = []
@@ -477,7 +477,7 @@ class CrossLayerQueryService:
             beliefs=beliefs,
             connections=connections,
             layer_summary=layer_summary,
-            generated_at=datetime.utcnow().isoformat()
+            generated_at=datetime.now(timezone.utc).isoformat()
         )
 
     def find_cross_layer_conflicts(self) -> CrossLayerQueryResult:
@@ -494,7 +494,7 @@ class CrossLayerQueryService:
                 beliefs=[],
                 connections=[],
                 layer_summary={},
-                generated_at=datetime.utcnow().isoformat()
+                generated_at=datetime.now(timezone.utc).isoformat()
             )
 
         conflicting_beliefs = set()
@@ -540,7 +540,7 @@ class CrossLayerQueryService:
             beliefs=beliefs,
             connections=connections,
             layer_summary=layer_summary,
-            generated_at=datetime.utcnow().isoformat()
+            generated_at=datetime.now(timezone.utc).isoformat()
         )
 
     def get_belief_chain(self, belief_id: str, max_depth: int = 5) -> CrossLayerQueryResult:
@@ -562,7 +562,7 @@ class CrossLayerQueryService:
                 beliefs=[],
                 connections=[],
                 layer_summary={},
-                generated_at=datetime.utcnow().isoformat()
+                generated_at=datetime.now(timezone.utc).isoformat()
             )
 
         start_belief = self.web.beliefs.get(belief_id)
@@ -573,7 +573,7 @@ class CrossLayerQueryService:
                 beliefs=[],
                 connections=[],
                 layer_summary={},
-                generated_at=datetime.utcnow().isoformat()
+                generated_at=datetime.now(timezone.utc).isoformat()
             )
 
         # BFS to find all connected beliefs up to max_depth
@@ -637,7 +637,7 @@ class CrossLayerQueryService:
             beliefs=beliefs,
             connections=connections,
             layer_summary=layer_summary,
-            generated_at=datetime.utcnow().isoformat()
+            generated_at=datetime.now(timezone.utc).isoformat()
         )
 
     def get_layer_statistics(self) -> Dict[str, Any]:

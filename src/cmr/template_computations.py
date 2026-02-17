@@ -3151,6 +3151,30 @@ def compute_t14_navigation_stress_loop(
     )
 
 
+def compute_t15_environmental_control(
+    controllability_score: float,
+    thermal_discomfort_events_per_day: float,
+    acoustic_intrusions_per_day: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, 1.0 - min(controllability_score, 1.0)) * 0.45
+        + min(thermal_discomfort_events_per_day / 8.0, 1.0) * 0.25
+        + min(acoustic_intrusions_per_day / 16.0, 1.0) * 0.30
+    )
+    return _gap_result(
+        template_id="T15",
+        risk_index=risk_index,
+        mechanism="Low environmental agency amplifies daily thermal and acoustic strain.",
+        occupant_age=occupant_age,
+        inputs={
+            "controllability_score": controllability_score,
+            "thermal_discomfort_events_per_day": thermal_discomfort_events_per_day,
+            "acoustic_intrusions_per_day": acoustic_intrusions_per_day,
+        },
+    )
+
+
 
 
 

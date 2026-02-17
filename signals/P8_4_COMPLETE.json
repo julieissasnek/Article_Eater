@@ -1,0 +1,21 @@
+{
+  "task_id": "P8.4",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T09:16:44Z",
+  "output_files": [
+    "src/services/incremental_bn.py",
+    "tests/test_incremental_bn.py",
+    "docs/P8_4_PGMPY_BN_INFERENCE_WIRING_2026-02-17.md",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Wired optional pgmpy inference into IncrementalBNBuilder: model build, posterior query, d-separation check, and Markov blanket retrieval. Added convenience wrappers and optional get_edge_estimate fallback path while preserving current direct-edge behavior.",
+  "issues_found": [
+    "pgmpy is not installed in the current runtime, so inference APIs currently return None (graceful degradation) until dependency is installed.",
+    "CPDs are heuristic binary approximations from edge means; richer parameterization may be needed for high-fidelity causal inference."
+  ],
+  "changes_to_plan": [
+    "Install pgmpy in runtime environments where BN posterior/d-separation queries are required.",
+    "Keep current direct edge means as primary signal, using pgmpy inference as optional augmentation."
+  ]
+}

@@ -92,7 +92,7 @@ def get_persistence() -> WebPersistenceService:
 @router.get("/trajectory/{belief_id}", response_model=TrajectoryResponse)
 async def get_entrenchment_trajectory(
     belief_id: str,
-    timeline: str = Query("system", regex="^(system|scholarly)$"),
+    timeline: str = Query("system", pattern="^(system|scholarly)$"),
     limit: int = Query(50, ge=1, le=200),
     persistence: WebPersistenceService = Depends(get_persistence)
 ) -> TrajectoryResponse:
@@ -121,7 +121,7 @@ async def get_entrenchment_trajectory(
 @router.get("/history/{belief_id}")
 async def get_entrenchment_history(
     belief_id: str,
-    timeline: Optional[str] = Query(None, regex="^(system|scholarly)$"),
+    timeline: Optional[str] = Query(None, pattern="^(system|scholarly)$"),
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     limit: int = Query(100, ge=1, le=500),
@@ -310,7 +310,7 @@ async def get_belief_comparison(
 @router.get("/events")
 async def get_entrenchment_events(
     belief_id: Optional[str] = None,
-    timeline: Optional[str] = Query(None, regex="^(system|scholarly)$"),
+    timeline: Optional[str] = Query(None, pattern="^(system|scholarly)$"),
     event_type: Optional[str] = None,
     limit: int = Query(100, ge=1, le=500),
     persistence: WebPersistenceService = Depends(get_persistence)

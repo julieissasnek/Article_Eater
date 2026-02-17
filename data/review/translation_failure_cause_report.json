@@ -1,0 +1,400 @@
+{
+  "generated_at": "2026-02-16T23:36:14.971426+00:00",
+  "input": "data/review/table_rule_gold_audit_rows.csv",
+  "rows_total": 12384,
+  "rows_unique": 12384,
+  "rows_with_any_failure": 4790,
+  "failure_rate_pct": 38.679,
+  "status_counts": {
+    "verified_strong": 7387,
+    "verified_weak": 763,
+    "suspect_rule": 2840,
+    "suspect_table": 1394
+  },
+  "claim_type_counts": {
+    "finding": 12175,
+    "effect": 2,
+    "sample": 178,
+    "methodology": 29
+  },
+  "rows_by_cause": [
+    {
+      "cause": "no_translation_failure_detected",
+      "rows": 7594,
+      "pct_rows": 61.321
+    },
+    {
+      "cause": "table_or_pdf_extraction_fault",
+      "rows": 4902,
+      "pct_rows": 39.583
+    },
+    {
+      "cause": "table_to_rule_mapping_fault",
+      "rows": 553,
+      "pct_rows": 4.465
+    },
+    {
+      "cause": "ontology_coverage_or_resolution_gap",
+      "rows": 4,
+      "pct_rows": 0.032
+    },
+    {
+      "cause": "article_or_row_ambiguity",
+      "rows": 1,
+      "pct_rows": 0.008
+    }
+  ],
+  "top_cooccurrence_pairs": [
+    {
+      "cause_a": "table_or_pdf_extraction_fault",
+      "cause_b": "table_to_rule_mapping_fault",
+      "rows": 553
+    },
+    {
+      "cause_a": "no_translation_failure_detected",
+      "cause_b": "table_or_pdf_extraction_fault",
+      "rows": 116
+    },
+    {
+      "cause_a": "article_or_row_ambiguity",
+      "cause_b": "table_or_pdf_extraction_fault",
+      "rows": 1
+    },
+    {
+      "cause_a": "article_or_row_ambiguity",
+      "cause_b": "table_to_rule_mapping_fault",
+      "rows": 1
+    }
+  ],
+  "examples": {
+    "no_translation_failure_detected": [
+      {
+        "paper_id": "doi:10.3390/ijerph7031036",
+        "source_table_id": "TBL-20260214092226-002",
+        "claim_id": "doi:10.3390/ijerph7031036-TBL-C001",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "b1 = 0.1626 b2 = 0.3428 b3 =-0.1387 x = 101.3 Half-life \uf0ae: Half-life \uf0ae",
+        "source_quote": "b1 = 0.1626 b2 = 0.3428 b3 =-0.1387 x = 101.3 Half-life \uf0ae: Half-life \uf0ae"
+      },
+      {
+        "paper_id": "doi:10.3390/ijerph7031036",
+        "source_table_id": "TBL-20260214092226-003",
+        "claim_id": "doi:10.3390/ijerph7031036-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "b1 = 0.2054 b2 = 0.3071 b3 =-0.1185 x = 159.8 Half-life \uf0ae: Half-life \uf0ae",
+        "source_quote": "b1 = 0.2054 b2 = 0.3071 b3 =-0.1185 x = 159.8 Half-life \uf0ae: Half-life \uf0ae"
+      },
+      {
+        "paper_id": "doi:10.3390/ijerph7031036",
+        "source_table_id": "TBL-20260214092226-004",
+        "claim_id": "doi:10.3390/ijerph7031036-TBL-C003",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "b1 = 0.1822 b2 = 0.3366 b3 =-0.1394 x = 111.4 Half-life \uf0ae: Half-life \uf0ae",
+        "source_quote": "b1 = 0.1822 b2 = 0.3366 b3 =-0.1394 x = 111.4 Half-life \uf0ae: Half-life \uf0ae"
+      },
+      {
+        "paper_id": "doi:10.3390/ijerph7031036",
+        "source_table_id": "TBL-20260214092226-005",
+        "claim_id": "doi:10.3390/ijerph7031036-TBL-C004",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "b1 = 0.1607 b2 = 0.3551 b3 =-0.1111 x = 121.3 Half-life \uf0ae: Half-life \uf0ae",
+        "source_quote": "b1 = 0.1607 b2 = 0.3551 b3 =-0.1111 x = 121.3 Half-life \uf0ae: Half-life \uf0ae"
+      },
+      {
+        "paper_id": "doi:10.20944/preprints201907.0323.v1",
+        "source_table_id": "TBL-20260214092258-001",
+        "claim_id": "doi:10.20944/preprints201907.0323.v1-TBL-C001",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "Deviation Contributors: Temperature (Chua et al., 2006; Fang et al., 2004; Kamaruzzaman and Sabrani, 2011; Seppanen, Fisk and Lei, 2006; Wargocki et al., 2006).; Direct Mental Effects: Lowering the rate of performance an",
+        "source_quote": "Deviation Contributors: Temperature (Chua et al., 2006; Fang et al., 2004; Kamaruzzaman and Sabrani, 2011; Seppanen, Fisk and Lei, 2006; Wargocki et al., 2006).; Direct Mental Effects: Lowering the rate of performance an"
+      },
+      {
+        "paper_id": "sha256:bae8d5930451",
+        "source_table_id": "TBL-20260214092318-001",
+        "claim_id": "sha256:bae8d5930451-TBL-C001",
+        "claim_type": "effect",
+        "row_status": "verified_strong",
+        "translation_status": "exact",
+        "reasons": "translation_status:exact",
+        "statement": ": showed effect size of 2004.00 (r) on T hereappearstobewidespreadbeliefthatceilingheight can affect the quality of indoor consumption experi- ences. Fischl and Ga\u00a8rling (2004) found that ceiling height ranked among the ",
+        "source_quote": ": showed effect size of 2004.00 (r) on T hereappearstobewidespreadbeliefthatceilingheight can affect the quality of indoor consumption experi- ences. Fischl and Ga\u00a8rling (2004) found that ceiling height ranked among the "
+      },
+      {
+        "paper_id": "sha256:bae8d5930451",
+        "source_table_id": "TBL-20260214092321-005",
+        "claim_id": "sha256:bae8d5930451-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "APPENDIX A FIGUREA1 SAMPLEPHOTOOFROOMWITHHIGHSALIENCE, HIGHCEILINGHEIGHT: APPENDIX C FIGUREC1 SAMPLEPRODUCT(COFFEE-TABLE)USEDINEXPERIMENT2",
+        "source_quote": "APPENDIX A FIGUREA1 SAMPLEPHOTOOFROOMWITHHIGHSALIENCE, HIGHCEILINGHEIGHT: APPENDIX C FIGUREC1 SAMPLEPRODUCT(COFFEE-TABLE)USEDINEXPERIMENT2"
+      },
+      {
+        "paper_id": "doi:10.1111/joid.12179",
+        "source_table_id": "TBL-20260214092339-006",
+        "claim_id": "doi:10.1111/joid.12179-TBL-C001",
+        "claim_type": "finding",
+        "row_status": "verified_strong",
+        "translation_status": "inferred",
+        "reasons": "translation_status:inferred",
+        "statement": "Table1.IVEIgroupPresenceQuestionnaireresults: Questionsonsenseofpresence SD D N A SA; : Mean(SD)",
+        "source_quote": "Table1.IVEIgroupPresenceQuestionnaireresults: Questionsonsenseofpresence SD D N A SA; : Mean(SD)"
+      }
+    ],
+    "table_or_pdf_extraction_fault": [
+      {
+        "paper_id": "doi:10.1145/2079216.2079270",
+        "source_table_id": "TBL-20260214092358-001",
+        "claim_id": "doi:10.1145/2079216.2079270-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214100051-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.1002/mar.20709",
+        "source_table_id": "TBL-20260214094714-001",
+        "claim_id": "doi:10.1002/mar.20709-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.1002/ad.2630",
+        "source_table_id": "TBL-20260214095332-001",
+        "claim_id": "doi:10.1002/ad.2630-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.3390/app14072699",
+        "source_table_id": "TBL-20260214100037-003",
+        "claim_id": "doi:10.3390/app14072699-TBL-C002",
+        "claim_type": "sample",
+        "row_status": "verified_weak",
+        "translation_status": "noncausal",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:noncausal",
+        "statement": "gender: snopseR 40 30",
+        "source_quote": "gender: snopseR 40 30"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214103605-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214103019-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.1002/mar.20709",
+        "source_table_id": "TBL-20260214110352-001",
+        "claim_id": "doi:10.1002/mar.20709-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      }
+    ],
+    "table_to_rule_mapping_fault": [
+      {
+        "paper_id": "doi:10.1145/2079216.2079270",
+        "source_table_id": "TBL-20260214092358-001",
+        "claim_id": "doi:10.1145/2079216.2079270-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214100051-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.1002/mar.20709",
+        "source_table_id": "TBL-20260214094714-001",
+        "claim_id": "doi:10.1002/mar.20709-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.1002/ad.2630",
+        "source_table_id": "TBL-20260214095332-001",
+        "claim_id": "doi:10.1002/ad.2630-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214103605-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.18208/ksdc.2022.28.2.245",
+        "source_table_id": "TBL-20260214103019-006",
+        "claim_id": "doi:10.18208/ksdc.2022.28.2.245-TBL-C008",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "natural landscape: \u221a",
+        "source_quote": "natural landscape: \u221a"
+      },
+      {
+        "paper_id": "doi:10.1002/mar.20709",
+        "source_table_id": "TBL-20260214110352-001",
+        "claim_id": "doi:10.1002/mar.20709-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      },
+      {
+        "paper_id": "doi:10.1002/ad.2630",
+        "source_table_id": "TBL-20260214112726-001",
+        "claim_id": "doi:10.1002/ad.2630-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "Visualproperties: Auditoryproperties",
+        "source_quote": "Visualproperties: Auditoryproperties"
+      }
+    ],
+    "ontology_coverage_or_resolution_gap": [
+      {
+        "paper_id": "doi:10.1016/b978-0-444-53817-8.00007-4",
+        "source_table_id": "TBL-20260216230511-002",
+        "claim_id": "doi:10.1016/b978-0-444-53817-8.00007-4-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "outcome_unresolved|translation_status:inferred",
+        "statement": "R ** R O: C sn N U; C sn E: sn; *: sn",
+        "source_quote": "R ** R O: C sn N U; C sn E: sn; *: sn"
+      },
+      {
+        "paper_id": "doi:10.1016/j.buildenv.2018.04.029",
+        "source_table_id": "TBL-20260216230613-006",
+        "claim_id": "doi:10.1016/j.buildenv.2018.04.029-TBL-C059",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "outcome_unresolved|translation_status:inferred",
+        "statement": "1 5 0 .0: ) tn a ts n o C (; : s tn e m la n co is r y iv hn pe; 4 0 0 .0 -: ) tn a ts n o C (; 3 1 0 .0 -: ) tn a ts n o C (",
+        "source_quote": "1 5 0 .0: ) tn a ts n o C (; : s tn e m la n co is r y iv hn pe; 4 0 0 .0 -: ) tn a ts n o C (; 3 1 0 .0 -: ) tn a ts n o C ("
+      },
+      {
+        "paper_id": "doi:10.1016/j.neuropsychologia.2014.08.030",
+        "source_table_id": "TBL-20260216230754-001",
+        "claim_id": "doi:10.1016/j.neuropsychologia.2014.08.030-TBL-C002",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "outcome_unresolved|translation_status:inferred",
+        "statement": "1 9 6 5: a n a r e a; B r o w e r ,: la y in g c la im to; 1 9 6 5 /1 9 7 0: a n a r e a; P a r r ,: la y in g c la im to",
+        "source_quote": "1 9 6 5: a n a r e a; B r o w e r ,: la y in g c la im to; 1 9 6 5 /1 9 7 0: a n a r e a; P a r r ,: la y in g c la im to"
+      },
+      {
+        "paper_id": "doi:10.17863/cam.41365",
+        "source_table_id": "TBL-20260216233215-012",
+        "claim_id": "doi:10.17863/cam.41365-TBL-C063",
+        "claim_type": "finding",
+        "row_status": "verified_weak",
+        "translation_status": "inferred",
+        "reasons": "outcome_unresolved|translation_status:inferred",
+        "statement": "63Hz: A; : C; 125Hz: A; 250Hz: A; 500Hz: A",
+        "source_quote": "63Hz: A; : C; 125Hz: A; 250Hz: A; 500Hz: A"
+      }
+    ],
+    "article_or_row_ambiguity": [
+      {
+        "paper_id": "doi:10.1016/j.neuropsychologia.2014.08.030",
+        "source_table_id": "TBL-20260216230802-016",
+        "claim_id": "doi:10.1016/j.neuropsychologia.2014.08.030-TBL-C056",
+        "claim_type": "finding",
+        "row_status": "suspect_table",
+        "translation_status": "inferred",
+        "reasons": "outcome_unresolved|source_row_low_information|statement_low_information|translation_status:inferred",
+        "statement": "S O C I A E 1 T A L: X; P r im a r y: D O *",
+        "source_quote": "S O C I A E 1 T A L: X; P r im a r y: D O *"
+      }
+    ]
+  }
+}

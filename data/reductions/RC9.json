@@ -1,0 +1,77 @@
+{
+    "claim_id": "RC_SRT_RAPID_AFFECT",
+    "version": "1.0.0",
+    "created_date": "2026-02-17",
+    "created_by": "System (Gap Closure)",
+    "revision_history": [
+        {
+            "version": "1.0.0",
+            "date": "2026-02-17",
+            "reason": "Initial implementation to close SRT gap",
+            "author": "System",
+            "changes": "Created RC9"
+        }
+    ],
+    "tier2_theory": "Stress Recovery Theory (SRT)",
+    "tier2_construct": "Affective Response",
+    "construct_definition": "The immediate, pre-cognitive emotional reaction to an environment.",
+    "construct_validity": "HIGH",
+    "construct_validity_justification": "Based on Zajonc's 'Preferences Need No Inferences' and Ulrich's psycho-evolutionary framework.",
+    "template_nodes": [
+        "DP_IMPLICIT_EVALUATION_001",
+        "PP_RAPID_GIST_004"
+    ],
+    "reduction_edges": [
+        {
+            "edge_id": "RC9_E1",
+            "from_node": "PP_RAPID_GIST_004",
+            "to_node": "DP_IMPLICIT_EVALUATION_001",
+            "edge_type": "PRODUCES",
+            "edge_confidence": {
+                "extraction_confidence": 0.85,
+                "statistical_confidence": 0.75,
+                "mechanism_confidence": 0.8,
+                "epistemic_confidence": 0.8
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [
+                "Kveraga et al., 2007"
+            ],
+            "evidence_links": []
+        },
+        {
+            "edge_id": "RC9_E2",
+            "from_node": "DP_IMPLICIT_EVALUATION_001",
+            "to_node": "Affective Response",
+            "edge_type": "CONSTITUTES",
+            "edge_confidence": {
+                "extraction_confidence": 0.9,
+                "statistical_confidence": 0.8,
+                "mechanism_confidence": 0.85,
+                "epistemic_confidence": 0.85
+            },
+            "testability": "DIRECTLY_TESTABLE",
+            "key_evidence": [
+                "Ulrich, 1983"
+            ],
+            "evidence_links": []
+        }
+    ],
+    "compositional_adequacy": "FULLY_DECOMPOSABLE",
+    "compositional_notes": "Rapid affect is constituted by the output of the implicit evaluation system triggered by rapid gist.",
+    "schema_gaps": [],
+    "reducibility_judgment": "FULLY_REDUCIBLE",
+    "mechanism_narrative": "Rapid Gist extraction (T22) immediately informs the Implicit Evaluation system (T9), generating an affective tag before cognitive processing occurs.",
+    "boundary_variables": [
+        "reaction_time",
+        "facial_emg",
+        "startle_reflex"
+    ],
+    "valid_as_of_template_count": 77,
+    "overall_confidence": "HIGH",
+    "overall_maturity": "how-plausibly",
+    "key_references": [
+        "Ulrich, R. S. (1983). Aesthetic and affective response to natural environment. Behavior and the Natural Environment.",
+        "Zajonc, R. B. (1980). Feeling and thinking: Preferences need no inferences. American Psychologist."
+    ]
+}

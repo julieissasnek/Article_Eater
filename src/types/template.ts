@@ -30,14 +30,28 @@ export type BridgingQuality =
  */
 export type Level =
   | "environmental"
+  | "ecological"
   | "sensory"
+  | "perceptual"
   | "neural"
   | "subcortical"
   | "neuroendocrine"
+  | "cellular"
+  | "circuit"
+  | "computational"
   | "cognitive"
   | "affective"
   | "behavioral"
-  | "physiological";
+  | "motor"
+  | "physiological"
+  | "psychological"
+  | "phenomenological"
+  | "memorial"
+  | "systems"
+  | "subpersonal"
+  | "molecular"
+  | "personal_epistemic"
+  | "biophysical";
 
 /**
  * The nature of the causal relationship.

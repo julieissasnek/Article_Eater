@@ -141,9 +141,12 @@ export function createTheoryApi(registry: TheoryRegistry): TheoryTierApi {
     },
 
     getConstructsUsingTemplate(templateId) {
-      return registry.reductionClaims.filter((claim) =>
-        claim.reducing_templates.some((item) => item.template_id === templateId),
-      );
+      return registry.reductionClaims.filter((claim) => {
+        const viaLegacy =
+          claim.reducing_templates?.some((item) => item.template_id === templateId) ?? false;
+        const viaNodes = claim.template_nodes.includes(templateId);
+        return viaLegacy || viaNodes;
+      });
     },
 
     searchTemplates(query) {

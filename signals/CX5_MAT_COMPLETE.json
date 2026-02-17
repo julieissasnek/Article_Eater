@@ -1,0 +1,20 @@
+{
+  "task_id": "CX5_MAT",
+  "completed_by": "codex",
+  "timestamp": "2026-02-16T09:56:03.320422Z",
+  "output_files": [
+    "src/types/template.ts",
+    "scripts/check_template_contract_compatibility.js",
+    "scripts/check_template_enum_drift.js",
+    "docs/cx5_mat_i_type_review_2026-02-16.md"
+  ],
+  "notes": "MAT-I type review complete with schema updates; validators run and found existing data drift outside this type patch.",
+  "issues_found": [
+    "Enum drift: data/templates/L3_daylight_multichannel_convergence.json contains from_level=multi_channel (invalid level token).",
+    "Compatibility scan reports legacy/unknown causal-link shapes in existing template corpus; MAT patch did not migrate historical files."
+  ],
+  "changes_to_plan": [
+    "CC should normalize L3 from_level/to_level tokens to canonical Level enum and encode convergence via causal_topology/convergence_rule/channel fields instead of level tokens.",
+    "Keep running both drift scripts after each template batch to prevent non-canonical level tokens from reappearing."
+  ]
+}

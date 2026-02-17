@@ -1,0 +1,22 @@
+{
+  "task_id": "P8.6",
+  "completed_by": "codex",
+  "timestamp": "2026-02-17T09:10:00Z",
+  "output_files": [
+    "scripts/check_table_extraction_quality.py",
+    "scripts/process_realtime_pdf_completion_queue.py",
+    "docs/P8_6_EXTRACTION_QUALITY_METRICS_2026-02-17.md",
+    "data/production/table_extraction_quality_report.json",
+    "TASKS.md",
+    "ACTIVE_TASKS.md"
+  ],
+  "notes": "Added extraction quality instrumentation for resolution pathways (match-type counts, LLM/semantic fallback rates, missing match-type rates) and JSON report generation for periodic review. Extended per-paper extraction audit payload with resolution pathway metrics.",
+  "issues_found": [
+    "Current quality gate still fails on article type metadata coverage threshold (0.5334 < 0.9500), which is pre-existing and unrelated to P8.6 instrumentation.",
+    "LLM fallback rates are currently zero in baseline runs because fallback is opt-in and disabled by default."
+  ],
+  "changes_to_plan": [
+    "Prioritize article-type metadata backfill/normalization to clear the remaining quality gate failure.",
+    "After enabling LLM fallback in production, monitor fallback-rate deltas via table_extraction_quality_report.json."
+  ]
+}

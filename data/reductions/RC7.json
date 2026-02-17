@@ -1,0 +1,93 @@
+{
+  "claim_id": "RC_ART_COMPATIBILITY",
+  "version": "1.0.0",
+  "created_date": "2026-02-17",
+  "created_by": "System (Migrated from RC_ART_COMPATIBILITY_001)",
+  "revision_history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-17",
+      "reason": "Initial migration from legacy format",
+      "author": "System",
+      "changes": "Converted to ReductionClaim DAG"
+    }
+  ],
+  "tier2_theory": "Attention Restoration Theory (ART)",
+  "tier2_construct": "Compatibility",
+  "construct_definition": "The degree of match between a person's goals, inclinations, and action intentions and the environmental supports and demands.",
+  "construct_validity": "MEDIUM",
+  "construct_validity_justification": "Conceptually essential to ART but difficult to operationalize without specific goal contexts.",
+  "template_nodes": [
+    "PP_SPECTRAL_MATCH_001",
+    "EC_AFFORDANCE_POSTURAL_001",
+    "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+    "XF_NAVIGATION_STRESS_VICIOUS_CYCLE_002"
+  ],
+  "reduction_edges": [
+    {
+      "edge_id": "RC7_E1",
+      "from_node": "EC_AFFORDANCE_POSTURAL_001",
+      "to_node": "PP_SPECTRAL_MATCH_001",
+      "edge_type": "PRODUCES",
+      "edge_confidence": {
+        "extraction_confidence": 0.8,
+        "statistical_confidence": 0.6,
+        "mechanism_confidence": 0.7,
+        "epistemic_confidence": 0.7
+      },
+      "testability": "DIRECTLY_TESTABLE",
+      "key_evidence": [],
+      "evidence_links": []
+    },
+    {
+      "edge_id": "RC7_E2",
+      "from_node": "PP_SPECTRAL_MATCH_001",
+      "to_node": "Compatibility",
+      "edge_type": "CONSTITUTES",
+      "edge_confidence": {
+        "extraction_confidence": 0.8,
+        "statistical_confidence": 0.6,
+        "mechanism_confidence": 0.7,
+        "epistemic_confidence": 0.7
+      },
+      "testability": "INDIRECTLY_TESTABLE",
+      "key_evidence": [
+        "Botvinick, Cohen, & Carter, 2004"
+      ],
+      "evidence_links": []
+    },
+    {
+      "edge_id": "RC7_E3",
+      "from_node": "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+      "to_node": "Compatibility",
+      "edge_type": "ENABLES",
+      "edge_confidence": {
+        "extraction_confidence": 0.7,
+        "statistical_confidence": 0.6,
+        "mechanism_confidence": 0.7,
+        "epistemic_confidence": 0.6
+      },
+      "testability": "DIRECTLY_TESTABLE",
+      "key_evidence": [],
+      "evidence_links": []
+    }
+  ],
+  "compositional_adequacy": "PARTIALLY_DECOMPOSABLE",
+  "compositional_notes": "Compatibility has a strong subjective/motivational component: it depends on what the person wants.",
+  "schema_gaps": [],
+  "irreducible_residual": "The goal-dependent nature of compatibility means it cannot be fully reduced to environmental features alone without a model of user intent.",
+  "reducibility_judgment": "PARTIALLY_REDUCIBLE",
+  "mechanism_narrative": "When environmental affordances (T8) match action intentions (Goals) with low Prediction Error (T1), the environment is Compatible. This reduces the need for Top-Down Control (T45), conserving Directed Attention.",
+  "boundary_variables": [
+    "goal_congruence",
+    "action_fluency",
+    "control_demand"
+  ],
+  "valid_as_of_template_count": 77,
+  "overall_confidence": "MEDIUM",
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    "Kaplan, S. (1995). The restorative benefits of nature.",
+    "Shenhav, A., Botvinick, M. M., & Cohen, J. D. (2013). The expected value of control."
+  ]
+}
