@@ -26,6 +26,7 @@ from src.cmr.paper_report import format_paper_report_text, generate_paper_report
 from src.cmr.report import generate_report, format_report_text
 from src.cmr.quick_assess import quick_assess, format_quick_report
 from src.cmr.sensitivity import analyze_sensitivity, format_sensitivity_report, get_quick_sensitivity
+from src.cmr.process_paper import process_paper, format_processing_report, get_processing_summary
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -284,6 +285,63 @@ def build_parser() -> argparse.ArgumentParser:
     compare_parser.add_argument("--db-path", type=str, default="ae.db", help="Path to database")
     compare_parser.add_argument("--json", action="store_true", dest="json_output", help="JSON output")
 
+    # process-paper subcommand (Sprint 13 Task 13.13)
+    proc_parser = subparsers.add_parser(
+        "process-paper",
+        help="Process a paper through the full CMR pipeline (eval + proposals + accumulation)",
+    )
+    proc_parser.add_argument(
+        "--claims",
+        type=str,
+        default=None,
+        help="JSON array of structured claims",
+    )
+    proc_parser.add_argument(
+        "--file",
+        type=str,
+        default=None,
+        help="Path to JSON file containing claims array (or {'claims': [...]})",
+    )
+    proc_parser.add_argument(
+        "--citation",
+        type=str,
+        required=True,
+        help="Paper citation (e.g., 'Ulrich 1984')",
+    )
+    proc_parser.add_argument(
+        "--doi",
+        type=str,
+        default=None,
+        help="Paper DOI (optional)",
+    )
+    proc_parser.add_argument(
+        "--no-persist",
+        action="store_true",
+        help="Don't persist proposals to database (dry run)",
+    )
+    proc_parser.add_argument(
+        "--include-raw",
+        action="store_true",
+        help="Include raw evaluation data in output",
+    )
+    proc_parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Show processing summary instead of processing a paper",
+    )
+    proc_parser.add_argument(
+        "--json",
+        action="store_true",
+        dest="json_output",
+        help="Output results in JSON format",
+    )
+    proc_parser.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+
     return parser
 
 
@@ -534,8 +592,10 @@ def run_sensitivity(args: argparse.Namespace) -> int:
             "baseline_wis": result.baseline_wis,
             "top_feature": result.top_feature,
             "top_delta": result.top_delta,
+            "top_probability": result.top_probability,
             "top_recommendation": result.top_recommendation,
             "category_impacts": result.category_impacts,
+            "monte_carlo_samples": result.monte_carlo_samples,
             "feature_sensitivities": [
                 {
                     "rank": s.rank,
@@ -543,6 +603,11 @@ def run_sensitivity(args: argparse.Namespace) -> int:
                     "description": s.description,
                     "category": s.category,
                     "wis_delta": s.wis_delta,
+                    "expected_delta": s.expected_delta,
+                    "improvement_probability": s.improvement_probability,
+                    "delta_ci_lower": s.delta_ci_lower,
+                    "delta_ci_upper": s.delta_ci_upper,
+                    "actionability_score": s.actionability_score,
                     "worst_value": s.worst_value,
                     "best_value": s.best_value,
                     "unit": s.unit,
@@ -603,6 +668,91 @@ def run_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def _load_claims_for_process(args: argparse.Namespace) -> list[dict] | None:
+    """Load claims for process-paper command."""
+    if args.claims:
+        payload = json.loads(args.claims)
+        if isinstance(payload, list):
+            return payload
+        raise ValueError("--claims must be a JSON array")
+
+    if args.file:
+        with open(args.file, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        if isinstance(payload, list):
+            return payload
+        if isinstance(payload, dict) and isinstance(payload.get("claims"), list):
+            return payload["claims"]
+        raise ValueError("--file JSON must be an array or object with a 'claims' array")
+
+    return None
+
+
+def run_process_paper(args: argparse.Namespace) -> int:
+    """Execute the process-paper subcommand."""
+    # Handle summary mode
+    if args.summary:
+        try:
+            summary = get_processing_summary(db_path=args.db_path)
+            if args.json_output:
+                print(json.dumps(summary, indent=2, default=str))
+            else:
+                print("=" * 50)
+                print("PAPER PROCESSING SUMMARY")
+                print("=" * 50)
+                print(f"Total papers processed: {summary['total_papers_processed']}")
+                print(f"Pending proposals: {summary['pending_proposals']}")
+                print("")
+                print("Proposals by type:")
+                for ptype, count in summary.get("proposals_by_type", {}).items():
+                    print(f"  {ptype}: {count}")
+                print("")
+                print("Recent papers:")
+                for paper in summary.get("recent_papers", []):
+                    print(f"  - {paper['citation']} (VOI: {paper['aggregate_voi']:.2f})")
+            return 0
+        except Exception as e:
+            print(f"Error getting summary: {e}", file=sys.stderr)
+            return 1
+
+    # Normal processing mode - require claims
+    try:
+        claims = _load_claims_for_process(args)
+    except Exception as e:
+        print(f"Error loading claims: {e}", file=sys.stderr)
+        return 1
+
+    if not claims:
+        print(
+            "Error: provide claims via --claims or --file (or use --summary for status).",
+            file=sys.stderr,
+        )
+        return 2
+
+    try:
+        result = process_paper(
+            claims=claims,
+            citation=args.citation,
+            doi=args.doi,
+            db_path=args.db_path,
+            persist_proposals=not args.no_persist,
+            include_raw_evaluation=args.include_raw,
+        )
+    except Exception as e:
+        print(f"Error processing paper: {e}", file=sys.stderr)
+        return 1
+
+    if args.json_output:
+        output = result.to_dict()
+        if args.include_raw and result.raw_evaluation:
+            output["raw_evaluation"] = result.raw_evaluation
+        print(json.dumps(output, indent=2, default=str))
+    else:
+        print(format_processing_report(result))
+
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = build_parser()
@@ -622,6 +772,8 @@ def main(argv: list[str] | None = None) -> int:
         return run_sensitivity(args)
     if args.command == "compare":
         return run_compare(args)
+    if args.command == "process-paper":
+        return run_process_paper(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1
