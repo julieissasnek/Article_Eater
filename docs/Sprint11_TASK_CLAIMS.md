@@ -20,7 +20,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 16:50 CET | — | none |
+| 11.1 | Wire real computations into orchestrator | CLAIMED | Codex+CC-Opus | 2026-02-17 16:50 CET | — | none |
 | 11.2 | Wire interaction adjustments | DONE | Antigravity | 2026-02-17 16:55 CET | 2026-02-17 17:05 CET | none |
 | 11.3 | Wire lifespan moderation | DONE | CC-Opus | 2026-02-17 16:43 CET | 2026-02-17 17:10 CET | none |
 | 11.4 | Feature-to-template input mapping | DONE | Codex | 2026-02-17 15:47 UTC | 2026-02-17 15:51 UTC | none |
@@ -30,7 +30,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | AVAILABLE | — | — | — | 11.1 DONE |
-| 11.6 | Paper claim extraction module | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.6 | Paper claim extraction module | CLAIMED | Antigravity | 2026-02-17 18:05 CET | — | [OVERRIDE] 11.1 |
 | 11.7 | Template matching module | DONE | Antigravity | 2026-02-17 17:15 CET | 2026-02-17 17:25 CET | none |
 | 11.8 | Mechanism tracing module | DONE | Antigravity | 2026-02-17 17:30 CET | 2026-02-17 17:40 CET | 11.7 DONE |
 | 11.9 | Convergence and composition modules | DONE | Antigravity | 2026-02-17 17:45 CET | 2026-02-17 18:00 CET | 11.8 DONE |
