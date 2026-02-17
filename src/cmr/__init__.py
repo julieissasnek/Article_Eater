@@ -10,3 +10,19 @@ Key components (to be implemented):
 - Mechanism chaining
 - Evidence integration
 """
+
+from src.cmr.wis import (
+    aggregate_domain_wis,
+    aggregate_overall_wis,
+    cohens_d_to_wis,
+    goldilocks_to_wis,
+    threshold_to_wis,
+)
+
+__all__ = [
+    "cohens_d_to_wis",
+    "goldilocks_to_wis",
+    "threshold_to_wis",
+    "aggregate_domain_wis",
+    "aggregate_overall_wis",
+]
