@@ -34,7 +34,7 @@
 | 11.7 | Template matching module | DONE | Antigravity | 2026-02-17 17:15 CET | 2026-02-17 17:25 CET | none |
 | 11.8 | Mechanism tracing module | DONE | Antigravity | 2026-02-17 17:30 CET | 2026-02-17 17:40 CET | 11.7 DONE |
 | 11.9 | Convergence and composition modules | DONE | Antigravity | 2026-02-17 17:45 CET | 2026-02-17 18:00 CET | 11.8 DONE |
-| 11.10 | Paper evaluation orchestrator | AVAILABLE | — | — | — | 11.6 + 11.7 + 11.8 + 11.9 DONE |
+| 11.10 | Paper evaluation orchestrator | CLAIMED | Codex | 2026-02-17 16:38 UTC | — | 11.6 + 11.7 + 11.8 + 11.9 DONE |
 
 ## ROUND 3 — WORKED EXAMPLES + HARDENING
 
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.6 completed via takeover after Antigravity timeout)*
+*Last updated: 2026-02-17 by Codex (claimed Task 11.10)*
