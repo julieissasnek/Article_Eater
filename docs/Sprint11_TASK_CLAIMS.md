@@ -22,7 +22,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 20:13 CET | — | none |
 | 11.2 | Wire interaction adjustments | DONE | Codex | 2026-02-17 17:08 UTC | 2026-02-17 17:09 UTC | none |
-| 11.3 | Wire lifespan moderation | CLAIMED | Codex | 2026-02-17 17:10 UTC | — | none |
+| 11.3 | Wire lifespan moderation | DONE | Codex | 2026-02-17 17:10 UTC | 2026-02-17 17:11 UTC | none |
 | 11.4 | Feature-to-template input mapping | AVAILABLE | — | — | — | none |
 
 ## ROUND 2 — VALIDATE + BEGIN PAPER EVAL
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:15 UTC by Codex*
+*Last updated: 2026-02-17 17:11 UTC by Codex*
