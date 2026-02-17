@@ -44,7 +44,7 @@
 | 11.12 | Paper report generator | DONE | Codex | 2026-02-17 19:08 CET | 2026-02-17 19:12 CET | 11.10 DONE |
 | 11.13 | Building eval regression suite | AVAILABLE | — | — | — | 11.5 DONE |
 | 11.14 | Paper eval contradicting study | DONE | Codex | 2026-02-17 19:13 CET | 2026-02-17 19:17 CET | 11.10 DONE |
-| 11.15 | Paper eval novel finding (gap) | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.15 | Paper eval novel finding (gap) | CLAIMED | Codex | 2026-02-17 19:18 CET | — | 11.10 DONE |
 | 11.16 | CLI for paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.17 | Cross-pipeline integration test | AVAILABLE | — | — | — | 11.5 + 11.10 DONE |
 | 11.18 | Paper eval validation sweep | AVAILABLE | — | — | — | 11.10 + 11.11 DONE |
@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (restored completed statuses and completed Task 11.14)*
+*Last updated: 2026-02-17 by Codex (Task 11.15 claimed)*
