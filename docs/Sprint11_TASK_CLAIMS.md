@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.20 claimed)*
+*Last updated: 2026-02-17 by Codex (Sprint11 plan update committed; Task 11.20 still claimed)*
