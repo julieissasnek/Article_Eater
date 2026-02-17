@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from src.cmr.building_eval import evaluate_building
 from src.cmr.models import TemplateRecord, create_tables, get_session
 
@@ -103,3 +105,50 @@ def test_building_eval_flags_severe_deficit_domain(tmp_path):
     assert "A_LOW" in report["severe_deficits"]
     low_domain = next(item for item in report["domain_scores"] if item["domain"] == "A_LOW")
     assert low_domain["wis"] == 20.0
+
+
+def test_building_eval_applies_convergence_triad_adjustment(tmp_path):
+    db_path = tmp_path / "cmr_eval_triad.db"
+    create_tables(str(db_path))
+    session = get_session(str(db_path))
+
+    l3_path = _write_template(tmp_path / "l3.json", display_id="L3", required_inputs=[], domain="L")
+    mat4_path = _write_template(tmp_path / "mat4.json", display_id="MAT4", required_inputs=[], domain="MAT")
+    view1_path = _write_template(tmp_path / "view1.json", display_id="VIEW1", required_inputs=[], domain="VIEW")
+
+    _insert_template_record(session, "L3", l3_path, series="L")
+    _insert_template_record(session, "MAT4", mat4_path, series="MAT")
+    _insert_template_record(session, "VIEW1", view1_path, series="VIEW")
+    session.commit()
+    session.close()
+
+    report = evaluate_building(
+        building_context={
+            "target_description": "Convergence triad check",
+            "template_wis_overrides": {
+                "L3": 50.0,
+                "MAT4": 40.0,
+                "VIEW1": 60.0,
+            },
+        },
+        measured_features={
+            "l2_score": 0.7,
+            "view_score": 0.6,
+            "l1_score": 0.65,
+            "l4_score": 0.55,
+            "l5_score": 0.6,
+            "primary_material": "wood",
+            "natural_material_ratio": 0.5,
+            "window_area_ratio": 0.3,
+            "view_layers": 3,
+            "nature_content_ratio": 0.6,
+            "dynamic_content": True,
+        },
+        occupant_profile={"age": 35},
+        db_path=str(db_path),
+    )
+
+    domains = {row["domain"]: row for row in report["domain_scores"]}
+    assert domains["L"]["wis"] == pytest.approx(50.0 * 1.22, abs=0.01)
+    assert domains["MAT"]["wis"] == pytest.approx(40.0 * 1.22, abs=0.01)
+    assert domains["VIEW"]["wis"] == pytest.approx(60.0 * 1.22, abs=0.01)
