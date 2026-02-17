@@ -1,0 +1,116 @@
+"""Tests for the CMR CLI module (Sprint 10 Task 3.9)."""
+
+import json
+
+from src.cmr.cli import build_parser, main
+
+
+def test_parser_has_evaluate_subcommand():
+    parser = build_parser()
+    args = parser.parse_args(["evaluate", "--ceiling-height", "3.0", "--floor-area", "25.0"])
+    assert args.command == "evaluate"
+    assert args.ceiling_height == 3.0
+    assert args.floor_area == 25.0
+
+
+def test_parser_accepts_all_building_features():
+    parser = build_parser()
+    args = parser.parse_args([
+        "evaluate",
+        "--ceiling-height", "2.75",
+        "--floor-area", "18.0",
+        "--building-type", "research_institute",
+        "--climate-zone", "3C",
+        "--illuminance", "350",
+        "--noise", "38",
+        "--window-area-ratio", "0.4",
+        "--primary-material", "concrete",
+        "--secondary-material", "teak",
+        "--has-nature-view",
+        "--rt60", "0.6",
+        "--view-content", "ocean_horizon",
+        "--occupant-age", "35",
+        "--cultural-context", "Western",
+    ])
+    assert args.building_type == "research_institute"
+    assert args.climate_zone == "3C"
+    assert args.illuminance == 350
+    assert args.noise == 38
+    assert args.window_area_ratio == 0.4
+    assert args.primary_material == "concrete"
+    assert args.secondary_material == "teak"
+    assert args.has_nature_view is True
+    assert args.rt60 == 0.6
+    assert args.view_content == "ocean_horizon"
+    assert args.occupant_age == 35
+    assert args.cultural_context == "Western"
+
+
+def test_parser_json_flag():
+    parser = build_parser()
+    args = parser.parse_args([
+        "evaluate",
+        "--ceiling-height", "3.0",
+        "--floor-area", "25.0",
+        "--json",
+    ])
+    assert args.json_output is True
+
+
+def test_parser_verbose_flag():
+    parser = build_parser()
+    args = parser.parse_args([
+        "evaluate",
+        "--ceiling-height", "3.0",
+        "--floor-area", "25.0",
+        "-v",
+    ])
+    assert args.verbose is True
+
+
+def test_parser_default_values():
+    parser = build_parser()
+    args = parser.parse_args([
+        "evaluate",
+        "--ceiling-height", "3.0",
+        "--floor-area", "25.0",
+    ])
+    assert args.building_type == "generic"
+    assert args.climate_zone == "4A"
+    assert args.occupant_age == 35
+    assert args.cultural_context == "Western"
+    assert args.json_output is False
+    assert args.verbose is False
+
+
+def test_main_without_command_returns_zero():
+    # Running with no command should print help and return 0
+    result = main([])
+    assert result == 0
+
+
+def test_main_evaluate_runs_without_error(tmp_path):
+    db_path = tmp_path / "test_cli.db"
+    result = main([
+        "evaluate",
+        "--ceiling-height", "3.0",
+        "--floor-area", "25.0",
+        "--db-path", str(db_path),
+    ])
+    assert result == 0
+
+
+def test_main_evaluate_json_output_is_valid_json(tmp_path, capsys):
+    db_path = tmp_path / "test_cli_json.db"
+    result = main([
+        "evaluate",
+        "--ceiling-height", "3.0",
+        "--floor-area", "25.0",
+        "--db-path", str(db_path),
+        "--json",
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    report = json.loads(captured.out)
+    assert "summary" in report
+    assert "overall_wis" in report["summary"]
