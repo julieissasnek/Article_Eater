@@ -33,7 +33,7 @@
 | 11.6 | Paper claim extraction module | DONE | Codex (takeover from timeout) | 2026-02-17 15:53 UTC | 2026-02-17 16:26 UTC | 11.1 DONE |
 | 11.7 | Template matching module | DONE | Codex | 2026-02-17 16:49 UTC | 2026-02-17 16:51 UTC | none |
 | 11.8 | Mechanism tracing module | DONE | Codex | 2026-02-17 16:52 UTC | 2026-02-17 16:54 UTC | 11.7 DONE |
-| 11.9 | Convergence and composition modules | AVAILABLE | — | — | — | 11.8 DONE |
+| 11.9 | Convergence and composition modules | CLAIMED | Codex | 2026-02-17 16:55 UTC | — | 11.8 DONE |
 | 11.10 | Paper evaluation orchestrator | DONE | Codex | 2026-02-17 18:55 CET | 2026-02-17 19:07 CET | 11.6 + 11.7 + 11.8 + 11.9 DONE |
 
 ## ROUND 3 — WORKED EXAMPLES + HARDENING
@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.8 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.9 claimed)*
