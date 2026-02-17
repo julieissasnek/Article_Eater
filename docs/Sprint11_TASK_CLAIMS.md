@@ -30,7 +30,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | CLAIMED | CC-Opus | 2026-02-17 18:20 CET | — | 11.1 DONE |
-| 11.6 | Paper claim extraction module | CLAIMED | Antigravity | 2026-02-17 18:05 CET | — | [OVERRIDE] 11.1 |
+| 11.6 | Paper claim extraction module | CLAIMED | Codex (takeover from timeout) | 2026-02-17 15:53 UTC | — | [OVERRIDE] 11.1 |
 | 11.7 | Template matching module | DONE | Antigravity | 2026-02-17 17:15 CET | 2026-02-17 17:25 CET | none |
 | 11.8 | Mechanism tracing module | DONE | Antigravity | 2026-02-17 17:30 CET | 2026-02-17 17:40 CET | 11.7 DONE |
 | 11.9 | Convergence and composition modules | DONE | Antigravity | 2026-02-17 17:45 CET | 2026-02-17 18:00 CET | 11.8 DONE |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by CC-Opus (Task 11.1 completed — building eval now produces differentiated scores)*
+*Last updated: 2026-02-17 by Codex (Task 11.6 takeover claim after Antigravity timeout)*
