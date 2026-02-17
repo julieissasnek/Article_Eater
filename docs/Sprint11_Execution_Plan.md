@@ -1088,6 +1088,50 @@ Paper eval → web of belief: connected/disconnected
 
 This report becomes the definitive answer to "what actually works." Commit it to docs/completeness_report.md and update it with every sprint.
 
+### TASK 11.31 — CC or Codex — Sprint Verification Test Suite
+**Estimated time: 90–120 minutes**
+**Dependency: 11.1 DONE**
+
+Read docs/Sprint_Verification_And_Provenance_Tests.md Part 1. Implement tests/test_sprint_verification.py. This suite verifies Sprint 10 AND Sprint 11 deliverables actually function in the integrated system. Adapt function calls to match the actual codebase — the test doc has approximate signatures. Every failing test is a finding — report it, don't just make the test pass.
+
+Key tests:
+- Template DB populated with classifications (S10-V01, V02)
+- WIS module produces non-50 values and is monotonic (S10-V03)
+- Compute functions exist and return real values (S10-V04)
+- Orchestrator produces DIFFERENT scores for Salk vs open-plan (S10-V05)
+- Lifespan moderation produces age differences (S10-V05)
+- Salk scores > 55, open-plan < 50, Salk beats open-plan (S11-V01)
+- Paper eval runs, finds VIEW1, and is direction-sensitive (S11-V02)
+
+### TASK 11.32 — Antigravity or Codex — Building Eval Provenance Tests
+**Estimated time: 90–120 minutes**
+**Dependency: 11.1 DONE**
+
+Read docs/Sprint_Verification_And_Provenance_Tests.md Part 2 (Building Evaluation Provenance). Implement tests/test_provenance_building.py. These tests verify that every WIS score is traceable back to specific inputs, templates, and parameters.
+
+Key tests:
+- Overall WIS = geometric mean of domain scores (PROV-B01)
+- Domain scores traceable to specific template activations (PROV-B01)
+- Template activations record inputs and raw outputs (PROV-B01)
+- Parameters come from JSON calibration files, not hardcoded (PROV-B02)
+- Lifespan moderation differences are recorded, not just present (PROV-B03)
+- Interaction adjustments are recorded when triggered (PROV-B04)
+
+### TASK 11.33 — CC or Codex — Paper Eval Provenance Tests
+**Estimated time: 90–120 minutes**
+**Dependency: 11.10 DONE**
+
+Read docs/Sprint_Verification_And_Provenance_Tests.md Part 2 (Paper Evaluation Provenance). Implement tests/test_provenance_paper.py. These tests verify the system's paper assessments are grounded in actual data and correct template/theory application.
+
+Key tests:
+- Claim matches record WHY they matched (PROV-P01)
+- Claim direction matters — increase ≠ decrease (PROV-P01)
+- Effect size matters — d=0.1 ≠ d=1.5 (PROV-P01)
+- Contradictions detected correctly (PROV-P02)
+- Gaps flagged for unmapped variables (PROV-P02)
+- Full provenance chain: data → extraction → matching → tracing → convergence → VOI → report (PROV-P03)
+- Cross-pipeline consistency: paper eval and building eval agree directionally (PROV-P04)
+
 ---
 
 ## COMPLETION CRITERIA
@@ -1122,12 +1166,15 @@ This report becomes the definitive answer to "what actually works." Commit it to
 23. ✅ Enum drift: zero drift across all components (11.28)
 24. ✅ No placeholders: zero silent default-value returns in pipeline (11.29)
 25. ✅ Completeness inventory: machine-readable report of what's wired (11.30)
+26. ✅ Sprint verification suite: all S10 and S11 deliverables confirmed working (11.31)
+27. ✅ Building provenance: every WIS score traceable to inputs and templates (11.32)
+28. ✅ Paper provenance: every assessment traceable to data, theory, and template (11.33)
 
 ---
 
 *Sprint 11 Execution Plan — February 17, 2026*
-*30 tasks across 3 rounds*
-*Estimated total effort: ~30–40 agent-hours*
+*33 tasks across 3 rounds*
+*Estimated total effort: ~40–50 agent-hours*
 *Agents: 1 CC + 3 Codex + 1 Antigravity*
 *Round 1: FIX BUILDING EVAL WIRING — nothing else until face-validity passes*
 *Round 2: Paper evaluation pipeline*
