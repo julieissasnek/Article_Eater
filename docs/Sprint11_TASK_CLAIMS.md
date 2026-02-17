@@ -46,7 +46,7 @@
 | 11.14 | Paper eval contradicting study | DONE | Codex | 2026-02-17 17:18 UTC | 2026-02-17 17:18 UTC | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | DONE | Codex | 2026-02-17 17:19 UTC | 2026-02-17 17:19 UTC | 11.10 DONE |
 | 11.16 | CLI for paper evaluation | DONE | Codex | 2026-02-17 17:20 UTC | 2026-02-17 17:20 UTC | 11.10 DONE |
-| 11.17 | Cross-pipeline integration test | CLAIMED | Codex | 2026-02-17 17:21 UTC | — | 11.5 + 11.10 DONE |
+| 11.17 | Cross-pipeline integration test | DONE | Codex | 2026-02-17 17:21 UTC | 2026-02-17 20:39 CET | 11.5 + 11.10 DONE |
 | 11.18 | Paper eval validation sweep | AVAILABLE | — | — | — | 11.10 + 11.11 DONE |
 | 11.19 | Batch 2 paper claims library | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.20 | VOI scoring module | AVAILABLE | — | — | — | 11.10 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:21 UTC by Codex (11.17 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.17 completed)*

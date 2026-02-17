@@ -1,6 +1,7 @@
 """Tests for the CMR CLI module (Sprint 10 Task 3.9)."""
 
 import json
+from pathlib import Path
 
 from src.cmr.cli import build_parser, main
 
@@ -114,3 +115,78 @@ def test_main_evaluate_json_output_is_valid_json(tmp_path, capsys):
     report = json.loads(captured.out)
     assert "summary" in report
     assert "overall_wis" in report["summary"]
+
+
+def test_parser_has_evaluate_paper_subcommand():
+    parser = build_parser()
+    args = parser.parse_args([
+        "evaluate-paper",
+        "--claims",
+        '[{"iv":"nature_view","dv":"restoration","direction":"increase"}]',
+    ])
+    assert args.command == "evaluate-paper"
+    assert args.claims is not None
+
+
+def test_main_evaluate_paper_claims_json_output(tmp_path, capsys):
+    db_path = tmp_path / "test_cli_paper_json.db"
+    result = main([
+        "evaluate-paper",
+        "--claims",
+        '[{"iv":"nature_view","dv":"restoration","direction":"increase","effect_size":0.5}]',
+        "--db-path",
+        str(db_path),
+        "--json",
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    report = json.loads(captured.out)
+    assert "summary" in report
+    assert "claim_assessments" in report
+
+
+def test_main_evaluate_paper_file_and_verbose(tmp_path, capsys):
+    db_path = tmp_path / "test_cli_paper_file.db"
+    claims_path = Path(tmp_path) / "paper_claims.json"
+    claims_path.write_text(
+        json.dumps(
+            [
+                {
+                    "iv": "nature_view",
+                    "dv": "stress_reduction",
+                    "direction": "decrease",
+                    "effect_size": -0.4,
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = main([
+        "evaluate-paper",
+        "--file",
+        str(claims_path),
+        "--db-path",
+        str(db_path),
+        "--json",
+        "--verbose",
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    report = json.loads(captured.out)
+    assert "raw_evaluation" in report
+    assert report["raw_evaluation"]["status"] == "complete"
+
+
+def test_main_evaluate_paper_text_output(tmp_path, capsys):
+    db_path = tmp_path / "test_cli_paper_text.db"
+    result = main([
+        "evaluate-paper",
+        "--text",
+        "Patients with nature views had less stress.",
+        "--db-path",
+        str(db_path),
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    assert "PAPER EVALUATION REPORT" in captured.out

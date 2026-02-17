@@ -20,6 +20,8 @@ import sys
 from typing import Any
 
 from src.cmr.building_eval import evaluate_building
+from src.cmr.paper_eval import evaluate_paper
+from src.cmr.paper_report import format_paper_report_text, generate_paper_report
 from src.cmr.report import generate_report, format_report_text
 
 
@@ -176,6 +178,48 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to the SQLite database",
     )
 
+    # evaluate-paper subcommand
+    paper_parser = subparsers.add_parser(
+        "evaluate-paper",
+        help="Evaluate a paper's claims against CMR templates",
+    )
+    paper_parser.add_argument(
+        "--claims",
+        type=str,
+        default=None,
+        help="JSON array of structured claims",
+    )
+    paper_parser.add_argument(
+        "--file",
+        type=str,
+        default=None,
+        help="Path to JSON file containing claims array (or {'claims': [...]}).",
+    )
+    paper_parser.add_argument(
+        "--text",
+        type=str,
+        default=None,
+        help="Paper text for regex-based claim extraction.",
+    )
+    paper_parser.add_argument(
+        "--json",
+        action="store_true",
+        dest="json_output",
+        help="Output results in JSON format",
+    )
+    paper_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Include raw evaluation details in output",
+    )
+    paper_parser.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+
     return parser
 
 
@@ -260,6 +304,63 @@ def run_evaluate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _load_structured_claims(args: argparse.Namespace) -> list[dict] | None:
+    if args.claims:
+        payload = json.loads(args.claims)
+        if isinstance(payload, list):
+            return payload
+        raise ValueError("--claims must be a JSON array")
+
+    if args.file:
+        with open(args.file, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        if isinstance(payload, list):
+            return payload
+        if isinstance(payload, dict) and isinstance(payload.get("claims"), list):
+            return payload["claims"]
+        raise ValueError("--file JSON must be an array or object with a 'claims' array")
+
+    return None
+
+
+def run_evaluate_paper(args: argparse.Namespace) -> int:
+    """Execute the evaluate-paper subcommand."""
+    if not args.claims and not args.file and not args.text:
+        print(
+            "Error: provide at least one input source (--claims, --file, or --text).",
+            file=sys.stderr,
+        )
+        return 2
+
+    try:
+        structured_claims = _load_structured_claims(args)
+        evaluation = evaluate_paper(
+            paper_text=args.text or "",
+            structured_claims=structured_claims,
+            db_path=args.db_path,
+        )
+        report = generate_paper_report(evaluation)
+    except Exception as exc:
+        print(f"Error during paper evaluation: {exc}", file=sys.stderr)
+        return 1
+
+    if args.verbose:
+        report["raw_evaluation"] = {
+            "status": evaluation.get("status"),
+            "steps": evaluation.get("steps", []),
+            "findings": evaluation.get("findings", []),
+            "template_system_updates": evaluation.get("template_system_updates", []),
+            "report": evaluation.get("report", {}),
+        }
+
+    if args.json_output:
+        print(json.dumps(report, indent=2, default=str))
+    else:
+        print(format_paper_report_text(report))
+
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = build_parser()
@@ -271,6 +372,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "evaluate":
         return run_evaluate(args)
+    if args.command == "evaluate-paper":
+        return run_evaluate_paper(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1
