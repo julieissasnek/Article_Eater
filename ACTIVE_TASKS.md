@@ -28,7 +28,6 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| CODEX-TASKS-2026-02-12/TASK-1..6 | Critical/Major fixes + integration + hardening | Codex-Terminal | 2026-02-12 00:50 GMT | IN PROGRESS | TASK-0/1/3/4/5/6 complete; TASK-2 still in progress. See docs/CODEX_CONTINUATION_HANDOFF_2026-02-12.md |
 | RRA-2026-02-15/S2-S4 | Ruthless repo audit (Sections 2, 3, 4): terminology conflicts + spec assumptions vs code | Codex-Terminal | 2026-02-15 08:10 GMT | ✅ COMPLETE | Artifacts: `docs/REPO_AUDIT_REPORT_2026-02-15.md` (Sections 2-4 addendum), `docs/UNIFIED_VARIABLE_VOCAB_TABLE_CROSS_REPOS_2026-02-15.md`, `docs/UNIFIED_VARIABLE_VOCAB_TABLE_CROSS_REPOS_2026-02-15.csv`. |
 
 ---
@@ -80,7 +79,6 @@ All tasks completed. See TASKS.md for details.
 | Task ID | Description | Priority | Dependencies |
 |---------|-------------|----------|--------------|
 | DISC-3 | Add search execution logging to Article Finder | P1 | DISC-2 ✓ |
-| ENT-6 | Replay DB strategy (safe runner) | P1 | ENT-1-5 ✓ |
 
 ### Sprint 3.0 Extensions (P2/P3)
 | Task ID | Description | Priority | Dependencies |
@@ -88,6 +86,28 @@ All tasks completed. See TASKS.md for details.
 | — | All Sprint 3.0 P2 tasks complete | — | — |
 
 ---
+
+## Completed Today (2026-02-17)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| GEA-1 | Grounded expert retrieval + recursion hardening | Codex-Terminal | 2026-02-17 08:16 UTC | Alias-safe interaction traversal and `overall_maturity` confidence mapping |
+| GEA-2 | Grounded expert empirical evidence layer | Codex-Terminal | 2026-02-17 08:20 UTC | WebOfBelief SQLite empirical claim integration into grounded responses |
+| GEA-3 | Grounded expert BN calibration layer | Codex-Terminal | 2026-02-17 08:31 UTC | BN posterior calibration summary added to response model + output formatting; tests passing |
+| P8.1 | Variable mapping coverage audit | Codex-Terminal | 2026-02-17 08:36 UTC | Created `docs/P8_1_VARIABLE_MAPPING_AUDIT_2026-02-17.md` (12,596-row production audit + root-cause summary) |
+| P8.2 | Canonical env/out variable registry | Codex-Terminal | 2026-02-17 08:55 UTC | Added `scripts/build_canonical_env_out_registry.py` and generated `contracts/vocab/canonical_env_out_registry.json` |
+| P8.3 | LLM fallback for unmapped variables | Codex-Terminal | 2026-02-17 09:06 UTC | Added staged resolver fallback in realtime intake + PDF completion (`llm_lookup_fallback`, `semantic_lookup_fallback`, queueing safeguards) |
+| P8.4 | pgmpy BN inference wiring | Codex-Terminal | 2026-02-17 09:16 UTC | Added optional pgmpy model/query APIs (posterior, d-separation, Markov blanket) in `incremental_bn.py` with graceful fallback |
+| P8.5 | Zotero->BibTeX->extraction E2E verification | Codex-Terminal | 2026-02-17 09:13 UTC | Added `tests/test_bibtex_e2e_flow.py` and validated BibTeX parsing/matching/ingestion suite (`57 passed`) |
+| P8.6 | Extraction quality metrics | Codex-Terminal | 2026-02-17 09:10 UTC | Added match-type/fallback-rate instrumentation and JSON reporting in quality gate + per-paper audit enrichment |
+| P8.6-FIX | Quality gate denominator correction | Codex-Terminal | 2026-02-17 09:32 UTC | Corrected article type metadata coverage denominator to typed rows; quality gate now PASS |
+| CODEX-TASKS-2026-02-12/TASK-2 | Fix Major Issues from evaluation | Codex-Terminal | 2026-02-17 12:30 UTC | Added canonical-ingestion and OpenAPI operationId uniqueness wiring tests in `tests/test_main_wiring.py`; added BN frontend `npm test` build gate in `BN_graphical/frontend-v2/package.json`; deprecation cleanup (`lifespan`, `pattern`, timezone-aware UTC); post-closure compatibility hardening restored legacy enum aliases/surfaces (`ClaimType`, VOI/discovery `GapType`) and argument query handler routing in `QueryEngine`; verification: `./venv/bin/pytest -q` => `2935 passed, 9 skipped`. |
+| ENT-6 | Replay DB strategy + safe replay runner | Codex-Terminal | 2026-02-17 12:45 UTC | Added `ScholarlyReplayService.with_safe_replay_copy()` + master-filtered loader in `src/services/entrenchment_replay.py`; added `scripts/run_entrenchment_replay_safe.py`; added `tests/test_entrenchment_replay_safe.py`; verification: `19 passed` for entrenchment test subset. |
+| I9.1 | ResearchQueueService implementation | Codex-Terminal | 2026-02-17 09:47 UTC | Added queue models + service (`refresh_queue`, assignment, result reporting) with persisted state and fallback query generation; tests added. |
+| I9.2 | Theory-driven gap detection | Codex-Terminal | 2026-02-17 09:48 UTC | Added Tier 1 prediction-driven target generation and queue-level theory coverage metrics with tests. |
+| I9.3 | Queue to Zotero watcher integration | Codex-Terminal | 2026-02-17 09:50 UTC | Added BibTeX delta watcher + passive target matching and `sync_zotero_to_queue()` auto-report flow with tests. |
+| I9.4 | VOI collector registration | Codex-Terminal | 2026-02-17 09:56 UTC | Added collector profile models + queue registration/list/claim APIs with capacity checks, deadlines, and search guidance generation. |
+| I9.5 | Research opportunity registry | Codex-Terminal | 2026-02-17 10:10 UTC | Added opportunity lifecycle model + registry methods with auto-creation from `NOT_FOUND` outcomes and persisted state. |
 
 ## Completed Today (2026-02-12)
 

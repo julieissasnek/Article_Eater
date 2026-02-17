@@ -1,8 +1,20 @@
 # TASKS.md
 
-*Last updated: Sunday, February 16, 2026 (CC-11 through CC-17 complete — 139 templates calibrated, template query service created)*
+*Last updated: Tuesday, February 17, 2026 (TASK-2 compatibility closure pass complete + full pytest green: 2935 passed, 9 skipped + ENT-6 safe replay runner completed + Sprint 8 P8.1-P8.6 completed + quality gate fix applied + Sprint 9 I9.1-I9.5 completed)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
+
+---
+
+## 🤖 GROUNDED EXPERT AGENT INTEGRATION — 2026-02-17
+
+| Task | Priority | Status | Notes |
+|------|----------|--------|-------|
+| GEA-1 | Retrieval and recursive explanation hardening | HIGH | ✅ COMPLETE | Alias-safe template resolution + `overall_maturity` confidence mapping in `src/services/grounded_expert_agent.py` |
+| GEA-2 | WebOfBelief empirical evidence layer | HIGH | ✅ COMPLETE | SQLite empirical claim retrieval and grounded evidence synthesis added |
+| GEA-3 | BN confidence calibration layer | HIGH | ✅ COMPLETE | BN posterior summaries added to expert responses (`bn_calibration`, confidence statement, formatted output) |
+
+**Validation**: `./venv/bin/pytest -q tests/test_grounded_expert_agent.py` (4 passed)
 
 ---
 
@@ -243,12 +255,12 @@ The `finding_mechanism_links` schema will specify how Tier 3 findings connect to
 
 | Task | Priority | Status | Notes |
 |------|----------|--------|-------|
-| P8.1: Audit variable mapping coverage | HIGH | PENDING | Why so many `unresolved.*` variables? |
-| P8.2: Create canonical env/out variable registry | HIGH | PENDING | Map all valid env.* and out.* values |
-| P8.3: Add LLM fallback for unmapped variables | MEDIUM | PENDING | Attempt to map before marking unresolved |
-| P8.4: Wire pgmpy for BN inference | MEDIUM | PENDING | Enable d-separation, posterior queries |
-| P8.5: Test Zotero→BibTeX→extraction E2E flow | HIGH | PENDING | Document & verify full workflow |
-| P8.6: Add extraction quality metrics | MEDIUM | PENDING | Track % unresolved, confidence distribution |
+| P8.1: Audit variable mapping coverage | HIGH | ✅ COMPLETE | Report: `docs/P8_1_VARIABLE_MAPPING_AUDIT_2026-02-17.md` (12,596-row audit; unresolved env 27.6%, unresolved out 15.7%; table→rule alignment 100%) |
+| P8.2: Create canonical env/out variable registry | HIGH | ✅ COMPLETE | Added `scripts/build_canonical_env_out_registry.py` + `contracts/vocab/canonical_env_out_registry.json`; report: `docs/P8_2_CANONICAL_ENV_OUT_REGISTRY_2026-02-17.md` |
+| P8.3: Add LLM fallback for unmapped variables | MEDIUM | ✅ COMPLETE | Implemented in `scripts/run_realtime_table_rule_intake.py` and `scripts/process_realtime_pdf_completion_queue.py` with constrained shortlist policy; report: `docs/P8_3_LLM_FALLBACK_RESOLUTION_2026-02-17.md` |
+| P8.4: Wire pgmpy for BN inference | MEDIUM | ✅ COMPLETE | Added optional pgmpy inference wiring in `src/services/incremental_bn.py` (posterior query, d-separation, Markov blanket) with graceful fallback; report: `docs/P8_4_PGMPY_BN_INFERENCE_WIRING_2026-02-17.md` |
+| P8.5: Test Zotero→BibTeX→extraction E2E flow | HIGH | ✅ COMPLETE | Added integration test `tests/test_bibtex_e2e_flow.py` and verified full BibTeX ingest stack (`57 passed` across BibTeX test suite); report: `docs/P8_5_ZOTERO_BIBTEX_EXTRACTION_E2E_2026-02-17.md` |
+| P8.6: Add extraction quality metrics | MEDIUM | ✅ COMPLETE | Added fallback/match-type metrics + JSON report output in `scripts/check_table_extraction_quality.py`; per-paper audit enrichment in `scripts/process_realtime_pdf_completion_queue.py`; follow-up fix `docs/P8_6_QUALITY_GATE_FIX_2026-02-17.md`; quality gate now PASS |
 
 ### Sprint 9 — Unified Research Queue & Tight Integration
 
@@ -267,11 +279,11 @@ into a single actionable "What should I be looking for?" queue.
 
 | Task | Priority | Status | Notes |
 |------|----------|--------|-------|
-| I9.1: Implement ResearchQueueService | HIGH | PENDING | Per `research_queue.contract.md` |
-| I9.2: Add theory-driven gap detection | HIGH | PENDING | Use Tier 1 frameworks to predict missing research |
-| I9.3: Connect queue to Zotero watcher | MEDIUM | PENDING | Auto-detect when Zotero additions match targets |
-| I9.4: Create VOI collector registration | MEDIUM | PENDING | Per `voi_collector.contract.md` |
-| I9.5: Add research opportunity registry | MEDIUM | PENDING | Track gaps that need new research |
+| I9.1: Implement ResearchQueueService | HIGH | ✅ COMPLETE | Implemented in `src/queue/service.py` + `src/queue/models.py`; queue persistence + assignment/reporting flow |
+| I9.2: Add theory-driven gap detection | HIGH | ✅ COMPLETE | Tier 1 prediction gap generation + framework coverage metric in queue state |
+| I9.3: Connect queue to Zotero watcher | MEDIUM | ✅ COMPLETE | BibTeX delta watcher in `src/queue/zotero_watcher.py`; passive match+auto-report via `sync_zotero_to_queue()` |
+| I9.4: Create VOI collector registration | MEDIUM | ✅ COMPLETE | Collector profile registration + `claim_target` + search guidance implemented in `src/queue/service.py` / `src/queue/models.py` |
+| I9.5: Add research opportunity registry | MEDIUM | ✅ COMPLETE | Added `ResearchOpportunity` model + registry lifecycle methods and persistence in `src/queue/service.py` |
 | I9.6: Build Streamlit queue dashboard | LOW | PENDING | Visualize queue, assign targets, track progress |
 | I9.7: Implement automated searcher bot | LOW | PENDING | Semantic Scholar API for bulk screening |
 
@@ -514,7 +526,7 @@ Maps ae.rule.v2 (PDF extractions) → Sprint 6 ClaimV2/NodeType:
 |------|-------------|--------|
 | TASK-0 | Ruthless System Evaluation | COMPLETE (2026-02-12) |
 | TASK-1 | Fix Critical Issues | COMPLETE (2026-02-12, code-level) |
-| TASK-2 | Fix Major Issues | IN PROGRESS (2026-02-12) |
+| TASK-2 | Fix Major Issues | COMPLETE (2026-02-17, closure pass + compatibility hardening; full pytest: 2935 passed, 9 skipped) |
 | TASK-3 | Integration Test Suite | COMPLETE (2026-02-12) |
 | TASK-4 | Documentation Audit | COMPLETE (2026-02-12) |
 | TASK-5 | Performance Profiling | COMPLETE (2026-02-12) |
@@ -2128,10 +2140,11 @@ For INFRA-1 and INFRA-14 (search orchestration), consult:
 
 | ID | Task | Status |
 |----|------|--------|
-| ENT-6 | Decide replay DB strategy + add runner that copies live DB (no mutation) | ☐ TODO |
+| ENT-6 | Decide replay DB strategy + add runner that copies live DB (no mutation) | ✓ COMPLETE (2026-02-17) |
 
 ### Tests
 - `tests/test_entrenchment_tracker.py`: 16 tests covering paper publication, replay pipeline, snapshots, health metrics
+- `tests/test_entrenchment_replay_safe.py`: 3 tests covering safe DB copy strategy, master-filtered loader, and runner execution against copied DB
 
 ---
 

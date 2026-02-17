@@ -56,6 +56,9 @@ class EffectPathway(str, Enum):
     # - "explicit" → "personal_epistemic"
     # - "implicit_cognitive" → "personal_epistemic"
     # - "implicit_physiological" → "subpersonal"
+    EXPLICIT = PERSONAL_EPISTEMIC
+    IMPLICIT_COGNITIVE = PERSONAL_EPISTEMIC
+    IMPLICIT_PHYSIOLOGICAL = SUBPERSONAL
 
 
 class ClaimBifurcationType(str, Enum):
@@ -74,6 +77,10 @@ class ClaimBifurcationType(str, Enum):
     """
     EVALUATIVE_RESPONSE = "evaluative_response"   # "People prefer X" (Type A)
     FUNCTIONAL_EFFECT = "functional_effect"       # "X reduces stress" (Type B)
+
+
+# Backward compatibility alias (Sprint 1.5 rename).
+ClaimType = ClaimBifurcationType
 
 
 # =============================================================================

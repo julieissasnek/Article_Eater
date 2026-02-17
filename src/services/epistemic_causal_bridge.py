@@ -2345,7 +2345,7 @@ class EpistemicCausalBridge:
                 continue
             belief = self.web.beliefs[belief_id]
             
-            for dep_id in belief.depends_on:
+            for dep_id in getattr(belief, "depends_on", []):
                 if dep_id not in self.web.beliefs:
                     continue
                 dep = self.web.beliefs[dep_id]
@@ -2650,8 +2650,9 @@ class EpistemicCausalBridge:
             for belief_id in tcf.supporting_beliefs:
                 if belief_id in self.web.beliefs:
                     belief = self.web.beliefs[belief_id]
-                    if belief.contrast_class:
-                        return belief.contrast_class
+                    contrast_class = getattr(belief, "contrast_class", None)
+                    if contrast_class:
+                        return contrast_class
         
         return None
     

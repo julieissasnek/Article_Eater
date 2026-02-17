@@ -54,6 +54,7 @@ from src.services.query_response import (
     EvidenceItem, FollowUp
 )
 from src.services.web_of_belief import WebOfBelief, Belief, EpistemicLevel
+from src.argument.qa_handlers import ArgumentQueryHandler
 
 # Optional VOI integration
 try:
@@ -92,7 +93,8 @@ class QueryEngine:
     def __init__(
         self,
         accumulator: Optional[WebAccumulator] = None,
-        web: Optional[WebOfBelief] = None
+        web: Optional[WebOfBelief] = None,
+        argument_query_handler: Optional[ArgumentQueryHandler] = None,
     ):
         """
         Initialize the query engine.
@@ -100,12 +102,14 @@ class QueryEngine:
         Args:
             accumulator: WebAccumulator instance (loads from DB)
             web: Direct WebOfBelief instance (for testing)
+            argument_query_handler: Optional argument-specific query router
         """
         self._accumulator = accumulator
         self._web = web
         self._parser = QueryParser()
         self._response_gen = None  # Lazy init
         self._voi_scorer = None  # Lazy init
+        self._argument_query_handler = argument_query_handler
 
     @property
     def accumulator(self) -> WebAccumulator:
@@ -197,6 +201,16 @@ class QueryEngine:
 
         if not query_text:
             return self._error_response(query_id, "empty_query", "Query text is required")
+
+        # Route argument-structure queries before generic parser/search.
+        if self._argument_query_handler is not None:
+            argument_response = self._argument_query_handler.handle_query(
+                query_id=query_id,
+                query_text=query_text,
+                processing_time_ms=int((time.time() - start_time) * 1000),
+            )
+            if argument_response is not None:
+                return argument_response
 
         # Parse the query
         parse_result = self._parser.parse(query_text)

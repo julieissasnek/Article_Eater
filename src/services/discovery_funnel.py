@@ -34,13 +34,64 @@ from pathlib import Path
 # Import canonical gap types from single source of truth
 # Per Canonical Decisions Record (02-15_09), Decision 1
 from src.epistemic.gap_types import (
-    GapType,
-    GapPriority,
-    GAP_TYPE_WEIGHTS,
+    GapType as CanonicalGapType,
     convert_legacy_gap_type,
 )
 
 logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# GAP TYPE COMPATIBILITY
+# =============================================================================
+
+class GapType(str, Enum):
+    """
+    Service-level gap enum kept for backward compatibility.
+
+    Canonical types live in src.epistemic.gap_types and are mapped as needed.
+    """
+    MISSING_EVIDENCE = "missing_evidence"
+    WEAK_SUPPORT = "weak_support"
+    CONTRADICTION = "contradiction"
+    BOUNDARY_UNCLEAR = "boundary"
+    # Legacy VOI aliases seen in other service payloads.
+    UNCERTAIN = "uncertain"
+    UNEXPLORED = "unexplored"
+
+
+SERVICE_TO_CANONICAL_GAP_TYPE = {
+    GapType.MISSING_EVIDENCE: CanonicalGapType.MECHANISM,
+    GapType.UNEXPLORED: CanonicalGapType.MECHANISM,
+    GapType.WEAK_SUPPORT: CanonicalGapType.VALIDATION,
+    GapType.UNCERTAIN: CanonicalGapType.VALIDATION,
+    GapType.CONTRADICTION: CanonicalGapType.DIRECTION,
+    GapType.BOUNDARY_UNCLEAR: CanonicalGapType.BOUNDARY,
+}
+
+CANONICAL_TO_SERVICE_GAP_TYPE = {
+    CanonicalGapType.MECHANISM: GapType.MISSING_EVIDENCE,
+    CanonicalGapType.VALIDATION: GapType.WEAK_SUPPORT,
+    CanonicalGapType.DIRECTION: GapType.CONTRADICTION,
+    CanonicalGapType.BOUNDARY: GapType.BOUNDARY_UNCLEAR,
+}
+
+
+def to_canonical_gap_type(value: GapType | CanonicalGapType | str) -> CanonicalGapType:
+    """Normalize any accepted gap type representation to canonical."""
+    if isinstance(value, CanonicalGapType):
+        return value
+    if isinstance(value, GapType):
+        return SERVICE_TO_CANONICAL_GAP_TYPE[value]
+    return convert_legacy_gap_type(value)
+
+
+def to_service_gap_type(value: GapType | CanonicalGapType | str) -> GapType:
+    """Normalize canonical/legacy gap type input to service GapType."""
+    if isinstance(value, GapType):
+        return value
+    canonical = to_canonical_gap_type(value)
+    return CANONICAL_TO_SERVICE_GAP_TYPE.get(canonical, GapType.MISSING_EVIDENCE)
 
 
 # =============================================================================
@@ -162,8 +213,8 @@ class VOIGap:
             self.gap_id = str(uuid.uuid4())
         if not self.identified_at:
             self.identified_at = datetime.now(timezone.utc).isoformat()
-        if isinstance(self.gap_type, str):
-            self.gap_type = convert_legacy_gap_type(self.gap_type)
+        if isinstance(self.gap_type, (str, CanonicalGapType)):
+            self.gap_type = to_service_gap_type(self.gap_type)
         if isinstance(self.status, str):
             self.status = GapStatus(self.status)
 
@@ -596,7 +647,7 @@ class DiscoveryFunnelService:
         return VOIGap(
             gap_id=row["gap_id"],
             topic=row["topic"],
-            gap_type=convert_legacy_gap_type(row["gap_type"]),
+            gap_type=to_service_gap_type(row["gap_type"]),
             predicted_voi=row["predicted_voi"],
             status=GapStatus(row["status"]),
             belief_id=row["belief_id"],
@@ -997,7 +1048,7 @@ def create_gap_from_voi_result(
     return VOIGap(
         gap_id=str(uuid.uuid4()),
         topic=voi_result.get("topic", voi_result.get("description", "Unknown gap")),
-        gap_type=convert_legacy_gap_type(voi_result.get("gap_type", "mechanism")),
+        gap_type=to_service_gap_type(voi_result.get("gap_type", "mechanism")),
         predicted_voi=voi_result.get("voi", voi_result.get("expected_value", 0.5)),
         belief_id=voi_result.get("belief_id"),
         constraint_id=voi_result.get("constraint_id"),
