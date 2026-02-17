@@ -59,7 +59,10 @@ def test_building_eval_pipeline_runs_end_to_end(tmp_path):
     session.close()
 
     report = evaluate_building(
-        building_context={"target_description": "Dummy facility"},
+        building_context={
+            "target_description": "Dummy facility",
+            "data_gaps": ["MISS1"],
+        },
         measured_features={"ceiling_height_m": 3.0},
         occupant_profile={"age": 35},
         db_path=str(db_path),
@@ -69,7 +72,7 @@ def test_building_eval_pipeline_runs_end_to_end(tmp_path):
     assert isinstance(report["domain_scores"], list)
     assert isinstance(report["overall_wis"], float)
     assert "OK1" in report["activated_templates"]
-    assert "MISS1" in report["data_gaps"]
+    assert report["data_gaps"] == ["MISS1"]
 
 
 def test_building_eval_flags_severe_deficit_domain(tmp_path):

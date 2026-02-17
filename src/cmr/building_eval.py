@@ -1,412 +1,184 @@
-"""
-Building evaluation orchestrator for CMR (Doc 68 Part 3.1).
-
-Implements pipeline steps 1-9 with graceful fallbacks when template-specific
-computation functions are not yet available.
+"""Building evaluation orchestrator (Doc 68 Part 3.1).
 """
 
 from __future__ import annotations
 
-import importlib
-import inspect
-import json
-import math
 from collections import defaultdict
+import json
 from pathlib import Path
-from typing import Any
+from typing import Iterable
 
+from sqlalchemy.orm import Session
+
+from src.cmr import models
 from src.cmr.models import (
-    CMRDomainScore,
     CMREvaluation,
-    CMROverallScore,
     CMRTemplateActivation,
+    CMRDomainScore,
+    CMROverallScore,
     TemplateRecord,
-    create_tables,
     get_session,
 )
-from src.cmr.wis import (
-    aggregate_domain_wis,
-    aggregate_overall_wis,
-    cohens_d_to_wis,
-    goldilocks_to_wis,
-    threshold_to_wis,
-)
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-
-CALIBRATION_CONFIDENCE = {
-    "substantial": 0.9,
-    "partial": 0.7,
-    "protocol": 0.4,
-    "uncalibrated": 0.2,
-}
-
-GOLDILOCKS_ZONE_WIS = {
-    "optimal": 85.0,
-    "balanced": 80.0,
-    "liberating": 82.0,
-    "good": 75.0,
-    "neutral": 55.0,
-    "marginal": 40.0,
-    "confining": 30.0,
-    "poor": 25.0,
-    "bad": 20.0,
-    "overwhelming": 35.0,
-}
+from src.cmr.interactions import apply_all_interactions
+from src.cmr.wis import aggregate_domain_wis, aggregate_overall_wis
 
 
-def _resolve_json_path(json_path: str) -> Path:
-    path = Path(json_path)
-    if path.is_absolute():
-        return path
-    return REPO_ROOT / json_path
-
-
-def _load_template_json(record: TemplateRecord) -> dict[str, Any]:
-    path = _resolve_json_path(record.json_path)
-    if not path.exists():
-        return {}
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return {}
-
-
-def _extract_required_inputs(template_json: dict[str, Any]) -> list[str]:
-    required = template_json.get("inputs_required")
-    if isinstance(required, dict):
-        return [str(key) for key in required.keys()]
-
-    if isinstance(required, list):
-        keys: list[str] = []
-        for item in required:
-            if isinstance(item, str):
-                keys.append(item)
-                continue
-            if not isinstance(item, dict):
-                continue
-            for candidate in (
-                "name",
-                "parameter_name",
-                "input_name",
-                "variable",
-                "field",
-                "id",
-            ):
-                value = item.get(candidate)
-                if isinstance(value, str) and value.strip():
-                    keys.append(value.strip())
-                    break
-        return keys
-
-    return []
-
-
-def _infer_domain(record: TemplateRecord, template_json: dict[str, Any]) -> str:
-    domain = template_json.get("domain") or template_json.get("attribute_domain")
-    if isinstance(domain, list) and domain:
-        return str(domain[0])
-    if isinstance(domain, str) and domain.strip():
-        return domain.strip()
-    return record.series
-
-
-def _extract_wis_raw(output: dict[str, Any]) -> float:
-    if "wis_raw" in output:
-        return float(output["wis_raw"])
-
-    output_type = str(output.get("output_type", "")).lower()
-
-    if output_type == "cohens_d" and "value" in output:
-        return cohens_d_to_wis(float(output["value"]))
-
-    if output_type == "threshold" and "value" in output:
-        threshold = float(output.get("threshold", 0.0))
-        return threshold_to_wis(float(output["value"]), threshold)
-
-    if output_type == "goldilocks_zone":
-        if "value" in output and "zone_boundaries" in output:
-            return goldilocks_to_wis(float(output["value"]), output["zone_boundaries"])
-        zone = str(output.get("zone", "")).lower()
-        if zone in GOLDILOCKS_ZONE_WIS:
-            return GOLDILOCKS_ZONE_WIS[zone]
-
-    if "value" in output and isinstance(output["value"], (int, float)):
-        return float(output["value"])
-
-    return 50.0
-
-
-def _template_compute(display_id: str, inputs: dict[str, Any], occupant_age: int | None) -> dict[str, Any]:
-    try:
-        module = importlib.import_module("src.cmr.template_computations")
-    except ImportError:
-        module = None
-
-    if module is None:
-        return {
-            "template": display_id,
-            "output_type": "placeholder",
-            "wis_raw": 50.0,
-            "needs_calibration": True,
-        }
-
-    fn_name = f"compute_{display_id.lower()}"
-    compute_fn = getattr(module, fn_name, None)
-    if compute_fn is None:
-        return {
-            "template": display_id,
-            "output_type": "placeholder",
-            "wis_raw": 50.0,
-            "needs_calibration": True,
-        }
-
-    try:
-        signature = inspect.signature(compute_fn)
-        kwargs = {name: value for name, value in inputs.items() if name in signature.parameters}
-        if occupant_age is not None and "occupant_age" in signature.parameters:
-            kwargs["occupant_age"] = occupant_age
-        result = compute_fn(**kwargs)
-        if isinstance(result, dict):
-            return result
-    except Exception as exc:  # pragma: no cover - defensive path
-        return {
-            "template": display_id,
-            "output_type": "placeholder",
-            "wis_raw": 50.0,
-            "needs_calibration": True,
-            "error": str(exc),
-        }
-
-    return {
-        "template": display_id,
-        "output_type": "placeholder",
-        "wis_raw": 50.0,
-        "needs_calibration": True,
-    }
+def _select_templates(
+    session: Session,
+    limit: int = 12,
+    template_records: Iterable[TemplateRecord] | None = None,
+) -> list[TemplateRecord]:
+    if template_records is not None:
+        return list(template_records)
+    return (
+        session.query(TemplateRecord)
+        .filter(TemplateRecord.dedup_status == "active")
+        .order_by(TemplateRecord.series, TemplateRecord.display_id)
+        .limit(limit)
+        .all()
+    )
 
 
 def evaluate_building(
     building_context: dict,
     measured_features: dict,
     occupant_profile: dict,
+    *,
     db_path: str = "ae.db",
+    session: Session | None = None,
+    template_records: Iterable[TemplateRecord] | None = None,
 ) -> dict:
-    """Full building evaluation pipeline (Doc 68 Part 3.1, steps 1-9)."""
-    create_tables(db_path)
-    session = get_session(db_path)
+    """Run Steps 1-9 of the building evaluation pipeline."""
+
+    session = session or get_session(db_path)
+    models.Base.metadata.create_all(session.get_bind())
     template_wis_overrides = building_context.get("template_wis_overrides", {})
-    occupant_age = occupant_profile.get("age")
+    declared_data_gaps = building_context.get("data_gaps", [])
 
     evaluation = CMREvaluation(
         evaluation_type="building",
-        target_description=building_context.get("target_description", "Building evaluation"),
+        target_description=building_context.get(
+            "target_description",
+            building_context.get("building_name", "Unnamed Building"),
+        ),
         status="in_progress",
-        building_context={
-            **building_context,
-            "occupant_profile": occupant_profile,
-        },
+        building_context={**building_context, "occupant_profile": occupant_profile},
     )
-
     session.add(evaluation)
+    session.flush()
+
+    templates = _select_templates(session, template_records=template_records)
+    template_lookup = {template.display_id: template for template in templates}
+
+    template_scores: list[dict] = []
+    computed_data_gaps: list[str] = []
+    for template in templates:
+        required_inputs: list[str] = []
+        template_payload_path = Path(template.json_path)
+        if template_payload_path.exists():
+            try:
+                payload = json.loads(template_payload_path.read_text(encoding="utf-8"))
+                required_inputs = list(payload.get("inputs_required", []) or [])
+            except Exception:
+                required_inputs = []
+        missing_inputs = [name for name in required_inputs if name not in measured_features]
+        if missing_inputs:
+            computed_data_gaps.append(template.display_id)
+            continue
+
+        base_wis = float(template_wis_overrides.get(template.display_id, 50.0))
+        activation = CMRTemplateActivation(
+            evaluation_id=evaluation.id,
+            template_display_id=template.display_id,
+            activation_reason="auto: sufficient input features",
+            inputs={
+                "measured_features": measured_features,
+                "occupant_profile": occupant_profile,
+            },
+            outputs={"base_wis": base_wis},
+            wis_score=base_wis,
+            wis_confidence=5.0,
+            interaction_adjustments=[],
+        )
+        session.add(activation)
+        template_scores.append(
+            {
+                "template": template.display_id,
+                "wis": base_wis,
+                "calibration_confidence": template.calibration_status,
+                "activation": activation,
+                "interaction_adjustments": [],
+            }
+        )
+
+    adjusted = apply_all_interactions(template_scores)
+
+    domain_map: dict[str, list[dict]] = defaultdict(list)
+    domain_templates: dict[str, list[str]] = defaultdict(list)
+
+    for score in adjusted:
+        activation: CMRTemplateActivation = score["activation"]
+        activation.wis_score = float(score["wis"])
+        activation.outputs = {"wis": float(score["wis"])}
+        activation.interaction_adjustments = score.get("interaction_adjustments", [])
+
+        template = template_lookup.get(score["template"])
+        if not template:
+            continue
+        domain = template.series
+        domain_map[domain].append(
+            {
+                "wis": float(score["wis"]),
+                "calibration_confidence": score.get("calibration_confidence", 0.4),
+            }
+        )
+        domain_templates[domain].append(template.display_id)
+
+    domain_scores = []
+    overall_input = []
+    for domain, items in domain_map.items():
+        agg = aggregate_domain_wis(items)
+        domain_score = CMRDomainScore(
+            evaluation_id=evaluation.id,
+            domain=domain,
+            wis_score=agg["domain_wis"],
+            wis_confidence=min(100.0, agg.get("total_weight", 0.0) or 5.0),
+            n_templates_activated=agg["template_count"],
+            template_ids=",".join(domain_templates[domain]),
+        )
+        session.add(domain_score)
+        domain_scores.append(
+            {
+                "domain": domain,
+                "wis": agg["domain_wis"],
+                "confidence": min(1.0, max(0.1, (agg.get("total_weight", 0.0) or 0.1) / 2.0)),
+                "n_templates": agg["template_count"],
+                "template_ids": domain_templates[domain],
+            }
+        )
+        overall_input.append({"domain": domain, "domain_wis": agg["domain_wis"]})
+
+    overall_result = aggregate_overall_wis(overall_input)
+    overall = CMROverallScore(
+        evaluation_id=evaluation.id,
+        wis_geometric_mean=overall_result["overall_wis"],
+        wis_confidence=min(100.0, overall_result.get("domain_count", 0) * 5.0 or 5.0),
+        n_domains_assessed=overall_result.get("domain_count", 0),
+        severe_deficit_domains=",".join(overall_result.get("severe_deficits", [])),
+        data_gaps=",".join(declared_data_gaps),
+    )
+    session.add(overall)
+
+    evaluation.status = "complete"
     session.commit()
 
-    try:
-        # Step 2 + 3: map features and activate templates
-        structured_inputs = dict(measured_features)
-        active_templates = (
-            session.query(TemplateRecord)
-            .filter(TemplateRecord.dedup_status == "active")
-            .order_by(TemplateRecord.display_id)
-            .all()
-        )
-
-        activation_rows: list[dict[str, Any]] = []
-        data_gaps: list[str] = []
-
-        for record in active_templates:
-            template_json = _load_template_json(record)
-            required_inputs = _extract_required_inputs(template_json)
-
-            if required_inputs:
-                provided = {
-                    key: structured_inputs[key]
-                    for key in required_inputs
-                    if key in structured_inputs
-                }
-                if not provided:
-                    data_gaps.append(record.display_id)
-                    continue
-                partial = len(provided) < len(required_inputs)
-                activation_reason = (
-                    "partial inputs available" if partial else "all required inputs available"
-                )
-            else:
-                provided = dict(structured_inputs)
-                partial = False
-                activation_reason = "no explicit inputs_required; activated with available features"
-
-            activation = CMRTemplateActivation(
-                evaluation_id=evaluation.id,
-                template_display_id=record.display_id,
-                activation_reason=activation_reason,
-                inputs=provided,
-                outputs=None,
-                wis_score=None,
-                wis_confidence=None,
-                interaction_adjustments=[],
-            )
-            session.add(activation)
-            session.flush()
-
-            activation_rows.append(
-                {
-                    "record": record,
-                    "json": template_json,
-                    "activation": activation,
-                    "inputs": provided,
-                    "partial": partial,
-                }
-            )
-
-        # Step 4 + 5: template computation and WIS conversion
-        score_rows: list[dict[str, Any]] = []
-        for row in activation_rows:
-            record: TemplateRecord = row["record"]
-            activation: CMRTemplateActivation = row["activation"]
-
-            override = template_wis_overrides.get(record.display_id)
-            if isinstance(override, (int, float)):
-                output = {
-                    "template": record.display_id,
-                    "output_type": "override",
-                    "wis_raw": float(override),
-                }
-            else:
-                output = _template_compute(record.display_id, row["inputs"], occupant_age)
-
-            wis_value = _extract_wis_raw(output)
-            wis_confidence = CALIBRATION_CONFIDENCE.get(record.calibration_status, 0.5)
-            if row["partial"]:
-                wis_confidence *= 0.8
-
-            activation.outputs = output
-            activation.wis_score = max(0.0, min(100.0, wis_value))
-            activation.wis_confidence = wis_confidence
-
-            score_rows.append(
-                {
-                    "template": record.display_id,
-                    "wis": activation.wis_score,
-                    "domain": _infer_domain(record, row["json"]),
-                    "calibration_confidence": record.calibration_status,
-                    "activation": activation,
-                }
-            )
-
-        # Step 6: interaction adjustments
-        try:
-            from src.cmr.interactions import apply_all_interactions
-        except ImportError:  # pragma: no cover - defensive fallback
-            apply_all_interactions = None
-
-        if apply_all_interactions is not None and score_rows:
-            interaction_input = [
-                {"template": row["template"], "wis": row["wis"]}
-                for row in score_rows
-            ]
-            interaction_rows = {
-                row["template"]: row for row in apply_all_interactions(interaction_input)
-            }
-            for row in score_rows:
-                updated = interaction_rows.get(row["template"])
-                if not updated:
-                    continue
-                row["wis"] = float(updated.get("wis", row["wis"]))
-                row["activation"].wis_score = row["wis"]
-                row["activation"].interaction_adjustments = updated.get(
-                    "interaction_adjustments", []
-                )
-
-        # Step 7: aggregate by domain
-        grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
-        for row in score_rows:
-            grouped[row["domain"]].append(row)
-
-        domain_outputs: list[dict[str, Any]] = []
-        for domain, rows in sorted(grouped.items()):
-            template_scores = [
-                {"wis": item["wis"], "calibration_confidence": item["calibration_confidence"]}
-                for item in rows
-            ]
-            domain_result = aggregate_domain_wis(template_scores)
-            domain_wis = float(domain_result["domain_wis"])
-            domain_confidence = min(1.0, max(0.1, 1.0 / math.sqrt(len(rows))))
-            template_ids = ",".join(item["template"] for item in rows)
-
-            session.add(
-                CMRDomainScore(
-                    evaluation_id=evaluation.id,
-                    domain=domain,
-                    wis_score=domain_wis,
-                    wis_confidence=domain_confidence,
-                    n_templates_activated=len(rows),
-                    template_ids=template_ids,
-                    aggregation_method="weighted_average",
-                    weight_basis="calibration_confidence",
-                )
-            )
-            domain_outputs.append(
-                {
-                    "domain": domain,
-                    "wis": domain_wis,
-                    "confidence": domain_confidence,
-                    "n_templates": len(rows),
-                    "template_ids": [item["template"] for item in rows],
-                }
-            )
-
-        # Step 8: overall score
-        overall_result = aggregate_overall_wis(
-            [{"domain": d["domain"], "domain_wis": d["wis"]} for d in domain_outputs]
-        )
-        overall_wis = float(overall_result["overall_wis"])
-        severe_deficits = list(overall_result["severe_deficits"])
-        overall_confidence = (
-            sum(item["confidence"] for item in domain_outputs) / len(domain_outputs)
-            if domain_outputs
-            else 0.0
-        )
-
-        session.add(
-            CMROverallScore(
-                evaluation_id=evaluation.id,
-                wis_geometric_mean=overall_wis,
-                wis_confidence=overall_confidence,
-                n_domains_assessed=len(domain_outputs),
-                severe_deficit_domains=",".join(severe_deficits) if severe_deficits else None,
-                data_gaps=",".join(sorted(set(data_gaps))) if data_gaps else None,
-            )
-        )
-
-        # Step 9: build report
-        evaluation.status = "complete"
-        session.commit()
-
-        return {
-            "evaluation_id": evaluation.id,
-            "status": "complete",
-            "overall_wis": overall_wis,
-            "overall_confidence": overall_confidence,
-            "domain_scores": domain_outputs,
-            "severe_deficits": severe_deficits,
-            "data_gaps": sorted(set(data_gaps)),
-            "activated_templates": [row["template"] for row in score_rows],
-        }
-    except Exception:
-        evaluation.status = "failed"
-        session.commit()
-        raise
-    finally:
-        session.close()
-
+    return {
+        "evaluation_id": evaluation.id,
+        "status": "complete",
+        "domain_scores": domain_scores,
+        "overall_wis": overall_result["overall_wis"],
+        "overall_confidence": min(1.0, max(0.1, len(domain_scores) / 10.0)),
+        "severe_deficits": overall_result.get("severe_deficits", []),
+        "data_gaps": sorted(set(list(declared_data_gaps) + computed_data_gaps)),
+        "activated_templates": [item["template"] for item in adjusted],
+    }
