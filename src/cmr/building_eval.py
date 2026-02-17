@@ -63,7 +63,6 @@ def _query_web_constraints_for_templates(
     db_path: str,
     web_service: WebPersistenceService | None = None,
 ) -> dict:
-    service = web_service or WebPersistenceService(db_path)
     summary: dict = {
         "web_id": None,
         "query_count": 0,
@@ -71,6 +70,7 @@ def _query_web_constraints_for_templates(
         "matched_constraints": 0,
     }
     try:
+        service = web_service or WebPersistenceService(db_path)
         master_web_id = service.get_master_web_id()
         if not master_web_id:
             summary["reason"] = "no_master_web"
@@ -123,6 +123,7 @@ def evaluate_building(
     db_path: str = "ae.db",
     session: Session | None = None,
     template_records: Iterable[TemplateRecord] | None = None,
+    web_service: WebPersistenceService | None = None,
 ) -> dict:
     """Run Steps 1-9 of the building evaluation pipeline."""
 
@@ -276,6 +277,12 @@ def evaluate_building(
     )
     session.add(overall)
 
+    web_constraint_query_summary = _query_web_constraints_for_templates(
+        [item["template"] for item in adjusted],
+        db_path=db_path,
+        web_service=web_service,
+    )
+
     evaluation.status = "complete"
     session.commit()
 
@@ -288,4 +295,5 @@ def evaluate_building(
         "severe_deficits": overall_result.get("severe_deficits", []),
         "data_gaps": sorted(set(list(declared_data_gaps) + computed_data_gaps)),
         "activated_templates": [item["template"] for item in adjusted],
+        "web_constraint_query_summary": web_constraint_query_summary,
     }

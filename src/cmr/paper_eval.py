@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -13,6 +14,7 @@ from src.cmr.mechanism_tracing import trace_claim
 from src.cmr.models import TemplateRecord, create_tables, get_session
 from src.cmr.template_matching import build_template_index, match_claims_to_templates
 from src.cmr.voi_scoring import aggregate_paper_voi, score_voi
+from src.services.web_persistence import WebPersistenceService
 
 
 @dataclass
@@ -274,6 +276,89 @@ def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[
     return findings
 
 
+def _claim_query_terms(claim: dict[str, Any], max_terms: int = 8) -> list[str]:
+    text = " ".join(
+        [
+            str(claim.get("description", "")),
+            str(claim.get("text", "")),
+            str(claim.get("iv", "")),
+            str(claim.get("dv", "")),
+            str(claim.get("direction", "")),
+        ]
+    ).lower()
+    terms = [token for token in re.findall(r"[a-z0-9_]+", text) if len(token) >= 3]
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for term in terms:
+        if term in seen:
+            continue
+        seen.add(term)
+        deduped.append(term)
+        if len(deduped) >= max_terms:
+            break
+    return deduped
+
+
+def _query_web_for_claims(
+    claims: list[dict[str, Any]],
+    *,
+    db_path: str,
+    web_service: WebPersistenceService | None = None,
+) -> dict[str, Any]:
+    summary: dict[str, Any] = {
+        "web_id": None,
+        "query_count": 0,
+        "queries": [],
+        "matched_beliefs": 0,
+    }
+    try:
+        service = web_service or WebPersistenceService(db_path)
+        master_web_id = service.get_master_web_id()
+        if not master_web_id:
+            summary["reason"] = "no_master_web"
+            return summary
+
+        summary["web_id"] = master_web_id
+        beliefs = service.get_beliefs_for_web(master_web_id)
+        summary["belief_pool_size"] = len(beliefs)
+
+        total_matches = 0
+        for claim in claims:
+            terms = _claim_query_terms(claim)
+            if not terms:
+                continue
+
+            matches = 0
+            for belief in beliefs:
+                haystack = " ".join(
+                    [
+                        str(getattr(belief, "content", "")),
+                        str(getattr(belief, "theory_id", "")),
+                        str(getattr(belief, "domain", "")),
+                        " ".join(getattr(belief, "tags", []) or []),
+                    ]
+                ).lower()
+                if any(term in haystack for term in terms):
+                    matches += 1
+
+            summary["queries"].append(
+                {
+                    "claim_id": claim.get("claim_id"),
+                    "terms": terms,
+                    "query": " ".join(terms),
+                    "match_count": matches,
+                }
+            )
+            total_matches += matches
+
+        summary["query_count"] = len(summary["queries"])
+        summary["matched_beliefs"] = total_matches
+        return summary
+    except Exception as exc:  # pragma: no cover - defensive path
+        summary["error"] = str(exc)
+        return summary
+
+
 def _build_recommendations(
     prioritized: list[dict[str, Any]],
     template_system_updates: list[dict[str, str]],
@@ -359,6 +444,7 @@ def evaluate_paper(
     *,
     db_path: str = "ae.db",
     session: Session | None = None,
+    web_service: WebPersistenceService | None = None,
 ) -> dict:
     """Full paper evaluation pipeline (Doc 68 Part 3.2 Steps 1-7)."""
     own_session = session is None
@@ -371,6 +457,11 @@ def evaluate_paper(
         # Step 1: claim extraction
         claims, step1_details = _extract_claims(paper_text, structured_claims)
         steps.append(PaperEvalStep(1, "claim_extraction", "complete", step1_details))
+        web_query_summary = _query_web_for_claims(
+            claims,
+            db_path=db_path,
+            web_service=web_service,
+        )
 
         # Step 2: template matching
         templates = _load_active_templates(session)
@@ -387,6 +478,8 @@ def evaluate_paper(
                     "templates_indexed": len(template_index),
                     "claims": len(claims),
                     "matches_found": total_matches,
+                    "web_queries": web_query_summary.get("query_count", 0),
+                    "web_belief_matches": web_query_summary.get("matched_beliefs", 0),
                 },
             )
         )
@@ -495,6 +588,7 @@ def evaluate_paper(
             "template_system_updates": template_system_updates,
             # Backward-compatible detailed outputs.
             "claims": claims,
+            "web_query_summary": web_query_summary,
             "template_matches": claim_matches,
             "traced_claims": composed,
             "prioritized_findings": prioritized,

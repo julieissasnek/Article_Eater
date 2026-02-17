@@ -57,7 +57,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.21 | Input sensitivity sweep | CLAIMED | CC-Opus | 2026-02-17 20:15 CET | — | 11.1 DONE |
 | 11.22 | Function signature audit | AVAILABLE | — | — | — | 11.1 DONE |
-| 11.23 | Web of belief integration test | CLAIMED | Codex | 2026-02-17 15:55 UTC | — | 11.10 DONE |
+| 11.23 | Web of belief integration test | DONE | Codex | 2026-02-17 15:55 UTC | 2026-02-17 16:48 UTC | 11.10 DONE |
 | 11.24 | VOI end-to-end verification | AVAILABLE | — | — | — | 11.20 DONE |
 | 11.25 | Bayesian network health check | AVAILABLE | — | — | — | none |
 | 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.3 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.23 completed)*
