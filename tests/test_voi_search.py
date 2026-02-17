@@ -152,15 +152,17 @@ class TestGapType:
     """Tests for GapType enum."""
 
     def test_gap_types_exist(self):
-        """Test that both gap types are defined."""
-        assert GapType.UNCERTAIN.value == "uncertain"
-        assert GapType.UNEXPLORED.value == "unexplored"
+        """Test canonical values with legacy alias members available."""
+        assert GapType.UNCERTAIN.value == "validation"
+        assert GapType.UNEXPLORED.value == "mechanism"
+        assert GapType.VALIDATION == GapType.UNCERTAIN
+        assert GapType.MECHANISM == GapType.UNEXPLORED
 
     def test_gap_type_values(self):
-        """Test gap type string values - expanded per P-VOI Panel."""
-        assert len(GapType) == 4  # Per P-VOI Panel: UNCERTAIN, UNEXPLORED, CONTRADICTION, BOUNDARY_UNCLEAR
-        assert GapType.CONTRADICTION.value == "contradiction"
-        assert GapType.BOUNDARY_UNCLEAR.value == "boundary"
+        """Test canonical gap values exposed by VOI module enum."""
+        assert len(GapType) == 4
+        assert GapType.DIRECTION.value == "direction"
+        assert GapType.BOUNDARY.value == "boundary"
 
 
 # =============================================================================

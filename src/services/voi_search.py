@@ -11,7 +11,8 @@ Sprints:
 - Sprint K: Cross-field vocabulary integration (Lane E, 2026-02-08)
 
 Per Phase D revised plan:
-- Two gap types initially: UNCERTAIN, UNEXPLORED (per Lampson)
+- Two gap types initially: validation and mechanism
+  (legacy labels: UNCERTAIN, UNEXPLORED; per Lampson)
 - Source selection by domain (per Giles)
 - Epsilon-greedy with decay (per Simon)
 - Expanded null result vocabulary (per Cartwright)
@@ -62,28 +63,42 @@ logger = logging.getLogger(__name__)
 
 class GapType(str, Enum):
     """
-    Legacy VOI gap enum exposed by this module for API/test compatibility.
+    VOI gap enum aligned to canonical GapType values.
 
-    Canonical gap types remain defined in src.epistemic.gap_types.
+    Legacy member names are retained as aliases for module compatibility.
     """
-    UNCERTAIN = "uncertain"
-    UNEXPLORED = "unexplored"
-    CONTRADICTION = "contradiction"
+    VALIDATION = "validation"
+    MECHANISM = "mechanism"
+    DIRECTION = "direction"
+    BOUNDARY = "boundary"
+
+    # Backward-compatible aliases (same canonical values)
+    UNCERTAIN = "validation"
+    UNEXPLORED = "mechanism"
+    CONTRADICTION = "direction"
     BOUNDARY_UNCLEAR = "boundary"
 
 
 LEGACY_TO_CANONICAL_GAP_TYPE = {
-    GapType.UNCERTAIN: CanonicalGapType.VALIDATION,
-    GapType.UNEXPLORED: CanonicalGapType.MECHANISM,
-    GapType.CONTRADICTION: CanonicalGapType.DIRECTION,
-    GapType.BOUNDARY_UNCLEAR: CanonicalGapType.BOUNDARY,
+    GapType.VALIDATION: CanonicalGapType.VALIDATION,
+    GapType.MECHANISM: CanonicalGapType.MECHANISM,
+    GapType.DIRECTION: CanonicalGapType.DIRECTION,
+    GapType.BOUNDARY: CanonicalGapType.BOUNDARY,
 }
 
 CANONICAL_TO_LEGACY_GAP_TYPE = {
-    CanonicalGapType.VALIDATION: GapType.UNCERTAIN,
-    CanonicalGapType.MECHANISM: GapType.UNEXPLORED,
-    CanonicalGapType.DIRECTION: GapType.CONTRADICTION,
-    CanonicalGapType.BOUNDARY: GapType.BOUNDARY_UNCLEAR,
+    CanonicalGapType.VALIDATION: GapType.VALIDATION,
+    CanonicalGapType.MECHANISM: GapType.MECHANISM,
+    CanonicalGapType.DIRECTION: GapType.DIRECTION,
+    CanonicalGapType.BOUNDARY: GapType.BOUNDARY,
+}
+
+# Preserve historical external labels where string keys are user-visible.
+CANONICAL_TO_LEGACY_LABEL = {
+    GapType.VALIDATION: "uncertain",
+    GapType.MECHANISM: "unexplored",
+    GapType.DIRECTION: "contradiction",
+    GapType.BOUNDARY: "boundary",
 }
 
 
@@ -97,11 +112,17 @@ def to_canonical_gap_type(value: GapType | CanonicalGapType | str) -> CanonicalG
 
 
 def to_legacy_gap_type(value: GapType | CanonicalGapType | str) -> GapType:
-    """Normalize canonical/legacy gap input to legacy VOI GapType."""
+    """Normalize canonical/legacy gap input to VOI module GapType."""
     if isinstance(value, GapType):
         return value
     canonical = to_canonical_gap_type(value)
-    return CANONICAL_TO_LEGACY_GAP_TYPE.get(canonical, GapType.UNEXPLORED)
+    return CANONICAL_TO_LEGACY_GAP_TYPE.get(canonical, GapType.MECHANISM)
+
+
+def legacy_gap_type_label(value: GapType | CanonicalGapType | str) -> str:
+    """Return compatibility label used by historical VOI outputs."""
+    module_gap = to_legacy_gap_type(value)
+    return CANONICAL_TO_LEGACY_LABEL.get(module_gap, module_gap.value)
 
 
 # =============================================================================
@@ -298,12 +319,12 @@ def get_cross_field_vocabulary() -> CrossFieldVocabulary:
 
 # Per P-VOI Panel (Thagard): Gap types have different VOI priorities
 # Contradictions actively hurt coherence until resolved
-# NOTE: Exposed using legacy VOI GapType for module compatibility.
+# NOTE: Exposed using canonical values with compatibility aliases.
 GAP_TYPE_PRIORITY_WEIGHTS = {
-    GapType.CONTRADICTION: 1.0,   # Highest priority - active harm
-    GapType.UNCERTAIN: 0.7,       # High uncertainty needs resolution
-    GapType.UNEXPLORED: 0.5,      # Missing evidence
-    GapType.BOUNDARY_UNCLEAR: 0.4,  # Scope clarification
+    GapType.DIRECTION: 1.0,   # Highest priority - active harm
+    GapType.VALIDATION: 0.7,       # High uncertainty needs resolution
+    GapType.MECHANISM: 0.5,      # Missing evidence
+    GapType.BOUNDARY: 0.4,  # Scope clarification
 }
 
 
@@ -334,7 +355,7 @@ class EpistemicGap:
     def to_search_context(self) -> Dict[str, Any]:
         """Context for query generation."""
         return {
-            "gap_type": self.gap_type.value,
+            "gap_type": legacy_gap_type_label(self.gap_type),
             "belief_id": self.primary_belief_id,
             "description": self.description,
             "voi_score": self.voi_score
@@ -361,18 +382,18 @@ class EpistemicGap:
             logger.debug("Discovery funnel not available, skipping gap registration")
             return None
 
-        # Map VOI legacy gap types to discovery funnel gap types.
+        # Map VOI gap types to discovery funnel gap types.
         gap_type_map = {
-            GapType.UNCERTAIN: FunnelGapType.WEAK_SUPPORT,
-            GapType.UNEXPLORED: FunnelGapType.MISSING_EVIDENCE,
-            GapType.CONTRADICTION: FunnelGapType.CONTRADICTION,
-            GapType.BOUNDARY_UNCLEAR: FunnelGapType.BOUNDARY_UNCLEAR,
+            GapType.VALIDATION: FunnelGapType.VALIDATION,
+            GapType.MECHANISM: FunnelGapType.MECHANISM,
+            GapType.DIRECTION: FunnelGapType.DIRECTION,
+            GapType.BOUNDARY: FunnelGapType.BOUNDARY,
         }
 
         return VOIGap(
             gap_id=str(uuid.uuid4()),
             topic=self.description,
-            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MISSING_EVIDENCE),
+            gap_type=gap_type_map.get(self.gap_type, FunnelGapType.MECHANISM),
             predicted_voi=self.voi_score,
             belief_id=self.primary_belief_id,
             theory_id=theory_id,
@@ -480,12 +501,12 @@ class VOICalculator:
 
     # Per P-VOI Panel: Alpha determines structural vs epistemic weighting
     # Based on gap type - structural gaps weight structural VOI higher
-    # NOTE: Uses legacy VOI GapType values for module API compatibility.
+    # NOTE: Uses canonical values with legacy aliases.
     ALPHA_BY_GAP_TYPE = {
-        GapType.UNEXPLORED: 0.7,       # Missing evidence = structural
-        GapType.UNCERTAIN: 0.4,        # Uncertainty = epistemic
-        GapType.CONTRADICTION: 0.5,    # Equal weight - both matter
-        GapType.BOUNDARY_UNCLEAR: 0.3,  # Scope = more epistemic
+        GapType.MECHANISM: 0.7,       # Missing evidence = structural
+        GapType.VALIDATION: 0.4,        # Uncertainty = epistemic
+        GapType.DIRECTION: 0.5,    # Equal weight - both matter
+        GapType.BOUNDARY: 0.3,  # Scope = more epistemic
     }
 
     def calculate_voi(
@@ -592,7 +613,7 @@ class VOICalculator:
 
     def _sparsity_component(self, gap_type: GapType, belief: Belief) -> float:
         """Score based on evidence sparsity."""
-        if gap_type == GapType.UNEXPLORED:
+        if gap_type == GapType.MECHANISM:
             # Mechanism gaps have high sparsity by definition (was UNEXPLORED)
             return 0.8
 
@@ -757,14 +778,14 @@ class QueryGenerator:
                     queries.append(" ".join(belief_terms[:2] + scope_terms))
 
         # Add gap-type specific queries
-        if gap.gap_type == GapType.UNCERTAIN:
+        if gap.gap_type == GapType.VALIDATION:
             # For validation gaps (was UNCERTAIN), look for replication/meta-analysis
             if belief:
                 key_terms = self._extract_terms(belief.content)[:3]
                 queries.append(" ".join(key_terms + ["meta-analysis"]))
                 queries.append(" ".join(key_terms + ["replication"]))
 
-        elif gap.gap_type == GapType.UNEXPLORED:
+        elif gap.gap_type == GapType.MECHANISM:
             # For mechanism gaps (was UNEXPLORED), look for any evidence
             if belief:
                 key_terms = self._extract_terms(belief.content)[:3]
@@ -933,10 +954,10 @@ class GapDetector:
             if belief.credence.uncertainty > self.UNCERTAINTY_THRESHOLD:
                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
-                    GapType.UNCERTAIN, belief, web
+                    GapType.VALIDATION, belief, web
                 )
                 gaps.append(EpistemicGap(
-                    gap_type=GapType.UNCERTAIN,
+                    gap_type=GapType.VALIDATION,
                     description=f"High uncertainty ({belief.credence.uncertainty:.0%}) on: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
                     voi_score=combined_voi,
@@ -949,10 +970,10 @@ class GapDetector:
             if n_papers < self.MIN_SUPPORTING_STUDIES:
                 # Per P-VOI Panel: calculate_voi now returns (combined, structural, epistemic)
                 combined_voi, structural_voi, epistemic_voi = self.voi_calculator.calculate_voi(
-                    GapType.UNEXPLORED, belief, web
+                    GapType.MECHANISM, belief, web
                 )
                 gaps.append(EpistemicGap(
-                    gap_type=GapType.UNEXPLORED,
+                    gap_type=GapType.MECHANISM,
                     description=f"Only {n_papers} supporting studies for: {belief.content[:50]}...",
                     primary_belief_id=belief_id,
                     voi_score=combined_voi,
@@ -1314,7 +1335,7 @@ class StrategySelector:
 
         for (gap_type, strategy), attempts in self._strategy_attempts.items():
             successes = self._strategy_successes.get((gap_type, strategy), 0)
-            key = f"{gap_type.value}_{strategy.value}"
+            key = f"{legacy_gap_type_label(gap_type)}_{strategy.value}"
             stats['strategy_performance'][key] = {
                 'attempts': attempts,
                 'successes': successes,
@@ -1511,6 +1532,8 @@ class NullResultDetector:
         # Additional boost if categories match gap type relevance
         relevance = self.vocabulary.get('gap_type_relevance', {})
         relevant_categories = relevance.get(gap_type.value, [])
+        if not relevant_categories:
+            relevant_categories = relevance.get(legacy_gap_type_label(gap_type), [])
 
         for category in detection['categories_detected']:
             if category in relevant_categories:
@@ -1709,7 +1732,7 @@ def estimate_search_value(
     type_counts = {}
     type_voi = {}
     for gap in gaps:
-        gap_type = gap.gap_type.value
+        gap_type = legacy_gap_type_label(gap.gap_type)
         type_counts[gap_type] = type_counts.get(gap_type, 0) + 1
         type_voi[gap_type] = type_voi.get(gap_type, 0.0) + gap.voi_score
 

@@ -47,33 +47,44 @@ logger = logging.getLogger(__name__)
 
 class GapType(str, Enum):
     """
-    Service-level gap enum kept for backward compatibility.
+    Service-level gap enum aligned to canonical GapType values.
 
-    Canonical types live in src.epistemic.gap_types and are mapped as needed.
+    Legacy member names are retained as aliases for backward compatibility.
     """
-    MISSING_EVIDENCE = "missing_evidence"
-    WEAK_SUPPORT = "weak_support"
-    CONTRADICTION = "contradiction"
+    MECHANISM = "mechanism"
+    VALIDATION = "validation"
+    DIRECTION = "direction"
+    BOUNDARY = "boundary"
+
+    # Backward-compatible aliases (same canonical values)
+    MISSING_EVIDENCE = "mechanism"
+    WEAK_SUPPORT = "validation"
+    CONTRADICTION = "direction"
     BOUNDARY_UNCLEAR = "boundary"
-    # Legacy VOI aliases seen in other service payloads.
-    UNCERTAIN = "uncertain"
-    UNEXPLORED = "unexplored"
+    UNCERTAIN = "validation"
+    UNEXPLORED = "mechanism"
 
 
 SERVICE_TO_CANONICAL_GAP_TYPE = {
-    GapType.MISSING_EVIDENCE: CanonicalGapType.MECHANISM,
-    GapType.UNEXPLORED: CanonicalGapType.MECHANISM,
-    GapType.WEAK_SUPPORT: CanonicalGapType.VALIDATION,
-    GapType.UNCERTAIN: CanonicalGapType.VALIDATION,
-    GapType.CONTRADICTION: CanonicalGapType.DIRECTION,
-    GapType.BOUNDARY_UNCLEAR: CanonicalGapType.BOUNDARY,
+    GapType.MECHANISM: CanonicalGapType.MECHANISM,
+    GapType.VALIDATION: CanonicalGapType.VALIDATION,
+    GapType.DIRECTION: CanonicalGapType.DIRECTION,
+    GapType.BOUNDARY: CanonicalGapType.BOUNDARY,
 }
 
 CANONICAL_TO_SERVICE_GAP_TYPE = {
-    CanonicalGapType.MECHANISM: GapType.MISSING_EVIDENCE,
-    CanonicalGapType.VALIDATION: GapType.WEAK_SUPPORT,
-    CanonicalGapType.DIRECTION: GapType.CONTRADICTION,
-    CanonicalGapType.BOUNDARY: GapType.BOUNDARY_UNCLEAR,
+    CanonicalGapType.MECHANISM: GapType.MECHANISM,
+    CanonicalGapType.VALIDATION: GapType.VALIDATION,
+    CanonicalGapType.DIRECTION: GapType.DIRECTION,
+    CanonicalGapType.BOUNDARY: GapType.BOUNDARY,
+}
+
+# Preserve historical external labels where string keys are user-visible.
+CANONICAL_TO_LEGACY_LABEL = {
+    GapType.MECHANISM: "missing_evidence",
+    GapType.VALIDATION: "weak_support",
+    GapType.DIRECTION: "contradiction",
+    GapType.BOUNDARY: "boundary",
 }
 
 
@@ -91,7 +102,13 @@ def to_service_gap_type(value: GapType | CanonicalGapType | str) -> GapType:
     if isinstance(value, GapType):
         return value
     canonical = to_canonical_gap_type(value)
-    return CANONICAL_TO_SERVICE_GAP_TYPE.get(canonical, GapType.MISSING_EVIDENCE)
+    return CANONICAL_TO_SERVICE_GAP_TYPE.get(canonical, GapType.MECHANISM)
+
+
+def legacy_gap_type_label(value: GapType | CanonicalGapType | str) -> str:
+    """Return compatibility label used by historical discovery-funnel outputs."""
+    service_gap = to_service_gap_type(value)
+    return CANONICAL_TO_LEGACY_LABEL.get(service_gap, service_gap.value)
 
 
 # =============================================================================
@@ -223,7 +240,7 @@ class VOIGap:
         return {
             "gap_id": self.gap_id,
             "topic": self.topic,
-            "gap_type": self.gap_type.value,
+            "gap_type": legacy_gap_type_label(self.gap_type),
             "predicted_voi": self.predicted_voi,
             "status": self.status.value,
             "belief_id": self.belief_id,
