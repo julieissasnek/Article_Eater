@@ -27,6 +27,7 @@ from src.cmr.lifespan_moderation import (
     compute_template_with_lifespan,
     extract_occupant_age,
 )
+from src.services.web_persistence import WebPersistenceService
 
 
 def _select_templates(
@@ -54,6 +55,64 @@ def _load_required_inputs_from_json(json_path: str) -> list[str]:
     except Exception:
         return []
     return list(payload.get("inputs_required", []) or [])
+
+
+def _query_web_constraints_for_templates(
+    template_ids: list[str],
+    *,
+    db_path: str,
+    web_service: WebPersistenceService | None = None,
+) -> dict:
+    service = web_service or WebPersistenceService(db_path)
+    summary: dict = {
+        "web_id": None,
+        "query_count": 0,
+        "queries": [],
+        "matched_constraints": 0,
+    }
+    try:
+        master_web_id = service.get_master_web_id()
+        if not master_web_id:
+            summary["reason"] = "no_master_web"
+            return summary
+
+        summary["web_id"] = master_web_id
+        constraints = service.get_constraints_for_web(master_web_id)
+        summary["constraint_pool_size"] = len(constraints)
+
+        total_matches = 0
+        for template_id in template_ids:
+            token = str(template_id or "").lower()
+            if not token:
+                continue
+            matches = 0
+            for constraint in constraints:
+                haystack = " ".join(
+                    [
+                        str(getattr(constraint, "constraint_id", "")),
+                        str(getattr(constraint, "source_id", "")),
+                        str(getattr(constraint, "target_id", "")),
+                        str(getattr(constraint, "warrant_type", "")),
+                        str(getattr(constraint, "provenance", "")),
+                    ]
+                ).lower()
+                if token in haystack:
+                    matches += 1
+            summary["queries"].append(
+                {
+                    "template_id": template_id,
+                    "query": token,
+                    "match_count": matches,
+                }
+            )
+            total_matches += matches
+
+        summary["query_count"] = len(summary["queries"])
+        summary["matched_constraints"] = total_matches
+        return summary
+    except Exception as exc:  # pragma: no cover - defensive path
+        summary["error"] = str(exc)
+        return summary
 
 
 def evaluate_building(
@@ -116,7 +175,9 @@ def evaluate_building(
             # Try to compute using real template function with occupant age
             compute_result = compute_template_with_lifespan(
                 template_id=template.display_id,
-                measured_features=measured_features,
+                # mapped_inputs uses compute-function argument names; merge them so
+                # templates like L2 (medi_lux) receive the resolved values.
+                measured_features={**measured_features, **mapped_inputs},
                 occupant_profile=occupant_profile,
             )
             base_wis = float(compute_result.get("wis", 50.0))
