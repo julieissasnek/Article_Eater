@@ -42,7 +42,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.11 | Ulrich 1984 paper evaluation | DONE | Codex | 2026-02-17 17:15 UTC | 2026-02-17 17:25 UTC | 11.10 DONE |
 | 11.12 | Paper report generator | DONE | Codex | 2026-02-17 17:16 UTC | 2026-02-17 17:16 UTC | 11.10 DONE |
-| 11.13 | Building eval regression suite | CLAIMED | Codex | 2026-02-17 17:16 UTC | — | 11.5 DONE |
+| 11.13 | Building eval regression suite | DONE | Codex | 2026-02-17 17:16 UTC | 2026-02-17 17:18 UTC | 11.5 DONE |
 | 11.14 | Paper eval contradicting study | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.16 | CLI for paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:16 UTC by Codex (11.13 claimed)*
+*Last updated: 2026-02-17 17:18 UTC by Codex (11.13 completed)*
