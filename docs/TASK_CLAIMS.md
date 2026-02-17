@@ -20,9 +20,9 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 1.1 | Enum drift fix | AVAILABLE | — | — | — | none |
+| 1.1 | Enum drift fix | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 | 1.2 | Template DB index | DONE | CC | 2026-02-17 | 2026-02-17 | none |
-| 1.3 | Load staging theory-links | AVAILABLE | — | — | — | none |
+| 1.3 | Load staging theory-links | CLAIMED | Codex | 2026-02-17 14:57 CET | — | none |
 | 1.4 | WIS conversion module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 
 ## ROUND 2 — PIPELINE COMPONENTS
@@ -38,14 +38,14 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 3.1 | Antigravity validation sweep | AVAILABLE | — | — | — | Round 1+2 DONE |
+| 3.1 | Antigravity validation sweep | DONE | Codex | 2026-02-17 | 2026-02-17 | Round 1+2 DONE |
 | 3.2 | Batch 2 template computations (20 templates) | DONE | CC | 2026-02-17 | 2026-02-17 | 2.1 DONE |
 | 3.3 | Report generator | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.4 DONE |
-| 3.4 | Template JSON enrichment | AVAILABLE | — | — | — | 1.2 DONE |
-| 3.5 | Gap template stubs | AVAILABLE | — | — | — | 1.2 DONE |
+| 3.4 | Template JSON enrichment | DONE | Codex | 2026-02-17 | 2026-02-17 | 1.2 DONE |
+| 3.5 | Gap template stubs | DONE | Codex | 2026-02-17 | 2026-02-17 | 1.2 DONE |
 | 3.6 | Paper evaluation skeleton | DONE | CC | 2026-02-17 | 2026-02-17 | 2.4 DONE |
-| 3.7 | Salk Institute worked example | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
+| 3.7 | Salk Institute worked example | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.1 + 2.3 + 2.4 DONE |
 
 ---
 
-*Last updated: 2026-02-17 by CC (backfilled completed tasks)*
+*Last updated: 2026-02-17 by Codex (backfilled completed tasks + Task 1.3 claimed)*
