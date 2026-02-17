@@ -21,7 +21,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 16:50 CET | — | none |
-| 11.2 | Wire interaction adjustments | CLAIMED | Antigravity | 2026-02-17 16:55 CET | — | none |
+| 11.2 | Wire interaction adjustments | DONE | Antigravity | 2026-02-17 16:55 CET | 2026-02-17 17:05 CET | none |
 | 11.3 | Wire lifespan moderation | CLAIMED | CC-Opus | 2026-02-17 16:43 CET | — | none |
 | 11.4 | Feature-to-template input mapping | CLAIMED | Codex | 2026-02-17 15:47 UTC | — | none |
 
