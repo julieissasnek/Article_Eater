@@ -116,6 +116,12 @@ try:
 except ImportError:
     _PAPER_EVAL_AVAILABLE = False
 
+try:
+    from src.cmr.paper_report import generate_paper_report, format_paper_report_text
+    _PAPER_REPORT_AVAILABLE = True
+except ImportError:
+    _PAPER_REPORT_AVAILABLE = False
+
 __all__ = [
     # Core models
     "Base",
@@ -204,3 +210,9 @@ if _REPORT_AVAILABLE:
 
 if _PAPER_EVAL_AVAILABLE:
     __all__.append("evaluate_paper")
+
+if _PAPER_REPORT_AVAILABLE:
+    __all__.extend([
+        "generate_paper_report",
+        "format_paper_report_text",
+    ])
