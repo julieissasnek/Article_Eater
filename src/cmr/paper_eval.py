@@ -1,4 +1,4 @@
-"""Paper evaluation skeleton (Doc 68 Part 3.2, Sprint 10 Task 3.6)."""
+"""Paper evaluation orchestrator (Sprint 11 Task 11.10)."""
 
 from __future__ import annotations
 
@@ -7,7 +7,11 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
+from src.cmr.claim_extraction import extract_claims_from_text, extract_claims_structured
+from src.cmr.convergence import assess_convergence, check_composition_failures
+from src.cmr.mechanism_tracing import trace_claim
 from src.cmr.models import TemplateRecord, create_tables, get_session
+from src.cmr.template_matching import build_template_index, match_claims_to_templates
 
 
 @dataclass
@@ -18,71 +22,259 @@ class PaperEvalStep:
     details: dict[str, Any]
 
 
-def _extract_claims(paper_text: str, structured_claims: list[dict] | None) -> tuple[list[dict], dict[str, Any]]:
+def _extract_claims(
+    paper_text: str,
+    structured_claims: list[dict] | None,
+) -> tuple[list[dict], dict[str, Any]]:
     if structured_claims:
-        return structured_claims, {"mode": "provided", "count": len(structured_claims)}
+        claims = extract_claims_structured(structured_claims)
+        return claims, {"mode": "provided", "count": len(claims)}
+
+    claims = extract_claims_from_text(paper_text or "")
+    if claims:
+        return claims, {"mode": "text_extraction", "count": len(claims)}
+
+    # Backward-compatible fallback used by existing tests.
     return (
         [
             {
                 "claim_id": "placeholder_claim_1",
-                "text": paper_text[:240],
+                "text": (paper_text or "")[:240],
                 "iv": None,
                 "dv": None,
                 "source": "placeholder_extractor",
+                "direction": "unknown",
             }
         ],
         {"mode": "placeholder", "count": 1},
     )
 
 
-def _match_templates(session: Session, claims: list[dict]) -> list[dict]:
-    templates = (
+def _load_active_templates(session: Session) -> list[TemplateRecord]:
+    return (
         session.query(TemplateRecord)
         .filter(TemplateRecord.dedup_status == "active")
         .all()
     )
-    matches: list[dict] = []
 
-    for claim in claims:
-        iv = str(claim.get("iv") or "").strip().lower()
-        dv = str(claim.get("dv") or "").strip().lower()
-        claim_text = str(claim.get("text") or "").lower()
 
-        for template in templates:
-            haystacks = [
-                str(template.name).lower(),
-                str(template.template_id).lower(),
-                str(template.display_id).lower(),
-                str(template.series).lower(),
-            ]
-            if iv and not any(iv in h for h in haystacks):
-                continue
-            if dv and not any(dv in h for h in haystacks):
-                continue
-            if not iv and not dv and not any(token in claim_text for token in (template.display_id.lower(), template.series.lower())):
-                continue
-
-            matches.append(
+def _trace_mechanisms(claim_matches: list[dict], template_index: dict[str, dict]) -> list[dict]:
+    traced_claims: list[dict] = []
+    for entry in claim_matches:
+        claim = entry.get("claim", {})
+        traced_templates: list[dict[str, Any]] = []
+        for match in entry.get("matches", []):
+            template_id = match.get("template_id")
+            template_data = template_index.get(template_id, {}).get("json_data", {})
+            trace = trace_claim(claim, template_data)
+            traced_templates.append(
                 {
-                    "claim_id": claim.get("claim_id"),
-                    "template_display_id": template.display_id,
-                    "template_id": template.template_id,
-                    "series": template.series,
-                    "match_method": "placeholder_text_filter",
+                    "template_id": template_id,
+                    "status": trace.get("status", "nuanced"),
+                    "confidence": float(trace.get("confidence", 0.3)),
+                    "reasoning": trace.get("reasoning", ""),
+                    "match_type": match.get("match_type"),
+                    "match_confidence": float(match.get("confidence", 0.0)),
+                }
+            )
+        traced_claims.append(
+            {
+                "claim": claim,
+                "matches": entry.get("matches", []),
+                "traced_templates": traced_templates,
+            }
+        )
+    return traced_claims
+
+
+def _prioritize_findings(composed_claims: list[dict]) -> list[dict]:
+    """
+    Rank findings by value-of-information proxy:
+    1) contradictions, 2) unsupported gaps, 3) confirmations/nuanced.
+    """
+    findings: list[dict[str, Any]] = []
+    for entry in composed_claims:
+        convergence = entry.get("convergence", {})
+        status = convergence.get("status", "unsupported")
+        claim = entry.get("claim", {})
+        traced = entry.get("traced_templates", [])
+        max_conf = max([float(t.get("confidence", 0.0)) for t in traced], default=0.0)
+
+        if status == "contradicted":
+            category = "contradiction"
+            priority = 1
+            voi = 95.0 - (10.0 * (1.0 - max_conf))
+        elif status in {"unsupported"}:
+            category = "gap"
+            priority = 2
+            voi = 75.0 - (12.0 * (1.0 - max_conf))
+        else:
+            category = "confirmation"
+            priority = 3
+            voi = 45.0 - (8.0 * (1.0 - max_conf))
+
+        findings.append(
+            {
+                "claim": claim,
+                "category": category,
+                "priority": priority,
+                "voi_score": round(max(0.0, min(100.0, voi)), 2),
+                "convergence_status": status,
+                "supporting_templates": convergence.get("supporting_templates", []),
+                "contradicting_templates": convergence.get("contradicting_templates", []),
+                "composition_warnings": entry.get("composition_analysis", {}).get("warnings", []),
+            }
+        )
+
+    findings.sort(key=lambda f: (f["priority"], -f["voi_score"]))
+    return findings
+
+
+def _score_to_band(score: float) -> str:
+    if score >= 0.75:
+        return "high"
+    if score >= 0.5:
+        return "medium"
+    return "low"
+
+
+def _category_to_voi(category: str) -> str:
+    if category == "contradiction":
+        return "high"
+    if category == "gap":
+        return "medium"
+    return "low"
+
+
+def _build_template_system_updates(composed_claims: list[dict]) -> list[dict]:
+    updates: list[dict[str, str]] = []
+    for entry in composed_claims:
+        claim = entry.get("claim", {})
+        convergence = entry.get("convergence", {})
+        status = convergence.get("status", "unsupported")
+        claim_text = claim.get("description") or f"{claim.get('iv')} -> {claim.get('dv')}"
+
+        supporting = convergence.get("supporting_templates", []) or []
+        contradicting = convergence.get("contradicting_templates", []) or []
+        matched_templates = [m.get("template_id") for m in entry.get("matches", []) if m.get("template_id")]
+
+        if status == "contradicted" and contradicting:
+            for template_id in contradicting:
+                updates.append(
+                    {
+                        "type": "contradicts",
+                        "template": str(template_id),
+                        "detail": f"Claim contradicts {template_id}: {claim_text}",
+                    }
+                )
+            continue
+
+        if supporting:
+            for template_id in supporting:
+                updates.append(
+                    {
+                        "type": "confirms",
+                        "template": str(template_id),
+                        "detail": f"Claim confirms {template_id}: {claim_text}",
+                    }
+                )
+            continue
+
+        if matched_templates:
+            for template_id in matched_templates:
+                updates.append(
+                    {
+                        "type": "extends",
+                        "template": str(template_id),
+                        "detail": f"Claim partially maps to {template_id} and may extend template boundaries: {claim_text}",
+                    }
+                )
+        else:
+            updates.append(
+                {
+                    "type": "gap",
+                    "template": "none",
+                    "detail": f"No template matched claim: {claim_text}",
                 }
             )
 
-    return matches
+    # Preserve first-seen order while deduplicating.
+    deduped: list[dict] = []
+    seen: set[tuple[str, str, str]] = set()
+    for update in updates:
+        key = (update["type"], update["template"], update["detail"])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(update)
+    return deduped
+
+
+def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[dict]) -> list[dict]:
+    findings: list[dict[str, Any]] = []
+    prioritized_by_claim: dict[str, dict] = {}
+    for item in prioritized:
+        claim_key = str(item.get("claim"))
+        prioritized_by_claim[claim_key] = item
+
+    for entry in composed_claims:
+        claim = entry.get("claim", {})
+        convergence = entry.get("convergence", {})
+        traced_templates = entry.get("traced_templates", [])
+        max_conf = max([float(t.get("confidence", 0.0)) for t in traced_templates], default=0.0)
+
+        ranked = prioritized_by_claim.get(str(claim), {})
+        category = ranked.get("category", "gap")
+
+        findings.append(
+            {
+                "claim": claim,
+                "assessment": category,
+                "convergence": convergence.get("status", "unsupported"),
+                "confidence": _score_to_band(max_conf),
+                "voi": _category_to_voi(category),
+            }
+        )
+    return findings
+
+
+def _flatten_scored_matches(claim_matches: list[dict], traced_claims: list[dict]) -> list[dict]:
+    trace_lookup: dict[tuple[int, str], dict[str, Any]] = {}
+    for idx, traced in enumerate(traced_claims):
+        for item in traced.get("traced_templates", []):
+            trace_lookup[(idx, item.get("template_id"))] = item
+
+    scored: list[dict] = []
+    for idx, entry in enumerate(claim_matches):
+        for match in entry.get("matches", []):
+            template_id = match.get("template_id")
+            trace = trace_lookup.get((idx, template_id), {})
+            scored.append(
+                {
+                    "claim": entry.get("claim"),
+                    "template_id": template_id,
+                    "match_type": match.get("match_type"),
+                    "match_confidence": float(match.get("confidence", 0.0)),
+                    "trace_status": trace.get("status", "nuanced"),
+                    "trace_confidence": float(trace.get("confidence", 0.0)),
+                    "score": round(
+                        0.5 * float(match.get("confidence", 0.0))
+                        + 0.5 * float(trace.get("confidence", 0.0)),
+                        3,
+                    ),
+                }
+            )
+    return scored
 
 
 def evaluate_paper(
-    paper_text: str,
+    paper_text: str = "",
     structured_claims: list[dict] | None = None,
     *,
     db_path: str = "ae.db",
     session: Session | None = None,
 ) -> dict:
-    """Paper evaluation pipeline skeleton, Steps 1-7."""
+    """Full paper evaluation pipeline (Doc 68 Part 3.2 Steps 1-7)."""
     own_session = session is None
     session = session or get_session(db_path)
     create_tables(db_path)
@@ -90,108 +282,139 @@ def evaluate_paper(
     steps: list[PaperEvalStep] = []
 
     try:
-        # Step 1: Claim extraction
+        # Step 1: claim extraction
         claims, step1_details = _extract_claims(paper_text, structured_claims)
+        steps.append(PaperEvalStep(1, "claim_extraction", "complete", step1_details))
+
+        # Step 2: template matching
+        templates = _load_active_templates(session)
+        template_index = build_template_index(templates)
+        claim_matches = match_claims_to_templates(claims, template_index)
+        total_matches = sum(len(item.get("matches", [])) for item in claim_matches)
         steps.append(
             PaperEvalStep(
-                step=1,
-                name="claim_extraction",
-                status="complete",
-                details=step1_details,
+                2,
+                "template_matching",
+                "complete",
+                {
+                    "templates_indexed": len(template_index),
+                    "claims": len(claims),
+                    "matches_found": total_matches,
+                },
             )
         )
 
-        # Step 2: Template matching
-        matches = _match_templates(session, claims)
+        # Step 3: mechanism tracing
+        traced = _trace_mechanisms(claim_matches, template_index)
         steps.append(
             PaperEvalStep(
-                step=2,
-                name="template_matching",
-                status="complete",
-                details={"matches_found": len(matches), "method": "placeholder"},
+                3,
+                "mechanism_tracing",
+                "complete",
+                {"claims_traced": len(traced)},
             )
         )
 
-        # Step 3: Mechanism tracing (stub)
+        # Step 4: convergence assessment
+        converged = assess_convergence(traced)
         steps.append(
             PaperEvalStep(
-                step=3,
-                name="mechanism_tracing",
-                status="stub",
-                details={"status": "not_yet_implemented"},
+                4,
+                "convergence_assessment",
+                "complete",
+                {
+                    "strong": sum(1 for c in converged if c.get("convergence", {}).get("status") == "strong"),
+                    "contradicted": sum(
+                        1 for c in converged if c.get("convergence", {}).get("status") == "contradicted"
+                    ),
+                },
             )
         )
 
-        # Step 4: Claim-template scoring (stub)
-        scored_matches = [
-            {
-                **match,
-                "score": 0.5,
-                "confidence": 0.4,
-            }
-            for match in matches
-        ]
+        # Step 5: composition checks
+        composed = check_composition_failures(converged)
         steps.append(
             PaperEvalStep(
-                step=4,
-                name="claim_template_scoring",
-                status="stub",
-                details={"scored_matches": len(scored_matches)},
+                5,
+                "composition_check",
+                "complete",
+                {
+                    "warnings": sum(
+                        len(c.get("composition_analysis", {}).get("warnings", [])) for c in composed
+                    )
+                },
             )
         )
 
-        # Step 5: Reduction assessment (stub)
+        # Step 6: VOI prioritization
+        prioritized = _prioritize_findings(composed)
         steps.append(
             PaperEvalStep(
-                step=5,
-                name="reduction_assessment",
-                status="stub",
-                details={"status": "placeholder"},
+                6,
+                "prioritization",
+                "complete",
+                {
+                    "findings": len(prioritized),
+                    "top_category": prioritized[0]["category"] if prioritized else None,
+                },
             )
         )
 
-        # Step 6: Coherence update simulation (stub)
-        steps.append(
-            PaperEvalStep(
-                step=6,
-                name="coherence_projection",
-                status="stub",
-                details={"predicted_delta": 0.0},
-            )
-        )
-
-        # Step 7: Report assembly
+        # Step 7: report assembly
         report = {
             "summary": {
                 "claims_evaluated": len(claims),
-                "template_matches": len(matches),
-                "status": "skeleton_complete",
+                "template_matches": total_matches,
+                "contradictions": sum(1 for f in prioritized if f["category"] == "contradiction"),
+                "gaps": sum(1 for f in prioritized if f["category"] == "gap"),
+                "confirmations": sum(1 for f in prioritized if f["category"] == "confirmation"),
+                "status": "paper_pipeline_complete",
             },
+            "top_findings": prioritized[:10],
             "recommendations": [
-                "Implement real claim extraction when parser contracts are finalized.",
-                "Replace placeholder matching with IV/DV ontology matching.",
-                "Implement mechanism tracing and reduction scoring.",
+                "Investigate contradiction findings first (highest VOI).",
+                "Queue unsupported claims as template/ontology gaps.",
+                "Treat single-mechanism confirmations as provisional.",
             ],
         }
         steps.append(
             PaperEvalStep(
-                step=7,
-                name="report_assembly",
-                status="complete",
-                details={"sections": list(report.keys())},
+                7,
+                "report_assembly",
+                "complete",
+                {"sections": list(report.keys())},
             )
+        )
+
+        n_claims_extracted = len(claims)
+        n_claims_matched = sum(1 for item in claim_matches if item.get("matches"))
+        n_claims_unmatched = max(0, n_claims_extracted - n_claims_matched)
+        findings = _build_findings_for_contract(composed, prioritized)
+        template_system_updates = _build_template_system_updates(composed)
+        paper_summary = (
+            f"Processed {n_claims_extracted} claims from paper; "
+            f"{n_claims_matched} matched templates and {n_claims_unmatched} unmatched."
         )
 
         return {
             "status": "complete",
-            "pipeline_type": "paper_evaluation_skeleton",
+            "pipeline_type": "paper_evaluation",
+            # Doc 68 contract-friendly fields for Task 11.10.
+            "paper_summary": paper_summary,
+            "n_claims_extracted": n_claims_extracted,
+            "n_claims_matched": n_claims_matched,
+            "n_claims_unmatched": n_claims_unmatched,
+            "findings": findings,
+            "template_system_updates": template_system_updates,
+            # Backward-compatible detailed outputs.
             "claims": claims,
-            "template_matches": matches,
-            "scored_matches": scored_matches,
+            "template_matches": claim_matches,
+            "traced_claims": composed,
+            "prioritized_findings": prioritized,
+            "scored_matches": _flatten_scored_matches(claim_matches, composed),
             "steps": [step.__dict__ for step in steps],
             "report": report,
         }
     finally:
         if own_session:
             session.close()
-
