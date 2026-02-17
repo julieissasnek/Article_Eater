@@ -30,7 +30,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | CLAIMED | Codex | 2026-02-17 20:23 CET | — | 11.1 DONE |
-| 11.6 | Paper claim extraction module | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.6 | Paper claim extraction module | CLAIMED | Codex | 2026-02-17 17:15 UTC | — | 11.1 DONE |
 | 11.7 | Template matching module | DONE | Codex | 2026-02-17 17:12 UTC | 2026-02-17 17:13 UTC | none |
 | 11.8 | Mechanism tracing module | DONE | Codex | 2026-02-17 17:13 UTC | 2026-02-17 17:13 UTC | 11.7 DONE |
 | 11.9 | Convergence and composition modules | DONE | Codex | 2026-02-17 17:14 UTC | 2026-02-17 17:14 UTC | 11.8 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:14 UTC by Codex (11.9 completed)*
+*Last updated: 2026-02-17 17:15 UTC by Codex (11.6 claimed)*
