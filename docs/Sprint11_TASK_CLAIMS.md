@@ -49,7 +49,7 @@
 | 11.17 | Cross-pipeline integration test | AVAILABLE | — | — | — | 11.5 + 11.10 DONE |
 | 11.18 | Paper eval validation sweep | AVAILABLE | — | — | — | 11.10 + 11.11 DONE |
 | 11.19 | Batch 2 paper claims library | AVAILABLE | — | — | — | 11.10 DONE |
-| 11.20 | VOI scoring module | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.20 | VOI scoring module | CLAIMED | Codex | 2026-02-17 19:24 CET | — | 11.10 DONE |
 
 ## ROUND 3 CONTINUED — GLOBAL INTEGRATION TESTS
 
@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.15 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.20 claimed)*
