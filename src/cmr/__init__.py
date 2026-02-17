@@ -27,6 +27,7 @@ from src.cmr.models import (
     ReductionClaim,
     TemplateRecord,
 )
+from src.cmr.interactions import apply_all_interactions, get_interaction
 
 __all__ = [
     "cohens_d_to_wis",
@@ -41,4 +42,6 @@ __all__ = [
     "CMRDomainScore",
     "CMROverallScore",
     "ReductionClaim",
+    "get_interaction",
+    "apply_all_interactions",
 ]
