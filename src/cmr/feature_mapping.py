@@ -99,7 +99,7 @@ FEATURE_TO_TEMPLATE_INPUT: Dict[str, Dict[str, str]] = {
     "MAT2": {
         "operative_temperature_c": "operative_temp_c",
         "running_mean_outdoor_c": "running_mean_outdoor_c",
-        "has_control": "has_control",
+        "ventilation_type": "ventilation_type",
     },
     "MAT4": {
         "material_type": "primary_material",
@@ -152,7 +152,7 @@ TEMPLATE_INPUT_DEFAULTS: Dict[str, Dict[str, Any]] = {
     },
     "CREA2": {"baseline_creativity": "medium"},
     "MAT1": {"climate": "temperate"},
-    "MAT2": {"running_mean_outdoor_c": 20.0, "has_control": True},
+    "MAT2": {"running_mean_outdoor_c": 20.0, "ventilation_type": "mixed"},
     "MAT4": {"surface_ratio": 0.3},
     "SOC2": {
         "shared_area_ratio": 0.5,

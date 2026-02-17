@@ -56,7 +56,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.21 | Input sensitivity sweep | CLAIMED | CC-Opus | 2026-02-17 20:15 CET | — | 11.1 DONE |
-| 11.22 | Function signature audit | CLAIMED | Codex | 2026-02-17 19:58 CET | — | 11.1 DONE |
+| 11.22 | Function signature audit | DONE | Codex | 2026-02-17 19:58 CET | 2026-02-17 20:08 CET | 11.1 DONE |
 | 11.23 | Web of belief integration test | DONE | Codex | 2026-02-17 15:55 UTC | 2026-02-17 16:48 UTC | 11.10 DONE |
 | 11.24 | VOI end-to-end verification | AVAILABLE | — | — | — | 11.20 DONE |
 | 11.25 | Bayesian network health check | AVAILABLE | — | — | — | none |
@@ -68,4 +68,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.22 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.22 completed)*
