@@ -65,10 +65,10 @@
 | 11.28 | Enum and schema drift check | AVAILABLE | — | — | — | none |
 | 11.29 | No-placeholder audit | AVAILABLE | — | — | — | 11.1 DONE |
 | 11.30 | Completeness inventory | AVAILABLE | — | — | — | 11.22 DONE |
-| 11.31 | Sprint verification test suite (Part 1) | CLAIMED | Codex | 2026-02-17 17:09 UTC | — | 11.1 DONE |
+| 11.31 | Sprint verification test suite (Part 1) | DONE | Codex | 2026-02-17 17:09 UTC | 2026-02-17 17:34 UTC | 11.1 DONE |
 | 11.32 | Building eval provenance tests (Part 2a) | DONE | Codex | 2026-02-17 17:28 UTC | 2026-02-17 17:30 UTC | 11.1 DONE |
 | 11.33 | Paper eval provenance tests (Part 2b) | DONE | Codex | 2026-02-17 17:30 UTC | 2026-02-17 17:32 UTC | 11.10 DONE |
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.33 done)*
+*Last updated: 2026-02-17 by Codex (Task 11.31 done)*
