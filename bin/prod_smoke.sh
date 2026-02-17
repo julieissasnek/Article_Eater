@@ -56,6 +56,8 @@ if command -v node >/dev/null 2>&1; then
   echo "Running V14 lifespan gates..."
   node scripts/validate_v14_lifespan_fields.js
   node scripts/validate_v14_runtime_checks.js
+  echo "Running V15 VF->CREA chain gate..."
+  node scripts/validate_v15_vf_crea_chain.js
 else
   echo "ERROR: node is required for V14 lifespan gates"
   exit 1
