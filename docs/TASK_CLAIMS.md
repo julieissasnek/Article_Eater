@@ -45,7 +45,7 @@
 | 3.5 | Gap template stubs | DONE | Codex | 2026-02-17 | 2026-02-17 | 1.2 DONE |
 | 3.6 | Paper evaluation skeleton | DONE | CC | 2026-02-17 | 2026-02-17 | 2.4 DONE |
 | 3.7 | Salk Institute worked example | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.1 + 2.3 + 2.4 DONE |
-| 3.8 | Batch 3 gap template computations | CLAIMED | Codex | 2026-02-17 15:57 CET | — | 3.5 DONE |
+| 3.8 | Batch 3 gap template computations | DONE | Codex | 2026-02-17 15:57 CET | 2026-02-17 15:04 UTC | 3.5 DONE |
 | 3.9 | CLI interface | CLAIMED | CC-Opus | 2026-02-17 16:15 CET | — | 2.4 DONE |
 | 3.10 | Worked example: open-plan office | CLAIMED | Antigravity | 2026-02-17 16:05 CET | — | 2.1 + 2.3 + 2.4 DONE |
 | 3.11 | Worked example: primary school classroom | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 3.8 claimed; overflow plan synchronized)*
+*Last updated: 2026-02-17 by Codex (Task 3.8 completed after full test-suite validation)*
