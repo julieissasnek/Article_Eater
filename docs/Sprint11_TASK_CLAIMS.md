@@ -55,9 +55,9 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.21 | Input sensitivity sweep | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.21 | Input sensitivity sweep | DONE | CC-Opus | 2026-02-17 20:15 CET | 2026-02-17 20:50 CET | 11.1 DONE |
 | 11.22 | Function signature audit | AVAILABLE | — | — | — | 11.1 DONE |
-| 11.23 | Web of belief integration test | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.23 | Web of belief integration test | CLAIMED | Antigravity | 2026-02-17 19:00 CET | — | 11.10 DONE |
 | 11.24 | VOI end-to-end verification | AVAILABLE | — | — | — | 11.20 DONE |
 | 11.25 | Bayesian network health check | AVAILABLE | — | — | — | none |
 | 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
