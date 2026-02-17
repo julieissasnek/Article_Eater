@@ -140,6 +140,12 @@ try:
 except ImportError:
     _PAPER_HISTORY_AVAILABLE = False
 
+try:
+    from src.cmr.star_tracker import get_domain_star_progress, get_star_advancement_tracker
+    _STAR_TRACKER_AVAILABLE = True
+except ImportError:
+    _STAR_TRACKER_AVAILABLE = False
+
 __all__ = [
     # Core models
     "Base",
@@ -248,4 +254,10 @@ if _PAPER_HISTORY_AVAILABLE:
         "get_processed_papers",
         "get_papers_for_template",
         "get_high_voi_papers",
+    ])
+
+if _STAR_TRACKER_AVAILABLE:
+    __all__.extend([
+        "get_star_advancement_tracker",
+        "get_domain_star_progress",
     ])
