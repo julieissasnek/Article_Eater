@@ -168,4 +168,10 @@ export interface Template {
 
   /** Version of the template definition */
   version?: string;
+
+  /**
+   * Backward-compatible calibration payload used by several calibration test fixtures.
+   * Field shape varies by template family.
+   */
+  calibration_data?: Record<string, any>;
 }

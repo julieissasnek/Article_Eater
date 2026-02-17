@@ -243,7 +243,8 @@ if kill -0 $SERVER_PID 2>/dev/null; then
 
     # Stop server
     kill $SERVER_PID 2>/dev/null
-    wait $SERVER_PID 2>/dev/null
+    # uvicorn exits via SIGTERM here; do not fail the harness on expected 143.
+    wait $SERVER_PID 2>/dev/null || true
     echo "Server stopped."
 else
     fail "Server failed to start"
