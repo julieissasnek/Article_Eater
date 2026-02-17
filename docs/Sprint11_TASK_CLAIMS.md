@@ -41,7 +41,7 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.11 | Ulrich 1984 paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
-| 11.12 | Paper report generator | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.12 | Paper report generator | CLAIMED | Codex | 2026-02-17 19:08 CET | — | 11.10 DONE |
 | 11.13 | Building eval regression suite | AVAILABLE | — | — | — | 11.5 DONE |
 | 11.14 | Paper eval contradicting study | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | AVAILABLE | — | — | — | 11.10 DONE |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.10 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.12 claimed)*
