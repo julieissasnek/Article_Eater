@@ -224,3 +224,36 @@ def test_main_quick_assess_json_includes_tier_b_reveals(capsys):
     payload = json.loads(captured.out)
     assert payload["tier_mode"] == "A+B"
     assert isinstance(payload["tier_b_reveals"], list)
+
+
+def test_parser_compare_accepts_payloads():
+    parser = build_parser()
+    args = parser.parse_args([
+        "compare",
+        "--a",
+        '{"ceiling_height_m":2.7,"floor_area_m2":25.0}',
+        "--b",
+        '{"ceiling_height_m":3.1,"floor_area_m2":25.0}',
+    ])
+    assert args.command == "compare"
+    assert args.labels == ["Current", "Proposed"]
+
+
+def test_main_compare_json_output(tmp_path, capsys):
+    db_path = tmp_path / "test_cli_compare.db"
+    result = main([
+        "compare",
+        "--a",
+        '{"ceiling_height_m":2.6,"floor_area_m2":25.0,"has_nature_view":false}',
+        "--b",
+        '{"ceiling_height_m":3.1,"floor_area_m2":25.0,"has_nature_view":true,"view_content":"nature"}',
+        "--db-path",
+        str(db_path),
+        "--json",
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+    assert "overall" in payload
+    assert "per_domain_deltas" in payload
+    assert "summary" in payload

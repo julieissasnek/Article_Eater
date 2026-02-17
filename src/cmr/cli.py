@@ -20,6 +20,7 @@ import sys
 from typing import Any
 
 from src.cmr.building_eval import evaluate_building
+from src.cmr.compare import compare_buildings
 from src.cmr.paper_eval import evaluate_paper
 from src.cmr.paper_report import format_paper_report_text, generate_paper_report
 from src.cmr.report import generate_report, format_report_text
@@ -266,6 +267,23 @@ def build_parser() -> argparse.ArgumentParser:
     sens_parser.add_argument("--db-path", type=str, default="ae.db", help="Path to database")
     sens_parser.add_argument("--json", action="store_true", dest="json_output", help="JSON output")
 
+    compare_parser = subparsers.add_parser(
+        "compare",
+        help="Compare two building scenarios side by side",
+    )
+    compare_parser.add_argument("--a", type=str, required=True, help="JSON object for Building A features")
+    compare_parser.add_argument("--b", type=str, required=True, help="JSON object for Building B features")
+    compare_parser.add_argument(
+        "--labels",
+        nargs=2,
+        metavar=("LABEL_A", "LABEL_B"),
+        default=["Current", "Proposed"],
+        help="Labels used for Building A and Building B",
+    )
+    compare_parser.add_argument("--age", type=int, default=35, help="Occupant age")
+    compare_parser.add_argument("--db-path", type=str, default="ae.db", help="Path to database")
+    compare_parser.add_argument("--json", action="store_true", dest="json_output", help="JSON output")
+
     return parser
 
 
@@ -454,6 +472,137 @@ def run_quick_assess(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_sensitivity(args: argparse.Namespace) -> int:
+    """Execute the sensitivity subcommand."""
+    measured_features: dict[str, Any] = {}
+
+    if args.ceiling_height is not None:
+        measured_features["ceiling_height_m"] = args.ceiling_height
+    if args.floor_area is not None:
+        measured_features["floor_area_m2"] = args.floor_area
+    if args.illuminance is not None:
+        measured_features["illuminance_lux"] = args.illuminance
+    if args.noise is not None:
+        measured_features["ambient_noise_dba"] = args.noise
+    if args.window_area_ratio is not None:
+        measured_features["window_area_ratio"] = args.window_area_ratio
+    if args.rt60 is not None:
+        measured_features["rt60_seconds"] = args.rt60
+    if args.operative_temp is not None:
+        measured_features["operative_temp_c"] = args.operative_temp
+    if args.density is not None:
+        measured_features["density_m2_per_person"] = args.density
+    if args.has_nature_view:
+        measured_features["has_nature_view"] = True
+    if args.primary_material is not None:
+        measured_features["primary_material"] = args.primary_material
+
+    occupant_profile = {"age": args.age}
+
+    if args.quick:
+        # Quick heuristic analysis
+        result = get_quick_sensitivity(measured_features, occupant_profile)
+        if args.json_output:
+            print(json.dumps(result, indent=2))
+        else:
+            print("=" * 50)
+            print("QUICK SENSITIVITY ANALYSIS")
+            print("=" * 50)
+            print()
+            print(f"Top recommendation: {result['top_recommendation']}")
+            print()
+            for i, rec in enumerate(result.get("recommendations", []), 1):
+                print(f"{i}. {rec['recommendation']}")
+                print(f"   Feature: {rec['feature']}")
+                print(f"   Estimated impact: +{rec['estimated_impact']:.1f} WIS points")
+                print()
+        return 0
+
+    try:
+        result = analyze_sensitivity(
+            measured_features=measured_features,
+            occupant_profile=occupant_profile,
+            db_path=args.db_path,
+            check_diminishing=not args.no_diminishing,
+        )
+    except Exception as e:
+        print(f"Error during sensitivity analysis: {e}", file=sys.stderr)
+        return 1
+
+    if args.json_output:
+        output = {
+            "baseline_wis": result.baseline_wis,
+            "top_feature": result.top_feature,
+            "top_delta": result.top_delta,
+            "top_recommendation": result.top_recommendation,
+            "category_impacts": result.category_impacts,
+            "feature_sensitivities": [
+                {
+                    "rank": s.rank,
+                    "feature": s.feature,
+                    "description": s.description,
+                    "category": s.category,
+                    "wis_delta": s.wis_delta,
+                    "worst_value": s.worst_value,
+                    "best_value": s.best_value,
+                    "unit": s.unit,
+                    "diminishing_returns": s.diminishing_returns,
+                    "diminishing_threshold": s.diminishing_threshold,
+                }
+                for s in result.feature_sensitivities
+            ],
+        }
+        print(json.dumps(output, indent=2))
+    else:
+        print(format_sensitivity_report(result))
+
+    return 0
+
+
+def run_compare(args: argparse.Namespace) -> int:
+    """Execute the compare subcommand."""
+    try:
+        features_a = json.loads(args.a)
+        features_b = json.loads(args.b)
+        if not isinstance(features_a, dict) or not isinstance(features_b, dict):
+            raise ValueError("--a and --b must be JSON objects.")
+
+        result = compare_buildings(
+            features_a=features_a,
+            features_b=features_b,
+            label_a=args.labels[0],
+            label_b=args.labels[1],
+            occupant_age=args.age,
+            db_path=args.db_path,
+        )
+    except Exception as e:
+        print(f"Error during comparison: {e}", file=sys.stderr)
+        return 1
+
+    if args.json_output:
+        print(json.dumps(result, indent=2, default=str))
+        return 0
+
+    overall = result.get("overall", {})
+    print("=" * 60)
+    print("BUILDING COMPARISON")
+    print("=" * 60)
+    print(f"{args.labels[0]} overall WIS: {overall.get('a_wis', 0.0):.1f}")
+    print(f"{args.labels[1]} overall WIS: {overall.get('b_wis', 0.0):.1f}")
+    print(f"Delta ({args.labels[1]} - {args.labels[0]}): {overall.get('delta', 0.0):+.1f}")
+    print("")
+    print("Top Improvements:")
+    for row in result.get("biggest_improvements", [])[:3]:
+        print(f"- {row['domain']}: {row['delta']:+.1f}")
+    print("")
+    print("Top Regressions:")
+    for row in result.get("biggest_regressions", [])[:3]:
+        print(f"- {row['domain']}: {row['delta']:+.1f}")
+    print("")
+    print(result.get("summary", ""))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = build_parser()
@@ -469,6 +618,10 @@ def main(argv: list[str] | None = None) -> int:
         return run_evaluate_paper(args)
     if args.command == "quick-assess":
         return run_quick_assess(args)
+    if args.command == "sensitivity":
+        return run_sensitivity(args)
+    if args.command == "compare":
+        return run_compare(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1
