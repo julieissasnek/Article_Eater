@@ -22,7 +22,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 20:13 CET | — | none |
 | 11.2 | Wire interaction adjustments | DONE | Codex | 2026-02-17 17:08 UTC | 2026-02-17 17:09 UTC | none |
-| 11.3 | Wire lifespan moderation | AVAILABLE | — | — | — | none |
+| 11.3 | Wire lifespan moderation | CLAIMED | Codex | 2026-02-17 17:10 UTC | — | none |
 | 11.4 | Feature-to-template input mapping | AVAILABLE | — | — | — | none |
 
 ## ROUND 2 — VALIDATE + BEGIN PAPER EVAL
@@ -40,7 +40,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.11 | Ulrich 1984 paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.11 | Ulrich 1984 paper evaluation | CLAIMED | Codex | 2026-02-17 17:15 UTC | — | 11.10 DONE |
 | 11.12 | Paper report generator | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.13 | Building eval regression suite | AVAILABLE | — | — | — | 11.5 DONE |
 | 11.14 | Paper eval contradicting study | AVAILABLE | — | — | — | 11.10 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.2 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.3 claimed)*
