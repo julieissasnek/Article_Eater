@@ -246,6 +246,7 @@ When done: `13.13 DONE [CC] <timestamp>` → `docs/DONE.md`
 ---
 
 ## CODEX-1 TASK LIST
+> **Codex-1 Review** (2026-02-17T17:30 UTC): Prepared to execute CX1 tasks in order once dependencies resolve.
 
 ---
 
