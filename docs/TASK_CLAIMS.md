@@ -22,7 +22,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 1.1 | Enum drift fix | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 | 1.2 | Template DB index | DONE | CC | 2026-02-17 | 2026-02-17 | none |
-| 1.3 | Load staging theory-links | DONE | Codex | 2026-02-17 14:57 CET | 2026-02-17 15:15 CET | none |
+| 1.3 | Load staging theory-links | DONE | Antigravity | 2026-02-17 14:57 CET | 2026-02-17 15:15 CET | none |
 | 1.4 | WIS conversion module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 
 ## ROUND 2 — PIPELINE COMPONENTS
@@ -38,7 +38,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 3.1 | Antigravity validation sweep | DONE | Codex | 2026-02-17 | 2026-02-17 | Round 1+2 DONE |
+| 3.1 | Antigravity validation sweep | DONE | Antigravity | 2026-02-17 | 2026-02-17 | Round 1+2 DONE |
 | 3.2 | Batch 2 template computations (20 templates) | DONE | CC | 2026-02-17 | 2026-02-17 | 2.1 DONE |
 | 3.3 | Report generator | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.4 DONE |
 | 3.4 | Template JSON enrichment | DONE | Codex | 2026-02-17 | 2026-02-17 | 1.2 DONE |
