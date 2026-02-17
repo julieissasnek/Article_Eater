@@ -43,7 +43,7 @@
 | 11.11 | Ulrich 1984 paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.12 | Paper report generator | DONE | Codex | 2026-02-17 19:08 CET | 2026-02-17 19:12 CET | 11.10 DONE |
 | 11.13 | Building eval regression suite | AVAILABLE | — | — | — | 11.5 DONE |
-| 11.14 | Paper eval contradicting study | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.14 | Paper eval contradicting study | CLAIMED | Codex | 2026-02-17 19:13 CET | — | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.16 | CLI for paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.17 | Cross-pipeline integration test | AVAILABLE | — | — | — | 11.5 + 11.10 DONE |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.12 completed)*
+*Last updated: 2026-02-17 by Codex (Task 11.14 claimed)*
