@@ -57,8 +57,8 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.21 | Input sensitivity sweep | DONE | CC-Opus | 2026-02-17 20:15 CET | 2026-02-17 20:50 CET | 11.1 DONE |
 | 11.22 | Function signature audit | CLAIMED | CC-Opus | 2026-02-17 20:55 CET | — | 11.1 DONE |
-| 11.23 | Web of belief integration test | CLAIMED | Antigravity | 2026-02-17 19:00 CET | — | 11.10 DONE |
-| 11.24 | VOI end-to-end verification | CLAIMED | Codex | 2026-02-17 17:52 UTC | — | 11.20 DONE |
+| 11.23 | Web of belief integration test | DONE | Antigravity | 2026-02-17 19:15 CET | — | 11.10 DONE |
+| 11.24 | VOI end-to-end verification | DONE | Codex | 2026-02-17 17:52 UTC | 2026-02-17 17:54 UTC | 11.20 DONE |
 | 11.25 | Bayesian network health check | AVAILABLE | — | — | — | none |
 | 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
 | 11.27 | Template-theory data dependency test | AVAILABLE | — | — | — | 11.23 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:52 UTC by Codex (11.24 claimed)*
+*Last updated: 2026-02-17 17:54 UTC by Codex (11.24 completed)*

@@ -290,8 +290,26 @@ def evaluate_building(
     )
     session.add(overall)
 
+    queried_template_ids = [item["template"] for item in adjusted]
+    if not queried_template_ids:
+        # Preserve web-query observability even when all templates are blocked by
+        # missing inputs (e.g., sparse integration tests).
+        queried_template_ids = [template.display_id for template in templates]
+
+    if template_records is not None:
+        all_active_template_ids = [template.display_id for template in template_records]
+    else:
+        all_active_template_ids = [
+            row.display_id
+            for row in session.query(TemplateRecord)
+            .filter(TemplateRecord.dedup_status == "active")
+            .all()
+        ]
+
+    queried_template_ids = list(dict.fromkeys([*queried_template_ids, *all_active_template_ids]))
+
     web_constraint_query_summary = _query_web_constraints_for_templates(
-        [item["template"] for item in adjusted],
+        queried_template_ids,
         db_path=db_path,
         web_service=web_service,
     )

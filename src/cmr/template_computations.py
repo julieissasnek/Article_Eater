@@ -3689,7 +3689,7 @@ TEMPLATE_COMPUTE_FUNCTIONS = {
     "T5": compute_t5_enclosure_threat_residual,
     "T8": compute_t8_neural_grid_constraint,
     "T11": compute_t11_exploration_mode,
-    "T15": compute_t15_personal_control,
+    "T15": compute_t15_environmental_control,
     "T16": compute_t16_restoration_timecourse,
     "T20": compute_t20_convergent_performance,
     "T22": compute_t22_rapid_gist,

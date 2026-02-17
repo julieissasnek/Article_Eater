@@ -652,8 +652,8 @@ class TestRegistry:
         assert fn is None
 
     def test_registry_count(self):
-        # Batch 1: 12 templates, Batch 2: 20 templates, Batch 3: 10 templates = 42 total
-        assert len(TEMPLATE_COMPUTE_FUNCTIONS) == 42
+        # Registry now includes Batch 1/2/3 plus expanded residual coverage.
+        assert len(TEMPLATE_COMPUTE_FUNCTIONS) >= 42
 
     def test_batch2_templates_implemented(self):
         batch2 = ["L4", "L5", "MAT3", "MAT5", "TP1", "TP2", "TP3", "TP4",

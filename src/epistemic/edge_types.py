@@ -397,6 +397,7 @@ LEGACY_CONSTRAINT_TYPE_MAP = {
     "argumentative_support": EdgeType.ARGUMENTATIVE_SUPPORT,
     "argumentative_challenge": EdgeType.ARGUMENTATIVE_CHALLENGE,
     "generalizability_warrant": EdgeType.GENERALIZABILITY_WARRANT,
+    "tier2_theory_link": EdgeType.EPISTEMIC_DERIVATION,
 }
 
 
