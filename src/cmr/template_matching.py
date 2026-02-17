@@ -208,6 +208,7 @@ def match_claims_to_templates(
                     "template_id": tmpl_id,
                     "match_type": match_type,
                     "confidence": confidence,
+                    "match_score": confidence,
                     "rationale": rationale,
                     "details": {
                         "iv_match": iv_match,
