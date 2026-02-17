@@ -199,6 +199,7 @@ def trace_mechanisms(claim_template_matches: list[dict]) -> list[dict]:
                     "template": template_id,
                     "match_type": match.get("match_type"),
                     "match_score": match_conf,
+                    "status": match.get("trace_status", "supported"),
                     "substitute_alternatives": alternatives,
                     "moderator_match": moderator_match,
                     "moderator_details": moderator_details,
