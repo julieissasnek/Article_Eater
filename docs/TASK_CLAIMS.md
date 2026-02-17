@@ -21,31 +21,31 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 1.1 | Enum drift fix | AVAILABLE | — | — | — | none |
-| 1.2 | Template DB index | AVAILABLE | — | — | — | none |
+| 1.2 | Template DB index | DONE | CC | 2026-02-17 | 2026-02-17 | none |
 | 1.3 | Load staging theory-links | AVAILABLE | — | — | — | none |
-| 1.4 | WIS conversion module | AVAILABLE | — | — | — | none |
+| 1.4 | WIS conversion module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 
 ## ROUND 2 — PIPELINE COMPONENTS
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 2.1 | Template computation functions (Batch 1, 12 templates) | AVAILABLE | — | — | — | 1.2 DONE |
-| 2.2 | CMR data models | AVAILABLE | — | — | — | none |
-| 2.3 | Interaction matrix module | AVAILABLE | — | — | — | none |
-| 2.4 | Building eval orchestrator skeleton | AVAILABLE | — | — | — | 2.2 DONE |
+| 2.1 | Template computation functions (Batch 1, 12 templates) | DONE | CC | 2026-02-17 | 2026-02-17 | 1.2 DONE |
+| 2.2 | CMR data models | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
+| 2.3 | Interaction matrix module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
+| 2.4 | Building eval orchestrator skeleton | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.2 DONE |
 
 ## ROUND 3 — VALIDATION + OVERFLOW
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 3.1 | Antigravity validation sweep | AVAILABLE | — | — | — | Round 1+2 DONE |
-| 3.2 | Batch 2 template computations (22 templates) | AVAILABLE | — | — | — | 2.1 DONE |
-| 3.3 | Report generator | AVAILABLE | — | — | — | 2.4 DONE |
+| 3.2 | Batch 2 template computations (20 templates) | DONE | CC | 2026-02-17 | 2026-02-17 | 2.1 DONE |
+| 3.3 | Report generator | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.4 DONE |
 | 3.4 | Template JSON enrichment | AVAILABLE | — | — | — | 1.2 DONE |
 | 3.5 | Gap template stubs | AVAILABLE | — | — | — | 1.2 DONE |
-| 3.6 | Paper evaluation skeleton | AVAILABLE | — | — | — | 2.4 DONE |
+| 3.6 | Paper evaluation skeleton | DONE | CC | 2026-02-17 | 2026-02-17 | 2.4 DONE |
 | 3.7 | Salk Institute worked example | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
 
 ---
 
-*Last updated: — (agents update this line with each commit)*
+*Last updated: 2026-02-17 by CC (backfilled completed tasks)*
