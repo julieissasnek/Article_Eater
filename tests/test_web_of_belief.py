@@ -1,4 +1,5 @@
 
+import json
 import pytest
 import sys
 import os
@@ -8,6 +9,30 @@ sys.path.append(os.getcwd())
 
 from src.services.web_persistence import WebPersistenceService
 from src.services.web_of_belief import ConstraintType
+
+
+def _is_tier2_theory_link(constraint) -> bool:
+    text = " ".join(
+        [
+            str(getattr(constraint, "constraint_type", "")),
+            str(getattr(constraint, "warrant_type", "")),
+            str(getattr(constraint, "constraint_id", "")),
+            str(getattr(constraint, "source_id", "")),
+            str(getattr(constraint, "target_id", "")),
+            str(getattr(constraint, "provenance", "")),
+        ]
+    ).lower()
+    return any(
+        token in text
+        for token in (
+            "tier2",
+            "theory_link",
+            "epistemic_derivation",
+            "theory:",
+            "tier2_theory_link:",
+        )
+    )
+
 
 class TestWebOfBeliefIntegration:
     """
@@ -45,14 +70,7 @@ class TestWebOfBeliefIntegration:
         
         constraints = self.service.get_constraints_for_web(self.web_id)
         
-        # Filter for tier2_theory_link
-        # Note: constraint_type might be an Enum or converted string
-        links = []
-        for c in constraints:
-            c_type = str(c.constraint_type)
-            # Checked mapped type (EPISTEMIC_DERIVATION) or legacy for robustness
-            if "tier2" in c_type.lower() or "theory_link" in c_type.lower() or "epistemic_derivation" in c_type.lower():
-                links.append(c)
+        links = [c for c in constraints if _is_tier2_theory_link(c)]
                 
         count = len(links)
         print(f"\nLoaded {count} theory links (from total {len(constraints)} constraints).")
@@ -69,7 +87,7 @@ class TestWebOfBeliefIntegration:
             pytest.skip("No web found")
 
         constraints = self.service.get_constraints_for_web(self.web_id)
-        links = [c for c in constraints if "tier2" in str(c.constraint_type).lower() or "epistemic_derivation" in str(c.constraint_type).lower()]
+        links = [c for c in constraints if _is_tier2_theory_link(c)]
         
         # In the staging loader, theory_id was likely stored in a specific way.
         # The Constraint object might not have 'theory_id' directly unless it was monkey-patched 
@@ -88,6 +106,19 @@ class TestWebOfBeliefIntegration:
             # Also check target_id convention
             if str(link.target_id).startswith("theory:"):
                 theory_targets.add(link.target_id)
+
+            provenance = getattr(link, "provenance", None)
+            if isinstance(provenance, str):
+                try:
+                    payload = json.loads(provenance)
+                except Exception:
+                    payload = {}
+                theory_id = payload.get("theory_id")
+                theory_name = payload.get("theory_name")
+                if theory_id:
+                    theory_targets.add(str(theory_id))
+                if theory_name:
+                    theory_targets.add(str(theory_name))
         
         print(f"\nFound Theory Identifiers: {theory_targets}")
         
@@ -106,7 +137,7 @@ class TestWebOfBeliefIntegration:
             pytest.skip("No web found")
             
         constraints = self.service.get_constraints_for_web(self.web_id)
-        links = [c for c in constraints if "tier2" in str(c.constraint_type).lower() or "epistemic_derivation" in str(c.constraint_type).lower()]
+        links = [c for c in constraints if _is_tier2_theory_link(c)]
         
         beliefs = {b.belief_id: b for b in self.service.get_beliefs_for_web(self.web_id)}
         
