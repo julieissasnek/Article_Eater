@@ -23,6 +23,39 @@ def test_extract_claims_structured_normalizes_and_validates():
     assert claim["effect_size"] == 0.42
     assert claim["sample_n"] == 121
     assert claim["source"] == "structured_input"
+    assert claim["validation_warnings"] == []
+    assert claim["duplicate_count"] == 1
+
+
+def test_extract_claims_structured_warns_on_bad_inputs():
+    claims = [
+        {
+            "iv": "Nature View",
+            "dv": "Recovery Time",
+            "direction": "sideways",
+            "effect_size": 3.2,
+            "sample_n": 8,
+        }
+    ]
+
+    result = extract_claims_structured(claims)
+    assert len(result) == 1
+    warnings = set(result[0]["validation_warnings"])
+    assert "invalid_direction" in warnings
+    assert "effect_size_outlier" in warnings
+    assert "small_sample_n" in warnings
+
+
+def test_extract_claims_structured_dedupes_duplicates():
+    claims = [
+        {"iv": "Nature View", "dv": "Recovery Time", "direction": "decrease"},
+        {"iv": "nature view", "dv": "recovery time", "direction": "decreases"},
+    ]
+
+    result = extract_claims_structured(claims)
+    assert len(result) == 1
+    assert result[0]["duplicate_count"] == 2
+    assert "duplicate_claim" in result[0]["validation_warnings"]
 
 
 def test_extract_claims_from_text_supports_base_verbs_and_inflections():

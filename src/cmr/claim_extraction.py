@@ -334,34 +334,62 @@ def extract_claims_structured(claims: list[dict]) -> list[dict]:
     Optional: direction, effect_size, sample_n, context.
     """
     normalized: list[dict] = []
+    seen_keys: dict[tuple[str, str, str], int] = {}
+
     for claim in claims:
+        if not isinstance(claim, dict):
+            continue
+
         iv = claim.get("independent_var") or claim.get("independent_variable") or claim.get("iv")
         dv = claim.get("dependent_var") or claim.get("dependent_variable") or claim.get("dv")
         if not iv or not dv:
             continue
 
-        direction = _normalize_direction(claim.get("direction"))
+        raw_direction = claim.get("direction")
+        direction = _normalize_direction(raw_direction)
         iv_text = str(iv).strip()
         dv_text = str(dv).strip()
         context = str(claim.get("context") or "")
         relationship = str(claim.get("relationship") or claim.get("direction") or "reported_effect")
         description = str(claim.get("description") or f"{iv_text} {relationship} {dv_text}")
+        effect_size = _safe_float(claim.get("effect_size"))
+        sample_n = _safe_int(claim.get("sample_n"))
+        warnings: list[str] = []
 
-        normalized.append(
-            {
-                **_build_claim(
-                    iv=iv_text,
-                    dv=dv_text,
-                    direction=direction,
-                    relationship=relationship,
-                    sentence=description if description else context,
-                    source="structured_input",
-                    base_confidence=0.9,
-                ),
-                "effect_size": _safe_float(claim.get("effect_size")),
-                "sample_n": _safe_int(claim.get("sample_n")),
-            }
-        )
+        if raw_direction is not None and str(raw_direction).strip() and direction == "unknown":
+            warnings.append("invalid_direction")
+        if effect_size is not None and abs(effect_size) > 3.0:
+            warnings.append("effect_size_outlier")
+        if sample_n is not None and sample_n < 10:
+            warnings.append("small_sample_n")
+
+        dedupe_key = (_normalize(iv_text), _normalize(dv_text), direction)
+        existing_index = seen_keys.get(dedupe_key)
+        if existing_index is not None:
+            existing = normalized[existing_index]
+            existing_warnings = existing.setdefault("validation_warnings", [])
+            if "duplicate_claim" not in existing_warnings:
+                existing_warnings.append("duplicate_claim")
+            existing["duplicate_count"] = int(existing.get("duplicate_count", 1)) + 1
+            continue
+
+        normalized_claim = {
+            **_build_claim(
+                iv=iv_text,
+                dv=dv_text,
+                direction=direction,
+                relationship=relationship,
+                sentence=description if description else context,
+                source="structured_input",
+                base_confidence=0.9,
+            ),
+            "effect_size": effect_size,
+            "sample_n": sample_n,
+            "validation_warnings": warnings,
+            "duplicate_count": 1,
+        }
+        seen_keys[dedupe_key] = len(normalized)
+        normalized.append(normalized_claim)
     return normalized
 
 
@@ -435,4 +463,3 @@ def extract_claims_from_text(text: str) -> list[dict]:
         if existing is None or claim["confidence"] > existing["confidence"]:
             deduped[key] = claim
     return list(deduped.values())
-
