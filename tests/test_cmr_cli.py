@@ -190,3 +190,37 @@ def test_main_evaluate_paper_text_output(tmp_path, capsys):
     assert result == 0
     captured = capsys.readouterr()
     assert "PAPER EVALUATION REPORT" in captured.out
+
+
+def test_parser_quick_assess_accepts_tier_b_inputs():
+    parser = build_parser()
+    args = parser.parse_args([
+        "quick-assess",
+        "--ceiling", "3.0",
+        "--area", "25.0",
+        "--illuminance", "450",
+        "--noise", "42",
+        "--rt60", "0.5",
+    ])
+    assert args.command == "quick-assess"
+    assert args.illuminance == 450
+    assert args.noise == 42
+    assert args.rt60 == 0.5
+
+
+def test_main_quick_assess_json_includes_tier_b_reveals(capsys):
+    result = main([
+        "quick-assess",
+        "--ceiling", "3.0",
+        "--area", "25.0",
+        "--nature-view", "nature",
+        "--illuminance", "450",
+        "--noise", "42",
+        "--rt60", "0.5",
+        "--json",
+    ])
+    assert result == 0
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+    assert payload["tier_mode"] == "A+B"
+    assert isinstance(payload["tier_b_reveals"], list)

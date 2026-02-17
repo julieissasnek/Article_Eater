@@ -23,6 +23,8 @@ from src.cmr.building_eval import evaluate_building
 from src.cmr.paper_eval import evaluate_paper
 from src.cmr.paper_report import format_paper_report_text, generate_paper_report
 from src.cmr.report import generate_report, format_report_text
+from src.cmr.quick_assess import quick_assess, format_quick_report
+from src.cmr.sensitivity import analyze_sensitivity, format_sensitivity_report, get_quick_sensitivity
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -220,6 +222,50 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to the SQLite database",
     )
 
+    # quick-assess subcommand (Tier A + optional Tier B)
+    quick_parser = subparsers.add_parser(
+        "quick-assess",
+        help="Quick assessment using Tier A inputs, with optional Tier B measurements",
+    )
+    quick_parser.add_argument("--ceiling", type=float, help="Ceiling height in meters")
+    quick_parser.add_argument("--area", type=float, help="Floor area in square meters")
+    quick_parser.add_argument("--nature-view", type=str, help="View content (nature/urban/none)")
+    quick_parser.add_argument("--wayfinding", action="store_true", help="Wayfinding is clear")
+    quick_parser.add_argument("--walking-paths", action="store_true", help="Walking paths available")
+    quick_parser.add_argument("--colors", type=str, help="Comma-separated wall colors")
+    quick_parser.add_argument("--color-varied", action="store_true", help="Color varies through space")
+    quick_parser.add_argument("--floor-surface", type=str, default="level", help="Floor surface type")
+    quick_parser.add_argument("--stairs-standard", action="store_true", help="Stairs meet standards")
+    quick_parser.add_argument("--thermal", type=str, help="Thermal system (operable_windows/hvac)")
+    quick_parser.add_argument("--material", type=str, help="Primary material (wood/concrete/etc)")
+    quick_parser.add_argument("--max-group", type=int, help="Maximum group size")
+    quick_parser.add_argument("--illuminance", type=float, help="Tier B: measured illuminance (lux)")
+    quick_parser.add_argument("--noise", type=float, help="Tier B: measured ambient noise (dBA)")
+    quick_parser.add_argument("--rt60", type=float, help="Tier B: measured reverberation time (seconds)")
+    quick_parser.add_argument("--age", type=int, default=35, help="Occupant age")
+    quick_parser.add_argument("--json", action="store_true", dest="json_output", help="JSON output")
+
+    # sensitivity subcommand
+    sens_parser = subparsers.add_parser(
+        "sensitivity",
+        help="Analyze sensitivity of WIS to input features",
+    )
+    sens_parser.add_argument("--ceiling-height", type=float, help="Current ceiling height (m)")
+    sens_parser.add_argument("--floor-area", type=float, help="Current floor area (m²)")
+    sens_parser.add_argument("--illuminance", type=float, help="Current illuminance (lux)")
+    sens_parser.add_argument("--noise", type=float, help="Current noise level (dBA)")
+    sens_parser.add_argument("--window-area-ratio", type=float, help="Current window ratio")
+    sens_parser.add_argument("--rt60", type=float, help="Current RT60 (seconds)")
+    sens_parser.add_argument("--operative-temp", type=float, help="Current temperature (°C)")
+    sens_parser.add_argument("--density", type=float, help="Current density (m²/person)")
+    sens_parser.add_argument("--has-nature-view", action="store_true", help="Has nature view")
+    sens_parser.add_argument("--primary-material", type=str, help="Primary material")
+    sens_parser.add_argument("--age", type=int, default=35, help="Occupant age")
+    sens_parser.add_argument("--quick", action="store_true", help="Quick heuristic analysis (faster)")
+    sens_parser.add_argument("--no-diminishing", action="store_true", help="Skip diminishing returns check")
+    sens_parser.add_argument("--db-path", type=str, default="ae.db", help="Path to database")
+    sens_parser.add_argument("--json", action="store_true", dest="json_output", help="JSON output")
+
     return parser
 
 
@@ -361,6 +407,53 @@ def run_evaluate_paper(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_quick_assess(args: argparse.Namespace) -> int:
+    """Execute the quick-assess subcommand."""
+    wall_colors = args.colors.split(",") if args.colors else None
+    has_nature_view = args.nature_view is not None
+    view_content = args.nature_view if args.nature_view else None
+
+    result = quick_assess(
+        ceiling_height_m=args.ceiling,
+        floor_area_m2=args.area,
+        has_nature_view=has_nature_view,
+        view_content=view_content,
+        walking_paths_available=args.walking_paths if hasattr(args, "walking_paths") else None,
+        wayfinding_clear=args.wayfinding if hasattr(args, "wayfinding") else None,
+        wall_colors=wall_colors,
+        color_sequence_varied=args.color_varied if hasattr(args, "color_varied") else None,
+        floor_surface=args.floor_surface,
+        stair_dimensions_standard=args.stairs_standard if hasattr(args, "stairs_standard") else None,
+        thermal_system=args.thermal,
+        primary_material=args.material,
+        max_group_size=args.max_group,
+        illuminance_lux=args.illuminance,
+        ambient_noise_dba=args.noise,
+        rt60_seconds=args.rt60,
+        occupant_age=args.age,
+    )
+
+    if args.json_output:
+        output = {
+            "overall_rating": result.overall_rating,
+            "overall_wis": result.overall_wis,
+            "template_scores": result.template_scores,
+            "strengths": result.strengths,
+            "deficits": result.deficits,
+            "recommendations": result.recommendations,
+            "tier_b_suggestions": result.tier_b_suggestions,
+            "tier_mode": result.tier_mode,
+            "tier_b_reveals": result.tier_b_reveals,
+            "templates_assessed": result.templates_assessed,
+            "templates_skipped": result.templates_skipped,
+        }
+        print(json.dumps(output, indent=2))
+    else:
+        print(format_quick_report(result))
+
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = build_parser()
@@ -374,6 +467,8 @@ def main(argv: list[str] | None = None) -> int:
         return run_evaluate(args)
     if args.command == "evaluate-paper":
         return run_evaluate_paper(args)
+    if args.command == "quick-assess":
+        return run_quick_assess(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1
