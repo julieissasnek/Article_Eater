@@ -9,6 +9,7 @@ from typing import Any, Iterable
 
 from src.cmr.models import TemplateRecord
 from src.cmr.reduction_api import reduce_construct
+from src.cmr.reduction_api import reduce_construct
 
 
 REDUCTION_KEYWORDS = {
