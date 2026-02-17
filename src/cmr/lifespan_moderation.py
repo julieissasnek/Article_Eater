@@ -279,17 +279,34 @@ def compute_template_with_lifespan(
     else:
         wis = 50.0
 
-    # Clamp WIS to valid range
-    wis = max(0.0, min(100.0, wis))
+    # Clamp base WIS to valid range
+    base_wis = max(0.0, min(100.0, wis))
+
+    # Apply lifespan moderation: age affects sensitivity to environmental features
+    # Determine PE direction from the base WIS relative to neutral (50)
+    age = extract_occupant_age(occupant_profile)
+    lifespan_multiplier = result_dict.get('details', {}).get('lifespan_multiplier', 1.0)
+
+    if base_wis > 55:
+        pe_direction = "positive"  # Good environmental feature
+    elif base_wis < 45:
+        pe_direction = "negative"  # Bad environmental feature
+    else:
+        pe_direction = "neutral"   # Near-neutral feature
+
+    # Apply age adjustment - children and elderly are more sensitive
+    adjusted_wis = get_age_adjustment_factor(base_wis, age, pe_direction)
 
     return {
         "template": template_id,
-        "wis": wis,
+        "wis": adjusted_wis,
+        "wis_before_age_adjustment": base_wis,
         "raw_output": result_dict,
         "needs_computation": False,
         "lifespan_applied": True,
-        "age": extract_occupant_age(occupant_profile),
-        "lifespan_multiplier": result_dict.get('details', {}).get('lifespan_multiplier', 1.0),
+        "age": age,
+        "lifespan_multiplier": lifespan_multiplier,
+        "pe_direction": pe_direction,
     }
 
 
