@@ -45,7 +45,7 @@
 | 11.13 | Building eval regression suite | DONE | Codex | 2026-02-17 17:16 UTC | 2026-02-17 17:18 UTC | 11.5 DONE |
 | 11.14 | Paper eval contradicting study | DONE | Codex | 2026-02-17 17:18 UTC | 2026-02-17 17:18 UTC | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | DONE | Codex | 2026-02-17 17:19 UTC | 2026-02-17 17:19 UTC | 11.10 DONE |
-| 11.16 | CLI for paper evaluation | CLAIMED | Codex | 2026-02-17 17:20 UTC | — | 11.10 DONE |
+| 11.16 | CLI for paper evaluation | DONE | Codex | 2026-02-17 17:20 UTC | 2026-02-17 17:20 UTC | 11.10 DONE |
 | 11.17 | Cross-pipeline integration test | AVAILABLE | — | — | — | 11.5 + 11.10 DONE |
 | 11.18 | Paper eval validation sweep | AVAILABLE | — | — | — | 11.10 + 11.11 DONE |
 | 11.19 | Batch 2 paper claims library | AVAILABLE | — | — | — | 11.10 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:20 UTC by Codex (11.16 claimed)*
+*Last updated: 2026-02-17 17:20 UTC by Codex (11.16 completed)*
