@@ -60,7 +60,7 @@
 | 11.23 | Web of belief integration test | DONE | Antigravity | 2026-02-17 19:15 CET | — | 11.10 DONE |
 | 11.24 | VOI end-to-end verification | DONE | Codex | 2026-02-17 17:52 UTC | 2026-02-17 17:54 UTC | 11.20 DONE |
 | 11.25 | Bayesian network health check | CLAIMED | CC-Opus | 2026-02-17 21:55 CET | — | none |
-| 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
+| 11.26 | Argument structure tracing | CLAIMED | Codex | 2026-02-17 18:06 UTC | — | 11.1 + 11.10 DONE |
 | 11.27 | Template-theory data dependency test | CLAIMED | Antigravity | 2026-02-17 19:30 CET | — | 11.23 DONE |
 | 11.28 | Enum and schema drift check | DONE | CC-Opus | 2026-02-17 21:40 CET | 2026-02-17 21:50 CET | none |
 | 11.29 | No-placeholder audit | DONE | CC-Opus | 2026-02-17 21:25 CET | 2026-02-17 21:35 CET | 11.1 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 18:04 UTC by Codex (11.18 completed)*
+*Last updated: 2026-02-17 18:06 UTC by Codex (11.26 claimed)*
