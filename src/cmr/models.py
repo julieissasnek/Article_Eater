@@ -210,6 +210,29 @@ class ReductionClaim(Base):
     staging_links_total = Column(Integer, default=0)
 
 
+class PaperRecord(Base):
+    """History record for processed paper evaluations."""
+
+    __tablename__ = "cmr_paper_records"
+
+    id = Column(Integer, primary_key=True)
+    citation = Column(Text, nullable=True)
+    doi = Column(String, nullable=True)
+    evaluated_at = Column(DateTime, default=func.now(), nullable=False)
+
+    n_claims = Column(Integer, nullable=False, default=0)
+    n_matched = Column(Integer, nullable=False, default=0)
+    n_unmatched = Column(Integer, nullable=False, default=0)
+    n_contradictions = Column(Integer, nullable=False, default=0)
+    n_confirmations = Column(Integer, nullable=False, default=0)
+    n_gaps = Column(Integer, nullable=False, default=0)
+    aggregate_voi = Column(Float, nullable=False, default=0.0)
+    proposals_generated = Column(Integer, nullable=False, default=0)
+
+    # Denormalized list for quick template-to-paper lookup.
+    matched_template_ids = Column(JSON, nullable=False, default=list)
+
+
 def get_engine(db_path: str = "ae.db"):
     """Create SQLAlchemy engine for the Article Eater database."""
     return create_engine(f"sqlite:///{db_path}", echo=False)
@@ -236,6 +259,7 @@ __all__ = [
     "CMRDomainScore",
     "CMROverallScore",
     "ReductionClaim",
+    "PaperRecord",
     "get_engine",
     "get_session",
     "create_tables",

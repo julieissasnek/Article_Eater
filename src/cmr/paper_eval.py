@@ -12,6 +12,7 @@ from src.cmr.claim_extraction import extract_claims_from_text, extract_claims_st
 from src.cmr.convergence import assess_convergence, check_composition_failures
 from src.cmr.mechanism_tracing import trace_claim
 from src.cmr.models import TemplateRecord, create_tables, get_session
+from src.cmr.paper_history import create_paper_record
 from src.cmr.template_matching import build_template_index, match_claims_to_templates
 from src.cmr.voi_scoring import aggregate_paper_voi, score_voi
 from src.services.web_persistence import WebPersistenceService
@@ -442,6 +443,8 @@ def evaluate_paper(
     paper_text: str = "",
     structured_claims: list[dict] | None = None,
     *,
+    citation: str | None = None,
+    doi: str | None = None,
     db_path: str = "ae.db",
     session: Session | None = None,
     web_service: WebPersistenceService | None = None,
@@ -548,6 +551,14 @@ def evaluate_paper(
         n_claims_unmatched = max(0, n_claims_extracted - n_claims_matched)
         findings = _build_findings_for_contract(composed, prioritized)
         template_system_updates = _build_template_system_updates(composed)
+        matched_template_ids = sorted(
+            {
+                str(match.get("template_id")).strip()
+                for row in claim_matches
+                for match in row.get("matches", [])
+                if match.get("template_id")
+            }
+        )
 
         report = {
             "summary": {
@@ -574,6 +585,24 @@ def evaluate_paper(
         paper_summary = (
             f"Processed {n_claims_extracted} claims from paper; "
             f"{n_claims_matched} matched templates and {n_claims_unmatched} unmatched."
+        )
+        create_paper_record(
+            citation=citation,
+            doi=doi,
+            n_claims=n_claims_extracted,
+            n_matched=n_claims_matched,
+            n_unmatched=n_claims_unmatched,
+            n_contradictions=sum(1 for f in prioritized if f["category"] == "contradiction"),
+            n_confirmations=sum(1 for f in prioritized if f["category"] == "confirmation"),
+            n_gaps=sum(1 for f in prioritized if f["category"] == "gap"),
+            aggregate_voi=float(aggregate_voi.get("aggregate_voi", 0.0) or 0.0),
+            proposals_generated=sum(
+                1
+                for update in template_system_updates
+                if update.get("type") in {"contradicts", "extends", "gap"}
+            ),
+            matched_template_ids=matched_template_ids,
+            session=session,
         )
 
         return {

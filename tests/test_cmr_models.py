@@ -10,6 +10,7 @@ from src.cmr.models import (
     CMREvaluation,
     CMROverallScore,
     CMRTemplateActivation,
+    PaperRecord,
     ReductionClaim,
     TemplateRecord,
 )
@@ -167,6 +168,31 @@ def test_reduction_claim_crud():
     assert loaded.staging_links_total == 1251
 
 
+def test_paper_record_crud():
+    session = _session()
+    record = PaperRecord(
+        citation="Ulrich 1984",
+        doi="10.1126/science.6143402",
+        n_claims=3,
+        n_matched=2,
+        n_unmatched=1,
+        n_contradictions=0,
+        n_confirmations=1,
+        n_gaps=1,
+        aggregate_voi=0.62,
+        proposals_generated=2,
+        matched_template_ids=["VIEW1", "SOC2"],
+    )
+    session.add(record)
+    session.commit()
+
+    loaded = session.query(PaperRecord).filter_by(doi="10.1126/science.6143402").one()
+    assert loaded.n_claims == 3
+    assert loaded.n_matched == 2
+    assert loaded.aggregate_voi == 0.62
+    assert "VIEW1" in loaded.matched_template_ids
+
+
 def test_migration_021_creates_expected_tables(tmp_path: Path):
     db_path = tmp_path / "cmr.db"
     conn = sqlite3.connect(str(db_path))
@@ -189,3 +215,25 @@ def test_migration_021_creates_expected_tables(tmp_path: Path):
     assert "cmr_domain_scores" in tables
     assert "cmr_overall_scores" in tables
     assert "reduction_claims" in tables
+
+
+def test_migration_022_creates_paper_records_table(tmp_path: Path):
+    db_path = tmp_path / "cmr.db"
+    conn = sqlite3.connect(str(db_path))
+    conn.executescript("CREATE TABLE IF NOT EXISTS templates (display_id TEXT PRIMARY KEY);")
+
+    migration_021_sql = Path("migrations/021_add_cmr_models.sql").read_text(encoding="utf-8")
+    conn.executescript(migration_021_sql)
+    migration_022_sql = Path("migrations/022_add_cmr_paper_records.sql").read_text(encoding="utf-8")
+    conn.executescript(migration_022_sql)
+    conn.commit()
+
+    tables = {
+        row[0]
+        for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ).fetchall()
+    }
+    conn.close()
+
+    assert "cmr_paper_records" in tables

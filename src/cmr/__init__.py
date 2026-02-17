@@ -20,6 +20,7 @@ from src.cmr.models import (
     CMREvaluation,
     CMROverallScore,
     CMRTemplateActivation,
+    PaperRecord,
     ReductionClaim,
     TemplateRecord,
     get_engine,
@@ -128,6 +129,17 @@ try:
 except ImportError:
     _VOI_SCORING_AVAILABLE = False
 
+try:
+    from src.cmr.paper_history import (
+        create_paper_record,
+        get_high_voi_papers,
+        get_papers_for_template,
+        get_processed_papers,
+    )
+    _PAPER_HISTORY_AVAILABLE = True
+except ImportError:
+    _PAPER_HISTORY_AVAILABLE = False
+
 __all__ = [
     # Core models
     "Base",
@@ -136,6 +148,7 @@ __all__ = [
     "CMRTemplateActivation",
     "CMRDomainScore",
     "CMROverallScore",
+    "PaperRecord",
     "ReductionClaim",
     # Database utilities
     "get_engine",
@@ -227,4 +240,12 @@ if _VOI_SCORING_AVAILABLE:
     __all__.extend([
         "score_voi",
         "aggregate_paper_voi",
+    ])
+
+if _PAPER_HISTORY_AVAILABLE:
+    __all__.extend([
+        "create_paper_record",
+        "get_processed_papers",
+        "get_papers_for_template",
+        "get_high_voi_papers",
     ])
