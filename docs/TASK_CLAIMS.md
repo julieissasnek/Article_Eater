@@ -22,7 +22,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 1.1 | Enum drift fix | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 | 1.2 | Template DB index | DONE | CC | 2026-02-17 | 2026-02-17 | none |
-| 1.3 | Load staging theory-links | CLAIMED | Codex | 2026-02-17 14:28 UTC | — | none |
+| 1.3 | Load staging theory-links | DONE | Codex | 2026-02-17 14:28 UTC | 2026-02-17 15:06 CET | none |
 | 1.4 | WIS conversion module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 
 ## ROUND 2 — PIPELINE COMPONENTS
@@ -45,7 +45,7 @@
 | 3.5 | Gap template stubs | DONE | Codex | 2026-02-17 | 2026-02-17 | 1.2 DONE |
 | 3.6 | Paper evaluation skeleton | DONE | CC | 2026-02-17 | 2026-02-17 | 2.4 DONE |
 | 3.7 | Salk Institute worked example | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.1 + 2.3 + 2.4 DONE |
-| 3.8 | Batch 3 gap template computations | AVAILABLE | — | — | — | 3.5 DONE |
+| 3.8 | Batch 3 gap template computations | CLAIMED | Codex | 2026-02-17 15:57 CET | — | 3.5 DONE |
 | 3.9 | CLI interface | AVAILABLE | — | — | — | 2.4 DONE |
 | 3.10 | Worked example: open-plan office | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
 | 3.11 | Worked example: primary school classroom | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (added tasks 3.8-3.12 from updated sprint plan)*
+*Last updated: 2026-02-17 by Codex (Task 3.8 claimed; Task 1.3 marked done)*
