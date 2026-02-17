@@ -20,7 +20,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.1 | Wire real computations into orchestrator | CLAIMED | Codex+CC-Opus | 2026-02-17 16:50 CET | — | none |
+| 11.1 | Wire real computations into orchestrator | DONE | Codex+CC-Opus | 2026-02-17 16:50 CET | 2026-02-17 18:15 CET | none |
 | 11.2 | Wire interaction adjustments | DONE | Antigravity | 2026-02-17 16:55 CET | 2026-02-17 17:05 CET | none |
 | 11.3 | Wire lifespan moderation | DONE | CC-Opus | 2026-02-17 16:43 CET | 2026-02-17 17:10 CET | none |
 | 11.4 | Feature-to-template input mapping | DONE | Codex | 2026-02-17 15:47 UTC | 2026-02-17 15:51 UTC | none |
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.4 completed)*
+*Last updated: 2026-02-17 by CC-Opus (Task 11.1 completed — building eval now produces differentiated scores)*

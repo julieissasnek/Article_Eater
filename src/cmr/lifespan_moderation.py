@@ -21,6 +21,60 @@ from src.cmr.template_computations import (
     get_lifespan_multiplier,
     ComputeResult,
 )
+from src.cmr.wis import goldilocks_to_wis, threshold_to_wis
+
+
+# Zone-to-WIS mapping for templates that return zone classifications
+# Maps zone strings to approximate WIS scores based on PE semantics
+ZONE_TO_WIS: Dict[str, float] = {
+    # Negative/aversive zones (WIS 15-35)
+    "confinement": 25.0,
+    "extreme_low": 15.0,
+    "extreme_high": 15.0,
+    "aversive": 20.0,
+    "severely_deficient": 15.0,
+    "deficient": 30.0,
+    "insufficient": 35.0,
+    "too_low": 30.0,
+    "too_high": 30.0,
+    "below_threshold": 35.0,
+    "poor": 25.0,
+    "low": 30.0,
+    "crowded": 25.0,
+    "no_privacy": 20.0,
+    "exposed": 25.0,
+
+    # Neutral zones (WIS 45-55)
+    "neutral": 50.0,
+    "standard": 50.0,
+    "baseline": 50.0,
+    "moderate": 50.0,
+    "adequate": 55.0,
+    "acceptable": 50.0,
+    "mixed": 50.0,
+
+    # Positive zones (WIS 60-80)
+    "good": 65.0,
+    "optimal": 75.0,
+    "liberating": 70.0,
+    "expansive": 80.0,
+    "high": 70.0,
+    "sufficient": 65.0,
+    "above_threshold": 70.0,
+    "comfortable": 70.0,
+    "private": 75.0,
+    "restorative": 75.0,
+    "natural": 75.0,
+    "biophilic": 80.0,
+    "high_quality": 80.0,
+    "excellent": 85.0,
+
+    # Special zones
+    "awe": 70.0,  # Can be overwhelming, not purely positive
+    "overwhelming": 55.0,  # Too much of a good thing
+    "high_enhancement_potential": 75.0,
+    "low_enhancement_potential": 50.0,
+}
 
 
 def extract_occupant_age(occupant_profile: Dict[str, Any]) -> Optional[int]:
@@ -185,16 +239,48 @@ def compute_template_with_lifespan(
     # Convert ComputeResult to dict
     result_dict = result.to_dict()
 
-    # Extract WIS from result
-    # Different templates return WIS in different formats
-    if 'wis_raw' in result_dict.get('details', {}):
-        wis = float(result_dict['details']['wis_raw'])
-    elif result_dict.get('output_type') == 'score':
-        # Score type returns normalized 0-1, convert to 0-100
-        wis = float(result_dict['value']) * 100.0
+    # Extract WIS from result based on output_type
+    output_type = result_dict.get('output_type', '')
+    zone = result_dict.get('zone', '')
+    details = result_dict.get('details', {})
+    raw_value = float(result_dict.get('value', 0.0))
+
+    # Priority 1: If wis_raw is explicitly provided, use it
+    if 'wis_raw' in details:
+        wis = float(details['wis_raw'])
+    # Priority 2: For goldilocks zones, convert zone to WIS
+    elif output_type == 'goldilocks_zone' and zone:
+        wis = ZONE_TO_WIS.get(zone.lower(), 50.0)
+    # Priority 3: For threshold checks, use zone mapping
+    elif output_type == 'threshold_check' and zone:
+        wis = ZONE_TO_WIS.get(zone.lower(), 50.0)
+    # Priority 4: For score outputs - check if value is WIS-scale or normalized
+    elif output_type == 'score':
+        # If value is clearly WIS-scale (>1.0 and <=100), use directly
+        if raw_value > 1.0 and raw_value <= 100.0:
+            wis = raw_value
+        # If value is normalized (0-1) AND zone is provided, prefer zone
+        elif 0.0 <= raw_value <= 1.0 and zone:
+            wis = ZONE_TO_WIS.get(zone.lower(), raw_value * 100.0)
+        # Otherwise scale normalized value
+        elif 0.0 <= raw_value <= 1.0:
+            wis = raw_value * 100.0
+        else:
+            wis = 50.0
+    # Priority 5: For matrix lookups with zone, use zone
+    elif output_type == 'matrix_lookup' and zone:
+        wis = ZONE_TO_WIS.get(zone.lower(), 50.0)
+    # Priority 6: If zone is provided without specific output_type
+    elif zone:
+        wis = ZONE_TO_WIS.get(zone.lower(), 50.0)
+    # Fallback: Use raw value if in WIS range, else default to 50
+    elif 0.0 <= raw_value <= 100.0:
+        wis = raw_value
     else:
-        # Default: value is the WIS
-        wis = float(result_dict.get('value', 50.0))
+        wis = 50.0
+
+    # Clamp WIS to valid range
+    wis = max(0.0, min(100.0, wis))
 
     return {
         "template": template_id,
