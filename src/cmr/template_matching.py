@@ -9,7 +9,6 @@ from typing import Any, Iterable
 
 from src.cmr.models import TemplateRecord
 from src.cmr.reduction_api import reduce_construct
-from src.cmr.reduction_api import reduce_construct
 
 
 REDUCTION_KEYWORDS = {
@@ -27,6 +26,49 @@ REDUCTION_KEYWORDS = {
     "affective response": ("SRT", "Affective_Response"),
     "approach avoidance": ("SRT", "Approach_Avoidance"),
 }
+
+
+def _claim_text(claim: dict[str, Any]) -> str:
+    parts = [
+        str(claim.get("iv", "")),
+        str(claim.get("dv", "")),
+        str(claim.get("description", "")),
+        str(claim.get("context", "")),
+    ]
+    return " ".join(part.lower() for part in parts if part).strip()
+
+
+def _reduce_construct_from_claim(claim: dict[str, Any]) -> tuple[str, str] | None:
+    text = _claim_text(claim)
+    for keyword, value in REDUCTION_KEYWORDS.items():
+        if keyword in text:
+            return value
+    return None
+
+
+def match_claims_via_reduction(claims: list[dict], template_index: dict[str, dict]) -> list[dict]:
+    results: list[dict] = []
+    for claim in claims:
+        match_info: list[dict] = []
+        reduction_key = _reduce_construct_from_claim(claim)
+        if reduction_key:
+            reduction = reduce_construct(*reduction_key)
+            if reduction:
+                for mapping in reduction.get("template_mappings", []):
+                    tid = mapping.get("template_id")
+                    if not tid:
+                        continue
+                    coverage = float(mapping.get("coverage", 0.0) or 0.0)
+                    match_info.append(
+                        {
+                            "template_id": tid,
+                            "match_type": "reduction",
+                            "confidence": min(1.0, max(0.0, coverage)),
+                            "rationale": mapping.get("mechanism", "") or reduction.get("irreducible_residual", ""),
+                        }
+                    )
+        results.append({"claim": claim, "matches": match_info})
+    return results
 
 
 
