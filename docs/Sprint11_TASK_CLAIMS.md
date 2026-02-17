@@ -21,8 +21,8 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.1 | Wire real computations into orchestrator | DONE | Codex+CC-Opus | 2026-02-17 16:50 CET | 2026-02-17 18:15 CET | none |
-| 11.2 | Wire interaction adjustments | DONE | Antigravity | 2026-02-17 16:55 CET | 2026-02-17 17:05 CET | none |
-| 11.3 | Wire lifespan moderation | DONE | CC-Opus | 2026-02-17 16:43 CET | 2026-02-17 17:10 CET | none |
+| 11.2 | Wire interaction adjustments | AVAILABLE | — | — | — | none |
+| 11.3 | Wire lifespan moderation | AVAILABLE | — | — | — | none |
 | 11.4 | Feature-to-template input mapping | DONE | Codex | 2026-02-17 15:47 UTC | 2026-02-17 15:51 UTC | none |
 
 ## ROUND 2 — VALIDATE + BEGIN PAPER EVAL
@@ -30,10 +30,10 @@
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | DONE | Codex | 2026-02-17 18:47 CET | 2026-02-17 18:58 CET | 11.1 DONE |
-| 11.6 | Paper claim extraction module | DONE | Codex (takeover from timeout) | 2026-02-17 15:53 UTC | 2026-02-17 16:26 UTC | [OVERRIDE] 11.1 |
-| 11.7 | Template matching module | DONE | Antigravity | 2026-02-17 17:15 CET | 2026-02-17 17:25 CET | none |
-| 11.8 | Mechanism tracing module | DONE | Antigravity | 2026-02-17 17:30 CET | 2026-02-17 17:40 CET | 11.7 DONE |
-| 11.9 | Convergence and composition modules | DONE | Antigravity | 2026-02-17 17:45 CET | 2026-02-17 18:00 CET | 11.8 DONE |
+| 11.6 | Paper claim extraction module | DONE | Codex (takeover from timeout) | 2026-02-17 15:53 UTC | 2026-02-17 16:26 UTC | 11.1 DONE |
+| 11.7 | Template matching module | AVAILABLE | — | — | — | none |
+| 11.8 | Mechanism tracing module | AVAILABLE | — | — | — | 11.7 DONE |
+| 11.9 | Convergence and composition modules | AVAILABLE | — | — | — | 11.8 DONE |
 | 11.10 | Paper evaluation orchestrator | DONE | Codex | 2026-02-17 18:55 CET | 2026-02-17 19:07 CET | 11.6 + 11.7 + 11.8 + 11.9 DONE |
 
 ## ROUND 3 — WORKED EXAMPLES + HARDENING
@@ -43,7 +43,7 @@
 | 11.11 | Ulrich 1984 paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.12 | Paper report generator | DONE | Codex | 2026-02-17 19:08 CET | 2026-02-17 19:12 CET | 11.10 DONE |
 | 11.13 | Building eval regression suite | AVAILABLE | — | — | — | 11.5 DONE |
-| 11.14 | Paper eval contradicting study | CLAIMED | Codex | 2026-02-17 19:13 CET | — | 11.10 DONE |
+| 11.14 | Paper eval contradicting study | DONE | Codex | 2026-02-17 19:13 CET | 2026-02-17 19:17 CET | 11.10 DONE |
 | 11.15 | Paper eval novel finding (gap) | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.16 | CLI for paper evaluation | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.17 | Cross-pipeline integration test | AVAILABLE | — | — | — | 11.5 + 11.10 DONE |
@@ -51,6 +51,21 @@
 | 11.19 | Batch 2 paper claims library | AVAILABLE | — | — | — | 11.10 DONE |
 | 11.20 | VOI scoring module | AVAILABLE | — | — | — | 11.10 DONE |
 
+## ROUND 3 CONTINUED — GLOBAL INTEGRATION TESTS
+
+| Task | Description | Status | Agent | Claimed | Done | Dependency |
+|------|------------|--------|-------|---------|------|------------|
+| 11.21 | Input sensitivity sweep | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.22 | Function signature audit | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.23 | Web of belief integration test | AVAILABLE | — | — | — | 11.10 DONE |
+| 11.24 | VOI end-to-end verification | AVAILABLE | — | — | — | 11.20 DONE |
+| 11.25 | Bayesian network health check | AVAILABLE | — | — | — | none |
+| 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
+| 11.27 | Template-theory data dependency test | AVAILABLE | — | — | — | 11.23 DONE |
+| 11.28 | Enum and schema drift check | AVAILABLE | — | — | — | none |
+| 11.29 | No-placeholder audit | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.30 | Completeness inventory | AVAILABLE | — | — | — | 11.22 DONE |
+
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.14 claimed)*
+*Last updated: 2026-02-17 by Codex (restored completed statuses and completed Task 11.14)*

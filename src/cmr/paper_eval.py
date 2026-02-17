@@ -238,6 +238,52 @@ def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[
     return findings
 
 
+def _build_recommendations(
+    prioritized: list[dict[str, Any]],
+    template_system_updates: list[dict[str, str]],
+) -> list[str]:
+    recommendations: list[str] = []
+
+    has_contradiction = any(item.get("category") == "contradiction" for item in prioritized)
+    has_gap = any(item.get("category") == "gap" for item in prioritized)
+    has_confirmation = any(item.get("category") == "confirmation" for item in prioritized)
+
+    contradicted_templates = {
+        update.get("template")
+        for update in template_system_updates
+        if update.get("type") == "contradicts"
+    }
+
+    if has_contradiction:
+        recommendations.append("Investigate contradiction findings first (highest VOI).")
+        if "VF3" in contradicted_templates or "CREA2" in contradicted_templates:
+            recommendations.append(
+                "Review VF3 Goldilocks boundaries; check if effect reverses above R_h 0.80."
+            )
+        recommendations.append(
+            "Run targeted replication checks for contradicted templates before ontology updates."
+        )
+
+    if has_gap:
+        recommendations.append("Queue unsupported claims as template/ontology gaps.")
+
+    if has_confirmation:
+        recommendations.append("Treat single-mechanism confirmations as provisional.")
+
+    if not recommendations:
+        recommendations.append("No critical issues detected; continue with broader validation sweep.")
+
+    # Keep order, remove duplicates.
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for rec in recommendations:
+        if rec in seen:
+            continue
+        seen.add(rec)
+        deduped.append(rec)
+    return deduped
+
+
 def _flatten_scored_matches(claim_matches: list[dict], traced_claims: list[dict]) -> list[dict]:
     trace_lookup: dict[tuple[int, str], dict[str, Any]] = {}
     for idx, traced in enumerate(traced_claims):
@@ -361,6 +407,12 @@ def evaluate_paper(
         )
 
         # Step 7: report assembly
+        n_claims_extracted = len(claims)
+        n_claims_matched = sum(1 for item in claim_matches if item.get("matches"))
+        n_claims_unmatched = max(0, n_claims_extracted - n_claims_matched)
+        findings = _build_findings_for_contract(composed, prioritized)
+        template_system_updates = _build_template_system_updates(composed)
+
         report = {
             "summary": {
                 "claims_evaluated": len(claims),
@@ -371,11 +423,7 @@ def evaluate_paper(
                 "status": "paper_pipeline_complete",
             },
             "top_findings": prioritized[:10],
-            "recommendations": [
-                "Investigate contradiction findings first (highest VOI).",
-                "Queue unsupported claims as template/ontology gaps.",
-                "Treat single-mechanism confirmations as provisional.",
-            ],
+            "recommendations": _build_recommendations(prioritized, template_system_updates),
         }
         steps.append(
             PaperEvalStep(
@@ -385,12 +433,6 @@ def evaluate_paper(
                 {"sections": list(report.keys())},
             )
         )
-
-        n_claims_extracted = len(claims)
-        n_claims_matched = sum(1 for item in claim_matches if item.get("matches"))
-        n_claims_unmatched = max(0, n_claims_extracted - n_claims_matched)
-        findings = _build_findings_for_contract(composed, prioritized)
-        template_system_updates = _build_template_system_updates(composed)
         paper_summary = (
             f"Processed {n_claims_extracted} claims from paper; "
             f"{n_claims_matched} matched templates and {n_claims_unmatched} unmatched."
