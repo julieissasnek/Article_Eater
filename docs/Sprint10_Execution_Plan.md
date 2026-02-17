@@ -374,6 +374,8 @@ Run these checks and report results:
 
 ## ROUND 3 OVERFLOW: KEEP GOING
 
+Tasks 3.8 through 3.12 expand the overflow sequence to cover gap templates, CLI tooling, and worked examples beyond the Salk study.
+
 Take these tasks in order when you finish your Round 2 work. Don't wait — just pick the next one.
 
 ### TASK 3.2 — CC — Batch 2 Template Computations
@@ -467,7 +469,7 @@ The point is getting the pipeline structure in place so it can be incrementally 
 
 ### TASK 3.7 — Antigravity — Salk Institute Worked Example
 **Estimated time: 60–90 minutes**
-**Dependency: Tasks 2.1, 2.3, 2.4 all done + Task 3.1 validation passed**
+**Dependency: 2.1 + 2.3 + 2.4 DONE**
 
 Run a REAL building evaluation on the Salk Institute. Research or estimate the actual architectural parameters:
 
@@ -493,19 +495,124 @@ Run evaluate_building with these inputs for three occupant profiles:
 
 Report: What does the system say? Do the domain scores make sense? Does the lifespan moderation produce reasonable age differences? Where does the system flag gaps? Write up findings as a validation report. This becomes the first real demonstration of the system working.
 
+### TASK 3.8 — CC or Codex — Batch 3 Gap Template Computations
+**Estimated time: 90–120 minutes**
+**Dependency: 3.5 (gap stubs) DONE**
+
+The 10 gap templates (T4, T6, T7, T10, T14, T15, T17, T18, T23, T28) got stub JSON files in Task 3.5. Now write minimal compute functions for them in src/cmr/template_computations.py. These templates are uncalibrated, so the compute functions should:
+
+- Accept whatever inputs the mechanism logically requires (e.g., T6 cortisol: chronic_noise_exposure, sleep_quality, control_perception)
+- Return a qualitative risk assessment: {"risk_level": "low" | "moderate" | "high", "mechanism": "description", "needs_calibration": true}
+- Convert to WIS using a simple mapping: low=65, moderate=45, high=25
+- Write tests for each
+
+These won't be precise, but they mean the system REPORTS on stress, reward, memory, attention, and control rather than silently ignoring them.
+
+### TASK 3.9 — Codex — CLI Interface
+**Estimated time: 60–90 minutes**
+**Dependency: 2.4 (orchestrator) DONE**
+
+Create src/cmr/cli.py — a command-line interface for running building evaluations:
+
+```bash
+python -m src.cmr.cli evaluate \
+  --building-type research_institute \
+  --climate-zone 3C \
+  --ceiling-height 2.75 \
+  --floor-area 18.0 \
+  --illuminance 350 \
+  --noise 38 \
+  --occupant-age 35
+```
+
+Use argparse. Map CLI args to the evaluate_building() function. Print the text report from report.py (Task 3.3). Include a `--json` flag for machine-readable output. Include a `--verbose` flag that shows per-template scores, not just domain summaries.
+
+### TASK 3.10 — Codex — Second Worked Example: Open-Plan Office
+**Estimated time: 60 minutes**
+**Dependency: 2.1 + 2.3 + 2.4 DONE**
+
+Run evaluate_building on a typical open-plan office — the system's most important stress test, since open-plan offices are the most-studied negative case in the literature:
+
+```python
+open_plan = {
+    "ceiling_height_m": 2.7,
+    "floor_area_m2": 500.0,          # Large open floor
+    "illuminance_lux": 500,
+    "ambient_noise_dba": 62,          # Typical open plan
+    "window_area_ratio": 0.25,
+    "primary_material": "carpet_tile",
+    "secondary_material": "glass_partition",
+    "has_nature_view": False,
+    "rt60_seconds": 0.4,
+    "view_content": "interior_only",
+    "privacy_visual": "none",
+    "privacy_acoustic": "none",
+    "density_m2_per_person": 8.0,
+}
+```
+
+The system SHOULD flag this badly — SOC2 privacy failure, CREA2 wrong noise for focus work, no nature view, low VQI. If it doesn't, the system is broken. Write up results and compare to known open-plan literature. This is a face-validity check.
+
+### TASK 3.11 — Codex — Third Worked Example: Primary School Classroom
+**Estimated time: 60 minutes**
+**Dependency: 2.1 + 2.3 + 2.4 DONE**
+
+Run evaluate_building with occupant_age = 7 (DEV-I developmental moderation should activate):
+
+```python
+classroom = {
+    "ceiling_height_m": 3.0,
+    "floor_area_m2": 60.0,
+    "illuminance_lux": 400,
+    "ambient_noise_dba": 40,
+    "window_area_ratio": 0.30,
+    "primary_material": "timber_frame",
+    "secondary_material": "linoleum",
+    "has_nature_view": True,
+    "rt60_seconds": 0.4,
+    "view_content": "playground_trees",
+}
+```
+
+Run for age 7 and age 35 (teacher). The developmental moderation should produce DIFFERENT scores — children have higher PE sensitivity (DEV-I U-curve). Verify the differences are in the right direction and plausible magnitude. Write up results.
+
+### TASK 3.12 — CC — Template Computation Batch 4: Residuals
+**Estimated time: 2–3 hours**
+**Dependency: 3.2 (Batch 2) DONE**
+
+Write compute functions for the ~18 partial-capture residual templates from Doc 67 Part 1. These are the T-series templates that partially overlap with Gen-2 but have a residual mechanism. The compute function should:
+
+- Handle ONLY the residual mechanism (not the part captured by Gen-2)
+- Reference the Gen-2 template it overlaps with
+- Include a deduplication check: if the Gen-2 template is also active, reduce this template's WIS contribution by the overlap fraction
+- Example: T5 (enclosure threat) residual = visceral threat signal at extreme confinement. VF3 handles the cognitive-mode shift. T5 compute function only fires when R_h < 0.20 (extreme confinement beyond VF3's lowest zone).
+
 ---
 
 ## COMPLETION CRITERIA
 
-The sprint is **DONE** when:
+**Minimum viable (end of Rounds 1+2):**
 1. ✅ Template DB has 150 records, queryable by series/generation/dedup_status
 2. ✅ 1,361 staging links loaded and verified
 3. ✅ WIS module passes all test cases
 4. ✅ At least 12 core template computation functions exist and pass tests
 5. ✅ Interaction matrices encoded and tested
 6. ✅ Building eval orchestrator runs end-to-end (even with some placeholder computations)
-7. ✅ Antigravity validation sweep passes
-8. ✅ Full test suite green (≥2,945 passing, zero new failures)
+7. ✅ Full test suite green (≥2,945 passing, zero new failures)
+
+**Full sprint (all rounds including overflow):**
+8. ✅ Antigravity validation sweep passes (3.1)
+9. ✅ Batch 2 computations: 22 more templates (3.2)
+10. ✅ Report generator produces human-readable output (3.3)
+11. ✅ All 150 JSON files enriched with missing fields (3.4)
+12. ✅ 10 gap template stubs created (3.5)
+13. ✅ Paper eval skeleton exists (3.6)
+14. ✅ Salk Institute worked example produces plausible results (3.7)
+15. ✅ Gap template compute functions exist (3.8)
+16. ✅ CLI interface works (3.9)
+17. ✅ Open-plan office flags badly as expected (3.10)
+18. ✅ Classroom shows developmental moderation differences (3.11)
+19. ✅ Residual template computations handle deduplication (3.12)
 
 ---
 
