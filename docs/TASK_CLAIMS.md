@@ -47,7 +47,7 @@
 | 3.7 | Salk Institute worked example | DONE | Codex | 2026-02-17 | 2026-02-17 | 2.1 + 2.3 + 2.4 DONE |
 | 3.8 | Batch 3 gap template computations | CLAIMED | Codex | 2026-02-17 15:57 CET | — | 3.5 DONE |
 | 3.9 | CLI interface | AVAILABLE | — | — | — | 2.4 DONE |
-| 3.10 | Worked example: open-plan office | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
+| 3.10 | Worked example: open-plan office | CLAIMED | Antigravity | 2026-02-17 16:05 CET | — | 2.1 + 2.3 + 2.4 DONE |
 | 3.11 | Worked example: primary school classroom | AVAILABLE | — | — | — | 2.1 + 2.3 + 2.4 DONE |
 | 3.12 | Template computation batch 4 residuals | AVAILABLE | — | — | — | 3.2 DONE |
 
