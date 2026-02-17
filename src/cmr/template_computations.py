@@ -3151,28 +3151,7 @@ def compute_t14_navigation_stress_loop(
     )
 
 
-def compute_t15_environmental_control(
-    controllability_score: float,
-    thermal_discomfort_events_per_day: float,
-    acoustic_intrusions_per_day: float,
-    occupant_age: Optional[int] = None,
-) -> ComputeResult:
-    risk_index = (
-        max(0.0, 1.0 - min(controllability_score, 1.0)) * 0.50
-        + min(thermal_discomfort_events_per_day / 10.0, 1.0) * 0.25
-        + min(acoustic_intrusions_per_day / 20.0, 1.0) * 0.25
-    )
-    return _gap_result(
-        template_id="T15",
-        risk_index=risk_index,
-        mechanism="Low environmental agency drives chronic frustration and fatigue.",
-        occupant_age=occupant_age,
-        inputs={
-            "controllability_score": controllability_score,
-            "thermal_discomfort_events_per_day": thermal_discomfort_events_per_day,
-            "acoustic_intrusions_per_day": acoustic_intrusions_per_day,
-        },
-    )
+
 
 
 def compute_t17_dopaminergic_novelty(
@@ -3680,13 +3659,29 @@ TEMPLATE_COMPUTE_FUNCTIONS = {
     "VF2": compute_vf2_visual_rhythm,
     "OLF1": compute_olf1_olfactory_pe,
 
+    # Batch 4 (Residuals)
+    "T1": compute_t1_temporal_spectral_match,
+    "T2": compute_t2_prospect_refuge_residual,
+    "T5": compute_t5_enclosure_threat_residual,
+    "T8": compute_t8_neural_grid_constraint,
+    "T11": compute_t11_exploration_mode,
+    "T15": compute_t15_personal_control,
+    "T16": compute_t16_restoration_timecourse,
+    "T20": compute_t20_convergent_performance,
+    "T22": compute_t22_rapid_gist,
+    "T24": compute_t24_theta_sequence,
+    "T27": compute_t27_non_thermal_interoception,
+    "T32": compute_t32_subcortical_auditory,
+    "T33": compute_t33_reverberation_space,
+    "T38": compute_t38_hierarchical_control_depth,
+    "T40": compute_t40_msi_inverse_effectiveness,
+
     # Batch 3
     "T4": compute_t4_attention_demand,
     "T6": compute_t6_cortisol_cascade,
     "T7": compute_t7_allostatic_anticipation,
     "T10": compute_t10_sleep_consolidation,
     "T14": compute_t14_navigation_stress_loop,
-    "T15": compute_t15_environmental_control,
     "T17": compute_t17_dopaminergic_novelty,
     "T18": compute_t18_vestibular_spatial,
     "T23": compute_t23_context_memory,
