@@ -63,7 +63,7 @@
 | 11.26 | Argument structure tracing | AVAILABLE | — | — | — | 11.1 + 11.10 DONE |
 | 11.27 | Template-theory data dependency test | CLAIMED | Antigravity | 2026-02-17 19:30 CET | — | 11.23 DONE |
 | 11.28 | Enum and schema drift check | AVAILABLE | — | — | — | none |
-| 11.29 | No-placeholder audit | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.29 | No-placeholder audit | CLAIMED | CC-Opus | 2026-02-17 21:25 CET | — | 11.1 DONE |
 | 11.30 | Completeness inventory | DONE | CC-Opus | 2026-02-17 21:10 CET | 2026-02-17 21:20 CET | 11.22 DONE |
 | 11.31 | Sprint verification test suite (Part 1) | DONE | Codex | 2026-02-17 17:09 UTC | 2026-02-17 17:34 UTC | 11.1 DONE |
 | 11.32 | Building eval provenance tests (Part 2a) | DONE | Codex | 2026-02-17 17:28 UTC | 2026-02-17 17:30 UTC | 11.1 DONE |
