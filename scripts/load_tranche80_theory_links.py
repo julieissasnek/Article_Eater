@@ -22,7 +22,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from src.epistemic.edge_types import convert_legacy_constraint_type
 from src.services.web_of_belief import (
     Belief,
     BeliefStatus,
@@ -34,9 +33,9 @@ from src.services.web_persistence import WebPersistenceService
 
 
 PRIMARY_THEORY_MAP = {
-    "ART": "ART",
+    "art": "ART",
     "biophilia": "Biophilia",
-    "SRT": "SRT",
+    "srt": "SRT",
 }
 
 
@@ -53,8 +52,9 @@ def _parse_strength(row: dict[str, str]) -> float:
 
 
 def _theory_id_for_row(theory_name: str) -> str:
-    if theory_name in PRIMARY_THEORY_MAP:
-        return PRIMARY_THEORY_MAP[theory_name]
+    key = theory_name.strip().lower()
+    if key in PRIMARY_THEORY_MAP:
+        return PRIMARY_THEORY_MAP[key]
     return theory_name.strip()
 
 
@@ -196,7 +196,9 @@ def main() -> int:
             constraint_id=f"tier2_theory_link:{line_no}",
             source_id=source_id,
             target_id=target_id,
-            constraint_type=convert_legacy_constraint_type(edge_type or "coherence_support"),
+            # Persist as explicit tier2_theory_link per Sprint 10 contract.
+            # Web persistence loader handles this legacy value via coercion.
+            constraint_type="tier2_theory_link",
             strength=_parse_strength(row),
             bidirectional=False,
             evidence_ids=[source_id, paper_id],
