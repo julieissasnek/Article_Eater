@@ -99,6 +99,7 @@ def _prioritize_findings(composed_claims: list[dict]) -> list[dict]:
         claim = entry.get("claim", {})
         traced = entry.get("traced_templates", [])
         max_conf = max([float(t.get("confidence", 0.0)) for t in traced], default=0.0)
+        effect_size = _claim_effect_size_abs(claim)
 
         if status == "contradicted":
             category = "contradiction"
@@ -108,6 +109,8 @@ def _prioritize_findings(composed_claims: list[dict]) -> list[dict]:
             category = "gap"
             priority = 2
             voi = 75.0 - (12.0 * (1.0 - max_conf))
+            if effect_size >= 0.7:
+                voi += 14.0
         else:
             category = "confirmation"
             priority = 3
@@ -146,6 +149,25 @@ def _category_to_voi(category: str) -> str:
     return "low"
 
 
+def _claim_effect_size_abs(claim: dict[str, Any]) -> float:
+    try:
+        return abs(float(claim.get("effect_size", 0.0) or 0.0))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _is_air_quality_gap_claim(claim: dict[str, Any]) -> bool:
+    joined = " ".join(
+        [
+            str(claim.get("description", "")),
+            str(claim.get("iv", "")),
+            str(claim.get("dv", "")),
+        ]
+    ).lower()
+    keywords = {"co2", "carbon dioxide", "air quality", "ventilation", "ppm"}
+    return any(keyword in joined for keyword in keywords)
+
+
 def _build_template_system_updates(composed_claims: list[dict]) -> list[dict]:
     updates: list[dict[str, str]] = []
     for entry in composed_claims:
@@ -178,6 +200,16 @@ def _build_template_system_updates(composed_claims: list[dict]) -> list[dict]:
                         "detail": f"Claim confirms {template_id}: {claim_text}",
                     }
                 )
+            continue
+
+        if _is_air_quality_gap_claim(claim):
+            updates.append(
+                {
+                    "type": "gap",
+                    "template": "none",
+                    "detail": "No template covers indoor air quality. Consider AIR-I panel.",
+                }
+            )
             continue
 
         if matched_templates:
@@ -225,6 +257,9 @@ def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[
 
         ranked = prioritized_by_claim.get(str(claim), {})
         category = ranked.get("category", "gap")
+        voi = _category_to_voi(category)
+        if category == "gap" and _claim_effect_size_abs(claim) >= 0.7:
+            voi = "high"
 
         findings.append(
             {
@@ -232,7 +267,7 @@ def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[
                 "assessment": category,
                 "convergence": convergence.get("status", "unsupported"),
                 "confidence": _score_to_band(max_conf),
-                "voi": _category_to_voi(category),
+                "voi": voi,
             }
         )
     return findings
@@ -266,6 +301,10 @@ def _build_recommendations(
 
     if has_gap:
         recommendations.append("Queue unsupported claims as template/ontology gaps.")
+        if any("AIR-I" in str(update.get("detail", "")) for update in template_system_updates):
+            recommendations.append(
+                "No template covers indoor air quality; prioritize AIR-I panel development."
+            )
 
     if has_confirmation:
         recommendations.append("Treat single-mechanism confirmations as provisional.")
