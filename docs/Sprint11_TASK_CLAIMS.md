@@ -31,7 +31,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | AVAILABLE | — | — | — | 11.1 DONE |
 | 11.6 | Paper claim extraction module | AVAILABLE | — | — | — | 11.1 DONE |
-| 11.7 | Template matching module | AVAILABLE | — | — | — | none |
+| 11.7 | Template matching module | CLAIMED | Codex | 2026-02-17 17:12 UTC | — | none |
 | 11.8 | Mechanism tracing module | AVAILABLE | — | — | — | 11.7 DONE |
 | 11.9 | Convergence and composition modules | AVAILABLE | — | — | — | 11.8 DONE |
 | 11.10 | Paper evaluation orchestrator | DONE | Codex | 2026-02-17 16:50 UTC | 2026-02-17 17:08 UTC | 11.6 + 11.7 + 11.8 + 11.9 DONE |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:12 UTC by Codex (11.4 completed)*
+*Last updated: 2026-02-17 17:12 UTC by Codex (11.7 claimed)*
