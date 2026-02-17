@@ -1,0 +1,294 @@
+{
+    "template_id": "NM_CIRCADIAN_ENTRAINMENT_001",
+    "name": "Circadian Entrainment and Non-Visual Light Effects",
+    "structural_pattern": "ENTRAINMENT",
+    "higher_order_principle": "Melanopsin-expressing ipRGCs provide a non-visual light pathway to the SCN (circadian clock), VLPO (sleep/wake), and perihabenular nucleus (mood). Architectural lighting that provides sufficient melanopic EDI at appropriate times entrains healthy circadian rhythms, promoting sleep quality, daytime alertness, and mood stability. Insufficient or mistimed light causes circadian disruption equivalent to chronic jet lag.",
+    "transferable_to": [
+        "office lighting standards (WELL Building Standard)",
+        "shift work environments (hospitals, factories)",
+        "residential lighting for sleep hygiene",
+        "school schedule and lighting design"
+    ],
+    "framework_ids": [
+        "NM"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "architectural_light_exposure",
+            "to_variable": "ipRGC_melanopic_stimulation",
+            "activity": "non_visual_photoreception",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Foster, 2021; Provencio et al., 2000; Berson et al., 2002",
+            "parameters": {
+                "photoreceptor": "melanopsin ipRGCs, peak sensitivity ~480nm",
+                "threshold": ">250 melanopic EDI for circadian entrainment",
+                "duration": ">30 minutes sustained exposure",
+                "location": "measured at eye level, not at work surface"
+            }
+        },
+        {
+            "from_variable": "ipRGC_stimulation",
+            "to_variable": "SCN_circadian_entrainment",
+            "activity": "phase_setting_of_master_clock",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Foster, 2021",
+            "parameters": {
+                "morning_light": "advances_clock (helps late chronotypes)",
+                "evening_light": "delays_clock (exacerbates late chronotypes)",
+                "downstream": "SCN controls melatonin (pineal), cortisol diurnal rhythm (adrenal), core body temperature"
+            }
+        },
+        {
+            "from_variable": "SCN_entrainment",
+            "to_variable": "sleep_quality_and_daytime_alertness",
+            "activity": "circadian_regulation_of_sleep_wake",
+            "from_level": "subpersonal",
+            "to_level": "personal_epistemic",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Cajochen et al., 2005; Figueiro et al., 2017",
+            "parameters": {
+                "entrained": "consolidated sleep, daytime alertness, normal cortisol diurnal rhythm",
+                "disrupted": "fragmented sleep, daytime drowsiness, flattened cortisol rhythm (connects to T5/T29)"
+            }
+        },
+        {
+            "from_variable": "ipRGC_stimulation",
+            "to_variable": "mood_regulation_via_perihabenular",
+            "activity": "non_circadian_light_mood_effect",
+            "from_level": "subpersonal",
+            "to_level": "personal_epistemic",
+            "bridging_quality": "MEDIUM",
+            "maturity": "how-plausibly",
+            "key_evidence": "Fernandez et al., 2018; LeGates et al., 2012",
+            "parameters": {
+                "note": "Light affects mood INDEPENDENTLY of circadian entrainment and vision. This pathway may explain seasonal affective disorder and the mood benefits of bright environments even for non-circadian endpoints."
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Parameters are specific to melanopic EDI, not photopic lux \u2014 standard lighting design metrics (photopic lux) do not capture circadian effectiveness",
+        "Timing matters enormously: the same light dose at 8am vs. 10pm has opposite circadian effects",
+        "Individual chronotype modulates optimal timing \u2014 one-size-fits-all lighting schedules are suboptimal",
+        "Age: ipRGC sensitivity declines with age; elderly require higher melanopic EDI"
+    ],
+    "moderators": [
+        "age (lens yellowing and pupil size reduce retinal light)",
+        "chronotype (owls need more morning light, larks need less)",
+        "latitude/season (natural availability of circadian light)",
+        "glazing_properties (low-e glass often blocks cyan/blue spectrum)"
+    ],
+    "interactions": [
+        {
+            "template": "T5 (NM_THREAT_MODULATION_001)",
+            "type": "MODULATOR",
+            "description": "Circadian disruption flattens cortisol diurnal rhythm \u2014 the same pattern seen in chronic stress and social isolation (T50). Healthy circadian rhythm is necessary for normal HPA axis function."
+        },
+        {
+            "template": "T29 (ALLOSTATIC_MASTER_001)",
+            "type": "INPUT",
+            "description": "Circadian disruption is an allostatic stressor. Chronic disruption contributes to allostatic load via sleep loss, cortisol dysregulation, and inflammatory marker elevation."
+        },
+        {
+            "template": "T22 (NM_AESTHETIC_REWARD_001)",
+            "type": "INDEPENDENT",
+            "description": "The non-visual light pathway (ipRGC) is independent of the visual aesthetic pathway. A beautiful but dim environment fails circadian requirements; an ugly but bright environment succeeds."
+        }
+    ],
+    "overall_maturity": "how-actually (mechanism) / how-plausibly (specific architectural thresholds)",
+    "key_references": [
+        "Foster, R. G. (2021). Sleep, circadian rhythms and health. Interface Focus",
+        "Provencio, I., et al. (2000). A novel human opsin in the inner retina. Journal of Neuroscience",
+        "Berson, D. M., Dunn, F. A., & Takao, M. (2002). Phototransduction by retinal ganglion cells. Science",
+        "Fernandez, D. C., et al. (2018). Light affects mood and learning through distinct retina-brain pathways. Cell",
+        "Figueiro, M. G., et al. (2017). Tailored lighting intervention improves measures of sleep, depression, and agitation. BMC Geriatrics"
+    ],
+    "display_id": "T55",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
+}

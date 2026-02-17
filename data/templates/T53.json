@@ -1,0 +1,294 @@
+{
+    "template_id": "IC_OLFACTORY_LIMBIC_001",
+    "name": "Olfactory-Limbic Environmental Processing",
+    "structural_pattern": "BYPASS",
+    "higher_order_principle": "Olfaction has the most direct sensory pathway to limbic structures (amygdala, entorhinal cortex, hippocampus), bypassing thalamic relay. Odors affect emotion and memory before conscious identification. Environmental odors serve as: (1) rapid affective modulators via amygdala, (2) autobiographical memory retrieval cues via hippocampus, and (3) multisensory coherence signals that modulate processing fluency.",
+    "transferable_to": [
+        "hospital anxiety reduction (via pleasant/familiar scents)",
+        "retail environment affective priming",
+        "workplace stress reduction (biophilic odors)",
+        "memory care facilities for dementia (olfactory cues for wayfinding/identity)"
+    ],
+    "framework_ids": [
+        "IC"
+    ],
+    "causal_links": [
+        {
+            "from_variable": "environmental_odor_molecules",
+            "to_variable": "amygdala_affective_evaluation",
+            "activity": "direct_olfactory_limbic_processing",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Gottfried, 2010; Zelano & Sobel, 2005",
+            "parameters": {
+                "pathway": "olfactory_bulb \u2192 piriform + amygdala (direct, no thalamic relay)",
+                "latency_ms": "150-200 for amygdala activation",
+                "note": "Faster affective evaluation than any other sense"
+            }
+        },
+        {
+            "from_variable": "environmental_odor_molecules",
+            "to_variable": "hippocampal_memory_retrieval",
+            "activity": "odor_evoked_autobiographical_memory",
+            "from_level": "subpersonal",
+            "to_level": "personal_epistemic",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Herz & Engen, 1996; Herz, 2004",
+            "parameters": {
+                "pathway": "olfactory_bulb \u2192 entorhinal_cortex \u2192 hippocampus",
+                "memory_properties": "more_emotional, more_vivid, earlier_in_life than other modalities",
+                "architectural_implication": "building_odors_index_occupant_memories"
+            }
+        },
+        {
+            "from_variable": "olfactory_visual_congruence",
+            "to_variable": "multisensory_processing_fluency",
+            "activity": "cross_modal_prediction_confirmation",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "MEDIUM",
+            "maturity": "how-plausibly",
+            "key_evidence": "Kahn et al., 2008; Bar cross-modal prediction",
+            "parameters": {
+                "congruent": "garden_smell + garden_visual \u2192 fluency \u2192 positive_affect",
+                "incongruent": "exhaust_smell + garden_visual \u2192 PE \u2192 negative_affect"
+            }
+        },
+        {
+            "from_variable": "amygdala_evaluation",
+            "to_variable": "autonomic_response",
+            "activity": "olfactory_autonomic_cascade",
+            "from_level": "subpersonal",
+            "to_level": "subpersonal",
+            "bridging_quality": "HIGH",
+            "maturity": "how-actually",
+            "key_evidence": "Gottfried, 2010",
+            "parameters": {
+                "pleasant_odors": "reduced_sympathetic, increased_parasympathetic",
+                "unpleasant_odors": "increased_sympathetic, HPA_activation_possible",
+                "connects_to": "T5 (threat/HPA) via amygdala-hypothalamic pathway"
+            }
+        }
+    ],
+    "scope_conditions": [
+        "Olfactory adaptation is rapid (~2-5 minutes for constant odors). Environmental odor effects require either novel odors or fluctuating concentrations.",
+        "Cross-cultural variation in odor preferences is substantial (Majid). Mechanism is universal; preferred odors are not.",
+        "Olfactory sensitivity varies with age (declines significantly after 60), sex (females generally more sensitive), and individual genetics (OR gene polymorphisms)."
+    ],
+    "moderators": [
+        "odor_valence (personal/cultural preference determines direction of affect)",
+        "concentration (intensity often has inverted-U relationship with pleasantness)",
+        "context_congruence (roasted coffee smell is pleasant in kitchen, confusing in bathroom)",
+        "nasal_patency (physiological access to receptors)"
+    ],
+    "interactions": [
+        {
+            "template": "T5 (NM_THREAT_MODULATION_001)",
+            "type": "INPUT",
+            "description": "Unpleasant odors activate amygdala \u2192 T5 pathway. Malodorous environments are stressors."
+        },
+        {
+            "template": "T23 (SN_CONTEXT_MEMORY_002)",
+            "type": "INPUT",
+            "description": "Odor-evoked hippocampal retrieval uses the same context memory system. Building odors contribute to 'Being Away' or prevent it (hospital smell anchors you to medical context)."
+        },
+        {
+            "template": "T12 (IC_INTEROCEPTIVE_AFFECT_001)",
+            "type": "SHARED_SUBSTRATE",
+            "description": "Olfaction is a chemical sense with interoceptive qualities. OFC odor processing shares substrate with interoceptive representation."
+        }
+    ],
+    "overall_maturity": "how-actually (pathway) / how-plausibly (architectural application)",
+    "key_references": [
+        "Gottfried, J. A. (2010). Central mechanisms of odour object perception. Nature Reviews Neuroscience",
+        "Herz, R. S., & Engen, T. (1996). Odor memory: Review and analysis. Psychonomic Bulletin & Review",
+        "Herz, R. S. (2004). A naturalistic analysis of autobiographical memories triggered by olfactory visual and auditory stimuli. Chemical Senses",
+        "Arshamian, A., et al. (2022). The perception of odor pleasantness is shared across cultures. Current Biology",
+        "Zelano, C., & Sobel, N. (2005). Humans as an animal model for systems-level organization of olfaction. Neuron"
+    ],
+    "display_id": "T53",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
+}

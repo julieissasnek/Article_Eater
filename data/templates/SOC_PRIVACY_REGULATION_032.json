@@ -1,0 +1,259 @@
+{
+    "template_id": "SOC_PRIVACY_REGULATION_032",
+    "display_id": "T32",
+    "name": "Privacy regulation \u2192 boundary control \u2192 stress reduction",
+    "structural_pattern": "environmental_affordance \u2192 control_perception \u2192 stress_mitigation",
+    "higher_order_principle": "Privacy as boundary control mechanism (Altman)",
+    "framework_ids": [
+        "SOCIAL_BRAIN",
+        "NM_STRESS"
+    ],
+    "transferable_to": [
+        "Residential design",
+        "Hospital patient rooms",
+        "Office acoustic pods"
+    ],
+    "causal_links": [
+        {
+            "id": "link_1",
+            "from_entity": "architectural_boundaries",
+            "activity": "enhances",
+            "to_entity": "perceived_control_over_access",
+            "from_level": "ecological",
+            "to_level": "cognitive",
+            "bridging_quality": "strong",
+            "maturity": "established",
+            "evidence_base": "Solid barriers increase perceived control over social interaction (Altman 1975)",
+            "change_produced": "increased agency/autonomy"
+        },
+        {
+            "id": "link_2",
+            "from_entity": "perceived_control_over_access",
+            "activity": "inhibits",
+            "to_entity": "cortisol_release",
+            "from_level": "cognitive",
+            "to_level": "neuroendocrine",
+            "bridging_quality": "moderate",
+            "maturity": "how-plausibly",
+            "evidence_base": "Control over stressors reduces HPA axis activation (Dickerson & Kemeny 2004)",
+            "change_produced": "reduced stress response magnitude"
+        },
+        {
+            "id": "link_3",
+            "from_entity": "cortisol_release",
+            "activity": "inhibits",
+            "to_entity": "social_withdrawal",
+            "from_level": "neuroendocrine",
+            "to_level": "behavioral",
+            "bridging_quality": "moderate",
+            "maturity": "how-plausibly",
+            "evidence_base": "Chronic stress leads to social withdrawal (sickness behavior mechanism)",
+            "change_produced": "maintenance of social engagement capacity"
+        }
+    ],
+    "scope_conditions": [
+        "Applies when social interaction is undesired or overwhelming",
+        "Control must be verified/perceived as reliable"
+    ],
+    "moderators": [
+        "Individual need for privacy (introversion)",
+        "Cultural norms regarding accessibility",
+        "Duration of exposure"
+    ],
+    "interactions": [
+        "SOC_COPRESENCE_031 (T31)",
+        "XF_SOCIAL_AFFORDANCE_DENSITY_001 (T19)",
+        "NM_THREAT_HPA_001 (T5)"
+    ],
+    "overall_maturity": "how-plausibly",
+    "key_references": [
+        {
+            "citation": "Altman, I. (1975). The Environmental and Social Behavior."
+        },
+        {
+            "citation": "Dickerson, S. S., & Kemeny, M. E. (2004). Acute stressors and cortisol responses. Psychological Bulletin."
+        }
+    ],
+    "short_description": "Architectural boundaries that afford control over social access reduce physiological stress.",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
+}

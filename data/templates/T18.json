@@ -1,72 +1,257 @@
 {
-  "template_id": "MYSTERY_EXPLORATION_018",
-  "display_id": "T18",
-  "name": "Environmental mystery \u2192 exploration motivation \u2192 information seeking",
-  "structural_pattern": "partial_visibility \u2192 curiosity \u2192 approach_behavior",
-  "higher_order_principle": "Environments that promise more information motivate exploration.",
-  "framework_ids": [
-    "INFORMATION_PROCESSING",
-    "SPATIAL_NAVIGATION"
-  ],
-  "causal_links": [
-    {
-      "from_entity": "partial_occlusion_cues",
-      "activity": "information_gap_detection",
-      "to_entity": "curiosity_state",
-      "change_produced": "desire for resolution",
-      "level": "environmental",
-      "bridging_to": "psychological",
-      "bridging_quality": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Kaplan & Kaplan 1989; Loewenstein 1994",
-      "scope_conditions": "Must promise accessible information",
-      "interactions": []
+    "template_id": "EC_VESTIBULAR_SPATIAL_001",
+    "display_id": "T18",
+    "name": "Architectural vertical dimension \u2192 vestibular processing \u2192 cognitive style",
+    "structural_pattern": "spatial_feature \u2192 sensory_system_engagement \u2192 cognitive_modulation",
+    "higher_order_principle": "Embodied Cognition (Verticality Metaphor)",
+    "framework_ids": [
+        "EMBODIED_COGNITION",
+        "SPATIAL_NAVIGATION"
+    ],
+    "transferable_to": [
+        "Cathedral design",
+        "Atrium spaces",
+        "Virtual reality (limited by lack of vestibular input)"
+    ],
+    "causal_links": [
+        {
+            "id": "link_1",
+            "from_entity": "vertical_architectural_features",
+            "activity": "stimulates",
+            "to_entity": "vestibular_system",
+            "from_level": "ecological",
+            "to_level": "circuit",
+            "bridging_quality": "medium",
+            "maturity": "how-plausibly",
+            "evidence_base": "Hitier et al. (2014) - head tilt/gaze shifts",
+            "change_produced": "otolith organ activation"
+        },
+        {
+            "id": "link_2",
+            "from_entity": "vestibular_processing",
+            "activity": "modulates",
+            "to_entity": "spatial_reference_frame",
+            "from_level": "circuit",
+            "to_level": "circuit",
+            "bridging_quality": "medium",
+            "maturity": "how-plausibly",
+            "evidence_base": "Brandt et al. (2005) - vestibular-hippocampal link",
+            "change_produced": "allocentric vs egocentric shift"
+        },
+        {
+            "id": "link_3",
+            "from_entity": "spatial_reference_frame",
+            "activity": "biases",
+            "to_entity": "cognitive_processing_style",
+            "from_level": "circuit",
+            "to_level": "psychological",
+            "bridging_quality": "low",
+            "maturity": "how-possibly",
+            "evidence_base": "Meyers-Levy & Zhu (2007) - ceiling height effect",
+            "change_produced": "abstract vs concrete processing"
+        }
+    ],
+    "scope_conditions": [
+        "Requires physical presence (VR without motion platform lacks this)",
+        "Modulated by individual height sensitivity"
+    ],
+    "moderators": [
+        "Prior experience with vertical spaces",
+        "Balance/vestibular health"
+    ],
+    "interactions": [
+        "EC_AFFORDANCE_POSTURAL_001 (T8) - creates upward gaze/posture",
+        "NM_DOPAMINERGIC_NOVELTY_REWARD_001 (T17) - verticality often creates awe/novelty"
+    ],
+    "overall_maturity": "how-possibly",
+    "key_references": [
+        {
+            "citation": "Hitier, M. et al. (2014). Vestibular pathways involved in cognition."
+        },
+        {
+            "citation": "Meyers-Levy, J. & Zhu, R. (2007). The influence of ceiling height."
+        }
+    ],
+    "short_description": "High ceilings and vertical views engage the vestibular system, potentially shifting cognition toward abstraction.",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
     },
-    {
-      "from_entity": "curiosity_state",
-      "activity": "approach_motivation",
-      "to_entity": "exploration_behavior",
-      "change_produced": "movement toward hidden area",
-      "level": "cognitive",
-      "bridging_to": "behavioral",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "evidence_base": "Berlyne 1960",
-      "scope_conditions": "Safety must be adequate",
-      "interactions": [
-        "Threat assessment can override"
-      ]
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
     }
-  ],
-  "scope_conditions": [
-    "Mystery must promise achievable resolution",
-    "Excessive occlusion creates anxiety not curiosity",
-    "Individual differences in novelty-seeking"
-  ],
-  "moderators": [
-    "Openness to experience",
-    "Current safety assessment",
-    "Time pressure"
-  ],
-  "interactions": [
-    "PROSPECT_REFUGE_017",
-    "PP_COMPLEXITY_GOLDILOCKS_002"
-  ],
-  "overall_maturity": "supported",
-  "key_references": [
-    {
-      "id": "Kaplan_1989",
-      "citation": "Kaplan & Kaplan (1989)"
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
     },
-    {
-      "id": "Loewenstein_1994",
-      "citation": "Loewenstein (1994)"
-    },
-    {
-      "id": "Berlyne_1960",
-      "citation": "Berlyne (1960)"
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
     }
-  ],
-  "version": "1.0.0",
-  "short_description": "Environments that promise more information motivate exploration"
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
 }

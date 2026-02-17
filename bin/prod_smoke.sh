@@ -51,6 +51,16 @@ else
   fi
 fi
 
+# V14 lifespan schema/runtime gates
+if command -v node >/dev/null 2>&1; then
+  echo "Running V14 lifespan gates..."
+  node scripts/validate_v14_lifespan_fields.js
+  node scripts/validate_v14_runtime_checks.js
+else
+  echo "ERROR: node is required for V14 lifespan gates"
+  exit 1
+fi
+
 if [[ -x "./bin/tc" ]]; then
   ./bin/tc doctor --prod || true
   ./bin/tc health || true

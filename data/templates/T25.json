@@ -1,72 +1,279 @@
 {
-  "template_id": "SYMMETRY_PREFERENCE_025",
-  "display_id": "T25",
-  "name": "Bilateral symmetry \u2192 processing fluency \u2192 aesthetic preference",
-  "structural_pattern": "structural_property \u2192 cognitive_ease \u2192 evaluative_response",
-  "higher_order_principle": "Symmetry detection is automatic and contributes to processing fluency.",
-  "framework_ids": [
-    "PREDICTIVE_PROCESSING",
-    "EVOLUTIONARY_AESTHETICS"
-  ],
-  "causal_links": [
-    {
-      "from_entity": "bilateral_symmetry",
-      "activity": "rapid_pattern_detection",
-      "to_entity": "processing_fluency",
-      "change_produced": "enhanced perceptual ease",
-      "level": "environmental",
-      "bridging_to": "computational",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "evidence_base": "Wagemans 1995; Treder 2010",
-      "scope_conditions": "Vertical symmetry strongest",
-      "interactions": []
+    "template_id": "MS_RIPPLE_REPLAY_002",
+    "display_id": "T25",
+    "name": "Environmental rest opportunities → sharp-wave ripple replay → spatial knowledge consolidation",
+    "structural_pattern": "low_demand_pause → replay_opportunity → memory_consolidation",
+    "higher_order_principle": "Two-Stage Model of Memory (Buzsáki)",
+    "framework_ids": [
+        "MEMORY_SYSTEMS",
+        "SPATIAL_NAVIGATION"
+    ],
+    "transferable_to": [
+        "Educational breaks",
+        "Wayfinding learning",
+        "Skill acquisition"
+    ],
+    "causal_links": [
+        {
+            "id": "link_1",
+            "from_entity": "rest_affordances",
+            "activity": "facilitates",
+            "to_entity": "quiet_wakefulness",
+            "from_level": "ecological",
+            "to_level": "behavioral",
+            "bridging_quality": "high",
+            "maturity": "how-actually",
+            "evidence_base": "Behavioral observation",
+            "change_produced": "cessation of exploration"
+        },
+        {
+            "id": "link_2",
+            "from_entity": "quiet_wakefulness",
+            "activity": "triggers",
+            "to_entity": "hippocampal_state_transition",
+            "from_level": "behavioral",
+            "to_level": "circuit",
+            "bridging_quality": "high",
+            "maturity": "how-actually",
+            "evidence_base": "Buzsáki (2015)",
+            "change_produced": "Theta → SPA-LIA (Sharp Wave Ripples)"
+        },
+        {
+            "id": "link_3",
+            "from_entity": "sharp_wave_ripples",
+            "activity": "replays",
+            "to_entity": "compressed_trajectories",
+            "from_level": "circuit",
+            "to_level": "circuit",
+            "bridging_quality": "high",
+            "maturity": "how-actually",
+            "evidence_base": "Foster & Wilson (2006)",
+            "change_produced": "20x compressed replay of recent path"
+        },
+        {
+            "id": "link_4",
+            "from_entity": "replay_events",
+            "activity": "drives",
+            "to_entity": "cortical_consolidation",
+            "from_level": "circuit",
+            "to_level": "systems",
+            "bridging_quality": "high",
+            "maturity": "how-actually",
+            "evidence_base": "Girardeau et al. (2009)",
+            "change_produced": "long-term memory formation"
+        }
+    ],
+    "scope_conditions": [
+        "Requires 'true' rest (not anxiety or high-demand waiting)",
+        "Minimum duration ~2-5 min for replay events"
+    ],
+    "moderators": [
+        "Novelty of prior experience (novel = more replay)",
+        "Reward association (rewarded paths replayed more)"
+    ],
+    "interactions": [
+        "SN_THETA_SEQUENCE_003 (T24)",
+        "NM_CHOLINERGIC_GATING_007 (T26)",
+        {
+            "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+            "display_id": "CREA1",
+            "nature": "Reverse link added by CX V12 S3 remediation to satisfy bidirectional interaction encoding."
+        },
+        {
+            "template_id": "INCUBATION_ARCHITECTURE_001",
+            "display_id": "CREA3",
+            "nature": "Reverse link added by CX V12 S3 remediation to satisfy bidirectional interaction encoding."
+        }
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        {
+            "citation": "Buzsáki, G. (2015). Hippocampal sharp wave-ripple: A cognitive biomarker."
+        },
+        {
+            "citation": "Foster, D. J. & Wilson, M. A. (2006). Reverse replay of behavioural sequences."
+        }
+    ],
+    "short_description": "We learn the map when we stop moving; quiet rest allows the hippocampus to replay and save our route.",
+    "age_band_modifiers": {
+        "toddler_0_3": {
+            "speed": 0.45,
+            "vision": 0.7,
+            "hearing": 0.85,
+            "motor": 0.5,
+            "olfaction": 0.9
+        },
+        "age_3_6": {
+            "speed": 0.6,
+            "vision": 0.8,
+            "hearing": 0.9,
+            "motor": 0.65,
+            "olfaction": 0.95
+        },
+        "age_6_9": {
+            "speed": 0.72,
+            "vision": 0.88,
+            "hearing": 0.94,
+            "motor": 0.78,
+            "olfaction": 0.97
+        },
+        "age_9_12": {
+            "speed": 0.82,
+            "vision": 0.94,
+            "hearing": 0.97,
+            "motor": 0.87,
+            "olfaction": 0.98
+        },
+        "age_12_16": {
+            "speed": 0.9,
+            "vision": 0.97,
+            "hearing": 0.98,
+            "motor": 0.93,
+            "olfaction": 0.99
+        },
+        "emerging_adult_16_25": {
+            "speed": 0.97,
+            "vision": 1.0,
+            "hearing": 1.0,
+            "motor": 0.98,
+            "olfaction": 1.0
+        },
+        "young_20_40": {
+            "speed": 1.0,
+            "vision": 1.0,
+            "hearing": 1.0,
+            "motor": 1.0,
+            "olfaction": 1.0
+        },
+        "middle_40_65": {
+            "speed": 0.88,
+            "vision": 0.9,
+            "hearing": 0.92,
+            "motor": 0.9,
+            "olfaction": 0.85
+        },
+        "older_65_80": {
+            "speed": 0.72,
+            "vision": 0.7,
+            "hearing": 0.75,
+            "motor": 0.7,
+            "olfaction": 0.5
+        },
+        "frail_80_plus": {
+            "speed": 0.55,
+            "vision": 0.5,
+            "hearing": 0.55,
+            "motor": 0.5,
+            "olfaction": 0.25
+        }
     },
-    {
-      "from_entity": "processing_fluency",
-      "activity": "hedonic_attribution",
-      "to_entity": "aesthetic_preference",
-      "change_produced": "positive evaluation",
-      "level": "cognitive",
-      "bridging_to": "psychological",
-      "bridging_quality": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Reber et al. 2004",
-      "scope_conditions": "May plateau at high symmetry levels",
-      "interactions": [
-        "Can be overridden by meaning/context"
-      ]
+    "vulnerability_index": {
+        "formula": "speed * vision * hearing * motor * olfaction",
+        "interpretation": "lower product indicates higher vulnerability",
+        "reference_band": "young_20_40"
+    },
+    "universal_design_thresholds": {
+        "min_ambient_illuminance_lux": 300,
+        "max_rt60_speech_s": 0.4,
+        "min_snr_db": 15,
+        "min_cof": 0.55,
+        "max_riser_mm": 170,
+        "min_contrast_ratio": 0.7,
+        "min_wayfinding_channels": 3
+    },
+    "challenge_gradient_available": false,
+    "lifespan_sensitivity_multiplier": {
+        "model": "u_curve_piecewise",
+        "reference": "age_25_50",
+        "by_age_range": {
+            "age_0_6": 1.6,
+            "age_6_12": 1.35,
+            "age_12_25": 1.15,
+            "age_25_50": 1.0,
+            "age_50_65": 1.2,
+            "age_65_80": 1.45,
+            "age_80_plus": 1.7
+        },
+        "boundary_rule": {
+            "range": "16-25",
+            "method": "linear_interpolation_to_adult_baseline"
+        }
+    },
+    "developmental_challenge_benefit": false,
+    "context_modes": {
+        "school": {
+            "context": "school",
+            "classroom_parameters": {
+                "daylight_vqi_min": {
+                    "primary_5_9": 50,
+                    "upper_9_12": 40,
+                    "secondary_12_16": 35
+                },
+                "illuminance_lux": {
+                    "min": 300,
+                    "max": 500
+                },
+                "cct_k": {
+                    "primary_5_9": 4000,
+                    "upper_9_12": {
+                        "min": 4000,
+                        "max": 5000
+                    },
+                    "secondary_12_16": {
+                        "min": 4000,
+                        "max": 5000
+                    }
+                },
+                "acoustic_rt60_s_max": {
+                    "primary_5_9": 0.4,
+                    "upper_9_12": 0.5,
+                    "secondary_12_16": 0.6
+                },
+                "background_noise_dba_max": {
+                    "primary_5_9": 35,
+                    "upper_9_12": 40,
+                    "secondary_12_16": 40
+                },
+                "visual_complexity_target": {
+                    "primary_5_9": "moderate_low",
+                    "upper_9_12": "moderate",
+                    "secondary_12_16": "moderate"
+                },
+                "display_area_m2_per_child": {
+                    "primary_5_9": 0.5,
+                    "upper_9_12": 0.3,
+                    "secondary_12_16": "lockers_desks"
+                },
+                "nature_view_priority": {
+                    "primary_5_9": "essential",
+                    "upper_9_12": "very_important",
+                    "secondary_12_16": "important"
+                },
+                "movement_break_min": {
+                    "primary_5_9": "15-20",
+                    "upper_9_12": "25-30",
+                    "secondary_12_16": "40-45"
+                },
+                "ceiling_height_m": {
+                    "primary_5_9": {
+                        "min": 2.7,
+                        "max": 3.0
+                    },
+                    "upper_9_12": {
+                        "min": 3.0,
+                        "max": 3.5
+                    },
+                    "secondary_12_16": {
+                        "min": 3.0,
+                        "max": 3.5
+                    }
+                },
+                "spatial_clarity": {
+                    "primary_5_9": "maximum",
+                    "upper_9_12": "high",
+                    "secondary_12_16": "moderate"
+                }
+            }
+        }
     }
-  ],
-  "scope_conditions": [
-    "Applies to architecture, faces, objects",
-    "Perfect symmetry may appear artificial",
-    "Dynamic asymmetry valued in some contexts"
-  ],
-  "moderators": [
-    "Complexity level",
-    "Cultural aesthetic norms",
-    "Expertise in design"
-  ],
-  "interactions": [
-    "PP_FRACTAL_FLUENCY_003",
-    "PP_COMPLEXITY_GOLDILOCKS_002"
-  ],
-  "overall_maturity": "supported",
-  "key_references": [
-    {
-      "id": "Wagemans_1995",
-      "citation": "Wagemans (1995)"
-    },
-    {
-      "id": "Treder_2010",
-      "citation": "Treder (2010)"
-    },
-    {
-      "id": "Jacobsen_2006",
-      "citation": "Jacobsen & H\u00f6fel (2006)"
-    }
-  ],
-  "version": "1.0.0",
-  "short_description": "Symmetry detection is automatic and contributes to processing fluency"
 }

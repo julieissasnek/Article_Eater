@@ -1,72 +1,274 @@
 {
-  "template_id": "NM_NATURE_RESTORATION_006",
-  "display_id": "T6",
-  "name": "Natural visual content \u2192 parasympathetic dominance \u2192 stress recovery",
-  "structural_pattern": "stimulus_pattern \u2192 autonomic_shift \u2192 physiological_restoration",
-  "higher_order_principle": "Natural scenes activate parasympathetic nervous system, reducing stress physiology.",
-  "framework_ids": [
-    "NEUROMODULATORY",
-    "RESTORATIVE_ENVIRONMENTS"
-  ],
-  "causal_links": [
-    {
-      "from_entity": "natural_scene_features",
-      "activity": "visual_processing",
-      "to_entity": "amygdala_deactivation",
-      "change_produced": "reduced threat signal",
-      "level": "environmental",
-      "bridging_to": "circuit",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "evidence_base": "Ulrich 1983; Park et al. 2010",
-      "scope_conditions": "Non-threatening nature (no predators, cliffs)",
-      "interactions": []
+    "template_id": "NM_CORTISOL_HIPPOCAMPAL_005",
+    "display_id": "T6",
+    "name": "Chronic cortisol \u2192 hippocampal impairment \u2192 spatial cognition degradation",
+    "structural_pattern": "sustained_stressor \u2192 neural_damage \u2192 functional_impairment (vicious cycle)",
+    "higher_order_principle": "Glucocorticoid Cascade Hypothesis (Sapolsky)",
+    "framework_ids": [
+        "NM_STRESS",
+        "SPATIAL_NAVIGATION"
+    ],
+    "transferable_to": [
+        "Any chronic stress context affecting memory"
+    ],
+    "causal_links": [
+        {
+            "id": "link_1",
+            "from_entity": "chronic_cortisol_elevation",
+            "activity": "enhances",
+            "to_entity": "glucocorticoid_receptor_activation",
+            "from_level": "neuroendocrine",
+            "to_level": "molecular",
+            "bridging_quality": "strong",
+            "maturity": "how-actually",
+            "evidence_base": "Sapolsky (2000)",
+            "change_produced": "GR saturation"
+        },
+        {
+            "id": "link_2",
+            "from_entity": "glucocorticoid_receptor_activation",
+            "activity": "inhibits",
+            "to_entity": "hippocampal_structural_integrity",
+            "from_level": "molecular",
+            "to_level": "cellular",
+            "bridging_quality": "strong",
+            "maturity": "how-actually",
+            "evidence_base": "McEwen (2007) - dendritic retraction in CA3 + suppressed neurogenesis in DG",
+            "change_produced": "atrophy",
+            "parameter_range": "detectable after ~3 weeks chronic stress"
+        },
+        {
+            "id": "link_3",
+            "from_entity": "hippocampal_atrophy",
+            "activity": "inhibits",
+            "to_entity": "cognitive_map_quality",
+            "from_level": "cellular",
+            "to_level": "circuit",
+            "bridging_quality": "strong",
+            "maturity": "how-actually",
+            "evidence_base": "Kim & Diamond (2002)",
+            "change_produced": "place cell instability"
+        },
+        {
+            "id": "link_4",
+            "from_entity": "impaired_cognitive_map",
+            "activity": "enhances",
+            "to_entity": "navigational_stress",
+            "from_level": "circuit",
+            "to_level": "psychological",
+            "bridging_quality": "moderate",
+            "maturity": "how-plausibly",
+            "evidence_base": "Circular logic: poor maps lead to more stress (Cycle T14)",
+            "change_produced": "feedback loop reinforcement"
+        }
+    ],
+    "scope_conditions": [
+        "Applies to CHRONIC not acute cortisol (acute can enhance memory)",
+        "Age-dependent (older adults more vulnerable)",
+        "Individual receptor density variation"
+    ],
+    "moderators": [
+        "Exercise (neuroprotective via BDNF)",
+        "Environmental enrichment (neuroprotective)",
+        "Social support"
+    ],
+    "interactions": [
+        "XF_NAVIGATION_STRESS_VICIOUS_CYCLE_002 (T14) - the full cycle",
+        "SN_LAYOUT_COGNITIVE_MAP_001 (T3) - provides the baseline map quality",
+        "NM_THREAT_HPA_001 (T5) - drives the cortisol"
+    ],
+    "overall_maturity": "how-actually",
+    "key_references": [
+        {
+            "citation": "Sapolsky, R. M. (2000). Glucocorticoids and hippocampal atrophy."
+        },
+        {
+            "citation": "McEwen, B. S. (2007). Physiology of stress."
+        },
+        {
+            "citation": "Kim, J. J. & Diamond, D. M. (2002). The stressed hippocampus."
+        }
+    ],
+    "short_description": "Chronic cortisol damages the hippocampus, impairing spatial memory and creating a vicious cycle of navigational stress.",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
     },
-    {
-      "from_entity": "amygdala_deactivation",
-      "activity": "vagal_activation",
-      "to_entity": "HRV_increase",
-      "change_produced": "parasympathetic dominance",
-      "level": "neural",
-      "bridging_to": "physiological",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "evidence_base": "Thayer & Lane 2009",
-      "scope_conditions": "Baseline stress required for measurable recovery",
-      "interactions": [
-        "Social presence modulates effect"
-      ]
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
     }
-  ],
-  "scope_conditions": [
-    "Effect requires prior stress elevation",
-    "Window views may be sufficient",
-    "Simulated nature (VR) shows weaker effects"
-  ],
-  "moderators": [
-    "Baseline stress level",
-    "Nature familiarity/expertise",
-    "Duration of exposure"
-  ],
-  "interactions": [
-    "NM_THREAT_HPA_001 (opposite direction)",
-    "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001"
-  ],
-  "overall_maturity": "established",
-  "key_references": [
-    {
-      "id": "Ulrich_1983",
-      "citation": "Ulrich (1983)"
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
     },
-    {
-      "id": "Park_2010",
-      "citation": "Park et al. (2010)"
-    },
-    {
-      "id": "Kaplan_1995",
-      "citation": "Kaplan (1995)"
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
     }
-  ],
-  "version": "1.0.0",
-  "short_description": "Natural scenes activate parasympathetic nervous system, reducing stress physiology"
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  }
 }
