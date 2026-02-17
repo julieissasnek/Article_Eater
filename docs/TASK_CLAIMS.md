@@ -22,7 +22,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 1.1 | Enum drift fix | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 | 1.2 | Template DB index | DONE | CC | 2026-02-17 | 2026-02-17 | none |
-| 1.3 | Load staging theory-links | CLAIMED | Codex | 2026-02-17 14:57 CET | — | none |
+| 1.3 | Load staging theory-links | DONE | Codex | 2026-02-17 14:57 CET | 2026-02-17 15:15 CET | none |
 | 1.4 | WIS conversion module | DONE | Codex | 2026-02-17 | 2026-02-17 | none |
 
 ## ROUND 2 — PIPELINE COMPONENTS
@@ -48,4 +48,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (backfilled completed tasks + Task 1.3 claimed)*
+*Last updated: 2026-02-17 by Codex (backfilled completed tasks and current status)*

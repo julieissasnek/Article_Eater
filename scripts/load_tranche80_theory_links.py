@@ -73,6 +73,11 @@ def _count_constraints(service: WebPersistenceService, web_id: str) -> tuple[int
     return len(constraints), ids
 
 
+def _tier2_constraint_ids(service: WebPersistenceService, web_id: str) -> set[str]:
+    constraints = service.get_constraints_for_web(web_id)
+    return {c.constraint_id for c in constraints if c.constraint_id.startswith("tier2_theory_link:")}
+
+
 def _ensure_belief(
     service: WebPersistenceService,
     web_id: str,
@@ -114,14 +119,14 @@ def main() -> int:
     parser.add_argument(
         "--expect-before",
         type=int,
-        default=25959,
-        help="Expected baseline constraint count before loading.",
+        default=None,
+        help="Optional baseline constraint count before loading.",
     )
     parser.add_argument(
         "--expect-new",
         type=int,
         default=1361,
-        help="Expected number of newly added constraints.",
+        help="Expected number of Tier-2 theory-link constraints after loading.",
     )
     args = parser.parse_args()
 
@@ -144,9 +149,12 @@ def main() -> int:
         raise RuntimeError(
             f"Unexpected theory-link row count: {len(rows)} (expected {args.expect_new})"
         )
+    expected_ids = {f"tier2_theory_link:{line_no}" for line_no, _ in rows}
+    tier2_before_ids = _tier2_constraint_ids(service, master_web_id)
 
     per_theory: Counter[str] = Counter()
     passthrough_theories: Counter[str] = Counter()
+    inserted = 0
 
     for line_no, row in rows:
         theory_name = (row.get("theory_name") or "").strip()
@@ -208,16 +216,31 @@ def main() -> int:
             },
             sort_keys=True,
         )
+        constraint_id = constraint.constraint_id
+        if constraint_id in tier2_before_ids:
+            continue
         service.save_constraint(master_web_id, constraint)
+        inserted += 1
 
     after_count, after_ids = _count_constraints(service, master_web_id)
     added = after_count - before_count
 
     if not before_ids.issubset(after_ids):
         raise RuntimeError("Existing constraints were altered or removed.")
-    if added != args.expect_new:
+    if added != inserted:
         raise RuntimeError(
-            f"Constraint delta mismatch: +{added} (expected +{args.expect_new})"
+            f"Constraint delta mismatch: +{added} (inserted {inserted})"
+        )
+
+    tier2_after_ids = _tier2_constraint_ids(service, master_web_id)
+    missing_ids = expected_ids - tier2_after_ids
+    if missing_ids:
+        raise RuntimeError(
+            f"Missing tier2 constraints: {sorted(list(missing_ids))[:5]} ... ({len(missing_ids)} total)"
+        )
+    if len(tier2_after_ids) != args.expect_new:
+        raise RuntimeError(
+            f"Unexpected tier2 theory-link count: {len(tier2_after_ids)} (expected {args.expect_new})"
         )
 
     print(f"Master web: {master_web_id}")
