@@ -3272,6 +3272,374 @@ def compute_t28_cognitive_offloading(
 
 
 # =============================================================================
+# BATCH 4: RESIDUAL TEMPLATE COMPUTATIONS
+# =============================================================================
+
+def compute_t1_temporal_spectral_match(
+    spectral_slope: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T1 Residual: 1/f Temporal Spectral Matching (Auditory)."""
+    # Target slope: -1.0 (pink noise) -> optimal
+    diff = abs(spectral_slope - (-1.0))
+    
+    if diff < 0.2:
+        zone = "optimal_1_f"
+        wis_raw = 85
+    elif diff < 0.5:
+        zone = "near_optimal"
+        wis_raw = 65
+    else:
+        zone = "non_fractal"
+        wis_raw = 35
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.5,
+        details={"spectral_slope": spectral_slope, "diff": diff}
+    )
+
+def compute_t2_prospect_refuge_residual(
+    is_enclosed_niche: bool,
+    rear_protection: bool,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T2 Residual: Refuge Component (Safety Niche)."""
+    if is_enclosed_niche and rear_protection:
+        zone = "strong_refuge"
+        wis_raw = 85
+    elif is_enclosed_niche or rear_protection:
+        zone = "partial_refuge"
+        wis_raw = 60
+    else:
+        zone = "exposed"
+        wis_raw = 30
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.6,
+        details={"is_enclosed_niche": is_enclosed_niche, "rear_protection": rear_protection}
+    )
+
+def compute_t5_enclosure_threat_residual(
+    ceiling_height_m: float,
+    floor_area_m2: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T5 Residual: Visceral Threat Detection at Extreme Confinement."""
+    r_h = ceiling_height_m / math.sqrt(floor_area_m2) if floor_area_m2 > 0 else 0
+    
+    if r_h < 0.20:
+        zone = "visceral_threat"
+        wis_raw = 15  # Active harm
+        confidence = 0.8
+    else:
+        zone = "baseline_safe"
+        wis_raw = 50  # Neutral (handled by VF3 above this)
+        confidence = 0.5
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=confidence,
+        details={"r_h": r_h, "threshold": 0.20}
+    )
+
+def compute_t8_neural_grid_constraint(
+    visual_access_grid: bool,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T8 Residual: Neural Grid/Place Cell Constraint."""
+    if visual_access_grid:
+        zone = "supported"
+        wis_raw = 70
+    else:
+        zone = "unsupported"
+        wis_raw = 40
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.4,
+        details={"visual_access_grid": visual_access_grid}
+    )
+
+def compute_t11_exploration_mode(
+    environmental_novelty_score: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T11 Residual: LC-NE Arousal / Exploration Mode."""
+    if environmental_novelty_score > 0.8:
+        zone = "exploration_mode"
+        wis_raw = 75
+    elif environmental_novelty_score > 0.4:
+        zone = "balanced_mode"
+        wis_raw = 65
+    else:
+        zone = "habituation_mode"
+        wis_raw = 50
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.5,
+        details={"novelty_score": environmental_novelty_score}
+    )
+
+def compute_t15_personal_control(
+    has_thermostat_control: bool,
+    has_operable_windows: bool,
+    has_movable_furniture: bool,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T15 Residual: Environmental Mastery / Personal Control."""
+    score = sum([has_thermostat_control, has_operable_windows, has_movable_furniture])
+    
+    if score >= 2:
+        zone = "high_control"
+        wis_raw = 85
+    elif score == 1:
+        zone = "moderate_control"
+        wis_raw = 65
+    else:
+        zone = "low_control"
+        wis_raw = 35
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.7,
+        details={"control_points": score}
+    )
+
+def compute_t16_restoration_timecourse(
+    exposure_duration_min: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T16 Residual: Restoration Time-Course Dynamics."""
+    if exposure_duration_min < 5:
+        zone = "insufficient"
+        wis_raw = 30
+    elif exposure_duration_min < 20:
+        zone = "partial_restoration"
+        wis_raw = 60
+    else:
+        zone = "full_restoration"
+        wis_raw = 85
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.6,
+        details={"duration_min": exposure_duration_min}
+    )
+
+def compute_t20_convergent_performance(
+    distraction_free_ratio: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T20 Residual: Convergent Cognitive Performance."""
+    if distraction_free_ratio > 0.8:
+        zone = "high_focus"
+        wis_raw = 80
+    elif distraction_free_ratio > 0.5:
+        zone = "moderate_focus"
+        wis_raw = 60
+    else:
+        zone = "low_focus"
+        wis_raw = 35
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.6,
+        details={"distraction_free_ratio": distraction_free_ratio}
+    )
+
+def compute_t22_rapid_gist(
+    scene_gist_clarity: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T22 Residual: Rapid Gist / LSF Magnocellular Processing."""
+    if scene_gist_clarity > 0.7:
+        zone = "high_clarity"
+        wis_raw = 75
+    else:
+        zone = "low_clarity"
+        wis_raw = 45
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.4,
+        details={"scene_gist_clarity": scene_gist_clarity}
+    )
+
+def compute_t24_theta_sequence(
+    spatial_sequence_clarity: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T24 Residual: Theta Sequence / Spatial Navigation Constraint."""
+    if spatial_sequence_clarity > 0.6:
+        zone = "supported"
+        wis_raw = 70
+    else:
+        zone = "unsupported"
+        wis_raw = 40
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.3,
+        details={"spatial_sequence_clarity": spatial_sequence_clarity}
+    )
+
+def compute_t27_non_thermal_interoception(
+    iaq_co2_ppm: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T27 Residual: Non-Thermal Interoception (Air Quality)."""
+    if iaq_co2_ppm < 800:
+        zone = "good_iaq"
+        wis_raw = 80
+    elif iaq_co2_ppm < 1200:
+        zone = "moderate_iaq"
+        wis_raw = 55
+    else:
+        zone = "poor_iaq"
+        wis_raw = 25
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.7,
+        details={"iaq_co2_ppm": iaq_co2_ppm}
+    )
+
+def compute_t32_subcortical_auditory(
+    acoustic_snr_db: float,
+    rt60: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T32 Residual: Subcortical Auditory Encoding."""
+    if acoustic_snr_db > 15:
+        zone = "high_intelligibility"
+        wis_raw = 80
+    elif acoustic_snr_db > 5:
+        zone = "moderate_intelligibility"
+        wis_raw = 60
+    else:
+        zone = "poor_intelligibility"
+        wis_raw = 30
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.6,
+        details={"acoustic_snr_db": acoustic_snr_db, "rt60": rt60}
+    )
+
+def compute_t33_reverberation_space(
+    rt60: float,
+    room_volume_m3: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T33 Residual: Reverberation-Space Congruence."""
+    # Sabin estimate (very rough): T = 0.161 * V / A
+    # Expect larger rooms to have longer RT60
+    expected_rt60 = 0.5 * math.log10(max(1, room_volume_m3 / 10.0))
+    deviation = abs(rt60 - expected_rt60)
+    
+    if deviation < 0.3:
+        zone = "congruent"
+        wis_raw = 70
+    else:
+        zone = "incongruent"
+        wis_raw = 40
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.4,
+        details={"rt60": rt60, "expected_rt60": expected_rt60, "deviation": deviation}
+    )
+
+def compute_t38_hierarchical_control_depth(
+    spatial_nesting_levels: int,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T38 Residual: Hierarchical Control Nesting Depth."""
+    if spatial_nesting_levels <= 3:
+        zone = "optimal_depth"
+        wis_raw = 80
+    elif spatial_nesting_levels == 4:
+        zone = "max_depth"
+        wis_raw = 60
+    else:
+        zone = "cognitive_overload"
+        wis_raw = 30
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.5,
+        details={"nesting_levels": spatial_nesting_levels}
+    )
+
+def compute_t40_msi_inverse_effectiveness(
+    unisensory_strength_avg: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """T40 Residual: MSI Inverse Effectiveness Principle."""
+    # Enhancement is greater when individual signals are weak
+    if unisensory_strength_avg < 0.4:
+        zone = "high_enhancement_potential"
+        wis_raw = 75
+    else:
+        zone = "low_enhancement_potential"
+        wis_raw = 50
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis_raw / 100.0,
+        unit="wis_normalized",
+        zone=zone,
+        confidence=0.3,
+        details={"unisensory_strength": unisensory_strength_avg}
+    )
+
+
+# =============================================================================
 # EXPORT REGISTRY
 # =============================================================================
 
@@ -3311,6 +3679,7 @@ TEMPLATE_COMPUTE_FUNCTIONS = {
     "VF1": compute_vf1_contour_curvature,
     "VF2": compute_vf2_visual_rhythm,
     "OLF1": compute_olf1_olfactory_pe,
+
     # Batch 3
     "T4": compute_t4_attention_demand,
     "T6": compute_t6_cortisol_cascade,
@@ -3333,5 +3702,4 @@ def get_compute_function(template_id: str):
 def list_implemented_templates() -> List[str]:
     """List IDs of all implemented templates."""
     return sorted(list(TEMPLATE_COMPUTE_FUNCTIONS.keys()))
-
 

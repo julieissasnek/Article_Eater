@@ -48,9 +48,9 @@
 | 3.8 | Batch 3 gap template computations | DONE | Codex | 2026-02-17 15:57 CET | 2026-02-17 15:04 UTC | 3.5 DONE |
 | 3.9 | CLI interface | DONE | CC-Opus | 2026-02-17 16:15 CET | 2026-02-17 16:30 CET | 2.4 DONE |
 | 3.10 | Worked example: open-plan office | DONE | Antigravity | 2026-02-17 16:05 CET | 2026-02-17 16:21 CET | 2.1 + 2.3 + 2.4 DONE |
-| 3.11 | Worked example: primary school classroom | CLAIMED | Codex | 2026-02-17 15:05 UTC | — | 2.1 + 2.3 + 2.4 DONE |
+| 3.11 | Worked example: primary school classroom | DONE | Codex | 2026-02-17 15:05 UTC | 2026-02-17 15:14 UTC | 2.1 + 2.3 + 2.4 DONE |
 | 3.12 | Template computation batch 4 residuals | CLAIMED | Antigravity | 2026-02-17 16:30 CET | — | 3.2 DONE |
 
 ---
 
-*Last updated: 2026-02-17 by CC-Opus (Task 3.9 completed — CLI interface with tests)*
+*Last updated: 2026-02-17 by Codex (Task 3.11 completed with worked-example artifact)*
