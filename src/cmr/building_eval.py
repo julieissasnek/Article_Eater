@@ -20,7 +20,13 @@ from src.cmr.models import (
     get_session,
 )
 from src.cmr.interactions import apply_all_interactions
+from src.cmr.feature_mapping import resolve_template_inputs
+from src.cmr.template_computations import TEMPLATE_COMPUTE_FUNCTIONS
 from src.cmr.wis import aggregate_domain_wis, aggregate_overall_wis
+from src.cmr.lifespan_moderation import (
+    compute_template_with_lifespan,
+    extract_occupant_age,
+)
 
 
 def _select_templates(
@@ -37,6 +43,17 @@ def _select_templates(
         .limit(limit)
         .all()
     )
+
+
+def _load_required_inputs_from_json(json_path: str) -> list[str]:
+    path = Path(json_path)
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    return list(payload.get("inputs_required", []) or [])
 
 
 def evaluate_building(
@@ -73,20 +90,47 @@ def evaluate_building(
     template_scores: list[dict] = []
     computed_data_gaps: list[str] = []
     for template in templates:
-        required_inputs: list[str] = []
-        template_payload_path = Path(template.json_path)
-        if template_payload_path.exists():
-            try:
-                payload = json.loads(template_payload_path.read_text(encoding="utf-8"))
-                required_inputs = list(payload.get("inputs_required", []) or [])
-            except Exception:
-                required_inputs = []
-        missing_inputs = [name for name in required_inputs if name not in measured_features]
+        mapped_inputs: dict = {}
+        if template.display_id in TEMPLATE_COMPUTE_FUNCTIONS:
+            mapped_inputs, missing_inputs = resolve_template_inputs(
+                template.display_id,
+                measured_features,
+                occupant_profile,
+            )
+        else:
+            required_inputs = _load_required_inputs_from_json(template.json_path)
+            missing_inputs = [name for name in required_inputs if name not in measured_features]
+            mapped_inputs = {name: measured_features[name] for name in required_inputs if name in measured_features}
+
         if missing_inputs:
             computed_data_gaps.append(template.display_id)
             continue
 
-        base_wis = float(template_wis_overrides.get(template.display_id, 50.0))
+        # Step 4: Call real compute function with lifespan moderation
+        # Check for explicit override first
+        if template.display_id in template_wis_overrides:
+            base_wis = float(template_wis_overrides[template.display_id])
+            compute_outputs = {"base_wis": base_wis, "source": "override"}
+            needs_computation = False
+        else:
+            # Try to compute using real template function with occupant age
+            compute_result = compute_template_with_lifespan(
+                template_id=template.display_id,
+                measured_features=measured_features,
+                occupant_profile=occupant_profile,
+            )
+            base_wis = float(compute_result.get("wis", 50.0))
+            needs_computation = compute_result.get("needs_computation", True)
+            compute_outputs = {
+                "base_wis": base_wis,
+                "source": "placeholder" if needs_computation else "computed",
+                "lifespan_applied": compute_result.get("lifespan_applied", False),
+                "age": compute_result.get("age"),
+                "lifespan_multiplier": compute_result.get("lifespan_multiplier", 1.0),
+            }
+            if "raw_output" in compute_result:
+                compute_outputs["raw_output"] = compute_result["raw_output"]
+
         activation = CMRTemplateActivation(
             evaluation_id=evaluation.id,
             template_display_id=template.display_id,
@@ -94,10 +138,11 @@ def evaluate_building(
             inputs={
                 "measured_features": measured_features,
                 "occupant_profile": occupant_profile,
+                "mapped_inputs": mapped_inputs,
             },
-            outputs={"base_wis": base_wis},
+            outputs=compute_outputs,
             wis_score=base_wis,
-            wis_confidence=5.0,
+            wis_confidence=5.0 if needs_computation else 7.0,
             interaction_adjustments=[],
         )
         session.add(activation)
@@ -108,6 +153,7 @@ def evaluate_building(
                 "calibration_confidence": template.calibration_status,
                 "activation": activation,
                 "interaction_adjustments": [],
+                "lifespan_applied": compute_outputs.get("lifespan_applied", False),
             }
         )
 

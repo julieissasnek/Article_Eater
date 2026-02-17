@@ -23,7 +23,7 @@
 | 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 16:50 CET | — | none |
 | 11.2 | Wire interaction adjustments | DONE | Antigravity | 2026-02-17 16:55 CET | 2026-02-17 17:05 CET | none |
 | 11.3 | Wire lifespan moderation | DONE | CC-Opus | 2026-02-17 16:43 CET | 2026-02-17 17:10 CET | none |
-| 11.4 | Feature-to-template input mapping | CLAIMED | Codex | 2026-02-17 15:47 UTC | — | none |
+| 11.4 | Feature-to-template input mapping | DONE | Codex | 2026-02-17 15:47 UTC | 2026-02-17 15:51 UTC | none |
 
 ## ROUND 2 — VALIDATE + BEGIN PAPER EVAL
 
@@ -53,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-17 by Codex (Task 11.4 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.4 completed)*
