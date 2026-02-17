@@ -2986,6 +2986,292 @@ def compute_olf1_olfactory_pe(
 
 
 # =============================================================================
+# BATCH 3: GAP TEMPLATE COMPUTATIONS (TASK 3.8)
+# =============================================================================
+
+RISK_TO_WIS = {
+    "low": 65.0,
+    "moderate": 45.0,
+    "high": 25.0,
+}
+
+
+def _risk_level_from_index(index: float) -> str:
+    if index >= 0.67:
+        return "high"
+    if index >= 0.34:
+        return "moderate"
+    return "low"
+
+
+def _gap_result(
+    *,
+    template_id: str,
+    risk_index: float,
+    mechanism: str,
+    occupant_age: Optional[int] = None,
+    inputs: Optional[Dict[str, Any]] = None,
+) -> ComputeResult:
+    risk_level = _risk_level_from_index(max(0.0, min(1.0, risk_index)))
+    wis = RISK_TO_WIS[risk_level]
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=wis,
+        unit="wis_0_100",
+        zone=risk_level,
+        confidence=0.35,
+        details={
+            "template_id": template_id,
+            "risk_level": risk_level,
+            "mechanism": mechanism,
+            "needs_calibration": True,
+            "lifespan_multiplier": get_lifespan_multiplier(occupant_age),
+            "inputs": inputs or {},
+        },
+    )
+
+
+def compute_t4_attention_demand(
+    distraction_rate_per_hour: float,
+    attentional_switch_cost: float,
+    recovery_breaks_per_hour: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        min(distraction_rate_per_hour / 12.0, 1.0) * 0.45
+        + max(0.0, min(attentional_switch_cost, 1.0)) * 0.35
+        + max(0.0, 1.0 - min(recovery_breaks_per_hour / 4.0, 1.0)) * 0.20
+    )
+    return _gap_result(
+        template_id="T4",
+        risk_index=risk_index,
+        mechanism="Sustained attentional demand without adequate recovery.",
+        occupant_age=occupant_age,
+        inputs={
+            "distraction_rate_per_hour": distraction_rate_per_hour,
+            "attentional_switch_cost": attentional_switch_cost,
+            "recovery_breaks_per_hour": recovery_breaks_per_hour,
+        },
+    )
+
+
+def compute_t6_cortisol_cascade(
+    chronic_noise_exposure_dba: float,
+    sleep_quality: float,
+    control_perception: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        min(max(chronic_noise_exposure_dba - 45.0, 0.0) / 25.0, 1.0) * 0.45
+        + max(0.0, 1.0 - min(sleep_quality, 1.0)) * 0.35
+        + max(0.0, 1.0 - min(control_perception, 1.0)) * 0.20
+    )
+    return _gap_result(
+        template_id="T6",
+        risk_index=risk_index,
+        mechanism="Stress hormone escalation under chronic noise and low control.",
+        occupant_age=occupant_age,
+        inputs={
+            "chronic_noise_exposure_dba": chronic_noise_exposure_dba,
+            "sleep_quality": sleep_quality,
+            "control_perception": control_perception,
+        },
+    )
+
+
+def compute_t7_allostatic_anticipation(
+    unpredictability_index: float,
+    perceived_control: float,
+    exposure_duration_hours: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, min(unpredictability_index, 1.0)) * 0.50
+        + max(0.0, 1.0 - min(perceived_control, 1.0)) * 0.30
+        + min(exposure_duration_hours / 10.0, 1.0) * 0.20
+    )
+    return _gap_result(
+        template_id="T7",
+        risk_index=risk_index,
+        mechanism="Anticipatory allostatic load from persistent unpredictability.",
+        occupant_age=occupant_age,
+        inputs={
+            "unpredictability_index": unpredictability_index,
+            "perceived_control": perceived_control,
+            "exposure_duration_hours": exposure_duration_hours,
+        },
+    )
+
+
+def compute_t10_sleep_consolidation(
+    night_noise_dba: float,
+    light_intrusion_lux: float,
+    bedtime_regular: bool,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        min(max(night_noise_dba - 30.0, 0.0) / 25.0, 1.0) * 0.45
+        + min(light_intrusion_lux / 25.0, 1.0) * 0.35
+        + (0.20 if not bedtime_regular else 0.0)
+    )
+    return _gap_result(
+        template_id="T10",
+        risk_index=risk_index,
+        mechanism="Impaired sleep consolidation from nighttime sensory disruption.",
+        occupant_age=occupant_age,
+        inputs={
+            "night_noise_dba": night_noise_dba,
+            "light_intrusion_lux": light_intrusion_lux,
+            "bedtime_regular": bedtime_regular,
+        },
+    )
+
+
+def compute_t14_navigation_stress_loop(
+    wayfinding_error_rate: float,
+    crowding_level: float,
+    time_pressure: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        min(wayfinding_error_rate / 8.0, 1.0) * 0.45
+        + max(0.0, min(crowding_level, 1.0)) * 0.30
+        + max(0.0, min(time_pressure, 1.0)) * 0.25
+    )
+    return _gap_result(
+        template_id="T14",
+        risk_index=risk_index,
+        mechanism="Navigation errors reinforce stress and attentional narrowing.",
+        occupant_age=occupant_age,
+        inputs={
+            "wayfinding_error_rate": wayfinding_error_rate,
+            "crowding_level": crowding_level,
+            "time_pressure": time_pressure,
+        },
+    )
+
+
+def compute_t15_environmental_control(
+    controllability_score: float,
+    thermal_discomfort_events_per_day: float,
+    acoustic_intrusions_per_day: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, 1.0 - min(controllability_score, 1.0)) * 0.50
+        + min(thermal_discomfort_events_per_day / 10.0, 1.0) * 0.25
+        + min(acoustic_intrusions_per_day / 20.0, 1.0) * 0.25
+    )
+    return _gap_result(
+        template_id="T15",
+        risk_index=risk_index,
+        mechanism="Low environmental agency drives chronic frustration and fatigue.",
+        occupant_age=occupant_age,
+        inputs={
+            "controllability_score": controllability_score,
+            "thermal_discomfort_events_per_day": thermal_discomfort_events_per_day,
+            "acoustic_intrusions_per_day": acoustic_intrusions_per_day,
+        },
+    )
+
+
+def compute_t17_dopaminergic_novelty(
+    novelty_density: float,
+    monotony_days: float,
+    exploration_access: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, 1.0 - min(novelty_density, 1.0)) * 0.40
+        + min(monotony_days / 14.0, 1.0) * 0.35
+        + max(0.0, 1.0 - min(exploration_access, 1.0)) * 0.25
+    )
+    return _gap_result(
+        template_id="T17",
+        risk_index=risk_index,
+        mechanism="Novelty deprivation suppresses dopaminergic exploratory drive.",
+        occupant_age=occupant_age,
+        inputs={
+            "novelty_density": novelty_density,
+            "monotony_days": monotony_days,
+            "exploration_access": exploration_access,
+        },
+    )
+
+
+def compute_t18_vestibular_spatial(
+    vertical_transition_count: float,
+    vestibular_cue_quality: float,
+    motion_disorientation_events: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        min(vertical_transition_count / 20.0, 1.0) * 0.25
+        + max(0.0, 1.0 - min(vestibular_cue_quality, 1.0)) * 0.45
+        + min(motion_disorientation_events / 6.0, 1.0) * 0.30
+    )
+    return _gap_result(
+        template_id="T18",
+        risk_index=risk_index,
+        mechanism="Vestibular-spatial mismatch increases disorientation burden.",
+        occupant_age=occupant_age,
+        inputs={
+            "vertical_transition_count": vertical_transition_count,
+            "vestibular_cue_quality": vestibular_cue_quality,
+            "motion_disorientation_events": motion_disorientation_events,
+        },
+    )
+
+
+def compute_t23_context_memory(
+    context_stability: float,
+    cue_congruence: float,
+    transition_frequency: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, 1.0 - min(context_stability, 1.0)) * 0.40
+        + max(0.0, 1.0 - min(cue_congruence, 1.0)) * 0.35
+        + min(transition_frequency / 12.0, 1.0) * 0.25
+    )
+    return _gap_result(
+        template_id="T23",
+        risk_index=risk_index,
+        mechanism="Weak context cues undermine memory retrieval and encoding.",
+        occupant_age=occupant_age,
+        inputs={
+            "context_stability": context_stability,
+            "cue_congruence": cue_congruence,
+            "transition_frequency": transition_frequency,
+        },
+    )
+
+
+def compute_t28_cognitive_offloading(
+    external_memory_support_score: float,
+    signage_clarity: float,
+    working_memory_load: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    risk_index = (
+        max(0.0, 1.0 - min(external_memory_support_score, 1.0)) * 0.40
+        + max(0.0, 1.0 - min(signage_clarity, 1.0)) * 0.30
+        + max(0.0, min(working_memory_load, 1.0)) * 0.30
+    )
+    return _gap_result(
+        template_id="T28",
+        risk_index=risk_index,
+        mechanism="Insufficient offloading support overloads working memory.",
+        occupant_age=occupant_age,
+        inputs={
+            "external_memory_support_score": external_memory_support_score,
+            "signage_clarity": signage_clarity,
+            "working_memory_load": working_memory_load,
+        },
+    )
+
+
+# =============================================================================
 # EXPORT REGISTRY
 # =============================================================================
 
@@ -3025,6 +3311,17 @@ TEMPLATE_COMPUTE_FUNCTIONS = {
     "VF1": compute_vf1_contour_curvature,
     "VF2": compute_vf2_visual_rhythm,
     "OLF1": compute_olf1_olfactory_pe,
+    # Batch 3
+    "T4": compute_t4_attention_demand,
+    "T6": compute_t6_cortisol_cascade,
+    "T7": compute_t7_allostatic_anticipation,
+    "T10": compute_t10_sleep_consolidation,
+    "T14": compute_t14_navigation_stress_loop,
+    "T15": compute_t15_environmental_control,
+    "T17": compute_t17_dopaminergic_novelty,
+    "T18": compute_t18_vestibular_spatial,
+    "T23": compute_t23_context_memory,
+    "T28": compute_t28_cognitive_offloading,
 }
 
 
@@ -3036,6 +3333,5 @@ def get_compute_function(template_id: str):
 def list_implemented_templates() -> List[str]:
     """List IDs of all implemented templates."""
     return sorted(list(TEMPLATE_COMPUTE_FUNCTIONS.keys()))
-
 
 
