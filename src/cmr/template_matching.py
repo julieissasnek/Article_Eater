@@ -8,6 +8,25 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from src.cmr.models import TemplateRecord
+from src.cmr.reduction_api import reduce_construct
+
+
+REDUCTION_KEYWORDS = {
+    "soft fascination": ("ART", "Fascination_Soft"),
+    "soft fasc": ("ART", "Fascination_Soft"),
+    "being away": ("ART", "Being_Away"),
+    "compatibility": ("ART", "Compatibility"),
+    "extent": ("ART", "Extent"),
+    "hard fascination": ("ART", "Fascination_Hard"),
+    "nature in space": ("BIOPHILIA", "Nature_In_Space"),
+    "natural analogues": ("BIOPHILIA", "Natural_Analogues"),
+    "nature of space": ("BIOPHILIA", "Nature_Of_Space"),
+    "remaining patterns": ("BIOPHILIA", "Remaining_Patterns"),
+    "stress recovery": ("SRT", "Autonomic_Stress_Reduction"),
+    "affective response": ("SRT", "Affective_Response"),
+    "approach avoidance": ("SRT", "Approach_Avoidance"),
+}
+
 
 
 _SYNONYM_GROUPS = [
