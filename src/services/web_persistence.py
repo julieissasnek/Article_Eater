@@ -52,6 +52,7 @@ from src.services.web_of_belief import (
     ScopeConditions,     # Sprint 6
     create_neuroarchitecture_web,
 )
+from src.epistemic.edge_types import convert_legacy_constraint_type
 
 # Import bridge warrants (Sprint 3)
 try:
@@ -1216,6 +1217,37 @@ class WebPersistenceService:
 
     def _row_to_belief(self, row: sqlite3.Row) -> Belief:
         """Convert database row to Belief object."""
+        raw_level = row['level'] if 'level' in row.keys() else None
+        if raw_level is None:
+            belief_level = EpistemicLevel.EMPIRICAL
+        else:
+            level_text = str(raw_level).strip().lower()
+            legacy_level_map = {
+                "evidence": EpistemicLevel.EMPIRICAL,
+                "observation": EpistemicLevel.OBSERVATIONAL,
+                "theory": EpistemicLevel.THEORETICAL,
+                "generalization": EpistemicLevel.INTERMEDIATE,
+            }
+            try:
+                belief_level = EpistemicLevel(level_text)
+            except ValueError:
+                belief_level = legacy_level_map.get(level_text, EpistemicLevel.EMPIRICAL)
+
+        raw_status = row['status'] if 'status' in row.keys() else None
+        if raw_status is None:
+            belief_status = BeliefStatus.STUB
+        else:
+            status_text = str(raw_status).strip().lower()
+            legacy_status_map = {
+                "active": BeliefStatus.ESTABLISHED,
+                "inactive": BeliefStatus.TENTATIVE,
+                "deprecated": BeliefStatus.ANOMALOUS,
+            }
+            try:
+                belief_status = BeliefStatus(status_text)
+            except ValueError:
+                belief_status = legacy_status_map.get(status_text, BeliefStatus.STUB)
+
         credence = Credence(
             value=row['credence_value'],
             uncertainty=row['credence_uncertainty'],
@@ -1232,8 +1264,8 @@ class WebPersistenceService:
         belief = Belief(
             belief_id=row['belief_id'],
             content=row['content'],
-            level=EpistemicLevel(row['level']),
-            status=BeliefStatus(row['status']),
+            level=belief_level,
+            status=belief_status,
             credence=credence,
             theory_id=row['theory_id'],
             _legacy_entrenchment=row['entrenchment'] or 0.3,
@@ -1308,11 +1340,13 @@ class WebPersistenceService:
 
     def _row_to_constraint(self, row: sqlite3.Row) -> Constraint:
         """Convert database row to Constraint object."""
+        raw_constraint_type = row['constraint_type'] if 'constraint_type' in row.keys() else "supports"
+        constraint_type = convert_legacy_constraint_type(str(raw_constraint_type))
         constraint = Constraint(
             constraint_id=row['constraint_id'],
             source_id=row['source_id'],
             target_id=row['target_id'],
-            constraint_type=ConstraintType(row['constraint_type']),
+            constraint_type=constraint_type,
             strength=row['strength'],
             bidirectional=bool(row['bidirectional']),
             evidence_ids=json.loads(row['evidence_ids']) if row['evidence_ids'] else []

@@ -483,8 +483,10 @@ class Credence:
     n_observations: int = 0
     
     def __post_init__(self):
-        self.value = max(0.01, min(0.99, self.value))
-        self.uncertainty = max(0.0, min(1.0, self.uncertainty))
+        value = 0.5 if self.value is None else float(self.value)
+        uncertainty = 0.5 if self.uncertainty is None else float(self.uncertainty)
+        self.value = max(0.01, min(0.99, value))
+        self.uncertainty = max(0.0, min(1.0, uncertainty))
     
     def confidence_interval(self, level: float = 0.95) -> Tuple[float, float]:
         """Credible interval for the credence itself."""
