@@ -43,6 +43,7 @@ from src.cmr.template_computations import (
     get_compute_function,
     list_implemented_templates,
     get_lifespan_multiplier,
+    # Batch 1 templates
     compute_vf3_ceiling_height,
     compute_l1_luminance_contrast,
     compute_l2_circadian_medi,
@@ -55,6 +56,27 @@ from src.cmr.template_computations import (
     compute_sc1_spatial_integration,
     compute_sc4_wayfinding_social,
     compute_view1_vqi,
+    # Batch 2 templates
+    compute_l4_cct_temporal,
+    compute_l5_dynamic_light,
+    compute_mat3_material_identity,
+    compute_mat5_material_cultural,
+    compute_tp1_motor_pe,
+    compute_tp2_threshold_boundary,
+    compute_tp3_temporal_rhythm,
+    compute_tp4_temporal_hierarchy,
+    compute_soc1_proxemic_pe,
+    compute_soc3_territorial,
+    compute_crea1_creative_network,
+    compute_crea3_incubation,
+    compute_crea4_collaborative,
+    compute_sc2_isovist,
+    compute_sc3_promenade,
+    compute_col1_chromatic_pe,
+    compute_col2_color_harmony,
+    compute_vf1_contour_curvature,
+    compute_vf2_visual_rhythm,
+    compute_olf1_olfactory_pe,
 )
 
 # Optional modules - may not exist yet
@@ -88,6 +110,12 @@ try:
 except ImportError:
     _REPORT_AVAILABLE = False
 
+try:
+    from src.cmr.paper_eval import evaluate_paper
+    _PAPER_EVAL_AVAILABLE = True
+except ImportError:
+    _PAPER_EVAL_AVAILABLE = False
+
 __all__ = [
     # Core models
     "Base",
@@ -113,6 +141,7 @@ __all__ = [
     "get_compute_function",
     "list_implemented_templates",
     "get_lifespan_multiplier",
+    # Batch 1
     "compute_vf3_ceiling_height",
     "compute_l1_luminance_contrast",
     "compute_l2_circadian_medi",
@@ -125,6 +154,27 @@ __all__ = [
     "compute_sc1_spatial_integration",
     "compute_sc4_wayfinding_social",
     "compute_view1_vqi",
+    # Batch 2
+    "compute_l4_cct_temporal",
+    "compute_l5_dynamic_light",
+    "compute_mat3_material_identity",
+    "compute_mat5_material_cultural",
+    "compute_tp1_motor_pe",
+    "compute_tp2_threshold_boundary",
+    "compute_tp3_temporal_rhythm",
+    "compute_tp4_temporal_hierarchy",
+    "compute_soc1_proxemic_pe",
+    "compute_soc3_territorial",
+    "compute_crea1_creative_network",
+    "compute_crea3_incubation",
+    "compute_crea4_collaborative",
+    "compute_sc2_isovist",
+    "compute_sc3_promenade",
+    "compute_col1_chromatic_pe",
+    "compute_col2_color_harmony",
+    "compute_vf1_contour_curvature",
+    "compute_vf2_visual_rhythm",
+    "compute_olf1_olfactory_pe",
 ]
 
 # Add optional exports if available
@@ -151,3 +201,6 @@ if _REPORT_AVAILABLE:
         "generate_report",
         "format_report_text",
     ])
+
+if _PAPER_EVAL_AVAILABLE:
+    __all__.append("evaluate_paper")
