@@ -496,7 +496,7 @@ def compute_crea2_processing_style(
 
     Pathways:
     - A (Disfluency): Noise 65-75 dB
-    - B (Spaciousness): Ceiling R_h 0.35-0.50
+    - B (Spaciousness): Ceiling R_h >= 0.35
     - C (Resource): Dim lighting ~150 lux
 
     Args:
@@ -511,7 +511,7 @@ def compute_crea2_processing_style(
     """
     # Classify each pathway
     pathway_a = 65 <= noise_db <= 75  # Optimal disfluency noise
-    pathway_b = 0.35 <= ceiling_rh <= 0.50  # Liberating ceiling
+    pathway_b = ceiling_rh >= 0.35  # Spaciousness channel stays active above threshold
     pathway_c = 100 <= ambient_lux <= 200  # Dim lighting
 
     # Build matrix key
@@ -3697,4 +3697,3 @@ def get_compute_function(template_id: str):
 def list_implemented_templates() -> List[str]:
     """List IDs of all implemented templates."""
     return sorted(list(TEMPLATE_COMPUTE_FUNCTIONS.keys()))
-

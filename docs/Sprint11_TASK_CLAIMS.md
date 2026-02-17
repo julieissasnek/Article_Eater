@@ -20,7 +20,7 @@
 
 | Task | Description | Status | Agent | Claimed | Done | Dependency |
 |------|------------|--------|-------|---------|------|------------|
-| 11.1 | Wire real computations into orchestrator | CLAIMED | Codex | 2026-02-17 20:13 CET | — | none |
+| 11.1 | Wire real computations into orchestrator | DONE | Codex | 2026-02-17 20:13 CET | 2026-02-17 20:21 CET | none |
 | 11.2 | Wire interaction adjustments | DONE | Codex | 2026-02-17 17:08 UTC | 2026-02-17 17:09 UTC | none |
 | 11.3 | Wire lifespan moderation | DONE | Codex | 2026-02-17 17:10 UTC | 2026-02-17 17:11 UTC | none |
 | 11.4 | Feature-to-template input mapping | DONE | Codex | 2026-02-17 17:11 UTC | 2026-02-17 17:12 UTC | none |
@@ -71,4 +71,4 @@
 
 ---
 
-*Last updated: 2026-02-17 17:13 UTC by Codex (11.8 claimed)*
+*Last updated: 2026-02-17 by Codex (Task 11.1 completed after board refresh)*

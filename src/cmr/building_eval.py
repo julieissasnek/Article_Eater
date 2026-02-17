@@ -32,18 +32,25 @@ from src.services.web_persistence import WebPersistenceService
 
 def _select_templates(
     session: Session,
-    limit: int = 12,
+    limit: int | None = None,
     template_records: Iterable[TemplateRecord] | None = None,
 ) -> list[TemplateRecord]:
     if template_records is not None:
         return list(template_records)
-    return (
+    templates = (
         session.query(TemplateRecord)
         .filter(TemplateRecord.dedup_status == "active")
         .order_by(TemplateRecord.series, TemplateRecord.display_id)
-        .limit(limit)
         .all()
     )
+    # Prefer templates with implemented compute functions in normal evaluation
+    # to avoid placeholder-only dilution from non-compute stubs.
+    implemented = set(TEMPLATE_COMPUTE_FUNCTIONS.keys())
+    compute_templates = [template for template in templates if template.display_id in implemented]
+    selected = compute_templates or templates
+    if limit is not None:
+        return selected[:limit]
+    return selected
 
 
 def _load_required_inputs_from_json(json_path: str) -> list[str]:
@@ -226,8 +233,14 @@ def evaluate_building(
 
     for score in adjusted:
         activation: CMRTemplateActivation = score["activation"]
+        previous_outputs = activation.outputs if isinstance(activation.outputs, dict) else {}
         activation.wis_score = float(score["wis"])
-        activation.outputs = {"wis": float(score["wis"])}
+        activation.outputs = {
+            **previous_outputs,
+            "wis_pre_interaction": previous_outputs.get("base_wis", activation.wis_score),
+            "wis": float(score["wis"]),
+            "interaction_multiplier": float(score.get("interaction_multiplier", 1.0)),
+        }
         activation.interaction_adjustments = score.get("interaction_adjustments", [])
 
         template = template_lookup.get(score["template"])

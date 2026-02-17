@@ -70,7 +70,7 @@ ZONE_TO_WIS: Dict[str, float] = {
     "excellent": 85.0,
 
     # Special zones
-    "awe": 70.0,  # Can be overwhelming, not purely positive
+    "awe": 65.0,  # Expansive but less target-fit than liberating proportions
     "overwhelming": 55.0,  # Too much of a good thing
     "high_enhancement_potential": 75.0,
     "low_enhancement_potential": 50.0,
