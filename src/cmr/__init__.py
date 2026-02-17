@@ -28,6 +28,7 @@ from src.cmr.models import (
     TemplateRecord,
 )
 from src.cmr.interactions import apply_all_interactions, get_interaction
+from src.cmr.building_eval import evaluate_building
 
 __all__ = [
     "cohens_d_to_wis",
@@ -44,4 +45,5 @@ __all__ = [
     "ReductionClaim",
     "get_interaction",
     "apply_all_interactions",
+    "evaluate_building",
 ]
