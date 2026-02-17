@@ -3,7 +3,7 @@
   "display_id": "MAT1",
   "name": "C-Tactile Affective Touch Pathway in Architectural Material Experience",
   "short_description": "Architectural surfaces engage dual somatosensory pathways; CT afferents evaluate body-surface contact for optimal temperature, velocity, and roughness",
-  "structural_pattern": "Architectural surfaces that make contact with the body engage two parallel somatosensory pathways. The discriminative pathway (Aβ afferents → S1) extracts spatial and temporal properties (texture, shape, compliance). The affective pathway (CT afferents → posterior insula) evaluates whether the contact is within the biologically optimal range for pleasant touch: velocity 1–10 cm/s, surface temperature within ±2°C of skin temperature (~32°C), and moderate surface roughness (Ra 10–100 μm). Materials with low thermal effusivity (e < 800 W·s^½·m⁻²·K⁻¹) maintain skin-temperature contact and activate the CT pathway positively. Materials with high thermal effusivity (e > 3,000) rapidly draw heat from the skin and produce neutral or aversive affective signals.",
+  "structural_pattern": "Architectural surfaces that make contact with the body engage two parallel somatosensory pathways. The discriminative pathway (A\u03b2 afferents \u2192 S1) extracts spatial and temporal properties (texture, shape, compliance). The affective pathway (CT afferents \u2192 posterior insula) evaluates whether the contact is within the biologically optimal range for pleasant touch: velocity 1\u201310 cm/s, surface temperature within \u00b12\u00b0C of skin temperature (~32\u00b0C), and moderate surface roughness (Ra 10\u2013100 \u03bcm). Materials with low thermal effusivity (e < 800 W\u00b7s^\u00bd\u00b7m\u207b\u00b2\u00b7K\u207b\u00b9) maintain skin-temperature contact and activate the CT pathway positively. Materials with high thermal effusivity (e > 3,000) rapidly draw heat from the skin and produce neutral or aversive affective signals.",
   "higher_order_principle": "Dual-channel sensory evaluation applied to touch. Just as the visual system has parallel image-forming and non-visual (ipRGC) pathways (L-I panel), the somatosensory system has parallel discriminative and affective pathways. Architecture engages both, but traditional material specification addresses only the discriminative dimension.",
   "framework_ids": [
     "affective_neuroscience",
@@ -15,12 +15,12 @@
   "attribute_domain": "A1",
   "ct_optimal_parameters": {
     "velocity_range": "1-10 cm/s",
-    "temperature_range": "skin temp ±2°C (~30-34°C)",
-    "roughness_range": "Ra 10-100 μm"
+    "temperature_range": "skin temp \u00b12\u00b0C (~30-34\u00b0C)",
+    "roughness_range": "Ra 10-100 \u03bcm"
   },
   "thermal_effusivity_categories": {
     "ct_positive": {
-      "range": "< 800 W·s^½·m⁻²·K⁻¹",
+      "range": "< 800 W\u00b7s^\u00bd\u00b7m\u207b\u00b2\u00b7K\u207b\u00b9",
       "examples": [
         "wood (~400)",
         "cork (~200)",
@@ -28,14 +28,14 @@
       ]
     },
     "ct_neutral": {
-      "range": "800-3000 W·s^½·m⁻²·K⁻¹",
+      "range": "800-3000 W\u00b7s^\u00bd\u00b7m\u207b\u00b2\u00b7K\u207b\u00b9",
       "examples": [
         "stone (~2000)",
         "concrete (~1500)"
       ]
     },
     "ct_aversive": {
-      "range": "> 3000 W·s^½·m⁻²·K⁻¹",
+      "range": "> 3000 W\u00b7s^\u00bd\u00b7m\u207b\u00b2\u00b7K\u207b\u00b9",
       "examples": [
         "metal (~12000)",
         "glass (~8000)"
@@ -47,52 +47,67 @@
       "source": "McGlone (Panel MAT-II)",
       "contact_temperature_zones": {
         "pleasurable_range": {
-          "range": "28–36°C",
-          "description": "Centered on skin temperature ~32°C",
+          "range": "28\u201336\u00b0C",
+          "description": "Centered on skin temperature ~32\u00b0C",
           "ct_response": "Maximal CT-afferent firing, positive affective signal"
         },
         "neutral_range": {
-          "range": "24–28°C and 36–38°C",
+          "range": "24\u201328\u00b0C and 36\u201338\u00b0C",
           "description": "Outside optimal but not aversive",
           "ct_response": "Reduced CT-afferent firing"
         },
         "aversive_range": {
-          "range": "< 24°C or > 38°C",
+          "range": "< 24\u00b0C or > 38\u00b0C",
           "description": "Outside CT-afferent optimal range",
           "ct_response": "Minimal CT-afferent firing, cold/heat-sensitive fiber activation"
         }
       },
       "optimal_stroke_velocity": {
-        "range": "1–10 cm/s",
+        "range": "1\u201310 cm/s",
         "peak": "~3 cm/s",
-        "evidence": "Löken et al. (2009)"
+        "evidence": "L\u00f6ken et al. (2009)"
       }
     },
     "thermal_effusivity_classification": {
-      "note": "Refined from Panel MAT-II using standard SI units (J m⁻² K⁻¹ s⁻¹/²)",
+      "note": "Refined from Panel MAT-II using standard SI units (J m\u207b\u00b2 K\u207b\u00b9 s\u207b\u00b9/\u00b2)",
       "warm_pleasant": {
         "effusivity": "< 500",
         "contact_sensation": "Warm, maintained near skin temp",
         "pe_type": "Positive (CT-afferent activation)",
-        "materials": ["Wood", "Cork", "Fabric", "Leather"]
+        "materials": [
+          "Wood",
+          "Cork",
+          "Fabric",
+          "Leather"
+        ]
       },
       "neutral": {
-        "effusivity": "500–1,500",
+        "effusivity": "500\u20131,500",
         "contact_sensation": "Cool initially, moderating",
         "pe_type": "Low PE",
-        "materials": ["Plaster", "Drywall", "Most plastics"]
+        "materials": [
+          "Plaster",
+          "Drywall",
+          "Most plastics"
+        ]
       },
       "cool_alerting": {
-        "effusivity": "1,500–3,000",
+        "effusivity": "1,500\u20133,000",
         "contact_sensation": "Cool, sustained",
         "pe_type": "Moderate negative (or positive in hot climates)",
-        "materials": ["Stone", "Ceramic tile", "Concrete"]
+        "materials": [
+          "Stone",
+          "Ceramic tile",
+          "Concrete"
+        ]
       },
       "cold_aversive": {
         "effusivity": "> 7,000",
         "contact_sensation": "Cold, sustained",
         "pe_type": "High negative",
-        "materials": ["Metal (steel, aluminum)"]
+        "materials": [
+          "Metal (steel, aluminum)"
+        ]
       }
     },
     "climate_dependent_valence": {
@@ -106,10 +121,10 @@
     },
     "neuroimaging_validation_needed": {
       "experiment": "Touching architectural surfaces at varying temperatures while fMRI/EEG measures cortical activation",
-      "prediction": "Surfaces producing 28–36°C contact activate posterior insular cortex; outside this range activates somatosensory cortex",
+      "prediction": "Surfaces producing 28\u201336\u00b0C contact activate posterior insular cortex; outside this range activates somatosensory cortex",
       "status": "NOT YET CONDUCTED"
     },
-    "calibration_source": "Panel MAT-II (Doc 51) — McGlone CT-afferent boundaries"
+    "calibration_source": "Panel MAT-II (Doc 51) \u2014 McGlone CT-afferent boundaries"
   },
   "calibration_status": "partially_calibrated",
   "causal_links": [
@@ -131,7 +146,7 @@
       "to_level": "neural",
       "bridging_to": "strong",
       "maturity": "established",
-      "evidence_base": "CT afferents fire maximally at skin temperature ±2°C. Contact with low-effusivity materials (wood) maintains this range → high CT firing. (Morrison et al., 2010; Ackerley et al., 2014)"
+      "evidence_base": "CT afferents fire maximally at skin temperature \u00b12\u00b0C. Contact with low-effusivity materials (wood) maintains this range \u2192 high CT firing. (Morrison et al., 2010; Ackerley et al., 2014)"
     },
     {
       "from_entity": "surface_roughness_and_contact_velocity",
@@ -141,7 +156,7 @@
       "to_level": "neural",
       "bridging_to": "strong",
       "maturity": "established",
-      "evidence_base": "CT optimal velocity: 1–10 cm/s. Moderate roughness (Ra 10–100 μm) at CT-optimal velocity → maximal pleasant signal. (Löken et al., 2009)"
+      "evidence_base": "CT optimal velocity: 1\u201310 cm/s. Moderate roughness (Ra 10\u2013100 \u03bcm) at CT-optimal velocity \u2192 maximal pleasant signal. (L\u00f6ken et al., 2009)"
     },
     {
       "from_entity": "CT_afferent_firing_rate",
@@ -166,7 +181,7 @@
   ],
   "scope_conditions": [
     "Applies only to body-surface contact zones: handrails, seating, flooring, countertops, walls within reach",
-    "CT pathway engagement requires direct skin contact — clothing, shoes, and gloves block CT activation",
+    "CT pathway engagement requires direct skin contact \u2014 clothing, shoes, and gloves block CT activation",
     "Velocity-dependent: stationary contact engages thermal dimension only; moving contact engages texture-velocity interaction",
     "Modulated by body region: CT afferent density varies (highest in forearm, face; lower in palm, sole)"
   ],
@@ -178,9 +193,9 @@
   ],
   "interactions": [
     {
-      "template_id": "IC_INTEROCEPTIVE_AFFECT_001",
+      "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
       "display_id": "T12",
-      "nature": "MAT1 provides specific afferent pathway (CT → posterior insula) for one component of interoceptive comfort"
+      "nature": "MAT1 provides specific afferent pathway (CT \u2192 posterior insula) for one component of interoceptive comfort"
     },
     {
       "template_id": "CROSSMODAL_CONGRUENCE_001",
@@ -196,19 +211,19 @@
   "maturity": "supported",
   "key_references": [
     {
-      "citation": "McGlone, F., Wessberg, J., & Olausson, H. (2014). Discriminative and affective touch: Sensing and feeling. Neuron, 82(4), 737–755.",
+      "citation": "McGlone, F., Wessberg, J., & Olausson, H. (2014). Discriminative and affective touch: Sensing and feeling. Neuron, 82(4), 737\u2013755.",
       "google_scholar_count": 500
     },
     {
-      "citation": "Olausson, H., et al. (2002). Unmyelinated tactile afferents signal touch and project to insular cortex. Nature Neuroscience, 5(9), 900–904.",
+      "citation": "Olausson, H., et al. (2002). Unmyelinated tactile afferents signal touch and project to insular cortex. Nature Neuroscience, 5(9), 900\u2013904.",
       "google_scholar_count": 800
     },
     {
-      "citation": "Löken, L. S., et al. (2009). Coding of pleasant touch by unmyelinated afferents in humans. Nature Neuroscience, 12(5), 547–548.",
+      "citation": "L\u00f6ken, L. S., et al. (2009). Coding of pleasant touch by unmyelinated afferents in humans. Nature Neuroscience, 12(5), 547\u2013548.",
       "google_scholar_count": 800
     },
     {
-      "citation": "Morrison, I., Löken, L. S., & Olausson, H. (2010). The skin as a social organ. Experimental Brain Research, 204(3), 305–314.",
+      "citation": "Morrison, I., L\u00f6ken, L. S., & Olausson, H. (2010). The skin as a social organ. Experimental Brain Research, 204(3), 305\u2013314.",
       "google_scholar_count": 300
     }
   ],
@@ -253,17 +268,17 @@
     },
     "emerging_adult_16_25": {
       "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
+      "vision": 1,
+      "hearing": 1,
       "motor": 0.98,
-      "olfaction": 1.0
+      "olfaction": 1
     },
     "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
+      "speed": 1,
+      "vision": 1,
+      "hearing": 1,
+      "motor": 1,
+      "olfaction": 1
     },
     "middle_40_65": {
       "speed": 0.88,
@@ -309,7 +324,7 @@
       "age_0_6": 1.6,
       "age_6_12": 1.35,
       "age_12_25": 1.15,
-      "age_25_50": 1.0,
+      "age_25_50": 1,
       "age_50_65": 1.2,
       "age_65_80": 1.45,
       "age_80_plus": 1.7
@@ -377,14 +392,14 @@
         "ceiling_height_m": {
           "primary_5_9": {
             "min": 2.7,
-            "max": 3.0
+            "max": 3
           },
           "upper_9_12": {
-            "min": 3.0,
+            "min": 3,
             "max": 3.5
           },
           "secondary_12_16": {
-            "min": 3.0,
+            "min": 3,
             "max": 3.5
           }
         },
@@ -395,5 +410,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "active",
+  "generation": 2,
+  "ecological_validation": false
 }

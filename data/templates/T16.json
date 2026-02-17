@@ -1,76 +1,84 @@
 {
-    "template_id": "DT_RESTORATION_TIMECOURSE_001",
-    "display_id": "T16",
-    "name": "Transition to restorative environment \u2192 DMN re-engagement timecourse",
-    "structural_pattern": "state_transition \u2192 recovery_dynamics \u2192 temporal_profile",
-    "higher_order_principle": "Temporal Dynamics of Restoration",
-    "framework_ids": [
-        "DIRECTED_ATTENTION"
-    ],
-    "transferable_to": [
-        "Work breaks",
-        "Park design (minimum size/duration)",
-        "Commute recovery"
-    ],
-    "causal_links": [
-        {
-            "id": "link_1",
-            "from_entity": "exit_high_demand_environment",
-            "activity": "allows",
-            "to_entity": "tpn_deactivation",
-            "from_level": "ecological",
-            "to_level": "circuit",
-            "bridging_quality": "strong",
-            "maturity": "how-actually",
-            "evidence_base": "Removal of demand",
-            "change_produced": "cessation of top-down control"
-        },
-        {
-            "id": "link_2",
-            "from_entity": "tpn_deactivation",
-            "activity": "gradually_allows",
-            "to_entity": "dmn_re_engagement",
-            "from_level": "circuit",
-            "to_level": "circuit",
-            "bridging_quality": "moderate",
-            "maturity": "how-plausibly",
-            "evidence_base": "fMRI temporal dynamics",
-            "change_produced": "network switch",
-            "parameter_range": "initial: 3-5m; full: 20-40m"
-        },
-        {
-            "id": "link_3",
-            "from_entity": "dmn_re_engagement",
-            "activity": "drives",
-            "to_entity": "subjective_restoration",
-            "from_level": "circuit",
-            "to_level": "psychological",
-            "bridging_quality": "moderate",
-            "maturity": "how-plausibly",
-            "evidence_base": "Correlates with mood recovery",
-            "change_produced": "feeling of refreshment",
-            "parameter_range": "lag of ~20-30m"
-        }
-    ],
-    "scope_conditions": [
-        "Requires low-demand environment (not just 'fun' high-demand)",
-        "Brief exposure (<5m) provides perceptual but not restorative benefits"
-    ],
-    "moderators": [
-        "Mindfulness traits (faster switch)",
-        "Nature quality (immersion speeds switch)"
-    ],
-    "interactions": [
-        "DT_ATTENTIONAL_DEMAND_001 (T4)",
-        "MS_CONSOLIDATION_RESTORATION_001 (T10)"
-    ],
-    "overall_maturity": "how-plausibly",
-    "key_references": [
-        {
-            "citation": "Kaplan, S. (1995). The restorative benefits of nature."
-        }
-    ],
-    "short_description": "Restoration is not instant; it takes 20-40 minutes for the Default Mode Network to fully re-engage.",
+  "template_id": "DT_RESTORATION_TIMECOURSE_001",
+  "display_id": "T16",
+  "name": "Transition to restorative environment \u2192 DMN re-engagement timecourse",
+  "structural_pattern": "state_transition \u2192 recovery_dynamics \u2192 temporal_profile",
+  "higher_order_principle": "Temporal Dynamics of Restoration",
+  "framework_ids": [
+    "DIRECTED_ATTENTION"
+  ],
+  "transferable_to": [
+    "Work breaks",
+    "Park design (minimum size/duration)",
+    "Commute recovery"
+  ],
+  "causal_links": [
+    {
+      "id": "link_1",
+      "from_entity": "exit_high_demand_environment",
+      "activity": "allows",
+      "to_entity": "tpn_deactivation",
+      "from_level": "ecological",
+      "to_level": "circuit",
+      "bridging_quality": "strong",
+      "maturity": "how-actually",
+      "evidence_base": "Removal of demand",
+      "change_produced": "cessation of top-down control"
+    },
+    {
+      "id": "link_2",
+      "from_entity": "tpn_deactivation",
+      "activity": "gradually_allows",
+      "to_entity": "dmn_re_engagement",
+      "from_level": "circuit",
+      "to_level": "circuit",
+      "bridging_quality": "moderate",
+      "maturity": "how-plausibly",
+      "evidence_base": "fMRI temporal dynamics",
+      "change_produced": "network switch",
+      "parameter_range": "initial: 3-5m; full: 20-40m"
+    },
+    {
+      "id": "link_3",
+      "from_entity": "dmn_re_engagement",
+      "activity": "drives",
+      "to_entity": "subjective_restoration",
+      "from_level": "circuit",
+      "to_level": "psychological",
+      "bridging_quality": "moderate",
+      "maturity": "how-plausibly",
+      "evidence_base": "Correlates with mood recovery",
+      "change_produced": "feeling of refreshment",
+      "parameter_range": "lag of ~20-30m"
+    }
+  ],
+  "scope_conditions": [
+    "Requires low-demand environment (not just 'fun' high-demand)",
+    "Brief exposure (<5m) provides perceptual but not restorative benefits"
+  ],
+  "moderators": [
+    "Mindfulness traits (faster switch)",
+    "Nature quality (immersion speeds switch)"
+  ],
+  "interactions": [
+    "DT_ATTENTIONAL_DEMAND_001 (T4)",
+    "MS_CONSOLIDATION_RESTORATION_001 (T10)"
+  ],
+  "calibration_data": {
+    "temporal_stages": {
+      "stage_1": "Clearing the mind (0-10 min)",
+      "stage_2": "Recovery of directed attention (10-40 min)",
+      "stage_3": "Reflection on life problems (40 min+ - 'Soft Fascination' peak)",
+      "source": "Kaplan & Kaplan (1989)"
+    }
+  },
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "citation": "Kaplan, S. (1995). The restorative benefits of nature."
+    }
+  ],
+  "short_description": "Restoration is not instant; it takes 20-40 minutes for the Default Mode Network to fully re-engage.",
   "age_band_modifiers": {
     "toddler_0_3": {
       "speed": 0.45,
@@ -251,5 +259,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "residual",
+  "generation": 1,
+  "ecological_validation": false
 }

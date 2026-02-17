@@ -1,108 +1,108 @@
 {
-    "template_id": "IC_THERMAL_COMFORT_001",
-    "name": "Thermal Comfort and Thermoregulatory Interoceptive Processing",
-    "structural_pattern": "HOMEOSTATIC",
-    "higher_order_principle": "Thermal comfort is an interoceptive evaluation processed in the posterior and anterior insula. Thermal discomfort competes for anterior insula processing resources with interoceptive affect, social empathy, and salience computation. Adaptive thermal comfort depends on prediction: expected temperature range modulates the comfort evaluation. Thermal discomfort is a low-priority but persistent allostatic stressor.",
-    "transferable_to": [
-        "adaptive HVAC control systems (predictive comfort)",
-        "transitional spaces (lobbies/foyers as thermal buffers)",
-        "personal comfort systems (desk fans/heaters)",
-        "outdoor thermal comfort (plazas, transit stops)"
-    ],
-    "framework_ids": [
-        "IC"
-    ],
-    "causal_links": [
-        {
-            "from_variable": "ambient_thermal_environment",
-            "to_variable": "thermoreceptor_activation",
-            "activity": "peripheral_thermosensation",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "de Dear & Brager, 2002",
-            "parameters": {
-                "adaptive_comfort_zone": "20-28\u00b0C (naturally ventilated), 22-26\u00b0C (air conditioned)",
-                "note": "Zone depends on outdoor running mean temperature, clothing, and activity level"
-            }
-        },
-        {
-            "from_variable": "thermoreceptor_activation",
-            "to_variable": "anterior_insula_thermal_representation",
-            "activity": "interoceptive_thermal_evaluation",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Craig, 2009; Critchley, 2005",
-            "parameters": {
-                "pathway": "skin_thermoreceptors \u2192 spinal_cord \u2192 thalamus_VPM \u2192 posterior_insula \u2192 anterior_insula",
-                "competition": "thermal signals share anterior insula with T12, T49, SN"
-            }
-        },
-        {
-            "from_variable": "thermal_prediction_error",
-            "to_variable": "thermal_discomfort",
-            "activity": "mismatch_between_expected_and_actual_temperature",
-            "from_level": "subpersonal",
-            "to_level": "personal_epistemic",
-            "bridging_quality": "MEDIUM",
-            "maturity": "how-plausibly",
-            "key_evidence": "de Dear adaptive model; Bar PE framework",
-            "parameters": {
-                "note": "Drafts, sudden temperature changes, spatial thermal gradients all produce thermal PE even within the comfort zone"
-            }
-        },
-        {
-            "from_variable": "chronic_thermal_discomfort",
-            "to_variable": "allostatic_load_contribution",
-            "activity": "sustained_thermoregulatory_demand",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "MEDIUM",
-            "maturity": "how-plausibly",
-            "key_evidence": "Implied by T29 framework",
-            "parameters": {
-                "note": "Thermal discomfort is a low-intensity but persistent stressor. Its contribution to allostatic load is through chronic anterior insula occupation and mild sympathetic activation."
-            }
-        }
-    ],
-    "scope_conditions": [
-        "Adaptive comfort applies primarily to naturally ventilated spaces where users have control/expectation of variability",
-        "Thermal allesthesia: discomfort relief (cooling down when hot) is intensely pleasurable (rewarding), distinct from neutral comfort",
-        "Individual variation in metabolic rate (age, sex, BMI) shifts the comfort zone significantly"
-    ],
-    "moderators": [
-        "personal_control (access to windows/thermostats expands comfort zone)",
-        "acclimatization (seasonal adaptation shifts preference)",
-        "clothing_insulation (clo value)",
-        "metabolic_rate (met value)"
-    ],
-    "interactions": [
-        {
-            "template": "T12 (IC_INTEROCEPTIVE_AFFECT_001)",
-            "type": "SHARED_SUBSTRATE",
-            "description": "Thermal comfort and interoceptive affect share anterior insula. Thermal discomfort reduces available processing for other interoceptive signals."
-        },
-        {
-            "template": "T29 (ALLOSTATIC_MASTER_001)",
-            "type": "INPUT",
-            "description": "Chronic thermal discomfort contributes to allostatic load."
-        },
-        {
-            "template": "RC_ART_COMPATIBILITY",
-            "type": "INPUT",
-            "description": "Thermal discomfort is a form of environmental incompatibility \u2014 the space doesn't support the body's thermal needs."
-        }
-    ],
-    "overall_maturity": "how-actually (thermoregulatory physiology) / how-plausibly (anterior insula competition claim)",
-    "key_references": [
-        "de Dear, R. J., & Brager, G. S. (1998). ASHRAE Transactions",
-        "de Dear, R. J., & Brager, G. S. (2002). Thermal comfort in naturally ventilated buildings. Energy and Buildings",
-        "Craig, A. D. (2009). Nature Reviews Neuroscience"
-    ],
-    "display_id": "T57",
+  "template_id": "IC_THERMAL_COMFORT_001",
+  "name": "Thermal Comfort and Thermoregulatory Interoceptive Processing",
+  "structural_pattern": "HOMEOSTATIC",
+  "higher_order_principle": "Thermal comfort is an interoceptive evaluation processed in the posterior and anterior insula. Thermal discomfort competes for anterior insula processing resources with interoceptive affect, social empathy, and salience computation. Adaptive thermal comfort depends on prediction: expected temperature range modulates the comfort evaluation. Thermal discomfort is a low-priority but persistent allostatic stressor.",
+  "transferable_to": [
+    "adaptive HVAC control systems (predictive comfort)",
+    "transitional spaces (lobbies/foyers as thermal buffers)",
+    "personal comfort systems (desk fans/heaters)",
+    "outdoor thermal comfort (plazas, transit stops)"
+  ],
+  "framework_ids": [
+    "IC"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "ambient_thermal_environment",
+      "to_variable": "thermoreceptor_activation",
+      "activity": "peripheral_thermosensation",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "de Dear & Brager, 2002",
+      "parameters": {
+        "adaptive_comfort_zone": "20-28\u00b0C (naturally ventilated), 22-26\u00b0C (air conditioned)",
+        "note": "Zone depends on outdoor running mean temperature, clothing, and activity level"
+      }
+    },
+    {
+      "from_variable": "thermoreceptor_activation",
+      "to_variable": "anterior_insula_thermal_representation",
+      "activity": "interoceptive_thermal_evaluation",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Craig, 2009; Critchley, 2005",
+      "parameters": {
+        "pathway": "skin_thermoreceptors \u2192 spinal_cord \u2192 thalamus_VPM \u2192 posterior_insula \u2192 anterior_insula",
+        "competition": "thermal signals share anterior insula with T12, T49, SN"
+      }
+    },
+    {
+      "from_variable": "thermal_prediction_error",
+      "to_variable": "thermal_discomfort",
+      "activity": "mismatch_between_expected_and_actual_temperature",
+      "from_level": "subpersonal",
+      "to_level": "personal_epistemic",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "key_evidence": "de Dear adaptive model; Bar PE framework",
+      "parameters": {
+        "note": "Drafts, sudden temperature changes, spatial thermal gradients all produce thermal PE even within the comfort zone"
+      }
+    },
+    {
+      "from_variable": "chronic_thermal_discomfort",
+      "to_variable": "allostatic_load_contribution",
+      "activity": "sustained_thermoregulatory_demand",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "key_evidence": "Implied by T29 framework",
+      "parameters": {
+        "note": "Thermal discomfort is a low-intensity but persistent stressor. Its contribution to allostatic load is through chronic anterior insula occupation and mild sympathetic activation."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Adaptive comfort applies primarily to naturally ventilated spaces where users have control/expectation of variability",
+    "Thermal allesthesia: discomfort relief (cooling down when hot) is intensely pleasurable (rewarding), distinct from neutral comfort",
+    "Individual variation in metabolic rate (age, sex, BMI) shifts the comfort zone significantly"
+  ],
+  "moderators": [
+    "personal_control (access to windows/thermostats expands comfort zone)",
+    "acclimatization (seasonal adaptation shifts preference)",
+    "clothing_insulation (clo value)",
+    "metabolic_rate (met value)"
+  ],
+  "interactions": [
+    {
+      "template": "T12 (IC_INTEROCEPTIVE_AFFECT_001)",
+      "type": "SHARED_SUBSTRATE",
+      "description": "Thermal comfort and interoceptive affect share anterior insula. Thermal discomfort reduces available processing for other interoceptive signals."
+    },
+    {
+      "template": "T29 (ALLOSTATIC_MASTER_001)",
+      "type": "INPUT",
+      "description": "Chronic thermal discomfort contributes to allostatic load."
+    },
+    {
+      "template": "RC_ART_COMPATIBILITY",
+      "type": "INPUT",
+      "description": "Thermal discomfort is a form of environmental incompatibility \u2014 the space doesn't support the body's thermal needs."
+    }
+  ],
+  "overall_maturity": "how-actually (thermoregulatory physiology) / how-plausibly (anterior insula competition claim)",
+  "key_references": [
+    "de Dear, R. J., & Brager, G. S. (1998). ASHRAE Transactions",
+    "de Dear, R. J., & Brager, G. S. (2002). Thermal comfort in naturally ventilated buildings. Energy and Buildings",
+    "Craig, A. D. (2009). Nature Reviews Neuroscience"
+  ],
+  "display_id": "T57",
   "age_band_modifiers": {
     "toddler_0_3": {
       "speed": 0.45,
@@ -283,5 +283,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "residual",
+  "generation": 1,
+  "ecological_validation": false
 }

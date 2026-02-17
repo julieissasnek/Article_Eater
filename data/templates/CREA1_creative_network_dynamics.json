@@ -1,10 +1,10 @@
 {
   "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
   "display_id": "CREA1",
-  "name": "Creative Network Dynamics — DMN–Executive Coupling for Divergent and Convergent Processing",
+  "name": "Creative Network Dynamics \u2014 DMN\u2013Executive Coupling for Divergent and Convergent Processing",
   "short_description": "Creativity emerges from dynamic coupling between DMN (idea generation) and executive networks (idea evaluation); environments modulate coupling strength and phase switching",
-  "structural_pattern": "Creative cognition requires dynamic coupling between three networks: (1) Default-Mode Network (medial PFC, posterior cingulate, angular gyrus) for generating novel associations; (2) Executive-Control Network (dorsolateral PFC, inferior frontal gyrus) for evaluating and selecting; (3) Salience Network (anterior insula, dorsal ACC) for orchestrating switches between generative and evaluative phases. The creative process involves temporal cycling: early GENERATIVE phase (DMN dominant, weak executive coupling) → salience-mediated TRANSITION (meta-awareness of promising idea) → EVALUATIVE phase (strong executive coupling). Environments modulate this coupling through sensory richness, which calibrates salience network switching rate.",
-  "higher_order_principle": "Creativity is a network dynamic, not a brain region. The optimal creative state involves flexible alternation between generative (DMN-dominant) and evaluative (executive-dominant) phases. Environmental features that support this flexibility — moderate sensory richness, neither understimulating nor overstimulating — produce better creative output than environments that lock the brain into either extreme.",
+  "structural_pattern": "Creative cognition requires dynamic coupling between three networks: (1) Default-Mode Network (medial PFC, posterior cingulate, angular gyrus) for generating novel associations; (2) Executive-Control Network (dorsolateral PFC, inferior frontal gyrus) for evaluating and selecting; (3) Salience Network (anterior insula, dorsal ACC) for orchestrating switches between generative and evaluative phases. The creative process involves temporal cycling: early GENERATIVE phase (DMN dominant, weak executive coupling) \u2192 salience-mediated TRANSITION (meta-awareness of promising idea) \u2192 EVALUATIVE phase (strong executive coupling). Environments modulate this coupling through sensory richness, which calibrates salience network switching rate.",
+  "higher_order_principle": "Creativity is a network dynamic, not a brain region. The optimal creative state involves flexible alternation between generative (DMN-dominant) and evaluative (executive-dominant) phases. Environmental features that support this flexibility \u2014 moderate sensory richness, neither understimulating nor overstimulating \u2014 produce better creative output than environments that lock the brain into either extreme.",
   "framework_ids": [
     "predictive_processing",
     "DMN_TPN_dynamics",
@@ -17,14 +17,14 @@
     "dmn_role": "Generates candidate ideas through spontaneous associative processes",
     "ecn_role": "Evaluates and selects among candidates for originality and appropriateness",
     "salience_role": "Orchestrates switching between generative and evaluative modes",
-    "creative_coupling": "High-creativity individuals show stronger DMN–ECN functional connectivity during divergent thinking"
+    "creative_coupling": "High-creativity individuals show stronger DMN\u2013ECN functional connectivity during divergent thinking"
   },
   "phase_model": {
     "generative_phase": {
       "duration_seconds": "5-15 (early in divergent task)",
       "network_state": "DMN dominant with weaker executive coupling",
       "cognitive_mode": "Associative flow with loose goal direction",
-      "environmental_support": "Open, moderate stimulation, reduced external demand"
+      "environmental_support": "Moderate noise (65-70 dB), high ceiling (R_h > 0.35), dim (100-200 lux)"
     },
     "transition": {
       "trigger": "Meta-awareness of promising candidate (salience network)",
@@ -35,7 +35,7 @@
       "duration_seconds": "5-10 (late in divergent task, preparing response)",
       "network_state": "Strengthened executive coupling",
       "cognitive_mode": "Screening candidates for novelty AND appropriateness",
-      "environmental_support": "Quiet, well-lit, supportive of focused analysis"
+      "environmental_support": "Quiet (<45 dBA), bright (400-500 lux), standard ceiling (R_h 0.25-0.35)"
     }
   },
   "sensory_richness_optimum": {
@@ -53,14 +53,29 @@
   },
   "coupling_flexibility": {
     "measure": "Alpha power variability over prefrontal cortex",
-    "high_creativity_marker": "Higher alpha variability (more flexible DMN–ECN switching)",
+    "high_creativity_marker": "Higher alpha variability (more flexible DMN\u2013ECN switching)",
     "environmental_modulation": "Moderate complexity environments produce higher alpha variability"
   },
   "phase_appropriate_architecture": {
     "recommendation": "Different environments for different creative phases",
-    "generative_zone": "Open, dim ambient (150 lux), moderate non-semantic sound (65-75 dB), natural materials",
-    "evaluative_zone": "Enclosed, bright task light (500+ lux), quiet (<50 dB), minimal distraction",
-    "transitional_zone": "Walking paths, nature views, soft fascination (connects to CREA3)"
+    "generative_zone": {
+      "noise": "65-70 dBA ambient",
+      "light": "100-200 lux",
+      "ceiling": "R_h > 0.35",
+      "pathway_combo": "A+B (noise + ceiling)"
+    },
+    "evaluative_zone": {
+      "noise": "<45 dBA",
+      "light": "400-500 lux",
+      "ceiling": "R_h 0.25-0.35",
+      "pathway_combo": "None (minimize broadening)"
+    },
+    "transitional_zone": {
+      "noise": "50-55 dBA",
+      "light": "Daylight preferred",
+      "features": "Walking path, soft fascination",
+      "pathway_combo": "Single pathway, moderate"
+    }
   },
   "causal_links": [
     {
@@ -71,7 +86,7 @@
       "to_level": "neural",
       "bridging_quality": "moderate",
       "maturity": "how-plausibly",
-      "evidence_base": "Beaty et al. (2016, 2019); network connectivity studies establish the DMN–ECN coupling mechanism. Environmental modulation of coupling not yet directly measured."
+      "evidence_base": "Beaty et al. (2016, 2019); network connectivity studies establish the DMN\u2013ECN coupling mechanism. Environmental modulation of coupling not yet directly measured."
     },
     {
       "from_entity": "dmn_ecn_coupling_flexibility",
@@ -81,7 +96,7 @@
       "to_level": "cognitive",
       "bridging_quality": "strong",
       "maturity": "established",
-      "evidence_base": "Beaty et al. (2016): stronger DMN–ECN coupling predicts individual differences in creative ability (r ≈ 0.4)."
+      "evidence_base": "Beaty et al. (2016): stronger DMN\u2013ECN coupling predicts individual differences in creative ability (r \u2248 0.4)."
     },
     {
       "from_entity": "generative_evaluative_phase_alternation",
@@ -96,7 +111,7 @@
   ],
   "scope_conditions": [
     "Applies to individual creative cognition (collaborative creativity requires CREA4, future panel)",
-    "Domain-general mechanism — applies across verbal, visual, scientific, and artistic creativity",
+    "Domain-general mechanism \u2014 applies across verbal, visual, scientific, and artistic creativity",
     "Most relevant for tasks requiring novel associations (divergent thinking, insight problems)",
     "Does not model long-term creative development (plasticity effects)"
   ],
@@ -113,7 +128,7 @@
       "nature": "CREA1 specifies a creative sub-state within T27's dynamic range. T27 describes the general DMN/TPN alternation; CREA1 specifies the creativity-specific coupling pattern."
     },
     {
-      "template_id": "EC_PROACTIVE_REACTIVE_CONTROL_001",
+      "template_id": "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
       "display_id": "T45",
       "nature": "Reactive control (T45) blocks creative coupling. Environments that trigger reactive control (high complexity, threat cues) impair creative network dynamics."
     },
@@ -134,24 +149,24 @@
   "overall_maturity": "supported (network dynamics); how-plausibly (environmental modulation)",
   "key_references": [
     {
-      "citation": "Beaty, R. E., Benedek, M., Silvia, P. J., & Schacter, D. L. (2016). Creative cognition and brain network dynamics. Trends in Cognitive Sciences, 20(2), 87–95.",
+      "citation": "Beaty, R. E., Benedek, M., Silvia, P. J., & Schacter, D. L. (2016). Creative cognition and brain network dynamics. Trends in Cognitive Sciences, 20(2), 87\u201395.",
       "google_scholar_count": 1200
     },
     {
-      "citation": "Beaty, R. E., Seli, P., & Schacter, D. L. (2019). Network neuroscience of creative cognition. Current Opinion in Behavioral Sciences, 27, 22–30.",
+      "citation": "Beaty, R. E., Seli, P., & Schacter, D. L. (2019). Network neuroscience of creative cognition. Current Opinion in Behavioral Sciences, 27, 22\u201330.",
       "google_scholar_count": 300
     },
     {
-      "citation": "Christoff, K., Irving, Z. C., Fox, K. C. R., Spreng, R. N., & Andrews-Hanna, J. R. (2016). Mind-wandering as spontaneous thought: A dynamic framework. Nature Reviews Neuroscience, 17(11), 718–731.",
+      "citation": "Christoff, K., Irving, Z. C., Fox, K. C. R., Spreng, R. N., & Andrews-Hanna, J. R. (2016). Mind-wandering as spontaneous thought: A dynamic framework. Nature Reviews Neuroscience, 17(11), 718\u2013731.",
       "google_scholar_count": 1800
     },
     {
-      "citation": "Benedek, M., & Fink, A. (2019). Toward a neurocognitive framework of creative cognition. Current Opinion in Behavioral Sciences, 27, 116–122.",
+      "citation": "Benedek, M., & Fink, A. (2019). Toward a neurocognitive framework of creative cognition. Current Opinion in Behavioral Sciences, 27, 116\u2013122.",
       "google_scholar_count": 300
     }
   ],
   "source_panel": "55_Panel_CREA_I_Creative_Cognition_V1_0.md",
-  "calibration_status": "uncalibrated",
+  "calibration_status": "deepened",
   "version": "1.0.0",
   "phase_durations_s": {
     "generation": {
@@ -216,17 +231,17 @@
     },
     "emerging_adult_16_25": {
       "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
+      "vision": 1,
+      "hearing": 1,
       "motor": 0.98,
-      "olfaction": 1.0
+      "olfaction": 1
     },
     "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
+      "speed": 1,
+      "vision": 1,
+      "hearing": 1,
+      "motor": 1,
+      "olfaction": 1
     },
     "middle_40_65": {
       "speed": 0.88,
@@ -272,7 +287,7 @@
       "age_0_6": 1.6,
       "age_6_12": 1.35,
       "age_12_25": 1.15,
-      "age_25_50": 1.0,
+      "age_25_50": 1,
       "age_50_65": 1.2,
       "age_65_80": 1.45,
       "age_80_plus": 1.7
@@ -340,14 +355,14 @@
         "ceiling_height_m": {
           "primary_5_9": {
             "min": 2.7,
-            "max": 3.0
+            "max": 3
           },
           "upper_9_12": {
-            "min": 3.0,
+            "min": 3,
             "max": 3.5
           },
           "secondary_12_16": {
-            "min": 3.0,
+            "min": 3,
             "max": 3.5
           }
         },
@@ -358,5 +373,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "active",
+  "generation": 2,
+  "ecological_validation": false
 }

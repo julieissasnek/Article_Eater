@@ -2,8 +2,8 @@
   "template_id": "CIRCADIAN_ARCH_REG_001",
   "display_id": "L2",
   "name": "Circadian Architectural Regulation via Non-Visual Photoreception",
-  "short_description": "Building design mediates ipRGC → SCN pathway; appropriate light timing produces circadian alignment, inappropriate light causes temporal PE and allostatic load",
-  "structural_pattern": "Building design determines the spectral power distribution, intensity, timing, duration, and spatial distribution of light reaching the occupant's eyes. This light is transduced by melanopsin-expressing intrinsically photosensitive retinal ganglion cells (ipRGCs), which project via the retinohypothalamic tract to the suprachiasmatic nucleus (SCN). The SCN, as the master circadian pacemaker, generates temporal predictions (a ~24h oscillation) and uses the light signal to entrain this oscillation to the environmental day-night cycle. Appropriate light (high melanopic irradiance during the biological day, dim warm light during biological evening) produces small temporal PE and efficient circadian function. Inappropriate light produces temporal PE — misalignment between the SCN's predicted phase and the light signal — resulting in circadian disruption with cascading health, cognitive, and affective consequences via the allostatic pathway (T29).",
+  "short_description": "Building design mediates ipRGC \u2192 SCN pathway; appropriate light timing produces circadian alignment, inappropriate light causes temporal PE and allostatic load",
+  "structural_pattern": "Building design determines the spectral power distribution, intensity, timing, duration, and spatial distribution of light reaching the occupant's eyes. This light is transduced by melanopsin-expressing intrinsically photosensitive retinal ganglion cells (ipRGCs), which project via the retinohypothalamic tract to the suprachiasmatic nucleus (SCN). The SCN, as the master circadian pacemaker, generates temporal predictions (a ~24h oscillation) and uses the light signal to entrain this oscillation to the environmental day-night cycle. Appropriate light (high melanopic irradiance during the biological day, dim warm light during biological evening) produces small temporal PE and efficient circadian function. Inappropriate light produces temporal PE \u2014 misalignment between the SCN's predicted phase and the light signal \u2014 resulting in circadian disruption with cascading health, cognitive, and affective consequences via the allostatic pathway (T29).",
   "higher_order_principle": "Temporal prediction error at the circadian timescale. The SCN generates a 24-hour prediction; light calibrates it. Chronic mismatch = chronic temporal PE = allostatic load. This is the circadian instantiation of the same prediction-error-correction principle that operates at perceptual, attentional, and allostatic timescales.",
   "framework_ids": [
     "circadian_neuroscience",
@@ -52,7 +52,7 @@
       "to_level": "physiological",
       "bridging_to": "strong",
       "maturity": "established",
-      "evidence_base": "SCN → pineal (melatonin: onset ~2h before habitual bedtime, peak during sleep, suppressed by light). SCN → adrenal (cortisol: peak ~30min after waking, declining through day). Rhythm alignment = health; misalignment = disruption."
+      "evidence_base": "SCN \u2192 pineal (melatonin: onset ~2h before habitual bedtime, peak during sleep, suppressed by light). SCN \u2192 adrenal (cortisol: peak ~30min after waking, declining through day). Rhythm alignment = health; misalignment = disruption."
     },
     {
       "from_entity": "circadian_alignment",
@@ -62,19 +62,19 @@
       "to_level": "cognitive",
       "bridging_to": "moderate",
       "maturity": "supported",
-      "evidence_base": "Aligned circadian function supports: sleep quality, daytime alertness, mood stability, metabolic health, immune function, cognitive performance. Misalignment impairs all of these. Chronic misalignment → allostatic load (T29)."
+      "evidence_base": "Aligned circadian function supports: sleep quality, daytime alertness, mood stability, metabolic health, immune function, cognitive performance. Misalignment impairs all of these. Chronic misalignment \u2192 allostatic load (T29)."
     }
   ],
   "scope_conditions": [
-    "Applies to all occupied buildings — every building is a circadian instrument whether designed as one or not",
+    "Applies to all occupied buildings \u2014 every building is a circadian instrument whether designed as one or not",
     "Strongest effects for occupants with limited outdoor light exposure (deep-plan offices, healthcare, residential care, schools)",
     "Timing effects are phase-dependent: same light has different circadian impact depending on when in the 24h cycle it is experienced",
     "Individual differences in chronotype (morningness-eveningness) moderate the optimal timing of circadian light"
   ],
   "moderators": [
-    "Age: aging reduces ipRGC density and lens transmittance → elderly need more light for equivalent circadian stimulus",
+    "Age: aging reduces ipRGC density and lens transmittance \u2192 elderly need more light for equivalent circadian stimulus",
     "Chronotype: evening chronotypes are more vulnerable to insufficient morning light",
-    "Season and latitude: high-latitude winters provide insufficient daylight for circadian entrainment → architectural compensation needed",
+    "Season and latitude: high-latitude winters provide insufficient daylight for circadian entrainment \u2192 architectural compensation needed",
     "Building type: healthcare and shift-work environments have the most severe circadian challenges",
     "Prior photic history: a dim morning reduces the circadian system's sensitivity to subsequent light"
   ],
@@ -84,9 +84,9 @@
   },
   "calibration_parameters": {
     "standard_dose_response": {
-      "population": "Adults 20–45",
-      "cs_threshold": "CS ≥ 0.3 for ≥ 2 hours during morning/early afternoon",
-      "medi_threshold": "M-EDI ≥ 250 lux at eye level",
+      "population": "Adults 20\u201345",
+      "cs_threshold": "CS \u2265 0.3 for \u2265 2 hours during morning/early afternoon",
+      "medi_threshold": "M-EDI \u2265 250 lux at eye level",
       "delivery_methods": [
         "Window-adjacent workstation in well-daylit office",
         "Ceiling-mounted 6500K LED panels at 500+ lux"
@@ -94,7 +94,7 @@
     },
     "age_corrected_dose_response": {
       "population": "Adults 65+",
-      "medi_threshold": "M-EDI ≥ 500 lux at eye level (approximately DOUBLE)",
+      "medi_threshold": "M-EDI \u2265 500 lux at eye level (approximately DOUBLE)",
       "delivery_methods": [
         "Supplementary high-CCT task lighting",
         "Illuminated vertical surfaces at seated eye height",
@@ -103,13 +103,13 @@
       "design_implication": "Standard ceiling-only overhead lighting is INSUFFICIENT for circadian needs in elderly populations"
     },
     "age_correction_function": {
-      "formula": "Required M-EDI(age) ≈ M-EDI(25) × (1 + 0.015 × (age − 25))",
+      "formula": "Required M-EDI(age) \u2248 M-EDI(25) \u00d7 (1 + 0.015 \u00d7 (age \u2212 25))",
       "examples": {
         "age_45": "~30% increase (1.3x)",
         "age_65": "~60% increase (1.6x)",
         "age_90": "~100% increase (2.0x)"
       },
-      "precision": "±20% individual variation even within age cohorts",
+      "precision": "\u00b120% individual variation even within age cohorts",
       "mechanism": "Progressive yellowing and thickening of crystalline lens attenuates short-wavelength light; by age 65, lens transmits ~50% of blue light compared to age 25",
       "evidence_base": "Turner & Mainster (2008); Figueiro et al. (2014, 2017)"
     },
@@ -119,7 +119,7 @@
       "Buildings with aging workforce need circadian-optimized design",
       "Light at eye level (task lights, illuminated vertical surfaces) more effective than overhead"
     ],
-    "calibration_source": "Panel L-II (Doc 49) — Figueiro age-correction formalization"
+    "calibration_source": "Panel L-II (Doc 49) \u2014 Figueiro age-correction formalization"
   },
   "calibration_status": "well_calibrated",
   "interactions": [
@@ -147,19 +147,19 @@
   "maturity": "established",
   "key_references": [
     {
-      "citation": "Berson, D. M., Dunn, F. A., & Takao, M. (2002). Phototransduction by retinal ganglion cells that set the circadian clock. Science, 295(5557), 1070–1073.",
+      "citation": "Berson, D. M., Dunn, F. A., & Takao, M. (2002). Phototransduction by retinal ganglion cells that set the circadian clock. Science, 295(5557), 1070\u20131073.",
       "google_scholar_count": 3500
     },
     {
-      "citation": "Brainard, G. C., Hanifin, J. P., Greeson, J. M., et al. (2001). Action spectrum for melatonin regulation in humans: Evidence for a novel circadian photoreceptor. Journal of Neuroscience, 21(16), 6405–6412.",
+      "citation": "Brainard, G. C., Hanifin, J. P., Greeson, J. M., et al. (2001). Action spectrum for melatonin regulation in humans: Evidence for a novel circadian photoreceptor. Journal of Neuroscience, 21(16), 6405\u20136412.",
       "google_scholar_count": 2200
     },
     {
-      "citation": "Rea, M. S., & Figueiro, M. G. (2018). Light as a circadian stimulus for architectural lighting. Lighting Research & Technology, 50(4), 497–510.",
+      "citation": "Rea, M. S., & Figueiro, M. G. (2018). Light as a circadian stimulus for architectural lighting. Lighting Research & Technology, 50(4), 497\u2013510.",
       "google_scholar_count": 300
     },
     {
-      "citation": "Knutsson, A. (2003). Health disorders of shift workers. Occupational Medicine, 53(2), 103–108.",
+      "citation": "Knutsson, A. (2003). Health disorders of shift workers. Occupational Medicine, 53(2), 103\u2013108.",
       "google_scholar_count": 1200
     },
     {
@@ -356,5 +356,10 @@
     "middle": 1.3,
     "older": 2,
     "frail": 2.5
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "active",
+  "generation": 2,
+  "ecological_validation": false
 }

@@ -2,9 +2,9 @@
   "template_id": "NEURAL_MUSIC_EMOTION_ARCH_001",
   "display_id": "M13",
   "name": "Neural Architecture of Music-Evoked Emotion",
-  "short_description": "Music-evoked emotions engage distributed network: brainstem (~50ms) → amygdala (~100-200ms) → hippocampus (~500ms-2s) → NAc (~1-5s) → insula → ACC → vmPFC (2-10s); each structure processes different BRECVEMA mechanisms",
-  "structural_pattern": "Music-evoked emotions engage a distributed network of brain structures, each processing different aspects of the emotional response at different timescales. PROCESSING HIERARCHY: (1) Brainstem nuclei (LC, raphé, reticular formation) — process basic acoustic features, generate arousal responses via noradrenaline/serotonin, ~50ms, implements Juslin's brainstem reflex (B). (2) Amygdala — responds to musical stimuli signaling potential threat (dissonance, unexpected loud sounds), activation modulated by listener familiarity with musical style, ~100-200ms. (3) Hippocampus — dual function: episodic memory retrieval (E-memory mechanism) and novelty/familiarity detection that feeds into prediction error and emotional response, ~500ms-2s. (4) Ventral striatum (NAc) — reward center, produces dopamine during pleasurable moments, receives input from auditory cortex, amygdala, and hippocampus to compute 'reward value', NAc activation proportional to willingness to pay (Salimpoor 2013), ~1-5s. (5) Insula — processes interoceptive signals that constitute 'feeling' of emotion, interface between body's response and subjective experience, connectivity to auditory cortex predicts chill frequency. (6) ACC — monitors conflict between emotional responses. (7) vmPFC/OFC — the familiar subjective value node, integrates prediction outcomes, reward signals, memory associations, and aesthetic evaluations.",
-  "higher_order_principle": "Music-evoked emotion is not a single neural circuit — it is simultaneous activation of MULTIPLE circuits, each implementing one or more BRECVEMA mechanisms. The temporal unfolding follows the processing hierarchy: fast subcortical mechanisms provide initial affective coloring (~50-100ms), intermediate mechanisms add complexity (~200ms-2s), slow cortical mechanisms produce final evaluative response (~2-10s). vmPFC receives convergent input from all pathways and computes unified subjective value.",
+  "short_description": "Music-evoked emotions engage distributed network: brainstem (~50ms) \u2192 amygdala (~100-200ms) \u2192 hippocampus (~500ms-2s) \u2192 NAc (~1-5s) \u2192 insula \u2192 ACC \u2192 vmPFC (2-10s); each structure processes different BRECVEMA mechanisms",
+  "structural_pattern": "Music-evoked emotions engage a distributed network of brain structures, each processing different aspects of the emotional response at different timescales. PROCESSING HIERARCHY: (1) Brainstem nuclei (LC, raph\u00e9, reticular formation) \u2014 process basic acoustic features, generate arousal responses via noradrenaline/serotonin, ~50ms, implements Juslin's brainstem reflex (B). (2) Amygdala \u2014 responds to musical stimuli signaling potential threat (dissonance, unexpected loud sounds), activation modulated by listener familiarity with musical style, ~100-200ms. (3) Hippocampus \u2014 dual function: episodic memory retrieval (E-memory mechanism) and novelty/familiarity detection that feeds into prediction error and emotional response, ~500ms-2s. (4) Ventral striatum (NAc) \u2014 reward center, produces dopamine during pleasurable moments, receives input from auditory cortex, amygdala, and hippocampus to compute 'reward value', NAc activation proportional to willingness to pay (Salimpoor 2013), ~1-5s. (5) Insula \u2014 processes interoceptive signals that constitute 'feeling' of emotion, interface between body's response and subjective experience, connectivity to auditory cortex predicts chill frequency. (6) ACC \u2014 monitors conflict between emotional responses. (7) vmPFC/OFC \u2014 the familiar subjective value node, integrates prediction outcomes, reward signals, memory associations, and aesthetic evaluations.",
+  "higher_order_principle": "Music-evoked emotion is not a single neural circuit \u2014 it is simultaneous activation of MULTIPLE circuits, each implementing one or more BRECVEMA mechanisms. The temporal unfolding follows the processing hierarchy: fast subcortical mechanisms provide initial affective coloring (~50-100ms), intermediate mechanisms add complexity (~200ms-2s), slow cortical mechanisms produce final evaluative response (~2-10s). vmPFC receives convergent input from all pathways and computes unified subjective value.",
   "framework_ids": [
     "MUSIC_COGNITION",
     "AFFECTIVE_NEUROSCIENCE",
@@ -14,39 +14,55 @@
   "domain": "music_emotion",
   "neural_hierarchy": {
     "brainstem_50ms": {
-      "structures": "Locus coeruleus, raphé nuclei, reticular formation",
+      "structures": "Locus coeruleus, raph\u00e9 nuclei, reticular formation",
       "function": "Acoustic reflex, arousal modulation",
-      "brecvema_mechanisms": ["B"]
+      "brecvema_mechanisms": [
+        "B"
+      ]
     },
     "amygdala_100_200ms": {
       "structures": "Amygdala",
       "function": "Threat/significance detection, aversive response to dissonance",
-      "brecvema_mechanisms": ["B", "E_conditioning"]
+      "brecvema_mechanisms": [
+        "B",
+        "E_conditioning"
+      ]
     },
     "hippocampus_500ms_2s": {
       "structures": "Hippocampus",
       "function": "Episodic memory retrieval, novelty detection",
-      "brecvema_mechanisms": ["E_memory"]
+      "brecvema_mechanisms": [
+        "E_memory"
+      ]
     },
     "ventral_striatum_1_5s": {
       "structures": "Nucleus accumbens",
       "function": "Reward signal, dopamine release",
-      "brecvema_mechanisms": ["M", "A"]
+      "brecvema_mechanisms": [
+        "M",
+        "A"
+      ]
     },
     "insula_500ms_2s": {
       "structures": "Anterior and posterior insula",
       "function": "Interoceptive processing, bodily feeling",
-      "brecvema_mechanisms": ["All — processes bodily response"]
+      "brecvema_mechanisms": [
+        "All \u2014 processes bodily response"
+      ]
     },
     "acc_1_5s": {
       "structures": "Anterior cingulate cortex",
       "function": "Conflict monitoring between emotional signals",
-      "brecvema_mechanisms": ["Integration"]
+      "brecvema_mechanisms": [
+        "Integration"
+      ]
     },
     "vmpfc_2_10s": {
       "structures": "Ventromedial prefrontal cortex, orbitofrontal cortex",
       "function": "Subjective value integration, aesthetic evaluation",
-      "brecvema_mechanisms": ["A"]
+      "brecvema_mechanisms": [
+        "A"
+      ]
     }
   },
   "clinical_dissociations": {
@@ -73,7 +89,7 @@
       "to_level": "neural",
       "bridging_quality": "strong",
       "maturity": "established",
-      "evidence_base": "Salimpoor et al. (2011, 2013) — NAc dopamine release during peak musical pleasure, proportional to willingness to pay"
+      "evidence_base": "Salimpoor et al. (2011, 2013) \u2014 NAc dopamine release during peak musical pleasure, proportional to willingness to pay"
     },
     {
       "from_entity": "all_pathways",
@@ -107,19 +123,19 @@
   "overall_maturity": "established",
   "key_references": [
     {
-      "citation": "Koelsch, S. (2014). Brain correlates of music-evoked emotions. Nature Reviews Neuroscience, 15(3), 170–180.",
+      "citation": "Koelsch, S. (2014). Brain correlates of music-evoked emotions. Nature Reviews Neuroscience, 15(3), 170\u2013180.",
       "google_scholar_count": 1500
     },
     {
-      "citation": "Blood, A. J., & Zatorre, R. J. (2001). Intensely pleasurable responses to music correlate with activity in brain regions implicated in reward and emotion. PNAS, 98(20), 11818–11823.",
+      "citation": "Blood, A. J., & Zatorre, R. J. (2001). Intensely pleasurable responses to music correlate with activity in brain regions implicated in reward and emotion. PNAS, 98(20), 11818\u201311823.",
       "google_scholar_count": 3000
     },
     {
-      "citation": "Salimpoor, V. N., Benovoy, M., Larcher, K., Dagher, A., & Zatorre, R. J. (2011). Anatomically distinct dopamine release during anticipation and experience of peak emotion to music. Nature Neuroscience, 14(2), 257–262.",
+      "citation": "Salimpoor, V. N., Benovoy, M., Larcher, K., Dagher, A., & Zatorre, R. J. (2011). Anatomically distinct dopamine release during anticipation and experience of peak emotion to music. Nature Neuroscience, 14(2), 257\u2013262.",
       "google_scholar_count": 1500
     },
     {
-      "citation": "Belfi, A. M., Evans, E., Heskje, J., Bruss, J., & Tranel, D. (2017). Musical anhedonia after focal brain damage. Neuropsychologia, 97, 29–37.",
+      "citation": "Belfi, A. M., Evans, E., Heskje, J., Bruss, J., & Tranel, D. (2017). Musical anhedonia after focal brain damage. Neuropsychologia, 97, 29\u201337.",
       "google_scholar_count": 100
     }
   ],
@@ -305,5 +321,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "gap",
+  "generation": 1,
+  "ecological_validation": false
 }

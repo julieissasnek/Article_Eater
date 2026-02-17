@@ -1,60 +1,60 @@
 {
-    "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
-    "name": "Adaptive Thermal Comfort and Allesthesia",
-    "structural_pattern": "ADAPTATION",
-    "higher_order_principle": "Thermal comfort (T74) is not a fixed temperature (e.g., 22\u00b0C) but a prediction error relative to an *adaptive* expectation (T57). The Setpoint Adaptation model shows that expectations shift with outdoor weather and history. Furthermore, 'Allesthesia' describes how a thermal stimulus that corrects a systematic error (e.g., cool breeze when hot) is intensely pleasurable, not just neutral.",
-    "transferable_to": [
-        "HVAC setpoint strategies (energy saving)",
-        "natural ventilation design",
-        "transitional spaces (lobbies)"
-    ],
-    "framework_ids": [
-        "IC"
-    ],
-    "causal_links": [
-        {
-            "from_variable": "thermal_state_vs_setpoint",
-            "to_variable": "hedonic_valence",
-            "activity": "allesthetic_evaluation",
-            "from_level": "subpersonal",
-            "to_level": "personal_epistemic",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Cabanac, 1971; de Dear, 2011",
-            "parameters": {
-                "Negative_Load": "If body is Hyperthermic (Hot) -> Cold stimulus = Pleasure (Positive Allesthesia)",
-                "Neutral_Load": "If body is Neutral -> Cold stimulus = Unpleasant (Discomfort)",
-                "Implication": "Static uniform environments kill allesthesia opportunities. Dynamic/variable environments allow for pleasure."
-            }
-        }
-    ],
-    "scope_conditions": [
-        "Adaptive comfort works best when users have CONTROL (windows, fans). Absence of control locks the setpoint to a narrow range.",
-        "Metabolic rate variability: Physical activity shifts the setpoint dramatically."
-    ],
-    "moderators": [
-        "outdoor_temperature (running mean)",
-        "clothing",
-        "activity_level"
-    ],
-    "interactions": [
-        {
-            "template": "T57 (IC_THERMAL_COMFORT_001)",
-            "type": "EXTENSION",
-            "description": "T57 describes the Neural Mechanism (Insula). T74 describes the Behavioral/Psychological Model (Adaptation/Allesthesia)."
-        },
-        {
-            "template": "T29 (ALLOSTATIC_MASTER_001)",
-            "type": "INPUT",
-            "description": "Allesthesia is the reward for reducing allostatic load (T29)."
-        }
-    ],
-    "overall_maturity": "how-actually",
-    "key_references": [
-        "Cabanac, M. (1971). Physiological role of pleasure. Science",
-        "de Dear, R. (2011). Revisiting an old hypothesis of human thermal perception: allesthesia. Building Research & Information"
-    ],
-    "display_id": "T74",
+  "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+  "name": "Adaptive Thermal Comfort and Allesthesia",
+  "structural_pattern": "ADAPTATION",
+  "higher_order_principle": "Thermal comfort (T74) is not a fixed temperature (e.g., 22\u00b0C) but a prediction error relative to an *adaptive* expectation (T57). The Setpoint Adaptation model shows that expectations shift with outdoor weather and history. Furthermore, 'Allesthesia' describes how a thermal stimulus that corrects a systematic error (e.g., cool breeze when hot) is intensely pleasurable, not just neutral.",
+  "transferable_to": [
+    "HVAC setpoint strategies (energy saving)",
+    "natural ventilation design",
+    "transitional spaces (lobbies)"
+  ],
+  "framework_ids": [
+    "IC"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "thermal_state_vs_setpoint",
+      "to_variable": "hedonic_valence",
+      "activity": "allesthetic_evaluation",
+      "from_level": "subpersonal",
+      "to_level": "personal_epistemic",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Cabanac, 1971; de Dear, 2011",
+      "parameters": {
+        "Negative_Load": "If body is Hyperthermic (Hot) -> Cold stimulus = Pleasure (Positive Allesthesia)",
+        "Neutral_Load": "If body is Neutral -> Cold stimulus = Unpleasant (Discomfort)",
+        "Implication": "Static uniform environments kill allesthesia opportunities. Dynamic/variable environments allow for pleasure."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Adaptive comfort works best when users have CONTROL (windows, fans). Absence of control locks the setpoint to a narrow range.",
+    "Metabolic rate variability: Physical activity shifts the setpoint dramatically."
+  ],
+  "moderators": [
+    "outdoor_temperature (running mean)",
+    "clothing",
+    "activity_level"
+  ],
+  "interactions": [
+    {
+      "template": "T57 (IC_THERMAL_COMFORT_001)",
+      "type": "EXTENSION",
+      "description": "T57 describes the Neural Mechanism (Insula). T74 describes the Behavioral/Psychological Model (Adaptation/Allesthesia)."
+    },
+    {
+      "template": "T29 (ALLOSTATIC_MASTER_001)",
+      "type": "INPUT",
+      "description": "Allesthesia is the reward for reducing allostatic load (T29)."
+    }
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    "Cabanac, M. (1971). Physiological role of pleasure. Science",
+    "de Dear, R. (2011). Revisiting an old hypothesis of human thermal perception: allesthesia. Building Research & Information"
+  ],
+  "display_id": "T74",
   "age_band_modifiers": {
     "toddler_0_3": {
       "speed": 0.45,
@@ -235,5 +235,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "residual",
+  "generation": 1,
+  "ecological_validation": false
 }

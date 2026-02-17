@@ -1,90 +1,90 @@
 {
-    "template_id": "LUMINANCE_CONTRAST_PE_001",
-    "name": "Luminance Contrast and Visual Comfort",
-    "structural_pattern": "OPTIMIZATION",
-    "higher_order_principle": "Visual comfort (T69) is the minimization of metabolic cost in the early visual system. Excessive luminance ratios (>1:10) create 'glare' \u2014 a prediction error/metabolic stress state where retinal adaptation cannot resolve the scene. Insufficient contrast creates accommodation stress (blur). The Goldilocks zone of luminance contrast supports efficient spatial frequency analysis (1/f) and minimizes visual fatigue.",
-    "transferable_to": [
-        "lighting design (glare metrics: UGR)",
-        "workstation ergonomics",
-        "window design (daylight autonomous dimming)",
-        "signage visibility"
-    ],
-    "framework_ids": [
-        "PP",
-        "EC"
-    ],
-    "causal_links": [
-        {
-            "from_variable": "luminance_contrast_ratio",
-            "to_variable": "retinal_adaptation_stress",
-            "activity": "dynamic_range_compression_demand",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Boyce, 2014; Clear, 2013",
-            "parameters": {
-                "glare_zone": "Ratio > 1:10 (task:surround) or > 1:20 (remote)",
-                "mechanism": "Intrinsically photosensitive adaptation cannot stabilize. Scatter in lens increases veiling luminance (disability glare)."
-            }
-        },
-        {
-            "from_variable": "visual_discomfort_signal",
-            "to_variable": "squint_and_avoidance_behavior",
-            "activity": "glare_avoidance",
-            "from_level": "subpersonal",
-            "to_level": "personal_epistemic",
-            "bridging_quality": "HIGH",
-            "maturity": "how-actually",
-            "key_evidence": "Sheedy et al., 2003",
-            "parameters": {
-                "muscle": "Orbicularis oculi contraction (squint) triggers trigeminal nerve pain pathway",
-                "effect": "Headache, eye strain (asthenopia), avoidance of the space"
-            }
-        },
-        {
-            "from_variable": "optimal_contrast_distribution",
-            "to_variable": "processing_fluency_enhancement",
-            "activity": "efficient_scene_parsing",
-            "from_level": "subpersonal",
-            "to_level": "subpersonal",
-            "bridging_quality": "MEDIUM",
-            "maturity": "how-plausibly",
-            "key_evidence": "Wilkins et al., 1984 (stripes/contrast)",
-            "parameters": {
-                "connection": "Proper contrast enhances T1 (Spectral Match) processing. High contrast edges facilitate edge detection (V1)."
-            }
-        }
-    ],
-    "scope_conditions": [
-        "Age-dependent: Older eyes (>45) suffer much more from glare due to lens scatter (cataracts) and slower adaptation.",
-        "Task-dependent: Computer work (self-luminous target) has stricter contrast limits than paper work.",
-        "Flicker: Temporal modulation of luminance (invisible flicker) adds to neural load even if contrast is static."
-    ],
-    "moderators": [
-        "age (lens opacity)",
-        "task_type",
-        "position (glare source in fovea vs periphery)"
-    ],
-    "interactions": [
-        {
-            "template": "T1 (PP_SPECTRAL_MATCH_001)",
-            "type": "FOUNDATION",
-            "description": "Luminance distribution is the carrier for spatial frequency (1/f). Glare 'blows out' the 1/f structure."
-        },
-        {
-            "template": "T67 (PP_PROCESSING_FLUENCY_001)",
-            "type": "INPUT",
-            "description": "Visual comfort (low glare) is a prerequisite for processing fluency."
-        }
-    ],
-    "overall_maturity": "how-actually",
-    "key_references": [
-        "Boyce, P. R. (2014). Human Factors in Lighting. CRC Press",
-        "Sheedy, J. E., et al. (2003). Symptoms of asthenopia. Optometry and Vision Science",
-        "Wilkins, A., et al. (1984). Inferences about the neural mechanism of visual discomfort. Brain"
-    ],
-    "display_id": "T69",
+  "template_id": "LUMINANCE_CONTRAST_PE_001",
+  "name": "Luminance Contrast and Visual Comfort",
+  "structural_pattern": "OPTIMIZATION",
+  "higher_order_principle": "Visual comfort (T69) is the minimization of metabolic cost in the early visual system. Excessive luminance ratios (>1:10) create 'glare' \u2014 a prediction error/metabolic stress state where retinal adaptation cannot resolve the scene. Insufficient contrast creates accommodation stress (blur). The Goldilocks zone of luminance contrast supports efficient spatial frequency analysis (1/f) and minimizes visual fatigue.",
+  "transferable_to": [
+    "lighting design (glare metrics: UGR)",
+    "workstation ergonomics",
+    "window design (daylight autonomous dimming)",
+    "signage visibility"
+  ],
+  "framework_ids": [
+    "PP",
+    "EC"
+  ],
+  "causal_links": [
+    {
+      "from_variable": "luminance_contrast_ratio",
+      "to_variable": "retinal_adaptation_stress",
+      "activity": "dynamic_range_compression_demand",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Boyce, 2014; Clear, 2013",
+      "parameters": {
+        "glare_zone": "Ratio > 1:10 (task:surround) or > 1:20 (remote)",
+        "mechanism": "Intrinsically photosensitive adaptation cannot stabilize. Scatter in lens increases veiling luminance (disability glare)."
+      }
+    },
+    {
+      "from_variable": "visual_discomfort_signal",
+      "to_variable": "squint_and_avoidance_behavior",
+      "activity": "glare_avoidance",
+      "from_level": "subpersonal",
+      "to_level": "personal_epistemic",
+      "bridging_quality": "HIGH",
+      "maturity": "how-actually",
+      "key_evidence": "Sheedy et al., 2003",
+      "parameters": {
+        "muscle": "Orbicularis oculi contraction (squint) triggers trigeminal nerve pain pathway",
+        "effect": "Headache, eye strain (asthenopia), avoidance of the space"
+      }
+    },
+    {
+      "from_variable": "optimal_contrast_distribution",
+      "to_variable": "processing_fluency_enhancement",
+      "activity": "efficient_scene_parsing",
+      "from_level": "subpersonal",
+      "to_level": "subpersonal",
+      "bridging_quality": "MEDIUM",
+      "maturity": "how-plausibly",
+      "key_evidence": "Wilkins et al., 1984 (stripes/contrast)",
+      "parameters": {
+        "connection": "Proper contrast enhances T1 (Spectral Match) processing. High contrast edges facilitate edge detection (V1)."
+      }
+    }
+  ],
+  "scope_conditions": [
+    "Age-dependent: Older eyes (>45) suffer much more from glare due to lens scatter (cataracts) and slower adaptation.",
+    "Task-dependent: Computer work (self-luminous target) has stricter contrast limits than paper work.",
+    "Flicker: Temporal modulation of luminance (invisible flicker) adds to neural load even if contrast is static."
+  ],
+  "moderators": [
+    "age (lens opacity)",
+    "task_type",
+    "position (glare source in fovea vs periphery)"
+  ],
+  "interactions": [
+    {
+      "template": "T1 (PP_SPECTRAL_MATCH_001)",
+      "type": "FOUNDATION",
+      "description": "Luminance distribution is the carrier for spatial frequency (1/f). Glare 'blows out' the 1/f structure."
+    },
+    {
+      "template": "T67 (PP_PROCESSING_FLUENCY_001)",
+      "type": "INPUT",
+      "description": "Visual comfort (low glare) is a prerequisite for processing fluency."
+    }
+  ],
+  "overall_maturity": "how-actually",
+  "key_references": [
+    "Boyce, P. R. (2014). Human Factors in Lighting. CRC Press",
+    "Sheedy, J. E., et al. (2003). Symptoms of asthenopia. Optometry and Vision Science",
+    "Wilkins, A., et al. (1984). Inferences about the neural mechanism of visual discomfort. Brain"
+  ],
+  "display_id": "T69",
   "age_band_modifiers": {
     "toddler_0_3": {
       "speed": 0.45,
@@ -265,5 +265,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "residual",
+  "generation": 1,
+  "ecological_validation": false
 }

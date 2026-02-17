@@ -3,7 +3,7 @@
   "display_id": "L1",
   "name": "Luminance Contrast Prediction Error and Aesthetic Response",
   "short_description": "Visual system generates luminance predictions; contrast-driven PE produces aesthetic and emotional responses along Goldilocks continuum",
-  "structural_pattern": "The visual system generates predictions about luminance distribution based on spatial context, prior experience with similar spaces, and the current adaptation state. Actual luminance distributions are compared against these predictions via magnocellular-pathway processing in early visual cortex (V1/V2). The magnitude and spatial structure of the resulting prediction error determines aesthetic and emotional response along a continuum: very low PE (uniform lighting, no contrast) → boredom, flatness; moderate PE (interesting contrast, spatial depth revealed by light and shadow) → aesthetic pleasure, engagement; high PE (dramatic chiaroscuro, luminance ratios exceeding adaptation range) → intensity, drama, potential awe; extreme PE (blinding glare, total darkness where light expected) → discomfort, aversion.",
+  "structural_pattern": "The visual system generates predictions about luminance distribution based on spatial context, prior experience with similar spaces, and the current adaptation state. Actual luminance distributions are compared against these predictions via magnocellular-pathway processing in early visual cortex (V1/V2). The magnitude and spatial structure of the resulting prediction error determines aesthetic and emotional response along a continuum: very low PE (uniform lighting, no contrast) \u2192 boredom, flatness; moderate PE (interesting contrast, spatial depth revealed by light and shadow) \u2192 aesthetic pleasure, engagement; high PE (dramatic chiaroscuro, luminance ratios exceeding adaptation range) \u2192 intensity, drama, potential awe; extreme PE (blinding glare, total darkness where light expected) \u2192 discomfort, aversion.",
   "higher_order_principle": "Goldilocks-zone PE applied specifically to the luminance domain. The inverted-U function observed for visual complexity (T2) and auditory information content (M1) is instantiated in luminance contrast processing, with the additional feature that the upper PE range connects to the awe pathway (AX3) through Plummer's high-contrast light types (shaft, chiaroscuro, aureole).",
   "framework_ids": [
     "predictive_processing",
@@ -31,7 +31,7 @@
       "to_level": "affective",
       "bridging_to": "moderate",
       "maturity": "supported",
-      "evidence_base": "Moderate luminance PE → positive aesthetic evaluation (analogous to T2 complexity Goldilocks). Specific to luminance channel; interacts with but is separable from chromatic and spatial-frequency complexity."
+      "evidence_base": "Moderate luminance PE \u2192 positive aesthetic evaluation (analogous to T2 complexity Goldilocks). Specific to luminance channel; interacts with but is separable from chromatic and spatial-frequency complexity."
     },
     {
       "from_entity": "luminance_PE_magnitude",
@@ -56,7 +56,7 @@
   ],
   "scope_conditions": [
     "Applies to any architectural space with luminance variation",
-    "Luminance contrast must be defined at the spatial scale relevant to the visual field — both local (object/background) and global (room-level light distribution)",
+    "Luminance contrast must be defined at the spatial scale relevant to the visual field \u2014 both local (object/background) and global (room-level light distribution)",
     "Temporal dynamics matter: static contrast habituates; changing contrast (sunlight movement) sustains PE",
     "Adaptation state of the eye moderates the effective contrast"
   ],
@@ -68,12 +68,12 @@
     "Viewing direction relative to light source (direct view of source vs. reflected light)"
   ],
   "light_types_taxonomy": {
-    "shaft": "Beam of light entering through an aperture into a darker space — high localized PE",
-    "wash": "Even, gentle illumination of a surface by indirect light — low PE, visual calm",
-    "glow": "Luminosity appearing to emanate from within a surface — violates point-source prediction",
-    "dapple": "Complex, semi-random pattern of light and shadow — moderate fractal PE",
-    "aureole": "Halo of light surrounding a brighter source — figure-ground separation through contrast",
-    "chiaroscuro": "Dramatic interplay of light and deep shadow — high PE, strong depth cues"
+    "shaft": "Beam of light entering through an aperture into a darker space \u2014 high localized PE",
+    "wash": "Even, gentle illumination of a surface by indirect light \u2014 low PE, visual calm",
+    "glow": "Luminosity appearing to emanate from within a surface \u2014 violates point-source prediction",
+    "dapple": "Complex, semi-random pattern of light and shadow \u2014 moderate fractal PE",
+    "aureole": "Halo of light surrounding a brighter source \u2014 figure-ground separation through contrast",
+    "chiaroscuro": "Dramatic interplay of light and deep shadow \u2014 high PE, strong depth cues"
   },
   "calibration_parameters": {
     "cv_luminance_goldilocks_boundaries": {
@@ -86,7 +86,7 @@
         "plummer_type": "wash"
       },
       "aesthetic_zone": {
-        "cv_range": "0.5–1.5",
+        "cv_range": "0.5\u20131.5",
         "experiential_character": "Interesting, pleasant, engaging",
         "pe_level": "Moderate PE (Goldilocks optimum)",
         "architectural_examples": "Well-designed daylit spaces, the dapple, pendant lighting",
@@ -94,12 +94,15 @@
         "plummer_type": "dapple"
       },
       "dramatic_zone": {
-        "cv_range": "1.5–3.0",
+        "cv_range": "1.5\u20133.0",
         "experiential_character": "Powerful, impressive, intense",
         "pe_level": "High PE (approaching accommodation)",
         "architectural_examples": "Museums, sacred spaces, the shaft",
         "context_dependence": "Appropriate for experiential/cultural spaces",
-        "plummer_types": ["shaft", "chiaroscuro"]
+        "plummer_types": [
+          "shaft",
+          "chiaroscuro"
+        ]
       },
       "discomfort_zone": {
         "cv_range": "> 3.0",
@@ -110,20 +113,24 @@
       }
     },
     "photosensitivity_correction": {
-      "population_distribution": "15–20% of general population reports significant discomfort at median-comfortable levels",
+      "population_distribution": "15\u201320% of general population reports significant discomfort at median-comfortable levels",
       "clinical_populations": "Migraine (~12% adults), photosensitive epilepsy (~3% epilepsy patients)",
-      "threshold_shift": "Shift ALL boundaries downward by 30–50% for photosensitive populations",
+      "threshold_shift": "Shift ALL boundaries downward by 30\u201350% for photosensitive populations",
       "design_recommendation": "Design for 85th percentile of sensitivity, not 50th",
       "evidence_base": "Wilkins (1995); Wilkins et al. (1984)"
     },
     "caveats": [
-      "Boundaries shift ±30–50% for photosensitive populations",
+      "Boundaries shift \u00b130\u201350% for photosensitive populations",
       "Boundaries are adaptation-state dependent",
       "Spatial configuration matters: same CV can feel pleasant or unpleasant depending on spatial logic",
-      "These boundaries are from Western, predominantly office/educational settings — cross-cultural calibration needed"
+      "These boundaries are from Western, predominantly office/educational settings \u2014 cross-cultural calibration needed"
     ],
-    "measurement_tools": ["Evalglare", "Radiance HDR photography", "Luminance mapping"],
-    "calibration_source": "Panel L-II (Doc 49) — Rockcastle et al. preliminary boundaries"
+    "measurement_tools": [
+      "Evalglare",
+      "Radiance HDR photography",
+      "Luminance mapping"
+    ],
+    "calibration_source": "Panel L-II (Doc 49) \u2014 Rockcastle et al. preliminary boundaries"
   },
   "calibration_status": "partially_calibrated",
   "interactions": [
@@ -134,18 +141,18 @@
     },
     {
       "template_id": "AWE_HIGH_PE_ACCOMMODATION_001",
-      "nature": "High luminance PE → awe pathway. L1 provides the luminance-specific input to the awe mechanism; AX3 describes the downstream response."
+      "nature": "High luminance PE \u2192 awe pathway. L1 provides the luminance-specific input to the awe mechanism; AX3 describes the downstream response."
     },
     {
       "template_id": "PP_SPECTRAL_MATCH_001",
       "display_id": "T1",
-      "nature": "Dappled light (Plummer's taxonomy) has 1/f spatial luminance spectra → T1 fractal fluency. The dapple is where luminance PE and spectral match converge."
+      "nature": "Dappled light (Plummer's taxonomy) has 1/f spatial luminance spectra \u2192 T1 fractal fluency. The dapple is where luminance PE and spectral match converge."
     }
   ],
   "maturity": "supported",
   "key_references": [
     {
-      "citation": "Muckli, L., & Petro, L. S. (2013). Network interactions: Non-geniculate input to V1. Current Opinion in Neurobiology, 23(2), 195–201.",
+      "citation": "Muckli, L., & Petro, L. S. (2013). Network interactions: Non-geniculate input to V1. Current Opinion in Neurobiology, 23(2), 195\u2013201.",
       "google_scholar_count": 300
     },
     {
@@ -153,11 +160,11 @@
       "google_scholar_count": 200
     },
     {
-      "citation": "Veitch, J. A., & Newsham, G. R. (1998). Lighting quality and energy-efficiency effects on task performance, mood, health, satisfaction, and comfort. Journal of the Illuminating Engineering Society, 27(1), 107–129.",
+      "citation": "Veitch, J. A., & Newsham, G. R. (1998). Lighting quality and energy-efficiency effects on task performance, mood, health, satisfaction, and comfort. Journal of the Illuminating Engineering Society, 27(1), 107\u2013129.",
       "google_scholar_count": 600
     },
     {
-      "citation": "Wienold, J., & Christoffersen, J. (2006). Evaluation methods and development of a new glare prediction model for daylight environments with the use of CCD cameras. Energy and Buildings, 38(7), 743–757.",
+      "citation": "Wienold, J., & Christoffersen, J. (2006). Evaluation methods and development of a new glare prediction model for daylight environments with the use of CCD cameras. Energy and Buildings, 38(7), 743\u2013757.",
       "google_scholar_count": 500
     }
   ],
@@ -344,5 +351,10 @@
         }
       }
     }
-  }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "active",
+  "generation": 2,
+  "ecological_validation": false
 }
