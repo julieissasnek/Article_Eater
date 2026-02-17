@@ -12,6 +12,7 @@ from src.cmr.convergence import assess_convergence, check_composition_failures
 from src.cmr.mechanism_tracing import trace_claim
 from src.cmr.models import TemplateRecord, create_tables, get_session
 from src.cmr.template_matching import build_template_index, match_claims_to_templates
+from src.cmr.voi_scoring import aggregate_paper_voi, score_voi
 
 
 @dataclass
@@ -87,41 +88,41 @@ def _trace_mechanisms(claim_matches: list[dict], template_index: dict[str, dict]
     return traced_claims
 
 
-def _prioritize_findings(composed_claims: list[dict]) -> list[dict]:
+def _prioritize_findings(
+    composed_claims: list[dict],
+    template_maturity_by_id: dict[str, str],
+) -> list[dict]:
     """
-    Rank findings by value-of-information proxy:
-    1) contradictions, 2) unsupported gaps, 3) confirmations/nuanced.
+    Rank findings via VOI scoring contract (Task 11.20).
     """
-    findings: list[dict[str, Any]] = []
+    raw_findings: list[dict[str, Any]] = []
     for entry in composed_claims:
         convergence = entry.get("convergence", {})
         status = convergence.get("status", "unsupported")
         claim = entry.get("claim", {})
-        traced = entry.get("traced_templates", [])
-        max_conf = max([float(t.get("confidence", 0.0)) for t in traced], default=0.0)
-        effect_size = _claim_effect_size_abs(claim)
+        matches = entry.get("matches", []) or []
+        matched_ids = [m.get("template_id") for m in matches if m.get("template_id")]
+        maturities = [template_maturity_by_id.get(tid, "") for tid in matched_ids]
 
+        has_matches = bool(matched_ids)
         if status == "contradicted":
             category = "contradiction"
-            priority = 1
-            voi = 95.0 - (10.0 * (1.0 - max_conf))
+        elif status in {"unsupported"} and _is_air_quality_gap_claim(claim):
+            category = "gap"
+        elif status in {"unsupported"} and has_matches:
+            category = "extension"
         elif status in {"unsupported"}:
             category = "gap"
-            priority = 2
-            voi = 75.0 - (12.0 * (1.0 - max_conf))
-            if effect_size >= 0.7:
-                voi += 14.0
         else:
             category = "confirmation"
-            priority = 3
-            voi = 45.0 - (8.0 * (1.0 - max_conf))
 
-        findings.append(
+        raw_findings.append(
             {
                 "claim": claim,
                 "category": category,
-                "priority": priority,
-                "voi_score": round(max(0.0, min(100.0, voi)), 2),
+                "assessment": category,
+                "template_maturity": maturities,
+                "effect_size": _claim_effect_size_abs(claim),
                 "convergence_status": status,
                 "supporting_templates": convergence.get("supporting_templates", []),
                 "contradicting_templates": convergence.get("contradicting_templates", []),
@@ -129,22 +130,24 @@ def _prioritize_findings(composed_claims: list[dict]) -> list[dict]:
             }
         )
 
-    findings.sort(key=lambda f: (f["priority"], -f["voi_score"]))
-    return findings
+    scored = score_voi(raw_findings)
+    prioritized: list[dict[str, Any]] = []
+    for idx, finding in enumerate(scored, start=1):
+        prioritized.append(
+            {
+                **finding,
+                "priority": idx,
+                "voi_score": round(100.0 * float(finding.get("voi_score", 0.0)), 2),
+                "voi_bucket": finding.get("voi_bucket", "low"),
+            }
+        )
+    return prioritized
 
 
 def _score_to_band(score: float) -> str:
     if score >= 0.75:
         return "high"
     if score >= 0.5:
-        return "medium"
-    return "low"
-
-
-def _category_to_voi(category: str) -> str:
-    if category == "contradiction":
-        return "high"
-    if category == "gap":
         return "medium"
     return "low"
 
@@ -257,9 +260,7 @@ def _build_findings_for_contract(composed_claims: list[dict], prioritized: list[
 
         ranked = prioritized_by_claim.get(str(claim), {})
         category = ranked.get("category", "gap")
-        voi = _category_to_voi(category)
-        if category == "gap" and _claim_effect_size_abs(claim) >= 0.7:
-            voi = "high"
+        voi = str(ranked.get("voi_bucket", "low"))
 
         findings.append(
             {
@@ -280,7 +281,7 @@ def _build_recommendations(
     recommendations: list[str] = []
 
     has_contradiction = any(item.get("category") == "contradiction" for item in prioritized)
-    has_gap = any(item.get("category") == "gap" for item in prioritized)
+    has_gap = any(item.get("category") in {"gap", "extension"} for item in prioritized)
     has_confirmation = any(item.get("category") == "confirmation" for item in prioritized)
 
     contradicted_templates = {
@@ -373,6 +374,7 @@ def evaluate_paper(
 
         # Step 2: template matching
         templates = _load_active_templates(session)
+        template_maturity_by_id = {template.display_id: template.maturity for template in templates}
         template_index = build_template_index(templates)
         claim_matches = match_claims_to_templates(claims, template_index)
         total_matches = sum(len(item.get("matches", [])) for item in claim_matches)
@@ -432,7 +434,8 @@ def evaluate_paper(
         )
 
         # Step 6: VOI prioritization
-        prioritized = _prioritize_findings(composed)
+        prioritized = _prioritize_findings(composed, template_maturity_by_id)
+        aggregate_voi = aggregate_paper_voi(prioritized)
         steps.append(
             PaperEvalStep(
                 6,
@@ -441,6 +444,7 @@ def evaluate_paper(
                 {
                     "findings": len(prioritized),
                     "top_category": prioritized[0]["category"] if prioritized else None,
+                    "aggregate_voi": aggregate_voi.get("aggregate_voi", 0.0),
                 },
             )
         )
@@ -459,6 +463,8 @@ def evaluate_paper(
                 "contradictions": sum(1 for f in prioritized if f["category"] == "contradiction"),
                 "gaps": sum(1 for f in prioritized if f["category"] == "gap"),
                 "confirmations": sum(1 for f in prioritized if f["category"] == "confirmation"),
+                "aggregate_voi": aggregate_voi.get("aggregate_voi", 0.0),
+                "expected_information_gain": aggregate_voi.get("expected_information_gain", "low"),
                 "status": "paper_pipeline_complete",
             },
             "top_findings": prioritized[:10],

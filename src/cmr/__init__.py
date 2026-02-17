@@ -122,6 +122,12 @@ try:
 except ImportError:
     _PAPER_REPORT_AVAILABLE = False
 
+try:
+    from src.cmr.voi_scoring import score_voi, aggregate_paper_voi
+    _VOI_SCORING_AVAILABLE = True
+except ImportError:
+    _VOI_SCORING_AVAILABLE = False
+
 __all__ = [
     # Core models
     "Base",
@@ -215,4 +221,10 @@ if _PAPER_REPORT_AVAILABLE:
     __all__.extend([
         "generate_paper_report",
         "format_paper_report_text",
+    ])
+
+if _VOI_SCORING_AVAILABLE:
+    __all__.extend([
+        "score_voi",
+        "aggregate_paper_voi",
     ])
