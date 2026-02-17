@@ -22,6 +22,7 @@ from src.cmr.models import (
 from src.cmr.interactions import apply_all_interactions
 from src.cmr.feature_mapping import resolve_template_inputs
 from src.cmr.template_computations import TEMPLATE_COMPUTE_FUNCTIONS
+from src.cmr.tier2_scores import compute_tier2_scores
 from src.cmr.wis import aggregate_domain_wis, aggregate_overall_wis
 from src.cmr.lifespan_moderation import (
     compute_template_with_lifespan,
@@ -317,6 +318,10 @@ def evaluate_building(
     evaluation.status = "complete"
     session.commit()
 
+    tier2_scores = compute_tier2_scores(
+        {item["template"]: float(item["wis"]) for item in adjusted}
+    )
+
     return {
         "evaluation_id": evaluation.id,
         "status": "complete",
@@ -326,5 +331,6 @@ def evaluate_building(
         "severe_deficits": overall_result.get("severe_deficits", []),
         "data_gaps": sorted(set(list(declared_data_gaps) + computed_data_gaps)),
         "activated_templates": [item["template"] for item in adjusted],
+        "tier2_scores": tier2_scores,
         "web_constraint_query_summary": web_constraint_query_summary,
     }
