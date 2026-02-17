@@ -34,7 +34,7 @@
 | 11.7 | Template matching module | AVAILABLE | — | — | — | none |
 | 11.8 | Mechanism tracing module | AVAILABLE | — | — | — | 11.7 DONE |
 | 11.9 | Convergence and composition modules | AVAILABLE | — | — | — | 11.8 DONE |
-| 11.10 | Paper evaluation orchestrator | AVAILABLE | — | — | — | 11.6 + 11.7 + 11.8 + 11.9 DONE |
+| 11.10 | Paper evaluation orchestrator | DONE | Codex | 2026-02-17 16:50 UTC | 2026-02-17 17:08 UTC | 11.6 + 11.7 + 11.8 + 11.9 DONE |
 
 ## ROUND 3 — WORKED EXAMPLES + HARDENING
 
@@ -65,7 +65,7 @@
 | 11.28 | Enum and schema drift check | AVAILABLE | — | — | — | none |
 | 11.29 | No-placeholder audit | AVAILABLE | — | — | — | 11.1 DONE |
 | 11.30 | Completeness inventory | AVAILABLE | — | — | — | 11.22 DONE |
-| 11.31 | Sprint verification test suite (Part 1) | AVAILABLE | — | — | — | 11.1 DONE |
+| 11.31 | Sprint verification test suite (Part 1) | CLAIMED | Codex | 2026-02-17 17:09 UTC | — | 11.1 DONE |
 | 11.32 | Building eval provenance tests (Part 2a) | AVAILABLE | — | — | — | 11.1 DONE |
 | 11.33 | Paper eval provenance tests (Part 2b) | AVAILABLE | — | — | — | 11.10 DONE |
 
