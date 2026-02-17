@@ -31,7 +31,7 @@
 |------|------------|--------|-------|---------|------|------------|
 | 11.5 | Re-run all worked examples | AVAILABLE | — | — | — | 11.1 DONE |
 | 11.6 | Paper claim extraction module | AVAILABLE | — | — | — | 11.1 DONE |
-| 11.7 | Template matching module | CLAIMED | Antigravity | 2026-02-17 17:15 CET | — | none |
+| 11.7 | Template matching module | DONE | Antigravity | 2026-02-17 17:15 CET | 2026-02-17 17:25 CET | none |
 | 11.8 | Mechanism tracing module | AVAILABLE | — | — | — | 11.7 DONE |
 | 11.9 | Convergence and composition modules | AVAILABLE | — | — | — | 11.8 DONE |
 | 11.10 | Paper evaluation orchestrator | AVAILABLE | — | — | — | 11.6 + 11.7 + 11.8 + 11.9 DONE |
