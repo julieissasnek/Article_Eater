@@ -298,5 +298,23 @@
         }
       }
     }
+  },
+  "calibration_data": {
+    "contour_curvature_index": {
+      "definition": "Standard deviation of curvature distribution",
+      "optimal_range": "0.40-0.80 (fluency + interest)",
+      "smooth_range": "0.15-0.40",
+      "angular_engaging_range": "0.80-1.20",
+      "angular_aversive_range": "> 1.20 (for naive viewers)"
+    },
+    "exposure_habituation": {
+      "function": "d(t) = d_acute * [0.40 + 0.60 * e^(-t/tau)]",
+      "tau_hedonic_days": "12-18",
+      "floor_factor": 0.40
+    },
+    "knowledge_meaning_modifier": {
+      "max_reduction": "0.60 (60% reduction in PE penalty)",
+      "mechanism": "Top-down re-evaluation of angular PE"
+    }
   }
 }
