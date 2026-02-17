@@ -1,4 +1,4 @@
-from src.cmr.report import format_report_text, generate_report
+from src.cmr.report import format_report_text, generate_report, get_domain_plot_data
 
 
 def test_generate_report_contains_all_required_sections():
@@ -33,6 +33,11 @@ def test_generate_report_contains_all_required_sections():
     assert report["data_gaps"] == ["SOC3", "VIEW1"]
     assert report["uncertainty_disclosure"]["empirically_calibrated_templates"] == 2
     assert report["uncertainty_disclosure"]["expert_estimate_templates"] == 2
+    assert "overall_wis_lower" in report["summary"]
+    assert "overall_wis_upper" in report["summary"]
+    assert "confidence_width" in report["summary"]
+    assert "domain_details" in report
+    assert "uncertainty_flags" in report
 
 
 def test_format_report_text_includes_plain_language_sections():
@@ -52,5 +57,25 @@ def test_format_report_text_includes_plain_language_sections():
     assert "Deficits:" in text
     assert "Data Gaps:" in text
     assert "Recommendations:" in text
+    assert "Uncertainty Flags:" in text
     assert "Uncertainty Disclosure:" in text
     assert "Methodology:" in text
+
+
+def test_get_domain_plot_data_returns_aligned_arrays():
+    report = generate_report(
+        {
+            "overall_wis": 55.0,
+            "overall_confidence": 0.7,
+            "domain_scores": [
+                {"domain": "L", "wis": 66.0, "confidence": 0.9, "n_templates": 2, "template_ids": ["L1", "L2"]},
+                {"domain": "SOC", "wis": 44.0, "confidence": 0.3, "n_templates": 2, "template_ids": ["SOC1", "SOC2"]},
+            ],
+            "data_gaps": [],
+            "template_details": [],
+        }
+    )
+    data = get_domain_plot_data(report)
+    assert data["domains"] == ["L", "SOC"]
+    assert len(data["domains"]) == len(data["scores"]) == len(data["lower"]) == len(data["upper"])
+    assert data["lower"][0] <= data["scores"][0] <= data["upper"][0]

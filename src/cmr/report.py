@@ -92,6 +92,27 @@ def _calibration_summary(evaluation_result: dict[str, Any]) -> tuple[int, int]:
     return empirical, expert
 
 
+def _score_interval(
+    score: float,
+    *,
+    lower: float | None = None,
+    upper: float | None = None,
+    confidence: float | None = None,
+) -> tuple[float, float, float]:
+    if lower is not None and upper is not None:
+        lo = max(0.0, min(100.0, float(lower)))
+        hi = max(0.0, min(100.0, float(upper)))
+        if hi < lo:
+            lo, hi = hi, lo
+        return lo, hi, hi - lo
+
+    conf = 0.5 if confidence is None else max(0.0, min(1.0, float(confidence)))
+    half_width = (1.0 - conf) * 20.0
+    lo = max(0.0, float(score) - half_width)
+    hi = min(100.0, float(score) + half_width)
+    return lo, hi, hi - lo
+
+
 def generate_report(evaluation_result: dict) -> dict:
     """Generate a structured human-readable assessment report."""
     overall_wis = float(evaluation_result.get("overall_wis", 0.0))
@@ -107,13 +128,44 @@ def generate_report(evaluation_result: dict) -> dict:
         )
     )
 
+    overall_lower, overall_upper, overall_width = _score_interval(
+        overall_wis,
+        lower=evaluation_result.get("overall_wis_lower"),
+        upper=evaluation_result.get("overall_wis_upper"),
+        confidence=overall_confidence,
+    )
+
+    domain_details = []
+    for item in domain_scores:
+        wis = float(item.get("wis", 0.0))
+        lower, upper, width = _score_interval(
+            wis,
+            lower=item.get("wis_lower") or item.get("domain_wis_lower"),
+            upper=item.get("wis_upper") or item.get("domain_wis_upper"),
+            confidence=item.get("confidence"),
+        )
+        domain_details.append(
+            {
+                "domain": item["domain"],
+                "wis": wis,
+                "wis_lower": round(lower, 1),
+                "wis_upper": round(upper, 1),
+                "confidence_width": round(width, 1),
+                "confidence": float(item.get("confidence", 0.0)),
+                "n_templates": int(item.get("n_templates", 0)),
+                "template_ids": list(item.get("template_ids", [])),
+            }
+        )
+
     strengths = [
         {
             "domain": item["domain"],
             "wis": float(item["wis"]),
+            "wis_lower": item["wis_lower"],
+            "wis_upper": item["wis_upper"],
             "why": "domain performance is in the resilient range",
         }
-        for item in domain_scores
+        for item in domain_details
         if float(item.get("wis", 0.0)) > 70.0
     ]
 
@@ -121,10 +173,12 @@ def generate_report(evaluation_result: dict) -> dict:
         {
             "domain": item["domain"],
             "wis": float(item["wis"]),
+            "wis_lower": item["wis_lower"],
+            "wis_upper": item["wis_upper"],
             "risk_level": "high" if float(item["wis"]) < 30.0 else "moderate",
             "templates": list(item.get("template_ids", [])),
         }
-        for item in domain_scores
+        for item in domain_details
         if float(item.get("wis", 0.0)) < 40.0
     ]
 
@@ -151,14 +205,27 @@ def generate_report(evaluation_result: dict) -> dict:
     report = {
         "summary": {
             "overall_wis": overall_wis,
+            "overall_wis_lower": round(overall_lower, 1),
+            "overall_wis_upper": round(overall_upper, 1),
+            "confidence_width": round(overall_width, 1),
             "confidence": _confidence_bucket(overall_confidence),
             "confidence_value": overall_confidence,
             "verdict": _verdict_for_score(overall_wis),
         },
+        "domain_details": domain_details,
         "strengths": strengths,
         "deficits": deficits,
         "data_gaps": data_gaps,
         "recommendations": recommendations,
+        "uncertainty_flags": [
+            {
+                "domain": item["domain"],
+                "confidence_width": item["confidence_width"],
+                "message": "High score uncertainty (>20 WIS points). Prioritize higher-quality measurement.",
+            }
+            for item in domain_details
+            if item["confidence_width"] > 20.0
+        ],
         "uncertainty_disclosure": {
             "empirically_calibrated_templates": empirical_count,
             "expert_estimate_templates": expert_count,
@@ -178,7 +245,10 @@ def format_report_text(report: dict) -> str:
     summary = report.get("summary", {})
     lines = [
         "CMR ASSESSMENT REPORT",
-        f"Overall WIS: {summary.get('overall_wis', 0.0):.1f}",
+        (
+            f"Overall WIS: {summary.get('overall_wis', 0.0):.1f} "
+            f"[{summary.get('overall_wis_lower', 0.0):.1f}, {summary.get('overall_wis_upper', 0.0):.1f}]"
+        ),
         f"Confidence: {summary.get('confidence', 'low')} ({summary.get('confidence_value', 0.0):.2f})",
         f"Verdict: {summary.get('verdict', 'n/a')}",
         "",
@@ -224,6 +294,21 @@ def format_report_text(report: dict) -> str:
     lines.extend(
         [
             "",
+            "Uncertainty Flags:",
+        ]
+    )
+    flags = report.get("uncertainty_flags", [])
+    if flags:
+        for flag in flags:
+            lines.append(
+                f"- {flag['domain']}: width={flag['confidence_width']:.1f} ({flag['message']})"
+            )
+    else:
+        lines.append("- None")
+
+    lines.extend(
+        [
+            "",
             "Uncertainty Disclosure:",
             (
                 "- Empirical templates: "
@@ -242,3 +327,13 @@ def format_report_text(report: dict) -> str:
 
     return "\n".join(lines)
 
+
+def get_domain_plot_data(report: dict) -> dict[str, list[float | str]]:
+    """Prepare domain-level data for bar charts with error bars."""
+    details = report.get("domain_details", []) or []
+    return {
+        "domains": [str(item.get("domain", "")) for item in details],
+        "scores": [float(item.get("wis", 0.0)) for item in details],
+        "lower": [float(item.get("wis_lower", item.get("wis", 0.0))) for item in details],
+        "upper": [float(item.get("wis_upper", item.get("wis", 0.0))) for item in details],
+    }
