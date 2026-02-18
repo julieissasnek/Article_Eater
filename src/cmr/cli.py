@@ -342,6 +342,112 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to the SQLite database",
     )
 
+    # proposals subcommand (Task 13.2)
+    prop_parser = subparsers.add_parser(
+        "proposals",
+        help="Manage update proposals (list, review, accept, reject)",
+    )
+    prop_subparsers = prop_parser.add_subparsers(dest="proposals_action", help="Proposal actions")
+
+    # proposals list
+    prop_list = prop_subparsers.add_parser("list", help="List all proposals")
+    prop_list.add_argument(
+        "--status",
+        type=str,
+        default=None,
+        choices=["proposed", "accepted", "rejected", "deferred", "under_review"],
+        help="Filter by status",
+    )
+    prop_list.add_argument(
+        "--template",
+        type=str,
+        default=None,
+        help="Filter by template ID",
+    )
+    prop_list.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+
+    # proposals review
+    prop_review = prop_subparsers.add_parser("review", help="Show details of a proposal")
+    prop_review.add_argument(
+        "proposal_id",
+        type=str,
+        help="Proposal ID to review",
+    )
+    prop_review.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+
+    # proposals accept
+    prop_accept = prop_subparsers.add_parser("accept", help="Accept a proposal")
+    prop_accept.add_argument(
+        "proposal_id",
+        type=str,
+        help="Proposal ID to accept",
+    )
+    prop_accept.add_argument(
+        "--notes",
+        type=str,
+        default="",
+        help="Review notes",
+    )
+    prop_accept.add_argument(
+        "--reviewer",
+        type=str,
+        default="cli_user",
+        help="Reviewer identifier",
+    )
+    prop_accept.add_argument(
+        "--no-apply",
+        action="store_true",
+        help="Don't apply changes to template file",
+    )
+    prop_accept.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+    prop_accept.add_argument(
+        "--templates-dir",
+        type=str,
+        default="data/templates",
+        help="Path to templates directory",
+    )
+
+    # proposals reject
+    prop_reject = prop_subparsers.add_parser("reject", help="Reject a proposal")
+    prop_reject.add_argument(
+        "proposal_id",
+        type=str,
+        help="Proposal ID to reject",
+    )
+    prop_reject.add_argument(
+        "--notes",
+        type=str,
+        required=True,
+        help="Rejection reason (required)",
+    )
+    prop_reject.add_argument(
+        "--reviewer",
+        type=str,
+        default="cli_user",
+        help="Reviewer identifier",
+    )
+    prop_reject.add_argument(
+        "--db-path",
+        type=str,
+        default="ae.db",
+        help="Path to the SQLite database",
+    )
+
     return parser
 
 
@@ -753,6 +859,69 @@ def run_process_paper(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_proposals(args: argparse.Namespace) -> int:
+    """Execute the proposals subcommand."""
+    from src.cmr.learning.update_proposals import (
+        list_all_proposals,
+        get_proposal_by_id,
+        accept_proposal,
+        reject_proposal,
+        format_proposal_list,
+        format_proposal_summary,
+        ProposalStatus,
+    )
+
+    if args.proposals_action is None:
+        print("Usage: cmr proposals {list|review|accept|reject}", file=sys.stderr)
+        return 1
+
+    if args.proposals_action == "list":
+        status_filter = None
+        if args.status:
+            status_filter = ProposalStatus(args.status)
+
+        proposals = list_all_proposals(
+            db_path=args.db_path,
+            status_filter=status_filter,
+            template_filter=args.template,
+        )
+        print(format_proposal_list(proposals))
+        return 0
+
+    if args.proposals_action == "review":
+        proposal = get_proposal_by_id(args.proposal_id, db_path=args.db_path)
+        if not proposal:
+            print(f"Proposal not found: {args.proposal_id}", file=sys.stderr)
+            return 1
+        print(format_proposal_summary(proposal))
+        return 0
+
+    if args.proposals_action == "accept":
+        success, message = accept_proposal(
+            proposal_id=args.proposal_id,
+            reviewed_by=args.reviewer,
+            notes=args.notes,
+            db_path=args.db_path,
+            templates_dir=args.templates_dir,
+            apply_changes=not args.no_apply,
+        )
+        print(message)
+        return 0 if success else 1
+
+    if args.proposals_action == "reject":
+        success, message = reject_proposal(
+            proposal_id=args.proposal_id,
+            reviewed_by=args.reviewer,
+            notes=args.notes,
+            db_path=args.db_path,
+        )
+        print(message)
+        return 0 if success else 1
+
+    print(f"Unknown proposals action: {args.proposals_action}", file=sys.stderr)
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = build_parser()
@@ -774,6 +943,8 @@ def main(argv: list[str] | None = None) -> int:
         return run_compare(args)
     if args.command == "process-paper":
         return run_process_paper(args)
+    if args.command == "proposals":
+        return run_proposals(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1

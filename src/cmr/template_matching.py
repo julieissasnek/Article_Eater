@@ -12,19 +12,33 @@ from src.cmr.reduction_api import reduce_construct
 
 
 REDUCTION_KEYWORDS = {
+    # ART constructs
     "soft fascination": ("ART", "Fascination_Soft"),
     "soft fasc": ("ART", "Fascination_Soft"),
     "being away": ("ART", "Being_Away"),
     "compatibility": ("ART", "Compatibility"),
     "extent": ("ART", "Extent"),
     "hard fascination": ("ART", "Fascination_Hard"),
+    "attention restoration": ("ART", "Being_Away"),
+    # Biophilia constructs
     "nature in space": ("BIOPHILIA", "Nature_In_Space"),
+    "nature_in_space": ("BIOPHILIA", "Nature_In_Space"),
     "natural analogues": ("BIOPHILIA", "Natural_Analogues"),
     "nature of space": ("BIOPHILIA", "Nature_Of_Space"),
     "remaining patterns": ("BIOPHILIA", "Remaining_Patterns"),
+    "nature view": ("BIOPHILIA", "Nature_In_Space"),
+    "nature_view": ("BIOPHILIA", "Nature_In_Space"),
+    "tree view": ("BIOPHILIA", "Nature_In_Space"),
+    "window view": ("BIOPHILIA", "Nature_In_Space"),
+    # SRT constructs
     "stress recovery": ("SRT", "Autonomic_Stress_Reduction"),
+    "stress reduction": ("SRT", "Autonomic_Stress_Reduction"),
+    "recovery time": ("SRT", "Autonomic_Stress_Reduction"),
+    "recovery_time": ("SRT", "Autonomic_Stress_Reduction"),
     "affective response": ("SRT", "Affective_Response"),
     "approach avoidance": ("SRT", "Approach_Avoidance"),
+    "pain medication": ("SRT", "Autonomic_Stress_Reduction"),
+    "analgesic": ("SRT", "Autonomic_Stress_Reduction"),
 }
 
 

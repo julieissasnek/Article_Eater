@@ -1,0 +1,132 @@
+{
+  "$schema": "article_eater_panel_template_v1",
+  "panel_id": "MEMORY-I",
+  "panel_name": "Memory System Calibration Panel",
+  "priority": "MEDIUM",
+  "estimated_duration_hours": 3,
+
+  "purpose": "Calibrate memory-related mechanisms missing from the template system. Sleep-dependent consolidation and context-dependent recall are critical for educational, healthcare, and workplace design but lack architectural parameterization.",
+
+  "target_templates": [
+    {
+      "template_id": "T10",
+      "name": "Sleep Consolidation & Restoration",
+      "status": "gap",
+      "mechanism": "Sleep-dependent memory consolidation as affected by bedroom/sleeping environment. Slow-wave sleep → hippocampal replay → neocortical consolidation.",
+      "architectural_relevance": "Bedrooms, healthcare recovery rooms, dormitories, hotels. Environmental features that optimize sleep architecture directly affect learning and recovery."
+    },
+    {
+      "template_id": "T23",
+      "name": "Context-Dependent Memory",
+      "status": "gap",
+      "mechanism": "Environmental context reinstated at retrieval → 20-40% recall advantage. Encoding specificity principle applied to architecture.",
+      "architectural_relevance": "Educational facilities, training centers, workplaces. Designing learning spaces to optimize later recall through context reinstatement."
+    }
+  ],
+
+  "constructs_to_calibrate": [
+    {
+      "name": "sleep_architecture_sensitivity",
+      "description": "Relationship between room features and sleep stage proportions",
+      "expected_range": null,
+      "current_status": "many studies on temperature, light, noise, but not integrated",
+      "key_papers": ["Okamoto-Mizuno & Mizuno 2012", "Czeisler 2015"]
+    },
+    {
+      "name": "consolidation_window",
+      "description": "Critical period after learning when sleep affects retention",
+      "expected_range": {"min": 0, "max": 24, "unit": "hours"},
+      "current_status": "well-established in sleep science, not applied to architecture",
+      "key_papers": ["Walker & Stickgold 2006", "Diekelmann & Born 2010"]
+    },
+    {
+      "name": "context_reinstatement_benefit",
+      "description": "Recall improvement when learning and test contexts match",
+      "expected_range": {"min": 0.2, "max": 0.4, "unit": "proportion_improvement"},
+      "current_status": "robust finding, needs architectural operationalization",
+      "key_papers": ["Godden & Baddeley 1975", "Smith & Vela 2001"]
+    },
+    {
+      "name": "context_distinctiveness",
+      "description": "Degree to which environment features create distinctive context",
+      "expected_range": {"min": 0, "max": 1, "unit": "distinctiveness_index"},
+      "current_status": "theoretical construct, needs measurement protocol",
+      "key_papers": ["Smith 1988"]
+    },
+    {
+      "name": "encoding_depth_environment",
+      "description": "How environmental features affect depth of encoding",
+      "expected_range": null,
+      "current_status": "indirect evidence only",
+      "key_papers": ["Craik & Lockhart 1972"]
+    }
+  ],
+
+  "key_papers": [
+    {
+      "citation": "Godden & Baddeley 1975",
+      "doi": "10.1111/j.2044-8295.1975.tb01468.x",
+      "contribution": "Classic underwater/land encoding study. Established context-dependent memory effect size.",
+      "sample_n": 18
+    },
+    {
+      "citation": "Smith & Vela 2001",
+      "doi": "10.3758/BF03196157",
+      "contribution": "Meta-analysis of environmental context-dependent memory. Effect size d=0.28.",
+      "sample_n": null
+    },
+    {
+      "citation": "Walker & Stickgold 2006",
+      "doi": "10.1146/annurev.psych.56.091103.070311",
+      "contribution": "Review of sleep-dependent memory consolidation mechanisms.",
+      "sample_n": null
+    },
+    {
+      "citation": "Okamoto-Mizuno & Mizuno 2012",
+      "doi": "10.3390/ijerph9072736",
+      "contribution": "Effects of thermal environment on sleep quality and architecture.",
+      "sample_n": null
+    }
+  ],
+
+  "architectural_relevance": {
+    "building_types": ["schools", "universities", "training_centers", "dormitories", "healthcare", "hotels"],
+    "design_features": [
+      "Distinctive learning environments (memorable features)",
+      "Bedroom acoustic isolation",
+      "Bedroom temperature control",
+      "Light control for circadian alignment",
+      "Consistency between learning and testing spaces",
+      "Multi-sensory context cues (materials, colors, sounds)"
+    ],
+    "population_sensitivity": [
+      "Children benefit more from context reinstatement",
+      "Elderly show reduced sleep consolidation efficiency",
+      "Students under stress show impaired consolidation"
+    ]
+  },
+
+  "panel_instructions": {
+    "pre_reading": [
+      "Review encoding specificity principle",
+      "Understand sleep architecture (SWS, REM, spindles)",
+      "Review hippocampal-neocortical dialogue during sleep"
+    ],
+    "calibration_protocol": [
+      "1. Define architectural features that create distinctive contexts",
+      "2. Map room features to sleep architecture metrics",
+      "3. Parameterize context reinstatement benefit by context similarity",
+      "4. Create sleep environment quality index",
+      "5. Define WIS conversion from memory parameters"
+    ],
+    "output_deliverables": [
+      "Updated T10, T23 template JSON files with calibrated parameters",
+      "Context distinctiveness measurement protocol",
+      "Sleep environment quality scoring",
+      "Interaction coefficients with L templates (light), MAT templates (thermal)"
+    ]
+  },
+
+  "created_at": "2026-02-17",
+  "version": "1.0"
+}

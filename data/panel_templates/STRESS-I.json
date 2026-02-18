@@ -1,0 +1,139 @@
+{
+  "$schema": "article_eater_panel_template_v1",
+  "panel_id": "STRESS-I",
+  "panel_name": "Stress Mechanism Calibration Panel",
+  "priority": "HIGH",
+  "estimated_duration_hours": 4,
+
+  "purpose": "Calibrate stress-related mechanisms currently missing from the template system. The HPA axis pathway, allostatic load, and stress-navigation feedback loop are critical for healthcare, eldercare, and workplace design but lack quantitative calibration.",
+
+  "target_templates": [
+    {
+      "template_id": "T6",
+      "name": "Cortisol-Hippocampal Cascade",
+      "status": "gap",
+      "mechanism": "Chronic stress → elevated cortisol → hippocampal volume reduction → memory impairment",
+      "architectural_relevance": "Healthcare facilities, eldercare homes, high-stress workplaces. Environment features that prevent chronic stress activation protect long-term cognitive function."
+    },
+    {
+      "template_id": "T7",
+      "name": "Allostatic Anticipation",
+      "status": "gap",
+      "mechanism": "Anticipatory stress responses to environmental unpredictability. Repeated activation without resolution leads to allostatic load.",
+      "architectural_relevance": "Predictable vs. unpredictable environments. Wayfinding clarity, consistent thermal/lighting conditions, reliable acoustic environment reduce anticipatory stress."
+    },
+    {
+      "template_id": "T14",
+      "name": "Navigation-Stress Vicious Cycle",
+      "status": "gap",
+      "mechanism": "Wayfinding failure → stress activation → cognitive impairment → worse wayfinding → more stress. A positive feedback loop.",
+      "architectural_relevance": "Hospital wayfinding, large complex buildings. Design interventions that break the cycle at any point (better signage, stress-reducing features at decision points)."
+    }
+  ],
+
+  "constructs_to_calibrate": [
+    {
+      "name": "cortisol_onset_lag",
+      "description": "Time from stressor exposure to peak cortisol response",
+      "expected_range": {"min": 15, "max": 25, "unit": "minutes"},
+      "current_status": "documented but not parameterized",
+      "key_papers": ["Fich et al. 2014", "Kirschbaum et al. 1993", "Ulrich 1984"]
+    },
+    {
+      "name": "cortisol_recovery_rate",
+      "description": "Rate of cortisol return to baseline after stressor removal",
+      "expected_range": {"min": 30, "max": 60, "unit": "minutes"},
+      "current_status": "varies by context, needs architectural modifiers",
+      "key_papers": ["Fich et al. 2014"]
+    },
+    {
+      "name": "allostatic_load_threshold",
+      "description": "Number of daily stress activations before chronic effects emerge",
+      "expected_range": {"min": 3, "max": 8, "unit": "activations_per_day"},
+      "current_status": "theoretical, needs operational definition",
+      "key_papers": ["McEwen 1998", "Sterling 2012"]
+    },
+    {
+      "name": "wayfinding_stress_coupling",
+      "description": "Effect size of wayfinding failure on stress markers",
+      "expected_range": {"min": 0.3, "max": 0.6, "unit": "cohens_d"},
+      "current_status": "indirect evidence only",
+      "key_papers": ["Hund & Minarik 2006", "Carlson et al. 2010"]
+    },
+    {
+      "name": "enclosure_stress_threshold",
+      "description": "Room dimensions below which stress response activates",
+      "expected_range": {"min": 0.25, "max": 0.35, "unit": "R_h_ratio"},
+      "current_status": "partially calibrated in VF3 but threat pathway separate",
+      "key_papers": ["Fich et al. 2014", "Vartanian et al. 2015"]
+    }
+  ],
+
+  "key_papers": [
+    {
+      "citation": "Fich et al. 2014",
+      "doi": "10.1080/17508975.2014.923229",
+      "contribution": "Gold standard CAVE VR study with proper cortisol time-course (7 samples). Found 73% cortisol increase with enclosed rooms and slower recovery.",
+      "sample_n": 93
+    },
+    {
+      "citation": "Ulrich 1984",
+      "doi": "10.1126/science.6143402",
+      "contribution": "Foundational study showing window view nature → faster surgical recovery. Stress mechanism pathway.",
+      "sample_n": 46
+    },
+    {
+      "citation": "McEwen 1998",
+      "doi": "10.1056/NEJM199801153380307",
+      "contribution": "Allostatic load theory. Framework for understanding chronic stress effects.",
+      "sample_n": null
+    },
+    {
+      "citation": "Kirschbaum et al. 1993",
+      "doi": "10.1016/0306-4530(93)90009-A",
+      "contribution": "TSST protocol for laboratory stress induction. Defines cortisol time-course parameters.",
+      "sample_n": null
+    }
+  ],
+
+  "architectural_relevance": {
+    "building_types": ["hospitals", "eldercare", "offices", "schools", "prisons"],
+    "design_features": [
+      "Ceiling height and room proportions",
+      "Nature views and biophilic elements",
+      "Wayfinding clarity and predictability",
+      "Acoustic privacy and control",
+      "Thermal comfort and personal control",
+      "Lighting quality and circadian alignment"
+    ],
+    "population_sensitivity": [
+      "Elderly show heightened cortisol response and slower recovery",
+      "Children show different stress markers (less cortisol, more behavioral)",
+      "Clinical populations (anxiety, PTSD) have altered baseline and reactivity"
+    ]
+  },
+
+  "panel_instructions": {
+    "pre_reading": [
+      "Review Fich et al. 2014 methodology as gold standard",
+      "Understand HPA axis timing constraints",
+      "Review VR-specific confounds (cybersickness mimics stress)"
+    ],
+    "calibration_protocol": [
+      "1. Establish cortisol time-course parameters from Fich and Kirschbaum",
+      "2. Define architectural modifier coefficients (ceiling, view, acoustic)",
+      "3. Parameterize the stress-navigation feedback loop",
+      "4. Create allostatic load accumulation model",
+      "5. Define WIS conversion from stress parameters"
+    ],
+    "output_deliverables": [
+      "Updated T6, T7, T14 template JSON files with calibrated parameters",
+      "Stress pathway model (cortisol → HRV → behavior)",
+      "Interaction coefficients with VIEW1, VF3, SC4",
+      "Field validation protocol for workplace stress assessment"
+    ]
+  },
+
+  "created_at": "2026-02-17",
+  "version": "1.0"
+}

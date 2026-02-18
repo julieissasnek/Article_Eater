@@ -1,0 +1,141 @@
+{
+  "$schema": "article_eater_panel_template_v1",
+  "panel_id": "CONTROL-I",
+  "panel_name": "Environmental Control and Cognitive Offloading Calibration Panel",
+  "priority": "MEDIUM",
+  "estimated_duration_hours": 3,
+
+  "purpose": "Calibrate mechanisms related to personal environmental control and cognitive offloading. Environmental mastery (control over thermostat, blinds, furniture) and externalization of working memory to the environment are critical for workplace satisfaction and cognitive performance.",
+
+  "target_templates": [
+    {
+      "template_id": "T15",
+      "name": "Environmental Mastery / Control",
+      "status": "partial",
+      "mechanism": "Personal CONTROL over environment (thermostat, blinds, furniture position, etc.) as independent predictor of satisfaction and stress reduction. Distinct from social territory (SOC templates).",
+      "architectural_relevance": "Offices, healthcare, residential. Sense of control reduces stress even when control is not exercised. Perceived controllability matters as much as actual control."
+    },
+    {
+      "template_id": "T28",
+      "name": "Cognitive Offloading",
+      "status": "gap",
+      "mechanism": "Externalization of working memory to environment (notes, displays, spatial arrangements). Environment as extended mind.",
+      "architectural_relevance": "Workplaces, educational, creative spaces. Designing environments that support cognitive offloading reduces WM load and improves performance."
+    }
+  ],
+
+  "constructs_to_calibrate": [
+    {
+      "name": "perceived_control_baseline",
+      "description": "Baseline perceived control in typical office environment",
+      "expected_range": {"min": 0.3, "max": 0.5, "unit": "control_index_0_to_1"},
+      "current_status": "validated scales exist, needs architectural operationalization",
+      "key_papers": ["Hedge et al. 1995", "Leaman & Bordass 2007"]
+    },
+    {
+      "name": "control_stress_effect",
+      "description": "Stress reduction from perceived environmental control",
+      "expected_range": {"min": 0.2, "max": 0.5, "unit": "cohens_d"},
+      "current_status": "well-established in workplace psychology",
+      "key_papers": ["Karasek 1979", "Steptoe & Appels 1989"]
+    },
+    {
+      "name": "control_elements_weight",
+      "description": "Relative importance of different controllable features",
+      "expected_range": null,
+      "current_status": "thermal > lighting > acoustic in most studies",
+      "key_papers": ["Frontczak & Wargocki 2011"]
+    },
+    {
+      "name": "wm_offloading_benefit",
+      "description": "Working memory load reduction from environmental supports",
+      "expected_range": {"min": 1, "max": 3, "unit": "items_freed"},
+      "current_status": "established in cognitive science, not applied to architecture",
+      "key_papers": ["Risko & Gilbert 2016", "Clark & Chalmers 1998"]
+    },
+    {
+      "name": "display_surface_threshold",
+      "description": "Minimum writable/display surface for effective offloading",
+      "expected_range": {"min": 1.0, "max": 2.0, "unit": "m2_per_person"},
+      "current_status": "preliminary estimates in CREA4, needs validation",
+      "key_papers": ["Cho 2021"]
+    }
+  ],
+
+  "key_papers": [
+    {
+      "citation": "Leaman & Bordass 2007",
+      "doi": "10.1080/09613210601036139",
+      "contribution": "Building Use Studies database. Personal control strongly predicts satisfaction.",
+      "sample_n": 20000
+    },
+    {
+      "citation": "Hedge et al. 1995",
+      "doi": "10.1080/00140139508925103",
+      "contribution": "Personal environmental control and sick building syndrome.",
+      "sample_n": 4327
+    },
+    {
+      "citation": "Karasek 1979",
+      "doi": "10.2307/2392498",
+      "contribution": "Job demands-control model. Control buffers stress effects.",
+      "sample_n": null
+    },
+    {
+      "citation": "Risko & Gilbert 2016",
+      "doi": "10.1016/j.tics.2016.07.002",
+      "contribution": "Cognitive offloading review. Humans strategically offload to environment.",
+      "sample_n": null
+    },
+    {
+      "citation": "Clark & Chalmers 1998",
+      "doi": "10.1093/analys/58.1.7",
+      "contribution": "Extended mind hypothesis. Cognition extends into environment.",
+      "sample_n": null
+    }
+  ],
+
+  "architectural_relevance": {
+    "building_types": ["offices", "healthcare", "residential", "educational", "creative_spaces"],
+    "design_features": [
+      "Personal thermal control (operable windows, individual thermostats)",
+      "Lighting control (dimming, task lighting, blinds)",
+      "Acoustic control (panels, doors, background sound)",
+      "Furniture flexibility (movable desks, configurable spaces)",
+      "Writable surfaces (whiteboards, glass walls, displays)",
+      "Personal storage and territory marking",
+      "Visual displays and information surfaces"
+    ],
+    "population_sensitivity": [
+      "Control need increases under stress",
+      "Older workers value thermal control more",
+      "Creative workers need more offloading surfaces",
+      "Individual differences in control preference (high vs. low)"
+    ]
+  },
+
+  "panel_instructions": {
+    "pre_reading": [
+      "Review Karasek demand-control model",
+      "Understand extended cognition and cognitive offloading",
+      "Review Building Use Studies methodology"
+    ],
+    "calibration_protocol": [
+      "1. Define control elements and their relative weights",
+      "2. Map perceived control to stress and satisfaction outcomes",
+      "3. Parameterize cognitive offloading surfaces and features",
+      "4. Create control index calculation method",
+      "5. Define interaction with SOC templates (territorial vs. control)",
+      "6. Create WIS conversion from control parameters"
+    ],
+    "output_deliverables": [
+      "Updated T15 template JSON with calibrated parameters",
+      "New cognitive_offloading template (T28) with calibrated parameters",
+      "Control index measurement protocol",
+      "Offloading surface recommendations by task type"
+    ]
+  },
+
+  "created_at": "2026-02-17",
+  "version": "1.0"
+}

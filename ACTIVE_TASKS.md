@@ -91,6 +91,8 @@ All tasks completed. See TASKS.md for details.
 
 | Task ID | Description | Terminal | Completed At | Outcome |
 |---------|-------------|----------|--------------|---------|
+| 13.10 | Field Validation Protocol Generator | CC-0217 | 2026-02-17 20:15 UTC | src/cmr/field_validation.py (5 templates: L2, VF3, VIEW1, SOC2, MAT1), 45 tests passing |
+| 12.21 | Full System Regression Suite | CC-0217 | 2026-02-17 20:35 UTC | 281 CMR tests passed, Tier 2 validation passed, Ulrich 1984 pipeline passed, report at docs/SPRINT_12_REGRESSION_REPORT_2026-02-17.md |
 | CMR-3.2 | Batch 2 Template Computations (20 templates) | CLAUDE-0217-CTX | 2026-02-17 UTC | 20 compute functions in template_computations.py, 52 tests, DECISIONS.md D3.2.1-D3.2.6 |
 | GEA-1 | Grounded expert retrieval + recursion hardening | Codex-Terminal | 2026-02-17 08:16 UTC | Alias-safe interaction traversal and `overall_maturity` confidence mapping |
 | GEA-2 | Grounded expert empirical evidence layer | Codex-Terminal | 2026-02-17 08:20 UTC | WebOfBelief SQLite empirical claim integration into grounded responses |

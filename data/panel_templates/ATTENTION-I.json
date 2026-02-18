@@ -1,0 +1,140 @@
+{
+  "$schema": "article_eater_panel_template_v1",
+  "panel_id": "ATTENTION-I",
+  "panel_name": "Attention and Cognitive Performance Calibration Panel",
+  "priority": "HIGH",
+  "estimated_duration_hours": 4,
+
+  "purpose": "Calibrate attention-related mechanisms missing from the template system. General attentional demand and analytical/convergent cognitive performance are critical for workplace, educational, and healthcare design. Current templates cover only creative/divergent performance (CREA series).",
+
+  "target_templates": [
+    {
+      "template_id": "T4",
+      "name": "Attentional Demand/Restoration",
+      "status": "gap",
+      "mechanism": "General attention demand as a function of environmental complexity, noise, visual clutter. Attention restoration through nature exposure.",
+      "architectural_relevance": "All building types. The foundational attention resource that other cognitive processes draw upon. Environment can deplete or restore this resource."
+    },
+    {
+      "template_id": "T20-residual",
+      "name": "Convergent Cognitive Performance",
+      "status": "partial",
+      "mechanism": "Analytical work, sustained attention, focused problem-solving as modulated by environment. Distinct from creative/divergent performance.",
+      "architectural_relevance": "Offices, schools, healthcare. Most knowledge work is convergent (analytical reports, calculations, focused reading) not divergent (brainstorming)."
+    }
+  ],
+
+  "constructs_to_calibrate": [
+    {
+      "name": "attentional_capacity_baseline",
+      "description": "Baseline sustained attention capacity under neutral conditions",
+      "expected_range": {"min": 15, "max": 45, "unit": "minutes"},
+      "current_status": "well-established in cognitive psychology, needs environmental modifiers",
+      "key_papers": ["Kaplan 1995", "Berman et al. 2008"]
+    },
+    {
+      "name": "attention_restoration_rate",
+      "description": "Rate of attention restoration through nature exposure",
+      "expected_range": {"min": 5, "max": 15, "unit": "minutes_to_50%_recovery"},
+      "current_status": "ART theory, partially captured by VIEW1 but not parameterized",
+      "key_papers": ["Berman et al. 2008", "Kaplan 1995"]
+    },
+    {
+      "name": "noise_attention_decrement",
+      "description": "Attention performance decrease per dB above threshold",
+      "expected_range": {"min": 0.5, "max": 2, "unit": "percent_per_dBA"},
+      "current_status": "acoustic templates cover speech intelligibility, not general attention",
+      "key_papers": ["Banbury & Berry 1998", "Szalma & Hancock 2011"]
+    },
+    {
+      "name": "visual_clutter_threshold",
+      "description": "Visual complexity level above which attention suffers",
+      "expected_range": {"min": 0.4, "max": 0.7, "unit": "clutter_index_0_to_1"},
+      "current_status": "indirect evidence only",
+      "key_papers": ["McMains & Kastner 2011"]
+    },
+    {
+      "name": "convergent_optimal_environment",
+      "description": "Environmental parameters that optimize convergent (analytical) work",
+      "expected_range": null,
+      "current_status": "distinct from divergent, but not parameterized",
+      "key_papers": ["Mehta et al. 2012", "Steidle & Werth 2013"]
+    }
+  ],
+
+  "key_papers": [
+    {
+      "citation": "Kaplan 1995",
+      "doi": "10.1006/jevp.1995.0017",
+      "contribution": "Attention Restoration Theory. Foundational framework for understanding attention fatigue and restoration.",
+      "sample_n": null
+    },
+    {
+      "citation": "Berman et al. 2008",
+      "doi": "10.1111/j.1467-9280.2008.02225.x",
+      "contribution": "Nature walk improved directed attention performance. Effect size d=0.5.",
+      "sample_n": 38
+    },
+    {
+      "citation": "Mehta et al. 2012",
+      "doi": "10.1086/665048",
+      "contribution": "Moderate noise (70dB) improved creative performance, but hurt analytical performance.",
+      "sample_n": 65
+    },
+    {
+      "citation": "Steidle & Werth 2013",
+      "doi": "10.1016/j.jenvp.2012.09.004",
+      "contribution": "Dim lighting improved creative but not analytical performance. Task-type matters.",
+      "sample_n": 186
+    },
+    {
+      "citation": "Banbury & Berry 1998",
+      "doi": "10.1016/S0003-6870(97)00068-3",
+      "contribution": "Office noise effects on performance. Irrelevant speech most disruptive.",
+      "sample_n": null
+    }
+  ],
+
+  "architectural_relevance": {
+    "building_types": ["offices", "schools", "libraries", "hospitals", "research_facilities"],
+    "design_features": [
+      "Acoustic environment (background noise, speech privacy)",
+      "Visual complexity and clutter",
+      "Nature views and biophilic elements",
+      "Lighting levels and quality",
+      "Privacy and interruption protection",
+      "Task-environment matching (convergent vs divergent work)"
+    ],
+    "population_sensitivity": [
+      "Children have lower baseline attention capacity",
+      "Elderly show increased susceptibility to distraction",
+      "ADHD individuals show altered attention restoration patterns",
+      "Introverts more sensitive to environmental stimulation"
+    ]
+  },
+
+  "panel_instructions": {
+    "pre_reading": [
+      "Review Attention Restoration Theory (Kaplan 1995)",
+      "Understand directed attention vs. soft fascination",
+      "Review convergent vs. divergent task literature"
+    ],
+    "calibration_protocol": [
+      "1. Parameterize attention demand from environmental features",
+      "2. Model attention restoration time-course from nature exposure",
+      "3. Quantify noise-attention relationship across noise types",
+      "4. Define visual complexity threshold for attention decrement",
+      "5. Distinguish convergent vs. divergent optimal environments",
+      "6. Create WIS conversion from attention parameters"
+    ],
+    "output_deliverables": [
+      "Updated T4 template JSON with calibrated parameters",
+      "New convergent_performance template (T20-residual)",
+      "Attention demand index calculation",
+      "Interaction coefficients with VIEW1, acoustic templates, L templates"
+    ]
+  },
+
+  "created_at": "2026-02-17",
+  "version": "1.0"
+}

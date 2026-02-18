@@ -1,0 +1,126 @@
+{
+  "$schema": "article_eater_panel_template_v1",
+  "panel_id": "REWARD-I",
+  "panel_name": "Reward and Novelty Mechanism Calibration Panel",
+  "priority": "MEDIUM",
+  "estimated_duration_hours": 3,
+
+  "purpose": "Calibrate dopaminergic reward mechanisms related to environmental novelty and approach behavior. Understanding why novel architecture initially attracts and why the effect wanes is critical for designing spaces that maintain long-term engagement.",
+
+  "target_templates": [
+    {
+      "template_id": "T17",
+      "name": "Dopaminergic Novelty Reward",
+      "status": "gap",
+      "mechanism": "Environmental novelty → VTA dopamine release → NAcc approach behavior → reward learning → habituation over time",
+      "architectural_relevance": "Museums, retail, workplaces, educational facilities. Understanding the novelty-habituation curve helps design spaces that maintain engagement vs. spaces optimized for initial 'wow' that fades."
+    }
+  ],
+
+  "constructs_to_calibrate": [
+    {
+      "name": "novelty_response_peak",
+      "description": "Time to peak dopamine response after novelty exposure",
+      "expected_range": {"min": 0.5, "max": 2, "unit": "seconds"},
+      "current_status": "animal models well-characterized, human fMRI indirect",
+      "key_papers": ["Bunzeck & Duzel 2006", "Wittmann et al. 2008"]
+    },
+    {
+      "name": "habituation_time_constant",
+      "description": "Time for novelty response to decay to 50%",
+      "expected_range": {"min": 5, "max": 30, "unit": "minutes"},
+      "current_status": "highly variable, context-dependent",
+      "key_papers": ["Rankin et al. 2009"]
+    },
+    {
+      "name": "optimal_novelty_level",
+      "description": "Intermediate novelty that maximizes approach without anxiety",
+      "expected_range": {"min": 0.3, "max": 0.6, "unit": "novelty_index_0_to_1"},
+      "current_status": "Berlyne's inverted-U, needs architectural operationalization",
+      "key_papers": ["Berlyne 1970", "Silvia 2005"]
+    },
+    {
+      "name": "architectural_novelty_features",
+      "description": "Features that drive architectural novelty perception",
+      "expected_range": null,
+      "current_status": "not parameterized",
+      "key_papers": ["Vartanian et al. 2013"]
+    },
+    {
+      "name": "novelty_seeking_individual_differences",
+      "description": "Range of novelty preferences in population",
+      "expected_range": {"min": -0.5, "max": 0.5, "unit": "z_score_preference"},
+      "current_status": "BIS/BAS scales validated but not applied to architecture",
+      "key_papers": ["Carver & White 1994"]
+    }
+  ],
+
+  "key_papers": [
+    {
+      "citation": "Bunzeck & Duzel 2006",
+      "doi": "10.1016/j.neuron.2006.06.022",
+      "contribution": "fMRI showing SN/VTA activation to novel stimuli. Establishes neural basis for novelty-dopamine link.",
+      "sample_n": 18
+    },
+    {
+      "citation": "Wittmann et al. 2008",
+      "doi": "10.1016/j.neuron.2008.09.024",
+      "contribution": "Anticipation of novelty activates reward circuits. Shows novelty-seeking is intrinsically rewarding.",
+      "sample_n": 20
+    },
+    {
+      "citation": "Berlyne 1970",
+      "doi": null,
+      "contribution": "Arousal potential and the inverted-U relationship between complexity/novelty and preference.",
+      "sample_n": null
+    },
+    {
+      "citation": "Vartanian et al. 2013",
+      "doi": "10.1073/pnas.1301689110",
+      "contribution": "Neural correlates of architectural judgment. Approach/avoidance decisions in architectural contexts.",
+      "sample_n": 18
+    }
+  ],
+
+  "architectural_relevance": {
+    "building_types": ["museums", "retail", "hospitality", "workplaces", "educational"],
+    "design_features": [
+      "Visual complexity and novelty",
+      "Spatial sequence and discovery",
+      "Material palette variety",
+      "Lighting variation and drama",
+      "Unexpected views and reveals",
+      "Balance of familiar and novel elements"
+    ],
+    "population_sensitivity": [
+      "High novelty-seekers prefer more complex environments",
+      "Low novelty-seekers prefer predictable, familiar spaces",
+      "Age affects novelty tolerance (children vs. elderly)",
+      "Anxiety-prone individuals may find excessive novelty aversive"
+    ]
+  },
+
+  "panel_instructions": {
+    "pre_reading": [
+      "Review Berlyne's arousal theory",
+      "Understand dopamine circuit anatomy (VTA, NAcc, PFC)",
+      "Review habituation literature"
+    ],
+    "calibration_protocol": [
+      "1. Define architectural novelty index (visual complexity, spatial unexpectedness, material variety)",
+      "2. Map novelty index to approach behavior probability",
+      "3. Model habituation curve for repeated exposure",
+      "4. Define individual differences moderator",
+      "5. Create WIS conversion from novelty-reward parameters"
+    ],
+    "output_deliverables": [
+      "Updated T17 template JSON with calibrated parameters",
+      "Novelty index calculation method",
+      "Habituation time-course model",
+      "Individual differences modifier"
+    ]
+  },
+
+  "created_at": "2026-02-17",
+  "version": "1.0"
+}
