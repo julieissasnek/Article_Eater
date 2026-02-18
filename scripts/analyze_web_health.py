@@ -39,12 +39,23 @@ def analyze_web_health():
     # 2. Variable Quality (Garbage Detection)
     report_lines.append("\n## 2. Variable Quality (Garbage Detection)\n")
     try:
-        if 'nodes' in tables['name'].values:
-            nodes_df = pd.read_sql("SELECT * FROM nodes", conn)
+        # In this schema, nodes are implicit in the environment_id and outcome_id columns of the beliefs table
+        if 'beliefs' in tables['name'].values:
+            # Get all source and target nodes
+            # We'll check environment_id/outcome_id first, but also look at 'content' if needed 
+            # (though content is likely a JSON or text description)
             
+            df = pd.read_sql("SELECT environment_id, outcome_id FROM beliefs", conn)
+            
+            # Combine to get unique nodes
+            all_nodes = pd.concat([df['environment_id'], df['outcome_id']]).dropna().unique()
+            nodes_df = pd.DataFrame(all_nodes, columns=['id'])
+            
+            report_lines.append(f"- **Total Implicit Nodes:** {len(nodes_df)}")
+
             # Simple heuristic for "garbage" variables: 
             # - Long strings (likely sentences)
-            # - Contain spaces (variable names should generally be concise or snake_case in this system context, though natural language nodes exist)
+            # - Contain spaces (variable names should generally be concise or snake_case in this system context)
             
             long_nodes = nodes_df[nodes_df['id'].str.len() > 50]
             space_nodes = nodes_df[nodes_df['id'].str.contains(' ')]
@@ -54,7 +65,7 @@ def analyze_web_health():
             
             report_lines.append("\n**Sample Garbage Nodes:**")
             for _, row in long_nodes.head(10).iterrows():
-                report_lines.append(f"- `{row['id'][:80]}...`")
+                report_lines.append(f"- `{str(row['id'])[:80]}...`")
                 
     except Exception as e:
         report_lines.append(f"Error analyzing node quality: {e}")
@@ -62,22 +73,19 @@ def analyze_web_health():
     # 3. Graph Connectivity
     report_lines.append("\n## 3. Graph Connectivity\n")
     try:
-        if 'edges' in tables['name'].values and 'nodes' in tables['name'].values:
-            edges_df = pd.read_sql("SELECT source, target FROM edges", conn)
+        if 'beliefs' in tables['name'].values:
+            edges_df = pd.read_sql("SELECT environment_id as source, outcome_id as target FROM beliefs WHERE environment_id IS NOT NULL AND outcome_id IS NOT NULL", conn)
             G = nx.from_pandas_edgelist(edges_df, 'source', 'target')
             
-            # Add standalone nodes
-            all_nodes = pd.read_sql("SELECT id FROM nodes", conn)['id'].tolist()
-            G.add_nodes_from(all_nodes)
+            # Nodes are already added by from_pandas_edgelist for connected ones. 
+            # If we want singletons, we need to know the full set of intended nodes, 
+            # but in an edge-list-only DB, singletons might not exist unless we define a separate node list.
+            # We'll assume the graph is defined by the edges present.
             
             num_connected = nx.number_connected_components(G)
             report_lines.append(f"- **Connected Components:** {num_connected}")
             
-            # Find specific "Islands"
             components = list(nx.connected_components(G))
-            singletons = [c for c in components if len(c) == 1]
-            report_lines.append(f"- **Singleton Nodes (Completely Disconnected):** {len(singletons)}")
-            
             largest_cc_size = len(max(components, key=len)) if components else 0
             report_lines.append(f"- **Largest Component Size:** {largest_cc_size} nodes")
             
@@ -87,22 +95,18 @@ def analyze_web_health():
     # 4. Edge Weight Distribution
     report_lines.append("\n## 4. Edge Weight Distribution\n")
     try:
-        if 'edges' in tables['name'].values:
-            edges_df = pd.read_sql("SELECT weight FROM edges", conn)
+        if 'beliefs' in tables['name'].values:
+            edges_df = pd.read_sql("SELECT credence_value FROM beliefs", conn)
             
-            if 'weight' in edges_df.columns:
-                report_lines.append(f"- **Mean Weight:** {edges_df['weight'].mean():.4f}")
-                report_lines.append(f"- **Min Weight:** {edges_df['weight'].min()}")
-                report_lines.append(f"- **Max Weight:** {edges_df['weight'].max()}")
+            if 'credence_value' in edges_df.columns:
+                report_lines.append(f"- **Mean Credence:** {edges_df['credence_value'].mean():.4f}")
+                report_lines.append(f"- **Min Credence:** {edges_df['credence_value'].min()}")
+                report_lines.append(f"- **Max Credence:** {edges_df['credence_value'].max()}")
                 
                 # Check for default/dummy weights
-                zero_weights = len(edges_df[edges_df['weight'] == 0])
-                one_weights = len(edges_df[edges_df['weight'] == 1])
-                report_lines.append(f"- **Edges with Weight = 0:** {zero_weights}")
-                report_lines.append(f"- **Edges with Weight = 1:** {one_weights}")
-            else:
-                report_lines.append("- 'weight' column not found in edges table.")
-                
+                default_weights = len(edges_df[edges_df['credence_value'] == 0.5]) # Assuming 0.5 might be a default
+                report_lines.append(f"- **Edges with Credence = 0.5 (Default?):** {default_weights}")
+            
     except Exception as e:
         report_lines.append(f"Error analyzing edge weights: {e}")
 
