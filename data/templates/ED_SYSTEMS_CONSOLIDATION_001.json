@@ -1,0 +1,151 @@
+{
+  "template_id": "ED_SYSTEMS_CONSOLIDATION_001",
+  "template_name": "Systems Consolidation and Hippocampal-Neocortical Transfer",
+  "status": "calibrated",
+  "panel": "MEMORY-I",
+  "primary_anchor": "György Buzsáki (NYU)",
+  "complement": "Richard Morris (Edinburgh)",
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "Distinguish acute consolidation-supporting activity (session-scale) from systems consolidation outcome (weeks-to-years); architectural claims for consolidation outcome < 0.40",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "During quiet wakefulness and sleep, hippocampal sharp-wave ripple complexes (SWRs) reactivate recent spatial experiences in compressed temporal sequence",
+      "substrate": "CA3 → CA1 sharp-wave ripples (150–250 Hz, 50–120 ms); coupled with cortical slow oscillations and sleep spindles",
+      "confidence": 0.8,
+      "bridge_warrant": "MECHANISM",
+      "source": "Buzsáki (2015); Lee & Wilson (2002)",
+      "justification": {
+        "data": [
+          {"finding": "Sharp-wave ripple complexes (150-250 Hz, 50-120 ms) occur during quiet wakefulness and NREM sleep; they reactivate recent spatial experiences in compressed temporal sequence", "source": "Buzsáki (2015); Buzsáki et al. (1992)", "paradigm": "In vivo electrophysiology", "effect": "SWRs compress replay of recent experience", "n": null, "design": "Neurophysiology"},
+          {"finding": "Place cells active during navigation replay in same sequence during subsequent SWRs, compressed ~20× relative to real time", "source": "Lee & Wilson (2002)", "paradigm": "Place cell recording during rest", "effect": "SWR replay mirrors navigation", "n": null, "design": "Neurophysiology"}
+        ],
+        "backing": "Buzsáki's work established SWRs as the primary hippocampal oscillation for memory consolidation. The compressed replay during SWRs provides the mechanism for transferring recent experiences to neocortical long-term storage.",
+        "qualifier": "The SWR mechanism is well-established in rodents. Human evidence relies on indirect measures (scalp EEG does not resolve individual SWRs) and fMRI signatures of hippocampal-cortical connectivity.",
+        "rebuttal": "Would fail if human hippocampus uses different consolidation mechanisms than rodents; but indirect evidence supports SWR-like activity in human hippocampus.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "process": "SWR-mediated replay transfers spatial information from hippocampal to neocortical storage: repeated replay strengthens cortico-cortical connections that encode the spatial schema independently of hippocampus",
+      "substrate": "Hippocampal → entorhinal → neocortical (mPFC, posterior parietal) transfer via SWR-spindle-slow oscillation coupling",
+      "confidence": 0.65,
+      "bridge_warrant": "MECHANISM",
+      "source": "Buzsáki (2015); Girardeau et al. (2009)",
+      "justification": {
+        "data": [
+          {"finding": "SWRs are temporally coupled with cortical slow oscillations and sleep spindles; this coupling is the substrate for hippocampal → neocortical transfer", "source": "Buzsáki (2015); Sirota et al. (2003)", "paradigm": "Multi-site electrophysiology", "effect": "SWR-spindle-slow oscillation coupling", "n": null, "design": "Neurophysiology"},
+          {"finding": "Disrupting SWRs during rest impairs memory consolidation; the replay is necessary for transfer", "source": "Girardeau et al. (2009)", "paradigm": "Closed-loop SWR disruption", "effect": "SWR disruption impairs consolidation", "n": null, "design": "Intervention"}
+        ],
+        "backing": "The standard model of systems consolidation holds that repeated SWR replay gradually strengthens neocortical connections, eventually enabling memory retrieval without hippocampal involvement. The causal role of SWRs is demonstrated by disruption studies.",
+        "qualifier": "The transfer mechanism is established; the timescale for architectural spatial memories to become hippocampal-independent is uncertain (weeks to months).",
+        "rebuttal": "Would fail if consolidation occurs through mechanisms other than SWR replay; but disruption studies support the necessity of SWRs for spatial memory consolidation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "process": "Schema availability accelerates transfer: when neocortical schema already exists, new hippocampal spatial information is integrated into schema faster (days rather than weeks)",
+      "substrate": "mPFC schema → accelerated hippocampal-neocortical binding",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM",
+      "source": "Tse et al. (2007); Tse et al. (2011)",
+      "justification": {
+        "data": [
+          {"finding": "With pre-existing schema, new spatial information shows neocortical expression within 24-48 hours rather than weeks", "source": "Tse et al. (2011)", "paradigm": "IEG expression after schema-consistent learning", "effect": "Schema accelerates consolidation", "n": null, "design": "Molecular biology"},
+          {"finding": "mPFC lesions impair schema-dependent accelerated consolidation; mPFC is necessary for schema effects", "source": "Tse et al. (2007)", "paradigm": "Lesion study", "effect": "mPFC mediates schema acceleration", "n": null, "design": "Lesion"}
+        ],
+        "backing": "Morris and colleagues demonstrated that schemas fundamentally accelerate consolidation. When a spatial schema exists, new information can reach stable neocortical representation in days rather than the weeks typically required for slow consolidation.",
+        "qualifier": "The acceleration effect is demonstrated in rodents with laboratory-constructed schemas. Human architectural schemas are naturalistic and may show different acceleration dynamics.",
+        "rebuttal": "Would fail if human architectural schemas are too variable to support consistent acceleration; but the general schema mechanism is robust.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "process": "Architectural environment supports or impedes acute consolidation-supporting activity (SWR replay, DMN re-engagement) through environmental conditions (see MS_RIPPLE_REPLAY_002)",
+      "substrate": "Environmental modulation of hippocampal state transitions (theta → LIA/SWR)",
+      "confidence": 0.45,
+      "bridge_warrant": "THEORETICAL_DEFAULT",
+      "source": "Buzsáki (2015); Tambini et al. (2010)",
+      "justification": {
+        "data": [
+          {"finding": "SWR generation requires transition from theta state (active exploration) to LIA state (quiet wakefulness); environmental conditions that maintain theta suppress SWRs", "source": "Buzsáki (2015)", "paradigm": "State-dependent electrophysiology", "effect": "Behavioral state gates SWR generation", "n": null, "design": "Neurophysiology"},
+          {"finding": "Rest periods with low cognitive demand show increased hippocampal-cortical connectivity that predicts subsequent memory", "source": "Tambini et al. (2010)", "paradigm": "fMRI rest connectivity", "effect": "Rest supports consolidation", "n": null, "design": "fMRI"}
+        ],
+        "backing": "The architectural bridge is that environments supporting quiet wakefulness (low arousal, minimal cognitive demand, absence of threat) enable the hippocampal state transition from theta to LIA that is necessary for SWR generation.",
+        "qualifier": "THEORETICAL_DEFAULT: the causal chain from architectural feature → hippocampal state transition → SWR generation is inferred rather than directly demonstrated. The mechanism is plausible but the specific environmental modulation is untested.",
+        "rebuttal": "Would fail if human hippocampal state transitions are less sensitive to environmental conditions than rodent hippocampus; or if cognitive factors dominate environmental factors.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "exposure_duration": {
+      "value": "session_scale_effect",
+      "interpretation": "Architectural rest spaces support SWR replay and DMN re-engagement during the same session as spatial learning. This is acute consolidation-SUPPORTING activity, not consolidation itself.",
+      "confidence_mechanism": 0.55,
+      "confidence_architectural": 0.45,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    },
+    "memory_consolidation": {
+      "value": "< 0.40",
+      "interpretation": "Confidence that any single architectural design choice meaningfully affects the OUTCOME of systems consolidation is low, because the causal chain from architectural feature → acute replay → repeated replay → neocortical transfer is too long and involves too many non-architectural variables",
+      "confidence": 0.35,
+      "bridge_warrant": "ANALOGICAL"
+    },
+    "hippocampal_encoding": {
+      "value": "2–5x_faster_with_existing_schema",
+      "interpretation": "When a neocortical schema exists, systems consolidation is accelerated: new spatial information becomes schema-integrated within days rather than weeks (Tse et al., 2011)",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM"
+    }
+  },
+  "population_modifiers": {
+    "age_group": {
+      "effect": "SWR frequency and amplitude decline with age; coupling between SWRs, spindles, and slow oscillations degrades. Systems consolidation is slower in older adults.",
+      "mechanism": "Age-related decline in hippocampal interneuron function (Mander et al., 2013)",
+      "confidence": 0.55
+    },
+    "memory_consolidation": {
+      "effect": "Chronic sleep disruption (common in hospitals, shift-work environments) severely impairs the SWR-spindle-slow oscillation coupling that drives systems consolidation",
+      "confidence": 0.65
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Body budget deficit disrupts sleep architecture, reducing the SWR-spindle-slow oscillation coupling that drives consolidation. Chronic allostatic load is a primary enemy of systems consolidation.",
+    "AX4_perceived_control": "Low perceived control elevates cortisol, which impairs hippocampal neuroplasticity and reduces the quality of SWR replay. The chronic stress pathway (AX4 → cortisol → hippocampal atrophy) is the primary route through which environmental control loss impairs long-term memory consolidation."
+  },
+  "cross_template_references": [
+    "MS_RIPPLE_REPLAY_002 — provides the acute consolidation-supporting activity parameters",
+    "ED_SCHEMA_ENCODING_001 — schema availability accelerates consolidation",
+    "STRESS-I T6 — cortisol impairs consolidation-supporting neural activity",
+    "MS_CONSOLIDATION_RESTORATION_001 — DMN-mediated integration complements SWR replay"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T00:00:00.000000+00:00",
+  "architectural_modifiers": {
+    "spatial_configuration": {
+      "coefficient": 0.15,
+      "interpretation": "Presence of consolidation-permissive rest spaces (per MS_RIPPLE_REPLAY_002 conditions) in proximity to learning zones supports acute consolidation activity",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    },
+    "repeated_exposure_to_same_space": {
+      "coefficient": 0.25,
+      "interpretation": "Repeated navigation of the same spatial layout across sessions provides the repeated SWR replay substrate for gradual consolidation",
+      "confidence": 0.5,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "display_id": "ESC1",
+  "name": "Systems Consolidation and Hippocampal-Neocortical Transfer",
+  "t1_frameworks": [],
+  "calibration_status": "calibrated",
+  "panel_source": "MEMORY-I"
+}

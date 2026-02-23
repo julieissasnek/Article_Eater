@@ -1,0 +1,156 @@
+{
+  "template_id": "TERRITORIAL_AFFORDANCE_SOCIAL_001",
+  "name": "Territorial Affordance and Social Prediction Gradient",
+  "status": "calibrated",
+  "maturity": "how-plausibly",
+  "t1_frameworks": [
+    "IC",
+    "NM",
+    "SN"
+  ],
+  "t1_5_parent_theories": [
+    "Altman_Privacy_Regulation",
+    "Defensible_Space"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "territorial_markers",
+      "to": "social_setting_features",
+      "description": "Architectural features that signal territorial ownership — personalization, boundary marking, depth from public circulation, defensible space geometry (Newman, 1972) — reduce social prediction error by making others' likely behavior more predictable within the territory.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Territorial markers (personalization, boundary objects, symbolic items) reduce intrusion rates by 40-60% in observed settings", "source": "Brown (1987); Gifford (2014)", "paradigm": "Field observation of territorial behavior", "effect": "Markers constrain others' behavior", "n": null, "design": "Observational field studies"},
+          {"finding": "Defensible space geometry (visibility, access control) predicts crime reduction in residential settings", "source": "Newman (1972); Taylor et al. (1980)", "paradigm": "Crime and urban design", "effect": "Spatial configuration affects territorial violations", "n": null, "design": "Quasi-experimental"}
+        ],
+        "backing": "The territorial signaling → behavior constraint link is well-established in environmental psychology. Personalization and boundary marking communicate ownership, which reduces others' uncertainty about appropriate behavior in the space.",
+        "qualifier": "The social prediction error reduction is inferred from behavioral observations rather than directly measured. The PP-framework interpretation is theoretical overlay on behavioral data.",
+        "rebuttal": "Would fail if territorial markers are culturally illegible (unfamiliar symbols) or if social norms override territorial signals (service personnel, emergency responders).",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 2,
+      "from": "social_setting_features",
+      "to": "reduced_vigilance_cost",
+      "description": "Clear territorial signaling reduces the occupant's need for continuous social monitoring (amygdala vigilance). This is the PP-channel benefit of territory: the generative model of 'who will enter this space and why' is well-constrained.",
+      "warrant": "MECHANISM",
+      "confidence": 0.5,
+      "justification": {
+        "data": [
+          {"finding": "Occupants of personalized offices report lower distraction and higher concentration than those in undifferentiated open-plan spaces", "source": "Sundstrom et al. (1980); Gifford (2014)", "paradigm": "Workplace satisfaction studies", "effect": "Territoriality reduces cognitive load", "n": null, "design": "Survey and observational"},
+          {"finding": "Amygdala vigilance decreases when social environment is predictable; linked to reduced cortisol and higher RSA", "source": "Porges (2007); environmental psychology inference", "paradigm": "Autonomic measurement", "effect": "Predictability reduces vigilance cost", "n": null, "design": "Laboratory"}
+        ],
+        "backing": "The mechanism is PP-grounded: territory constrains the generative model of social intrusion, reducing prediction error and thereby reducing the metabolic cost of social vigilance. The occupant need not continuously update beliefs about who might enter.",
+        "qualifier": "The vigilance-reduction claim bridges from behavioral observations (reported concentration) to neural mechanisms (amygdala) via the PP framework. Direct fMRI measurement of territorial effects on amygdala is absent.",
+        "rebuttal": "Would fail if territorial ownership induces its own vigilance cost (defensive monitoring of boundaries); but empirical evidence suggests net vigilance reduction in well-marked territories.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 3,
+      "from": "territorial_markers",
+      "to": "defensive_response",
+      "description": "When territorial signals are violated (unauthorized intrusion into marked space), the response is immediate: autonomic arousal (RSA drop, skin conductance rise), behavioral challenge or withdrawal.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Territorial intrusion produces immediate autonomic response: heart rate increase, skin conductance rise, behavioral confrontation or avoidance", "source": "Altman (1975); environmental psychology literature", "paradigm": "Intrusion studies", "effect": "Violation triggers defensive response", "n": null, "design": "Controlled field studies"},
+          {"finding": "RSA drops when personal space is invaded; consistent with shift from social engagement to defensive mode", "source": "Porges (2007); proxemics literature", "paradigm": "Autonomic measurement during proximity manipulation", "effect": "Boundary violation produces stress response", "n": null, "design": "Laboratory"}
+        ],
+        "backing": "The territorial violation → defensive response link is robust in the environmental psychology literature. The autonomic signature (RSA drop, SC rise) indicates shift from parasympathetic to sympathetic dominance — the body's preparation for defense.",
+        "qualifier": "The defensive response magnitude depends on the relationship between parties (stranger > acquaintance > intimate) and the nature of the violation (aggressive intrusion > accidental entry).",
+        "rebuttal": "Would fail if occupants habituate to repeated violations; but evidence shows sustained defensive response to ongoing territorial threats.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "territorial_markers": {
+      "primary_territory": {
+        "personalization_level": "high",
+        "boundary_clarity": "sharp",
+        "depth_from_circulation": ">5m",
+        "defensibility_score": 0.8,
+        "note": "Personal office, assigned desk with barriers"
+      },
+      "secondary_territory": {
+        "personalization_level": "moderate",
+        "boundary_clarity": "moderate",
+        "depth_from_circulation": "2-5m",
+        "defensibility_score": 0.5,
+        "note": "Regular meeting room, habitual cafe seat"
+      },
+      "public_territory": {
+        "personalization_level": "none",
+        "boundary_clarity": "absent",
+        "depth_from_circulation": "<2m",
+        "defensibility_score": 0.2,
+        "note": "Lobby bench, open corridor"
+      },
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE",
+      "source": "Altman 1975; Brown 1987; Gifford 2014"
+    },
+    "prediction_error_signal": {
+      "primary_territory_PE_reduction": 0.6,
+      "secondary_territory_PE_reduction": 0.35,
+      "public_territory_PE_reduction": 0.1,
+      "unit": "fraction_of_baseline_social_PE",
+      "description": "Fraction of baseline social prediction error eliminated by territorial ownership signals",
+      "confidence": 0.45,
+      "bridge_type": "CAPACITY",
+      "note": "THEORETICAL_DEFAULT — derived from PP framework applied to territorial behavior; no direct social PE measurement in architectural settings"
+    },
+    "interpersonal_distance": {
+      "primary_territory": {
+        "tolerance_distance": 2.0,
+        "unit": "meters",
+        "note": "Intrusion within 2m of occupied primary territory triggers defensive response"
+      },
+      "secondary_territory": {
+        "tolerance_distance": 0.5,
+        "unit": "meters"
+      },
+      "source": "Gifford 2014; Sommer 1969",
+      "confidence": 0.5,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "building_types": [
+    "offices",
+    "residential",
+    "eldercare",
+    "dormitories"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_prior": 0.55,
+  "interaction_templates": [
+    "PRIVACY_GRADIENT_REGULATION_001",
+    "PROXEMIC_PE_ARCH_001"
+  ],
+  "ie_dpt_interaction": "No direct IE-DPT interaction identified.",
+  "key_references": [
+    "Newman, O. (1972). Defensible Space. Macmillan.",
+    "Brown, B. B. (1987). https://doi.org/10.1016/S0272-4944(87)80002-5",
+    "Gifford, R. (2014). Environmental Psychology (5th ed.). Optimal Books."
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:20.015074+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — territorial ownership reduces IC2 social vigilance cost. Primary territories provide the lowest social-monitoring metabolic cost. Open-plan offices with no territorial signals produce chronic low-grade social vigilance that accumulates IC2 cost.",
+    "AX4": "Perceived Control — territory IS a form of perceived control over the social environment. Loss of territory (hot-desking, forced room changes in eldercare) is a direct AX4 violation."
+  },
+  "display_id": "TAS1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.55
+}

@@ -1,0 +1,214 @@
+{
+  "template_id": "PROXEMIC_PE_ARCH_001",
+  "name": "Proxemic PE — Architecture Mediates Interpersonal Distance",
+  "status": "calibrated",
+  "maturity": "how-actually",
+  "t1_frameworks": [
+    "NM",
+    "IC",
+    "PP"
+  ],
+  "t1_5_parent_theories": [
+    "Hall_Proxemics",
+    "Amygdala_Proximity_Detection"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "spatial_configuration",
+      "to": "interpersonal_distance",
+      "description": "Corridor width, seating layout, room geometry constrain the minimum achievable interpersonal distance between strangers or acquaintances.",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.75,
+      "justification": {
+        "data": [
+          {"finding": "Corridors < 1.8 m force passing strangers into personal zone; < 1.5 m forces intimate zone violations", "source": "Hall (1966); Kennedy & Adolphs (2014)", "paradigm": "Proxemic measurement in architectural settings", "effect": "Architectural geometry directly determines achievable interpersonal distance", "n": null, "design": "Field observation"}
+        ],
+        "backing": "This is a constitutive relationship: corridor width, seating spacing, and room geometry mathematically constrain the minimum physical distance between occupants. No empirical study required — physics and geometry determine the outcome.",
+        "qualifier": "Occupant behavior (pausing, waiting, adjusting path) can modulate actual proximity within the architectural constraints.",
+        "rebuttal": "Would fail if occupants routinely avoid constrained spaces entirely, eliminating the proximity effect.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "interpersonal_distance",
+      "to": "hpa_axis_activation",
+      "description": "Amygdala activation scales exponentially with decreasing interpersonal distance below ~120 cm (personal zone boundary). Patient SM bilateral amygdala lesion eliminates proximity discomfort entirely (Kennedy et al., 2009).",
+      "warrant": "MECHANISM",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {"finding": "Patient SM with bilateral amygdala destruction shows no personal space preference; stands comfortably at distances that cause marked discomfort in neurotypical individuals", "source": "Kennedy et al. (2009)", "paradigm": "Clinical lesion study", "effect": "Amygdala necessary for proximity discomfort", "n": 1, "design": "Single-case neuropsychology"},
+          {"finding": "fMRI shows monotonic amygdala activation increasing as interpersonal distance decreases below ~60 cm", "source": "Adolphs fMRI approach paradigm", "paradigm": "fMRI during approach paradigm", "effect": "Amygdala = proximity detector", "n": null, "design": "Within-subjects fMRI"}
+        ],
+        "backing": "Adolphs' work established that the amygdala is necessary for the discomfort signal that enforces personal space. The patient SM case provides definitive evidence that bilateral amygdala damage eliminates proximity discomfort entirely.",
+        "qualifier": "The exponential response function (half-maximum ~90 cm) is derived from fMRI data; threshold varies with culture (Hall 1966) and individual differences.",
+        "rebuttal": "Would fail if proximity discomfort operates through a non-amygdala pathway; patient SM's lack of discomfort would need alternative explanation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "hpa_axis_activation",
+      "to": "interoceptive_signal",
+      "description": "Amygdala output projects to insula (interoceptive representation) and PAG (defensive behavior). The phenomenological correlate is unease, discomfort, desire to retreat. IC2 body-budget cost: elevated baseline arousal.",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Amygdala projects to insula for interoceptive representation and to PAG for defensive behavior; these projections are the neural substrate of proximity discomfort", "source": "Neuroanatomical literature; Adolphs panel statement", "paradigm": "Neural tracing", "effect": "Amygdala-insula-PAG pathway mediates phenomenological discomfort", "n": null, "design": "Neuroanatomical"}
+        ],
+        "backing": "The amygdala-insula pathway is well-characterized. The phenomenological correlate (unease, desire to retreat) maps onto the IC2 body-budget as an arousal cost that accumulates with chronic proximity violation.",
+        "qualifier": "The phenomenological-neural mapping involves some inference; the specific contribution to IC2 body-budget is model-derived.",
+        "rebuttal": "Would fail if proximity discomfort is purely cognitive without interoceptive representation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "from": "prediction_error_signal",
+      "to": "architectural_threshold",
+      "description": "PP modulation: predictable approaches reduce amygdala response by ~30% vs. unpredicted approaches at the same distance. Top-down precision weighting from cortical social prediction circuits.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Predictable approaches produce ~30% less amygdala activation than unpredictable ones at the same physical distance", "source": "Kennedy & Adolphs (2014); Saxe panel contribution", "paradigm": "fMRI with approach predictability manipulation", "effect": "Predictability reduces amygdala response", "n": null, "design": "Within-subjects fMRI"}
+        ],
+        "backing": "The data support both threat-detection (NM) and prediction-error (PP) accounts. Adolphs concedes a dual-framework assignment: NM primary (base mechanism), PP secondary (modulation). Even fully predicted approaches still produce amygdala activation at distances < 45 cm (floor effect).",
+        "qualifier": "The 30% modulation coefficient is derived from laboratory approach paradigms; architectural translation involves assumptions about approach predictability in real corridors.",
+        "rebuttal": "Would fail if cortical prediction fully suppresses amygdala response, which the data contradict (floor effect at < 45 cm).",
+        "competing_accounts": [
+          {"account": "Pure threat-detection without PP modulation", "proponent": "Adolphs (initial position)", "resolution": "Panel consensus: NM primary with PP modulation"}
+        ],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "interpersonal_distance": {
+      "value": 120,
+      "unit": "cm",
+      "range": {
+        "min": 90,
+        "max": 150
+      },
+      "description": "Distance threshold below which amygdala proximity alarm activates for stranger interactions",
+      "source": "Hall 1966; Kennedy et al. 2009; Adolphs fMRI data",
+      "confidence": 0.7,
+      "bridge_type": "MECHANISM",
+      "population_modifiers": {
+        "contact_cultures": {
+          "value": 90,
+          "note": "Latin American, Middle Eastern — Hall 1966"
+        },
+        "non_contact_cultures": {
+          "value": 150,
+          "note": "Northern European, East Asian — Hall 1966; Sorokowska et al. 2017"
+        },
+        "sensory_sensitivity": {
+          "value": "variable",
+          "note": "Some individuals show enlarged zone (~180 cm), others show absent zone; Gessaroli et al. 2013"
+        },
+        "elderly": {
+          "value": 100,
+          "note": "Reduced mobility may reduce preferred distance due to auditory/visual compensation needs"
+        }
+      }
+    },
+    "hpa_axis_activation": {
+      "form": "exponential",
+      "half_maximum_distance": 90,
+      "unit": "cm",
+      "description": "Amygdala activation = A_max × exp(−d / τ), where d = interpersonal distance, τ ≈ 40 cm. Half-maximum at ~90 cm for strangers.",
+      "source": "Adolphs fMRI approach paradigm; Kennedy et al. 2009",
+      "confidence": 0.65,
+      "bridge_type": "MECHANISM"
+    },
+    "environmental_novelty_level": {
+      "value": 0.7,
+      "description": "Multiplier on amygdala response for predicted vs. unpredicted approaches. Predicted approach at distance d produces 70% of the amygdala activation of an unpredicted approach at the same d.",
+      "source": "Kennedy & Adolphs 2014; Saxe panel contribution",
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "spatial_configuration": {
+      "corridor_width": {
+        "threshold": 1.8,
+        "unit": "meters",
+        "note": "Corridors < 1.8 m force passing strangers into personal zone. Below 1.5 m: intimate zone violations for bidirectional traffic.",
+        "stress_modifier": 0.2,
+        "confidence": 0.6
+      },
+      "retreat_path_availability": {
+        "dead_end_modifier": 1.2,
+        "description": "Dead-end configurations increase effective proxemic zone by ~20%",
+        "open_room_modifier": 0.85,
+        "description_open": "Open rooms with multiple exits reduce effective proxemic zone by ~15%",
+        "confidence": 0.55
+      },
+      "visual_barrier_type": {
+        "transparent_partition": {
+          "proximity_discomfort_modifier": 0.7,
+          "note": "30% reduction vs. opaque wall at same distance"
+        },
+        "opaque_wall": {
+          "proximity_discomfort_modifier": 1.0,
+          "note": "Baseline"
+        },
+        "no_barrier": {
+          "proximity_discomfort_modifier": 1.0,
+          "note": "Same as opaque wall — the barrier reduces discomfort, not increases it"
+        },
+        "confidence": 0.5
+      },
+      "novelty_modifier": {
+        "novel_environment": {
+          "zone_expansion": 1.15,
+          "note": "Unfamiliar settings increase preferred distance ~15%"
+        },
+        "familiar_environment": {
+          "zone_expansion": 1.0
+        },
+        "confidence": 0.5
+      }
+    }
+  },
+  "building_types": [
+    "hospitals",
+    "eldercare",
+    "offices",
+    "schools",
+    "transit",
+    "residential_corridors"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "NM_VAGAL_REGULATION_001",
+    "PRIVACY_GRADIENT_REGULATION_001",
+    "TERRITORIAL_AFFORDANCE_SOCIAL_001"
+  ],
+  "ie_dpt_interaction": "T_IE_003 (Personal Space × Social Context) — proxemic threshold modulated by social role relationship",
+  "key_references": [
+    "Kennedy, D. P., Gläscher, J., Tyszka, J. M., & Adolphs, R. (2009). https://doi.org/10.1038/nn.2381",
+    "Hall, E. T. (1966). The Hidden Dimension. Doubleday.",
+    "Sorokowska, A., et al. (2017). https://doi.org/10.1177/0022022116671012"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:09.506783+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — amygdala proximity alarm contributes to IC2 body-budget arousal cost. Chronic proximity violation (crowded housing, undersized corridors) accumulates allostatic load via T6 pathway.",
+    "AX4": "Perceived Control — ability to regulate own interpersonal distance (movable seating, choice of corridor, retreat path access) reduces proxemic stress. Fixed seating < 1.2 m in waiting rooms is an AX4 violation."
+  },
+  "display_id": "PPA1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.6
+}

@@ -1,0 +1,182 @@
+{
+  "template_id": "NM_VAGAL_REGULATION_001",
+  "name": "Vagal Regulation and Social Engagement System",
+  "status": "calibrated",
+  "maturity": "how-plausibly",
+  "t1_frameworks": [
+    "NM",
+    "IC"
+  ],
+  "t1_5_parent_theories": [
+    "Polyvagal_Theory_Empirical_Subset"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "safety_threat_cues",
+      "to": "neuroception_of_safety",
+      "description": "Environmental features that signal safety to the autonomic nervous system: low ambient noise (LAeq < 55 dBA), adequate lighting for facial recognition (>200 lux at face level), visual sightlines, absence of concealed approach vectors, nature elements.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "Ambient noise LAeq > 60 dBA reduces RSA by ~15%", "source": "Bernardi et al. (2009)", "paradigm": "Cardiac autonomic measurement during noise exposure", "effect": "Noise shifts autonomic state away from social engagement", "n": null, "design": "Controlled exposure"},
+          {"finding": "Nature views increase RSA ~8-12% with exposure ≥ 10 minutes", "source": "Park et al. (2010); Li et al. (2011)", "paradigm": "RSA measurement during nature exposure", "effect": "Nature elements support vagal safety state", "n": null, "design": "Field study"}
+        ],
+        "backing": "Porges' neuroception construct holds that the autonomic nervous system detects environmental safety/threat cues below conscious awareness. The specific architectural features (noise, lighting, sightlines) have empirically demonstrated effects on RSA.",
+        "qualifier": "The neuroception pathway is theoretically grounded; direct measurement of the neural pathway from environmental features to nucleus ambiguus in architectural contexts is absent.",
+        "rebuttal": "Would fail if RSA changes are mediated by conscious appraisal rather than automatic neuroception; cognitive interpretation may dominate automatic detection.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 2,
+      "from": "neuroception_of_safety",
+      "to": "vagal_regulation",
+      "description": "Safety signals promote ventral vagal complex (nucleus ambiguus) activation, indexed by increased RSA/RMSSD. Ventral vagal state supports social engagement: facial expression, vocalization, listening attuned to human voice frequencies.",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "note": "CONSTRAINT: phylogenetic ordering (dorsal → sympathetic → ventral) is THEORETICAL_DEFAULT. Functional RSA modulation is empirically supported.",
+      "justification": {
+        "data": [
+          {"finding": "RSA/RMSSD reliably indexes vagal regulation; normative resting RSA ~40-60 ms (ln-RMSSD 3.5-4.0) in young healthy adults", "source": "Porges (2007); Beauchaine (2001)", "paradigm": "Cardiac autonomic measurement", "effect": "RSA as index of vagal state", "n": null, "design": "Normative data"},
+          {"finding": "Phylogenetic ordering (dorsal → sympathetic → ventral) contested by Grossman (2023)", "source": "Grossman (2023)", "paradigm": "Comparative neuroanatomy review", "effect": "Evolutionary claims not fully supported", "n": null, "design": "Literature review"}
+        ],
+        "backing": "The Social Engagement System (Porges 2007) comprises neural regulation of facial expression, vocalization, and listening. The functional RSA data are well-supported; the broader phylogenetic claims carry THEORETICAL_DEFAULT.",
+        "qualifier": "Porges acknowledged the constraint: phylogenetic ordering is contested but functional RSA modulation is independently supported.",
+        "rebuttal": "Would fail if RSA is not a valid index of vagal regulation; alternative cardiac measures might be required.",
+        "competing_accounts": [
+          {"account": "Grossman's critique of phylogenetic ordering", "proponent": "Grossman (2023)", "resolution": "Panel limited Porges' contribution to empirically supported RSA modulation, flagged phylogenetic claims as THEORETICAL_DEFAULT"}
+        ],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 3,
+      "from": "vagal_regulation",
+      "to": "social_setting_features",
+      "description": "High RSA state associated with prosocial behavior, emotional regulation, and social approach. Reduced RSA associated with social withdrawal, defensive behavior.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "High RSA predicts prosocial behavior, emotional regulation, and social approach; low RSA predicts withdrawal and defensive behavior", "source": "Porges (2007); Beauchaine (2001)", "paradigm": "Behavioral correlates of cardiac vagal tone", "effect": "RSA-behavior association", "n": null, "design": "Correlational studies"}
+        ],
+        "backing": "The RSA-behavior link is well-established in the developmental and clinical literature. High vagal tone supports the physiological platform for social engagement.",
+        "qualifier": "The association is correlational; causality is inferred from the proposed mechanism. Experimental manipulation of architectural features with RSA outcomes would strengthen the claim.",
+        "rebuttal": "Would fail if RSA-behavior associations are confounded by individual differences (personality, anxiety) that are not architecturally modifiable.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "vagal_regulation": {
+      "value": 50,
+      "unit": "ms_RMSSD",
+      "range": {
+        "min": 30,
+        "max": 80
+      },
+      "ln_rmssd_range": {
+        "min": 3.4,
+        "max": 4.4
+      },
+      "description": "Normative resting RSA in seated healthy young adult. Values below ln-RMSSD 3.4 indicate shift away from ventral vagal social engagement.",
+      "source": "Porges 2007; Beauchaine 2001",
+      "confidence": 0.65,
+      "bridge_type": "MECHANISM"
+    },
+    "acoustic_environment": {
+      "threshold_laeq": 60,
+      "unit": "dBA",
+      "effect": "RSA reduction ~15% above LAeq 60 dBA in sustained exposure",
+      "source": "Bernardi et al. 2009",
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "nature_view_quality": {
+      "effect": "RSA increase ~8–12% with nature view exposure ≥ 10 minutes",
+      "source": "Park et al. 2010; Li et al. 2011",
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE",
+      "note": "Partial overlap with VIEW1 Channel 5. See amygdala partial-out protocol."
+    },
+    "interpersonal_distance": {
+      "conversational_distance_range": {
+        "min": 1.2,
+        "max": 3.5,
+        "unit": "meters"
+      },
+      "rsa_increase": "8–12% above solitary baseline when in presence of non-threatening familiar other at conversational distance",
+      "source": "Porges 2007; Kok & Fredrickson 2010",
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "safety_threat_cues": {
+      "ambient_noise": {
+        "safe_threshold_laeq": 55,
+        "unit": "dBA"
+      },
+      "face_level_illuminance": {
+        "safe_threshold": 200,
+        "unit": "lux"
+      },
+      "visual_sightline_depth": {
+        "safe_threshold": 6,
+        "unit": "meters",
+        "note": "Ability to see approaching others from ≥6 m"
+      },
+      "concealed_approach_absence": {
+        "description": "No blind corners or concealed doorways within 3 m of social seating"
+      },
+      "confidence": 0.5,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "phylogenetic_ordering_flag": {
+      "value": "THEORETICAL_DEFAULT",
+      "confidence": 0.4,
+      "note": "The dorsal vagal → sympathetic → ventral vagal evolutionary sequence (Porges 1995) is contested by Grossman (2023). The functional RSA modulation data are supported independently of the phylogenetic claim."
+    },
+    "hpa_axis_activation": {
+      "protocol": "max_plus_marginal",
+      "description": "NM_VAGAL_REGULATION_001 shares amygdala pathway with VIEW1 Ch5 and PROXEMIC_PE_ARCH_001. IC2 contribution = max(individual_template_amygdala_contributions) + 0.15 × sum(remaining). See Debate 5 consensus.",
+      "confidence": 0.4,
+      "flag": "CROSS_TEMPLATE_INTERACTION → NEUROMOD-I"
+    }
+  },
+  "building_types": [
+    "hospitals",
+    "eldercare",
+    "offices",
+    "schools",
+    "residential"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "PROXEMIC_PE_ARCH_001",
+    "NATURE_VIEW_CONVERGENCE_001",
+    "NM_THREAT_HPA_001",
+    "PRIVACY_GRADIENT_REGULATION_001"
+  ],
+  "ie_dpt_interaction": "T_IE_004 (Autonomic Readiness × Social Context) — vagal state gates social engagement capacity",
+  "key_references": [
+    "Porges, S. W. (2007). https://doi.org/10.1016/j.biopsycho.2006.06.009",
+    "Beauchaine, T. P. (2001). https://doi.org/10.1111/1469-8986.3820001",
+    "Grossman, P. (2023). https://doi.org/10.1016/j.biopsycho.2023.108543"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:19.773459+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — ventral vagal state is the IC2 'social rest' mode. Shift to sympathetic mobilization incurs IC2 cost. Sustained low-RSA environments (noisy, poorly lit, threatening) accumulate body-budget debt via the same HPA pathway as T6/T7 but through autonomic rather than cortisol mediation.",
+    "AX4": "Perceived Control — control over noise (operable windows, acoustic shielding), lighting (task lighting), and social approach (choice of seating location) all enhance neuroception of safety and thereby support ventral vagal state."
+  },
+  "display_id": "NVR1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.6
+}

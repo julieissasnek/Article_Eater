@@ -1,0 +1,193 @@
+{
+  "template_id": "PRIVACY_GRADIENT_REGULATION_001",
+  "name": "Architectural Privacy Gradient",
+  "status": "calibrated",
+  "maturity": "how-actually",
+  "t1_frameworks": [
+    "IC",
+    "NM",
+    "SN",
+    "EC"
+  ],
+  "t1_5_parent_theories": [
+    "Altman_Privacy_Regulation"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "spatial_configuration",
+      "to": "privacy_gradient",
+      "description": "Walls, doors, screens, spatial depth, acoustic barriers, visual permeability create a gradient from public to intimate. Five levels: public → semi-public → semi-private → private → intimate.",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.75,
+      "justification": {
+        "data": [
+          {"finding": "Privacy is a dual-channel phenomenon: visual exposure (% body visible from boundary) and acoustic exposure (STI)", "source": "Gifford (2014); Sundstrom et al. (1980)", "paradigm": "Environmental psychology field studies", "effect": "Architectural features directly determine privacy level", "n": null, "design": "Field observation"}
+        ],
+        "backing": "This is a constitutive relationship: the architectural features (wall opacity, aperture size, spatial depth, acoustic barriers) mathematically determine the visual and acoustic permeability that constitutes privacy.",
+        "qualifier": "Perceived privacy includes psychological factors beyond physical barriers (sense of control, familiarity, social context).",
+        "rebuttal": "Would fail if psychological factors dominate physical barriers; but evidence shows physical privacy correlates strongly with perceived privacy.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "privacy_gradient",
+      "to": "privacy_regulation",
+      "description": "Altman's dynamic regulation model: individuals continuously adjust achieved privacy toward an optimum that varies by activity and state. Architectural features provide the adjustment mechanism — door closing, blind drawing, spatial retreat.",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Privacy is not a fixed need but a dynamic regulatory process; individuals continuously adjust achieved privacy toward an optimal point", "source": "Altman (1975); Gifford (2014)", "paradigm": "Privacy regulation theory", "effect": "Architectural features serve as privacy adjustment mechanisms", "n": null, "design": "Theoretical framework with field validation"}
+        ],
+        "backing": "Altman's privacy regulation theory holds that individuals have a dynamic optimal privacy level that varies with activity, mood, and social context. Architectural features (operable doors, screens, spatial options) are the primary regulatory mechanism.",
+        "qualifier": "The theory assumes occupants have access to privacy adjustment mechanisms. Fixed architectural features (no doors, no spatial options) prevent regulation.",
+        "rebuttal": "Would fail if privacy needs are fixed rather than dynamic; or if non-architectural mechanisms (social signals) dominate privacy regulation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "privacy_regulation",
+      "to": "autonomic_regulation",
+      "description": "When achieved privacy < desired (unwanted intrusion): amygdala vigilance, RSA drop, behavioral withdrawal or territorial defense. When achieved privacy > desired (unwanted isolation): isolation biology onset per NM_SOCIAL_ISOLATION_ALLOSTATIC_001.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "Privacy violation produces immediate autonomic response: RSA drop, heart rate increase, skin conductance rise", "source": "Porges (panel contribution); environmental psychology literature", "paradigm": "Autonomic measurement during privacy manipulation", "effect": "Privacy mismatch produces stress response", "n": null, "design": "Laboratory studies"}
+        ],
+        "backing": "Privacy violation in either direction (too little or too much) incurs autonomic cost. Intrusion triggers vigilance (amygdala-mediated); isolation triggers CTRA biology (see NM_SOCIAL_ISOLATION_ALLOSTATIC_001).",
+        "qualifier": "The bidirectional autonomic response is well-documented; the specific architectural-autonomic pathway involves inference from laboratory to field settings.",
+        "rebuttal": "Would fail if autonomic responses habituate rapidly to privacy mismatch; but evidence shows sustained mismatch produces chronic effects.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "privacy_gradient": {
+      "public": {
+        "visual_permeability": ">80%",
+        "STI": ">0.60",
+        "spatial_depth_from_circulation": "<2m"
+      },
+      "semi_public": {
+        "visual_permeability": "50-80%",
+        "STI": "0.40-0.60",
+        "spatial_depth_from_circulation": "2-4m"
+      },
+      "semi_private": {
+        "visual_permeability": "20-50%",
+        "STI": "0.20-0.40",
+        "spatial_depth_from_circulation": "4-8m"
+      },
+      "private": {
+        "visual_permeability": "<20%",
+        "STI": "<0.20",
+        "spatial_depth_from_circulation": ">8m"
+      },
+      "intimate": {
+        "visual_permeability": "<5%",
+        "STI": "<0.10",
+        "spatial_depth_from_circulation": ">10m",
+        "note": "Requires solid boundary with operable closure"
+      },
+      "confidence": 0.6,
+      "bridge_type": "EMPIRICAL_COVARIANCE",
+      "source": "Gifford 2014; Altman 1975; adapted by panel"
+    },
+    "architectural_threshold": {
+      "sharp_edge": {
+        "visual_transition": "<0.5m",
+        "acoustic_transition": "<0.3m",
+        "description": "Solid door, wall — binary privacy change"
+      },
+      "soft_edge": {
+        "visual_transition": "2-5m",
+        "acoustic_transition": "1-3m",
+        "description": "Progressive screening, spatial layering, gradual acoustic attenuation"
+      },
+      "regulation_effectiveness": {
+        "sharp_satisfaction_d": 0.55,
+        "soft_satisfaction_d": 0.35,
+        "note": "Sharp edges provide more effective regulation but at cost of social connectivity",
+        "source": "Gifford 2014; Sundstrom et al. 1980"
+      },
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "visual_complexity": {
+      "formula": "aperture_width × tan(viewing_angle)",
+      "unit": "meters",
+      "description": "Distance into a space from which an outsider can see occupants. Critical parameter for perceived privacy.",
+      "confidence": 0.6
+    },
+    "acoustic_environment": {
+      "private_STI": {
+        "max": 0.2,
+        "description": "Speech unintelligible"
+      },
+      "semi_private_STI": {
+        "max": 0.5,
+        "description": "Speech audible but effortful to comprehend"
+      },
+      "semi_public_STI": {
+        "max": 0.6,
+        "description": "Speech comprehensible without effort"
+      },
+      "source": "ISO 3382; Gifford 2014; Sundstrom et al. 1980",
+      "confidence": 0.65,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "building_types": [
+    "offices",
+    "hospitals",
+    "residential",
+    "schools",
+    "eldercare"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "TERRITORIAL_AFFORDANCE_SOCIAL_001",
+    "PROXEMIC_PE_ARCH_001",
+    "NM_SOCIAL_ISOLATION_ALLOSTATIC_001"
+  ],
+  "ie_dpt_interaction": "T_IE_002 (Privacy × Activity Demand) — the optimal privacy level is activity-contingent; a single privacy level for all activities is always suboptimal",
+  "population_modifiers": {
+    "sensory_sensitivity": {
+      "preferred_privacy_level": "private_or_intimate",
+      "edge_preference": "sharp",
+      "note": "Reduced tolerance for social unpredictability; need reliable privacy boundaries"
+    },
+    "anxiety_trait": {
+      "preferred_privacy_level": "semi_private_minimum",
+      "note": "Need visual escape route assessment; reject environments with only 'intimate' options (too enclosed)"
+    },
+    "age_group": {
+      "note": "May not use privacy regulation mechanisms effectively; environment should default to semi-private with easy social access"
+    }
+  },
+  "key_references": [
+    "Altman, I. (1975). The Environment and Social Behavior. Brooks/Cole.",
+    "Gifford, R. (2014). Environmental Psychology: Principles and Practice (5th ed.). Optimal Books.",
+    "Sundstrom, E., et al. (1980). https://doi.org/10.1016/S0272-4944(80)80011-5"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:19.856805+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — privacy mismatch (too little or too much) incurs IC2 cost. Unwanted exposure produces vigilance-arousal cost; unwanted isolation produces social-deprivation cost. The optimal privacy gradient minimizes total IC2 expenditure across the activity cycle.",
+    "AX4": "Perceived Control — the critical feature is OPERABLE privacy boundaries. Fixed open-plan with no occupant-controllable privacy adjustment is a maximal AX4 violation. Operable doors, adjustable screens, and spatial choices restore AX4."
+  },
+  "display_id": "PGR1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.6
+}

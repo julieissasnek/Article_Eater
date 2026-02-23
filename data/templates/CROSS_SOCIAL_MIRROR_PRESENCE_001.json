@@ -1,0 +1,158 @@
+{
+  "template_id": "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+  "name": "Social Mirror and Embodied Social Presence",
+  "status": "calibrated",
+  "maturity": "how-plausibly",
+  "t1_frameworks": [
+    "IC",
+    "EC"
+  ],
+  "t1_5_parent_theories": [
+    "Shared_Manifold_Hypothesis",
+    "Second_Person_Neuroscience"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "visual_complexity",
+      "to": "movement_affordances",
+      "description": "Seeing another person's whole-body movement in architectural space activates mirror neuron circuits (F5, inferior parietal lobule). The simulation is automatic and pre-conscious. Gallese et al. 1996; Rizzolatti et al. 1996.",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Observation of goal-directed actions activates the same motor circuits (F5 premotor cortex, inferior parietal lobule) as execution of those actions", "source": "Rizzolatti et al. (1996); Gallese et al. (1996)", "paradigm": "Single-cell recording in macaque premotor cortex", "effect": "Mirror neurons fire during action observation", "n": null, "design": "Neurophysiology"},
+          {"finding": "Human fMRI confirms homologous mirror system activation during action observation", "source": "Iacoboni et al. (1999); Rizzolatti & Craighero (2004)", "paradigm": "fMRI action observation", "effect": "Human mirror system activation", "n": null, "design": "fMRI within-subjects"}
+        ],
+        "backing": "The mirror neuron system is well-characterized in both non-human primates and humans. Action observation automatically activates motor simulation circuits. Architectural spaces that provide whole-body visibility enable this simulation more fully than spaces that restrict visibility to face-only.",
+        "qualifier": "The mirror system is primarily demonstrated for hand/arm actions. Whole-body locomotion observation has less direct neural evidence, though the principle of motor simulation extends theoretically.",
+        "rebuttal": "Would fail if action simulation requires attention; but evidence shows mirror activation is automatic and occurs even with divided attention.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "movement_affordances",
+      "to": "sensorimotor_coupling",
+      "description": "Embodied simulation generates a phenomenological sense of shared presence — the felt quality of being-with rather than merely being-near. This is Gallese's 'shared manifold': an automatic mapping of the observed person's bodily state onto the observer's motor repertoire.",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Motor simulation during action observation produces phenomenological resonance — a 'felt sense' of the other's action that constitutes the shared manifold", "source": "Gallese (2001); Gallese & Gattara (2015)", "paradigm": "Theoretical framework with neural evidence", "effect": "Simulation → shared presence phenomenology", "n": null, "design": "Theoretical"},
+          {"finding": "Second-person neuroscience shows distinct neural signatures for observing vs. being-observed-by another person", "source": "Schilbach et al. (2013)", "paradigm": "Interactive fMRI paradigms", "effect": "Interactive social cognition differs from observation", "n": null, "design": "fMRI"}
+        ],
+        "backing": "Gallese's shared manifold hypothesis proposes that the mirror system is the neural substrate for embodied intersubjectivity. The automatic mapping of observed action onto own motor repertoire generates the phenomenological sense of 'we-ness' or co-presence.",
+        "qualifier": "The motor-simulation → phenomenology bridge is philosophically contested. The shared manifold is a theoretical interpretation of the neural data, not a direct observation.",
+        "rebuttal": "Would fail if mirror activation occurs without phenomenological co-presence; some evidence suggests motor simulation can occur without conscious awareness of the other.",
+        "competing_accounts": [
+          {"account": "Theory-theory of social cognition", "proponent": "Gopnik, Wellman", "resolution": "Panel consensus: simulation and theory-theory may both contribute; Gallese's architectural claims rest on the simulation component"}
+        ],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 3,
+      "from": "sensorimotor_coupling",
+      "to": "social_setting_features",
+      "description": "Embodied co-presence promotes social approach, empathy, and interpersonal coordination. In architectural terms: spaces that support embodied co-presence facilitate prosocial behavior more effectively than spaces that provide only head-and-face visibility.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.5,
+      "justification": {
+        "data": [
+          {"finding": "Spaces supporting whole-body visibility (atriums with glass mezzanines, open staircases) produce more spontaneous social interaction than spaces with head-only visibility (high counters, cubicle partitions)", "source": "Gallese & Gattara (2015); observational studies", "paradigm": "Architectural observation", "effect": "Body visibility correlates with social behavior", "n": null, "design": "Observational"},
+          {"finding": "Synchronous movement (enabled by whole-body visibility) enhances cooperation and affiliation", "source": "Hove & Risen (2009); Tarr et al. (2014)", "paradigm": "Synchrony studies", "effect": "Body coordination → prosocial outcomes", "n": null, "design": "Controlled experiment"}
+        ],
+        "backing": "The architectural bridge is that whole-body visibility is a necessary condition for full embodied simulation. Spaces that strip kinematic richness (showing only heads) reduce the motor resonance that underlies social approach and coordination.",
+        "qualifier": "The direct architectural-to-prosocial link is inferred; controlled studies of architectural visibility and social behavior are limited. The mechanism (simulation → prosociality) is better supported than the architectural modulation.",
+        "rebuttal": "Would fail if social behavior is determined by factors other than embodied simulation (explicit social norms, task demands); these factors may dominate in many settings.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "visual_complexity": {
+      "full_body_visibility": {
+        "visual_solid_angle": ">0.02 sr",
+        "kinematic_richness": "full locomotion and gesture visible",
+        "co_presence_index": 1.0
+      },
+      "upper_body_only": {
+        "visual_solid_angle": "0.005-0.02 sr",
+        "kinematic_richness": "gesture and facial expression visible",
+        "co_presence_index": 0.65
+      },
+      "head_face_only": {
+        "visual_solid_angle": "<0.005 sr",
+        "kinematic_richness": "facial expression only",
+        "co_presence_index": 0.35
+      },
+      "no_visual_access": {
+        "co_presence_index": 0.0,
+        "note": "Auditory co-presence only — substantially weaker"
+      },
+      "confidence": 0.5,
+      "bridge_type": "CAPACITY",
+      "source": "Gallese & Gattara 2015; Schilbach et al. 2013; panel estimate"
+    },
+    "social_setting_features": {
+      "glass_partitions_at_mezzanine": {
+        "reveals": "full_body",
+        "mode": "passive_observation",
+        "co_presence_index": 0.5
+      },
+      "open_staircase": {
+        "reveals": "full_body_in_motion",
+        "mode": "passive_observation",
+        "co_presence_index": 0.55,
+        "note": "Movement on stairs is kinematically rich"
+      },
+      "communal_table": {
+        "reveals": "upper_body_plus_gesture",
+        "mode": "active_engagement",
+        "co_presence_index": 0.85
+      },
+      "high_counter_only": {
+        "reveals": "head_shoulders",
+        "mode": "limited_engagement",
+        "co_presence_index": 0.3
+      },
+      "confidence": 0.45,
+      "bridge_type": "CAPACITY"
+    }
+  },
+  "building_types": [
+    "offices",
+    "universities",
+    "hospitals",
+    "residential_common",
+    "cultural_institutions"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.55,
+  "interaction_templates": [
+    "CROSS_SOCIAL_AFFORDANCE_READING_001",
+    "CROSS_TPJ_SPATIAL_SOCIAL_BRIDGE_001",
+    "NM_VAGAL_REGULATION_001"
+  ],
+  "ie_dpt_interaction": "T_IE_011 (Embodiment × Social Space) — motor simulation strength modulated by the observer's own embodied experience of the architectural space",
+  "key_references": [
+    "Gallese, V. (2001). https://doi.org/10.1017/S0140525X01000061",
+    "Gallese, V., & Gattara, A. (2015). https://doi.org/10.12838/issn.20390491/n27.2015/5",
+    "Schilbach, L., et al. (2013). https://doi.org/10.1017/S0140525X12000660"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:20.055824+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — embodied co-presence has a dual IC2 signature: motor simulation incurs a small metabolic cost, but the social buffering and anxiety-reduction it provides produces a net IC2 benefit in most non-threatening settings. Threatening social co-presence (co-presence with hostile others) inverts the sign.",
+    "AX4": "Perceived Control — voluntary exposure to social co-presence (choosing to sit in the atrium vs. the private office) enhances the co-presence benefit. Forced exposure (only communal spaces available, no private alternative) may produce social fatigue."
+  },
+  "display_id": "CSMP1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.55
+}

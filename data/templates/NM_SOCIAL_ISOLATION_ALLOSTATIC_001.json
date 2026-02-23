@@ -1,0 +1,208 @@
+{
+  "template_id": "NM_SOCIAL_ISOLATION_ALLOSTATIC_001",
+  "name": "Social Isolation Allostatic Load",
+  "status": "calibrated",
+  "maturity": "how-plausibly",
+  "t1_frameworks": [
+    "NM",
+    "IC"
+  ],
+  "t1_5_parent_theories": [
+    "CTRA_Conserved_Transcriptional_Response",
+    "Allostasis"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "social_setting_features",
+      "to": "social_connectedness",
+      "description": "Architectural features that preclude meaningful social contact: single-occupancy rooms without common areas, lack of visual access to others, absence of shared activity spaces, sound-isolated units. Perceived isolation activates within 2-4 weeks of sustained deprivation.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "Below ~3 meaningful social exchanges per day, perceived isolation biology begins to activate", "source": "Cacioppo et al. (2006); Holt-Lunstad et al. (2010)", "paradigm": "Longitudinal studies of social isolation", "effect": "Threshold for isolation biology activation", "n": null, "design": "Longitudinal cohort"},
+          {"finding": "Single-occupancy rooms without common areas produce highest isolation risk (modifier 1.40)", "source": "Panel consensus (Cacioppo)", "paradigm": "Architectural risk factor analysis", "effect": "Architectural features predict isolation biology", "n": null, "design": "Observational"}
+        ],
+        "backing": "Cacioppo's work established that perceived social isolation is not merely psychological but has a distinct biological signature. The architectural bridge requires identifying features that preclude the ~3 meaningful exchanges per day threshold.",
+        "qualifier": "Isolation is PERCEIVED, not objective. A person can be surrounded by others and feel isolated, or alone and not feel isolated. Architecture facilitates contact but does not guarantee perceived connection.",
+        "rebuttal": "Would fail if individual differences in social need dominate architectural effects; introverts may thrive in settings that isolate extroverts.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 2,
+      "from": "social_connectedness",
+      "to": "noradrenergic_response",
+      "description": "Conserved Transcriptional Response to Adversity: upregulation of pro-inflammatory genes (NFKB pathway), downregulation of antiviral genes (IRF pathway). Cole et al. 2007; Cacioppo et al. 2014.",
+      "warrant": "MECHANISM",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {"finding": "Perceived social isolation activates CTRA: upregulation of NFKB-mediated pro-inflammatory genes, downregulation of IRF-mediated antiviral genes", "source": "Cole et al. (2007)", "paradigm": "Gene expression profiling", "effect": "Distinct transcriptional signature of loneliness", "n": null, "design": "Molecular biology"}
+        ],
+        "backing": "Cole's work established the CTRA as a conserved biological response to social threat. The molecular mechanism is well-characterized: perceived isolation shifts gene expression toward inflammatory defense at the expense of antiviral defense.",
+        "qualifier": "The CTRA is not specific to loneliness; it is a general adversity response. The specificity of the architectural-loneliness-CTRA pathway is inferred rather than directly demonstrated.",
+        "rebuttal": "Would fail if CTRA activation requires stressors beyond social isolation; architecture-induced isolation may be insufficient to trigger CTRA without additional adversity.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "noradrenergic_response",
+      "to": "exposure_duration",
+      "description": "Elevated IL-6, CRP, TNF-alpha. Elevated cortisol awakening response. Disrupted sleep. Increased cardiovascular risk markers.",
+      "warrant": "MECHANISM",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {"finding": "Chronic perceived isolation produces elevated inflammatory markers (IL-6, CRP, TNF-alpha), elevated cortisol awakening response, and increased cardiovascular risk", "source": "Cacioppo et al. (2014); Cacioppo & Cacioppo (2018)", "paradigm": "Biomarker studies in lonely individuals", "effect": "Measurable physiological consequences of chronic isolation", "n": null, "design": "Cross-sectional and longitudinal"}
+        ],
+        "backing": "The inflammatory and HPA consequences of chronic isolation are well-documented. These are the biological signatures that make social isolation a health risk factor.",
+        "qualifier": "The time course is weeks to months, not hours to days. A single day of social deprivation does not produce the CTRA signature.",
+        "rebuttal": "Would fail if inflammatory markers are elevated by confounders (poor diet, sedentary behavior) that correlate with but are not caused by architectural isolation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "from": "exposure_duration",
+      "to": "allostatic_load",
+      "description": "Feeds T6/T7 allostatic load counter at the chronic (weeks-months) timescale. Social isolation adds ~0.5–1.0 activation-equivalents per day to the T7 body-budget.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Once isolation biology is active, contributes ~0.75 activation-equivalents per day to allostatic load; consumes ~19% of daily T6/T7 budget", "source": "Derived from Cacioppo cortisol awakening response data cross-referenced with McEwen framework", "paradigm": "Allostatic load modeling", "effect": "Isolation as chronic allostatic stressor", "n": null, "design": "Model derivation"}
+        ],
+        "backing": "Social isolation feeds the same allostatic load counter as T6/T7, but at a chronic rather than acute timescale. The 0.75 activation-equivalent is derived from cortisol awakening response differences in lonely vs. connected individuals.",
+        "qualifier": "The activation-equivalent conversion is model-derived. Direct measurement of architectural-isolation contribution to allostatic load has not been performed.",
+        "rebuttal": "Would fail if chronic isolation operates through pathways distinct from the T6/T7 HPA axis that do not contribute to the shared allostatic counter.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "interpersonal_distance": {
+      "value": 3,
+      "unit": "meaningful_exchanges_per_day",
+      "range": {
+        "min": 2,
+        "max": 5
+      },
+      "description": "Below this threshold, perceived isolation biology begins to activate. A 'meaningful exchange' is defined as face-to-face interaction ≥ 5 minutes with conversational engagement.",
+      "source": "Cacioppo et al. 2006; Holt-Lunstad et al. 2010",
+      "confidence": 0.55,
+      "bridge_type": "EMPIRICAL_COVARIANCE",
+      "population_modifiers": {
+        "elderly": {
+          "value": 2,
+          "note": "Lower threshold — fewer contacts needed due to higher quality per contact in long-term relationships; but also higher vulnerability when contacts are lost"
+        },
+        "adolescents": {
+          "value": 5,
+          "note": "Higher contact need; peer interaction critical for development"
+        },
+        "introverts": {
+          "value": 2,
+          "note": "Fewer but deeper contacts may suffice"
+        }
+      }
+    },
+    "social_setting_features": {
+      "brief_greeting": {
+        "isolation_buffer_weight": 0.1,
+        "note": "Hallway hello — minimal buffering"
+      },
+      "casual_conversation_5min": {
+        "isolation_buffer_weight": 0.3
+      },
+      "substantive_conversation_15min": {
+        "isolation_buffer_weight": 0.7
+      },
+      "shared_activity_30min": {
+        "isolation_buffer_weight": 1.0,
+        "note": "Full unit of meaningful contact"
+      },
+      "source": "Hawkley & Cacioppo 2010; Holt-Lunstad et al. 2010",
+      "confidence": 0.5,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "isolation_onset_latency": {
+      "value": 14,
+      "unit": "days",
+      "range": {
+        "min": 7,
+        "max": 28
+      },
+      "description": "Time from onset of below-threshold social contact to detectable CTRA biological signature",
+      "source": "Cole et al. 2007; Cacioppo & Cacioppo 2018",
+      "confidence": 0.5,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    },
+    "allostatic_load": {
+      "daily_equivalent": 0.75,
+      "unit": "activation_equivalents_per_day",
+      "description": "Once isolation biology is active, contributes 0.75 activation-equivalents to the T7 allostatic load counter per day. At T6 threshold of 4/day, this consumes ~19% of the daily allostatic budget.",
+      "confidence": 0.45,
+      "bridge_type": "CAPACITY",
+      "note": "Derived from Cacioppo cortisol awakening response data cross-referenced with McEwen allostatic load framework"
+    },
+    "safety_threat_cues": {
+      "single_occupancy_no_common": {
+        "isolation_risk_modifier": 1.4,
+        "note": "Highest risk: single rooms without shared spaces"
+      },
+      "single_occupancy_with_common": {
+        "isolation_risk_modifier": 1.0,
+        "note": "Baseline: common area access mitigates"
+      },
+      "shared_occupancy_with_common": {
+        "isolation_risk_modifier": 0.6,
+        "note": "Lowest risk when co-occupancy is voluntary"
+      },
+      "shared_occupancy_involuntary": {
+        "isolation_risk_modifier": 0.8,
+        "note": "Crowding without choice can paradoxically increase perceived isolation"
+      },
+      "confidence": 0.5
+    }
+  },
+  "building_types": [
+    "eldercare",
+    "hospitals",
+    "prisons",
+    "single-occupancy_housing",
+    "dormitories"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "T6",
+    "T7",
+    "SPATIAL_SOCIAL_ENCOUNTER_001",
+    "PRIVACY_GRADIENT_REGULATION_001"
+  ],
+  "ie_dpt_interaction": "T_IE_009 (Isolation × Architectural Agency) — isolation allostatic load is amplified when architectural constraints prevent the occupant from seeking social contact (locked ward, mobility impairment without accessible common areas)",
+  "key_references": [
+    "Cacioppo, J. T., & Hawkley, L. C. (2009). https://doi.org/10.1111/j.1749-6632.2009.04447.x",
+    "Cole, S. W., et al. (2007). https://doi.org/10.1101/gr.6665707",
+    "Holt-Lunstad, J., Smith, T. B., & Layton, J. B. (2010). https://doi.org/10.1371/journal.pmed.1000316"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:19.690985+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — social isolation is a chronic body-budget drain. The CTRA biological signature represents a sustained departure from allostatic equilibrium that the IC2 model must track as a slow-timescale component, distinct from the fast-timescale cortisol episodes of T6.",
+    "AX4": "Perceived Control — the critical variable is whether the occupant CAN seek social contact but chooses not to (introversion, low need) vs. CANNOT seek contact due to architectural constraint (isolation, locked ward, inaccessible common area). Only the latter drives the CTRA response."
+  },
+  "display_id": "NSIA1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.6
+}

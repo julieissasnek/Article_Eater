@@ -1,0 +1,163 @@
+{
+  "template_id": "ED_HIPPOCAMPAL_ENCODING_001",
+  "template_name": "Hippocampal Relational Binding in Environmental Encoding",
+  "status": "calibrated",
+  "panel": "MEMORY-I",
+  "primary_anchor": "Lila Davachi (Columbia)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Environmental input — multi-feature spatial configuration (proportion, lighting, materials, acoustic signature, olfactory cues) — enters parahippocampal place area (PPA) via ventral visual stream",
+      "substrate": "PPA → entorhinal cortex (EC) → DG/CA3",
+      "confidence": 0.75,
+      "bridge_warrant": "MECHANISM",
+      "source": "Epstein & Kanwisher (1998); Davachi (2006)",
+      "justification": {
+        "data": [
+          {"finding": "PPA shows selective activation for spatial scenes, places, and environmental layouts independent of specific objects", "source": "Epstein & Kanwisher (1998)", "paradigm": "fMRI scene perception", "effect": "PPA is a scene-selective region", "n": null, "design": "fMRI within-subjects"},
+          {"finding": "PPA → entorhinal → hippocampal pathway transmits spatial scene information for memory encoding", "source": "Davachi (2006); Ranganath & Ritchey (2012)", "paradigm": "fMRI memory encoding", "effect": "PPA-hippocampal connectivity predicts encoding", "n": null, "design": "fMRI"}
+        ],
+        "backing": "The PPA is the cortical gateway for spatial scene processing. Its selective activation for places and layouts is well-established, and its connectivity to hippocampus via entorhinal cortex provides the anatomical pathway for spatial memory encoding.",
+        "qualifier": "The PPA-hippocampal pathway is demonstrated; the specific contribution of each feature dimension (proportion, lighting, materials) to PPA encoding is less precisely quantified.",
+        "rebuttal": "Would fail if spatial scene processing bypassed PPA via alternative pathways; but lesion and neuroimaging evidence consistently implicate PPA as necessary for scene encoding.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "process": "DG performs pattern separation on incoming spatial configuration: if distinctiveness exceeds separation threshold (~60–70% dissimilarity to stored patterns in young adults), orthogonal hippocampal representation is created",
+      "substrate": "DG mossy fiber pathway → CA3 recurrent collaterals",
+      "confidence": 0.6,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Yassa & Stark (2011); Bakker et al. (2008)",
+      "justification": {
+        "data": [
+          {"finding": "DG shows pattern separation: similar inputs produce dissimilar outputs; high-resolution fMRI reveals DG/CA3 activity distinguishes similar spatial scenes", "source": "Bakker et al. (2008); Yassa & Stark (2011)", "paradigm": "High-resolution fMRI mnemonic similarity task", "effect": "DG separates similar inputs", "n": null, "design": "fMRI within-subjects"},
+          {"finding": "Pattern separation threshold increases with age (from ~35% to ~50% dissimilarity required)", "source": "Yassa et al. (2011); Stark et al. (2013)", "paradigm": "Age comparison on mnemonic similarity", "effect": "Age impairs pattern separation", "n": null, "design": "Cross-sectional"}
+        ],
+        "backing": "Yassa and Stark's work established the computational role of DG in pattern separation using high-resolution fMRI. The separation threshold determines whether new spatial inputs create distinct representations or are assimilated to existing patterns.",
+        "qualifier": "The ~60-70% dissimilarity threshold is derived from laboratory stimuli; translation to architectural feature dimensions involves capacity assumptions about how spatial features are weighted.",
+        "rebuttal": "Would fail if pattern separation in humans operates differently than predicted by computational models; but fMRI evidence supports the DG pattern separation role.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "process": "CA1 binds separated spatial representation with temporal context, emotional valence, and co-present social information into relational episodic trace",
+      "substrate": "CA1 pyramidal neurons; Schaffer collateral input from CA3 + direct EC layer III input",
+      "confidence": 0.7,
+      "bridge_warrant": "MECHANISM",
+      "source": "Davachi (2006); Eichenbaum et al. (2007)",
+      "justification": {
+        "data": [
+          {"finding": "CA1 activation during encoding predicts subsequent relational memory (binding of items to context) but not item memory alone", "source": "Davachi (2006)", "paradigm": "fMRI subsequent memory paradigm", "effect": "CA1 supports relational binding", "n": null, "design": "fMRI"},
+          {"finding": "CA1 receives convergent input from CA3 (spatial) and EC layer III (temporal/contextual), enabling relational binding", "source": "Eichenbaum et al. (2007)", "paradigm": "Neuroanatomical and physiological studies", "effect": "CA1 integrates spatial and temporal information", "n": null, "design": "Neurophysiology"}
+        ],
+        "backing": "Davachi's work established CA1 as the site of relational binding in episodic memory. The convergence of CA3 spatial information and EC temporal/contextual information in CA1 provides the neural substrate for integrating what, where, and when.",
+        "qualifier": "The relational binding function of CA1 is well-established; the specific contribution of architectural context (vs. other contextual information) to the binding is less directly measured.",
+        "rebuttal": "Would fail if relational binding occurred elsewhere in the hippocampal circuit; but lesion and imaging evidence converge on CA1 as the binding site.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "process": "Encoding strength modulated by environmental distinctiveness: more distinctive spatial configurations produce stronger DG separation, more orthogonal CA3 representations, and more durable CA1 relational bindings",
+      "substrate": "DG-CA3-CA1 encoding cascade",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Davachi (2006); Yassa & Stark (2011)",
+      "justification": {
+        "data": [
+          {"finding": "Novel or distinctive stimuli produce stronger hippocampal activation and better subsequent memory than familiar or generic stimuli", "source": "Davachi & Wagner (2002); Ranganath & Rainer (2003)", "paradigm": "Novelty/distinctiveness manipulation in fMRI encoding", "effect": "Distinctiveness enhances encoding", "n": null, "design": "fMRI"},
+          {"finding": "The ~35% encoding strength boost for distinctive vs. generic environments is estimated from hippocampal activation differences", "source": "Panel estimate from Davachi fMRI data", "paradigm": "fMRI encoding strength proxy", "effect": "Estimated 35% boost", "n": null, "design": "Derived estimate"}
+        ],
+        "backing": "The distinctiveness → encoding strength link follows from the DG pattern separation cascade: more distinctive inputs produce more orthogonal representations, which produce stronger, less interference-prone memory traces.",
+        "qualifier": "The 35% encoding boost is a panel estimate derived from laboratory novelty effects. Direct measurement of architectural distinctiveness effects on hippocampal encoding is absent.",
+        "rebuttal": "Would fail if encoding strength is determined by attention or emotional salience rather than distinctiveness per se; these factors may co-vary with distinctiveness in real environments.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "environmental_novelty_level": {
+      "value": 0.5,
+      "unit": "minimum_dissimilarity_fraction",
+      "interpretation": "Adjacent spaces must differ on ≥50% of weighted feature dimensions for DG pattern separation (adults 65+)",
+      "confidence": 0.5,
+      "bridge_warrant": "CAPACITY"
+    },
+    "visual_complexity": {
+      "spatial_proportion": 0.25,
+      "lighting_luminance": 0.2,
+      "material_texture": 0.15,
+      "color_palette": 0.1,
+      "acoustic_signature": 0.15,
+      "olfactory_cue": 0.05,
+      "ceiling_height": 0.1,
+      "interpretation": "Weight distribution across feature dimensions for distinctiveness computation; spatial proportion and lighting weighted highest per PPA encoding priority",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "hippocampal_encoding": {
+      "value": 1.35,
+      "unit": "multiplier_relative_to_generic",
+      "interpretation": "Distinctive environments (>threshold dissimilarity) produce ~35% stronger hippocampal encoding than generic environments",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "population_modifiers": {
+    "age_group": {
+      "effect": "Pattern separation threshold increases from 0.35 to 0.50; encoding strength boost reduced to 1.20",
+      "mechanism": "DG neurogenesis decline; perforant path degradation (Small et al., 2011)",
+      "confidence": 0.55
+    },
+    "clinical_condition": {
+      "effect": "Encoding strength reduced by 15–25% (multiplier 0.75–0.85); interacts with STRESS-I T6 hippocampal volume parameter",
+      "mechanism": "Glucocorticoid receptor-mediated suppression of LTP in CA1 (Kim & Diamond, 2002)",
+      "confidence": 0.5
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Hippocampal encoding efficiency is modulated by interoceptive state. Body budget deficit (allostatic load > threshold, per IC2) reduces hippocampal LTP capacity and impairs relational binding. The encoding strength parameter should be discounted by IC2's allostatic_load_modifier when body budget is in deficit.",
+    "AX4_perceived_control": "Perceived environmental control modulates encoding through stress pathways. Low perceived control elevates cortisol (AX4 → T6 pathway), which suppresses hippocampal encoding. The encoding strength multiplier should incorporate AX4's control_deficit_cortisol_amplifier as a secondary modifier."
+  },
+  "cross_template_references": [
+    "ED_PATTERN_SEP_COMP_001 — provides the DG separation threshold that gates encoding strength",
+    "STRESS-I T6 — cortisol modulation of hippocampal encoding",
+    "SPATIAL-I SC1 — spatial integration parameters feed the spatial proportion dimension"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T00:00:00.000000+00:00",
+  "architectural_modifiers": {
+    "visual_complexity": {
+      "coefficient": 0.25,
+      "interpretation": "Varying ceiling height, room width, or volume between adjacent spaces contributes 0.25 to distinctiveness score per unit of variation",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "luminance_level": {
+      "coefficient": 0.2,
+      "interpretation": "Contrast in luminance, color temperature, or directionality between adjacent spaces",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "material_surface_properties": {
+      "coefficient": 0.15,
+      "interpretation": "Different floor or wall materials between adjacent spaces",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "display_id": "EHE1",
+  "name": "Hippocampal Relational Binding in Environmental Encoding",
+  "t1_frameworks": [],
+  "calibration_status": "calibrated",
+  "panel_source": "MEMORY-I"
+}

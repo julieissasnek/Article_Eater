@@ -1,0 +1,141 @@
+{
+  "template_id": "CROSS_TPJ_SPATIAL_SOCIAL_BRIDGE_001",
+  "name": "TPJ Spatial-Social Bridge",
+  "status": "calibrated",
+  "maturity": "how-possibly",
+  "t1_frameworks": [
+    "SN",
+    "IC"
+  ],
+  "t1_5_parent_theories": [
+    "Theory_of_Mind_Neural_Basis"
+  ],
+  "panel_id": "SOCIAL-I",
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "social_setting_features",
+      "to": "mirror_system_activation",
+      "description": "Spatial configurations where others' intentions are hard to read — ambiguous seating signals, unclear territorial boundaries, unpredictable approach trajectories — increase the demand on mentalizing circuits.",
+      "warrant": "CAPACITY",
+      "confidence": 0.45,
+      "justification": {
+        "data": [
+          {"finding": "Social uncertainty increases mentalizing demand; ambiguous social situations require more effortful mental state inference", "source": "Saxe (2006); theoretical inference", "paradigm": "Mentalizing task paradigms", "effect": "Ambiguity increases cognitive load", "n": null, "design": "Theoretical"},
+          {"finding": "Hot-desking and unclear territorial signals are associated with higher reported cognitive load in office studies", "source": "Workplace literature; panel inference", "paradigm": "Office design studies", "effect": "Ambiguous spaces increase mental effort", "n": null, "design": "Survey"}
+        ],
+        "backing": "The capacity warrant reflects the inference that architectural ambiguity (unclear territorial signals, unpredictable approaches) creates social uncertainty that must be resolved through mentalizing. This is PP-grounded: higher prediction error in social domain requires more computational work.",
+        "qualifier": "THEORETICAL_DEFAULT — no direct studies link architectural ambiguity to rTPJ activation. The claim bridges from general mentalizing literature to architectural application.",
+        "rebuttal": "Would fail if occupants habituate to ambiguity and stop actively mentalizing; chronic ambiguity might produce disengagement rather than continuous mentalizing.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 2,
+      "from": "mirror_system_activation",
+      "to": "mirror_system_activation",
+      "description": "rTPJ activates specifically for mental state representation. Higher social ambiguity → more mentalizing work → greater rTPJ metabolic cost. Saxe & Kanwisher 2003; Saxe 2006.",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "rTPJ shows selective activation for mental state attribution tasks (false belief, intention inference) vs. non-mental representations", "source": "Saxe & Kanwisher (2003)", "paradigm": "fMRI false belief tasks", "effect": "rTPJ is theory-of-mind specific", "n": null, "design": "fMRI within-subjects"},
+          {"finding": "rTPJ activation scales with mentalizing demand; more complex mental state inferences produce greater activation", "source": "Saxe (2006)", "paradigm": "Parametric mentalizing tasks", "effect": "rTPJ tracks mentalizing effort", "n": null, "design": "fMRI parametric"}
+        ],
+        "backing": "Saxe's work established rTPJ as the core neural substrate for mental state representation. The region is reliably activated across theory-of-mind tasks and shows parametric modulation with mentalizing demand. This is the strongest link in the chain.",
+        "qualifier": "The rTPJ-mentalizing link is robust; the architectural application (ambiguous spaces → mentalizing demand) is the uncertain bridge.",
+        "rebuttal": "Would fail if rTPJ activation does not produce subjective fatigue; neural activation alone does not guarantee phenomenological cost.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "mirror_system_activation",
+      "to": "cognitive_load",
+      "description": "Sustained high mentalizing demand produces social-cognitive fatigue, contributing to IC2 body-budget cost. Occupants in socially ambiguous environments report more mental exhaustion.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.5,
+      "justification": {
+        "data": [
+          {"finding": "Sustained social-cognitive effort depletes executive resources and produces subjective fatigue", "source": "Baumeister et al. (ego depletion); social cognition literature", "paradigm": "Cognitive depletion paradigms", "effect": "Social cognition is effortful", "n": null, "design": "Experimental"},
+          {"finding": "Open-plan office workers report higher mental exhaustion and lower concentration than private office workers", "source": "Sundstrom et al. (1980); Brennan et al. (2002)", "paradigm": "Office design studies", "effect": "Open-plan associated with exhaustion", "n": null, "design": "Survey and observational"}
+        ],
+        "backing": "The mentalizing → fatigue link bridges from cognitive depletion literature to architectural application. Chronically high mentalizing demand (from socially ambiguous environments) accumulates as IC2 body-budget cost over the workday.",
+        "qualifier": "The causal link from architectural ambiguity → mentalizing → fatigue involves multiple inferential steps. Alternative explanations (noise, interruptions, lack of privacy) may account for open-plan exhaustion.",
+        "rebuttal": "Would fail if exhaustion in open-plan environments is caused by non-mentalizing factors (acoustic intrusion, visual distraction) rather than social-cognitive load.",
+        "competing_accounts": [
+          {"account": "Acoustic-primary explanation", "proponent": "Noise literature", "resolution": "Panel consensus: both acoustic and social-cognitive mechanisms likely contribute; this template captures the social-cognitive component"}
+        ],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "social_connectedness": {
+      "unclear_territorial_signals": {
+        "mentalizing_load_modifier": 1.3,
+        "note": "Hot-desking, unmarked seating, ambiguous ownership"
+      },
+      "unpredictable_approach": {
+        "mentalizing_load_modifier": 1.25,
+        "note": "Blind corners, multiple entry points, no visual warning of approach"
+      },
+      "ambiguous_social_coding": {
+        "mentalizing_load_modifier": 1.2,
+        "note": "Spaces without clear activity signals (is this for conversation or quiet work?)"
+      },
+      "clear_social_coding": {
+        "mentalizing_load_modifier": 0.8,
+        "note": "Legible activity zones reduce mentalizing demand by ~20%"
+      },
+      "confidence": 0.45,
+      "bridge_type": "CAPACITY",
+      "note": "THEORETICAL_DEFAULT — derived from PP-framework application to social cognition. No direct rTPJ-architecture fMRI studies exist."
+    },
+    "mirror_system_activation": {
+      "active_mentalizing_range": {
+        "max": 3.5,
+        "unit": "meters",
+        "note": "Within conversational distance, mentalizing is engaged for interactive prediction"
+      },
+      "passive_mentalizing_range": {
+        "max": 25,
+        "unit": "meters",
+        "note": "At observation distance, mentalizing is lighter — categorical rather than individuated"
+      },
+      "confidence": 0.5,
+      "bridge_type": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "building_types": [
+    "offices",
+    "hospitals",
+    "universities",
+    "transit_hubs"
+  ],
+  "bridge_warrant": "CAPACITY",
+  "bridge_prior": 0.45,
+  "interaction_templates": [
+    "CROSS_SOCIAL_MIRROR_PRESENCE_001",
+    "CROSS_SOCIAL_AFFORDANCE_READING_001",
+    "TERRITORIAL_AFFORDANCE_SOCIAL_001"
+  ],
+  "ie_dpt_interaction": "No direct IE-DPT interaction identified.",
+  "key_references": [
+    "Saxe, R., & Kanwisher, N. (2003). https://doi.org/10.1016/S1053-8119(03)00230-1",
+    "Saxe, R. (2006). https://doi.org/10.1146/annurev.psych.57.102904.190143"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T12:58:20.138096+00:00",
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — mentalizing is metabolically costly (rTPJ is a high-demand cortical area). Environments that chronically require high mentalizing load contribute to social-cognitive fatigue component of IC2.",
+    "AX4": "Perceived Control — ability to choose social complexity level (retreat to low-ambiguity private space when fatigued) restores mentalizing capacity. No retreat option means no AX4 → accumulated mentalizing fatigue."
+  },
+  "display_id": "CTSS1",
+  "calibration_status": "calibrated",
+  "panel_source": "SOCIAL-I",
+  "confidence": 0.45
+}

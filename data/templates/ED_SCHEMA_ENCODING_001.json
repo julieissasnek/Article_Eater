@@ -1,0 +1,133 @@
+{
+  "template_id": "ED_SCHEMA_ENCODING_001",
+  "template_name": "Schema-Dependent Encoding in Architectural Environments",
+  "status": "calibrated",
+  "panel": "MEMORY-I",
+  "primary_anchor": "Richard Morris (Edinburgh)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant enters a building whose spatial layout matches a stored architectural schema (e.g., 'hospital layout', 'school corridor plan', 'office grid'). Neocortical schema is activated via prefrontal-hippocampal interaction.",
+      "substrate": "Medial prefrontal cortex (mPFC) schema representation → hippocampal encoding modulation",
+      "confidence": 0.65,
+      "bridge_warrant": "MECHANISM",
+      "source": "Tse et al. (2007); van Kesteren et al. (2012)",
+      "justification": {
+        "data": [
+          {"finding": "mPFC activation during encoding increases when new information is schema-consistent; mPFC-hippocampal connectivity predicts schema-facilitated learning", "source": "van Kesteren et al. (2012)", "paradigm": "fMRI schema learning paradigm", "effect": "mPFC mediates schema effects on encoding", "n": null, "design": "fMRI"},
+          {"finding": "Rats with pre-existing spatial schema (event arena) show rapid single-trial learning of new locations within the schema", "source": "Tse et al. (2007)", "paradigm": "Rodent spatial learning with schema", "effect": "Schema accelerates new learning", "n": null, "design": "Behavioral/lesion"}
+        ],
+        "backing": "Morris and colleagues established that neocortical schemas (stored in mPFC) can accelerate new learning by providing a pre-existing framework. The mPFC-hippocampal interaction determines whether new information is encoded via slow hippocampal-dependent or fast schema-dependent pathways.",
+        "qualifier": "The schema mechanism is established; the application to architectural schemas (hospital layout, office grid) involves inference from general schema research to building-specific knowledge structures.",
+        "rebuttal": "Would fail if architectural schemas are too weak or variable to support schema-dependent encoding; first-time building users may lack relevant schemas.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "process": "Activated schema provides a pre-existing framework: new spatial information (specific room locations, service positions) is rapidly assimilated into the schema structure, bypassing the slow hippocampal-dependent encoding process",
+      "substrate": "Neocortical schema → accelerated hippocampal binding; reduced hippocampal dependency for schema-consistent information",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Tse et al. (2007); Tse et al. (2011)",
+      "justification": {
+        "data": [
+          {"finding": "Hippocampal lesions impair new learning ONLY when no schema exists; with pre-existing schema, neocortex can support rapid new learning independently of hippocampus", "source": "Tse et al. (2007)", "paradigm": "Lesion study with schema manipulation", "effect": "Schema reduces hippocampal dependency", "n": null, "design": "Lesion"},
+          {"finding": "Schema-consistent information reaches stable neocortical representation within hours rather than weeks", "source": "Tse et al. (2011)", "paradigm": "IEG expression after schema-consistent learning", "effect": "Accelerated systems consolidation with schema", "n": null, "design": "Molecular biology"}
+        ],
+        "backing": "Tse et al. demonstrated that schemas fundamentally change the dynamics of memory encoding: when a schema exists, new information can be rapidly integrated without the slow hippocampal-dependent consolidation process that typically takes weeks.",
+        "qualifier": "The acceleration effect is demonstrated in rodents with artificially constructed schemas. Human architectural schemas are acquired more naturalistically; the degree of acceleration may vary.",
+        "rebuttal": "Would fail if human architectural schemas are less coherent than experimental animal schemas; real building types may have more variability than laboratory event arenas.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "process": "Schema-consistent information is encoded ~50% faster but with lower distinctiveness (weaker hippocampal trace, stronger neocortical trace). Schema-inconsistent information generates prediction errors and is encoded more slowly but with higher distinctiveness (stronger hippocampal trace).",
+      "substrate": "Hippocampal-neocortical encoding balance",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Tse et al. (2007); Greve et al. (2017)",
+      "justification": {
+        "data": [
+          {"finding": "Schema-consistent items are learned faster but remembered less distinctively; schema-inconsistent items are learned slower but remembered more distinctively", "source": "Greve et al. (2017)", "paradigm": "Human schema learning with memory tests", "effect": "Speed-distinctiveness tradeoff", "n": null, "design": "Behavioral"},
+          {"finding": "Schema violation produces prediction error signal that enhances hippocampal encoding (similar to novelty effect)", "source": "van Kesteren et al. (2012); prediction error literature", "paradigm": "fMRI schema violation", "effect": "Violation enhances encoding", "n": null, "design": "fMRI"}
+        ],
+        "backing": "The schema presents a tradeoff: conformity enables fast learning but produces less distinctive memories (prone to interference). Violation triggers prediction error that enhances encoding distinctiveness at the cost of learning speed.",
+        "qualifier": "The 50% faster estimate is derived from laboratory schema paradigms. The distinctiveness-speed tradeoff in architectural contexts is inferred rather than directly measured.",
+        "rebuttal": "Would fail if architectural users prioritize speed over distinctiveness regardless of design; wayfinding in unfamiliar buildings may demand schema conformity even at the cost of memorability.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "schema_conformity_priority": {
+      "value": "boolean_design_choice",
+      "options": [
+        "fast_encoding",
+        "deep_encoding"
+      ],
+      "interpretation": "fast_encoding: maximize schema conformity → ~50% faster spatial learning, lower distinctiveness. deep_encoding: moderate schema violation → ~30% slower learning, higher distinctiveness and memorability.",
+      "confidence": 0.6,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "hippocampal_encoding": {
+      "value": 1.25,
+      "unit": "encoding_strength_multiplier_for_violating_features",
+      "interpretation": "Features that violate the activated schema are encoded ~25% more strongly (but ~30% more slowly) than schema-consistent features",
+      "confidence": 0.5,
+      "bridge_warrant": "CAPACITY"
+    },
+    "schema_availability_threshold": {
+      "value": "≥3_prior_exposures_to_building_type",
+      "interpretation": "Schema activation requires prior experience with the building type; first-time visitors to a hospital do not have a 'hospital schema' and cannot benefit from schema-dependent acceleration",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "population_modifiers": {
+    "expertise_familiarity": {
+      "effect": "Architects, wayfinding designers, and frequent travelers have richer and more diverse spatial schemas; schema acceleration is stronger for these populations",
+      "confidence": 0.4
+    },
+    "cognitive_impairment": {
+      "effect": "Schema retrieval is impaired in early-stage dementia; schema-dependent acceleration is reduced or absent. Schema-conforming design is STILL beneficial (simpler layout) but the acceleration mechanism operates at reduced capacity.",
+      "confidence": 0.45
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Allostatic load impairs prefrontal cortex function, which is required for schema retrieval and activation. Under body budget deficit, schema-dependent acceleration is reduced because the mPFC cannot efficiently activate the stored schema. This creates a double jeopardy in stressful environments: occupants who most need fast spatial learning (e.g., emergency patients) are least able to benefit from schema acceleration.",
+    "AX4_perceived_control": "High perceived control facilitates schema activation by reducing prefrontal cognitive load. Environments that signal predictability and control (clear signage, visible exits, orderly layout) support both AX4 and schema-dependent encoding simultaneously."
+  },
+  "cross_template_references": [
+    "ED_RECONSOLIDATION_001 — schema availability modulates reconsolidation integration capacity",
+    "ED_SYSTEMS_CONSOLIDATION_001 — schema availability accelerates systems consolidation (Tse et al., 2007)",
+    "ED_HIPPOCAMPAL_ENCODING_001 — schema conformity trades off against encoding distinctiveness"
+  ],
+  "calibrated": true,
+  "calibrated_date": "2026-02-22T00:00:00.000000+00:00",
+  "architectural_modifiers": {
+    "spatial_configuration": {
+      "coefficient": 0.3,
+      "interpretation": "Degree to which spatial layout matches the prototypical layout for the building type; higher typicality → stronger schema activation → faster encoding",
+      "confidence": 0.5,
+      "bridge_warrant": "CAPACITY"
+    },
+    "age_group": {
+      "coefficient": 0.15,
+      "interpretation": "Signage and wayfinding cues that match schematic expectations (e.g., green exit signs, numbered floor indicators) reinforce schema activation",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "display_id": "ESE1",
+  "name": "Schema-Dependent Encoding in Architectural Environments",
+  "t1_frameworks": [],
+  "calibration_status": "calibrated",
+  "panel_source": "MEMORY-I"
+}
