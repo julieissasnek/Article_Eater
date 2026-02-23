@@ -274,6 +274,69 @@
         "name"
       ],
       "type": "object"
+    },
+    "TheoryLink": {
+      "description": "Links a rule to a theoretical framework it supports or is explained by.",
+      "additionalProperties": false,
+      "properties": {
+        "theory_id": {
+          "description": "Canonical theory identifier, e.g. 'ART', 'SRT', 'Biophilia'.",
+          "type": "string"
+        },
+        "from_variable": {
+          "description": "Source variable in the causal link.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "to_variable": {
+          "description": "Target variable in the causal link.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "from_level": {
+          "description": "Epistemic level of the source (theoretical/empirical/observational).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "to_level": {
+          "description": "Epistemic level of the target.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activity": {
+          "description": "Type of theoretical activity (e.g. 'explains', 'predicts', 'mediates').",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "maturity": {
+          "description": "Maturity of the link: established, supported, speculative.",
+          "enum": [
+            "established",
+            "supported",
+            "speculative",
+            "unknown",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "theory_id"
+      ],
+      "type": "object"
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -431,6 +494,16 @@
     "tags": {
       "items": {
         "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "theory_links": {
+      "description": "Theoretical frameworks this rule relates to (T7.3).",
+      "items": {
+        "$ref": "#/$defs/TheoryLink"
       },
       "type": [
         "array",

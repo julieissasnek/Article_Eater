@@ -20,6 +20,7 @@ if str(STREAMLIT_ROOT) not in sys.path:
 
 from config import PAGE_TITLE  # noqa: E402
 from styles import apply_shared_styles  # noqa: E402
+from src.services.db_locator import resolve_web_db  # noqa: E402
 from src.services.web_accumulator import WebAccumulator  # noqa: E402
 from src.services.web_of_belief import Belief, WebOfBelief, create_neuroarchitecture_web  # noqa: E402
 
@@ -37,10 +38,15 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
 
 def _candidate_db_paths() -> list[Path]:
     data_dir = REPO_ROOT / "data"
-    return [
-        data_dir / "web_persistence_v2.db",
-        data_dir / "web_persistence.db",
-    ]
+    candidates: list[Path] = []
+    try:
+        candidates.append(resolve_web_db(prefer="integrated"))
+    except Exception:
+        pass
+    for path in (data_dir / "web_persistence.db", data_dir / "web_persistence_v2.db"):
+        if path not in candidates:
+            candidates.append(path)
+    return candidates
 
 
 @st.cache_resource(show_spinner=False)

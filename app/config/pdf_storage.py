@@ -28,6 +28,18 @@ from dataclasses import dataclass
 import logging
 
 logger = logging.getLogger(__name__)
+AE_ROOT = Path(__file__).resolve().parents[2]
+_AF_DATA_CANDIDATES = [
+    AE_ROOT.parent / "Article_Finder_v3_2_3" / "data",
+    Path.home() / "REPOS" / "Article_Finder_v3_2_3" / "data",
+]
+
+
+def _default_af_data_path() -> Path:
+    for candidate in _AF_DATA_CANDIDATES:
+        if candidate.exists():
+            return candidate
+    return _AF_DATA_CANDIDATES[0]
 
 
 @dataclass
@@ -44,12 +56,12 @@ class PDFStorageConfig:
 # =============================================================================
 LOCAL_CONFIG = PDFStorageConfig(
     mode='local',
-    primary_path=Path('/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/pdfs'),
+    primary_path=AE_ROOT / 'data' / 'pdfs',
     search_paths=[
         # 1. Article Eater uploaded PDFs
-        Path('/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/pdfs'),
+        AE_ROOT / 'data' / 'pdfs',
         # 2. Article Finder's PDF collection
-        Path('/Users/davidusa/REPOS/Article_Finder_v3_2_3/data'),
+        _default_af_data_path(),
         # 3. Zotero's local storage (PDFs stored by attachment key)
         Path.home() / 'Zotero' / 'storage',
     ],

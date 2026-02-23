@@ -7,9 +7,19 @@ import streamlit as st
 from pathlib import Path
 import sqlite3
 from datetime import datetime
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db
 
 # Article Finder database path
-AF_DB_PATH = Path.home() / "REPOS" / "Article_Finder_v3_2_3" / "data" / "article_finder.db"
+try:
+    AF_DB_PATH = resolve_article_finder_db()
+except Exception:
+    AF_DB_PATH = Path.home() / "REPOS" / "Article_Finder_v3_2_3" / "data" / "article_finder.db"
 
 
 def get_stats():
@@ -17,7 +27,7 @@ def get_stats():
     if not AF_DB_PATH.exists():
         return None
 
-    conn = sqlite3.connect(AF_DB_PATH)
+    conn = sqlite3.connect(str(AF_DB_PATH))
     conn.row_factory = sqlite3.Row
 
     stats = {}

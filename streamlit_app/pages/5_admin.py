@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any, Optional
+import os
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -28,6 +29,14 @@ st.set_page_config(
     page_icon="⚙️",
     layout="wide"
 )
+
+
+def _resolve_ae_db_path() -> Path:
+    repo_root = Path(__file__).resolve().parents[2]
+    env_db = os.environ.get("AE_DB_PATH") or os.environ.get("AE_DB")
+    if env_db:
+        return Path(env_db).expanduser()
+    return repo_root / "ae.db"
 
 
 # =============================================================================
@@ -77,8 +86,7 @@ def get_health_status() -> Dict[str, tuple]:
     # Database check
     try:
         import sqlite3
-        from pathlib import Path
-        db_path = Path(__file__).parent.parent.parent / "db" / "article_eater.db"
+        db_path = _resolve_ae_db_path()
         if db_path.exists():
             conn = sqlite3.connect(str(db_path))
             conn.execute("SELECT 1")
@@ -222,8 +230,7 @@ def get_real_papers(limit: int = 50) -> List[Dict[str, Any]]:
     """Get real papers from database."""
     try:
         import sqlite3
-        from pathlib import Path
-        db_path = Path(__file__).parent.parent.parent / "db" / "article_eater.db"
+        db_path = _resolve_ae_db_path()
 
         if not db_path.exists():
             return []

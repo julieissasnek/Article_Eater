@@ -1,64 +1,45 @@
-"""
-Article Eater - Combined Resolver
-Resolves both environment (IV) and outcome (DV) terms during claim extraction.
+"""Combined resolver for environment (IV) and outcome (DV) terms."""
 
-def _resolve_construct_id(raw_id, construct_type='outcome', paper_id=None):
-    """Resolve construct ID through ontology contractors.
-    
-    Args:
-        raw_id: Raw term to resolve
-        construct_type: 'environment' for IVs, 'outcome' for DVs
-        paper_id: Paper ID for context
-    """
-    try:
-        from lib.combined_resolver import resolve_single_construct
-        result = resolve_single_construct(str(raw_id), construct_type, paper_id)
-        return result['canonical_id']
-    except ImportError:
-        # Fallback to outcome-only resolver
-        try:
-            from lib.outcome_resolver import resolve_or_queue
-            result = resolve_or_queue(str(raw_id), paper_id=paper_id)
-            return result['canonical_id'] if result else str(raw_id)
-        except Exception:
-            return str(raw_id)
-    except Exception:
-        return str(raw_id)
-
-def _resolve_outcome_id(raw_id, paper_id=None):
-    """Resolve outcome (DV) ID."""
-    return _resolve_construct_id(raw_id, 'outcome', paper_id)
-
-def _resolve_environment_id(raw_id, paper_id=None):
-    """Resolve environment (IV) ID."""
-    return _resolve_construct_id(raw_id, 'environment', paper_id)
-
-
-Usage:
-    from lib.combined_resolver import resolve_claim_constructs
-    
-    resolved = resolve_claim_constructs(
-        environment_terms=["daylight", "warm lighting"],
-        outcome_terms=["mood", "attention"],
-        paper_id="doi:10.1234/example"
-    )
-"""
-
-from typing import Dict, List, Optional, Any
-from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Import individual resolvers
 try:
     from .environment_resolver import resolve_environment, resolve_or_queue_environment
 except ImportError:
-    resolve_environment = lambda x: None
-    resolve_or_queue_environment = lambda x, **kw: (None, False)
+    resolve_environment = lambda _x: None
+    resolve_or_queue_environment = lambda _x, **_kw: (None, False)
 
 try:
     from .outcome_resolver import resolve_outcome, resolve_or_queue
 except ImportError:
-    resolve_outcome = lambda x: None
-    resolve_or_queue = lambda x, **kw: (None, False)
+    resolve_outcome = lambda _x: None
+    resolve_or_queue = lambda _x, **_kw: (None, False)
+
+
+def _resolve_construct_id(raw_id: Any, construct_type: str = "outcome", paper_id: str | None = None) -> str:
+    """Resolve a construct ID with conservative fallbacks."""
+    try:
+        result = resolve_single_construct(str(raw_id), construct_type, paper_id)
+        return str(result.get("canonical_id") or raw_id)
+    except Exception:
+        if construct_type == "outcome":
+            try:
+                resolved, _queued = resolve_or_queue(str(raw_id), paper_id=paper_id)
+                if resolved and isinstance(resolved, dict):
+                    return str(resolved.get("canonical_id") or raw_id)
+            except Exception:
+                pass
+        return str(raw_id)
+
+
+def _resolve_outcome_id(raw_id: Any, paper_id: str | None = None) -> str:
+    """Resolve outcome (DV) ID."""
+    return _resolve_construct_id(raw_id, "outcome", paper_id)
+
+
+def _resolve_environment_id(raw_id: Any, paper_id: str | None = None) -> str:
+    """Resolve environment (IV) ID."""
+    return _resolve_construct_id(raw_id, "environment", paper_id)
 
 
 def resolve_claim_constructs(
@@ -133,7 +114,7 @@ def resolve_claim_constructs(
 
 def resolve_single_construct(
     raw_term: str,
-    construct_type: str,  # 'environment' or 'outcome'
+    construct_type: str,  # "environment" or "outcome"
     paper_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
@@ -147,32 +128,32 @@ def resolve_single_construct(
     Returns:
         Dict with canonical_id and metadata, or placeholder if unresolved
     """
-    if construct_type == 'environment':
+    if construct_type == "environment":
         resolved = resolve_environment(raw_term)
         if resolved:
             return {
-                'canonical_id': resolved['tag_id'],
-                'canonical_name': resolved['canonical_name'],
-                'confidence': resolved['confidence'],
-                'resolved': True
+                "canonical_id": resolved["tag_id"],
+                "canonical_name": resolved["canonical_name"],
+                "confidence": resolved["confidence"],
+                "resolved": True,
             }
-    elif construct_type == 'outcome':
+    elif construct_type == "outcome":
         resolved = resolve_outcome(raw_term)
         if resolved:
             return {
-                'canonical_id': resolved['canonical_id'],
-                'canonical_name': resolved.get('name', ''),
-                'confidence': resolved['confidence'],
-                'resolved': True
+                "canonical_id": resolved["canonical_id"],
+                "canonical_name": resolved.get("name", ""),
+                "confidence": resolved["confidence"],
+                "resolved": True,
             }
-    
+
     # Unresolved - return placeholder
-    safe_id = raw_term.lower().replace(' ', '_')[:50]
+    safe_id = raw_term.lower().replace(" ", "_")[:50]
     return {
-        'canonical_id': f"UNRESOLVED:{construct_type}:{safe_id}",
-        'canonical_name': raw_term,
-        'confidence': 0.0,
-        'resolved': False
+        "canonical_id": f"UNRESOLVED:{construct_type}:{safe_id}",
+        "canonical_name": raw_term,
+        "confidence": 0.0,
+        "resolved": False,
     }
 
 
@@ -180,13 +161,13 @@ def get_stats() -> Dict[str, Any]:
     """Get resolver statistics."""
     from .environment_resolver import _load_lookup as load_env
     from .outcome_resolver import _load_lookup as load_out
-    
+
     env_data = load_env()
     out_data = load_out()
-    
+
     return {
-        'environment_tags': len(env_data.get('tags', {})),
-        'environment_lookup_entries': len(env_data.get('lookup', {})),
-        'outcome_terms': len(out_data.get('terms', {})),
-        'outcome_lookup_entries': len(out_data.get('lookup', {})),
+        "environment_tags": len(env_data.get("tags", {})),
+        "environment_lookup_entries": len(env_data.get("lookup", {})),
+        "outcome_terms": len(out_data.get("terms", {})),
+        "outcome_lookup_entries": len(out_data.get("lookup", {})),
     }

@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "notes": "Conservative alias mappings for unresolved BN node repair. Keep narrow, high-signal, and contract-reviewed.",
+  "rules": [
+    {
+      "id": "env_navigation_to_legibility",
+      "kind": "env",
+      "canonical_id": "env.cognitive.legibility",
+      "anchors_any": ["navigation", "navigational"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.93
+    },
+    {
+      "id": "env_daylight_to_daylight",
+      "kind": "env",
+      "canonical_id": "env.daylight",
+      "anchors_any": ["daylight", "daylighting"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.93
+    },
+    {
+      "id": "env_noise_sound_to_noise",
+      "kind": "env",
+      "canonical_id": "env.noise",
+      "anchors_any": ["noise", "sound", "soundscape", "acoustic"],
+      "max_tokens": 7,
+      "max_noise_tokens": 1,
+      "confidence": 0.9
+    },
+    {
+      "id": "env_temperature_thermal_to_thermal",
+      "kind": "env",
+      "canonical_id": "env.thermal",
+      "anchors_any": ["temperature", "thermal"],
+      "max_tokens": 7,
+      "max_noise_tokens": 1,
+      "confidence": 0.9
+    },
+    {
+      "id": "env_ceiling_to_ceiling_height",
+      "kind": "env",
+      "canonical_id": "env.v1_090.ceiling_height",
+      "anchors_any": ["ceiling"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.9
+    },
+    {
+      "id": "env_open_plan_to_open_plan",
+      "kind": "env",
+      "canonical_id": "env.ae.open_plan",
+      "anchors_any": ["open_plan", "openplan"],
+      "tokens_all": [],
+      "tokens_none": [],
+      "max_tokens": 4,
+      "max_noise_tokens": 1,
+      "confidence": 0.95
+    },
+    {
+      "id": "env_color_to_saturation",
+      "kind": "env",
+      "canonical_id": "env.color.saturation",
+      "anchors_any": ["color", "colour", "colors", "saturation"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.92
+    },
+    {
+      "id": "env_nature_to_nature_imagery",
+      "kind": "env",
+      "canonical_id": "env.ae.nature_imagery",
+      "anchors_any": ["nature"],
+      "max_tokens": 8,
+      "max_noise_tokens": 1,
+      "confidence": 0.91
+    },
+    {
+      "id": "env_view_window_to_outdoors",
+      "kind": "env",
+      "canonical_id": "env.ae.view_to_outdoors",
+      "anchors_any": ["view", "views", "window", "windows"],
+      "tokens_none": ["review", "reviews"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.9
+    },
+    {
+      "id": "env_crowd_to_crowded_space",
+      "kind": "env",
+      "canonical_id": "env.ae.crowded_space",
+      "anchors_any": ["crowd", "crowding"],
+      "max_tokens": 6,
+      "max_noise_tokens": 1,
+      "confidence": 0.9
+    },
+    {
+      "id": "env_warm_to_warm_lighting",
+      "kind": "env",
+      "canonical_id": "env.ae.warm_lighting",
+      "anchors_any": ["warm", "warmer", "warmth"],
+      "max_tokens": 5,
+      "max_noise_tokens": 1,
+      "confidence": 0.89
+    },
+    {
+      "id": "env_cool_to_low_saturation",
+      "kind": "env",
+      "canonical_id": "env.ae.low_saturation",
+      "anchors_any": ["cool", "cooler"],
+      "max_tokens": 5,
+      "max_noise_tokens": 1,
+      "confidence": 0.89
+    },
+    {
+      "id": "out_navigation_wayfinding_to_cog_performance",
+      "kind": "out",
+      "canonical_id": "out.cog.performance",
+      "anchors_any": ["navigation", "navigational", "wayfinding"],
+      "max_tokens": 7,
+      "max_noise_tokens": 1,
+      "confidence": 0.92
+    }
+  ]
+}

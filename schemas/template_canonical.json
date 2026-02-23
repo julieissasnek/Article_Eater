@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://article-eater.ucsd.edu/schemas/template_canonical.json",
+  "title": "CMR Template Canonical Schema",
+  "description": "Canonical JSON schema for CMR belief templates. Defines two validation tiers: scaffold (all templates) and calibrated (calibrated templates only).",
+  "type": "object",
+
+  "$defs": {
+    "t1_framework": {
+      "type": "string",
+      "enum": ["PP", "SN", "DP", "DT", "NM", "IC", "MS", "EC", "CB", "MSI"],
+      "description": "One of the 10 canonical Tier 1 neurally grounded framework theories"
+    },
+    "justification_depth_tier": {
+      "type": "string",
+      "enum": ["A", "B", "C"],
+      "description": "Toulmin justification depth: A=full (contested/high-conf), B=standard (calibrated), C=stub (residual gaps)"
+    },
+    "data_entry": {
+      "type": "object",
+      "description": "Evidence supporting a mechanism step (Toulmin data)",
+      "properties": {
+        "finding": {"type": "string", "description": "One-sentence description of what was found"},
+        "source": {"type": "string", "description": "APA short citation"},
+        "paradigm": {"type": "string", "description": "Experimental paradigm or method"},
+        "effect": {"type": "string", "description": "Effect size or key quantitative result"},
+        "n": {"type": ["integer", "null"], "description": "Sample size or null"},
+        "design": {"type": "string", "description": "Study design: within-subjects, between, longitudinal, etc."}
+      },
+      "required": ["finding", "source"]
+    },
+    "competing_account": {
+      "type": "object",
+      "description": "Alternative mechanistic account for a from→to transition",
+      "properties": {
+        "account": {"type": "string", "description": "Short name for the alternative"},
+        "proponent": {"type": "string", "description": "Researcher(s) associated with this account"},
+        "claim": {"type": "string", "description": "One-sentence description of what the alternative claims"},
+        "implication_for_template": {"type": "string", "description": "What changes if this account is correct"}
+      },
+      "required": ["account", "claim"]
+    },
+    "justification": {
+      "type": "object",
+      "description": "Toulmin justification layer for a mechanism step (per OPUS_REVIEW_GUIDE_ADDENDUM_TOULMIN.md)",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/data_entry"},
+          "description": "Array of evidence objects supporting this step"
+        },
+        "backing": {
+          "type": "string",
+          "description": "2-5 sentences explaining why the warrant connecting data to claim is trustworthy"
+        },
+        "qualifier": {
+          "type": "string",
+          "description": "2-5 sentences specifying scope conditions, epistemic limits, timescale considerations"
+        },
+        "rebuttal": {
+          "type": "string",
+          "description": "2-5 sentences specifying conditions under which this step would fail (Popperian falsification)"
+        },
+        "competing_accounts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/competing_account"},
+          "description": "Named alternative explanations for this from→to transition"
+        },
+        "depth_tier": {
+          "$ref": "#/$defs/justification_depth_tier",
+          "description": "Justification depth tier (A/B/C)"
+        }
+      }
+    },
+    "calibration_status": {
+      "type": "string",
+      "enum": ["calibrated", "scaffold", "uncalibrated", "partial"],
+      "description": "Template calibration status"
+    },
+    "bridge_warrant_type": {
+      "type": "string",
+      "enum": ["CONSTITUTIVE", "MECHANISM", "EMPIRICAL_COVARIANCE", "FUNCTIONAL", "CAPACITY", "ANALOGICAL", "THEORETICAL_DEFAULT"],
+      "description": "CMR bridge warrant types with ceiling priors per OPUS_REVIEW_GUIDE.md"
+    },
+    "mechanism_step": {
+      "type": "object",
+      "description": "A single step in the causal mechanism chain",
+      "properties": {
+        "step": {"type": "integer", "minimum": 1},
+        "step_number": {"type": "integer", "minimum": 1},
+        "description": {"type": "string"},
+        "process": {"type": "string"},
+        "from": {"type": "string", "description": "Source variable (canonical name)"},
+        "to": {"type": "string", "description": "Target variable (canonical name)"},
+        "substrate": {"type": "string", "description": "Neural/physiological substrate"},
+        "warrant": {"$ref": "#/$defs/bridge_warrant_type"},
+        "bridge_warrant": {"$ref": "#/$defs/bridge_warrant_type"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"type": "string"},
+        "justification": {
+          "$ref": "#/$defs/justification",
+          "description": "Toulmin justification layer (required for calibrated templates, Tier A/B/C)"
+        }
+      },
+      "anyOf": [
+        {"required": ["step", "description"]},
+        {"required": ["step_number", "description"]},
+        {"required": ["step", "process"]},
+        {"required": ["step_number", "process"]}
+      ]
+    },
+    "cross_template_interaction": {
+      "type": "object",
+      "properties": {
+        "template_id": {"type": "string"},
+        "interaction_type": {"type": "string"},
+        "description": {"type": "string"}
+      }
+    },
+    "residual_gap": {
+      "type": "object",
+      "properties": {
+        "gap_id": {"type": "string"},
+        "description": {"type": "string"},
+        "severity": {"type": "string", "enum": ["low", "medium", "high"]},
+        "resolution_path": {"type": "string"}
+      }
+    }
+  },
+
+  "properties": {
+    "template_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique template identifier (e.g., NATURE_VIEW_CONVERGENCE_001)"
+    },
+    "display_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short display identifier (e.g., VIEW1, T6, SC1)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable template name"
+    },
+    "template_name": {
+      "type": "string",
+      "description": "Alternative field for human-readable template name (maps to name)"
+    },
+    "t1_frameworks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/t1_framework"},
+      "minItems": 1,
+      "description": "List of T1 frameworks this template derives from"
+    },
+    "calibration_status": {
+      "$ref": "#/$defs/calibration_status",
+      "description": "Template calibration status"
+    },
+    "status": {
+      "type": "string",
+      "description": "Legacy status field - maps to calibration_status"
+    },
+    "panel_source": {
+      "type": ["string", "null"],
+      "description": "Panel that produced this calibration (e.g., VISUAL-I, MEMORY-I)"
+    },
+    "panel_id": {
+      "type": "string",
+      "description": "Alternative field for panel source"
+    },
+    "panel": {
+      "type": "string",
+      "description": "Alternative field for panel source"
+    },
+
+    "mechanism_chain": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/mechanism_step"},
+      "description": "Causal mechanism steps from environment to outcome"
+    },
+    "mechanism_steps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/mechanism_step"},
+      "description": "Legacy field - maps to mechanism_chain"
+    },
+
+    "bridge_warrant": {
+      "$ref": "#/$defs/bridge_warrant_type",
+      "description": "Primary bridge warrant type"
+    },
+    "bridge_warrant_type": {
+      "$ref": "#/$defs/bridge_warrant_type",
+      "description": "Legacy field - maps to bridge_warrant"
+    },
+
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Overall confidence/prior"
+    },
+    "prior_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Legacy field - maps to confidence"
+    },
+    "bridge_prior": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Alternative field for confidence"
+    },
+
+    "calibrated_parameters": {
+      "type": "object",
+      "description": "Panel-calibrated parameter values"
+    },
+
+    "cross_template_interactions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/cross_template_interaction"},
+      "description": "Interactions with other templates"
+    },
+    "super_template_interactions": {
+      "type": "object",
+      "description": "Legacy field - maps to cross_template_interactions (IC2/AX4 interactions)"
+    },
+    "interaction_templates": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of interacting template IDs"
+    },
+
+    "residual_gaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/residual_gap"},
+      "description": "Known gaps requiring future calibration"
+    },
+
+    "population_modifiers": {
+      "type": ["object", "null"],
+      "description": "Population-specific modifications to parameters"
+    },
+
+    "architectural_modifiers": {
+      "type": ["object", "null"],
+      "description": "Architectural feature coefficients"
+    },
+    "architectural_modifier_coefficients": {
+      "type": "object",
+      "description": "Legacy field - maps to architectural_modifiers"
+    },
+
+    "IC2_AX4_interaction": {
+      "type": "object",
+      "description": "Interoceptive (IC2) and Perceived Control (AX4) super-template interactions"
+    },
+
+    "calibrated": {
+      "type": "boolean",
+      "description": "Boolean flag indicating calibration"
+    },
+    "calibrated_date": {
+      "type": "string",
+      "description": "ISO date of calibration"
+    },
+    "calibration_date": {
+      "type": "string",
+      "description": "Alternative field for calibration date"
+    },
+    "maturity": {
+      "type": "string",
+      "description": "Template maturity level"
+    },
+
+    "t1_5_parent_theories": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "T1.5 parent theory references"
+    },
+
+    "building_types": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Applicable building types"
+    },
+
+    "key_references": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Key literature references"
+    },
+
+    "ie_dpt_interaction": {
+      "type": "string",
+      "description": "IE-DPT (Implicit/Explicit) interaction description"
+    },
+
+    "cross_template_references": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Cross-template reference IDs"
+    },
+
+    "primary_anchor": {
+      "type": "string",
+      "description": "Primary expert anchor for calibration"
+    },
+    "complement": {
+      "type": ["string", "null"],
+      "description": "Complementary expert anchor"
+    },
+    "calibration_constraint": {
+      "type": "string",
+      "description": "Constraints applied during calibration"
+    }
+  },
+
+  "required": ["template_id"],
+
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {"properties": {"calibration_status": {"const": "calibrated"}}, "required": ["calibration_status"]},
+          {"properties": {"status": {"const": "calibrated"}}, "required": ["status"]},
+          {"properties": {"calibrated": {"const": true}}, "required": ["calibrated"]}
+        ]
+      },
+      "then": {
+        "anyOf": [
+          {"required": ["bridge_warrant"]},
+          {"required": ["bridge_warrant_type"]}
+        ]
+      }
+    }
+  ]
+}

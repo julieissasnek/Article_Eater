@@ -580,7 +580,9 @@ async def get_annotation_stats():
 # =============================================================================
 
 # Directory for uploaded PDFs
-PDF_UPLOAD_DIR = Path("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/pdfs")
+PDF_UPLOAD_DIR = Path(
+    os.environ.get("AE_PDF_UPLOAD_DIR", str(_AE_REPO_ROOT / "data" / "pdfs"))
+).expanduser()
 
 
 @router.post("/upload")

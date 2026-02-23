@@ -6,7 +6,7 @@ This worker polls the v20 processing_queue table (job_id, job_type, params, stat
 and executes *real* L0/L2 jobs using:
 
 - Semantic Scholar search (app.services.semantic_scholar)
-- Seven-panel LLM extraction (app.services.extract_7panel)
+- Article-essence LLM extraction (app.services.extract_article_essence)
 
 It is governed by config/app.policy.json:
 
@@ -35,7 +35,10 @@ from typing import Any, Dict, Optional, List
 
 from app.core.policy import load_policy
 from app.services.semantic_scholar import search as s2_search
-from app.services.extract_7panel import extract_findings_from_text
+try:
+    from app.services.extract_article_essence import extract_findings_from_text
+except Exception:  # pragma: no cover - legacy fallback
+    from app.services.extract_7panel import extract_findings_from_text
 
 LOGGER = logging.getLogger("ae.worker")
 logging.basicConfig(
