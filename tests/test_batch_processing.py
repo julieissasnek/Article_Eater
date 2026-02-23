@@ -288,7 +288,8 @@ class TestBatchProcessor:
             bundles_dir=temp_dirs['bundles'],
             max_consecutive_failures=3,
             pause_on_circuit_break=True,
-            skip_already_processed=False
+            skip_already_processed=False,
+            accumulator_db=temp_dirs['root'] / "test_acc.db"
         )
 
         # Mock the pipeline to always fail

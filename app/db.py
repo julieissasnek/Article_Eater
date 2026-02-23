@@ -1,8 +1,12 @@
 import sqlite3
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DB = ROOT / "ae.db"
+
+def get_db_path() -> Path:
+    _db_env = os.environ.get("AE_DB_PATH")
+    return Path(_db_env) if _db_env else ROOT / "ae.db"
 
 
 def connect() -> sqlite3.Connection:
@@ -20,7 +24,7 @@ def connect() -> sqlite3.Connection:
     - findings
     plus the security/cost tables from earlier versions.
     """
-    con = sqlite3.connect(DB, timeout=30.0)
+    con = sqlite3.connect(get_db_path(), timeout=30.0)
     # Enable WAL journaling for better concurrency with multiple worker processes.
     con.execute("PRAGMA journal_mode=WAL;")
     # Normal synchronous mode is a good balance of durability vs speed for this use case.

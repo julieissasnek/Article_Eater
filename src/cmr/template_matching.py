@@ -187,6 +187,13 @@ def build_template_index(template_records: Iterable[TemplateRecord]) -> dict[str
                 if dst:
                     outputs.add(dst)
         
+        # Extract from mechanism_chain (Gen-2 schema)
+        for step in data.get("mechanism_chain", []):
+            if "from" in step:
+                inputs.add(step["from"])
+            if "to" in step:
+                outputs.add(step["to"])
+        
         # Extract mechanism text for mechanistic matching
         if "structural_pattern" in data:
             mechanisms.add(data["structural_pattern"])
