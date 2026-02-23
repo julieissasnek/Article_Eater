@@ -71,6 +71,14 @@ async def lifespan(_: FastAPI):
     logger.info("=" * 60)
     logger.info("Article Eater API V22.0.0 (Post-Quinean) starting up...")
     logger.info("=" * 60)
+
+    # Run startup validation (logs warnings, does not block)
+    try:
+        from src.config.validate import validate_or_warn
+        validate_or_warn()
+    except Exception as e:
+        logger.warning(f"Startup validation skipped: {e}")
+
     logger.info(f"Database: {DB_PATH}")
     logger.info("CORS enabled for local development and production")
     logger.info("Features: Authentication, WebSockets, Real-time updates")
@@ -906,6 +914,8 @@ from .routes.annotator import router as annotator_router
 from .routes.image_pool import router as image_pool_router
 # Paper lifecycle tracking (2026-02-09)
 from .routes.lifecycle import router as lifecycle_router
+# Health check endpoints (2026-02-23)
+from .routes.health import router as health_router
 
 try:
     ensure_db()
@@ -928,6 +938,8 @@ app.include_router(annotator_router, prefix='/api/v1/annotator', tags=['annotato
 app.include_router(image_pool_router, tags=['image-pool'])
 # Paper lifecycle tracking (2026-02-09)
 app.include_router(lifecycle_router, prefix='/api/v1', tags=['lifecycle'])
+# Health check endpoints (2026-02-23)
+app.include_router(health_router, tags=['health'])
 # Entrenchment monitoring (ENT-4/ENT-5, 2026-02-09)
 from app.routes.entrenchment import router as entrenchment_router
 app.include_router(entrenchment_router, prefix='/api/v1', tags=['entrenchment'])

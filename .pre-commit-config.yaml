@@ -33,6 +33,13 @@ repos:
       - id: check-added-large-files
         args: ['--maxkb=500']
 
+  # isort for import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black]
+
   # Ruff for Python linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.0
