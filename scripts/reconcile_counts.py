@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 
 PROJECT_ROOT = Path(__file__).parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "data" / "templates"
-AE_DB = PROJECT_ROOT / "data" / "ae.db"
+AE_DB = PROJECT_ROOT / "ae.db"
 WEB_DB_V1 = PROJECT_ROOT / "data" / "web_persistence.db"
 WEB_DB_V2 = PROJECT_ROOT / "data" / "web_persistence_v2.db"
 TRANSFER_DOC = PROJECT_ROOT / "docs" / "TRANSFER_Feb21_Session8_CORRECTED.md"
@@ -173,17 +173,17 @@ def reconcile():
     print()
 
     # Source 2: ae.db
-    print("SOURCE 2: ae.db (templates table)")
-    print("-" * 40)
-    ae_counts = count_db_templates(AE_DB)
-    if "error" in ae_counts:
-        print(f"  {ae_counts['error']}")
-    else:
-        print(f"  Total: {ae_counts.get('total', 'N/A')}")
-        if ae_counts.get("by_status"):
-            for status, count in ae_counts["by_status"].items():
-                print(f"    {status}: {count}")
-    print()
+    # print("SOURCE 2: ae.db (templates table)")
+    # print("-" * 40)
+    # ae_counts = count_db_templates(AE_DB)
+    # if "error" in ae_counts:
+    #     print(f"  {ae_counts['error']}")
+    # else:
+    #     print(f"  Total: {ae_counts.get('total', 'N/A')}")
+    #     if ae_counts.get("by_status"):
+    #         for status, count in ae_counts["by_status"].items():
+    #             print(f"    {status}: {count}")
+    # print()
 
     # Source 3: web_persistence.db (v1)
     print("SOURCE 3: web_persistence.db (beliefs table)")

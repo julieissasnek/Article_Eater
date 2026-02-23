@@ -1,0 +1,57 @@
+# TEMPLATE COMPLIANCE AUDIT
+Generated: 2026-02-23T03:00:00Z
+
+| Template ID | Panel | Mechanism chain complete? | All params have confidence? | Bridge warrant assigned? | Confidence ≤ ceiling? | THEORETICAL_DEFAULT flagged? | Residual gaps specified? | Population modifiers present? | Architectural modifiers present? | Cross-template interactions present? |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ARCH_PROMENADE_TEMPORAL_PE_001 | SPATIAL-I (Sprint 13.17) — upgrades SC-I structural YAML (Doc 38) and SC-II partial calibration (Doc 62); SC3 was 'uncalibrated' at SC-I, 'partial' at SC-II, now 'calibrated' with THEORETICAL_DEFAULT flags on key parameters | YES | NO | YES | NO | YES | NO | YES | NO | YES |
+| CB_SLEEP_ARCHITECTURE_002 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| CROSSMODAL_CONGRUENCE_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| CROSS_SOCIAL_AFFORDANCE_READING_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| CROSS_SOCIAL_MIRROR_PRESENCE_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| CROSS_TPJ_SPATIAL_SOCIAL_BRIDGE_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| CT_AFFECTIVE_TOUCH_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| ED_HIPPOCAMPAL_ENCODING_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| ED_PATTERN_SEP_COMP_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| ED_PE_ENCODING_PRINCIPLE_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| ED_RECONSOLIDATION_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| ED_SCHEMA_ENCODING_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| ED_SYSTEMS_CONSOLIDATION_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| HAP_SURFACE_MATERIAL_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| LUM_CONTRAST_PE_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| CIRCADIAN_ARCH_REG_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| DAYLIGHT_MULTICHANNEL_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| CCT_TEMPORAL_ECOLOGICAL_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| DYNAMIC_LIGHT_TEMPORAL_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| MATERIAL_AGING_TEMPORAL_DEPTH_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| MATERIAL_CULTURAL_CONDITIONING_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| MATERIAL_IDENTITY_INTEGRATION_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| MSI_CONGRUENCY_PRINCIPLE_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| MSI_INVERSE_EFFECTIVENESS_002 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| MS_CONSOLIDATION_RESTORATION_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| MS_RIPPLE_REPLAY_002 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| NATURAL_MATERIAL_CONVERGENCE_001 | MULTI-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| NM_OXYTOCIN_SOCIAL_003 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| NM_SOCIAL_ISOLATION_ALLOSTATIC_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| NM_VAGAL_REGULATION_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| PRIVACY_GRADIENT_REGULATION_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| PROXEMIC_PE_ARCH_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| ISOVIST_VISUAL_PREDICTION_001 | SPATIAL-I (Sprint 13.17) — upgrades SC-I structural YAML (Doc 38) and SC-II partial calibration (Doc 62) | YES | NO | YES | NO | YES | NO | YES | NO | YES |
+| SPATIAL_SOCIAL_ENCOUNTER_001 | SPATIAL-I (Sprint 13.17) — upgrades SC-I structural YAML (Doc 38); this template was already well-calibrated for the encounter-frequency claim (SC-I rated ✓ Good); SPATIAL-I adds the valence-mechanism calibration and working memory interruption parameters | YES | NO | YES | NO | YES | NO | NO | NO | YES |
+| SN_CONTEXT_MEMORY_002 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| SPATIAL_INTEGRATION_PE_001 | SPATIAL-I (Sprint 13.17) — upgrades SC-I structural YAML (Doc 38) and SC-II partial calibration (Doc 62) | YES | NO | YES | NO | YES | NO | YES | NO | YES |
+| PP_SPECTRAL_MATCH_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| T14 | STRESS-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| PP_COMPLEXITY_GOLDILOCKS_002 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| PP_RAPID_GIST_004 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| CHRONO_LIGHT_ENTRAINMENT_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| NM_CIRCADIAN_ENTRAINMENT_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| T6 | STRESS-I | YES | YES | YES | YES | N/A | NO | YES | YES | NO |
+| T7 | STRESS-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| CIRCADIAN_ARCH_REGULATION_001 | LIGHT-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| TERRITORIAL_AFFORDANCE_SOCIAL_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| THRESHOLD_EPISODIC_BOUNDARY_001 | MEMORY-I | YES | YES | YES | NO | YES | NO | YES | YES | NO |
+| VF1_CONTOUR_PE_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | NO | YES |
+| VF2_VISUAL_RHYTHM_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |
+| VF3_SPATIAL_PROPORTIONS_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| NATURE_VIEW_CONVERGENCE_001 | VISUAL-I | YES | YES | YES | YES | N/A | NO | YES | YES | YES |
+| XF_SOCIAL_AFFORDANCE_DENSITY_001 | SOCIAL-I | YES | YES | YES | YES | N/A | NO | NO | NO | YES |

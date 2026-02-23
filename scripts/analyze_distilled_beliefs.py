@@ -17,7 +17,7 @@ def list_theoretical_beliefs(cursor):
     cursor.execute("""
         SELECT domain, status, substr(content, 1, 100) as content_preview
         FROM beliefs
-        WHERE level = 'THEORETICAL'
+        WHERE level LIKE '%THEORETICAL%'
         ORDER BY domain, status
     """)
     rows = cursor.fetchall()
@@ -48,7 +48,7 @@ def sample_domain_beliefs(cursor):
         cursor.execute("""
             SELECT status, substr(content, 1, 100) as content_preview
             FROM beliefs
-            WHERE domain = ? AND level = 'EMPIRICAL'
+            WHERE domain = ? AND level LIKE '%EMPIRICAL%'
             ORDER BY RANDOM()
             LIMIT 3
         """, (domain,))
