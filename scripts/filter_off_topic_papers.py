@@ -25,6 +25,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -32,9 +38,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
-
-# Article Finder database path
-AF_DB_PATH = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
 
 # =============================================================================
 # KEYWORD LISTS - Built from Tagging_Contractor and Outcome_Contractor vocab
@@ -460,6 +463,11 @@ def main():
         description="Filter off-topic papers from CNfA corpus"
     )
     parser.add_argument(
+        "--af-db",
+        default=None,
+        help="Path to article_finder.db (auto-resolved if omitted)",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Show what would be filtered without applying",
@@ -481,12 +489,14 @@ def main():
     )
 
     args = parser.parse_args()
+    af_db_path = resolve_article_finder_db(args.af_db)
+    logger.info("Using AF DB: %s", af_db_path)
 
-    if not AF_DB_PATH.exists():
-        logger.error(f"Database not found: {AF_DB_PATH}")
+    if not af_db_path.exists():
+        logger.error(f"Database not found: {af_db_path}")
         sys.exit(1)
 
-    conn = sqlite3.connect(AF_DB_PATH)
+    conn = sqlite3.connect(af_db_path)
     conn.row_factory = sqlite3.Row
 
     if args.review:

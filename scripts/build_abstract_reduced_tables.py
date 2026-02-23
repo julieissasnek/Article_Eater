@@ -11,10 +11,17 @@ import csv
 import math
 import re
 import sqlite3
+import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db
 
 
 TOPIC_KEYWORDS = {
@@ -136,8 +143,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build abstract reduced tables + PDF download priorities.")
     parser.add_argument(
         "--db",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db",
-        help="Path to article_finder.db",
+        default=None,
+        help="Path to article_finder.db (auto-resolved if omitted)",
     )
     parser.add_argument(
         "--must-include-seeds",
@@ -146,18 +153,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--reject-csv",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/review/reject_candidates.csv",
-        help="Reject candidates CSV from production_run.py",
+        default=None,
+        help="Reject candidates CSV (defaults to AF repo data/review/reject_candidates.csv)",
     )
     parser.add_argument(
         "--hbe-allowlist",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/config/hbe_journals_allowlist.txt",
-        help="HBE venue allowlist path",
+        default=None,
+        help="HBE venue allowlist (defaults to AF repo config/hbe_journals_allowlist.txt)",
     )
     parser.add_argument(
         "--neuro-allowlist",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/config/neuroscience_venues_allowlist.txt",
-        help="Neuroscience venue allowlist path",
+        default=None,
+        help="Neuroscience venue allowlist (defaults to AF repo config/neuroscience_venues_allowlist.txt)",
     )
     parser.add_argument(
         "--output-dir",
@@ -382,12 +389,28 @@ def write_csv(path: Path, rows: List[dict], fieldnames: List[str]) -> None:
 def main() -> int:
     args = parse_args()
     out_dir = Path(args.output_dir)
+    af_db = resolve_article_finder_db(args.db)
+    af_root = af_db.parent.parent
+    reject_csv = Path(args.reject_csv) if args.reject_csv else af_db.parent / "review" / "reject_candidates.csv"
+    hbe_allowlist_path = (
+        Path(args.hbe_allowlist) if args.hbe_allowlist else af_root / "config" / "hbe_journals_allowlist.txt"
+    )
+    neuro_allowlist_path = (
+        Path(args.neuro_allowlist)
+        if args.neuro_allowlist
+        else af_root / "config" / "neuroscience_venues_allowlist.txt"
+    )
+    print(
+        "[build_abstract_reduced_tables] using "
+        f"af_db={af_db} reject_csv={reject_csv} "
+        f"hbe_allowlist={hbe_allowlist_path} neuro_allowlist={neuro_allowlist_path}"
+    )
     doi_seeds, title_seeds = load_seed_rules(Path(args.must_include_seeds))
-    reject_map = load_reject_protection(Path(args.reject_csv))
-    hbe_allowlist = load_allowlist(Path(args.hbe_allowlist))
-    neuro_allowlist = load_allowlist(Path(args.neuro_allowlist))
+    reject_map = load_reject_protection(reject_csv)
+    hbe_allowlist = load_allowlist(hbe_allowlist_path)
+    neuro_allowlist = load_allowlist(neuro_allowlist_path)
 
-    conn = sqlite3.connect(args.db)
+    conn = sqlite3.connect(str(af_db))
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 

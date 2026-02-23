@@ -464,6 +464,7 @@ Task:
 2. If evidence is mismatched to this IV/DV pair or ambiguous, return unknown.
 3. Prefer no_effect only for explicit null findings.
 4. Cite chunk IDs and quote text exactly from those chunks.
+5. Include a field-level evidence packet for direction with support_type and alternatives.
 
 Return JSON only:
 {{
@@ -471,7 +472,17 @@ Return JSON only:
   "confidence": 0.0,
   "justification": "one short paragraph",
   "evidence_chunk_ids": ["E1","E3"],
-  "evidence_quotes": ["exact quote 1", "exact quote 2"]
+  "evidence_quotes": ["exact quote 1", "exact quote 2"],
+  "field_assessments": {{
+    "direction": {{
+      "value": "increase|decrease|no_effect|unknown",
+      "support_type": "explicit|derived|inferred",
+      "section": "abstract|methods|results|table|figure_caption|discussion|conclusion|unknown",
+      "page": 1,
+      "alt_interpretations": ["increase","decrease"],
+      "confidence": 0.0
+    }}
+  }}
 }}
 """
     return system, user
@@ -524,6 +535,42 @@ def _verify_vote(vote: dict[str, Any], chunks: list[EvidenceChunk]) -> tuple[boo
             reasons.append("no_effect_but_directional_cue_present")
 
     return len(reasons) == 0, reasons
+
+
+def _score_vote_risk(vote: dict[str, Any]) -> float:
+    """Heuristic risk score (0..1) for one model vote."""
+    risk = 0.06
+    if not vote.get("verified"):
+        risk += 0.34
+    direction = _norm_direction(vote.get("direction"))
+    if direction == "unknown":
+        risk += 0.18
+    if vote.get("raw_error"):
+        risk += 0.35
+    if vote.get("verify_reasons"):
+        risk += min(0.22, 0.05 * len(vote.get("verify_reasons") or []))
+
+    packet = vote.get("field_assessments")
+    direction_packet = packet.get("direction") if isinstance(packet, dict) else None
+    if isinstance(direction_packet, dict):
+        support = _normalize(direction_packet.get("support_type")).lower()
+        if support == "derived":
+            risk += 0.10
+        elif support == "inferred":
+            risk += 0.20
+        elif support not in {"explicit", "derived", "inferred"}:
+            risk += 0.08
+        if not _normalize(direction_packet.get("section")):
+            risk += 0.07
+        if direction_packet.get("page") in (None, "", 0):
+            risk += 0.05
+        alts = direction_packet.get("alt_interpretations")
+        if isinstance(alts, list) and alts:
+            risk += min(0.12, 0.03 * len(alts))
+    else:
+        risk += 0.16
+
+    return max(0.0, min(1.0, risk))
 
 
 def _build_override_entry(
@@ -788,11 +835,14 @@ def _run_one_claim(
             rec["justification"] = _normalize(obj.get("justification"))
             rec["evidence_chunk_ids"] = obj.get("evidence_chunk_ids")
             rec["evidence_quotes"] = obj.get("evidence_quotes")
+            rec["field_assessments"] = obj.get("field_assessments")
             ok, reasons = _verify_vote(rec, chunks)
             rec["verified"] = ok
             rec["verify_reasons"] = reasons
+            rec["vote_risk_score"] = _score_vote_risk(rec)
         except Exception as exc:
             rec["raw_error"] = f"{type(exc).__name__}: {exc}"
+            rec["vote_risk_score"] = _score_vote_risk(rec)
         votes.append(rec)
 
     final_direction, counts = _consensus_direction(votes, min_votes=min_consensus_votes)

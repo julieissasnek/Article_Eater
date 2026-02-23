@@ -8,20 +8,30 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
+import sys
 from collections import Counter, defaultdict, deque
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_WEB_DB = PROJECT_ROOT / "data" / "web_persistence.db"
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 DEFAULT_BN_JSON = PROJECT_ROOT / "data" / "production" / "realtime_incremental_bn.json"
 DEFAULT_THRESHOLDS = PROJECT_ROOT / "config" / "web_bn_health_thresholds.json"
 MASTER_WEB_ID = "master:web:accumulated"
 
+from src.services.db_locator import resolve_web_db
+
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Check Web/BN health against threshold gates.")
-    p.add_argument("--web-db", default=str(DEFAULT_WEB_DB), help="Path to web_persistence.db")
+    p.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    p.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     p.add_argument("--bn-json", default=str(DEFAULT_BN_JSON), help="Path to realtime_incremental_bn.json")
     p.add_argument("--thresholds", default=str(DEFAULT_THRESHOLDS), help="Path to thresholds JSON")
     p.add_argument("--json", action="store_true", help="Emit JSON report")
@@ -260,7 +270,8 @@ def evaluate_checks(metrics: Dict[str, Dict[str, Any]], checks: List[Dict[str, A
 
 def main() -> int:
     args = parse_args()
-    web_metrics = collect_web_metrics(Path(args.web_db))
+    web_db = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    web_metrics = collect_web_metrics(web_db)
     bn_metrics = collect_bn_metrics(Path(args.bn_json))
     thresholds = json.loads(Path(args.thresholds).read_text(encoding="utf-8"))
 
@@ -269,6 +280,11 @@ def main() -> int:
     target = evaluate_checks(metrics, thresholds.get("target", []))
 
     report = {
+        "paths": {
+            "web_db": str(web_db),
+            "bn_json": str(Path(args.bn_json)),
+            "thresholds": str(Path(args.thresholds)),
+        },
         "metrics": metrics,
         "minimum_viable": minimum,
         "target": target,

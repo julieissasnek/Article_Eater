@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.services.extract_7panel import _parse_findings_output
+from app.services.extract_article_essence import _parse_findings_output
 
 
 def _assert(condition: bool, message: str) -> None:

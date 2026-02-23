@@ -20,6 +20,7 @@ import os
 import re
 import subprocess
 import tempfile
+import traceback
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -375,9 +376,13 @@ def _run_profile_variant(
     vocab: dict[str, Any],
     max_pages: int,
     codex_timeout_sec: int,
+    force_rule_based: bool = False,
 ) -> dict[str, Any]:
     adapter = _ChatAdapter(profile.provider, codex_timeout_sec=codex_timeout_sec)
-    extractor = AITableExtractor(api_client=adapter, model=profile.model)
+    extractor = AITableExtractor(
+        api_client=None if force_rule_based else adapter,
+        model=profile.model,
+    )
 
     claims_out: list[dict[str, Any]] = []
     rejected_claims: list[dict[str, Any]] = []
@@ -397,6 +402,8 @@ def _run_profile_variant(
                     "paper_id": paper_id,
                     "pdf_path": str(pdf_path),
                     "error": f"extract_tables_error:{type(exc).__name__}",
+                    "error_message": str(exc),
+                    "traceback": traceback.format_exc(limit=12),
                     "tables": [],
                 }
             )
@@ -533,6 +540,11 @@ def main() -> None:
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--vocab-path", default="data/vocabulary/variable_vocabulary.json")
     parser.add_argument("--codex-timeout-sec", type=int, default=90)
+    parser.add_argument(
+        "--force-rule-based",
+        action="store_true",
+        help="Disable AI table extraction calls and use internal rule-based fallback only.",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -559,6 +571,7 @@ def main() -> None:
                 vocab=vocab,
                 max_pages=args.max_pages,
                 codex_timeout_sec=args.codex_timeout_sec,
+                force_rule_based=args.force_rule_based,
             )
             out_path = output_dir / f"{run_ts}_{profile.name}_{variant}.json"
             out_path.write_text(json.dumps(result, indent=2), encoding="utf-8")

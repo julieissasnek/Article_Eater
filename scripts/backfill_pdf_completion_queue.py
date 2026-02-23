@@ -11,12 +11,17 @@ from __future__ import annotations
 import argparse
 import csv
 import sqlite3
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
-DEFAULT_AF_DB = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
+from src.services.db_locator import resolve_article_finder_db
+
 DEFAULT_QUEUE_CSV = Path("data/production/realtime_pdf_completion_queue.csv")
 
 
@@ -26,7 +31,7 @@ def now_iso() -> str:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Backfill missing PDF papers into completion queue.")
-    p.add_argument("--af-db", type=Path, default=DEFAULT_AF_DB, help="Path to Article Finder DB")
+    p.add_argument("--af-db", type=Path, default=None, help="Path to article_finder.db (auto-resolved if omitted)")
     p.add_argument(
         "--queue-csv",
         type=Path,
@@ -136,6 +141,8 @@ def fetch_pdf_papers(db_path: Path, min_abstract_len: int) -> List[Dict[str, Any
 
 def main() -> int:
     args = parse_args()
+    args.af_db = resolve_article_finder_db(args.af_db)
+    print(f"[backfill_pdf_completion_queue] using af_db={args.af_db}")
     queue_rows = read_queue(args.queue_csv)
     existing_ids = {str(r.get("paper_id", "")).strip() for r in queue_rows if str(r.get("paper_id", "")).strip()}
 

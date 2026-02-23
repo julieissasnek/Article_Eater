@@ -25,10 +25,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.services.bridge_warrants import BridgeRegistry, detect_bridge_from_claim
+from src.services.db_locator import resolve_article_finder_db, resolve_web_db
 
-
-DEFAULT_WEB_DB = Path("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db")
-DEFAULT_AF_DB = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
 MASTER_WEB_ID = "master:web:accumulated"
 
 CONTRADICT_MARKERS = [
@@ -85,8 +83,14 @@ class BeliefRow:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Reprocess web relation diversity + bridges for historical data.")
-    p.add_argument("--web-db", default=str(DEFAULT_WEB_DB), help="Path to web_persistence.db")
-    p.add_argument("--af-db", default=str(DEFAULT_AF_DB), help="Path to article_finder.db")
+    p.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    p.add_argument("--af-db", default=None, help="Path to article_finder.db (auto-resolved if omitted)")
+    p.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     p.add_argument("--neighbors", type=int, default=3, help="Prior beliefs to connect per belief for shared env/out")
     p.add_argument("--dry-run", action="store_true", help="Compute changes without writing")
     return p.parse_args()
@@ -222,8 +226,8 @@ def load_beliefs(conn: sqlite3.Connection, year_map: Dict[str, int]) -> List[Bel
 
 def main() -> int:
     args = parse_args()
-    web_db = Path(args.web_db)
-    af_db = Path(args.af_db)
+    web_db = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    af_db = resolve_article_finder_db(args.af_db)
     now = datetime.now(timezone.utc).isoformat()
 
     year_map = load_year_map(af_db)

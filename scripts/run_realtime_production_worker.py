@@ -19,12 +19,23 @@ import sys
 import time
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db, resolve_web_db
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run realtime table/rule production worker continuously.")
+    parser.add_argument("--af-db", default=None, help="Path to article_finder.db (auto-resolved if omitted)")
+    parser.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    parser.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     parser.add_argument("--poll-seconds", type=int, default=45, help="Seconds between cycles")
     parser.add_argument("--intake-limit", type=int, default=250, help="Max new papers per intake cycle")
     parser.add_argument("--pdf-batch-size", type=int, default=40, help="Max queued PDFs to process per cycle")
@@ -93,7 +104,10 @@ def collect_metrics(bn_state_path: Path) -> dict:
         "bn_edges": None,
     }
 
-    web_db = PROJECT_ROOT / "data" / "web_persistence.db"
+    try:
+        web_db = resolve_web_db(prefer="integrated")
+    except Exception:
+        web_db = PROJECT_ROOT / "data" / "web_persistence.db"
     if web_db.exists():
         try:
             conn = sqlite3.connect(str(web_db))
@@ -119,6 +133,9 @@ def collect_metrics(bn_state_path: Path) -> dict:
 
 def run_cycle(args: argparse.Namespace) -> int:
     py = sys.executable
+    af_db = resolve_article_finder_db(args.af_db)
+    web_db = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    print(f"[worker] using af_db={af_db} web_db={web_db}")
 
     preprocess_cmd = [
         py,
@@ -132,6 +149,12 @@ def run_cycle(args: argparse.Namespace) -> int:
     intake_cmd = [
         py,
         "scripts/run_realtime_table_rule_intake.py",
+        "--db",
+        str(af_db),
+        "--web-db",
+        str(web_db),
+        "--web-db-prefer",
+        args.web_db_prefer,
         "--limit",
         str(args.intake_limit),
         "--integrate-web",
@@ -142,6 +165,12 @@ def run_cycle(args: argparse.Namespace) -> int:
     pdf_cmd = [
         py,
         "scripts/process_realtime_pdf_completion_queue.py",
+        "--af-db",
+        str(af_db),
+        "--web-db",
+        str(web_db),
+        "--web-db-prefer",
+        args.web_db_prefer,
         "--batch-size",
         str(args.pdf_batch_size),
         "--max-workers",

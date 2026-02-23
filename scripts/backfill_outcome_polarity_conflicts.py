@@ -14,11 +14,17 @@ import argparse
 import hashlib
 import json
 import sqlite3
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-DEFAULT_WEB_DB = Path("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_web_db
+
 MASTER_WEB_ID = "master:web:accumulated"
 
 NEGATIVE_EFFECT_MARKERS = [
@@ -57,7 +63,13 @@ POSITIVE_MARKERS = [
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Backfill outcome polarity conflicts into constraints.")
-    p.add_argument("--web-db", default=str(DEFAULT_WEB_DB), help="Path to web_persistence.db")
+    p.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    p.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     p.add_argument("--max-targets-per-source", type=int, default=8, help="Limit positive targets per negative/null source")
     p.add_argument("--dry-run", action="store_true", help="Compute counts without writing")
     return p.parse_args()
@@ -107,7 +119,8 @@ def make_constraint_id(source_id: str, target_id: str, outcome_id: str, provenan
 
 def main() -> int:
     args = parse_args()
-    db = Path(args.web_db)
+    db = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    print(f"[backfill_outcome_polarity_conflicts] using web_db={db}")
     now = datetime.now(timezone.utc).isoformat()
 
     conn = sqlite3.connect(str(db), timeout=60.0)

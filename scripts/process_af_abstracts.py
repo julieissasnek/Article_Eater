@@ -28,6 +28,8 @@ from typing import Any, Dict, List, Optional
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.services.db_locator import resolve_article_finder_db
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -36,15 +38,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Article Finder database path (canonical source per contract)
-AF_DB_PATH = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
-
-
-def get_af_connection() -> sqlite3.Connection:
+# Article Finder database path (resolved at runtime)
+def get_af_connection(af_db_path: Path | None = None) -> sqlite3.Connection:
     """Connect to Article Finder database."""
-    if not AF_DB_PATH.exists():
-        raise FileNotFoundError(f"Article Finder database not found: {AF_DB_PATH}")
-    conn = sqlite3.connect(AF_DB_PATH)
+    resolved_db = resolve_article_finder_db(af_db_path)
+    if not resolved_db.exists():
+        raise FileNotFoundError(f"Article Finder database not found: {resolved_db}")
+    conn = sqlite3.connect(resolved_db)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -163,6 +163,7 @@ def process_papers(
     topic: str = "neuroarchitecture",
     category: Optional[str] = None,
     output_dir: Optional[Path] = None,
+    af_db_path: Optional[Path] = None,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """
@@ -172,7 +173,7 @@ def process_papers(
     """
     output_dir = output_dir or PROJECT_ROOT / "data" / "extracted_findings"
 
-    conn = get_af_connection()
+    conn = get_af_connection(af_db_path)
     papers = get_papers_for_extraction(conn, limit=limit, category=category)
 
     logger.info(f"Found {len(papers)} papers ready for extraction")
@@ -255,6 +256,12 @@ def main():
         description="Process abstracts from Article Finder database"
     )
     parser.add_argument(
+        "--af-db",
+        type=Path,
+        default=None,
+        help="Path to article_finder.db (auto-resolved if omitted)",
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=10,
@@ -297,6 +304,7 @@ def main():
         topic=args.topic,
         category=args.category,
         output_dir=args.output,
+        af_db_path=args.af_db,
         dry_run=args.dry_run,
     )
 

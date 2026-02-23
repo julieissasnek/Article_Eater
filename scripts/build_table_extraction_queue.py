@@ -16,10 +16,17 @@ import csv
 import math
 import re
 import sqlite3
+import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db
 
 
 TOPIC_KEYWORDS = {
@@ -58,13 +65,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build topic-broad table extraction queue.")
     parser.add_argument(
         "--db",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db",
-        help="Path to article_finder.db",
+        default=None,
+        help="Path to article_finder.db (auto-resolved if omitted)",
     )
     parser.add_argument(
         "--reject-csv",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/review/reject_candidates.csv",
-        help="Reject candidates CSV from production_run.py",
+        default=None,
+        help="Reject candidates CSV (defaults to AF repo data/review/reject_candidates.csv)",
     )
     parser.add_argument(
         "--must-include-seeds",
@@ -178,8 +185,13 @@ def compute_priority(citation_count: int, year: int, must_include: bool, protect
 
 
 def build_queue(args: argparse.Namespace) -> Tuple[List[PaperRecord], List[PaperRecord], Dict[str, int], str]:
-    db_path = Path(args.db)
-    reject_map = load_reject_protection(Path(args.reject_csv))
+    db_path = resolve_article_finder_db(args.db)
+    reject_csv = (
+        Path(args.reject_csv)
+        if args.reject_csv
+        else db_path.parent / "review" / "reject_candidates.csv"
+    )
+    reject_map = load_reject_protection(reject_csv)
     doi_seeds, title_seeds = load_seed_rules(Path(args.must_include_seeds))
 
     conn = sqlite3.connect(str(db_path))

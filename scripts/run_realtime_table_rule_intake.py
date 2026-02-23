@@ -27,7 +27,9 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-DEFAULT_AF_DB = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
+from src.services.db_locator import resolve_article_finder_db, resolve_web_db
+
+DEFAULT_AF_DB = PROJECT_ROOT / "data" / "article_finder.db"
 DEFAULT_WEB_DB = PROJECT_ROOT / "data" / "web_persistence.db"
 from src.epistemic.extraction.paper_classifier import classify_paper
 
@@ -206,7 +208,14 @@ OUTCOME_LOOKUP_MAP = load_lookup_map(CONTRACT_OUTCOME_LOOKUP)
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Realtime table+rule intake for new AF papers.")
-    parser.add_argument("--db", default=str(DEFAULT_AF_DB), help="Path to Article Finder DB")
+    parser.add_argument("--db", default=None, help="Path to Article Finder DB (auto-resolved if omitted)")
+    parser.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    parser.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     parser.add_argument("--limit", type=int, default=250, help="Max new papers per run")
     parser.add_argument("--min-abstract-len", type=int, default=200, help="Min abstract length")
     parser.add_argument(
@@ -967,6 +976,12 @@ def load_pdf_queue_rows(path: Path) -> List[Dict[str, Any]]:
 
 def main() -> int:
     args = parse_args()
+    global DEFAULT_AF_DB, DEFAULT_WEB_DB
+    DEFAULT_AF_DB = resolve_article_finder_db(args.db)
+    DEFAULT_WEB_DB = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    args.db = str(DEFAULT_AF_DB)
+    print(f"[intake] using af_db={DEFAULT_AF_DB} web_db={DEFAULT_WEB_DB}")
+
     state_path = Path(args.state_file)
     tables_path = Path(args.tables_jsonl)
     rules_path = Path(args.rules_jsonl)

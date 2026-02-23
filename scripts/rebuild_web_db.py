@@ -28,6 +28,7 @@ from src.services.web_of_belief import (
     WebOfBelief,
 )
 from src.services.web_persistence import WebPersistenceService
+from src.services.extraction_to_web import claim_to_belief
 
 logging.basicConfig(
     level=logging.INFO,
@@ -172,51 +173,31 @@ def compute_credence(claim: dict[str, Any], gold_standard_paper_ids: set[str]) -
 def convert_claim_to_belief(claim: dict[str, Any], gold_standard_paper_ids: set[str] | None = None) -> Belief:
     """Convert an extracted claim into a WebOfBelief belief."""
     gold_standard_paper_ids = gold_standard_paper_ids or set()
-
-    iv = claim.get("iv") or claim.get("iv_raw") or "unknown_iv"
-    dv = claim.get("dv") or claim.get("dv_raw") or "unknown_dv"
-    direction = claim.get("direction", "unknown")
-
-    content = f"{iv} -> {dv}"
-    if direction and direction != "unknown":
-        content += f" ({direction})"
-
-    stats: list[str] = []
-    if claim.get("effect_size"):
-        stats.append(f"d={claim['effect_size']}")
-    if claim.get("r"):
-        stats.append(f"r={claim['r']}")
-    if claim.get("p_value"):
-        stats.append(f"p={claim['p_value']}")
-    if stats:
-        content += f" [{', '.join(stats)}]"
-
-    claim_id = str(claim.get("claim_id") or "unknown_id")
-    belief_id = _safe_belief_id(claim_id)
-
-    confidence = _to_float(claim.get("extraction_confidence"))
-    uncertainty = max(0.05, 1.0 - (confidence if confidence is not None else 0.5))
+    
+    # 1. First run the rich extraction mapping
+    result = claim_to_belief(claim)
+    if not result.success or not result.entity:
+        raise ValueError(f"Failed to map claim: {result.warnings}")
+        
+    belief = result.entity
+    
+    # 2. Override the credence score using the Sprint D scoring rubric
     credence_value = compute_credence(claim, gold_standard_paper_ids)
-
-    tags = ["source:extraction_pipeline"]
+    
+    # Keep the uncertainty and evidential direction calculated by claim_to_belief
+    belief.credence.value = credence_value
+    
+    # 3. Enhance tags like the original script did
+    if "source:extraction_pipeline" not in belief.tags:
+        belief.tags.append("source:extraction_pipeline")
     if claim.get("semantic_type"):
-        tags.append(f"type:{claim['semantic_type']}")
+        belief.tags.append(f"type:{claim['semantic_type']}")
     if claim.get("context"):
-        tags.append(f"context:{claim['context']}")
+        belief.tags.append(f"context:{claim['context']}")
     if claim.get("batch_id"):
-        tags.append(f"batch:{claim['batch_id']}")
-
-    return Belief(
-        belief_id=belief_id,
-        content=content,
-        level=EpistemicLevel.EMPIRICAL,
-        status=BeliefStatus.ESTABLISHED,
-        credence=Credence(credence_value, uncertainty),
-        paper_ids=[claim.get("paper_id")] if claim.get("paper_id") else [],
-        environment_id=claim.get("iv") if claim.get("iv_mapped") else None,
-        outcome_id=claim.get("dv") if claim.get("dv_mapped") else None,
-        tags=tags,
-    )
+        belief.tags.append(f"batch:{claim['batch_id']}")
+        
+    return belief
 
 
 def _constraint_id(prefix: str, source_id: str, target_id: str) -> str:

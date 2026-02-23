@@ -13,9 +13,16 @@ from __future__ import annotations
 import argparse
 import csv
 import sqlite3
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.services.db_locator import resolve_article_finder_db
 
 
 ARTICLE_TYPES = [
@@ -136,8 +143,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build separate tables by article type.")
     parser.add_argument(
         "--db",
-        default="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db",
-        help="Path to Article Finder DB",
+        default=None,
+        help="Path to article_finder.db (auto-resolved if omitted)",
     )
     parser.add_argument(
         "--gold-csv",
@@ -206,7 +213,9 @@ def split_rows(
 def main() -> int:
     args = parse_args()
     out_dir = Path(args.output_dir)
-    meta = load_paper_metadata(Path(args.db))
+    af_db = resolve_article_finder_db(args.db)
+    print(f"[build_article_type_tables] using af_db={af_db}")
+    meta = load_paper_metadata(af_db)
 
     gold_rows = read_csv_rows(Path(args.gold_csv))
     reduced_rows = read_csv_rows(Path(args.reduced_csv))

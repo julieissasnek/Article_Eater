@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
+from src.services.db_locator import resolve_article_finder_db, resolve_web_db
 
 from src.services.table_extractor import ExtractionMethod  # noqa: E402
 from src.services.table_to_claims import PipelineTableIntegrator  # noqa: E402
@@ -36,7 +37,7 @@ from src.epistemic.extraction.paper_classifier import classify_paper  # noqa: E4
 from lib.environment_resolver import resolve_environment, resolve_or_queue_environment  # noqa: E402
 from lib.outcome_resolver import queue_unknown_outcome, resolve_or_queue, resolve_outcome  # noqa: E402
 
-DEFAULT_AF_ROOT = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3")
+DEFAULT_AF_ROOT = PROJECT_ROOT.parent / "Article_Finder_v3_2_3"
 DEFAULT_AF_DB = DEFAULT_AF_ROOT / "data" / "article_finder.db"
 DEFAULT_WEB_DB = PROJECT_ROOT / "data" / "web_persistence.db"
 
@@ -244,6 +245,14 @@ class PaperProcessResult:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Process realtime PDF completion queue.")
+    parser.add_argument("--af-db", default=None, help="Path to article_finder.db (auto-resolved if omitted)")
+    parser.add_argument("--web-db", default=None, help="Path to web DB (auto-resolved if omitted)")
+    parser.add_argument(
+        "--web-db-prefer",
+        choices=("integrated", "latest"),
+        default="integrated",
+        help="Auto-resolution policy when --web-db is omitted",
+    )
     parser.add_argument(
         "--queue-csv",
         default="data/production/realtime_pdf_completion_queue.csv",
@@ -2243,6 +2252,11 @@ def load_family_context_for_papers(
 
 def main() -> int:
     args = parse_args()
+    global DEFAULT_AF_DB, DEFAULT_WEB_DB
+    DEFAULT_AF_DB = resolve_article_finder_db(args.af_db)
+    DEFAULT_WEB_DB = resolve_web_db(args.web_db, prefer=args.web_db_prefer)
+    print(f"[pdf_completion] using af_db={DEFAULT_AF_DB} web_db={DEFAULT_WEB_DB}")
+
     queue_csv_path = Path(args.queue_csv)
     confirmed_csv_path = Path(args.confirmed_csv)
     no_claims_csv_path = Path(args.no_claims_csv)

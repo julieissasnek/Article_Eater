@@ -21,8 +21,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.epistemic.extraction.paper_classifier import classify_paper
+from src.services.db_locator import resolve_article_finder_db
 
-DEFAULT_AF_DB = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db")
+DEFAULT_AF_DB = None
 
 
 def parse_args() -> argparse.Namespace:
@@ -34,8 +35,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--db",
-        default=str(DEFAULT_AF_DB),
-        help="Article Finder SQLite DB path",
+        default=DEFAULT_AF_DB,
+        help="Article Finder SQLite DB path (auto-resolved if omitted)",
     )
     parser.add_argument(
         "--review-csv",
@@ -109,7 +110,8 @@ def main() -> int:
     args = parse_args()
     queue_path = Path(args.queue_csv)
     review_path = Path(args.review_csv)
-    db_path = Path(args.db)
+    db_path = resolve_article_finder_db(args.db)
+    print(f"[reclassify_pdf_queue_article_types] using af_db={db_path}")
     if not queue_path.exists():
         print(f"Queue not found: {queue_path}")
         return 1

@@ -1,19 +1,40 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1"
-AF_DB="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+AF_DB="${AF_DB:-$(python3 - <<PY
+import sys
+from pathlib import Path
+repo = Path(r"$REPO")
+if str(repo) not in sys.path:
+    sys.path.insert(0, str(repo))
+from src.services.db_locator import resolve_article_finder_db
+print(resolve_article_finder_db())
+PY
+)}"
+WEB_DB="${WEB_DB:-$(python3 - <<PY
+import sys
+from pathlib import Path
+repo = Path(r"$REPO")
+if str(repo) not in sys.path:
+    sys.path.insert(0, str(repo))
+from src.services.db_locator import resolve_web_db
+print(resolve_web_db(prefer='integrated'))
+PY
+)}"
+export AF_DB WEB_DB
 cd "$REPO"
 
 remaining_abstracts() {
 python3 - <<'PY'
 import sqlite3, json
+import os
 from pathlib import Path
 state_path=Path('data/production/realtime_intake_state.json')
 state={'last_event_ts':'','last_paper_id':''}
 if state_path.exists():
     state=json.loads(state_path.read_text())
-conn=sqlite3.connect('/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db')
+conn=sqlite3.connect(os.environ['AF_DB'])
 cur=conn.cursor()
 cur.execute('''
 SELECT COUNT(*) FROM papers
@@ -48,7 +69,7 @@ PY
 
 summary() {
 python3 - <<'PY'
-import json, sqlite3
+import json, sqlite3, os
 from pathlib import Path
 base=Path('data/production')
 
@@ -65,7 +86,7 @@ if bn.exists():
     print('bn_edges', len(d.get('edges',{})))
 
 try:
-    conn=sqlite3.connect('file:data/web_persistence.db?mode=ro', uri=True)
+    conn=sqlite3.connect(f"file:{Path(os.environ['WEB_DB'])}?mode=ro", uri=True)
     cur=conn.cursor()
     cur.execute('SELECT COUNT(*) FROM beliefs')
     print('web_beliefs', cur.fetchone()[0])

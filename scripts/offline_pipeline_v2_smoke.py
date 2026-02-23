@@ -34,6 +34,28 @@ def fake_call_llm(prompt: str, cfg: Any) -> str:
 
     We only need enough structure to satisfy the Seven-Panel v2 schemas.
     """
+    # Agent_Finder_v2 still runs classic Agent_Finder first, so return a
+    # schema-valid classic findings array for that path.
+    if "Seven-Panel findings array" in prompt or "Seven-Panel findings" in prompt:
+        return json.dumps(
+            [
+                {
+                    "finding_text": "Dummy finding: biophilic ceiling reduces reported stress.",
+                    "statistics": {
+                        "p_value": 0.03,
+                        "effect_size": 0.5,
+                        "effect_size_type": "d",
+                        "sample_size": 60,
+                        "ci_lower": 0.2,
+                        "ci_upper": 0.8,
+                    },
+                    "quote": "Participants under biophilic ceilings reported lower stress.",
+                    "page_span": "p.3-4",
+                    "raw_abstract": "Dummy abstract for v2 smoke test.",
+                }
+            ]
+        )
+
     # The v2 agent identifies itself by expecting a single JSON object with
     # keys panel_subjects / panel_context / ... / panel_limits.
     if "Seven-Panel v2 representation" in prompt or "Seven-Panel v2" in prompt:
@@ -62,14 +84,6 @@ def fake_call_llm(prompt: str, cfg: Any) -> str:
                             "key_inclusions": [],
                             "key_exclusions": [],
                         },
-                        "traits_measured": [
-                            {
-                                "name": "Sensory Processing Sensitivity",
-                                "scale": "HSPS",
-                                "used_as_moderator": True,
-                            }
-                        ],
-                        "notes": "Dummy v2 subjects panel for smoke test.",
                     },
                     "traits_measured": [
                         {
@@ -193,19 +207,20 @@ def fake_call_llm(prompt: str, cfg: Any) -> str:
             }
         )
 
-    # Fallback: defer to existing fake from offline_pipeline_smoke if needed.
-    # For now we just return a minimal Aggregator-style JSON so that if the
-    # classic path is accidentally invoked, it does not crash.
+    # Fallback: return an empty object for non-finding/non-v2 prompt paths.
     return json.dumps({})
 
 def main() -> None:
     _install_root()
     from scripts import offline_pipeline_smoke  # type: ignore
     from src.agents import agent_stubs as stubs
+    from src.agents import agent_panels_v2
     from src.services.service_locator import get_graph_service
 
     original_call_llm = stubs.call_llm
+    original_v2_call_llm = agent_panels_v2.call_llm
     stubs.call_llm = fake_call_llm
+    agent_panels_v2.call_llm = fake_call_llm
 
     data_dir = ROOT / "data"
     graph_path = data_dir / "graph.jsonl"
@@ -232,6 +247,7 @@ def main() -> None:
     if "rulegraph_v2" not in event_types:
         print("[offline_pipeline_v2_smoke] FAIL: missing rulegraph_v2 event in graph.jsonl")
         stubs.call_llm = original_call_llm
+        agent_panels_v2.call_llm = original_v2_call_llm
         raise SystemExit(1)
 
     print("[offline_pipeline_v2_smoke] OK")
@@ -239,6 +255,7 @@ def main() -> None:
     print(f" - v2 rules emitted: {len(result.get('rules_v2', []))}")
 
     stubs.call_llm = original_call_llm
+    agent_panels_v2.call_llm = original_v2_call_llm
 
 
 if __name__ == "__main__":
