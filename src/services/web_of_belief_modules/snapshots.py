@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 from datetime import datetime, timezone
-from typing import Any, Mapping, MutableMapping
+from typing import Any, Mapping
 
 
 def build_snapshot_fields(

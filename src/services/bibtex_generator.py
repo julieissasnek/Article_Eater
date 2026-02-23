@@ -23,9 +23,8 @@ import unicodedata
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple
 from pathlib import Path
-import json
 import logging
 
 logger = logging.getLogger(__name__)

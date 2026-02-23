@@ -21,7 +21,6 @@ import uuid
 from src.agents.agent_core import LLMConfig, call_llm
 from src.agents.json_utils import parse_and_validate
 from src.contracts.schemas import SevenPanelArtifact, SevenPanelItem
-from src.agents.bbn_calibrator import calibrate as BBN_Calibrator  # keep existing BN-level helper
 
 # New: persistence + per-finding confidence
 from src.services.service_locator import get_graph_service

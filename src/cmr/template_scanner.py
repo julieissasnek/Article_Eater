@@ -16,15 +16,13 @@ The scanner:
 
 import json
 import logging
-import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, make_transient
 
-from src.cmr.models import Base, TemplateRecord, get_engine, get_session
+from src.cmr.models import Base, TemplateRecord, get_engine
 
 logger = logging.getLogger(__name__)
 

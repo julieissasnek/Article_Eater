@@ -13,7 +13,7 @@ import json
 import logging
 import re
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path

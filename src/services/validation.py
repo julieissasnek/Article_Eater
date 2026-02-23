@@ -14,7 +14,7 @@ This module provides:
 
 from enum import Enum
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any, Set
+from typing import Dict, List, Optional, Any
 import math
 
 

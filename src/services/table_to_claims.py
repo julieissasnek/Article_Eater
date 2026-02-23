@@ -10,7 +10,6 @@ import json
 import logging
 import re
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
@@ -18,9 +17,6 @@ from src.services.table_extractor import (
     ExtractedTable,
     TableType,
     ExtractionMethod,
-    AITableExtractor,
-    PdfPlumberTableExtractor,
-    HybridTableExtractor,
     get_table_extractor,
     extracted_table_to_article_metadata,
     extracted_table_to_rct_facts,

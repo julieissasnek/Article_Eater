@@ -14,12 +14,11 @@ Phase D Sprint D2
 """
 
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict, Any, Tuple, Set
+from typing import List, Optional, Dict, Any, Set
 from enum import Enum
 from datetime import datetime
-import math
 
-from src.services.web_of_belief import WebOfBelief, Belief, EpistemicLevel, SourceDepth
+from src.services.web_of_belief import WebOfBelief, Belief, SourceDepth
 
 # H2: Import taxonomy for dynamic outcome categories (per Kaplan panel recommendation)
 try:

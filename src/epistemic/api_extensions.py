@@ -17,22 +17,14 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Any
 from datetime import datetime
-from enum import Enum
 
-from src.epistemic.node_types import NodeType, NodeTypeFamily, get_node_type_family
+from src.epistemic.node_types import NodeType, get_node_type_family
 from src.epistemic.edge_types import EdgeType
 from src.epistemic.monitors.theory_monitor import (
     TheoryMonitor,
-    TheoryHealthStatus,
-    TheoryRisk,
-    TheoryHealthReport,
-    TheoryMonitorSummary,
 )
 from src.epistemic.monitors.cross_type_coherence import (
     CrossTypeCoherenceMonitor,
-    CoherenceType,
-    CoherenceAnomaly,
-    WebCoherenceReport,
 )
 from src.epistemic.entrenchment.prediction_ledger import (
     PredictionLedger,

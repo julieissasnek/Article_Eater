@@ -12,27 +12,20 @@ This module provides:
 """
 
 import yaml
-import json
 import logging
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any, Set, Tuple
-from enum import Enum
 
 from src.services.web_of_belief import (
     Belief,
-    Credence,
     EpistemicLevel,
-    BeliefStatus,
     ScopeConditions,
     CausalDirection,
 )
 
 from src.services.validation import (
     ValidationReport,
-    ValidationPhase,
-    PASS_THRESHOLDS,
-    EcologicalValidity,
 )
 
 logger = logging.getLogger(__name__)

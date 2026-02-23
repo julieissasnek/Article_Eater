@@ -15,17 +15,14 @@ Date: January 20, 2026
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple, Set
+from typing import List, Dict, Any, Optional, Tuple
 from enum import Enum
 from datetime import datetime, timezone
 import logging
-import math
 
 from src.services.web_of_belief import (
     WebOfBelief,
-    Belief,
-    BeliefStatus,
-    CredenceHistoryEntry
+    Belief
 )
 
 logger = logging.getLogger(__name__)

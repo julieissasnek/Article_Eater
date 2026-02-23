@@ -21,11 +21,9 @@ from datetime import datetime, timezone
 from src.services.web_of_belief import (
     WebOfBelief,
     Belief,
-    Constraint,
     BeliefStatus,
     ConstraintType,
-    CausalDirection,
-    SourceDepth
+    CausalDirection
 )
 
 logger = logging.getLogger(__name__)

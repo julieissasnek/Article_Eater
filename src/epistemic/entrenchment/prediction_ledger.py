@@ -18,7 +18,7 @@ from typing import List, Optional, Dict
 from datetime import datetime
 import json
 
-from .theory_updating import update_theory_entrenchment, CONFIRMATION_BONUS, DISCONFIRMATION_PENALTY
+from .theory_updating import update_theory_entrenchment
 
 
 @dataclass

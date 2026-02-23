@@ -7,7 +7,6 @@ Alternative implementation for comparison with dataclass-based approach.
 import pandas as pd
 import json
 import os
-import re
 from collections import Counter
 
 # Inputs/Outputs

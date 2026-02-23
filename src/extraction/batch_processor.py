@@ -6,13 +6,12 @@ Focuses on high precision by filtering for high-confidence papers and using rigo
 """
 
 import json
-import os
 import re
 import time
 import argparse
 import sys
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Tuple
 import pandas as pd
 from datetime import datetime
 

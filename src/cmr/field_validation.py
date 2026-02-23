@@ -15,10 +15,9 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 import json
 
-from src.cmr.models import TemplateRecord, get_session
 
 
 class StudyDesignType(str, Enum):

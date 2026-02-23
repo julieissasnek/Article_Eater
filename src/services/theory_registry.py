@@ -18,10 +18,8 @@ from src.models.theory_models import (
     Theory, TheoryClaim, TheoryAssumption, TheoryBoundary,
     Prediction, PredictionEvidence, Originator, DerivationStep,
     TheoryLevel, PredictionType, Direction, Magnitude, TestingStatus,
-    SupportLevel, TestType, TestResult, TestStrength, ReplicationStatus,
-    Necessity, Testability, RelationType, Generality, UncertaintyType,
-    generate_theory_id, generate_prediction_id, generate_claim_id,
-    compute_derivation_confidence
+    SupportLevel, ReplicationStatus,
+    Necessity, Testability, RelationType, Generality, UncertaintyType
 )
 
 logger = logging.getLogger(__name__)

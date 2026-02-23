@@ -13,7 +13,6 @@ Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §4.2
 
 from dataclasses import dataclass
 from typing import Optional, Dict
-from enum import Enum
 
 from src.epistemic.node_types import NodeType
 

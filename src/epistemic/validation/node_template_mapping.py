@@ -7,7 +7,7 @@ Validates that extracted node types are valid for the source template family.
 Reference: Non_Empirical_Web_Integration_Spec_V1.0.md Appendix A
 """
 
-from typing import Dict, List, Set
+from typing import Dict, List
 
 
 # =============================================================================

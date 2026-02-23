@@ -16,7 +16,7 @@ References:
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict
 
-from src.methods.registry import MethodRegistry, MethodEntry
+from src.methods.registry import MethodRegistry
 from src.methods.method_identifier import MethodIdentificationResult
 from src.methods.task_ecology import (
     TaskClass,

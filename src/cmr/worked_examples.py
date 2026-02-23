@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 from src.cmr.building_eval import evaluate_building
 from src.cmr.models import TemplateRecord

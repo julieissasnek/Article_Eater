@@ -12,16 +12,14 @@ References:
 - PE: Prediction Error (predictive processing framework)
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple, Any
 from enum import Enum
 
 from src.epistemic.bn_nodes import (
     EpistemicVariable,
-    VariableType,
     EPISTEMIC_VARIABLES,
     SOURCE_QUALITY_COMPONENTS,
-    get_epistemic_variable,
 )
 
 

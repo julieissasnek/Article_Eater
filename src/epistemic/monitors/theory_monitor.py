@@ -18,7 +18,6 @@ from typing import List, Dict, Optional, Any
 from enum import Enum
 from datetime import datetime
 
-from src.epistemic.node_types import NodeType
 from src.epistemic.entrenchment.prediction_ledger import PredictionLedger
 from src.epistemic.entrenchment.theory_updating import assess_theory_health
 

@@ -10,7 +10,7 @@ References:
 - PE: Prediction Error (predictive processing framework)
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from enum import Enum
 

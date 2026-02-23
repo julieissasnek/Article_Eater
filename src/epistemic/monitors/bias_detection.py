@@ -15,7 +15,7 @@ References:
 - Ioannidis, J.P.A. (2005). Why Most Published Research Findings Are False
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Set, Any
 from enum import Enum
 from collections import defaultdict

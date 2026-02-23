@@ -20,10 +20,9 @@ import json
 import hashlib
 import logging
 from dataclasses import dataclass, field, asdict
-from typing import Dict, List, Optional, Any, Callable
+from typing import Dict, List, Optional, Any
 from enum import Enum
 from datetime import datetime, timezone
-from pathlib import Path
 import sqlite3
 import threading
 

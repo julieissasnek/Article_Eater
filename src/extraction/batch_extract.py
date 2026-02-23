@@ -11,8 +11,6 @@ import csv
 import json
 import sys
 import re
-import subprocess
-import tempfile
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path

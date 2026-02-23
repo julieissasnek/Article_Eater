@@ -45,8 +45,7 @@ References:
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Tuple, Set
-from enum import Enum
+from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime, timezone
 from pathlib import Path
 import json
@@ -60,7 +59,6 @@ from src.services.web_of_belief import (
     Belief,
     Constraint,
     Credence,
-    UncertainQuantity,
     EpistemicLevel,
     BeliefStatus,
     ConstraintType,
@@ -72,27 +70,18 @@ from src.services.refined_epistemic import SemanticStatus
 
 # Import embedding-based theory matcher (TD-A: Theory Inference)
 from src.services.theory_matcher import (
-    EmbeddingTheoryMatcher,
     TheoryMatchResult,
-    MatchMethod,
     get_theory_matcher,
 )
 
 # Import scope extractor (TD-B: Scope Extraction)
 from src.services.scope_extractor import (
-    ScopeExtractor,
-    ExtractedScope,
     extract_scope_from_claim,
-    get_scope_extractor,
 )
 
 # BN Coherence Integration (ARCH-4 Sprint 1.3)
 from src.services.bn_coherence_client import (
     BNCoherenceClient,
-    CoherenceCheckStatus,
-    check_beliefs_coherence,
-    pre_integration_check,
-    should_integrate_belief,
 )
 
 logger = logging.getLogger(__name__)

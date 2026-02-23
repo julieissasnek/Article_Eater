@@ -25,16 +25,13 @@ from __future__ import annotations
 
 import json
 import re
-import uuid
-from dataclasses import dataclass, field
-from datetime import datetime
-from pathlib import Path
+from dataclasses import dataclass
 from typing import Any
 
 from src.extraction.effect_size_converter import to_cohens_d
-from src.extraction.hard_negatives import filter_hard_negatives, is_hard_negative
+from src.extraction.hard_negatives import filter_hard_negatives
 from src.extraction.row_classifier_codex import RowProfile, classify_row_content, normalize_ocr_text
-from src.extraction.table_semantics_codex import build_table_content_profile, EXTRACTABLE_SEMANTICS
+from src.extraction.table_semantics_codex import build_table_content_profile
 from src.extraction.article_type_contract import get_family_contract
 from src.extraction.vocabulary import (
     find_closest_dv,

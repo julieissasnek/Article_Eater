@@ -25,7 +25,6 @@ import math
 import logging
 from collections import defaultdict
 from itertools import combinations
-import copy
 
 logger = logging.getLogger(__name__)
 

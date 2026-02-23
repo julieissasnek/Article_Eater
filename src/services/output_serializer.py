@@ -23,7 +23,7 @@ All outputs follow a consistent structure:
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
 from pathlib import Path
 import json

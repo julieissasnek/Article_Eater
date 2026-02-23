@@ -34,9 +34,6 @@ from typing import Any, Dict, List, Optional, Tuple
 # Import real contrast classes from epistemic_causal_bridge
 from src.services.epistemic_causal_bridge import (
     ContrastClass,
-    ContrastTransferType,
-    ConditionSpec,
-    PopulationContext,
 )
 
 

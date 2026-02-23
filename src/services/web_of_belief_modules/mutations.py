@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import logging
-from typing import Any, Callable, Iterable, Mapping, Optional, Sequence
+from typing import Any, Callable, Mapping, Optional, Sequence
 
 logger = logging.getLogger(__name__)
 

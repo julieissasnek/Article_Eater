@@ -9,13 +9,11 @@ If current template value falls outside CI, auto-generates an update proposal.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Optional
 import math
-from datetime import datetime
 
 from src.cmr.learning.update_proposals import (
     Evidence,
-    ProposalType,
     generate_boundary_revision_proposal,
     generate_contradiction_proposal,
 )

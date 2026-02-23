@@ -13,8 +13,8 @@ References:
 - Mill, J.S. (1859). On Liberty (marketplace of ideas)
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Any, Callable
+from dataclasses import dataclass
+from typing import Dict, List, Optional, Any, Callable
 from enum import Enum
 
 

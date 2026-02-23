@@ -26,7 +26,6 @@ from src.cmr.tier2_scores import compute_tier2_scores
 from src.cmr.wis import aggregate_domain_wis, aggregate_overall_wis
 from src.cmr.lifespan_moderation import (
     compute_template_with_lifespan,
-    extract_occupant_age,
 )
 from src.services.web_persistence import WebPersistenceService
 

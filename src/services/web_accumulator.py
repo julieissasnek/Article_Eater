@@ -48,7 +48,7 @@ logger = logging.getLogger(__name__)
 try:
     DEFAULT_DB_PATH = resolve_web_db(prefer="integrated")
 except Exception:
-    DEFAULT_DB_PATH = Path(__file__).parent.parent.parent / "data" / "web_persistence.db"
+    DEFAULT_DB_PATH = Path(__file__).parent.parent.parent / "web_persistence.db"
 DEFAULT_JSON_PATH = Path(__file__).parent.parent.parent / "data" / "accumulated_web.json"
 DEFAULT_EVENTS_PATH = Path(__file__).parent.parent.parent / "data" / "events.jsonl"
 
@@ -231,7 +231,7 @@ class WebAccumulator:
             Integration report dict
         """
         from src.services.web_of_belief import (
-            WebOfBelief, Belief, Constraint, Credence,
+            Belief, Constraint, Credence,
             EpistemicLevel, BeliefStatus, ConstraintType,
             create_neuroarchitecture_web
         )
@@ -510,7 +510,6 @@ class WebAccumulator:
         master_id = self.persistence.get_master_web_id()
         if master_id:
             # Delete from database
-            from src.services.web_persistence import WebPersistenceService
             # For now, just log - actual deletion would require more code
             logger.warning(f"Would clear master web {master_id} - not implemented in MVP")
 

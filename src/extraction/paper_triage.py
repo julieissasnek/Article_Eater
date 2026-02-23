@@ -12,7 +12,6 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 import pandas as pd
 

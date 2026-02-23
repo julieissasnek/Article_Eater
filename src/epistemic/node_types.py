@@ -9,7 +9,7 @@ Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §2.2
 """
 
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List
 from dataclasses import dataclass
 
 

@@ -20,14 +20,13 @@ Expert Panel Guidance:
 """
 
 import logging
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any, Set, Tuple
 from datetime import datetime, timezone
-import math
 
 # Import canonical gap types from single source of truth
 # Per Canonical Decisions Record (02-15_09), Decision 1
-from src.epistemic.gap_types import GapType, GapPriority, GAP_TYPE_WEIGHTS
+from src.epistemic.gap_types import GapType, GapPriority
 
 logger = logging.getLogger(__name__)
 

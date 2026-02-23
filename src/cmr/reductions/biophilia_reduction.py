@@ -17,7 +17,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 
-from src.cmr.models import ReductionClaim, get_session
+from src.cmr.models import ReductionClaim
 
 
 @dataclass

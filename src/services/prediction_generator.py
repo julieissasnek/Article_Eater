@@ -13,14 +13,10 @@ import json
 import math
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple
-from enum import Enum
 import logging
 
 from src.models.theory_models import (
-    Theory, Prediction, DerivationStep, QuantitativePrediction,
-    Direction, Magnitude, TestingStatus, SupportLevel,
-    PredictionType, Generality, UncertaintyType,
-    compute_derivation_confidence
+    Theory, Prediction, Direction, Magnitude, TestingStatus
 )
 from src.services.theory_registry import TheoryRegistry
 

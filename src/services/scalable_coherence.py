@@ -47,7 +47,6 @@ from enum import Enum
 from collections import defaultdict
 import time
 import logging
-import math
 
 logger = logging.getLogger(__name__)
 

@@ -12,19 +12,16 @@ Per Mayo: Severe testing requires tracking what tests were passed.
 Date: February 8, 2026
 """
 
-import json
 import logging
 import sqlite3
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 
 from src.services.credibility_testing import (
     CredibilityReport,
-    CredibilityFlag,
-    Decision,
 )
 
 logger = logging.getLogger(__name__)

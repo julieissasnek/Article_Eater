@@ -13,7 +13,7 @@ References:
 - BonJour, L. (1985). The Structure of Empirical Knowledge (isolation objection)
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Any
 from enum import Enum
 

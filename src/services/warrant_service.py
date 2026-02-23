@@ -30,7 +30,7 @@ References:
 - Pollock, J.L. (1995). Cognitive Carpentry. MIT Press.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Set, Tuple, Any, TYPE_CHECKING
 from enum import Enum
 import logging

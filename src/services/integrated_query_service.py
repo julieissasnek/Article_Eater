@@ -16,13 +16,9 @@ The T1 Panel Discussion is the intellectually exciting part: each framework
 identifies complications, speculates about mechanisms, and notes limitations.
 """
 
-import json
-import os
 import logging
-from pathlib import Path
-from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Tuple
-from collections import defaultdict
+from dataclasses import dataclass
+from typing import Dict, List, Optional, Tuple
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -30,7 +26,7 @@ logger = logging.getLogger(__name__)
 # Import the base template query service
 from src.services.template_query_service import (
     TemplateQueryService, QueryResponse, TemplateAnswer,
-    UserPersona, NeuroscienceDetail, ResearchGap
+    UserPersona
 )
 
 # Try to import WebOfBelief for article grounding

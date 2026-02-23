@@ -16,7 +16,6 @@ import hashlib
 import json
 
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text
-from sqlalchemy.orm import Session
 
 from src.cmr.models import Base, get_session
 

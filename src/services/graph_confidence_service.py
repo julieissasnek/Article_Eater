@@ -30,7 +30,7 @@ References:
 - Pearl, J. (2009). Causal inference in statistics: An overview.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Set, Tuple, Any, TYPE_CHECKING
 from enum import Enum
 import logging
@@ -40,7 +40,6 @@ if TYPE_CHECKING:
     from src.services.web_of_belief import WebOfBelief
 
 from src.services.ranking_service import RankPair
-from src.services.warrant_service import WarrantStatus
 from src.services.grounding_service import FoundherentistScore, JustificationStatus
 
 logger = logging.getLogger(__name__)

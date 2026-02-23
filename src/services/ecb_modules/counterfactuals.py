@@ -8,7 +8,6 @@ and epistemic gap structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 # Avoid circular imports — these are used for type hints only.

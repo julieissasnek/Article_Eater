@@ -20,7 +20,7 @@ Usage:
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Any, Tuple, TYPE_CHECKING
+from typing import Dict, List, Optional, Set, Any, TYPE_CHECKING
 from datetime import datetime, timezone
 import logging
 
@@ -34,7 +34,6 @@ from src.services.ranking_service import (
 )
 from src.services.warrant_service import (
     WarrantService,
-    WarrantStatus,
     DefeatRelation,
     WarrantResult,
     DefeatType
@@ -42,13 +41,11 @@ from src.services.warrant_service import (
 from src.services.grounding_service import (
     GroundingService,
     GroundingResult,
-    ExperientialClaim,
-    JustificationStatus
+    ExperientialClaim
 )
 from src.services.graph_confidence_service import (
     GraphConfidenceService,
-    GraphConfidenceResult,
-    IdentifiabilityStatus
+    GraphConfidenceResult
 )
 
 logger = logging.getLogger(__name__)

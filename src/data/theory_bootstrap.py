@@ -49,9 +49,7 @@ from src.models.theory_models import (
     Prediction, Originator, DerivationStep, QuantitativePrediction,
     TheoryLevel, PredictionType, Direction, Magnitude, TestingStatus,
     SupportLevel, ReplicationStatus, Necessity, Testability,
-    RelationType, Generality, UncertaintyType,
-    generate_theory_id, generate_prediction_id, generate_claim_id,
-    compute_derivation_confidence
+    Generality
 )
 
 

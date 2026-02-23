@@ -33,25 +33,21 @@ Usage:
     response = engine.query_from_request(request)
 """
 
-import json
 import logging
 import uuid
 import time
-from pathlib import Path
-from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
 # Import components
-from src.services.web_accumulator import WebAccumulator, AccumulatorStats
+from src.services.web_accumulator import WebAccumulator
 from src.services.query_parser import (
-    QueryParser, QueryType, CausalLevel, QueryIntent, ParseResult
+    QueryParser, QueryIntent, ParseResult
 )
 from src.services.query_response import (
-    QueryResponseGenerator, ResponseMode, ProgressiveResponse,
-    EvidenceItem, FollowUp
+    QueryResponseGenerator, ResponseMode
 )
 from src.services.web_of_belief import WebOfBelief, Belief, EpistemicLevel
 from src.argument.qa_handlers import ArgumentQueryHandler

@@ -18,7 +18,7 @@ Per Gap Resolution Improvements (2026-02-12):
 """
 
 import logging
-from typing import List, Dict, Tuple, Optional, Set
+from typing import List, Dict, Optional, Set
 from dataclasses import dataclass, field
 
 logger = logging.getLogger(__name__)

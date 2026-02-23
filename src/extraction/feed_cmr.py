@@ -22,7 +22,6 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.cmr.process_paper import (
     process_paper,
     ProcessingResult,
-    format_processing_report,
 )
 
 

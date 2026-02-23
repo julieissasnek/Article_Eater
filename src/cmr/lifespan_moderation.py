@@ -13,15 +13,13 @@ Per AGE-I and DEV-I panels:
 from __future__ import annotations
 
 import inspect
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Dict, Optional
 
 from src.cmr.template_computations import (
-    TEMPLATE_COMPUTE_FUNCTIONS,
     get_compute_function,
     get_lifespan_multiplier,
     ComputeResult,
 )
-from src.cmr.wis import goldilocks_to_wis, threshold_to_wis
 
 
 # Zone-to-WIS mapping for templates that return zone classifications

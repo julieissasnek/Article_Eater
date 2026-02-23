@@ -14,7 +14,7 @@ import pdfplumber
 import re
 import json
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime
 import logging
@@ -534,7 +534,6 @@ class PDFExtractor:
 
 
 if __name__ == "__main__":
-    import sys
     from pathlib import Path
     
     pdf_dir = Path("/home/claude/article_eater/data/pdfs")

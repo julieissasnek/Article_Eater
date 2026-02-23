@@ -33,7 +33,6 @@ from src.queue.models import (
     SearchResultType,
     TargetStatus,
     iso_z,
-    parse_iso_z,
 )
 from src.services.gap_predictor import GapPredictor
 

@@ -8,9 +8,9 @@ evidence accumulation → paper record keeping.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Optional
 
 from src.cmr.paper_eval import evaluate_paper
 from src.cmr.paper_history import get_processed_papers
@@ -19,16 +19,13 @@ from src.cmr.learning.update_proposals import (
     ProposalType,
     UpdateProposal,
     generate_proposal,
-    generate_contradiction_proposal,
     get_pending_proposals,
-    format_proposal_summary,
 )
 from src.cmr.learning.evidence_accumulation import (
     EvidencePool,
     AccumulatedEvidence,
     accumulate_evidence,
     generate_proposals_from_accumulated,
-    format_accumulation_report,
 )
 
 

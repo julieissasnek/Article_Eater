@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Optional
 
 from src.cmr.learning.update_proposals import (
     Evidence,

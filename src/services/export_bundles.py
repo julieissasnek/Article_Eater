@@ -26,11 +26,11 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
 logger = logging.getLogger(__name__)
 

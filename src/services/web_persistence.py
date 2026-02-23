@@ -32,7 +32,6 @@ import sqlite3
 import json
 import logging
 import math
-from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional, Tuple, Iterable
 from contextlib import contextmanager
@@ -47,8 +46,6 @@ from src.services.web_of_belief import (
     Credence,
     EpistemicLevel,
     BeliefStatus,
-    ConstraintType,
-    CausalDirection,     # Sprint 6
     ScopeConditions,     # Sprint 6
     create_neuroarchitecture_web,
 )
@@ -663,6 +660,7 @@ class WebPersistenceService:
             self._persistent_conn.row_factory = sqlite3.Row
             self._persistent_conn.execute("PRAGMA foreign_keys = ON")
 
+        print(f"DEBUG: Opening DB at {db_path}")
         self._ensure_schema()
 
     @contextmanager

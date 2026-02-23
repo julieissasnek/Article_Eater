@@ -65,7 +65,10 @@ def candidate_web_dbs(explicit: Path | str | None = None) -> list[Path]:
     return _existing_unique(
         [
             explicit,
+            os.getenv("AE_DB_PATH"),  # Check explicitly overridden path first
             os.getenv("AE_WEB_DB"),
+            Path("web_persistence.db").resolve(),
+            PROJECT_ROOT / "web_persistence.db",
             PROJECT_ROOT / "data" / "web_persistence.db",
             PROJECT_ROOT / "data" / "web_persistence_v2.db",
         ]

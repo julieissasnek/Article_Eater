@@ -8,15 +8,14 @@ for claim extraction tasks. Allows benchmarking different models.
 
 import json
 import logging
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 
 from src.services.llm_query_bridge import (
     MODEL_REGISTRY,
     AnthropicProvider,
     OpenAIProvider,
     GoogleProvider,
-    ModelConfig,
-    ModelTier
+    ModelConfig
 )
 
 logger = logging.getLogger(__name__)

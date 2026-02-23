@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
 
 from src.cmr.reduction_api import reduce_theory
 

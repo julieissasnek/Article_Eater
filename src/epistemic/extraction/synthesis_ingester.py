@@ -16,7 +16,6 @@ from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 from enum import Enum
-import uuid
 
 from src.epistemic.node_types import NodeType
 from src.epistemic.edge_types import EdgeType
@@ -24,11 +23,9 @@ from src.epistemic.contracts.claim_v2 import ClaimV2
 from src.epistemic.contracts.edge_v2 import EdgeV2
 from src.epistemic.entrenchment.synthesis_rules import (
     compute_synthesis_entrenchment,
-    compute_median_entrenchment,
 )
 from src.epistemic.entrenchment.expert_discount import (
     compute_expert_synthesis_entrenchment,
-    EXPERT_SYNTHESIS_DISCOUNT,
 )
 
 

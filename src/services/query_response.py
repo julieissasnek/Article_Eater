@@ -26,7 +26,7 @@ from enum import Enum
 
 from src.services.query_parser import QueryIntent, QueryType, ParseResult
 from src.services.web_of_belief import (
-    WebOfBelief, Belief, SourceDepth, EpistemicLevel
+    WebOfBelief, Belief, SourceDepth
 )
 from src.services.stability_engine import StabilityEngine
 
@@ -948,7 +948,7 @@ def generate_progressive_response(
         ProgressiveResponse with appropriate level of detail
     """
     import time
-    from src.services.query_parser import parse_query, CausalLevel
+    from src.services.query_parser import parse_query
     import uuid
 
     start_time = time.time()

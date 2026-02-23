@@ -11,7 +11,7 @@ This implements a Popperian correction within the Quinean framework."
 Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §4.2
 """
 
-from typing import Optional, Tuple
+from typing import Tuple
 
 
 # =============================================================================

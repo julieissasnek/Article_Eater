@@ -7,27 +7,13 @@ Demonstrates the full pipeline: PDF -> Extraction -> Epistemic Update
 """
 
 import json
-from pathlib import Path
-from typing import List, Dict, Any, Optional
-from dataclasses import dataclass, field
+from typing import List, Dict, Any
+from dataclasses import dataclass
 
-from src.services.pdf_extraction import PDFExtractor, ExtractedPaper, TheoryReference
+from src.services.pdf_extraction import ExtractedPaper, TheoryReference
 from src.services.refined_epistemic import (
     RefinedEpistemicState,
-    SemanticBelief,
-    SemanticStatus,
-    RefinedDependency,
-    DependencyType,
     create_refined_neuroarchitecture
-)
-from src.services.web_of_belief import (
-    WebOfBelief,
-    Belief,
-    EpistemicLevel,
-    BeliefStatus,
-    Credence,
-    UncertainQuantity,
-    create_neuroarchitecture_web
 )
 
 

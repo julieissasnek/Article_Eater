@@ -27,13 +27,13 @@ import logging
 import random
 import uuid
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple, Set
+from typing import List, Dict, Any, Optional, Tuple
 from enum import Enum
 from pathlib import Path
 
 import yaml
 
-from src.services.web_of_belief import WebOfBelief, Belief, Credence
+from src.services.web_of_belief import WebOfBelief, Belief
 
 # Import canonical gap types from single source of truth
 # Per Canonical Decisions Record (02-15_09), Decision 1

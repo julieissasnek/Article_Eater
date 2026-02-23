@@ -21,7 +21,6 @@ from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Dict, Any
-from urllib.parse import urlparse, quote_plus
 
 logger = logging.getLogger(__name__)
 

@@ -28,8 +28,8 @@ References:
 - Haack, S. (2009). Evidence and Inquiry: A Pragmatist Reconstruction.
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any, TYPE_CHECKING
+from dataclasses import dataclass
+from typing import Dict, List, Optional, Set, Any, TYPE_CHECKING
 from enum import Enum
 import logging
 

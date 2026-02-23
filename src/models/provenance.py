@@ -9,9 +9,9 @@ Reference: contracts/schemas/provenance.v1.schema.json
 Reference: contracts/schemas/experiential_claim.v1.schema.json
 """
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 import re
 

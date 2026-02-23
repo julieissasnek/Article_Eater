@@ -19,7 +19,7 @@ import json
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any, Optional
 from enum import Enum
 from datetime import datetime
 import logging

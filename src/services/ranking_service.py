@@ -26,9 +26,8 @@ References:
 - Spohn, W. (2012). The Laws of Belief: Ranking Theory and its Philosophical Applications.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Set, Tuple, Any, TYPE_CHECKING
-from enum import Enum
 import logging
 
 if TYPE_CHECKING:

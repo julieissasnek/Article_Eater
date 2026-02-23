@@ -23,7 +23,7 @@ Reference: Canonical Decisions Record (02-15_09)
 """
 
 from enum import Enum
-from typing import Dict, List, Set
+from typing import Dict, List
 from dataclasses import dataclass
 
 

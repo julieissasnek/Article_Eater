@@ -28,12 +28,9 @@ from src.services.web_of_belief import (
     WebOfBelief,
     Belief,
     Constraint,
-    Credence,
-    EpistemicLevel,
     BeliefStatus,
     ConstraintType,
     CausalDirection,
-    ScopeConditions,
 )
 
 logger = logging.getLogger(__name__)

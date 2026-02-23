@@ -13,9 +13,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Optional
 
-from src.cmr.process_paper import process_paper, ProcessingResult
+from src.cmr.process_paper import process_paper
 
 
 @dataclass

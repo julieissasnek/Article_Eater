@@ -8,7 +8,7 @@ Per panel consultation (Spohn, Pollock, Haack, 2026-02-12).
 Reference: contracts/schemas/epistemic_status.v1.schema.json
 """
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Dict, Any, Optional
 from datetime import datetime

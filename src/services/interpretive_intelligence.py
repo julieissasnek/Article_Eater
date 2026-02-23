@@ -24,13 +24,11 @@ import logging
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple, Union
 from enum import Enum
-from datetime import datetime, timezone
 
 from src.services.web_of_belief import (
     WebOfBelief,
     Belief,
     Constraint,
-    Credence,
     EpistemicLevel,
     ConstraintType,
 )

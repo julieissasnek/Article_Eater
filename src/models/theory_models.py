@@ -9,7 +9,6 @@ their predictions, and evidence relationships.
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 from typing import List, Dict, Any, Optional
-from datetime import datetime
 import json
 
 

@@ -40,12 +40,10 @@ Philosophical Foundations:
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple, Set, FrozenSet
+from typing import List, Dict, Any, Optional, Tuple, Set
 from datetime import datetime, timezone
-import json
 import logging
 import os
-from itertools import combinations
 
 from src.services.web_of_belief_modules import (
     AnalysisContracts as _AnalysisContracts,
@@ -105,11 +103,6 @@ from src.services.web_of_belief_components import (
     Constraint,
     TheoryWorld,
     UncertainQuantity,
-)
-from src.epistemic.edge_types import (
-    EdgeType as ConstraintType,
-    EdgeType,
-    convert_legacy_constraint_type,
 )
 
 logger = logging.getLogger(__name__)

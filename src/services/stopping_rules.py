@@ -13,10 +13,9 @@ Date: January 21, 2026
 Phase D Sprint D1
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Dict, Any, Set
 from enum import Enum
-import math
 
 from src.services.web_of_belief import WebOfBelief, Belief
 

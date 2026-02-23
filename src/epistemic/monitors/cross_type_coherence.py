@@ -16,12 +16,11 @@ Reference: Non_Empirical_Web_Integration_Spec_V1.0.md §5.2
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Set, Tuple, Any
+from typing import List, Dict, Optional, Tuple, Any
 from enum import Enum
 from datetime import datetime
 
 from src.epistemic.node_types import NodeType, NodeTypeFamily, get_node_type_family
-from src.epistemic.edge_types import EdgeType, EdgeTypeCategory
 
 
 class CoherenceType(str, Enum):

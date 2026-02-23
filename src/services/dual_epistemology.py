@@ -23,22 +23,12 @@ that epistemological choices aren't neutral.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple
-from enum import Enum
-from datetime import datetime
+from typing import List, Dict, Any, Tuple
 import json
-import math
-from collections import defaultdict
 
 # Import both approaches
-from src.services.refined_epistemic import (
-    RefinedEpistemicState,
-    SemanticStatus,
-    DependencyType,
-    create_refined_neuroarchitecture
-)
 from src.services.evidence_integration import EvidenceIntegrator
-from src.services.pdf_extraction import PDFExtractor, ExtractedPaper
+from src.services.pdf_extraction import ExtractedPaper
 
 
 # =============================================================================

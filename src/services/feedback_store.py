@@ -16,7 +16,7 @@ Date: January 20, 2026
 import sqlite3
 import json
 import logging
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any, Literal
 from pathlib import Path

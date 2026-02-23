@@ -10,7 +10,6 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 
 GOLD_STANDARD_PATH = Path(__file__).parent.parent.parent / "data" / "gold_standard" / "gold_standard_papers.json"

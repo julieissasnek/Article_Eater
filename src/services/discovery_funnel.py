@@ -24,10 +24,10 @@ import sqlite3
 import json
 import logging
 import uuid
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 from contextlib import contextmanager
 from pathlib import Path
 
