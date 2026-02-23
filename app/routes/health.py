@@ -172,6 +172,194 @@ def _check_schemas() -> SubsystemStatus:
     )
 
 
+def _check_web_persistence() -> SubsystemStatus:
+    """Check the main web persistence database."""
+    db_path = ROOT / "data" / "web_persistence.db"
+    start = time.perf_counter()
+
+    try:
+        if not db_path.exists():
+            return SubsystemStatus(
+                name="web_persistence",
+                status="degraded",
+                details={"error": "web_persistence.db not found"},
+            )
+
+        conn = sqlite3.connect(str(db_path), timeout=5.0)
+        cursor = conn.cursor()
+
+        # Check we can query beliefs table
+        cursor.execute("SELECT COUNT(*) FROM beliefs")
+        belief_count = cursor.fetchone()[0]
+
+        conn.close()
+        latency = (time.perf_counter() - start) * 1000
+
+        return SubsystemStatus(
+            name="web_persistence",
+            status="ok",
+            latency_ms=round(latency, 2),
+            details={"beliefs": belief_count, "path": str(db_path)},
+        )
+    except Exception as e:
+        latency = (time.perf_counter() - start) * 1000
+        return SubsystemStatus(
+            name="web_persistence",
+            status="unhealthy",
+            latency_ms=round(latency, 2),
+            details={"error": str(e)},
+        )
+
+
+def _check_migrations() -> SubsystemStatus:
+    """Check for pending database migrations."""
+    start = time.perf_counter()
+
+    try:
+        from src.services.db_migrations import check_migration_status
+
+        db_path = ROOT / "data" / "web_persistence.db"
+        if not db_path.exists():
+            return SubsystemStatus(
+                name="migrations",
+                status="ok",
+                details={"note": "No database yet"},
+            )
+
+        status = check_migration_status(str(db_path))
+        latency = (time.perf_counter() - start) * 1000
+
+        if status["pending_count"] > 0:
+            return SubsystemStatus(
+                name="migrations",
+                status="degraded",
+                latency_ms=round(latency, 2),
+                details={
+                    "pending": status["pending_count"],
+                    "versions": status["pending_versions"],
+                    "current": status["current_version"],
+                    "action": "Run: python scripts/maintenance.py --task db",
+                },
+            )
+
+        return SubsystemStatus(
+            name="migrations",
+            status="ok",
+            latency_ms=round(latency, 2),
+            details={"version": status["current_version"]},
+        )
+    except Exception as e:
+        latency = (time.perf_counter() - start) * 1000
+        return SubsystemStatus(
+            name="migrations",
+            status="degraded",
+            latency_ms=round(latency, 2),
+            details={"error": str(e)},
+        )
+
+
+def _check_env_vars() -> SubsystemStatus:
+    """Check required environment variables."""
+    import os
+
+    start = time.perf_counter()
+
+    required = {
+        "GOOGLE_API_KEY": "LLM integration",
+    }
+    optional = {
+        "AE_ENV": "Environment mode",
+        "AE_DB_PATH": "Database path override",
+    }
+
+    missing_required = []
+    missing_optional = []
+
+    for var, purpose in required.items():
+        if not os.getenv(var):
+            missing_required.append(var)
+
+    for var, purpose in optional.items():
+        if not os.getenv(var):
+            missing_optional.append(var)
+
+    latency = (time.perf_counter() - start) * 1000
+
+    if missing_required:
+        return SubsystemStatus(
+            name="environment",
+            status="degraded",
+            latency_ms=round(latency, 2),
+            details={
+                "missing_required": missing_required,
+                "missing_optional": missing_optional,
+            },
+        )
+
+    return SubsystemStatus(
+        name="environment",
+        status="ok",
+        latency_ms=round(latency, 2),
+        details={
+            "missing_optional": missing_optional if missing_optional else None,
+        },
+    )
+
+
+def _check_disk_space() -> SubsystemStatus:
+    """Check available disk space."""
+    import shutil
+
+    start = time.perf_counter()
+
+    try:
+        usage = shutil.disk_usage(ROOT)
+        free_pct = (usage.free / usage.total) * 100
+        free_gb = usage.free / (1024**3)
+        latency = (time.perf_counter() - start) * 1000
+
+        if free_pct < 5:
+            return SubsystemStatus(
+                name="disk",
+                status="unhealthy",
+                latency_ms=round(latency, 2),
+                details={
+                    "free_percent": round(free_pct, 1),
+                    "free_gb": round(free_gb, 2),
+                    "error": "Disk space critically low (<5%)",
+                },
+            )
+        elif free_pct < 15:
+            return SubsystemStatus(
+                name="disk",
+                status="degraded",
+                latency_ms=round(latency, 2),
+                details={
+                    "free_percent": round(free_pct, 1),
+                    "free_gb": round(free_gb, 2),
+                    "warning": "Disk space low (<15%)",
+                },
+            )
+
+        return SubsystemStatus(
+            name="disk",
+            status="ok",
+            latency_ms=round(latency, 2),
+            details={
+                "free_percent": round(free_pct, 1),
+                "free_gb": round(free_gb, 2),
+            },
+        )
+    except Exception as e:
+        latency = (time.perf_counter() - start) * 1000
+        return SubsystemStatus(
+            name="disk",
+            status="degraded",
+            latency_ms=round(latency, 2),
+            details={"error": str(e)},
+        )
+
+
 @router.get("", response_model=HealthStatus)
 @router.get("/", response_model=HealthStatus)
 async def health_check() -> HealthStatus:
@@ -211,8 +399,12 @@ async def readiness_check() -> ReadinessResponse:
     """
     subsystems = [
         _check_database(),
+        _check_web_persistence(),
         _check_templates(),
         _check_schemas(),
+        _check_migrations(),
+        _check_env_vars(),
+        _check_disk_space(),
     ]
 
     passed = sum(1 for s in subsystems if s.status == "ok")
