@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # Opus Transfer Context V10.0
 ## February 18, 2026 — Session: Sprint D Diagnosis, Adversarial Review, Philosopher Presentation
 

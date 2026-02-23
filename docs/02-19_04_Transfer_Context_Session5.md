@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # Transfer Context: Session 5 — Goldilocks, PE, Hedonic Tagging, Clark
 ## Date: 2026-02-19 | David Kirsh | Cognitive Science, UCSD
 

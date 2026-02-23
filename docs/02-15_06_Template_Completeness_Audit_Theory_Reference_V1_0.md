@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # TEMPLATE COMPLETENESS AUDIT & THEORY REFERENCE
 ## Article Eater — Opus-Side Deliverable for Sprint 7/8
 ## Version 1.0 — February 15, 2026

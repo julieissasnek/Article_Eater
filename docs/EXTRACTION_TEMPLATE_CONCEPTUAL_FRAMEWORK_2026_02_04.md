@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # CONCEPTUAL FRAMEWORK EXTRACTION TEMPLATE v1.0
 
 **Version**: 1.0.0

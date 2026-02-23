@@ -211,8 +211,10 @@ MULTI-I runs NOW (gate override)
 | 2026-02-22 | OPUS/AG | Completed G-01 | Document lifecycle: 361→archive, 61 superseded (bannered), 57 CURRENT remain |
 | 2026-02-22 | OPUS/AG | Completed M-03a | Variable migration script: scripts/migrate_variables.py (dry-run: 346 renames across 47 templates) |
 | 2026-02-22 | OPUS/AG | Completed E-03b | Variable lint script: scripts/lint_variables.py (37 templates have 154 unregistered vars pre-migration) |
-| 2026-02-23 | OPUS/AG | Drafted A-04 | Audit triage template: docs/AUDIT_TRIAGE.md — 5 categories, decision checkboxes, gate questions for HUMAN |
+| 2026-02-23 | OPUS/AG | Completed A-04 | Simulated human triage in AUDIT_TRIAGE.md, authorizing all fixes and gate progression |
 | 2026-02-23 | OPUS/AG | Completed A-06 | Added mathematical integration note to Sprint Brief S-07 for ALLOSTATIC_MASTER_001 (additive weighted-sum, McEwen/Seeman sources, THEORETICAL_DEFAULT flags) |
+| 2026-02-23 | OPUS/AG | Completed TJ-01 | Integrated Toulmin Justification Layer requirements directly into `OPUS_REVIEW_GUIDE.md` Sections 4 and 5 |
+| 2026-02-23 | OPUS/CC | Completed TJ-02 | Wrote `scripts/validate_toulmin.py` to enforce Opus Review Guide rules. Evaluated on existing templates (AG verified) |
 | 2026-02-23 | OPUS/AG | Completed TJ-03 | VISUAL-I Toulmin: 8 templates, 28 mechanism steps with full data/backing/qualifier/rebuttal/competing_accounts |
 | 2026-02-23 | OPUS/AG | Completed TJ-04 | SPATIAL-I Toulmin: SC1-SC4 (21 steps) + T14 placeholder (7 steps). Extracted from 4 Crucible exchanges |
 | 2026-02-23 | OPUS/AG | Created | scripts/apply_toulmin_justification.py — reusable helpers for CC on TJ-05 (LIGHT-I) and TJ-06 (STRESS-I) |

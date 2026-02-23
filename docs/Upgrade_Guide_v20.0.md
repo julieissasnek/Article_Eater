@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Upgrade Guide — v20.0
 
 ## Steps

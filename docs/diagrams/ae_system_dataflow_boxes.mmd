@@ -1,0 +1,95 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#1a1a1a', 'primaryBorderColor': '#333333', 'lineColor': '#666666', 'secondaryColor': '#f5f5f5', 'tertiaryColor': '#fafafa', 'fontSize': '14px'}}}%%
+
+flowchart LR
+    subgraph INPUTS["INPUTS"]
+        direction TB
+        I1["Scientific Papers<br/>(PDFs)"]
+        I2["DOIs &<br/>Metadata"]
+        I3["CMR Templates<br/>━━━━━━━━━━━━━━<br/>Causal Model Repository:<br/>Pre-defined theoretical<br/>causal structures from<br/>10 canonical frameworks<br/>(PP, SN, DP, DT, NM,<br/>IC, MS, EC, CB, MSI)<br/>encoding expected<br/>IV → Mechanism → DV<br/>pathways"]
+    end
+
+    subgraph AF["ARTICLE FINDER<br/>(AF)"]
+        direction TB
+        AF1["Literature<br/>Search"]
+        AF2["PDF<br/>Retrieval"]
+        AF3["Deduplication<br/>& Triage"]
+    end
+
+    subgraph AE["ARTICLE EATER<br/>(AE)"]
+        direction TB
+        AE1["PDF Parser"]
+        AE2["Claim<br/>Extractor"]
+        AE3["Vocabulary<br/>Mapper"]
+        AE4["Method<br/>Registry"]
+        AE5["Direction<br/>Detection"]
+        AE6["Quality<br/>Scorer"]
+    end
+
+    subgraph KNOWLEDGE["KNOWLEDGE STRUCTURES"]
+        direction TB
+        subgraph WOB["WEB OF BELIEF<br/>(Quinean Coherence)"]
+            direction TB
+            W1["Belief Nodes"]
+            W2["Coherence<br/>Engine"]
+            W3["Entrenchment<br/>Scoring"]
+            W4["Temporal<br/>Decay"]
+        end
+        subgraph BN["BAYESIAN NETWORK<br/>(Causal Model)"]
+            direction TB
+            B1["Causal<br/>Nodes"]
+            B2["Conditional<br/>Edges"]
+            B3["Inference<br/>Engine"]
+            B4["Bridge<br/>Warrants"]
+        end
+    end
+
+    subgraph OUTPUTS["OUTPUTS"]
+        direction TB
+        O1["Structured<br/>Claims (JSON)"]
+        O2["Graph Exports<br/>(GraphML, DOT)"]
+        O3["Reports<br/>(HTML, PDF)"]
+        O4["Query<br/>Interface"]
+        O5["Streamlit<br/>Dashboard"]
+    end
+
+    %% Main data flow
+    I1 --> AF
+    I2 --> AF
+    AF1 --> AF2 --> AF3
+    AF --> AE
+
+    AE1 --> AE2 --> AE3 --> AE4 --> AE5 --> AE6
+
+    I3 --> BN
+
+    AE6 --> WOB
+    AE6 --> BN
+
+    W1 --> W2 --> W3 --> W4
+    B1 --> B2 --> B3
+    B4 --> W1
+
+    WOB <--> BN
+
+    WOB --> O1
+    WOB --> O2
+    BN --> O2
+    BN --> O3
+    WOB --> O4
+    O4 --> O5
+    O2 --> O5
+
+    %% Styling
+    classDef inputBox fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef afBox fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    classDef aeBox fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef wobBox fill:#FCE4EC,stroke:#C2185B,stroke-width:2px,color:#880E4F
+    classDef bnBox fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef outBox fill:#E0F7FA,stroke:#00838F,stroke-width:2px,color:#006064
+
+    class I1,I2,I3 inputBox
+    class AF1,AF2,AF3 afBox
+    class AE1,AE2,AE3,AE4,AE5,AE6 aeBox
+    class W1,W2,W3,W4 wobBox
+    class B1,B2,B3,B4 bnBox
+    class O1,O2,O3,O4,O5 outBox

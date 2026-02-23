@@ -1,0 +1,84 @@
+{
+  "id": "ai_handoff_next_steps_2026_02_20",
+  "date_utc": "2026-02-20",
+  "inputs": {
+    "health_markdown": "docs/system_health_report_app_streamlit_db_contracts_2026-02-20.md",
+    "health_json": "data/production/system_health_report_app_streamlit_db_contracts_2026-02-20.json",
+    "web_bn_json": "data/production/check_web_bn_health_app_streamlit_db_contracts_2026-02-20.json"
+  },
+  "baseline_metrics": {
+    "web.isolated_pct": 22.49762432689262,
+    "web.contradicts_count": 171,
+    "web.contradicts_share_pct": 0.6039415130324222,
+    "bn.edges": 4271,
+    "bn.largest_component_pct": 24.911204391346466
+  },
+  "safety_contracts": [
+    "dry_run_before_write",
+    "backup_web_db_and_bn_json_before_write",
+    "no_hardcoded_absolute_af_web_db_paths",
+    "no_hard_gate_regression",
+    "no_minimum_viable_regression"
+  ],
+  "phases": [
+    {
+      "id": "P1",
+      "name": "increase_cross_paper_integration_density",
+      "commands": [
+        "python3 scripts/reprocess_web_relations_and_bridges.py --dry-run"
+      ],
+      "acceptance": [
+        "web.isolated_pct decreases",
+        "minimum_viable remains 12/12 pass"
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "increase_contradiction_coverage_conservatively",
+      "commands": [
+        "python3 scripts/backfill_outcome_polarity_conflicts.py --dry-run",
+        "python3 scripts/backfill_argument_constraints.py --dry-run"
+      ],
+      "acceptance": [
+        "web.contradicts_count >= 200 or improves materially",
+        "web.contradicts_share_pct increases without minimum_viable regression"
+      ]
+    },
+    {
+      "id": "P3",
+      "name": "improve_bn_connectivity",
+      "commands": [
+        "python3 scripts/check_web_bn_health.py --json"
+      ],
+      "acceptance": [
+        "bn.edges increases vs baseline",
+        "bn.largest_component_pct increases vs baseline",
+        "bn.unresolved_count remains 0"
+      ]
+    },
+    {
+      "id": "P4",
+      "name": "lock_regression_guards",
+      "commands": [
+        "pytest -q tests/test_db_path_contracts.py tests/test_db_locator.py tests/test_compute_system_health.py tests/test_sanity_check.py tests/test_bn_unresolved_repair.py"
+      ],
+      "acceptance": [
+        "all listed tests pass"
+      ]
+    }
+  ],
+  "reporting": {
+    "required_outputs": [
+      "docs/system_health_report_<suffix>.md",
+      "data/production/system_health_report_<suffix>.json",
+      "data/production/check_web_bn_health_<suffix>.json"
+    ],
+    "required_before_after_metrics": [
+      "web.isolated_pct",
+      "web.contradicts_count",
+      "web.contradicts_share_pct",
+      "bn.edges",
+      "bn.largest_component_pct"
+    ]
+  }
+}

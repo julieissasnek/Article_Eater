@@ -402,3 +402,110 @@ Following Codex suggestions for improving table semantics before claim extractio
 - **Decision**: Added placeholder-variable routing (`col_2`, `row_3`, etc.) to force these rows into review queue instead of training set.
 - **Rationale**: user requested many whole-sentence examples of field surface forms; span-level labels improve model learnability and reduce noisy supervision.
 - **Risk**: Medium — noisy upstream `iv_raw`/`dv_raw` can still generate imperfect spans; unresolved rows remain in review queue for gold correction.
+
+### D.D15.9: Pilot Claim Quality Gate + Type-Safe AI Parsing (2026-02-20)
+- **Decision**: Added strict claim quality filters to `scripts/run_llm_table_pilot.py` for placeholder/duplicate/OCR-noise/citation-like claims before metrics/output.
+- **Decision**: Added rejection accounting (`claims_pre_filter`, `claims_rejected`, reason counters, `rejected_claims` sample).
+- **Decision**: Added `--codex-timeout-sec` to bound per-call latency and avoid pilot stalls.
+- **Decision**: Added numeric coercion helper in `src/services/table_extractor.py` so string-typed numeric fields from LLM JSON no longer crash AI parsing (`'>=' not supported between instances of 'str' and 'float'`).
+- **Rationale**: Improve precision and robustness under messy OCR/LLM formatting while keeping batch runs operational.
+- **Risk**: Medium — stricter filtering may reduce recall until upstream table reconstruction improves row cleanliness.
+
+### D.D15.10: Table Fingerprint Type-Safety + Traceback Visibility (2026-02-20)
+- **Decision**: Patched `src/services/table_extractor.py` fingerprint dedup path to normalize header/cell values via `str(value or "")` before `.strip().lower()`.
+- **Decision**: Patched `scripts/run_llm_table_pilot.py` extraction error records to include:
+  - `error_message` (stringified exception),
+  - `traceback` (formatted traceback, 12-frame cap).
+- **Validation**:
+  - direct `AITableExtractor(api_client=None)` checks on previously failing PDFs now return tables without `AttributeError`,
+  - post-patch pilot diagnostic (`max-pages=1`, 3 PDFs) completed with no `pdf_errors`.
+- **Rationale**: Prevent silent type crashes in dedup logic and make future extraction failures directly actionable from run artifacts.
+
+### D.D15.11: High-Recall Claim Risk Scoring Layer (2026-02-20)
+- **Decision**: Added `src/extraction/evidence_risk.py` to compute field-level and claim-level risk instead of hard-dropping uncertain claims.
+- **Decision**: Added `scripts/score_claim_risk.py` to batch-annotate extraction outputs with:
+  - `field_risk_scores`,
+  - `field_risk_reasons`,
+  - `claim_risk_score`,
+  - `claim_risk_tier`,
+  - `claim_risk_reasons`.
+- **Decision**: Added prompt/JSON contract `docs/CLAIM_FIELD_EVIDENCE_CONTRACT_v1.md` requiring per-field evidence quote, section/page, support type, alternatives, and confidence.
+- **Validation**:
+  - tests: `tests/test_evidence_risk.py`,
+  - run on `data/production/structured_claims.rag_llm_consensus.json`,
+  - output: `data/production/structured_claims.rag_llm_consensus.risk_scored.json`,
+  - report: `data/production/structured_claims.rag_llm_consensus.risk_report.json`.
+- **Rationale**: Maintain RAG+LLM recall while quantifying precision risk for policy-based filtering thresholds.
+
+### D.D15.12: Direction RAG Prompt + Vote Risk Enrichment (2026-02-20)
+- **Decision**: Upgraded `scripts/run_direction_rag_ladder.py` prompt output contract to include `field_assessments.direction` with:
+  - `value`, `support_type`, `section`, `page`, `alt_interpretations`, `confidence`.
+- **Decision**: Added `vote_risk_score` for each model vote based on:
+  - verification status,
+  - raw errors/verify reasons,
+  - completeness + support quality of `field_assessments.direction`.
+- **Rationale**: improve traceability and uncertainty calibration for direction adjudication without reducing claim recall upstream.
+
+### D.D15.13: Direction-Expectation Gating + Abstract Resolver (2026-02-20)
+- **Decision**: Added `src/extraction/direction_expectation.py` to explicitly gate whether direction is expected:
+  - expected for empirical families only,
+  - not expected for non-empirical families,
+  - not expected for abstract aim/objective statements lacking result cues.
+- **Decision**: Updated `src/extraction/evidence_risk.py` so unknown-direction risk is penalized only when direction is expected.
+- **Decision**: Added `scripts/resolve_unknown_direction_from_abstract.py`:
+  - marks unknown claims as `not_required` when direction expectation gate is false,
+  - resolves expected unknowns via abstract-claim matching and abstract text heuristics,
+  - supports optional LLM abstract adjudication.
+- **Validation run** (`structured_claims.rag_llm_consensus.risk_scored.json`):
+  - unknown scanned: 171
+  - resolved: 42
+  - unknown_not_required: 52
+  - unresolved_required: 77
+  - output: `data/production/structured_claims.rag_llm_consensus.risk_scored.dir_resolved.json`
+  - report: `data/production/structured_claims.rag_llm_consensus.risk_scored.dir_resolved_report.json`
+
+### D.D15.14: Figure-Slope Direction Fallback + DOCX/PDF Comparator (2026-02-20)
+- **Decision**: Added `src/extraction/figure_direction.py` to infer direction from plotted line slopes in figure pages using PyMuPDF drawing primitives.
+- **Precision guards**:
+  - require both IV and DV lexical overlap on candidate figure page,
+  - skip covariate-like IVs (`age`, `gender`, `income`, etc.),
+  - abstain (`unknown`) when diagonal slope signal is weak/ambiguous.
+- **Decision**: Extended `scripts/resolve_unknown_direction_from_abstract.py` with optional figure fallback:
+  - new flags: `--use-figure-vision`, `--pdf-dir`, `--figure-max-pages`,
+  - records `direction_resolution_method=figure_line_slope` plus diagnostics/page when used.
+- **Decision**: Added `scripts/compare_docx_vs_pdf_claims.py` to benchmark paired Acrobat DOCX exports vs PDFs under the same claim extractor.
+- **Validation**:
+  - `pytest -q tests/test_figure_direction.py` passed (2 tests),
+  - 5-file Acrobat pilot comparison artifacts written to:
+    - `data/production/llm_pilot/docx_vs_pdf_claim_compare.ai_api.enhanced.json`
+    - `data/production/llm_pilot/docx_vs_pdf_claim_compare.ai_api.rule_based.json`
+  - observed: enhanced mode produced 0 claims on this pilot; rule-based mode yielded sparse low-quality DOCX-only claims (high unknown rate), so this set is not yet a reliable claim-quality benchmark without stronger pre-cleaning/classification.
+
+### D.D15.15: Batch Pipeline Wiring for Figure-Direction Resolution (2026-02-20)
+- **Decision**: Wired figure-based direction inference into `src/extraction/batch_extract.py` as a built-in post-pass.
+- **Activation policy**:
+  - process only `direction == unknown` claims,
+  - require `direction_expected_for_claim == true`,
+  - do not modify reviewer-overridden claims,
+  - require confidence >= `figure_min_confidence` (default `0.72`).
+- **New pipeline options**:
+  - function args: `use_figure_direction`, `figure_pdf_dir`, `figure_max_pages`, `figure_min_confidence`,
+  - CLI flags: `--no-figure-direction`, `--figure-pdf-dir`, `--figure-max-pages`, `--figure-min-confidence`.
+- **Output contract extension**:
+  - adds `figure_direction` stats block in top-level payload,
+  - adds `summary.direction_resolved_from_figures`.
+
+### D.D15.16: Queue CSV PDF Mapping for Figure Coverage (2026-02-20)
+- **Issue**: figure-direction pass originally depended on `data/production/pdf_repaired` stem matching, causing high `pdf_missing` and near-zero impact.
+- **Decision**: resolve paper PDFs from realtime queue metadata first:
+  - source: `data/production/realtime_pdf_completion_queue.csv`,
+  - selection order: `resolved_pdf_path` then `pdf_path`,
+  - fallback remains local `pdf_repaired` stem matching.
+- **New controls**:
+  - function arg: `figure_queue_csv_path`,
+  - CLI: `--figure-queue-csv-path`, `--no-figure-queue-csv`.
+- **Validation result** (`structured_claims.with_figure_direction.queue_map.json`):
+  - `queue_map_entries=1033`,
+  - `pdf_missing=0` (from 117),
+  - `direction_resolved_from_figures=10` (from 0),
+  - direction count delta: `unknown -10`, `increase +9`, `decrease +1`.

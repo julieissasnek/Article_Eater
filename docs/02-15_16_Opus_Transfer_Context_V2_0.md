@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # OPUS TRANSFER CONTEXT V2
 ## Article Eater Project — Session Handoff
 ## February 15, 2026 — Document 16

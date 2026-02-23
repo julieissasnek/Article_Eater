@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # ENGINEERING OPERATIONS — SPRINT 10 EXECUTION PLAN
 ## For All Agents: Claude Code, Codex, Antigravity
 ## February 17, 2026

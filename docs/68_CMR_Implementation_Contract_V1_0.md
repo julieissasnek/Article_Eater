@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # DOCUMENT 68: CMR IMPLEMENTATION CONTRACT
 ## Frozen Schema, Ingestion Semantics, and Pipeline Specification
 ## February 17, 2026

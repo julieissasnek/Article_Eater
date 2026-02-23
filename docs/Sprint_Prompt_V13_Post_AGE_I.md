@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See Sprint_Prompt_V15_Post_VF_II_CREA_III.md for current version
+
 # ARTICLE EATER — AGENT SPRINT PROMPT V13.0
 ## Post AGE-I Cross-Cutting Panel | February 17, 2026
 

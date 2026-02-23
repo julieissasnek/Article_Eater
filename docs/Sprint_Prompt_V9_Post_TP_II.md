@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See Sprint_Prompt_V15_Post_VF_II_CREA_III.md for current version
+
 # ARTICLE EATER — AGENT SPRINT PROMPT V9.0
 ## Post TP-II Calibration | February 17, 2026
 

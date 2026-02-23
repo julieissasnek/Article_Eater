@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See 52_Calibration_Extension_Registry_V2_1.md for current version
+
 # CALIBRATION & EXTENSION REGISTRY
 ## Consolidated Record of All Panel Updates, Parameter Values, and Broadening/Deepening Priorities
 ## February 16, 2026 — Document 52

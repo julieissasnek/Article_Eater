@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # OPUS TRANSFER CONTEXT V4.0
 ## Article Eater — Theory Architect Session Handoff
 ## February 16, 2026

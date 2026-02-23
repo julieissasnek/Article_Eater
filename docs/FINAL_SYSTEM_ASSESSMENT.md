@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Final System Assessment — Article Eater CMR Pipeline
 
 **Date**: 2026-02-18

@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # ARTICLE EATER — TRANSFER CONTEXT V9.0
 ## Session Handoff Document | February 17, 2026 — Document 53
 

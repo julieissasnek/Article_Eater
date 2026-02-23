@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Non-Empirical Paper Types: Extraction-to-Web Bridge Specification
 ## Version 1.0 — February 14, 2026
 ## Article Eater Epistemic Infrastructure

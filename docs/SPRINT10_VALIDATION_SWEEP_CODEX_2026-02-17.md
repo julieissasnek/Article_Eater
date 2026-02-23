@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Sprint 10 Validation Sweep (Codex)
 Date: 2026-02-17
 Runner: Codex (branch `codex/cc-migration-artifacts-sprint-0-7`)

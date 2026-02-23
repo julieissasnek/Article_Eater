@@ -1,0 +1,101 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e8f4e8', 'primaryTextColor': '#1a1a1a', 'primaryBorderColor': '#2d5a2d', 'lineColor': '#4a7c4a', 'secondaryColor': '#fff3cd', 'tertiaryColor': '#f0f0f0'}}}%%
+
+flowchart TB
+    subgraph INPUTS["📥 INPUTS"]
+        direction TB
+        PDF["PDFs<br/>(Scientific Papers)"]
+        DOI["DOIs / Metadata"]
+        TEMPLATES["CMR Templates<br/>(Causal Model Repository)"]
+    end
+
+    subgraph AF["🔍 ARTICLE FINDER"]
+        direction TB
+        SEARCH["Literature Search"]
+        RETRIEVE["PDF Retrieval"]
+        DEDUP["Deduplication"]
+    end
+
+    subgraph AE["⚙️ ARTICLE EATER (Extraction)"]
+        direction TB
+        PARSE["PDF Parser<br/>(text extraction)"]
+        CLAIM_EXT["Claim Extractor<br/>(IV → DV + stats)"]
+        VOCAB["Vocabulary Mapper<br/>(normalize terms)"]
+        METHOD["Method Registry<br/>(instrument profiles)"]
+        DIRECTION["Direction RAG<br/>(increase/decrease)"]
+        QUALITY["Quality Scorer<br/>(confidence decomposition)"]
+    end
+
+    subgraph WOB["🕸️ WEB OF BELIEF (Quinean Coherence)"]
+        direction TB
+        BELIEFS["Belief Nodes<br/>(claims + confidence)"]
+        COHERENCE["Coherence Engine<br/>(mutual support)"]
+        ENTRENCH["Entrenchment<br/>(connectivity + load)"]
+        STALENESS["Temporal Decay<br/>(evidence age)"]
+    end
+
+    subgraph BN["📊 BAYESIAN NETWORK"]
+        direction TB
+        NODES["BN Nodes<br/>(causal variables)"]
+        EDGES["Causal Edges<br/>(conditional deps)"]
+        INFERENCE["Inference Engine<br/>(posterior updates)"]
+        BRIDGE["Bridge Warrants<br/>(theory → evidence)"]
+    end
+
+    subgraph OUTPUTS["📤 OUTPUTS"]
+        direction TB
+        JSON["Structured Claims<br/>(JSON)"]
+        GRAPH["Graph Exports<br/>(GraphML, DOT, GEXF)"]
+        REPORTS["Reports<br/>(HTML, PDF, MD)"]
+        QUERY["Query Interface<br/>(NL + SQL)"]
+        STREAMLIT["Streamlit Dashboard"]
+    end
+
+    %% Data Flow Connections
+    DOI --> AF
+    AF --> PDF
+    PDF --> AE
+    TEMPLATES --> BN
+
+    PARSE --> CLAIM_EXT
+    CLAIM_EXT --> VOCAB
+    VOCAB --> METHOD
+    METHOD --> DIRECTION
+    DIRECTION --> QUALITY
+
+    %% AE to knowledge structures
+    QUALITY --> WOB
+    QUALITY --> BN
+
+    %% Within WOB
+    BELIEFS --> COHERENCE
+    COHERENCE --> ENTRENCH
+    ENTRENCH --> STALENESS
+
+    %% WOB ↔ BN bidirectional
+    WOB <--> BN
+    COHERENCE <--> INFERENCE
+    BRIDGE --> BELIEFS
+
+    %% To outputs
+    WOB --> JSON
+    WOB --> GRAPH
+    BN --> GRAPH
+    BN --> REPORTS
+    WOB --> QUERY
+    QUERY --> STREAMLIT
+    GRAPH --> STREAMLIT
+
+    %% Styling
+    classDef inputStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef afStyle fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    classDef aeStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    classDef wobStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef bnStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef outputStyle fill:#e0f7fa,stroke:#00838f,stroke-width:2px
+
+    class PDF,DOI,TEMPLATES inputStyle
+    class SEARCH,RETRIEVE,DEDUP afStyle
+    class PARSE,CLAIM_EXT,VOCAB,METHOD,DIRECTION,QUALITY aeStyle
+    class BELIEFS,COHERENCE,ENTRENCH,STALENESS wobStyle
+    class NODES,EDGES,INFERENCE,BRIDGE bnStyle
+    class JSON,GRAPH,REPORTS,QUERY,STREAMLIT outputStyle

@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Ruthless System Review v5: Article Eater Post-Quinean V22.1.0
 
 **Date**: February 8, 2026

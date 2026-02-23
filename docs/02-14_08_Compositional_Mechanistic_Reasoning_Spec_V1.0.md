@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Compositional Mechanistic Reasoning: A Specification
 ## The Generative Engine for Article Eater
 ## Version 1.0 — February 14, 2026

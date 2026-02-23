@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # THREE-AI TASK DISTRIBUTION PLAN
 ## Article Eater — Sprint Execution
 ## February 15, 2026

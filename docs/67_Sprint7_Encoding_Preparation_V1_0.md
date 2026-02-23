@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # DOCUMENT 67: SPRINT 7 ENCODING PREPARATION
 ## Deduplication Map, Machine-Readable Format, Common Effect Metric, and Accessibility Tiers
 ## February 17, 2026

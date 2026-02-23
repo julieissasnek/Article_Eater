@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # OPUS TRANSFER CONTEXT — V3.0
 ## Article Eater Project: Complete State for New Chat Instance
 ## February 16, 2026 — Carry-Forward Document

@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Panel Consultation P-VOI: Value of Information - Theoretical Grounding
 **Date**: 2026-02-09
 **Panel ID**: P-VOI

@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # SPRINT 11 EXECUTION PLAN
 ## Fix Building Eval Wiring + Paper Evaluation Pipeline
 ## February 17, 2026

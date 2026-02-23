@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Codex Handoff: Epistemic Calculus & Do-Calculus Coordination
 
 **Date**: 2026-02-12

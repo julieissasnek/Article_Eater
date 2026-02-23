@@ -1,0 +1,67 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#1a1a1a', 'primaryBorderColor': '#333333', 'lineColor': '#555555', 'fontSize': '16px'}}}%%
+
+flowchart LR
+    subgraph INPUTS["INPUTS"]
+        I1["Scientific<br/>Papers"]
+        I2["CMR Templates<br/>(Causal Models)"]
+    end
+
+    subgraph AF["ARTICLE<br/>FINDER"]
+        AF1["Search &<br/>Retrieve"]
+    end
+
+    subgraph AE["ARTICLE<br/>EATER"]
+        AE1["Extract<br/>Claims"]
+    end
+
+    subgraph WOB["WEB OF BELIEF"]
+        direction TB
+        W1["Belief Nodes<br/>━━━━━━━━━━━━<br/>Claims with<br/>confidence scores"]
+        W2["Coherence Engine<br/>━━━━━━━━━━━━<br/>Quinean mutual<br/>support computation"]
+        W3["Entrenchment<br/>━━━━━━━━━━━━<br/>Connectivity +<br/>evidential load"]
+        W4["Bridge Warrants<br/>━━━━━━━━━━━━<br/>Theory ↔ Evidence<br/>links"]
+        W5["Temporal Decay<br/>━━━━━━━━━━━━<br/>Evidence aging &<br/>staleness"]
+
+        W1 --- W2
+        W2 --- W3
+        W3 --- W4
+        W4 --- W5
+        W1 --- W4
+        W2 --- W5
+    end
+
+    subgraph BN["BAYESIAN<br/>NETWORK"]
+        BN1["Causal<br/>Inference"]
+    end
+
+    subgraph OUTPUTS["OUTPUTS"]
+        O1["Graphs &<br/>Reports"]
+        O2["Query<br/>Interface"]
+    end
+
+    %% Main flow
+    I1 --> AF
+    AF --> AE
+    AE --> WOB
+    I2 --> BN
+
+    WOB <--> BN
+
+    WOB --> O1
+    WOB --> O2
+    BN --> O1
+
+    %% Styling
+    classDef inputBox fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
+    classDef afBox fill:#FFF8E1,stroke:#F9A825,stroke-width:3px,color:#F57F17
+    classDef aeBox fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
+    classDef wobBox fill:#FCE4EC,stroke:#C2185B,stroke-width:2px,color:#880E4F
+    classDef bnBox fill:#F3E5F5,stroke:#7B1FA2,stroke-width:3px,color:#4A148C
+    classDef outBox fill:#E0F7FA,stroke:#00838F,stroke-width:3px,color:#006064
+
+    class I1,I2 inputBox
+    class AF1 afBox
+    class AE1 aeBox
+    class W1,W2,W3,W4,W5 wobBox
+    class BN1 bnBox
+    class O1,O2 outBox

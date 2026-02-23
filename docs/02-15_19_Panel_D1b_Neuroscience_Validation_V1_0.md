@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # PANEL D-1b: NEUROSCIENCE VALIDATION OF REDUCTION CLAIM WORKED EXAMPLE
 ## Article Eater — Expert Panel Discussion
 ## February 15, 2026 — Document 19

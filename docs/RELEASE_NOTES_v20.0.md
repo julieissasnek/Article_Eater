@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Article Eater v20.0
 
 **Date:** 2025-11-15 21:46:41

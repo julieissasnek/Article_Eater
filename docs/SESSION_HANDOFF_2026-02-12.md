@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # Session Handoff: 2026-02-12
 
 **For**: Claude Code continuation

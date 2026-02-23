@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See TRANSFER_Feb21_Session8_CORRECTED.md for current version
+
 # OPUS TRANSFER CONTEXT V6.0
 ## Document 48 — February 16, 2026
 ## For handoff to next Opus instance

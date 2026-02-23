@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # SPRINT VERIFICATION & END-TO-END PROVENANCE TEST SUITE
 ## February 17, 2026
 

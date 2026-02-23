@@ -1,3 +1,5 @@
+# ⚠️ SUPERSEDED — See (newer version exists) for current version
+
 # DOCUMENT 66: COMPREHENSIVE PROJECT AUDIT
 ## A Ruthless Assessment of the Article Eater System
 ## February 17, 2026

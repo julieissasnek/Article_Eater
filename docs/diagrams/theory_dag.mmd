@@ -1,0 +1,206 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#1a1a1a', 'primaryBorderColor': '#333333', 'lineColor': '#666666', 'fontSize': '12px'}, 'flowchart': {'curve': 'basis', 'nodeSpacing': 30, 'rankSpacing': 60}}}%%
+
+flowchart TB
+    subgraph T1["TIER 1: FRAMEWORK THEORIES"]
+        PP["PP<br/>Predictive<br/>Processing"]
+        SN["SN<br/>Spatial<br/>Navigation"]
+        DP["DP<br/>Dual-Process<br/>Evaluation"]
+        DT["DT<br/>DMN/TPN<br/>Dynamics"]
+        NM["NM<br/>Neuromodulatory<br/>Systems"]
+        IC["IC<br/>Interoceptive<br/>Affect"]
+        MS["MS<br/>Memory<br/>Systems"]
+        EC["EC<br/>Embodied<br/>Cognition"]
+        CB["CB<br/>Chronobiology"]
+        MSI["MSI<br/>Multisensory<br/>Integration"]
+    end
+
+    subgraph T15["TIER 1.5: DOMAIN THEORIES"]
+        ART["ART<br/>Attention<br/>Restoration"]
+        SRT["SRT<br/>Stress<br/>Recovery"]
+        BIO["Biophilia"]
+        PR["Prospect<br/>Refuge"]
+    end
+
+    subgraph T2["TIER 2: CMR TEMPLATES / MECHANISMS"]
+        subgraph T2_PP["PP Templates"]
+            T1_t["T1: Visual Scene Stats"]
+            T9["T9: Rapid Evaluation"]
+            VF1["VF1: Contour PE"]
+            VF2["VF2: Visual Rhythm"]
+            L1["L1: Luminance PE"]
+            COL1["COL1: Chromatic PE"]
+        end
+
+        subgraph T2_SN["SN Templates"]
+            T3["T3: Cognitive Map"]
+            SC1["SC1: Spatial Integration"]
+            SC2["SC2: Isovist/Vista"]
+            SC3["SC3: Promenade"]
+            ENCL["ENCLOSURE: Safety"]
+        end
+
+        subgraph T2_DT["DT Templates"]
+            T4["T4: Attention Fatigue"]
+            T27["T27: DMN Restoration"]
+            CREA1["CREA1: Creative Networks"]
+        end
+
+        subgraph T2_NM["NM Templates"]
+            T5["T5: HPA/Cortisol"]
+            NM2_t["NM2: Novelty/Dopamine"]
+            T65["T65: Vagal Regulation"]
+            T66["T66: Learned Safety"]
+        end
+
+        subgraph T2_IC["IC Templates"]
+            T7["T7: Allostatic Efficiency"]
+            IC2_t["IC2: Body Budget"]
+            T56["T56: Awe/Vastness"]
+            T57["T57: Thermal Comfort"]
+        end
+
+        subgraph T2_MS["MS Templates"]
+            E1["E1: Hippocampal Binding"]
+            E6["E6: PE Encoding"]
+            TP2["TP2: Doorway Effect"]
+            T58["T58: Acoustic Ecology"]
+        end
+
+        subgraph T2_EC["EC Templates"]
+            T8["T8: Affordances"]
+            VF3["VF3: Ceiling Height"]
+            MAT1["MAT1: Affective Touch"]
+            TP1["TP1: Motor PE"]
+        end
+
+        subgraph T2_CB["CB Templates"]
+            T30["T30: Circadian"]
+            L2["L2: ipRGC Pathway"]
+            L3["L3: Daylight Multi"]
+            L4["L4: CCT Temporal"]
+        end
+
+        subgraph T2_MSI["MSI Templates"]
+            T39["T39: Crossmodal"]
+            MAT3["MAT3: Material Identity"]
+            MAT4["MAT4: Natural Material"]
+            MSI2_t["MSI2: Auditory Spatial"]
+        end
+
+        subgraph T2_CROSS["Cross-Framework"]
+            VIEW1["VIEW1: Nature View"]
+        end
+    end
+
+    %% T1 to T1.5 connections
+    PP --> ART
+    PP --> SRT
+    PP --> BIO
+    DT --> ART
+    SN --> ART
+    SN --> PR
+    NM --> SRT
+    NM --> BIO
+    NM --> PR
+    IC --> SRT
+    IC --> BIO
+    EC --> BIO
+    MSI --> BIO
+
+    %% T1 to T2 connections (PP)
+    PP --> T1_t
+    PP --> T9
+    PP --> VF1
+    PP --> VF2
+    PP --> L1
+    PP --> COL1
+
+    %% T1 to T2 connections (SN)
+    SN --> T3
+    SN --> SC1
+    SN --> SC2
+    SN --> SC3
+    SN --> ENCL
+
+    %% T1 to T2 connections (DT)
+    DT --> T4
+    DT --> T27
+    DT --> CREA1
+
+    %% T1 to T2 connections (NM)
+    NM --> T5
+    NM --> NM2_t
+    NM --> T65
+    NM --> T66
+
+    %% T1 to T2 connections (IC)
+    IC --> T7
+    IC --> IC2_t
+    IC --> T56
+    IC --> T57
+
+    %% T1 to T2 connections (MS)
+    MS --> E1
+    MS --> E6
+    MS --> TP2
+    MS --> T58
+
+    %% T1 to T2 connections (EC)
+    EC --> T8
+    EC --> VF3
+    EC --> MAT1
+    EC --> TP1
+
+    %% T1 to T2 connections (CB)
+    CB --> T30
+    CB --> L2
+    CB --> L3
+    CB --> L4
+
+    %% T1 to T2 connections (MSI)
+    MSI --> T39
+    MSI --> MAT3
+    MSI --> MAT4
+    MSI --> MSI2_t
+
+    %% VIEW1 connects to multiple frameworks
+    PP --> VIEW1
+    IC --> VIEW1
+    NM --> VIEW1
+
+    %% T1.5 to T2 reductions (ART)
+    ART -.-> VIEW1
+    ART -.-> VF1
+    ART -.-> SC2
+    ART -.-> T4
+    ART -.-> T27
+
+    %% T1.5 to T2 reductions (SRT)
+    SRT -.-> VIEW1
+    SRT -.-> MAT4
+    SRT -.-> T5
+    SRT -.-> T9
+    SRT -.-> T66
+
+    %% T1.5 to T2 reductions (Biophilia)
+    BIO -.-> VIEW1
+    BIO -.-> VF1
+    BIO -.-> VF2
+    BIO -.-> MAT4
+    BIO -.-> MAT1
+
+    %% T1.5 to T2 reductions (Prospect-Refuge)
+    PR -.-> SC2
+    PR -.-> ENCL
+    PR -.-> T66
+
+    %% Styling
+    classDef t1Style fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
+    classDef t15Style fill:#FFF3E0,stroke:#EF6C00,stroke-width:3px,color:#E65100
+    classDef t2Style fill:#E8F5E9,stroke:#2E7D32,stroke-width:1px,color:#1B5E20,font-size:10px
+    classDef crossStyle fill:#FCE4EC,stroke:#C2185B,stroke-width:2px,color:#880E4F
+
+    class PP,SN,DP,DT,NM,IC,MS,EC,CB,MSI t1Style
+    class ART,SRT,BIO,PR t15Style
+    class T1_t,T9,VF1,VF2,L1,COL1,T3,SC1,SC2,SC3,ENCL,T4,T27,CREA1,T5,NM2_t,T65,T66,T7,IC2_t,T56,T57,E1,E6,TP2,T58,T8,VF3,MAT1,TP1,T30,L2,L3,L4,T39,MAT3,MAT4,MSI2_t t2Style
+    class VIEW1 crossStyle
