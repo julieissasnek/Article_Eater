@@ -1,0 +1,127 @@
+{
+  "template_id": "MATERIAL_AGING_TEMPORAL_DEPTH_001",
+  "template_name": "Material Aging and Temporal Depth \u2014 Patina as Perceptual Enrichment",
+  "panel": "MULTI-I",
+  "primary_anchor": "Juhani Pallasmaa (Helsinki) \u2014 theoretical",
+  "complement": "Byron Mikellides (Oxford Brookes) \u2014 empirical",
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "Pallasmaa-only parameters: confidence \u2264 0.40, THEORETICAL_DEFAULT mandatory",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant perceives material aging features: patina (oxidation colour change on copper, bronze), wear patterns (polished stone thresholds, smooth wood handrails), weathering (lichen on stone, grain exposure on wood), staining (use patterns, water marks). These are multi-sensory: visual (colour change, texture modification), haptic (smoothing from use, roughening from weather), olfactory (aged wood scent differs from new wood).",
+      "substrate": "Multi-sensory material perception (same pathway as MATERIAL_IDENTITY_INTEGRATION_001) with temporal feature extraction",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Mikellides (1990)"
+    },
+    {
+      "step": 2,
+      "process": "Aging features are perceptually categorized as 'temporal depth indicators' \u2014 evidence that the material has existed over time and has been used by others. This temporal information is extracted automatically: the visual system detects wear patterns, patina, and weathering as statistical deviations from 'new' material appearance.",
+      "substrate": "Visual temporal feature extraction (texture analysis); somatosensory wear-pattern detection",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Pallasmaa (2005); Mikellides (1990)"
+    },
+    {
+      "step": 3,
+      "process": "Temporal depth indicators activate evaluative responses: aged materials are rated as more 'authentic,' 'characterful,' and 'trustworthy' than pristine equivalents (Mikellides, d \u2248 0.40\u20130.60). Pallasmaa's theoretical framework interprets this as 'existential anchoring' \u2014 connection to the continuity of human habitation.",
+      "substrate": "Orbitofrontal evaluation; possible interaction with social cognition (inferring others' use-history)",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Mikellides (1990); Pallasmaa (2005)"
+    },
+    {
+      "step": 4,
+      "process": "Long-term occupancy satisfaction: buildings with natural material aging (exposed timber darkening, copper patinating, stone weathering) show UPWARD satisfaction trajectories over years; buildings with static finishes (painted, sealed, anodized) show FLAT or DOWNWARD trajectories.",
+      "substrate": "Post-occupancy evaluation data (Heerwagen field observations)",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT",
+      "source": "Heerwagen (2009); informal field observation, not controlled study"
+    }
+  ],
+  "calibrated_parameters": {
+    "authenticity_character_boost": {
+      "value": "d \u2248 0.40\u20130.60",
+      "unit": "Cohen's_d_semantic_differential_aged_vs_pristine",
+      "interpretation": "Visibly aged materials are rated 0.40\u20130.60 standard deviations higher on authenticity and character than pristine equivalents in European cultural contexts.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Mikellides (1990)"
+    },
+    "satisfaction_trajectory_benefit": {
+      "value": "positive_slope_over_5-10_year_occupancy",
+      "interpretation": "Buildings with natural material aging show increasing satisfaction over time. Not quantified precisely \u2014 based on field observations rather than controlled studies.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT",
+      "source": "Heerwagen (2009)"
+    },
+    "material_aging_quality": {
+      "graceful_aging": [
+        "copper \u2192 green patina",
+        "bronze \u2192 brown patina",
+        "wood \u2192 darkening, grain exposure",
+        "stone \u2192 weathering, lichen",
+        "leather \u2192 softening, colour deepening"
+      ],
+      "ungraceful_aging": [
+        "painted surfaces \u2192 peeling, flaking",
+        "sealed concrete \u2192 staining, cracking",
+        "plastic \u2192 yellowing, brittleness",
+        "chrome \u2192 pitting, rust"
+      ],
+      "interpretation": "Not all material aging is positive. Graceful aging (patina, wear polishing, colour deepening) is evaluated positively; ungraceful aging (peeling, staining, structural degradation) is evaluated negatively. Material selection for temporal depth must prioritize gracefully aging materials.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "pallasmaa_existential_anchoring": {
+      "value": "theoretical_framework_only",
+      "interpretation": "Pallasmaa's claim that patina produces 'existential anchoring' \u2014 a sense of connection to the continuity of human habitation \u2014 is a compelling phenomenological framework but has not been empirically tested. No confidence score assigned to this parameter.",
+      "confidence": 0.3,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "population_modifiers": {
+    "cultural_variation": {
+      "effect": "Temporal depth evaluation is culturally modulated. European and Japanese traditions value patina (wabi-sabi). Gulf states and some East Asian markets value pristine newness. The template must select cultural modifier before computing the temporal depth benefit.",
+      "confidence": 0.45
+    },
+    "age_of_occupant": {
+      "effect": "Older occupants tend to evaluate temporal depth more positively than younger occupants (possible nostalgia effect, or generational cultural difference in material preferences).",
+      "confidence": 0.35
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Temporal depth is not a direct body budget input. However, the sense of being in a well-aged, human-used environment may contribute to environmental trust and safety perception (this is a long-standing place; others have been safe here), which supports parasympathetic tone. This is speculative (confidence 0.25).",
+    "AX4_perceived_control": "Temporal depth may enhance perceived control through predictability: a building that has aged gracefully communicates structural reliability and environmental stability. The occupant infers that the environment has endured and will continue to endure. This is Pallasmaa's 'existential anchoring' translated to a control variable."
+  },
+  "cross_template_references": [
+    "MATERIAL_CULTURAL_CONDITIONING_001 \u2014 cultural attitudes toward aging/patina modulate temporal depth evaluation",
+    "NATURAL_MATERIAL_CONVERGENCE_001 \u2014 natural materials age more gracefully than synthetic materials",
+    "MSI_CONGRUENCY_PRINCIPLE_001 \u2014 aged materials may produce richer multi-sensory congruency (deepened visual colour + mellowed haptic texture + aged olfactory signature)"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "MATD1",
+  "name": "Material Aging and Temporal Depth \u2014 Patina as Perceptual Enrichment",
+  "architectural_modifiers": {
+    "graceful_aging_material_fraction": {
+      "coefficient": 0.2,
+      "interpretation": "Fraction of building surfaces that will age gracefully (copper, bronze, natural wood, natural stone, leather). Higher fraction \u2192 more temporal depth over building lifespan \u2192 upward satisfaction trajectory.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    },
+    "maintenance_regime": {
+      "coefficient": 0.1,
+      "interpretation": "Over-maintenance (repainting, re-sealing, polishing away patina) prevents temporal depth accumulation. Under-maintenance (allowing structural degradation) produces ungraceful aging. Optimal: maintain structural integrity while allowing cosmetic aging.",
+      "confidence": 0.35,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "MSI",
+    "PP"
+  ],
+  "bridge_warrant": "CAPACITY",
+  "confidence": 0.4
+}

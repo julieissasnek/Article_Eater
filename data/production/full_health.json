@@ -1,0 +1,316 @@
+{
+  "timestamp": "2026-02-21T15:43:04.084015",
+  "database": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+  "overall_pass": true,
+  "total_passed": 30,
+  "total_failed": 4,
+  "critical_failed": 0,
+  "tests": [
+    {
+      "name": "A1_no_bn_cycles",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "Bayesian Network must be acyclic (DAG)",
+      "severity": "critical"
+    },
+    {
+      "name": "A2_no_dangling_edges",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "All BN edges must connect valid nodes",
+      "severity": "critical"
+    },
+    {
+      "name": "A3_no_orphan_constraints",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "All constraints must reference existing beliefs",
+      "severity": "critical"
+    },
+    {
+      "name": "A4_no_duplicate_constraints",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "All constraint IDs must be unique",
+      "severity": "critical"
+    },
+    {
+      "name": "A5_valid_constraint_types",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "All constraints must use valid types",
+      "severity": "critical"
+    },
+    {
+      "name": "A6_valid_strengths",
+      "category": "STRUCTURAL",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "All constraint strengths must be in [0, 1]",
+      "severity": "critical"
+    },
+    {
+      "name": "B1_isolated_pct_minimum",
+      "category": "CONNECTIVITY",
+      "passed": true,
+      "actual": 14.7,
+      "threshold": "\u226420%",
+      "description": "Isolated beliefs should be under 20%",
+      "severity": "warning"
+    },
+    {
+      "name": "B2_isolated_pct_target",
+      "category": "CONNECTIVITY",
+      "passed": false,
+      "actual": 14.7,
+      "threshold": "\u226410%",
+      "description": "Isolated beliefs target under 10%",
+      "severity": "info"
+    },
+    {
+      "name": "B3_avg_degree",
+      "category": "CONNECTIVITY",
+      "passed": true,
+      "actual": 3.52,
+      "threshold": "\u22652.0",
+      "description": "Average node degree must be at least 2.0",
+      "severity": "warning"
+    },
+    {
+      "name": "B4_bn_largest_component",
+      "category": "CONNECTIVITY",
+      "passed": true,
+      "actual": 99.8,
+      "threshold": "\u226595%",
+      "description": "BN largest component should cover 95%+ nodes",
+      "severity": "warning"
+    },
+    {
+      "name": "B5_min_beliefs",
+      "category": "CONNECTIVITY",
+      "passed": true,
+      "actual": 12628,
+      "threshold": "\u22651000",
+      "description": "Web should contain at least 1000 beliefs",
+      "severity": "warning"
+    },
+    {
+      "name": "B6_min_constraints",
+      "category": "CONNECTIVITY",
+      "passed": true,
+      "actual": 37614,
+      "threshold": "\u22655000",
+      "description": "Web should contain at least 5000 constraints",
+      "severity": "warning"
+    },
+    {
+      "name": "C1_contradicts_min",
+      "category": "EPISTEMIC_BALANCE",
+      "passed": true,
+      "actual": 1.02,
+      "threshold": "\u22650.5%",
+      "description": "Some contradictions should exist for epistemic health",
+      "severity": "warning"
+    },
+    {
+      "name": "C2_contradicts_target",
+      "category": "EPISTEMIC_BALANCE",
+      "passed": false,
+      "actual": 1.02,
+      "threshold": "\u22652.0%",
+      "description": "Target contradiction ratio for healthy debate",
+      "severity": "info"
+    },
+    {
+      "name": "C3_positive_majority",
+      "category": "EPISTEMIC_BALANCE",
+      "passed": true,
+      "actual": 92.7,
+      "threshold": "\u226590%",
+      "description": "Supports + Explains should dominate the constraint set",
+      "severity": "warning"
+    },
+    {
+      "name": "C4_not_all_support",
+      "category": "EPISTEMIC_BALANCE",
+      "passed": true,
+      "actual": 58.8,
+      "threshold": "\u226520%",
+      "description": "Explains edges should be at least 20% of constraints",
+      "severity": "warning"
+    },
+    {
+      "name": "C5_both_sides",
+      "category": "EPISTEMIC_BALANCE",
+      "passed": true,
+      "actual": 43.3,
+      "threshold": "\u226530%",
+      "description": "At least 30% of beliefs should participate as both source and target",
+      "severity": "warning"
+    },
+    {
+      "name": "D1_provenance_coverage",
+      "category": "PROVENANCE",
+      "passed": true,
+      "actual": 97.4,
+      "threshold": "\u226550%",
+      "description": "At least 50% of constraints should have provenance tags",
+      "severity": "warning"
+    },
+    {
+      "name": "D2_provenance_diversity",
+      "category": "PROVENANCE",
+      "passed": true,
+      "actual": 9,
+      "threshold": "\u22653",
+      "description": "Should have at least 3 distinct provenance types",
+      "severity": "info"
+    },
+    {
+      "name": "E1_off_topic_pct",
+      "category": "OFF_TOPIC",
+      "passed": true,
+      "actual": 0.12,
+      "threshold": "\u22645%",
+      "description": "Off-topic beliefs should be under 5% (found 15 of 12628)",
+      "severity": "warning"
+    },
+    {
+      "name": "E2_off_topic_minimum",
+      "category": "OFF_TOPIC",
+      "passed": true,
+      "actual": 0.12,
+      "threshold": "\u226410%",
+      "description": "Off-topic beliefs must be under 10%",
+      "severity": "warning"
+    },
+    {
+      "name": "F1_keyword_template_coverage",
+      "category": "TEMPLATE_COVERAGE",
+      "passed": true,
+      "actual": 100.0,
+      "threshold": "\u226540%",
+      "description": "163/163 templates matched via rich keyword index",
+      "severity": "warning"
+    },
+    {
+      "name": "F2_db_annotation_coverage",
+      "category": "TEMPLATE_COVERAGE",
+      "passed": true,
+      "actual": 100.0,
+      "threshold": "\u226530%",
+      "description": "163/163 templates referenced in belief annotations",
+      "severity": "warning"
+    },
+    {
+      "name": "F3_belief_annotation_pct",
+      "category": "TEMPLATE_COVERAGE",
+      "passed": true,
+      "actual": 66.4,
+      "threshold": "\u226550%",
+      "description": "8380/12628 beliefs have template annotations",
+      "severity": "warning"
+    },
+    {
+      "name": "F4_template_count",
+      "category": "TEMPLATE_COVERAGE",
+      "passed": true,
+      "actual": 163,
+      "threshold": "\u226550",
+      "description": "Template library should have at least 50 templates",
+      "severity": "info"
+    },
+    {
+      "name": "G1_recent_activity",
+      "category": "STALENESS",
+      "passed": true,
+      "actual": 37614,
+      "threshold": ">0",
+      "description": "There should be some constraints created in the last 24 hours",
+      "severity": "info"
+    },
+    {
+      "name": "G2_timestamp_coverage",
+      "category": "STALENESS",
+      "passed": true,
+      "actual": 100.0,
+      "threshold": "\u226510%",
+      "description": "At least 10% of constraints should have timestamps",
+      "severity": "info"
+    },
+    {
+      "name": "H1_bn_has_nodes",
+      "category": "BN_CONSISTENCY",
+      "passed": true,
+      "actual": 6340,
+      "threshold": ">0",
+      "description": "BN must have nodes",
+      "severity": "critical"
+    },
+    {
+      "name": "H2_bn_isolated",
+      "category": "BN_CONSISTENCY",
+      "passed": true,
+      "actual": 0.09,
+      "threshold": "\u22641.0%",
+      "description": "BN isolated nodes should be under 1%",
+      "severity": "warning"
+    },
+    {
+      "name": "H3_bn_no_unresolved",
+      "category": "BN_CONSISTENCY",
+      "passed": true,
+      "actual": 0,
+      "threshold": 0,
+      "description": "BN should have no unresolved nodes",
+      "severity": "warning"
+    },
+    {
+      "name": "I1_skeptic_readiness",
+      "category": "TEMPLATE_PROVENANCE",
+      "passed": false,
+      "actual": 32.8,
+      "threshold": "\u226540%",
+      "description": "Average of refs/mechanism/params/confidence coverage",
+      "severity": "warning"
+    },
+    {
+      "name": "I2_panel_source",
+      "category": "TEMPLATE_PROVENANCE",
+      "passed": false,
+      "actual": 76.7,
+      "threshold": "\u226580%",
+      "description": "125/163 templates have panel source attribution",
+      "severity": "warning"
+    },
+    {
+      "name": "I3_references",
+      "category": "TEMPLATE_PROVENANCE",
+      "passed": true,
+      "actual": 92.0,
+      "threshold": "\u226590%",
+      "description": "150/163 templates have key references",
+      "severity": "warning"
+    },
+    {
+      "name": "I4_t1_framework",
+      "category": "TEMPLATE_PROVENANCE",
+      "passed": true,
+      "actual": 90.2,
+      "threshold": "\u226585%",
+      "description": "147/163 templates have T1 framework linkage",
+      "severity": "warning"
+    }
+  ]
+}

@@ -1,0 +1,749 @@
+{
+  "input_path": "data/production/structured_claims.rag_llm_consensus.json",
+  "output_path": "data/production/structured_claims.rag_llm_consensus.risk_scored.json",
+  "summary": {
+    "total_claims": 382,
+    "claim_risk_mean": 0.2585,
+    "claim_risk_min": 0.1216,
+    "claim_risk_max": 0.8134,
+    "risk_tier_counts": {
+      "low": 367,
+      "high": 9,
+      "medium": 6
+    },
+    "risk_tier_pct": {
+      "low": 96.07,
+      "high": 2.36,
+      "medium": 1.57
+    },
+    "top_risk_reasons": [
+      {
+        "reason": "missing_effect_size",
+        "count": 364
+      },
+      {
+        "reason": "missing_p_value",
+        "count": 362
+      },
+      {
+        "reason": "abstract_only_provenance",
+        "count": 318
+      },
+      {
+        "reason": "iv_not_in_quote",
+        "count": 308
+      },
+      {
+        "reason": "dv_not_in_quote",
+        "count": 293
+      },
+      {
+        "reason": "unknown_direction",
+        "count": 171
+      },
+      {
+        "reason": "placeholder_raw_variable",
+        "count": 17
+      },
+      {
+        "reason": "placeholder_token",
+        "count": 17
+      },
+      {
+        "reason": "iv_raw_equals_dv_raw",
+        "count": 14
+      },
+      {
+        "reason": "lexical_direction_conflict",
+        "count": 12
+      },
+      {
+        "reason": "ocr_long_token",
+        "count": 2
+      },
+      {
+        "reason": "ocr_raw_variable_noise",
+        "count": 2
+      }
+    ]
+  },
+  "precision_risk_indicators": {
+    "placeholder_raw_fields": 17,
+    "iv_raw_equals_dv_raw": 14,
+    "unknown_direction": 171,
+    "total_claims": 382
+  },
+  "top_risky_claims": [
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260216234042-004:C001",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "claim_risk_score": 0.8134,
+      "claim_risk_tier": "high",
+      "direction": "increase",
+      "iv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "dv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "claim_risk_reasons": [
+        "ocr_long_token",
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "ocr_raw_variable_noise",
+        "missing_p_value"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260216234042-006:C002",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "claim_risk_score": 0.7478,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: estimates of sphericity (\u03b5 =; col_2: 0.554). A significant main effect of",
+      "dv_raw": "col_1: estimates of sphericity (\u03b5 =; col_2: 0.554). A significant main effect of",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/0010-0285(78)90006-3:TBL-20260216230440-001:C001",
+      "paper_id": "doi:10.1016/0010-0285(78)90006-3",
+      "claim_risk_score": 0.7478,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: cant effect was that due to superordinate information [F(2,18) =; col_2: ",
+      "dv_raw": "col_1: cant effect was that due to superordinate information [F(2,18) =; col_2: ",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260216234042-006:C001",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "claim_risk_score": 0.7278,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: sphericity for D-value [\u03c72(5) =; col_2: 93.78, p < 0.001\u2217\u2217]. Therefore, (",
+      "dv_raw": "col_1: sphericity for D-value [\u03c72(5) =; col_2: 93.78, p < 0.001\u2217\u2217]. Therefore, (",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/0010-0285(78)90006-3:TBL-20260216230440-003:C002",
+      "paper_id": "doi:10.1016/0010-0285(78)90006-3",
+      "claim_risk_score": 0.7278,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: condition [Q(2,16) =; col_2: 3.54, p < .05]. A Newman-Keuls test also sug",
+      "dv_raw": "col_1: condition [Q(2,16) =; col_2: 3.54, p < .05]. A Newman-Keuls test also sug",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260216230128-004:C001",
+      "paper_id": "doi:10.1007/bf00996485",
+      "claim_risk_score": 0.7128,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: for illuminance, F(1,; col_2: 80) = 5.85, p < .03. Subjects in the low-il",
+      "dv_raw": "col_1: for illuminance, F(1,; col_2: 80) = 5.85, p < .03. Subjects in the low-il",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260216230128-004:C002",
+      "paper_id": "doi:10.1007/bf00996485",
+      "claim_risk_score": 0.7128,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: nificant effect for level of illuminance, F(13,; col_2: 68) = 4.06, p < .",
+      "dv_raw": "col_1: nificant effect for level of illuminance, F(13,; col_2: 68) = 4.06, p < .",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260216230128-008:C001",
+      "paper_id": "doi:10.1007/bf00996485",
+      "claim_risk_score": 0.7128,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: collaboration, the effect of color was significant, F(1,; col_2: 68) = 6.",
+      "dv_raw": "col_1: collaboration, the effect of color was significant, F(1,; col_2: 68) = 6.",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260216230128-009:C001",
+      "paper_id": "doi:10.1007/bf00996485",
+      "claim_risk_score": 0.7128,
+      "claim_risk_tier": "high",
+      "direction": "unknown",
+      "iv_raw": "col_1: coding task as a function of either color F(1,; col_2: 66) = .27, p > .20",
+      "dv_raw": "col_1: coding task as a function of either color F(1,; col_2: 66) = .27, p > .20",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/978-3-031-04714-5_6:TBL-20260216230002-008:C001",
+      "paper_id": "doi:10.1007/978-3-031-04714-5_6",
+      "claim_risk_score": 0.6326,
+      "claim_risk_tier": "medium",
+      "direction": "increase",
+      "iv_raw": "col_1: application of LED technologies and smart-advanced textiles (Figs.; col_2",
+      "dv_raw": "col_1: application of LED technologies and smart-advanced textiles (Figs.; col_2",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "missing_p_value",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/b978-0-12-802075-3.00011-5:TBL-20260216230512-004:C001",
+      "paper_id": "doi:10.1016/b978-0-12-802075-3.00011-5",
+      "claim_risk_score": 0.6326,
+      "claim_risk_tier": "medium",
+      "direction": "increase",
+      "iv_raw": "col_1: Cognitive Task; col_2: 2 in LED 3 relative to fluorescent (marginally),",
+      "dv_raw": "col_1: Cognitive Task; col_2: 2 in LED 3 relative to fluorescent (marginally),",
+      "claim_risk_reasons": [
+        "placeholder_token",
+        "iv_raw_equals_dv_raw",
+        "placeholder_raw_variable",
+        "missing_p_value",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3390/su152216104:TBL-20260216234427-008:C001",
+      "paper_id": "doi:10.3390/su152216104",
+      "claim_risk_score": 0.5003,
+      "claim_risk_tier": "medium",
+      "direction": "unknown",
+      "iv_raw": "col_1: CrowdingPerception",
+      "dv_raw": "Positiveemotions \u22120",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3390/su152216104:TBL-20260216234427-008:C002",
+      "paper_id": "doi:10.3390/su152216104",
+      "claim_risk_score": 0.5003,
+      "claim_risk_tier": "medium",
+      "direction": "unknown",
+      "iv_raw": "col_1: CrowdingPerception",
+      "dv_raw": "Negativeemotions",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/0010-0285(78)90006-3:TBL-20260216230440-003:C001",
+      "paper_id": "doi:10.1016/0010-0285(78)90006-3",
+      "claim_risk_score": 0.5003,
+      "claim_risk_tier": "medium",
+      "direction": "unknown",
+      "iv_raw": "col_1: to superordinate structure [F(2,22) =; col_2: 11.07, p < .Ol]. Neither th",
+      "dv_raw": "recovery_time",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/0010-0285(78)90006-3:TBL-20260216230440-003:C003",
+      "paper_id": "doi:10.1016/0010-0285(78)90006-3",
+      "claim_risk_score": 0.4803,
+      "claim_risk_tier": "medium",
+      "direction": "unknown",
+      "iv_raw": "col_1: There was a reliable effect due to dimensions [F(l,ll) =; col_2: 6.80, p ",
+      "dv_raw": "recovery_time",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "unknown_direction",
+        "missing_effect_size",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1146/annurev-neuro-072116-031215:TBL-20260216232200-014:C001",
+      "paper_id": "doi:10.1146/annurev-neuro-072116-031215",
+      "claim_risk_score": 0.3851,
+      "claim_risk_tier": "low",
+      "direction": "increase",
+      "iv_raw": "col_1: picture present (M \u00bc5:4; s:d:\u00bc2:5). Sessions; col_2: 1 and 4 (1.02) sugge",
+      "dv_raw": "mood",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "missing_p_value",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1016/b978-0-12-802075-3.00011-5:TBL-20260216230512-004:C002",
+      "paper_id": "doi:10.1016/b978-0-12-802075-3.00011-5",
+      "claim_risk_score": 0.3851,
+      "claim_risk_tier": "low",
+      "direction": "increase",
+      "iv_raw": "window_area_ratio",
+      "dv_raw": "col_1: Vigor/Activityscore (cid:6)1.67; col_2: 5.24 (cid:6).25 4.92 .54 6.71 2.9",
+      "claim_risk_reasons": [
+        "placeholder_raw_variable",
+        "placeholder_token",
+        "missing_p_value",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3390/app11093942:TBL-20260216234107-001:C002",
+      "paper_id": "doi:10.3390/app11093942",
+      "claim_risk_score": 0.3776,
+      "claim_risk_tier": "low",
+      "direction": "increase",
+      "iv_raw": "lations, furnished as in the real conditio s of the Q\u2013Q plots referring to rever",
+      "dv_raw": "lations, furnished as in the real conditio s of the Q\u2013Q plots referring to rever",
+      "claim_risk_reasons": [
+        "iv_raw_equals_dv_raw",
+        "missing_p_value",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.14288/1.0071305:TBL-20260216232555-029:C001",
+      "paper_id": "doi:10.14288/1.0071305",
+      "claim_risk_score": 0.3756,
+      "claim_risk_tier": "low",
+      "direction": "no_effect",
+      "iv_raw": "Measure: A-NS-SCR; Baseline Effect: No; Test Effect: No; Recovery Effect: No",
+      "dv_raw": "Measure: A-NS-SCR; Baseline Effect: No; Test Effect: No; Recovery Effect: No",
+      "claim_risk_reasons": [
+        "iv_raw_equals_dv_raw",
+        "missing_effect_size",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1038/s41598-022-20649-y:TBL-20260216231047-002:C001",
+      "paper_id": "doi:10.1038/s41598-022-20649-y",
+      "claim_risk_score": 0.3626,
+      "claim_risk_tier": "low",
+      "direction": "increase",
+      "iv_raw": "Contrast: Gr\u2013IC; Group: Stand; Median: 7.529; SD: 1.036; 95% CI: [5.577,9.579]",
+      "dv_raw": "Contrast: Gr\u2013IC; Group: Stand; Median: 7.529; SD: 1.036; 95% CI: [5.577,9.579]",
+      "claim_risk_reasons": [
+        "iv_raw_equals_dv_raw",
+        "missing_p_value",
+        "dv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.25916/sut.26402764.v1:C001",
+      "paper_id": "doi:10.25916/sut.26402764.v1",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "bright light exposure",
+      "dv_raw": "heart rate changes and some psychologica",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1177/0018720819892383:C001",
+      "paper_id": "doi:10.1177/0018720819892383",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "temperature",
+      "dv_raw": "visual perception were found",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1177/0018720819892383:C002",
+      "paper_id": "doi:10.1177/0018720819892383",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "temperature on visual perception were found",
+      "dv_raw": "preference",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/3-540-48384-5_25:C001",
+      "paper_id": "doi:10.1007/3-540-48384-5_25",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "Actions",
+      "dv_raw": "observations",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1371/journal.pone.0307934:C001",
+      "paper_id": "doi:10.1371/journal.pone.0307934",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "electroencephalography during 5-min exposure to the",
+      "dv_raw": "greenery design",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.3389/fnhum.2021.771711:C001",
+      "paper_id": "doi:10.3389/fnhum.2021.771711",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "Heightened auditory activity to task-irrelevant sound",
+      "dv_raw": "both poorer WM performance",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:zotero:TFKWSKYP:C001",
+      "paper_id": "zotero:TFKWSKYP",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "perceptions of time spent dining were",
+      "dv_raw": "music, but not to a significant level",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1177/0013916518824631:C001",
+      "paper_id": "doi:10.1177/0013916518824631",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "age",
+      "dv_raw": "perceived home",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1177/0013916518824631:C003",
+      "paper_id": "doi:10.1177/0013916518824631",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "perceived crowding",
+      "dv_raw": "blood pressure",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1177/0013916518824631:C004",
+      "paper_id": "doi:10.1177/0013916518824631",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "perceived crowding",
+      "dv_raw": "allostatic load among participants who reported",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/978-3-031-56544-1_21:C001",
+      "paper_id": "doi:10.1007/978-3-031-56544-1_21",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "illumination level and correlated colour tempera",
+      "dv_raw": "glare",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/978-3-031-56544-1_21:C002",
+      "paper_id": "doi:10.1007/978-3-031-56544-1_21",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "glare",
+      "dv_raw": "worker behaviour",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1080/00140130903154579:C008",
+      "paper_id": "doi:10.1080/00140130903154579",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "including increased distraction",
+      "dv_raw": "attention",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1080/00140130903154579:C009",
+      "paper_id": "doi:10.1080/00140130903154579",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "reduced privacy",
+      "dv_raw": "attention",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1080/00140130903154579:C010",
+      "paper_id": "doi:10.1080/00140130903154579",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "increased concentration",
+      "dv_raw": "attention",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/s10086-006-0812-5:C007",
+      "paper_id": "doi:10.1007/s10086-006-0812-5",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "visual characteristics of a wood interior",
+      "dv_raw": "its psychological image",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/s10086-006-0812-5:C008",
+      "paper_id": "doi:10.1007/s10086-006-0812-5",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "They also investigated the",
+      "dv_raw": "edge-grain patterns on subjective \u201cnatural\u201d feelings and revealed that a clear, regul",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1007/s10086-006-0812-5:C009",
+      "paper_id": "doi:10.1007/s10086-006-0812-5",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "revealed that a clear",
+      "dv_raw": "mood",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1016/j.landurbplan.2012.12.013:C001",
+      "paper_id": "doi:10.1016/j.landurbplan.2012.12.013",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "common problem in cities",
+      "dv_raw": "in the dense city of Copenhagen",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    },
+    {
+      "claim_id": "abs:doi:10.1016/j.landurbplan.2012.12.013:C002",
+      "paper_id": "doi:10.1016/j.landurbplan.2012.12.013",
+      "claim_risk_score": 0.3018,
+      "claim_risk_tier": "low",
+      "direction": "unknown",
+      "iv_raw": "Second",
+      "dv_raw": "average users\u2019 perceived restorativeness",
+      "claim_risk_reasons": [
+        "unknown_direction",
+        "missing_effect_size",
+        "missing_p_value",
+        "abstract_only_provenance",
+        "dv_not_in_quote",
+        "iv_not_in_quote"
+      ]
+    }
+  ]
+}

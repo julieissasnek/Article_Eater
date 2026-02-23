@@ -1,290 +1,274 @@
 {
-  "template_id": "VISUAL_FORM_CEILING_HEIGHT_001",
+  "template_id": "VF3_SPATIAL_PROPORTIONS_001",
   "display_id": "VF3",
-  "name": "Ceiling Height and Cognitive Mode \u2014 The Priming of Abstract vs. Concrete Processing",
-  "structural_pattern": "Architecture primes cognitive processing style through vertical scale. High ceilings (>3.0m) prime abstract, relational, and creative processing (exploratory mode). Low ceilings (<2.6m) prime concrete, item-specific, and detail-oriented processing (confinement mode). The mechanism is mediated by the Parahippocampal Place Area (PPA) and conceptual priming of 'freedom' vs. 'confinement' (Meyers-Levy & Zhu, 2007; Vartanian et al., 2015).",
-  "higher_order_principle": "Vertical scale acts as a somatosensory-cognitive prime. The physical envelope of the space sets the default scope of attention and conceptual processing. Large vertical volume = broad scope (abstract). Compressed vertical volume = narrow scope (concrete).",
-  "transferable_to": [
-    "Workplace Design (matching ceiling height to task type)",
-    "Retail Design (high for exploration, low for detailed evaluation)",
-    "Educational Spaces (varied heights for different learning modes)"
-  ],
-  "framework_ids": [
-    "embodied_cognition",
-    "conceptual_metaphor_theory",
-    "predictive_processing",
-    "architectural_neuroscience"
-  ],
-  "causal_links": [
+  "name": "Spatial Proportions, Ceiling Height, and Cognitive Processing Mode",
+  "status": "calibrated",
+  "maturity": "supported",
+  "panel": "VISUAL-I",
+  "prior_calibration": "VF-II Doc 64 (Feb 17, 2026) + Doc 54 R_h parameterization — deepened here",
+  "t1_frameworks": [],
+  "mechanism_chain": [
     {
-      "from_variable": "ceiling_height",
-      "to_variable": "perceived_confinement",
-      "activity": "modulates",
-      "from_level": "environmental",
-      "to_level": "sensory",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "notes": "Vartanian et al. (2015) fMRI data shows differential PPA activation. High ceilings reduce confinement signal; low ceilings increase it."
-    },
-    {
-      "from_variable": "perceived_chomfinement",
-      "to_variable": "processing_style",
-      "activity": "primes",
-      "from_level": "sensory",
-      "to_level": "cognitive",
-      "bridging_quality": "moderate",
-      "maturity": "supported",
-      "notes": "Meyers-Levy & Zhu (2007) behavioral data: High ceilings -> better performance on anagrams (abstract). Low ceilings -> better performance on item-specific tasks (concrete)."
-    }
-  ],
-  "scope_conditions": [
-    "Effect is strongest when the ceiling height is salient (noticed)",
-    "Effect interacts with room area (proportionality references)",
-    "Modulated by lighting (bright ceilings felt higher)"
-  ],
-  "moderators": [
-    "Task type (creative vs. analytical)",
-    "Individual differences in claustrophobia/agoraphobia",
-    "Cultural norms for standard ceiling height"
-  ],
-  "interactions": [
-    {
-      "template_id": "ISOVIST_VISUAL_PREDICTION_001",
-      "display_id": "SC2",
-      "nature": "VF3 (vertical scale) and SC2 (horizontal scale) co-determine the Volumetric Proportion PE. A high ceiling in a small room (high R_h) creates a different effect than in a large room."
-    },
-    {
-      "template_id": "COMPLEXITY_GOLDILOCKS_001",
-      "display_id": "T2",
-      "nature": "Visual complexity on the ceiling plane (coffering, beams) reduces perceived height (VF3 moderator) but increases T2 complexity."
-    },
-    {
-      "template_id": "LUMINANCE_VOLUME_001",
-      "display_id": "L1",
-      "nature": "Ceiling luminance modulates perceived height. A bright ceiling feels higher (VF3 correction factor)."
-    },
-    {
-      "template_id": "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
-      "display_id": "T60",
-      "nature": "Reverse link added by CX V10 S4 remediation to satisfy bidirectional interaction encoding."
-    }
-  ],
-  "ecological_paradigm": {
-    "design": "Experimental room w/ adjustable ceiling",
-    "protocol": "Participants perform abstract (anagrams) vs. concrete (proofreading) tasks at 2.4m vs. 3.3m height.",
-    "behavioral_measure": "Task performance speed and accuracy",
-    "physiological_measure": "fMRI (PPA activation), HRV (confinement stress)",
-    "predictions": [
-      "3.3m > 2.4m for abstract tasks",
-      "2.4m > 3.3m for concrete tasks",
-      "PPA activation scales with height"
-    ]
-  },
-  "overall_maturity": "supported_partially_calibrated",
-  "key_references": [
-    "Meyers-Levy, J., & Zhu, R. (2007). The influence of ceiling height. Journal of Consumer Research.",
-    "Vartanian, O., et al. (2015). Architectural design and the brain.",
-    "Baird, J. C., et al. (1978). Ceiling height and perceived room size."
-  ],
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "from": "spatial_enclosure_ratio",
+      "to": "spatial_enclosure_ratio",
+      "description": "R_h = ceiling_height / √(floor_area). This dimensionless ratio captures the occupant's sense of spatial liberation vs. confinement in a form that predicts amygdala response independently of absolute room size. Low R_h (< 0.25): spatial compression, proprioceptive prediction of restricted movement range, elevated amygdala activation. High R_h (> 0.50): spatial expansion, movement range exceeds prediction → positive spatial PE.",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {
+            "finding": "Ceiling height affects abstract thinking: higher ceilings promote relational processing",
+            "source": "Meyers-Levy & Zhu (2007)",
+            "paradigm": "Behavioral experiment manipulating ceiling height",
+            "effect": "Higher ceilings → more abstract categorization, more freedom-related thoughts",
+            "n": 100,
+            "design": "Between-subjects ceiling height manipulation"
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "R_h (ceiling-to-floor ratio) correlates with spaciousness perception and positive affect",
+            "source": "Vartanian et al. (2015)",
+            "paradigm": "fMRI with room proportion manipulation",
+            "effect": "Significant effect of room height on beauty ratings and pleasure center activation",
+            "n": 18,
+            "design": "Within-subjects fMRI with room images"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+        ],
+        "backing": "Proportional ratios generate prediction error through deviation from categorical expectations. R_h (ceiling height / √floor area) is the most-studied proportional variable, with converging evidence from behavioral (Meyers-Levy), neuroimaging (Vartanian), and environmental psychology paradigms. The mechanism connects to T22: R_h is a primary LSF driver determining categorical gist.",
+        "qualifier": "Confidence 0.55 reflects moderate empirical support with some neuroimaging confirmation. The effect of ceiling height on cognition and affect is established but the specific R_h formulation and its boundary values are theoretical constructs calibrated from panel consensus rather than parametric experiments.",
+        "rebuttal": "The claim would fail if: (a) the ceiling height effect is mediated by perceived spaciousness (a simple perceptual variable) rather than proportional PE — spaciousness can be achieved through other means (open plan, glass walls) without changing R_h; (b) the R_h metric is too reductive for the complex proportional relationships in real architecture.",
+        "competing_accounts": [
+          {
+            "account": "Spatial agency model",
+            "proponent": "Stamps (2010)",
+            "claim": "Proportional effects are mediated by perceived agency (freedom to move/act) rather than prediction error — higher ceilings expand perceived movement options rather than reducing PE",
+            "implication_for_template": "If agency rather than PE, the mechanism pathway changes but the architectural prediction (higher R_h → more positive response up to a point) remains. The implication is that movement affordances matter more than visual statistics."
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+        ],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "spatial_enclosure_ratio",
+      "to": "interoceptive_signal",
+      "description": "Low R_h → confinement → narrowed cognitive scope (Fredrickson broaden-and-build reversed). High R_h → liberation → expanded affordance → amygdala reduction → broadened cognitive scope. Meyers-Levy & Zhu (2007): 2.4m vs. 3.0m ceiling produced relational/categorical processing shift. Vartanian et al. (2015): fMRI enclosure effects on beauty and approach decisions.",
+      "warrant": "MECHANISM",
+      "confidence": 0.6,
+      "justification": {
+        "data": [
+          {
+            "finding": "Claustrophobia-like responses (elevated HR, desire to leave) in rooms with very low R_h (<0.20)",
+            "source": "Stamps (2010)",
+            "paradigm": "Environmental simulation studies",
+            "effect": "Significant increase in enclosure stress below R_h ≈ 0.20",
+            "n": null,
+            "design": "Environmental simulation with physiological measurement"
+          },
+          {
+            "finding": "Golden ratio and harmonic proportional systems produce higher aesthetic ratings in architectural contexts",
+            "source": "Salingaros (panel opening statement)",
+            "paradigm": "Proportional analysis of historical architecture",
+            "effect": "Higher aesthetic ratings for proportionally coherent buildings",
+            "n": null,
+            "design": "Cross-sectional preference studies"
+          }
+        ],
+        "backing": "The proportional PE mechanism has a lower-bound threshold (enclosure stress at very low R_h) and an aesthetic preference gradient. The lower bound is the most robust finding: confined spaces reliably produce stress responses. The aesthetic effect of specific proportional systems (golden ratio) is less certain.",
+        "qualifier": "Confidence 0.50 at this step because while enclosure stress is well-documented, the specific cognitive processing mechanism (proportional PE vs. perceived agency vs. instinctive confinement response) is debated. The golden ratio aesthetic claim is contested and may reflect cultural training rather than perceptual universals.",
+        "rebuttal": "The claim would fail if: (a) the enclosure stress response is purely a threat detection mechanism (amygdala, not PE) rather than a proportional PE computation; (b) harmony in proportional systems is entirely culturally constructed, with no perceptual basis in prediction error.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "interoceptive_signal",
+      "to": "creative_network_dynamics",
+      "description": "Broadened affect → expanded prediction envelope → increased tolerance for remote associations → divergent/relational thinking advantages. VF3 → CREA2B is a single causal chain: DO NOT independently compute CREA2B from ceiling height — trace through VF3's affect link. Motor pathway (CREA3) is genuinely independent and additive.",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "VR room manipulation shows beauty and approach ratings correlate with proportional harmony",
+            "source": "Vartanian et al. (2019)",
+            "paradigm": "VR-based architectural evaluation",
+            "effect": "Effect size d ≈ 0.30 for proportionally harmonious vs. dissonant rooms",
+            "n": null,
+            "design": "Within-subjects VR room comparison"
+          },
+          {
+            "finding": "Coburn R² = 0.35 for combined visual statistics: proportional variables contribute incrementally beyond fractal and curvature",
+            "source": "Coburn et al. (2020)",
+            "paradigm": "Image-computable statistics predicting beauty",
+            "effect": "Incremental ΔR² for aspect ratio variables after controlling D and curvature",
+            "n": 2000,
+            "design": "Cross-sectional regression on ~800 images"
+          }
+        ],
+        "backing": "Proportional harmony produces aesthetic preference through a combination of efficient spatial prediction (low PE for harmonious proportions) and categorical frame confirmation (T22). Coburn's data show that proportional variables contribute to beauty predictions incrementally beyond fractal dimension and curvature.",
+        "qualifier": "Confidence 0.50 reflects modest empirical support. The effect size is smaller than for fractal dimension (T1) or curvature (VF1). Proportional harmony may be partially confounded with familiarity and cultural training in classical architecture.",
+        "rebuttal": "The claim would fail if: (a) the incremental contribution of proportional variables is too small to be architecturally meaningful (ΔR² < 0.03); (b) proportional preferences are entirely explained by cultural exposure to classical architecture rather than by perceptual PE computation.",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     }
-  },
-  "calibration_data": {
-    "pe_transition_function": {
-      "formula": "PE_transition = 0.55 * ln(R_h_new / R_h_old)",
-      "broadening_threshold": "Ratio > 1.4x (positive PE)",
-      "narrowing_threshold": "Ratio < 0.7x (negative PE)"
+  ],
+  "calibrated_parameters": {
+    "spatial_enclosure_ratio": {
+      "confining": {
+        "range": "<0.25",
+        "response": "Spatial compression, threat elevation",
+        "confidence": 0.65
+      },
+      "balanced": {
+        "range": "0.25–0.35",
+        "response": "Neutral — adequate for most functions",
+        "confidence": 0.65
+      },
+      "liberating": {
+        "range": "0.35–0.50",
+        "response": "Spatial liberation, affect broadening, creativity support",
+        "confidence": 0.65
+      },
+      "impressive": {
+        "range": "0.50–0.80",
+        "response": "Strong liberation, potential awe initiation",
+        "confidence": 0.6
+      },
+      "overwhelming": {
+        "range": ">0.80",
+        "response": "Exceeds comfortable scale; awe or discomfort",
+        "confidence": 0.55
+      },
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Doc 54 R_h parameterization; Vartanian et al. (2015); Meyers-Levy & Zhu (2007)"
     },
-    "contour_interaction": {
-      "rule": "Additive (Combined_PE = VF1 + VF3)",
-      "mitigation": "Curved contours (VF1) can offset confining proportions (VF3)"
+    "architectural_threshold": {
+      "formula": "PE_transition = 0.55 × ln(R_h_new / R_h_old)",
+      "k_central": 0.55,
+      "k_range": [
+        0.35,
+        0.75
+      ],
+      "k_confidence": 0.4,
+      "k_flag": "THEORETICAL_DEFAULT — k estimated from Vartanian fMRI + Meyers-Levy behavioral; not directly measured",
+      "examples": {
+        "corridor_to_atrium": {
+          "R_h_ratio": 2.7,
+          "PE_transition": 0.55,
+          "processing_shift_d": 0.5
+        },
+        "standard_to_high_studio": {
+          "R_h_ratio": 1.4,
+          "PE_transition": 0.18,
+          "processing_shift_d": 0.2
+        },
+        "atrium_to_standard_room": {
+          "R_h_ratio": 0.53,
+          "PE_transition": -0.35,
+          "processing_shift_d": 0.3
+        }
+      },
+      "overall_confidence": 0.45
     },
-    "crea2b_linkage": {
-      "type": "Causal Chain",
-      "pathway": "VF3 -> Affect -> CREA2B -> Divergent Thinking"
+    "creative_network_dynamics": {
+      "d_divergent_thinking_liberating_R_h": 0.4,
+      "range": [
+        0.25,
+        0.55
+      ],
+      "confidence": 0.55,
+      "source": "Meyers-Levy & Zhu (2007); Slepian & Ambady (2012)",
+      "computation": "Apply as VF3 affect broadening → CREA2B coefficient. Do NOT double-add CREA2B independently from ceiling height."
+    },
+    "visual_complexity": {
+      "model": "ADDITIVE (Vartanian 2019)",
+      "curved_liberating": "+0.35 net positive",
+      "curved_confining": "0.00 neutral",
+      "angular_liberating": "+0.10 mildly positive",
+      "angular_confining": "+0.45 net NEGATIVE",
+      "confidence": 0.65,
+      "design_implication": "In unavoidable corridors, curved contours compensate for enclosure PE."
     }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "active",
-  "generation": 2,
-  "ecological_validation": false
+  "population_modifiers": {
+    "claustrophobia": {
+      "direction": "amplified_low_R_h_response",
+      "modifier": "~2–3× amygdala response; optimal R_h threshold shifts to >0.35",
+      "confidence": 0.55
+    },
+    "children": {
+      "direction": "proportionally_higher_effective_R_h",
+      "notes": "Child in adult-proportioned space has effectively higher R_h than adult. R_h should be computed relative to observer height.",
+      "confidence": 0.5
+    }
+  },
+  "building_types": [
+    "creative workspaces (R_h target 0.40–0.55)",
+    "corridors in hospitals (confining R_h — compensate with low CCI)",
+    "sacred spaces (high R_h for awe)"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "p_parent_theory": 0.85,
+  "p_cnfa_specific": 0.6,
+  "p_effect_composite": 0.51,
+  "interaction_templates": [
+    {
+      "id": "PP_RAPID_GIST_004",
+      "display": "T22",
+      "nature": "T22 processes R_h as an LSF property in the first 130ms categorical frame. VF3 provides the slower, proportionally detailed evaluation that follows. T22 is upstream; VF3 is downstream."
+    },
+    {
+      "id": "ARCH_PROMENADE_TEMPORAL_PE_001",
+      "display": "SC3",
+      "nature": "SC3's promenade deliberately sequences R_h transitions (approach → development → climax) to deploy VF3's transition-enhancement function as a compositional device."
+    },
+    {
+      "id": "VF1_CONTOUR_PE_001",
+      "display": "VF1",
+      "nature": "VF1 and VF3 interact additively. See contour_proportions_interaction in calibrated_parameters."
+    },
+    {
+      "id": "AX3_AWE_HIGH_PE_001",
+      "display": "AX3",
+      "nature": "High R_h (> 0.80) contributes to awe threshold by adding spatial liberation PE to the SC3 promenade climax. VF3 → AX3 is a contributing cause pathway."
+    }
+  ],
+  "key_references": [
+    "Meyers-Levy, J., & Zhu, R. (2007). The influence of ceiling height. Journal of Consumer Research, 34(2), 174–186. https://doi.org/10.1086/519146",
+    "Vartanian, O., et al. (2015). Architectural design and the brain: Effects of ceiling height and perceived enclosure. Journal of Environmental Psychology, 41, 10–18. https://doi.org/10.1016/j.jenvp.2014.11.006",
+    "Fredrickson, B. L. (2001). The role of positive emotions in positive psychology. American Psychologist, 56(3), 218–226. https://doi.org/10.1037/0003-066X.56.3.218",
+    "Slepian, M. L., & Ambady, N. (2012). Fluid movement and creativity. Journal of Experimental Psychology: General, 141(4), 625–629. https://doi.org/10.1037/a0027395"
+  ],
+  "panel_docs": [
+    "docs/42_Panel_TP_I_Temporal.md",
+    "docs/VISUAL_I_Panel_Output_Feb21.md"
+  ],
+  "panel_reasoning_excerpt": "## Panel Charge\n\nThis panel addresses **A10 Temporal Experience & Movement** (coverage ★★ Partial in Doc 33). Unlike previous panels, which addressed specific sensory domains (light, materials, spatial configuration, visual form), this panel addresses the TEMPORAL DIMENSION that crosscuts all domains. Architecture is not experienced instantaneously — it is experienced over time, through movement, across daily and seasonal cycles, and through the long duration of a building's life. The temporal dimension is where the individual sensory templates become an integrated experience.\n\nMultiple previous panels have already formalized temporal mechanisms within their domains: L2 (circadian architecture, hours-to-days), L5 (dynamic light, minutes-to-hours), MAT2 (seasonal thermal adaptation, weeks-to-months), SC3 (architectural promenade, seconds-to-minutes), VF3 (processing-style shifts at spatial transitions, seconds). What is NOT formalized: (1) **proprioceptive-motor prediction** — how the body predicts and responds to architectural surfaces and spatial demands during movement, (2) **the doorway effect** — how architectural thresholds create episodic boundaries in memory, (3) **aging and patina** — how buildings change over years and decades and how this temporal depth affects experience, and (4) **the temporal hierarchy** — the systematic integration of PE events across timescales from milliseconds to decades.\n\nThe panel is charged with producing 3–4 templates covering: (a) motor prediction and proprioceptive PE during architectural movement, (b) the threshold as episodic boundary (the doorway effect in architectural design), (c) material aging and temporal depth, and (d) a temporal hierarchy framework that systematizes the timescale structure already present across all templates. These must connect to SC3 (which handles the promenade compositional structure), L2/L5 (circadian and dynamic light), MAT2 (seasonal thermal), and T8 (affordance/postural readiness).\n\n---",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/42_Panel_TP_I_Temporal.md",
+  "excerpt_char_range": [
+    192,
+    2187
+  ],
+  "cross_template_interactions": {
+    "IC2_body_budget": "Confining R_h produces sustained mild threat activation accruing as allostatic cost. In hospitals with uniformly low R_h corridors and ward bays (R_h < 0.25), cumulative IC2 cost over days of inpatient stay is non-trivial — contributing to the navigation-stress cycle (T14).",
+    "AX4_perceived_control": "Spatial liberation (high R_h) is architecturally the most direct embodiment of expanded action-policy space (PP_ACTIVE_INFERENCE_003). High R_h environments afford more movement options, contributing to AX4 directly through affordance expansion."
+  },
+  "architectural_modifiers": {
+    "visual_complexity": {
+      "description": "Atrium visible from occupant position amplifies liberation PE even when immediate ceiling is standard height.",
+      "modifier": "+0.08 to +0.15 R_h equivalent",
+      "confidence": 0.5
+    },
+    "creative_network_dynamics": {
+      "recommended_R_h": "0.40–0.55"
+    }
+  },
+  "calibration_status": "calibrated",
+  "panel_source": "VISUAL-I",
+  "confidence": 0.6
 }

@@ -2,359 +2,264 @@
   "template_id": "LUM_CONTRAST_PE_001",
   "display_id": "L1",
   "name": "Luminance Contrast Prediction Error and Aesthetic Response",
-  "short_description": "Visual system generates luminance predictions; contrast-driven PE produces aesthetic and emotional responses along Goldilocks continuum",
-  "structural_pattern": "The visual system generates predictions about luminance distribution based on spatial context, prior experience with similar spaces, and the current adaptation state. Actual luminance distributions are compared against these predictions via magnocellular-pathway processing in early visual cortex (V1/V2). The magnitude and spatial structure of the resulting prediction error determines aesthetic and emotional response along a continuum: very low PE (uniform lighting, no contrast) \u2192 boredom, flatness; moderate PE (interesting contrast, spatial depth revealed by light and shadow) \u2192 aesthetic pleasure, engagement; high PE (dramatic chiaroscuro, luminance ratios exceeding adaptation range) \u2192 intensity, drama, potential awe; extreme PE (blinding glare, total darkness where light expected) \u2192 discomfort, aversion.",
-  "higher_order_principle": "Goldilocks-zone PE applied specifically to the luminance domain. The inverted-U function observed for visual complexity (T2) and auditory information content (M1) is instantiated in luminance contrast processing, with the additional feature that the upper PE range connects to the awe pathway (AX3) through Plummer's high-contrast light types (shaft, chiaroscuro, aureole).",
-  "framework_ids": [
-    "predictive_processing",
-    "neuroaesthetics",
-    "architectural_phenomenology"
-  ],
-  "domain": "light_luminance",
-  "attribute_domain": "A4",
-  "causal_links": [
-    {
-      "from_entity": "luminance_contrast_ratio",
-      "to_entity": "V1_V2_prediction_error_signal",
-      "activity": "generates",
-      "from_level": "environmental",
-      "to_level": "neural",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "Luminance contrast drives feedforward magnocellular signals compared against top-down predictions in V1/V2. Well-characterized electrophysiologically (Muckli & Petro, 2013)."
-    },
-    {
-      "from_entity": "V1_V2_prediction_error_signal",
-      "to_entity": "aesthetic_engagement",
-      "activity": "modulates_inverted_U",
-      "from_level": "neural",
-      "to_level": "affective",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Moderate luminance PE \u2192 positive aesthetic evaluation (analogous to T2 complexity Goldilocks). Specific to luminance channel; interacts with but is separable from chromatic and spatial-frequency complexity."
-    },
-    {
-      "from_entity": "luminance_PE_magnitude",
-      "to_entity": "awe_response",
-      "activity": "triggers_above_threshold",
-      "from_level": "neural",
-      "to_level": "affective",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "When luminance PE exceeds Goldilocks zone but remains assimilable (dramatic shaft, chiaroscuro), engages AX3 awe pathway. Plummer's shaft and chiaroscuro types are the architectural configurations most likely to reach this range."
-    },
-    {
-      "from_entity": "luminance_PE_magnitude",
-      "to_entity": "visual_discomfort_glare",
-      "activity": "triggers_above_tolerance",
-      "from_level": "neural",
-      "to_level": "affective",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "Extreme luminance PE (direct glare, disability glare) exceeds comfortable processing and triggers aversion, visual fatigue, avoidance behavior. Quantifiable via Unified Glare Rating (UGR) and Daylight Glare Probability (DGP)."
-    }
-  ],
-  "scope_conditions": [
-    "Applies to any architectural space with luminance variation",
-    "Luminance contrast must be defined at the spatial scale relevant to the visual field \u2014 both local (object/background) and global (room-level light distribution)",
-    "Temporal dynamics matter: static contrast habituates; changing contrast (sunlight movement) sustains PE",
-    "Adaptation state of the eye moderates the effective contrast"
-  ],
-  "moderators": [
-    "Prior spatial expectations (entering a cathedral vs. a corridor sets different luminance predictions)",
-    "Cultural conditioning (sacred spaces are expected to have dramatic light; offices are expected to have uniform light)",
-    "Individual photosensitivity (migraine-prone individuals have lower glare tolerance)",
-    "Time of day and circadian phase (dark-adapted eyes are more sensitive to contrast)",
-    "Viewing direction relative to light source (direct view of source vs. reflected light)"
-  ],
-  "light_types_taxonomy": {
-    "shaft": "Beam of light entering through an aperture into a darker space \u2014 high localized PE",
-    "wash": "Even, gentle illumination of a surface by indirect light \u2014 low PE, visual calm",
-    "glow": "Luminosity appearing to emanate from within a surface \u2014 violates point-source prediction",
-    "dapple": "Complex, semi-random pattern of light and shadow \u2014 moderate fractal PE",
-    "aureole": "Halo of light surrounding a brighter source \u2014 figure-ground separation through contrast",
-    "chiaroscuro": "Dramatic interplay of light and deep shadow \u2014 high PE, strong depth cues"
-  },
-  "calibration_parameters": {
-    "cv_luminance_goldilocks_boundaries": {
-      "comfort_zone": {
-        "cv_range": "< 0.5",
-        "experiential_character": "Uniform, calm, readable",
-        "pe_level": "Low PE (prediction confirmed)",
-        "architectural_examples": "Office ceiling panels, overcast daylight, the wash",
-        "context_dependence": "Appropriate for sustained task environments",
-        "plummer_type": "wash"
-      },
-      "aesthetic_zone": {
-        "cv_range": "0.5\u20131.5",
-        "experiential_character": "Interesting, pleasant, engaging",
-        "pe_level": "Moderate PE (Goldilocks optimum)",
-        "architectural_examples": "Well-designed daylit spaces, the dapple, pendant lighting",
-        "context_dependence": "Ideal for mixed-use, educational, residential",
-        "plummer_type": "dapple"
-      },
-      "dramatic_zone": {
-        "cv_range": "1.5\u20133.0",
-        "experiential_character": "Powerful, impressive, intense",
-        "pe_level": "High PE (approaching accommodation)",
-        "architectural_examples": "Museums, sacred spaces, the shaft",
-        "context_dependence": "Appropriate for experiential/cultural spaces",
-        "plummer_types": [
-          "shaft",
-          "chiaroscuro"
-        ]
-      },
-      "discomfort_zone": {
-        "cv_range": "> 3.0",
-        "experiential_character": "Painful, aversive, fatiguing",
-        "pe_level": "Excessive PE (negative valence)",
-        "architectural_examples": "Unmanaged glare, bright window in dark room",
-        "context_dependence": "Avoid in all sustained-occupancy settings"
-      }
-    },
-    "photosensitivity_correction": {
-      "population_distribution": "15\u201320% of general population reports significant discomfort at median-comfortable levels",
-      "clinical_populations": "Migraine (~12% adults), photosensitive epilepsy (~3% epilepsy patients)",
-      "threshold_shift": "Shift ALL boundaries downward by 30\u201350% for photosensitive populations",
-      "design_recommendation": "Design for 85th percentile of sensitivity, not 50th",
-      "evidence_base": "Wilkins (1995); Wilkins et al. (1984)"
-    },
-    "caveats": [
-      "Boundaries shift \u00b130\u201350% for photosensitive populations",
-      "Boundaries are adaptation-state dependent",
-      "Spatial configuration matters: same CV can feel pleasant or unpleasant depending on spatial logic",
-      "These boundaries are from Western, predominantly office/educational settings \u2014 cross-cultural calibration needed"
-    ],
-    "measurement_tools": [
-      "Evalglare",
-      "Radiance HDR photography",
-      "Luminance mapping"
-    ],
-    "calibration_source": "Panel L-II (Doc 49) \u2014 Rockcastle et al. preliminary boundaries"
-  },
-  "calibration_status": "partially_calibrated",
-  "interactions": [
-    {
-      "template_id": "PP_COMPLEXITY_GOLDILOCKS_002",
-      "display_id": "T2",
-      "nature": "Luminance contrast contributes to overall visual complexity. L1 and T2 operate on partially overlapping but distinguishable dimensions."
-    },
-    {
-      "template_id": "AWE_HIGH_PE_ACCOMMODATION_001",
-      "nature": "High luminance PE \u2192 awe pathway. L1 provides the luminance-specific input to the awe mechanism; AX3 describes the downstream response."
-    },
-    {
-      "template_id": "PP_SPECTRAL_MATCH_001",
-      "display_id": "T1",
-      "nature": "Dappled light (Plummer's taxonomy) has 1/f spatial luminance spectra \u2192 T1 fractal fluency. The dapple is where luminance PE and spectral match converge."
-    }
-  ],
+  "status": "calibrated",
   "maturity": "supported",
-  "key_references": [
+  "panel": "VISUAL-I",
+  "t1_frameworks": [],
+  "mechanism_chain": [
     {
-      "citation": "Muckli, L., & Petro, L. S. (2013). Network interactions: Non-geniculate input to V1. Current Opinion in Neurobiology, 23(2), 195\u2013201.",
-      "google_scholar_count": 300
-    },
-    {
-      "citation": "Plummer, H. (2009). The architecture of natural light. Thames & Hudson.",
-      "google_scholar_count": 200
-    },
-    {
-      "citation": "Veitch, J. A., & Newsham, G. R. (1998). Lighting quality and energy-efficiency effects on task performance, mood, health, satisfaction, and comfort. Journal of the Illuminating Engineering Society, 27(1), 107\u2013129.",
-      "google_scholar_count": 600
-    },
-    {
-      "citation": "Wienold, J., & Christoffersen, J. (2006). Evaluation methods and development of a new glare prediction model for daylight environments with the use of CCD cameras. Energy and Buildings, 38(7), 743\u2013757.",
-      "google_scholar_count": 500
-    }
-  ],
-  "source_panel": "34_Panel_LI_Light_Luminance.md",
-  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
-  "overall_maturity": "supported",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "from": "luminance_level",
+      "to": "visual_complexity",
+      "description": "Luminance contrast drives feedforward magnocellular signals to V1/V2. V1/V2 neurons compare feedforward luminance input against top-down predictions about expected luminance distribution given spatial context (Muckli & Petro, 2013). Luminance PE is the residual between actual and predicted luminance.",
+      "warrant": "MECHANISM",
+      "confidence": 0.7,
+      "justification": {
+        "data": [
+          {
+            "finding": "V1/V2 neurons compare feedforward luminance input against top-down contextual predictions via non-geniculate feedback",
+            "source": "Muckli & Petro (2013)",
+            "paradigm": "fMRI of V1 contextual modulation",
+            "effect": "V1 activity modulated by spatial context predictions",
+            "n": null,
+            "design": "Review of fMRI contextual modulation studies"
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "Luminance contrast drives magnocellular feedforward signals; mismatch with predicted luminance generates PE",
+            "source": "Rao & Ballard (1999)",
+            "paradigm": "Predictive coding computational model",
+            "effect": "Luminance PE = residual between actual and predicted luminance",
+            "n": null,
+            "design": "Computational model validated against V1 physiology"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
+        ],
+        "backing": "Luminance contrast drives feedforward magnocellular signals whose mismatch with contextual predictions generates PE in V1/V2. This is the same predictive processing mechanism as T1 but applied specifically to the luminance dimension. Muckli's work confirms that V1 actively predicts expected luminance given spatial context.",
+        "qualifier": "Confidence 0.70 reflects strong mechanistic evidence for luminance PE in V1. The mechanism operates at the earliest cortical processing stages and is well-supported by both computational models and neuroimaging.",
+        "rebuttal": "The claim would fail if: (a) architectural luminance contrast is primarily processed through retinal adaptation mechanisms rather than cortical PE computation — simple light/dark adaptation would explain contrast responses without invoking prediction; (b) V1 luminance PE is negligible compared to other contrast computation mechanisms (e.g., retinal ganglion cell center-surround).",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "luminance_level",
+      "to": "positive_aesthetic_response",
+      "description": "Moderate luminance PE (global contrast ratio 1:5–1:15, architecturally coherent shadow structure) generates resolvable prediction challenge → positive valence. Strother (2019): peak preference ratings at global contrast ratio 1:7–1:15 in architectural photographs. Effect size d ≈ 0.50 for preferred vs. flat-lighting conditions.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.6,
+      "justification": {
+        "data": [
+          {
+            "finding": "Peak aesthetic preference for architectural scenes at global luminance contrast ratio 1:7 to 1:15",
+            "source": "Strother (2019)",
+            "paradigm": "Preference ratings for architectural photographs with manipulated global contrast",
+            "effect": "Peak preference at 1:7-1:15 global contrast ratio",
+            "n": null,
+            "design": "Within-subjects parametric contrast manipulation"
           },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+          {
+            "finding": "Adequate luminance variation reveals spatial structure; insufficient or excessive contrast degrades spatial perception",
+            "source": "Veitch & Newsham (1998)",
+            "paradigm": "Office lighting quality assessment",
+            "effect": "Preferred luminance range 50-300 cd/m² for work environments",
+            "n": null,
+            "design": "Cross-sectional post-occupancy evaluation"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+        ],
+        "backing": "Strother's systematic manipulation of global contrast in architectural photographs establishes the dose-response function. Peak preference at 1:7-1:15 corresponds to shadows that reveal spatial structure without overwhelming adaptation. Muckli (panel debate) added that these boundaries depend on SPATIAL STRUCTURE: architecturally coherent contrast (shadows on recognizable elements) produces more positive response than arbitrary patches at the same ratio.",
+        "qualifier": "Confidence 0.60 with EMPIRICAL_COVARIANCE warrant reflects that Strother's data are architectural-specific but not yet published in full parametric form. The boundary values are expert-calibrated from preliminary data. The confidence applies to architecturally coherent contrast distribution; incoherent contrast (arbitrary patches) produces lower preference at the same ratio.",
+        "rebuttal": "The claim would fail if: (a) luminance contrast preference is dominated by semantic content (what the shadows reveal) rather than contrast magnitude per se; (b) the 1:7-1:15 range is specific to Strother's stimulus set and does not generalize to the diversity of real architectural lighting conditions.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "luminance_level",
+      "to": "awe_experience",
+      "description": "High luminance PE (global contrast > 1:30) in specific spatial configuration (bright zone <20% of visual field surrounded by dark context — Plummer's shaft, chiaroscuro) generates categorical PE: light becomes visible AS A SUBSTANCE rather than surface illumination. Dual-adaptation state in V1 drives AX3 pathway activation.",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "High luminance contrast (>1:30) in specific spatial configuration triggers awe-related physiological responses",
+            "source": "Plummer (2009)",
+            "paradigm": "Architectural analysis of light-shaft configurations in sacred architecture",
+            "effect": "Shaft of light (bright <20% visual field in dark surround) produces reported awe",
+            "n": null,
+            "design": "Architectural case analysis with phenomenological description"
+          },
+          {
+            "finding": "V1 processes extreme contrast through dual-adaptation state — separate adaptation to bright and dark regions",
+            "source": "Muckli (panel debate)",
+            "paradigm": "Neurophysiological account of dual-adaptation",
+            "effect": "Light becomes visible AS A SUBSTANCE when contrast exceeds adaptation range",
+            "n": null,
+            "design": "Mechanistic proposal based on V1 adaptation physiology"
+          }
+        ],
+        "backing": "The awe-trigger configuration (Plummer's shaft, chiaroscuro) requires specific spatial parameters: bright zone occupying less than 20% of visual field surrounded by substantially darker context. The dual-adaptation mechanism (Muckli) explains why this produces a qualitatively different perceptual experience: the visual system cannot adapt simultaneously to both regions, generating categorical PE where light is perceived as substance rather than surface illumination.",
+        "qualifier": "Confidence 0.55 with MECHANISM warrant reflects a well-motivated mechanistic account but limited direct empirical measurement of the awe response. The 20% fraction and 1:30 contrast threshold are expert estimates (Strother + Muckli, panel consensus) requiring psychophysical validation.",
+        "rebuttal": "The claim would fail if: (a) the awe response to dramatic light is mediated by semantic/cultural associations (sacred space = awe) rather than by contrast-driven perceptual mechanisms — in which case the effect would be culturally specific, not universal; (b) the 1:30 threshold is too stimulus-specific to be architecturally useful as a design parameter.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "from": "luminance_level",
+      "to": "luminance_level",
+      "description": "Luminance exceeding retinal adaptation tolerance (point source > 2,000 cd/m²; DGP > 0.35) triggers discomfort via sustained accommodation effort, pupillary strain, and cortical arousal. Wienold & Christoffersen (2006): DGP > 0.35 produces 50% occupant dissatisfaction.",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.8,
+      "justification": {
+        "data": [
+          {
+            "finding": "Daylight Glare Probability >0.35 produces 50% occupant dissatisfaction",
+            "source": "Wienold & Christoffersen (2006)",
+            "paradigm": "Post-occupancy evaluation with glare measurement",
+            "effect": "DGP >0.35 → 50% dissatisfaction threshold",
+            "n": null,
+            "design": "Cross-sectional field measurement + survey"
+          },
+          {
+            "finding": "Point source luminance >2000 cd/m² produces disability glare via sustained accommodation effort and pupillary strain",
+            "source": "CIE (2002); IES standards",
+            "paradigm": "Standardized glare assessment",
+            "effect": "Disability glare threshold at ~2000 cd/m² for point source",
+            "n": null,
+            "design": "Standardized measurement protocols"
+          }
+        ],
+        "backing": "Glare discomfort is the most well-established dose-response relationship in architectural lighting science. The DGP metric integrates luminance distribution, solid angle, and position index into a single probability of dissatisfaction. The 0.35 threshold is derived from extensive field measurements in occupied buildings.",
+        "qualifier": "Confidence 0.80 reflects the strongest empirical base in this template — glare research has decades of field validation with large samples. The DGP metric is standardized and widely used in building design. Population modifiers (migraine, elderly) shift the threshold but the basic relationship is robust.",
+        "rebuttal": "The claim would fail if: (a) DGP is an inadequate metric for immersive architectural experience — some dramatic lighting that exceeds DGP 0.35 may be aesthetically valued (e.g., direct sun in a cathedral) despite producing measurable glare; (b) occupant adaptation and control can override the DGP-predicted dissatisfaction (people who choose to sit in sun accept higher glare).",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "noradrenergic_response": {
+      "low_bound": 5,
+      "optimal": 10,
+      "high_bound": 15,
+      "unit": "ratio max:min luminance in visual field (cd/m²)",
+      "CI_95_optimal": [
+        7,
+        14
+      ],
+      "confidence": 0.6,
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Strother (2019); Veitch & Newsham (1998)",
+      "flag": "THEORETICAL_DEFAULT for exact boundaries — Strother data not yet published in full parametric form; boundaries expert-calibrated"
+    },
+    "awe_experience": {
+      "contrast_ratio_threshold": 30,
+      "bright_zone_max_fraction_of_visual_field": 0.2,
+      "confidence": 0.55,
+      "warrant": "MECHANISM",
+      "source": "Plummer (2009); Muckli V1 dual-adaptation account",
+      "notes": "Shaft, chiaroscuro, aureole configurations meet this criterion. The 20% fraction is an expert estimate requiring direct psychophysical validation."
+    },
+    "luminance_level": {
+      "lower_bound": 50,
+      "upper_bound": 300,
+      "unit": "cd/m² average scene luminance",
+      "confidence": 0.55,
+      "warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "sense_of_coherence": {
+      "description": "Contrast on architecturally meaningful structures (coherent shadows) produces more positive aesthetic response than equivalent contrast from arbitrary sources.",
+      "magnitude": "+0.20 to +0.35 preference advantage for coherent vs. incoherent contrast at matched ratio",
+      "confidence": 0.5,
+      "flag": "THEORETICAL_DEFAULT for exact magnitude"
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "active",
-  "generation": 2,
-  "ecological_validation": false
+  "population_modifiers": {
+    "noradrenergic_response": {
+      "direction": "lower_glare_threshold",
+      "modifier": "DGP threshold −0.08",
+      "confidence": 0.55
+    },
+    "age_group": {
+      "direction": "lower_glare_tolerance",
+      "modifier": "Preferred range shifts to 30–200 cd/m²; DGP threshold −0.05",
+      "confidence": 0.55
+    },
+    "dark_adapted": {
+      "direction": "leftward_shift_in_contrast_tolerance",
+      "confidence": 0.6
+    }
+  },
+  "building_types": [
+    "sacred spaces (awe zone)",
+    "museums and galleries (moderate-to-high contrast)",
+    "offices (moderate: 1:5–1:10)",
+    "hospitals (low: 1:3–1:6)"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_prior": 0.6,
+  "p_parent_theory": 0.85,
+  "p_cnfa_specific": 0.6,
+  "p_effect_composite": 0.51,
+  "interaction_templates": [
+    {
+      "id": "PP_SPECTRAL_MATCH_001",
+      "display": "T1",
+      "nature": "Dappled light has 1/f luminance statistics — intersection of T1 and L1. Both activate simultaneously; joint activation is additive."
+    },
+    {
+      "id": "AX3_AWE_HIGH_PE_001",
+      "display": "AX3",
+      "nature": "L1's high-PE awe-trigger configuration (contrast > 1:30, bright zone <20%) is the luminance-specific input to AX3. L1 is upstream; AX3 is downstream."
+    },
+    {
+      "id": "SPATIAL_INTEGRATION_PE_001",
+      "display": "SC1",
+      "nature": "L1 is a partial confound in SC1 studies (high-integration spaces receive more daylight → luminance contrast). Article Eater should apply L1 partial-out when analyzing SC1 claims."
+    }
+  ],
+  "key_references": [
+    "Muckli, L., & Petro, L. S. (2013). Network interactions: Non-geniculate input to V1. Current Opinion in Neurobiology, 23(2), 195–201. https://doi.org/10.1016/j.conb.2013.01.020",
+    "Wienold, J., & Christoffersen, J. (2006). Evaluation methods and development of a new glare prediction model. Energy and Buildings, 38(7), 743–757. https://doi.org/10.1016/j.enbuild.2005.08.029",
+    "Plummer, H. (2009). The architecture of natural light. Thames & Hudson.",
+    "Veitch, J. A., & Newsham, G. R. (1998). Lighting quality and energy-efficiency effects. Journal of the Illuminating Engineering Society, 27(1), 107–129. https://doi.org/10.1080/00994480.1998.10748214"
+  ],
+  "panel_docs": [
+    "docs/02-16_01_47_Panel_VIEW_I_Nature_View_V1_0.md",
+    "docs/37_Panel_MAT_I_Materials.md",
+    "docs/38_Panel_SC_I_Spatial_Config.md",
+    "docs/42_Panel_TP_I_Temporal.md",
+    "docs/VISUAL_I_Panel_Output_Feb21.md"
+  ],
+  "panel_reasoning_excerpt": "### Window Science and Daylighting\n\n**5. Christoph Reinhart** (MIT, Building Technology Program)\nExpert on daylight modeling and building simulation whose work quantifies the non-visual benefits of windows — not just illumination but view quality, daylight autonomy, and spatial daylight distribution (Reinhart et al., 2006, ~600 citations). His research demonstrates that window design involves a multi-objective optimization: maximizing daylight (L2/L3), managing glare (L1), providing view (this template), and controlling solar heat gain. The view function is often sacrificed to the other objectives — frosted glass for privacy, electrochromic glass for glare control, deep floor plates that push workstations away from windows.\n*Role*: Provides the building-science perspective on window design as a view delivery system. Reinhart's work establishes that VIEW is a quantifiable window function — \"view out\" metrics (EN 17037) assess the quality of what is visible, including the fraction of sky, landscape, and ground visible from each workstation. This connects the psychological literature (Ulrich, Kaplan) to the architectural design process: view quality can be modeled, optimized, and specified.\n\n**6. Lisa Heschong** (formerly Heschong Mahone Group; author of *Thermal Delight in Architecture*)\nResearcher who conducted the landmark studies on daylight and human performance, demonstrating that students in classrooms with more daylight performed better on standardized tests, and that retail stores with skylights had higher sales (Heschong et al., 2002, ~500 citations). Her work separates the VIEW effect from the DAYLIGHT effect: students in rooms with windows to nature performed better than students in rooms with windows to built environments, even controlling for light levels. This suggests that view content contributes independently of illumination.\n*Role*: Provides the evidence that separates view from daylight. Heschong's finding that view CONTENT matters (nature > built, controlling for light level) is critical for isolating the view mechanism from the daylight mechanism. In the PE framework: L2 and L3 formalize the light benefits of windows; VIEW-I formalizes the content benefits. Both operate through windows, but through different channels.",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-16_01_47_Panel_VIEW_I_Nature_View_V1_0.md",
+  "excerpt_char_range": [
+    7083,
+    9360
+  ],
+  "cross_template_interactions": {
+    "IC2_body_budget": "L1's glare extreme (DGP > 0.45) imposes sustained visual discomfort contributing to allostatic cost. Moderate contrast (Goldilocks zone) contributes to IC2 equilibrium. Chronic under-contrasted environments (uniform fluorescent lighting) deny the restorative visual prediction engagement that moderate PE provides.",
+    "AX4_perceived_control": "Occupant control over shading (operable blinds, electrochromic glazing) is a direct AX4 interaction. Glare from uncontrollable sources scores among the highest AX4 violations in post-occupancy surveys."
+  },
+  "architectural_modifiers": {
+    "luminance_level": {
+      "description": "Uncontrolled direct sun creates extreme contrast (DGP > 0.50). External shading: −40–60% peak luminance.",
+      "confidence": 0.7
+    },
+    "material_surface_properties": {
+      "description": "High-reflectance walls within 3m of window reduce global contrast ratio by ~30–50%.",
+      "confidence": 0.6
+    },
+    "spatial_enclosure_ratio": {
+      "description": "ρ > 0.80 vs. ρ < 0.30: 25–40% reduction in contrast ratio.",
+      "confidence": 0.6
+    }
+  },
+  "calibration_status": "calibrated",
+  "panel_source": "VISUAL-I",
+  "confidence": 0.6
 }

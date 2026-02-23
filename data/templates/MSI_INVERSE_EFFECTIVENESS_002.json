@@ -1,0 +1,104 @@
+{
+  "template_id": "MSI_INVERSE_EFFECTIVENESS_002",
+  "template_name": "Inverse Effectiveness: Degraded Unisensory Channel Enhances Multisensory Compensation",
+  "panel": "MULTI-I",
+  "primary_anchor": "Benjamin Rowland (Wake Forest)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "Behavioral effect at EMPIRICAL_COVARIANCE; neural mechanism at THEORETICAL_DEFAULT per pre-panel review",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "An occupant perceives the architectural environment through multiple sensory channels. Each channel has a signal-to-noise ratio that varies with environmental conditions: visual clarity degrades in dim lighting, fog, or distance; auditory clarity degrades in noise; haptic clarity degrades with gloves or numbness.",
+      "substrate": "Modality-specific sensory processing with variable reliability",
+      "confidence": 0.7,
+      "bridge_warrant": "MECHANISM",
+      "source": "Stein & Meredith (1993)"
+    },
+    {
+      "step": 2,
+      "process": "When a unisensory signal is weak (low signal-to-noise), the addition of a congruent signal in another modality produces GREATER enhancement than when the unisensory signal is strong. This is inverse effectiveness: multisensory gain is inversely proportional to unisensory signal strength.",
+      "substrate": "Superior colliculus multisensory neurons (animal); cortical multisensory areas (human behavioral analogue)",
+      "confidence": 0.6,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Stein & Meredith (1993); Rowland & Stein (2014)"
+    },
+    {
+      "step": 3,
+      "process": "In degraded conditions, multisensory integration can produce super-additive responses: the combined response exceeds the sum of individual channel responses. In strong-signal conditions, integration is typically additive or sub-additive.",
+      "substrate": "Nonlinear multisensory integration — super-additivity requires weak unisensory signals",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Rowland et al. (2007); Rowland & Stein (2014)"
+    }
+  ],
+  "calibrated_parameters": {
+    "inverse_effectiveness_threshold": {
+      "value": "unisensory_detection_within_2x_threshold",
+      "interpretation": "Inverse effectiveness is most pronounced when the unisensory signal is near detection threshold (within ~2× absolute threshold). At this level, adding a congruent cross-modal signal can improve detection by 50–100%.",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "super_additivity_conditions": {
+      "value": "individual_channels_below_50%_detection_accuracy",
+      "interpretation": "Super-additive multisensory responses occur when individual channel performance is below ~50% (chance level for detection). Above 50%, integration is typically additive. Above 80%, integration adds minimal benefit.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "architectural_degradation_scenarios": {
+      "dim_lighting": "Visual channel degraded; haptic and auditory channels compensate. Textured floor surfaces and acoustic wayfinding cues become critical in low-light conditions.",
+      "high_noise": "Auditory channel degraded; visual and haptic channels compensate. Visual signage and tactile wayfinding become critical in noisy environments.",
+      "visual_impairment": "Chronic visual degradation; lifetime adaptation produces enhanced reliance on auditory and haptic channels. Buildings for visually impaired populations must maximize non-visual channel richness.",
+      "confidence": 0.5,
+      "bridge_warrant": "CAPACITY"
+    },
+    "neural_mechanism_human": {
+      "value": "THEORETICAL_DEFAULT",
+      "interpretation": "The neural mechanism (superior colliculus multisensory neuron response profiles) is established in cat. Human behavioral analogues are consistent but the neural substrate in humans is inferred, not directly measured for architectural stimuli.",
+      "confidence": 0.45,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "population_modifiers": {
+    "visual_impairment": {
+      "effect": "Chronically degraded visual channel → enhanced multisensory integration with auditory and haptic channels. Inverse effectiveness predicts that this population benefits MOST from rich haptic and auditory design.",
+      "confidence": 0.55
+    },
+    "age_group": {
+      "effect": "Multiple sensory channels degrade with age (vision, hearing, touch). Inverse effectiveness predicts that MULTI-SENSORY design is more important for elderly than for young adults — the compensation effect is larger when multiple channels are partially degraded.",
+      "confidence": 0.5
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Body budget deficit can produce transient sensory degradation (blurred vision from fatigue, reduced tactile sensitivity from cold, auditory masking from tinnitus exacerbated by stress). Under allostatic deficit, inverse effectiveness becomes more architecturally relevant — the building must compensate for stress-degraded sensory channels.",
+    "AX4_perceived_control": "In degraded sensory conditions (dim, noisy, cold), perceived control drops. Multisensory compensation that maintains environmental legibility preserves perceived control. Inverse effectiveness is therefore an indirect support for AX4: by maintaining perception under degradation, it prevents the control loss that occurs when the occupant cannot perceive the environment."
+  },
+  "cross_template_references": [
+    "MATERIAL_IDENTITY_INTEGRATION_001 — MLE integration is enhanced under inverse effectiveness conditions",
+    "NATURAL_MATERIAL_CONVERGENCE_001 — convergence bonus may be partially explained by inverse effectiveness in partially degraded channels",
+    "VISUAL-I VIEW1 — nature view channels provide visual redundancy"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "MIE2",
+  "name": "Inverse Effectiveness: Degraded Unisensory Channel Enhances Multisensory Compensation",
+  "architectural_modifiers": {
+    "sensory_redundancy_index": {
+      "coefficient": 0.25,
+      "interpretation": "Number of sensory channels providing the same spatial/material information. Higher redundancy → more robust perception under degradation. A room where material identity is communicated through vision AND touch AND sound AND smell has maximum redundancy.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "degradation_resilience_score": {
+      "coefficient": 0.2,
+      "interpretation": "How well the built environment maintains perceptual quality when one channel is degraded. Buildings designed for multisensory redundancy score high; buildings relying exclusively on visual communication score low.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "MSI"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "confidence": 0.55
+}

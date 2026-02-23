@@ -1,0 +1,109 @@
+{
+  "template_id": "MSI_CONGRUENCY_PRINCIPLE_001",
+  "template_name": "Crossmodal Congruency \u2192 Processing Fluency \u2192 Affect",
+  "panel": "MULTI-I",
+  "primary_anchor": "Charles Spence (Oxford)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Architectural environment presents multi-sensory stimulus array: visual appearance (colour, texture, luminance), acoustic character (reverberation, sound absorption, ambient spectrum), haptic properties (surface temperature, roughness, compliance), olfactory signature (material VOCs, moisture, age)",
+      "substrate": "Parallel sensory processing in modality-specific cortices",
+      "confidence": 0.65,
+      "bridge_warrant": "MECHANISM",
+      "source": "Spence (2011)"
+    },
+    {
+      "step": 2,
+      "process": "Brain evaluates crossmodal congruency: do the sensory channels align along expected correspondence dimensions? Warm visual appearance + warm haptic feel + soft acoustic absorption + wood scent = CONGRUENT. Warm visual appearance + cold haptic feel + hard reverberation + chemical scent = INCONGRUENT.",
+      "substrate": "Superior temporal sulcus; inferior frontal gyrus \u2014 congruency evaluation",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Spence (2011); Spence & Gallace (2011)"
+    },
+    {
+      "step": 3,
+      "process": "Congruent multi-sensory arrays produce processing fluency: the brain processes the environment with less computational effort, generating a positive metacognitive signal (things 'feel right'). Incongruent arrays produce disfluency: increased processing effort, negative metacognitive signal (things 'feel wrong').",
+      "substrate": "Prefrontal fluency monitoring \u2192 affect generation via somatic marker pathway",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Reber et al. (2004); Spence (2011)"
+    },
+    {
+      "step": 4,
+      "process": "Fluency/disfluency signal modulates environmental affect: congruent environments are rated as more pleasant, more coherent, more trustworthy. Incongruent environments produce unease, suspicion, reduced dwelling time.",
+      "substrate": "Orbitofrontal cortex valuation; anterior insula interoceptive integration",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Reber et al. (2004)"
+    }
+  ],
+  "calibrated_parameters": {
+    "congruency_affect_boost": {
+      "value": "d \u2248 0.30\u20130.50",
+      "unit": "Cohen's_d_for_pleasantness_rating_congruent_vs_incongruent",
+      "interpretation": "Crossmodally congruent environments are rated ~0.30\u20130.50 standard deviations more pleasant than incongruent environments, controlling for individual channel quality.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Spence (2011)"
+    },
+    "key_correspondence_dimensions": {
+      "warm_cool": "Visual warmth (warm colours, wood textures) \u2194 haptic warmth (low \u03bb surfaces) \u2194 acoustic warmth (low reverberation, absorptive surfaces) \u2194 olfactory warmth (wood, vanilla, cinnamon VOCs)",
+      "rough_smooth": "Visual roughness (textured surfaces) \u2194 haptic roughness (high Ra) \u2194 acoustic roughness (diffuse, scattered sound) \u2194 olfactory 'roughness' (earthy, mineral scents)",
+      "bright_dark": "Visual brightness \u2194 high-pitched ambient sounds \u2194 smooth haptic surfaces \u2194 'bright' scents (citrus, mint)",
+      "confidence": 0.45,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "incongruency_detection_threshold": {
+      "value": "1\u20132 dimensions misaligned",
+      "interpretation": "A single misaligned correspondence dimension (e.g., warm visuals + cold haptics) produces detectable disfluency. Two or more misaligned dimensions produce strong negative affect.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "material_authenticity_as_congruency": {
+      "value": "authentic > simulated",
+      "interpretation": "Authentic materials produce inherently congruent multi-sensory signals (real wood looks, feels, and smells like wood). Simulated materials (wood-print laminate) produce inherent incongruency (looks like wood, feels like plastic). This is the primary architectural source of crossmodal incongruency.",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "population_modifiers": {
+    "expertise": {
+      "effect": "Architects, designers, and aesthetically trained individuals are MORE sensitive to crossmodal incongruency (lower detection threshold, stronger negative affect from misalignment).",
+      "confidence": 0.4
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Crossmodal incongruency is a form of prediction error that the body budget must process. Under allostatic deficit, the processing cost of incongruency is experienced more negatively (lower tolerance for things that 'feel wrong'). Congruent environments are easier on the body budget because they require less processing effort.",
+    "AX4_perceived_control": "Crossmodal congruency contributes to environmental predictability, which supports perceived control. When sensory channels agree (what you see is what you get when you touch), the environment is predictable. When they disagree (wood-print laminate), the environment is deceptive, undermining trust and control."
+  },
+  "cross_template_references": [
+    "MATERIAL_IDENTITY_INTEGRATION_001 \u2014 congruency is a prerequisite for optimal MLE integration",
+    "CROSSMODAL_CONGRUENCE_001 \u2014 spatial coherence is a specific case of congruency (spatial alignment of multi-sensory signals)",
+    "NATURAL_MATERIAL_CONVERGENCE_001 \u2014 natural materials are inherently congruent; this is part of their stress reduction advantage"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "MCP1",
+  "name": "Crossmodal Congruency \u2192 Processing Fluency \u2192 Affect",
+  "architectural_modifiers": {
+    "correspondence_alignment_score": {
+      "coefficient": 0.25,
+      "interpretation": "Number of correspondence dimensions aligned across channels / total number of dimensions. Score of 1.0 = perfect congruency across all channels.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "material_simulation_penalty": {
+      "coefficient": -0.2,
+      "interpretation": "Each simulated material (laminate pretending to be wood, vinyl pretending to be stone) introduces a crossmodal incongruency that reduces overall environmental pleasantness.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "t1_frameworks": [
+    "MSI"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "confidence": 0.5
+}

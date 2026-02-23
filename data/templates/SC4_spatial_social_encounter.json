@@ -1,328 +1,266 @@
 {
   "template_id": "SPATIAL_SOCIAL_ENCOUNTER_001",
   "display_id": "SC4",
-  "name": "Spatial Configuration as Determinant of Social Encounter Frequency and Quality",
-  "short_description": "Spatial integration determines encounter frequency; context determines encounter valence; visual connectivity determines social monitoring load; edges enable social choice",
-  "structural_pattern": "Spatial configuration creates conditions for social encounter by determining WHO encounters WHOM, HOW OFTEN, and in WHAT CONTEXT. Space Syntax integration predicts co-presence: high-integration spaces are where paths converge, making encounter likely. Social encounters are PE events: encountering another person means encountering an agent whose behavior must be predicted. EXPECTED encounters in high-integration social spaces \u2192 low social PE \u2192 pleasant, bonding. UNEXPECTED encounters in low-integration spaces \u2192 high social PE \u2192 T5 threat assessment \u2192 anxiety. Visual connectivity (who can see whom) affects social monitoring and perceived privacy. Edge conditions (boundaries between public paths and semi-private zones) create OPTIONAL social encounter: places where a person can choose to engage or withdraw.",
-  "higher_order_principle": "The social dimension of spatial prediction. As SC1 describes how configuration determines NAVIGATIONAL prediction, SC4 describes how it determines SOCIAL prediction: probability, context, and valence of encountering other people. Open-plan offices are the canonical negative case: high visual co-presence + no edges \u2192 chronic elevated social PE \u2192 attention fatigue, paradoxically reduced meaningful interaction.",
-  "framework_ids": [
-    "space_syntax",
-    "social_neuroscience",
-    "environmental_psychology",
-    "behavioral_architecture"
-  ],
-  "domain": "spatial_configuration",
-  "attribute_domain": "A3",
-  "encounter_valence_conditions": {
-    "expected_social_space": "High-integration social space (break room, lobby) \u2192 low social PE \u2192 positive valence",
-    "unexpected_isolated_space": "Low-integration space (dead-end, parking garage) \u2192 high social PE \u2192 T5 threat \u2192 anxiety"
-  },
-  "open_plan_problem": {
-    "high_visual_connectivity": "Constant social monitoring \u2192 social brain always active",
-    "no_edge_conditions": "No withdrawal option \u2192 forced exposure",
-    "result": "Chronic elevated social PE \u2192 distraction, reduced deep work, withdrawal into headphones/screens"
-  },
-  "causal_links": [
-    {
-      "from_entity": "spatial_integration",
-      "to_entity": "social_encounter_frequency",
-      "activity": "determines",
-      "from_level": "environmental",
-      "to_level": "behavioral",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "One of the best-validated Space Syntax findings: integration predicts pedestrian density, which predicts encounter frequency. (Hillier, 1996)"
-    },
-    {
-      "from_entity": "spatial_context_of_encounter",
-      "to_entity": "social_PE_valence",
-      "activity": "determines",
-      "from_level": "environmental",
-      "to_level": "affective",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Expected encounters in social spaces \u2192 positive. Unexpected encounters in non-social spaces \u2192 T5 threat. (Gehl, 1971/2011)"
-    },
-    {
-      "from_entity": "visual_connectivity_between_occupants",
-      "to_entity": "social_monitoring_load",
-      "activity": "determines",
-      "from_level": "environmental",
-      "to_level": "cognitive",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Open-plan environments maintain social brain in continuous monitoring mode. Cumulative social PE load \u2192 T25 attentional fatigue. (Kim & de Dear, 2013)"
-    },
-    {
-      "from_entity": "edge_condition_richness",
-      "to_entity": "social_choice_availability",
-      "activity": "enables",
-      "from_level": "environmental",
-      "to_level": "behavioral",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Edges (alcoves, window seats, setbacks) allow occupants to CHOOSE engagement or withdrawal. Optional activities increase with edge quality. (Gehl, 2010)"
-    }
-  ],
-  "scope_conditions": [
-    "Applies to all multi-occupant buildings and urban spaces",
-    "Effect strongest in buildings where social interaction is primary function (offices, schools, hospitals)",
-    "Cultural norms modulate social encounter preferences",
-    "Digital communication reduces dependency on spatial co-presence but embodied encounter remains psychologically distinct"
-  ],
-  "moderators": [
-    "Occupant density: spatial configuration creates CONDITIONS; density determines whether encounters occur",
-    "Cultural norms: social distance preferences, greeting rituals, eye-contact norms",
-    "Organizational hierarchy: encounters between status levels may carry higher social PE",
-    "Time of day: social expectations differ (corridor at 2pm vs. 2am)",
-    "Control: voluntary social spaces (caf\u00e9) vs. forced social spaces (open-plan desk)"
-  ],
-  "interactions": [
-    {
-      "template_id": "SPATIAL_INTEGRATION_NAV_PE_001",
-      "display_id": "SC1",
-      "nature": "SC1 determines WHERE people move; SC4 determines WHERE people MEET. Integration predicts both."
-    },
-    {
-      "template_id": "NM_THREAT_HPA_001",
-      "display_id": "T5",
-      "nature": "Unexpected social encounters in low-integration spaces activate T5 threat assessment."
-    },
-    {
-      "template_id": "DT_DIRECTED_ATTENTION_001",
-      "display_id": "T25",
-      "nature": "Chronic social monitoring in high-visibility environments taxes directed attention \u2192 T25 fatigue."
-    },
-    {
-      "template_id": "ISOVIST_VISUAL_PREDICTION_001",
-      "display_id": "SC2",
-      "nature": "SC2 isovist area determines visual access between occupants \u2192 visual component of social monitoring load."
-    },
-    {
-      "template_id": "PROXEMIC_PE_ARCH_001",
-      "display_id": "SOC1",
-      "nature": "Reverse link added by CX V10 S4 remediation to satisfy bidirectional interaction encoding."
-    },
-    {
-      "template_id": "PRIVACY_GRADIENT_REGULATION_001",
-      "display_id": "SOC2",
-      "nature": "Reverse link added by CX V10 S4 remediation to satisfy bidirectional interaction encoding."
-    },
-    {
-      "template_id": "TERRITORIAL_AFFORDANCE_SOCIAL_001",
-      "display_id": "SOC3",
-      "nature": "Reverse link added by CX V10 S4 remediation to satisfy bidirectional interaction encoding."
-    }
-  ],
+  "name": "Spatial Integration as Determinant of Social Encounter Frequency, Predictability, and Valence",
+  "status": "calibrated",
   "maturity": "supported",
-  "key_references": [
+  "panel_source": "SPATIAL-I (Sprint 13.17) — upgrades SC-I structural YAML (Doc 38); this template was already well-calibrated for the encounter-frequency claim (SC-I rated ✓ Good); SPATIAL-I adds the valence-mechanism calibration and working memory interruption parameters",
+  "t1_frameworks": [
+    "SN",
+    "IC",
+    "NM",
+    "EC"
+  ],
+  "t1_5_parent_theories": [
     {
-      "citation": "Hillier, B. (1996). Space is the machine. Cambridge University Press.",
-      "google_scholar_count": 3000
+      "name": "Space Syntax (Hillier & Hanson, 1984)",
+      "reduction_pathway": "Constitutive: spatial integration predicts co-presence (two people occupying the same high-integration space simultaneously). Co-presence is the necessary condition for social encounter. Integration → co-presence probability → encounter frequency. Directly operationalized."
     },
     {
-      "citation": "Gehl, J. (1971/2011). Life between buildings. Island Press.",
-      "google_scholar_count": 4000
+      "name": "Privacy Regulation Theory (Altman, 1975)",
+      "reduction_pathway": "Reduced to IC, SN, PP, EC, MS, IE-DPT in T1_5_Expansion. Edge conditions (Gehl, 1971) are the spatial mechanism of privacy regulation — they provide the choice between engagement and withdrawal that Altman's dialectical model requires."
     },
     {
-      "citation": "Gehl, J. (2010). Cities for people. Island Press.",
-      "google_scholar_count": 3000
-    },
-    {
-      "citation": "Kim, J., & de Dear, R. (2013). Workspace satisfaction: The privacy-communication trade-off in open-plan offices. Journal of Environmental Psychology, 36, 18\u201326.",
-      "google_scholar_count": 1000
-    },
-    {
-      "citation": "Hillier, B., & Hanson, J. (1984). The social logic of space. Cambridge University Press.",
-      "google_scholar_count": 5000
+      "name": "Proxemics (Hall, 1966)",
+      "reduction_pathway": "Not yet formally reduced. SC4 is the template most directly relevant to a future Proxemics reduction. The spatial configuration determines the ambient interpersonal distance distribution — Hall's zones (intimate, personal, social, public) occur with different base rates depending on spatial configuration."
     }
   ],
-  "source_panel": "38_Panel_SC_I_Spatial_Config.md",
-  "overall_maturity": "supported",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "description": "Spatial integration determines CO-PRESENCE PROBABILITY: in a high-integration space, many movement paths converge, making it probable that any two occupants of a building will pass through the same space simultaneously. Integration is a direct predictor of encounter frequency independent of any other variable.",
+      "neural_substrate": "Environmental property — formal mathematical relationship between integration and co-presence (Hillier & Hanson, 1984)",
+      "level": "environmental → social",
+      "justification": {
+        "data": [
+          {
+            "finding": "Integration-encounter frequency r = 0.72 — same correlation as integration-movement",
+            "source": "Hillier & Hanson (1984); Space Syntax field studies",
+            "paradigm": "Pedestrian observation",
+            "effect": "r = 0.72, co-presence = movement co-occurrence",
+            "n": null,
+            "design": "Cross-sectional observation, hundreds of buildings"
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "Co-presence is the necessary condition for social encounter; integration directly predicts co-presence probability",
+            "source": "Hillier & Hanson (1984)",
+            "paradigm": "Space Syntax theory",
+            "effect": "Mathematical relationship: integration → co-presence probability → encounter frequency",
+            "n": null,
+            "design": "Formal mathematical framework"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
+        ],
+        "backing": "Encounter frequency is a direct function of co-presence which equals movement co-occurrence. The integration-encounter correlation inherits the meta-analytic level evidence from integration-movement (SC1). This is the strongest empirical claim in SC4.",
+        "qualifier": "Confidence 0.80 with EMPIRICAL_COVARIANCE — same level as integration-movement. \"Among the most replicated Space Syntax findings\" (Hillier). Robust across building types and cultures.",
+        "rebuttal": "The claim would fail if: (a) programmatic factors (office floor assignment, scheduling) dominate encounter frequency over spatial configuration in most buildings — integration predicts potential encounters but organizational structure determines actual encounters.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 2,
+      "description": "ENCOUNTER VALENCE DETERMINATION: The social prediction system evaluates each encounter's CONTEXT to determine valence. Expected encounter in high-integration social space (lobby, break room) → low social PE → social confirmation → positive valence (OFC reward signal). Unexpected encounter in low-integration space (isolated corridor, storage room) → high social PE → amygdala rapid threat appraisal → negative valence until encounter is resolved as safe.",
+      "neural_substrate": "Amygdala rapid person-detection and threat assessment (Whalen, 1998); OFC social reward signal for confirmed positive social predictions; TPJ (temporo-parietal junction) theory of mind for agent prediction during encounter",
+      "level": "social → neural → affective",
+      "justification": {
+        "data": [
+          {
+            "finding": "Social prediction system evaluates encounter context: expected = low PE → positive; unexpected = high PE → negative",
+            "source": "Theoretical integration from social neuroscience + spatial analysis",
+            "paradigm": "Social PE framework",
+            "effect": "Encounter valence determined by prediction match",
+            "n": null,
+            "design": "Theoretical framework"
           },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+          {
+            "finding": "Amygdala rapid person-detection and threat assessment; OFC social reward for confirmed positive predictions",
+            "source": "Whalen (1998); social neuroscience literature",
+            "paradigm": "fMRI of social processing",
+            "effect": "Amygdala activated by unexpected person detection; OFC by social reward",
+            "n": null,
+            "design": "fMRI social cognition studies"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+        ],
+        "backing": "The valence determination step connects the frequency claim (Step 1) to the emotional outcome. The mechanism: expected encounters in high-integration social spaces → low social PE → social confirmation → positive valence. Unexpected encounters in low-integration spaces → high social PE → amygdala threat appraisal. Shahar recommended EMPIRICAL_COVARIANCE for SC4 overall \"pending a study that independently varies integration and edge condition density.\"",
+        "qualifier": "EMPIRICAL_COVARIANCE (Shahar adjudication). The valence mechanism is inferred from social neuroscience literature, not directly tested in architectural encounter studies. The key empirical anchor is Kim & de Dear (2013) — open-plan dissatisfaction. But the specific spatial mechanism (integration × edge condition → predictability → valence) is inferred.",
+        "rebuttal": "The claim would fail if: (a) encounter valence is determined primarily by social relationship quality (friend vs. stranger) rather than spatial predictability — the same unexpected encounter with a friend may be positive while the same expected encounter with a disliked colleague may be negative, overwhelming the spatial prediction factor.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 3,
+      "description": "OPEN-PLAN CHRONIC MONITORING MECHANISM: High visual integration in open-plan environments produces VISUAL CO-PRESENCE: occupants can see each other continuously. This activates the social prediction system at sub-threshold level continuously — not full social encounter processing, but ambient social monitoring. The mechanism is working memory INTERRUPTION (Meilinger / Salvucci & Taatgen, 2008): peripheral social signals (movement in visual field, raised voice) interrupt the current working memory state at a rate proportional to social density and visual integration. Each interruption requires working memory reconstruction. Over 4+ hours, cumulative working memory interruption costs accumulate as fatigue and dissatisfaction.",
+      "neural_substrate": "DLPFC sustained activation under concurrent task + social monitoring demands; ACC conflict monitoring between current task and social signals; superior temporal sulcus continuous person-motion detection in peripheral visual field; LC arousal burst at each social signal detection",
+      "level": "environmental → cognitive → affective",
+      "justification": {
+        "data": [
+          {
+            "finding": "Open-plan offices reduce privacy satisfaction and increase noise disturbance, no compensating communication benefit",
+            "source": "Kim & de Dear (2013)",
+            "paradigm": "Large-scale post-occupancy evaluation meta-analysis",
+            "effect": "Significant open-plan dissatisfaction across multiple dimensions",
+            "n": null,
+            "design": "Meta-analysis of POE data"
+          },
+          {
+            "finding": "Working memory INTERRUPTION mechanism: peripheral social signals interrupt WM at rate proportional to social density × visual integration",
+            "source": "Meilinger (panel mechanism); Salvucci & Taatgen (2008) threaded cognition model",
+            "paradigm": "Cognitive interruption model applied to spatial context",
+            "effect": "WM interruption rate ∝ social density × visual integration",
+            "n": null,
+            "design": "Theoretical extension from dual-task cognition"
+          }
+        ],
+        "backing": "Meilinger refined the mechanism: \"The social prediction system operates in a PHASIC pattern — attention is captured by social signals and returns to baseline. What differs from private office conditions is the FREQUENCY of capture events, not baseline monitoring level.\" The mechanism is WM interruption, not sustained monitoring. Shahar endorsed: MECHANISM warrant for the secondary claim (visual co-presence → attention interruption).",
+        "qualifier": "MECHANISM for the interruption pathway (Shahar adjudication). The chronic monitoring effect accumulates over 4+ hours. Shahar: \"chronic social monitoring without edge conditions is an INTEROCEPTIVE load — the sustained prefrontal activation produces arousal signals that IC2 registers as an allostatic cost.\"",
+        "rebuttal": "The claim would fail if: (a) open-plan dissatisfaction is primarily about acoustic privacy (noise) rather than visual social monitoring — Kim & de Dear's noise finding may be the primary driver, not spatial configuration; (b) occupant habituation reduces the interruption rate over time — long-term open-plan workers may develop filtering strategies that reduce the PE cost.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 4,
+      "description": "EDGE CONDITION MECHANISM: Edge conditions (Gehl, 1971) — alcoves, window seats, recesses, setbacks from movement paths — give occupants spatial CHOICE over encounter timing. Moving to an edge condition is an AX4 act (taking control of social prediction load). At an edge, the occupant can initiate contact (predictable, chosen → positive social PE) or withdraw (isovist reconfigured to reduce social monitoring demand → load reduction). Buildings without edge conditions eliminate this choice, converting all social co-presence to FORCED encounters.",
+      "neural_substrate": "Prefrontal–amygdala control circuit: edge conditions allow top-down regulation of social threat appraisal; AX4 (perceived control) mediates the valence effect of edge access; oxytocin release in chosen social encounters vs. cortisol in forced social exposure (tentative — no direct architectural measurement)",
+      "level": "architectural → behavioral → neural → affective",
+      "justification": {
+        "data": [
+          {
+            "finding": "Edge conditions (alcoves, window seats, recesses) give occupants spatial CHOICE over encounter timing",
+            "source": "Gehl (1971)",
+            "paradigm": "Architectural phenomenology",
+            "effect": "Edge access → control over social engagement/withdrawal",
+            "n": null,
+            "design": "Observational urban design studies"
+          },
+          {
+            "finding": "Moving to edge condition reconfigures isovist to reduce social monitoring demand → load reduction",
+            "source": "Meilinger (panel mechanism)",
+            "paradigm": "AX4 perceived control mechanism",
+            "effect": "Edge access restores CONTROL over when social capture events occur",
+            "n": null,
+            "design": "Theoretical framework"
+          }
+        ],
+        "backing": "Meilinger: \"Edge conditions work because they restore CONTROL over when social capture events occur. Moving to an edge is an AX4 act.\" The mechanism connects to AX4 (perceived control) and IC2 (allostatic cost reduction). Buildings without edge conditions convert all co-presence to forced encounters.",
+        "qualifier": "Confidence moderate. The edge condition concept is well-established in architectural theory (Gehl 1971) but the specific mechanism (AX4-mediated working memory load control) is Meilinger's panel contribution, not independently validated.",
+        "rebuttal": "The claim would fail if: (a) edge conditions are primarily about physical comfort (leaning, sitting) rather than social control — the benefit may be postural, not social-predictive; (b) in cultures with different social norms, edge conditions may not provide the assumed control over encounters.",
+        "competing_accounts": [],
+        "depth_tier": "C"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "spatial_configuration": {
+      "construct": "Rate of working memory interruptions per hour attributable to social signal detection in open-plan vs. enclosed-office conditions",
+      "central_estimate": 4.0,
+      "unit": "interruptions per hour above enclosed-office baseline",
+      "range": [
+        2.0,
+        8.0
+      ],
+      "confidence_interval_95": [
+        1.5,
+        10.0
+      ],
+      "confidence_score": 0.45,
+      "flag": "THEORETICAL_DEFAULT — no direct architectural measurement of interruption rate; extrapolated from general interruption literature (Czerwinski et al., 2004) + Kim and de Dear (2013) noise disturbance data",
+      "bridge_warrant": "MECHANISM",
+      "bridge_prior": 0.6,
+      "mechanism_note": "Salvucci & Taatgen (2008) threaded cognition: each interruption requires 7–25 seconds of working memory reconstruction (varies by task type and interruption depth). At 4 interruptions/hour = 30–100 seconds/hour of reconstruction cost, compounding over 8-hour workday.",
+      "architectural_modifier_coefficients": {
+        "acoustic_masking_system": {
+          "modifier": -0.4,
+          "unit": "fractional reduction in interruption rate",
+          "rationale": "Acoustic masking reduces the salience of peripheral social signals; Kim and de Dear (2013) identify noise as primary driver of open-plan dissatisfaction"
+        },
+        "visual_screen_height_above_1.2m": {
+          "modifier": -0.3,
+          "unit": "fractional reduction",
+          "rationale": "Screens reduce visual co-presence while maintaining spatial integration; visual interruption rate falls; acoustic interruption rate unchanged"
+        },
+        "workstation_density_above_10_per_100m2": {
+          "modifier": 0.5,
+          "unit": "fractional increase",
+          "rationale": "Density amplifies both visual and acoustic social signal rate; Kim and de Dear: crowding compounds noise and lack of privacy effects"
+        }
+      }
+    },
+    "architectural_threshold": {
+      "construct": "Effect of edge condition provision (alcoves, setbacks, window seats per 10m of corridor) on self-reported social interaction quality",
+      "central_estimate": "+0.8 to +1.2 points on 7-point social satisfaction scale",
+      "confidence": 0.4,
+      "flag": "THEORETICAL_DEFAULT — Gehl observational data on public space + Whyte's 'The Social Life of Small Urban Spaces'; direct controlled measurement in building interiors absent",
+      "bridge_warrant": "FUNCTIONAL",
+      "bridge_prior": 0.5,
+      "note": "Total encounter quantity increases modestly with edge conditions; encounter QUALITY (duration, depth, willingness to linger) increases substantially — edge conditions convert social PE from forced-unpredictable to chosen-predictable"
+    },
+    "environmental_novelty_level": {
+      "construct": "GSR elevation at unexpected person encounter in low-integration space vs. expected encounter in high-integration space",
+      "central_estimate_delta": "+0.30 to +0.60 μS",
+      "confidence": 0.45,
+      "flag": "THEORETICAL_DEFAULT — extrapolated from general social-surprise literature (Herry et al., 2010); no direct architectural measurement",
+      "bridge_warrant": "MECHANISM",
+      "bridge_prior": 0.6,
+      "note": "Resolves quickly (3–10 seconds) once the encounter is appraised as non-threatening; sustained only if the low-integration spatial context maintains persistent threat uncertainty"
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "active",
-  "generation": 2,
-  "ecological_validation": false
+  "ie_dpt_interaction": {
+    "channel": "Both",
+    "implicit": "T_IE_007 (Spatial Safety Monitoring) — the implicit channel continuously evaluates social configuration for threat: who is here, how many, are any in the low-integration spaces where unexpected encounter is most threatening",
+    "explicit": "T_IE_006 (Social Norm Evaluation) — the explicit channel monitors whether social behavior in the space conforms to normative expectations; Kirsh's explicit sense applies — occupants can deliberately modulate their social monitoring strategy (headphones in open plan = explicit choice to reduce implicit monitoring load)",
+    "confidence": 0.5
+  },
+  "building_types": {
+    "primary": [
+      "Offices — especially open-plan (SC4 is the template most directly implicated)",
+      "Universities and schools (corridor encounter ecology; classroom visual integration)",
+      "Healthcare (patient-staff encounter patterns; staff social load in nursing stations)"
+    ],
+    "secondary": [
+      "Housing (communal space social encounter design)",
+      "Cultural buildings (planned social encounter in foyers, galleries)",
+      "Urban mixed-use (retail-residential ground-floor interface)"
+    ],
+    "low_applicability": [
+      "Solitary occupancy buildings (private residences without shared spaces)",
+      "Drive-through and automated facilities"
+    ]
+  },
+  "key_references": [
+    "Hillier, B., & Hanson, J. (1984). The social logic of space. https://doi.org/10.1017/CBO9780511597237",
+    "Kim, J., & de Dear, R. (2013). Workspace satisfaction: The privacy-communication trade-off in open-plan offices. Journal of Environmental Psychology. https://doi.org/10.1016/j.jenvp.2013.06.007",
+    "Gehl, J. (1971/2011). Life between buildings. Island Press.",
+    "Altman, I. (1975). The environment and social behavior. Brooks/Cole.",
+    "Salvucci, D. D., & Taatgen, N. A. (2008). Threaded cognition. Psychological Review. https://doi.org/10.1037/0033-295X.115.1.101",
+    "Czerwinski, M., Horvitz, E., & Wilhite, S. (2004). A diary study of task switching and interruptions. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems. https://doi.org/10.1145/985692.985715",
+    "Meilinger, T., Knauff, M., & Bülthoff, H. H. (2008). Working memory in wayfinding. Quarterly Journal of Experimental Psychology. https://doi.org/10.1080/17470210701781093",
+    "Hall, E. T. (1966). The hidden dimension. Doubleday."
+  ],
+  "panel_docs": [
+    "docs/38_Panel_SC_I_Spatial_Config.md",
+    "docs/42_Panel_TP_I_Temporal.md",
+    "docs/44_Panel_SOC_I_Social_Config.md"
+  ],
+  "panel_reasoning_excerpt": "### Template SC4: Spatial Configuration and Social Encounter Prediction\n\n```yaml\ntemplate_id: \"SPATIAL_SOCIAL_ENCOUNTER_001\"\ndisplay_id: \"SC4\"\nname: \"Spatial Configuration as Determinant of Social Encounter Frequency and Quality\"\n\nstructural_pattern: >\n  Spatial configuration creates the conditions for social encounter\n  by determining WHO encounters WHOM, HOW OFTEN, and in WHAT CONTEXT.\n  Space Syntax integration predicts not only individual movement but\n  the CO-PRESENCE of multiple individuals: high-integration spaces\n  are where paths converge, making encounter likely. The frequency\n  of social encounters is a direct function of spatial integration.\n  \n  Social encounters are PE events: encountering another person means\n  encountering an agent whose behavior must be predicted (T48–T52\n  social brain templates). The VALENCE of social encounter PE depends\n  on the spatial context:\n  \n  EXPECTED ENCOUNTERS in high-integration social spaces (office\n  break room, village square, building lobby) → low social PE →\n  social confirmation → pleasant, bonding.\n  \n  UNEXPECTED ENCOUNTERS in low-integration spaces (hospital\n  corridor at night, parking garage, dead-end) → high social PE\n  → T5 threat assessment → anxiety until the encounter is\n  resolved as safe.\n  \n  Spatial configuration also determines VISUAL ACCESS between\n  people (who can see whom), which affects social monitoring,\n  perceived privacy, and the sense of being observed. High visual\n  connectivity (open plan, transparent partitions) → constant\n  social monitoring → social prediction system always active →\n  social PE load may accumulate over extended occupancy.\n  Low visual connectivity (private offices, acoustic/visual\n  separation) → infrequent social encounters → low social PE\n  load but also reduced social reward.\n  \n  Edge conditions (Gehl) — the boundaries between public\n  movement paths and semi-private stationary zones — are the\n  spatial features that create OPTIONAL social encounter:\n  places where a person can choose to engage or withdraw.\n  Buildings that provide rich edge conditions support social\n  choice; buildings without edges force either constant\n  exposure (open plan) or complete isolation (private cells).\n\nhigher_order_principle: >\n  The social dimension of spatial prediction. As SC1 describes\n  how spatial configuration determines NAVIGATIONAL prediction,\n  SC4 describes how spatial configuration determines SOCIAL\n  prediction: the probability, context, and valence of\n  encountering other people. The social prediction is layered\n  on the spatial prediction — you must be in a space to\n  encounter someone there, so the spatial network determines\n  the distribution of social PE events across the building.\n  \n  Open-plan offices are the canonical negative case: they\n  maximize visual co-presence (constant social monitoring)\n  while eliminating edges (no withdrawal option), producing\n  chronic elevated social PE that manifests as distraction,\n  reduced deep work, and paradoxically reduced meaningful\n  social interaction (because people withdraw into\n  headphones and screens to escape the uncontrolled\n  social prediction load).\n\nframework_ids:\n  - \"space_syntax\"\n  - \"social_neuroscience\"\n  - \"environmental_psychology\"\n  - \"behavioral_architecture\"\n\ncausal_links:\n  - from_variable: \"spatial_integration\"\n    to_variable: \"social_encounter_frequency\"\n    activity: \"determines\"\n    from_level: \"environmental\"\n    to_level: \"behavioral\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      This is one of the best-validated findings in Space\n      Syntax: integration predicts pedestrian density, and\n      pedestrian density predicts encounter frequency.\n      Hillier (1996), Hillier & Hanson (1984). Replicated\n      across cultures, building types, and urban scales.\n\n  - from_variable: \"spatial_context_of_encounter\"\n    to_variable: \"social_PE_valence\"\n    activity: \"determines\"\n    from_level: \"environmental\"\n    to_level: \"affecti\n\n[... excerpt truncated at 4000 chars]",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/38_Panel_SC_I_Spatial_Config.md",
+  "excerpt_char_range": [
+    87680,
+    92680
+  ],
+  "cross_template_interactions": {
+    "IC2_body_budget": {
+      "interaction": "SC4 feeds IC2 as one of the most chronic architectural stressors in contemporary building types. Open-plan office occupants spending 8 hours/day in high-visual-integration environments accumulate a daily allostatic load from social monitoring demands that IC2 registers as elevated body budget expenditure. Kim and de Dear (2013) document the outcome: 90% of open-plan workers report noise and lack of privacy as their primary workplace complaint, even when they report general job satisfaction. The IC2 mechanism explains why: the allostatic cost of chronic social monitoring is real even when consciously tolerated.",
+      "direction": "SC4 feeds IC2 chronically for prolonged open-plan occupancy; effect compounds with SC2 (small isovist) and T14 (navigational stress) in high-density workplaces",
+      "confidence": 0.55
+    },
+    "AX4_perceived_control": {
+      "interaction": "SC4 is perhaps the most direct architectural determinant of AX4 in workplace and educational settings. The CHOICE over social encounter timing — determined by edge condition availability — IS perceived social control. Removing edge conditions removes the spatial mechanism of social agency. This is why open-plan offices have such strongly negative AX4 scores despite ostensibly 'collaborative' intentions: the design removes the spatial prerequisite for social self-determination.",
+      "direction": "Edge condition density feeds AX4 directly; visual integration (without edge conditions) feeds AX4 inversely",
+      "confidence": 0.6
+    }
+  },
+  "calibration_status": "calibrated"
 }

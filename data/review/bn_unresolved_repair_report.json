@@ -1,0 +1,336 @@
+{
+  "generated_at_utc": "2026-02-21T01:24:00.483055+00:00",
+  "paths": {
+    "bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
+    "env_lookup": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/contracts/vocab/environment_lookup.json",
+    "outcome_lookup": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/contracts/outcome_vocab/outcome_lookup.json",
+    "alias_rules": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/config/bn_unresolved_alias_rules.json",
+    "candidate_bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.candidate.json",
+    "mapping_jsonl": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/review/bn_unresolved_replacement_map.jsonl"
+  },
+  "config": {
+    "enable_fuzzy": false,
+    "fuzzy_cutoff": 0.96,
+    "alias_rules_enabled": true,
+    "alias_resolution_mode": "typed",
+    "require_existing_targets": false,
+    "fallback_unknown_namespace": true,
+    "max_term_tokens": 8,
+    "max_noise_tokens": 1,
+    "write_candidate": true
+  },
+  "before": {
+    "nodes": 11846.0,
+    "edges": 12024.0,
+    "unresolved_count": 5506.0,
+    "unresolved_pct": 46.479824413304065,
+    "connected_components": 2071.0,
+    "largest_component_count": 7763.0,
+    "largest_component_pct": 65.53266925544487
+  },
+  "after_if_applied": {
+    "nodes": 6340.0,
+    "edges": 12024.0,
+    "unresolved_count": 0.0,
+    "unresolved_pct": 0.0,
+    "connected_components": 10.0,
+    "largest_component_count": 6328.0,
+    "largest_component_pct": 99.81072555205047
+  },
+  "delta": {
+    "unresolved_count": -5506,
+    "unresolved_pct": -46.4798,
+    "largest_component_pct": 34.2781
+  },
+  "proposed_replacements": {
+    "count": 5506,
+    "by_method": {
+      "fallback_unknown_namespace": 5430,
+      "alias_rule": 76
+    },
+    "examples": [
+      {
+        "old_node_id": "env.unresolved.navigation_across_human",
+        "new_node_id": "env.cognitive.legibility.navigation_across_human",
+        "kind": "env",
+        "raw_component": "navigation_across_human",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.holmes_intact_navigation",
+        "new_node_id": "env.cognitive.legibility.holmes_intact_navigation",
+        "kind": "env",
+        "raw_component": "holmes_intact_navigation",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.place_navigation_impaired",
+        "new_node_id": "env.cognitive.legibility.place_navigation_impaired",
+        "kind": "env",
+        "raw_component": "place_navigation_impaired",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.categories_navigational",
+        "new_node_id": "env.cognitive.legibility.categories_navigational",
+        "kind": "env",
+        "raw_component": "categories_navigational",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.navigation_aid_use",
+        "new_node_id": "env.cognitive.legibility.navigation_aid_use",
+        "kind": "env",
+        "raw_component": "navigation_aid_use",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.human_navigation_skills",
+        "new_node_id": "env.cognitive.legibility.human_navigation_skills",
+        "kind": "env",
+        "raw_component": "human_navigation_skills",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.differences_navigation_caused",
+        "new_node_id": "env.cognitive.legibility.differences_navigation_caused",
+        "kind": "env",
+        "raw_component": "differences_navigation_caused",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.human_spatial_navigation",
+        "new_node_id": "env.cognitive.legibility.human_spatial_navigation",
+        "kind": "env",
+        "raw_component": "human_spatial_navigation",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.successful_navigation",
+        "new_node_id": "env.cognitive.legibility.successful_navigation",
+        "kind": "env",
+        "raw_component": "successful_navigation",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.navigation_experimental_using",
+        "new_node_id": "env.cognitive.legibility.navigation_experimental_using",
+        "kind": "env",
+        "raw_component": "navigation_experimental_using",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.navigation_ability_associated",
+        "new_node_id": "env.cognitive.legibility.navigation_ability_associated",
+        "kind": "env",
+        "raw_component": "navigation_ability_associated",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "env.unresolved.navigation_memory_journal",
+        "new_node_id": "env.cognitive.legibility.navigation_memory_journal",
+        "kind": "env",
+        "raw_component": "navigation_memory_journal",
+        "canonical_id": "env.cognitive.legibility",
+        "match_method": "alias_rule",
+        "confidence": 0.93,
+        "alias_rule_id": "env_navigation_to_legibility"
+      },
+      {
+        "old_node_id": "out.unresolved.place_navigation_impaired",
+        "new_node_id": "out.cog.performance.place_navigation_impaired",
+        "kind": "out",
+        "raw_component": "place_navigation_impaired",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "out.unresolved.mengersen_wayfinding_simple",
+        "new_node_id": "out.cog.performance.mengersen_wayfinding_simple",
+        "kind": "out",
+        "raw_component": "mengersen_wayfinding_simple",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "out.unresolved.taxonomy_human_wayfinding",
+        "new_node_id": "out.cog.performance.taxonomy_human_wayfinding",
+        "kind": "out",
+        "raw_component": "taxonomy_human_wayfinding",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "out.unresolved.navigation_ability_associated",
+        "new_node_id": "out.cog.performance.navigation_ability_associated",
+        "kind": "out",
+        "raw_component": "navigation_ability_associated",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "out.unresolved.col_wayfinding_simple",
+        "new_node_id": "out.cog.performance.col_wayfinding_simple",
+        "kind": "out",
+        "raw_component": "col_wayfinding_simple",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "out.unresolved.finding_building_wayfinding",
+        "new_node_id": "out.cog.performance.finding_building_wayfinding",
+        "kind": "out",
+        "raw_component": "finding_building_wayfinding",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      },
+      {
+        "old_node_id": "env.unresolved.color_depression_white",
+        "new_node_id": "env.color.saturation.color_depression_white",
+        "kind": "env",
+        "raw_component": "color_depression_white",
+        "canonical_id": "env.color.saturation",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "env_color_to_saturation"
+      },
+      {
+        "old_node_id": "out.unresolved.navigation_and_search",
+        "new_node_id": "out.cog.performance.navigation_and_search",
+        "kind": "out",
+        "raw_component": "navigation_and_search",
+        "canonical_id": "out.cog.performance",
+        "match_method": "alias_rule",
+        "confidence": 0.92,
+        "alias_rule_id": "out_navigation_wayfinding_to_cog_performance"
+      }
+    ]
+  },
+  "top_unresolved_samples": [
+    {
+      "node_id": "out.common_value_s5a",
+      "count": 1
+    },
+    {
+      "node_id": "out.models_curvilinear_rustic",
+      "count": 1
+    },
+    {
+      "node_id": "out.extremely_high_homogeneity",
+      "count": 1
+    },
+    {
+      "node_id": "out.burada_olmaktan_mutluyum",
+      "count": 1
+    },
+    {
+      "node_id": "env.evitcelfer_ton_wol",
+      "count": 1
+    },
+    {
+      "node_id": "out.development_are_classified",
+      "count": 1
+    },
+    {
+      "node_id": "env.differences_self_report",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_zhang_etal",
+      "count": 1
+    },
+    {
+      "node_id": "env.col_mean_pub",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_glazingtransmittance_cid",
+      "count": 1
+    },
+    {
+      "node_id": "out.changing_lanes_older",
+      "count": 1
+    },
+    {
+      "node_id": "out.corsi_block_tapping_task",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_physicalaspects_col",
+      "count": 1
+    },
+    {
+      "node_id": "out.daylight",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_lehmann_titze",
+      "count": 1
+    },
+    {
+      "node_id": "env.col_tate_gallery",
+      "count": 1
+    },
+    {
+      "node_id": "env.orange_level_level",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_rmb_col",
+      "count": 1
+    },
+    {
+      "node_id": "out.in_domain_versus_out_of_domain",
+      "count": 1
+    },
+    {
+      "node_id": "out.col_skulmowskietal_computers",
+      "count": 1
+    }
+  ]
+}

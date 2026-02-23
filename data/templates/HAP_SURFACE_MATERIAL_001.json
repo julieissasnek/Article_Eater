@@ -1,0 +1,130 @@
+{
+  "template_id": "HAP_SURFACE_MATERIAL_001",
+  "template_name": "Surface Material Properties and Haptic Affective Response",
+  "panel": "MULTI-I",
+  "primary_anchor": "Francis McGlone (Liverpool JM)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant's hand, foot, or body contacts an architectural surface. Surface material properties — roughness (Ra), thermal conductivity (λ), compliance (Young's modulus E), texture grain orientation — are transduced by mechanoreceptors (Meissner, Pacinian, Merkel, Ruffini) and CT afferents.",
+      "substrate": "Peripheral somatosensory transduction: glabrous and hairy skin receptors",
+      "confidence": 0.65,
+      "bridge_warrant": "MECHANISM",
+      "source": "McGlone et al. (2014)"
+    },
+    {
+      "step": 2,
+      "process": "Material property encoding is dual-process: Aβ mechanoreceptors encode discriminative properties (roughness magnitude, texture spatial frequency, hardness) in SI cortex; CT afferents encode affective valence (pleasant/unpleasant) in posterior insular cortex.",
+      "substrate": "SI cortex (discriminative) + posterior insula (affective) — parallel processing streams",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM",
+      "source": "McGlone et al. (2014); Morrison (2016)"
+    },
+    {
+      "step": 3,
+      "process": "Material-specific hedonic profiles: wood (warm, moderate roughness, moderate compliance = strongly pleasant); natural stone (cool, smooth to moderate roughness, rigid = neutral to mildly pleasant); metal (cold, very smooth, rigid = mildly aversive); concrete (cold, rough, rigid = moderately aversive); fabric (warm, soft, compliant = strongly pleasant).",
+      "substrate": "Somatosensory + insular + orbitofrontal evaluation",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "McGlone et al. (2014)"
+    }
+  ],
+  "calibrated_parameters": {
+    "material_hedonic_rankings": {
+      "wood_natural": {
+        "hedonic_score": 0.75,
+        "unit": "0-1 scale",
+        "Ra": "5–15 μm",
+        "λ": "0.12 W/m·K",
+        "E": "~10 GPa"
+      },
+      "natural_fibre_textile": {
+        "hedonic_score": 0.8,
+        "Ra": "10–30 μm",
+        "λ": "0.05 W/m·K",
+        "E": "< 0.1 GPa"
+      },
+      "cork": {
+        "hedonic_score": 0.7,
+        "Ra": "15–40 μm",
+        "λ": "0.04 W/m·K",
+        "E": "~0.02 GPa"
+      },
+      "natural_stone_warm": {
+        "hedonic_score": 0.45,
+        "note": "sandstone, limestone at room temp",
+        "λ": "1.5–2.5 W/m·K"
+      },
+      "natural_stone_cold": {
+        "hedonic_score": 0.3,
+        "note": "marble, granite below 20°C",
+        "λ": "2.5–3.5 W/m·K"
+      },
+      "metal_room_temp": {
+        "hedonic_score": 0.2,
+        "note": "steel, aluminium at room temperature",
+        "λ": "15–50 W/m·K"
+      },
+      "concrete_raw": {
+        "hedonic_score": 0.25,
+        "note": "unfinished concrete",
+        "Ra": "> 100 μm",
+        "λ": "1.7 W/m·K"
+      },
+      "plastic_smooth": {
+        "hedonic_score": 0.35,
+        "note": "smooth plastic, vinyl",
+        "Ra": "< 0.5 μm",
+        "λ": "0.2 W/m·K"
+      },
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "thermal_modulation": {
+      "value": "heated metal/stone ≈ +0.25 hedonic score; cooled wood ≈ -0.15 hedonic score",
+      "interpretation": "Surface temperature modulates hedonic response independently of material identity. Heated stone or metal handrails approach wood hedonic levels. Cooling natural materials reduces their haptic pleasantness.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "population_modifiers": {
+    "age_group": {
+      "effect": "Reduced tactile sensitivity (higher detection thresholds) may attenuate fine texture discrimination but hedonic valuation pathway is preserved. Thermal sensitivity is maintained; thermal conductivity effects are robust in aging.",
+      "confidence": 0.4
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Haptic affect from material contact contributes to body budget through the parasympathetic pathway: pleasant touch → insular cortex → parasympathetic activation → body budget credit. Unpleasant touch (cold metal, rough concrete) produces sympathetic activation → body budget debit.",
+    "AX4_perceived_control": "Choice of contact surface is a control variable. When occupants can choose which surfaces to touch (selecting the wood railing over the metal one), perceived control amplifies the hedonic benefit. When contact is forced (only cold metal surfaces available), the lack of haptic choice compounds the negative affect."
+  },
+  "cross_template_references": [
+    "CT_AFFECTIVE_TOUCH_001 — provides the neural mechanism; HAP extends to specific material mappings",
+    "MATERIAL_IDENTITY_INTEGRATION_001 — haptic channel contributes to multi-modal material identity",
+    "NATURAL_MATERIAL_CONVERGENCE_001 — wood haptic pleasantness is one channel of convergence"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "HSM1",
+  "name": "Surface Material Properties and Haptic Affective Response",
+  "architectural_modifiers": {
+    "surface_temperature_management": {
+      "coefficient": 0.2,
+      "interpretation": "Active thermal management of surfaces (heated stone seats, heated metal railings) shifts hedonic scores toward positive range. Passive thermal mass (cold stone in winter) shifts toward negative.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "texture_grain_alignment": {
+      "coefficient": 0.1,
+      "interpretation": "Wood grain aligned with hand-stroke direction (e.g., horizontal on a railing gripped in a slide) produces more pleasant haptic experience than cross-grain contact.",
+      "confidence": 0.35,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "EC"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "confidence": 0.5
+}

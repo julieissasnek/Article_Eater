@@ -1,261 +1,217 @@
 {
   "template_id": "CHRONO_LIGHT_ENTRAINMENT_001",
-  "display_id": "T30",
-  "name": "Architectural light exposure \u2192 circadian entrainment quality \u2192 physiological coordination",
-  "structural_pattern": "light_input \u2192 clock_synchronization \u2192 systemic_coordination",
-  "higher_order_principle": "Circadian Regulation (Czeisler)",
-  "framework_ids": [
-    "CHRONOBIOLOGICAL"
+  "name": "Architectural Light → Circadian Entrainment Quality",
+  "status": "calibrated",
+  "maturity": "supported",
+  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I — gap stub only; no prior structural template",
+  "t1_frameworks": [
+    "CB",
+    "NM"
   ],
-  "transferable_to": [
-    "Office lighting",
-    "Hospital patient rooms",
-    "Shift work environments"
-  ],
-  "causal_links": [
+  "panel_id": "LIGHT-I",
+  "calibration_date": "2026-02-21",
+  "mechanism_chain": [
     {
-      "id": "link_1",
-      "from_entity": "architectural_light",
-      "activity": "stimulates",
-      "to_entity": "iprgc_pathway",
-      "from_level": "ecological",
-      "to_level": "cellular",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Berson et al. (2002)",
-      "change_produced": "melanopsin activation (~480nm sensitivity)"
-    },
-    {
-      "id": "link_2",
-      "from_entity": "iprgc_signal",
-      "activity": "entrains",
-      "to_entity": "scn_clock",
-      "from_level": "cellular",
-      "to_level": "circuit",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Hattar et al. (2002)",
-      "change_produced": "phase alignment of SCN"
+      "step": 1,
+      "from": "building_light_environment",
+      "to": "24h_light_schedule",
+      "description": "Building light environment: spectral composition + irradiance + timing schedule across 24h",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.72,
+      "justification": {
+        "data": [
+          {"finding": "Building design determines spectral composition, irradiance levels, and timing of light exposure across occupancy period", "source": "Reinhart et al. (2006)", "paradigm": "Climate-based daylight modeling", "effect": "WFR, glazing, orientation determine daylight delivery", "n": null, "design": "Computational simulation"}
+        ],
+        "backing": "Architectural parameters directly control the light environment. This is the input layer of the circadian system.",
+        "qualifier": "Occupant behavior (shading use, outdoor breaks) modifies architectural delivery.",
+        "rebuttal": "Would fail if behavioral factors dominate architectural effects.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
     },
     {
-      "id": "link_3",
-      "from_entity": "scn_coordination",
-      "activity": "regulates",
-      "to_entity": "systemic_physiology",
-      "from_level": "circuit",
-      "to_level": "systems",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Roenneberg & Merrow (2016)",
-      "change_produced": "sleep, cortisol, immune, metabolic rhythms"
-    }
-  ],
-  "scope_conditions": [
-    "Specific to blue-enriched light (~480nm)",
-    "Timing is critical (morning vs evening effects differ)"
-  ],
-  "moderators": [
-    "Age (lens yellowing blocks blue light)",
-    "Prior light history"
-  ],
-  "interactions": [
-    "ALLOSTATIC_MASTER_001 (T29) - disruption is a stressor",
-    "NM_CORTISOL_HIPPOCAMPAL_005 (T6)"
-  ],
-  "overall_maturity": "how-actually",
-  "key_references": [
-    {
-      "citation": "Czeisler, C. A. et al. (1999). Stability, precision, and near-24-hour period of the human circadian pacemaker."
+      "step": 2,
+      "from": "photophase_light",
+      "to": "daily_melanopic_integral",
+      "description": "→ Daily melanopic lux integral (m-lux·hours) during photophase determines cumulative SCN phase-stabilization signal",
+      "warrant": "MECHANISM",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "Minimum 150 m-lux·hours daily daytime melanopic dose for stable entrainment maintenance", "source": "Kronauer model; Figueiro et al. (2017)", "paradigm": "Field dosimetry + mathematical modeling", "effect": "Below 100 m-lux·h: progressive drift; above 250: diminishing returns", "n": 109, "design": "Field study"}
+        ],
+        "backing": "The cumulative daily melanopic dose determines entrainment strength. Kronauer's model predicts entrainment as a function of light integral.",
+        "qualifier": "Minimum threshold derived from model extrapolation; direct measurement in occupied buildings is limited.",
+        "rebuttal": "Would fail if light timing matters more than integral; or if individual chronotype dominates building effects.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
     },
     {
-      "citation": "LeGates, T. A. et al. (2014). Light as a central modulator of circadian rhythms."
-    }
-  ],
-  "short_description": "Buildings set our biological clocks; good light aligns our physiology, bad light breaks it.",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
+      "step": 3,
+      "from": "evening_light",
+      "to": "phase_delay",
+      "description": "→ Evening melanopic lux above threshold (>30 m-lux) delays SCN phase via PRC delay region",
+      "warrant": "MECHANISM",
+      "confidence": 0.68,
+      "justification": {
+        "data": [
+          {"finding": "Evening light above 30 m-lux mEDI contributes to SCN delay region of PRC", "source": "Arendt (panel); Gooley et al. (2011)", "paradigm": "Controlled evening exposure", "effect": "Threshold 30 m-lux in evening sensitivity window", "n": 116, "design": "Within-subjects"}
+        ],
+        "backing": "The PRC delay region is activated by evening light. This partially offsets morning advance contributions.",
+        "qualifier": "Threshold varies with circadian phase; lower at peak sensitivity.",
+        "rebuttal": "Would fail if evening light effects are acute only without cumulative phase-shifting.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
+    {
+      "step": 4,
+      "from": "advance_delay_contributions",
+      "to": "net_phase_correction",
+      "description": "→ Net daily phase correction = advance contribution (morning light) minus delay contribution (evening light)",
+      "warrant": "MECHANISM",
+      "confidence": 0.62,
+      "justification": {
+        "data": [
+          {"finding": "Phase response curve integrates morning advance and evening delay contributions", "source": "Kronauer et al. (1999)", "paradigm": "Limit-cycle oscillator modeling", "effect": "Net correction depends on timing-weighted light exposure", "n": null, "design": "Mathematical model"}
+        ],
+        "backing": "Kronauer's limit-cycle model formalizes the advance-delay integration.",
+        "qualifier": "Model validated in controlled conditions; architectural translation involves additional uncertainty.",
+        "rebuttal": "Would fail if morning and evening contributions are not additive.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
     },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
+    {
+      "step": 5,
+      "from": "sufficient_correction",
+      "to": "stable_entrainment",
+      "description": "→ If net correction ≥ intrinsic period deviation (0.17–0.22 h/day): stable entrainment maintained",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Human intrinsic circadian period averages 24.2h; requires 0.2h/day correction for entrainment", "source": "Czeisler et al. (1999)", "paradigm": "Forced desynchrony studies", "effect": "Mean intrinsic period 24.18h", "n": 24, "design": "Controlled laboratory"}
+        ],
+        "backing": "Stable entrainment requires daily phase correction to match the intrinsic period deviation.",
+        "qualifier": "Individual variation in intrinsic period affects minimum light requirement.",
+        "rebuttal": "Would fail if non-photic zeitgebers (meals, activity) provide sufficient correction.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
     },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
+    {
+      "step": 6,
+      "from": "insufficient_correction",
+      "to": "social_jetlag",
+      "description": "→ If net correction < intrinsic period deviation: progressive phase drift → social jetlag → chronic misalignment",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Social jetlag (mismatch between biological and social clock) prevalent in modern populations; associated with inadequate daytime light exposure", "source": "Wittmann et al. (2006)", "paradigm": "Epidemiological survey", "effect": "Social jetlag correlates with indoor work and low light exposure", "n": 501, "design": "Cross-sectional"}
+        ],
+        "backing": "Wittmann's social jetlag concept captures the cumulative misalignment that results from inadequate entrainment.",
+        "qualifier": "Epidemiological association; direct architectural causation is inferred.",
+        "rebuttal": "Would fail if social jetlag is primarily driven by behavioral choices rather than architectural light.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
     },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
-          }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
-          }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+    {
+      "step": 7,
+      "from": "chronic_misalignment",
+      "to": "allostatic_load",
+      "description": "→ Chronic misalignment → allostatic load via cortisol CAR blunting, sleep architecture degradation (CB_SLEEP_ARCHITECTURE_002), metabolic dysregulation (Panda pathway)",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.52,
+      "justification": {
+        "data": [
+          {"finding": "Circadian misalignment associated with metabolic syndrome, cognitive impairment, increased disease risk", "source": "Scheer et al. (2009); Panda (panel)", "paradigm": "Laboratory misalignment and epidemiology", "effect": "Multiple adverse outcomes from chronic misalignment", "n": null, "design": "Mixed"}
+        ],
+        "backing": "The health consequences of chronic misalignment are documented in shift-work and epidemiological literature. Panda's gene-expression pathway adds molecular mechanism.",
+        "qualifier": "Architectural extrapolation involves assumptions about equivalence between shift-work and inadequate-light misalignment.",
+        "rebuttal": "Would fail if behavioral compensation eliminates architectural effects; or if misalignment effects are reversible with recovery periods.",
+        "competing_accounts": [],
+        "depth_tier": "B"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "luminance_level": {
+      "value": 150,
+      "unit": "m-lux_mEDI_hours_per_day_daytime_only",
+      "range": {
+        "min": 100,
+        "max": 250
+      },
+      "note": "Minimum cumulative daily daytime melanopic dose for stable entrainment maintenance. Equivalent to approximately 87 m-lux for 2 continuous hours, or 50 m-lux for 3–4 hours. Below 100 m-lux·h: progressive circadian drift expected over weeks. Above 250 m-lux·h: diminishing returns; ceiling effects in entrainment quality.",
+      "source": "Kronauer model derivation; Figueiro et al. (2017) field data",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM"
+    },
+    "evening_delay_contamination_threshold": {
+      "value": 30,
+      "unit": "m-lux_mEDI_above_which_evening_exposure_contributes_delay",
+      "range": {
+        "min": 15,
+        "max": 55
+      },
+      "note": "Evening light above 30 m-lux mEDI in the 2 hours before habitual sleep onset begins contributing to the SCN delay region of the PRC, partially offsetting the morning advance contribution. This threshold is lower than the daytime maintenance threshold due to the circadian phase-dependent sensitivity of the SCN in the evening.",
+      "source": "Arendt; Münch et al. (2006); Gooley et al. (2011)",
+      "confidence": 0.68,
+      "bridge_warrant": "MECHANISM"
+    },
+    "social_setting_features": {
+      "value": 0.2,
+      "unit": "hours_circadian_phase_delay_per_week_in_subthreshold_light_environment",
+      "range": {
+        "min": 0.08,
+        "max": 0.4
+      },
+      "note": "Rate of social jetlag accumulation in occupants working in buildings with daytime melanopic integral below the minimum threshold (150 m-lux·h/day). Each week of subthreshold exposure produces approximately 12 minutes of progressive phase delay. After 4 weeks: ~48 min delay; this represents the equivalent of living 1 time zone west of local clock time.",
+      "source": "Kronauer model projection; Wittmann et al. (2006) social jetlag epidemiology",
+      "confidence": 0.48,
+      "bridge_warrant": "CAPACITY",
+      "flag": "THEORETICAL_DEFAULT — directly measured architectural accumulation rate absent; derived from free-running period × entrainment failure model"
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "reference",
-  "generation": 1,
-  "ecological_validation": false
+  "building_types": [
+    "all_occupied_buildings",
+    "priority: offices, schools"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "CIRCADIAN_ARCH_REG_001",
+    "CB_SLEEP_ARCHITECTURE_002",
+    "T6",
+    "T7"
+  ],
+  "ie_dpt_interaction": "No primary T_IE interaction; T_IE_001 secondary — occupant scheduling behavior (choosing indoor vs. outdoor breaks) modulates daily melanopic integral",
+  "key_references": [
+    "Kronauer et al. (1999). https://doi.org/10.1152/jappl.1999.87.1.428",
+    "Wittmann et al. (2006). https://doi.org/10.1016/j.cub.2006.01.063",
+    "Figueiro et al. (2017). https://doi.org/10.1016/j.sleh.2017.03.005"
+  ],
+  "panel_docs": [
+    "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+    "docs/02-15_02_Neuroscience_Panel_Templates_and_Taxonomy_V1.0.md"
+  ],
+  "panel_source": "Tier 1 Frameworks",
+  "panel_reasoning_excerpt": "## Summary of Panel-Recommended New Templates\n\n| New Template | Content | Source | Maturity |\n|---|---|---|---|\n| PP_ACTIVE_INFERENCE_003 | Environmental controllability → action policy availability → expected free energy reduction | Friston | how-plausibly |\n| PP_RAPID_GIST_004 | Low-spatial-frequency scene structure → fast PFC associative activation → contextual frame | Bar | how-actually |\n| SN_CONTEXT_MEMORY_002 | Environmental context stability → context-dependent encoding → retrieval efficiency | Nadel | how-actually |\n| SN_THETA_SEQUENCE_003 | Path structure → theta sequence coherence → navigational fluency | Buzsáki | how-actually |\n| MS_RIPPLE_REPLAY_002 | Environmental rest opportunities → SPW-R replay → spatial knowledge consolidation | Buzsáki | how-actually/plausibly |\n| NM_CHOLINERGIC_GATING_007 | Environmental salience → BF-ACh → selective cortical precision enhancement | Chiba | how-actually |\n| DT_DMN_MAINTENANCE_002 | Low-demand periods → DMN subsystem re-engagement → model maintenance | Raichle | how-plausibly |\n| EC_COGNITIVE_OFFLOADING_002 | Environmental legibility → information in environment → reduced internal processing | Clark | how-plausibly |\n| ALLOSTATIC_MASTER_001 | Sum of environmental demands → total allostatic cost → available resources for function | Sterling, Seth | how-plausibly |\n| CHRONO_LIGHT_ENTRAINMENT_001 | Architectural light exposure → SCN entrainment → circadian regulation quality | Sterling, panel consensus | how-actually |",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+  "excerpt_char_range": [
+    47377,
+    48871
+  ],
+  "cross_template_interactions": {
+    "IC2": "Primary interaction: social jetlag accumulation is a persistent body-budget phase-misalignment — the strongest IC2 interaction in the circadian template cluster. The body budget model generates predictions timed to clock time; when the circadian clock is phase-delayed from social schedule, the predictions systematically miss, producing a structural source of body-budget prediction error.",
+    "AX4": "Occupant control of break timing, lunch location (indoor vs. outdoor), and desk proximity to windows all modulate the daily melanopic integral. AX4 modifier: high control → occupant can compensate for subthreshold architectural delivery via outdoor exposure."
+  },
+  "display_id": "CLE1",
+  "calibration_status": "calibrated",
+  "confidence": 0.6
 }

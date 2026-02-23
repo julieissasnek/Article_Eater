@@ -1,0 +1,108 @@
+{
+  "template_id": "CROSSMODAL_CONGRUENCE_001",
+  "template_name": "Multi-Sensory Spatial Coherence in Architectural Environments",
+  "panel": "MULTI-I",
+  "primary_anchor": "Charles Spence (Oxford)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "scope_correction": "Per PRE_PANEL_REVIEW_CLEARANCE_MULTI_I.md: this template concerns multi-sensory spatial coherence, NOT social cognition. The Sprint Task Brief description was erroneous.",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Architectural environment presents spatially distributed multi-sensory information: visual objects at specific locations, sound sources at specific locations, haptic surfaces at specific contact points, odour sources at specific positions. The brain must determine the spatial coherence of this multi-sensory array.",
+      "substrate": "Modality-specific spatial processing: visual spatial maps (dorsal stream), auditory spatial maps (superior temporal cortex), haptic spatial maps (SI/SII), olfactory localization (nostrils, head movement)",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Spence (2011); Stein & Meredith (1993)"
+    },
+    {
+      "step": 2,
+      "process": "Spatial rule of multisensory integration (Stein & Meredith, 1993): signals from the SAME spatial location are integrated (bound into a unified percept); signals from DIFFERENT spatial locations are segregated (processed as separate events). Spatial alignment is the primary binding cue for multi-sensory integration.",
+      "substrate": "Superior colliculus spatial alignment; cortical multisensory areas",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Stein & Meredith (1993)"
+    },
+    {
+      "step": 3,
+      "process": "Spatially coherent environments \u2014 where visual sources, sound sources, haptic surfaces, and olfactory signatures are spatially aligned \u2014 produce a unified percept of place. Spatial incoherence (sound from a different direction than the visual source, haptic properties that don't match the visible surface) produces perceptual fragmentation.",
+      "substrate": "Multi-sensory integration \u2192 unified spatial representation vs. perceptual segregation",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Spence (2011); K\u00f6rding et al. (2007)"
+    },
+    {
+      "step": 4,
+      "process": "Perceptual fragmentation from spatial incoherence produces negative affect, reduced spatial presence, and impaired spatial memory encoding. Coherent environments produce positive affect, strong spatial presence, and enhanced spatial memory.",
+      "substrate": "Coherence \u2192 affect pathway; interacts with MEMORY-I context encoding",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Spence (2011)"
+    }
+  ],
+  "calibrated_parameters": {
+    "spatial_alignment_window": {
+      "value": "~30 cm spatial, ~200 ms temporal",
+      "interpretation": "Multisensory signals within ~30 cm spatial and ~200 ms temporal window are bound (common cause inference). Outside this window, they are segregated.",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM",
+      "source": "Stein & Meredith (1993); K\u00f6rding et al. (2007)"
+    },
+    "coherence_affect_benefit": {
+      "value": "d \u2248 0.25\u20130.40",
+      "unit": "Cohen's_d_spatial_presence_rating",
+      "interpretation": "Spatially coherent environments are rated ~0.25\u20130.40 standard deviations higher on spatial presence and place identity than incoherent environments.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "architectural_incoherence_sources": {
+      "value": [
+        "displaced_audio (speakers not co-located with visual source)",
+        "HVAC_noise_from_invisible_source",
+        "material_simulation (visual appearance \u2260 haptic reality)",
+        "artificial_scent_from_diffuser (olfactory signal not from visible material)"
+      ],
+      "interpretation": "Common architectural sources of spatial multi-sensory incoherence. Each source degrades the unified percept of place.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "population_modifiers": {
+    "visual_impairment": {
+      "effect": "Spatial coherence becomes more dependent on auditory-haptic alignment. Displaced audio is more disorienting for visually impaired occupants who rely on sound for spatial localization.",
+      "confidence": 0.45
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Spatial incoherence increases processing load (the brain must resolve conflicting spatial cues), which is a body budget cost. In allostatic deficit, the tolerance for spatial incoherence is reduced.",
+    "AX4_perceived_control": "Spatial coherence is a prerequisite for environmental legibility. When multi-sensory spatial cues agree, the occupant can form a reliable spatial model and act on it (high control). When cues conflict, the spatial model is unreliable and action planning is impaired (low control)."
+  },
+  "cross_template_references": [
+    "MSI_CONGRUENCY_PRINCIPLE_001 \u2014 spatial coherence is a specific case of crossmodal congruency applied to spatial alignment",
+    "MEMORY-I SN_CONTEXT_MEMORY_002 \u2014 spatial coherence supports context encoding quality",
+    "SPATIAL-I SC1 \u2014 spatial integration parameters are enhanced by multi-sensory coherence"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "CC1",
+  "name": "Multi-Sensory Spatial Coherence in Architectural Environments",
+  "architectural_modifiers": {
+    "spatial_coherence_score": {
+      "coefficient": 0.2,
+      "interpretation": "Fraction of multi-sensory signals in the environment that are spatially co-located with their expected sources. Score of 1.0 = all sounds come from where they appear to originate, all material surfaces look and feel as expected.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "audio_displacement_penalty": {
+      "coefficient": -0.15,
+      "interpretation": "Sound sources displaced from their visual origin (ceiling speakers for background music, hidden HVAC noise) degrade spatial coherence.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "MSI"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "confidence": 0.45
+}

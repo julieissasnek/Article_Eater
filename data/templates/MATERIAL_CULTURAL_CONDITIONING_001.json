@@ -1,0 +1,118 @@
+{
+  "template_id": "MATERIAL_CULTURAL_CONDITIONING_001",
+  "template_name": "Material-Cultural Conditioning and Evaluative Association",
+  "panel": "MULTI-I",
+  "primary_anchor": "Byron Mikellides (Oxford Brookes)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "All parameters are population-dependent. No universal cultural conditioning parameters. Flag any as error.",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant perceives architectural material identity (wood, stone, concrete, steel, glass, fabric). Material identity is classified via visual and haptic processing.",
+      "substrate": "Ventral visual stream (material categorization); somatosensory cortex (haptic confirmation)",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Ernst (2006)"
+    },
+    {
+      "step": 2,
+      "process": "Material identity activates learned evaluative associations stored in long-term memory. These associations are culturally acquired through repeated exposure to material-context pairings in the occupant's cultural environment (marble in banks = wealth/trust; exposed brick in caf\u00e9s = authenticity/informality; raw concrete in prisons = austerity/oppression).",
+      "substrate": "Inferior temporal cortex (material categorization) \u2192 medial temporal (associative memory) \u2192 orbitofrontal (evaluation)",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Mikellides (1990)"
+    },
+    {
+      "step": 3,
+      "process": "Evaluative associations modulate the affective response to the material: culturally positive associations amplify innate hedonic response; culturally negative associations suppress or reverse it. This modulation operates on TOP of the biophilic baseline from NATURAL_MATERIAL_CONVERGENCE_001.",
+      "substrate": "Top-down modulation from mPFC/OFC on amygdala and insular cortex",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Mikellides (1990)"
+    }
+  ],
+  "calibrated_parameters": {
+    "biophilic_baseline": {
+      "wood": "+0.25 (positive across all studied cultures)",
+      "natural_stone": "+0.10 (mildly positive across most cultures)",
+      "earth_clay": "+0.10 (positive in cultures with vernacular tradition)",
+      "processed_metal": "-0.05 (mildly negative baseline; culturally variable)",
+      "raw_concrete": "-0.10 (mildly negative baseline; culturally highly variable)",
+      "synthetic_plastic": "-0.15 (negative across most cultures)",
+      "unit": "affective_score_shift_-1_to_+1",
+      "interpretation": "Innate biophilic baseline: evolutionary familiarity \u2192 positive; evolutionary novelty \u2192 negative. This baseline is UNIVERSAL but SMALL relative to cultural modifier.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "cultural_modifier_examples": {
+      "population": "Western_European",
+      "marble": "+0.30 (luxury, permanence, classicism)",
+      "exposed_brick": "+0.20 (authenticity, industrial chic, informality)",
+      "raw_concrete": "-0.20 (brutalism, institutional, oppressive)",
+      "glass_curtain_wall": "+0.15 (modernity, transparency, corporate prestige)",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT",
+      "note": "These values are for Western European cultural context ONLY. Other populations require independent parameter estimation."
+    },
+    "cultural_modifier_nordic": {
+      "population": "Nordic",
+      "wood": "+0.40 (cultural amplification of biophilic baseline; wood = national identity)",
+      "marble": "+0.05 (neutral; less cultural association with luxury)",
+      "raw_concrete": "-0.10 (less negative than Western European; Nordic modernism tradition)",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    },
+    "cultural_modifier_japanese": {
+      "population": "East_Asian_Japanese",
+      "wood_hinoki": "+0.45 (sacred/pure associations; highest studied cultural wood amplification)",
+      "raw_concrete": "+0.15 (POSITIVE \u2014 And\u014d tradition; spiritual simplicity)",
+      "tatami_woven_grass": "+0.30 (cultural domestic warmth; unique to Japanese context)",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "population_modifiers": {
+    "architectural_education": {
+      "effect": "Architecturally educated individuals show different cultural conditioning: concrete may be evaluated positively (appreciation of brutalism), glass positively (modernist transparency). Education partially overrides default cultural associations.",
+      "confidence": 0.4
+    },
+    "socioeconomic_status": {
+      "effect": "SES modulates material evaluations: marble and glass are evaluated more positively by higher-SES occupants (aspirational associations); wood and brick more positively by middle-SES (comfort/authenticity associations).",
+      "confidence": 0.35
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Cultural material associations include interoceptive predictions: wood predicts warmth (body budget credit), concrete predicts cold (body budget debit), regardless of actual surface temperature. These are learned interoceptive predictions that may be culturally specific.",
+    "AX4_perceived_control": "Culturally familiar materials enhance perceived control through predictability \u2014 the occupant knows what to expect from the material (how it feels, what it connotes). Culturally unfamiliar materials reduce perceived control by introducing material uncertainty."
+  },
+  "cross_template_references": [
+    "NATURAL_MATERIAL_CONVERGENCE_001 \u2014 biophilic baseline is the innate layer; cultural conditioning is the learned layer",
+    "MSI_CONGRUENCY_PRINCIPLE_001 \u2014 cultural expectations create crossmodal predictions (visual wood \u2192 expected warm haptic \u2192 congruency if confirmed)",
+    "MATERIAL_AGING_TEMPORAL_DEPTH_001 \u2014 cultural attitudes toward aging/patina modulate temporal depth evaluation"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "MCC1",
+  "name": "Material-Cultural Conditioning and Evaluative Association",
+  "architectural_modifiers": {
+    "cultural_alignment_score": {
+      "coefficient": 0.25,
+      "interpretation": "Degree to which material palette aligns with target population's cultural associations. Misalignment (e.g., raw concrete in a Mediterranean domestic context) produces negative evaluation regardless of material quality.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    },
+    "context_congruence": {
+      "coefficient": 0.15,
+      "interpretation": "Material must match building typology expectations: marble in a bank = congruent; marble in a playground = incongruent. Context-material mismatch produces negative evaluation.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    }
+  },
+  "t1_frameworks": [
+    "MSI",
+    "PP"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "confidence": 0.5
+}

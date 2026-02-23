@@ -1,260 +1,252 @@
 {
   "template_id": "PP_RAPID_GIST_004",
   "display_id": "T22",
-  "name": "Low-spatial-frequency scene structure \u2192 rapid associative prediction \u2192 contextual framing",
-  "structural_pattern": "coarse_feature_extraction \u2192 top_down_prediction_cascade \u2192 interpretive_frame",
-  "higher_order_principle": "Gist Perception (Bar)",
-  "framework_ids": [
-    "PREDICTIVE_PROCESSING"
-  ],
-  "transferable_to": [
-    "First impressions of buildings",
-    "Social situation categorization"
-  ],
-  "causal_links": [
+  "name": "Low-Spatial-Frequency Scene Structure — Rapid Associative Prediction — Contextual Framing",
+  "status": "calibrated",
+  "maturity": "supported",
+  "panel": "VISUAL-I",
+  "t1_frameworks": [],
+  "mechanism_chain": [
     {
-      "id": "link_1",
-      "from_entity": "low_spatial_frequency_content",
-      "activity": "travels_via",
-      "to_entity": "magnocellular_pfc_pathway",
-      "from_level": "ecological",
-      "to_level": "circuit",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Bar et al. (2006)",
-      "change_produced": "rapid PFC activation (~130ms)"
-    },
-    {
-      "id": "link_2",
-      "from_entity": "magnocellular_pfc_activation",
-      "activity": "generates",
-      "to_entity": "scene_category_prediction",
-      "from_level": "circuit",
-      "to_level": "computational",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Bar (2007)",
-      "change_produced": "top-down guess ('this is a hospital')"
-    },
-    {
-      "id": "link_3",
-      "from_entity": "scene_category_prediction",
-      "activity": "biases",
-      "to_entity": "detail_processing",
-      "from_level": "computational",
-      "to_level": "psychological",
-      "bridging_quality": "high",
-      "maturity": "how-actually",
-      "evidence_base": "Predictive coding top-down modulation",
-      "change_produced": "confirmation bias for gist"
-    }
-  ],
-  "scope_conditions": [
-    "View duration <2-3s relies on gist; longer allows override",
-    "Requires sufficient light for LSF extraction"
-  ],
-  "moderators": [
-    "Anxiety (biases gist toward threat)",
-    "Prior expectations"
-  ],
-  "interactions": [
-    "PP_SPECTRAL_MATCH_001 (T1)",
-    "DP_IMPLICIT_EVALUATION_001 (T9)"
-  ],
-  "overall_maturity": "how-actually",
-  "key_references": [
-    {
-      "citation": "Bar, M. (2007). The proactive brain: using analogies and associations to generate predictions."
-    },
-    {
-      "citation": "Barrett, L. F. & Bar, M. (2009). See it with feeling."
-    }
-  ],
-  "short_description": "We judge a building's 'vibe' from its blurry outline (low spatial frequency) in under 150ms.",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "from": "spatial_configuration",
+      "to": "prefrontal_executive_control",
+      "description": "Building's LSF content — volume proportions, ceiling-to-floor ratio, window-to-wall ratio, gross light distribution — projects via magnocellular RGCs (preferential sensitivity to < 2 cycles/degree) → V1/V2 → dorsal stream → OFC and lateral PFC. PFC activation onset: ~130ms (Bar et al., 2006 MEG).",
+      "warrant": "MECHANISM",
+      "confidence": 0.7,
+      "justification": {
+        "data": [
+          {
+            "finding": "LSF visual content activates PFC within 130ms via magnocellular pathway, enabling rapid scene categorization before detailed processing",
+            "source": "Bar et al. (2006)",
+            "paradigm": "MEG during object recognition with LSF/HSF filtering",
+            "effect": "PFC activation 130ms post-stimulus for LSF; 180ms for HSF",
+            "n": 18,
+            "design": "Within-subjects MEG with spatial frequency filtering"
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "Magnocellular projections to PFC trigger top-down facilitation of object recognition",
+            "source": "Kveraga, Boshyan, & Bar (2007)",
+            "paradigm": "fMRI with LSF-filtered stimuli",
+            "effect": "LSF stimuli activate OFC and lateral PFC; PFC activation precedes temporal cortex activation",
+            "n": 16,
+            "design": "Within-subjects fMRI with spatial frequency manipulation"
+          },
+          {
+            "finding": "Affective predictions accompany perceptual predictions — category and valence are co-constructed during initial perception",
+            "source": "Barrett & Bar (2009)",
+            "paradigm": "Theoretical synthesis of affective neuroscience and visual prediction",
+            "effect": "Affective value assigned at same latency as conceptual identity (~130ms)",
+            "n": null,
+            "design": "Review/theoretical synthesis with supporting neuroimaging data"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
+        ],
+        "backing": "The magnocellular-PFC pathway is the fastest route from retina to associative cortex. Bar's MEG data show PFC activation at 130ms for LSF content, substantially preceding the ventral stream object recognition pathway. This creates an architectural implication: building proportions and gross light distribution (LSF properties) determine the brain's first-impression category before material detail (HSF) is processed.",
+        "qualifier": "MECHANISM warrant at 0.70 reflects strong neural pathway evidence from MEG and fMRI. The 130ms latency is well-established for laboratory stimuli. Architectural application assumes that building LSF content (proportions, window-to-wall ratio, massing) drives the same magnocellular pathway as laboratory LSF stimuli. This transfer is well-motivated by the physics of retinal processing but not directly confirmed with architectural stimuli in MEG/fMRI.",
+        "rebuttal": "The claim would fail if: (a) architectural scenes are processed differently from simple objects — the LSF gist pathway was established using isolated objects and simple scenes, and complex multi-element architectural scenes may not produce the same rapid PFC activation; (b) magnocellular pathway engagement requires specific stimulus properties (high temporal frequency, low spatial frequency) that architectural scenes at typical viewing distances do not consistently provide.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 2,
+      "from": "prefrontal_executive_control",
+      "to": "noradrenergic_response",
+      "description": "PFC generates: (a) scene category prediction ('hospital,' 'home,' 'sacred space,' 'prison') based on LSF match to stored categorical templates; (b) affective prediction co-constructed with the category (Barrett & Bar, 2009).",
+      "warrant": "MECHANISM",
+      "confidence": 0.7,
+      "justification": {
+        "data": [
+          {
+            "finding": "LSF-driven PFC generates scene category prediction and co-constructed affective prediction",
+            "source": "Barrett & Bar (2009)",
+            "paradigm": "Affect-as-information framework applied to visual prediction",
+            "effect": "Category and valence co-constructed at 130ms",
+            "n": null,
+            "design": "Theoretical framework with neuroimaging support"
           },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+          {
+            "finding": "Architectural preferences assigned within 200ms correlate r ≈ 0.65-0.70 with preferences assigned after unlimited viewing",
+            "source": "Bar (panel opening statement)",
+            "paradigm": "Flash preference paradigm for architectural images",
+            "effect": "r = 0.65-0.70 for 200ms vs. unlimited exposure preference correlation",
+            "n": null,
+            "design": "Within-subjects preference comparison across exposure durations"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+        ],
+        "backing": "PFC generates both categorical and affective predictions about architectural spaces. The categories (\"hospital,\" \"home,\" \"sacred space,\" \"prison\") carry embedded emotional valence. The fact that 200ms flash preferences predict final preferences at r ≈ 0.65-0.70 confirms that the rapid LSF-driven categorization strongly constrains subsequent evaluation.",
+        "qualifier": "Confidence 0.70 reflects strong mechanistic evidence for PFC-mediated scene categorization with co-constructed affect. The architectural category set is culturally embedded — the categories \"institutional,\" \"sacred,\" \"domestic\" carry different affective predictions across cultures. The qualifier applies most strongly within a given cultural context.",
+        "rebuttal": "The claim would fail if: (a) architectural scene categorization occurs primarily through ventral stream processing (slower, HSF-dependent) rather than the fast magnocellular route — in which case the first impression would be delayed and more detail-dependent; (b) affective prediction is not co-constructed with category but assigned separately at a later stage (~300ms+), making the rapid evaluation purely cognitive without emotional content.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "noradrenergic_response",
+      "to": "sensory_input_generic",
+      "description": "PFC-generated predictions propagate as top-down feedback to V1/V2. Summerfield et al. (2006): predicted stimuli show suppressed V1/V2 responses; unpredicted stimuli show enhanced responses. The categorical frame BIASES how every subsequent HSF detail is processed.",
+      "warrant": "MECHANISM",
+      "confidence": 0.7,
+      "justification": {
+        "data": [
+          {
+            "finding": "Predicted stimuli show suppressed V1/V2 responses compared to unpredicted stimuli via top-down feedback",
+            "source": "Summerfield et al. (2006)",
+            "paradigm": "fMRI during predictive coding paradigm",
+            "effect": "Predicted faces → reduced fusiform BOLD vs. unpredicted",
+            "n": 16,
+            "design": "Within-subjects expectation manipulation"
+          },
+          {
+            "finding": "Top-down predictions modulate V1/V2 response gain, biasing processing of subsequent HSF detail",
+            "source": "Kok et al. (2012)",
+            "paradigm": "fMRI expectation suppression in V1",
+            "effect": "Expected orientations → suppressed V1 BOLD",
+            "n": 19,
+            "design": "Within-subjects orientation expectation"
+          }
+        ],
+        "backing": "The categorical frame established by PFC propagates as top-down feedback to V1/V2, biasing how every subsequent architectural detail is processed. This is the mechanism underlying first-impression perseverance: the frame literally changes the neural response to HSF detail, making frame-consistent details easier to process and frame-inconsistent details surprising.",
+        "qualifier": "Confidence 0.70 for the neural mechanism of top-down modulation. The mechanism is well-established for simple stimuli but the architectural application — where the PFC categorical frame (\"hospital\" vs. \"home\") modulates V1/V2 processing of brick texture and ornament — is a plausible extension that has not been directly tested with architectural stimuli.",
+        "rebuttal": "The claim would fail if: (a) PFC-to-V1 top-down modulation is too weak in real-world viewing to meaningfully bias architectural detail processing — laboratory paradigms with controlled stimuli may overestimate the effect; (b) the categorical frame is continuously updated (not perseverant) as HSF detail accumulates, making the initial category assignment temporary rather than persistent.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "from": "categorical_frame_bias",
+      "to": "visual_complexity",
+      "description": "The categorical frame established within 130ms persists and shapes final aesthetic evaluation. Correlation between 130ms flash preference and unlimited-viewing preference: r ≈ 0.65–0.70 (photograph studies); r ≈ 0.55–0.65 estimated for immersive environments. First-impression perseverance coefficient: 40% (range 25–55%).",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "First-impression perseverance: early categorical judgment correlates r ≈ 0.65-0.70 with final aesthetic evaluation",
+            "source": "Bar & Neta (2007); Coburn et al. (2020)",
+            "paradigm": "Flash preference paradigm",
+            "effect": "R² ≈ 0.42-0.49 for photograph-based first impression predicting final evaluation",
+            "n": null,
+            "design": "Within-subjects comparison across exposure durations"
+          },
+          {
+            "finding": "Anchoring effects in judgment: initial estimates account for 40-70% of final judgments",
+            "source": "Tversky & Kahneman (1974)",
+            "paradigm": "Anchoring and adjustment in judgment under uncertainty",
+            "effect": "First anchor accounts for ~50% of final estimate",
+            "n": null,
+            "design": "Multiple behavioral experiments"
+          }
+        ],
+        "backing": "The perseverance coefficient captures the degree to which the rapid LSF-driven categorical frame constrains the final architectural evaluation. The coefficient (40%, range 25-55%) converges from two independent sources: flash-preference correlations with unlimited viewing (Bar) and the general anchoring literature (Tversky & Kahneman). Coburn (panel debate) argued for -10% adjustment for immersive vs. photograph-based experience.",
+        "qualifier": "Confidence 0.55 with MECHANISM warrant reflects that the mechanism (top-down PFC modulation) is well-established but the specific perseverance coefficient is estimated from photograph studies. Coburn argued immersive architectural experience reduces perseverance by ~10% because occupants encounter successive HSF detail while moving through space, partially overriding the initial frame. The range 25-55% reflects this uncertainty.",
+        "rebuttal": "The claim would fail if: (a) immersive architectural experience substantially overrides photograph-based first impressions — Coburn argued this may reduce perseverance to 25-35%, making the effect practically small; (b) the anchoring analogy is inapplicable because architectural evaluation involves ongoing sensory input (not static judgment from memory), allowing continuous frame updating that reduces the anchor effect.",
+        "competing_accounts": [
+          {
+            "account": "Continuous updating vs. anchored persistence",
+            "proponent": "Coburn (panel debate)",
+            "claim": "Immersive architectural experience continuously updates the categorical frame through HSF detail accumulation, reducing perseverance to 25-35% — substantially less than photograph-based estimates",
+            "implication_for_template": "If perseverance is 25-35% rather than 40-55%, T22's influence on building design is reduced: architects should invest more in material detail (HSF) and less in massing/proportions (LSF) than the current model predicts."
+          }
+        ],
+        "depth_tier": "A"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "visual_complexity": {
+      "central_value": 2.0,
+      "unit": "cycles per degree (cutoff for magnocellular-predominant processing)",
+      "range": [
+        1.5,
+        3.0
+      ],
+      "confidence": 0.65,
+      "warrant": "MECHANISM",
+      "source": "Kveraga et al. (2007)"
+    },
+    "primary_architectural_LSF_drivers": {
+      "description": "R_h (ceiling height / √floor area), WWR (window-to-wall ratio), gross luminance distribution (light/dark ratio), massing silhouette",
+      "confidence": 0.65,
+      "warrant": "MECHANISM",
+      "notes": "These are the architectural features that carry the LSF information determining categorical gist."
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "residual",
-  "generation": 1,
-  "ecological_validation": false
+  "population_modifiers": {
+    "first_visit_vs_repeat_visitor": {
+      "direction": "higher_perseverance_first_visit",
+      "modifier": "+0.10 perseverance coefficient",
+      "confidence": 0.5
+    },
+    "anxiety_trait": {
+      "direction": "threat_bias_in_categorical_frame",
+      "notes": "Ambiguous LSF content more likely to receive negative categorical prediction in anxious observers.",
+      "confidence": 0.55
+    },
+    "cultural_background": {
+      "direction": "stronger_faster_categorical_prediction",
+      "confidence": 0.55
+    }
+  },
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "p_parent_theory": 0.85,
+  "p_cnfa_specific": 0.6,
+  "p_effect_composite": 0.51,
+  "interaction_templates": [
+    {
+      "id": "VF3_SPATIAL_PROPORTIONS_001",
+      "display": "VF3",
+      "nature": "T22 is upstream of VF3: gist categorical evaluation of ceiling height occurs at ~130ms via T22, before VF3's slower proportional evaluation at ~300ms+. T22 sets the frame; VF3 calibrates the detailed proportional response within it."
+    },
+    {
+      "id": "LUM_CONTRAST_PE_001",
+      "display": "L1",
+      "nature": "T22's gross luminance distribution (overall chiaroscuro) is the L1 analog at the LSF scale. T22 processes the overall pattern; L1 processes local contrast details."
+    },
+    {
+      "id": "SPATIAL_INTEGRATION_PE_001",
+      "display": "SC1",
+      "nature": "SC1's integration value is partly an LSF property — global connectivity pattern visible from a distance. T22's categorical evaluation of openness/enclosure partially overlaps with SC1's integration measure."
+    }
+  ],
+  "key_references": [
+    "Bar, M., et al. (2006). Top-down facilitation of visual recognition. Proceedings of the National Academy of Sciences, 103(2), 449–454. https://doi.org/10.1073/pnas.0507062103",
+    "Kveraga, K., Boshyan, J., & Bar, M. (2007). Magnocellular projections as the trigger of top-down facilitation in recognition. Journal of Neuroscience, 27(48), 13232–13240. https://doi.org/10.1523/JNEUROSCI.3481-07.2007",
+    "Barrett, L. F., & Bar, M. (2009). See it with feeling: Affective predictions during object perception. Philosophical Transactions of the Royal Society B, 364(1521), 1325–1334. https://doi.org/10.1098/rstb.2008.0312",
+    "Summerfield, C., et al. (2006). Predictive codes for forthcoming perception in the frontal cortex. Science, 314(5803), 1311–1314. https://doi.org/10.1126/science.1132028"
+  ],
+  "panel_docs": [
+    "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+    "docs/02-15_02_Neuroscience_Panel_Templates_and_Taxonomy_V1.0.md",
+    "docs/02-15_03_Panel_III_Multimodal_Senses_HigherCognition_V1.0.md",
+    "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md",
+    "docs/VISUAL_I_Panel_Output_Feb21.md"
+  ],
+  "panel_reasoning_excerpt": "## MOSHE BAR\n\nI want to focus on something your templates treat too casually — the *speed* of environmental evaluation and the neural mechanisms that support it.\n\n**The proactive brain generates associations before you \"see\" the scene.** In my work (Bar, 2007, 2009; Bar et al., 2006), I've shown that the brain begins processing environmental information through a fast, low-spatial-frequency pathway that extracts the *gist* of a scene within approximately 130 milliseconds — before detailed object recognition occurs. This fast pathway goes from V1 to prefrontal cortex (via the magnocellular system), where it triggers associative predictions: \"This looks like a hospital\" → activate hospital-related expectations. These top-down predictions then modulate the slower, detailed processing of the scene in temporal and parietal cortex.\n\nFor architecture, this means the *first impression* of a space is determined by its low-spatial-frequency structure — the gross distribution of light and dark, the overall shape of the volume, the proportion of openings to surfaces, the color temperature. Fine details (material textures, decorative elements, signage content) are processed later and interpreted *within the context* of the initial gist-based prediction. If the gist prediction is \"institutional\" (flat lighting, rectangular proportions, uniform surfaces), then all subsequent detail processing is colored by institutional expectations. If the gist prediction is \"welcoming\" (warm lighting, varied proportions, natural materials), subsequent processing is colored by those expectations.\n\n**This generates a specific prediction your templates miss**: You can change the *entire experience* of a building more effectively by changing its low-spatial-frequency properties (lighting distribution, volume proportions, opening sizes) than by changing its high-spatial-frequency properties (decorative details, signage design, material texture). This is because the low-spatial-frequency gist frames the interpretation of everything else. A billion dollars of fine finishing in a building with bad proportions and flat lighting won't overcome the initial gist-based prediction of \"institutional.\"\n\n**Missing template**: **PP_RAPID_GIST_004**: Scene low-spatial-frequency structure → magnocellular → PFC associative activation (130ms) → top-down prediction cascade → contextual frame for subsequent detailed processing. Maturity: how-actually for the neural pathway (Bar et al., 2006; Kveraga, Boshyan, & Bar, 2007); how-plausibly for the architectural application.\n\n---",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+  "excerpt_char_range": [
+    30498,
+    33067
+  ],
+  "cross_template_interactions": {
+    "IC2_body_budget": "T22's affective prediction is an allostatic ANTICIPATION mechanism: the categorical frame predicts the body-budget demands the environment will impose. An 'institutional' prediction triggers preparatory arousal increase; a 'sacred/safe' prediction triggers preparatory parasympathetic engagement. This is IC2's predictive allostasis operating in the architectural domain.",
+    "AX4_perceived_control": "Categorical frame modulates AX4: environments predicted as 'institutional' carry reduced perceived control expectation, compounding actual control available. Shifting the LSF category from 'institutional' to 'domestic/collaborative' pre-emptively increases AX4 via categorical prediction."
+  },
+  "architectural_modifiers": {
+    "spatial_enclosure_ratio": {
+      "description": "R_h and WWR are the architectural parameters most directly determining LSF category assignment. Changing R_h from 0.22 (corridor) to 0.60 (atrium) shifts the categorical frame from 'enclosed/institutional' to 'open/monumental.'",
+      "confidence": 0.6
+    },
+    "facade_silhouette": {
+      "description": "Building silhouette (massing outline against sky) is the primary LSF cue for exterior first impression.",
+      "confidence": 0.55
+    }
+  },
+  "calibration_status": "calibrated",
+  "panel_source": "VISUAL-I",
+  "confidence": 0.6
 }

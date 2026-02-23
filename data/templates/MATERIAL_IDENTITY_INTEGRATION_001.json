@@ -1,0 +1,115 @@
+{
+  "template_id": "MATERIAL_IDENTITY_INTEGRATION_001",
+  "template_name": "Multi-Modal Material Identity Integration via Bayesian Cue Combination",
+  "panel": "MULTI-I",
+  "primary_anchor": "Marc Ernst (Ulm)",
+  "complement": null,
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "Bridge warrant for architectural parameters: FUNCTIONAL (0.50) maximum per pre-panel review",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant perceives architectural material through multiple sensory channels simultaneously: visual texture/color (via ventral visual stream), haptic roughness/temperature/compliance (via somatosensory cortex), acoustic tap/footstep signature (via auditory cortex), olfactory signature (via olfactory bulb → piriform cortex)",
+      "substrate": "Parallel sensory processing in modality-specific cortices",
+      "confidence": 0.7,
+      "bridge_warrant": "MECHANISM",
+      "source": "Ernst & Banks (2002); Ernst (2006)"
+    },
+    {
+      "step": 2,
+      "process": "Brain infers whether multi-modal signals share a common cause (same material) using Bayesian causal inference. If common-cause probability is high (seeing and touching the same surface), signals are integrated; if low (hearing a distant sound while touching a nearby surface), they are segregated.",
+      "substrate": "Posterior parietal cortex; superior temporal sulcus — causal inference computation",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Körding et al. (2007); Shams & Beierholm (2010)"
+    },
+    {
+      "step": 3,
+      "process": "Integrated material percept is formed by reliability-weighted combination (MLE): each channel contributes in proportion to its signal-to-noise ratio. The combined estimate has lower variance than any individual channel.",
+      "substrate": "Cortical multisensory integration areas; reliability weighting via precision-weighted prediction errors",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM",
+      "source": "Ernst & Banks (2002)"
+    },
+    {
+      "step": 4,
+      "process": "Multi-modal material percept generates affective response: material identity (wood, stone, metal, fabric) triggers learned evaluative associations and innate biophilic preferences simultaneously",
+      "substrate": "Orbitofrontal cortex (evaluative), insula (interoceptive affect), amygdala (biophilic salience)",
+      "confidence": 0.5,
+      "bridge_warrant": "FUNCTIONAL",
+      "source": "Ernst (2006); Spence (2011)"
+    }
+  ],
+  "calibrated_parameters": {
+    "mle_precision_gain_visual_haptic": {
+      "value": 0.25,
+      "unit": "fractional_improvement_in_material_discrimination",
+      "interpretation": "Visual + haptic integration improves material roughness/texture discrimination by ~25% (lab estimate 30–40%, architectural discount to 20–30%, midpoint 25%)",
+      "confidence": 0.5,
+      "bridge_warrant": "FUNCTIONAL"
+    },
+    "olfactory_precision_addition": {
+      "value": 0.1,
+      "unit": "additional_precision_gain",
+      "interpretation": "Adding olfactory channel (natural materials) contributes ~10% additional precision gain. Olfactory is a weaker, less reliable channel with lower MLE weight.",
+      "confidence": 0.4,
+      "bridge_warrant": "CAPACITY"
+    },
+    "total_multimodal_precision_gain": {
+      "value": 0.35,
+      "unit": "fractional_improvement_visual_haptic_olfactory_vs_visual_alone",
+      "interpretation": "Full multi-modal material experience (see + touch + smell) produces ~35% more precise material percept than visual-only",
+      "confidence": 0.45,
+      "bridge_warrant": "FUNCTIONAL"
+    },
+    "common_cause_threshold": {
+      "value": "spatial_and_temporal_coincidence",
+      "interpretation": "Multi-modal integration requires that signals are spatially co-located (within ~30 cm) and temporally coincident (within ~200 ms). This is satisfied for direct material contact but NOT for visual inspection of distant surfaces.",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM"
+    }
+  },
+  "population_modifiers": {
+    "visual_impairment": {
+      "effect": "Reduced visual reliability → higher weight on haptic and auditory channels → MLE automatically compensates. See MSI_INVERSE_EFFECTIVENESS_002.",
+      "confidence": 0.5
+    },
+    "age_group": {
+      "effect": "Multisensory integration is generally preserved or enhanced in aging (Laurienti et al., 2006). Older adults may benefit MORE from multi-modal material presentation because single-channel reliability degrades with age.",
+      "confidence": 0.45
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Body budget state modulates haptic exploration behavior: under allostatic deficit, occupants reduce environmental touch behavior (withdrawal, reduced approach), limiting multi-modal integration opportunities. The precision gain is available only if the occupant ENGAGES with material surfaces.",
+    "AX4_perceived_control": "Perceived control facilitates exploration: occupants with high environmental control are more likely to touch, explore, and engage multiple sensory channels, maximizing multi-modal integration. Low control restricts exploration to visual-only, forfeiting the precision gain."
+  },
+  "cross_template_references": [
+    "MSI_CONGRUENCY_PRINCIPLE_001 — congruency between channels determines whether integration produces positive or negative affect",
+    "MSI_INVERSE_EFFECTIVENESS_002 — degraded unisensory channels increase the multi-modal precision gain",
+    "VISUAL-I T1 — visual channel parameters for material texture statistics; no double-counting"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "MII1",
+  "name": "Multi-Modal Material Identity Integration via Bayesian Cue Combination",
+  "architectural_modifiers": {
+    "touchable_surface_fraction": {
+      "coefficient": 0.25,
+      "interpretation": "Fraction of material surfaces within arm's reach that can be touched during normal use. Higher fraction → more multi-modal integration opportunities → more precise material percepts.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "material_authenticity": {
+      "coefficient": 0.2,
+      "interpretation": "Authentic materials (real wood, stone, metal) produce congruent multi-modal signals. Simulated materials (wood-print laminate, stone-texture vinyl) produce INCONGRUENT signals — visual says 'wood' but haptic says 'plastic'. Incongruence degrades the precision gain and produces negative affect.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "t1_frameworks": [
+    "MSI",
+    "PP"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "confidence": 0.5
+}

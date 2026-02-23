@@ -1,0 +1,205 @@
+{
+  "paths": {
+    "web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+    "bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
+    "thresholds": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json"
+  },
+  "metrics": {
+    "web": {
+      "beliefs": 12628,
+      "constraints": 28314,
+      "bridges": 1555,
+      "supports_count": 8705,
+      "explains_count": 17083,
+      "contradicts_count": 171,
+      "supports_share_pct": 30.74450801723529,
+      "explains_share_pct": 60.334110334110335,
+      "contradicts_share_pct": 0.6039415130324222,
+      "isolated_count": 2841,
+      "isolated_pct": 22.49762432689262,
+      "both_sides_count": 3761,
+      "both_sides_pct": 29.783021856192587,
+      "avg_indeg": 2.2421602787456445,
+      "avg_outdeg": 2.2421602787456445,
+      "bridge_with_source_pct": 100.0
+    },
+    "bn": {
+      "nodes": 6194,
+      "edges": 4271,
+      "dangling_edges": 0,
+      "has_cycle": 0,
+      "isolated_count": 0,
+      "isolated_pct": 0.0,
+      "largest_component_count": 1543,
+      "largest_component_pct": 24.911204391346466,
+      "unresolved_count": 0,
+      "unresolved_pct": 0.0
+    }
+  },
+  "minimum_viable": {
+    "passed": 12,
+    "failed": 0,
+    "results": [
+      {
+        "metric": "web.beliefs",
+        "op": ">=",
+        "value": 1000,
+        "actual": 12628,
+        "ok": true,
+        "description": "Sufficient web size"
+      },
+      {
+        "metric": "web.constraints",
+        "op": ">=",
+        "value": 8000,
+        "actual": 28314,
+        "ok": true,
+        "description": "Sufficient web relation count"
+      },
+      {
+        "metric": "web.isolated_pct",
+        "op": "<=",
+        "value": 25.0,
+        "actual": 22.49762432689262,
+        "ok": true,
+        "description": "Isolation not excessive"
+      },
+      {
+        "metric": "web.explains_count",
+        "op": ">=",
+        "value": 100,
+        "actual": 17083,
+        "ok": true,
+        "description": "Explanatory relations present"
+      },
+      {
+        "metric": "web.contradicts_count",
+        "op": ">=",
+        "value": 20,
+        "actual": 171,
+        "ok": true,
+        "description": "Contradiction relations present"
+      },
+      {
+        "metric": "web.bridges",
+        "op": ">=",
+        "value": 100,
+        "actual": 1555,
+        "ok": true,
+        "description": "Bridge layer active"
+      },
+      {
+        "metric": "web.bridge_with_source_pct",
+        "op": ">=",
+        "value": 80.0,
+        "actual": 100.0,
+        "ok": true,
+        "description": "Bridge provenance linked"
+      },
+      {
+        "metric": "bn.nodes",
+        "op": ">=",
+        "value": 500,
+        "actual": 6194,
+        "ok": true,
+        "description": "BN node coverage"
+      },
+      {
+        "metric": "bn.edges",
+        "op": ">=",
+        "value": 1000,
+        "actual": 4271,
+        "ok": true,
+        "description": "BN edge coverage"
+      },
+      {
+        "metric": "bn.dangling_edges",
+        "op": "==",
+        "value": 0,
+        "actual": 0,
+        "ok": true,
+        "description": "BN integrity (no dangling refs)"
+      },
+      {
+        "metric": "bn.has_cycle",
+        "op": "==",
+        "value": 0,
+        "actual": 0,
+        "ok": true,
+        "description": "BN must remain acyclic"
+      },
+      {
+        "metric": "bn.unresolved_pct",
+        "op": "<=",
+        "value": 95.0,
+        "actual": 0.0,
+        "ok": true,
+        "description": "Canonical mapping above floor"
+      }
+    ],
+    "ok": true
+  },
+  "target": {
+    "passed": 2,
+    "failed": 5,
+    "results": [
+      {
+        "metric": "web.isolated_pct",
+        "op": "<=",
+        "value": 10.0,
+        "actual": 22.49762432689262,
+        "ok": false,
+        "description": "Strong web integration"
+      },
+      {
+        "metric": "web.contradicts_count",
+        "op": ">=",
+        "value": 200,
+        "actual": 171,
+        "ok": false,
+        "description": "Substantial contradiction coverage"
+      },
+      {
+        "metric": "web.contradicts_share_pct",
+        "op": ">=",
+        "value": 2.0,
+        "actual": 0.6039415130324222,
+        "ok": false,
+        "description": "Contradiction share not negligible"
+      },
+      {
+        "metric": "web.bridges",
+        "op": ">=",
+        "value": 1500,
+        "actual": 1555,
+        "ok": true,
+        "description": "Deep bridge coverage"
+      },
+      {
+        "metric": "bn.edges",
+        "op": ">=",
+        "value": 5000,
+        "actual": 4271,
+        "ok": false,
+        "description": "Dense BN evidence graph"
+      },
+      {
+        "metric": "bn.unresolved_pct",
+        "op": "<=",
+        "value": 30.0,
+        "actual": 0.0,
+        "ok": true,
+        "description": "Mostly canonical BN nodes"
+      },
+      {
+        "metric": "bn.largest_component_pct",
+        "op": ">=",
+        "value": 50.0,
+        "actual": 24.911204391346466,
+        "ok": false,
+        "description": "BN not heavily fragmented"
+      }
+    ],
+    "ok": false
+  }
+}

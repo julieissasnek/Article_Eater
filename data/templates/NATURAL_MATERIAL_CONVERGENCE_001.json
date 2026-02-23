@@ -1,0 +1,129 @@
+{
+  "template_id": "NATURAL_MATERIAL_CONVERGENCE_001",
+  "template_name": "Natural Material Stress Reduction via Multi-Modal Convergence",
+  "panel": "MULTI-I",
+  "primary_anchor": "Qing Li (Nippon Medical School)",
+  "complement": "Judith Heerwagen (Pacific NW Lab)",
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "VISUAL-I T1 owns visual fractal channel; MULTI-I owns convergence bonus only",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Natural materials (wood, natural stone, natural fibre) emit multi-sensory signals: visual texture with fractal statistics (T1 channel, owned by VISUAL-I), haptic warmth and moderate roughness (CT pathway), and olfactory volatile organic compounds (phytoncides from wood).",
+      "substrate": "Parallel sensory pathways: visual (PPA \u2192 ventral stream), haptic (CT \u2192 insular cortex), olfactory (olfactory bulb \u2192 piriform \u2192 amygdala)",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Li et al. (2009); McGlone et al. (2014); Taylor et al. (2005)"
+    },
+    {
+      "step": 2,
+      "process": "Each channel independently activates parasympathetic pathways: visual fractal statistics \u2192 perceptual fluency \u2192 reduced cortical arousal; haptic warmth/roughness \u2192 CT \u2192 insular \u2192 parasympathetic shift; phytoncides \u2192 olfactory \u2192 limbic \u2192 HPA axis suppression.",
+      "substrate": "Three independent parasympathetic activation pathways converging on autonomic regulation",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Li (2010); Morrison (2016); Taylor et al. (2005)"
+    },
+    {
+      "step": 3,
+      "process": "Convergent parasympathetic activation from independent pathways produces a convergence bonus: the combined stress reduction exceeds the sum of individual channel effects by approximately 20% (field data from Heerwagen).",
+      "substrate": "Convergent autonomic regulation: multiple independent inputs \u2192 parasympathetic dominance",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Heerwagen & Hase (2001); Heerwagen (2009)"
+    },
+    {
+      "step": 4,
+      "process": "Outcome: measurable stress reduction (cortisol \u2193 ~8\u201315%, blood pressure \u2193, HRV shift toward parasympathetic, NK cell activity \u2191 ~50%). Duration of effect: hours for physiological markers; accumulated benefit from chronic exposure.",
+      "substrate": "Systemic autonomic and endocrine modulation",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Li et al. (2009); Li (2010)"
+    }
+  ],
+  "calibrated_parameters": {
+    "visual_channel_effect": {
+      "value": "INHERITED_FROM_VISUAL-I_T1",
+      "interpretation": "Visual fractal statistics stress reduction is calibrated by VISUAL-I T1 (PP_SPECTRAL_MATCH_001). MULTI-I does NOT re-calibrate this channel. The builder AI reads the visual effect from T1 and adds the convergence bonus from this template.",
+      "cross_panel_dependency": "VISUAL-I T1"
+    },
+    "haptic_channel_effect": {
+      "value": "cortisol_reduction_~5% (wood surface contact, moderate duration)",
+      "interpretation": "Haptic contact with natural wood surfaces produces measurable parasympathetic activation via CT pathway. Effect is smaller than olfactory channel because architectural contact is intermittent.",
+      "confidence": 0.4,
+      "bridge_warrant": "CAPACITY"
+    },
+    "olfactory_channel_effect": {
+      "phytoncide_concentration_indoor": "20\u201380 \u03bcg/m\u00b3 (unfinished or lightly finished wood in ventilated rooms)",
+      "cortisol_reduction": "~8% at indoor concentrations (vs. ~15% at forest concentrations of 50\u2013200 \u03bcg/m\u00b3)",
+      "nk_cell_activity_increase": "~25\u201330% at indoor concentrations (vs. ~52% at forest concentrations)",
+      "interpretation": "Indoor phytoncide exposure is approximately half the forest exposure level; physiological effects scale sublinearly.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Li et al. (2009); Li (2010)"
+    },
+    "convergence_bonus": {
+      "value": 1.2,
+      "unit": "multiplier_on_sum_of_individual_channel_effects",
+      "interpretation": "Multi-channel natural material exposure (visual + haptic + olfactory) produces ~20% more stress reduction than the arithmetic sum of individual channel effects. Mechanism: convergent parasympathetic activation from independent pathways.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "Heerwagen & Hase (2001)"
+    },
+    "dose_response": {
+      "value": "sublinear",
+      "interpretation": "Doubling wood surface area does not double stress reduction. Diminishing returns above ~40% wood surface coverage in a room. Below ~10%, phytoncide concentrations may be below threshold.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "population_modifiers": {
+    "high_baseline_stress": {
+      "effect": "Individuals with elevated baseline cortisol show LARGER absolute stress reduction from natural materials (more room to decrease). Relative reduction is approximately constant (~8\u201315%).",
+      "confidence": 0.45
+    },
+    "anosmia": {
+      "effect": "Olfactory channel is absent; convergence bonus reduced to visual + haptic only (~10% bonus instead of 20%). Phytoncide stress reduction pathway is eliminated.",
+      "confidence": 0.4
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "Natural material stress reduction directly serves IC2 body budget restoration: parasympathetic activation from multi-channel natural material exposure reduces allostatic load. The convergence bonus means that multi-modal natural material environments are more efficient at body budget restoration than single-channel environments (e.g., nature views alone).",
+    "AX4_perceived_control": "Perceived control is not a primary modulator of the natural material stress reduction pathway, which operates largely below conscious awareness (especially the olfactory channel). However, environments that provide both natural materials AND perceived control produce synergistic stress reduction via independent pathways."
+  },
+  "cross_template_references": [
+    "VISUAL-I T1 \u2014 visual fractal channel; no double-counting; MULTI-I adds convergence bonus only",
+    "CT_AFFECTIVE_TOUCH_001 \u2014 haptic channel mechanism",
+    "STRESS-I T6 \u2014 cortisol reduction from natural materials antagonizes T6 stress pathway",
+    "STRESS-I T7 \u2014 body budget restoration via multi-modal natural material exposure"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "NMC1",
+  "name": "Natural Material Stress Reduction via Multi-Modal Convergence",
+  "architectural_modifiers": {
+    "natural_material_surface_fraction": {
+      "coefficient": 0.3,
+      "interpretation": "Fraction of interior surfaces that are natural materials (wood, stone, natural fibre). Optimal range: 30\u201350%. Below 10%: subthreshold for olfactory channel. Above 60%: diminishing returns.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "wood_finish_type": {
+      "coefficient": 0.15,
+      "interpretation": "Unfinished/oiled wood releases more phytoncides than sealed/lacquered wood. Polyurethane-sealed wood releases minimal VOCs and has negligible olfactory stress reduction.",
+      "confidence": 0.45,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "ventilation_rate": {
+      "coefficient": -0.1,
+      "interpretation": "High ventilation rates dilute indoor phytoncide concentration. Low ventilation preserves phytoncide levels but may create other IAQ issues. Optimal: moderate ventilation with natural material surfaces.",
+      "confidence": 0.35,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "MSI",
+    "PP"
+  ],
+  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "confidence": 0.45
+}

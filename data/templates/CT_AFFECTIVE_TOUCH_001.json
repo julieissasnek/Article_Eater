@@ -1,0 +1,127 @@
+{
+  "template_id": "CT_AFFECTIVE_TOUCH_001",
+  "template_name": "C-Tactile Affective Touch Pathway for Architectural Surfaces",
+  "panel": "MULTI-I",
+  "primary_anchor": "India Morrison (Linköping)",
+  "complement": "Francis McGlone (Liverpool JM)",
+  "calibration_date": "2026-02-22",
+  "calibration_constraint": "Bridge warrant for architectural surface parameters: CAPACITY (0.45) maximum per pre-panel review",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "process": "Occupant makes contact with architectural surface (hand on railing, fingertips on wall, foot on floor, back against chair). Surface properties — roughness (Ra), thermal conductivity (λ), compliance (E), texture grain — are transduced by both Aβ mechanoreceptors (discriminative touch) and CT afferents (affective touch).",
+      "substrate": "Peripheral nerve fibres in skin: Aβ (myelinated, fast) + CT (unmyelinated, slow, optimal velocity 1–10 cm/s)",
+      "confidence": 0.65,
+      "bridge_warrant": "MECHANISM",
+      "source": "Löken et al. (2009); Morrison et al. (2010)"
+    },
+    {
+      "step": 2,
+      "process": "CT afferent firing rate encodes surface pleasantness: inverted-U response with peak at ~3 cm/s stroking velocity, moderate roughness (Ra 1–10 μm), skin-temperature warmth (~32°C surface), and moderate compliance",
+      "substrate": "CT afferent unmyelinated C fibres → dorsal horn → spinothalamic tract",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Löken et al. (2009); McGlone et al. (2014)"
+    },
+    {
+      "step": 3,
+      "process": "CT signal projects to posterior insular cortex, where it is processed as hedonic (pleasant/unpleasant) rather than discriminative. Posterior insula integrates CT input with interoceptive state (IC2 body budget) to generate an affective touch percept.",
+      "substrate": "Posterior insular cortex → anterior insula (interoceptive integration) → orbitofrontal cortex (valuation)",
+      "confidence": 0.55,
+      "bridge_warrant": "MECHANISM",
+      "source": "Morrison (2016); Craig (2009)"
+    },
+    {
+      "step": 4,
+      "process": "Pleasant architectural touch produces parasympathetic activation: reduced heart rate, reduced cortisol, increased positive affect. This is the haptic channel of the natural material stress reduction pathway.",
+      "substrate": "Insular cortex → autonomic regulation → parasympathetic shift",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY",
+      "source": "McGlone et al. (2014); Morrison (2016)"
+    }
+  ],
+  "calibrated_parameters": {
+    "ct_optimal_velocity": {
+      "value": "1–10 cm/s, peak at ~3 cm/s",
+      "unit": "cm/s",
+      "interpretation": "CT afferents fire maximally at gentle stroking velocities. Architectural contact modes (gripping, pressing, walking) produce lower effective velocities than laboratory stroking, reducing CT activation.",
+      "confidence": 0.6,
+      "bridge_warrant": "MECHANISM",
+      "source": "Löken et al. (2009)"
+    },
+    "body_site_attenuation_factors": {
+      "forearm_reference": 1.0,
+      "palm": 0.6,
+      "fingertips": 0.55,
+      "sole_of_foot": 0.3,
+      "back_shoulder": 0.7,
+      "interpretation": "Hedonic response magnitude relative to forearm reference. Palm and fingertips have lower CT density but some CT-like responses (Watkins et al., 2021). Sole primarily thermal/compliance rather than CT.",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "surface_roughness_preference": {
+      "optimal_Ra": "1–10 μm",
+      "aversive_smooth": "< 0.5 μm (perceived as artificial)",
+      "aversive_rough": "> 50 μm (perceived as abrasive)",
+      "interpretation": "Moderate roughness is preferred; extreme smooth or rough is aversive. Wood (Ra ~5–15 μm) is near optimal; polished metal (Ra < 0.1 μm) is too smooth; rough concrete (Ra > 100 μm) is too rough.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "thermal_conductivity_preference": {
+      "pleasant": "λ < 0.5 W/m·K (warm-feeling: wood ~0.12, cork ~0.04)",
+      "neutral": "λ = 0.5–2.0 W/m·K (brick ~0.8, dry earth ~1.0)",
+      "aversive": "λ > 2.0 W/m·K (stone ~2.5, steel ~50, cold-feeling)",
+      "interpretation": "Low thermal conductivity = warm to touch = pleasant CT activation. High conductivity = cold to touch = reduced CT firing and negative affect.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    },
+    "visual_expectation_pathway": {
+      "value": "anticipatory_affect_from_visual_material_assessment",
+      "interpretation": "Seeing warm, natural materials (wood grain, natural stone texture) generates anticipatory pleasant touch expectation via crossmodal correspondence (Spence). This operates even without actual contact.",
+      "confidence": 0.5,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
+    }
+  },
+  "population_modifiers": {
+    "age_group": {
+      "effect": "CT afferent density and conduction may decline with age, but the hedonic valuation pathway in insular cortex is preserved. Net effect: slightly attenuated CT activation but preserved affective response.",
+      "confidence": 0.4
+    },
+    "neuropathy": {
+      "effect": "Peripheral neuropathy (diabetic, chemotherapy-induced) damages CT afferents. Haptic pleasure from architectural surfaces is reduced or absent. These populations rely more heavily on visual and olfactory channels.",
+      "confidence": 0.45
+    }
+  },
+  "IC2_AX4_interaction": {
+    "IC2_body_budget": "CT afferent signals are integrated with interoceptive state in posterior/anterior insula. Pleasant touch under body budget balance produces positive affect; pleasant touch under body budget deficit may be attenuated or reinterpreted (the same warm wood surface that is comforting when well-nourished may be irrelevant when hungry or in pain).",
+    "AX4_perceived_control": "Voluntary touch (self-initiated contact with a surface) produces stronger CT hedonic response than involuntary contact (bumping into a surface, forced contact with a railing). Perceived control over the touch interaction amplifies the pleasant affect."
+  },
+  "cross_template_references": [
+    "HAP_SURFACE_MATERIAL_001 — extends CT pathway to specific material property → affect mappings",
+    "NATURAL_MATERIAL_CONVERGENCE_001 — CT pathway is the haptic channel of multi-modal natural material stress reduction",
+    "MSI_CONGRUENCY_PRINCIPLE_001 — visual-haptic congruency modulates whether touch confirms or violates material expectations"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "MULTI-I",
+  "display_id": "CAT1",
+  "name": "C-Tactile Affective Touch Pathway for Architectural Surfaces",
+  "architectural_modifiers": {
+    "material_warmth_index": {
+      "coefficient": 0.3,
+      "interpretation": "Composite of thermal conductivity and surface texture grain. Wood scores highest (~0.85); cork (~0.90); natural fibre textile (~0.80); stone (~0.30); metal (~0.10).",
+      "confidence": 0.45,
+      "bridge_warrant": "CAPACITY"
+    },
+    "touch_opportunity_density": {
+      "coefficient": 0.2,
+      "interpretation": "Number of touchable surfaces per unit path length. Railings, door handles, seating surfaces, wall textures at hand height all contribute. Higher density → more CT activation opportunities per journey.",
+      "confidence": 0.4,
+      "bridge_warrant": "THEORETICAL_DEFAULT"
+    }
+  },
+  "t1_frameworks": [
+    "EC"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "confidence": 0.45
+}

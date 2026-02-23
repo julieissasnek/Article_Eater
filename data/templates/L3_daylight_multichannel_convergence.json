@@ -2,424 +2,372 @@
   "template_id": "DAYLIGHT_MULTICHANNEL_001",
   "display_id": "L3",
   "name": "Daylight as Multi-Channel Stimulus with Convergent Benefit",
-  "short_description": "Natural daylight simultaneously provides six mechanistic benefits through partially independent pathways; convergence produces effects larger than any single channel",
-  "structural_pattern": "Natural daylight simultaneously provides six distinguishable benefits through partially independent mechanisms: (1) circadian entrainment (ipRGC \u2192 SCN \u2192 melatonin/cortisol alignment; L2), (2) acute alerting (ipRGC \u2192 brainstem arousal centers \u2192 cortical activation), (3) visual comfort and color fidelity (broadband spectrum \u2192 accurate color constancy \u2192 low chromatic PE), (4) view and environmental connection (window \u2192 outdoor scene \u2192 soft fascination, T27; environmental monitoring \u2192 threat reduction, T5), (5) dynamic temporal variation (sun movement, clouds, weather \u2192 moderate sustained luminance PE, L1 Goldilocks range), and (6) temporal orientation (light quality encodes time of day and season \u2192 temporal prediction congruence). The convergence of all six channels produces effects substantially larger than any single channel alone.",
-  "higher_order_principle": "Multi-channel convergence applied to daylight. Parallels AX6 (Multi-Modal PE Integration) and the BRECVEMA convergence principle (M16). No artificial lighting system that matches daylight on only one parameter will replicate the full daylight effect, because the effect is a product of simultaneous activation across channels.",
-  "framework_ids": [
-    "circadian_neuroscience",
-    "predictive_processing",
-    "attention_restoration",
-    "environmental_psychology"
+  "status": "calibrated",
+  "maturity": "supported",
+  "mechanism_chain_provenance": "INHERITED from 34_Panel_LI_Light_Luminance.md (Document 34, Feb 16) — six-channel structure preserved; parameters newly established in LIGHT-I",
+  "t1_frameworks": [
+    "CB",
+    "PP",
+    "NM"
   ],
-  "domain": "light_luminance",
-  "attribute_domain": "A4",
-  "channels": [
-    {
-      "channel": 1,
-      "name": "circadian_entrainment",
-      "mechanism": "ipRGC \u2192 SCN \u2192 melatonin/cortisol alignment",
-      "template_link": "CIRCADIAN_ARCH_REG_001"
-    },
-    {
-      "channel": 2,
-      "name": "acute_alerting",
-      "mechanism": "ipRGC \u2192 locus coeruleus, dorsal raphe \u2192 cortical arousal"
-    },
-    {
-      "channel": 3,
-      "name": "color_fidelity",
-      "mechanism": "Broadband spectrum \u2192 accurate color constancy \u2192 low chromatic PE"
-    },
-    {
-      "channel": 4,
-      "name": "view_environmental_connection",
-      "mechanism": "Window \u2192 outdoor scene \u2192 soft fascination, threat reduction",
-      "template_links": [
-        "T27",
-        "T5"
-      ]
-    },
-    {
-      "channel": 5,
-      "name": "dynamic_variation",
-      "mechanism": "Sun movement, clouds \u2192 sustained moderate luminance PE",
-      "template_link": "LUM_CONTRAST_PE_001"
-    },
-    {
-      "channel": 6,
-      "name": "temporal_orientation",
-      "mechanism": "Light quality encodes time of day and season"
-    }
+  "t1_5_parent_theories": [
+    "ART",
+    "SRT"
   ],
-  "causal_links": [
+  "panel_id": "LIGHT-I",
+  "calibration_date": "2026-02-21",
+  "mechanism_chain": [
     {
-      "from_entity": "daylight_availability",
-      "to_entity": "circadian_entrainment",
-      "activity": "supports",
-      "from_level": "environmental",
-      "to_level": "physiological",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "Channel 1. Via L2. Daylight provides high melanopic irradiance from above during biological day."
-    },
-    {
-      "from_entity": "daylight_availability",
-      "to_entity": "acute_alerting",
-      "activity": "enhances",
-      "from_level": "environmental",
-      "to_level": "neural",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "Channel 2. ipRGC \u2192 locus coeruleus, dorsal raphe \u2192 cortical arousal. Operates within minutes. Vandewalle et al. (2009) demonstrated light-driven activation of brainstem arousal and limbic structures via fMRI."
-    },
-    {
-      "from_entity": "daylight_spectrum",
-      "to_entity": "color_constancy_and_rendering",
-      "activity": "optimizes",
-      "from_level": "environmental",
-      "to_level": "sensory",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Channel 3. Broadband daylight spectrum \u2192 minimal chromatic PE (Hurlbert, 2007). Surfaces appear as expected; color constancy operates within its evolved operating range."
-    },
-    {
-      "from_entity": "window_and_view",
-      "to_entity": "attention_restoration_and_threat_reduction",
-      "activity": "supports",
-      "from_level": "environmental",
-      "to_level": "cognitive",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Channel 4. Via T27 (DMN/soft fascination) and T5 (threat reduction through environmental monitoring). View provides visual access, depth, and natural scene content."
-    },
-    {
-      "from_entity": "daylight_dynamics",
-      "to_entity": "sustained_moderate_luminance_PE",
-      "activity": "generates",
-      "from_level": "environmental",
-      "to_level": "neural",
-      "bridging_to": "moderate",
-      "maturity": "preliminary",
-      "evidence_base": "Channel 5. Via L1 (luminance PE). Sun movement, cloud passage, and weather variation create continuous low-to-moderate luminance PE that sustains engagement without causing fatigue."
-    },
-    {
-      "from_entity": "daylight_quality",
-      "to_entity": "temporal_orientation",
-      "activity": "provides",
-      "from_level": "environmental",
-      "to_level": "cognitive",
-      "bridging_to": "weak",
-      "maturity": "preliminary",
-      "evidence_base": "Channel 6. Light color temperature and directionality encode time of day. Loss of this signal in windowless spaces may contribute to temporal disorientation."
-    },
-    {
-      "from_entity": "channel_convergence",
-      "to_entity": "cognitive_performance_and_wellbeing",
-      "activity": "amplifies",
-      "from_level": "cognitive",
-      "to_level": "behavioral",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "The convergence effect. Heschong (2002) 20% math improvement cannot be attributed to any single channel. The multiplicative convergence principle predicts that blocking any single channel substantially reduces the total effect."
-    }
-  ],
-  "calibration_parameters": {
-    "channel_weights": {
-      "note": "Expert-estimated weights from Panel L-II \u2014 VERY PRELIMINARY, not empirical values",
-      "circadian_L2": {
-        "weight": 0.35,
-        "evidence": "Figueiro's work shows circadian-optimized electric lighting recovers 40\u201360% of daylight effect on sleep and alertness"
-      },
-      "view_VIEW1": {
-        "weight": 0.25,
-        "evidence": "Heschong finding that view content predicts performance independently of illumination; nature view literature"
-      },
-      "luminance_contrast_L1": {
-        "weight": 0.15,
-        "evidence": "Daylit spaces have more varied and directional luminance distributions than most artificial lighting"
-      },
-      "ecological_CCT_L4": {
-        "weight": 0.1,
-        "evidence": "Contested mechanism \u2014 if merely arousal, this weight is absorbed into circadian and contrast channels"
-      },
-      "dynamic_variation_L5": {
-        "weight": 0.15,
-        "evidence": "Preliminary mechanism \u2014 estimated contribution based on occupant satisfaction gap"
+      "step": 1,
+      "from": "architectural_design_parameters",
+      "to": "corneal_melanopic_irradiance",
+      "description": "Architectural design (WFR, glazing, orientation, depth) → corneal melanopic irradiance (m-EDI, CIE S 026)",
+      "warrant": "MECHANISM",
+      "confidence": 0.72,
+      "justification": {
+        "data": [
+          {
+            "finding": "Window-to-floor ratio and room depth determine spatial daylight autonomy and corneal illuminance distribution across floor plate",
+            "source": "Reinhart et al. (2006)",
+            "paradigm": "Climate-based daylight modeling (DAYSIM)",
+            "effect": "WFR 0.20 delivers >300 lux sDA to 50% of floor plate in mid-latitude south-facing office",
+            "n": null,
+            "design": "Computational simulation validated against field measurements"
+          },
+          {
+            "finding": "Standard clear glazing (VT 0.65-0.70) transmits approximately 78% of exterior melanopic irradiance due to differential spectral transmittance in 460-480nm range",
+            "source": "CIE S 026:2018; Münch et al. (2012)",
+            "paradigm": "Spectroradiometric measurement of glazing transmittance",
+            "effect": "Melanopic transmittance 0.65-0.88 depending on glazing type",
+            "n": null,
+            "design": "Laboratory spectral measurement"
+          }
+        ],
+        "backing": "The warrant connecting architectural parameters to corneal melanopic irradiance rests on well-established photometric relationships validated by climate-based daylight modeling (CBDM) tools and CIE-standardized spectral measurement methods. Reinhart's DAYSIM tool has been extensively validated against field measurements in occupied buildings. The photopic-to-melanopic conversion factors from CIE S 026:2018 provide standardized translation from architectural photometric calculations to biologically relevant melanopic units.",
+        "qualifier": "Conversion from photopic daylight metrics (sDA, UDI) to melanopic m-EDI introduces uncertainty because CBDM tools compute photopic values; melanopic conversion depends on sky condition, time of day, and spectral composition of daylight. The 0.78 melanopic transmittance coefficient applies to standard clear glazing; electrochromic, tinted, and low-e glazing have substantially different values (0.30-0.55). These calculations assume stationary occupant positions; mobile occupants receive variable corneal irradiance.",
+        "rebuttal": "This step would fail if: (a) occupant behavior systematically deviates from design assumptions — occupants who habitually face away from windows, use laptop screens as primary visual field, or deploy personal shading would receive substantially less corneal irradiance than architectural calculations predict; (b) glazing fouling, interior obstructions, or furniture placement substantially attenuate the designed daylight delivery; (c) exterior obstructions (neighboring buildings, vegetation) not captured in daylight modeling reduce actual irradiance.",
+        "competing_accounts": [],
+        "depth_tier": "B"
       }
     },
-    "super_additivity": {
-      "estimate": "15\u201325%",
-      "meaning": "Full-daylight effect is ~15\u201325% larger than would be predicted by summing individual channels",
-      "note": "Consistent with convergence principle in VIEW1 and MAT4 but not directly measured"
-    },
-    "channel_separation_status": {
-      "view_separable_from_light": "Confirmed \u2014 Heschong (2002) view content predicts performance independently of illumination level",
-      "circadian_separable_from_visual": "Confirmed \u2014 Figueiro's work shows circadian-optimized electric lighting works in windowless environments (but smaller effects)",
-      "dynamics_separable_from_average_illuminance": "Partially confirmed \u2014 Chamilothori's moving vs static sunlight patches (but magnitude of L5 independent contribution unknown)",
-      "full_factorial_separation": "NOT YET CONDUCTED \u2014 highest priority for L-III"
-    },
-    "assessment_tools": {
-      "circadian_L2": "CBDM (climate-based daylight modeling)",
-      "view": "EN 17037",
-      "luminance_contrast_L1": "Luminance mapping (Evalglare, Radiance HDR)",
-      "integrated_multi_channel": "No integrated assessment tool yet exists"
-    },
-    "calibration_source": "Panel L-II (Doc 49) \u2014 Heschong, de Kort, Foster expert estimation"
-  },
-  "calibration_status": "partially_calibrated_expert_estimates",
-  "scope_conditions": [
-    "Applies to any building with windows providing daylight access",
-    "Effect magnitude depends on daylight availability (climate, orientation, window-to-wall ratio, glazing type)",
-    "Deep-plan buildings may provide daylight to perimeter zones but not core zones \u2192 spatial inequality",
-    "Seasonal variation: high-latitude winter reduces all six channels"
-  ],
-  "moderators": [
-    "Window design: size, placement, glazing transmittance, shading determine how much of each channel is delivered",
-    "View quality: natural outdoor scene > urban roofscape > lightwell > interior partition",
-    "Occupant position relative to window: daylight benefits decrease with distance from facade",
-    "Task demands: high visual-task environments may require electric lighting supplement even with good daylight",
-    "Glare control: uncontrolled direct sun can negate daylight benefits through discomfort"
-  ],
-  "interactions": [
     {
-      "template_id": "CIRCADIAN_ARCH_REG_001",
-      "display_id": "L2",
-      "nature": "L2 is Channel 1 of L3. L3 embeds L2 within the broader multi-channel framework."
-    },
-    {
-      "template_id": "LUM_CONTRAST_PE_001",
-      "display_id": "L1",
-      "nature": "L1 is Channel 5 of L3 (dynamic luminance variation). L3 embeds L1's Goldilocks principle within the broader convergence."
-    },
-    {
-      "template_id": "DT_DMN_MAINTENANCE_002",
-      "display_id": "T27",
-      "nature": "T27 is Channel 4 of L3. Window views provide soft fascination \u2192 DMN re-engagement \u2192 attention restoration."
-    },
-    {
-      "template_id": "MULTIMODAL_PE_INTEGRATION_001",
-      "display_id": "AX6",
-      "nature": "L3 is the daylight-specific instance of the multi-channel convergence principle formalized in AX6."
-    },
-    {
-      "template_id": "NM_THREAT_HPA_001",
-      "display_id": "T5",
-      "nature": "T5 is Channel 4 of L3. Windows provide environmental monitoring \u2192 threat reduction."
-    }
-  ],
-  "maturity": "supported",
-  "key_references": [
-    {
-      "citation": "Heschong, L., Wright, R. L., & Okura, S. (2002). Daylighting impacts on human performance in school. Journal of the Illuminating Engineering Society, 31(2), 101\u2013114.",
-      "google_scholar_count": 800
-    },
-    {
-      "citation": "Vandewalle, G., Maquet, P., & Dijk, D. J. (2009). Light as a modulator of cognitive brain function. Trends in Cognitive Sciences, 13(10), 429\u2013438.",
-      "google_scholar_count": 400
-    },
-    {
-      "citation": "Edwards, L., & Torcellini, P. (2002). A literature review of the effects of natural light on building occupants. National Renewable Energy Laboratory.",
-      "google_scholar_count": 400
-    },
-    {
-      "citation": "Smolders, K. C. H. J., de Kort, Y. A. W., & Cluitmans, P. J. M. (2012). A higher illuminance induces alertness even during office hours. Physiology & Behavior, 107(1), 7\u201316.",
-      "google_scholar_count": 200
-    }
-  ],
-  "source_panel": "34_Panel_LI_Light_Luminance.md",
-  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
-  "overall_maturity": "supported",
-  "ecological_safety_gate": 1,
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1,
-      "hearing": 1,
-      "motor": 0.98,
-      "olfaction": 1
-    },
-    "young_20_40": {
-      "speed": 1,
-      "vision": 1,
-      "hearing": 1,
-      "motor": 1,
-      "olfaction": 1
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+      "step": 2,
+      "from": "corneal_melanopic_irradiance",
+      "to": "circadian_entrainment",
+      "description": "→ Channel 1 [CB]: M1 ipRGC activation → RHT glutamate/PACAP → SCN core pacemaker → circadian entrainment (melatonin/cortisol rhythm alignment)",
+      "warrant": "MECHANISM",
+      "confidence": 0.68,
+      "justification": {
+        "data": [
+          {
+            "finding": "Half-maximum circadian phase shift occurs at approximately 119 photopic lux (≈77 m-lux mEDI at 4100K) during circadian night; sigmoidal dose-response with Hill coefficient ~2",
+            "source": "Zeitzer et al. (2000)",
+            "paradigm": "Controlled light exposure with melatonin phase measurement",
+            "effect": "Sigmoidal dose-response; saturation at ~500 lux",
+            "n": 23,
+            "design": "Within-subjects cross-over with multiple intensity levels"
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "M1 ipRGCs with high melanopsin expression project directly to SCN via retinohypothalamic tract; M1 threshold higher than composite ipRGC population but temporal integration extends to minutes",
+            "source": "Berson et al. (2002); Foster (panel statement)",
+            "paradigm": "Retrograde tracing and electrophysiology",
+            "effect": "M1 cells specifically innervate SCN core retinorecipient zone",
+            "n": null,
+            "design": "Animal model (rat/mouse)"
+          },
+          {
+            "finding": "Office workers in highest-quartile morning light exposure (~75 m-lux mEDI) showed measurable improvements in sleep quality and mood vs. lowest-quartile (~20 m-lux)",
+            "source": "Figueiro et al. (2017)",
+            "paradigm": "Field study with light-at-eye dosimetry",
+            "effect": "d ≈ 0.30 on Pittsburgh Sleep Quality Index",
+            "n": 109,
+            "design": "Cross-sectional with objective light exposure measurement"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3
+        ],
+        "backing": "This mechanism chain rests on two converging lines: (a) controlled laboratory photobiology establishing the sigmoidal dose-response for circadian phase shifting via M1 ipRGC → RHT → SCN pathway (Zeitzer, Czeisler, Brainard), and (b) field studies demonstrating that real-world variations in morning melanopic exposure predict sleep and mood outcomes (Figueiro). The laboratory work provides the mechanistic foundation; the field work provides ecological validation. Foster's subtype specificity argument (M1 vs M2-M6) increases confidence that the pathway is correctly identified rather than being confounded with alerting responses.",
+        "qualifier": "The threshold values are derived from controlled laboratory conditions with prior dim-light adaptation. Kronauer's prior-photic-history compression means that real building occupants with accumulated morning exposure may require lower thresholds than laboratory estimates. The 75-100 m-lux consensus range reflects this architectural translation correction. Effect sizes in field studies (d ≈ 0.30) are smaller than laboratory manipulations would predict, likely reflecting the noise of uncontrolled field conditions.",
+        "rebuttal": "This step would fail if: (a) the M1 ipRGC subtype is not the primary circadian entrainment pathway and other ipRGC subtypes or conventional photoreceptors contribute substantially — evidence from melanopsin-knockout mice argues against this; (b) the dose-response relationship does not translate from controlled laboratory to occupied buildings due to unmeasured moderators (prior light exposure, individual chronotype, age); (c) the field studies showing sleep benefits from morning light are confounded with window proximity, outdoor access, or socioeconomic factors rather than reflecting direct circadian effects.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 3,
+      "from": "corneal_melanopic_irradiance",
+      "to": "acute_cortical_arousal",
+      "description": "→ Channel 2 [NM]: M2–M4 ipRGC projections → locus coeruleus NE + histaminergic TM nucleus → cortical arousal (acute alerting)",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {
+            "finding": "Light exposure acutely increases subjective alertness and reduces EEG slow-wave activity within 5-15 minutes; threshold approximately 10-50 m-lux depending on circadian phase",
+            "source": "Cajochen et al. (2000)",
+            "paradigm": "Controlled light exposure with EEG and subjective measures",
+            "effect": "Reduced theta/alpha power; increased alertness ratings",
+            "n": 10,
+            "design": "Within-subjects crossover"
           },
-          "upper_9_12": {
-            "min": 3,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3,
-            "max": 3.5
+          {
+            "finding": "Light activates brainstem arousal centers (LC, TMN) and prefrontal cortex via non-visual pathway; fMRI BOLD increase in hypothalamus and brainstem",
+            "source": "Vandewalle et al. (2006)",
+            "paradigm": "fMRI during light exposure",
+            "effect": "Significant BOLD signal increase in LC region and thalamus",
+            "n": 20,
+            "design": "Within-subjects fMRI"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
+        ],
+        "backing": "The alerting response is mediated by M2-M4 ipRGC projections that bypass the SCN and project directly to brainstem arousal centers. This is a distinct pathway from the M1 circadian entrainment pathway, operating with lower thresholds and faster kinetics. The fMRI evidence from Vandewalle specifically localizes the effect to the locus coeruleus region, consistent with noradrenergic arousal. The distinction from the circadian pathway is important: alerting can occur independently of circadian phase-shifting.",
+        "qualifier": "The alerting threshold varies substantially with circadian phase and prior sleep. During the biological night when melatonin is high, thresholds may be as low as 10 m-lux; during daytime with prior bright light adaptation, thresholds rise to 50+ m-lux. The latency is fast (5-15 minutes) but duration post-exposure is limited (20-90 minutes). Alerting is a transient state enhancement, not a sustained circadian effect.",
+        "rebuttal": "This step would fail if: (a) the alerting response is actually a visual-cortical effect of increased luminance rather than a brainstem neuromodulatory effect — however, the fMRI brainstem activation argues against this; (b) the effect is confounded with arousal from any novel stimulus change rather than being light-specific; (c) chronic exposure produces habituation such that the alerting benefit disappears after initial days of exposure.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 4,
+      "from": "broadband_daylight_spectrum",
+      "to": "reduced_chromatic_prediction_error",
+      "description": "→ Channel 3 [PP]: Broadband daylight spectrum → low chromatic PE → color constancy operating within evolved range → reduced chromatic mismatch cost",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.50,
+      "justification": {
+        "data": [
+          {
+            "finding": "Human color constancy mechanisms are optimized for daylight spectral statistics; artificial narrow-band sources produce measurable color appearance shifts",
+            "source": "Brainard & Stockman (2010)",
+            "paradigm": "Psychophysical color matching",
+            "effect": "Color constancy degraded under narrow-band illumination",
+            "n": null,
+            "design": "Review of psychophysical literature"
+          }
+        ],
+        "backing": "The visual system has evolved under broadband daylight with its characteristic spectral statistics. Color constancy mechanisms assume daylight-like illumination spectra. Artificial lighting deviating from the daylight locus may produce subtle but persistent chromatic prediction errors as the visual system attempts to maintain color constancy under non-ecological illumination conditions.",
+        "qualifier": "This is a theoretical inference from color constancy literature rather than direct measurement of chromatic PE under architectural illumination. The behavioral or wellbeing consequences of chromatic mismatch in buildings have not been directly measured. Effect size on occupant outcomes is unknown.",
+        "rebuttal": "This step would fail if: (a) the visual system adapts completely to non-daylight spectra over minutes to hours, eliminating any chronic chromatic PE; (b) chromatic PE in the absence of explicit color discrimination tasks has no measurable consequence for affect or cognitive performance; (c) modern LED sources with high color rendering adequately approximate the daylight spectral statistics for color constancy purposes.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 5,
+      "from": "window_view",
+      "to": "attention_restoration",
+      "description": "→ Channel 4 [PP/DT]: Window view → soft fascination → ART pathway → DMN partial engagement without directed-attention cost",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "Hospital patients with tree views recovered faster than those with brick wall views",
+            "source": "Ulrich (1984)",
+            "paradigm": "Retrospective medical records analysis",
+            "effect": "Shorter hospital stay, fewer analgesic doses",
+            "n": 46,
+            "design": "Matched-pairs retrospective"
+          },
+          {
+            "finding": "Brief exposure to nature scenes restores directed attention capacity measured by backward digit span",
+            "source": "Berman et al. (2008)",
+            "paradigm": "Pre-post attention task with nature walk vs. urban walk",
+            "effect": "d ≈ 0.35 improvement in digit span after nature exposure",
+            "n": 38,
+            "design": "Within-subjects crossover"
+          }
+        ],
+        "backing": "Attention Restoration Theory (Kaplan & Kaplan) posits that natural scenes engage 'soft fascination' — effortless attention that allows directed-attention mechanisms to recover. Window views of nature provide this restorative stimulus during the workday. The mechanism may involve DMN activation during soft fascination, allowing executive network recovery.",
+        "qualifier": "The ART pathway is well-supported for nature content specifically; views of urban scenes or blank walls do not produce the same restoration. The specific window content matters substantially. Most occupied buildings have mixed or urban views rather than nature views. The effect may be smaller or absent when window content lacks biophilic elements.",
+        "rebuttal": "This step would fail if: (a) the Ulrich effect is confounded by other room differences (window side vs. corridor side, noise, privacy) rather than view content specifically; (b) ART effects measured in nature walks do not transfer to sedentary window gazing; (c) the effect requires extended engagement with the view rather than peripheral awareness while working.",
+        "competing_accounts": [
+          {
+            "account": "Stress reduction rather than attention restoration",
+            "proponent": "Ulrich (1991)",
+            "claim": "Nature views reduce stress via psychophysiological pathway (reduced cortisol, heart rate) rather than restoring attentional capacity",
+            "implication_for_template": "If stress reduction rather than attention restoration, the mechanism connects to T6/T7 allostatic pathway rather than PP directed-attention pathway; the outcome prediction is similar but the intermediate mechanism differs"
+          }
+        ],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 6,
+      "from": "solar_cloud_dynamics",
+      "to": "sustained_temporal_engagement",
+      "description": "→ Channel 5 [PP]: Solar/cloud dynamics → continuous low-to-moderate luminance PE (L1 Goldilocks range) → sustained moderate engagement",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.52,
+      "justification": {
+        "data": [
+          {
+            "finding": "Dynamic variation in light is sufficient but not strictly necessary for circadian entrainment; natural daylight provides continuous low-magnitude prediction errors that may sustain engagement",
+            "source": "Panel consensus (LIGHT-I Debate C)",
+            "paradigm": "Theoretical derivation from PP framework",
+            "effect": "Sufficient for engagement; necessity disputed",
+            "n": null,
+            "design": "Expert panel consensus"
+          }
+        ],
+        "backing": "Natural daylight through windows provides continuous low-magnitude luminance variation from cloud passage, solar angle change, and weather dynamics. This variation falls within the 'Goldilocks zone' for predictive processing — sufficient PE to maintain engagement without overwhelming processing capacity. Static electric lighting lacks this dynamic variation.",
+        "qualifier": "The panel explicitly concluded that dynamic variation is 'sufficient but not strictly necessary' for circadian health outcomes. Laike's field data show effects from sustained bright light without particular emphasis on variation. The PP engagement benefit from dynamic variation may be separable from the circadian benefit.",
+        "rebuttal": "This step would fail if: (a) the cognitive engagement benefit of luminance variation is negligible relative to the direct circadian benefit of sustained irradiance; (b) occupants habituate to daylight dynamics such that the PE becomes negligible over days/weeks; (c) the engagement effect is driven by glare events and visual discomfort rather than beneficial prediction-error engagement.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 7,
+      "from": "cct_variation",
+      "to": "temporal_orientation",
+      "description": "→ Channel 6 [CB/PP]: CCT variation across photophase → S-cone:M+L-cone ratio shift → temporal ecological prior → temporal orientation",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "Natural daylight CCT varies from ~2700K equivalent (dawn/dusk) to ~6500K (noon); S/(M+L) cone ratio shifts 2.6-fold across this range",
+            "source": "Spitschan et al. (2017)",
+            "paradigm": "Spectroradiometric survey of natural illuminants",
+            "effect": "S/(M+L) ratio 0.12 (dawn) to 0.31 (noon)",
+            "n": null,
+            "design": "Field spectral measurement"
+          }
+        ],
+        "backing": "The S-cone vs. M+L-cone ratio provides a chromatic time-of-day signal independent of absolute irradiance. This ratio is highly consistent in natural daylight and may function as a temporal ecological prior in the predictive processing system. Natural daylight transmits this temporal signal reliably; fixed-CCT artificial lighting eliminates it.",
+        "qualifier": "The temporal ecological prior is reliable only for natural daylight following the Planckian locus. Artificial LED sources can have arbitrary CCT without following the daylight spectral locus, potentially producing unreliable or misleading temporal signals. The behavioral or physiological consequences of CCT-mismatch have not been directly measured in architectural settings. Confidence reduced to 0.40 for artificial-light-only spaces.",
+        "rebuttal": "This step would fail if: (a) the visual system does not use CCT as a temporal prior but only responds to absolute spectral content; (b) the cone-melanopsin opponent channel does not reach the SCN or other temporal processing areas; (c) artificial LED sources adequately approximate the daylight spectral statistics for temporal signaling purposes.",
+        "competing_accounts": [
+          {
+            "account": "Direct melanopsin pathway rather than cone-opponent",
+            "proponent": "Foster (panel dissent)",
+            "claim": "CCT effects on circadian system are mediated directly by melanopic irradiance (higher CCT → more short-wavelength → more melanopsin activation) rather than cone-opponent temporal signal",
+            "implication_for_template": "If direct melanopsin rather than cone-opponent, the temporal ecological prior is less relevant; the CCT effect reduces to a melanopic dose effect already captured in Channel 1"
+          }
+        ],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 8,
+      "from": "multi_channel_activation",
+      "to": "synergistic_benefit",
+      "description": "→ Channel convergence: simultaneous activation of all 6 channels produces synergistic benefit > additive sum; convergence coefficient 1.20–1.35",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.45,
+      "justification": {
+        "data": [
+          {
+            "finding": "Heschong school studies found total daylight effect size (d ≈ 0.45) larger than would be predicted from single-channel models",
+            "source": "Heschong et al. (2002)",
+            "paradigm": "Field study correlating daylight metrics with student performance",
+            "effect": "7-18% improvement in math/reading scores in highest daylight classrooms",
+            "n": 21000,
+            "design": "Cross-sectional correlational"
+          }
+        ],
+        "backing": "The convergence coefficient represents the hypothesis that simultaneous activation of circadian, alerting, chromatic, restorative, dynamic, and temporal channels produces benefits exceeding their additive sum. This may reflect channel interactions at neural level (e.g., circadian alignment potentiates alerting response) or methodological artifact (unmeasured confounds in daylight classrooms).",
+        "qualifier": "This is largely a THEORETICAL_DEFAULT. No direct parametric study has manipulated individual channels while holding others constant in architectural settings. The 1.20-1.35 range is derived from comparing total daylight effect sizes to theoretical single-channel predictions. The channels share substrate (ipRGC subtypes) and may not be truly independent.",
+        "rebuttal": "This step would fail if: (a) the channels are not independent and the total effect is actually less than additive due to shared substrate saturation; (b) the large effect sizes in daylight studies are confounded by unmeasured variables (SES, school quality, teacher quality) rather than reflecting true multi-channel convergence; (c) the convergence coefficient is an artifact of comparing apples-to-oranges outcome measures across different studies.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "luminance_level": {
+      "value": 0.38,
+      "unit": "cohens_d_on_composite_outcome_index",
+      "range": {
+        "min": 0.2,
+        "max": 0.55
+      },
+      "note": "Composite effect across sleep quality, daytime alertness, and mood from field studies of daylight intervention vs. control condition",
+      "source": "Heschong et al. (2002) school studies (d ≈ 0.45); Figueiro et al. (2017) office study (d ≈ 0.30); Laike field data (d ≈ 0.25–0.35)",
+      "confidence": 0.6,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "population_modifiers": {
+        "elderly_care": {
+          "multiplier": 1.3,
+          "note": "Larger effect sizes in elderly populations, likely due to greater baseline circadian disruption and higher vulnerability"
         }
       }
+    },
+    "channel_convergence_coefficient": {
+      "value": 1.27,
+      "unit": "multiplier_on_additive_channel_sum",
+      "range": {
+        "min": 1.1,
+        "max": 1.45
+      },
+      "note": "Synergy above additive sum. Lower bound: channels are not truly independent (circadian and alerting share ipRGC substrate). Upper bound: Heschong school data total effect size implies substantial convergence above single-channel models.",
+      "source": "Heschong et al. (2002); Figueiro et al. (2017); theoretical derivation from multi-channel independence assumption",
+      "confidence": 0.45,
+      "bridge_warrant": "FUNCTIONAL",
+      "flag": "THEORETICAL_DEFAULT — no direct parametric study of channel independence has been conducted in architectural settings"
+    },
+    "spatial_configuration": {
+      "south_facing_reference": 1.0,
+      "east_west_facing": {
+        "multiplier": 0.7,
+        "note": "Half-day exposure; orientation provides morning or afternoon peak, not both"
+      },
+      "north_facing_45N_latitude": {
+        "multiplier": 0.42,
+        "range": {
+          "min": 0.3,
+          "max": 0.55
+        }
+      },
+      "north_facing_60N_latitude_winter": {
+        "multiplier": 0.18,
+        "note": "Reinhart modeling; essentially no direct solar access in winter months"
+      },
+      "source": "Reinhart et al. (2006); Laike et al. (2015)",
+      "confidence": 0.7,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE"
     }
   },
-  "glare_tolerance_cd_m2": {
-    "young": 3000,
-    "middle": 2000,
-    "older": 1000,
-    "frail": 500
+  "building_types": [
+    "offices",
+    "schools",
+    "hospitals",
+    "eldercare",
+    "residential"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "CIRCADIAN_ARCH_REG_001",
+    "NM_CIRCADIAN_ENTRAINMENT_001",
+    "CCT_TEMPORAL_ECOLOGICAL_001",
+    "DYNAMIC_LIGHT_TEMPORAL_001",
+    "T6",
+    "T7",
+    "ALLOSTATIC_MASTER_001"
+  ],
+  "ie_dpt_interaction": "T_IE_005 (Cost-Gated Threshold) — for occupants in explicitly energy-saving mindsets, daylight benefits may be discounted by the perceived cost of glare management or thermal gain from increased glazing; IE-DPT explicit channel modulates the translation from physical daylight exposure to perceived benefit",
+  "key_references": [
+    "Zeitzer et al. (2000). https://doi.org/10.1111/j.1469-7793.2000.00695.x",
+    "Figueiro et al. (2017). https://doi.org/10.1016/j.sleh.2017.03.005",
+    "Heschong et al. (2002). https://doi.org/10.1080/00994480.2002.10748396",
+    "Reinhart et al. (2006). https://doi.org/10.1582/LEUKOS.2006.03.01.001",
+    "CIE S 026:2018. https://doi.org/10.25039/S026.2018"
+  ],
+  "panel_docs": [
+    "docs/02-16_01_47_Panel_VIEW_I_Nature_View_V1_0.md",
+    "docs/37_Panel_MAT_I_Materials.md"
+  ],
+  "panel_source": "Panel V (Social Brain)",
+  "panel_reasoning_excerpt": "## Panel Charge\n\nRoger Ulrich's finding that hospital patients with a view of trees recovered faster than those with a view of a brick wall (Ulrich, 1984, ~7,000 citations) is the single most cited study in the architecture-wellbeing literature. Yet the project has no dedicated template for the VIEW mechanism. Ulrich's finding is referenced by T1 (fractal fluency of natural scenes), the Biophilia reduction (Doc 19), SC2 (isovist as visual prediction horizon), and T25 (directed attention and ART). But the specific mechanism — how the CONTENT of what is visible through a window affects the occupant — has not been formalized as a template.\n\nThe gap is not merely that Ulrich is uncited but that the VIEW mechanism involves a convergence of multiple existing templates that has not been made explicit: a window view of nature simultaneously engages fractal fluency (T1), prospect/refuge balance (T5/SC2), attention restoration (T25/ART), circadian light entrainment (L2), dynamic temporal variation (L5), and ecological familiarity (MAT4's convergence principle applied to visual scenes). The view is a multi-channel stimulus, and the convergence is what makes it powerful.\n\nThe panel is charged with producing 1–2 templates covering: (a) view content as a PE mechanism — how the brain generates predictions about what should be visible from a window and how different view contents (nature, urban, wall, sky) modulate PE, attention restoration, and affect, and (b) the window as a multi-channel environmental mediator — how windows provide not just a view but daylight (L2/L3), temporal information (L5), acoustic connection, and olfactory access to the outdoors. These must connect to T1 (fractal fluency), T25 (directed attention/ART), T29 (allostatic regulation), L2/L3 (circadian/daylight), SC2 (isovist), and the Biophilia reduction (Doc 19).\n\n---",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-16_01_47_Panel_VIEW_I_Nature_View_V1_0.md",
+  "excerpt_char_range": [
+    201,
+    2059
+  ],
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — circadian alignment supports accurate body-budget predictions across the day; misalignment from inadequate daylight is a persistent body-budget prediction error, contributing to T7 allostatic anticipation load. This is the primary IC2 interaction for this template.",
+    "AX4": "Perceived Control — occupants with operable shading and task lighting control can actively manage their daylight exposure; controllability modifier applies to the relationship between architectural WFR and actual corneal irradiance received."
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "active",
-  "generation": 2,
-  "ecological_validation": false
+  "calibration_status": "calibrated",
+  "confidence": 0.6
 }

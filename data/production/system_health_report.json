@@ -1,0 +1,363 @@
+{
+  "generated_at_utc": "2026-02-20T20:00:20.709001+00:00",
+  "paths": {
+    "web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+    "finding_web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
+    "bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
+    "links_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/finding_template_theory_links.json",
+    "templates_dir": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/templates",
+    "thresholds": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json",
+    "stress_baseline_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/web_health_stress_baseline.json"
+  },
+  "finding_db_selection": {
+    "mode": "auto",
+    "selection_basis": "max(annotation_match, belief_match, belief_count)",
+    "candidates": [
+      {
+        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
+        "annotation_match": 382,
+        "belief_match": 382,
+        "belief_count": 382
+      },
+      {
+        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+        "annotation_match": 0,
+        "belief_match": 0,
+        "belief_count": 12628
+      }
+    ]
+  },
+  "gates": {
+    "sanity_check": {
+      "name": "sanity_check",
+      "ok": true,
+      "duration_seconds": 1.5593794159940444,
+      "exit_code": 0,
+      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n[sanity_check] repo root: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\n[sanity_check] OK\n[sanity_check] WARNINGS (non-fatal):\n - Import warning: apps.user_rules_gui.app: No module named 'flask'\n - Allowlisted TODO markers detected:\n- src/services/gap_predictor.py contains TODO\n- src/services/voi_search.py contains TODO\n- src/services/prediction_generator.py contains TODO\n- src/services/credibility_feedback.py contains TODO\n- src/services/vocabulary_bridge.py contains TODO\n- src/services/integrated_query_service.py contains TODO\n- src/services/interpretive_intelligence.py contains TODO\n- src/services/epistemic_causal_bridge.py contains TODO\n- src/services/credibility_testing.py contains TODO"
+    },
+    "offline_pipeline_smoke": {
+      "name": "offline_pipeline_smoke",
+      "ok": true,
+      "duration_seconds": 0.16224187501939014,
+      "exit_code": 0,
+      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/scripts/offline_pipeline_smoke.py:123: PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/\n  seven_items = [item.dict() for item in artifact.items]\n[offline_pipeline_smoke] OK\n - events in graph.jsonl: 4\n - calibration files: 1"
+    },
+    "offline_pipeline_v2_smoke": {
+      "name": "offline_pipeline_v2_smoke",
+      "ok": true,
+      "duration_seconds": 0.16854262497508898,
+      "exit_code": 0,
+      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n[offline_pipeline_v2_smoke] OK\n - events in graph.jsonl: 3\n - v2 rules emitted: 1"
+    },
+    "web_of_belief_invariants": {
+      "name": "web_of_belief_invariants",
+      "ok": true,
+      "duration_seconds": 0.18061366700567305,
+      "exit_code": 0,
+      "detail": "run_probe passed with counters={\"add_belief\": 125, \"add_constraint\": 144, \"add_evidence\": 124, \"beliefs\": 252, \"constraints\": 516, \"seek_equilibrium\": 107, \"theory_worlds\": 8}"
+    },
+    "web_bn_minimum_viable": {
+      "name": "web_bn_minimum_viable",
+      "ok": true,
+      "duration_seconds": 0.0,
+      "exit_code": 0,
+      "detail": "minimum_viable passed=12 failed=0"
+    },
+    "finding_template_contracts": {
+      "name": "finding_template_contracts",
+      "ok": true,
+      "duration_seconds": 0.0,
+      "exit_code": 0,
+      "detail": "all finding-template contracts passed"
+    }
+  },
+  "score": {
+    "overall_score": 76.14,
+    "band": "YELLOW",
+    "overall_ok": true,
+    "hard_gates_ok": true,
+    "subscores": {
+      "contract": 85.71,
+      "pipeline": 72.55,
+      "web_bn": 52.43,
+      "theory": 85.46,
+      "stability": 100.0
+    },
+    "inputs": {
+      "minimum_ratio": 1.0,
+      "target_ratio": 0.2857,
+      "cci_ratio": 0.3901,
+      "hard_gate_pass_rate": 1.0,
+      "runtime_ratio_to_baseline": 0.1077
+    }
+  },
+  "web_bn_report": {
+    "metrics": {
+      "web": {
+        "beliefs": 12628,
+        "constraints": 28314,
+        "bridges": 1555,
+        "supports_count": 8705,
+        "explains_count": 17083,
+        "contradicts_count": 171,
+        "supports_share_pct": 30.74450801723529,
+        "explains_share_pct": 60.334110334110335,
+        "contradicts_share_pct": 0.6039415130324222,
+        "isolated_count": 2841,
+        "isolated_pct": 22.49762432689262,
+        "both_sides_count": 3761,
+        "both_sides_pct": 29.783021856192587,
+        "avg_indeg": 2.2421602787456445,
+        "avg_outdeg": 2.2421602787456445,
+        "bridge_with_source_pct": 100.0
+      },
+      "bn": {
+        "nodes": 6194,
+        "edges": 4271,
+        "dangling_edges": 0,
+        "has_cycle": 0,
+        "isolated_count": 0,
+        "isolated_pct": 0.0,
+        "largest_component_count": 1543,
+        "largest_component_pct": 24.911204391346466,
+        "unresolved_count": 0,
+        "unresolved_pct": 0.0
+      }
+    },
+    "minimum_viable": {
+      "passed": 12,
+      "failed": 0,
+      "results": [
+        {
+          "metric": "web.beliefs",
+          "op": ">=",
+          "value": 1000,
+          "actual": 12628,
+          "ok": true,
+          "description": "Sufficient web size"
+        },
+        {
+          "metric": "web.constraints",
+          "op": ">=",
+          "value": 8000,
+          "actual": 28314,
+          "ok": true,
+          "description": "Sufficient web relation count"
+        },
+        {
+          "metric": "web.isolated_pct",
+          "op": "<=",
+          "value": 25.0,
+          "actual": 22.49762432689262,
+          "ok": true,
+          "description": "Isolation not excessive"
+        },
+        {
+          "metric": "web.explains_count",
+          "op": ">=",
+          "value": 100,
+          "actual": 17083,
+          "ok": true,
+          "description": "Explanatory relations present"
+        },
+        {
+          "metric": "web.contradicts_count",
+          "op": ">=",
+          "value": 20,
+          "actual": 171,
+          "ok": true,
+          "description": "Contradiction relations present"
+        },
+        {
+          "metric": "web.bridges",
+          "op": ">=",
+          "value": 100,
+          "actual": 1555,
+          "ok": true,
+          "description": "Bridge layer active"
+        },
+        {
+          "metric": "web.bridge_with_source_pct",
+          "op": ">=",
+          "value": 80.0,
+          "actual": 100.0,
+          "ok": true,
+          "description": "Bridge provenance linked"
+        },
+        {
+          "metric": "bn.nodes",
+          "op": ">=",
+          "value": 500,
+          "actual": 6194,
+          "ok": true,
+          "description": "BN node coverage"
+        },
+        {
+          "metric": "bn.edges",
+          "op": ">=",
+          "value": 1000,
+          "actual": 4271,
+          "ok": true,
+          "description": "BN edge coverage"
+        },
+        {
+          "metric": "bn.dangling_edges",
+          "op": "==",
+          "value": 0,
+          "actual": 0,
+          "ok": true,
+          "description": "BN integrity (no dangling refs)"
+        },
+        {
+          "metric": "bn.has_cycle",
+          "op": "==",
+          "value": 0,
+          "actual": 0,
+          "ok": true,
+          "description": "BN must remain acyclic"
+        },
+        {
+          "metric": "bn.unresolved_pct",
+          "op": "<=",
+          "value": 95.0,
+          "actual": 0.0,
+          "ok": true,
+          "description": "Canonical mapping above floor"
+        }
+      ],
+      "ok": true
+    },
+    "target": {
+      "passed": 2,
+      "failed": 5,
+      "results": [
+        {
+          "metric": "web.isolated_pct",
+          "op": "<=",
+          "value": 10.0,
+          "actual": 22.49762432689262,
+          "ok": false,
+          "description": "Strong web integration"
+        },
+        {
+          "metric": "web.contradicts_count",
+          "op": ">=",
+          "value": 200,
+          "actual": 171,
+          "ok": false,
+          "description": "Substantial contradiction coverage"
+        },
+        {
+          "metric": "web.contradicts_share_pct",
+          "op": ">=",
+          "value": 2.0,
+          "actual": 0.6039415130324222,
+          "ok": false,
+          "description": "Contradiction share not negligible"
+        },
+        {
+          "metric": "web.bridges",
+          "op": ">=",
+          "value": 1500,
+          "actual": 1555,
+          "ok": true,
+          "description": "Deep bridge coverage"
+        },
+        {
+          "metric": "bn.edges",
+          "op": ">=",
+          "value": 5000,
+          "actual": 4271,
+          "ok": false,
+          "description": "Dense BN evidence graph"
+        },
+        {
+          "metric": "bn.unresolved_pct",
+          "op": "<=",
+          "value": 30.0,
+          "actual": 0.0,
+          "ok": true,
+          "description": "Mostly canonical BN nodes"
+        },
+        {
+          "metric": "bn.largest_component_pct",
+          "op": ">=",
+          "value": 50.0,
+          "actual": 24.911204391346466,
+          "ok": false,
+          "description": "BN not heavily fragmented"
+        }
+      ],
+      "ok": false
+    }
+  },
+  "finding_metrics": {
+    "findings_total": 382,
+    "findings_with_tier2": 379,
+    "tier2_coverage": 0.9921465968586387,
+    "unique_tier1_count": 18,
+    "non_music_music_top_count": 0,
+    "beliefs_total": 382,
+    "beliefs_with_annotation": 382,
+    "persisted_ratio": 1.0,
+    "unique_tier1_values": [
+      "AFFECTIVE_EMOTION",
+      "ARCHITECTURAL_PHENOMENOLOGY",
+      "ART",
+      "AUDIO_COGNITION",
+      "BIOPHILIA",
+      "CIRCADIAN_REGULATION",
+      "COGNITIVE_CONTROL",
+      "CREATIVE_COGNITION",
+      "EMBODIED_ECOLOGICAL",
+      "MATERIAL_HAPTIC_THERMAL",
+      "MEMORY_LEARNING",
+      "MULTISENSORY_INTEGRATION",
+      "NEUROMODULATORY_REWARD",
+      "PREDICTIVE_PROCESSING",
+      "SOCIAL_COGNITION",
+      "SPATIAL_COGNITION",
+      "SRT",
+      "VISUAL_PERCEPTION_AESTHETICS"
+    ]
+  },
+  "chain_completeness": {
+    "counts": {
+      "findings_total": 382,
+      "has_belief_id": 382,
+      "belief_exists": 382,
+      "has_annotation": 382,
+      "has_tier1": 379,
+      "has_tier2": 379,
+      "has_templates": 382,
+      "bn_touched": 149,
+      "complete_chain": 149
+    },
+    "ratios": {
+      "has_belief_id_ratio": 1.0,
+      "belief_exists_ratio": 1.0,
+      "has_annotation_ratio": 1.0,
+      "has_tier1_ratio": 0.9921465968586387,
+      "has_tier2_ratio": 0.9921465968586387,
+      "has_templates_ratio": 1.0,
+      "bn_touched_ratio": 0.3900523560209424,
+      "complete_chain_ratio": 0.3900523560209424
+    }
+  },
+  "template_grounding": {
+    "active_templates": 95,
+    "adequately_grounded_templates": 79,
+    "weakly_grounded_templates": 16,
+    "adequate_ratio": 0.8315789473684211,
+    "findings_with_templates": 382
+  },
+  "web_probe_counters": {
+    "add_belief": 125,
+    "add_constraint": 144,
+    "add_evidence": 124,
+    "seek_equilibrium": 107,
+    "beliefs": 252,
+    "constraints": 516,
+    "theory_worlds": 8
+  }
+}

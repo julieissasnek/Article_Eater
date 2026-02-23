@@ -1,0 +1,276 @@
+{
+  "profile": "demo_balanced_codex",
+  "provider": "codex_exec",
+  "model": "gpt-5.2-codex",
+  "variant": "no_gate",
+  "papers": 3,
+  "counters": {
+    "tables_detected": 13,
+    "tables_kept": 13,
+    "claims_rejected": 4,
+    "drop_same_raw_iv_dv": 4,
+    "drop_placeholder_column_label": 4,
+    "drop_ocr_long_token_noise": 1
+  },
+  "metrics": {
+    "claims": 2,
+    "claims_rejected": 4,
+    "claims_pre_filter": 6,
+    "mapped_both": 2,
+    "mapped_both_pct": 100.0,
+    "effect_size": 1,
+    "unknown_direction": 1,
+    "unknown_direction_pct": 50.0,
+    "suspect_claims": 1,
+    "suspect_claims_pct": 50.0
+  },
+  "claims": [
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260220181002-004:C003",
+      "paper_id": "doi:10.1007/bf00996485",
+      "iv": "illuminance_lux",
+      "iv_raw": "illuminance_lux",
+      "iv_mapped": true,
+      "iv_confidence": 1.0,
+      "dv": "visual_comfort",
+      "dv_raw": "visual_comfort",
+      "dv_mapped": true,
+      "dv_confidence": 1.0,
+      "direction": "unknown",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_n": null,
+      "p_value": 1.0,
+      "is_significant": false,
+      "context": null,
+      "source_table_id": "TBL-20260220181002-004",
+      "source_page": 9,
+      "source_quote": "col_1: F(1,; col_2: 80) = 25.59, p < .001.",
+      "extraction_confidence": 0.847,
+      "confidence_decomposition": {
+        "table_type_confidence": 0.78,
+        "row_quality_confidence": 0.85,
+        "iv_map_confidence": 1.0,
+        "dv_map_confidence": 1.0,
+        "stat_parse_confidence": 0.4,
+        "aggregate": 0.847,
+        "meets_thresholds": true
+      },
+      "vocabulary_mapped": true,
+      "extraction_method": "enhanced_codex",
+      "semantic_type": "statistical_results",
+      "claim_type": "associational",
+      "rule_type": "edge",
+      "article_type_family": "unknown",
+      "field_contract_family": "unknown",
+      "field_targets": [
+        "classification_diagnostics",
+        "minimum_safe_summary"
+      ],
+      "attack_patterns": [],
+      "attack_detected": false,
+      "attack_types": [],
+      "attack_max_confidence": 0.0,
+      "pilot_profile": "demo_balanced_codex",
+      "pilot_variant": "no_gate",
+      "pilot_model": "gpt-5.2-codex"
+    },
+    {
+      "claim_id": "doi:10.3390/buildings14103293:TBL-20260220181230-009:C001",
+      "paper_id": "doi:10.3390/buildings14103293",
+      "iv": "fractal_dimension",
+      "iv_raw": "centration and \u0394D-P (r =",
+      "iv_mapped": true,
+      "iv_confidence": 0.73,
+      "dv": "nature_content_ratio",
+      "dv_raw": "ratio and the following variables: \u0394D-P (r =",
+      "dv_mapped": true,
+      "dv_confidence": 0.72,
+      "direction": "increase",
+      "effect_size": 0.49,
+      "effect_size_type": "r_converted",
+      "sample_n": null,
+      "p_value": null,
+      "context": "correlation_matrix",
+      "source_table_id": "TBL-20260220181230-009",
+      "source_page": 10,
+      "source_quote": "ratio and the following variables: \u0394D-P (r = was associated with centration and \u0394D-P (r = (r = 0.238).",
+      "extraction_confidence": 0.72,
+      "vocabulary_mapped": true,
+      "extraction_method": "correlation_matrix",
+      "warnings": [],
+      "claim_type": "associational",
+      "rule_type": "edge",
+      "article_type_family": "unknown",
+      "field_contract_family": "unknown",
+      "field_targets": [
+        "classification_diagnostics",
+        "minimum_safe_summary"
+      ],
+      "attack_patterns": [],
+      "attack_detected": false,
+      "attack_types": [],
+      "attack_max_confidence": 0.0,
+      "pilot_profile": "demo_balanced_codex",
+      "pilot_variant": "no_gate",
+      "pilot_model": "gpt-5.2-codex"
+    }
+  ],
+  "rejected_claims": [
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260220180913-002:C001",
+      "paper_id": "doi:10.1007/bf00996485",
+      "source_table_id": "TBL-20260220180913-002",
+      "iv_raw": "col_1: yielded a significant effect for illuminance, F(9,; col_2: 70) = 2.33, p ",
+      "dv_raw": "col_1: yielded a significant effect for illuminance, F(9,; col_2: 70) = 2.33, p ",
+      "source_quote": "col_1: yielded a significant effect for illuminance, F(9,; col_2: 70) = 2.33, p < .03, and",
+      "reasons": [
+        "drop_same_raw_iv_dv",
+        "drop_placeholder_column_label"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260220181002-004:C001",
+      "paper_id": "doi:10.1007/bf00996485",
+      "source_table_id": "TBL-20260220181002-004",
+      "iv_raw": "col_1: for illuminance, F(1,; col_2: 80) = 5.85, p < .03. Subjects in the low-il",
+      "dv_raw": "col_1: for illuminance, F(1,; col_2: 80) = 5.85, p < .03. Subjects in the low-il",
+      "source_quote": "col_1: for illuminance, F(1,; col_2: 80) = 5.85, p < .03. Subjects in the low-illuminance",
+      "reasons": [
+        "drop_same_raw_iv_dv",
+        "drop_placeholder_column_label"
+      ]
+    },
+    {
+      "claim_id": "doi:10.1007/bf00996485:TBL-20260220181002-004:C002",
+      "paper_id": "doi:10.1007/bf00996485",
+      "source_table_id": "TBL-20260220181002-004",
+      "iv_raw": "col_1: nificant effect for level of illuminance, F(13,; col_2: 68) = 4.06, p < .",
+      "dv_raw": "col_1: nificant effect for level of illuminance, F(13,; col_2: 68) = 4.06, p < .",
+      "source_quote": "col_1: nificant effect for level of illuminance, F(13,; col_2: 68) = 4.06, p < .001 (by",
+      "reasons": [
+        "drop_same_raw_iv_dv",
+        "drop_placeholder_column_label"
+      ]
+    },
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260220181408-013:C001",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "source_table_id": "TBL-20260220181408-013",
+      "iv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "dv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "source_quote": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col_2: 0.399). Both the main effect of pattern",
+      "reasons": [
+        "drop_same_raw_iv_dv",
+        "drop_placeholder_column_label",
+        "drop_ocr_long_token_noise"
+      ]
+    }
+  ],
+  "table_records": [
+    {
+      "paper_id": "doi:10.1007/bf00996485",
+      "table_id": "TBL-20260220180849-001",
+      "page": 7,
+      "kept": true,
+      "type": "demographics",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.1007/bf00996485",
+      "table_id": "TBL-20260220180913-002",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.1007/bf00996485",
+      "table_id": "TBL-20260220180938-003",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.1007/bf00996485",
+      "table_id": "TBL-20260220181002-004",
+      "page": 9,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/buildings14103293",
+      "table_id": "TBL-20260220181051-005",
+      "page": 7,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/buildings14103293",
+      "table_id": "TBL-20260220181116-006",
+      "page": 7,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/buildings14103293",
+      "table_id": "TBL-20260220181141-007",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/buildings14103293",
+      "table_id": "TBL-20260220181205-008",
+      "page": 8,
+      "kept": true,
+      "type": "unknown",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/buildings14103293",
+      "table_id": "TBL-20260220181230-009",
+      "page": 10,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260220181255-010",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260220181344-012",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260220181408-013",
+      "page": 10,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260220181432-014",
+      "page": 10,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    }
+  ]
+}

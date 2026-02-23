@@ -1,299 +1,189 @@
 {
   "template_id": "NM_CIRCADIAN_ENTRAINMENT_001",
   "name": "Circadian Entrainment and Non-Visual Light Effects",
-  "structural_pattern": "ENTRAINMENT",
-  "higher_order_principle": "Melanopsin-expressing ipRGCs provide a non-visual light pathway to the SCN (circadian clock), VLPO (sleep/wake), and perihabenular nucleus (mood). Architectural lighting that provides sufficient melanopic EDI at appropriate times entrains healthy circadian rhythms, promoting sleep quality, daytime alertness, and mood stability. Insufficient or mistimed light causes circadian disruption equivalent to chronic jet lag.",
-  "transferable_to": [
-    "office lighting standards (WELL Building Standard)",
-    "shift work environments (hospitals, factories)",
-    "residential lighting for sleep hygiene",
-    "school schedule and lighting design"
-  ],
-  "framework_ids": [
+  "status": "calibrated",
+  "maturity": "established",
+  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I — no prior structural template in Document 34; calibrated from gap stub",
+  "t1_frameworks": [
+    "CB",
     "NM"
   ],
-  "causal_links": [
+  "panel_id": "LIGHT-I",
+  "calibration_date": "2026-02-21",
+  "mechanism_chain": [
     {
-      "from_variable": "architectural_light_exposure",
-      "to_variable": "ipRGC_melanopic_stimulation",
-      "activity": "non_visual_photoreception",
-      "from_level": "subpersonal",
-      "to_level": "subpersonal",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Foster, 2021; Provencio et al., 2000; Berson et al., 2002",
-      "parameters": {
-        "photoreceptor": "melanopsin ipRGCs, peak sensitivity ~480nm",
-        "threshold": ">250 melanopic EDI for circadian entrainment",
-        "duration": ">30 minutes sustained exposure",
-        "location": "measured at eye level, not at work surface"
+      "step": 1,
+      "from": "corneal_melanopic_irradiance",
+      "to": "ipRGC_activation",
+      "description": "Corneal melanopic irradiance (m-EDI) above alerting threshold (≥30 m-lux)",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Light activates brainstem arousal centers with threshold approximately 10-50 m-lux depending on circadian phase", "source": "Cajochen et al. (2000); Vandewalle et al. (2006)", "paradigm": "Controlled light exposure with EEG and fMRI", "effect": "Acute alertness increase; brainstem BOLD activation", "n": 20, "design": "Within-subjects"}
+        ],
+        "backing": "The alerting threshold is lower than the circadian entrainment threshold because M2-M4 ipRGCs have different projection targets and sensitivities than M1 cells.",
+        "qualifier": "Threshold varies with circadian phase and prior sleep.",
+        "rebuttal": "Would fail if the alerting response is visual-cortical rather than brainstem-mediated.",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     },
     {
-      "from_variable": "ipRGC_stimulation",
-      "to_variable": "SCN_circadian_entrainment",
-      "activity": "phase_setting_of_master_clock",
-      "from_level": "subpersonal",
-      "to_level": "subpersonal",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Foster, 2021",
-      "parameters": {
-        "morning_light": "advances_clock (helps late chronotypes)",
-        "evening_light": "delays_clock (exacerbates late chronotypes)",
-        "downstream": "SCN controls melatonin (pineal), cortisol diurnal rhythm (adrenal), core body temperature"
+      "step": 2,
+      "from": "ipRGC_activation",
+      "to": "brainstem_projections",
+      "description": "→ M2–M4 ipRGC projections: (a) olivary pretectal nucleus → pupillary constriction; (b) intergeniculate leaflet → NPY/GABA → SCN phase modulation; (c) dorsal raphe nucleus → serotonergic arousal; (d) locus coeruleus → NE release → prefrontal cortical arousal",
+      "warrant": "MECHANISM",
+      "confidence": 0.68,
+      "justification": {
+        "data": [
+          {"finding": "M2-M4 ipRGC subtypes project to OPN, IGL, DRN, and LC; distinct from M1 SCN projections", "source": "Ecker et al. (2010); Foster (panel)", "paradigm": "Retrograde tracing and immunohistochemistry", "effect": "Subtype-specific projection patterns", "n": null, "design": "Animal model anatomy"}
+        ],
+        "backing": "Foster's subtype distinction is critical: alerting operates via M2-M4 projections, not the M1 circadian pathway.",
+        "qualifier": "Established in animal models; human homology presumed.",
+        "rebuttal": "Would fail if human ipRGC subtypes differ substantially.",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     },
     {
-      "from_variable": "SCN_entrainment",
-      "to_variable": "sleep_quality_and_daytime_alertness",
-      "activity": "circadian_regulation_of_sleep_wake",
-      "from_level": "subpersonal",
-      "to_level": "personal_epistemic",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Cajochen et al., 2005; Figueiro et al., 2017",
-      "parameters": {
-        "entrained": "consolidated sleep, daytime alertness, normal cortisol diurnal rhythm",
-        "disrupted": "fragmented sleep, daytime drowsiness, flattened cortisol rhythm (connects to T5/T29)"
+      "step": 3,
+      "from": "LC_activation",
+      "to": "cortical_NE_elevation",
+      "description": "→ LC-NE: diffuse cortical NE elevation → increased gain of sensory processing → heightened alertness + reduced drowsiness",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Light exposure activates LC-NE system; diffuse cortical NE increases sensory processing gain", "source": "Vandewalle et al. (2006)", "paradigm": "fMRI during light exposure", "effect": "BOLD increase in LC region and prefrontal cortex", "n": 20, "design": "Within-subjects fMRI"}
+        ],
+        "backing": "The LC-NE arousal system is a well-characterized neuromodulatory pathway; light is an established input.",
+        "qualifier": "fMRI localizes to LC region but does not directly measure NE release.",
+        "rebuttal": "Would fail if the fMRI activation reflects a different brainstem structure.",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     },
     {
-      "from_variable": "ipRGC_stimulation",
-      "to_variable": "mood_regulation_via_perihabenular",
-      "activity": "non_circadian_light_mood_effect",
-      "from_level": "subpersonal",
-      "to_level": "personal_epistemic",
-      "bridging_quality": "MEDIUM",
-      "maturity": "how-plausibly",
-      "key_evidence": "Fernandez et al., 2018; LeGates et al., 2012",
-      "parameters": {
-        "note": "Light affects mood INDEPENDENTLY of circadian entrainment and vision. This pathway may explain seasonal affective disorder and the mood benefits of bright environments even for non-circadian endpoints."
+      "step": 4,
+      "from": "TMN_activation",
+      "to": "histamine_wakefulness",
+      "description": "→ Histaminergic tuberomammillary nucleus (TMN): light-driven histamine release → wakefulness support",
+      "warrant": "MECHANISM",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "TMN histaminergic neurons receive indirect light input and contribute to wakefulness", "source": "Cajochen et al. (2000)", "paradigm": "Arousal physiology", "effect": "Histamine contributes to light-driven arousal", "n": null, "design": "Literature synthesis"}
+        ],
+        "backing": "The histaminergic wakefulness system is established; light-driven activation is plausible via brainstem pathways.",
+        "qualifier": "Less direct evidence for light-TMN pathway than for light-LC pathway.",
+        "rebuttal": "Would fail if histamine contribution is negligible relative to NE.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 5,
+      "from": "parallel_M1_pathway",
+      "to": "SCN_entrainment",
+      "description": "→ Simultaneously: M1 SCN entrainment pathway (CIRCADIAN_ARCH_REG_001) operating in parallel",
+      "warrant": "MECHANISM",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {"finding": "M1 ipRGCs project to SCN; operates in parallel with M2-M4 alerting pathways", "source": "Berson et al. (2002)", "paradigm": "Neural tracing", "effect": "Dual pathway: circadian + alerting", "n": null, "design": "Anatomical"}
+        ],
+        "backing": "The circadian and alerting pathways operate independently but simultaneously. This is the dual-pathway model.",
+        "qualifier": "Cross-reference to L2 (CIRCADIAN_ARCH_REG_001) for detailed circadian pathway.",
+        "rebuttal": "Would fail if pathways interact in ways that make them non-additive.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 6,
+      "from": "neuromodulatory_activation",
+      "to": "behavioral_alertness",
+      "description": "→ Net behavioral output: acute alertness increase (latency ~5–15 min), sustained across exposure duration, additive with caffeine and social engagement but independent of them",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {"finding": "Each doubling of melanopic lux above threshold adds d=0.22 to sustained attention performance during afternoon alertness trough", "source": "Vandewalle et al. (2006); de Kort & Veitch (2014)", "paradigm": "Field and laboratory studies", "effect": "Modest but consistent alertness benefit", "n": null, "design": "Review synthesis"}
+        ],
+        "backing": "The alertness benefit is empirically demonstrated but effect sizes are modest (d ≈ 0.22).",
+        "qualifier": "Effect size may vary with individual differences, circadian phase, and prior sleep.",
+        "rebuttal": "Would fail if the effect is confounded with novelty or arousal from any stimulus change.",
+        "competing_accounts": [],
+        "depth_tier": "B"
       }
     }
   ],
-  "scope_conditions": [
-    "Parameters are specific to melanopic EDI, not photopic lux \u2014 standard lighting design metrics (photopic lux) do not capture circadian effectiveness",
-    "Timing matters enormously: the same light dose at 8am vs. 10pm has opposite circadian effects",
-    "Individual chronotype modulates optimal timing \u2014 one-size-fits-all lighting schedules are suboptimal",
-    "Age: ipRGC sensitivity declines with age; elderly require higher melanopic EDI"
-  ],
-  "moderators": [
-    "age (lens yellowing and pupil size reduce retinal light)",
-    "chronotype (owls need more morning light, larks need less)",
-    "latitude/season (natural availability of circadian light)",
-    "glazing_properties (low-e glass often blocks cyan/blue spectrum)"
-  ],
-  "interactions": [
-    {
-      "template": "T5 (NM_THREAT_MODULATION_001)",
-      "type": "MODULATOR",
-      "description": "Circadian disruption flattens cortisol diurnal rhythm \u2014 the same pattern seen in chronic stress and social isolation (T50). Healthy circadian rhythm is necessary for normal HPA axis function."
-    },
-    {
-      "template": "T29 (ALLOSTATIC_MASTER_001)",
-      "type": "INPUT",
-      "description": "Circadian disruption is an allostatic stressor. Chronic disruption contributes to allostatic load via sleep loss, cortisol dysregulation, and inflammatory marker elevation."
-    },
-    {
-      "template": "T22 (NM_AESTHETIC_REWARD_001)",
-      "type": "INDEPENDENT",
-      "description": "The non-visual light pathway (ipRGC) is independent of the visual aesthetic pathway. A beautiful but dim environment fails circadian requirements; an ugly but bright environment succeeds."
-    }
-  ],
-  "overall_maturity": "how-actually (mechanism) / how-plausibly (specific architectural thresholds)",
-  "key_references": [
-    "Foster, R. G. (2021). Sleep, circadian rhythms and health. Interface Focus",
-    "Provencio, I., et al. (2000). A novel human opsin in the inner retina. Journal of Neuroscience",
-    "Berson, D. M., Dunn, F. A., & Takao, M. (2002). Phototransduction by retinal ganglion cells. Science",
-    "Fernandez, D. C., et al. (2018). Light affects mood and learning through distinct retina-brain pathways. Cell",
-    "Figueiro, M. G., et al. (2017). Tailored lighting intervention improves measures of sleep, depression, and agitation. BMC Geriatrics"
-  ],
-  "display_id": "T55",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
+  "calibrated_parameters": {
+    "noradrenergic_response": {
+      "value": 0.22,
+      "unit": "cohens_d_improvement_sustained_attention_per_doubling_melanopic_lux",
+      "range": {
+        "min": 0.12,
+        "max": 0.35
+      },
+      "note": "Each doubling of melanopic lux above alerting threshold adds approximately d=0.22 to sustained attention task performance during the biological afternoon (13:00–16:00) — the circadian alertness trough",
+      "source": "Vandewalle et al. (2006); de Kort & Veitch (2014) review synthesis",
+      "confidence": 0.55,
+      "bridge_warrant": "EMPIRICAL_COVARIANCE",
+      "population_modifiers": {
+        "elderly": {
+          "multiplier": 0.65,
+          "note": "Reduced LC-NE responsiveness with aging; larger architectural dose required for equivalent alerting"
         },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
-          }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
-          }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
+        "chronotype_extreme_evening": {
+          "timing_note": "Alerting benefit shifted ~2h later in biological time for extreme evening chronotypes"
         }
       }
+    },
+    "luminance_level": {
+      "value": "PARTIAL",
+      "note": "The NM alerting response is driven by melanopic irradiance at the retina, not by perceived brightness. A warm 2700K source at 500 photopic lux delivers approximately 155 m-lux mEDI; a cool 6500K source at 300 photopic lux delivers approximately 270 m-lux mEDI. The 6500K source is dimmer to the visual system but more alerting via the NM pathway. This dissociation has direct architectural implications: perceived brightness (visual comfort) and alerting efficacy are separable design targets.",
+      "confidence": 0.78,
+      "bridge_warrant": "MECHANISM"
     }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "residual",
-  "generation": 1,
-  "ecological_validation": false
+  "building_types": [
+    "offices",
+    "schools",
+    "hospitals",
+    "transport_facilities"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "DAYLIGHT_MULTICHANNEL_001",
+    "CIRCADIAN_ARCH_REG_001",
+    "NM_NORADRENERGIC_EXPLORE_006"
+  ],
+  "ie_dpt_interaction": "T_IE_004 (Real-Time Activity Frame Shift) — light-driven alertness elevation can shift the occupant from a low-engagement implicit processing mode to an active directed-attention mode, functioning as an environmental frame-shift trigger",
+  "key_references": [
+    "Cajochen et al. (2000). https://doi.org/10.1152/jappl.2000.88.5.1643",
+    "Vandewalle et al. (2006). https://doi.org/10.1016/j.cub.2006.04.031",
+    "de Kort & Veitch (2014). https://doi.org/10.1016/j.jenvp.2013.06.005"
+  ],
+  "panel_docs": [
+    "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md"
+  ],
+  "panel_source": "Panel V (Social Brain)",
+  "panel_reasoning_excerpt": "### T55 Specification\n\n```python\nMechanisticTemplate(\n    template_id=\"NM_CIRCADIAN_ENTRAINMENT_001\",\n    name=\"Circadian Entrainment and Non-Visual Light Effects\",\n    structural_pattern=\"ENTRAINMENT\",  # new pattern: external signal synchronizes internal oscillator\n    higher_order_principle=(\n        \"Melanopsin-expressing ipRGCs provide a non-visual light pathway to the \"\n        \"SCN (circadian clock), VLPO (sleep/wake), and perihabenular nucleus (mood). \"\n        \"Architectural lighting that provides sufficient melanopic EDI at appropriate \"\n        \"times entrains healthy circadian rhythms, promoting sleep quality, daytime \"\n        \"alertness, and mood stability. Insufficient or mistimed light causes \"\n        \"circadian disruption equivalent to chronic jet lag.\"\n    ),\n    framework_ids=[\"NM\"],  # Neuromodulation — circadian rhythm controls melatonin, cortisol diurnal cycle\n    causal_links=[\n        CausalLink(\n            from_variable=\"architectural_light_exposure\",\n            to_variable=\"ipRGC_melanopic_stimulation\",\n            activity=\"non_visual_photoreception\",\n            from_level=\"SUBPERSONAL\", to_level=\"SUBPERSONAL\",\n            bridging_quality=\"HIGH\", maturity=\"how-actually\",\n            key_evidence=\"Foster, 2021; Provencio et al., 2000; Berson et al., 2002\",\n            parameters={\n                \"photoreceptor\": \"melanopsin ipRGCs, peak sensitivity ~480nm\",\n                \"threshold\": \">250 melanopic EDI for circadian entrainment\",\n                \"duration\": \">30 minutes sustained exposure\",\n                \"location\": \"measured at eye level, not at work surface\"\n            }\n        ),\n        CausalLink(\n            from_variable=\"ipRGC_stimulation\",\n            to_variable=\"SCN_circadian_entrainment\",\n            activity=\"phase_setting_of_master_clock\",\n            from_level=\"SUBPERSONAL\", to_level=\"SUBPERSONAL\",\n            bridging_quality=\"HIGH\", maturity=\"how-actually\",\n            key_evidence=\"Foster, 2021\",\n            parameters={\n                \"morning_light\": \"advances_clock (helps late chronotypes)\",\n                \"evening_light\": \"delays_clock (exacerbates late chronotypes)\",\n                \"downstream\": \"SCN controls melatonin (pineal), cortisol diurnal rhythm (adrenal), core body temperature\"\n            }\n        ),\n        CausalLink(\n            from_variable=\"SCN_entrainment\",\n            to_variable=\"sleep_quality_and_daytime_alertness\",\n            activity=\"circadian_regulation_of_sleep_wake\",\n            from_level=\"SUBPERSONAL\", to_level=\"PERSONAL_EPISTEMIC\",\n            bridging_quality=\"HIGH\", maturity=\"how-actually\",\n            key_evidence=\"Cajochen et al., 2005; Figueiro et al., 2017\",\n            parameters={\n                \"entrained\": \"consolidated sleep, daytime alertness, normal cortisol diurnal rhythm\",\n                \"disrupted\": \"fragmented sleep, daytime drowsiness, flattened cortisol rhythm (connects to T5/T29)\"\n            }\n        ),\n        CausalLink(\n            from_variable=\"ipRGC_stimulation\",\n            to_variable=\"mood_regulation_via_perihabenular\",\n            activity=\"non_circadian_light_mood_effect\",\n            from_level=\"SUBPERSONAL\", to_level=\"PERSONAL_EPISTEMIC\",\n            bridging_quality=\"MEDIUM\", maturity=\"how-plausibly\",\n            key_evidence=\"Fernandez et al., 2018; LeGates et al., 2012\",\n            parameters={\n                \"note\": \"Light affects mood INDEPENDENTLY of circadian entrainment and vision. \"\n                        \"This pathway may explain seasonal affective disorder and the mood \"\n                        \"benefits of bright environments even for non-circadian endpoints.\"\n            }\n        )\n    ],\n    scope_conditions=[\n        \"Parameters are specific to melanopic EDI, not photopic lux — standard lighting design metrics (photopic lux) do not capture circadian effectiveness\",\n        \"Timing matters enormously: the same light dose at 8am vs. 10pm has opposite circadian effects\",\n        \"\n\n[... excerpt truncated at 4000 chars]",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md",
+  "excerpt_char_range": [
+    26315,
+    31315
+  ],
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — acute alerting via LC-NE temporarily elevates metabolic demand prediction; if not followed by adequate activity or offset by subsequent lower-arousal periods, contributes to end-of-day fatigue accumulation",
+    "AX4": "Perceived Control — occupants with access to dimmer switches and shading can modulate alerting stimulus and prevent over-activation; absence of control forces exposure to potentially excessive alerting stimulus in late afternoon/evening"
+  },
+  "display_id": "NCE1",
+  "calibration_status": "calibrated",
+  "confidence": 0.6
 }

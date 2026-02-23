@@ -2,351 +2,262 @@
   "template_id": "CCT_TEMPORAL_ECOLOGICAL_001",
   "display_id": "L4",
   "name": "Light Color Temperature as Temporal and Ecological Prediction Signal",
-  "short_description": "CCT serves as temporal and ecological prediction signal; congruence produces fluency, violation produces PE with circadian, cognitive, and affective consequences",
-  "structural_pattern": "The correlated color temperature (CCT) of ambient light serves as both a temporal prediction signal and an ecological prediction signal. The brain maintains expectations about light color based on time of day (warm/low-CCT light predicts morning, evening, or firelight; cool/high-CCT light predicts midday or overcast conditions) and ecological context (warm light predicts interior/intimate/safe; cool light predicts exterior/open/exposed). When architectural lighting CCT matches the temporal and ecological context, predictions are confirmed, processing is fluent, and the affective response is congruent. When CCT violates context (blue-white 6500K light in an evening residential space; dim warm 2700K light during morning work hours), the result is temporal-ecological PE that manifests as discomfort, incongruity, or circadian disruption. Additionally, CCT modulates arousal and processing style: cool/bright light \u2192 precision-weighted processing (analytical, detail-focused); warm/dim light \u2192 relaxed prediction weighting (creative, relational).",
-  "higher_order_principle": "Cross-modal prediction congruence (AX5) applied to the temporal and ecological dimensions of light. CCT is a prediction cue that the brain uses to infer time, context, and appropriate behavioral mode. Congruence = fluency; violation = PE with downstream circadian, cognitive, and affective consequences.",
-  "framework_ids": [
-    "predictive_processing",
-    "circadian_neuroscience",
-    "ecological_psychology"
+  "status": "calibrated",
+  "maturity": "supported",
+  "mechanism_chain_provenance": "INHERITED from Document 34 (L4) — structural pattern preserved; quantitative parameters newly established in LIGHT-I",
+  "t1_frameworks": [
+    "CB",
+    "PP"
   ],
-  "domain": "light_luminance",
-  "attribute_domain": "A4",
-  "cct_ranges": {
-    "warm_firelight": "~2000K - intimate, evening, rest",
-    "warm_incandescent": "~2700-3000K - evening, residential",
-    "neutral": "~4000-4500K - balanced, transitional",
-    "cool_daylight": "~5000-6500K - midday, alertness, activity",
-    "overcast_sky": "~6500K+ - exterior, exposed"
-  },
-  "causal_links": [
+  "panel_id": "LIGHT-I",
+  "calibration_date": "2026-02-21",
+  "mechanism_chain": [
     {
-      "from_entity": "light_CCT",
-      "to_entity": "temporal_context_prediction",
-      "activity": "generates",
-      "from_level": "environmental",
-      "to_level": "cognitive",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "CCT implicitly communicates time of day. ~2000-3000K = sunrise/sunset/firelight (evening, rest). ~5000-6500K = midday/overcast (alertness, activity). Violation (cool light at night) produces temporal incongruity."
-    },
-    {
-      "from_entity": "CCT_temporal_congruence",
-      "to_entity": "circadian_impact",
-      "activity": "modulates",
-      "from_level": "cognitive",
-      "to_level": "physiological",
-      "bridging_to": "strong",
-      "maturity": "established",
-      "evidence_base": "Not merely symbolic: blue-enriched (high-CCT) light at evening directly suppresses melatonin onset via L2 pathway. The circadian system responds to spectral content, not perceived color warmth. Temporal incongruity is both psychologically uncomfortable and physiologically disruptive."
-    },
-    {
-      "from_entity": "light_CCT",
-      "to_entity": "arousal_and_processing_style",
-      "activity": "modulates",
-      "from_level": "environmental",
-      "to_level": "cognitive",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Cool/bright \u2192 heightened arousal \u2192 narrower prediction intervals \u2192 analytical processing (Steidle & Werth, 2013; Feldman & Friston, 2010 precision weighting). Warm/dim \u2192 lowered arousal \u2192 wider prediction intervals \u2192 creative/relational processing."
-    },
-    {
-      "from_entity": "CCT_ecological_match",
-      "to_entity": "color_constancy_and_surface_appearance",
-      "activity": "supports_or_distorts",
-      "from_level": "environmental",
-      "to_level": "sensory",
-      "bridging_to": "moderate",
-      "maturity": "supported",
-      "evidence_base": "Surfaces are expected to appear under daylight-like spectra (Hurlbert, 2007). Extreme CCT departures distort surface colors beyond color constancy range \u2192 chromatic PE (Conway, 2009). Used deliberately by Turrell and theatrical lighting designers for perceptual transformation effects."
-    }
-  ],
-  "scope_conditions": [
-    "Applies to any architecturally-lit space",
-    "Strongest effects when CCT is clearly incongruent with temporal or social context",
-    "Tunable/dynamic CCT systems can match natural daylight variation and minimize temporal PE",
-    "Cultural modulation: warm-light preference is near-universal but the exact preferred CCT varies by culture and context"
-  ],
-  "moderators": [
-    "Illuminance level: CCT effects interact with brightness (warm dim light is cozy; warm bright light is unusual)",
-    "Context expectations: a restaurant at 2700K is expected; a hospital operating room at 2700K violates expectations",
-    "Time of day: same CCT has different effects depending on circadian phase",
-    "Individual chronotype and light sensitivity"
-  ],
-  "processing_style_effects": {
-    "cool_bright": {
-      "arousal": "heightened",
-      "prediction_intervals": "narrow",
-      "processing_style": "analytical, detail-focused",
-      "optimal_tasks": "precision work, analysis, editing"
-    },
-    "warm_dim": {
-      "arousal": "lowered",
-      "prediction_intervals": "wide",
-      "processing_style": "creative, relational",
-      "optimal_tasks": "brainstorming, synthesis, social interaction"
-    }
-  },
-  "interactions": [
-    {
-      "template_id": "CIRCADIAN_ARCH_REG_001",
-      "display_id": "L2",
-      "nature": "L4 specifies the spectral/CCT dimension that feeds into L2's circadian entrainment pathway. CCT is the perceptually accessible proxy for the melanopic content that L2 operates on."
-    },
-    {
-      "template_id": "CROSSMODAL_CONGRUENCE_001",
-      "nature": "L4 is a specific instance of cross-modal prediction congruence: visual CCT cue predicts temporal context; congruence = fluency; violation = PE."
-    },
-    {
-      "template_id": "LUM_CONTRAST_PE_001",
-      "display_id": "L1",
-      "nature": "L1 operates on luminance distribution (light-dark); L4 operates on chromaticity (warm-cool). Independent channels that jointly determine the visual character of architectural light."
-    }
-  ],
-  "maturity": "supported_with_acknowledged_dissent",
-  "maturity_note": "Ecological and arousal interpretations not yet empirically distinguished. Core CCT-mood and CCT-cognition findings replicated but with inconsistencies.",
-  "calibration_parameters": {
-    "dual_interpretation": {
-      "preferred_interpretation": "ecological_signal",
-      "alternative_interpretation": "arousal_mediation",
-      "panel_verdict": "RETAIN with acknowledged dual interpretation",
-      "reasoning": "Ecological-signal framing integrates naturally with PE framework and generates testable predictions that arousal account does not"
-    },
-    "ecological_signal_account": {
-      "proponent": "Steidle",
-      "mechanism": "Brain uses CCT as ecological TIME-OF-DAY signal triggering corresponding processing modes",
-      "evidence_for": [
-        "Dim/warm \u2192 creativity effect replicated in multiple laboratories",
-        "Effect operates through construal level (dim light promotes abstract, high-level construal)",
-        "Effect interacts with light COLOR, not just intensity \u2014 warm CCT at moderate illuminance promotes creativity more than cool CCT"
-      ],
-      "key_prediction": "Cool light at low illuminance is ecologically incongruent \u2192 should produce DISCOMFORT or cognitive interference"
-    },
-    "arousal_mediation_account": {
-      "proponent": "Veitch",
-      "mechanism": "CCT \u2192 arousal \u2192 processing mode (simple mediation without ecological prediction)",
-      "evidence_for": [
-        "Replication landscape uneven \u2014 variable effect sizes and published failures to replicate",
-        "Cool bright light is more arousing than warm dim light; arousal modulates processing style",
-        "Studies controlling illuminance while varying CCT alone generally find smaller or null effects"
-      ],
-      "key_objection": "Color constancy mechanisms compensate for illuminant changes \u2014 if system discounts CCT, cannot simultaneously use it as ecological signal"
-    },
-    "critical_experiment_to_resolve": {
-      "design": "Congruent (6500K morning \u2192 3000K evening) vs Incongruent (3000K morning \u2192 6500K evening) vs Constant (4500K throughout)",
-      "ecological_prediction": "Incongruent WORSE than constant (active violation > absence)",
-      "arousal_prediction": "Incongruent and constant equivalent (both lack arousal-modulation benefit)",
-      "status": "NOT YET CONDUCTED"
-    },
-    "evaluation_guidance": "Article Eater should evaluate CCT-cognition findings against BOTH interpretations and note which aspects of study design favor one account over the other",
-    "calibration_source": "Panel L-II (Doc 49) \u2014 Steidle-Veitch debate and panel verdict"
-  },
-  "calibration_status": "partially_calibrated_dual_interpretation",
-  "key_references": [
-    {
-      "citation": "Steidle, A., & Werth, L. (2013). Freedom from constraints: Darkness and dim illumination promote creativity. Journal of Environmental Psychology, 35, 67\u201380.",
-      "google_scholar_count": 300
-    },
-    {
-      "citation": "Feldman, H., & Friston, K. J. (2010). Attention, uncertainty, and free-energy. Frontiers in Human Neuroscience, 4, 215.",
-      "google_scholar_count": 800
-    },
-    {
-      "citation": "Hurlbert, A. (2007). Colour constancy. Current Biology, 17(21), R906\u2013R907.",
-      "google_scholar_count": 100
-    },
-    {
-      "citation": "Conway, B. R. (2009). Color vision, cones, and color-coding in the cortex. The Neuroscientist, 15(3), 274\u2013290.",
-      "google_scholar_count": 400
-    }
-  ],
-  "source_panel": "34_Panel_LI_Light_Luminance.md",
-  "calibration_panel": "49_Panel_LII_Light_Calibration_V1_0.md",
-  "overall_maturity": "supported_with_acknowledged_dissent",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "from": "architectural_light_source",
+      "to": "spectral_power_distribution",
+      "description": "Architectural light source CCT (and spectral power distribution relative to daylight locus)",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.88,
+      "justification": {
+        "data": [
+          {
+            "finding": "CCT-dependent conversion factors from photopic lux to melanopic lux are standardized; 2700K warm white = 0.31, 6500K cool white = 0.90",
+            "source": "CIE S 026:2018; Spitschan et al. (2016)",
+            "paradigm": "Standardized spectroradiometric measurement",
+            "effect": "~3:1 ratio in melanopic content between warm and cool sources at same photopic illuminance",
+            "n": null,
+            "design": "International measurement standard"
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+        ],
+        "backing": "The relationship between CCT and spectral power distribution is a physical property of light sources. CIE standardization provides reliable conversion factors for common architectural sources.",
+        "qualifier": "CCT alone does not fully specify SPD. LEDs with same CCT can have different SPDs if they have different phosphor compositions. The conversion factors assume typical LED SPDs.",
+        "rebuttal": "This step would fail if: (a) LED manufacturers produce sources with same CCT but dramatically different SPDs; (b) the CIE S 026 weighting function is incorrect.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 2,
+      "from": "spectral_power_distribution",
+      "to": "cone_activation_ratio",
+      "description": "→ S-cone vs. M+L-cone activation ratio at the retina (chromatic temporal signal)",
+      "warrant": "MECHANISM",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {
+            "finding": "Natural daylight CCT varies from ~2700K (dawn/dusk) to ~6500K (noon); S/(M+L) cone ratio shifts 2.6-fold across this range",
+            "source": "Spitschan et al. (2017)",
+            "paradigm": "Spectroradiometric survey of natural illuminants",
+            "effect": "S/(M+L) ratio 0.12 (dawn) to 0.31 (noon)",
+            "n": null,
+            "design": "Field spectral measurement"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+        ],
+        "backing": "The shift in S/(M+L) cone ratio with CCT is a direct consequence of the spectral composition of daylight across the day. Short-wavelength content increases at midday, shifting cone activation ratios predictably.",
+        "qualifier": "The natural daylight statistics assume outdoor viewing conditions. Indoor daylight through glazing may have modified spectral composition due to glazing transmittance. Artificial sources may not follow the natural daylight locus.",
+        "rebuttal": "This step would fail if: (a) the visual system does not compute cone ratios; (b) chromatic adaptation eliminates the ratio signal over minutes.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 3,
+      "from": "cone_activation_ratio",
+      "to": "temporal_encoding",
+      "description": "→ Cone-melanopsin opponent channel: S/(M+L) ratio encodes time-of-day prior independent of absolute irradiance",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "Cone-ipRGC opponent interaction generates a signal encoding the ratio of cone to melanopsin activation; this ratio shifts with CCT",
+            "source": "Panda (panel statement); Spitschan et al. (2016)",
+            "paradigm": "Theoretical derivation from photoreceptor physiology",
+            "effect": "Ratio signal independent of absolute illuminance",
+            "n": null,
+            "design": "Computational modeling"
+          }
+        ],
+        "backing": "The ratio-based encoding provides a more reliable temporal signal than absolute irradiance, which varies with weather and obstructions. Panda's argument that the cone-melanopsin ratio functions as a chromatic time-of-day signal is theoretically grounded but empirically limited.",
+        "qualifier": "This is a theoretical mechanism proposed by Panda in panel debate. Direct evidence that the SCN uses cone-melanopsin ratios for temporal prediction is limited. Foster explicitly dissented, arguing the CCT effect is mediated directly by melanopic irradiance.",
+        "rebuttal": "This step would fail if: (a) the SCN does not receive cone input; (b) the temporal encoding is purely irradiance-based without chromatic component; (c) Foster's direct melanopsin account is correct and the cone-opponent channel is not used for circadian timing.",
+        "competing_accounts": [
+          {
+            "account": "Direct melanopsin pathway",
+            "proponent": "Foster (panel dissent)",
+            "claim": "CCT effects on circadian system are mediated directly by melanopic irradiance (higher CCT → more short-wavelength → more melanopsin activation) rather than cone-opponent temporal signal",
+            "implication_for_template": "If direct melanopsin rather than cone-opponent, the temporal ecological prior is less relevant; the CCT effect reduces to a melanopic dose effect already captured in L2"
+          }
+        ],
+        "depth_tier": "A"
+      }
+    },
+    {
+      "step": 4,
+      "from": "temporal_encoding",
+      "to": "predictive_model_update",
+      "description": "→ PP channel: generative model receives CCT-derived temporal prediction; low CCT (2700K) = dusk/evening prior; high CCT (6500K) = midday prior",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.50,
+      "justification": {
+        "data": [
+          {
+            "finding": "S/(M+L) ratio is a highly consistent temporal predictor in natural environments — more consistent than absolute irradiance",
+            "source": "Spitschan et al. (2017)",
+            "paradigm": "Natural illuminant survey analysis",
+            "effect": "Ratio predicts time of day better than irradiance alone",
+            "n": null,
+            "design": "Correlational analysis of natural light statistics"
+          }
+        ],
+        "backing": "If the visual system evolved under natural illumination, it would benefit from using CCT-based temporal priors. The PP framework predicts that the generative model incorporates reliable environmental statistics. CCT is a reliable temporal statistic in natural environments.",
+        "qualifier": "This is a theoretical prediction from predictive processing framework. Direct measurement of temporal PE from CCT mismatch is not available. The behavioral or physiological consequences are inferred rather than measured.",
+        "rebuttal": "This step would fail if: (a) the PP temporal generative model does not use light statistics; (b) indoor environments have trained the system to expect arbitrary CCT at any time; (c) explicit knowledge of artificial lighting eliminates the implicit temporal prior.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 5,
+      "from": "congruent_CCT",
+      "to": "low_temporal_PE",
+      "description": "→ If CCT signal is temporally congruent with clock time: temporal prediction confirmed, small PE, system operates efficiently",
+      "warrant": "FUNCTIONAL",
+      "confidence": 0.55,
+      "justification": {
+        "data": [
+          {
+            "finding": "Panel consensus: temporal ecological prior operates with confidence 0.60 for natural daylight sources; reliability degrades to 0.40 for artificial LED sources deviating from daylight locus",
+            "source": "LIGHT-I Panel Consensus (Debate B)",
+            "paradigm": "Expert panel calibration",
+            "effect": "Confidence conditional on source type",
+            "n": null,
+            "design": "Expert panel judgment"
+          }
+        ],
+        "backing": "The PP framework predicts that confirmed predictions produce low PE and efficient processing. When CCT matches expected time of day, the temporal prediction is confirmed.",
+        "qualifier": "The efficiency benefit of congruent CCT is theoretical. No study has directly compared cognitive or affective outcomes under congruent vs. incongruent CCT conditions while controlling for melanopic irradiance.",
+        "rebuttal": "This step would fail if: (a) CCT congruence has no measurable cognitive or affective consequence; (b) the system adapts to any CCT pattern within hours.",
+        "competing_accounts": [],
+        "depth_tier": "C"
+      }
+    },
+    {
+      "step": 6,
+      "from": "incongruent_CCT",
+      "to": "temporal_PE_and_allostatic_cost",
+      "description": "→ If CCT signal is temporally incongruent (e.g., 6500K at 22:00): temporal prediction error, IC2 body-budget mismatch, allostatic cost",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.52,
+      "justification": {
+        "data": [
+          {
+            "finding": "Evening exposure to LED-backlit screens (high CCT) affects circadian physiology and cognitive performance",
+            "source": "Cajochen et al. (2011)",
+            "paradigm": "Controlled evening light exposure",
+            "effect": "Delayed melatonin onset; reduced sleepiness; altered cognitive performance",
+            "n": 13,
+            "design": "Within-subjects crossover"
+          },
+          {
+            "finding": "CCT arousal mismatch cost: d = 0.20-0.50 on arousal/cortisol markers",
+            "source": "Rahman et al. (2014)",
+            "paradigm": "Evening light CCT manipulation",
+            "effect": "Elevated evening cortisol under high CCT",
+            "n": null,
+            "design": "Controlled laboratory"
+          }
+        ],
+        "backing": "Evening high-CCT light produces measurable physiological consequences including delayed melatonin and elevated cortisol. These are consistent with a temporal mismatch cost. The IC2 body-budget mismatch is a theoretical interpretation.",
+        "qualifier": "The observed effects confound the PP temporal mismatch (ecological signal conflict) with the direct CB pathway (melanopic suppression). Cajochen's study cannot distinguish whether the cognitive effects are from temporal PE or from melatonin suppression directly.",
+        "rebuttal": "This step would fail if: (a) all evening high-CCT effects are mediated by direct melatonin suppression with no independent temporal PE component; (b) the allostatic cost framing is inappropriate and the effects are transient without cumulative consequence.",
+        "competing_accounts": [],
+        "depth_tier": "B"
+      }
+    },
+    {
+      "step": 7,
+      "from": "high_CCT_evening",
+      "to": "dual_pathway_disruption",
+      "description": "→ Parallel CB channel: CCT modulates melanopic irradiance (high CCT → higher melanopsin activation per photopic lux); evening high-CCT light simultaneously signals ecological 'midday' (PP conflict) and directly suppresses melatonin (CB disruption)",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {
+            "finding": "High CCT sources have ~3x the melanopic irradiance per photopic lux compared to low CCT; this directly increases circadian system activation",
+            "source": "CIE S 026:2018",
+            "paradigm": "Standardized conversion factors",
+            "effect": "6500K delivers ~3x melanopic dose vs 2700K at same photopic lux",
+            "n": null,
+            "design": "Physical measurement standard"
+          },
+          {
+            "finding": "Evening light suppresses melatonin via direct M1 ipRGC pathway; suppression threshold ~30 m-lux mEDI",
+            "source": "Gooley et al. (2011); Arendt (panel statement)",
+            "paradigm": "Controlled evening exposure",
+            "effect": "Dose-dependent melatonin suppression",
+            "n": 116,
+            "design": "Within-subjects"
+          }
+        ],
+        "backing": "The dual-pathway model is the panel consensus: evening high-CCT light operates through both PP (temporal ecological mismatch) and CB (direct melanopic suppression) channels simultaneously. This explains why CCT effects are larger than either pathway alone would predict.",
+        "qualifier": "The relative contributions of PP vs CB pathways are not quantified. Arendt's insistence on distinguishing suppression from phase-shifting applies here: the two phenomena have different thresholds and architectural implications.",
+        "rebuttal": "This step would fail if: (a) the PP pathway is negligible and all CCT effects are direct melanopic; (b) the pathways are not additive but redundant, such that blocking one eliminates the entire effect.",
+        "competing_accounts": [],
+        "depth_tier": "A"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "luminance_level": {
+      "note": "CCT-dependent conversion factors (1 photopic lux → m-lux mEDI, CIE S 026)",
+      "2700K_warm_white": 0.31,
+      "3000K": 0.42,
+      "4000K_neutral_white": 0.62,
+      "5000K": 0.78,
+      "6500K_cool_white_D65": 0.9,
+      "natural_daylight_overcast": 0.92,
+      "source": "Spitschan et al. (2016); CIE S 026:2018",
+      "confidence": 0.88,
+      "bridge_warrant": "CONSTITUTIVE"
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "active",
-  "generation": 2,
-  "ecological_validation": false
+  "building_types": [
+    "all_occupied_buildings",
+    "priority: residential, eldercare, healthcare, schools"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "CIRCADIAN_ARCH_REG_001",
+    "CB_SLEEP_ARCHITECTURE_002",
+    "NM_CIRCADIAN_ENTRAINMENT_001",
+    "T7"
+  ],
+  "ie_dpt_interaction": "T_IE_003 (Semantic Override) — occupants with explicit knowledge of CCT effects can override the implicit temporal prior response; a sleep researcher working under 6500K at 23:00 does not experience the same temporal mismatch cost as a naive occupant",
+  "key_references": [
+    "Spitschan et al. (2016). https://doi.org/10.1016/j.cub.2016.08.040",
+    "Cajochen et al. (2011). https://doi.org/10.1152/japplphysiol.00165.2011",
+    "Rahman et al. (2014). https://doi.org/10.1177/0748730414548551"
+  ],
+  "panel_docs": [
+    "docs/37_Panel_MAT_I_Materials.md"
+  ],
+  "panel_source": "MAT-I (Materials)",
+  "panel_reasoning_excerpt": "### Template MAT3: Multi-Modal Material Identity Integration\n\n```yaml\ntemplate_id: \"MATERIAL_IDENTITY_INTEGRATION_001\"\ndisplay_id: \"MAT3\"\nname: \"Multi-Modal Material Identity Integration and Cross-Modal Prediction\"\n\nstructural_pattern: >\n  The brain constructs a unified material percept from parallel\n  sensory channels: visual (grain, color, reflectance, texture),\n  haptic (roughness, compliance, temperature), acoustic (impact\n  sound, resonance, absorption), and olfactory (VOC signature).\n  Each channel generates predictions about the other channels\n  based on learned material-identity associations: \"this looks\n  like oak\" generates predictions for warmth, moderate roughness,\n  mellow impact sound, and faint terpene scent. Contact that\n  CONFIRMS these cross-modal predictions produces processing\n  fluency and a sense of material authenticity. Contact that\n  VIOLATES them produces cross-modal PE and a sense of material\n  inauthenticity — the \"something is off\" experience of veneer,\n  laminate, or deceptive surface treatments. The PE magnitude\n  depends on the specificity of the visual prediction (highly\n  stereotyped materials like marble or oak generate strong\n  cross-modal predictions; novel materials generate weak ones)\n  and the number of channels violated (single-channel violation\n  produces mild unease; multi-channel violation produces strong\n  inauthenticity signal).\n\nhigher_order_principle: >\n  Extension of AX5 (cross-modal congruence) to the specific\n  domain of material identity. AX5 describes the general principle\n  that sensory channels predict each other. MAT3 specifies how\n  this operates for materials: (a) which material properties are\n  predicted by which sensory channels, (b) what physical parameters\n  determine congruence vs. violation, and (c) how multi-channel\n  convergence produces the qualitative sense of \"real material\"\n  vs. \"fake material\" that Pallasmaa and Zumthor describe.\n\nframework_ids:\n  - \"multisensory_integration\"\n  - \"predictive_processing\"\n  - \"ecological_psychology\"\n  - \"architectural_phenomenology\"\n\ncausal_links:\n  - from_variable: \"visual_material_identity\"\n    to_variable: \"cross_modal_haptic_thermal_acoustic_prediction\"\n    activity: \"generates\"\n    from_level: \"neural\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Vision dominates material identification in architectural\n      contexts (Klatzky & Lederman, 2010). Seeing a surface\n      activates the material category (\"marble,\" \"oak,\" \"steel\")\n      and generates predictions for ALL other modalities. These\n      predictions are learned associations, not innate — cultural\n      exposure calibrates the cross-modal prediction network.\n\n  - from_variable: \"actual_haptic_thermal_acoustic_olfactory_input\"\n    to_variable: \"cross_modal_material_PE\"\n    activity: \"generates_if_discrepant\"\n    from_level: \"environmental\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Contact with the material provides ground truth. If haptic\n      input matches visual prediction → low PE, fluency. If\n      mismatch → cross-modal PE. Spence & Gallace (2011):\n      visual-haptic incongruence slows material categorization\n      and reduces confidence. The magnitude scales with the\n      number of violated channels.\n\n  - from_variable: \"cross_modal_material_PE\"\n    to_variable: \"material_authenticity_judgment\"\n    activity: \"determines\"\n    from_level: \"neural\"\n    to_level: \"cognitive\"\n    bridging_quality: \"moderate\"\n    maturity: \"supported\"\n    notes: >\n      Low cross-modal PE → \"real\" material, processing fluency,\n      positive affect. High cross-modal PE → \"fake\" material,\n      processing disfluency, negative affect. Pallasmaa's\n      \"alienation of the senses\" under synthetic materials\n      may be the experiential correlate of sustained high\n      cross-modal material PE.\n\n  - from_variable: \"material_authenticity_judgment\"\n    to_variable: \"enviro\n\n[... excerpt truncated at 4000 chars]",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/37_Panel_MAT_I_Materials.md",
+  "excerpt_char_range": [
+    79040,
+    84040
+  ],
+  "cross_template_interactions": {
+    "IC2": "Body Budget Prediction — the temporal prior mismatch cost is an IC2 interaction: the body budget model predicts metabolic state based on expected time of day; CCT-driven temporal mismatch introduces a persistent body-budget prediction error",
+    "AX4": "Perceived Control — occupants with tunable lighting systems can adjust CCT; those without control are forced into temporal mismatch conditions"
+  },
+  "calibration_status": "calibrated",
+  "confidence": 0.6
 }
