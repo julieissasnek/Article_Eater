@@ -62,7 +62,11 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 class BridgeType(Enum):
-    """Types of bridge warrants."""
+    """
+    Canonical CMR bridge warrant types (6 levels).
+    Ceiling priors defined in OPUS_REVIEW_GUIDE.md:9-17.
+    For evidence evaluation types, see EvidenceEvaluationType.
+    """
     MECHANISM = "mechanism"        # Same causal pathway in both domains
     FUNCTIONAL = "functional"      # Same outcome, different mechanisms
     ANALOGICAL = "analogical"      # Structural similarity
@@ -70,11 +74,19 @@ class BridgeType(Enum):
     # F2.1: Capacity bridge type per Cartwright (ruthless review 2026-01-22)
     CAPACITY = "capacity"          # Entity has stable capacity (not mechanism-based)
     EMPIRICAL_COVARIANCE = "empirical_covariance"  # Sprint 8: Co-tested in same study
+    THEORETICAL_DEFAULT = "theoretical_default"     # Panel-estimated with no direct empirical support
 
-    # Sprint T2-1.7: Epistemic bridge warrant subtypes
-    EPISTEMIC_COHERENCE_WARRANT = "epistemic_coherence_warrant"      # Accepted via web coherence
-    ARGUMENTATIVE_WARRANT = "argumentative_warrant"                  # Survived adversarial scrutiny
-    EPISTEMIC_VIGILANCE_WARRANT = "epistemic_vigilance_warrant"      # Evaluated via source quality
+
+class EvidenceEvaluationType(str, Enum):
+    """
+    Types for evaluating evidence quality in Article Eater.
+    These are NOT CMR bridge warrant types and do not have ceiling priors.
+    They evaluate how trustworthy/well-structured evidence is,
+    not the strength of a theory-to-architecture bridge.
+    """
+    EPISTEMIC_COHERENCE = "epistemic_coherence_warrant"      # Accepted via web coherence
+    ARGUMENTATIVE = "argumentative_warrant"                  # Survived adversarial scrutiny
+    EPISTEMIC_VIGILANCE = "epistemic_vigilance_warrant"      # Evaluated via source quality
 
 
 class BridgeStatus(Enum):
@@ -99,17 +111,22 @@ class ConfidenceSource(Enum):
 #   - CONSTITUTIVE reduced from 0.85 to 0.75 (definitional bridges can be contested)
 #   - CAPACITY added at 0.45 (entities have stable capacities, but often unfalsifiable)
 # Panel validation (2026-01-22): CAPACITY reduced from 0.55 to 0.45 per Cartwright
+# Ceiling priors per OPUS_REVIEW_GUIDE.md:9-17
 DEFAULT_BRIDGE_CONFIDENCE: Dict[BridgeType, float] = {
-    BridgeType.CONSTITUTIVE: 0.75,  # Target literally contains source (reduced per Cartwright)
-    BridgeType.MECHANISM: 0.60,     # Mechanisms often conserved
-    BridgeType.CAPACITY: 0.45,      # Entity has stable capacity - reduced per Cartwright panel validation
-    BridgeType.FUNCTIONAL: 0.50,    # Functions via different mechanisms
-    BridgeType.ANALOGICAL: 0.35,    # Suggestive but often fail
+    BridgeType.CONSTITUTIVE: 0.75,        # Target literally contains source (reduced per Cartwright)
+    BridgeType.MECHANISM: 0.60,           # Mechanisms often conserved
     BridgeType.EMPIRICAL_COVARIANCE: 0.60,  # Sprint 8: Co-tested in same study
-    # Sprint T2-1.7: Epistemic bridge warrant default confidences
-    BridgeType.EPISTEMIC_COHERENCE_WARRANT: 0.55,    # Coherence alone is moderate confidence
-    BridgeType.ARGUMENTATIVE_WARRANT: 0.70,          # Survived scrutiny = higher confidence
-    BridgeType.EPISTEMIC_VIGILANCE_WARRANT: 0.65,    # Source quality check = good confidence
+    BridgeType.FUNCTIONAL: 0.50,          # Functions via different mechanisms
+    BridgeType.CAPACITY: 0.45,            # Entity has stable capacity - reduced per Cartwright panel validation
+    BridgeType.THEORETICAL_DEFAULT: 0.40, # Panel-estimated with no direct empirical support
+    BridgeType.ANALOGICAL: 0.35,          # Suggestive but often fail
+}
+
+# Evidence evaluation type confidences (separate from CMR bridge priors)
+EVIDENCE_EVALUATION_CONFIDENCE: Dict[EvidenceEvaluationType, float] = {
+    EvidenceEvaluationType.ARGUMENTATIVE: 0.70,          # Survived scrutiny = higher confidence
+    EvidenceEvaluationType.EPISTEMIC_VIGILANCE: 0.65,    # Source quality check = good confidence
+    EvidenceEvaluationType.EPISTEMIC_COHERENCE: 0.55,    # Coherence alone is moderate confidence
 }
 
 

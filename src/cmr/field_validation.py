@@ -12,7 +12,7 @@ Given a template_id, generates a field study protocol including:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
@@ -76,7 +76,7 @@ class FieldStudyProtocol:
     cost_breakdown: dict[str, float]
     ethical_considerations: list[str]
     practical_notes: list[str]
-    generated_at: datetime = field(default_factory=datetime.utcnow)
+    generated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict:
         return {
@@ -693,7 +693,7 @@ def export_protocols_json(output_path: Optional[Path] = None) -> dict:
     """Export all protocols to JSON."""
     protocols = generate_all_protocols()
     data = {
-        "generated_at": datetime.utcnow().isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "n_protocols": len(protocols),
         "protocols": [p.to_dict() for p in protocols],
     }

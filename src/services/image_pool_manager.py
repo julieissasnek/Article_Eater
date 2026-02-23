@@ -17,7 +17,7 @@ import os
 import requests
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Dict, Any
@@ -259,7 +259,7 @@ class PoolImage:
     feature_scores: Dict[str, float] = field(default_factory=dict)
 
     # Metadata
-    downloaded_at: datetime = field(default_factory=datetime.utcnow)
+    downloaded_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     tagged_at: Optional[datetime] = None
     notes: str = ""
 
@@ -682,7 +682,7 @@ def search_and_download(
     conn.execute("""
         INSERT INTO download_log (query, source, count_requested, count_downloaded, timestamp)
         VALUES (?, ?, ?, ?, ?)
-    """, (query, source, count, len(saved), datetime.utcnow().isoformat()))
+    """, (query, source, count, len(saved), datetime.now(timezone.utc).isoformat()))
     conn.commit()
     conn.close()
 
@@ -775,7 +775,7 @@ def update_image_tags(
 
     if updates:
         updates.append("tagged_at = ?")
-        params.append(datetime.utcnow().isoformat())
+        params.append(datetime.now(timezone.utc).isoformat())
 
         sql = f"UPDATE images SET {', '.join(updates)} WHERE image_id = ?"
         params.append(image_id)

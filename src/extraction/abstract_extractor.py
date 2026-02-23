@@ -34,6 +34,7 @@ from src.extraction.claim_extractor import (
 from src.extraction.contracts import assert_valid_payload
 from src.extraction.row_classifier_codex import normalize_ocr_text
 from src.extraction.vocabulary import find_closest_dv, find_closest_iv, load_vocabulary
+from src.services.db_locator import resolve_article_finder_db
 
 
 _MIN_MAP_CONF = 0.65
@@ -218,7 +219,7 @@ _TABLE_START_RE = re.compile(r"^\s*table\s*\d+[a-z]?[.:)]?\s*", re.IGNORECASE)
 
 _DEFAULT_METADATA_CSV = "data/production/realtime_pdf_completion_queue.csv"
 _DEFAULT_PREPROCESS_DIR = "data/production/pdf_preprocess_cache"
-_DEFAULT_ARTICLE_DB = "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/article_finder.db"
+_DEFAULT_ARTICLE_DB: str | None = None
 
 
 def _normalize_space(text: str) -> str:
@@ -1293,7 +1294,7 @@ def batch_extract_abstracts_and_captions(
     table_classifications_path: str = "data/production/table_classifications.json",
     metadata_csv_path: str = _DEFAULT_METADATA_CSV,
     preprocess_cache_dir: str = _DEFAULT_PREPROCESS_DIR,
-    article_db_path: str = _DEFAULT_ARTICLE_DB,
+    article_db_path: str | None = _DEFAULT_ARTICLE_DB,
     vocabulary_path: str = "data/vocabulary/variable_vocabulary.json",
     output_path: str = "data/production/abstract_claims.json",
     caption_lookup_output_path: str = "data/production/caption_dv_lookup.json",
@@ -1307,9 +1308,14 @@ def batch_extract_abstracts_and_captions(
         triage_records = triage_records[:limit]
 
     metadata_map = _load_metadata_csv(metadata_csv_path)
-    db_path = Path(article_db_path)
+    db_path: Path | None = None
+    try:
+        db_path = resolve_article_finder_db(article_db_path)
+    except Exception:
+        if article_db_path:
+            db_path = Path(article_db_path)
     db_conn: sqlite3.Connection | None = None
-    if db_path.exists():
+    if db_path is not None and db_path.exists():
         try:
             db_conn = sqlite3.connect(str(db_path))
         except Exception:
@@ -1423,7 +1429,11 @@ def main() -> None:
     parser.add_argument("--table-classifications-path", default="data/production/table_classifications.json")
     parser.add_argument("--metadata-csv-path", default=_DEFAULT_METADATA_CSV)
     parser.add_argument("--preprocess-cache-dir", default=_DEFAULT_PREPROCESS_DIR)
-    parser.add_argument("--article-db-path", default=_DEFAULT_ARTICLE_DB)
+    parser.add_argument(
+        "--article-db-path",
+        default=_DEFAULT_ARTICLE_DB,
+        help="Path to article_finder.db (auto-resolved if omitted)",
+    )
     parser.add_argument("--vocabulary-path", default="data/vocabulary/variable_vocabulary.json")
     parser.add_argument("--output-path", default="data/production/abstract_claims.json")
     parser.add_argument("--caption-lookup-output-path", default="data/production/caption_dv_lookup.json")

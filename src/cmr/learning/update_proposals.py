@@ -9,7 +9,7 @@ they queue for human review.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Optional
 import hashlib
@@ -61,8 +61,8 @@ class UpdateProposalRecord(Base):
     impact_assessment = Column(Text, nullable=True)
     requires_human_review = Column(Boolean, default=True)
     status = Column(String(20), default="proposed")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     reviewed_by = Column(String(100), nullable=True)
     review_notes = Column(Text, nullable=True)
 
@@ -106,7 +106,7 @@ class UpdateProposal:
     impact_assessment: str = ""
     requires_human_review: bool = True
     status: ProposalStatus = ProposalStatus.PROPOSED
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     review_notes: str = ""
 
     def to_dict(self) -> dict:
@@ -133,7 +133,7 @@ def _generate_proposal_id(
     parameter_name: Optional[str] = None,
 ) -> str:
     """Generate a unique proposal ID."""
-    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
     content = f"{template_id}:{proposal_type.value}:{parameter_name or 'none'}:{timestamp}"
     hash_suffix = hashlib.md5(content.encode()).hexdigest()[:6]
     return f"UPD-{timestamp[:8]}-{hash_suffix.upper()}"
@@ -497,7 +497,7 @@ def update_proposal_status(
     record.status = new_status.value
     record.reviewed_by = reviewed_by
     record.review_notes = review_notes
-    record.updated_at = datetime.utcnow()
+    record.updated_at = datetime.now(timezone.utc)
     session.commit()
     return True
 
@@ -741,7 +741,7 @@ def _apply_proposal_to_template(
         if "review_notes" not in template_data:
             template_data["review_notes"] = []
         template_data["review_notes"].append({
-            "date": datetime.utcnow().isoformat(),
+            "date": datetime.now(timezone.utc).isoformat(),
             "proposal_id": proposal.proposal_id,
             "note": f"Contradiction flagged for {proposal.parameter_name}: "
                     f"current={proposal.current_value}, observed={proposal.proposed_value}",
@@ -755,7 +755,7 @@ def _apply_proposal_to_template(
     if "update_history" not in template_data:
         template_data["update_history"] = []
     template_data["update_history"].append({
-        "date": datetime.utcnow().isoformat(),
+        "date": datetime.now(timezone.utc).isoformat(),
         "proposal_id": proposal.proposal_id,
         "type": proposal.proposal_type.value,
         "parameter": proposal.parameter_name,

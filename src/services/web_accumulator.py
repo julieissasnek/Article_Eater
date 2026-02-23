@@ -40,10 +40,15 @@ from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 
+from src.services.db_locator import resolve_web_db
+
 logger = logging.getLogger(__name__)
 
 # Default paths
-DEFAULT_DB_PATH = Path(__file__).parent.parent.parent / "data" / "web_persistence.db"
+try:
+    DEFAULT_DB_PATH = resolve_web_db(prefer="integrated")
+except Exception:
+    DEFAULT_DB_PATH = Path(__file__).parent.parent.parent / "data" / "web_persistence.db"
 DEFAULT_JSON_PATH = Path(__file__).parent.parent.parent / "data" / "accumulated_web.json"
 DEFAULT_EVENTS_PATH = Path(__file__).parent.parent.parent / "data" / "events.jsonl"
 

@@ -398,10 +398,13 @@ Return as JSON with structure:
                 str(pdf_path)
             )
             if extracted:
+                def _norm_cell(value: Any) -> str:
+                    return str(value or "").strip().lower()
+
                 fingerprint = (
                     extracted.page_number,
-                    tuple(h.strip().lower() for h in extracted.headers),
-                    tuple(tuple(c.strip().lower() for c in row) for row in extracted.rows[:10]),
+                    tuple(_norm_cell(h) for h in (extracted.headers or [])),
+                    tuple(tuple(_norm_cell(c) for c in row) for row in (extracted.rows or [])[:10]),
                 )
                 if fingerprint in seen_fingerprints:
                     continue

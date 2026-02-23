@@ -164,6 +164,19 @@ VOCABULARY_BRIDGE = {
     'views': ['windows', 'visual access', 'prospect'],
     'nature': ['biophilia', 'natural elements', 'natural environment'],
 
+    # Material / texture terms (biophilic design)
+    'wood': ['timber', 'wooden', 'wood prominent', 'wood treatment', 'natural wood',
+             'wood paneling', 'wood grain', 'grained wood', 'wood surface',
+             'natural materials', 'wood_prominent'],
+    'timber': ['wood', 'wooden', 'natural wood', 'wood prominent'],
+    'grained wood': ['wood', 'timber', 'wood grain', 'wood prominent', 'natural wood'],
+    'beautiful wood': ['wood', 'timber', 'wood prominent', 'natural wood', 'wood grain'],
+    'natural materials': ['wood', 'timber', 'stone', 'natural wood',
+                          'natural_materials_wood_stone'],
+    'stone': ['natural materials', 'natural stone', 'rock'],
+    'biophilic design': ['nature', 'natural elements', 'wood', 'plants',
+                         'natural materials', 'biophilia'],
+
     # Outcome terms
     'productivity': ['performance', 'work output', 'efficiency', 'task performance'],
     'stress': ['anxiety', 'tension', 'psychological stress', 'cortisol'],
@@ -173,6 +186,10 @@ VOCABULARY_BRIDGE = {
     'creativity': ['creative thinking', 'innovation', 'divergent thinking'],
     'sleep': ['sleep quality', 'circadian', 'rest'],
     'recovery': ['healing', 'recuperation', 'restoration'],
+    'restorative': ['restoration', 'recovery', 'stress recovery', 'healing',
+                    'attention restoration', 'ART'],
+    'restoration': ['restorative', 'recovery', 'stress recovery',
+                    'attention restoration', 'ART', 'recuperation'],
 
     # Population terms
     'workers': ['employees', 'office workers', 'staff'],
@@ -257,6 +274,11 @@ QUERY_PATTERNS = [
      QueryType.WHICH_IS_BETTER, 2, 3),  # Note: group 1 is optional context
     (r"(?:should\s+I|is\s+it\s+better\s+to)\s+(?:use|choose|prefer)\s+(.+?)\s+or\s+(.+?)(?:\?|$)",
      QueryType.WHICH_IS_BETTER, 1, 2),
+    # "which is more [adjective] X or Y?" — comparative quality queries
+    (r"which\s+is\s+more\s+\w+\s+(.+?)\s+or\s+(.+?)(?:\?|$)",
+     QueryType.WHICH_IS_BETTER, 1, 2),
+    (r"(?:is|are)\s+(.+?)\s+(?:more|less)\s+\w+\s+than\s+(.+?)(?:\?|$)",
+     QueryType.WHICH_IS_BETTER, 1, 2),
 
     # HOW_CONFIDENT patterns
     (r"how\s+(?:confident|certain|sure)\s+(?:are\s+we|is\s+the\s+evidence)\s+(?:about|that|in)\s+(.+?)(?:\?|$)",
@@ -269,6 +291,19 @@ QUERY_PATTERNS = [
      QueryType.WHY_BELIEVE, 1, None),
     (r"(?:what|where)\s+(?:is|are)\s+(?:the\s+)?(?:basis|grounds|reasons?)\s+for\s+(?:believing\s+)?(.+?)(?:\?|$)",
      QueryType.WHY_BELIEVE, 1, None),
+
+    # MECHANISM patterns — "what mechanism explains why X?", "how does X cause Y?"
+    # "why is wood restorative?", "do plants and wood share the same mechanism?"
+    (r"(?:what|which)\s+mechanism\s+(?:explains?|underlies?|accounts?\s+for)\s+(?:why\s+)?(.+?)(?:\?|$)",
+     QueryType.WHY_BELIEVE, 1, None),
+    (r"how\s+does\s+(.+?)\s+(?:cause|produce|lead to|result in|trigger|mediate)\s+(.+?)(?:\?|$)",
+     QueryType.DOES_X_AFFECT_Y, 1, 2),
+    (r"why\s+(?:is|are|does|do)\s+(.+?)\s+(?:restorative|calming|stress.reducing|beneficial|helpful)(?:\?|$)",
+     QueryType.WHY_BELIEVE, 1, None),
+    (r"(?:do|does)\s+(.+?)\s+and\s+(.+?)\s+(?:share|use|work through)\s+(?:the\s+)?same\s+(?:mechanism|route|pathway|process)(?:\?|$)",
+     QueryType.COMPARE, 1, 2),
+    (r"(?:is|are)\s+(?:the\s+)?(?:mechanism|route|pathway|process)\s+(?:for|behind)\s+(.+?)\s+(?:the\s+)?same\s+as\s+(?:for\s+)?(.+?)(?:\?|$)",
+     QueryType.COMPARE, 1, 2),
 
     # WHAT_CONTRADICTS patterns
     (r"what\s+(?:contradicts|conflicts\s+with|challenges|disputes)\s+(.+?)(?:\?|$)",

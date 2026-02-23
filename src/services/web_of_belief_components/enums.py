@@ -108,6 +108,50 @@ class PESubtype(str, Enum):
     SOCIAL_PE = "social_pe"
 
 
+class StudyDesign(str, Enum):
+    """ARCH-6a: Study design quality classification (Mayo).
+
+    Ordered from strongest to weakest severe-testing potential.
+    RCTs can rule out confounds that observational studies cannot.
+    """
+
+    RCT = "rct"                           # Randomized controlled trial
+    META_ANALYSIS = "meta_analysis"       # Systematic meta-analysis of multiple studies
+    QUASI_EXPERIMENTAL = "quasi_experimental"  # Non-randomized but controlled
+    OBSERVATIONAL = "observational"       # Correlational / cross-sectional / cohort
+    CASE_STUDY = "case_study"             # Single case, clinical, or design post-occupancy
+    QUALITATIVE = "qualitative"           # Interviews, ethnography, phenomenological
+    THEORETICAL = "theoretical"           # No empirical data — modelling or argument only
+    UNKNOWN = "unknown"                   # Not classified
+
+
+class EvidenceQuality(str, Enum):
+    """ARCH-6d: Distinguish 'consistent with' vs 'severely tested by' (Mayo).
+
+    A belief that is CONSISTENT WITH evidence has not been tested against
+    plausible alternatives. A belief that has been SEVERELY TESTED survived
+    a study designed to detect failure if the hypothesis were false.
+    """
+
+    SEVERELY_TESTED = "severely_tested"           # Passed a test that would likely have failed if H false
+    MODERATELY_TESTED = "moderately_tested"       # Partial control for alternatives
+    CONSISTENT_ONLY = "consistent_only"           # Compatible with evidence but alternatives not ruled out
+    UNTESTED = "untested"                         # No empirical confrontation
+
+
+# ---- severity weights for StudyDesign ----
+STUDY_DESIGN_SEVERITY_WEIGHT: dict[str, float] = {
+    StudyDesign.RCT.value: 1.0,
+    StudyDesign.META_ANALYSIS.value: 0.95,
+    StudyDesign.QUASI_EXPERIMENTAL.value: 0.70,
+    StudyDesign.OBSERVATIONAL.value: 0.45,
+    StudyDesign.CASE_STUDY.value: 0.25,
+    StudyDesign.QUALITATIVE.value: 0.15,
+    StudyDesign.THEORETICAL.value: 0.05,
+    StudyDesign.UNKNOWN.value: 0.30,
+}
+
+
 __all__ = [
     "EpistemicLevel",
     "BeliefStatus",
@@ -120,4 +164,7 @@ __all__ = [
     "PathwayType",
     "ReplicationStatus",
     "PESubtype",
+    "StudyDesign",
+    "EvidenceQuality",
+    "STUDY_DESIGN_SEVERITY_WEIGHT",
 ]

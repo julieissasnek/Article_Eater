@@ -871,59 +871,170 @@ class MechanismExplanationPattern:
     def __init__(self, web: WebOfBelief):
         self.web = web
 
+    # Constraint types that represent forward causal steps in a mechanism chain
+    MECHANISM_FORWARD_TYPES = {
+        ConstraintType.EPISTEMIC_MEDIATION,
+        ConstraintType.SUPPORTS,
+        ConstraintType.PROPOSES_MECHANISM,
+        ConstraintType.THEORETICALLY_PREDICTS,
+    }
+
+    # Constraint types that represent cross-chain coherence (parallel routes)
+    PARALLEL_ROUTE_TYPES = {
+        ConstraintType.COHERENCE_SUPPORT,
+    }
+
     def traverse(self, belief_id: str) -> Optional[MechanismResult]:
-        """Trace causal mechanisms for a belief."""
+        """
+        Trace causal mechanisms starting from a seed belief.
+
+        Strategy:
+          1. If belief_id points to a 'mechanism:' node, walk FORWARD along
+             EPISTEMIC_MEDIATION / SUPPORTS chains to build the ordered chain.
+          2. Otherwise (legacy: raw beliefs), look upstream for antecedents.
+          3. Collect parallel routes (COHERENCE_SUPPORT) as additional mediators.
+        """
         if belief_id not in self.web.beliefs:
             return None
 
         target = self.web.beliefs[belief_id]
+
+        # --- Forward walk from mechanism: entry nodes ---
+        if belief_id.startswith("mechanism:"):
+            return self._traverse_forward(target)
+
+        # --- Legacy: upstream antecedent search ---
+        return self._traverse_upstream(target)
+
+    def _traverse_forward(
+        self,
+        entry: Belief,
+        max_depth: int = 8,
+    ) -> MechanismResult:
+        """
+        Walk forward along EPISTEMIC_MEDIATION/SUPPORTS from the entry node.
+        Returns an ordered causal chain as a list of MechanismSteps.
+        """
+        # Build forward index: source_id → list of (target_id, constraint)
+        forward: Dict[str, List[tuple]] = {}
+        for c in self.web.constraints.values():
+            if c.constraint_type in self.MECHANISM_FORWARD_TYPES:
+                forward.setdefault(c.source_id, []).append((c.target_id, c))
+            if c.bidirectional and c.constraint_type in self.MECHANISM_FORWARD_TYPES:
+                forward.setdefault(c.target_id, []).append((c.source_id, c))
+
+        # BFS forward keeping insertion order for rendering
+        visited: set = set()
+        causal_chain: List[MechanismStep] = []
+        mediators: List[MechanismStep] = []
+        moderators: List[MechanismStep] = []
+        parallel_routes: List[MechanismStep] = []
+        has_experimental = False
+
+        queue: List[tuple] = [(entry.belief_id, 0, None)]  # (belief_id, depth, incoming_constraint)
+        while queue:
+            node_id, depth, incoming_c = queue.pop(0)
+            if node_id in visited or depth > max_depth:
+                continue
+            visited.add(node_id)
+
+            node_belief = self.web.beliefs.get(node_id)
+            if not node_belief:
+                continue
+
+            if node_id != entry.belief_id:
+                # Determine role from incoming constraint
+                role = "cause" if depth == 1 else "mediator"
+                if incoming_c and getattr(incoming_c, 'mediator', None):
+                    role = "mediator"
+
+                step = MechanismStep(
+                    belief_id=node_id,
+                    content=node_belief.content,
+                    role=role,
+                    evidence_strength=getattr(incoming_c, 'strength', 0.5) if incoming_c else 0.5,
+                    mechanism_type=self._infer_mechanism_type(node_belief),
+                )
+                # Attach mediator description from constraint for renderer
+                if incoming_c and getattr(incoming_c, 'mediator', None):
+                    step._mediator_desc = incoming_c.mediator
+                else:
+                    step._mediator_desc = None
+
+                if role == "mediator":
+                    mediators.append(step)
+                causal_chain.append(step)
+
+            # Follow forward edges — prefer mechanism: nodes first
+            next_hops = sorted(
+                forward.get(node_id, []),
+                key=lambda x: (0 if x[0].startswith("mechanism:") else 1)
+            )
+            for next_id, c in next_hops:
+                if next_id not in visited:
+                    # Coherence edges = parallel routes, not sequential steps
+                    if c.constraint_type in self.PARALLEL_ROUTE_TYPES:
+                        nb = self.web.beliefs.get(next_id)
+                        if nb:
+                            parallel_routes.append(MechanismStep(
+                                belief_id=next_id,
+                                content=nb.content,
+                                role="parallel_route",
+                                evidence_strength=c.strength,
+                                mechanism_type=self._infer_mechanism_type(nb),
+                            ))
+                    else:
+                        queue.append((next_id, depth + 1, c))
+
+        # Attach parallel routes as moderators slot (used in rendering)
+        moderators = parallel_routes
+
+        mechanism_type = self._determine_overall_mechanism(causal_chain, mediators)
+        confidence = self._calculate_mechanism_confidence(causal_chain, mediators, has_experimental)
+
+        return MechanismResult(
+            target_belief=entry,
+            causal_chain=causal_chain,
+            mediators=mediators,
+            moderators=moderators,
+            mechanism_type=mechanism_type,
+            confidence=confidence,
+            has_experimental_support=has_experimental,
+        )
+
+    def _traverse_upstream(
+        self,
+        target: Belief,
+    ) -> MechanismResult:
+        """Legacy upstream traversal for non-mechanism: beliefs."""
         causal_chain = []
         mediators = []
         moderators = []
         has_experimental = False
 
-        # Find causal antecedents (what causes this belief's outcome)
-        for constraint_id, constraint in self.web.constraints.items():
-            if constraint.target_id == belief_id:
-                source = self.web.beliefs.get(constraint.source_id)
-                if not source:
-                    continue
+        for constraint in self.web.constraints.values():
+            if constraint.target_id != target.belief_id:
+                continue
+            source = self.web.beliefs.get(constraint.source_id)
+            if not source:
+                continue
+            role = self._determine_role(constraint)
+            step = MechanismStep(
+                belief_id=source.belief_id,
+                content=source.content,
+                role=role,
+                evidence_strength=getattr(constraint, 'strength', 0.5),
+                mechanism_type=self._infer_mechanism_type(source),
+            )
+            step._mediator_desc = getattr(constraint, 'mediator', None)
+            if role == "moderator":
+                moderators.append(step)
+            elif role == "mediator":
+                mediators.append(step)
+            else:
+                causal_chain.append(step)
 
-                # Check constraint type for causal role
-                role = self._determine_role(constraint)
-                if role == "moderator":
-                    moderators.append(MechanismStep(
-                        belief_id=source.belief_id,
-                        content=source.content,
-                        role=role,
-                        evidence_strength=getattr(constraint, 'strength', 0.5),
-                        mechanism_type=self._infer_mechanism_type(source),
-                    ))
-                elif role == "mediator":
-                    mediators.append(MechanismStep(
-                        belief_id=source.belief_id,
-                        content=source.content,
-                        role=role,
-                        evidence_strength=getattr(constraint, 'strength', 0.5),
-                        mechanism_type=self._infer_mechanism_type(source),
-                    ))
-                else:
-                    causal_chain.append(MechanismStep(
-                        belief_id=source.belief_id,
-                        content=source.content,
-                        role=role,
-                        evidence_strength=getattr(constraint, 'strength', 0.5),
-                        mechanism_type=self._infer_mechanism_type(source),
-                    ))
-
-                # Check for experimental support
-                if hasattr(constraint, 'evidence_type') and constraint.evidence_type == 'experimental':
-                    has_experimental = True
-
-        # Determine overall mechanism type
         mechanism_type = self._determine_overall_mechanism(causal_chain, mediators)
-
-        # Calculate confidence
         confidence = self._calculate_mechanism_confidence(causal_chain, mediators, has_experimental)
 
         return MechanismResult(
@@ -1003,57 +1114,182 @@ class MechanismExplanationPattern:
         detail: DetailLevel,
         expertise: ExpertiseLevel
     ) -> str:
-        """Render mechanism explanation as text."""
+        """Render mechanism explanation as an ordered causal chain narrative."""
         lines = []
 
-        # Header
-        target_summary = result.target_belief.content[:60] + "..." if len(result.target_belief.content) > 60 else result.target_belief.content
-        lines.append(f"## How Does This Work: {target_summary}")
+        # ── Header ────────────────────────────────────────────────────────────
+        entry = result.target_belief
+        entry_label = self._belief_label(entry)
+        lines.append(f"## Causal Mechanism: {entry_label}")
         lines.append("")
-
-        # Mechanism type and confidence
-        lines.append(f"**Mechanism Type:** {result.mechanism_type.title()}")
-        lines.append(f"**Confidence:** {result.confidence:.0%}")
+        lines.append(
+            f"**Mechanism type:** {result.mechanism_type.title()} "
+            f"| **Confidence:** {result.confidence:.0%}"
+        )
         if result.has_experimental_support:
-            lines.append("**Note:** Supported by experimental evidence")
+            lines.append("*(Supported by experimental evidence)*")
         lines.append("")
 
-        # Causal chain
-        if result.causal_chain:
-            lines.append("### Causal Pathway")
-            for i, step in enumerate(result.causal_chain, 1):
-                if detail == DetailLevel.SUMMARY:
-                    lines.append(f"{i}. {step.content[:80]}...")
-                else:
-                    lines.append(f"{i}. **{step.role.title()}**: {step.content}")
-                    if detail == DetailLevel.COMPREHENSIVE:
-                        lines.append(f"   - Evidence strength: {step.evidence_strength:.0%}")
-                        lines.append(f"   - Type: {step.mechanism_type}")
+        if not result.causal_chain:
+            lines.append(
+                "*No causal chain found in the belief graph for this node. "
+                "More mechanism beliefs may need to be seeded.*"
+            )
+            return "\n".join(lines)
+
+        # ── Ordered causal chain with arrow connectors ────────────────────────
+        lines.append("### Causal Chain")
+        lines.append("")
+
+        # Entry node
+        lines.append(f"**[STIMULUS / ENTRY]** {self._belief_label(entry)}")
+        if detail != DetailLevel.SUMMARY:
+            lines.append(f"> {self._first_sentence(entry.content)}")
+        lines.append("")
+
+        for i, step in enumerate(result.causal_chain):
+            # Arrow connector with mediator description
+            mediator_desc = getattr(step, '_mediator_desc', None)
+            if mediator_desc:
+                lines.append(f"  ↓ *[{mediator_desc}]*")
+            else:
+                lines.append("  ↓")
+
+            # Role badge
+            role_badge = {
+                "cause": "STEP",
+                "mediator": "MEDIATED BY",
+                "parallel_route": "PARALLEL ROUTE",
+            }.get(step.role, "STEP")
+
+            label = self._belief_label_from_id(step.belief_id)
+            lines.append(f"**[{role_badge} {i + 1}]** {label}")
+
+            if detail == DetailLevel.SUMMARY:
+                lines.append(f"> {step.content[:100]}...")
+            else:
+                lines.append(f"> {self._first_sentence(step.content)}")
+                if detail == DetailLevel.COMPREHENSIVE:
+                    lines.append(f"> *(Evidence strength: {step.evidence_strength:.0%} "
+                                 f"| Type: {step.mechanism_type})*")
+                    # Full content for comprehensive
+                    rest = self._remaining_sentences(step.content)
+                    if rest:
+                        lines.append(f"> {rest}")
             lines.append("")
 
-        # Mediators
-        if result.mediators and detail != DetailLevel.SUMMARY:
-            lines.append("### Mediating Factors")
-            lines.append("These factors explain *how* the effect occurs:")
-            for med in result.mediators:
-                lines.append(f"- {med.content}")
-            lines.append("")
-
-        # Moderators
+        # ── Parallel routes (simultaneously active chains) ─────────────────────
         if result.moderators and detail != DetailLevel.SUMMARY:
-            lines.append("### Moderating Factors")
-            lines.append("These factors affect *when* or *for whom* the effect occurs:")
-            for mod in result.moderators:
-                lines.append(f"- {mod.content}")
-            lines.append("")
+            parallel = [m for m in result.moderators if m.role == "parallel_route"]
+            if parallel:
+                lines.append("### Parallel Routes (simultaneous)")
+                lines.append(
+                    "The same stimulus also activates these concurrent pathways:"
+                )
+                lines.append("")
+                for pr in parallel:
+                    pr_label = self._belief_label_from_id(pr.belief_id)
+                    lines.append(f"- **{pr_label}**")
+                    lines.append(f"  {self._first_sentence(pr.content)}")
+                lines.append("")
 
-        # Expertise-appropriate explanation
+        # ── Expertise-appropriate closing note ────────────────────────────────
         if expertise == ExpertiseLevel.NOVICE:
-            lines.append("### What This Means")
-            lines.append(f"This finding works through a {result.mechanism_type} process. ")
-            lines.append("The causal chain above shows the steps from cause to effect.")
+            lines.append("### What This Means in Practice")
+            lines.append(
+                f"This works through a {result.mechanism_type} process — "
+                f"the steps above show what actually happens in sequence, "
+                f"from the environmental trigger to the final outcome."
+            )
+        elif expertise == ExpertiseLevel.RESEARCHER:
+            n_steps = len(result.causal_chain)
+            lines.append(
+                f"*Chain length: {n_steps} steps. "
+                f"Confidence attenuates multiplicatively through the chain; "
+                f"each mediation step adds epistemic uncertainty.*"
+            )
 
         return "\n".join(lines)
+
+    # ── Rendering helpers ──────────────────────────────────────────────────────
+
+    def _belief_label(self, belief: Belief) -> str:
+        """Short human label from a belief object."""
+        return self._belief_label_from_id(belief.belief_id)
+
+    # ── Human-readable short labels for mechanism + outcome nodes ─────
+    _CLEAN_LABELS = {
+        # Mechanism nodes with custom readable names
+        "mechanism:srt:olfactory_safety_classification":
+            "Olfactory safety classification (piriform cortex)",
+        # Outcome nodes
+        "outcome:srt:skin_conductance_reduction": "Skin conductance ↓ (GSR; fastest, 30–90 s)",
+        "outcome:srt:heart_rate_reduction":       "Heart rate ↓ (2–5 min)",
+        "outcome:srt:hrv_increase":               "Heart rate variability ↑ (HRV; most sensitive, 1–5 min)",
+        "outcome:srt:blood_pressure_reduction":    "Blood pressure ↓ (5–15 min)",
+        "outcome:srt:cortisol_reduction":          "Cortisol ↓ (slowest, 15–30 min)",
+        "outcome:srt:respiratory_normalization":   "Respiratory rate ↓ & depth ↑ (1–5 min)",
+        "outcome:art:working_memory_recovery":     "Working memory ↑ (n-back, digit span)",
+        "outcome:art:inhibitory_control_recovery": "Inhibitory control ↑ (Stroop, go/no-go)",
+        "outcome:art:sustained_attention_recovery":"Sustained attention ↑ (SART, CPT)",
+        "outcome:subjective:calm":                "Subjective calm (PANAS, PRS)",
+        "outcome:subjective:vitality":            "Subjective vitality ↑ (SVS)",
+    }
+
+    def _belief_label_from_id(self, belief_id: str) -> str:
+        """Convert belief IDs to clean human-readable labels.
+
+        mechanism:art:soft_fascination → 'Soft Fascination (ART)'
+        outcome:srt:heart_rate_reduction → 'Heart rate ↓ (2–5 min)'
+        stimulus:wood:visual → 'Wood — Visual Channel'
+        """
+        # Custom clean labels (mechanism + outcome nodes)
+        if belief_id in self._CLEAN_LABELS:
+            return self._CLEAN_LABELS[belief_id]
+
+        if belief_id.startswith("mechanism:"):
+            parts = belief_id.split(":")
+            if len(parts) >= 3:
+                theory = parts[1].upper()
+                step = parts[2].replace("_", " ").title()
+                return f"{step} ({theory})"
+
+        if belief_id.startswith("outcome:"):
+            parts = belief_id.split(":")
+            if len(parts) >= 3:
+                step = parts[2].replace("_", " ").title()
+                return step
+
+        if belief_id.startswith("stimulus:"):
+            parts = belief_id.split(":")
+            if len(parts) >= 3:
+                material = parts[1].title()
+                modality = parts[2].replace("_", " ").title()
+                return f"{material} — {modality} Channel"
+
+        # Fallback: use content snippet from beliefs dict
+        belief = self.web.beliefs.get(belief_id)
+        if belief:
+            return belief.content[:60] + ("..." if len(belief.content) > 60 else "")
+        return belief_id
+
+    @staticmethod
+    def _first_sentence(text: str) -> str:
+        """Return first sentence of text."""
+        for sep in ('. ', '! ', '? ', '\n'):
+            idx = text.find(sep)
+            if idx != -1 and idx < 200:
+                return text[:idx + 1]
+        return text[:180] + ("..." if len(text) > 180 else "")
+
+    @staticmethod
+    def _remaining_sentences(text: str) -> str:
+        """Return everything after the first sentence."""
+        for sep in ('. ', '! ', '? '):
+            idx = text.find(sep)
+            if idx != -1 and idx < 200:
+                return text[idx + 2:].strip()
+        return ""
 
 
 # =============================================================================
@@ -1480,19 +1716,14 @@ class InterpretiveEngine:
         """
         Answer a natural language question.
 
+        For mechanism/WHY queries: traverses ALL relevant mechanism: entry beliefs
+        and merges their chains, so e.g. "why is wood restorative?" shows both the
+        ART cognitive chain and the SRT visual→amygdala→HPA physiological chain.
+
         Per Wilson: Achieve cognitive effect with minimal processing effort.
-
-        Args:
-            question: Natural language question
-            detail: How much detail to include
-            expertise: User's expertise level
-
-        Returns:
-            ExplanationResponse if successful, or ClarifyingQuestion if uncertain
         """
         # Classify question
         classification = self.classifier.classify_or_clarify(question)
-
         if isinstance(classification, ClarifyingQuestion):
             return classification
 
@@ -1500,7 +1731,6 @@ class InterpretiveEngine:
 
         # Find relevant beliefs
         belief_ids = self._find_relevant_beliefs(question)
-
         if not belief_ids:
             return ExplanationResponse(
                 success=False,
@@ -1508,51 +1738,377 @@ class InterpretiveEngine:
                        "Try rephrasing or asking about a specific topic."
             )
 
-        # Generate explanation for first matching belief
+        # Detect mechanism query: if multiple mechanism: nodes found, traverse all
+        mechanism_ids = [b for b in belief_ids if b.startswith("mechanism:")]
+
+        if len(mechanism_ids) >= 2:
+            # Prune: remove any entry that is already reachable (downstream) of another
+            # entry in the same candidate set — it will appear as a step in the root
+            # chain and doesn't need its own traversal.
+            root_ids = self._prune_to_roots(mechanism_ids)
+            return self._answer_multi_chain(
+                question, root_ids, pattern, detail, expertise
+            )
+
+        # Single belief path (non-mechanism or single entry)
         request = ExplanationRequest(
             pattern=pattern,
             belief_id=belief_ids[0],
             detail=detail,
             expertise=expertise
         )
-
         return self.explain(request)
+    def _answer_multi_chain(
+        self,
+        question: str,
+        entry_ids: List[str],
+        pattern: ExplanationPattern,
+        detail: DetailLevel,
+        expertise: ExpertiseLevel,
+    ) -> ExplanationResponse:
+        """
+        Traverse multiple mechanism entry nodes and produce a HUMAN-READABLE
+        conditional narrative grouped by encounter mode.
+
+        Output reads like:
+          "There are three complementary explanations that depend in part on
+           how a subject encounters wood.
+           If they only see it — just the grain and colour — ...
+           If they also smell it (the wood still gives off its woody scent) — ...
+           If they touch it, running their hand along the railing — ..."
+        """
+        from src.services.interpretive_intelligence import (
+            MechanismExplanationPattern, MechanismResult,
+        )
+        mech_pattern = MechanismExplanationPattern(self.web)
+
+        # Traverse all entry points
+        results: List[MechanismResult] = []
+        for eid in entry_ids[:5]:
+            r = mech_pattern.traverse(eid)
+            if r and (r.causal_chain or r.mediators):
+                results.append(r)
+
+        if not results:
+            return ExplanationResponse(
+                success=False,
+                message="Mechanism beliefs found but no traversable chains. "
+                        "Seed more mechanism nodes to extend the chain."
+            )
+
+        # ── Classify each chain by encounter modality ────────────────────────
+        # Look for stimulus: nodes feeding into each entry to determine modality
+        encounter_chains = []
+        for result in results:
+            entry_id = result.target_belief.belief_id
+            # Find any stimulus: node that feeds this entry
+            modality, condition = self._infer_encounter_mode(entry_id)
+            encounter_chains.append((modality, condition, result))
+
+        # Deduplicate: if two chains share a modality, keep first
+        seen_modalities: set = set()
+        unique_chains = []
+        for modality, condition, result in encounter_chains:
+            if modality not in seen_modalities:
+                unique_chains.append((modality, condition, result))
+                seen_modalities.add(modality)
+
+        # Sort by sensory priority: visual first (most common encounter),
+        # then olfactory, haptic, acoustic, kinesthetic, then everything else
+        MODALITY_ORDER = {
+            "seeing it": 0, "seeing it up close": 1,
+            "visual (attention pathway)": 0,
+            "smelling it": 2,
+            "touching it": 3, "multi-sensory (material pathway)": 3,
+            "being in a noisy space with it": 4,
+            "moving through it": 5,
+        }
+        unique_chains.sort(key=lambda x: MODALITY_ORDER.get(x[0], 99))
+
+        # ── Build narrative ──────────────────────────────────────────────────
+        lines = []
+        q_clean = question.strip("?!. ").lower()
+
+        # Extract the material from the query
+        material = "this"
+        for word in ("wood", "plants", "water", "stone", "daylight", "light", "nature"):
+            if word in q_clean:
+                material = word
+                break
+
+        n = len(unique_chains)
+        lines.append(f"## {question.strip('?!').strip().title()}")
+        lines.append("")
+        lines.append(
+            f"There are **{n} complementary explanation{'s' if n > 1 else ''}** "
+            f"that depend in part on how a subject encounters {material}. "
+            f"These operate simultaneously when multiple senses are engaged — "
+            f"they are additive, not alternative."
+        )
+        lines.append("")
+
+        seen_node_ids: set = set()
+
+        for i, (modality, condition, result) in enumerate(unique_chains):
+            # ── Encounter header ─────────────────────────────────────────────
+            header = self._narrative_header(modality, condition, material, i, n)
+            lines.append(f"---")
+            lines.append(f"### {header}")
+            lines.append("")
+
+            # ── Walk the chain as narrative prose ────────────────────────────
+            entry = result.target_belief
+            entry_sent = mech_pattern._first_sentence(entry.content)
+
+            # Opening sentence
+            theory = entry.belief_id.split(":")[1].upper() if ":" in entry.belief_id else ""
+            lines.append(
+                f"This triggers the **{theory}** pathway. "
+                f"{entry_sent}"
+            )
+            lines.append("")
+
+            # Walk the chain steps as numbered prose with progressive disclosure
+            step_lines = []
+            for j, step in enumerate(result.causal_chain):
+                if step.belief_id in seen_node_ids:
+                    label = mech_pattern._belief_label_from_id(step.belief_id)
+                    step_lines.append(
+                        f"From here, the pathway converges with the route "
+                        f"described above (→ *{label}*) and follows the same "
+                        f"downstream chain."
+                    )
+                    break
+
+                label = mech_pattern._belief_label_from_id(step.belief_id)
+                first_sent = mech_pattern._first_sentence(step.content)
+                remaining = mech_pattern._remaining_sentences(step.content)
+
+                # Summary line (always visible)
+                step_lines.append(f"{j + 1}. **{label}** — {first_sent}")
+
+                # Progressive disclosure: expandable deeper explanation
+                if detail != DetailLevel.SUMMARY and remaining:
+                    step_lines.append(f"<details>")
+                    step_lines.append(f"<summary>Why? (click to expand)</summary>")
+                    step_lines.append(f"")
+                    step_lines.append(f"{remaining}")
+                    step_lines.append(f"")
+                    step_lines.append(f"</details>")
+                    step_lines.append(f"")
+
+                seen_node_ids.add(step.belief_id)
+
+            if step_lines:
+                lines.extend(step_lines)
+                lines.append("")
+
+            # Outcome summary for this chain
+            outcomes = [s for s in result.causal_chain
+                        if s.belief_id.startswith("outcome:")]
+            if outcomes and detail != DetailLevel.SUMMARY:
+                lines.append("**Measurable outcomes:**")
+                for out in outcomes:
+                    label = mech_pattern._belief_label_from_id(out.belief_id)
+                    mediator = getattr(out, '_mediator_desc', None)
+                    if mediator:
+                        lines.append(f"- {label} ({mediator})")
+                    else:
+                        lines.append(f"- {label}")
+                lines.append("")
+
+            seen_node_ids.add(entry.belief_id)
+
+        # ── Closing summary ──────────────────────────────────────────────────
+        if n > 1:
+            lines.append("---")
+            lines.append("### Combined Effect")
+            lines.append("")
+            lines.append(
+                f"When multiple channels are active simultaneously "
+                f"(e.g., seeing *and* smelling {material}), "
+                f"the pathways above reinforce each other. The combined effect is "
+                f"larger than any single channel alone — this convergent benefit "
+                f"is why real {material} outperforms photographs or synthetic imitations "
+                f"matched on any single sensory dimension."
+            )
+            lines.append("")
+
+        if expertise == ExpertiseLevel.RESEARCHER:
+            lines.append(
+                f"*Technical: {len(entry_ids)} mechanism entry nodes scored; "
+                f"{len(results)} traversable chains found; "
+                f"{n} distinct encounter modalities rendered.*"
+            )
+
+        return ExplanationResponse(
+            success=True,
+            explanation="\n".join(lines),
+        )
+
+    def _infer_encounter_mode(self, mechanism_entry_id: str) -> tuple:
+        """
+        Given a mechanism: entry node ID, look for stimulus: nodes that
+        feed into it via SUPPORTS constraints, and infer the encounter
+        modality + condition from the stimulus node's tags/mediator.
+
+        Returns (modality: str, condition: str)
+        """
+        MODALITY_MAP = {
+            "visual": ("seeing it", "just looking at the grain and colour"),
+            "fractal_visual": ("seeing it up close", "close enough to see the grain texture"),
+            "olfactory": ("smelling it", "the wood still gives off its woody scent"),
+            "haptic": ("touching it", "running a hand along the surface, like a wooden railing"),
+            "acoustic": ("being in a noisy space with it", "wood surfaces absorb sound, reducing distraction"),
+            "kinesthetic": ("moving through it", "walking on wood floors or past wood panels"),
+        }
+
+        # Check if the entry ID itself hints at modality
+        eid_lower = mechanism_entry_id.lower()
+        if "olfact" in eid_lower or "smell" in eid_lower:
+            return MODALITY_MAP.get("olfactory", ("olfactory", ""))
+        if "visual" in eid_lower or "ecological_appraisal" in eid_lower:
+            return MODALITY_MAP.get("visual", ("visual", ""))
+
+        # Search for stimulus: → this entry constraints
+        for c in self.web.constraints.values():
+            if c.target_id == mechanism_entry_id and c.source_id.startswith("stimulus:"):
+                parts = c.source_id.split(":")
+                if len(parts) >= 3:
+                    modality = parts[2]  # stimulus:wood:visual → "visual"
+                    if modality in MODALITY_MAP:
+                        return MODALITY_MAP[modality]
+
+        # Infer from the mechanism family
+        if ":art:" in eid_lower:
+            return ("visual (attention pathway)", "the environment captures involuntary attention")
+        if ":srt:" in eid_lower:
+            return ("visual/olfactory (stress pathway)", "the scene signals ecological safety")
+        if ":mat4:" in eid_lower:
+            return ("multi-sensory (material pathway)", "seeing, touching, and/or smelling the material")
+        if ":dt1:" in eid_lower:
+            return ("environmental (distraction pathway)", "the environment reduces false alarms")
+
+        return ("sensory", "encountering the stimulus")
+
+    def _narrative_header(
+        self, modality: str, condition: str, material: str, index: int, total: int
+    ) -> str:
+        """Generate a human-readable section header for one encounter mode."""
+        if index == 0:
+            prefix = f"If they are only **{modality}**"
+        elif index == total - 1:
+            prefix = f"And if they are also **{modality}**"
+        else:
+            prefix = f"If they are also **{modality}**"
+
+        if condition:
+            return f"{prefix} — *{condition}*"
+        return prefix
+
+    def _prune_to_roots(self, candidate_ids: List[str]) -> List[str]:
+        """
+        Given a list of mechanism: belief IDs, remove any that are already
+        reachable (downstream) from another candidate via MEDIATION/SUPPORTS.
+
+        A 'root' is a node from which traversal begins fresh — not a node that
+        will inevitably be visited as a step inside another chain.
+
+        Example: given [biophilic_stimulus, soft_fascination], soft_fascination
+        is downstream of biophilic_stimulus so is pruned. Only biophilic_stimulus
+        is traversed; soft_fascination appears naturally as STEP 1.
+        """
+        FORWARD_TYPES = {
+            ConstraintType.EPISTEMIC_MEDIATION,
+            ConstraintType.SUPPORTS,
+            ConstraintType.PROPOSES_MECHANISM,
+        }
+        candidate_set = set(candidate_ids)
+
+        # Build reachability: for each candidate, which other candidates can it reach?
+        reachable_from: Dict[str, set] = {cid: set() for cid in candidate_ids}
+
+        for start in candidate_ids:
+            visited: set = set()
+            queue = [start]
+            while queue:
+                node = queue.pop(0)
+                if node in visited:
+                    continue
+                visited.add(node)
+                for c in self.web.constraints.values():
+                    if c.source_id == node and c.constraint_type in FORWARD_TYPES:
+                        if c.target_id in candidate_set and c.target_id != start:
+                            reachable_from[start].add(c.target_id)
+                        if c.target_id not in visited:
+                            queue.append(c.target_id)
+
+        # Remove any candidate that is reachable from another candidate
+        dominated = set()
+        for cid in candidate_ids:
+            dominated |= reachable_from[cid]
+
+        roots = [cid for cid in candidate_ids if cid not in dominated]
+        return roots if roots else candidate_ids[:2]  # safety fallback
 
     def _find_relevant_beliefs(self, question: str) -> List[str]:
         """
         Find beliefs related to question terms.
 
-        Uses vocabulary bridge if available, otherwise simple keyword matching.
+        For mechanism/WHY queries, prefer `mechanism:` belief nodes over raw
+        PDF extracts, since those nodes represent the actual causal steps the
+        MechanismPattern can traverse.
         """
         q_lower = question.lower()
+
+        # Detect if this is a mechanism/WHY/HOW query
+        is_mechanism_query = any(
+            kw in q_lower
+            for kw in (
+                "mechanism", "why is", "why are", "why does", "why do",
+                "how does", "how do", "what causes", "what explains",
+                "same route", "same pathway", "restorative", "restoration",
+            )
+        )
+
+        stopwords = {
+            'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
+            'to', 'of', 'in', 'for', 'on', 'with', 'that', 'this', 'it',
+            'what', 'why', 'how', 'does', 'do', 'same', 'which',
+        }
+        q_words = set(q_lower.split()) - stopwords
+
         relevant = []
 
-        # Use vocabulary bridge if available
-        if self.vocab:
-            # Will be implemented in vocabulary_bridge.py
-            pass
-
-        # Simple keyword matching fallback
         for belief_id, belief in self.web.beliefs.items():
             content_lower = belief.content.lower()
+            id_lower = belief_id.lower()
 
-            # Check for word overlap
-            q_words = set(q_lower.split())
-            content_words = set(content_lower.split())
-
-            # Remove common words
-            stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
-                        'to', 'of', 'in', 'for', 'on', 'with', 'that', 'this', 'it'}
-            q_words -= stopwords
-            content_words -= stopwords
-
+            # Score: word overlap in content
+            content_words = set(content_lower.split()) - stopwords
             overlap = len(q_words & content_words)
-            if overlap >= 2:  # At least 2 non-stopword matches
-                relevant.append((belief_id, overlap))
 
-        # Sort by overlap count
-        relevant.sort(key=lambda x: x[1], reverse=True)
+            # Also check tags
+            tag_overlap = sum(
+                1 for t in belief.tags if any(w in t.lower() for w in q_words)
+            )
+            score = overlap + tag_overlap * 0.5
 
+            # Strong boost for mechanism: nodes in mechanism queries
+            if is_mechanism_query and belief_id.startswith("mechanism:"):
+                # Extra boost for nodes whose ID words match query words
+                id_words = set(id_lower.replace(":", " ").replace("_", " ").split())
+                id_match = len(q_words & id_words)
+                score += 10 + id_match * 2
+
+            # Moderate penalty for raw PDF table rows (poor candidate for traversal)
+            if belief_id.startswith("pdf:") and "-TBL-" in belief_id:
+                score *= 0.3
+
+            if score >= 1.5:
+                relevant.append((belief_id, score))
+
+        relevant.sort(key=lambda x: -x[1])
         return [bid for bid, _ in relevant[:5]]
 
     def explain_credibility_decision(

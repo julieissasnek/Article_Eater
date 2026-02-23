@@ -92,6 +92,7 @@ from src.services.web_of_belief_components import (
     EnablingConditions,
     EpistemicLevel,
     EpistemicNodeSubtype,
+    EvidenceQuality,
     InferenceType,
     NodeDomain,
     PathwayType,
@@ -99,6 +100,8 @@ from src.services.web_of_belief_components import (
     ReplicationStatus,
     ScopeConditions,
     SourceDepth,
+    StudyDesign,
+    STUDY_DESIGN_SEVERITY_WEIGHT,
     Constraint,
     TheoryWorld,
     UncertainQuantity,
@@ -315,7 +318,9 @@ class Belief:
     source_institution: Optional[str] = None
     study_method: Optional[str] = None
 
-    # ARCH-6b: Optional evidence metrics used by severe-testing approximation.
+    # ARCH-6a/6b: Evidence metrics and study design classification (Mayo).
+    study_design: StudyDesign = StudyDesign.UNKNOWN
+    evidence_quality: EvidenceQuality = EvidenceQuality.UNTESTED
     evidence_effect_size: Optional[float] = None
     evidence_p_value: Optional[float] = None
     evidence_sample_n: Optional[int] = None
@@ -565,13 +570,58 @@ class Belief:
 
     def compute_severity(self, alpha: float = 0.05) -> float:
         """ARCH-6b: Approximate severe-testing score for this belief's evidence."""
-        return _compute_severity_score(
+        base = _compute_severity_score(
             credence=self.credence.value,
             uncertainty=self.credence.uncertainty,
             sample_n=self.evidence_sample_n,
             effect_size=self.evidence_effect_size,
             p_value=self.evidence_p_value,
             alpha=alpha,
+        )
+        # ARCH-6a: Study design modulates severity — an RCT finding
+        # is more severely tested than an observational one, all else equal.
+        design_weight = STUDY_DESIGN_SEVERITY_WEIGHT.get(
+            self.study_design.value if isinstance(self.study_design, StudyDesign) else str(self.study_design),
+            0.30,
+        )
+        return max(0.0, min(1.0, 0.6 * base + 0.4 * design_weight))
+
+    def classify_evidence_quality(self) -> 'EvidenceQuality':
+        """ARCH-6d: Auto-classify evidence quality based on severity and study design.
+
+        Distinguishes 'consistent with' from 'severely tested by'.
+        """
+        severity = self.compute_severity()
+        design = self.study_design
+
+        if design in (StudyDesign.RCT, StudyDesign.META_ANALYSIS) and severity >= 0.50:
+            return EvidenceQuality.SEVERELY_TESTED
+        elif design in (StudyDesign.QUASI_EXPERIMENTAL,) and severity >= 0.45:
+            return EvidenceQuality.MODERATELY_TESTED
+        elif severity >= 0.40 and design not in (StudyDesign.THEORETICAL, StudyDesign.UNKNOWN):
+            return EvidenceQuality.MODERATELY_TESTED
+        elif self.evidence_effect_size is not None or self.evidence_p_value is not None:
+            return EvidenceQuality.CONSISTENT_ONLY
+        else:
+            return EvidenceQuality.UNTESTED
+
+    def severity_gate_check(self) -> Optional[str]:
+        """ARCH-6c: Check if credence violates the severity gate.
+
+        Returns None if OK, or a warning string if the belief has high
+        credence (> 0.70) without adequate severe testing.
+        """
+        if self.credence.value <= 0.70:
+            return None  # Gate only applies to high-credence beliefs
+        quality = self.classify_evidence_quality()
+        if quality in (EvidenceQuality.SEVERELY_TESTED, EvidenceQuality.MODERATELY_TESTED):
+            return None  # Adequately tested
+        severity = self.compute_severity()
+        return (
+            f"SEVERITY_GATE: Belief '{self.belief_id}' has credence "
+            f"{self.credence.value:.2f} but evidence_quality={quality.value} "
+            f"(severity={severity:.2f}, study_design={self.study_design.value}). "
+            f"High credence requires at least MODERATELY_TESTED evidence."
         )
 
     # =========================================================================
@@ -666,6 +716,9 @@ class Belief:
             'evidence_p_value': self.evidence_p_value,
             'evidence_sample_n': self.evidence_sample_n,
             'severity': self.compute_severity(),
+            'study_design': self.study_design.value if isinstance(self.study_design, StudyDesign) else str(self.study_design),
+            'evidence_quality': self.classify_evidence_quality().value,
+            'severity_gate_warning': self.severity_gate_check(),
             # Tier 1 additions
             'source_depth': self.source_depth.value,
             'contested': self.contested,

@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -34,7 +34,7 @@ class BatchResult:
     failed_papers: list[str]
     paper_results: list[dict]
     processing_time_seconds: float
-    processed_at: datetime = field(default_factory=datetime.utcnow)
+    processed_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict:
         return {

@@ -7,9 +7,13 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from src.cmr.reduction_api import find_template_theories, reduce_theory
+from src.services.db_locator import resolve_web_db
 from src.services.web_persistence import WebPersistenceService
 
-DEFAULT_DB = Path("data/web_persistence.db")
+try:
+    DEFAULT_DB = resolve_web_db(prefer="integrated")
+except Exception:
+    DEFAULT_DB = Path("data/web_persistence.db")
 
 
 def _normalize_theory(theory: Optional[str]) -> str:

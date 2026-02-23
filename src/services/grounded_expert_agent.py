@@ -64,6 +64,7 @@ except Exception:  # pragma: no cover - optional dependency path
 
 
 from enum import Enum
+from src.services.db_locator import resolve_web_db
 
 
 class ExplanationLevel(Enum):
@@ -146,12 +147,18 @@ class GroundedExpertAgent:
         self,
         panels_dir: str = "docs",
         templates_dir: str = "data/templates",
-        web_db_path: str = "data/web_persistence.db",
+        web_db_path: str | None = None,
         web_id: str = "master:web:accumulated",
     ):
         self.panels_dir = Path(panels_dir)
         self.templates_dir = Path(templates_dir)
-        self.web_db_path = Path(web_db_path) if web_db_path else None
+        if web_db_path:
+            self.web_db_path = Path(web_db_path)
+        else:
+            try:
+                self.web_db_path = resolve_web_db(prefer="integrated")
+            except Exception:
+                self.web_db_path = Path("data/web_persistence.db")
         self.web_id = web_id
 
         # Knowledge base

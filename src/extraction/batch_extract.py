@@ -29,6 +29,8 @@ from src.extraction.table_classifier import EXTRACTABLE_TYPES  # noqa: E402
 from src.extraction.vocabulary import find_closest_dv, load_vocabulary  # noqa: E402
 from src.extraction.article_type_contract import get_family_contract  # noqa: E402
 from src.extraction.contracts import assert_valid_payload  # noqa: E402
+from src.extraction.direction_expectation import direction_expected_for_claim  # noqa: E402
+from src.extraction.figure_direction import infer_direction_from_pdf_figures  # noqa: E402
 
 
 EXTRACTABLE_PAPER_TYPES = {"empirical", "review", "meta_analysis"}
@@ -273,6 +275,75 @@ def _safe_int(value: str | int | None) -> int | None:
         return int(float(raw))
     except ValueError:
         return None
+
+
+def _safe_slug(value: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9_.:-]+", "_", str(value or "")).strip("_")
+
+
+def _paper_id_to_pdf_stem_candidates(paper_id: str) -> list[str]:
+    pid = str(paper_id or "").strip()
+    if not pid:
+        return []
+    out = []
+    base = _safe_slug(pid)
+    if base:
+        out.append(base)
+    if pid.lower().startswith("doi:"):
+        doi = pid[4:].strip()
+        if doi:
+            out.append(f"doi_{doi.replace('/', '_')}")
+            out.append(f"doi_{doi.replace('/', '_').replace('.', '_')}")
+    return out
+
+
+def _build_pdf_index(pdf_dir: Path) -> dict[str, Path]:
+    if not pdf_dir.exists():
+        return {}
+    out: dict[str, Path] = {}
+    for p in pdf_dir.glob("*.pdf"):
+        out[p.stem.lower()] = p
+    return out
+
+
+def _load_pdf_map_from_queue(queue_csv_path: str | None) -> dict[str, Path]:
+    out: dict[str, Path] = {}
+    if not queue_csv_path:
+        return out
+    path = Path(queue_csv_path)
+    if not path.exists():
+        return out
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            paper_id = str(row.get("paper_id") or "").strip()
+            if not paper_id:
+                continue
+            candidates = [
+                str(row.get("resolved_pdf_path") or "").strip(),
+                str(row.get("pdf_path") or "").strip(),
+            ]
+            chosen: Path | None = None
+            for raw in candidates:
+                if not raw:
+                    continue
+                p = Path(raw)
+                if not p.is_absolute():
+                    p = (PROJECT_ROOT / raw).resolve()
+                if p.exists():
+                    chosen = p
+                    break
+            if chosen:
+                out[paper_id] = chosen
+    return out
+
+
+def _resolve_pdf_for_paper(paper_id: str, pdf_index: dict[str, Path]) -> Path | None:
+    for stem in _paper_id_to_pdf_stem_candidates(paper_id):
+        p = pdf_index.get(stem.lower())
+        if p and p.exists():
+            return p
+    return None
 
 
 def _table_sort_key(row: dict[str, Any]) -> tuple[int, int]:
@@ -1166,6 +1237,94 @@ def _write_direction_adjudication_packets(
     }
 
 
+def _apply_figure_direction_fallback(
+    claims: list[dict[str, Any]],
+    *,
+    enabled: bool,
+    pdf_dir: str,
+    queue_csv_path: str | None,
+    max_pages: int,
+    min_confidence: float,
+) -> dict[str, Any]:
+    stats = {
+        "enabled": bool(enabled),
+        "pdf_dir": pdf_dir,
+        "queue_csv_path": queue_csv_path,
+        "queue_map_entries": 0,
+        "scanned_unknown": 0,
+        "expected_direction": 0,
+        "resolved": 0,
+        "not_expected": 0,
+        "override_locked": 0,
+        "pdf_missing": 0,
+        "figure_unknown": 0,
+        "below_confidence": 0,
+        "errors": 0,
+    }
+    if not enabled:
+        return stats
+
+    index = _build_pdf_index(Path(pdf_dir))
+    queue_map = _load_pdf_map_from_queue(queue_csv_path)
+    stats["queue_map_entries"] = len(queue_map)
+    if not index and not queue_map:
+        return stats
+
+    for claim in claims:
+        direction = _normalize_key_text(claim.get("direction") or "unknown")
+        if direction != "unknown":
+            continue
+        stats["scanned_unknown"] += 1
+
+        expected, reason = direction_expected_for_claim(claim)
+        claim["direction_expected"] = bool(expected)
+        claim["direction_expected_reason"] = reason
+        if not expected:
+            stats["not_expected"] += 1
+            continue
+        stats["expected_direction"] += 1
+
+        if claim.get("direction_override_applied"):
+            stats["override_locked"] += 1
+            continue
+
+        paper_id = str(claim.get("paper_id") or "").strip()
+        pdf_path = queue_map.get(paper_id)
+        if not pdf_path:
+            pdf_path = _resolve_pdf_for_paper(paper_id, index)
+        if not pdf_path:
+            stats["pdf_missing"] += 1
+            continue
+
+        try:
+            vis = infer_direction_from_pdf_figures(
+                pdf_path=pdf_path,
+                claim=claim,
+                max_pages=max(1, int(max_pages)),
+            )
+        except Exception as exc:
+            stats["errors"] += 1
+            claim["direction_figure_error"] = f"{type(exc).__name__}: {exc}"
+            continue
+
+        if vis.direction not in {"increase", "decrease"}:
+            stats["figure_unknown"] += 1
+            continue
+        if float(vis.confidence) < float(min_confidence):
+            stats["below_confidence"] += 1
+            continue
+
+        claim["direction"] = vis.direction
+        claim["direction_inferred_from"] = "figure_line_slope"
+        claim["direction_figure_confidence"] = round(float(vis.confidence), 3)
+        claim["direction_figure_source_page"] = vis.source_page
+        claim["direction_figure_evidence"] = vis.evidence_quote
+        claim["direction_figure_diagnostics"] = vis.diagnostics
+        stats["resolved"] += 1
+
+    return stats
+
+
 def _merge_claim_sources(
     table_claims: list[dict[str, Any]],
     abstract_claims: list[dict[str, Any]],
@@ -1278,6 +1437,11 @@ def run_batch_extraction(
     tension_queue_path: str | None = "data/review/theory_direction_tension_queue.json",
     tension_questions_path: str | None = "docs/HITL_LLM_RAG_direction_questions.md",
     overrides_template_path: str | None = "data/review/direction_overrides.template.json",
+    use_figure_direction: bool = True,
+    figure_pdf_dir: str = "data/production/pdf_repaired",
+    figure_queue_csv_path: str | None = "data/production/realtime_pdf_completion_queue.csv",
+    figure_max_pages: int = 30,
+    figure_min_confidence: float = 0.72,
 ) -> dict[str, Any]:
     """D.15 pipeline: table extraction + abstract/caption integration."""
     triage = _load_triage(triage_path)
@@ -1406,6 +1570,14 @@ def run_batch_extraction(
     merged_claims, merge_summary = _merge_claim_sources(table_claims, abstract_claims, caption_claims)
     overrides = _load_direction_overrides(direction_overrides_path)
     overrides_applied = _apply_direction_overrides(merged_claims, overrides)
+    figure_stats = _apply_figure_direction_fallback(
+        merged_claims,
+        enabled=use_figure_direction,
+        pdf_dir=figure_pdf_dir,
+        queue_csv_path=figure_queue_csv_path,
+        max_pages=figure_max_pages,
+        min_confidence=figure_min_confidence,
+    )
     theory_stats = _refresh_theory_direction_tensions(merged_claims)
     demoted_hard_mode = _apply_direction_mode(
         merged_claims,
@@ -1422,6 +1594,7 @@ def run_batch_extraction(
     )
     merge_summary.update(theory_stats)
     merge_summary["direction_overrides_applied"] = overrides_applied
+    merge_summary["direction_resolved_from_figures"] = figure_stats.get("resolved", 0)
     merge_summary["direction_demoted_hard_mode"] = demoted_hard_mode
     merge_summary["direction_mode"] = direction_mode
     merge_summary["direction_hard_threshold"] = round(direction_hard_threshold, 3)
@@ -1443,6 +1616,7 @@ def run_batch_extraction(
         "direction_overrides_path": direction_overrides_path,
         "direction_mode": direction_mode,
         "direction_hard_threshold": direction_hard_threshold,
+        "figure_direction": figure_stats,
         "direction_adjudication_packets": packet_stats,
         "warnings": warnings,
         "claims": merged_claims,
@@ -1479,6 +1653,12 @@ def main() -> None:
     parser.add_argument("--tension-questions-path", default="docs/HITL_LLM_RAG_direction_questions.md")
     parser.add_argument("--overrides-template-path", default="data/review/direction_overrides.template.json")
     parser.add_argument("--no-adjudication-packets", action="store_true")
+    parser.add_argument("--no-figure-direction", action="store_true")
+    parser.add_argument("--figure-pdf-dir", default="data/production/pdf_repaired")
+    parser.add_argument("--figure-queue-csv-path", default="data/production/realtime_pdf_completion_queue.csv")
+    parser.add_argument("--no-figure-queue-csv", action="store_true")
+    parser.add_argument("--figure-max-pages", type=int, default=30)
+    parser.add_argument("--figure-min-confidence", type=float, default=0.72)
     args = parser.parse_args()
 
     direction_overrides_path = None if args.no_direction_overrides else args.direction_overrides_path
@@ -1490,6 +1670,8 @@ def main() -> None:
         tension_queue_path = args.tension_queue_path
         tension_questions_path = args.tension_questions_path
         overrides_template_path = args.overrides_template_path
+
+    figure_queue_csv_path = None if args.no_figure_queue_csv else args.figure_queue_csv_path
 
     result = run_batch_extraction(
         csv_path=args.csv_path,
@@ -1509,6 +1691,11 @@ def main() -> None:
         tension_queue_path=tension_queue_path,
         tension_questions_path=tension_questions_path,
         overrides_template_path=overrides_template_path,
+        use_figure_direction=not args.no_figure_direction,
+        figure_pdf_dir=args.figure_pdf_dir,
+        figure_queue_csv_path=figure_queue_csv_path,
+        figure_max_pages=args.figure_max_pages,
+        figure_min_confidence=args.figure_min_confidence,
     )
     print(json.dumps({k: v for k, v in result.items() if k != "claims"}, indent=2))
 

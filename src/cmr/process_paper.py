@@ -9,7 +9,7 @@ evidence accumulation → paper record keeping.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from src.cmr.paper_eval import evaluate_paper
@@ -310,7 +310,7 @@ def process_paper(
     result = ProcessingResult(
         paper_citation=citation,
         doi=doi,
-        processed_at=datetime.utcnow(),
+        processed_at=datetime.now(timezone.utc),
         n_claims=n_claims,
         n_matched=n_matched,
         n_unmatched=n_unmatched,

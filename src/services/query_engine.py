@@ -66,6 +66,18 @@ except ImportError:
     VOI_AVAILABLE = False
     logger.debug("VOI search not available")
 
+# Optional InterpretiveEngine integration (TODO 2)
+try:
+    from src.services.interpretive_intelligence import (
+        InterpretiveEngine, ClarifyingQuestion as _ClarifyingQuestion,
+        DetailLevel as _DetailLevel, ExpertiseLevel as _ExpertiseLevel,
+    )
+    INTERPRETIVE_AVAILABLE = True
+except ImportError:
+    InterpretiveEngine = None  # type: ignore[assignment, misc]
+    INTERPRETIVE_AVAILABLE = False
+    logger.debug("InterpretiveEngine not available")
+
 
 @dataclass
 class QueryResult:
@@ -95,6 +107,7 @@ class QueryEngine:
         accumulator: Optional[WebAccumulator] = None,
         web: Optional[WebOfBelief] = None,
         argument_query_handler: Optional[ArgumentQueryHandler] = None,
+        interpretive_engine: Optional["InterpretiveEngine"] = None,  # type: ignore[type-arg]
     ):
         """
         Initialize the query engine.
@@ -103,6 +116,7 @@ class QueryEngine:
             accumulator: WebAccumulator instance (loads from DB)
             web: Direct WebOfBelief instance (for testing)
             argument_query_handler: Optional argument-specific query router
+            interpretive_engine: Optional InterpretiveEngine for WHY/HOW/mechanism queries
         """
         self._accumulator = accumulator
         self._web = web
@@ -110,6 +124,9 @@ class QueryEngine:
         self._response_gen = None  # Lazy init
         self._voi_scorer = None  # Lazy init
         self._argument_query_handler = argument_query_handler
+        # Allow explicit injection; otherwise lazily created per-query below
+        self._interpretive_engine = interpretive_engine
+        self._interpretive_engine_initialized = interpretive_engine is not None
 
     @property
     def accumulator(self) -> WebAccumulator:
@@ -126,7 +143,12 @@ class QueryEngine:
 
         # Load from accumulator
         try:
-            self._web = self.accumulator.persistence.load_master_web()
+            result = self.accumulator.get_master_web()
+            # get_master_web() returns a (WebOfBelief, BridgeRegistry) tuple
+            if isinstance(result, tuple):
+                self._web = result[0]
+            else:
+                self._web = result
             if self._web is None:
                 # Create empty web if none exists
                 self._web = WebOfBelief(domain="neuroarchitecture")
@@ -211,6 +233,61 @@ class QueryEngine:
             )
             if argument_response is not None:
                 return argument_response
+
+        # Route WHY/HOW/mechanism/evidence questions to InterpretiveEngine (TODO 2).
+        # Auto-initialize the engine lazily for WHY_BELIEVE / mechanism queries.
+        # Falls through on failure or ClarifyingQuestion so the search tier still runs.
+        parse_result_peek = self._parser.parse(query_text)
+        is_why_query = parse_result_peek.primary.query_type.value in (
+            "why_believe", "unknown"
+        ) or any(
+            kw in query_text.lower()
+            for kw in ("mechanism", "why is", "why are", "why does", "how does",
+                        "same route", "same pathway", "restorative mechanism")
+        )
+
+        if is_why_query and INTERPRETIVE_AVAILABLE and not self._interpretive_engine_initialized:
+            try:
+                self._interpretive_engine = InterpretiveEngine(self.web)  # type: ignore[call-arg]
+                self._interpretive_engine_initialized = True
+                logger.info("InterpretiveEngine lazily initialized for mechanism/WHY query")
+            except Exception as exc:
+                logger.warning(f"Could not initialize InterpretiveEngine: {exc}")
+
+        if self._interpretive_engine is not None and is_why_query:
+            interpretive_response = self._interpretive_engine.answer_question(
+                question=query_text,
+                detail=_DetailLevel.STANDARD,
+                expertise=_ExpertiseLevel.PRACTITIONER,
+            )
+            if (
+                not isinstance(interpretive_response, _ClarifyingQuestion)
+                and interpretive_response.success
+            ):
+                processing_time_ms = int((time.time() - start_time) * 1000)
+                return {
+                    "schema": "ae.query_response.v1",
+                    "query_id": query_id,
+                    "status": "success",
+                    "response_mode": "explanation",
+                    "headline": interpretive_response.explanation.split("\n")[0][:200],
+                    "metadata": {
+                        "processing_time_ms": processing_time_ms,
+                        "query_type": "interpretive",
+                        "pattern": (
+                            interpretive_response.pattern.value
+                            if interpretive_response.pattern else "unknown"
+                        ),
+                    },
+                    "explanation": interpretive_response.to_dict(),
+                    "follow_ups": [
+                        {
+                            "question": "What evidence supports this?",
+                            "type": "deeper",
+                            "executable_query": f"what evidence {query_text}",
+                        }
+                    ],
+                }
 
         # Parse the query
         parse_result = self._parser.parse(query_text)
@@ -559,18 +636,41 @@ class QueryEngine:
         subject = intent.subject or ""
         obj = intent.object or ""
 
+        # Build full set of search terms for the object (including expansions and sub-words)
+        from src.services.query_parser import expand_term
+        obj_search_terms: set = set()
+        if obj:
+            obj_lower = obj.lower()
+            obj_search_terms.add(obj_lower)
+            # Add vocabulary expansions
+            obj_search_terms.update(t.lower() for t in expand_term(obj))
+            # Add individual words from multi-word phrases as fallback
+            words = [w for w in obj_lower.split() if len(w) > 3]
+            obj_search_terms.update(words)
+            # Add sub-phrase decompositions (bigrams)
+            word_list = obj_lower.split()
+            for size in range(2, len(word_list)):
+                for start in range(len(word_list) - size + 1):
+                    obj_search_terms.add(" ".join(word_list[start:start + size]))
+
         # Check for unexplored combinations
         subject_beliefs = [b for b in self.web.beliefs.values()
                           if subject.lower() in b.content.lower()]
-        object_beliefs = [b for b in self.web.beliefs.values()
-                         if obj.lower() in b.content.lower()] if obj else []
 
-        # If subject has beliefs but object doesn't
+        def _obj_in_content(content: str) -> bool:
+            """Check if any object search term appears in belief content."""
+            content_lower = content.lower()
+            return any(term in content_lower for term in obj_search_terms)
+
+        object_beliefs = ([b for b in self.web.beliefs.values()
+                          if _obj_in_content(b.content)] if obj else [])
+
+        # If subject has beliefs but object doesn't (even via expansions)
         if subject_beliefs and obj and not object_beliefs:
             gaps.append({
                 "gap_id": f"gap_{uuid.uuid4().hex[:8]}",
                 "gap_type": "unexplored",
-                "description": f"No evidence found for '{obj}'",
+                "description": f"No evidence found for '{obj}' (searched {len(obj_search_terms)} term variants)",
                 "priority": 0.7,
                 "suggested_search": f"{obj} research studies"
             })

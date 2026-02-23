@@ -71,6 +71,51 @@ def _build_moderators_map(
     return out
 
 
+def _build_theory_links(
+    bundle: SevenPanelV2Bundle,
+) -> Optional[List[Dict[str, Any]]]:
+    """Extract theory links from mechanism claims (T7.3).
+
+    Each MechanismClaim with a non-null ``theory`` field becomes a TheoryLink
+    entry conforming to $defs/TheoryLink in rule_graph.schema.json.
+    """
+    if not bundle.mechanisms or not bundle.mechanisms.mechanism_claims:
+        return None
+
+    links: List[Dict[str, Any]] = []
+    seen_theories: set = set()
+
+    for claim in bundle.mechanisms.mechanism_claims:
+        if not claim.theory:
+            continue
+        # Deduplicate by theory name within a single bundle
+        theory_key = claim.theory.strip().lower()
+        if theory_key in seen_theories:
+            continue
+        seen_theories.add(theory_key)
+
+        link: Dict[str, Any] = {
+            "theory_id": claim.theory.strip(),
+        }
+        if claim.phenomenon:
+            link["from_variable"] = claim.phenomenon
+        if claim.role:
+            link["activity"] = claim.role
+        if claim.strength:
+            # Map strength to maturity
+            strength_to_maturity = {
+                "strong": "established",
+                "moderate": "supported",
+                "weak": "speculative",
+            }
+            link["maturity"] = strength_to_maturity.get(
+                claim.strength.lower(), "unknown"
+            )
+        links.append(link)
+
+    return links or None
+
+
 def build_rulegraph_v2_rules(
     paper_id: str,
     bundle: SevenPanelV2Bundle,
@@ -92,6 +137,7 @@ def build_rulegraph_v2_rules(
 
     subject_scope = _build_subject_scope(bundle)
     moderators_map = _build_moderators_map(bundle.heterogeneity)
+    theory_links = _build_theory_links(bundle)
 
     for finding in bundle.findings.items:
         finding_id = finding.finding_id
@@ -125,9 +171,11 @@ def build_rulegraph_v2_rules(
             "evidence": [evidence_entry],
             "subject_scope": subject_scope,
             "subject_moderators": subject_moderators or None,
+            "theory_links": theory_links,
             "graph_version": "2.0",
             "created_at": _now_iso(),
         }
         rules.append(rule)
 
     return rules
+

@@ -177,11 +177,82 @@ OUTCOME_DOMAIN_TO_THEORY: Dict[str, List[str]] = {
     "physio": ["SRT"],                                 # Physiological outcomes
     "physio.alertness": ["SRT", "ART"],
     "physio.fatigue": ["SRT", "ART"],
+    "physio.thermal": ["Adaptive_Thermal_Comfort"],
     "health": ["SRT", "Biophilia"],
     "health.wellbeing": ["SRT", "Biophilia"],
     "behav": ["ART", "SRT"],
     "behav.productivity": ["ART"],
-    "social": ["Biophilia"],
+    "behav.adaptive": ["Adaptive_Thermal_Comfort", "Privacy_Regulation"],
+    "social": ["Biophilia", "Privacy_Regulation"],
+    "social.privacy": ["Privacy_Regulation"],
+    "social.crowding": ["Privacy_Regulation"],
+    "social.interaction": ["Privacy_Regulation"],
+    "affect.preference": ["Kaplan_Preference_Matrix"],
+    "affect.aesthetics": ["Kaplan_Preference_Matrix"],
+    "affect.comfort.thermal": ["Adaptive_Thermal_Comfort"],
+    "spatial.configuration": ["Space_Syntax"],
+    "spatial.navigation.wayfinding": ["Space_Syntax", "SN"],
+    "spatial.movement": ["Space_Syntax"],
+    "spatial.integration": ["Space_Syntax"],
+    "spatial.intelligibility": ["Space_Syntax"],
+    "behav.pedestrian": ["Space_Syntax"],
+    "affect.spatial.disorientation": ["Space_Syntax"],
+    "affect.perceived.safety.spatial": ["Space_Syntax", "Prospect_Refuge"],
+    "acoustic.perception": ["Soundscape_Theory"],
+    "acoustic.annoyance": ["Soundscape_Theory"],
+    "acoustic.comfort": ["Soundscape_Theory"],
+    "acoustic.restoration": ["Soundscape_Theory", "ART"],
+    "health.noise": ["Soundscape_Theory"],
+    "physio.cortisol.noise": ["Soundscape_Theory", "SRT"],
+    "affect.soundscape": ["Soundscape_Theory"],
+    "place.attachment": ["Place_Attachment"],
+    "place.identity": ["Place_Attachment"],
+    "place.familiarity": ["Place_Attachment", "SN"],
+    "behav.relocation": ["Place_Attachment"],
+    "affect.displacement": ["Place_Attachment"],
+    "affect.rootedness": ["Place_Attachment"],
+    "health.aging.place": ["Place_Attachment"],
+    "affect.grief.relocation": ["Place_Attachment"],
+}
+
+# Theory inference: environmental factors (IVs) -> likely theories
+ENVIRONMENT_DOMAIN_TO_THEORY: Dict[str, List[str]] = {
+    "nature": ["ART", "SRT", "Biophilia"],
+    "green": ["ART", "SRT", "Biophilia"],
+    "plant": ["ART", "SRT", "Biophilia"],
+    "outdoor": ["ART", "SRT", "Biophilia"],
+    "park": ["ART", "SRT", "Biophilia"],
+    "privacy": ["Privacy_Regulation"],
+    "partition": ["Privacy_Regulation"],
+    "enclosure": ["Privacy_Regulation"],
+    "complexity": ["Kaplan_Preference_Matrix"],
+    "mystery": ["Kaplan_Preference_Matrix"],
+    "coherence": ["Kaplan_Preference_Matrix"],
+    "natural_ventilation": ["Adaptive_Thermal_Comfort"],
+    "operable_window": ["Adaptive_Thermal_Comfort"],
+    "temperature": ["Adaptive_Thermal_Comfort"],
+    "thermal": ["Adaptive_Thermal_Comfort"],
+    "isovist": ["Space_Syntax", "Prospect_Refuge"],
+    "integration": ["Space_Syntax"],
+    "configuration": ["Space_Syntax"],
+    "connectivity": ["Space_Syntax"],
+    "topological_depth": ["Space_Syntax"],
+    "spatial_layout": ["Space_Syntax"],
+    "acoustic": ["Soundscape_Theory"],
+    "noise": ["Soundscape_Theory"],
+    "sound": ["Soundscape_Theory"],
+    "traffic": ["Soundscape_Theory"],
+    "birdsong": ["Soundscape_Theory"],
+    "masking_sound": ["Soundscape_Theory"],
+    "music": ["Soundscape_Theory"],
+    "residence_length": ["Place_Attachment"],
+    "length_of_stay": ["Place_Attachment"],
+    "relocation": ["Place_Attachment"],
+    "displacement": ["Place_Attachment"],
+    "familiarity": ["Place_Attachment"],
+    "personalization": ["Place_Attachment"],
+    "ownership": ["Place_Attachment"],
+    "duration": ["Place_Attachment"],
 }
 
 # Theory keywords in statements (fallback for inference)
@@ -196,6 +267,28 @@ THEORY_KEYWORDS: Dict[str, List[str]] = {
                           "visual preference", "aesthetic"],
     "Predictive_Processing": ["predictive", "prediction error", "bayesian brain",
                              "expectation", "surprise"],
+    "Privacy_Regulation": ["privacy regulation", "altman", "crowding", "personal space",
+                           "territoriality", "social contact", "boundary regulation"],
+    "Kaplan_Preference_Matrix": ["kaplan preference", "environmental preference", "coherence",
+                                 "complexity", "legibility", "mystery"],
+    "Adaptive_Thermal_Comfort": ["adaptive thermal", "thermal comfort", "de dear", "brager",
+                                 "pmv", "natural ventilation", "temperature preference"],
+    "Space_Syntax": ["space syntax", "hillier", "hanson", "axial analysis", "segment analysis",
+                     "integration value", "mean depth", "connectivity", "intelligibility",
+                     "natural movement", "isovist", "syntactic", "spatial network",
+                     "pedestrian flow", "topological depth", "angular analysis", "depthmap"],
+    "Soundscape_Theory": ["soundscape", "acoustic environment", "noise annoyance", "sound perception",
+                          "ISO 12913", "axelsson", "kang", "schafer", "soundscape evaluation",
+                          "pleasantness", "eventfulness", "acoustic comfort", "noise sensitivity",
+                          "sound masking", "speech intelligibility", "biophilic sound", "noise exposure",
+                          "environmental noise", "perceived noise", "acoustic restoration",
+                          "circumplex", "soundscape design"],
+    "Place_Attachment": ["place attachment", "sense of place", "place identity", "rootedness",
+                         "topophilia", "place bonding", "scannell", "gifford", "lewicka",
+                         "tuan", "altman", "relocation", "displacement", "aging in place",
+                         "territorial familiarity", "biographical memory place",
+                         "place meaning", "home attachment", "place disruption",
+                         "post-disaster recovery place", "personalization attachment"],
 }
 
 
@@ -465,6 +558,21 @@ def infer_theory_relevance_enhanced(
                     trace.append(f"Outcome:{partial_id}→{theory} "
                                f"(combined: {old_val:.2f}→{relevance[theory]:.2f})")
 
+    # Strategy 3: Environment factor mapping (always applied as boost)
+    for env_factor in environment_factors:
+        env_id = env_factor.get("id", "").lower()
+        for env_keyword, theories in ENVIRONMENT_DOMAIN_TO_THEORY.items():
+            if env_keyword in env_id:
+                for theory in theories:
+                    score = 1.2 # Maps to 0.6 through diminishing returns for first hit
+                    old_val = relevance.get(theory, 0)
+                    if embedding_result and theory in embedding_result.scores:
+                        relevance[theory] = _diminishing_returns_combine(old_val, score * 0.5)
+                    else:
+                        relevance[theory] = _diminishing_returns_combine(old_val, score)
+                    trace.append(f"EnvFactor:{env_id}→{theory} "
+                               f"(combined: {old_val:.2f}→{relevance[theory]:.2f})")
+
     # Determine method and confidence
     if embedding_result:
         method = embedding_result.method.value
@@ -543,15 +651,15 @@ def infer_theory_relevance(
                 trace.append(f"Keyword:'{keyword}'→{theory} score=0.60 (combined: {old_val:.2f}→{relevance[theory]:.2f})")
                 break
 
-    # Strategy 3: Environment factors (weaker signal)
+    # Strategy 3: Environment factor mapping
     for env_factor in environment_factors:
         env_id = env_factor.get("id", "").lower()
-        if any(w in env_id for w in ["nature", "green", "plant", "outdoor", "park"]):
-            # Nature-related factors suggest ART, SRT, Biophilia
-            for theory in ["ART", "SRT", "Biophilia"]:
-                old_val = relevance.get(theory, 0)
-                relevance[theory] = _diminishing_returns_combine(old_val, 0.4)
-                trace.append(f"EnvFactor:{env_id}→{theory} score=0.40 (combined: {old_val:.2f}→{relevance[theory]:.2f})")
+        for env_keyword, theories in ENVIRONMENT_DOMAIN_TO_THEORY.items():
+            if env_keyword in env_id:
+                for theory in theories:
+                    old_val = relevance.get(theory, 0)
+                    relevance[theory] = _diminishing_returns_combine(old_val, 1.2)
+                    trace.append(f"EnvFactor:{env_id}→{theory} score=1.2 (combined: {old_val:.2f}→{relevance[theory]:.2f})")
 
     # Log trace at debug level
     if trace:
