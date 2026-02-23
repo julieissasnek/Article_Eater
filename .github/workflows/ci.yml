@@ -38,11 +38,17 @@ jobs:
       - name: Validate templates
         run: python scripts/validate_all_templates.py
 
-      - name: Run tests
-        run: pytest tests/ -q --tb=short -x --ignore=tests/integration/
+      - name: Run tests with coverage
+        run: pytest tests/ -q --tb=short -x --ignore=tests/integration/ --cov=src --cov=app --cov-report=xml --cov-report=term-missing
         env:
           AE_ENV: dev
           AE_LLM_PROVIDER: fake
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
 
       - name: Check for import errors
         run: python -c "import src; import app"
