@@ -51,6 +51,22 @@ else
   fi
 fi
 
+if command -v python3 >/dev/null 2>&1; then
+  echo "Running finding-template relevance health gate..."
+  python3 scripts/probe_finding_template_relevance_health.py \
+    --links-json data/production/finding_template_theory_links.json \
+    --templates-dir data/templates \
+    --web-db data/web_persistence_v2.db \
+    --annotation-key template_relevance_v1 \
+    --max-non-music-music-top 0 \
+    --min-unique-tier1 10 \
+    --min-tier2-coverage 0.9 \
+    --min-persisted-ratio 1.0
+else
+  echo "ERROR: python3 is required for finding-template relevance health gate"
+  exit 1
+fi
+
 # V14 lifespan schema/runtime gates
 if command -v node >/dev/null 2>&1; then
   echo "Running V14 lifespan gates..."

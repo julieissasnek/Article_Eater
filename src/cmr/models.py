@@ -9,6 +9,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    UniqueConstraint,
     func,
     create_engine,
 )
@@ -210,6 +211,36 @@ class ReductionClaim(Base):
     staging_links_total = Column(Integer, default=0)
 
 
+class CMRStagingTheoryLink(Base):
+    """Staging table for template-level theory links extracted from causal links."""
+
+    __tablename__ = "cmr_staging_theory_links"
+
+    id = Column(Integer, primary_key=True)
+    template_display_id = Column(String, nullable=False)
+    template_id = Column(String, nullable=False)
+    theory_id = Column(String, nullable=False)
+    link_index = Column(Integer, nullable=False)
+
+    from_variable = Column(String, nullable=True)
+    to_variable = Column(String, nullable=True)
+    from_level = Column(String, nullable=True)
+    to_level = Column(String, nullable=True)
+    activity = Column(String, nullable=True)
+    maturity = Column(String, nullable=True)
+    source_json_path = Column(String, nullable=False)
+    loaded_at = Column(DateTime, default=func.now(), nullable=False)
+
+    __table_args__ = (
+        UniqueConstraint(
+            "template_display_id",
+            "theory_id",
+            "link_index",
+            name="uq_cmr_staging_theory_link",
+        ),
+    )
+
+
 class PaperRecord(Base):
     """History record for processed paper evaluations."""
 
@@ -259,6 +290,7 @@ __all__ = [
     "CMRDomainScore",
     "CMROverallScore",
     "ReductionClaim",
+    "CMRStagingTheoryLink",
     "PaperRecord",
     "get_engine",
     "get_session",

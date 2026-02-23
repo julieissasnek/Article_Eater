@@ -1,0 +1,895 @@
+{
+    "version": "1.0",
+    "created": "2026-02-18",
+    "description": "Consolidated vocabulary for Article Eater CMR pipeline. Maps natural language terms to canonical variable names.",
+
+    "independent_variables": {
+        "ceiling_height_m": {
+            "canonical": "ceiling_height_m",
+            "synonyms": [
+                "ceiling height", "room height", "floor-to-ceiling height",
+                "high ceilings", "low ceilings", "double-height ceiling",
+                "vertical dimension", "ceiling elevation", "room tallness",
+                "headroom", "clear height"
+            ],
+            "unit": "meters",
+            "templates": ["VF3", "CREA2"],
+            "domain": "A2_Spatial_Scale",
+            "extraction_hints": [
+                "Look for: height values in meters or feet (1 ft = 0.3048 m)",
+                "Context clues: room dimensions, spatial proportions, volumetric"
+            ]
+        },
+        "floor_area_m2": {
+            "canonical": "floor_area_m2",
+            "synonyms": [
+                "floor area", "room area", "room size", "space size",
+                "square meters", "square footage", "floor space",
+                "room dimensions", "usable area"
+            ],
+            "unit": "m2",
+            "templates": ["VF3"],
+            "domain": "A2_Spatial_Scale",
+            "extraction_hints": [
+                "Look for: area values in m² or sq ft (1 sq ft = 0.0929 m²)",
+                "Context clues: room dimensions, space planning"
+            ]
+        },
+        "illuminance_lux": {
+            "canonical": "illuminance_lux",
+            "synonyms": [
+                "daylight", "illuminance", "light level", "lux",
+                "lighting", "ambient light", "desktop illuminance",
+                "horizontal illuminance", "vertical illuminance",
+                "light intensity", "illumination", "brightness",
+                "natural light", "artificial light", "lighting conditions"
+            ],
+            "unit": "lux",
+            "templates": ["L1", "L2", "L3", "CREA2"],
+            "domain": "A4_Light",
+            "extraction_hints": [
+                "Look for: lux values, foot-candles (1 fc = 10.76 lux)",
+                "Context clues: lighting conditions, daylight exposure, work surface"
+            ]
+        },
+        "ambient_noise_dba": {
+            "canonical": "ambient_noise_dba",
+            "synonyms": [
+                "noise", "ambient noise", "sound level", "noise level",
+                "background noise", "dB(A)", "decibels", "Leq",
+                "speech intelligibility", "acoustic environment",
+                "noise exposure", "office noise", "sound pressure level",
+                "environmental noise", "LAeq"
+            ],
+            "unit": "dB(A)",
+            "templates": ["CREA2", "SOC2"],
+            "domain": "A5_Acoustic",
+            "extraction_hints": [
+                "Look for: dB values, dB(A), Leq, Ldn, LAeq",
+                "Context clues: acoustic environment, noise exposure, speech"
+            ]
+        },
+        "has_nature_view": {
+            "canonical": "has_nature_view",
+            "synonyms": [
+                "nature views", "view of nature", "nature view",
+                "window view", "green view", "outdoor view",
+                "natural view", "biophilic view", "vegetation view",
+                "tree view", "garden view", "park view", "landscape view"
+            ],
+            "unit": "boolean",
+            "templates": ["VIEW1"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: view type descriptions, window content",
+                "Context clues: visual access, outdoor connection"
+            ]
+        },
+        "view_content": {
+            "canonical": "view_content",
+            "synonyms": [
+                "view type", "window content", "view quality",
+                "nature content", "view elements", "outdoor scene"
+            ],
+            "unit": "categorical",
+            "templates": ["VIEW1"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: nature, urban, water, sky, vegetation",
+                "Context clues: visual elements, scene composition"
+            ]
+        },
+        "view_layers": {
+            "canonical": "view_layers",
+            "synonyms": [
+                "view depth", "layered view", "visual depth",
+                "foreground-background", "view complexity"
+            ],
+            "unit": "count",
+            "templates": ["VIEW1"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: layer counts, depth descriptions",
+                "Context clues: visual complexity, depth planes"
+            ]
+        },
+        "nature_content_ratio": {
+            "canonical": "nature_content_ratio",
+            "synonyms": [
+                "green ratio", "vegetation ratio", "nature percentage",
+                "biophilic content", "natural element ratio"
+            ],
+            "unit": "ratio (0-1)",
+            "templates": ["VIEW1"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: percentage values, ratios",
+                "Context clues: nature vs built, green coverage"
+            ]
+        },
+        "primary_material": {
+            "canonical": "primary_material",
+            "synonyms": [
+                "material type", "surface material", "wall material",
+                "building material", "finish material", "dominant material",
+                "wood", "stone", "concrete", "brick", "metal", "glass"
+            ],
+            "unit": "categorical",
+            "templates": ["MAT4"],
+            "domain": "A1_Materials",
+            "extraction_hints": [
+                "Look for: material names, finish descriptions",
+                "Context clues: interior finishes, construction materials"
+            ]
+        },
+        "natural_material_ratio": {
+            "canonical": "natural_material_ratio",
+            "synonyms": [
+                "wood ratio", "natural surfaces", "biophilic materials",
+                "organic materials", "natural finish percentage"
+            ],
+            "unit": "ratio (0-1)",
+            "templates": ["MAT4"],
+            "domain": "A1_Materials",
+            "extraction_hints": [
+                "Look for: material percentages, coverage ratios",
+                "Context clues: wood vs synthetic, natural vs artificial"
+            ]
+        },
+        "surface_effusivity": {
+            "canonical": "surface_effusivity",
+            "synonyms": [
+                "thermal effusivity", "surface warmth", "contact warmth",
+                "thermal feel", "haptic warmth"
+            ],
+            "unit": "J/(m²·K·s^0.5)",
+            "templates": ["MAT1"],
+            "domain": "A7_Haptic_Thermal",
+            "extraction_hints": [
+                "Look for: effusivity values, thermal properties",
+                "Context clues: surface touch, thermal sensation"
+            ]
+        },
+        "contact_temperature_c": {
+            "canonical": "contact_temperature_c",
+            "synonyms": [
+                "surface temperature", "touch temperature",
+                "contact temp", "floor temperature", "wall temperature"
+            ],
+            "unit": "°C",
+            "templates": ["MAT1"],
+            "domain": "A7_Haptic_Thermal",
+            "extraction_hints": [
+                "Look for: temperature values in °C or °F",
+                "Context clues: surface contact, thermal comfort"
+            ]
+        },
+        "operative_temp_c": {
+            "canonical": "operative_temp_c",
+            "synonyms": [
+                "operative temperature", "thermal comfort",
+                "indoor temperature", "room temperature",
+                "air temperature", "ambient temperature"
+            ],
+            "unit": "°C",
+            "templates": ["MAT2"],
+            "domain": "A7_Haptic_Thermal",
+            "extraction_hints": [
+                "Look for: temperature values, comfort indices",
+                "Context clues: thermal environment, HVAC"
+            ]
+        },
+        "running_mean_outdoor_c": {
+            "canonical": "running_mean_outdoor_c",
+            "synonyms": [
+                "outdoor temperature", "external temperature",
+                "prevailing outdoor", "climate context"
+            ],
+            "unit": "°C",
+            "templates": ["MAT2"],
+            "domain": "A7_Haptic_Thermal",
+            "extraction_hints": [
+                "Look for: outdoor temp, climate data",
+                "Context clues: adaptive comfort, seasonal"
+            ]
+        },
+        "ventilation_type": {
+            "canonical": "ventilation_type",
+            "synonyms": [
+                "natural ventilation", "mechanical ventilation",
+                "mixed mode", "HVAC type", "air conditioning",
+                "operable windows", "air distribution"
+            ],
+            "unit": "categorical",
+            "templates": ["MAT2"],
+            "domain": "A7_Haptic_Thermal",
+            "extraction_hints": [
+                "Look for: ventilation system type",
+                "Context clues: air handling, cooling method"
+            ]
+        },
+        "cct_kelvin": {
+            "canonical": "cct_kelvin",
+            "synonyms": [
+                "color temperature", "CCT", "correlated color temperature",
+                "warm light", "cool light", "light color",
+                "kelvin", "lamp color"
+            ],
+            "unit": "K",
+            "templates": ["L4"],
+            "domain": "A4_Light",
+            "extraction_hints": [
+                "Look for: Kelvin values, warm/cool descriptions",
+                "Context clues: lamp type, daylight simulation"
+            ]
+        },
+        "has_daylight_variation": {
+            "canonical": "has_daylight_variation",
+            "synonyms": [
+                "dynamic daylight", "temporal variation",
+                "light changes", "daylight dynamics", "circadian lighting"
+            ],
+            "unit": "boolean",
+            "templates": ["L5"],
+            "domain": "A4_Light",
+            "extraction_hints": [
+                "Look for: time-varying, dynamic, changing",
+                "Context clues: circadian, natural rhythm"
+            ]
+        },
+        "shared_area_ratio": {
+            "canonical": "shared_area_ratio",
+            "synonyms": [
+                "common space", "shared space", "communal area",
+                "collaboration space", "meeting area ratio"
+            ],
+            "unit": "ratio (0-1)",
+            "templates": ["SOC2"],
+            "domain": "A8_Social",
+            "extraction_hints": [
+                "Look for: percentage of shared space",
+                "Context clues: office layout, open plan"
+            ]
+        },
+        "phone_booths_per_worker": {
+            "canonical": "phone_booths_per_worker",
+            "synonyms": [
+                "phone rooms", "privacy pods", "focus rooms",
+                "quiet booths", "call rooms", "isolation spaces"
+            ],
+            "unit": "ratio",
+            "templates": ["SOC2"],
+            "domain": "A8_Social",
+            "extraction_hints": [
+                "Look for: booth counts, privacy provisions",
+                "Context clues: acoustic privacy, phone calls"
+            ]
+        },
+        "quiet_rooms_per_worker": {
+            "canonical": "quiet_rooms_per_worker",
+            "synonyms": [
+                "focus rooms", "quiet spaces", "concentration rooms",
+                "retreat spaces", "private offices"
+            ],
+            "unit": "ratio",
+            "templates": ["SOC2"],
+            "domain": "A8_Social",
+            "extraction_hints": [
+                "Look for: quiet room availability",
+                "Context clues: focused work, privacy"
+            ]
+        },
+        "visual_privacy_score": {
+            "canonical": "visual_privacy_score",
+            "synonyms": [
+                "visual privacy", "visual exposure", "sight lines",
+                "visual openness", "visual enclosure"
+            ],
+            "unit": "score (0-100)",
+            "templates": ["SOC2"],
+            "domain": "A8_Social",
+            "extraction_hints": [
+                "Look for: privacy ratings, exposure levels",
+                "Context clues: partitions, screens, walls"
+            ]
+        },
+        "acoustic_privacy_stc": {
+            "canonical": "acoustic_privacy_stc",
+            "synonyms": [
+                "acoustic privacy", "sound privacy", "STC rating",
+                "speech privacy", "noise isolation", "sound insulation"
+            ],
+            "unit": "STC",
+            "templates": ["SOC2"],
+            "domain": "A5_Acoustic",
+            "extraction_hints": [
+                "Look for: STC values, dB reduction",
+                "Context clues: partition ratings, speech privacy"
+            ]
+        },
+        "spatial_integration_score": {
+            "canonical": "spatial_integration_score",
+            "synonyms": [
+                "integration", "spatial connectivity", "syntactic integration",
+                "visual connectivity", "depth", "accessibility"
+            ],
+            "unit": "score (0-1)",
+            "templates": ["SC1", "SC4"],
+            "domain": "A3_Spatial_Config",
+            "extraction_hints": [
+                "Look for: space syntax values, integration scores",
+                "Context clues: layout analysis, connectivity"
+            ]
+        },
+        "layout_legibility": {
+            "canonical": "layout_legibility",
+            "synonyms": [
+                "wayfinding clarity", "legibility", "intelligibility",
+                "navigation ease", "spatial clarity", "orientation"
+            ],
+            "unit": "score (0-1)",
+            "templates": ["SC1"],
+            "domain": "A3_Spatial_Config",
+            "extraction_hints": [
+                "Look for: wayfinding metrics, clarity scores",
+                "Context clues: navigation, disorientation"
+            ]
+        },
+        "depth_from_entrance": {
+            "canonical": "depth_from_entrance",
+            "synonyms": [
+                "topological depth", "syntactic depth",
+                "distance from entry", "configurational depth"
+            ],
+            "unit": "steps",
+            "templates": ["SC1"],
+            "domain": "A3_Spatial_Config",
+            "extraction_hints": [
+                "Look for: step counts, depth values",
+                "Context clues: building circulation"
+            ]
+        },
+        "window_area_ratio": {
+            "canonical": "window_area_ratio",
+            "synonyms": [
+                "window ratio", "glazing ratio", "WWR",
+                "window-to-wall", "fenestration", "glass area"
+            ],
+            "unit": "ratio (0-1)",
+            "templates": ["VIEW1"],
+            "domain": "A4_Light",
+            "extraction_hints": [
+                "Look for: WWR percentages, glazing ratios",
+                "Context clues: facade design, daylight"
+            ]
+        },
+        "rt60_seconds": {
+            "canonical": "rt60_seconds",
+            "synonyms": [
+                "reverberation time", "RT60", "reverb",
+                "room acoustics", "decay time", "echo"
+            ],
+            "unit": "seconds",
+            "templates": ["SOC2"],
+            "domain": "A5_Acoustic",
+            "extraction_hints": [
+                "Look for: RT values in seconds",
+                "Context clues: room acoustics, sound quality"
+            ]
+        },
+        "luminance_contrast_cv": {
+            "canonical": "luminance_contrast_cv",
+            "synonyms": [
+                "luminance contrast", "brightness contrast",
+                "visual contrast", "light variation", "glare"
+            ],
+            "unit": "coefficient of variation",
+            "templates": ["L1"],
+            "domain": "A4_Light",
+            "extraction_hints": [
+                "Look for: contrast ratios, CV values",
+                "Context clues: visual comfort, glare"
+            ]
+        },
+        "density_m2_per_person": {
+            "canonical": "density_m2_per_person",
+            "synonyms": [
+                "occupant density", "space per person", "crowding",
+                "spatial density", "area per occupant"
+            ],
+            "unit": "m²/person",
+            "templates": ["SOC2"],
+            "domain": "A8_Social",
+            "extraction_hints": [
+                "Look for: area per person, density values",
+                "Context clues: occupancy, crowding"
+            ]
+        },
+        "fractal_dimension": {
+            "canonical": "fractal_dimension",
+            "synonyms": [
+                "fractal D", "fractal complexity", "scaling dimension",
+                "visual complexity", "D value", "box-counting dimension"
+            ],
+            "unit": "dimensionless (1.0-2.0)",
+            "templates": ["VF1", "VF2"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: D values between 1 and 2",
+                "Context clues: pattern complexity, scaling"
+            ]
+        },
+        "contour_curvature": {
+            "canonical": "contour_curvature",
+            "synonyms": [
+                "curvature", "curved forms", "curvilinear",
+                "organic shapes", "rounded", "angular"
+            ],
+            "unit": "categorical",
+            "templates": ["VF1"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: curved vs rectilinear descriptions",
+                "Context clues: form, shape, contour"
+            ]
+        },
+        "step_height_mm": {
+            "canonical": "step_height_mm",
+            "synonyms": [
+                "riser height", "stair riser", "step dimension",
+                "tread-riser", "stair geometry"
+            ],
+            "unit": "mm",
+            "templates": ["TP1"],
+            "domain": "A3_Spatial_Config",
+            "extraction_hints": [
+                "Look for: mm or inch measurements",
+                "Context clues: stair design, accessibility"
+            ]
+        },
+        "coefficient_of_friction": {
+            "canonical": "coefficient_of_friction",
+            "synonyms": [
+                "friction coefficient", "slip resistance", "COF",
+                "floor grip", "traction"
+            ],
+            "unit": "dimensionless",
+            "templates": ["TP1"],
+            "domain": "A1_Materials",
+            "extraction_hints": [
+                "Look for: COF values, slip ratings",
+                "Context clues: floor safety, walking"
+            ]
+        },
+        "color": {
+            "canonical": "color",
+            "synonyms": [
+                "wall color", "room color", "hue", "paint color",
+                "interior color", "chromatic", "achromatic"
+            ],
+            "unit": "categorical",
+            "templates": ["COL1", "COL2"],
+            "domain": "A6_Visual_Form",
+            "extraction_hints": [
+                "Look for: color names, Munsell, RGB",
+                "Context clues: interior design, paint"
+            ]
+        },
+        "time_of_day": {
+            "canonical": "time_of_day",
+            "synonyms": [
+                "morning", "afternoon", "evening", "circadian time",
+                "temporal context", "daytime", "nighttime"
+            ],
+            "unit": "categorical",
+            "templates": ["L2", "L4"],
+            "domain": "A10_Temporal",
+            "extraction_hints": [
+                "Look for: time descriptions, periods",
+                "Context clues: circadian, daily rhythm"
+            ]
+        },
+        "exposure_duration": {
+            "canonical": "exposure_duration",
+            "synonyms": [
+                "duration", "time spent", "exposure time",
+                "session length", "visit duration", "occupancy time"
+            ],
+            "unit": "hours or minutes",
+            "templates": ["L2", "VIEW1"],
+            "domain": "A10_Temporal",
+            "extraction_hints": [
+                "Look for: time values, duration",
+                "Context clues: visit length, work hours"
+            ]
+        }
+    },
+
+    "dependent_variables": {
+        "creativity": {
+            "canonical": "creativity",
+            "synonyms": [
+                "creative thinking", "creative output", "divergent thinking",
+                "creative performance", "ideation", "creative ideation",
+                "novel solutions", "innovation", "originality",
+                "creative fluency", "creative flexibility"
+            ],
+            "measurement_types": [
+                "Remote Associates Test (RAT)", "Alternative Uses Task (AUT)",
+                "Torrance Tests", "self-report creativity", "idea count",
+                "novelty ratings", "expert ratings"
+            ],
+            "templates": ["CREA1", "CREA2", "CREA3", "CREA4"]
+        },
+        "stress": {
+            "canonical": "stress",
+            "synonyms": [
+                "stress reduction", "stress recovery", "psychological stress",
+                "perceived stress", "anxiety", "tension", "relaxation",
+                "stress response", "stress levels", "distress"
+            ],
+            "measurement_types": [
+                "cortisol (salivary)", "PSS", "STAI", "VAS-stress",
+                "blood pressure", "skin conductance", "GSR",
+                "heart rate", "alpha-amylase"
+            ],
+            "templates": ["VIEW1", "T6-gap", "T7-gap", "SRT"]
+        },
+        "productivity": {
+            "canonical": "productivity",
+            "synonyms": [
+                "work performance", "task performance", "cognitive performance",
+                "work output", "efficiency", "work effectiveness",
+                "job performance", "output quality", "work speed"
+            ],
+            "measurement_types": [
+                "typing speed", "error rate", "self-report",
+                "supervisor rating", "output quantity", "task completion time"
+            ],
+            "templates": ["MAT1", "SOC2", "L2", "CREA2"]
+        },
+        "preference": {
+            "canonical": "preference",
+            "synonyms": [
+                "aesthetic preference", "liking", "attractiveness",
+                "pleasantness", "beauty", "appeal", "desirability",
+                "visual preference", "environmental preference"
+            ],
+            "measurement_types": [
+                "rating scale", "paired comparison", "ranking",
+                "VAS", "Likert scale", "forced choice"
+            ],
+            "templates": ["VF1", "VF2", "COL1", "VIEW1"]
+        },
+        "recovery_time": {
+            "canonical": "recovery_time",
+            "synonyms": [
+                "recovery duration", "hospital stay", "healing time",
+                "recuperation", "convalescence", "length of stay",
+                "LOS", "discharge time"
+            ],
+            "measurement_types": [
+                "days", "hours", "medical records"
+            ],
+            "templates": ["VIEW1", "SRT"]
+        },
+        "pain_medication_use": {
+            "canonical": "pain_medication_use",
+            "synonyms": [
+                "analgesic use", "pain medication", "painkiller",
+                "narcotic use", "pain relief medication", "opioid use"
+            ],
+            "measurement_types": [
+                "dose count", "medication records", "mg equivalent"
+            ],
+            "templates": ["VIEW1", "SRT"]
+        },
+        "cognitive_flexibility": {
+            "canonical": "cognitive_flexibility",
+            "synonyms": [
+                "mental flexibility", "cognitive shifting", "task switching",
+                "set shifting", "adaptability"
+            ],
+            "measurement_types": [
+                "Wisconsin Card Sort", "Trail Making B", "switching cost"
+            ],
+            "templates": ["CREA1", "CREA2"]
+        },
+        "attention": {
+            "canonical": "attention",
+            "synonyms": [
+                "concentration", "focus", "attentional capacity",
+                "directed attention", "sustained attention", "vigilance",
+                "attentional fatigue", "attention restoration"
+            ],
+            "measurement_types": [
+                "digit span", "Stroop", "SART", "ANT",
+                "reaction time", "error rate", "d-prime"
+            ],
+            "templates": ["VIEW1", "DT2", "CREA2"]
+        },
+        "mood": {
+            "canonical": "mood",
+            "synonyms": [
+                "affect", "emotional state", "feeling", "valence",
+                "positive affect", "negative affect", "hedonic tone"
+            ],
+            "measurement_types": [
+                "PANAS", "POMS", "VAS-mood", "semantic differential",
+                "facial expression", "EMG"
+            ],
+            "templates": ["VIEW1", "COL1", "COL2"]
+        },
+        "well_being": {
+            "canonical": "well_being",
+            "synonyms": [
+                "wellbeing", "wellness", "life satisfaction",
+                "quality of life", "subjective wellbeing", "flourishing"
+            ],
+            "measurement_types": [
+                "WEMWBS", "SF-36", "SWLS", "WHO-5"
+            ],
+            "templates": ["VIEW1", "SOC2", "MAT2"]
+        },
+        "thermal_comfort": {
+            "canonical": "thermal_comfort",
+            "synonyms": [
+                "thermal satisfaction", "temperature comfort",
+                "thermal sensation", "thermal acceptability"
+            ],
+            "measurement_types": [
+                "ASHRAE scale", "PMV", "PPD", "thermal sensation vote"
+            ],
+            "templates": ["MAT1", "MAT2"]
+        },
+        "acoustic_satisfaction": {
+            "canonical": "acoustic_satisfaction",
+            "synonyms": [
+                "noise satisfaction", "acoustic comfort", "sound quality",
+                "acoustic environment satisfaction"
+            ],
+            "measurement_types": [
+                "rating scale", "POE survey", "Leesman"
+            ],
+            "templates": ["SOC2"]
+        },
+        "visual_comfort": {
+            "canonical": "visual_comfort",
+            "synonyms": [
+                "lighting satisfaction", "glare comfort", "visual satisfaction",
+                "daylight satisfaction"
+            ],
+            "measurement_types": [
+                "rating scale", "glare assessment", "POE survey"
+            ],
+            "templates": ["L1", "L2", "L3"]
+        },
+        "wayfinding_success": {
+            "canonical": "wayfinding_success",
+            "synonyms": [
+                "navigation success", "wayfinding performance", "orientation",
+                "spatial orientation", "navigation accuracy"
+            ],
+            "measurement_types": [
+                "completion time", "error count", "wrong turns",
+                "sketch map accuracy"
+            ],
+            "templates": ["SC1", "SC4"]
+        },
+        "social_interaction": {
+            "canonical": "social_interaction",
+            "synonyms": [
+                "collaboration", "social contact", "interaction frequency",
+                "encounter rate", "communication"
+            ],
+            "measurement_types": [
+                "interaction count", "duration", "sociometric survey",
+                "observation"
+            ],
+            "templates": ["SOC2", "SC4"]
+        },
+        "privacy_satisfaction": {
+            "canonical": "privacy_satisfaction",
+            "synonyms": [
+                "privacy", "acoustic privacy", "visual privacy",
+                "personal space", "territorial control"
+            ],
+            "measurement_types": [
+                "rating scale", "POE survey", "Leesman"
+            ],
+            "templates": ["SOC2"]
+        },
+        "physiological_arousal": {
+            "canonical": "physiological_arousal",
+            "synonyms": [
+                "arousal", "activation", "autonomic arousal",
+                "sympathetic activation"
+            ],
+            "measurement_types": [
+                "heart rate", "skin conductance", "pupil dilation",
+                "blood pressure", "EDA"
+            ],
+            "templates": ["COL2", "VF3"]
+        },
+        "cortisol": {
+            "canonical": "cortisol",
+            "synonyms": [
+                "salivary cortisol", "cortisol level", "stress hormone",
+                "cortisol awakening response", "CAR"
+            ],
+            "measurement_types": [
+                "salivary sample", "hair cortisol", "immunoassay"
+            ],
+            "templates": ["VIEW1", "SRT"]
+        },
+        "heart_rate_variability": {
+            "canonical": "heart_rate_variability",
+            "synonyms": [
+                "HRV", "vagal tone", "parasympathetic activity",
+                "RMSSD", "HF-HRV", "LF/HF ratio"
+            ],
+            "measurement_types": [
+                "ECG", "PPG", "chest strap", "wearable"
+            ],
+            "templates": ["VIEW1", "SRT"]
+        },
+        "blood_pressure": {
+            "canonical": "blood_pressure",
+            "synonyms": [
+                "BP", "systolic", "diastolic", "hypertension",
+                "cardiovascular"
+            ],
+            "measurement_types": [
+                "sphygmomanometer", "ambulatory BP"
+            ],
+            "templates": ["SRT"]
+        },
+        "skin_conductance": {
+            "canonical": "skin_conductance",
+            "synonyms": [
+                "GSR", "EDA", "electrodermal activity",
+                "galvanic skin response", "SCL", "SCR"
+            ],
+            "measurement_types": [
+                "EDA sensor", "GSR sensor"
+            ],
+            "templates": ["COL2", "SRT"]
+        },
+        "sleep_quality": {
+            "canonical": "sleep_quality",
+            "synonyms": [
+                "sleep", "sleep efficiency", "sleep latency",
+                "insomnia", "circadian rhythm", "sleep duration"
+            ],
+            "measurement_types": [
+                "PSQI", "actigraphy", "polysomnography", "sleep diary"
+            ],
+            "templates": ["L2", "CB2"]
+        },
+        "cognitive_load": {
+            "canonical": "cognitive_load",
+            "synonyms": [
+                "mental load", "mental effort", "working memory load",
+                "cognitive demand", "information processing"
+            ],
+            "measurement_types": [
+                "NASA-TLX", "pupillometry", "dual-task performance"
+            ],
+            "templates": ["SC1", "CREA2"]
+        },
+        "memory": {
+            "canonical": "memory",
+            "synonyms": [
+                "recall", "recognition", "retention", "learning",
+                "memory performance", "episodic memory", "spatial memory"
+            ],
+            "measurement_types": [
+                "free recall", "cued recall", "recognition test",
+                "spatial memory task"
+            ],
+            "templates": ["E1", "E2", "E3"]
+        },
+        "restorative_experience": {
+            "canonical": "restorative_experience",
+            "synonyms": [
+                "restoration", "perceived restorativeness", "PRS",
+                "restorative quality", "recovery experience"
+            ],
+            "measurement_types": [
+                "PRS scale", "ROS", "SRRS"
+            ],
+            "templates": ["VIEW1", "DT2"]
+        },
+        "place_attachment": {
+            "canonical": "place_attachment",
+            "synonyms": [
+                "place identity", "sense of place", "belonging",
+                "territorial attachment", "environmental bonding"
+            ],
+            "measurement_types": [
+                "place attachment scale", "survey"
+            ],
+            "templates": ["SOC2"]
+        },
+        "aesthetic_pleasure": {
+            "canonical": "aesthetic_pleasure",
+            "synonyms": [
+                "aesthetic response", "beauty perception", "aesthetic emotion",
+                "aesthetic appreciation", "visual pleasure"
+            ],
+            "measurement_types": [
+                "rating scale", "approach tendency", "viewing time"
+            ],
+            "templates": ["VF1", "VF2", "COL1"]
+        },
+        "approach_avoidance": {
+            "canonical": "approach_avoidance",
+            "synonyms": [
+                "approach tendency", "behavioral intention", "willingness",
+                "attraction", "aversion", "behavioral approach"
+            ],
+            "measurement_types": [
+                "approach-avoidance task", "behavioral intention scale"
+            ],
+            "templates": ["VF1", "SC2", "SRT"]
+        },
+        "processing_fluency": {
+            "canonical": "processing_fluency",
+            "synonyms": [
+                "perceptual fluency", "ease of processing", "visual fluency",
+                "cognitive ease"
+            ],
+            "measurement_types": [
+                "response time", "preference judgments", "familiarity ratings"
+            ],
+            "templates": ["VF1", "VF2", "T1"]
+        },
+        "satisfaction": {
+            "canonical": "satisfaction",
+            "synonyms": [
+                "environmental satisfaction", "workplace satisfaction",
+                "building satisfaction", "occupant satisfaction",
+                "IEQ satisfaction"
+            ],
+            "measurement_types": [
+                "POE survey", "Leesman", "BUS", "CBE survey"
+            ],
+            "templates": ["SOC2", "MAT2", "L3"]
+        }
+    },
+
+    "unmapped_flag": "NEW_VARIABLE",
+
+    "domains": {
+        "A1_Materials": "Materials & Surfaces",
+        "A2_Spatial_Scale": "Spatial Scale (height, area, volume)",
+        "A3_Spatial_Config": "Spatial Configuration (layout, wayfinding)",
+        "A4_Light": "Light & Luminance",
+        "A5_Acoustic": "Acoustic Environment",
+        "A6_Visual_Form": "Visual Pattern & Form",
+        "A7_Haptic_Thermal": "Haptic & Thermal",
+        "A8_Social": "Social Configuration",
+        "A9_Task_Cognition": "Task & Cognition",
+        "A10_Temporal": "Temporal Factors"
+    }
+}

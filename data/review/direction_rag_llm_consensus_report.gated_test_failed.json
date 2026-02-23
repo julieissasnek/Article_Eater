@@ -1,0 +1,41 @@
+{
+  "status": "failed",
+  "failed_at": "2026-02-19T20:02:17+00:00",
+  "reasons": [
+    "empty_queue_items",
+    "missing_or_invalid_provider_credentials",
+    "provider_connectivity_check_failed"
+  ],
+  "summary": {
+    "queue_items": 0,
+    "profiles": [
+      {
+        "name": "high_openai",
+        "provider": "openai",
+        "model": "gpt-4.1"
+      },
+      {
+        "name": "mid_openai",
+        "provider": "openai",
+        "model": "gpt-4.1-mini"
+      },
+      {
+        "name": "low_openai",
+        "provider": "openai",
+        "model": "gpt-4o-mini"
+      }
+    ]
+  },
+  "details": {
+    "credential_errors": [
+      "high_openai: missing OPENAI_API_KEY",
+      "mid_openai: missing OPENAI_API_KEY",
+      "low_openai: missing OPENAI_API_KEY"
+    ],
+    "connectivity_failures": {
+      "high_openai": "AssertionError: Missing OPENAI_API_KEY",
+      "mid_openai": "AssertionError: Missing OPENAI_API_KEY",
+      "low_openai": "AssertionError: Missing OPENAI_API_KEY"
+    }
+  }
+}

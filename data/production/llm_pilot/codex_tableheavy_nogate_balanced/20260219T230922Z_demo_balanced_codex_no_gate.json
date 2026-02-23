@@ -1,0 +1,144 @@
+{
+  "profile": "demo_balanced_codex",
+  "provider": "codex_exec",
+  "model": "gpt-5.2-codex",
+  "variant": "no_gate",
+  "papers": 5,
+  "counters": {
+    "pdf_errors": 2,
+    "tables_detected": 7,
+    "tables_kept": 7
+  },
+  "metrics": {
+    "claims": 1,
+    "mapped_both": 1,
+    "mapped_both_pct": 100.0,
+    "effect_size": 1,
+    "unknown_direction": 0,
+    "unknown_direction_pct": 0.0,
+    "suspect_claims": 0,
+    "suspect_claims_pct": 0.0
+  },
+  "claims": [
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260219231052-009:C001",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "iv": "has_nature_view",
+      "iv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "iv_mapped": true,
+      "iv_confidence": 0.71,
+      "dv": "recovery_time",
+      "dv_raw": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col",
+      "dv_mapped": true,
+      "dv_confidence": 0.71,
+      "direction": "increase",
+      "effect_size": 0.25,
+      "effect_size_type": "cohens_d",
+      "sample_n": null,
+      "p_value": null,
+      "is_significant": false,
+      "context": null,
+      "source_table_id": "TBL-20260219231052-009",
+      "source_page": 10,
+      "source_quote": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col_2: 0.399). Both the main effect of pattern",
+      "extraction_confidence": 0.685,
+      "confidence_decomposition": {
+        "table_type_confidence": 0.6,
+        "row_quality_confidence": 0.6,
+        "iv_map_confidence": 0.71,
+        "dv_map_confidence": 0.71,
+        "stat_parse_confidence": 0.8,
+        "aggregate": 0.685,
+        "meets_thresholds": true
+      },
+      "vocabulary_mapped": true,
+      "extraction_method": "enhanced_codex",
+      "semantic_type": "statistical_results",
+      "claim_type": "associational",
+      "rule_type": "edge",
+      "article_type_family": "unknown",
+      "field_contract_family": "unknown",
+      "field_targets": [
+        "classification_diagnostics",
+        "minimum_safe_summary"
+      ],
+      "attack_patterns": [],
+      "attack_detected": false,
+      "attack_types": [],
+      "attack_max_confidence": 0.0,
+      "pilot_profile": "demo_balanced_codex",
+      "pilot_variant": "no_gate",
+      "pilot_model": "gpt-5.2-codex"
+    }
+  ],
+  "table_records": [
+    {
+      "paper_id": "doi:10.1007/bf00996485",
+      "pdf_path": "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs/10.1007_bf00996485.pdf",
+      "error": "extract_tables_error:AttributeError",
+      "tables": []
+    },
+    {
+      "paper_id": "doi:10.1016/0010-0285(78)90006-3",
+      "pdf_path": "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs/10.1016_0010-0285(78)90006-3.pdf",
+      "error": "extract_tables_error:AttributeError",
+      "tables": []
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260219231049-006",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260219231051-008",
+      "page": 8,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260219231052-009",
+      "page": 10,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "table_id": "TBL-20260219231053-010",
+      "page": 10,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/su152216104",
+      "table_id": "TBL-20260219231057-011",
+      "page": 7,
+      "kept": true,
+      "type": "unknown",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/su152216104",
+      "table_id": "TBL-20260219231059-013",
+      "page": 9,
+      "kept": true,
+      "type": "results",
+      "confidence": 0.5
+    },
+    {
+      "paper_id": "doi:10.3390/su152216104",
+      "table_id": "TBL-20260219231102-015",
+      "page": 10,
+      "kept": true,
+      "type": "demographics",
+      "confidence": 0.5
+    }
+  ]
+}

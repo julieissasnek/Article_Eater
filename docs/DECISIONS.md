@@ -189,4 +189,216 @@ These classifications are correct given the inference rules above. Individual re
 
 ---
 
+---
+
+## Sprint D: D.6 Claim Extraction Engine Improvements
+
+*Date: February 18, 2026*
+
+Following Codex suggestions for improving table semantics before claim extraction.
+
+### D.D6.1: Integration of Codex Table Semantics Module
+- **Context**: Codex built `table_semantics_codex.py` and `row_classifier_codex.py` for pre-extraction gating.
+- **Decision**: Integrate both modules into `claim_extractor.py` as the primary extraction path ("enhanced" method).
+- **Rationale**: Table semantic profiling filters non-extractable tables (references, model fit, demographics, garbage) before claim extraction, improving precision.
+- **Risk**: Low — maintains backward compatibility via `method="rule_based"` fallback.
+
+### D.D6.2: Row-Level Classification Gate
+- **Context**: Original extraction processed all rows equally; many rows are headers, citations, or junk.
+- **Decision**: Filter rows by label: keep HEADER (for context), STAT_ROW, TEXT_ROW, GROUP_LABEL. Reject CITATION_ROW, MODEL_FIT_ROW, DEMOGRAPHIC_ROW, JUNK_ROW.
+- **Alternatives**: Process all rows and filter claims later (lower precision); use LLM for row classification (expensive).
+- **Rationale**: Row-level gating removes garbage before claim construction, improving precision without LLM costs.
+- **Risk**: Low — conservative thresholds; STAT_ROW has 0.85 confidence minimum.
+
+### D.D6.3: Hard Negative Library
+- **Context**: Need CI gate to prevent regression when improving recall.
+- **Decision**: Created `hard_negatives.py` with known bad patterns: author bios, references, figure captions, OCR garbage, model fit, demographics, notes.
+- **Alternatives**: Pattern-only approach (implemented); ML classifier (overkill for known cases); manual review (not scalable).
+- **Rationale**: Hard negatives are deterministic rejections. Running against gold tests ensures improvements don't reintroduce garbage.
+- **Risk**: Low — patterns are conservative.
+
+### D.D6.4: Confidence Decomposition
+- **Context**: Single aggregate confidence score obscures failure modes.
+- **Decision**: Decompose into: table_type_confidence, row_quality_confidence, iv_map_confidence, dv_map_confidence, stat_parse_confidence. Require minimum thresholds per component.
+- **Alternatives**: Keep single score (less informative); different weights (current weights are preliminary).
+- **Rationale**: Per-component scores enable debugging (which stage failed?) and targeted improvements.
+- **Risk**: Medium — threshold values may need tuning. Current thresholds: table_type 0.5, row_quality 0.6, iv_map 0.4, dv_map 0.4, stat_parse 0.3.
+- **Panelist Concerns**: May want to adjust thresholds based on gold standard validation results.
+
+### D.D6.5: Robust P-Value Parsing
+- **Context**: OCR artifacts produce malformed p-values: ".03.", missing leading zeros, "ns" markers.
+- **Decision**: Add `_extract_p_value_robust()` function handling: trailing periods, asterisk notation (* ** ***), "ns" markers, missing leading zeros.
+- **Rationale**: More p-values parsed = more claims with is_significant flag = better confidence scoring.
+- **Risk**: Low — validation against known p-value formats.
+
+### D.D6.6: Header-Based IV/DV Inference
+- **Context**: Regression tables have IVs in left column and DVs in column headers, but row-based extraction misses this structure.
+- **Decision**: Add `_infer_iv_dv_from_headers()` to detect predictor/outcome columns from headers, use as fallback for row extraction.
+- **Alternatives**: Full table structure reconstruction (complex); LLM-based extraction (expensive).
+- **Rationale**: Header inference improves IV/DV mapping for structured tables without LLM costs.
+- **Risk**: Medium — header patterns may not match all table formats. Confidence is discounted 0.8x for inferred values.
+
+### D.D6.7: Significance-Aware Extraction
+- **Context**: Claims need is_significant flag for downstream weighting.
+- **Decision**: Extract is_significant from p-value parsing; default False for "ns" or p > .05; default True for asterisk notation or p < .05.
+- **Rationale**: Significance affects claim confidence and WIS weighting. Non-significant findings are still extracted (important for null effects).
+- **Risk**: Low — standard statistical conventions.
+
+### D.D6.8: OCR Normalization Before Parsing
+- **Context**: OCR doubles characters ("ttaaccttiillee") and concatenates words ("samplephoto").
+- **Decision**: Use Codex's `normalize_ocr_text()` before stat parsing: collapse char-pair duplication, reduce 3+ repeats to 2, split known compounds.
+- **Rationale**: Clean text improves stat pattern matching and vocabulary matching.
+- **Risk**: Low — conservative normalization rules.
+
+### D.D6.9: Table Exclusion Gates (Precision-First)
+- **Context**: Some tables should never produce claims regardless of content.
+- **Decision**: Reject tables with: semantic_type in {artifact, references, model_fit, demographics}, junk_density >= 0.2, citation_density >= 0.6 with stat_density < 0.2, no STAT_ROW for non-study_summary tables.
+- **Rationale**: Precision-first approach: better to miss some claims than extract garbage.
+- **Risk**: Low — conservative gates; extractable tables pass through.
+
+### D.D6.10: Default Extraction Method Changed to "enhanced"
+- **Context**: Legacy `extract_claims_from_table()` defaulted to "rule_based".
+- **Decision**: Change default to "enhanced" which uses all Codex improvements.
+- **Rationale**: Enhanced method has better precision; legacy available via `method="rule_based"` for comparison.
+- **Risk**: Low — backward compatible; tests updated.
+
+---
+
+## Summary: D.6 Improvements
+
+| Improvement | Status | Impact |
+|-------------|--------|--------|
+| Table semantics integration | ✓ Done | Rejects ~28 non-extractable tables |
+| Row classification gate | ✓ Done | Filters junk/citation/demographic rows |
+| Hard negative library | ✓ Done | CI gate for regression prevention |
+| Confidence decomposition | ✓ Done | Per-component scores for debugging |
+| Robust p-value parsing | ✓ Done | Handles .03., ns, asterisks |
+| Header-based IV/DV inference | ✓ Done | Improves structured table extraction |
+| Significance-aware extraction | ✓ Done | is_significant flag on claims |
+| OCR normalization | ✓ Done | Via Codex's normalize_ocr_text() |
+| Table exclusion gates | ✓ Done | Precision-first rejection |
+
+**Key outcome**: Reduced garbage admission, improved effect-size-bearing claim yield. See Codex's comparison: old run 76 claims with 8 effect sizes → new run 72 claims with 11 effect sizes, 0 extraction errors.
+
+---
+
 *Document maintained per root-level CLAUDE.md governance requirements.*
+
+---
+
+## Sprint 1.5 Phase C Decision Defaults (2026-02-19)
+
+### D1.5.2: Article_Finder GapType Unknown Values (1.5.C1a)
+- **Decision**: Option (b) map to canonical values.
+- **Mapping**:
+  - `coverage` -> `mechanism`
+  - `neural` -> `mechanism`
+  - `theory` -> `validation`
+- **Rationale**: Keep canonical enum set stable and avoid downstream drift in cross-repo checks.
+
+### D1.5.3: BN_graphical EvidenceType Unknown Values (1.5.C2c)
+- **Decision**: Option (b) map to canonical values.
+- **Mapping**:
+  - `direct` -> `experimental`
+  - `indirect` -> `observational`
+  - `meta` -> `meta_analysis`
+  - `review` -> `theoretical`
+- **Rationale**: Preserve semantic intent while remaining compatible with canonical `EvidenceType`.
+
+---
+
+## Sprint D: Abstract Extraction Upgrade (2026-02-19)
+
+### D.D14.1: Phrase Cleaning + Variant Mapping for Abstract Claims
+- **Context**: Abstract claim extraction was missing many findings because regex captures included clause boilerplate, producing poor IV/DV mapping confidence.
+- **Decision**: Add phrase normalization and variant mapping (`_clean_variable_phrase`, `_phrase_variants`, `_best_map`) before vocabulary resolution.
+- **Rationale**: Preserve precision threshold while increasing recall for natural-language abstract phrasing.
+- **Risk**: Medium — broader matching can raise false-positive risk; retained confidence gates to control this.
+
+### D.D14.2: Direction-Aware Relation Patterns
+- **Context**: Many abstract claims had `direction=unknown` despite explicit verbs (e.g., increased, reduced).
+- **Decision**: Expand relation patterns with directional hints and use pair-level direction when sentence-level direction is unknown.
+- **Rationale**: Improves directional signal without requiring LLM inference.
+- **Risk**: Low — directional override only applies when explicit lexical cues are present.
+
+### D.D14.3: Relaxed Second Pass + Intra-Abstract Fallback Pairing
+- **Context**: Claims were dropped when one side of the pair mapped but the other missed threshold.
+- **Decision**: Keep strict pass first, then run a relaxed pass (`min_conf=0.55`) with conservative fallback to high-frequency abstract-level IV/DV priors.
+- **Rationale**: Recovers partial findings while preserving a confidence floor.
+- **Risk**: Medium — fallback pairing can over-generalize in some abstracts; mitigated via dedupe and confidence checks.
+
+### D.D14.4: Non-Blocking Contract Validation for Table-Classification Caption Assist
+- **Context**: Strict table classification contract checks blocked caption lookup when minimal fixtures omitted `type`.
+- **Decision**: Use non-strict contract validation in abstract extractor helper readers for table-classification-derived caption context.
+- **Rationale**: Caption enrichment should degrade gracefully instead of halting extraction.
+- **Risk**: Low — strict contract validation remains enforced for primary output artifacts.
+
+### D.D14.5: Pair-Local Direction Inference + Unknown Backfill
+- **Context**: Many abstract sentences contain mixed clauses (one IV increases DV1 while decreasing DV2), causing sentence-level direction to collapse to `unknown`.
+- **Decision**: Add pair-local direction inference windows around IV/DV anchor phrases and a conservative within-paper IV/DV direction backfill when exactly one non-unknown direction exists.
+- **Rationale**: Direction should be attached to each IV->DV pair, not the whole sentence blob.
+- **Risk**: Medium — local lexical windows can still miss implicit polarity; constrained to explicit evidence and single-direction consensus.
+
+### D.D15.1: Merge-Level Direction Consensus Across Sources
+- **Context**: D.15 previously treated `{unknown, increase}` as a conflict and inflated conflict counts.
+- **Decision**: In merge logic, conflict now requires disagreement among non-unknown directions only; unknown directions are backfilled from cross-source pair consensus when unique.
+- **Rationale**: Unknown is missing information, not contradictory information.
+- **Risk**: Low — backfill only occurs when one unique known direction exists for the same paper+IV+DV.
+
+### D.D15.2: LLM Ceiling Harness for Abstract Extraction
+- **Context**: Need empirical upper-bound estimate for quality if we pay for strongest model extraction.
+- **Decision**: Add `scripts/run_llm_abstract_pilot.py` to run matched-paper rule vs `gpt-5.3-codex` comparisons, with optional intro/conclusion context for direction disambiguation.
+- **Rationale**: Enables data-driven decision on spending for higher-quality extraction.
+- **Risk**: Medium — pilot sample size and prompt style can bias results; use as directional benchmark, not final truth.
+
+### D.D15.3: Open-Ended Direction Adjudication Prompting (2026-02-19)
+- **Context**: Direction adjudication packets previously nudged review toward abstract/results-only evidence paths.
+- **Decision**: Updated `_build_resolution_questions` in `src/extraction/batch_extract.py` to use open-ended evidence retrieval wording (full-paper + credible external sources) and conservative URL+quote evidence requirements.
+- **Rationale**: Avoid premature narrowing of evidence and improve correctness when direction is inferable from methods/conclusion/captions or external summaries.
+- **Risk**: Medium — broader retrieval may increase noisy evidence unless source-quality gates are enforced.
+
+### D.D15.4: External-Evidence Pilot with 2-of-3 Consensus (2026-02-19)
+- **Context**: Needed empirical test of whether external evidence adjudication can reduce wrong-direction assignments in messy table/abstract extraction.
+- **Decision**: Ran pilot overrides (`data/review/direction_overrides.external_evidence_pilot.json`) and compared baseline vs pilot extractions and web rebuilds in isolated outputs.
+- **Outcome**:
+  - tension claims `37 -> 18`
+  - null tensions `1 -> 0`
+  - overrides applied: `20`
+  - contradictions unchanged (`8`), but low-trust contradiction suppressions shifted (`41 -> 29`).
+- **Rationale**: External evidence is effective for demoting unsupported mapped directions to `unknown` and correcting specific sign errors.
+- **Risk**: Medium — many adjudications remain “unknown” due IV/DV mapping mismatch; requires upstream mapping improvements for recall.
+
+### D.D15.5: No-HITL RAG + Multi-LLM Direction Adjudicator (2026-02-19)
+- **Decision**: Added `scripts/run_direction_rag_ladder.py` to perform local evidence retrieval, 3-model adjudication, grounding verification, and consensus-based overrides.
+- **Rationale**: Improve precision over single-snippet rules by requiring evidence-grounded multi-model agreement.
+- **Operational note**: external LLM providers require outbound network and provider keys; nested `codex exec` can be blocked in restricted sandboxes.
+
+### D.D15.6: Hard No-False-Success Gates for RAG+LLM Direction Ladder (2026-02-19)
+- **Decision**: Upgraded `scripts/run_direction_rag_ladder.py` with strict gate enforcement.
+- **Preflight gates**:
+  - fail on empty tension queue,
+  - fail on missing provider credentials,
+  - fail on provider connectivity check errors (unless explicitly skipped).
+- **Post-run gates**:
+  - fail if overrides list is empty,
+  - fail if all model votes failed,
+  - fail on no-op direction delta unless `--allow-noop` is set.
+- **Failure artifacts**: write `*_failed.json` report and overrides files with explicit reason lists.
+- **Rationale**: prevent silent no-op runs and eliminate false success reporting.
+
+### D.D15.7: Sentence-to-Field Training Set Generator for Empirical_v2 (2026-02-19)
+- **Decision**: Added `scripts/build_empirical_v2_sentence_training_set.py` to export whole-sentence examples with extracted field labels for ML training.
+- **Default policy**: precision-first (`abstract,caption` sources only; noisy/conflicting rows routed to review queue).
+- **Outputs**:
+  - `data/training/empirical_v2_sentence_field_pairs.jsonl`
+  - `data/training/empirical_v2_sentence_field_pairs.review.jsonl`
+  - `data/training/empirical_v2_sentence_field_pairs.summary.json`
+- **Rationale**: supports hybrid pipeline (ML extraction + LLM fallback) and explicit gold-label curation loop.
+
+### D.D15.8: Multi-Sentence + Span-Supervision Upgrade for Training Export (2026-02-19)
+- **Decision**: Extended sentence export to keep up to N high-value sentences per claim (`--sentences-per-claim`, default `2`) with local context windows.
+- **Decision**: Added `field_evidence` span annotations (`iv_span`, `dv_span`, `direction_span`, `significance_cue_span`, `p_value_span`, `effect_size_span`) for token-level supervision.
+- **Decision**: Added generic-phrase suppression so spans do not anchor to reporting boilerplate (e.g., "results indicate", "in this study").
+- **Decision**: Added placeholder-variable routing (`col_2`, `row_3`, etc.) to force these rows into review queue instead of training set.
+- **Rationale**: user requested many whole-sentence examples of field surface forms; span-level labels improve model learnability and reduce noisy supervision.
+- **Risk**: Medium — noisy upstream `iv_raw`/`dv_raw` can still generate imperfect spans; unresolved rows remain in review queue for gold correction.

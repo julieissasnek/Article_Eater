@@ -1,22 +1,31 @@
 {
-  "generated_at": "2026-02-14T22:08:59.053516+00:00",
+  "generated_at": "2026-02-18T23:56:08.949410+00:00",
   "source_status": "error_pdf_timeout",
-  "requeue_status": "queued_timeout_recovery",
-  "timeout_seconds": 180,
+  "status_field": "auto",
+  "requeue_status_base": "queued_timeout_recovery",
+  "fast_requeue_status": "queued_timeout_recovery_fast",
+  "fast_timeout_seconds": 120,
+  "slow_timeout_seconds": 300,
+  "slow_stage_enabled": true,
   "gains": {
-    "selected_rows": 23,
-    "recovered_to_extracted": 0,
+    "selected_rows": 2,
+    "fast_stage_timeout_seconds": 120,
+    "slow_stage_timeout_seconds": 300,
+    "slow_stage_candidates": 0,
+    "recovered_to_extracted": 2,
     "still_no_claims": 0,
-    "still_timeout": 23,
+    "still_timeout": 0,
     "new_processing_errors": 0,
     "total_claim_delta": 0,
     "positive_claim_delta_rows": 0,
-    "preprocess_ready_after": 23,
+    "preprocess_ready_after": 2,
     "preprocess_quarantine_after": 0,
     "preprocess_error_after": 0,
-    "repaired_pdf_path_rows": 0
+    "repaired_pdf_path_rows": 0,
+    "remaining_timeout_queue_rows": 0
   },
   "post_status_counts": {
-    "error_pdf_timeout": 23
-  }
+    "completed_pdf_extracted": 2
+  },
+  "remaining_timeout_csv": "data/review/timeout_retry_queue.csv"
 }

@@ -68,6 +68,7 @@ class CausalPathway:
     change_produced: str
     level: str
     bridging_to: str
+    bridging_quality: str
     maturity: str
     evidence_base: str
 
@@ -295,6 +296,7 @@ class TemplateQueryService:
     def __init__(self, templates_dir: str = "data/templates"):
         self.templates_dir = Path(templates_dir)
         self.templates: Dict[str, Dict] = {}
+        self.templates_by_id: Dict[str, Dict] = {}
         self.display_id_map: Dict[str, str] = {}  # display_id → template_id
         self._load_templates()
 
@@ -310,6 +312,7 @@ class TemplateQueryService:
                     t = json.load(fp)
                     tid = t.get('template_id', f.stem)
                     did = t.get('display_id', '')
+                    self.templates_by_id[tid] = t
                     self.templates[tid] = t
                     if did:
                         self.display_id_map[did] = tid
@@ -319,6 +322,36 @@ class TemplateQueryService:
 
         logger.info(f"Loaded {len(self.templates)} templates")
 
+    def _normalize_text_field(self, value: Any, default: str = "?") -> str:
+        if value is None:
+            return default
+        text = str(value).strip()
+        return text if text else default
+
+    def _first_present(self, mapping: Dict[str, Any], keys: List[str], default: str = "?") -> str:
+        for key in keys:
+            if key in mapping:
+                text = self._normalize_text_field(mapping.get(key), default="")
+                if text:
+                    return text
+        return default
+
+    def _resolve_template(self, ref_id: str, templates: Dict[str, Dict]) -> Dict:
+        """Resolve template by display_id or template_id across mixed template maps."""
+        if ref_id in templates and isinstance(templates[ref_id], dict):
+            return templates[ref_id]
+
+        tid = self.display_id_map.get(ref_id)
+        if tid and tid in templates and isinstance(templates[tid], dict):
+            return templates[tid]
+
+        for template in templates.values():
+            if not isinstance(template, dict):
+                continue
+            if template.get('display_id') == ref_id or template.get('template_id') == ref_id:
+                return template
+        return {}
+
     def _compute_relevance(self, template: Dict, keywords: List[str]) -> float:
         """
         Compute relevance score for a template given query keywords.
@@ -326,21 +359,57 @@ class TemplateQueryService:
         Simple keyword matching for now — should be replaced with
         semantic embeddings for production use.
         """
+        causal_terms = []
+        for link in template.get('causal_links', []):
+            if not isinstance(link, dict):
+                continue
+            for key in (
+                'from_entity',
+                'to_entity',
+                'from_variable',
+                'to_variable',
+                'activity',
+                'from_level',
+                'to_level',
+            ):
+                value = link.get(key)
+                if value:
+                    causal_terms.append(str(value))
+
         searchable = ' '.join([
             str(template.get('name', '')),
+            str(template.get('display_id', '')),
+            str(template.get('template_id', '')),
             str(template.get('structural_pattern', '')),
             str(template.get('higher_order_principle', '')),
             str(template.get('short_description', '')),
+            ' '.join(template.get('framework_ids', []) if isinstance(template.get('framework_ids'), list) else []),
+            ' '.join(causal_terms),
             ' '.join(template.get('scope_conditions', []) if isinstance(template.get('scope_conditions'), list) else []),
             ' '.join(template.get('moderators', []) if isinstance(template.get('moderators'), list) else []),
         ]).lower()
 
+        searchable_tokens = set(re.findall(r'\b[\w\-]+\b', searchable))
+
         # Count keyword matches
-        matches = sum(1 for kw in keywords if kw.lower() in searchable)
+        matches = 0.0
+        for kw in keywords:
+            kw_lower = kw.lower()
+            if kw_lower in searchable_tokens:
+                matches += 1.0
+            elif kw_lower in searchable:
+                matches += 0.5
 
         # Bonus for title/name matches
         name = template.get('name', '').lower()
-        name_matches = sum(2 for kw in keywords if kw.lower() in name)
+        name_tokens = set(re.findall(r'\b[\w\-]+\b', name))
+        name_matches = 0.0
+        for kw in keywords:
+            kw_lower = kw.lower()
+            if kw_lower in name_tokens:
+                name_matches += 2.0
+            elif kw_lower in name:
+                name_matches += 1.0
 
         return (matches + name_matches) / max(len(keywords), 1)
 
@@ -350,15 +419,52 @@ class TemplateQueryService:
         for link in template.get('causal_links', []):
             if not isinstance(link, dict):
                 continue
+            from_entity = self._first_present(
+                link,
+                ['from_entity', 'from_variable', 'source', 'from', 'input'],
+            )
+            to_entity = self._first_present(
+                link,
+                ['to_entity', 'to_variable', 'target', 'to', 'output'],
+            )
+            activity = self._first_present(
+                link,
+                ['activity', 'relationship', 'relation', 'mechanism'],
+                default='influences',
+            )
+            from_level = self._first_present(
+                link,
+                ['from_level', 'level', 'source_level'],
+            )
+            to_level = self._first_present(
+                link,
+                ['to_level', 'target_level', 'bridging_to'],
+            )
+            bridging_quality = self._first_present(
+                link,
+                ['bridging_quality', 'bridge_quality', 'bridging_to', 'bridging_strength'],
+            )
+            maturity = self._first_present(link, ['maturity', 'status'], default='unknown')
+            evidence_base = self._first_present(
+                link,
+                ['evidence_base', 'key_evidence', 'notes', 'description'],
+                default='',
+            )
+            change_produced = self._first_present(
+                link,
+                ['change_produced', 'notes', 'expected_change'],
+                default='',
+            )
             pathways.append(CausalPathway(
-                from_entity=link.get('from_entity', '?'),
-                activity=link.get('activity', '?'),
-                to_entity=link.get('to_entity', '?'),
-                change_produced=link.get('change_produced', ''),
-                level=link.get('level', link.get('from_level', '?')),
-                bridging_to=link.get('bridging_to', link.get('to_level', '?')),
-                maturity=link.get('maturity', '?'),
-                evidence_base=link.get('evidence_base', '')[:200]
+                from_entity=from_entity,
+                activity=activity,
+                to_entity=to_entity,
+                change_produced=change_produced,
+                level=from_level,
+                bridging_to=to_level,
+                bridging_quality=bridging_quality,
+                maturity=maturity,
+                evidence_base=evidence_base[:200],
             ))
         return pathways
 
@@ -494,7 +600,7 @@ class TemplateQueryService:
 
             # Check for weak bridging in causal links
             for pathway in ans.how:
-                if pathway.bridging_to in ['weak', 'speculative']:
+                if pathway.bridging_quality.lower() in ['weak', 'speculative']:
                     gaps.append(f"{ans.display_id}: {pathway.from_entity} → {pathway.to_entity} bridging is weak")
 
         return list(set(gaps))[:5]
@@ -530,8 +636,11 @@ class TemplateQueryService:
                         research_needed = f"Direct neuroimaging study needed to confirm {pathway.from_entity} → {pathway.to_entity} pathway"
                     elif pathway.maturity == 'supported':
                         research_needed = f"Replication with larger N and diverse populations needed"
-                    elif pathway.bridging_to in ['weak', 'moderate']:
-                        research_needed = f"Mechanism linking {pathway.level} to {pathway.bridging_to} level needs elucidation"
+                    elif pathway.bridging_quality.lower() in ['weak', 'moderate']:
+                        research_needed = (
+                            f"Mechanism linking {pathway.level} to {pathway.bridging_to} "
+                            "level needs elucidation"
+                        )
                     else:
                         research_needed = "Well-established; focus on boundary conditions"
 
@@ -580,7 +689,7 @@ class TemplateQueryService:
         gaps = []
 
         for ans in answers[:3]:
-            template = templates.get(ans.display_id, {})
+            template = self._resolve_template(ans.display_id, templates)
 
             # Gap Type 1: Weak causal links
             for pathway in ans.how:
@@ -593,10 +702,13 @@ class TemplateQueryService:
                         priority='high' if pathway.maturity == 'preliminary' else 'critical',
                         template_source=ans.display_id
                     ))
-                elif pathway.bridging_to in ['weak']:
+                elif pathway.bridging_quality.lower() in ['weak']:
                     gaps.append(ResearchGap(
                         gap_type='weak_link',
-                        description=f"Bridging from {pathway.level} to {pathway.bridging_to} level is weak",
+                        description=(
+                            f"Bridging from {pathway.level} to {pathway.bridging_to} "
+                            "level is weak"
+                        ),
                         current_evidence=pathway.evidence_base[:150] if pathway.evidence_base else "Limited",
                         proposed_study=f"Multi-level study measuring both {pathway.level} and {pathway.bridging_to} outcomes simultaneously",
                         priority='high',
@@ -678,7 +790,7 @@ class TemplateQueryService:
         seen = set()
 
         for ans in answers[:3]:
-            template = templates.get(ans.display_id, {})
+            template = self._resolve_template(ans.display_id, templates)
             interactions = template.get('interactions', [])
 
             for ix in interactions:
@@ -698,10 +810,10 @@ class TemplateQueryService:
 
                 if ref_id and ref_id not in seen:
                     seen.add(ref_id)
-                    ref_template = templates.get(ref_id, {})
+                    ref_template = self._resolve_template(ref_id, templates)
                     if ref_template:
                         related.append(RelatedTemplate(
-                            display_id=ref_id,
+                            display_id=ref_template.get('display_id', ref_id),
                             name=ref_template.get('name', '?')[:60],
                             relationship=nature[:150] if nature else "Related mechanism",
                             relevance=self._explain_relevance(ans.display_id, ref_id, nature)
@@ -752,9 +864,14 @@ class TemplateQueryService:
 
         # Score all templates
         scored = []
-        for tid, template in self.templates.items():
+        seen_template_ids = set()
+        for template in self.templates.values():
             if not isinstance(template, dict) or 'display_id' not in template:
                 continue
+            template_id = str(template.get('template_id', '')).strip()
+            if not template_id or template_id in seen_template_ids:
+                continue
+            seen_template_ids.add(template_id)
             relevance = self._compute_relevance(template, keywords)
             if relevance >= min_relevance:
                 scored.append((relevance, template))

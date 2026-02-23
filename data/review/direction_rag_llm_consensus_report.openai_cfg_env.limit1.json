@@ -1,0 +1,138 @@
+{
+  "summary": {
+    "generated_at": "2026-02-19T14:33:04+00:00",
+    "queue_path": "data/review/theory_direction_tension_queue.json",
+    "structured_claims_path": "data/production/structured_claims.json",
+    "abstract_claims_path": "data/production/abstract_claims.json",
+    "profiles": [
+      {
+        "name": "high_openai",
+        "provider": "openai",
+        "model": "gpt-4.1"
+      },
+      {
+        "name": "mid_openai",
+        "provider": "openai",
+        "model": "gpt-4.1-mini"
+      },
+      {
+        "name": "low_openai",
+        "provider": "openai",
+        "model": "gpt-4o-mini"
+      }
+    ],
+    "total_claims": 1,
+    "changed_vs_observed": 1,
+    "direction_counts_final": {
+      "unknown": 1
+    },
+    "direction_counts_observed": {
+      "increase": 1
+    }
+  },
+  "adjudications": [
+    {
+      "claim_id": "doi:10.1007/978-3-031-04714-5_6:TBL-20260216230002-008:C001",
+      "paper_id": "doi:10.1007/978-3-031-04714-5_6",
+      "observed_direction": "increase",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 6,
+      "votes": [
+        {
+          "profile": "high_openai",
+          "model": "gpt-4.1",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "ConnectionError: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError(\"HTTPSConnection(host='api.openai.com', port=443): Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "profile": "mid_openai",
+          "model": "gpt-4.1-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "ConnectionError: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError(\"HTTPSConnection(host='api.openai.com', port=443): Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "profile": "low_openai",
+          "model": "gpt-4o-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "ConnectionError: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError(\"HTTPSConnection(host='api.openai.com', port=443): Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        }
+      ],
+      "override": {
+        "claim_id": "doi:10.1007/978-3-031-04714-5_6:TBL-20260216230002-008:C001",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=increase final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.1007_978-3-031-04714-5_6.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:33:04+00:00",
+        "votes": [
+          {
+            "profile": "high_openai",
+            "model": "gpt-4.1",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "mid_openai",
+            "model": "gpt-4.1-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_openai",
+            "model": "gpt-4o-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 6.0,
+            "text": "col_1: application of LED technologies and smart-advanced textiles (Figs.; col_2: 10 and 11)."
+          },
+          {
+            "chunk_id": "E43",
+            "source": "pdf_preprocess",
+            "page": 22,
+            "score": 3.0,
+            "text": "16). Quantitative measurements of the relationship between observer and artworks were performed, with eye-tracking technique application. Information theory connected to the ergonomics of multiperceptive learning and optical physics was used for the assessment of the correct light sources in terms of spectral emis- sio"
+          },
+          {
+            "chunk_id": "E47",
+            "source": "pdf_preprocess",
+            "page": 23,
+            "score": 3.0,
+            "text": "Adaptive and Sustainability for Visual and Perceptive Comfort: Neuroscience\u2026 155 Fig. 17 Results for each LED: at the top, the first three images, center second three images, bot- tom third three images, respectively, for VWh, ST, VWP, emission spectrum, white point compared to black body, and light effect on a portion"
+          },
+          {
+            "chunk_id": "E14",
+            "source": "pdf_preprocess",
+            "page": 4,
+            "score": 2.0,
+            "text": "Brain damage on this brain area produces serious perceptual prob- lems and sometimes total color blindness, i.e., the achromatopsia phenomenon. Retinal images, vision, and perception coexist with the self-image or body scheme, i.e., the understanding, the awareness that the mind has about the body, as well as its encum"
+          }
+        ]
+      }
+    }
+  ]
+}

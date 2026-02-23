@@ -38,6 +38,8 @@ import operator
 
 logger = logging.getLogger(__name__)
 
+from src.services.web_of_belief_modules import compute_severity_score
+
 
 # =============================================================================
 # PART 1: FOUNDATIONAL ENUMS AND TYPES
@@ -234,6 +236,19 @@ class Belief:
     
     # Scope constraints
     scope: Optional[BeliefScope] = None
+    scope_population: Optional[str] = None
+    scope_context: Optional[str] = None
+    scope_temporal: Optional[str] = None
+
+    # ARCH-3a source tracking
+    source_lab: Optional[str] = None
+    source_institution: Optional[str] = None
+    study_method: Optional[str] = None
+
+    # ARCH-6b evidence metrics
+    evidence_effect_size: Optional[float] = None
+    evidence_p_value: Optional[float] = None
+    evidence_sample_n: Optional[int] = None
     
     # Justificatory dependencies
     depends_on: Set[str] = field(default_factory=set)
@@ -256,6 +271,17 @@ class Belief:
     
     def is_anomalous(self) -> bool:
         return self.status == BeliefStatus.ANOMALOUS
+
+    def compute_severity(self, alpha: float = 0.05) -> float:
+        """ARCH-6b compatibility helper on deprecated Belief type."""
+        return compute_severity_score(
+            credence=self.credence.value,
+            uncertainty=self.credence.uncertainty,
+            sample_n=self.evidence_sample_n,
+            effect_size=self.evidence_effect_size,
+            p_value=self.evidence_p_value,
+            alpha=alpha,
+        )
 
 
 # =============================================================================
@@ -508,6 +534,25 @@ class BeliefScope:
         if self.n_studies == 0:
             return 0.0
         return self.population_coverage.get(population, 0) / self.n_studies
+
+
+@dataclass
+class SelectionVariable:
+    """Pearl/Bareinboim selection-node style descriptor."""
+    name: str
+    source_value: str
+    target_value: str
+    impact: str  # low | moderate | high
+
+
+@dataclass
+class TransportabilityAssessment:
+    """Summary of transportability analysis between source and target populations."""
+    belief_id: str
+    transfer_type: ContrastTransferType
+    similarity: float
+    selection_variables: List[SelectionVariable] = field(default_factory=list)
+    recommendations: List[str] = field(default_factory=list)
 
 
 # =============================================================================
@@ -1350,6 +1395,115 @@ class EpistemicCausalBridge:
         # PA-5 (Simon): Two-tier tracking - excluded (actionable) vs skipped (noise)
         self._excluded_beliefs: List[ExcludedBelief] = []  # Beliefs that passed theory filter but failed other checks
         self._skipped_beliefs: List[ExcludedBelief] = []   # Beliefs not in target theory (separate for less noise)
+
+    # =========================================================================
+    # ARCH-2a: TRANSPORTABILITY ANALYSIS
+    # =========================================================================
+
+    def analyze_transportability(
+        self,
+        belief_id: str,
+        target_population: PopulationContext,
+    ) -> TransportabilityAssessment:
+        """
+        ARCH-2a: Assess transfer from source belief context to target population.
+
+        Uses a pragmatic Pearl/Bareinboim-style selection-variable summary where
+        mismatches are represented as transportability risks.
+        """
+        belief = self.web.beliefs.get(belief_id)
+        if belief is None:
+            raise ValueError(f"Belief not found: {belief_id}")
+
+        source_population_id = (
+            getattr(belief, "scope_population", None)
+            or getattr(getattr(belief, "scope", None), "populations", [None])[0]
+            or "unknown_source_population"
+        )
+        source_context = getattr(belief, "scope_context", None) or "unknown_source_context"
+        source_temporal = getattr(belief, "scope_temporal", None) or "unknown_source_temporal"
+
+        selections: List[SelectionVariable] = []
+        if source_population_id != target_population.population_id:
+            selections.append(
+                SelectionVariable(
+                    name="S_population",
+                    source_value=str(source_population_id),
+                    target_value=str(target_population.population_id),
+                    impact="high",
+                )
+            )
+
+        target_context = target_population.description or "unknown_target_context"
+        if source_context != target_context:
+            selections.append(
+                SelectionVariable(
+                    name="S_context",
+                    source_value=str(source_context),
+                    target_value=str(target_context),
+                    impact="moderate",
+                )
+            )
+
+        # Temporal portability is represented as another selection node.
+        target_temporal = "unspecified_target_temporal"
+        if source_temporal != target_temporal:
+            selections.append(
+                SelectionVariable(
+                    name="S_temporal",
+                    source_value=str(source_temporal),
+                    target_value=str(target_temporal),
+                    impact="moderate",
+                )
+            )
+
+        similarity = self._transport_similarity(
+            source_population_id=str(source_population_id),
+            source_context=str(source_context),
+            target_population=target_population,
+        )
+
+        if similarity >= 0.9:
+            transfer_type = ContrastTransferType.DIRECT
+        elif similarity >= 0.7:
+            transfer_type = ContrastTransferType.BASELINE_SHIFT
+        elif similarity >= 0.5:
+            transfer_type = ContrastTransferType.POPULATION_SHIFT
+        else:
+            transfer_type = ContrastTransferType.MEANING_SHIFT
+
+        recommendations: List[str] = []
+        if transfer_type == ContrastTransferType.DIRECT:
+            recommendations.append("Direct transfer is acceptable with minimal adjustment.")
+        else:
+            recommendations.append("Apply transportability adjustment before causal interpretation.")
+            recommendations.append("Collect target-population calibration data for key moderators.")
+        if selections:
+            recommendations.append("Model selection variables explicitly in sensitivity analysis.")
+
+        return TransportabilityAssessment(
+            belief_id=belief_id,
+            transfer_type=transfer_type,
+            similarity=round(similarity, 3),
+            selection_variables=selections,
+            recommendations=recommendations,
+        )
+
+    def _transport_similarity(
+        self,
+        *,
+        source_population_id: str,
+        source_context: str,
+        target_population: PopulationContext,
+    ) -> float:
+        score = 0.0
+        if source_population_id == target_population.population_id:
+            score += 0.6
+        if source_context and target_population.description and source_context == target_population.description:
+            score += 0.2
+        if target_population.baselines:
+            score += 0.2
+        return min(1.0, score)
     
     # =========================================================================
     # MODEL CONSTRUCTION

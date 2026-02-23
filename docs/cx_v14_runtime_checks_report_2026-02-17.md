@@ -1,7 +1,7 @@
 # CX V14 Runtime Checks Report
 
-- Generated: 2026-02-17T21:21:23.872Z
-- Templates scanned: 150
+- Generated: 2026-02-19T20:08:31.762Z
+- Templates scanned: 151
 - Required displays resolved: 4/4
 - Interpolation checks: 12/12
 - School-mode checks: 4/4

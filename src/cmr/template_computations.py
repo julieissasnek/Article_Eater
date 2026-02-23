@@ -798,6 +798,7 @@ MAT4_MATERIAL_PROFILES = {
         "cultural": 0.10,
     },
     "concrete": {
+
         "visual": 0.40,
         "haptic_thermal": 0.20,
         "acoustic": 0.15,
@@ -3643,11 +3644,108 @@ def compute_t40_msi_inverse_effectiveness(
 
 
 # =============================================================================
+# SND1: AUDITORY 1/f SCALING
+# =============================================================================
+
+def compute_snd1_fractal_soundscape(
+    spectral_slope_alpha: float,
+    background_dba: float,
+    occupant_age: Optional[int] = None,
+) -> ComputeResult:
+    """
+    SND1: Auditory 1/f Scaling (Fractal Soundscape).
+
+    Computes the match between the environmental soundscape's spectral slope
+    and the optimal 1/f (alpha=1.0) profile, moderated by overall loudness.
+
+    Parameters from SND1 calibration:
+    - Optimal Slope (Pink Noise): alpha = 1.0 (Goldilocks: 0.8-1.2)
+    - Optimal Level: 45-55 dBA (Masking without intrusion)
+
+    Args:
+        spectral_slope_alpha: Slope of PSD log-log plot (0=White, 1=Pink, 2=Brown)
+        background_dba: Overall sound pressure level
+        occupant_age: Optional age for lifespan moderation
+
+    Returns:
+        ComputeResult with fractal match score
+    """
+    if spectral_slope_alpha < 0:
+        raise ValueError("Spectral slope cannot be negative")
+    if background_dba < 0:
+        raise ValueError("dBA cannot be negative")
+
+    # 1. Slope Score (Gaussian-like peak at 1.0)
+    # Target is 1.0. Range 0.5-1.5 is acceptable.
+    slope_deviation = abs(spectral_slope_alpha - 1.0)
+    
+    if slope_deviation <= 0.2:
+        slope_score = 1.0  # Goldilocks (0.8 - 1.2)
+        slope_zone = "optimal_1f"
+    elif slope_deviation <= 0.5:
+        # Linear decay from 1.0 to 0.0 as deviation goes from 0.2 to 0.5
+        slope_score = 1.0 - (slope_deviation - 0.2) / 0.3
+        slope_zone = "acceptable"
+    else:
+        slope_score = 0.0
+        slope_zone = "discordant"
+
+    # 2. Level Score (Trapezoidal)
+    # <35: Too quiet (no masking) -> 0.5
+    # 35-45: Ramp up
+    # 45-55: Optimal -> 1.0
+    # 55-65: Ramp down
+    # >65: Intrusive -> 0.0
+    
+    if background_dba < 35:
+        level_score = 0.5 # Neutral/quiet
+        level_zone = "quiet"
+    elif background_dba <= 45:
+        level_score = 0.5 + 0.5 * ((background_dba - 35) / 10)
+        level_zone = "masking_onset"
+    elif background_dba <= 55:
+        level_score = 1.0
+        level_zone = "optimal_masking"
+    elif background_dba <= 65:
+        level_score = 1.0 - ((background_dba - 55) / 10)
+        level_zone = "intrusive_onset"
+    else:
+        level_score = 0.0
+        level_zone = "intrusive"
+
+    # Composite Score
+    # Both slope and level must be good. Interactive product.
+    composite_score = slope_score * level_score
+
+    # Lifespan moderation
+    lifespan_mult = get_lifespan_multiplier(occupant_age)
+
+    return ComputeResult(
+        output_type=OutputType.SCORE,
+        value=composite_score,
+        unit="score_0_1",
+        zone=slope_zone,
+        confidence=0.85, # Established physics/psychoacoustics
+        details={
+            "spectral_slope_alpha": spectral_slope_alpha,
+            "slope_deviation": slope_deviation,
+            "slope_score": slope_score,
+            "slope_zone": slope_zone,
+            "background_dba": background_dba,
+            "level_score": level_score,
+            "level_zone": level_zone,
+            "lifespan_multiplier": lifespan_mult,
+        }
+    )
+
+
+# =============================================================================
 # EXPORT REGISTRY
 # =============================================================================
 
 TEMPLATE_COMPUTE_FUNCTIONS = {
     # Batch 1
+    "SND1": compute_snd1_fractal_soundscape,
     "VF3": compute_vf3_ceiling_height,
     "L1": compute_l1_luminance_contrast,
     "L2": compute_l2_circadian_medi,

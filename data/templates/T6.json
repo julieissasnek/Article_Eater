@@ -1,280 +1,256 @@
 {
-  "template_id": "NM_CORTISOL_HIPPOCAMPAL_005",
-  "display_id": "T6",
-  "name": "Chronic cortisol \u2192 hippocampal impairment \u2192 spatial cognition degradation",
-  "structural_pattern": "sustained_stressor \u2192 neural_damage \u2192 functional_impairment (vicious cycle)",
-  "higher_order_principle": "Glucocorticoid Cascade Hypothesis (Sapolsky)",
-  "framework_ids": [
-    "NM_STRESS",
-    "SPATIAL_NAVIGATION"
+  "template_id": "T6",
+  "name": "Cortisol-Hippocampal Cascade",
+  "status": "calibrated",
+  "maturity": "how-actually",
+  "t1_frameworks": [
+    "NM",
+    "IC"
   ],
-  "transferable_to": [
-    "Any chronic stress context affecting memory"
+  "t1_5_parent_theories": [
+    "SRT"
   ],
-  "causal_links": [
+  "panel_id": "STRESS-I",
+  "calibration_date": "2026-02-21",
+  "mechanism_chain": [
     {
-      "id": "link_1",
-      "from_entity": "chronic_cortisol_elevation",
-      "activity": "enhances",
-      "to_entity": "glucocorticoid_receptor_activation",
-      "from_level": "neuroendocrine",
-      "to_level": "molecular",
-      "bridging_quality": "strong",
-      "maturity": "how-actually",
-      "evidence_base": "Sapolsky (2000)",
-      "change_produced": "GR saturation"
-    },
-    {
-      "id": "link_2",
-      "from_entity": "glucocorticoid_receptor_activation",
-      "activity": "inhibits",
-      "to_entity": "hippocampal_structural_integrity",
-      "from_level": "molecular",
-      "to_level": "cellular",
-      "bridging_quality": "strong",
-      "maturity": "how-actually",
-      "evidence_base": "McEwen (2007) - dendritic retraction in CA3 + suppressed neurogenesis in DG",
-      "change_produced": "atrophy",
-      "parameter_range": "detectable after ~3 weeks chronic stress"
+      "step": 1,
+      "from": "architectural_stressor",
+      "to": "perceived_threat_signal",
+      "description": "Architectural stressor exposure (enclosure R_h_ratio < 0.30, acoustic unpredictability, navigational confusion)",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.70,
+      "justification": {
+        "data": [
+          {"finding": "Room enclosure (R_h_ratio < 0.30) produces elevated cortisol response and slower recovery in TSST paradigm", "source": "Fich et al. (2014)", "paradigm": "CAVE VR with 7 saliva samples", "effect": "73% cortisol increase in enclosed vs. open room", "n": 93, "design": "Orthogonal design"},
+          {"finding": "Low ceiling height correlates with constricted feelings and approach avoidance", "source": "Vartanian et al. (2015)", "paradigm": "fMRI + behavioral", "effect": "Enclosure triggers avoidance-related neural activity", "n": 20, "design": "Within-subjects fMRI"}
+        ],
+        "backing": "Fich's VR paradigm directly demonstrates that architectural parameters (ceiling height, room proportions) modulate the cortisol stress response. This is the architectural translation of the TSST.",
+        "qualifier": "Effect sizes derived from controlled VR exposure; real-building extrapolation involves occupancy duration, task context, and behavioral adaptation.",
+        "rebuttal": "Would fail if occupant habituation eliminates architectural stress effects over repeated exposures; or if behavioral adaptation (leaving the space) truncates the physiological response.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
     {
-      "id": "link_3",
-      "from_entity": "hippocampal_atrophy",
-      "activity": "inhibits",
-      "to_entity": "cognitive_map_quality",
-      "from_level": "cellular",
-      "to_level": "circuit",
-      "bridging_quality": "strong",
-      "maturity": "how-actually",
-      "evidence_base": "Kim & Diamond (2002)",
-      "change_produced": "place cell instability"
+      "step": 2,
+      "from": "perceived_threat_signal",
+      "to": "HPA_axis_activation",
+      "description": "→ HPA activation (CRH → ACTH → cortisol)",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.85,
+      "justification": {
+        "data": [
+          {"finding": "HPA cascade: hypothalamic CRH → anterior pituitary ACTH → adrenocortical cortisol synthesis is the canonical stress response pathway", "source": "Kirschbaum et al. (1993); McEwen (1998)", "paradigm": "TSST protocol development", "effect": "Reliable cortisol elevation 15-25 min post-stressor", "n": null, "design": "Protocol validation"}
+        ],
+        "backing": "The HPA axis is a constitutive biological pathway. CRH release from the hypothalamus triggers ACTH from the pituitary, which triggers cortisol synthesis in the adrenal cortex. This is basic neuroendocrinology.",
+        "qualifier": "The pathway is well-established; individual variation in HPA reactivity depends on genetics, prior stress history, and circadian timing.",
+        "rebuttal": "Would fail if an alternative stress pathway (e.g., direct sympathetic activation without HPA involvement) dominated the cortisol response.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
     {
-      "id": "link_4",
-      "from_entity": "impaired_cognitive_map",
-      "activity": "enhances",
-      "to_entity": "navigational_stress",
-      "from_level": "circuit",
-      "to_level": "psychological",
-      "bridging_quality": "moderate",
-      "maturity": "how-plausibly",
-      "evidence_base": "Circular logic: poor maps lead to more stress (Cycle T14)",
-      "change_produced": "feedback loop reinforcement"
-    }
-  ],
-  "scope_conditions": [
-    "Applies to CHRONIC not acute cortisol (acute can enhance memory)",
-    "Age-dependent (older adults more vulnerable)",
-    "Individual receptor density variation"
-  ],
-  "moderators": [
-    "Exercise (neuroprotective via BDNF)",
-    "Environmental enrichment (neuroprotective)",
-    "Social support"
-  ],
-  "interactions": [
-    "XF_NAVIGATION_STRESS_VICIOUS_CYCLE_002 (T14) - the full cycle",
-    "SN_LAYOUT_COGNITIVE_MAP_001 (T3) - provides the baseline map quality",
-    "NM_THREAT_HPA_001 (T5) - drives the cortisol"
-  ],
-  "overall_maturity": "how-actually",
-  "key_references": [
-    {
-      "citation": "Sapolsky, R. M. (2000). Glucocorticoids and hippocampal atrophy."
+      "step": 3,
+      "from": "HPA_axis_activation",
+      "to": "cortisol_elevation",
+      "description": "→ Cortisol elevation (onset lag: 20 min; λ = 0.035 min⁻¹)",
+      "warrant": "MECHANISM",
+      "confidence": 0.85,
+      "justification": {
+        "data": [
+          {"finding": "Peak salivary cortisol at 15-25 min post-stressor (modal value 20 min); recovery follows first-order exponential with half-life ~20 min", "source": "Kirschbaum et al. (1993)", "paradigm": "TSST with serial sampling", "effect": "Predictable onset and recovery kinetics", "n": 116, "design": "Within-subjects"},
+          {"finding": "Two-compartment model: onset delay τ_onset follows first-order delay; recovery C(t) = C_peak × e^{−λ(t−t_peak)}, λ ≈ 0.035 min⁻¹", "source": "Aschenbrenner computational model; panel consensus", "paradigm": "Differential equation modeling", "effect": "Half-life ~20 min; 95% recovery ~57 min", "n": null, "design": "Mathematical model"}
+        ],
+        "backing": "Kirschbaum's TSST protocol established the canonical cortisol time course. The onset lag reflects HPA cascade transport and synthesis delays; the recovery rate reflects cortisol clearance kinetics.",
+        "qualifier": "Elderly subjects show 30-40% slower recovery (λ ≈ 0.022 min⁻¹). High-reactivity individuals show earlier peak (15 min).",
+        "rebuttal": "Would fail if salivary cortisol timing differs substantially from plasma cortisol or brain glucocorticoid receptor occupancy.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
     {
-      "citation": "McEwen, B. S. (2007). Physiology of stress."
+      "step": 4,
+      "from": "cortisol_elevation",
+      "to": "hippocampal_GR_MR_binding",
+      "description": "→ Glucocorticoid binding at hippocampal GR/MR receptors",
+      "warrant": "CONSTITUTIVE",
+      "confidence": 0.80,
+      "justification": {
+        "data": [
+          {"finding": "Hippocampus has highest density of glucocorticoid receptors (GR) and mineralocorticoid receptors (MR) in the brain; cortisol binds both with different affinities", "source": "McEwen (1998); Lupien et al. (2009)", "paradigm": "Receptor autoradiography and pharmacology", "effect": "Hippocampus is primary glucocorticoid-sensitive structure", "n": null, "design": "Neuroanatomical"}
+        ],
+        "backing": "The hippocampus is the primary site of cortisol action in the brain. MR binds cortisol at low levels (tonic); GR binds at elevated levels (stress). This is basic neuroendocrine anatomy.",
+        "qualifier": "The constitutive pathway is well-established; the functional consequences depend on dose, duration, and receptor occupancy kinetics.",
+        "rebuttal": "Would fail if cortisol brain effects are mediated primarily by non-hippocampal structures (amygdala, PFC); these pathways exist but hippocampal effects dominate for spatial memory.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
     {
-      "citation": "Kim, J. J. & Diamond, D. M. (2002). The stressed hippocampus."
-    }
-  ],
-  "short_description": "Chronic cortisol damages the hippocampus, impairing spatial memory and creating a vicious cycle of navigational stress.",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
+      "step": 5,
+      "from": "hippocampal_GR_MR_binding",
+      "to": "acute_memory_impairment",
+      "description": "→ Acute: memory retrieval impairment (declarative, spatial)",
+      "warrant": "MECHANISM",
+      "confidence": 0.75,
+      "justification": {
+        "data": [
+          {"finding": "Acute cortisone administration (25 mg) impairs declarative memory retrieval in healthy subjects", "source": "De Quervain et al. (2000)", "paradigm": "Randomized controlled trial with word list recall", "effect": "Significant retrieval impairment", "n": 36, "design": "Double-blind RCT"},
+          {"finding": "Cortisol elevation within 20-40 nmol/L range produces linear impairment of hippocampal-dependent memory; plateaus at higher levels", "source": "Lupien et al. (2009)", "paradigm": "Review of dose-response literature", "effect": "d = 0.35 per SD cortisol elevation", "n": null, "design": "Meta-analytic review"}
+        ],
+        "backing": "De Quervain's RCT directly demonstrates that acute cortisol elevation impairs memory retrieval. Lupien's review establishes the dose-response relationship and identifies the hippocampus as the vulnerable structure.",
+        "qualifier": "Effect is specific to retrieval, not encoding. Acute effects are transient; memory returns as cortisol clears. Individual variation in vulnerability is substantial.",
+        "rebuttal": "Would fail if acute cortisol enhances encoding (which it does) in a way that offsets retrieval impairment; the net effect depends on task timing relative to cortisol peak.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
+    {
+      "step": 6,
+      "from": "repeated_cortisol_elevation",
+      "to": "hippocampal_structural_damage",
+      "description": "→ Chronic (repeated activation >4/day): CA3 dendritic retraction, hippocampal volume reduction",
+      "warrant": "MECHANISM",
+      "confidence": 0.65,
+      "justification": {
+        "data": [
+          {"finding": "Chronic glucocorticoid elevation produces dendritic retraction in CA3 pyramidal neurons; reversible with 10-day recovery", "source": "McEwen (1998)", "paradigm": "Animal chronic stress models", "effect": "Structural remodeling at CA3 dendrites", "n": null, "design": "Rodent stress paradigm"},
+          {"finding": "Human longitudinal imaging: ≥4 stress activations per day associated with accelerated hippocampal volume loss", "source": "Lupien et al. (2009)", "paradigm": "Longitudinal MRI with cortisol sampling", "effect": "Volume reduction correlates with cumulative cortisol exposure", "n": null, "design": "Longitudinal cohort"}
+        ],
+        "backing": "McEwen's chronic stress model demonstrates the mechanism: repeated glucocorticoid exposure causes CA3 dendritic retraction. Lupien's human data confirm the threshold (~4 activations/day) for cumulative damage.",
+        "qualifier": "Structural effects require weeks to months of sustained activation. Effects are partially reversible with stress reduction. Individual resilience varies.",
+        "rebuttal": "Would fail if human chronic stress effects differ substantially from rodent models; or if hippocampal neurogenesis compensates for chronic damage.",
+        "competing_accounts": [],
+        "depth_tier": "A"
+      }
     },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
-          }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
-          }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
+    {
+      "step": 7,
+      "from": "hippocampal_structural_damage",
+      "to": "progressive_spatial_impairment",
+      "description": "→ Progressive spatial memory and navigation impairment",
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.60,
+      "justification": {
+        "data": [
+          {"finding": "Hippocampal volume correlates with spatial navigation performance; volume reduction associated with wayfinding impairment", "source": "Lupien et al. (2009)", "paradigm": "Structural MRI + behavioral testing", "effect": "Volume predicts spatial performance", "n": null, "design": "Cross-sectional correlation"},
+          {"finding": "Elderly with high cortisol exposure show greater spatial memory decline than age-matched controls", "source": "Lupien et al. (2009)", "paradigm": "Longitudinal aging study", "effect": "Cortisol × age interaction on spatial cognition", "n": null, "design": "Longitudinal cohort"}
+        ],
+        "backing": "The hippocampus is the substrate for cognitive mapping and spatial navigation. Structural damage to the hippocampus impairs these functions. This connects T6 to the spatial navigation templates (SS1, SS2, T14).",
+        "qualifier": "Spatial impairment is a downstream consequence; compensatory strategies (external aids, verbal directions) can partially offset hippocampal damage.",
+        "rebuttal": "Would fail if spatial navigation relies primarily on non-hippocampal structures (striatal route learning) in the built environment; this shifts the vulnerability away from T6's mechanism.",
+        "competing_accounts": [],
+        "depth_tier": "B"
       }
     }
+  ],
+  "calibrated_parameters": {
+    "hpa_axis_activation": {
+      "value": 40,
+      "unit": "minutes_to_80pct_baseline",
+      "lambda": 0.035,
+      "lambda_unit": "per_minute",
+      "range": {
+        "min": 30,
+        "max": 70
+      },
+      "source": "Kirschbaum et al. 1993; Fich et al. 2014",
+      "confidence": 0.8,
+      "architectural_modifiers": {
+        "high_enclosure": {
+          "r_h_ratio_threshold": 0.3,
+          "lambda_modifier": 0.7,
+          "note": "Enclosure below R_h_ratio 0.30 slows recovery; effective lambda = 0.024"
+        },
+        "nature_view_full": {
+          "pct_natural_elements_threshold": 0.5,
+          "lambda_modifier": 1.25,
+          "note": "Full nature view accelerates recovery by 25%"
+        },
+        "nature_view_partial": {
+          "pct_natural_elements_threshold": 0.25,
+          "lambda_modifier": 1.12
+        },
+        "acoustic_privacy": {
+          "condition": "occupant_controlled_acoustic_environment",
+          "lambda_modifier": 1.18,
+          "note": "Acoustic agency accelerates recovery by ~18%"
+        }
+      },
+      "population_modifiers": {
+        "elderly": {
+          "lambda": 0.022,
+          "note": "30-40% slower recovery; Lupien et al. 2009"
+        }
+      }
+    },
+    "allostatic_load": {
+      "value": 4,
+      "unit": "activations_per_day",
+      "range": {
+        "min": 3,
+        "max": 7
+      },
+      "chronic_effect_onset": "weeks_to_months_sustained_above_threshold",
+      "source": "McEwen 1998; Sterling 2012; Lupien et al. 2009",
+      "confidence": 0.65,
+      "population_modifiers": {
+        "elderly": {
+          "value": 3
+        },
+        "anxiety_PTSD": {
+          "value": 3,
+          "note": "Elevated baseline reduces threshold"
+        }
+      }
+    },
+    "spatial_enclosure_ratio": {
+      "r_h_ratio_critical": 0.3,
+      "r_h_ratio_marginal": 0.35,
+      "stress_modifier_critical": 0.15,
+      "stress_modifier_marginal": 0.08,
+      "unit": "normalized_stress_scale_0_to_1",
+      "source": "Fich et al. 2014; Vartanian et al. 2015",
+      "confidence": 0.7
+    }
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "gap",
-  "generation": 1,
-  "ecological_validation": false,
-  "gap_stub_note": "Awaiting calibration panel. See Doc 67 Part 1 for recommended panel."
+  "building_types": [
+    "hospitals",
+    "eldercare",
+    "prisons",
+    "high_stress_workplaces"
+  ],
+  "bridge_warrant": "MECHANISM",
+  "bridge_prior": 0.6,
+  "interaction_templates": [
+    "T7",
+    "T14",
+    "SOC2",
+    "SS2"
+  ],
+  "ie_dpt_interaction": "T_IE_008 (Trauma-Space Interaction) — elevated baseline cortisol from T6 chronic activation raises the stress threshold at which Trauma-Space templates trigger",
+  "key_references": [
+    "McEwen, B. S. (1998). https://doi.org/10.1056/NEJM199801153380307",
+    "Kirschbaum, C., et al. (1993). https://doi.org/10.1159/000119004",
+    "Fich, L. B., et al. (2014). https://doi.org/10.1080/17508975.2014.923229",
+    "Lupien, S. J., et al. (2009). https://doi.org/10.1038/nrn2639"
+  ],
+  "panel_docs": [
+    "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+    "docs/02-15_03_Panel_III_Multimodal_Senses_HigherCognition_V1.0.md",
+    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
+    "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md"
+  ],
+  "panel_source": "Tier 1 Frameworks",
+  "panel_reasoning_excerpt": "## Summary of Panel-Recommended Template Revisions\n\n| Template | Revision | Source |\n|---|---|---|\n| T1 (PP_SPECTRAL_MATCH) | Add prediction error LEVEL tag (low/intermediate/high hierarchy) | Friston |\n| T2 (PP_COMPLEXITY_GOLDILOCKS) | Mechanism via precision × prediction error interaction, not PE alone; curve shifts with familiarity via prior precision | Friston |\n| T3 (SN_LAYOUT_COGNITIVE_MAP) | Map is affective-spatial, not purely spatial; includes experiential binding | Nadel |\n| T4 (DT_ATTENTIONAL_DEMAND) | Specify DMN subsystems (MTL vs. dmPFC); DMN is not \"rest\" but active model maintenance | Raichle |\n| T5 (NM_THREAT_HPA) | Split ACh pathway from general threat; add cholinergic specificity and temporal dynamics | Chiba |\n| T6 (NM_CORTISOL_HIPPOCAMPAL) | Add temporal distinction: acute (enhances) vs. chronic (impairs) hippocampal function | Nadel |\n| T7 (IC_ALLOSTATIC_ANTICIPATION) | Elevate to master-template status; rename to ALLOSTATIC_EFFICIENCY | Seth, Sterling |\n| T8 (EC_AFFORDANCE_POSTURAL) | Broaden from postural to full sensorimotor; movement IS cognition, not input to it | Clark |\n| T12 (IC_INTEROCEPTIVE_AFFECT) | Fix serial pipeline error: interoceptive predictions are simultaneous with exteroceptive, not downstream | Seth |",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+  "excerpt_char_range": [
+    46112,
+    47376
+  ],
+  "display_id": "T6",
+  "calibration_status": "calibrated",
+  "confidence": 0.6
 }

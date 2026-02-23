@@ -35,6 +35,7 @@ from src.cmr.template_scanner import (
     query_active_gen2_series,
     query_by_dedup_status,
 )
+from src.cmr.staging_theory_loader import load_staging_theory_links
 
 # Template computations - always available
 from src.cmr.template_computations import (
@@ -165,6 +166,7 @@ __all__ = [
     "scan_template_file",
     "query_active_gen2_series",
     "query_by_dedup_status",
+    "load_staging_theory_links",
     # Template computations
     "ComputeResult",
     "OutputType",

@@ -1,0 +1,551 @@
+{
+  "summary": {
+    "generated_at": "2026-02-19T14:30:59+00:00",
+    "queue_path": "data/review/theory_direction_tension_queue.json",
+    "structured_claims_path": "data/production/structured_claims.json",
+    "abstract_claims_path": "data/production/abstract_claims.json",
+    "profiles": [
+      {
+        "name": "upper_codex",
+        "provider": "codex_exec",
+        "model": "gpt-5.3-codex"
+      },
+      {
+        "name": "balanced_codex",
+        "provider": "codex_exec",
+        "model": "gpt-5.2-codex"
+      },
+      {
+        "name": "low_codex",
+        "provider": "codex_exec",
+        "model": "gpt-5.1-codex-mini"
+      }
+    ],
+    "total_claims": 5,
+    "changed_vs_observed": 5,
+    "direction_counts_final": {
+      "unknown": 5
+    },
+    "direction_counts_observed": {
+      "increase": 4,
+      "decrease": 1
+    }
+  },
+  "adjudications": [
+    {
+      "claim_id": "doi:10.1007/978-3-031-04714-5_6:TBL-20260216230002-008:C001",
+      "paper_id": "doi:10.1007/978-3-031-04714-5_6",
+      "observed_direction": "increase",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 8,
+      "votes": [
+        {
+          "profile": "upper_codex",
+          "model": "gpt-5.3-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.3-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764a-0d5e-7323-a83b-b7da5bf18804\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "balanced_codex",
+          "model": "gpt-5.2-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764a-6eb4-7e22-b28c-d6581393ef03\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "low_codex",
+          "model": "gpt-5.1-codex-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.1-codex-mini\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764a-d053-77d2-9e3e-62568691ad49\n--------\nuser\nSYST"
+        }
+      ],
+      "override": {
+        "claim_id": "doi:10.1007/978-3-031-04714-5_6:TBL-20260216230002-008:C001",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=increase final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.1007_978-3-031-04714-5_6.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:26:04+00:00",
+        "votes": [
+          {
+            "profile": "upper_codex",
+            "model": "gpt-5.3-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "balanced_codex",
+            "model": "gpt-5.2-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_codex",
+            "model": "gpt-5.1-codex-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 6.0,
+            "text": "col_1: application of LED technologies and smart-advanced textiles (Figs.; col_2: 10 and 11)."
+          },
+          {
+            "chunk_id": "E43",
+            "source": "pdf_preprocess",
+            "page": 22,
+            "score": 3.0,
+            "text": "16). Quantitative measurements of the relationship between observer and artworks were performed, with eye-tracking technique application. Information theory connected to the ergonomics of multiperceptive learning and optical physics was used for the assessment of the correct light sources in terms of spectral emis- sio"
+          },
+          {
+            "chunk_id": "E47",
+            "source": "pdf_preprocess",
+            "page": 23,
+            "score": 3.0,
+            "text": "Adaptive and Sustainability for Visual and Perceptive Comfort: Neuroscience\u2026 155 Fig. 17 Results for each LED: at the top, the first three images, center second three images, bot- tom third three images, respectively, for VWh, ST, VWP, emission spectrum, white point compared to black body, and light effect on a portion"
+          },
+          {
+            "chunk_id": "E14",
+            "source": "pdf_preprocess",
+            "page": 4,
+            "score": 2.0,
+            "text": "Brain damage on this brain area produces serious perceptual prob- lems and sometimes total color blindness, i.e., the achromatopsia phenomenon. Retinal images, vision, and perception coexist with the self-image or body scheme, i.e., the understanding, the awareness that the mind has about the body, as well as its encum"
+          }
+        ]
+      }
+    },
+    {
+      "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260216234042-004:C001",
+      "paper_id": "doi:10.3389/fpsyg.2021.699962",
+      "observed_direction": "increase",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 8,
+      "votes": [
+        {
+          "profile": "upper_codex",
+          "model": "gpt-5.3-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.3-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764b-2eef-7fd2-847c-6cf9559f23e2\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "balanced_codex",
+          "model": "gpt-5.2-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764b-8d51-7a31-b755-a886ee8f54ca\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "low_codex",
+          "model": "gpt-5.1-codex-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.1-codex-mini\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764b-ecf8-74b1-baff-61c65467ccb0\n--------\nuser\nSYST"
+        }
+      ],
+      "override": {
+        "claim_id": "doi:10.3389/fpsyg.2021.699962:TBL-20260216234042-004:C001",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=increase final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.3389_fpsyg.2021.699962.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:27:17+00:00",
+        "votes": [
+          {
+            "profile": "upper_codex",
+            "model": "gpt-5.3-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "balanced_codex",
+            "model": "gpt-5.2-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_codex",
+            "model": "gpt-5.1-codex-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 7.0,
+            "text": "col_1: alowof0.31(SD=0.25)forD=1.2toahighof0.57(SD=0.26) of sphericity (\u03b5 =; col_2: 0.399). Both the main effect of pattern"
+          },
+          {
+            "chunk_id": "E28",
+            "source": "pdf_preprocess",
+            "page": 8,
+            "score": 5.0,
+            "text": "fpsyg-12-699962 August16,2021 Time:11:29 #8 Roblesetal. EffectsofFractalBasedDesign 0.679, 0.365, and 0.672, respectively). Indicated with a double p=02\u2217,95%CI [0.01,0.07],d=0.28].Theinteractionbetween asterisk for significance of p < 0.001 and single asterisk for D-value and Arrangement indicates that the ratings diff"
+          },
+          {
+            "chunk_id": "E43",
+            "source": "pdf_preprocess",
+            "page": 11,
+            "score": 5.0,
+            "text": "fpsyg-12-699962 August16,2021 Time:11:29 #11 Roblesetal. EffectsofFractalBasedDesign of the assumption of sphericity was indicated by Mauchly\u2019s trendwaspositive;thetrendforrefreshingwasflatbecausethe test for D-value [\u03c72(5) = 239.32 p < 0.001\u2217\u2217], thus degrees 2 subgroups were equivalent in size; and, finally, the overa"
+          },
+          {
+            "chunk_id": "E56",
+            "source": "pdf_preprocess",
+            "page": 13,
+            "score": 5.0,
+            "text": "fpsyg-12-699962 August16,2021 Time:11:29 #13 Roblesetal. EffectsofFractalBasedDesign [F(1.62,119.95) = 204.35, p < 0.001\u2217\u2217, 95% CI [0.65, 0.79], \u03b7 2 = 0.73], however, no significant effect of Arrangement p [F(1,74) = 0.89, p = 0.35, 95% CI [0, 0.1], \u03b7 2 = 0.01], p nor interaction between D-value and pattern arrangement"
+          }
+        ]
+      }
+    },
+    {
+      "claim_id": "doi:10.3390/app11093942:TBL-20260216234107-001:C002",
+      "paper_id": "doi:10.3390/app11093942",
+      "observed_direction": "increase",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 8,
+      "votes": [
+        {
+          "profile": "upper_codex",
+          "model": "gpt-5.3-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.3-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764c-4deb-7c12-b914-75a5cda8c35d\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "balanced_codex",
+          "model": "gpt-5.2-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764c-aec9-74f1-bed9-70617bcf8e7f\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "low_codex",
+          "model": "gpt-5.1-codex-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.1-codex-mini\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764d-1028-7991-b529-643d4e91e0cc\n--------\nuser\nSYST"
+        }
+      ],
+      "override": {
+        "claim_id": "doi:10.3390/app11093942:TBL-20260216234107-001:C002",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=increase final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.3390_app11093942.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:28:31+00:00",
+        "votes": [
+          {
+            "profile": "upper_codex",
+            "model": "gpt-5.3-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "balanced_codex",
+            "model": "gpt-5.2-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_codex",
+            "model": "gpt-5.1-codex-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 6.0,
+            "text": "lations, furnished as in the real conditio s of the Q\u2013Q plots referring to reverber: f all the investigated parameters are report verage of all receiver positions for RT, wh m the source for C50 and D50. This range w"
+          },
+          {
+            "chunk_id": "E89",
+            "source": "pdf_preprocess",
+            "page": 22,
+            "score": 3.0,
+            "text": "2021, 11, x FOR PEER R (i E ) VIEW (ii) 23 of 27 FigureAFi6g.uBreed Aro6o. mBecdornofiogmu rcaotniofingsu:r(ai)tieomnsp: t(yi)r eomompt,y( irio)oromo,m (iiw) ritohofmu rwniittuhr feu.rniture. (i) (ii) (i) (ii) F F i i g g u u r r e e A AF7 7i.g. RuR ereev v e eAr r b7b e.e r r aRa t tei i ovo nen r t tbi i memreae tf f"
+          },
+          {
+            "chunk_id": "E2",
+            "source": "paper_claim:doi:10.3390/app11093942:TBL-20260216234107-001:C001",
+            "page": null,
+            "score": 2.5,
+            "text": "lations, furnished as in the real conditio s of the Q\u2013Q plots referring to reverber: calibration of 3D models permits the cons The results in terms of the averaged value"
+          },
+          {
+            "chunk_id": "E7",
+            "source": "pdf_preprocess",
+            "page": 3,
+            "score": 2.0,
+            "text": "Materials and Methods Appl.Sci.2021,11,3942 3of26 A dedicated literature overview is presented, focusing at the same time on devices sound field requests and acoustic indoor requirements for living spaces of autistic people with hearing impairments or hypersensitivity to sound. With these results in mind, a real ccaass"
+          }
+        ]
+      }
+    },
+    {
+      "claim_id": "abs:doi:10.1111/psyp.14121:C005",
+      "paper_id": "doi:10.1111/psyp.14121",
+      "observed_direction": "increase",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 8,
+      "votes": [
+        {
+          "profile": "upper_codex",
+          "model": "gpt-5.3-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.3-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764d-6e95-7200-ba0c-7944ad830762\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "balanced_codex",
+          "model": "gpt-5.2-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764d-cdb3-7851-8511-3235b7ce88f6\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "low_codex",
+          "model": "gpt-5.1-codex-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.1-codex-mini\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764e-2fe6-7321-9938-14a51e3b6454\n--------\nuser\nSYST"
+        }
+      ],
+      "override": {
+        "claim_id": "abs:doi:10.1111/psyp.14121:C005",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=increase final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.1111_psyp.14121.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:29:45+00:00",
+        "votes": [
+          {
+            "profile": "upper_codex",
+            "model": "gpt-5.3-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "balanced_codex",
+            "model": "gpt-5.2-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_codex",
+            "model": "gpt-5.1-codex-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 9.0,
+            "text": "We also detected a significant increase in alpha frontal midline power and frontal hemispheric lateralization relative to blue condition, and increased power spectral density across all electrodes in the blue condition for theta, alpha, and beta bandwidths."
+          },
+          {
+            "chunk_id": "E61",
+            "source": "pdf_preprocess",
+            "page": 14,
+            "score": 6.0,
+            "text": "BOWER et al. | 13 of 17 and stress, which can have a negative impact on the body When altering or retrofitting a building, color is an eco- over long periods of time (Schneiderman et al., 2005). As nomic and practical design characteristic to alter. For in- we did not detect differences to the mean of autonomic stance,"
+          },
+          {
+            "chunk_id": "E70",
+            "source": "pdf_preprocess",
+            "page": 15,
+            "score": 6.0,
+            "text": "14 of 17 | BOWER et al. thresholds are between positive environmental stimula- DATA AVAILABILITY STATEMENT tion effect and a negative stress response to the changes. Source data and analysis code to accompany this manu- Therefore, understanding what balance is needed for script submission are all available to be viewed"
+          },
+          {
+            "chunk_id": "E77",
+            "source": "pdf_preprocess",
+            "page": 17,
+            "score": 6.0,
+            "text": "(1997). Anxiety and respiratory patterns: for adults and children. Spatial Cognition & Computation, 4(4), Their relationship during mental stress and physical load. 337\u2013 358."
+          }
+        ]
+      }
+    },
+    {
+      "claim_id": "abs:doi:10.1111/joid.12179:C001",
+      "paper_id": "doi:10.1111/joid.12179",
+      "observed_direction": "decrease",
+      "final_direction": "unknown",
+      "consensus_counts": {},
+      "chunks_used": 8,
+      "votes": [
+        {
+          "profile": "upper_codex",
+          "model": "gpt-5.3-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.3-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764e-8fef-7ac0-be9d-1e8aabde585d\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "balanced_codex",
+          "model": "gpt-5.2-codex",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764e-f079-7d02-81d3-661c36a2d3cc\n--------\nuser\nSYSTEM:\nY"
+        },
+        {
+          "profile": "low_codex",
+          "model": "gpt-5.1-codex-mini",
+          "direction": "unknown",
+          "confidence": 0.0,
+          "verified": false,
+          "verify_reasons": [],
+          "raw_error": "RuntimeError: codex_exec_failed rc=1: WARNING: proceeding, even though we could not update PATH: Operation not permitted (os error 1)\nOpenAI Codex v0.104.0 (research preview)\n--------\nworkdir: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\nmodel: gpt-5.1-codex-mini\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: auto\nsession id: 019c764f-506e-7e92-b8d1-2117723fb131\n--------\nuser\nSYST"
+        }
+      ],
+      "override": {
+        "claim_id": "abs:doi:10.1111/joid.12179:C001",
+        "direction": "unknown",
+        "status": "approved",
+        "reviewer": "Codex-rag-llm-consensus",
+        "rationale": "rag_llm_consensus observed=decrease final=unknown; valid_votes={}",
+        "evidence_url": "local://data/production/pdf_preprocess_cache/doi:10.1111_joid.12179.json",
+        "evidence_quote": "",
+        "updated_at": "2026-02-19T14:30:59+00:00",
+        "votes": [
+          {
+            "profile": "upper_codex",
+            "model": "gpt-5.3-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "balanced_codex",
+            "model": "gpt-5.2-codex",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          },
+          {
+            "profile": "low_codex",
+            "model": "gpt-5.1-codex-mini",
+            "direction": "unknown",
+            "confidence": 0.0,
+            "verified": false,
+            "verify_reasons": []
+          }
+        ],
+        "evidence_chunks": [
+          {
+            "chunk_id": "E70",
+            "source": "pdf_preprocess",
+            "page": 10,
+            "score": 13.0,
+            "text": "At the same time, red still had a good influence on task performance of subjects compared to the blue and green color schemes, although this was not statistically significant. Considering the Yerkers-Dodson law that suggests the overarousal impact ontask performance (Clarke &Costall, 2008; Kurt &Osueke, 2014), these re"
+          },
+          {
+            "chunk_id": "E1",
+            "source": "structured:source_quote",
+            "page": null,
+            "score": 12.0,
+            "text": "While heart rate was reduced for each color, significant decreases were detected in the blue, white, and green color scenarios."
+          },
+          {
+            "chunk_id": "E57",
+            "source": "pdf_preprocess",
+            "page": 8,
+            "score": 9.0,
+            "text": "Significant differences were as follows: Heavy/Light [F(3, 216) = 17.691, p<.001], Calm/Exciting [F(3, 216) = 20.524, p<.001], Weak/Strong [F(3, 216) = 24.550, p<.001], Cool/Warm [F (3, 216) = 39.570, p<.001], Tense/Relax [F(3, 216) = 26.409, p<.001], Unpleasant/Pleasant [F (3, 216) = 12.620, p<.001], and Dark/Light [F"
+          },
+          {
+            "chunk_id": "E26",
+            "source": "pdf_preprocess",
+            "page": 3,
+            "score": 8.0,
+            "text": "often, the results are contradictory. As for the relationship between color schemes and task perfor- mance, the findings are inconsistent due to hues and values of colors subjects were exposed to, types of tasks performed, and subject differences. Al-Ayash etal. (2016)measured ScholasticAptitudeTest (SAT)-type reading "
+          }
+        ]
+      }
+    }
+  ]
+}

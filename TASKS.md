@@ -1,8 +1,42 @@
 # TASKS.md
 
-*Last updated: Monday, February 17, 2026 (Sprint 10 Task 3.2 Batch 2 Template Computations completed + pytest green: 3101 passed, 9 skipped)*
+*Last updated: Wednesday, February 19, 2026 (Backlog tasks 1.1, 1.3, 1.4, D.11 completed)*
 
 This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
+
+---
+
+## 🔧 SPRINT D: DATA REMEDIATION — 2026-02-18
+
+| Task | Agent | Priority | Status | Notes |
+|------|-------|----------|--------|-------|
+| D.1 | CC | HIGH | ✅ COMPLETE | Vocabulary sheet consolidated from 3 sources |
+| D.2 | CC/AG | HIGH | ✅ COMPLETE | Paper triage classifier |
+| D.3 | Codex | HIGH | ✅ COMPLETE | Table reconstruction and classification |
+| D.4 | AG | HIGH | ✅ COMPLETE | Full CSV garbage audit |
+| D.5 | CC | HIGH | ✅ COMPLETE | Gold standard 15 papers |
+| D.6 | CC | HIGH | ✅ COMPLETE | Claim extraction engine (48 tests passing) |
+| D.7 | AG | HIGH | ✅ COMPLETE | Gold standard validation framework |
+| D.8 | Codex | HIGH | ✅ COMPLETE | Effect size converter |
+| D.9 | AG | HIGH | ✅ COMPLETE | Web of belief health report |
+| D.10 | Codex | HIGH | ✅ COMPLETE | Batch extraction pipeline (72 claims from 116 papers) |
+| D.11 | Codex | HIGH | ✅ COMPLETE | Rebuilt `web_persistence_v2.db` + post-rebuild health report |
+| D.12 | CC | HIGH | ✅ COMPLETE | CMR pipeline integration (22 papers, 67 claims, 50 matched) |
+| D.13 | Codex | HIGH | ✅ COMPLETE | Validation report generated (`docs/sprint_d_validation_report.md`, verdict: NEEDS WORK) |
+
+**Sprint D Artifacts**:
+- `data/vocabulary/variable_vocabulary.json` — Consolidated variable vocabulary (D.1)
+- `src/extraction/vocabulary.py` — Vocabulary lookup functions (D.1)
+- `data/production/paper_triage.json` — Paper classification (D.2)
+- `src/extraction/paper_triage.py` — Paper triage classifier (D.2)
+- `data/production/table_classifications.json` — Table classifications (D.3)
+- `src/extraction/table_classifier.py` — Table reconstruction and classification (D.3)
+- `src/extraction/effect_size_converter.py` — Effect size conversion utilities (D.8)
+- `src/extraction/claim_extractor.py` — Claim extraction engine (D.6)
+- `tests/test_claim_extractor.py` — 48 tests for claim extraction (D.6)
+- `data/gold_standard/gold_standard_papers.json` — Gold standard papers (D.5)
+
+**See**: `docs/SprintD_Data_Remediation.md` for full sprint details.
 
 ---
 
@@ -13,9 +47,9 @@ This file tracks all tasks for the Article_Eater_PostQuinean_v1 project.
 | 1.2 | Claude Code | HIGH | ✅ COMPLETE | Template DB Index: TemplateRecord model, migration, scanner, 22 tests passing |
 | 2.1 | Claude Code | HIGH | ✅ COMPLETE | Template Computation Functions Batch 1: 12 core templates (VF3, L1-3, CREA2, MAT1-2-4, SOC2, SC1-4, VIEW1), 55 tests passing |
 | 3.2 | Claude Code | HIGH | ✅ COMPLETE | Template Computation Functions Batch 2: 20 additional templates (L4-5, MAT3-5, TP1-4, SOC1-3, CREA1-4, SC2-3, COL1-2, VF1-2, OLF1), 52 tests passing |
-| 1.1 | Codex | HIGH | PENDING | Enum Drift Fix |
-| 1.3 | Codex | HIGH | PENDING | Load Staging Theory-Links |
-| 1.4 | Codex | HIGH | PENDING | WIS Conversion Module |
+| 1.1 | Codex | HIGH | ✅ COMPLETE | `python3 scripts/check_enum_drift.py` reports 0 drift issues |
+| 1.3 | Codex | HIGH | ✅ COMPLETE | Added `CMRStagingTheoryLink` + loader; loaded 1045 rows from template causal links |
+| 1.4 | Codex | HIGH | ✅ COMPLETE | Added `to_wis()` conversion utility and test coverage |
 
 **Sprint 10 Artifacts**:
 - `src/cmr/models.py` — SQLAlchemy models (TemplateRecord, CMREvaluation, etc.)
@@ -961,7 +995,7 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 | ARCH-5a | Split Belief into focused types (TheoreticalBelief, EmpiricalBelief, etc.) | PENDING |
 | ARCH-5b | Extract coherence computation to separate module | PENDING |
 | ARCH-5c | Extract entrenchment computation to separate module | PENDING |
-| ARCH-5d | Break web_of_belief.py into <500 line modules | PENDING |
+| ARCH-5d | Break web_of_belief.py into <500 line modules | DONE (modular extraction + compatibility layer) |
 | ARCH-5e | Break epistemic_causal_bridge.py into focused modules | PENDING |
 | ARCH-5f | Define clear module interfaces | PENDING |
 
@@ -977,7 +1011,7 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 | Task | Description | Status |
 |------|-------------|--------|
 | ARCH-6a | Track study design quality (RCT vs observational) | PENDING |
-| ARCH-6b | Compute "severity" of each supporting study | PENDING |
+| ARCH-6b | Compute "severity" of each supporting study | DONE |
 | ARCH-6c | Require at least one severe test for high credence | PENDING |
 | ARCH-6d | Distinguish "consistent with" from "severely tested by" | PENDING |
 
@@ -1115,7 +1149,7 @@ Panel P-ECB-R2 (Cartwright, Simon, Pearl) reviewed 6 implementation decisions. A
 |---------|-----------------|-------------|
 | Individual Differences | `quarantine/2026-02-10/individual_differences.py` | IND-1 through IND-4 |
 | Cultural Meanings | `quarantine/2026-02-10/cultural_meaning.py` | CULT-1 through CULT-5 |
-| Argument Attack Analysis | **REINTEGRATED** → `src/services/argument_attack.py` | ~~ATK-1~~ ✓ ~~ATK-3~~ ✓ ATK-2 ATK-4 pending |
+| Argument Attack Analysis | **REINTEGRATED** → `src/services/argument_attack.py` | ~~ATK-1~~ ✓ ~~ATK-2~~ ✓ ~~ATK-3~~ ✓ ~~ATK-4~~ ✓ |
 | Elaborate Generalization | `quarantine/2026-02-10/generalization_elaborate.py` | GEN-1 through GEN-4 |
 
 See: `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md`
@@ -1126,14 +1160,14 @@ See: `docs/ARCHIVED_FEATURES_EPISTEMIC_CAUSAL_BRIDGE_2026-02-10.md`
 
 **Added**: 2026-02-11
 **Completed**: ATK-1, ATK-3
-**Remaining**: ATK-2 (NLP detection), ATK-4 (UI)
+**Remaining**: none
 
 | ID | Task | Description | Status |
 |----|------|-------------|--------|
 | ATK-1 | Wire into tensions.jsonl | Enhance `get_tensions()` with attack analysis, output to `tensions.jsonl` | ✓ DONE |
-| ATK-2 | Claim extraction detection | Add attack patterns to claim extraction (NLP) | PENDING |
+| ATK-2 | Claim extraction detection | Add attack patterns to claim extraction (NLP) | DONE |
 | ATK-3 | Shift classification | Rule-based heuristics for classifying contrast shifts | ✓ DONE |
-| ATK-4 | Review UI | Streamlit page for attack review | PENDING |
+| ATK-4 | Review UI | Streamlit page for attack review | DONE |
 
 **Implementation Summary (2026-02-11)**:
 
@@ -1759,9 +1793,9 @@ class EpistemicLevel(Enum):
 | ID | Task | Priority |
 |----|------|----------|
 | ATK-1 | Integrate attack analysis with coherence violation detection | P2 |
-| ATK-2 | Add attack detection to claim extraction pipeline | P3 |
+| ATK-2 | Add attack detection to claim extraction pipeline | P3 (DONE) |
 | ATK-3 | Train classifier for shift type identification | P3 |
-| ATK-4 | UI for reviewing detected attacks | P3 |
+| ATK-4 | UI for reviewing detected attacks | P3 (DONE) |
 
 ---
 
@@ -2856,9 +2890,9 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | Rec# | Source Panel | Recommendation | Target Sprint | Status |
 |------|--------------|----------------|---------------|--------|
-| EC-1 | Thagard | Two-layer architecture documentation | 1.5 | PENDING |
+| EC-1 | Thagard | Two-layer architecture documentation | 1.5 | DONE |
 | EC-2 | Longino | Dialectical structure tracking | 2.5 | PLANNED |
-| EC-3 | Cartwright | Scope metadata with boundary conditions | 1.6 | PENDING |
+| EC-3 | Cartwright | Scope metadata with boundary conditions | 1.6 | DONE |
 | EC-4 | Chang | Iteration tracking for epistemic development | 2.0 | PLANNED |
 | EC-5 | Case | Learning pathway support for education | 3.0 | DEFERRED |
 | EC-6 | Mitchell | Community-relative entrenchment | 2.5 | PLANNED |
@@ -2878,7 +2912,7 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 | SY-6 | van Fraassen | Contrast-relative causal discovery | 2.0 | PLANNED |
 | SY-7 | Cartwright | Capacity inference | 2.5 | PLANNED |
 | SY-8 | Longino | Paradigm-relative models | 2.5 | PLANNED |
-| SY-9 | Chang | Belief value analysis | 1.6 | PENDING |
+| SY-9 | Chang | Belief value analysis | 1.6 | DONE |
 
 ---
 
@@ -3174,9 +3208,9 @@ Sprint 1.6 complete → Ready for P-EC panel evaluation of tagging accuracy and 
 
 | ID | Task | Priority | Deliverable | Status |
 |----|------|----------|-------------|--------|
-| 3.0.5-A | Admin dashboard in Streamlit | P1 | `streamlit_app/pages/admin.py` | Pending |
-| 3.0.5-B | Belief inspector (browse, search, filter) | P1 | Admin component | Pending |
-| 3.0.5-C | Constraint viewer (network visualization) | P1 | Admin component | Pending |
+| 3.0.5-A | Admin dashboard in Streamlit | P1 | `streamlit_app/pages/admin.py` | DONE |
+| 3.0.5-B | Belief inspector (browse, search, filter) | P1 | Admin component | DONE |
+| 3.0.5-C | Constraint viewer (network visualization) | P1 | Admin component | DONE |
 | 3.0.5-D | Community browser (members, credences) | P1 | Admin component | Pending |
 | 3.0.5-E | System statistics (counts, coherence, health) | P1 | Admin component | Pending |
 | 3.0.5-F | Paper/source browser | P2 | Admin component | Pending |
@@ -3929,7 +3963,7 @@ All modifications verified working.
 
 ---
 
-### Phase C: External Repo Fixes — PENDING (7 issues remain)
+### Phase C: External Repo Fixes — PARTIAL COMPLETE (C2/C3 done; C1/C2c remain decision-tracked)
 
 **Assignee**: Codex or CC with cross-repo coordination
 **Blocking**: Codex Sprint 1.4 drift check (must reach 0 issues)
@@ -3949,10 +3983,10 @@ All modifications verified working.
 
 | Task ID | Description | File | Action | Status |
 |---------|-------------|------|--------|--------|
-| 1.5.C2a | Fix ClaimType deprecated aliases | `article_decomposer.py` | `boundary`→`moderated`, `effect`→`causal`, `mechanism`→`mechanistic`, `null_result`→`null`, `replication`→`descriptive` | PENDING |
-| 1.5.C2b | Fix EvidenceType deprecated alias | `enhanced_edge.py` | `empirical` → `observational` | PENDING |
+| 1.5.C2a | Fix ClaimType deprecated aliases | `article_decomposer.py` | `boundary`→`moderated`, `effect`→`causal`, `mechanism`→`mechanistic`, `null_result`→`null`, `replication`→`descriptive` | DONE (verified) |
+| 1.5.C2b | Fix EvidenceType deprecated alias | `enhanced_edge.py` | `empirical` → `observational` | DONE (verified) |
 | 1.5.C2c | **DECISION**: EvidenceType unknown values | `literature_linker.py` | `direct`, `indirect`, `meta`, `review` not canonical. Options: (a) add to canonical, (b) map | DECISION NEEDED |
-| 1.5.C2d | Fix ConfidenceIntervalShape schema | `contracts/bn.api.v2.schema.json` | Migrate to `{ci_lower, ci_upper}` object format | PENDING |
+| 1.5.C2d | Fix ConfidenceIntervalShape schema | `contracts/bn.api.v2.schema.json` | Migrate to `{ci_lower, ci_upper}` object format | DONE (verified) |
 
 **Mapping proposal for C2c**:
 - `direct` → `experimental` (direct evidence = experimental?)
@@ -3964,8 +3998,8 @@ All modifications verified working.
 
 | Task ID | Description | File | Action | Status |
 |---------|-------------|------|--------|--------|
-| 1.5.C3a | Fix ArticleTypeCrosswalk aliases | `article_extraction_contracts.py` | Replace 8 deprecated values with canonical equivalents | PENDING |
-| 1.5.C3b | Fix ArticleTypeCrosswalk aliases | `article_type_classifier.py` | Replace 8 deprecated values with canonical equivalents | PENDING |
+| 1.5.C3a | Fix ArticleTypeCrosswalk aliases | `article_extraction_contracts.py` | Replace 8 deprecated values with canonical equivalents | DONE (verified) |
+| 1.5.C3b | Fix ArticleTypeCrosswalk aliases | `article_type_classifier.py` | Replace 8 deprecated values with canonical equivalents | DONE (verified) |
 
 **Deprecated → Canonical mapping** (from canonical_enums.json):
 - `cross_sectional_survey` → `observational_field`
@@ -4005,9 +4039,9 @@ Phase B (Schemas) ────────────────────�
                                                │
                                                ▼
 Phase C (External repos) ──────────────────────┐
-  1.5.C2a-d (BN_graphical)                     ├─► After decisions
-  1.5.C3a-b (Outcome_Contractor)               │
-  1.5.C1a (Article_Finder)                     │
+  1.5.C2a-d (BN_graphical)                     ├─► COMPLETE
+  1.5.C3a-b (Outcome_Contractor)               │   COMPLETE
+  1.5.C1a (Article_Finder)                     │   Decision-tracked mapping default
                                                │
                                                ▼
 1.5.A3 (task_ecology ClaimType) ───────────────┘ After D1.5.1 decision

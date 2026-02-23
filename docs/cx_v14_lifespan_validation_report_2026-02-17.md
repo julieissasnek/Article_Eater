@@ -1,7 +1,7 @@
 # CX V14 Lifespan Validation Report
 
-- Generated: 2026-02-17T21:21:23.808Z
-- Template files scanned: 150
+- Generated: 2026-02-19T20:08:31.697Z
+- Template files scanned: 151
 - Missing required root fields: 0
 - Structural validation issues: 0
 - Display-specific expectation issues: 0

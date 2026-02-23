@@ -124,7 +124,7 @@ class TestScanTemplates:
     def test_all_150_files_load(self, populated_db):
         """All 150 template files should load without error."""
         session, db_path, records = populated_db
-        assert len(records) == 150, f"Expected 150 templates, got {len(records)}"
+        assert len(records) == 151, f"Expected 151 templates, got {len(records)}"
 
     def test_query_active_gen2_crea_series(self, populated_db):
         """Query 'all active Gen-2 CREA series' should return CREA1-CREA4."""

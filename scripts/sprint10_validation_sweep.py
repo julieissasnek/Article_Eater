@@ -160,7 +160,27 @@ def run_full_suite():
     print("\n=== 3.1f Full Test Suite ===")
     print("Running pytest...")
     # Using sys.executable to run pytest
-    subprocess.call([sys.executable, "-m", "pytest"])
+    print("Running synchronous tests - MAIN BATCH (disabling asyncio plugin)...")
+    # Run all tests except API extended and known sensitive/hanging tests
+    # Disabling asyncio to prevent interaction issues
+    subprocess.call([
+        sys.executable, "-m", "pytest", "-p", "no:asyncio",
+        "--ignore=tests/test_api_extended.py",
+        "--ignore=tests/test_cmr_building_eval.py",
+        "--ignore=tests/test_provenance_building.py"
+    ])
+    
+    print("\nRunning synchronous tests - SENSITIVE BATCH (cmr_building_eval, provenance_building)...")
+    # Run sensitive tests in their own process to avoid interaction hangs
+    subprocess.call([
+        sys.executable, "-m", "pytest", "-p", "no:asyncio",
+        "tests/test_cmr_building_eval.py",
+        "tests/test_provenance_building.py"
+    ])
+    
+    print("\nRunning asynchronous tests (API)...")
+    # Run only API extended tests with asyncio enabled
+    subprocess.call([sys.executable, "-m", "pytest", "tests/test_api_extended.py"])
 
 if __name__ == "__main__":
     print("Starting Sprint 10 Validation Sweep...")

@@ -22,6 +22,27 @@ from typing import Dict, List, Optional, Any, Union, Tuple
 logger = logging.getLogger(__name__)
 
 
+def _as_float(value: Any) -> Optional[float]:
+    """Best-effort float coercion for LLM JSON fields."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    text = str(value).strip()
+    if not text:
+        return None
+    text = text.replace(",", "")
+    text = text.replace("−", "-")
+    # Preserve leading sign and decimal only.
+    m = re.search(r"[-+]?\d*\.?\d+", text)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except ValueError:
+        return None
+
+
 class ExtractionMethod(Enum):
     """Table extraction method."""
     AI_API = "ai_api"           # Primary: LLM-based extraction
@@ -667,15 +688,19 @@ Return only valid JSON, no other text."""
                 headers = ["Citation", "Outcome", "Effect Size", "95% CI", "p-value"]
             for result in results:
                 ci = ""
-                if result.get("ci_lower") is not None and result.get("ci_upper") is not None:
-                    ci = f"[{result['ci_lower']:.2f}, {result['ci_upper']:.2f}]"
+                ci_lower = _as_float(result.get("ci_lower"))
+                ci_upper = _as_float(result.get("ci_upper"))
+                if ci_lower is not None and ci_upper is not None:
+                    ci = f"[{ci_lower:.2f}, {ci_upper:.2f}]"
                 es = ""
-                if result.get("effect_size") is not None:
+                effect_size = _as_float(result.get("effect_size"))
+                if effect_size is not None:
                     es_type = result.get("effect_size_type", "d")
-                    es = f"{result['effect_size']:.2f} ({es_type})"
+                    es = f"{effect_size:.2f} ({es_type})"
                 p = ""
-                if result.get("p_value") is not None:
-                    p = f"{result['p_value']:.3f}" if result['p_value'] >= 0.001 else "<.001"
+                p_value = _as_float(result.get("p_value"))
+                if p_value is not None:
+                    p = f"{p_value:.3f}" if p_value >= 0.001 else "<.001"
 
                 rows.append([
                     result.get("citation", ""),
@@ -702,9 +727,10 @@ Return only valid JSON, no other text."""
                 headers = ["Group", "N", "Age (M±SD)", "% Female"]
             for group in groups:
                 age = ""
-                if group.get("age_mean") is not None:
-                    sd = group.get("age_sd")
-                    age = f"{group['age_mean']:.1f}" + (f" ± {sd:.1f}" if sd else "")
+                age_mean = _as_float(group.get("age_mean"))
+                if age_mean is not None:
+                    sd = _as_float(group.get("age_sd"))
+                    age = f"{age_mean:.1f}" + (f" ± {sd:.1f}" if sd is not None else "")
 
                 rows.append([
                     group.get("group_name", ""),

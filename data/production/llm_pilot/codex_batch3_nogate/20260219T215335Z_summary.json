@@ -1,0 +1,92 @@
+{
+  "run_ts": "20260219T215335Z",
+  "selected_pdfs": [
+    {
+      "paper_id": "doi:10.3389/fnhum.2017.00477",
+      "pdf_path": "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs/10.3389_fnhum.2017.00477.pdf"
+    },
+    {
+      "paper_id": "doi:10.1038/s41598-022-20649-y",
+      "pdf_path": "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs/10.1038_s41598-022-20649-y.pdf"
+    },
+    {
+      "paper_id": "doi:10.56294/sctconf2024842",
+      "pdf_path": "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs/10.56294_sctconf2024842.pdf"
+    }
+  ],
+  "profiles_path": "config/llm_table_pilot_profiles.codex.json",
+  "variants": [
+    "no_gate"
+  ],
+  "runs": [
+    {
+      "profile": "upper_codex",
+      "provider": "codex_exec",
+      "model": "gpt-5.3-codex",
+      "variant": "no_gate",
+      "output": "data/production/llm_pilot/codex_batch3_nogate/20260219T215335Z_upper_codex_no_gate.json",
+      "metrics": {
+        "claims": 0,
+        "mapped_both": 0,
+        "mapped_both_pct": 0.0,
+        "effect_size": 0,
+        "unknown_direction": 0,
+        "unknown_direction_pct": 0.0,
+        "suspect_claims": 0,
+        "suspect_claims_pct": 0.0
+      },
+      "counters": {
+        "tables_detected": 3,
+        "tables_kept": 3,
+        "pdf_errors": 1,
+        "empty_tables": 1
+      }
+    },
+    {
+      "profile": "balanced_codex",
+      "provider": "codex_exec",
+      "model": "gpt-5.2-codex",
+      "variant": "no_gate",
+      "output": "data/production/llm_pilot/codex_batch3_nogate/20260219T215335Z_balanced_codex_no_gate.json",
+      "metrics": {
+        "claims": 0,
+        "mapped_both": 0,
+        "mapped_both_pct": 0.0,
+        "effect_size": 0,
+        "unknown_direction": 0,
+        "unknown_direction_pct": 0.0,
+        "suspect_claims": 0,
+        "suspect_claims_pct": 0.0
+      },
+      "counters": {
+        "tables_detected": 3,
+        "tables_kept": 3,
+        "pdf_errors": 1,
+        "empty_tables": 2
+      }
+    },
+    {
+      "profile": "low_codex",
+      "provider": "codex_exec",
+      "model": "gpt-5.1-codex-mini",
+      "variant": "no_gate",
+      "output": "data/production/llm_pilot/codex_batch3_nogate/20260219T215335Z_low_codex_no_gate.json",
+      "metrics": {
+        "claims": 0,
+        "mapped_both": 0,
+        "mapped_both_pct": 0.0,
+        "effect_size": 0,
+        "unknown_direction": 0,
+        "unknown_direction_pct": 0.0,
+        "suspect_claims": 0,
+        "suspect_claims_pct": 0.0
+      },
+      "counters": {
+        "tables_detected": 3,
+        "tables_kept": 3,
+        "pdf_errors": 1,
+        "empty_tables": 2
+      }
+    }
+  ]
+}

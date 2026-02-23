@@ -41,14 +41,73 @@ Philosophical Foundations:
 
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple, Set, FrozenSet
-from enum import Enum
 from datetime import datetime, timezone
-import math
 import json
 import logging
-from collections import defaultdict
+import os
 from itertools import combinations
-import copy
+
+from src.services.web_of_belief_modules import (
+    AnalysisContracts as _AnalysisContracts,
+    CredenceAdjustment as _CredenceAdjustment,
+    DEFAULT_LEVEL_WEIGHTS as _DEFAULT_ENTRENCHMENT_LEVEL_WEIGHTS,
+    BeliefValueRecord as _BeliefValueRecord,
+    CentralityInput as _CentralityInput,
+    CoherenceResult as _CoherenceResult,
+    ExperimentBeliefInput as _ExperimentBeliefInput,
+    EntrenchmentInput as _EntrenchmentInput,
+    build_evidence_input as _build_evidence_input,
+    choose_adjustment_target as _choose_adjustment_target,
+    compute_credence_adjustment as _compute_credence_adjustment,
+    EpistemicValueInput as _EpistemicValueInput,
+    compute_centrality as _compute_centrality,
+    compute_entrenchment_components as _compute_entrenchment_components_contract,
+    compute_epistemic_value as _compute_epistemic_value,
+    compute_independence_score as _compute_independence_score,
+    compute_severity_score as _compute_severity_score,
+    estimate_resolution as _estimate_resolution_contract,
+    empty_entrenchment_components as _empty_entrenchment_components,
+    identify_scope_differences as _identify_scope_differences_contract,
+    infer_experiment_type as _infer_experiment_type_contract,
+    infer_test_focus_and_hypothesis as _infer_test_focus_and_hypothesis,
+    init_updates_payload as _init_evidence_updates_payload,
+    make_belief_update_record as _make_belief_update_record,
+    make_temporal_update_record as _make_temporal_update_record,
+    make_theory_world_update_records as _make_theory_world_update_records,
+    ensure_theory_relevance as _ensure_theory_relevance,
+    MutationContracts as _MutationContracts,
+    suggest_contested_scope as _suggest_contested_scope_contract,
+    suggest_scope as _suggest_scope_contract,
+    sort_value_records as _sort_value_records,
+    WebAnalysisOperations as _WebAnalysisOperations,
+    WebMutationOperations as _WebMutationOperations,
+    WebOfBeliefEngines as _WebOfBeliefEngines,
+    WebOfBeliefState as _WebOfBeliefState,
+)
+from src.services.web_of_belief_components import (
+    BeliefKind,
+    BeliefStatus,
+    CausalDirection,
+    CredenceHistoryEntry,
+    EnablingConditions,
+    EpistemicLevel,
+    EpistemicNodeSubtype,
+    InferenceType,
+    NodeDomain,
+    PathwayType,
+    PESubtype,
+    ReplicationStatus,
+    ScopeConditions,
+    SourceDepth,
+    Constraint,
+    TheoryWorld,
+    UncertainQuantity,
+)
+from src.epistemic.edge_types import (
+    EdgeType as ConstraintType,
+    EdgeType,
+    convert_legacy_constraint_type,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -80,385 +139,7 @@ except ImportError:
     SOCIAL_EPISTEMOLOGY_AVAILABLE = False
 
 
-# =============================================================================
-# EPISTEMIC LEVELS
-# =============================================================================
-
-class EpistemicLevel(Enum):
-    """
-    Levels in the web of belief, from center to periphery.
-    
-    Following Quine: beliefs near the center are more entrenched and
-    we're more reluctant to revise them. But NOTHING is unrevisable.
-    """
-    THEORETICAL = "theoretical"      # Core theoretical commitments
-    INTERMEDIATE = "intermediate"    # Generalizations, mechanisms
-    EMPIRICAL = "empirical"          # Research findings
-    OBSERVATIONAL = "observational"  # Direct measurements, observations
-
-
-class BeliefStatus(Enum):
-    """Status of a belief in the web."""
-    STUB = "stub"                  # Exists but not yet integrated
-    TENTATIVE = "tentative"        # Weakly held, easily revised
-    ESTABLISHED = "established"    # Well-supported by coherence
-    ENTRENCHED = "entrenched"      # Central, costly to revise
-    ANOMALOUS = "anomalous"        # In tension with the web
-
-
-# =============================================================================
-# DEPRECATED: ConstraintType → Use EdgeType from src.epistemic.edge_types
-# Sprint 1.2: Merged into canonical EdgeType per Opus decisions (2026-02-15)
-# REMOVE_BY: V25.0
-# =============================================================================
-# Import canonical EdgeType and alias as ConstraintType for backward compatibility
-from src.epistemic.edge_types import (
-    EdgeType as ConstraintType,
-    EdgeType,
-    convert_legacy_constraint_type,
-)
-
-
-# =============================================================================
-# INFERENCE TYPE (Sprint 1.6 - P-EC Panel: Synergies)
-# =============================================================================
-
-class InferenceType(Enum):
-    """
-    Type of inference that produced or supports a belief.
-
-    Sprint 1.6.1: Mark beliefs by their inferential origin.
-
-    - INDUCTIVE: Generalization from observations (empirical → general)
-    - DEDUCTIVE: Derived from theory (theory → prediction)
-    - ABDUCTIVE: Inference to best explanation (data → theory)
-    - MIXED: Multiple inference types combined
-    - UNKNOWN: Not yet classified
-    """
-    INDUCTIVE = "inductive"        # Data → generalization
-    DEDUCTIVE = "deductive"        # Theory → prediction
-    ABDUCTIVE = "abductive"        # Data → best explanation
-    MIXED = "mixed"                # Multiple types
-    UNKNOWN = "unknown"            # Not classified
-
-
-class BeliefKind(Enum):
-    """
-    Functional type of belief in the web.
-
-    Sprint 1.6.2: Mark beliefs by their functional role.
-
-    - MECHANISTIC: Describes causal mechanism (how X causes Y)
-    - EVIDENTIAL: Reports empirical finding (X was observed)
-    - THEORETICAL: Core theoretical commitment (X is fundamental)
-    - METHODOLOGICAL: About measurement or methods
-    - BRIDGE: Connects domains (per Cartwright's capacities)
-    """
-    MECHANISTIC = "mechanistic"    # Causal mechanism
-    EVIDENTIAL = "evidential"      # Empirical finding
-    THEORETICAL = "theoretical"    # Core commitment
-    METHODOLOGICAL = "methodological"  # About methods
-    BRIDGE = "bridge"              # Cross-domain connection
-
-
-# =============================================================================
-# CAUSAL DIRECTION (Sprint 6 - Expert Panel: Pearl)
-# =============================================================================
-
-class CausalDirection(Enum):
-    """
-    Causal direction for constraint relationships.
-
-    Per expert panel (Pearl): Distinguish correlation from causation.
-    Default is CORRELATIONAL for empirical, UNKNOWN for theoretical.
-
-    Sprint 6 addition: MEDIATED for indirect causal paths.
-    """
-    UNKNOWN = "unknown"              # Default for theoretical claims
-    CORRELATIONAL = "correlational"  # Default for empirical findings
-    FORWARD = "forward"              # source → target (experimental evidence)
-    REVERSE = "reverse"              # target → source
-    BIDIRECTIONAL = "bidirectional"  # mutual causation
-    COMMON_CAUSE = "common_cause"    # C → A, C → B (confound)
-    MEDIATED = "mediated"            # A → M → B (indirect causal path)
-
-
-# =============================================================================
-# SOURCE DEPTH (Tier 1 - Panel: Cartwright)
-# =============================================================================
-
-class SourceDepth(Enum):
-    """
-    Depth of source material used for extraction.
-
-    Per expert panel (Cartwright): Causal claims from abstracts should be
-    treated with more skepticism than those from full-text analysis.
-    """
-    FULL_TEXT = "full_text"      # Complete paper analyzed
-    ABSTRACT = "abstract"        # Only abstract available
-    METADATA = "metadata"        # Only title/keywords/structured data
-
-
-# =============================================================================
-# EPISTEMIC TIER 2: NODE DOMAIN (Sprint T2-1.1)
-# =============================================================================
-
-class NodeDomain(str, Enum):
-    """
-    Knowledge domain for nodes in the web.
-
-    Sprint T2-1.1: Enable epistemic meta-level nodes that reason about
-    the web itself (coherence, source quality, reflexive monitoring).
-
-    Existing domains are CNFA research areas. EPISTEMIC is the meta-level
-    domain for beliefs ABOUT beliefs and the web structure.
-    """
-    BASIC_SCIENCE = "basic_science"              # Neuroscience, physiology
-    ENVIRONMENTAL_PSYCHOLOGY = "environmental_psychology"  # ART, SRT, Biophilia
-    METHODOLOGY = "methodology"                  # Research methods, validity
-    CNFA = "cnfa"                                # Cognitive neuroscience of architecture
-    EPISTEMIC = "epistemic"                      # Meta-level: beliefs about beliefs
-
-
-# =============================================================================
-# EPISTEMIC TIER 2: NODE SUBTYPES (Sprint T2-1.2)
-# =============================================================================
-
-class EpistemicNodeSubtype(str, Enum):
-    """
-    Subtypes for EPISTEMIC domain nodes.
-
-    Sprint T2-1.2: Four templates for epistemic reasoning:
-    - E1: Coherence and belief maintenance (Quinean web dynamics)
-    - E2: Social epistemics (community credence, contestation)
-    - E3: Epistemic emotions (curiosity, certainty, doubt signals)
-    - E4: Reflective equilibrium (theory-evidence balance)
-    """
-    E1_COHERENCE_BELIEF_MAINTENANCE = "e1_coherence_belief_maintenance"
-    E2_SOCIAL_EPISTEMICS = "e2_social_epistemics"
-    E3_EPISTEMIC_EMOTIONS = "e3_epistemic_emotions"
-    E4_REFLECTIVE_EQUILIBRIUM = "e4_reflective_equilibrium"
-
-
-# =============================================================================
-# EPISTEMIC TIER 2: PATHWAY TYPE (Sprint T2-1.4)
-# =============================================================================
-
-class PathwayType(str, Enum):
-    """
-    Effect pathway classification for causal edges.
-
-    Sprint T2-1.4: Distinguish how environmental features affect outcomes:
-    - SUBPERSONAL: Direct physiological effects (no interpretation needed)
-    - PERSONAL_EPISTEMIC: Fully interpretation-mediated (requires cognition)
-    - MIXED: Both pathways active (e.g., lighting affects circadian AND mood)
-
-    Critical for validity assessment: photo studies cannot capture subpersonal
-    pathways (no thermal, acoustic, circadian channels).
-    """
-    SUBPERSONAL = "subpersonal"              # Direct physiological, no interpretation
-    PERSONAL_EPISTEMIC = "personal_epistemic"  # Fully interpretation-mediated
-    MIXED = "mixed"                          # Both channels active
-
-
-# =============================================================================
-# EPISTEMIC TIER 2: REPLICATION STATUS (Sprint T2-1.5)
-# =============================================================================
-
-class ReplicationStatus(str, Enum):
-    """
-    Replication status of empirical claims.
-
-    Sprint T2-1.5: Track whether findings have been independently replicated.
-    Critical for source quality assessment and structural bias detection.
-    """
-    REPLICATED = "replicated"                    # Successfully replicated by independent lab
-    PARTIALLY_REPLICATED = "partially_replicated"  # Some but not all conditions replicated
-    UNREPLICATED = "unreplicated"                # Not yet attempted
-    FAILED_REPLICATION = "failed_replication"    # Attempted and failed
-
-
-# =============================================================================
-# EPISTEMIC TIER 2: PREDICTION ERROR SUBTYPE (Sprint T2-1.6)
-# =============================================================================
-
-class PESubtype(str, Enum):
-    """
-    Subtypes of prediction error in environmental cognition.
-
-    Sprint T2-1.6: When environment violates expectations, what type of
-    prediction was violated?
-
-    - FUNCTIONAL_PE: Affordance mismatch (what the space is for)
-    - NAVIGATIONAL_PE: Spatial model mismatch (where things are)
-    - SOCIAL_PE: Social script mismatch (who belongs, appropriate behavior)
-    """
-    FUNCTIONAL_PE = "functional_pe"      # Affordance mismatch
-    NAVIGATIONAL_PE = "navigational_pe"  # Spatial model mismatch
-    SOCIAL_PE = "social_pe"              # Social script mismatch
-
-
-# =============================================================================
-# SCOPE CONDITIONS (Sprint 6 - Expert Panel: Cartwright)
-# =============================================================================
-
-@dataclass
-class ScopeConditions:
-    """
-    Scope conditions for beliefs.
-
-    Per expert panel (Cartwright): Most "contradictions" are scope boundaries.
-    Track conditions under which findings apply.
-
-    Panel Fix 3 (Cartwright): Unknown scope ≠ Universal scope.
-    Papers that don't specify scope shouldn't be assumed to apply everywhere.
-    - scope_specified=False: Paper didn't report scope conditions (unknown)
-    - scope_specified=True: Paper explicitly reported these scope conditions
-    """
-    population: Optional[str] = None      # "adults", "children", "clinical", "healthy"
-    setting: Optional[str] = None         # "lab", "field", "simulated", "vr"
-    duration: Optional[str] = None        # "acute", "chronic", "single_exposure"
-    measurement: Optional[str] = None     # "self_report", "physiological", "behavioral"
-    geography: Optional[str] = None       # "urban", "rural", "Western", "global"
-    moderators: List[str] = field(default_factory=list)
-
-    # Panel Fix 3: Distinguish between "unknown scope" and "specified scope"
-    scope_specified: bool = False  # Was scope explicitly reported in paper?
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'population': self.population,
-            'setting': self.setting,
-            'duration': self.duration,
-            'measurement': self.measurement,
-            'geography': self.geography,
-            'moderators': self.moderators.copy(),
-            'scope_specified': self.scope_specified
-        }
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> 'ScopeConditions':
-        return cls(
-            population=d.get('population'),
-            setting=d.get('setting'),
-            duration=d.get('duration'),
-            measurement=d.get('measurement'),
-            geography=d.get('geography'),
-            moderators=d.get('moderators', []),
-            scope_specified=d.get('scope_specified', False)
-        )
-
-
-# =============================================================================
-# ENABLING CONDITIONS (Tier 1 - Panel: Cartwright)
-# =============================================================================
-
-@dataclass
-class EnablingConditions:
-    """
-    Enabling conditions for a belief to manifest its effect.
-
-    Per expert panel (Cartwright): Distinct from scope conditions.
-    - Scope: "This finding applies to office settings" (domain restriction)
-    - Enabling: "This effect requires >30 min exposure" (activation requirement)
-
-    Without enabling conditions, the system cannot explain why findings
-    sometimes fail to replicate (mechanism blocked vs. absent).
-
-    Panel Review (R1): Added temporal_order and dose_response per Cartwright.
-    """
-    minimum_exposure: Optional[str] = None     # e.g., ">30 minutes"
-    baseline_state: Optional[str] = None       # e.g., "non-depressed baseline"
-    concurrent_factors: List[str] = field(default_factory=list)  # Must be present
-    blocking_factors: List[str] = field(default_factory=list)    # Must be absent
-    threshold: Optional[str] = None            # e.g., ">300 lux illuminance"
-    dosage: Optional[str] = None               # e.g., "daily exposure"
-    # R1 additions (Cartwright)
-    temporal_order: Optional[str] = None       # e.g., "exposure precedes outcome by >1 hour"
-    dose_response: Optional[bool] = None       # Does effect scale with dosage?
-    # PA-2 (Cartwright): Explicit list of acceptable dosage patterns
-    # Instead of implicit hierarchy (daily > weekly), explicitly list what satisfies.
-    # e.g., ["daily", "continuous", "twice_daily"] means these patterns satisfy "daily".
-    # If None, falls back to exact match checking.
-    dosage_satisfies: List[str] = field(default_factory=list)
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'minimum_exposure': self.minimum_exposure,
-            'baseline_state': self.baseline_state,
-            'concurrent_factors': self.concurrent_factors.copy(),
-            'blocking_factors': self.blocking_factors.copy(),
-            'threshold': self.threshold,
-            'dosage': self.dosage,
-            'dosage_satisfies': self.dosage_satisfies.copy(),  # PA-2
-        }
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> 'EnablingConditions':
-        return cls(
-            minimum_exposure=d.get('minimum_exposure'),
-            baseline_state=d.get('baseline_state'),
-            concurrent_factors=d.get('concurrent_factors', []),
-            blocking_factors=d.get('blocking_factors', []),
-            threshold=d.get('threshold'),
-            dosage=d.get('dosage'),
-            dosage_satisfies=d.get('dosage_satisfies', []),  # PA-2
-        )
-
-    def is_empty(self) -> bool:
-        """Check if any enabling conditions are specified."""
-        return (
-            self.minimum_exposure is None and
-            self.baseline_state is None and
-            len(self.concurrent_factors) == 0 and
-            len(self.blocking_factors) == 0 and
-            self.threshold is None and
-            self.dosage is None
-        )
-
-
-# =============================================================================
-# CREDENCE HISTORY (Tier 1 - Panel: Simon, Epistemologist)
-# =============================================================================
-
-@dataclass
-class CredenceHistoryEntry:
-    """
-    A single entry in a belief's credence history.
-
-    Used for stability tracking and oscillation detection.
-    Per expert panel (Simon): Track credence changes to detect when
-    the web has stabilized given available evidence.
-    """
-    timestamp: datetime
-    credence_value: float
-    delta: float                    # Change from previous value
-    triggered_by: Optional[str]     # Paper ID that caused update
-    update_reason: str = ""         # Brief description of why
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'timestamp': self.timestamp.isoformat(),
-            'credence_value': self.credence_value,
-            'delta': self.delta,
-            'triggered_by': self.triggered_by,
-            'update_reason': self.update_reason
-        }
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> 'CredenceHistoryEntry':
-        ts = d.get('timestamp')
-        if isinstance(ts, str):
-            ts = datetime.fromisoformat(ts)
-        elif ts is None:
-            ts = datetime.now(timezone.utc)
-        return cls(
-            timestamp=ts,
-            credence_value=d.get('credence_value', 0.5),
-            delta=d.get('delta', 0.0),
-            triggered_by=d.get('triggered_by'),
-            update_reason=d.get('update_reason', '')
-        )
+# Types extracted to `src/services/web_of_belief_components` (ARCH-5d).
 
 
 # =============================================================================
@@ -618,6 +299,9 @@ class Belief:
 
     # Sprint 6: Scope conditions (Expert Panel: Cartwright)
     scope: Optional[ScopeConditions] = None
+    scope_population: Optional[str] = None
+    scope_context: Optional[str] = None
+    scope_temporal: Optional[str] = None
 
     # Sprint 7: Canonical IDs for environment and outcome (Expert Panel: Bates)
     environment_id: Optional[str] = None  # e.g., "spatial.openness", "natural.vegetation"
@@ -625,6 +309,16 @@ class Belief:
 
     # Sprint 8: Evidence clustering (prevents double-counting multi-theory papers)
     evidence_cluster_id: Optional[str] = None  # e.g., "cluster:paper_123"
+
+    # ARCH-3a: Source provenance for independence diagnostics.
+    source_lab: Optional[str] = None
+    source_institution: Optional[str] = None
+    study_method: Optional[str] = None
+
+    # ARCH-6b: Optional evidence metrics used by severe-testing approximation.
+    evidence_effect_size: Optional[float] = None
+    evidence_p_value: Optional[float] = None
+    evidence_sample_n: Optional[int] = None
 
     # Tier 1 additions (Expert Panel: Cartwright, Simon, Epistemologist)
     source_depth: SourceDepth = SourceDepth.FULL_TEXT  # How deeply was source analyzed?
@@ -869,6 +563,17 @@ class Belief:
             if inferred != BeliefKind.EVIDENTIAL or self.level != EpistemicLevel.EMPIRICAL:
                 self.belief_kind = inferred
 
+    def compute_severity(self, alpha: float = 0.05) -> float:
+        """ARCH-6b: Approximate severe-testing score for this belief's evidence."""
+        return _compute_severity_score(
+            credence=self.credence.value,
+            uncertainty=self.credence.uncertainty,
+            sample_n=self.evidence_sample_n,
+            effect_size=self.evidence_effect_size,
+            p_value=self.evidence_p_value,
+            alpha=alpha,
+        )
+
     # =========================================================================
     # SPRINT 2.5: SOCIAL EPISTEMOLOGY METHODS
     # =========================================================================
@@ -951,6 +656,16 @@ class Belief:
             'environment_id': self.environment_id,
             'outcome_id': self.outcome_id,
             'evidence_cluster_id': self.evidence_cluster_id,
+            'scope_population': self.scope_population,
+            'scope_context': self.scope_context,
+            'scope_temporal': self.scope_temporal,
+            'source_lab': self.source_lab,
+            'source_institution': self.source_institution,
+            'study_method': self.study_method,
+            'evidence_effect_size': self.evidence_effect_size,
+            'evidence_p_value': self.evidence_p_value,
+            'evidence_sample_n': self.evidence_sample_n,
+            'severity': self.compute_severity(),
             # Tier 1 additions
             'source_depth': self.source_depth.value,
             'contested': self.contested,
@@ -1242,9 +957,18 @@ class Belief:
             domain=d.get('domain', ''),
             tags=d.get('tags', []),
             scope=scope,
+            scope_population=d.get('scope_population'),
+            scope_context=d.get('scope_context'),
+            scope_temporal=d.get('scope_temporal'),
             environment_id=d.get('environment_id'),
             outcome_id=d.get('outcome_id'),
             evidence_cluster_id=d.get('evidence_cluster_id'),
+            source_lab=d.get('source_lab'),
+            source_institution=d.get('source_institution'),
+            study_method=d.get('study_method'),
+            evidence_effect_size=d.get('evidence_effect_size'),
+            evidence_p_value=d.get('evidence_p_value'),
+            evidence_sample_n=d.get('evidence_sample_n'),
             # Tier 1 additions
             source_depth=source_depth,
             enabling_conditions=enabling_conditions,
@@ -1263,227 +987,8 @@ class Belief:
         )
 
 
-@dataclass
-class UncertainQuantity:
-    """A quantity with uncertainty that can be refined by evidence."""
-    estimate: float
-    standard_error: float
-    n_observations: int = 0
-    lower_bound: Optional[float] = None
-    upper_bound: Optional[float] = None
-    
-    # Track by moderator values
-    by_moderator: Dict[str, 'UncertainQuantity'] = field(default_factory=dict)
-    
-    def update(self, observed: float, obs_se: float, weight: float = 1.0,
-               moderator_key: Optional[str] = None) -> 'UncertainQuantity':
-        """Update with new observation, optionally tracking by moderator."""
-        
-        # Update main estimate
-        if self.n_observations == 0:
-            new_estimate = observed
-            new_se = obs_se
-        else:
-            prior_precision = 1 / (self.standard_error ** 2 + 1e-10)
-            obs_precision = weight / (obs_se ** 2 + 1e-10)
-            post_precision = prior_precision + obs_precision
-            new_estimate = (prior_precision * self.estimate + obs_precision * observed) / post_precision
-            new_se = 1 / math.sqrt(post_precision)
-        
-        # Apply bounds
-        if self.lower_bound is not None:
-            new_estimate = max(new_estimate, self.lower_bound)
-        if self.upper_bound is not None:
-            new_estimate = min(new_estimate, self.upper_bound)
-        
-        result = UncertainQuantity(
-            estimate=new_estimate,
-            standard_error=new_se,
-            n_observations=self.n_observations + 1,
-            lower_bound=self.lower_bound,
-            upper_bound=self.upper_bound,
-            by_moderator=copy.deepcopy(self.by_moderator)
-        )
-        
-        # Also update moderator-specific estimate
-        if moderator_key:
-            if moderator_key not in result.by_moderator:
-                result.by_moderator[moderator_key] = UncertainQuantity(
-                    estimate=observed, standard_error=obs_se, n_observations=1,
-                    lower_bound=self.lower_bound, upper_bound=self.upper_bound
-                )
-            else:
-                result.by_moderator[moderator_key] = result.by_moderator[moderator_key].update(
-                    observed, obs_se, weight
-                )
-        
-        return result
-    
-    def heterogeneity(self) -> float:
-        """Estimate heterogeneity across moderator values."""
-        if len(self.by_moderator) < 2:
-            return 0.0
-        
-        estimates = [uq.estimate for uq in self.by_moderator.values()]
-        mean_est = sum(estimates) / len(estimates)
-        variance = sum((e - mean_est) ** 2 for e in estimates) / len(estimates)
-        
-        # Return coefficient of variation
-        if mean_est == 0:
-            return 0.0
-        return math.sqrt(variance) / abs(mean_est)
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'estimate': self.estimate,
-            'se': self.standard_error,
-            'n': self.n_observations,
-            'heterogeneity': self.heterogeneity(),
-            'by_moderator': {k: v.estimate for k, v in self.by_moderator.items()}
-        }
-
-
-# =============================================================================
-# CONSTRAINTS (Edges in the Web)
-# =============================================================================
-
-@dataclass
-class Constraint:
-    """
-    A constraint relationship between beliefs.
-
-    In a coherentist epistemology, beliefs constrain each other.
-    The web is "tight" when constraints are satisfied, "loose" when
-    there are tensions.
-
-    Sprint 6 additions:
-    - causal_direction: Direction of causal claim (per Pearl)
-    - causal_evidence: Type of evidence supporting causal claim
-    - mediator: For MEDIATED direction, what's the intervening variable?
-    """
-    constraint_id: str
-    source_id: str
-    target_id: str
-
-    constraint_type: ConstraintType
-
-    # Strength: how much does source constrain target?
-    strength: float = 0.5  # 0 to 1
-
-    # Bidirectional? Most constraints are.
-    bidirectional: bool = True
-
-    # Evidence for this constraint
-    evidence_ids: List[str] = field(default_factory=list)
-
-    # Sprint 6: Causal direction (Expert Panel: Pearl)
-    causal_direction: CausalDirection = CausalDirection.UNKNOWN
-    causal_evidence: Optional[str] = None  # "experimental", "longitudinal", "cross_sectional", "theoretical"
-    mediator: Optional[str] = None  # For MEDIATED: what's the M?
-
-    # Sprint T2-1.9: Effect pathway (for BN edges)
-    pathway_type: Optional['PathwayType'] = None  # subpersonal | personal_epistemic | mixed
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'constraint_id': self.constraint_id,
-            'source': self.source_id,
-            'target': self.target_id,
-            'type': self.constraint_type.value,
-            'strength': self.strength,
-            'bidirectional': self.bidirectional,
-            'causal_direction': self.causal_direction.value,
-            'causal_evidence': self.causal_evidence,
-            'mediator': self.mediator,
-            'evidence_ids': self.evidence_ids.copy(),
-            'pathway_type': self.pathway_type.value if self.pathway_type else None
-        }
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> 'Constraint':
-        causal_dir = d.get('causal_direction', 'unknown')
-        try:
-            causal_direction = CausalDirection(causal_dir)
-        except ValueError:
-            causal_direction = CausalDirection.UNKNOWN
-
-        # Parse pathway_type
-        pathway_type = None
-        if d.get('pathway_type'):
-            try:
-                pathway_type = PathwayType(d['pathway_type'])
-            except ValueError:
-                pathway_type = None
-
-        return cls(
-            constraint_id=d.get('constraint_id', f"c:{d.get('source')}:{d.get('target')}"),
-            source_id=d.get('source', d.get('source_id')),
-            target_id=d.get('target', d.get('target_id')),
-            constraint_type=ConstraintType(d.get('type', 'supports')),
-            strength=d.get('strength', 0.5),
-            bidirectional=d.get('bidirectional', True),
-            evidence_ids=d.get('evidence_ids', []),
-            causal_direction=causal_direction,
-            causal_evidence=d.get('causal_evidence'),
-            mediator=d.get('mediator'),
-            pathway_type=pathway_type
-        )
-
-
-# =============================================================================
-# THEORY WORLDS
-# =============================================================================
-
-@dataclass
-class TheoryWorld:
-    """
-    A possible world defined by which theories are true.
-    
-    Instead of independent P(theory_i | evidence) for each theory,
-    we maintain a joint distribution over theory combinations:
-    
-    P(ART ∧ SRT | evidence)      - Both true
-    P(ART ∧ ¬SRT | evidence)     - ART only
-    P(¬ART ∧ SRT | evidence)     - SRT only  
-    P(¬ART ∧ ¬SRT | evidence)    - Neither true
-    
-    This captures the fact that theories are not independent—evidence
-    for one may be evidence for or against another.
-    """
-    world_id: str
-    
-    # Which theories are true in this world?
-    theories_true: FrozenSet[str]
-    theories_false: FrozenSet[str]
-    
-    # Prior probability of this world
-    prior: float = 0.0
-    
-    # Posterior probability given evidence
-    posterior: float = 0.0
-    
-    # Log-likelihood under this world
-    log_likelihood: float = 0.0
-    
-    def __hash__(self):
-        return hash(self.world_id)
-    
-    def contains_theory(self, theory_id: str) -> Optional[bool]:
-        """Is theory true (True), false (False), or unspecified (None)?"""
-        if theory_id in self.theories_true:
-            return True
-        elif theory_id in self.theories_false:
-            return False
-        return None
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            'world_id': self.world_id,
-            'theories_true': list(self.theories_true),
-            'theories_false': list(self.theories_false),
-            'prior': self.prior,
-            'posterior': self.posterior
-        }
+# `UncertainQuantity`, `Constraint`, and `TheoryWorld` are now provided by
+# `src/services/web_of_belief_components.graph_models`.
 
 
 # =============================================================================
@@ -1504,35 +1009,81 @@ class WebOfBelief:
     """
     
     def __init__(self, domain: str = "neuroarchitecture"):
+        # Facade-to-state architecture: mutable graph data lives in self._state.
+        self._state = _WebOfBeliefState(domain=domain)
+        self._engines = _WebOfBeliefEngines()
+        self._mutations = _WebMutationOperations(
+            _MutationContracts(
+                belief_factory=Belief,
+                constraint_factory=Constraint,
+                credence_factory=Credence,
+                credence_adjustment_factory=_CredenceAdjustment,
+                choose_adjustment_target=_choose_adjustment_target,
+                compute_credence_adjustment=_compute_credence_adjustment,
+                build_evidence_input=_build_evidence_input,
+                init_updates_payload=_init_evidence_updates_payload,
+                make_belief_update_record=_make_belief_update_record,
+                make_temporal_update_record=_make_temporal_update_record,
+                make_theory_world_update_records=_make_theory_world_update_records,
+                ensure_theory_relevance=_ensure_theory_relevance,
+                status_stub=BeliefStatus.STUB,
+                status_tentative=BeliefStatus.TENTATIVE,
+                status_anomalous=BeliefStatus.ANOMALOUS,
+                level_theoretical=EpistemicLevel.THEORETICAL,
+                level_empirical=EpistemicLevel.EMPIRICAL,
+                ctype_supports=ConstraintType.SUPPORTS,
+                ctype_contradicts=ConstraintType.CONTRADICTS,
+                ctype_instantiates=ConstraintType.INSTANTIATES,
+                ctype_bridges=ConstraintType.BRIDGES,
+                ctype_strong_tension=ConstraintType.STRONG_TENSION,
+                causal_direction_mediated=CausalDirection.MEDIATED,
+            )
+        )
+        self._analysis = _WebAnalysisOperations(
+            _AnalysisContracts(
+                credence_factory=Credence,
+                centrality_input_factory=_CentralityInput,
+                compute_centrality=_compute_centrality,
+                epistemic_value_input_factory=_EpistemicValueInput,
+                compute_epistemic_value=_compute_epistemic_value,
+                belief_value_record_factory=_BeliefValueRecord,
+                sort_value_records=_sort_value_records,
+                compute_independence_score=_compute_independence_score,
+                experiment_belief_input_factory=_ExperimentBeliefInput,
+                infer_experiment_type=_infer_experiment_type_contract,
+                infer_test_focus_and_hypothesis=_infer_test_focus_and_hypothesis,
+                suggest_scope=_suggest_scope_contract,
+                suggest_contested_scope=_suggest_contested_scope_contract,
+                identify_scope_differences=_identify_scope_differences_contract,
+                estimate_resolution=_estimate_resolution_contract,
+                epistemic_levels=list(EpistemicLevel),
+                level_theoretical=EpistemicLevel.THEORETICAL,
+                level_empirical=EpistemicLevel.EMPIRICAL,
+                level_observational=EpistemicLevel.OBSERVATIONAL,
+                status_anomalous=BeliefStatus.ANOMALOUS,
+            )
+        )
+        self._debug_invariants = os.getenv("WEB_OF_BELIEF_ASSERT_INVARIANTS", "").strip().lower() in {
+            "1",
+            "true",
+            "yes",
+            "on",
+        }
+
+        # Stable facade attributes (legacy/public compatibility).
         self.domain = domain
-        
-        # Beliefs (nodes)
-        self.beliefs: Dict[str, Belief] = {}
-        
-        # Constraints (edges)
-        self.constraints: Dict[str, Constraint] = {}
-        
-        # Theory worlds (joint distribution)
-        self.theory_ids: Set[str] = set()
-        self.theory_worlds: Dict[str, TheoryWorld] = {}
-        
-        # Indices
-        self._beliefs_by_level: Dict[EpistemicLevel, List[str]] = defaultdict(list)
-        self._beliefs_by_theory: Dict[str, List[str]] = defaultdict(list)
-        self._constraints_by_belief: Dict[str, List[str]] = defaultdict(list)
-        self._stubs: Set[str] = set()  # Unintegrated findings
-        
-        # Coherence tracking
+        self.beliefs: Dict[str, Belief] = self._state.beliefs
+        self.constraints: Dict[str, Constraint] = self._state.constraints
+        self.theory_ids: Set[str] = self._state.theory_ids
+        self.theory_worlds: Dict[str, TheoryWorld] = self._state.theory_worlds
+        self._beliefs_by_level: Dict[EpistemicLevel, List[str]] = self._state.beliefs_by_level
+        self._beliefs_by_theory: Dict[str, List[str]] = self._state.beliefs_by_theory
+        self._constraints_by_belief: Dict[str, List[str]] = self._state.constraints_by_belief
+        self._stubs: Set[str] = self._state.stubs
         self._coherence_score: float = 0.5
-        self._tensions: List[Dict[str, Any]] = []
-
-        # V23.0.0: Entrenchment cache (emergent, not stored)
-        # Per panel consultation (2026-02-08): Entrenchment is computed dynamically
-        # using Thagard formula: 40% connectivity + 30% level + 30% coherence_contrib
-        self._entrenchment_cache: Dict[str, float] = {}
+        self._tensions: List[Dict[str, Any]] = self._state.tensions
+        self._entrenchment_cache: Dict[str, float] = self._state.entrenchment_cache
         self._entrenchment_cache_valid: bool = False
-
-        # History
         self.version: int = 0
         self.created_at = datetime.now(timezone.utc)
         self.last_updated = datetime.now(timezone.utc)
@@ -1544,12 +1095,9 @@ class WebOfBelief:
     # Level weights for entrenchment calculation (foundherentism)
     # Theoretical beliefs are naturally more entrenched, but this is soft -
     # a highly-connected observation can still outrank an isolated theory.
-    _LEVEL_WEIGHTS: Dict[EpistemicLevel, float] = {
-        EpistemicLevel.THEORETICAL: 0.8,
-        EpistemicLevel.INTERMEDIATE: 0.5,
-        EpistemicLevel.EMPIRICAL: 0.3,
-        EpistemicLevel.OBSERVATIONAL: 0.2,
-    }
+    _LEVEL_WEIGHTS: Dict[EpistemicLevel, float] = dict(
+        _DEFAULT_ENTRENCHMENT_LEVEL_WEIGHTS
+    )
 
     def get_entrenchment(self, belief_id: str) -> float:
         """
@@ -1610,54 +1158,31 @@ class WebOfBelief:
         """Compute component parts for entrenchment."""
         belief = self.beliefs.get(belief_id)
         if not belief:
-            return {
-                "entrenchment": 0.0,
-                "connectivity": 0.0,
-                "level_weight": 0.0,
-                "coherence_contrib": 0.0,
-                "constraint_count": 0,
-            }
+            return _empty_entrenchment_components().to_dict()
 
-        # Factor 1: Connectivity (40%)
-        # Number of constraints involving this belief, saturating at 10
-        constraint_ids = self._constraints_by_belief.get(belief_id, [])
-        constraint_count = len(constraint_ids)
-        connectivity = min(1.0, constraint_count / 10.0)
-
-        # Factor 2: Epistemic level weight (30%)
-        # Soft hierarchy: theories naturally more entrenched but not absolutely
-        level_weight = self._LEVEL_WEIGHTS.get(belief.level, 0.3)
-
-        # Factor 3: Coherence contribution proxy (30%)
-        # Full computation is expensive. Use simplified proxy:
-        # - High credence + low uncertainty = contributes positively
-        # - Status ESTABLISHED or ENTRENCHED (legacy) = higher contribution
-        credence_factor = belief.credence.value * (1 - belief.credence.uncertainty)
-
-        status_bonus = {
-            BeliefStatus.ESTABLISHED: 0.2,
-            BeliefStatus.ENTRENCHED: 0.3,  # Legacy status, still meaningful
-            BeliefStatus.TENTATIVE: 0.0,
-            BeliefStatus.STUB: -0.1,
-            BeliefStatus.ANOMALOUS: -0.2,
-        }.get(belief.status, 0.0)
-
-        coherence_contrib = max(0.0, min(1.0, credence_factor + status_bonus))
-
-        # Combine with weights
-        entrenchment = (
-            0.4 * connectivity +
-            0.3 * level_weight +
-            0.3 * coherence_contrib
+        constraint_count = len(self._constraints_by_belief.get(belief_id, []))
+        payload = _EntrenchmentInput(
+            belief_id=belief_id,
+            belief_level=belief.level,
+            credence_value=belief.credence.value,
+            credence_uncertainty=belief.credence.uncertainty,
+            belief_status=belief.status,
+            constraint_count=constraint_count,
         )
+        try:
+            components = _compute_entrenchment_components_contract(
+                payload,
+                self._LEVEL_WEIGHTS,
+            )
+        except ValueError as exc:
+            logger.warning(
+                "Entrenchment contract violation for %s: %s",
+                belief_id,
+                exc,
+            )
+            return _empty_entrenchment_components().to_dict()
 
-        return {
-            "entrenchment": max(0.0, min(1.0, entrenchment)),
-            "connectivity": connectivity,
-            "level_weight": level_weight,
-            "coherence_contrib": coherence_contrib,
-            "constraint_count": constraint_count,
-        }
+        return components.to_dict()
 
     def _invalidate_entrenchment_cache(self) -> None:
         """Invalidate entrenchment cache (call when constraints change)."""
@@ -1667,6 +1192,120 @@ class WebOfBelief:
     def _validate_entrenchment_cache(self) -> None:
         """Mark entrenchment cache as valid."""
         self._entrenchment_cache_valid = True
+
+    def _assert_invariants_if_enabled(self) -> None:
+        if self._debug_invariants:
+            self.assert_invariants(raise_on_error=True)
+
+    def assert_invariants(self, raise_on_error: bool = True) -> List[str]:
+        """Check structural/probabilistic invariants for health monitoring."""
+        errors: List[str] = []
+        eps = 1e-6
+
+        if not (0.0 - eps <= self._coherence_score <= 1.0 + eps):
+            errors.append(f"coherence out of range: {self._coherence_score}")
+
+        for belief_id, belief in self.beliefs.items():
+            if belief.level not in EpistemicLevel:
+                errors.append(f"belief {belief_id} has invalid level: {belief.level}")
+            if belief.status not in BeliefStatus:
+                errors.append(f"belief {belief_id} has invalid status: {belief.status}")
+            if not (0.0 - eps <= belief.credence.value <= 1.0 + eps):
+                errors.append(f"belief {belief_id} credence out of range: {belief.credence.value}")
+            if not (0.0 - eps <= belief.credence.uncertainty <= 1.0 + eps):
+                errors.append(
+                    f"belief {belief_id} uncertainty out of range: {belief.credence.uncertainty}"
+                )
+
+        for level, belief_ids in self._beliefs_by_level.items():
+            for belief_id in belief_ids:
+                belief = self.beliefs.get(belief_id)
+                if belief is None:
+                    errors.append(f"missing belief in _beliefs_by_level: {belief_id}")
+                    continue
+                if belief.level != level:
+                    errors.append(
+                        f"belief-level mismatch for {belief_id}: idx={level}, belief={belief.level}"
+                    )
+
+        for theory_id, belief_ids in self._beliefs_by_theory.items():
+            for belief_id in belief_ids:
+                belief = self.beliefs.get(belief_id)
+                if belief is None:
+                    errors.append(f"missing belief in _beliefs_by_theory: {belief_id}")
+                    continue
+                if belief.theory_id != theory_id:
+                    errors.append(
+                        f"belief-theory mismatch for {belief_id}: idx={theory_id}, belief={belief.theory_id}"
+                    )
+
+        for belief_id in self._stubs:
+            belief = self.beliefs.get(belief_id)
+            if belief is None:
+                errors.append(f"missing stub belief: {belief_id}")
+                continue
+            if belief.status != BeliefStatus.STUB:
+                errors.append(f"stub set contains non-stub belief: {belief_id}")
+
+        for constraint_id, constraint in self.constraints.items():
+            if constraint.source_id not in self.beliefs:
+                errors.append(f"constraint {constraint_id} missing source: {constraint.source_id}")
+            if constraint.target_id not in self.beliefs:
+                errors.append(f"constraint {constraint_id} missing target: {constraint.target_id}")
+            if not (0.0 - eps <= float(constraint.strength) <= 1.0 + eps):
+                errors.append(
+                    f"constraint {constraint_id} strength out of range: {constraint.strength}"
+                )
+            source_constraints = self._constraints_by_belief.get(constraint.source_id, [])
+            if constraint_id not in source_constraints:
+                errors.append(
+                    f"constraint {constraint_id} missing source index for {constraint.source_id}"
+                )
+            if constraint.bidirectional:
+                target_constraints = self._constraints_by_belief.get(constraint.target_id, [])
+                if constraint_id not in target_constraints:
+                    errors.append(
+                        f"constraint {constraint_id} missing target index for {constraint.target_id}"
+                    )
+
+        for belief_id, constraint_ids in self._constraints_by_belief.items():
+            for constraint_id in constraint_ids:
+                constraint = self.constraints.get(constraint_id)
+                if constraint is None:
+                    errors.append(
+                        f"constraints_by_belief references missing constraint {constraint_id}"
+                    )
+                    continue
+                if belief_id not in (constraint.source_id, constraint.target_id):
+                    errors.append(
+                        f"constraints_by_belief mismatch: {belief_id} not in {constraint_id}"
+                    )
+
+        for tension in self._tensions:
+            source_id = tension.get("source")
+            target_id = tension.get("target")
+            if source_id not in self.beliefs:
+                errors.append(f"tension source missing: {source_id}")
+            if target_id not in self.beliefs:
+                errors.append(f"tension target missing: {target_id}")
+
+        if self.theory_worlds:
+            total = sum(world.posterior for world in self.theory_worlds.values())
+            if abs(total - 1.0) > eps:
+                errors.append(f"theory world posterior total != 1.0: {total}")
+            for world_id, world in self.theory_worlds.items():
+                if world.posterior < -eps:
+                    errors.append(f"negative posterior in world {world_id}: {world.posterior}")
+            for theory_id in self.theory_ids:
+                marginal = self.marginal_theory_probability(theory_id)
+                if not (-eps <= marginal <= 1.0 + eps):
+                    errors.append(
+                        f"marginal out of range for {theory_id}: {marginal}"
+                    )
+
+        if errors and raise_on_error:
+            raise AssertionError("Invariant violations: " + "; ".join(errors[:5]))
+        return errors
 
     # =========================================================================
     # BELIEF MANAGEMENT
@@ -1685,29 +1324,7 @@ class WebOfBelief:
             connect_to: Optional list of (belief_id, constraint_type, strength)
                         for creating initial constraints
         """
-        self.beliefs[belief.belief_id] = belief
-        self._beliefs_by_level[belief.level].append(belief.belief_id)
-        
-        if belief.theory_id:
-            self._beliefs_by_theory[belief.theory_id].append(belief.belief_id)
-        
-        if belief.is_stub():
-            self._stubs.add(belief.belief_id)
-        
-        # Create constraints
-        if connect_to:
-            for target_id, ctype, strength in connect_to:
-                if target_id in self.beliefs:
-                    self.add_constraint(Constraint(
-                        constraint_id=f"c:{belief.belief_id}:{target_id}",
-                        source_id=belief.belief_id,
-                        target_id=target_id,
-                        constraint_type=ctype,
-                        strength=strength
-                    ))
-        
-        self.version += 1
-        logger.debug(f"Added belief: {belief.belief_id} at level {belief.level.value}")
+        self._mutations.add_belief(self, belief=belief, connect_to=connect_to)
     
     def add_stub(
         self,
@@ -1750,27 +1367,7 @@ class WebOfBelief:
         Per expert panel (Pearl): MEDIATED causal direction requires specification
         of the mediator variable for proper causal reasoning about blocking/confounding.
         """
-        # Panel Fix 1: Require mediator for MEDIATED causal direction
-        if constraint.causal_direction == CausalDirection.MEDIATED:
-            if constraint.mediator is None:
-                raise ValueError(
-                    f"MEDIATED causal direction requires mediator specification. "
-                    f"Constraint {constraint.constraint_id}: source={constraint.source_id}, "
-                    f"target={constraint.target_id}. Please specify what M mediates the "
-                    f"relationship (A→M→B)."
-                )
-
-        self.constraints[constraint.constraint_id] = constraint
-        self._constraints_by_belief[constraint.source_id].append(constraint.constraint_id)
-
-        if constraint.bidirectional:
-            self._constraints_by_belief[constraint.target_id].append(constraint.constraint_id)
-
-        # V23.0.0: Invalidate entrenchment cache when constraints change
-        self._invalidate_entrenchment_cache()
-
-        # Recalculate coherence
-        self._update_coherence()
+        self._mutations.add_constraint(self, constraint=constraint)
     
     def integrate_stub(
         self,
@@ -1785,42 +1382,13 @@ class WebOfBelief:
         This connects an orphan finding to a theory, changing its status
         from STUB to TENTATIVE.
         """
-        if stub_id not in self.beliefs:
-            raise ValueError(f"Belief not found: {stub_id}")
-        
-        belief = self.beliefs[stub_id]
-        
-        if belief.status != BeliefStatus.STUB:
-            logger.warning(f"Belief {stub_id} is not a stub")
-            return
-        
-        # Update belief
-        belief.theory_id = theory_id
-        belief.status = BeliefStatus.TENTATIVE
-        # V23.0.0: Entrenchment now computed, not stored.
-        # Integration naturally increases entrenchment via:
-        # - New constraints (higher connectivity)
-        # - TENTATIVE status (better than STUB)
-
-        self._stubs.discard(stub_id)
-        self._beliefs_by_theory[theory_id].append(stub_id)
-        
-        # Find theoretical beliefs from this theory to connect to
-        theory_beliefs = [
-            bid for bid in self._beliefs_by_theory.get(theory_id, [])
-            if self.beliefs[bid].level == EpistemicLevel.THEORETICAL
-        ]
-        
-        for theory_belief_id in theory_beliefs:
-            self.add_constraint(Constraint(
-                constraint_id=f"c:{stub_id}:{theory_belief_id}",
-                source_id=stub_id,
-                target_id=theory_belief_id,
-                constraint_type=constraint_type,
-                strength=constraint_strength
-            ))
-        
-        logger.info(f"Integrated stub {stub_id} into theory {theory_id}")
+        self._mutations.integrate_stub(
+            self,
+            stub_id=stub_id,
+            theory_id=theory_id,
+            constraint_type=constraint_type,
+            constraint_strength=constraint_strength,
+        )
 
     def integrate_bridge(
         self,
@@ -1843,88 +1411,11 @@ class WebOfBelief:
         Returns:
             Dict with integration summary
         """
-        result = {
-            "bridge_id": bridge.bridge_id,
-            "constraints_created": 0,
-            "tensions_created": 0,
-            "coherence_impact": 0.0
-        }
-
-        coherence_before = self._coherence_score
-
-        if not create_constraints:
-            return result
-
-        # Create constraints between source and target beliefs
-        source_beliefs = [bid for bid in bridge.source_beliefs if bid in self.beliefs]
-        target_beliefs = [bid for bid in bridge.target_beliefs if bid in self.beliefs]
-
-        # Determine constraint type based on bridge status
-        if bridge.status.value == "failed":
-            # Failed bridge creates strong tension
-            constraint_type = ConstraintType.STRONG_TENSION
-            strength = 0.9  # Strong tension
-        else:
-            constraint_type = ConstraintType.BRIDGES
-            strength = bridge.confidence
-
-        # Create constraints from source to target beliefs
-        for source_id in source_beliefs:
-            for target_id in target_beliefs:
-                constraint_id = f"c:bridge:{bridge.bridge_id}:{source_id}:{target_id}"
-
-                # Skip if constraint already exists
-                if constraint_id in self.constraints:
-                    continue
-
-                constraint = Constraint(
-                    constraint_id=constraint_id,
-                    source_id=source_id,
-                    target_id=target_id,
-                    constraint_type=constraint_type,
-                    strength=strength,
-                    bidirectional=True,
-                    evidence_ids=[bridge.bridge_id]
-                )
-
-                self.add_constraint(constraint)
-                result["constraints_created"] += 1
-
-                if constraint_type == ConstraintType.STRONG_TENSION:
-                    result["tensions_created"] += 1
-
-        # If bridge failed, also create tensions with disconfirming evidence
-        if bridge.failure_record:
-            for evidence_id in bridge.failure_record.disconfirming_evidence:
-                if evidence_id not in self.beliefs:
-                    continue
-
-                for source_id in source_beliefs:
-                    tension_id = f"c:tension:{bridge.bridge_id}:{source_id}:{evidence_id}"
-                    if tension_id in self.constraints:
-                        continue
-
-                    tension = Constraint(
-                        constraint_id=tension_id,
-                        source_id=source_id,
-                        target_id=evidence_id,
-                        constraint_type=ConstraintType.CONTRADICTS,
-                        strength=0.8,
-                        bidirectional=True,
-                        evidence_ids=[bridge.bridge_id]
-                    )
-
-                    self.add_constraint(tension)
-                    result["tensions_created"] += 1
-
-        # Recalculate coherence
-        self._update_coherence()
-        result["coherence_impact"] = self._coherence_score - coherence_before
-
-        self.version += 1
-        logger.info(f"Integrated bridge {bridge.bridge_id}: {result['constraints_created']} constraints, {result['tensions_created']} tensions")
-
-        return result
+        return self._mutations.integrate_bridge(
+            self,
+            bridge=bridge,
+            create_constraints=create_constraints,
+        )
 
     # =========================================================================
     # THEORY WORLDS
@@ -1942,60 +1433,26 @@ class WebOfBelief:
         
         self.theory_ids.add(theory_id)
         self._rebuild_theory_worlds()
+        self._assert_invariants_if_enabled()
     
     def _rebuild_theory_worlds(self) -> None:
         """Rebuild the space of theory worlds."""
-        self.theory_worlds = {}
-        theory_list = sorted(self.theory_ids)
-        n = len(theory_list)
-        
-        if n == 0:
-            return
-        
-        # Generate all 2^n combinations
-        for i in range(2 ** n):
-            true_theories = set()
-            false_theories = set()
-            
-            for j, theory_id in enumerate(theory_list):
-                if (i >> j) & 1:
-                    true_theories.add(theory_id)
-                else:
-                    false_theories.add(theory_id)
-            
-            world_id = self._world_id(true_theories, false_theories)
-            
-            # Prior: assume independence initially
-            prior = 1.0
-            for theory_id in theory_list:
-                # Use any existing credence, otherwise 0.5
-                theory_beliefs = [
-                    b for b in self.beliefs.values()
-                    if b.theory_id == theory_id and b.level == EpistemicLevel.THEORETICAL
-                ]
-                if theory_beliefs:
-                    p = theory_beliefs[0].credence.value
-                else:
-                    p = 0.5
-                
-                if theory_id in true_theories:
-                    prior *= p
-                else:
-                    prior *= (1 - p)
-            
-            self.theory_worlds[world_id] = TheoryWorld(
-                world_id=world_id,
-                theories_true=frozenset(true_theories),
-                theories_false=frozenset(false_theories),
-                prior=prior,
-                posterior=prior
-            )
+        theory_priors: Dict[str, float] = {}
+        for theory_id in self.theory_ids:
+            theory_beliefs = [
+                belief
+                for belief in self.beliefs.values()
+                if belief.theory_id == theory_id and belief.level == EpistemicLevel.THEORETICAL
+            ]
+            theory_priors[theory_id] = theory_beliefs[0].credence.value if theory_beliefs else 0.5
+        self.theory_worlds = self._engines.theory_worlds.rebuild_worlds(
+            theory_ids=self.theory_ids,
+            theory_priors=theory_priors,
+        )
     
     def _world_id(self, true_set: Set[str], false_set: Set[str]) -> str:
         """Generate canonical world ID."""
-        true_str = ",".join(sorted(true_set)) if true_set else "∅"
-        false_str = ",".join(sorted(false_set)) if false_set else "∅"
-        return f"[+{true_str}][-{false_str}]"
+        return self._engines.theory_worlds.world_id(true_set, false_set)
     
     def update_theory_worlds(
         self,
@@ -2012,32 +1469,12 @@ class WebOfBelief:
         """
         if not self.theory_worlds:
             return
-        
-        total = 0.0
-        
-        for world_id, world in self.theory_worlds.items():
-            # Compute P(evidence | world)
-            likelihood = 1.0
-            for theory_id in self.theory_ids:
-                if theory_id in theory_likelihoods:
-                    p_given_true = theory_likelihoods[theory_id]
-                    p_given_false = 1 - p_given_true  # Simplification
-                    
-                    if theory_id in world.theories_true:
-                        likelihood *= p_given_true
-                    else:
-                        likelihood *= p_given_false
-            
-            # Bayes: P(world | evidence) ∝ P(evidence | world) * P(world)
-            world.posterior = world.prior * likelihood
-            world.log_likelihood += math.log(likelihood + 1e-10)
-            total += world.posterior
-        
-        # Normalize
-        if total > 0:
-            for world in self.theory_worlds.values():
-                world.posterior /= total
-                world.prior = world.posterior  # For next update
+        self._engines.theory_worlds.update_posteriors(
+            worlds=self.theory_worlds,
+            theory_ids=self.theory_ids,
+            theory_likelihoods=theory_likelihoods,
+        )
+        self._assert_invariants_if_enabled()
     
     def marginal_theory_probability(self, theory_id: str) -> float:
         """
@@ -2046,26 +1483,19 @@ class WebOfBelief:
         This is the marginal probability, summing over all worlds where
         the theory is true.
         """
-        if not self.theory_worlds:
-            return 0.5
-        
-        return sum(
-            world.posterior
-            for world in self.theory_worlds.values()
-            if theory_id in world.theories_true
+        return self._engines.theory_worlds.marginal(
+            worlds=self.theory_worlds,
+            theory_id=theory_id,
+            default=0.5,
         )
     
     def joint_probability(self, true_theories: Set[str]) -> float:
         """
         Compute P(these theories all true | evidence).
         """
-        if not self.theory_worlds:
-            return 0.5 ** len(true_theories)
-        
-        return sum(
-            world.posterior
-            for world in self.theory_worlds.values()
-            if true_theories <= world.theories_true
+        return self._engines.theory_worlds.joint(
+            worlds=self.theory_worlds,
+            true_theories=true_theories,
         )
     
     def conditional_probability(
@@ -2078,27 +1508,12 @@ class WebOfBelief:
         
         Example: P(SRT | ART=true, evidence)
         """
-        if not self.theory_worlds:
-            return 0.5
-        
-        numerator = 0.0
-        denominator = 0.0
-        
-        for world in self.theory_worlds.values():
-            # Check if world matches given conditions
-            matches_given = all(
-                (theory_id in world.theories_true) == is_true
-                for theory_id, is_true in given_theories.items()
-            )
-            
-            if matches_given:
-                denominator += world.posterior
-                if target_theory in world.theories_true:
-                    numerator += world.posterior
-        
-        if denominator == 0:
-            return 0.5
-        return numerator / denominator
+        return self._engines.theory_worlds.conditional(
+            worlds=self.theory_worlds,
+            target_theory=target_theory,
+            given_theories=given_theories,
+            default=0.5,
+        )
     
     # =========================================================================
     # COHERENCE AND REFLECTIVE EQUILIBRIUM
@@ -2113,78 +1528,12 @@ class WebOfBelief:
         - Contradicting constraints connect to low-credence beliefs
         - Few tensions (high-credence beliefs in contradiction)
         """
-        if not self.constraints:
-            self._coherence_score = 0.5
-            self._tensions = []
-            return
-        
-        total_coherence = 0.0
-        n_constraints = 0
-        tensions = []
-        
-        for constraint in self.constraints.values():
-            source = self.beliefs.get(constraint.source_id)
-            target = self.beliefs.get(constraint.target_id)
-            
-            if not source or not target:
-                continue
-            
-            n_constraints += 1
-            source_cred = source.credence.value
-            target_cred = target.credence.value
-            
-            if constraint.constraint_type == ConstraintType.SUPPORTS:
-                # Coherent if both high or both low
-                agreement = 1 - abs(source_cred - target_cred)
-                local_coherence = agreement * constraint.strength
-                
-            elif constraint.constraint_type == ConstraintType.CONTRADICTS:
-                # Coherent if one high and one low
-                disagreement = abs(source_cred - target_cred)
-                local_coherence = disagreement * constraint.strength
-                
-                # Tension if both are high credence
-                if source_cred > 0.6 and target_cred > 0.6:
-                    tensions.append({
-                        'source': constraint.source_id,
-                        'target': constraint.target_id,
-                        'source_credence': source_cred,
-                        'target_credence': target_cred,
-                        'type': 'contradiction_tension'
-                    })
-                    
-            elif constraint.constraint_type in [ConstraintType.EXPLAINS, ConstraintType.INSTANTIATES]:
-                # Explanatory coherence
-                local_coherence = (source_cred * target_cred) * constraint.strength
-
-            elif constraint.constraint_type == ConstraintType.BRIDGES:
-                # Sprint 3: Bridge constraints - coherent if both connected beliefs align
-                agreement = 1 - abs(source_cred - target_cred)
-                local_coherence = agreement * constraint.strength * 0.8  # Slightly less than direct support
-
-            elif constraint.constraint_type == ConstraintType.STRONG_TENSION:
-                # Sprint 3: Strong tension from failed bridges
-                # Similar to contradicts but with higher penalty
-                disagreement = abs(source_cred - target_cred)
-                local_coherence = disagreement * constraint.strength * 0.5  # Penalty for unresolved tension
-
-                # Strong tension if both are high credence (failed bridge with strong beliefs)
-                if source_cred > 0.5 and target_cred > 0.5:
-                    tensions.append({
-                        'source': constraint.source_id,
-                        'target': constraint.target_id,
-                        'source_credence': source_cred,
-                        'target_credence': target_cred,
-                        'type': 'bridge_failure_tension'
-                    })
-
-            else:
-                local_coherence = 0.5 * constraint.strength
-            
-            total_coherence += local_coherence
-        
-        self._coherence_score = total_coherence / n_constraints if n_constraints > 0 else 0.5
-        self._tensions = tensions
+        result: _CoherenceResult = self._engines.coherence.recompute(
+            beliefs=self.beliefs,
+            constraints=self.constraints.values(),
+        )
+        self._coherence_score = result.coherence_score
+        self._tensions = result.tensions
     
     def seek_equilibrium(self, max_iterations: int = 10) -> Dict[str, Any]:
         """
@@ -2196,60 +1545,7 @@ class WebOfBelief:
         Returns:
             Summary of adjustments made
         """
-        adjustments = []
-        
-        for iteration in range(max_iterations):
-            self._update_coherence()
-            
-            if not self._tensions:
-                break
-            
-            # For each tension, adjust the less entrenched belief
-            for tension in self._tensions[:3]:  # Limit per iteration
-                source = self.beliefs[tension['source']]
-                target = self.beliefs[tension['target']]
-                
-                # Adjust the less entrenched one (V23: emergent entrenchment)
-                source_entrenchment = self.get_entrenchment(source.belief_id)
-                target_entrenchment = self.get_entrenchment(target.belief_id)
-                if source_entrenchment < target_entrenchment:
-                    to_adjust = source
-                    reason = f"in contradiction with more entrenched {target.belief_id}"
-                else:
-                    to_adjust = target
-                    reason = f"in contradiction with more entrenched {source.belief_id}"
-                
-                old_cred = to_adjust.credence.value
-                
-                # Reduce credence
-                to_adjust.credence = Credence(
-                    value=to_adjust.credence.value * 0.85,
-                    uncertainty=min(0.5, to_adjust.credence.uncertainty * 1.1),
-                    n_supporting=to_adjust.credence.n_supporting,
-                    n_contradicting=to_adjust.credence.n_contradicting + 1,
-                    n_observations=to_adjust.credence.n_observations
-                )
-                
-                # Mark as anomalous if credence drops low
-                if to_adjust.credence.value < 0.3:
-                    to_adjust.status = BeliefStatus.ANOMALOUS
-                
-                adjustments.append({
-                    'belief_id': to_adjust.belief_id,
-                    'old_credence': old_cred,
-                    'new_credence': to_adjust.credence.value,
-                    'reason': reason,
-                    'iteration': iteration
-                })
-        
-        self._update_coherence()
-        
-        return {
-            'iterations': iteration + 1,
-            'final_coherence': self._coherence_score,
-            'remaining_tensions': len(self._tensions),
-            'adjustments': adjustments
-        }
+        return self._mutations.seek_equilibrium(self, max_iterations=max_iterations)
     
     def coherence_score(self) -> float:
         return self._coherence_score
@@ -2274,27 +1570,7 @@ class WebOfBelief:
         Returns:
             Normalized centrality score [0, 1]. 0 = no connections, 1 = highly connected.
         """
-        if belief_id not in self.beliefs:
-            return 0.0
-
-        # Count constraints where this belief is source or target
-        constraint_count = 0
-        for constraint in self.constraints.values():
-            if constraint.source_id == belief_id or constraint.target_id == belief_id:
-                constraint_count += 1
-
-        if not self.constraints:
-            return 0.0
-
-        # Normalize by max possible connections (all other beliefs)
-        max_connections = len(self.beliefs) - 1
-        if max_connections <= 0:
-            return 0.0
-
-        # Centrality is proportion of possible connections realized
-        # Cap at 1.0 in case there are multiple constraints to same belief
-        centrality = min(1.0, constraint_count / max_connections)
-        return centrality
+        return self._analysis.belief_centrality(self, belief_id)
 
     def belief_sensitivity(self, belief_id: str, delta: float = 0.1) -> float:
         """
@@ -2313,48 +1589,7 @@ class WebOfBelief:
         Returns:
             Sensitivity score [0, 1]. Higher = coherence more sensitive to this belief.
         """
-        if belief_id not in self.beliefs:
-            return 0.0
-
-        belief = self.beliefs[belief_id]
-        original_credence = belief.credence.value
-        original_coherence = self._coherence_score
-
-        # Perturb up (if possible) or down
-        if original_credence + delta <= 1.0:
-            test_credence = original_credence + delta
-        else:
-            test_credence = original_credence - delta
-
-        # Temporarily change credence
-        belief.credence = Credence(
-            value=test_credence,
-            uncertainty=belief.credence.uncertainty,
-            n_supporting=belief.credence.n_supporting,
-            n_contradicting=belief.credence.n_contradicting,
-            n_observations=belief.credence.n_observations
-        )
-
-        # Recompute coherence
-        self._update_coherence()
-        new_coherence = self._coherence_score
-
-        # Restore original credence
-        belief.credence = Credence(
-            value=original_credence,
-            uncertainty=belief.credence.uncertainty,
-            n_supporting=belief.credence.n_supporting,
-            n_contradicting=belief.credence.n_contradicting,
-            n_observations=belief.credence.n_observations
-        )
-
-        # Restore original coherence
-        self._update_coherence()
-
-        # Sensitivity is absolute change in coherence per unit delta
-        # Normalize to [0, 1] range (max coherence change is 1.0)
-        sensitivity = abs(new_coherence - original_coherence) / delta
-        return min(1.0, sensitivity)
+        return self._analysis.belief_sensitivity(self, belief_id, delta=delta)
 
     def belief_value(self, belief_id: str, centrality_weight: float = 0.5) -> float:
         """
@@ -2374,12 +1609,7 @@ class WebOfBelief:
         Returns:
             Value score [0, 1]. Higher = more epistemically valuable.
         """
-        centrality = self.belief_centrality(belief_id)
-        sensitivity = self.belief_sensitivity(belief_id)
-
-        sensitivity_weight = 1.0 - centrality_weight
-        value = centrality_weight * centrality + sensitivity_weight * sensitivity
-        return value
+        return self._analysis.belief_value(self, belief_id, centrality_weight=centrality_weight)
 
     def beliefs_by_value(self, top_n: Optional[int] = None) -> List[Tuple[str, float, float, float]]:
         """
@@ -2393,19 +1623,19 @@ class WebOfBelief:
         Returns:
             List of (belief_id, value, centrality, sensitivity) tuples.
         """
-        results = []
-        for belief_id in self.beliefs:
-            centrality = self.belief_centrality(belief_id)
-            sensitivity = self.belief_sensitivity(belief_id)
-            value = 0.5 * centrality + 0.5 * sensitivity
-            results.append((belief_id, value, centrality, sensitivity))
+        return self._analysis.beliefs_by_value(self, top_n=top_n)
 
-        # Sort by value descending
-        results.sort(key=lambda x: x[1], reverse=True)
+    def compute_independence_score(
+        self,
+        belief_ids: Optional[List[str]] = None,
+    ) -> Dict[str, float]:
+        """
+        ARCH-3b: Score evidential independence via lab × method × population diversity.
 
-        if top_n is not None:
-            return results[:top_n]
-        return results
+        Args:
+            belief_ids: Optional subset of belief IDs. Defaults to all beliefs.
+        """
+        return self._analysis.compute_independence_score(self, belief_ids=belief_ids)
 
     def high_value_beliefs(self, threshold: float = 0.5) -> List[Dict[str, Any]]:
         """
@@ -2419,26 +1649,7 @@ class WebOfBelief:
         Returns:
             List of dicts with belief details and value metrics.
         """
-        results = []
-        for belief_id, value, centrality, sensitivity in self.beliefs_by_value():
-            if value < threshold:
-                break  # Already sorted, no more above threshold
-
-            belief = self.beliefs[belief_id]
-            results.append({
-                'belief_id': belief_id,
-                'content': belief.content,
-                'level': belief.level.value,
-                'credence': belief.credence.value,
-                'entrenchment': belief.entrenchment,
-                'value': value,
-                'centrality': centrality,
-                'sensitivity': sensitivity,
-                'inference_type': belief.inference_type.value,
-                'belief_kind': belief.belief_kind.value
-            })
-
-        return results
+        return self._analysis.high_value_beliefs(self, threshold=threshold)
 
     # =========================================================================
     # TENSION-RESOLVING EXPERIMENTS (Sprint 1.6.4)
@@ -2461,30 +1672,7 @@ class WebOfBelief:
         Returns:
             List of experiment suggestions with details.
         """
-        self._update_coherence()  # Ensure tensions are current
-        suggestions = []
-
-        for tension in self._tensions[:max_suggestions]:
-            source = self.beliefs.get(tension['source'])
-            target = self.beliefs.get(tension['target'])
-
-            if not source or not target:
-                continue
-
-            suggestion = self._generate_experiment_suggestion(source, target, tension)
-            if suggestion:
-                suggestions.append(suggestion)
-
-        # Also suggest experiments for high-value contested beliefs
-        contested = [b for b in self.beliefs.values() if b.contested]
-        for belief in contested[:max_suggestions - len(suggestions)]:
-            if len(suggestions) >= max_suggestions:
-                break
-            suggestion = self._generate_contested_experiment(belief)
-            if suggestion:
-                suggestions.append(suggestion)
-
-        return suggestions
+        return self._analysis.suggest_experiments(self, max_suggestions=max_suggestions)
 
     def _generate_experiment_suggestion(
         self,
@@ -2497,57 +1685,7 @@ class WebOfBelief:
 
         Sprint 1.6.4: Creates structured experiment recommendations.
         """
-        # Determine experiment type based on belief levels
-        exp_type = self._infer_experiment_type(source, target)
-
-        # Identify what would need to be tested
-        if source.level == EpistemicLevel.THEORETICAL and target.level == EpistemicLevel.EMPIRICAL:
-            # Theory-data conflict: need to test the theoretical prediction
-            test_focus = "theoretical_prediction"
-            hypothesis = f"Test whether {source.content} correctly predicts {target.content}"
-        elif source.level == target.level == EpistemicLevel.EMPIRICAL:
-            # Conflicting empirical findings: need replication
-            test_focus = "replication"
-            hypothesis = f"Replicate to determine whether {source.content} or {target.content} holds"
-        elif source.level == EpistemicLevel.INTERMEDIATE:
-            # Mechanism conflict: need mechanism test
-            test_focus = "mechanism"
-            hypothesis = f"Test the mechanism: does {source.content} explain {target.content}?"
-        else:
-            test_focus = "general"
-            hypothesis = f"Investigate conflict between {source.belief_id} and {target.belief_id}"
-
-        # Estimate priority based on belief values
-        priority = max(
-            self.belief_value(source.belief_id),
-            self.belief_value(target.belief_id)
-        )
-
-        # Generate scope suggestions
-        scope_suggestion = self._suggest_scope(source, target)
-
-        return {
-            'experiment_id': f"exp:tension:{source.belief_id}:{target.belief_id}",
-            'type': exp_type,
-            'tension_type': tension.get('type', 'unknown'),
-            'test_focus': test_focus,
-            'hypothesis': hypothesis,
-            'source_belief': {
-                'id': source.belief_id,
-                'content': source.content,
-                'credence': source.credence.value,
-                'level': source.level.value
-            },
-            'target_belief': {
-                'id': target.belief_id,
-                'content': target.content,
-                'credence': target.credence.value,
-                'level': target.level.value
-            },
-            'priority': priority,
-            'scope_suggestion': scope_suggestion,
-            'expected_resolution': self._estimate_resolution(source, target)
-        }
+        return self._analysis.generate_experiment_suggestion(self, source, target, tension)
 
     def _generate_contested_experiment(self, belief: Belief) -> Optional[Dict[str, Any]]:
         """
@@ -2556,114 +1694,30 @@ class WebOfBelief:
         Sprint 1.6.4: Contested beliefs (oscillating credence) indicate
         genuine disagreement that experimentation could resolve.
         """
-        credence_range = belief.credence_range()
+        return self._analysis.generate_contested_experiment(self, belief)
 
-        return {
-            'experiment_id': f"exp:contested:{belief.belief_id}",
-            'type': 'replication_study',
-            'tension_type': 'credence_oscillation',
-            'test_focus': 'replication',
-            'hypothesis': f"Determine stable credence for: {belief.content}",
-            'source_belief': {
-                'id': belief.belief_id,
-                'content': belief.content,
-                'credence': belief.credence.value,
-                'credence_range': credence_range,
-                'level': belief.level.value
-            },
-            'target_belief': None,  # No target for contested belief
-            'priority': self.belief_value(belief.belief_id),
-            'scope_suggestion': self._suggest_contested_scope(belief),
-            'expected_resolution': {
-                'if_confirmed': f"Credence stabilizes above {credence_range[1]:.2f}",
-                'if_refuted': f"Credence stabilizes below {credence_range[0]:.2f}",
-                'uncertainty_reduction': abs(credence_range[1] - credence_range[0])
-            }
-        }
+    def _to_experiment_input(self, belief: Belief) -> _ExperimentBeliefInput:
+        return self._analysis.to_experiment_input(belief)
 
     def _infer_experiment_type(self, source: Belief, target: Belief) -> str:
         """Infer what type of experiment would address the tension."""
-        levels = {source.level, target.level}
-
-        if EpistemicLevel.OBSERVATIONAL in levels:
-            return 'measurement_study'
-        elif EpistemicLevel.THEORETICAL in levels and EpistemicLevel.EMPIRICAL in levels:
-            return 'hypothesis_test'
-        elif levels == {EpistemicLevel.EMPIRICAL}:
-            return 'replication_study'
-        elif EpistemicLevel.INTERMEDIATE in levels:
-            return 'mechanism_study'
-        else:
-            return 'exploratory_study'
+        return self._analysis.infer_experiment_type(source, target)
 
     def _suggest_scope(self, source: Belief, target: Belief) -> Dict[str, Any]:
         """Suggest scope conditions for the experiment."""
-        # Combine scope conditions from both beliefs
-        scopes = [source.scope, target.scope]
-        scopes = [s for s in scopes if s is not None]
-
-        if not scopes:
-            return {
-                'population': 'unspecified',
-                'setting': 'unspecified',
-                'note': 'Neither belief specifies scope - consider multiple settings'
-            }
-
-        # Find common scope elements
-        populations = [s.population for s in scopes if s.population]
-        settings = [s.setting for s in scopes if s.setting]
-
-        return {
-            'population': populations[0] if populations else 'unspecified',
-            'setting': settings[0] if settings else 'unspecified',
-            'should_vary': self._identify_scope_differences(scopes),
-            'note': 'Test under conditions specified by both beliefs'
-        }
+        return self._analysis.suggest_scope(source, target)
 
     def _suggest_contested_scope(self, belief: Belief) -> Dict[str, Any]:
         """Suggest scope for contested belief experiment."""
-        if belief.scope:
-            return {
-                'population': belief.scope.population or 'unspecified',
-                'setting': belief.scope.setting or 'unspecified',
-                'note': 'Replicate across multiple contexts to test generalizability'
-            }
-        return {
-            'population': 'unspecified',
-            'setting': 'unspecified',
-            'note': 'Scope not specified - systematic replication recommended'
-        }
+        return self._analysis.suggest_contested_scope(belief)
 
     def _identify_scope_differences(self, scopes: List[ScopeConditions]) -> List[str]:
         """Identify where scope conditions differ between beliefs."""
-        differences = []
-        if len(scopes) < 2:
-            return differences
-
-        s1, s2 = scopes[0], scopes[1]
-        if s1.population != s2.population:
-            differences.append('population')
-        if s1.setting != s2.setting:
-            differences.append('setting')
-        if s1.duration != s2.duration:
-            differences.append('duration')
-        if s1.measurement != s2.measurement:
-            differences.append('measurement')
-
-        return differences
+        return self._analysis.identify_scope_differences(scopes)
 
     def _estimate_resolution(self, source: Belief, target: Belief) -> Dict[str, Any]:
         """Estimate how the tension might be resolved."""
-        return {
-            'if_source_confirmed': f"{source.belief_id} credence increases, {target.belief_id} decreases",
-            'if_target_confirmed': f"{target.belief_id} credence increases, {source.belief_id} decreases",
-            'if_scope_boundary': "Both may be correct in different contexts",
-            'entrenchment_impact': {
-                'source': source.entrenchment,
-                'target': target.entrenchment,
-                'easier_to_revise': source.belief_id if source.entrenchment < target.entrenchment else target.belief_id
-            }
-        }
+        return self._analysis.estimate_resolution(source, target)
 
     def get_research_priorities(self, top_n: int = 10) -> Dict[str, Any]:
         """
@@ -2674,60 +1728,11 @@ class WebOfBelief:
         Returns:
             Dictionary with prioritized research directions.
         """
-        self._update_coherence()
-
-        return {
-            'web_coherence': self._coherence_score,
-            'n_tensions': len(self._tensions),
-            'n_contested': sum(1 for b in self.beliefs.values() if b.contested),
-            'suggested_experiments': self.suggest_experiments(max_suggestions=top_n),
-            'high_value_beliefs': self.high_value_beliefs(threshold=0.3)[:top_n],
-            'research_directions': self._generate_research_directions()
-        }
+        return self._analysis.get_research_priorities(self, top_n=top_n)
 
     def _generate_research_directions(self) -> List[Dict[str, str]]:
         """Generate high-level research direction recommendations."""
-        directions = []
-
-        # Based on tension types
-        tension_types = defaultdict(int)
-        for t in self._tensions:
-            tension_types[t.get('type', 'unknown')] += 1
-
-        if tension_types['contradiction_tension'] > 0:
-            directions.append({
-                'direction': 'Resolve contradictory findings',
-                'rationale': f"{tension_types['contradiction_tension']} pairs of high-credence beliefs contradict each other",
-                'approach': 'Systematic replication with scope variation'
-            })
-
-        if tension_types['bridge_failure_tension'] > 0:
-            directions.append({
-                'direction': 'Strengthen knowledge transfer',
-                'rationale': f"{tension_types['bridge_failure_tension']} bridge relationships have failed",
-                'approach': 'Test enabling conditions for knowledge transfer'
-            })
-
-        # Based on belief distribution
-        levels = defaultdict(int)
-        for b in self.beliefs.values():
-            levels[b.level] += 1
-
-        if levels[EpistemicLevel.THEORETICAL] > levels[EpistemicLevel.EMPIRICAL]:
-            directions.append({
-                'direction': 'More empirical testing needed',
-                'rationale': 'More theoretical than empirical beliefs',
-                'approach': 'Design experiments to test theoretical predictions'
-            })
-
-        if levels[EpistemicLevel.OBSERVATIONAL] == 0:
-            directions.append({
-                'direction': 'Add observational grounding',
-                'rationale': 'No observational-level beliefs',
-                'approach': 'Conduct direct measurement studies'
-            })
-
-        return directions
+        return self._analysis.generate_research_directions(self)
 
     # =========================================================================
     # EVIDENCE PROCESSING
@@ -2758,132 +1763,18 @@ class WebOfBelief:
         Returns:
             Summary of all updates
         """
-        updates = {
-            'belief_updates': [],
-            'theory_world_updates': {},
-            'temporal_updates': [],
-            'coherence_before': self._coherence_score,
-            'coherence_after': 0.0
-        }
-        
-        supports_beliefs = supports_beliefs or {}
-        contradicts_beliefs = contradicts_beliefs or {}
-        theory_relevance = theory_relevance or {}
-        observed_temporal = observed_temporal or {}
-        
-        # Create or update the evidence belief
-        if belief_id in self.beliefs:
-            evidence_belief = self.beliefs[belief_id]
-            evidence_belief.paper_ids.append(paper_id)
-            # Increase credence with replication
-            evidence_belief.credence = evidence_belief.credence.update(
-                True, 0.6, 0.7
-            )
-        else:
-            evidence_belief = Belief(
-                belief_id=belief_id,
-                content=content,
-                level=EpistemicLevel.EMPIRICAL,
-                status=BeliefStatus.STUB if not (supports_beliefs or contradicts_beliefs) else BeliefStatus.TENTATIVE,
-                credence=Credence(credence, 0.35),
-                paper_ids=[paper_id]
-            )
-            self.add_belief(evidence_belief)
-        
-        # Update supported beliefs
-        for target_id, strength in supports_beliefs.items():
-            if target_id not in self.beliefs:
-                continue
-            
-            target = self.beliefs[target_id]
-            old_cred = target.credence.value
-            target.credence = target.credence.update(True, strength, evidence_belief.credence.value)
-            
-            updates['belief_updates'].append({
-                'belief_id': target_id,
-                'direction': 'supported',
-                'old_credence': old_cred,
-                'new_credence': target.credence.value
-            })
-            
-            # Add supporting constraint
-            self.add_constraint(Constraint(
-                constraint_id=f"c:{belief_id}:{target_id}",
-                source_id=belief_id,
-                target_id=target_id,
-                constraint_type=ConstraintType.SUPPORTS,
-                strength=strength
-            ))
-            
-            # If target has a theory, mark evidence as relevant
-            if target.theory_id and target.theory_id not in theory_relevance:
-                theory_relevance[target.theory_id] = 0.5 + 0.3 * strength
-        
-        # Update contradicted beliefs
-        for target_id, strength in contradicts_beliefs.items():
-            if target_id not in self.beliefs:
-                continue
-            
-            target = self.beliefs[target_id]
-            old_cred = target.credence.value
-            target.credence = target.credence.update(False, strength, evidence_belief.credence.value)
-            
-            updates['belief_updates'].append({
-                'belief_id': target_id,
-                'direction': 'contradicted',
-                'old_credence': old_cred,
-                'new_credence': target.credence.value
-            })
-            
-            # Add contradicting constraint
-            self.add_constraint(Constraint(
-                constraint_id=f"c:{belief_id}:{target_id}",
-                source_id=belief_id,
-                target_id=target_id,
-                constraint_type=ConstraintType.CONTRADICTS,
-                strength=strength
-            ))
-            
-            # Update theory relevance (evidence against)
-            if target.theory_id and target.theory_id not in theory_relevance:
-                theory_relevance[target.theory_id] = 0.5 - 0.3 * strength
-        
-        # Update theory worlds
-        if theory_relevance:
-            old_marginals = {tid: self.marginal_theory_probability(tid) for tid in self.theory_ids}
-            self.update_theory_worlds(belief_id, theory_relevance)
-            new_marginals = {tid: self.marginal_theory_probability(tid) for tid in self.theory_ids}
-            
-            updates['theory_world_updates'] = {
-                tid: {'old': old_marginals.get(tid, 0.5), 'new': new_marginals.get(tid, 0.5)}
-                for tid in self.theory_ids
-            }
-        
-        # Update temporal parameters
-        for param_name, (value, se) in observed_temporal.items():
-            # Find beliefs with this temporal parameter
-            for belief in self.beliefs.values():
-                if belief.temporal_params and param_name in belief.temporal_params:
-                    old_est = belief.temporal_params[param_name].estimate
-                    belief.temporal_params[param_name] = belief.temporal_params[param_name].update(
-                        value, se, weight=evidence_belief.credence.value, moderator_key=moderator
-                    )
-                    updates['temporal_updates'].append({
-                        'belief_id': belief.belief_id,
-                        'parameter': param_name,
-                        'old_estimate': old_est,
-                        'new_estimate': belief.temporal_params[param_name].estimate,
-                        'moderator': moderator
-                    })
-        
-        # Update coherence
-        self._update_coherence()
-        updates['coherence_after'] = self._coherence_score
-        
-        self.version += 1
-        self.last_updated = datetime.now(timezone.utc)
-        
-        return updates
+        return self._mutations.add_evidence(
+            self,
+            belief_id=belief_id,
+            content=content,
+            paper_id=paper_id,
+            supports_beliefs=supports_beliefs,
+            contradicts_beliefs=contradicts_beliefs,
+            theory_relevance=theory_relevance,
+            observed_temporal=observed_temporal,
+            moderator=moderator,
+            credence=credence,
+        )
     
     # =========================================================================
     # QUERIES
@@ -2891,27 +1782,19 @@ class WebOfBelief:
     
     def get_stubs(self) -> List[Belief]:
         """Get all unintegrated findings."""
-        return [self.beliefs[bid] for bid in self._stubs if bid in self.beliefs]
+        return self._analysis.get_stubs(self)
     
     def get_anomalies(self) -> List[Belief]:
         """Get beliefs marked as anomalous."""
-        return [b for b in self.beliefs.values() if b.status == BeliefStatus.ANOMALOUS]
+        return self._analysis.get_anomalies(self)
     
     def get_beliefs_by_level(self, level: EpistemicLevel) -> List[Belief]:
         """Get all beliefs at a given epistemic level."""
-        return [
-            self.beliefs[bid]
-            for bid in self._beliefs_by_level.get(level, [])
-            if bid in self.beliefs
-        ]
+        return self._analysis.get_beliefs_by_level(self, level)
     
     def get_beliefs_for_theory(self, theory_id: str) -> List[Belief]:
         """Get all beliefs associated with a theory."""
-        return [
-            self.beliefs[bid]
-            for bid in self._beliefs_by_theory.get(theory_id, [])
-            if bid in self.beliefs
-        ]
+        return self._analysis.get_beliefs_for_theory(self, theory_id)
     
     # =========================================================================
     # REPORTING
@@ -2919,67 +1802,10 @@ class WebOfBelief:
     
     def summary(self) -> str:
         """Generate a human-readable summary."""
-        lines = [
-            "# Web of Belief Summary",
-            f"Domain: {self.domain}",
-            f"Version: {self.version}",
-            f"Coherence: {self._coherence_score:.3f}",
-            f"Tensions: {len(self._tensions)}",
-            "",
-            "## Beliefs by Level",
-        ]
-        
-        for level in EpistemicLevel:
-            beliefs = self.get_beliefs_by_level(level)
-            lines.append(f"\n### {level.value.title()} ({len(beliefs)})")
-            for b in sorted(beliefs, key=lambda x: x.credence.value, reverse=True)[:5]:
-                lines.append(
-                    f"  - [{b.credence.value:.2f}] {b.content[:60]}..."
-                    if len(b.content) > 60 else f"  - [{b.credence.value:.2f}] {b.content}"
-                )
-        
-        if self._stubs:
-            lines.append(f"\n## Stubs (Unintegrated Findings): {len(self._stubs)}")
-            for stub_id in list(self._stubs)[:5]:
-                stub = self.beliefs[stub_id]
-                lines.append(f"  - {stub.content[:60]}...")
-        
-        if self.theory_worlds:
-            lines.append("\n## Theory Probabilities")
-            for theory_id in sorted(self.theory_ids):
-                p = self.marginal_theory_probability(theory_id)
-                lines.append(f"  - P({theory_id}) = {p:.3f}")
-            
-            lines.append("\n## Joint Distribution (top 5 worlds)")
-            sorted_worlds = sorted(
-                self.theory_worlds.values(),
-                key=lambda w: w.posterior,
-                reverse=True
-            )[:5]
-            for world in sorted_worlds:
-                lines.append(f"  - {world.world_id}: P={world.posterior:.3f}")
-        
-        if self._tensions:
-            lines.append("\n## Tensions")
-            for t in self._tensions[:5]:
-                lines.append(f"  - {t['source']} vs {t['target']}")
-        
-        return "\n".join(lines)
+        return self._analysis.summary(self)
     
     def to_dict(self) -> Dict[str, Any]:
-        return {
-            'domain': self.domain,
-            'version': self.version,
-            'n_beliefs': len(self.beliefs),
-            'n_constraints': len(self.constraints),
-            'n_stubs': len(self._stubs),
-            'coherence': self._coherence_score,
-            'n_tensions': len(self._tensions),
-            'theory_marginals': {
-                tid: self.marginal_theory_probability(tid)
-                for tid in self.theory_ids
-            }
-        }
+        return self._analysis.to_dict(self)
 
     # =========================================================================
     # EPISTEMIC-CAUSAL BRIDGE (Sprint 1.5)
@@ -3076,17 +1902,17 @@ class WebOfBelief:
         Returns:
             WebOfBeliefSnapshot: A frozen copy of the web state
         """
-        return WebOfBeliefSnapshot(
+        fields = self._engines.snapshots.build_fields(
             domain=self.domain,
             version=self.version,
-            beliefs=copy.deepcopy(self.beliefs),
-            constraints=copy.deepcopy(self.constraints),
+            beliefs=self.beliefs,
+            constraints=self.constraints,
             coherence_score=self._coherence_score,
-            tensions=copy.deepcopy(self._tensions),
-            theory_ids=copy.deepcopy(self.theory_ids),
-            stubs=copy.deepcopy(self._stubs),
-            snapshot_at=datetime.now(timezone.utc)
+            tensions=self._tensions,
+            theory_ids=self.theory_ids,
+            stubs=self._stubs,
         )
+        return WebOfBeliefSnapshot(**fields)
 
 
 # =============================================================================
@@ -3125,15 +1951,15 @@ class WebOfBeliefSnapshot:
 
     def get_beliefs_by_level(self, level: EpistemicLevel) -> List[Belief]:
         """Get all beliefs at a given epistemic level."""
-        return [b for b in self.beliefs.values() if b.level == level]
+        return [belief for belief in self.beliefs.values() if belief.level == level]
 
     def get_stubs(self) -> List[Belief]:
         """Get all unintegrated findings."""
-        return [self.beliefs[bid] for bid in self.stubs if bid in self.beliefs]
+        return [self.beliefs[belief_id] for belief_id in self.stubs if belief_id in self.beliefs]
 
     def get_anomalies(self) -> List[Belief]:
         """Get beliefs marked as anomalous."""
-        return [b for b in self.beliefs.values() if b.status == BeliefStatus.ANOMALOUS]
+        return [belief for belief in self.beliefs.values() if belief.status == BeliefStatus.ANOMALOUS]
 
     def to_dict(self) -> Dict[str, Any]:
         return {

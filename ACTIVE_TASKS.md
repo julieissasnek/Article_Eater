@@ -28,11 +28,42 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| RRA-2026-02-15/S2-S4 | Ruthless repo audit (Sections 2, 3, 4): terminology conflicts + spec assumptions vs code | Codex-Terminal | 2026-02-15 08:10 GMT | ✅ COMPLETE | Artifacts: `docs/REPO_AUDIT_REPORT_2026-02-15.md` (Sections 2-4 addendum), `docs/UNIFIED_VARIABLE_VOCAB_TABLE_CROSS_REPOS_2026-02-15.md`, `docs/UNIFIED_VARIABLE_VOCAB_TABLE_CROSS_REPOS_2026-02-15.csv`. |
+| — | — | — | — | — | No active backlog claims |
 
 ---
 
-## MVP Integration Tasks (PRIORITY)
+## Completed Today (2026-02-19)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| 1.1 | Enum Drift Fix | CODEX-20260219-0046 | 00:47 CET | `python3 scripts/check_enum_drift.py` reports 0 drift issues |
+| 1.3 | Load Staging Theory-Links | CODEX-20260219-T1 | 00:55 CET | Added CMR staging model + loader, loaded 1045 rows into `ae.db` |
+| 1.4 | WIS Conversion Module | CODEX-20260219-T2 | 00:53 CET | Added `to_wis()` in `effect_size_converter.py` + tests |
+| D.11 | Web of Belief Rebuild | CODEX-20260219-T3 | 00:54 CET | Rebuilt `data/web_persistence_v2.db` from structured claims and generated `docs/web_health_report_post_rebuild.md` |
+| D.13 | Sprint D Validation | CODEX-20260219-T4 | 00:58 CET | Generated `docs/sprint_d_validation_report.md` (verdict: NEEDS WORK) |
+| 1.5.C2a | ClaimType aliases in article_decomposer.py | CODEX-20260219-T5 | 01:30 CET | Verified canonical alias mapping in BN_graphical; drift check clean |
+| 1.5.C2b | EvidenceType alias in enhanced_edge.py | CODEX-20260219-T6 | 01:30 CET | Verified `empirical -> observational` in BN_graphical; drift check clean |
+| 1.5.C2d | CI shape schema fix | CODEX-20260219-T7 | 01:30 CET | Verified CI object shape in BN_graphical contract; drift check clean |
+| 1.5.C3a | ArticleTypeCrosswalk in article_extraction_contracts.py | CODEX-20260219-T8 | 01:30 CET | Verified canonical crosswalk mapping in Outcome_Contractor; drift check clean |
+| 1.5.C3b | ArticleTypeCrosswalk in article_type_classifier.py | CODEX-20260219-T9 | 01:30 CET | Verified canonical crosswalk mapping in Outcome_Contractor; drift check clean |
+| EC-3 | Cartwright scope metadata | CODEX-20260219-T10 | 01:30 CET | Added `scope_population/context/temporal` fields to Belief + serialization |
+| ARCH-5d | Break up web_of_belief.py | CODEX-20260219-T11 | 01:30 CET | Extracted modular helpers (`web_of_belief_modules`) + compatibility wiring |
+| 3.0.5-A | Admin dashboard | CODEX-20260219-T12 | 01:30 CET | Added `streamlit_app/pages/admin.py` with overview, belief inspector, constraint viewer |
+| ATK-2 | Attack pattern extraction | CODEX-20260219-T13 | 01:30 CET | Added ATK pattern annotations to claim semantics + tests |
+| ATK-4 | Attack review UI | CODEX-20260219-T14 | 01:30 CET | Added `streamlit_app/pages/7_attack_review.py` for attack cue review |
+
+---
+
+## Completed Today (2026-02-18)
+
+| Task ID | Description | Terminal | Completed At | Outcome |
+|---------|-------------|----------|--------------|---------|
+| D.10 | Batch extraction pipeline | Codex | 02:45 | 72 claims from 116 papers |
+| D.12 | CMR integration | CC | 02:50 | 22 papers, 67 claims, 50 matched |
+
+---
+
+## MVP Integration Tasks (ARCHIVED - COMPLETE)
 
 **See `PARALLEL_WORK.md` for full lane details and file ownership.**
 
@@ -62,28 +93,34 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 ## Available Tasks (Not Claimed)
 
-### Sprint ECB-3: Van Fraassen and Polish ✓ COMPLETE
-All tasks completed. See TASKS.md for details.
+**SEE: `docs/CODEX_BACKLOG_PROMPT.md` for full task list with context and instructions.**
 
-### Future ECB Work (Panel Recommendations)
-| Task ID | Description | Priority | Source |
-|---------|-------------|----------|--------|
-| ECB-F1 | Add meaning_equivalent flag for functional equivalence | P2 | van Fraassen |
-| ECB-F2 | Add enabling_unclear gap type | P2 | Cartwright |
-| ECB-F3 | Decompose theory_conflict into structural/parametric | P2 | Pearl |
-| ECB-F4 | Track contrast class source (methods vs inferred) | P3 | Haack |
-| ECB-F5 | Deprecate transfer_type_str in favor of enum | P3 | Parnas |
-| ECB-F6 | Add explicit tests for ECB-3 boundary values | P1 | Brooks |
+### Priority 1: Sprint D Completion (if AG hasn't done)
+| Task ID | Description | Owner | Status |
+|---------|-------------|-------|--------|
+| D.11 | Web of Belief Rebuild | AG/Codex | COMPLETE |
+| D.13 | Sprint D Validation | AG/Codex | COMPLETE |
 
-### Other Infrastructure
-| Task ID | Description | Priority | Dependencies |
-|---------|-------------|----------|--------------|
-| DISC-3 | Add search execution logging to Article Finder | P1 | DISC-2 ✓ |
+### Priority 2: Sprint 10 Residuals
+| Task ID | Description | Status |
+|---------|-------------|--------|
+| 1.1 | Enum Drift Fix | COMPLETE |
+| 1.3 | Load Staging Theory-Links | COMPLETE |
+| 1.4 | WIS Conversion Module | COMPLETE |
 
-### Sprint 3.0 Extensions (P2/P3)
-| Task ID | Description | Priority | Dependencies |
-|---------|-------------|----------|--------------|
-| — | All Sprint 3.0 P2 tasks complete | — | — |
+### Priority 3: Enum Drift Fixes
+| Task ID | Description | Status |
+|---------|-------------|--------|
+| 1.5.C2a | ClaimType aliases in article_decomposer.py | COMPLETE |
+| 1.5.C2b | EvidenceType alias in enhanced_edge.py | COMPLETE |
+| 1.5.C2d | CI Shape schema fix | COMPLETE |
+| 1.5.C3a | ArticleTypeCrosswalk in article_extraction_contracts.py | COMPLETE |
+| 1.5.C3b | ArticleTypeCrosswalk in article_type_classifier.py | COMPLETE |
+
+### Priority 4-6: See docs/CODEX_BACKLOG_PROMPT.md
+- Panel recommendations (EC-1, EC-3, SY-9)
+- Architectural tasks (ARCH-*)
+- Admin/API features
 
 ---
 
