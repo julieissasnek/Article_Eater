@@ -992,12 +992,12 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 
 | Task | Description | Status |
 |------|-------------|--------|
-| ARCH-5a | Split Belief into focused types (TheoreticalBelief, EmpiricalBelief, etc.) | PENDING |
-| ARCH-5b | Extract coherence computation to separate module | PENDING |
-| ARCH-5c | Extract entrenchment computation to separate module | PENDING |
-| ARCH-5d | Break web_of_belief.py into <500 line modules | DONE (modular extraction + compatibility layer) |
-| ARCH-5e | Break epistemic_causal_bridge.py into focused modules | PENDING |
-| ARCH-5f | Define clear module interfaces | PENDING |
+| ARCH-5a | Split Belief into focused types (TheoreticalBelief, EmpiricalBelief, etc.) | DEFERRED (needs comprehensive test coverage first) |
+| ARCH-5b | Extract coherence computation to separate module | ✅ DONE (coherence.py in web_of_belief_modules) |
+| ARCH-5c | Extract entrenchment computation to separate module | ✅ DONE (entrenchment.py in web_of_belief_modules) |
+| ARCH-5d | Break web_of_belief.py into <500 line modules | ✅ DONE (modular extraction + compatibility layer) |
+| ARCH-5e | Break epistemic_causal_bridge.py into focused modules | ✅ DONE (ecb_modules/: contrast_classes, causal_models, counterfactuals) |
+| ARCH-5f | Define clear module interfaces | ✅ DONE (docs/architecture/module_interfaces.md) |
 
 **Effort**: MEDIUM-HIGH (1-2 sprints, careful refactoring)
 **Risk**: Breaking changes; needs comprehensive test coverage first
@@ -1010,10 +1010,10 @@ RANKING SERVICE (Spohn) + WARRANT SERVICE (Pollock) + GROUNDING SERVICE (Haack)
 
 | Task | Description | Status |
 |------|-------------|--------|
-| ARCH-6a | Track study design quality (RCT vs observational) | PENDING |
-| ARCH-6b | Compute "severity" of each supporting study | DONE |
-| ARCH-6c | Require at least one severe test for high credence | PENDING |
-| ARCH-6d | Distinguish "consistent with" from "severely tested by" | PENDING |
+| ARCH-6a | Track study design quality (RCT vs observational) | ✅ DONE (StudyDesign enum, 8 levels, STUDY_DESIGN_SEVERITY_WEIGHT) |
+| ARCH-6b | Compute "severity" of each supporting study | ✅ DONE (compute_severity now incorporates study design) |
+| ARCH-6c | Require at least one severe test for high credence | ✅ DONE (severity_gate_check(): credence >0.70 requires MODERATELY_TESTED+) |
+| ARCH-6d | Distinguish "consistent with" from "severely tested by" | ✅ DONE (EvidenceQuality enum + classify_evidence_quality()) |
 
 **Effort**: MEDIUM (1 sprint)
 **Requires**: Study design metadata extraction

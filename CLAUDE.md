@@ -1,3 +1,8 @@
+# ⚠️ SUPERSEDED — DO NOT USE FOR ARCHITECTURAL DECISIONS
+# See docs/TRANSFER_Feb21_Session8_CORRECTED.md for current architecture.
+# This file contains stale T1 roster information (ART/SRT listed as T1).
+# Retained for historical reference only.
+
 # CLAUDE.md — Article Eater Epistemic Tier 2 Implementation Context
 ## Version 2.0 — February 14, 2026
 
