@@ -45,6 +45,8 @@ from datetime import datetime, timezone
 import logging
 import os
 
+from src.epistemic.edge_types import ConstraintType
+
 from src.services.web_of_belief_modules import (
     AnalysisContracts as _AnalysisContracts,
     CredenceAdjustment as _CredenceAdjustment,
