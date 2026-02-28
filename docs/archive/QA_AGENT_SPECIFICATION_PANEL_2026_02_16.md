@@ -996,3 +996,71 @@ This QA agent integrates with the existing Article Eater system:
 ---
 
 *Prepared by Panel P-QA, February 16, 2026*
+
+## Part XI: Provenance UI and QA Level Examples (Addendum)
+
+### 1. Provenance Modal Context
+The provenance tracking system uses Haack’s foundherentism to track the **sources**, **grounding**, and **coherence** of any claim or node in the Web of Belief or BN. The QA System and Web Frontend will expose this data via a "Provenance Modal" or "Evidence Card".
+
+This modal visually breaks down the claim into its components, showing exactly how the system arrived at its confidence.
+
+### 2. Examples of Provenance Levels (Directness)
+
+#### A. DIRECT (Observational / Grounding Anchors)
+* **What it is:** Purely empirical data point, directly observed or measured in a study.
+* **Experiential Claim Example:** `exp.kaplan_1989_hrt_decrease`: "Participants watching the nature video experienced a mean heart rate decrease of 4.2 BPM compared to baseline."
+* **Modal Output:**
+  * **Grounding Score:** 1.0 (Directly Observed)
+  * **Coherence Contribution:** Low (It is an isolated fact)
+  * **Sources:** [Study DOI/Citation] -> Physiological measurement (ECG).
+
+#### B. ONE_HOP (Empirical Inference)
+* **What it is:** A direct generalization or immediate inference from a single set of observations.
+* **Claim Example:** "Viewing natural scenes reliably decreases physiological stress markers like heart rate."
+* **Modal Output:**
+  * **Grounding Score:** 0.8
+  * **Coherence Contribution:** Moderate
+  * **Grounding Chain:** Supported by `exp.kaplan_1989_hrt_decrease`, `exp.ulrich_1991_eda_recovery`.
+  * **Crossword Position:** Supports broader SRT theory.
+
+#### C. MULTI_HOP (Intermediate / Abstracted)
+* **What it is:** Synthesized claims that abstract away from specific physiological measures to broader psychological/architectural constructs.
+* **Claim Example:** "Biophilic design elements in healthcare settings promote parasympathetic nervous system dominance."
+* **Modal Output:**
+  * **Grounding Score:** 0.5
+  * **Coherence Contribution:** High 
+  * **Crossword Position:** Supported by (ONE_HOP claims on plants, wood, natural light). Supports (THEORETICAL claims on evolutionary preference).
+
+#### D. THEORETICAL (Purely Coherent/Explanatory)
+* **What it is:** Underlying mechanisms that explain *why* the empirical data looks the way it does. Not directly observable.
+* **Claim Example:** "Human visual systems evolved to efficiently process the fractal dimensions typically found in natural environments, reducing cognitive load." (Fractal Fluency Theory)
+* **Modal Output:**
+  * **Grounding Score:** 0.1 (Cannot directly observe evolution)
+  * **Coherence Contribution:** 0.95 (Highly integrative)
+  * **Justification Status:** `COHERENT_ONLY` or `WELL_JUSTIFIED` if firmly anchored to strong MULTI_HOP evidence like EEG alpha wave studies.
+  * **Sources:** Theoretical framing from Joye & Van den Berg, combined with empirical physics/vis-perception papers.
+
+### 3. Examples of Progressive Disclosure QA Levels
+
+When a user clicks on a "Molecule" (e.g., Attention Restoration Theory), the QA system progressively reveals depth.
+
+#### Level 1: Direct Answer (The "TL;DR")
+* **User Context:** Quick fact-checking.
+* **Example:** "Attention Restoration Theory (ART) explains how exposure to natural environments replenishes our capacity to concentrate by engaging effortless attention ('soft fascination')."
+
+#### Level 2: Contextualized Answer (The "Paragraph")
+* **User Context:** Needs to know if it applies to them or what the main evidence is.
+* **Example:** "ART proposes that modern environments constantly drain our top-down 'directed attention' (leading to mental fatigue). Nature helps us recover because it contains intrinsically interesting elements (like moving leaves or water) that capture our attention effortlessly from the bottom up. This gives our directed attention networks a break. Studies generally show moderate effect sizes (d = 0.3 to 0.5) for improved performance on focus-intensive tasks after taking a walk in nature compared to urban settings."
+
+#### Level 3: Mechanistic Answer (The "How does it work?")
+* **User Context:** Wants to understand the components and process.
+* **Example:** "(Shows the 4 components of ART)... The mechanism relies on four environmental properties:
+  1. **Soft Fascination:** The environment holds attention without effort (e.g., clouds).
+  2. **Being Away:** Psychological distance from routine demands.
+  3. **Extent:** The environment is rich and coherent enough to constitute an alternative world.
+  4. **Compatibility:** The environment matches the user's purposes.
+  *Neurologically, this is modeled as the default mode network (DMN) smoothly interplaying with the central executive network (CEN), allowing the frontal-parietal attention networks to down-regulate.*"
+
+#### Level 4 & 5: Multi-Level / Scholarly (The "Deep Dive")
+* **User Context:** Academic researcher or skeptic demanding rigorous proof.
+* **Example:** "(Shows Full Provenance Modal)... Methodological critiques of ART often point out that the 'Directed Attention Fatigue' construct is weakly operationalized. While the Backward Digit Span task is commonly used to measure it, recent meta-analyses (e.g., Joye & Dewitte, 2018) argue this task actually measures working memory capacity rather than sustained attention. Furthermore, there is ongoing debate about whether the effect is genuinely restorative (replenishing a depleted resource) or simply a shift in motivational state. The evidence is `WELL_JUSTIFIED` at the behavioral level, but the exact cognitive mechanism remains `CONTESTED`."
