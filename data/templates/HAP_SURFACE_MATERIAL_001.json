@@ -8,19 +8,55 @@
   "mechanism_chain": [
     {
       "step": 1,
-      "process": "Occupant's hand, foot, or body contacts an architectural surface. Surface material properties — roughness (Ra), thermal conductivity (λ), compliance (Young's modulus E), texture grain orientation — are transduced by mechanoreceptors (Meissner, Pacinian, Merkel, Ruffini) and CT afferents.",
+      "process": "Occupant's hand, foot, or body contacts an architectural surface. Surface material properties \u2014 roughness (Ra), thermal conductivity (\u03bb), compliance (Young's modulus E), texture grain orientation \u2014 are transduced by mechanoreceptors (Meissner, Pacinian, Merkel, Ruffini) and CT afferents.",
       "substrate": "Peripheral somatosensory transduction: glabrous and hairy skin receptors",
-      "confidence": 0.65,
+      "confidence": 0.6,
       "bridge_warrant": "MECHANISM",
-      "source": "McGlone et al. (2014)"
+      "source": "McGlone et al. (2014)",
+      "justification": {
+        "data": [
+          "Hand/foot/body contact with surface transduces mechanical properties",
+          "Roughness (Ra, arithmetic mean roughness) is encoded by mechanoreceptors: Meissner corpuscles (fine texture), Pacinian corpuscles (vibration), Merkel cells (sustained pressure), Ruffini endings (skin stretch)",
+          "Thermal conductivity (\u03bb) is encoded by thermoreceptors (TRPM8 cold, TRPV3/V4 warm)",
+          "Compliance (Young's modulus E) is encoded by pressure-sensitive receptors",
+          "Texture grain orientation is encoded by directionally sensitive receptors"
+        ],
+        "backing": "Sinclair (1967) foundational mechanoreceptor physiology. McGlone et al. (2014) on somatosensory transduction of material properties. Klatzky & Lederman (2002) on haptic perception of surfaces.",
+        "qualifier": "Confidence 0.6 reflects established receptor physiology. MECHANISM warrant: sensory transduction mechanisms are directly measured.",
+        "rebuttal": "Architectural contact conditions (gloved hands, footwear, limited contact time) differ from optimal transduction conditions. Receptor density varies across body regions.",
+        "competing_accounts": [
+          "Material properties are perceived entirely through visual cues: refuted by blind and visually impaired discrimination of materials",
+          "Thermal properties dominate material perception: partially true; temperature is important but texture and compliance contribute independently"
+        ],
+        "depth_tier": "A",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; McGlone authority"
+      }
     },
     {
       "step": 2,
-      "process": "Material property encoding is dual-process: Aβ mechanoreceptors encode discriminative properties (roughness magnitude, texture spatial frequency, hardness) in SI cortex; CT afferents encode affective valence (pleasant/unpleasant) in posterior insular cortex.",
-      "substrate": "SI cortex (discriminative) + posterior insula (affective) — parallel processing streams",
+      "process": "Material property encoding is dual-process: A\u03b2 mechanoreceptors encode discriminative properties (roughness magnitude, texture spatial frequency, hardness) in SI cortex; CT afferents encode affective valence (pleasant/unpleasant) in posterior insular cortex.",
+      "substrate": "SI cortex (discriminative) + posterior insula (affective) \u2014 parallel processing streams",
       "confidence": 0.55,
       "bridge_warrant": "MECHANISM",
-      "source": "McGlone et al. (2014); Morrison (2016)"
+      "source": "McGlone et al. (2014); Morrison (2016)",
+      "justification": {
+        "data": [
+          "A\u03b2 mechanoreceptors encode discriminative properties (roughness magnitude, texture spatial frequency, hardness) and project to SI cortex",
+          "CT afferents encode affective valence (pleasant/unpleasant) and project to posterior insula",
+          "SI cortex represents material texture and hardness with spatial topography",
+          "Posterior insula generates hedonic dimension independent of discriminative detail",
+          "Dual-process model is supported by dissociation in lesion studies and neuroimaging"
+        ],
+        "backing": "McGlone et al. (2014) on dual-process haptic processing. Morrison (2016) on affective vs. discriminative pathways. Neuroimaging studies (Simmons et al., 2013; Veldhuijzen et al., 2010) show channel separation.",
+        "qualifier": "Confidence 0.55 reflects neuroimaging and dual-dissociation evidence. MECHANISM warrant: dual neural pathways are anatomically segregated.",
+        "rebuttal": "Some convergence between channels occurs at higher levels (OFC, anterior insula). Top-down expectation can modulate both discriminative and affective components.",
+        "competing_accounts": [
+          "Single integrated haptic stream: refuted by double-dissociation in clinical populations (some retain discrimination with lost affect, and vice versa)",
+          "Affect is computed from discriminative properties (compatible; affect could be derived from discrimination, but dissociations suggest independent channels)"
+        ],
+        "depth_tier": "B",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; McGlone authority on dual-process"
+      }
     },
     {
       "step": 3,
@@ -28,7 +64,26 @@
       "substrate": "Somatosensory + insular + orbitofrontal evaluation",
       "confidence": 0.5,
       "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "source": "McGlone et al. (2014)"
+      "source": "McGlone et al. (2014)",
+      "justification": {
+        "data": [
+          "Wood (warm, Ra 5-15 \u03bcm, E ~10 GPa): hedonic_score 0.75",
+          "Natural textile (warm, Ra 10-30 \u03bcm, E <0.1 GPa): hedonic_score 0.80",
+          "Cork (warm, Ra 15-40 \u03bcm, E ~0.02 GPa): hedonic_score 0.70",
+          "Stone warm/neutral (cool, \u03bb 1.5-2.5 W/m\u00b7K): hedonic_score 0.30-0.45",
+          "Metal room temp (cold, \u03bb 15-50 W/m\u00b7K): hedonic_score 0.20",
+          "Concrete raw (cold, Ra >100 \u03bcm, rigid): hedonic_score 0.25"
+        ],
+        "backing": "Hedonic rankings from McGlone et al. (2014) psychophysical experiments. Thermal conductivity from materials databases (CRC). Correlation between \u03bb and hedonic score is robust (r \u2248 -0.80).",
+        "qualifier": "Confidence 0.5 reflects empirical psychophysical ratings but limited sample sizes. EMPIRICAL_COVARIANCE warrant: correlations between material properties and affect are measured.",
+        "rebuttal": "Cultural context modulates baseline hedonic scores (see MATERIAL_CULTURAL_CONDITIONING_001). Temperature at time of contact modulates effect independently of material \u03bb. Individual preferences vary (some prefer metal aesthetic).",
+        "competing_accounts": [
+          "Visual appearance drives affect (refuted by blind blindfold studies; haptic alone drives ratings similarly)",
+          "Temperature is the only driver of pleasantness (refuted by roughness and compliance effects demonstrated independently of temperature)"
+        ],
+        "depth_tier": "B",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; McGlone authority"
+      }
     }
   ],
   "calibrated_parameters": {
@@ -36,54 +91,54 @@
       "wood_natural": {
         "hedonic_score": 0.75,
         "unit": "0-1 scale",
-        "Ra": "5–15 μm",
-        "λ": "0.12 W/m·K",
+        "Ra": "5\u201315 \u03bcm",
+        "\u03bb": "0.12 W/m\u00b7K",
         "E": "~10 GPa"
       },
       "natural_fibre_textile": {
         "hedonic_score": 0.8,
-        "Ra": "10–30 μm",
-        "λ": "0.05 W/m·K",
+        "Ra": "10\u201330 \u03bcm",
+        "\u03bb": "0.05 W/m\u00b7K",
         "E": "< 0.1 GPa"
       },
       "cork": {
         "hedonic_score": 0.7,
-        "Ra": "15–40 μm",
-        "λ": "0.04 W/m·K",
+        "Ra": "15\u201340 \u03bcm",
+        "\u03bb": "0.04 W/m\u00b7K",
         "E": "~0.02 GPa"
       },
       "natural_stone_warm": {
         "hedonic_score": 0.45,
         "note": "sandstone, limestone at room temp",
-        "λ": "1.5–2.5 W/m·K"
+        "\u03bb": "1.5\u20132.5 W/m\u00b7K"
       },
       "natural_stone_cold": {
         "hedonic_score": 0.3,
-        "note": "marble, granite below 20°C",
-        "λ": "2.5–3.5 W/m·K"
+        "note": "marble, granite below 20\u00b0C",
+        "\u03bb": "2.5\u20133.5 W/m\u00b7K"
       },
       "metal_room_temp": {
         "hedonic_score": 0.2,
         "note": "steel, aluminium at room temperature",
-        "λ": "15–50 W/m·K"
+        "\u03bb": "15\u201350 W/m\u00b7K"
       },
       "concrete_raw": {
         "hedonic_score": 0.25,
         "note": "unfinished concrete",
-        "Ra": "> 100 μm",
-        "λ": "1.7 W/m·K"
+        "Ra": "> 100 \u03bcm",
+        "\u03bb": "1.7 W/m\u00b7K"
       },
       "plastic_smooth": {
         "hedonic_score": 0.35,
         "note": "smooth plastic, vinyl",
-        "Ra": "< 0.5 μm",
-        "λ": "0.2 W/m·K"
+        "Ra": "< 0.5 \u03bcm",
+        "\u03bb": "0.2 W/m\u00b7K"
       },
       "confidence": 0.5,
       "bridge_warrant": "EMPIRICAL_COVARIANCE"
     },
     "thermal_modulation": {
-      "value": "heated metal/stone ≈ +0.25 hedonic score; cooled wood ≈ -0.15 hedonic score",
+      "value": "heated metal/stone \u2248 +0.25 hedonic score; cooled wood \u2248 -0.15 hedonic score",
       "interpretation": "Surface temperature modulates hedonic response independently of material identity. Heated stone or metal handrails approach wood hedonic levels. Cooling natural materials reduces their haptic pleasantness.",
       "confidence": 0.45,
       "bridge_warrant": "CAPACITY"
@@ -96,13 +151,13 @@
     }
   },
   "IC2_AX4_interaction": {
-    "IC2_body_budget": "Haptic affect from material contact contributes to body budget through the parasympathetic pathway: pleasant touch → insular cortex → parasympathetic activation → body budget credit. Unpleasant touch (cold metal, rough concrete) produces sympathetic activation → body budget debit.",
+    "IC2_body_budget": "Haptic affect from material contact contributes to body budget through the parasympathetic pathway: pleasant touch \u2192 insular cortex \u2192 parasympathetic activation \u2192 body budget credit. Unpleasant touch (cold metal, rough concrete) produces sympathetic activation \u2192 body budget debit.",
     "AX4_perceived_control": "Choice of contact surface is a control variable. When occupants can choose which surfaces to touch (selecting the wood railing over the metal one), perceived control amplifies the hedonic benefit. When contact is forced (only cold metal surfaces available), the lack of haptic choice compounds the negative affect."
   },
   "cross_template_references": [
-    "CT_AFFECTIVE_TOUCH_001 — provides the neural mechanism; HAP extends to specific material mappings",
-    "MATERIAL_IDENTITY_INTEGRATION_001 — haptic channel contributes to multi-modal material identity",
-    "NATURAL_MATERIAL_CONVERGENCE_001 — wood haptic pleasantness is one channel of convergence"
+    "CT_AFFECTIVE_TOUCH_001 \u2014 provides the neural mechanism; HAP extends to specific material mappings",
+    "MATERIAL_IDENTITY_INTEGRATION_001 \u2014 haptic channel contributes to multi-modal material identity",
+    "NATURAL_MATERIAL_CONVERGENCE_001 \u2014 wood haptic pleasantness is one channel of convergence"
   ],
   "calibration_status": "calibrated",
   "panel_source": "MULTI-I",
@@ -126,5 +181,38 @@
     "EC"
   ],
   "bridge_warrant": "MECHANISM",
-  "confidence": 0.5
+  "confidence": 0.5,
+  "tier": "B",
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Haptic_Perception_Theory",
+    "Embodied_Cognition"
+  ],
+  "cross_template_interactions": [
+    {
+      "template_id": "CT_AFFECTIVE_TOUCH_001",
+      "interaction_type": "receives_from",
+      "description": "Surface material properties activate affective touch pathways"
+    },
+    {
+      "template_id": "NATURAL_MATERIAL_CONVERGENCE_001",
+      "interaction_type": "feeds_into",
+      "description": "Haptic surface properties contribute to natural material evaluation"
+    }
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which surface material properties and haptic affective response operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.948199+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "outcome_domains": [
+    "affect"
+  ],
+  "outcome_terms": [
+    "affect"
+  ]
 }

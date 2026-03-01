@@ -13,8 +13,8 @@ def _sample_claims() -> list[dict]:
             "description": "patients with nature views recover faster",
         },
         {
-            "iv": "ceiling_height",
-            "dv": "divergent_thinking",
+            "iv": "spatial_enclosure_ratio",
+            "dv": "creative_network_dynamics",
             "direction": "decrease",
             "effect_size": 0.3,
             "description": "high ceilings reduce divergent thinking in tests",
@@ -22,8 +22,12 @@ def _sample_claims() -> list[dict]:
     ]
 
 
-def test_evaluate_paper_pipeline_produces_report() -> None:
-    report = evaluate_paper(structured_claims=_sample_claims(), db_path="ae.db")
+def test_evaluate_paper_pipeline_produces_report(tmp_path) -> None:
+    db_path = str(tmp_path / "test_paper_eval.db")
+    from src.cmr.template_scanner import scan_templates
+    scan_templates(db_path=db_path)
+    
+    report = evaluate_paper(structured_claims=_sample_claims(), db_path=db_path)
     assert report["status"] == "complete"
     assert report["report"]["summary"]["status"] == "paper_pipeline_complete"
     assert report["n_claims_extracted"] == 2
@@ -32,8 +36,12 @@ def test_evaluate_paper_pipeline_produces_report() -> None:
     assert report["template_system_updates"]
 
 
-def test_prioritized_findings_have_voi_scores() -> None:
-    report = evaluate_paper(structured_claims=_sample_claims(), db_path="ae.db")
+def test_prioritized_findings_have_voi_scores(tmp_path) -> None:
+    db_path = str(tmp_path / "test_paper_eval.db")
+    from src.cmr.template_scanner import scan_templates
+    scan_templates(db_path=db_path)
+    
+    report = evaluate_paper(structured_claims=_sample_claims(), db_path=db_path)
     assert report["prioritized_findings"]
     for finding in report["prioritized_findings"]:
         score = float(finding["voi_score"])

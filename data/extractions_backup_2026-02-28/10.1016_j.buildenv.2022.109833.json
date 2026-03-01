@@ -1,0 +1,689 @@
+{
+  "doi": "10.1016/j.buildenv.2022.109833",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.86,
+  "n_findings": 12,
+  "extracted_at": "2026-02-25T05:10:52.292136+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00614955,
+  "title": "The effects of illuminance on students' memory. A neuroarchitecture study",
+  "authors": "Nuria Castilla et al., 2023",
+  "research_question": "To analyse the effect that a classroom's illuminance exerts on university students' memories, considering both psychological (memory task) and neurophysiological responses (EEG, HRV, and EDA).",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 142,
+    "description": "58% male, 42% female; average age 23.17 years (\u03c3 = 4.04). Participants were Spanish university students (18-23 years old) with normal or corrected-to-normal vision (contact lenses) and no colour deficiencies, and had not consumed performance-altering substances in the previous 24 hours.",
+    "recruitment": null
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Three immersive virtual environments (IVEs) simulating a university classroom, each with a different illuminance level: 100 lx, 300 lx, and 500 lx. The IVEs were rendered as 360\u00b0 panoramas and displayed via an HTC Vive HMD.",
+      "n_stimuli": 3,
+      "source": "Abstract, 2.2. IVE, 2.3. Illuminance configurations"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Sense of presence",
+      "instrument": "SUS questionnaire (6 items, 7-point Likert scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Memory performance",
+      "instrument": "Psychological memory task (similar to Deese-Roediger-McDermott (DRM) paradigm, recall of 15-word lists, 'memory-correct answers' metric)",
+      "type": "performance"
+    },
+    {
+      "construct": "Alertness / Brain activity (frontal highbeta band)",
+      "instrument": "EEG (b-Alert x10 device, Fz electrode, highbeta band 21-30 Hz, relative power)",
+      "type": "neural"
+    },
+    {
+      "construct": "Sympathetic system activity / Arousal",
+      "instrument": "HRV (b-Alert x10 device, low frequency band 0.05-0.15 Hz, normalized units, HRV-nLF)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Emotional arousal / Sympathetic system activity",
+      "instrument": "EDA (Shimmer 3GSR+ device, phasic component, normalized values, EDA-Phasic)",
+      "type": "physiological"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Classroom illuminance (100 lx, 300 lx, 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.003",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may increase cognitive load or interfere with memory encoding/retrieval processes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "The ANOVA test showed significant differences in memory performance as a function of illuminance (p = 0.003).",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.037",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may increase cognitive load or interfere with memory encoding/retrieval processes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "significant reduction of memory test performance as illuminance increased from 100 lx to 300 lx (p = 0.037)",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.003",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may increase cognitive load or interfere with memory encoding/retrieval processes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "and from 100 lx to 500 lx (p = 0.003).",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Classroom illuminance (300 lx vs 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "no significant difference was observed between the 300 lx and 500 lx (p > 0.05) levels.",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Classroom illuminance (100 lx, 300 lx, 500 lx)",
+      "consequent": "EEG-FzHighbeta (relative power, associated with alertness)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce brain activity associated with alertness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "The ANOVA showed significant differences (p = 0.002) in this metric as a function of illuminance.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "EEG-FzHighbeta (relative power, associated with alertness)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce brain activity associated with alertness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "this difference arose between the 100 lx and the 300 lx (p = 0.05) conditions",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "EEG-FzHighbeta (relative power, associated with alertness)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce brain activity associated with alertness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "and between the 100 lx and 500 lx (p = 0.002) conditions.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Classroom illuminance (100 lx, 300 lx, 500 lx)",
+      "consequent": "HRV-nLF (normalized units, sympathetic system activation)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.015",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce sympathetic system activation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "The ANOVA showed significant differences in the HRV-nLF metric based on classroom illuminance (p = 0.015).",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "HRV-nLF (normalized units, sympathetic system activation)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.016",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce sympathetic system activation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "this difference arose between the 100 lx and the 500 lx lighting (p = 0.016) conditions.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Classroom illuminance (100 lx, 300 lx, 500 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce sympathetic system activity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "The ANOVA showed significant differences in this metric as a function of illuminance (p = 0.002).",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.004",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce sympathetic system activity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "these differences arose between the 100 lx and the 300 lx (p = 0.004) conditions",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.004",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illuminance may reduce sympathetic system activity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "and between the 100 lx and 500 lx (p = 0.004) conditions.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Light has important effects on human physiology unrelated to visual perception, influencing non-visual biological effects through melanopsin-containing intrinsically photoreceptive retinal ganglion cells (ipRGC). These effects have physiological and cognitive impacts on arousal, alertness, emotional responses, mood regulation, and learning. The study suggests that task performance and neurophysiological metrics (EEG, HRV, EDA) go in the same direction, indicating that lower illuminance (100 lx) leads to higher neurophysiological activation and better memory performance."
+  ],
+  "moderators": [
+    "Time of day (not controlled, potential moderator)",
+    "Other lighting variables (e.g., uniformity, colour temperature) (not examined, potential moderators)",
+    "VR-induced focus on enjoyment vs task performance (potential moderator)",
+    "Presence of other students and viewpoint positions within the classroom (not examined, potential moderators)"
+  ],
+  "implementation_implications": [
+    "The findings have important consequences for the energy efficiency of educational centres, suggesting that lower illuminance levels (e.g., 100 lx) may improve learning outcomes while reducing energy consumption.",
+    "The results can inform architects and designers in establishing lighting design guidelines that enhance students' cognitive processes in learning environments.",
+    "The study provides information about the cognitive implications of lighting for learning in virtual environments."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "NM",
+    "MS",
+    "CB",
+    "PP"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "General outline of the methodology.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Statistical treatments.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Level of sense of presence for each item of the SUS questionnaire (mean and standard deviation).",
+      "key_stats": [
+        "Mean SUS-Total (100 lx) = 29.61",
+        "Mean SUS-Total (300 lx) = 31.23",
+        "Mean SUS-Total (500 lx) = 30.57"
+      ],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "Time of day was not controlled, which might influence results.",
+    "Only illuminance level was varied; other lighting variables (e.g., uniformity, colour temperature) were kept constant, limiting a comprehensive understanding of human responses to VR-based lighting environments.",
+    "Only one classroom design was used, so results might not generalize to different classroom designs.",
+    "VR might induce students to focus more on enjoying the experience rather than task performance.",
+    "The presence of other students and different viewpoint positions within the classroom were excluded due to parameterization difficulties, potentially influencing task performance."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.buildenv.2022.109833",
+    "title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+    "authors": [
+      "Nuria Castilla",
+      "J. L. Higuera-Trujillo",
+      "C. Llinares"
+    ],
+    "year": 2022,
+    "journal": "Building and Environment",
+    "volume": "228",
+    "issue": null,
+    "pages": "109833",
+    "publisher": "Elsevier BV",
+    "citation_count": 54,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1006/jevp.2001.0222",
+      "10.1007/s00521-015-2149-8",
+      "10.1007/s10639-022-11167-5",
+      "10.1007/s12273-021-0798-3",
+      "10.1016/0167-8760(85)90017-0",
+      "10.1016/S0167-8760(03)00073-4",
+      "10.1016/S0304-3940(98)00934-3",
+      "10.1016/j.apergo.2017.05.006",
+      "10.1016/j.autcon.2015.03.020",
+      "10.1016/j.autcon.2017.05.003",
+      "10.1016/j.bbr.2015.07.045",
+      "10.1016/j.bbr.2017.09.016",
+      "10.1016/j.brainres.2013.09.031",
+      "10.1016/j.buildenv.2014.10.003",
+      "10.1016/j.buildenv.2015.02.013",
+      "10.1016/j.buildenv.2018.12.002",
+      "10.1016/j.buildenv.2020.107122",
+      "10.1016/j.buildenv.2021.107823",
+      "10.1016/j.buildenv.2021.108396",
+      "10.1016/j.buildenv.2021.108674",
+      "10.1016/j.buildenv.2021.108678",
+      "10.1016/j.buildenv.2022.109182",
+      "10.1016/j.cell.2018.08.004",
+      "10.1016/j.chb.2016.02.023",
+      "10.1016/j.displa.2017.05.001",
+      "10.1016/j.enbuild.2016.12.087",
+      "10.1016/j.ijpsycho.2004.03.001",
+      "10.1016/j.jbusres.2019.06.041",
+      "10.1016/j.jenvp.2013.12.010",
+      "10.1016/j.jenvp.2014.04.009",
+      "10.1016/j.jenvp.2021.101733",
+      "10.1016/j.jneumeth.2003.10.009",
+      "10.1016/j.jneumeth.2010.04.028",
+      "10.1016/j.neuroscience.2013.05.016",
+      "10.1016/j.physbeh.2011.09.020",
+      "10.1016/j.physbeh.2012.04.028",
+      "10.1016/j.physbeh.2016.05.035",
+      "10.1016/j.rser.2010.10.014",
+      "10.1016/j.rser.2017.10.035",
+      "10.1016/j.smrv.2007.07.009",
+      "10.1017/S1092852900024196",
+      "10.1037/0033-295X.99.3.561",
+      "10.1051/e3sconf/201912001002",
+      "10.1073/pnas.1010180107",
+      "10.1080/00220671.1995.9941304",
+      "10.1080/00994480.1998.10748215",
+      "10.1080/09602010343000183",
+      "10.1080/10447318.2020.1778351",
+      "10.1080/13854040601100668",
+      "10.1080/17445760.2017.1390106",
+      "10.1088/1742-6596/2042/1/012125",
+      "10.1088/1755-1315/126/1/012124",
+      "10.1088/1755-1315/238/1/012006",
+      "10.1089/109493102753770516",
+      "10.1093/oxfordjournals.eurheartj.a014868",
+      "10.1093/sleep/26.6.695",
+      "10.1097/PSY.0b013e3182227d6a",
+      "10.1111/j.1460-2466.1992.tb00812.x",
+      "10.1111/j.1469-8986.1997.tb02140.x",
+      "10.1126/science.1067262",
+      "10.1126/science.1069609",
+      "10.1155/2010/320707",
+      "10.1162/pres.1994.3.2.130",
+      "10.1177/0018720819892383",
+      "10.1177/0748730403256650",
+      "10.1177/107385840200800209",
+      "10.1177/1087054712465335",
+      "10.1177/1420326X18820089",
+      "10.1177/1477153509336798",
+      "10.1177/1477153511418769",
+      "10.1177/1477153515576399",
+      "10.1177/1477153518825387",
+      "10.1191/1477153503li072oa",
+      "10.12813/kieae.2015.15.2.037",
+      "10.1371/journal.pone.0016429",
+      "10.1375/brim.10.1.3",
+      "10.1523/JNEUROSCI.23-18-07093.2003",
+      "10.1589/jpts.27.3147",
+      "10.2307/25148660",
+      "10.2307/41703475",
+      "10.3389/fpsyg.2019.01851",
+      "10.3758/s13428-010-0045-9",
+      "10.5665/sleep.6090"
+    ],
+    "cited_by": [
+      "10.1080/09291016.2026.2624724",
+      "10.1016/j.buildenv.2026.114405",
+      "10.3390/su18021112",
+      "10.3390/buildings16010176",
+      "10.1016/j.sftr.2025.101466",
+      "10.1016/j.buildenv.2025.114103",
+      "10.1016/j.buildenv.2025.114106",
+      "10.1016/j.rineng.2025.108929",
+      "10.1016/j.buildenv.2025.114007",
+      "10.3390/buildings15193524",
+      "10.1016/j.buildenv.2025.113874",
+      "10.1016/j.buildenv.2025.113702",
+      "10.1016/j.buildenv.2025.113785",
+      "10.3390/buildings15162955",
+      "10.4995/vitruvio-ijats.2025.24201",
+      "10.3390/buildings15132203",
+      "10.11591/ijaas.v14.i1.pp193-199",
+      "10.1108/sasbe-08-2024-0303",
+      "10.1111/ejed.70000",
+      "10.1080/17508975.2025.2502009",
+      "10.1155/hbe2/7410855",
+      "10.3389/feduc.2024.1451859",
+      "10.3390/su162410831",
+      "10.1016/j.jobe.2024.110487",
+      "10.1016/j.buildenv.2024.111958",
+      "10.1109/ISMAR-Adjunct64951.2024.00087",
+      "10.1016/j.buildenv.2024.112124",
+      "10.1080/00038628.2024.2367981",
+      "10.22146/buletinpsikologi.91955",
+      "10.48550/arXiv.2406.02728",
+      "10.1016/j.jobe.2024.108833",
+      "10.1016/j.buildenv.2024.111694",
+      "10.1016/j.asej.2024.102898",
+      "10.1080/09613218.2024.2347911",
+      "10.3390/buildings14051248",
+      "10.52783/jes.2362",
+      "10.3390/biology13040220",
+      "10.1109/VRW62533.2024.00330",
+      "10.3390/buildings14030770",
+      "10.1007/s10055-024-00947-8",
+      "10.3390/buildings14030637",
+      "10.1007/s44213-023-00022-z",
+      "10.7769/gesec.v14i12.3242",
+      "10.3390/buildings13123034",
+      "10.1016/j.buildenv.2023.110989",
+      "10.1016/j.buildenv.2023.111119",
+      "10.48550/arXiv.2311.05028",
+      "10.1016/j.jobe.2023.107063",
+      "10.1016/j.sftr.2023.100134",
+      "10.1016/j.enbuild.2023.113496",
+      "10.1016/j.buildenv.2023.110845",
+      "10.48550/arXiv.2307.10969",
+      "10.1016/j.enbenv.2023.04.003"
+    ],
+    "semantic_scholar_id": "cd7a6335f494a7b48be3ca590fb6052ba765f6d0",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:14.612174+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+    "crossref_year": 2023,
+    "crossref_citation_count": 47,
+    "crossref_journal": "Building and Environment",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 116,
+    "crossref_issn": [
+      "0360-1323"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.430492+00:00",
+    "_cr_refs_added": 83
+  },
+  "year": 2022,
+  "journal": "Building and Environment",
+  "authors_structured": [
+    "Nuria Castilla",
+    "J. L. Higuera-Trujillo",
+    "C. Llinares"
+  ],
+  "crossref_title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+  "crossref_authors": [
+    {
+      "name": "Nuria Castilla",
+      "orcid": "https://orcid.org/0000-0002-9993-828X",
+      "affiliation": null
+    },
+    {
+      "name": "Juan Luis Higuera-Trujillo",
+      "orcid": "https://orcid.org/0000-0003-1870-2388",
+      "affiliation": null
+    },
+    {
+      "name": "Carmen Llinares",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2023,
+  "crossref_journal": "Building and Environment",
+  "crossref_citation_count": 47,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:53:03.774558+00:00"
+}

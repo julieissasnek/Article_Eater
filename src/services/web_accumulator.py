@@ -35,6 +35,7 @@ Usage:
 
 import json
 import logging
+import os
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
@@ -48,7 +49,7 @@ logger = logging.getLogger(__name__)
 try:
     DEFAULT_DB_PATH = resolve_web_db(prefer="integrated")
 except Exception:
-    DEFAULT_DB_PATH = Path(__file__).parent.parent.parent / "web_persistence.db"
+    DEFAULT_DB_PATH = Path(os.environ.get("AE_DB_PATH", Path(__file__).parent.parent.parent / "data" / "web_persistence_v2.db"))
 DEFAULT_JSON_PATH = Path(__file__).parent.parent.parent / "data" / "accumulated_web.json"
 DEFAULT_EVENTS_PATH = Path(__file__).parent.parent.parent / "data" / "events.jsonl"
 

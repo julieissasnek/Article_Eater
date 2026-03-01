@@ -1,7 +1,20 @@
 """
-Extraction module for Article Eater Sprint D (Data Remediation).
+Extraction module for Article Eater.
 
-Provides tools for extracting structured claims from PDF-sourced data.
+Main Components:
+    - ExtractionPipeline: PDF extraction with queue management (pdf_extraction_module.py)
+    - Vocabulary tools for variable mapping
+    - Paper triage for classification
+    - Gold standard validation
+
+Usage (PDF Extraction Pipeline):
+    from src.extraction import ExtractionPipeline
+
+    pipeline = ExtractionPipeline(pdf_dir="/path/to/pdfs", output_dir="/path/to/output")
+    pipeline.scan_pdfs(source_file=Path("data/extractions/full_extraction.json"))
+    pipeline.process_batch(batch_size=50)
+    pipeline.resume()  # Continue later
+    ready = pipeline.get_ready_for_integration()  # Get results for BN/Web
 """
 
 from src.extraction.vocabulary import (
@@ -57,7 +70,51 @@ except Exception:  # pragma: no cover - optional dependency guard
     validate_extraction_against_gold = None
     print_gold_standard_summary = None
 
+# PDF Extraction Pipeline (primary module)
+try:
+    from src.extraction.pdf_extraction_module import (
+        ExtractionPipeline,
+        ExtractionRequest,
+        ExtractionResult,
+        QueueItem,
+        QualityReport,
+        Finding,
+        Stimulus,
+        TableInfo,
+        QueueStatus,
+        ArticleType,
+        QUALITY_THRESHOLDS,
+        FIELD_WEIGHTS,
+    )
+except Exception:  # pragma: no cover - optional dependency guard
+    ExtractionPipeline = None
+    ExtractionRequest = None
+    ExtractionResult = None
+    QueueItem = None
+    QualityReport = None
+    Finding = None
+    Stimulus = None
+    TableInfo = None
+    QueueStatus = None
+    ArticleType = None
+    QUALITY_THRESHOLDS = {}
+    FIELD_WEIGHTS = {}
+
+
 __all__ = [
+    # PDF Extraction Pipeline
+    "ExtractionPipeline",
+    "ExtractionRequest",
+    "ExtractionResult",
+    "QueueItem",
+    "QualityReport",
+    "Finding",
+    "Stimulus",
+    "TableInfo",
+    "QueueStatus",
+    "ArticleType",
+    "QUALITY_THRESHOLDS",
+    "FIELD_WEIGHTS",
     # Vocabulary
     "load_vocabulary",
     "find_closest_iv",

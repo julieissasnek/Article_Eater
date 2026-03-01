@@ -1,0 +1,692 @@
+{
+  "doi": "10.3390/buildings14103293",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.833,
+  "n_findings": 13,
+  "extracted_at": "2026-02-25T01:19:16.735130+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004636,
+  "title": "Enhancing Cognitive Performance and Physiological Benefit in Workspaces Through Patterns of Biophilic Design: A Restorative Approach",
+  "authors": "Ping Zhang et al., 2024",
+  "research_question": "To determine the restorative effects of different patterns of biophilic design and their combination on human psychological restoration in workspaces.",
+  "design_type": "pre_post|between_subjects",
+  "participants": {
+    "n": 79,
+    "description": "80 participants (48 males and 32 females, with an age range of 22 to 28) were initially recruited, with 79 analyzed after one exclusion. All were in good health with no history of psychiatric disorders.",
+    "recruitment": "Participants were recruited through chat groups and comprised students from the School of Architecture and Art Design."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "Four simulated real workspaces (4.2 m L \u00d7 3.3 m W \u00d7 3.0 m H, ~14 m\u00b2 area) were created: 1. Control group (no biophilic design). 2. Green wall group (1 m\u00b2 green wall with potted plants, representing 'visual connection with nature'). 3. Wood group (3.6 m L \u00d7 3.0 m H wooden wall, representing 'material connection with nature'). 4. Combination group (green wall overlapping wooden wall). All spaces had artificial lighting (950 lx), ventilation, quiet, temperature 24.8 \u00b1 0.9 \u00b0C, humidity 43.9 \u00b1 6.4%. Plants emitted no distinct odors.",
+      "n_stimuli": 4,
+      "source": "2.1. Environmental Setting, Figure 1"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Perceived mental fatigue",
+      "instrument": "Visual Analog Scale (VAS) (100 mm line, anchors 'No mental fatigue' to 'Mental fatigue as bad as it could be')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Sustained attention (cognitive performance)",
+      "instrument": "Sustained Attention to Response Task (SART)",
+      "type": "cognitive|performance"
+    },
+    {
+      "construct": "Cognitive performance (d-prime)",
+      "instrument": "SART (d-prime (D-P))",
+      "type": "cognitive|performance"
+    },
+    {
+      "construct": "Cognitive performance (Errors of commission)",
+      "instrument": "SART (Errors of commission)",
+      "type": "cognitive|performance"
+    },
+    {
+      "construct": "Cognitive performance (Reaction time)",
+      "instrument": "SART (Reaction time (RT))",
+      "type": "cognitive|performance"
+    },
+    {
+      "construct": "Cognitive performance (Inverse efficiency score)",
+      "instrument": "SART (Inverse efficiency score (IES))",
+      "type": "cognitive|performance"
+    },
+    {
+      "construct": "Cerebral hemodynamic changes (HbO concentration)",
+      "instrument": "functional near-infrared spectroscopy (fNIRS) (NirSmart device, 760 nm and 850 nm wavelengths, 7 light sources, 8 detectors, 22 channels covering prefrontal cortex)",
+      "type": "neural"
+    },
+    {
+      "construct": "Cerebral hemodynamic changes (RL HbO concentration)",
+      "instrument": "fNIRS (difference in HbO concentration between right and left PFC)",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Mental fatigue induction phase (2-back test)",
+      "consequent": "Perceived mental fatigue",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 1.995,
+      "effect_size_type": "Cohen_d",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "mental fatigue induction effectively consumed attention",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The result of the paired t-test indicates a significant increase in the participants' perceived mental fatigue after the induction (Table 2), suggesting that the mental fatigue induction effectively consumed attention.",
+      "outcome_id": "physio.fatigue",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
+      "consequent": "Perceived mental fatigue recovery ratio",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.241",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.1. Perceived Mental Fatigue, p.8",
+      "quote": "the result of ANOVA indicated that there was no significant difference in the perceived mental fatigue recovery ratio among the four groups (p = 0.241).",
+      "outcome_id": "health.recovery",
+      "outcome_domain": "health",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
+      "consequent": "Delta Errors of commission (\u2206Errors of commission) in SART performance",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "cognitive|performance",
+      "p_value": "0.034",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3, 75) = 3.04",
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.2. SART Performance, p.8",
+      "quote": "the results of ANOVA indicated that there was a significant difference only in the \u2206Errors of commission among the four groups (F (3, 75) = 3.04; p = 0.034)."
+    },
+    {
+      "id": 4,
+      "antecedent": "Combination group biophilic design (green wall + wood)",
+      "consequent": "Delta Errors of commission (\u2206Errors of commission) in SART performance (compared to control group)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "cognitive|performance",
+      "p_value": "0.022",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.299,
+        5.202
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT",
+        "Biophilia",
+        "MSI"
+      ],
+      "template_ids": [
+        "T20",
+        "VIEW1",
+        "NMC1"
+      ],
+      "mechanism": "fewer errors of commission, indicating greater accuracy following the environmental exposure.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.2. SART Performance, p.8",
+      "quote": "the \u2206Errors of commission in the combination group were significantly higher compared to the control group (2.75, 95% CI [0.299, 5.202], p = 0.022)."
+    },
+    {
+      "id": 5,
+      "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
+      "consequent": "Delta D-prime (\u2206D-P) in SART performance",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive|performance",
+      "p_value": "0.088",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.2. SART Performance, p.8",
+      "quote": "The \u2206D-P demonstrated a noticeable trend, although it did not reach statistical significance (p = 0.088)."
+    },
+    {
+      "id": 6,
+      "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
+      "consequent": "Delta ARL HbO concentration (\u2206RL HbO concentration)",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.048",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3, 75) = 2.76",
+      "theory_links": [
+        "DT",
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.3. Cerebral Hemodynamic Changes, p.9",
+      "quote": "The result of ANOVA indicated that there was a significant difference in ARL HbO concentration among the four groups (F (3, 75) = 2.76; p = 0.048).",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Combination group biophilic design (green wall + wood)",
+      "consequent": "Delta ARL HbO concentration (\u2206RL HbO concentration) (compared to control group)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.047",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.004,
+        0.858
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "NM",
+        "Biophilia",
+        "MSI"
+      ],
+      "template_ids": [
+        "VIEW1",
+        "NMC1"
+      ],
+      "mechanism": "lower degree of lateralization in PFC after the exposure, reflecting a lower level of mental fatigue and more attention restoration.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.3. Cerebral Hemodynamic Changes, p.9",
+      "quote": "the ARL HbO concentration in the combination group was significantly higher compared to the control group (0.43, 95% CI [0.004, 0.858], p = 0.047).",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Perceived mental fatigue recovery ratio",
+      "consequent": "Delta D-prime (\u2206D-P)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report|cognitive",
+      "p_value": "0.035",
+      "effect_size": 0.238,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: AD-P (r = 0.238, p = 0.035)"
+    },
+    {
+      "id": 9,
+      "antecedent": "Perceived mental fatigue recovery ratio",
+      "consequent": "Delta Errors of commission (\u2206Errors of commission)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report|cognitive",
+      "p_value": "0.019",
+      "effect_size": 0.262,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... \u2206Errors of commission (r = 0.262, p = 0.019)"
+    },
+    {
+      "id": 10,
+      "antecedent": "Perceived mental fatigue recovery ratio",
+      "consequent": "Delta Channels 14\u201318 HbO concentration (right PFC)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report|neural",
+      "p_value": "0.006",
+      "effect_size": 0.308,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... and \u2206Channels 14\u201318 HbO concentration (r = 0.308, p = 0.006).",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Delta Channels 5\u20139 HbO concentration (left PFC)",
+      "consequent": "Delta D-prime (\u2206D-P)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural|cognitive",
+      "p_value": "0.048",
+      "effect_size": 0.223,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
+      "quote": "Additionally, a significant positive correlation was observed between the AChannels 5\u20139 HbO concentration and AD-P (r = 0.223, p = 0.048)."
+    },
+    {
+      "id": 12,
+      "antecedent": "Single biophilic design pattern (green wall or wood)",
+      "consequent": "Subjective perception, cognitive performance, or physiological response",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report|cognitive|performance|neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "SRT",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "the restorative effects of a single biophilic design pattern are limited.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "4.1. Single Biophilic Design Pattern, p.12",
+      "quote": "The results showed that these settings had no restorative effect on subjective perception, cognitive performance, or physical response compared to the control group",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Combination of two biophilic design patterns (green wall + wood)",
+      "consequent": "Restoration (cognitive performance and physiological benefits)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report|cognitive|performance|neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "SRT",
+        "Biophilia",
+        "MSI",
+        "PP"
+      ],
+      "template_ids": [
+        "VIEW1",
+        "NMC1"
+      ],
+      "mechanism": "the combination of the two patterns generated a synergistic effect on restoration. ... seemed to enhance their harmony and the overall coherence of the environment... may have an advantage in fractal dimension",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "4.2. Combined Biophilic Design Patterns, p.12",
+      "quote": "The results also suggest that the combination of the two patterns generated a synergistic effect on restoration.",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Psychological restoration through contact with nature (Attention Restoration Theory and Stress Reduction Theory)",
+    "Asymmetric brain activation related to cognitive loads (lateralization of HbO concentration in PFC)",
+    "Lower cognitive load leading to better SART performance",
+    "Enhanced harmony and overall coherence of the environment by combining elements, improving the restoration process",
+    "Processing fluency (Perceptual Fluency Account) due to fractal characteristics of natural scenes, requiring fewer cognitive resources"
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Combining biophilic design patterns in workspaces can significantly enhance cognitive performance and physiological benefits, contributing to improved user experience and well-being.",
+    "Future research should optimize the configuration of combined biophilic patterns to provide more detailed guidance for practical biophilic design applications.",
+    "The findings provide valuable insights for enhancing restorative effects in workspaces."
+  ],
+  "domains": [
+    "A1_Materials",
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "ART",
+    "SRT",
+    "Biophilia",
+    "DT",
+    "NM",
+    "PP",
+    "MSI"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Three categories and 14 patterns of biophilic design.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "The effect of the mental fatigue induction on the mean (standard deviation, SD) of the participants' perceived mental fatigue.",
+      "key_stats": [
+        "p < 0.001",
+        "Cohen's d"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 3",
+      "description": "The mean (SD) of the delta values of four indicators in SART performance.",
+      "key_stats": [],
+      "n_findings_extracted_from": 2
+    }
+  ],
+  "limitations": [
+    "Small sample size.",
+    "Insufficient exploration of factors related to the experimental settings (e.g., details of plants and wood).",
+    "Experimental procedure factors (e.g., duration of the experimental exposure, degree of fatigue induction).",
+    "Focus solely on environmental settings in terms of size, neglecting green view index as a crucial parameter.",
+    "Plants in the green wall were not in optimal condition, potentially diminishing restoration potential.",
+    "Small spatial scale of workspaces, limiting generalizability to larger workspaces.",
+    "Need for a standardized experimental process to facilitate comparison across studies.",
+    "Inconsistency between objective and subjective psychological restoration, and their unclear association.",
+    "Suggests multimodal approaches (e.g., combining fNIRS with autonomic nerve system measurements like SCL) for future physiological response measurement."
+  ],
+  "paper_metadata": {
+    "doi": "10.3390/buildings14103293",
+    "title": "Enhancing Cognitive Performance and Physiological Benefit in Workspaces Through Patterns of Biophilic Design: A Restorative Approach",
+    "authors": [
+      "Ping Zhang",
+      "Zhengqi Yu",
+      "Guoying Hou",
+      "Ping Shu",
+      "Yunque Bo",
+      "Yankun Shi",
+      "Rui Nie"
+    ],
+    "year": 2024,
+    "journal": "Buildings",
+    "volume": "14",
+    "issue": "10",
+    "pages": "3293",
+    "publisher": "MDPI AG",
+    "citation_count": 5,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/jbio.201800160",
+      "10.1007/s00421-009-1122-6",
+      "10.1007/s10086-006-0812-5",
+      "10.1016/0272-4944(95)90001-2",
+      "10.1016/J.BUILDENV.2009.11.002",
+      "10.1016/J.JENVP.2005.07.001",
+      "10.1016/J.JENVP.2010.11.005",
+      "10.1016/J.JENVP.2014.05.004",
+      "10.1016/J.JENVP.2021.101557",
+      "10.1016/J.LANDURBPLAN.2014.08.005",
+      "10.1016/J.LANDURBPLAN.2015.12.015",
+      "10.1016/J.UFUG.2011.07.004",
+      "10.1016/S0028-3932(97)00015-8",
+      "10.1016/S0272-4944(05)80184-7",
+      "10.1016/j.apergo.2015.07.010",
+      "10.1016/j.buildenv.2009.11.002",
+      "10.1016/j.buildenv.2020.106779",
+      "10.1016/j.buildenv.2020.106932",
+      "10.1016/j.buildenv.2020.107039",
+      "10.1016/j.buildenv.2021.108134",
+      "10.1016/j.buildenv.2022.109355",
+      "10.1016/j.buildenv.2022.109645",
+      "10.1016/j.buildenv.2022.109964",
+      "10.1016/j.buildenv.2023.110752",
+      "10.1016/j.buildenv.2024.111202",
+      "10.1016/j.dibe.2023.100172",
+      "10.1016/j.envint.2019.105427",
+      "10.1016/j.envres.2017.06.028",
+      "10.1016/j.envres.2020.110420",
+      "10.1016/j.jenvp.2005.07.001",
+      "10.1016/j.jenvp.2010.11.005",
+      "10.1016/j.jenvp.2014.05.004",
+      "10.1016/j.jenvp.2020.101406",
+      "10.1016/j.jenvp.2021.101557",
+      "10.1016/j.jobe.2020.101481",
+      "10.1016/j.landurbplan.2014.08.005",
+      "10.1016/j.landurbplan.2015.12.015",
+      "10.1016/j.landurbplan.2023.104730",
+      "10.1016/j.neubiorev.2016.02.018",
+      "10.1016/j.neulet.2017.01.018",
+      "10.1016/j.ufug.2011.07.004",
+      "10.1016/j.ymeth.2008.04.005",
+      "10.1021/es903183r",
+      "10.1037/1089-2680.11.4.305",
+      "10.1038/s41598-023-40408-x",
+      "10.1038/sj.jea.7500165",
+      "10.1080/0361073X.2019.1627497",
+      "10.1080/09613218.2019.1612228",
+      "10.1080/09613218.2019.1660609",
+      "10.1080/10447318.2020.1778351",
+      "10.1080/10937404.2016.1196155",
+      "10.1080/10937404.2018.1505571",
+      "10.1080/21641846.2012.744581",
+      "10.1093/jurban/jtg063",
+      "10.1093/med/9780199685219.001.0001",
+      "10.1093/occmed/kqs140",
+      "10.1093/oso/9780190915858.003.0040",
+      "10.1111/j.1749-6632.2011.06400.x",
+      "10.1111/nyas.13948",
+      "10.1146/ANNUREV.NEURO.24.1.167",
+      "10.1146/annurev-publhealth-032013-182443",
+      "10.1146/annurev.neuro.24.1.167",
+      "10.1155/2015/151702",
+      "10.1177/00139160121972882",
+      "10.1177/0018720820909287",
+      "10.1177/1745691609356784",
+      "10.1186/1744-9081-8-48",
+      "10.1186/1744-9081-9-2",
+      "10.1186/s10086-022-02042-5",
+      "10.1371/journal.pone.0291355",
+      "10.26687/ARCHNET-IJAR.V8I2.436",
+      "10.26687/archnet-ijar.v8i2.436",
+      "10.3389/fnhum.2013.00889",
+      "10.3389/fpsyg.2019.00250",
+      "10.3390/SU13020823",
+      "10.3390/buildings13030622",
+      "10.3390/f13122073",
+      "10.3390/ijerph16101711",
+      "10.3390/ijerph19116672",
+      "10.3390/ijerph192013143",
+      "10.3390/su13020823",
+      "10.3758/s13428-018-01193-y",
+      "10.5334/PB-51-1-5",
+      "10.5334/pb-51-1-5"
+    ],
+    "cited_by": [
+      "10.3389/fbuil.2025.1689230",
+      "10.3389/fphys.2025.1700518",
+      "10.1016/j.buildenv.2025.113693",
+      "10.31117/neuroscirn.v8i3.403",
+      "10.3390/buildings15162910"
+    ],
+    "semantic_scholar_id": "c6c43b9d1b8c99a410be758494992dbae7da69d5",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:49:19.418873+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Enhancing Cognitive Performance and Physiological Benefit in Workspaces Through Patterns of Biophilic Design: A Restorative Approach",
+    "crossref_year": 2024,
+    "crossref_citation_count": 5,
+    "crossref_journal": "Buildings",
+    "crossref_publisher": "MDPI AG",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals\u2019 exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users\u2019 experience and well-being.",
+    "crossref_reference_count": 78,
+    "crossref_issn": [
+      "2075-5309"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.893767+00:00",
+    "_cr_refs_added": 15
+  },
+  "year": 2024,
+  "journal": "Buildings",
+  "authors_structured": [
+    "Ping Zhang",
+    "Zhengqi Yu",
+    "Guoying Hou",
+    "Ping Shu",
+    "Yunque Bo",
+    "Yankun Shi",
+    "Rui Nie"
+  ],
+  "crossref_title": "Enhancing Cognitive Performance and Physiological Benefit in Workspaces Through Patterns of Biophilic Design: A Restorative Approach",
+  "crossref_authors": [
+    {
+      "name": "Ping Zhang",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    },
+    {
+      "name": "Zhengqi Yu",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    },
+    {
+      "name": "Guoying Hou",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    },
+    {
+      "name": "Ping Shu",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    },
+    {
+      "name": "Yunque Bo",
+      "orcid": null,
+      "affiliation": "Policy Research Department, Tianjin Institute of Medical Science and Technology Information, Tianjin 300041, China"
+    },
+    {
+      "name": "Yankun Shi",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    },
+    {
+      "name": "Rui Nie",
+      "orcid": null,
+      "affiliation": "School of Architecture & Art Design, Hebei University of Technology, Tianjin 300130, China"
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Buildings",
+  "crossref_citation_count": 5,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "MDPI AG",
+  "crossref_subjects": [],
+  "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals\u2019 exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users\u2019 experience and well-being.",
+  "crossref_fetched_at": "2026-02-25T12:03:40.582483+00:00"
+}

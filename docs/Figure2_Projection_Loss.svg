@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 540" font-family="Georgia, 'Times New Roman', serif">
+  <!-- Title -->
+  <text x="410" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a1a">Figure 2. Projection Loss: From Mechanism Chain (Web) to Single Edge (BN)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+    </marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c44"/>
+    </marker>
+    <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#46a"/>
+    </marker>
+  </defs>
+
+  <!-- TOP: WEB REPRESENTATION -->
+  <text x="410" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#555">A. Web Representation (epistemic — preserves provenance)</text>
+
+  <!-- Chain nodes -->
+  <rect x="20" y="70" width="120" height="55" rx="6" fill="#dce8d4" stroke="#6b8e5b" stroke-width="1.5"/>
+  <text x="80" y="88" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Daylight</text>
+  <text x="80" y="102" text-anchor="middle" font-size="8.5" fill="#555">c = 0.85</text>
+  <text x="80" y="115" text-anchor="middle" font-size="7.5" fill="#777">Environmental input</text>
+
+  <rect x="180" y="70" width="120" height="55" rx="6" fill="#d4dce8" stroke="#5b6e8e" stroke-width="1.5"/>
+  <text x="240" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Retinal ipRGC</text>
+  <text x="240" y="99" text-anchor="middle" font-size="8.5" fill="#555">c = 0.80</text>
+  <text x="240" y="112" text-anchor="middle" font-size="7.5" fill="#777">MECHANISM bridge</text>
+  <text x="240" y="122" text-anchor="middle" font-size="7.5" fill="#777">α = 0.75</text>
+
+  <rect x="340" y="70" width="120" height="55" rx="6" fill="#d4dce8" stroke="#5b6e8e" stroke-width="1.5"/>
+  <text x="400" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Raphe Nuclei</text>
+  <text x="400" y="99" text-anchor="middle" font-size="8.5" fill="#555">c = 0.65</text>
+  <text x="400" y="112" text-anchor="middle" font-size="7.5" fill="#777">MECHANISM bridge</text>
+  <text x="400" y="122" text-anchor="middle" font-size="7.5" fill="#777">α = 0.75</text>
+
+  <rect x="500" y="70" width="120" height="55" rx="6" fill="#d4dce8" stroke="#5b6e8e" stroke-width="1.5"/>
+  <text x="560" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">5-HT Synthesis</text>
+  <text x="560" y="99" text-anchor="middle" font-size="8.5" fill="#555">c = 0.45</text>
+  <text x="560" y="112" text-anchor="middle" font-size="7.5" fill="#777">EMPIRICAL_COV bridge</text>
+  <text x="560" y="122" text-anchor="middle" font-size="7.5" fill="#777">α = 0.70</text>
+
+  <rect x="660" y="70" width="120" height="55" rx="6" fill="#e8dcd4" stroke="#8e6e5b" stroke-width="1.5"/>
+  <text x="720" y="88" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Positive Mood</text>
+  <text x="720" y="102" text-anchor="middle" font-size="8.5" fill="#555">c = 0.40</text>
+  <text x="720" y="115" text-anchor="middle" font-size="7.5" fill="#777">Outcome variable</text>
+
+  <!-- Chain arrows -->
+  <line x1="140" y1="97" x2="178" y2="97" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="300" y1="97" x2="338" y2="97" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="97" x2="498" y2="97" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="620" y1="97" x2="658" y2="97" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Annotations above chain -->
+  <text x="160" y="68" text-anchor="middle" font-size="7.5" fill="#6b8e5b">reduction</text>
+  <text x="320" y="68" text-anchor="middle" font-size="7.5" fill="#5b6e8e">bridge</text>
+  <text x="480" y="68" text-anchor="middle" font-size="7.5" fill="#5b6e8e">bridge</text>
+  <text x="640" y="68" text-anchor="middle" font-size="7.5" fill="#5b6e8e">bridge</text>
+
+  <!-- Preserved information box -->
+  <rect x="20" y="138" width="760" height="55" rx="4" fill="#fff8e0" stroke="#c90" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="30" y="156" font-size="9.5" font-weight="bold" fill="#8a6d00">PRESERVED in web:</text>
+  <text x="30" y="172" font-size="9" fill="#666">• Each step has its own credence, warrant type, and Toulmin structure (data, backing, rebuttal, qualifier)</text>
+  <text x="30" y="186" font-size="9" fill="#666">• Competing accounts at each step (e.g., circadian entrainment competes with direct 5-HT modulation at step 3)</text>
+
+  <!-- BIG PROJECTION ARROW -->
+  <path d="M 410 198 L 410 240" stroke="#c44" stroke-width="3" marker-end="url(#arrRed)"/>
+  <text x="440" y="215" font-size="11" font-weight="bold" fill="#c44">π (projection)</text>
+  <text x="440" y="230" font-size="9" fill="#c44">Algorithm 6</text>
+
+  <!-- BOTTOM: BN REPRESENTATION -->
+  <text x="410" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#555">B. Bayesian Network Representation (aleatory — bare probabilities)</text>
+
+  <!-- BN nodes -->
+  <circle cx="200" cy="310" r="30" fill="#c5d5e8" stroke="#456" stroke-width="2"/>
+  <text x="200" y="307" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Daylight</text>
+  <text x="200" y="322" text-anchor="middle" font-size="9" fill="#555">(observable)</text>
+
+  <circle cx="600" cy="310" r="30" fill="#e8d5c5" stroke="#864" stroke-width="2"/>
+  <text x="600" y="307" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Mood</text>
+  <text x="600" y="322" text-anchor="middle" font-size="9" fill="#555">(outcome)</text>
+
+  <!-- Single BN edge -->
+  <line x1="232" y1="310" x2="568" y2="310" stroke="#456" stroke-width="2.5" marker-end="url(#arrBlue)"/>
+
+  <!-- CPT box -->
+  <rect x="340" y="280" width="120" height="60" rx="4" fill="#fff" stroke="#456" stroke-width="1.2"/>
+  <text x="400" y="296" text-anchor="middle" font-size="9" font-weight="bold" fill="#333">CPT</text>
+  <text x="400" y="310" text-anchor="middle" font-size="8.5" fill="#555">P(Mood=pos | DL=hi) = 0.70</text>
+  <text x="400" y="323" text-anchor="middle" font-size="8.5" fill="#555">P(Mood=pos | DL=lo) = 0.35</text>
+  <text x="400" y="336" text-anchor="middle" font-size="7.5" fill="#888">Single number per cell</text>
+
+  <!-- Lost information box -->
+  <rect x="20" y="355" width="760" height="70" rx="4" fill="#ffe8e8" stroke="#c44" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="30" y="373" font-size="9.5" font-weight="bold" fill="#c44">LOST in projection:</text>
+  <text x="30" y="389" font-size="9" fill="#666">• All intermediate mechanism steps (ipRGC, raphe nuclei, 5-HT synthesis) — compressed into single edge</text>
+  <text x="30" y="403" font-size="9" fill="#666">• All warrant types — MECHANISM bridge at step 2 vs. EMPIRICAL_COV bridge at step 4 are indistinguishable in BN</text>
+  <text x="30" y="417" font-size="9" fill="#666">• All Toulmin provenance — WHY the probability has its value, WHAT would change it, WHERE the weakest link is</text>
+
+  <!-- WHY box — the critical addition -->
+  <rect x="20" y="430" width="760" height="55" rx="4" fill="#f0f0ff" stroke="#44a" stroke-width="1.5"/>
+  <text x="30" y="448" font-size="9.5" font-weight="bold" fill="#225">WHY the chain cannot simply be put into the BN:</text>
+  <text x="30" y="463" font-size="9" fill="#555">① Intermediate nodes (raphe nuclei, 5-HT) are unobservable in buildings — BN nodes require measurable probability distributions</text>
+  <text x="30" y="477" font-size="9" fill="#555">② Unknown confounders at intermediate steps violate the conditional independence assumptions BN inference requires</text>
+
+  <rect x="20" y="488" width="760" height="30" rx="4" fill="#f0f0ff" stroke="#44a" stroke-width="1.5"/>
+  <text x="30" y="503" font-size="9" fill="#555">③ Different warrant types at each step are invisible in BN format  ④ Architects control daylight, not raphe nuclei — BN operates on manipulable variables</text>
+
+  <!-- Caption -->
+  <text x="410" y="530" text-anchor="middle" font-size="9" fill="#666" font-style="italic">The BN knows THAT daylight improves mood (P = 0.70). The web knows WHY (through which pathway), with WHAT evidence (warrant types), and WHERE the uncertainty lies (5-HT step).</text>
+</svg>

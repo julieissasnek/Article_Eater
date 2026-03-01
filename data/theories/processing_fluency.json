@@ -1,0 +1,114 @@
+{
+  "theory_id": "PROCESSING_FLUENCY",
+  "name": "Processing Fluency as Monitoring Node",
+  "originator": "Reber, Schwarz, Winkielman",
+  "year": 1998,
+  "citation": "Reber, R., Schwarz, N., & Winkielman, P. (2004). Processing fluency and aesthetic pleasure. Personality and Social Psychology Review, 8(4), 364-382.",
+  "status": "ACTIVE",
+  "parent_t1_frameworks": {
+    "PP": 40,
+    "IC": 25,
+    "NM": 20,
+    "IE-DPT": 15
+  },
+  "constructs": [
+    {
+      "construct_name": "Fluency Signal",
+      "description": "Metacognitive monitoring signal reflecting ease of processing. Integrates prediction error magnitude, perceptual organization cost, and metabolic efficiency.",
+      "template_ids": [
+        "PP-MONITOR-001",
+        "NM-REWARD-008",
+        "IC-METABOLIC-003"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Fluency-Affect Link",
+      "description": "Processing fluency generates positive affect via misattribution \u2014 ease of processing is interpreted as familiarity, safety, or aesthetic quality.",
+      "template_ids": [
+        "NM-REWARD-012",
+        "IE-MISATTR-004",
+        "IE-FAMILIARITY-002"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Fluency-Judgment Link",
+      "description": "Fluency influences truth judgments, preference judgments, and aesthetic evaluations through a common metacognitive pathway.",
+      "template_ids": [
+        "IE-JUDGMENT-007",
+        "IC-PREFERENCE-006",
+        "PP-COMPLEXITY-011"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    }
+  ],
+  "constituent_templates": [],
+  "template_coverage_pct": 0.0,
+  "maturity": "how-actually",
+  "linked_archetypes": [
+    "PREDICTIVE_CODING",
+    "HOMEOSTATIC_REGULATION",
+    "GATED_PROPAGATION"
+  ],
+  "inputs": [
+    "prediction_error_magnitude",
+    "perceptual_organization_cost",
+    "metabolic_cost_rate"
+  ],
+  "outputs": [
+    "fluency_signal",
+    "approach_probability",
+    "aesthetic_judgment_bias",
+    "truth_judgment_bias"
+  ],
+  "irreducible_residual": {
+    "schema_gaps": [
+      "Individual differences in fluency sensitivity unmodeled",
+      "Cultural variation in fluency-affect link strength unmodeled",
+      "Disfluency-as-signal effects (novelty, difficulty = engagement) not captured"
+    ],
+    "compositional_adequacy": "INTERACTION_DEPENDENT",
+    "narrative": "Processing fluency reduces well to PP prediction error monitoring + IC metabolic cost tracking + NM reward signals. However, the metacognitive attribution step (interpreting fluency AS preference/truth/beauty) involves IE-DPT implicit-explicit boundary crossing that is not fully mechanized. The disfluency literature (Alter & Oppenheimer, 2009) shows fluency is not always positive \u2014 strategic disfluency can enhance learning and engagement."
+  },
+  "key_references": [
+    "Reber, R., Schwarz, N., & Winkielman, P. (2004). Processing fluency and aesthetic pleasure. Personality and Social Psychology Review, 8(4), 364-382. doi:10.1207/s15327957pspr0804_3 [2850+ citations]",
+    "Alter, A. L., & Oppenheimer, D. M. (2009). Uniting the tribes of fluency to form a metacognitive nation. Personality and Social Psychology Review, 13(3), 219-235. doi:10.1177/1088868309341564 [1200+ citations]",
+    "Winkielman, P., Schwarz, N., Fazendeiro, T., & Reber, R. (2003). The hedonic marking of processing fluency: Implications for evaluative judgments. In J. Musch & K. C. Klauer (Eds.), The psychology of evaluation: Affective processes in cognition and emotion (pp. 189-217). Lawrence Erlbaum Associates. doi:10.4324/9780203347522 [850+ citations]",
+    "Graf, L. K. M., & Landwehr, J. R. (2015). A dual-process perspective on fluency-based aesthetics: The pleasure-interest model. Personality and Social Psychology Review, 19(4), 395-410. doi:10.1177/1088868314568466 [420+ citations]",
+    "Schwarz, N. (2004). Metacognitive experiences in consumer judgment and decision making. Journal of Consumer Psychology, 14(4), 332-348. doi:10.1207/s15327663jcp1404_2 [680+ citations]"
+  ],
+  "function_form": {
+    "function_form": "A(x) = f(Fluency(x)); Fluency = 1/RT_perceptual; f is monotonically increasing",
+    "variables": {
+      "A(x)": "Aesthetic appreciation of stimulus x",
+      "Fluency(x)": "Processing ease (inverse of reaction time/effort)",
+      "RT_perceptual": "Perceptual processing time"
+    },
+    "predictions": [
+      "Symmetrical stimuli: higher fluency \u2192 preference (d \u2248 0.3-0.5)",
+      "Repeated exposure increases fluency \u2192 increased liking (mere exposure effect)"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "Reber, R., Schwarz, N., & Winkielman, P. (2004). Processing fluency and aesthetic pleasure. Personality and Social Psychology Review, 8(4).",
+    "predecessor": "Zajonc's mere exposure effect (1968); Berlyne's arousal aesthetics; prototype theory",
+    "historical_context": "Challenged Berlyne's arousal model: beauty comes from ease of processing, not optimal complexity. Explains mere exposure effect, symmetry preference, and prototype enhancement in one framework.",
+    "key_milestones": [
+      "1968: Zajonc mere exposure",
+      "2004: Reber et al. fluency theory",
+      "2006: Winkielman hedonic fluency"
+    ],
+    "influenced_by": [
+      "R. Zajonc (mere exposure)",
+      "R. Reber (fluency)",
+      "P. Winkielman (embodied affect)"
+    ],
+    "current_status": "actively_debated",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  }
+}

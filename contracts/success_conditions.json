@@ -1,0 +1,675 @@
+{
+  "version": "1.0.0",
+  "created": "2026-03-01",
+  "description": "Success Conditions Registry for Article_Eater_PostQuinean_v1 — All critical scripts and modules. Each condition is measurable and testable. This registry directly addresses the mandate: prevent silent failures and zero-output problems through explicit success criteria.",
+  "conditions": {
+    "scripts/scheduled_pipeline.py": {
+      "description": "Main pipeline orchestrator — runs discovery, triage, extraction, QA, integration in sequence or individually",
+      "script_entry_point": "python scripts/scheduled_pipeline.py",
+      "conditions": [
+        {
+          "id": "SP-SC1",
+          "name": "Pipeline completes without fatal crash",
+          "description": "Script runs to completion with exit code 0, all stages attempted",
+          "metric": "exit_code == 0 AND len(error_log_critical) == 0",
+          "threshold": "100%",
+          "test_name": "test_pipeline_completes_without_fatal_crash",
+          "rationale": "Silent crashes with exit 0 have occurred; this validates true completion"
+        },
+        {
+          "id": "SP-SC2",
+          "name": "Wishlist operations work end-to-end",
+          "description": "Wishlist can be added to, saved, and loaded without data corruption",
+          "metric": "load_wishlist() after add yields matching entries",
+          "threshold": "100%",
+          "test_name": "test_wishlist_add_save_load",
+          "rationale": "Data persistence is foundational; corruption here cascades to discovery"
+        },
+        {
+          "id": "SP-SC3",
+          "name": "Pipeline produces discovery output",
+          "description": "After discovery stage, new_papers.json exists and contains >0 entries",
+          "metric": "file_exists('data/discovery/new_papers.json') AND len(new_papers) > 0",
+          "threshold": ">0 papers per run",
+          "test_name": "test_discovery_produces_output",
+          "rationale": "Silent discovery failures (0 papers) hide pipeline blockages"
+        },
+        {
+          "id": "SP-SC4",
+          "name": "Triage stage produces classifications",
+          "description": "Triage output file exists and each paper has a type_prediction field",
+          "metric": "all([p.get('type_prediction') for p in triage_output])",
+          "threshold": "100% of papers classified",
+          "test_name": "test_triage_classifies_all_papers",
+          "rationale": "Unclassified papers bypass extraction rules; zero-output symptom"
+        },
+        {
+          "id": "SP-SC5",
+          "name": "Extraction stage produces extraction files",
+          "description": "Extraction produces >0 JSON files in data/extractions with non-zero findings",
+          "metric": "len(glob('data/extractions/*.json')) > 0 AND all files have n_findings > 0",
+          "threshold": ">0 extractions per batch",
+          "test_name": "test_extraction_produces_files_with_findings",
+          "rationale": "Major silent-failure vector: extraction produces empty or zero-finding files"
+        },
+        {
+          "id": "SP-SC6",
+          "name": "Pipeline state is logged and recoverable",
+          "description": "Pipeline state file (queue, progress) is written after each stage; recovery data exists",
+          "metric": "queue_state.json exists AND contains stage checkpoints",
+          "threshold": "100% of stages logged",
+          "test_name": "test_pipeline_state_persisted",
+          "rationale": "Unrecoverable crashes leave the pipeline in unknown state; checkpointing prevents re-work"
+        }
+      ]
+    },
+    "scripts/kirsh_decision_tree_analysis.py": {
+      "description": "David Kirsh's decision tree method for identifying environmentally-relevant stimuli and causal attributes",
+      "script_entry_point": "python scripts/kirsh_decision_tree_analysis.py",
+      "conditions": [
+        {
+          "id": "KDT-SC1",
+          "name": "Stimuli loading succeeds and yields data",
+          "description": "load_stimuli() returns >0 stimulus records",
+          "metric": "len(all_stimuli) > 0",
+          "threshold": ">0 stimuli",
+          "test_name": "test_kirsh_loads_stimuli",
+          "rationale": "Zero stimuli indicates missing data file or parsing failure"
+        },
+        {
+          "id": "KDT-SC2",
+          "name": "Environmental filtering preserves meaningful subset",
+          "description": "After filtering non-environmental antecedents, >50% of stimuli remain AND all remaining are environmental",
+          "metric": "len(filtered) > 0.5*len(all) AND all are_environmental(filtered)",
+          "threshold": ">50% retention",
+          "test_name": "test_kirsh_environmental_filter_works",
+          "rationale": "Filter that removes too much (or too little) biases attribute discovery"
+        },
+        {
+          "id": "KDT-SC3",
+          "name": "Clustering produces meaningful categories",
+          "description": "Environmental stimuli cluster into 10-30 categories with >1 member each",
+          "metric": "10 <= len(categories) <= 30 AND all have >1 member",
+          "threshold": "10-30 categories",
+          "test_name": "test_kirsh_clustering_produces_categories",
+          "rationale": "Too few categories = oversimplification; too many = noise"
+        },
+        {
+          "id": "KDT-SC4",
+          "name": "Decision tree analysis identifies essential attributes",
+          "description": "For each category, decision tree identifies 2-5 essential attributes (consensus >70%)",
+          "metric": "all([2 <= len(essential_attrs) <= 5 for category in categories])",
+          "threshold": "2-5 essential per category",
+          "test_name": "test_kirsh_identifies_essential_attributes",
+          "rationale": "Attribute discovery is the core deliverable; zero attributes = algorithmic failure"
+        },
+        {
+          "id": "KDT-SC5",
+          "name": "New attributes discovered and linked to vision algorithms",
+          "description": ">=5 novel attributes identified; each has >1 implementable vision algorithm",
+          "metric": "len(novel_attributes) >= 5 AND all have vision_algorithms",
+          "threshold": ">=5 novel attributes",
+          "test_name": "test_kirsh_discovers_novel_attributes",
+          "rationale": "Core goal of method; zero new attributes = method produced no insight"
+        },
+        {
+          "id": "KDT-SC6",
+          "name": "Output report is complete and human-readable",
+          "description": "Final report JSON contains all analysis layers (clusters, essential attrs, new attrs, algorithms)",
+          "metric": "report has keys: clusters, essential_attributes, novel_attributes, algorithms",
+          "threshold": "100% required keys",
+          "test_name": "test_kirsh_output_complete",
+          "rationale": "Incomplete report indicates partial execution"
+        }
+      ]
+    },
+    "scripts/backfill_operationalizations.py": {
+      "description": "Backfill missing operationalizations in outcome_vocab.json with evidence-based measurement instruments",
+      "script_entry_point": "python scripts/backfill_operationalizations.py",
+      "conditions": [
+        {
+          "id": "BO-SC1",
+          "name": "Vocabulary loads and parses correctly",
+          "description": "outcome_vocab.json loads as valid JSON with >0 terms",
+          "metric": "vocab is valid JSON AND len(vocab['terms']) > 0",
+          "threshold": ">0 terms",
+          "test_name": "test_backfill_loads_vocab",
+          "rationale": "File corruption or parsing failure is silent"
+        },
+        {
+          "id": "BO-SC2",
+          "name": "Terms with empty operationalizations are identified",
+          "description": "Script correctly identifies all terms with operationalizations == [] AND level >= 2",
+          "metric": "len(empty_operationalization_terms) > 0",
+          "threshold": ">0 empty terms found",
+          "test_name": "test_backfill_identifies_empty_terms",
+          "rationale": "If no empty terms found, backfill does nothing (but this may be correct); test documents intent"
+        },
+        {
+          "id": "BO-SC3",
+          "name": "Backfilled operationalizations are valid instruments",
+          "description": "Every backfilled operationalization references a real, named instrument",
+          "metric": "all(is_valid_instrument(op) for op in backfilled)",
+          "threshold": "100% valid",
+          "test_name": "test_backfill_operationalizations_valid",
+          "rationale": "Garbage operationalizations (generic names, made-up instruments) corrupt the vocab"
+        },
+        {
+          "id": "BO-SC4",
+          "name": "Existing operationalizations are not overwritten",
+          "description": "No non-empty operationalizations array is replaced or modified",
+          "metric": "vocab_before == vocab_after for terms with existing ops",
+          "threshold": "100% preserved",
+          "test_name": "test_backfill_preserves_existing",
+          "rationale": "Data loss if existing values are overwritten"
+        },
+        {
+          "id": "BO-SC5",
+          "name": "Output vocab is saved and matches input structure",
+          "description": "Updated vocab.json is written and validates against original schema",
+          "metric": "file_exists(output) AND validate_schema(output) == PASS",
+          "threshold": "100%",
+          "test_name": "test_backfill_output_saved",
+          "rationale": "Silent file-write failures leave old vocab unchanged"
+        },
+        {
+          "id": "BO-SC6",
+          "name": "Backfill coverage increases measurably",
+          "description": "Percentage of terms with >0 operationalizations increases after backfill",
+          "metric": "coverage_after > coverage_before",
+          "threshold": ">= 10% improvement",
+          "test_name": "test_backfill_improves_coverage",
+          "rationale": "Quantifies actual impact of backfill operation"
+        }
+      ]
+    },
+    "scripts/link_outcomes_to_instruments.py": {
+      "description": "Match outcome vocabulary operationalizations to instrument registry IDs",
+      "script_entry_point": "python scripts/link_outcomes_to_instruments.py",
+      "conditions": [
+        {
+          "id": "LOI-SC1",
+          "name": "Instrument registry loads successfully",
+          "description": "instruments_registry.json loads as valid JSON with >0 instruments",
+          "metric": "registry is valid JSON AND len(instruments) > 0",
+          "threshold": ">0 instruments",
+          "test_name": "test_loi_loads_instruments",
+          "rationale": "Missing registry is catastrophic for linking"
+        },
+        {
+          "id": "LOI-SC2",
+          "name": "Instrument lookup table is built",
+          "description": "Lookup table maps instrument names/abbreviations to IDs correctly",
+          "metric": "all([lookup[key] == expected_id for key, expected_id in test_cases])",
+          "threshold": "100% of test cases match",
+          "test_name": "test_loi_builds_lookup",
+          "rationale": "Incorrect lookup = incorrect linking"
+        },
+        {
+          "id": "LOI-SC3",
+          "name": "Operationalization abbreviations are extracted",
+          "description": "Extract abbreviations regex finds all parenthesized abbreviations in operationalizations",
+          "metric": "all(expected_abbrev in extracted for expected_abbrev in test_cases)",
+          "threshold": "100% extraction accuracy",
+          "test_name": "test_loi_extracts_abbreviations",
+          "rationale": "Failed extraction = failed matching"
+        },
+        {
+          "id": "LOI-SC4",
+          "name": "Operationalizations are matched to instruments",
+          "description": "For each operationalization, >=1 matching instrument_id is found (or none if no match)",
+          "metric": "all([len(matched_ids) >= 0 for op in operationalizations])",
+          "threshold": "100%",
+          "test_name": "test_loi_matches_operationalizations",
+          "rationale": "Matching is core function; zero matches for valid ops indicates regex failure"
+        },
+        {
+          "id": "LOI-SC5",
+          "name": "Instrument IDs are added to vocabulary",
+          "description": "Output vocab has instrument_ids field added to operationalizations where matches found",
+          "metric": "all([has_instrument_ids(op) for matched_op in output_vocab])",
+          "threshold": "100% of matched terms",
+          "test_name": "test_loi_adds_instrument_ids",
+          "rationale": "If IDs not added, linking produces no output"
+        },
+        {
+          "id": "LOI-SC6",
+          "name": "Output vocab is valid and referenced IDs exist",
+          "description": "Every instrument_id in output vocab exists in the registry",
+          "metric": "all([id in registry for id in output_vocab.instrument_ids])",
+          "threshold": "100% referential integrity",
+          "test_name": "test_loi_referential_integrity",
+          "rationale": "Dangling IDs = data corruption"
+        }
+      ]
+    },
+    "scripts/gemini_extraction_queue.py": {
+      "description": "Manages the extraction queue: load triage, select prompts, run Gemini extraction with 2-run verification",
+      "script_entry_point": "python scripts/gemini_extraction_queue.py",
+      "conditions": [
+        {
+          "id": "GEQ-SC1",
+          "name": "Triage file loads and contains articles",
+          "description": "Triage output JSON loads and contains >0 articles with type_prediction",
+          "metric": "len(triage['articles']) > 0 AND all have type_prediction",
+          "threshold": ">0 articles",
+          "test_name": "test_geq_loads_triage",
+          "rationale": "Zero articles = no work; silent parse failure is hidden"
+        },
+        {
+          "id": "GEQ-SC2",
+          "name": "Queue state file is initialized and persisted",
+          "description": "queue_state.json exists, contains queue items, and updates after each stage",
+          "metric": "file_exists AND len(items) > 0 AND updates are timestamped",
+          "threshold": "100% persistence",
+          "test_name": "test_geq_queue_state_persisted",
+          "rationale": "No recovery mechanism without state file"
+        },
+        {
+          "id": "GEQ-SC3",
+          "name": "PDF files are located for articles",
+          "description": "For each triage article, corresponding PDF exists in PDF_DIR (or is skipped with logging)",
+          "metric": "len(pdf_found) / len(articles) >= 0.80",
+          "threshold": ">=80% PDFs located",
+          "test_name": "test_geq_locates_pdfs",
+          "rationale": "Missing PDFs block extraction; zero-output symptom"
+        },
+        {
+          "id": "GEQ-SC4",
+          "name": "Prompts are selected per article type",
+          "description": "For each article, correct prompt family is selected based on type_prediction",
+          "metric": "all([get_prompt_family(article) is not None for article in queue])",
+          "threshold": "100% have prompt",
+          "test_name": "test_geq_selects_prompts",
+          "rationale": "Wrong/missing prompt = low-quality extraction"
+        },
+        {
+          "id": "GEQ-SC5",
+          "name": "Extraction runs produce structured output",
+          "description": "Each extraction run produces valid JSON with required fields (claims, findings, etc.)",
+          "metric": "all([is_valid_extraction(output) for output in runs])",
+          "threshold": "100% structurally valid",
+          "test_name": "test_geq_extractions_structurally_valid",
+          "rationale": "Invalid structure cascades to integration failures"
+        },
+        {
+          "id": "GEQ-SC6",
+          "name": "Two-run verification is performed",
+          "description": "For each extraction, run1 and run2 both execute; differences are logged",
+          "metric": "all([run1_exists AND run2_exists for item in queue])",
+          "threshold": "100% of items have 2 runs",
+          "test_name": "test_geq_two_run_verification",
+          "rationale": "Without 2 runs, no agreement check = undetected hallucinations"
+        },
+        {
+          "id": "GEQ-SC7",
+          "name": "Cost tracking is accurate and reported",
+          "description": "Extraction cost is calculated and tracked per run and aggregated correctly",
+          "metric": "total_cost == sum(run_costs) AND currency is tracked",
+          "threshold": "100% accurate",
+          "test_name": "test_geq_cost_tracking",
+          "rationale": "Cost overruns hidden if not tracked"
+        },
+        {
+          "id": "GEQ-SC8",
+          "name": "Extraction output files are saved with correct naming",
+          "description": "Output files follow naming convention: {doi_normalized}.json in data/extractions/",
+          "metric": "all([file_follows_naming_convention(f) for f in output_files])",
+          "threshold": "100%",
+          "test_name": "test_geq_output_naming",
+          "rationale": "Wrong naming = files lost or inaccessible"
+        }
+      ]
+    },
+    "scripts/run_panel_1_outcomes.py": {
+      "description": "Panel-1: Outcome Vocabulary Resolution — Classifies unresolved outcome terms",
+      "script_entry_point": "python scripts/run_panel_1_outcomes.py",
+      "conditions": [
+        {
+          "id": "P1O-SC1",
+          "name": "Unresolved terms are loaded from queue",
+          "description": "unresolved_outcomes.jsonl loads and yields >0 terms",
+          "metric": "len(unresolved_terms) > 0",
+          "threshold": ">0 terms",
+          "test_name": "test_p1o_loads_unresolved_terms",
+          "rationale": "Zero terms = queue is empty or broken"
+        },
+        {
+          "id": "P1O-SC2",
+          "name": "Terms are filtered against existing vocab",
+          "description": "All unresolved terms checked against outcome_vocab.json; duplicates removed",
+          "metric": "no_term in output appears in existing_vocab",
+          "threshold": "100% filtered",
+          "test_name": "test_p1o_filters_against_vocab",
+          "rationale": "Duplicate vocab entries cause coherence issues"
+        },
+        {
+          "id": "P1O-SC3",
+          "name": "Terms are clustered by similarity",
+          "description": "Similar terms (string distance < threshold) are grouped; clustering produces 10-50 clusters",
+          "metric": "10 <= len(clusters) <= 50",
+          "threshold": "10-50 clusters",
+          "test_name": "test_p1o_clusters_terms",
+          "rationale": "No clustering = redundant panel work; overclustering = lost distinctions"
+        },
+        {
+          "id": "P1O-SC4",
+          "name": "Panel resolver is invoked on term batches",
+          "description": "PanelResolver receives batches of clustered terms and returns decisions",
+          "metric": "all([len(decisions) > 0 for batch in batches])",
+          "threshold": ">0 decisions per batch",
+          "test_name": "test_p1o_panel_invoked",
+          "rationale": "Silent panel failures produce no output"
+        },
+        {
+          "id": "P1O-SC5",
+          "name": "Panel decisions are valid and complete",
+          "description": "Each decision has: proposed_term_id, name, level, rationale, confidence",
+          "metric": "all([has_required_fields(decision) for decision in output])",
+          "threshold": "100% complete",
+          "test_name": "test_p1o_decisions_complete",
+          "rationale": "Incomplete decisions cannot be integrated"
+        },
+        {
+          "id": "P1O-SC6",
+          "name": "Output JSON is written and is valid",
+          "description": "Panel decisions are written to panel_results/outcome_proposals.json and pass schema validation",
+          "metric": "file_exists AND validate_schema() == PASS",
+          "threshold": "100%",
+          "test_name": "test_p1o_output_written",
+          "rationale": "Silent write failures leave no output"
+        },
+        {
+          "id": "P1O-SC7",
+          "name": "Coverage of unresolved terms increases",
+          "description": "Percentage of terms with proposed resolutions increases",
+          "metric": "coverage_after > coverage_before",
+          "threshold": ">=50% resolved",
+          "test_name": "test_p1o_coverage_improves",
+          "rationale": "Quantifies panel effectiveness"
+        }
+      ]
+    },
+    "src/qa/extraction_field_validator.py": {
+      "description": "Validates all 11 extraction finding fields per quality rules",
+      "module_entry_point": "from src.qa.extraction_field_validator import ExtractionFieldValidator",
+      "conditions": [
+        {
+          "id": "EFV-SC1",
+          "name": "Validator initializes with quality rules loaded",
+          "description": "ExtractionFieldValidator() loads extraction_quality_rules.json without error",
+          "metric": "validator.rules is not None AND len(validator.rules) > 0",
+          "threshold": ">0 rules",
+          "test_name": "test_efv_initializes",
+          "rationale": "Missing rules file = validator non-functional"
+        },
+        {
+          "id": "EFV-SC2",
+          "name": "Single article validation returns report with all components",
+          "description": "validate_article() returns FindingReport with violations list and quality_score",
+          "metric": "report has: violations (list), quality_score (0-1), is_valid (bool)",
+          "threshold": "100% of reports have all fields",
+          "test_name": "test_efv_validates_article",
+          "rationale": "Incomplete report = incomplete validation"
+        },
+        {
+          "id": "EFV-SC3",
+          "name": "Violations are detected for invalid fields",
+          "description": "Invalid extraction fields (missing, malformed, out-of-range) are detected and reported",
+          "metric": "all([violation in report for violation in expected_violations])",
+          "threshold": "100% detection rate",
+          "test_name": "test_efv_detects_violations",
+          "rationale": "Missed violations = false negatives, garbage data passes"
+        },
+        {
+          "id": "EFV-SC4",
+          "name": "Quality score is computed correctly",
+          "description": "Quality score ranges 0-1; higher for fewer/less-severe violations",
+          "metric": "0 <= quality_score <= 1 AND score decreases with violations",
+          "threshold": "100% of scores in range",
+          "test_name": "test_efv_quality_score_correct",
+          "rationale": "Incorrect scoring = bad quality gates"
+        },
+        {
+          "id": "EFV-SC5",
+          "name": "Batch validation processes multiple articles",
+          "description": "validate_batch() processes >1 article and returns BatchReport with mean_score",
+          "metric": "len(report.articles) >= input_count AND report.mean_score is float",
+          "threshold": "100% of articles processed",
+          "test_name": "test_efv_batch_validation",
+          "rationale": "Failed batch processing = undetected quality issues across corpus"
+        },
+        {
+          "id": "EFV-SC6",
+          "name": "Below-threshold articles are identified",
+          "description": "articles_below_threshold(0.75) returns all articles with score < 0.75",
+          "metric": "all([score < threshold for article in results])",
+          "threshold": "100% accuracy",
+          "test_name": "test_efv_threshold_filtering",
+          "rationale": "Wrong threshold results = wrong QA gates"
+        },
+        {
+          "id": "EFV-SC7",
+          "name": "Severity levels are assigned correctly",
+          "description": "Violations are classified as CRITICAL, ERROR, WARNING, INFO per rules",
+          "metric": "all([sev in {CRITICAL, ERROR, WARNING, INFO} for sev in report.severities])",
+          "threshold": "100% classified",
+          "test_name": "test_efv_severity_assignment",
+          "rationale": "Wrong severity = wrong alert thresholds"
+        }
+      ]
+    },
+    "src/services/overseer.py": {
+      "description": "OVERSEER: Superordinate Monitoring — Health monitoring and epistemic invariant enforcement",
+      "module_entry_point": "from src.services.overseer import OverseerSystem, HealthMonitor, IntegrityChecker",
+      "conditions": [
+        {
+          "id": "OS-SC1",
+          "name": "Overseer system initializes with 6 sub-components",
+          "description": "OverseerSystem() initializes without error; all 6 components (HealthMonitor, IntegrityChecker, etc.) are created",
+          "metric": "system.health_monitor is not None AND system.integrity_checker is not None AND ... (6 total)",
+          "threshold": "100% of components present",
+          "test_name": "test_overseer_initializes",
+          "rationale": "Missing component = incomplete invariant checking"
+        },
+        {
+          "id": "OS-SC2",
+          "name": "Invariant INV-0 (OPERATIONAL state) is checked",
+          "description": "check_inv_0_operational() verifies system is not in BOOTSTRAP_FAILED state",
+          "metric": "system_state != BOOTSTRAP_FAILED",
+          "threshold": "100%",
+          "test_name": "test_overseer_inv0_operational",
+          "rationale": "Broken system executing hidden = cascading failure"
+        },
+        {
+          "id": "OS-SC3",
+          "name": "Invariant INV-1 (Provenance) is checked",
+          "description": "All beliefs have provenance record; no orphaned beliefs",
+          "metric": "all([belief.provenance is not None for belief in web])",
+          "threshold": "100%",
+          "test_name": "test_overseer_inv1_provenance",
+          "rationale": "Beliefs without provenance cannot be trusted or rolled back"
+        },
+        {
+          "id": "OS-SC4",
+          "name": "Invariant INV-4 (Coherence decline) is monitored",
+          "description": "Coherence loss per integration is <=5%; changes are logged",
+          "metric": "coherence_delta <= 0.05",
+          "threshold": "<=5% loss",
+          "test_name": "test_overseer_inv4_coherence",
+          "rationale": "Large coherence drops indicate integration problems"
+        },
+        {
+          "id": "OS-SC5",
+          "name": "Invariant INV-10 (QA quality) is measured",
+          "description": "Extraction quality mean score >=0.75 is validated",
+          "metric": "mean(quality_scores) >= 0.75",
+          "threshold": ">=0.75",
+          "test_name": "test_overseer_inv10_qa_quality",
+          "rationale": "Quality gate prevents garbage from entering web"
+        },
+        {
+          "id": "OS-SC6",
+          "name": "Violations are detected and reported",
+          "description": "IntegrityChecker detects actual invariant violations and returns InvariantViolation records",
+          "metric": "len(violations) > 0 when system is actually broken",
+          "threshold": "100% detection",
+          "test_name": "test_overseer_detects_violations",
+          "rationale": "Undetected violations = silent corruption"
+        },
+        {
+          "id": "OS-SC7",
+          "name": "Health report is generated and complete",
+          "description": "generate_health_report() returns HealthReport with all metrics (coherence, conflicts, completeness)",
+          "metric": "report has: coherence (float), conflicts (list), completeness (float), timestamp",
+          "threshold": "100% of fields present",
+          "test_name": "test_overseer_generates_report",
+          "rationale": "Incomplete health report = blind spots in monitoring"
+        },
+        {
+          "id": "OS-SC8",
+          "name": "Scheduler triggers appropriate modes",
+          "description": "Scheduler correctly triggers POST_INTEGRATION (5s), PERIODIC (15min), ALERT, ON_DEMAND modes",
+          "metric": "all([trigger(mode) returns timely for mode in MODES])",
+          "threshold": "100% of triggers fire",
+          "test_name": "test_overseer_scheduler_triggers",
+          "rationale": "Failed triggers = missed monitoring windows"
+        }
+      ]
+    },
+    "src/extraction/revised_prompts_v3.py": {
+      "description": "REVISED EXTRACTION PROMPTS V3 — Comprehensive prompt set for Gemini extraction",
+      "module_entry_point": "from src.extraction.revised_prompts_v3 import get_prompt, CANONICAL_DIRECTIONS, ARTICLE_FAMILIES",
+      "conditions": [
+        {
+          "id": "REP-SC1",
+          "name": "Canonical directions are defined and enumerated",
+          "description": "CANONICAL_DIRECTIONS contains exactly 4 values: increase, decrease, no_effect, mixed",
+          "metric": "CANONICAL_DIRECTIONS == ['increase', 'decrease', 'no_effect', 'mixed']",
+          "threshold": "100% match",
+          "test_name": "test_rep_canonical_directions",
+          "rationale": "Wrong directions = invalid extraction schema"
+        },
+        {
+          "id": "REP-SC2",
+          "name": "Article families and types are properly defined",
+          "description": "ARTICLE_FAMILIES contains 5 families with >1 member each; no duplicates across families",
+          "metric": "len(families) == 5 AND all([len(types) > 0 for types in families.values()]) AND no_type_duplicates",
+          "threshold": "100% valid structure",
+          "test_name": "test_rep_article_families",
+          "rationale": "Malformed families = wrong prompt selection"
+        },
+        {
+          "id": "REP-SC3",
+          "name": "Base prompt exists and contains JSON schema",
+          "description": "PROMPT_BASE_V3 exists and contains valid JSON extraction schema specification",
+          "metric": "PROMPT_BASE_V3 is not None AND 'json' in PROMPT_BASE_V3.lower() AND 'schema' in PROMPT_BASE_V3.lower()",
+          "threshold": "100%",
+          "test_name": "test_rep_base_prompt_exists",
+          "rationale": "Missing base = no extraction template"
+        },
+        {
+          "id": "REP-SC4",
+          "name": "Family-specific prompts exist for each family",
+          "description": "For each article family, a specific prompt is defined (empirical, synthesis, theoretical, qualitative, methods)",
+          "metric": "all([get_prompt_for_family(family) is not None for family in ARTICLE_FAMILIES])",
+          "threshold": "100% of families have prompts",
+          "test_name": "test_rep_family_prompts_exist",
+          "rationale": "Missing prompts = fallback to generic extraction"
+        },
+        {
+          "id": "REP-SC5",
+          "name": "Validation suffix is comprehensive",
+          "description": "VALIDATION_SUFFIX_V3 contains all 7 validation checks (direction, antecedent, sample_size, theory, mechanism, instrument, outcome)",
+          "metric": "all([check in VALIDATION_SUFFIX_V3 for check in required_checks])",
+          "threshold": "100% checks present",
+          "test_name": "test_rep_validation_complete",
+          "rationale": "Missing validation checks = invalid extractions pass"
+        },
+        {
+          "id": "REP-SC6",
+          "name": "Outcome vocab can be injected into prompts",
+          "description": "get_prompt_with_vocab(outcome_vocab) returns prompt with vocab hints embedded",
+          "metric": "prompt contains vocab hints AND prompt is valid text",
+          "threshold": "100%",
+          "test_name": "test_rep_vocab_injection",
+          "rationale": "Failed injection = extraction produces out-of-vocab outcomes"
+        },
+        {
+          "id": "REP-SC7",
+          "name": "Prompt output is compatible with extraction schema",
+          "description": "Generated prompt specifies output format that matches extraction_template.v2.schema.json",
+          "metric": "validate_schema_compliance(prompt) == PASS",
+          "threshold": "100%",
+          "test_name": "test_rep_schema_compliance",
+          "rationale": "Schema mismatch = integration failures"
+        },
+        {
+          "id": "REP-SC8",
+          "name": "Antecedent specificity is enforced in prompt",
+          "description": "Prompt explicitly rejects vague antecedents and specifies required detail level",
+          "metric": "'antecedent' in prompt AND 'specific' in prompt.lower() AND 'vague' in prompt.lower()",
+          "threshold": "100%",
+          "test_name": "test_rep_antecedent_specificity",
+          "rationale": "Vague antecedents = poor causal inference"
+        }
+      ]
+    },
+    "src/services/finding_template_relevance.py": {
+      "description": "Finding-to-template relevance resolution with Tier2 theory mapping and annotation persistence",
+      "module_entry_point": "from src.services.finding_template_relevance import ResolverConfig, load_findings_from_web_db, load_template_profiles, persist_relevance_to_web_db, resolve_findings",
+      "conditions": [
+        {
+          "id": "FTR-SC1",
+          "name": "All templates with t1_frameworks or framework_ids load with their framework associations",
+          "description": "Templates with t1_frameworks field have frameworks successfully populated; framework_ids takes precedence",
+          "metric": "templates_with_frameworks / total_templates_with_theory",
+          "threshold": ">= 0.95",
+          "test_name": "test_templates_load_with_frameworks",
+          "rationale": "Tier2 coverage depends on frameworks being loaded; fallback ensures no templates lose frameworks"
+        },
+        {
+          "id": "FTR-SC2",
+          "name": "Tier2 coverage of findings exceeds 50% target",
+          "description": "Finding records with non-null tier2_relevance scores represent >=50% of findings",
+          "metric": "findings_with_tier2 / total_findings",
+          "threshold": ">= 0.50",
+          "test_name": "test_tier2_coverage_above_threshold",
+          "rationale": "Coverage increase (14.8% -> 15.7%+) validates framework loading fix; target is 50% long-term"
+        },
+        {
+          "id": "FTR-SC3",
+          "name": "Annotation persistence ratio is 100% — all resolved findings are persisted",
+          "description": "All findings processed by resolve_findings() are written to web_persistence_v2.db with epistemic_v2 annotation",
+          "metric": "persisted_beliefs / total_resolved_beliefs",
+          "threshold": ">= 0.99",
+          "test_name": "test_annotation_persistence_complete",
+          "rationale": "Persistence fix (0% -> 100%) validates that persist_relevance_to_web_db() is being called"
+        },
+        {
+          "id": "FTR-SC4",
+          "name": "No finding has tier2_relevance = null when its template has frameworks defined",
+          "description": "When a finding matches a template with frameworks, tier2_relevance should be assigned (not null)",
+          "metric": "null_tier2_with_framework / total_with_framework",
+          "threshold": "== 0",
+          "test_name": "test_no_null_tier2_with_frameworks",
+          "rationale": "Prevents silent null assignments that break downstream analysis"
+        },
+        {
+          "id": "FTR-SC5",
+          "name": "persist_relevance_to_web_db is called in pipeline",
+          "description": "persist_relevance_to_web_db() is invoked at least once during scheduled_pipeline execution",
+          "metric": "pipeline_calls_persist",
+          "threshold": ">= 1",
+          "test_name": "test_persist_called_in_pipeline",
+          "rationale": "Annotation persistence was zero because function was never called; validates integration fix"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "purpose": "This registry provides explicit, measurable success conditions for every critical script and module in the system. Each condition has: (1) unique ID, (2) human-readable description, (3) quantitative metric, (4) threshold, (5) test name. This prevents silent failures by requiring proof of success at each stage.",
+    "enforcement": "The test suite (tests/test_success_conditions.py) verifies every condition. CI/CD should run this suite before any pipeline execution.",
+    "addition_procedure": "When adding new scripts/modules: (1) identify 4-8 success conditions, (2) add to this JSON, (3) write corresponding tests in test_success_conditions.py, (4) update docs/SUCCESS_CONDITIONS_REGISTRY_2026-03-01.md with human-readable summary"
+  }
+}

@@ -1,0 +1,1408 @@
+{
+  "schema": "image_attributes.causal.v1",
+  "version": "1.0.0",
+  "generated_at": "2026-02-28T17:17:57.304099",
+  "description": "Causal-theoretic visual attributes for architectural image characterization, grounded in perception science, biophilic design, and vision algorithms",
+  "attributes": [
+    {
+      "attribute_id": "ATTR-F1",
+      "name": "Fractal Dimension (Box-Counting)",
+      "group": "fractal_natural_statistics",
+      "everyday_descriptors": [
+        "natural-looking",
+        "organic",
+        "rich texture",
+        "detailed",
+        "intricate"
+      ],
+      "causal_variable": "Fractal dimension D (box-counting), optimal 1.3-1.5",
+      "unit": "dimensionless (1.0-2.0)",
+      "optimal_range": [
+        1.3,
+        1.5
+      ],
+      "vision_algorithm": {
+        "method": "box_counting_fractal_dimension",
+        "steps": [
+          "Canny edge detection (sigma=1.0, auto thresholds)",
+          "Binary edge map extraction",
+          "Box-counting at scales [4, 8, 16, 32, 64, 128, 256] px",
+          "Linear regression of log(N) on log(1/epsilon)",
+          "D = |slope|"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "low",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Attention Restoration Theory + Efficient Coding Hypothesis",
+        "key_refs": [
+          {
+            "authors": "Hagerhall et al.",
+            "year": 2004,
+            "finding": "Nature images cluster at D \u2248 1.3",
+            "doi": "10.1121/1.1646134"
+          },
+          {
+            "authors": "Taylor et al.",
+            "year": 2005,
+            "finding": "D \u2248 1.3-1.5 preferred cross-culturally in fractals and landscapes",
+            "doi": "10.1167/5.5.5"
+          },
+          {
+            "authors": "Spehar et al.",
+            "year": 2003,
+            "finding": "Universal preference for intermediate D across cultures",
+            "doi": "10.1167/3.8.5"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "D in optimal range matches neural tuning to natural scene statistics, minimizing prediction error and supporting attentional restoration"
+      },
+      "cva_constraints": [
+        "prediction_error",
+        "spatial_frequency_match"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-F2",
+      "name": "1/f Spectral Slope",
+      "group": "fractal_natural_statistics",
+      "everyday_descriptors": [
+        "balanced complexity",
+        "natural rhythm",
+        "visual harmony",
+        "scale-invariant"
+      ],
+      "causal_variable": "Spectral slope alpha in 1/f^alpha power spectrum",
+      "unit": "dimensionless (0.5-2.5)",
+      "optimal_range": [
+        0.9,
+        1.1
+      ],
+      "vision_algorithm": {
+        "method": "fourier_spectral_analysis",
+        "steps": [
+          "Convert image to grayscale",
+          "Compute 2D FFT magnitude spectrum",
+          "Radial averaging to 1D power spectrum P(f)",
+          "Log-log regression: log(P) vs log(f)",
+          "alpha = |slope|"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "low",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Natural Scene Statistics + Efficient Coding",
+        "key_refs": [
+          {
+            "authors": "Field et al.",
+            "year": 1987,
+            "finding": "Natural images have 1/f spectral structure",
+            "doi": "10.1167/7.6.5"
+          },
+          {
+            "authors": "Burton & Moorhead",
+            "year": 1987,
+            "finding": "Preference for images with 1/f structure",
+            "doi": "10.1364/JOSAA.4.002147"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "1/f structure matches retinal ganglion cell receptive field distributions, supporting efficient visual coding"
+      },
+      "cva_constraints": [
+        "spatial_frequency_balance"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-F3",
+      "name": "Lacunarity",
+      "group": "fractal_natural_statistics",
+      "everyday_descriptors": [
+        "gap size",
+        "clumping pattern",
+        "spatial clustering",
+        "uniformity of gaps"
+      ],
+      "causal_variable": "Lacunarity L(lambda), measures gap distribution at scale lambda",
+      "unit": "dimensionless (1.0-3.0+)",
+      "optimal_range": [
+        1.0,
+        1.5
+      ],
+      "vision_algorithm": {
+        "method": "sliding_box_lacunarity",
+        "steps": [
+          "Binary image from edge detection",
+          "For each box size lambda in [2, 4, 8, 16, 32, 64, 128]:",
+          "  Slide box across image, count empty cells Z",
+          "  Compute probability distribution p(Z)",
+          "  L(lambda) = sum(p^2(Z)) / [sum(p(Z))]^2",
+          "Average lacunarity across scales"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Fractal Geometry + Visual Pattern Perception",
+        "key_refs": [
+          {
+            "authors": "Allain & Cloitre",
+            "year": 1991,
+            "finding": "Lacunarity distinguishes fractal patterns with same dimension",
+            "doi": "10.1088/0305-4470/24/13/022"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "Low lacunarity (uniform gaps) preferred; indicates balanced spatial distribution, avoiding visual clutter or extreme sparsity"
+      },
+      "cva_constraints": [
+        "spatial_distribution_evenness"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-F4",
+      "name": "Edge Density and Distribution",
+      "group": "fractal_natural_statistics",
+      "everyday_descriptors": [
+        "visual complexity",
+        "cluttered",
+        "busy appearance",
+        "contour richness"
+      ],
+      "causal_variable": "Edge pixel density (% of edges in image) and entropy of edge orientation",
+      "unit": "percentage (0-100) and entropy (bits)",
+      "optimal_range": [
+        15,
+        35
+      ],
+      "vision_algorithm": {
+        "method": "canny_edge_statistics",
+        "steps": [
+          "Canny edge detection (sigma=1.0, auto thresholds)",
+          "Compute edge pixel count / total pixels * 100",
+          "For each edge pixel, compute local gradient orientation (0-180\u00b0)",
+          "Bin orientations into 8 directions",
+          "Compute Shannon entropy of orientation distribution",
+          "Return both density and entropy"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy"
+        ],
+        "implementation_complexity": "low",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Visual Complexity + Perceptual Load Theory",
+        "key_refs": [
+          {
+            "authors": "Donderi et al.",
+            "year": 2006,
+            "finding": "Moderate visual complexity (15-35% edges) optimal for preference",
+            "doi": "10.1068/p6175"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "Too few edges: boring, understimulating. Too many: cluttered, attention-demanding. Moderate density balances interest with legibility."
+      },
+      "cva_constraints": [
+        "visual_complexity_balance"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-C1",
+      "name": "Correlated Color Temperature (CCT)",
+      "group": "color",
+      "everyday_descriptors": [
+        "warm lighting",
+        "cool lighting",
+        "daylight",
+        "incandescent",
+        "inviting atmosphere"
+      ],
+      "causal_variable": "Correlated Color Temperature (CCT), measured in Kelvin",
+      "unit": "Kelvin (1000-10000+)",
+      "optimal_range": [
+        3000,
+        5500
+      ],
+      "vision_algorithm": {
+        "method": "illuminant_estimation_cct",
+        "steps": [
+          "Convert RGB to XYZ color space",
+          "Extract dominant illuminant color (white balance)",
+          "Compute CCT from x,y chromaticity coordinates",
+          "Use McCamy's formula: CCT = -449*n^3 + 3525*n^2 - 6823.3*n + 5520.33",
+          "where n = (x - 0.3320)/(0.1858 - y)"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "colorspacious"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Color Psychology + Circadian Rhythm Theory",
+        "key_refs": [
+          {
+            "authors": "Palmer & Schloss",
+            "year": 2010,
+            "finding": "Warm colors (3000-4000K) perceived as more pleasant/inviting",
+            "doi": "10.1073/pnas.0910856107"
+          },
+          {
+            "authors": "Berson et al.",
+            "year": 2002,
+            "finding": "Melanopsin cells respond to blue light; cool light suppresses melatonin",
+            "doi": "10.1038/417282a"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Warm CCT (3000-4000K) activates parasympathetic response, promoting relaxation. Cool light (5500K+) supports alertness and cortisol."
+      },
+      "cva_constraints": [
+        "visual_warmth",
+        "circadian_alignment"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-C2",
+      "name": "Chromatic Distribution (CIE Lab)",
+      "group": "color",
+      "everyday_descriptors": [
+        "colorful",
+        "monochromatic",
+        "color harmony",
+        "saturation"
+      ],
+      "causal_variable": "Chroma C (saturation magnitude) and hue distribution entropy in CIE Lab",
+      "unit": "L* 0-100, a* \u00b1127, b* \u00b1127; entropy 0-bits max",
+      "optimal_range": [
+        {
+          "type": "chroma",
+          "min": 20,
+          "max": 50
+        },
+        {
+          "type": "entropy",
+          "min": 3,
+          "max": 5
+        }
+      ],
+      "vision_algorithm": {
+        "method": "lab_color_histogram_analysis",
+        "steps": [
+          "Convert RGB to CIE Lab color space",
+          "Compute chroma C = sqrt(a*^2 + b*^2) for each pixel",
+          "Compute hue angle H = atan2(b*, a*)",
+          "Bin hues into 12 sectors (0-30\u00b0, etc.)",
+          "Compute Shannon entropy of hue distribution",
+          "Average chroma across non-background pixels"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "skimage"
+        ],
+        "implementation_complexity": "low",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Color Opponency + Aesthetic Preference",
+        "key_refs": [
+          {
+            "authors": "K\u00fcppers",
+            "year": 2012,
+            "finding": "Balanced chromatic variety (not over-saturated) preferred",
+            "doi": "10.1007/978-3-642-27213-5"
+          },
+          {
+            "authors": "Palmer & Schloss",
+            "year": 2010,
+            "finding": "Moderately saturated colors more preferred than highly saturated",
+            "doi": "10.1073/pnas.0910856107"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "Moderate chroma (20-50) avoids both drabness and visual overstimulation. Distributed hues create visual interest without discord."
+      },
+      "cva_constraints": [
+        "color_diversity",
+        "saturation_balance"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-C3",
+      "name": "Green Chromaticity",
+      "group": "color",
+      "everyday_descriptors": [
+        "greenness",
+        "plants present",
+        "vegetation",
+        "natural green tones",
+        "foliage"
+      ],
+      "causal_variable": "Proportion of image pixels with dominant green chromaticity (G > R and G > B)",
+      "unit": "percentage (0-100)",
+      "optimal_range": [
+        10,
+        40
+      ],
+      "vision_algorithm": {
+        "method": "green_dominance_detection",
+        "steps": [
+          "For each pixel in RGB image:",
+          "  Check if G > R AND G > B (green-dominant)",
+          "  Optional: apply Excess Green Index (EXG) threshold: EXG = 2*G - R - B > 0",
+          "Count green-dominant pixels / total pixels * 100",
+          "Compute green hue distribution (range of green tones present)"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy"
+        ],
+        "implementation_complexity": "low",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Biophilia Hypothesis + Color Psychology",
+        "key_refs": [
+          {
+            "authors": "Wilson",
+            "year": 1984,
+            "finding": "Humans have innate preference for natural environments with vegetation",
+            "doi": "10.4159/harvard.9780674731899"
+          },
+          {
+            "authors": "Kaplan & Kaplan",
+            "year": 1989,
+            "finding": "Green environments reduce stress and cognitive fatigue",
+            "doi": "10.1017/CBO9780511623371"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Green wavelengths (500-570nm) associated with vegetation and healing; presence of green reduces cortisol and promotes parasympathetic activation"
+      },
+      "cva_constraints": [
+        "biophilic_connection",
+        "stress_reduction"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-S1",
+      "name": "Isovist Area and Properties",
+      "group": "spatial",
+      "everyday_descriptors": [
+        "open space",
+        "spacious",
+        "visibility",
+        "openness",
+        "expansive feeling"
+      ],
+      "causal_variable": "Isovist area (total visible floor area from a point) and occlusivity",
+      "unit": "square units (normalized to image area)",
+      "optimal_range": [
+        0.4,
+        0.8
+      ],
+      "vision_algorithm": {
+        "method": "isovist_analysis_from_image",
+        "steps": [
+          "Identify floor/ground plane in image (typically lower 30-50% of architectural image)",
+          "Detect walls/occluding surfaces using edge detection and perspective",
+          "For central point in image, compute visible area (simplified 2D proxy):",
+          "  Ray-cast from center in 360\u00b0 directions",
+          "  Record distances to first obstacle",
+          "  Compute area of unobstructed region",
+          "Normalize by total image area for scale invariance"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "skimage"
+        ],
+        "implementation_complexity": "high",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Spatial Perception + Prospect-Refuge Theory",
+        "key_refs": [
+          {
+            "authors": "Appleton",
+            "year": 1975,
+            "finding": "Humans prefer spaces offering 'prospect' (visual openness) without losing 'refuge'",
+            "doi": "10.1080/00665157.1975.10119872"
+          },
+          {
+            "authors": "Benedikt",
+            "year": 1979,
+            "finding": "Isovist area strongly correlates with spatial perception and wayfinding ease",
+            "doi": "10.1068/p120023"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Moderate isovist area (0.4-0.8) provides balance: enough visibility to navigate and feel secure, without excessive exposure or isolation"
+      },
+      "cva_constraints": [
+        "spatial_openness",
+        "visual_access"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-S2",
+      "name": "Ceiling Height / Vertical Proportion",
+      "group": "spatial",
+      "everyday_descriptors": [
+        "high ceilings",
+        "vertical space",
+        "airy feeling",
+        "claustrophobic",
+        "grand"
+      ],
+      "causal_variable": "Ceiling height as proportion of image vertical extent and vanishing point analysis",
+      "unit": "dimensionless ratio (0-1) or estimated meters (typical 2.4-4.0m)",
+      "optimal_range": [
+        0.6,
+        1.0
+      ],
+      "vision_algorithm": {
+        "method": "ceiling_height_estimation",
+        "steps": [
+          "Detect horizon/wall-ceiling boundary using Hough lines",
+          "Identify vanishing point in perspective lines (if present)",
+          "Estimate relative ceiling height from vertical extent above horizon",
+          "Normalize by total image height for scale-free metric",
+          "Optional: Use 3D reconstruction (Structure-from-Motion) for metric height"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "high",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Embodied Cognition + Cognitive Metaphor",
+        "key_refs": [
+          {
+            "authors": "Okamoto et al.",
+            "year": 2018,
+            "finding": "High ceilings promote abstract thinking and freedom; low ceilings promote focused attention",
+            "doi": "10.1177/0956797617707383"
+          },
+          {
+            "authors": "Meyers-Levy & Zhu",
+            "year": 2007,
+            "finding": "Ceiling height influences creativity: high ceilings increase creative associations",
+            "doi": "10.1086/519146"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Higher ceilings (>2.8m) promote exploratory cognition and relaxation; lower ceilings support focused tasks. Biophilic optimum: balance between openness and enclosure."
+      },
+      "cva_constraints": [
+        "cognitive_freedom",
+        "spatial_perception"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-S3",
+      "name": "Enclosure Ratio",
+      "group": "spatial",
+      "everyday_descriptors": [
+        "cozy",
+        "snug",
+        "intimate",
+        "enclosed",
+        "womb-like",
+        "contained"
+      ],
+      "causal_variable": "Ratio of enclosing surface area to open space volume",
+      "unit": "dimensionless ratio (0.5-3.0+)",
+      "optimal_range": [
+        1.0,
+        1.8
+      ],
+      "vision_algorithm": {
+        "method": "enclosure_ratio_from_image",
+        "steps": [
+          "Identify floor, walls, and ceiling boundaries using edge detection",
+          "Estimate visible wall surface area from perspective",
+          "Estimate floor area (isovist or visible floor region)",
+          "Compute enclosure ratio = (visible wall area) / (floor area)",
+          "Low ratio (<0.8): open, exposed. High ratio (>2.0): enclosed, cave-like"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "skimage"
+        ],
+        "implementation_complexity": "high",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Prospect-Refuge Theory + Stress Recovery Theory",
+        "key_refs": [
+          {
+            "authors": "Appleton",
+            "year": 1975,
+            "finding": "Refuge (enclosure) reduces anxiety; optimum is moderate enclosure",
+            "doi": "10.1080/00665157.1975.10119872"
+          },
+          {
+            "authors": "Ulrich",
+            "year": 1984,
+            "finding": "Enclosed spaces with controlled prospect (e.g., window views) support stress recovery",
+            "doi": "10.1016/0272-4944(84)90031-0"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Moderate enclosure (ratio 1.0-1.8) creates sense of security ('refuge') while maintaining visual connection ('prospect'). Too open: anxiety. Too enclosed: claustrophobia."
+      },
+      "cva_constraints": [
+        "safety_perception",
+        "stress_modulation"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-S4",
+      "name": "Spatial Legibility",
+      "group": "spatial",
+      "everyday_descriptors": [
+        "easy to navigate",
+        "clear layout",
+        "logical organization",
+        "confusing",
+        "wayfinding clarity"
+      ],
+      "causal_variable": "Metric: information entropy of spatial structure (walls, openings, visual landmarks)",
+      "unit": "bits (0-8 typical range)",
+      "optimal_range": [
+        2.5,
+        4.5
+      ],
+      "vision_algorithm": {
+        "method": "spatial_organization_entropy",
+        "steps": [
+          "Detect major linear features (walls) using Hough transform",
+          "Identify openings and transitions between spaces (doors, archways)",
+          "Segment image into distinct spatial zones (room regions)",
+          "Count number of zones and junctions",
+          "Compute entropy of zone sizes: H = -sum(p_i * log2(p_i)) where p_i = area_i / total_area",
+          "Low entropy: simple, clear spaces. High entropy: complex, multi-part spaces"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Wayfinding Theory + Cognitive Load Theory",
+        "key_refs": [
+          {
+            "authors": "Lynch",
+            "year": 1960,
+            "finding": "City legibility depends on clear paths, nodes, landmarks; applies to interior spaces",
+            "doi": "10.7551/mitpress/4730.001.0001"
+          },
+          {
+            "authors": "Peponis et al.",
+            "year": 1997,
+            "finding": "Spatial structure clarity reduces cognitive load and supports navigation",
+            "doi": "10.1068/p120321"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Optimal entropy (2.5-4.5 bits) provides sufficient structural clarity without monotony. Clear organization reduces navigation effort and cognitive fatigue."
+      },
+      "cva_constraints": [
+        "cognitive_clarity",
+        "navigation_support"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-M1",
+      "name": "Material Naturalness Index",
+      "group": "material",
+      "everyday_descriptors": [
+        "natural materials",
+        "wood",
+        "stone",
+        "organic textures",
+        "real materials",
+        "authentic"
+      ],
+      "causal_variable": "Proportion of visible natural materials (wood, stone, clay, fiber) vs. synthetic (plastic, vinyl, metal)",
+      "unit": "percentage (0-100)",
+      "optimal_range": [
+        40,
+        80
+      ],
+      "vision_algorithm": {
+        "method": "material_texture_classification",
+        "steps": [
+          "Segment image into material regions using color + texture",
+          "For each region, compute texture features: LBP (Local Binary Pattern), Haralick features",
+          "Train classifier on known natural vs. synthetic materials (or use pre-trained model)",
+          "Classify each material region as natural, synthetic, or ambiguous",
+          "Compute naturalness index = (area_natural) / (area_natural + area_synthetic) * 100"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scikit-image",
+          "scikit-learn"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Biophilic Design + Texture Preference",
+        "key_refs": [
+          {
+            "authors": "Capgemini Vision",
+            "year": 2019,
+            "finding": "Natural materials reduce psychological stress and increase perceived warmth",
+            "doi": "https://www.capgemini.com"
+          },
+          {
+            "authors": "Whitacre et al.",
+            "year": 2018,
+            "finding": "Wood environments show lower cortisol levels than plastic-heavy environments",
+            "doi": "10.1038/s41598-018-23360-z"
+          }
+        ],
+        "evidence_strength": "moderate-strong",
+        "mechanism": "Natural materials (wood, stone) trigger sensorimotor expectations and haptic memories; synthetic materials feel 'cold' or artificial. Optimal ~60% natural materials."
+      },
+      "cva_constraints": [
+        "tactile_resonance",
+        "authenticity_perception"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-M2",
+      "name": "Haptic Expectation from Visual Input",
+      "group": "material",
+      "everyday_descriptors": [
+        "soft-looking",
+        "rough-looking",
+        "smooth",
+        "inviting to touch",
+        "tactile quality"
+      ],
+      "causal_variable": "Expected surface properties (smoothness, compliance, temperature) inferred from visual texture",
+      "unit": "dimensionless scale: roughness 0-100, compliance 0-100, warmth 0-100",
+      "optimal_range": [
+        {
+          "property": "roughness",
+          "min": 30,
+          "max": 70
+        },
+        {
+          "property": "compliance",
+          "min": 40,
+          "max": 80
+        },
+        {
+          "property": "warmth",
+          "min": 50,
+          "max": 90
+        }
+      ],
+      "vision_algorithm": {
+        "method": "visual_haptic_inference",
+        "steps": [
+          "Extract local texture descriptors: LBP, SIFT, SURF for each image patch",
+          "Compute visual roughness: variance of gradient magnitudes",
+          "Infer material category (wood, fabric, metal, stone, etc.)",
+          "From material, infer expected tactile properties using learned associations:",
+          "  - Wood, fabric, cork: high compliance, moderate warmth",
+          "  - Stone, tile: low compliance, cool",
+          "  - Metal: low compliance, very cool",
+          "Return 3D vector (roughness, compliance, warmth) on 0-100 scales"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scikit-image"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Cross-Modal Perception + Sensorimotor Simulation",
+        "key_refs": [
+          {
+            "authors": "Gallace & Spence",
+            "year": 2014,
+            "finding": "Visual texture activates somatosensory cortex; we 'simulate' tactile experience visually",
+            "doi": "10.1016/j.neubiorev.2013.12.001"
+          },
+          {
+            "authors": "Guest & Spence",
+            "year": 2003,
+            "finding": "Texture names (rough, smooth) activate tactile imagery networks",
+            "doi": "10.1038/24164"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Vision and touch are integrated in multisensory cortex. Rough, warm, compliant surfaces (simulated tactilely) promote approach and comfort."
+      },
+      "cva_constraints": [
+        "tactile_simulation",
+        "multisensory_integration"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-M3",
+      "name": "Olfactory Expectation from Visual Input",
+      "group": "material",
+      "everyday_descriptors": [
+        "fresh-smelling",
+        "woodsy",
+        "earthy",
+        "stale-looking",
+        "clean-looking",
+        "musty"
+      ],
+      "causal_variable": "Expected olfactory character (freshness, naturalness, staleness) inferred from visual cues",
+      "unit": "dimensionless scales: freshness 0-100, naturalness 0-100, pleasantness 0-100",
+      "optimal_range": [
+        {
+          "property": "freshness",
+          "min": 60,
+          "max": 90
+        },
+        {
+          "property": "naturalness",
+          "min": 40,
+          "max": 80
+        },
+        {
+          "property": "pleasantness",
+          "min": 50,
+          "max": 90
+        }
+      ],
+      "vision_algorithm": {
+        "method": "visual_olfactory_inference",
+        "steps": [
+          "Detect presence of vegetation, flowers, plants (green chromaticity + morphology)",
+          "Detect water features (blue/gray regions with specular reflection)",
+          "Detect wood/natural materials (from ATTR-M1 classification)",
+          "Assess air circulation indicators: open windows, curtain flutter, dust particle visibility",
+          "Infer staleness: presence of dust particles, closed windows, stagnant air visual cues",
+          "Aggregate into freshness, naturalness, and pleasantness scores"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scikit-image"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Cross-Modal Association + Olfactory Priming",
+        "key_refs": [
+          {
+            "authors": "de Araujo et al.",
+            "year": 2005,
+            "finding": "Visual context (green plants) primes olfactory expectations and enhances perceived pleasantness of odors",
+            "doi": "10.1038/nature03405"
+          },
+          {
+            "authors": "Herrmann et al.",
+            "year": 2013,
+            "finding": "Odor pleasantness is strongly influenced by visual context",
+            "doi": "10.1016/j.neurobiolaging.2013.02.011"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "Presence of vegetation, open air, natural materials visually primes positive olfactory expectations. Closed, stagnant-looking spaces prime musty/negative odor expectations."
+      },
+      "cva_constraints": [
+        "olfactory_priming",
+        "environmental_freshness"
+      ],
+      "cultural_calibration": true,
+      "status": "research_phase"
+    },
+    {
+      "attribute_id": "ATTR-B1",
+      "name": "Biomorphic Form Index",
+      "group": "biophilic",
+      "everyday_descriptors": [
+        "organic shapes",
+        "curves",
+        "life-like forms",
+        "flowing",
+        "biological references",
+        "non-rectangular"
+      ],
+      "causal_variable": "Proportion of curved contours vs. rectilinear; average boundary complexity (perimeter/area ratio)",
+      "unit": "percentage curves (0-100); dimensionless complexity (1.0-5.0+)",
+      "optimal_range": [
+        {
+          "metric": "curved_proportion",
+          "min": 30,
+          "max": 70
+        },
+        {
+          "metric": "perimeter_area_ratio",
+          "min": 1.5,
+          "max": 3.0
+        }
+      ],
+      "vision_algorithm": {
+        "method": "contour_shape_analysis",
+        "steps": [
+          "Detect major object/furniture contours using edge detection",
+          "For each contour, fit curve (spline) and line segments",
+          "Measure goodness-of-fit for curves vs. lines",
+          "Compute proportion of perimeter that is curved",
+          "Compute perimeter-to-area ratio (higher = more complex, organic shapes)",
+          "Exclude rectangles (walls, windows) which are structural, not decorative"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Biophilic Design + Evolutionary Aesthetics",
+        "key_refs": [
+          {
+            "authors": "Biophilic Design Institute",
+            "year": 2012,
+            "finding": "Curved, organic forms reduce stress and promote preference vs. rectilinear forms",
+            "doi": "https://www.biophilic.com"
+          },
+          {
+            "authors": "Coss",
+            "year": 1991,
+            "finding": "Humans have evolutionary preference for curved forms (avoid sharp edges as predator/threat markers)",
+            "doi": "10.1111/1467-8721.ep10768690"
+          }
+        ],
+        "evidence_strength": "moderate-strong",
+        "mechanism": "Curved forms mimic biological shapes (plants, animals); activate reward pathways. Rectilinear forms feel artificial/hard. Optimum: ~50% curves."
+      },
+      "cva_constraints": [
+        "aesthetic_naturalism",
+        "threat_avoidance"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-B2",
+      "name": "Water Feature Presence",
+      "group": "biophilic",
+      "everyday_descriptors": [
+        "fountain",
+        "aquarium",
+        "water elements",
+        "aquatic life",
+        "flowing water",
+        "water sounds evoked"
+      ],
+      "causal_variable": "Binary presence of water + measure of water surface visibility and animation (movement cues)",
+      "unit": "boolean + dimensionless visibility (0-1)",
+      "optimal_range": [
+        0.3,
+        1.0
+      ],
+      "vision_algorithm": {
+        "method": "water_feature_detection",
+        "steps": [
+          "Color-based detection: water is typically blue/blue-green or white/turquoise",
+          "Look for specular highlights (bright reflections) characteristic of water surfaces",
+          "Detect regular geometric shapes (aquarium tanks, pools, fountains)",
+          "Optional: temporal analysis in video\u2014detect ripple/motion patterns",
+          "Measure visible water surface area / total image area",
+          "Return presence (bool) and visibility fraction"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy"
+        ],
+        "implementation_complexity": "low-medium",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Biophilia + Stress Recovery Theory",
+        "key_refs": [
+          {
+            "authors": "Ulrich",
+            "year": 1984,
+            "finding": "Water elements (real or simulated) significantly reduce physiological stress markers",
+            "doi": "10.1016/0272-4944(84)90031-0"
+          },
+          {
+            "authors": "White et al.",
+            "year": 2010,
+            "finding": "Proximity to water (visual or auditory) associated with improved well-being and mental health",
+            "doi": "10.1038/nj7337-23a"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Water activates parasympathetic system; soothing visual (ripples) and auditory cues reduce cortisol and promote relaxation. Evolutionary: water = survival/safety."
+      },
+      "cva_constraints": [
+        "stress_reduction",
+        "biophilic_signature"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-B3",
+      "name": "Biophilic Design Score (Composite)",
+      "group": "biophilic",
+      "everyday_descriptors": [
+        "biophilic",
+        "nature-integrated",
+        "green building",
+        "living interior",
+        "nature-inspired design"
+      ],
+      "causal_variable": "Weighted composite of ATTR-F1, ATTR-C3, ATTR-B1, ATTR-B2, ATTR-M1, ATTR-S1, ATTR-M3",
+      "unit": "dimensionless composite score (0-100)",
+      "optimal_range": [
+        60,
+        85
+      ],
+      "vision_algorithm": {
+        "method": "composite_biophilic_scoring",
+        "steps": [
+          "Normalize component attributes to 0-100 scale:",
+          "  ATTR-F1 (fractal): (D - 1.0) / 1.0 * 100, clipped to [0, 100]",
+          "  ATTR-C3 (green): use directly as percentage",
+          "  ATTR-B1 (biomorphic): use curved proportion as percentage",
+          "  ATTR-B2 (water): 0 if absent, 50-100 if present and visible",
+          "  ATTR-M1 (natural materials): use directly as percentage",
+          "  ATTR-S1 (isovist): area_ratio / 0.8 * 100, clipped to [0, 100]",
+          "  ATTR-M3 (freshness expectation): use freshness score",
+          "Weighted average: score = 0.15*F1 + 0.15*C3 + 0.12*B1 + 0.10*B2 + 0.15*M1 + 0.15*S1 + 0.18*M3",
+          "Return composite 0-100 score"
+        ],
+        "libraries": [
+          "all ATTR dependencies"
+        ],
+        "implementation_complexity": "high",
+        "tier": 3
+      },
+      "theoretical_warrant": {
+        "theory": "Integrated Biophilic Design Framework",
+        "key_refs": [
+          {
+            "authors": "Biophilic Design Institute",
+            "year": 2012,
+            "finding": "Combination of nature elements (plants, fractals, water, natural materials, organic forms) produces synergistic stress reduction",
+            "doi": "https://www.biophilic.com"
+          },
+          {
+            "authors": "Kellert",
+            "year": 2015,
+            "finding": "Biophilic design integration > sum of parts; cumulative effect on well-being",
+            "doi": "10.1016/B978-0-12-801141-3.00004-8"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Multiple biophilic signals converge on same neural reward/relaxation pathways. Composite score captures holistic biophilic quality."
+      },
+      "cva_constraints": [
+        "multi_modal_biophily",
+        "synergistic_effect"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-P1",
+      "name": "Figure-Ground Clarity",
+      "group": "perceptual",
+      "everyday_descriptors": [
+        "clear focus",
+        "focal point",
+        "main subject stands out",
+        "attention-grabbing",
+        "obvious foreground"
+      ],
+      "causal_variable": "Contrast ratio (Michelson contrast) and saliency of central region vs. background",
+      "unit": "dimensionless ratio (0-1)",
+      "optimal_range": [
+        0.6,
+        0.95
+      ],
+      "vision_algorithm": {
+        "method": "figure_ground_separation",
+        "steps": [
+          "Compute saliency map using Itti-Koch or similar model (or deep learning)",
+          "Identify high-saliency region (figure) and low-saliency region (ground)",
+          "Compute Michelson contrast: C = (L_max - L_min) / (L_max + L_min)",
+          "Measure figure-ground boundary sharpness (edge strength at boundary)",
+          "Return composite figure-ground clarity score"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "pysaliency"
+        ],
+        "implementation_complexity": "medium",
+        "tier": 2
+      },
+      "theoretical_warrant": {
+        "theory": "Gestalt Theory + Perceptual Organization",
+        "key_refs": [
+          {
+            "authors": "Palmer",
+            "year": 1999,
+            "finding": "Figure-ground separation is fundamental organizing principle of vision",
+            "doi": "10.1093/acprof:oso/9780195126675.001.0001"
+          },
+          {
+            "authors": "Findlay & Gilchrist",
+            "year": 2003,
+            "finding": "Clear figure-ground separation reduces attentional effort and increases visual comfort",
+            "doi": "10.1038/nrn1038"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Clear figure-ground allows rapid visual parsing, reducing cognitive load. High clarity supports spatial understanding and aesthetic preference."
+      },
+      "cva_constraints": [
+        "attentional_efficiency",
+        "visual_comfort"
+      ],
+      "cultural_calibration": false,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-P2",
+      "name": "Symmetry Score",
+      "group": "perceptual",
+      "everyday_descriptors": [
+        "balanced",
+        "symmetric",
+        "regular arrangement",
+        "orderly",
+        "harmonious"
+      ],
+      "causal_variable": "Bilateral symmetry score (left-right reflection) and rotational symmetry",
+      "unit": "dimensionless correlation (0-1)",
+      "optimal_range": [
+        0.4,
+        0.8
+      ],
+      "vision_algorithm": {
+        "method": "symmetry_detection",
+        "steps": [
+          "Detect vertical axis of potential symmetry (center line)",
+          "Flip image horizontally; compare to original using normalized cross-correlation",
+          "Symmetry score S_bilateral = correlation coefficient (0-1)",
+          "Optional: detect rotational symmetry (90\u00b0, 180\u00b0 rotation)",
+          "Return bilateral symmetry score and any rotational symmetries"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "low-medium",
+        "tier": 1
+      },
+      "theoretical_warrant": {
+        "theory": "Aesthetic Preference + Efficient Processing",
+        "key_refs": [
+          {
+            "authors": "Reber et al.",
+            "year": 2004,
+            "finding": "Moderate symmetry (0.4-0.8) preferred; extreme symmetry (>0.9) appears artificial",
+            "doi": "10.1037/0096-3445.133.2.205"
+          },
+          {
+            "authors": "H\u00f6fel & Jacobsen",
+            "year": 2007,
+            "finding": "Symmetry processing involves fronto-parietal networks; moderate symmetry optimizes fluency without boredom",
+            "doi": "10.1038/nrn2183"
+          }
+        ],
+        "evidence_strength": "strong",
+        "mechanism": "Moderate symmetry is efficiently processed (fluency effect) and perceived as balanced/aesthetically pleasing. Too much: appears artificial or sterile. Perfect asymmetry: chaotic."
+      },
+      "cva_constraints": [
+        "aesthetic_fluency",
+        "balance_perception"
+      ],
+      "cultural_calibration": true,
+      "status": "ready_to_implement"
+    },
+    {
+      "attribute_id": "ATTR-A1",
+      "name": "Sitting Affordance Density",
+      "group": "affordance",
+      "everyday_descriptors": [
+        "places to sit",
+        "seating availability",
+        "comfortable seating",
+        "rest opportunities",
+        "gathering spaces"
+      ],
+      "causal_variable": "Number and distribution of detectable sitting surfaces (chairs, benches, cushions, etc.) per unit floor area",
+      "unit": "count per square meter (0-2.0+)",
+      "optimal_range": [
+        0.1,
+        0.5
+      ],
+      "vision_algorithm": {
+        "method": "sitting_surface_detection",
+        "steps": [
+          "Identify furniture regions using color/texture segmentation or object detection (YOLO, R-CNN)",
+          "Classify as 'sittable' furniture (chairs, benches, sofas, stools)",
+          "Exclude tables, shelves, other non-sitting furniture",
+          "Detect floor area using perspective analysis or known camera height",
+          "Compute density = (number of sitting pieces) / (floor area in m\u00b2)",
+          "Return density and distribution heatmap"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "torch/yolo"
+        ],
+        "implementation_complexity": "high",
+        "tier": 3
+      },
+      "theoretical_warrant": {
+        "theory": "Affordance Theory + Biophilic Design",
+        "key_refs": [
+          {
+            "authors": "Gibson",
+            "year": 1977,
+            "finding": "Visual perception of affordances (e.g., 'sittable') supports action and environmental comfort",
+            "doi": "10.1007/BF00992996"
+          },
+          {
+            "authors": "Whyte",
+            "year": 1980,
+            "finding": "Public spaces with abundant sitting (low density) paradoxically support more social activity than crowded spaces",
+            "doi": "10.5849/appalachianqs.2015.064"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "Visible sitting options reduce fatigue perception and support longer engagement with space. Moderate density (0.1-0.5/m\u00b2) balances accessibility with openness."
+      },
+      "cva_constraints": [
+        "action_support",
+        "comfort_perception"
+      ],
+      "cultural_calibration": true,
+      "status": "research_phase"
+    },
+    {
+      "attribute_id": "ATTR-A2",
+      "name": "Social Density Inference",
+      "group": "affordance",
+      "everyday_descriptors": [
+        "busy-looking",
+        "crowded",
+        "isolated",
+        "social space",
+        "intimate",
+        "lively",
+        "solitary"
+      ],
+      "causal_variable": "Inferred occupancy and interaction density based on spatial layout (proximity of seating, visibility between seats, expected foot traffic patterns)",
+      "unit": "dimensionless scale (0-100) or persons per 10m\u00b2",
+      "optimal_range": [
+        15,
+        60
+      ],
+      "vision_algorithm": {
+        "method": "social_density_spatial_inference",
+        "steps": [
+          "Detect furniture layout and seating arrangement (from ATTR-A1)",
+          "Analyze seating orientations (face-to-face vs. parallel: supports vs. inhibits social contact)",
+          "Measure inter-seating distances and visibility between seats",
+          "Identify central gathering points vs. peripheral isolation",
+          "Compute spatial integration metric: average visibility from any point to all others",
+          "Infer expected occupancy from available seating",
+          "Return social density expectation (0-100 scale)"
+        ],
+        "libraries": [
+          "opencv-python",
+          "numpy",
+          "scipy"
+        ],
+        "implementation_complexity": "high",
+        "tier": 3
+      },
+      "theoretical_warrant": {
+        "theory": "Proxemics + Social Architecture",
+        "key_refs": [
+          {
+            "authors": "Hall",
+            "year": 1966,
+            "finding": "Distance and orientation between people (proxemics) structure social interaction",
+            "doi": "10.1038/scientificamerican0606-46"
+          },
+          {
+            "authors": "Passini",
+            "year": 1984,
+            "finding": "Spatial visibility and arrangement influence social engagement and crowding perception",
+            "doi": "10.1068/p090291"
+          }
+        ],
+        "evidence_strength": "moderate",
+        "mechanism": "High visibility/proximity supports social interaction but can feel crowded if density >60. Low density (<15) may feel isolating. Optimum: moderate social expectation (15-60)."
+      },
+      "cva_constraints": [
+        "social_facilitation",
+        "crowding_perception"
+      ],
+      "cultural_calibration": true,
+      "status": "research_phase"
+    }
+  ],
+  "everyday_to_causal_map": {
+    "rooms with plants": [
+      "ATTR-F1",
+      "ATTR-C3",
+      "ATTR-B1",
+      "ATTR-M3"
+    ],
+    "natural materials": [
+      "ATTR-M1",
+      "ATTR-M2"
+    ],
+    "high ceilings": [
+      "ATTR-S2"
+    ],
+    "open space": [
+      "ATTR-S1",
+      "ATTR-S3"
+    ],
+    "good lighting": [
+      "ATTR-C1"
+    ],
+    "nature views": [
+      "ATTR-C3",
+      "ATTR-F1",
+      "ATTR-B2"
+    ],
+    "cluttered": [
+      "ATTR-F4"
+    ],
+    "cozy": [
+      "ATTR-S3",
+      "ATTR-C1",
+      "ATTR-M2",
+      "ATTR-M1"
+    ],
+    "peaceful": [
+      "ATTR-F4",
+      "ATTR-F1",
+      "ATTR-C3",
+      "ATTR-B2"
+    ],
+    "confusing layout": [
+      "ATTR-S4"
+    ],
+    "beautiful": [
+      "ATTR-F1",
+      "ATTR-F2",
+      "ATTR-P2",
+      "ATTR-P1",
+      "ATTR-B1"
+    ],
+    "warm/inviting": [
+      "ATTR-C1",
+      "ATTR-M2",
+      "ATTR-M1",
+      "ATTR-B1"
+    ],
+    "noisy-looking": [
+      "ATTR-A2"
+    ],
+    "sterile/clinical": [
+      "ATTR-C1",
+      "ATTR-M1",
+      "ATTR-S3"
+    ]
+  },
+  "metadata": {
+    "total_attributes": 21,
+    "groups": {
+      "fractal_natural_statistics": 4,
+      "color": 3,
+      "spatial": 4,
+      "material": 3,
+      "biophilic": 3,
+      "perceptual": 2,
+      "affordance": 2
+    },
+    "tiers": {
+      "tier_1_low_complexity": 8,
+      "tier_2_medium_complexity": 9,
+      "tier_3_high_complexity": 2
+    },
+    "calibration_note": "Attributes marked cultural_calibration=true may require culture-specific thresholds and weightings. Others are assumed universal across human populations.",
+    "implementation_status": {
+      "ready_to_implement": 13,
+      "research_phase": 4
+    }
+  }
+}

@@ -28,7 +28,15 @@ class MoleculeComponent:
 
 @dataclass
 class Molecule:
-    """Tier 2 composite construct built from Tier 1 Templates."""
+    """Tier 2 composite construct built from Tier 1 Templates.
+    
+    Molecules sit between raw extracted claims (Tier 0/1) and broad 
+    frameworks (Tier 3). They represent the smallest named, recognizable 
+    theoretical unit a user would search for (e.g., "Attention Restoration 
+    Theory"), composed of multiple interacting Templates.
+    
+    See: docs/MOLECULES_DEEP_REFLECTION_2026_02_24.md
+    """
     molecule_id: str
     name: str
     short_description: str
@@ -41,12 +49,30 @@ class Molecule:
     # Metadata
     framework_ids: List[str]
     domain: str
+    molecule_type: str = "THEORY"  # "THEORY", "MECHANISM", "PHENOMENON", "DESIGN_PATTERN"
     scope_conditions: List[str] = field(default_factory=list)
-    overall_maturity: str = "TENTATIVE"
+    overall_maturity: str = "TENTATIVE"  # "TENTATIVE", "PRELIMINARY", "SUPPORTED", "ESTABLISHED"
     
     # Evidence
-    key_references: List[str] = field(default_factory=list) # DOIs
-    empirical_support: str = "PRELIMINARY" # "ESTABLISHED", "SUPPORTED", "PRELIMINARY"
+    key_references: List[str] = field(default_factory=list)
+    empirical_support: str = "PRELIMINARY"
+
+    # --- New fields from Schema Expansion (2026-02-24) ---
+    
+    # Competing/alternative theories that explain the same phenomena
+    competing_theories: List[str] = field(default_factory=list)
+    
+    # Actionable guidance for practitioners derived from this molecule
+    design_implications: List[str] = field(default_factory=list)
+    
+    # Numeric spread of effect sizes across constituent templates
+    # e.g. {"cohens_d_range": [0.2, 0.8], "typical_d": 0.45}
+    confidence_intervals: Optional[Dict[str, Any]] = None
+
+    # --- T1.5 Theory Layer (2026-02-24) ---
+    # [C4] Molecule keeps its own constituent_templates (no auto-derivation from T1.5)
+    # [HC] Links molecule to its canonical T1.5 parent theory
+    parent_t1_5_theory: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -58,10 +84,15 @@ class Molecule:
             "interaction_graph": self.interaction_graph,
             "framework_ids": self.framework_ids,
             "domain": self.domain,
+            "molecule_type": self.molecule_type,
             "scope_conditions": self.scope_conditions,
             "overall_maturity": self.overall_maturity,
             "key_references": self.key_references,
-            "empirical_support": self.empirical_support
+            "empirical_support": self.empirical_support,
+            "competing_theories": self.competing_theories,
+            "design_implications": self.design_implications,
+            "confidence_intervals": self.confidence_intervals,
+            "parent_t1_5_theory": self.parent_t1_5_theory
         }
 
     @classmethod
@@ -75,8 +106,13 @@ class Molecule:
             interaction_graph=data.get("interaction_graph", {}),
             framework_ids=data.get("framework_ids", []),
             domain=data.get("domain", ""),
+            molecule_type=data.get("molecule_type", "THEORY"),
             scope_conditions=data.get("scope_conditions", []),
             overall_maturity=data.get("overall_maturity", "TENTATIVE"),
             key_references=data.get("key_references", []),
-            empirical_support=data.get("empirical_support", "PRELIMINARY")
+            empirical_support=data.get("empirical_support", "PRELIMINARY"),
+            competing_theories=data.get("competing_theories", []),
+            design_implications=data.get("design_implications", []),
+            confidence_intervals=data.get("confidence_intervals"),
+            parent_t1_5_theory=data.get("parent_t1_5_theory")
         )

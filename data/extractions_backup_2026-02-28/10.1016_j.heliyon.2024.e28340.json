@@ -1,0 +1,346 @@
+{
+  "doi": "10.1016/j.heliyon.2024.e28340",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.86,
+  "n_findings": 4,
+  "extracted_at": "2026-02-25T00:45:57.514460+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.002569,
+  "title": "The impact of room shape on affective states, heartrate, and creative output",
+  "authors": "K. Strachan-Regan et al., 2024",
+  "research_question": "To investigate the effects of curved and rectangular architectural spaces on individuals' affective states, heart rate, and creative output.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 35,
+    "description": "A total of 35 participants (15 males, 20 females) with ages ranging from 18 to 64 years (M = 25.6, SD = 9.11). The sample included 18 students (51.4%), 13 employed (40%), and 3 unemployed (8.7%). All participants were proficient in English and had near normal or corrected vision.",
+    "recruitment": "Recruited through the University's Research Participant Pool and social media platforms."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Two distinct virtual reality environments: a 'curved room' and a 'rectangular room'. Both rooms were white, approximately 20 m\u00b2 in floor area, and 2.8 m ceiling height. They featured identical office-like elements (wooden desk, black speaker, carpet, one door, one light) and a view of blue sky, trees, and greenery. The rectangular room had square windows and rectangular dimensions/corners. The curved room featured rounded walls, curved windows, and a dome-shaped ceiling.",
+      "n_stimuli": 2,
+      "source": "Fig. 1, p.2; Methods 3.4, p.5"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Positive affect",
+      "instrument": "Positive and Negative Affect Schedule (PANAS-Long Form)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Negative affect",
+      "instrument": "Positive and Negative Affect Schedule (PANAS-Long Form)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Average heart rate in beats per minute",
+      "instrument": "Elite HRV CorSense device",
+      "type": "physiological"
+    },
+    {
+      "construct": "Divergent thinking / Creative output (Semantic Distance)",
+      "instrument": "Guilford Alternative Uses Task (GAUT) scored using computational Semantic Distance (SemDis) platform",
+      "type": "performance"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Curved room condition (compared to rectangular room condition)",
+      "consequent": "Positive affect scores (PANAS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.82,
+      "effect_size_type": "Cohen_d",
+      "sample_size": 35,
+      "confidence_interval": null,
+      "test_statistic": "t(34) = 4.87",
+      "theory_links": [
+        "PP",
+        "DP",
+        "NM",
+        "IC",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "VF1",
+        "T9",
+        "NM7",
+        "IC2"
+      ],
+      "mechanism": "Curved architectural spaces are associated with feelings of safety, pleasantness, and reduced threat, leading to higher positive emotional responses. Humans have an inherent inclination to approach environments that evoke positive emotions, possibly due to the ubiquity of curvature in natural settings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "Participants reported significantly higher scores on positive affect for the curved-room condition... compared to the rectangular-room condition.",
+      "outcome_id": "affect.mood.positive",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Rectangular room condition (compared to curved room condition)",
+      "consequent": "Negative affect scores (PANAS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": 0.35,
+      "effect_size_type": "Cohen_d",
+      "sample_size": 35,
+      "confidence_interval": null,
+      "test_statistic": "t(34) = 2.09",
+      "theory_links": [
+        "PP",
+        "DP",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "VF1",
+        "T9",
+        "NM7",
+        "IC2"
+      ],
+      "mechanism": "Angular geometry and rectangular interior spaces can elicit a more threatening response, consistent with higher negative affect.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "participants had significantly higher negative affect scores for the rectangular-room condition compared to the curved-room condition.",
+      "outcome_id": "affect.mood.negative",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Curved room condition (compared to rectangular room condition)",
+      "consequent": "Average heart rate (beats per minute)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": 0.71,
+      "effect_size_type": "Cohen_d",
+      "sample_size": 34,
+      "confidence_interval": null,
+      "test_statistic": "t(33) = 4.18",
+      "theory_links": [
+        "NM",
+        "IC",
+        "SRT"
+      ],
+      "template_ids": [
+        "NM5",
+        "IC2",
+        "SRT1"
+      ],
+      "mechanism": "Lower resting heart rate is associated with subjective feelings of relaxation and comfort, as well as a neurophysiological positive emotional response.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "Participants had a significantly lower heart rate for the curved-room condition... compared to the rectangular-room condition.",
+      "outcome_id": "physio.heart_rate",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Curved room condition (compared to rectangular room condition)",
+      "consequent": "Semantic Distance (SemDis) scores (creative output)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "<0.047",
+      "effect_size": 0.35,
+      "effect_size_type": "Cohen_d",
+      "sample_size": 35,
+      "confidence_interval": null,
+      "test_statistic": "t(34) = 2.06",
+      "theory_links": [
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "CREA1",
+        "CREA2",
+        "T20"
+      ],
+      "mechanism": "Various room features, such as window views of nature, complexity, natural materials, and warmer colors, are potential enhancers of creative thinking. The design and layout of a space can enhance creative thinking processes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6-7",
+      "quote": "Participants had a significantly higher SemDis scores for the curved-room condition... compared to the rectangular-room condition."
+    }
+  ],
+  "mechanisms": [
+    "Curved architectural spaces are associated with feelings of safety, pleasantness, and reduced threat, leading to higher positive emotional responses.",
+    "Humans have an inherent inclination to approach environments that evoke positive emotions and avoid those perceived as unfriendly or threatening, potentially due to the ubiquity of curvature in natural settings.",
+    "Lower resting heart rate is linked to subjective feelings of relaxation and comfort, and a neurophysiological positive emotional response.",
+    "Room features, including window views of nature, complexity, natural materials, and warmer colors, can enhance creative thinking processes."
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Architects and designers can utilize these findings to inform their decisions and promote neuroarchitecture that enhances positive emotional experiences and productivity.",
+    "Incorporating curved room designs can create spaces that improve mood, reduce stress, and increase creative thinking.",
+    "Considering room layout and design is important for educational and work environments."
+  ],
+  "domains": [
+    "A6_Visual_Form",
+    "A4_Light",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DP",
+    "NM",
+    "IC",
+    "DT",
+    "SRT",
+    "Biophilia"
+  ],
+  "tables": [],
+  "limitations": [
+    "The Guilford Alternative Uses Task (GAUT) and semantic distance, while valid, may not be the most sensitive measures of creativity, and other instruments are available.",
+    "The study focused solely on rectangular versus curved geometry to keep the experiment brief and prevent participant fatigue; future studies should explore various room shapes and curved walls.",
+    "The potential moderating impact of other factors, such as participant personality, was not examined and requires further research."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.heliyon.2024.e28340",
+    "title": "The impact of room shape on affective states, heartrate, and creative output",
+    "authors": [
+      "K. Strachan-Regan",
+      "O. Baumann"
+    ],
+    "year": 2024,
+    "journal": "Heliyon",
+    "volume": "10",
+    "issue": "6",
+    "pages": "e28340",
+    "publisher": "Elsevier BV",
+    "citation_count": 11,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1006/JEVP.1998.0089",
+      "10.1006/jevp.1998.0089",
+      "10.1007/978-1-4419-0745-5_3",
+      "10.1007/s00779-020-01455-7",
+      "10.1007/s10055-023-00864-2",
+      "10.1007/s10508-010-9618-z",
+      "10.1016/J.BUILDENV.2019.106278",
+      "10.1016/J.TSC.2013.03.001",
+      "10.1016/S0163-6383(97)90059-X",
+      "10.1016/S0165-1838(96)00108-7",
+      "10.1016/S0167-8760(97)85486-4",
+      "10.1016/j.buildenv.2019.106278",
+      "10.1016/j.buildenv.2020.106932",
+      "10.1016/j.cobeha.2018.08.010",
+      "10.1016/j.heliyon.2023.e16433",
+      "10.1016/j.jenvp.2019.101344",
+      "10.1016/j.jenvp.2022.101923",
+      "10.1016/j.tsc.2013.03.001",
+      "10.1017/S0021849904040097",
+      "10.1017/s0021849904040097",
+      "10.1037/0022-3514.54.6.1063",
+      "10.1037/H0026506",
+      "10.1037/H0055538",
+      "10.1037/H0072647",
+      "10.1037/H0073513",
+      "10.1037/h0026506",
+      "10.1037/h0055538",
+      "10.1037/h0072647",
+      "10.1037/h0073513",
+      "10.1038/sj.jea.7500165",
+      "10.1080/00038628.2021.1940827",
+      "10.1080/09613218.2019.1612228",
+      "10.1080/15502724.2023.2262148",
+      "10.1089/cyber.2009.0308",
+      "10.1093/jurban/jtg063",
+      "10.1111/J.1467-6494.1965.TB01391.X",
+      "10.1111/ina.12593",
+      "10.1111/j.1467-6494.1965.tb01391.x",
+      "10.1111/j.1467-9280.2006.01759.x",
+      "10.1111/j.1551-6709.2010.01106.x",
+      "10.1111/psyp.14121",
+      "10.1161/01.HYP.35.4.880",
+      "10.1348/0144665031752934",
+      "10.15540/nr.8.2.96",
+      "10.2190/EM.27.1.b",
+      "10.30773/pi.2017.08.17",
+      "10.3115/v1/P14-1023",
+      "10.3389/fnhum.2012.00319",
+      "10.3389/fnhum.2017.00477",
+      "10.3389/fnins.2019.01131",
+      "10.3758/BRM.41.4.1149",
+      "10.3758/s13428-020-01453-w",
+      "10.5395/rde.2013.38.1.52",
+      "10.7490/F1000RESEARCH.1094398.1"
+    ],
+    "cited_by": [
+      "10.3390/su18031469",
+      "10.3390/brainsci16020131",
+      "10.1080/26892618.2025.2602124",
+      "10.29121/shodhkosh.v6.i4s.2025.6837",
+      "10.3389/fpsyg.2025.1656337",
+      "10.1016/j.buildenv.2025.114103",
+      "10.3390/designs9050118",
+      "10.1145/3743049.3743059",
+      "10.3390/brainsci15020201",
+      "10.22236/kalamatika.vol9no2.2024pp147-160",
+      "10.3390/architecture4030031"
+    ],
+    "semantic_scholar_id": "028cfc0d46bf431608c1bc6854912dd3d244000c",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:39:08.367735+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "The impact of room shape on affective states, heartrate, and creative output",
+    "crossref_year": 2024,
+    "crossref_citation_count": 12,
+    "crossref_journal": "Heliyon",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 50,
+    "crossref_issn": [
+      "2405-8440"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.470240+00:00",
+    "_cr_refs_added": 10
+  },
+  "year": 2024,
+  "journal": "Heliyon",
+  "authors_structured": [
+    "K. Strachan-Regan",
+    "O. Baumann"
+  ],
+  "crossref_title": "The impact of room shape on affective states, heartrate, and creative output",
+  "crossref_authors": [
+    {
+      "name": "K. Strachan-Regan",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "O. Baumann",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Heliyon",
+  "crossref_citation_count": 12,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:54:03.073491+00:00"
+}

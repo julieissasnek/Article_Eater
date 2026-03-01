@@ -182,7 +182,7 @@ class TestCREA2Sensitivity:
         quiet = compute_crea2_processing_style(
             noise_db=35.0,
             ceiling_rh=0.6,  # 3m ceiling, 25m² floor
-            ambient_lux=400,
+            ambient_lux=400.0,
             occupant_age=35,
         )
         moderate = compute_crea2_processing_style(
@@ -213,14 +213,14 @@ class TestCREA2Sensitivity:
         below = compute_crea2_processing_style(
             noise_db=45.0,
             ceiling_rh=0.5,  # Below 0.7 threshold
-            ambient_lux=400,
+            ambient_lux=400.0,
             occupant_age=35,
         )
         # Above threshold - pathway_b should activate
         above = compute_crea2_processing_style(
             noise_db=45.0,
             ceiling_rh=0.8,  # Above 0.7 threshold
-            ambient_lux=400,
+            ambient_lux=400.0,
             occupant_age=35,
         )
 

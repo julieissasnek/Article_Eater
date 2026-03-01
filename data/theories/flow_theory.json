@@ -1,0 +1,106 @@
+{
+  "theory_id": "FLOW_THEORY",
+  "name": "Flow Theory",
+  "originator": "Csikszentmihalyi",
+  "year": 1990,
+  "citation": "Csikszentmihalyi, M. (1990). Flow: The psychology of optimal experience. Harper & Row.",
+  "status": "REDUCED",
+  "parent_t1_frameworks": {
+    "DP": 30,
+    "DT": 25,
+    "NM": 20,
+    "PP": 15,
+    "EC": 10
+  },
+  "constructs": [
+    {
+      "construct_name": "Challenge-Skill Balance",
+      "description": "Optimal zone where challenge matches skill level. Too low = boredom (insufficient PE), too high = anxiety (overwhelming PE). Maps to inverted-U PE engagement.",
+      "template_ids": [
+        "PP_COMPLEXITY_GOLDILOCKS_002",
+        "AX_CONTROL_STRESS_004"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Autotelic Experience",
+      "description": "Intrinsic motivation via mesolimbic dopamine system mediating mastery exploration. Self-reinforcing activity as its own reward.",
+      "template_ids": [
+        "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+        "NM_DOPAMINE_NOVELTY_002"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Temporal Distortion",
+      "description": "Altered time perception via attentional resource saturation and insular cortex engagement reduction.",
+      "template_ids": [
+        "CREATIVE_NETWORK_DYNAMICS_001"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-possibly"
+    },
+    {
+      "construct_name": "Loss of Self-Consciousness",
+      "description": "DMN self-referential processing suppression during task-positive network dominance. Reduced medial PFC activity.",
+      "template_ids": [
+        "CREATIVE_NETWORK_DYNAMICS_001",
+        "CROSS_PROACTIVE_REACTIVE_CONTROL_001"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Clear Goals and Immediate Feedback",
+      "description": "Unambiguous environmental affordances (EC) providing real-time prediction error correction loops.",
+      "template_ids": [
+        "AX_CONTROL_STRESS_004",
+        "ER_ECOLOGICAL_RATIONALITY_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    }
+  ],
+  "constituent_templates": [
+    "PP_COMPLEXITY_GOLDILOCKS_002",
+    "AX_CONTROL_STRESS_004",
+    "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+    "NM_DOPAMINE_NOVELTY_002",
+    "CREATIVE_NETWORK_DYNAMICS_001",
+    "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+    "ER_ECOLOGICAL_RATIONALITY_001"
+  ],
+  "template_coverage_pct": 0.75,
+  "maturity": "how-plausibly",
+  "irreducible_residual": {
+    "schema_gaps": [
+      "Trait flow proneness individual differences unmodeled",
+      "Group flow dynamics not yet addressed"
+    ],
+    "compositional_adequacy": "INTERACTION_DEPENDENT",
+    "narrative": "Trait flow proneness \u2014 why some individuals enter flow states more readily than others \u2014 and expertise-domain specificity \u2014 why flow transfers poorly across domains \u2014 represent person-dependent factors beyond architectural/environmental reduction. The environmental contribution is clearer: spatial configurations that provide unambiguous affordances and immediate feedback loops (EC framework) under IE-DPT challenge-appropriate framing. Accepted by Feb 23 Expansion Panel."
+  },
+  "rejection_rationale": "",
+  "child_molecules": [],
+  "google_scholar_count": 85000,
+  "key_references": [
+    "Csikszentmihalyi, M. (1990). Flow. Harper & Row.",
+    "Nakamura, J. & Csikszentmihalyi, M. (2014). The concept of flow. In Flow and the foundations of positive psychology (pp. 239-263). Springer."
+  ],
+  "reduced_in": "Master paper \u00a778.3; Feb 23 Expansion Panel",
+  "function_form": {
+    "function_form": "Flow(c, s) = exp(\u2212((c \u2212 s)\u00b2/2\u03c3\u00b2)); c = challenge, s = skill",
+    "variables": {
+      "Flow(c,s)": "Probability of flow state",
+      "c": "Perceived challenge level of activity",
+      "s": "Perceived skill level of agent",
+      "\u03c3": "Tolerance bandwidth (~0.3 in normalized units)"
+    },
+    "predictions": [
+      "Flow occurs when challenge \u2248 skill (within ~15% tolerance)",
+      "Flow states increase task performance ~20-25% and reduce time perception"
+    ]
+  }
+}

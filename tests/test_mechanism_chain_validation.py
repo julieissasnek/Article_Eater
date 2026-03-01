@@ -1,3 +1,4 @@
+import os
 """
 Mechanism Chain Validation Tests
 ================================

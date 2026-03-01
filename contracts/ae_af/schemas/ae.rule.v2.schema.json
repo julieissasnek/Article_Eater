@@ -141,6 +141,50 @@
         "constitutive"
       ],
       "description": "Cartwright: Type of bridge warrant connecting domains. See ae.bridge.v1 schema."
+    },
+    "theory_links": {
+      "type": ["array", "null"],
+      "default": null,
+      "description": "Theoretical frameworks this rule relates to. Array of theory link objects connecting to T1.5 and T2 theories. Added by CMR-SPEC T7.3 (Feb 2026).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "theory_id": {
+            "type": "string",
+            "description": "Canonical theory ID from data/theories/*.json (e.g., PROCESSING_FLUENCY, ART, BIOPHILIA)"
+          },
+          "from_variable": {
+            "type": "string",
+            "description": "Independent variable in theory's terms (canonical name)"
+          },
+          "to_variable": {
+            "type": "string",
+            "description": "Dependent variable in theory's terms (canonical name)"
+          },
+          "from_level": {
+            "type": "string",
+            "enum": ["T1", "T1.5", "T2"],
+            "description": "Tier level of the from_variable within theory hierarchy"
+          },
+          "to_level": {
+            "type": "string",
+            "enum": ["T1", "T1.5", "T2"],
+            "description": "Tier level of the to_variable within theory hierarchy"
+          },
+          "activity": {
+            "type": "string",
+            "enum": ["supports", "contradicts", "extends", "qualifies"],
+            "description": "How this rule relates to the theory's predictions"
+          },
+          "maturity": {
+            "type": "string",
+            "enum": ["how-actually", "how-plausibly", "how-possibly"],
+            "description": "Confidence level per Spohn: how-actually=empirically established, how-plausibly=theoretically coherent, how-possibly=speculative"
+          }
+        },
+        "required": ["theory_id", "activity"]
+      }
     }
   },
   "$defs": {

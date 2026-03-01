@@ -1,0 +1,72 @@
+{
+  "theory_id": "CHRONOBIOLOGY",
+  "name": "Chronobiology",
+  "originator": "Aschoff",
+  "year": 1965,
+  "citation": "Aschoff, J. (1965). Circadian rhythms in man. Science, 148(3676), 1427-1432.",
+  "status": "REJECTED",
+  "parent_t1_frameworks": {
+    "CB": 100
+  },
+  "constructs": [
+    {
+      "construct_name": "Circadian Oscillator (SCN)",
+      "description": "Self-sustaining biological clock in suprachiasmatic nucleus. Generates ~24h oscillation independent of environment, entrained by light via retinohypothalamic tract. Core mechanism of CB framework.",
+      "template_ids": [
+        "CB-SCN-001",
+        "CB-LIGHT-ENTRAINMENT-002"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Phase Response Curve",
+      "description": "Time-dependent sensitivity to light pulses. Light advances phase in subjective evening, delays in subjective morning. Critical for circadian adaptation to seasonal and jet-lag perturbations.",
+      "template_ids": [
+        "CB-PHASE-SHIFT-003",
+        "CB-LIGHT-SENSITIVITY-004"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Circadian Gating of Behavior",
+      "description": "Time-dependent modulation of behavioral and physiological responsiveness. SCN output gates activity levels, alertness, body temperature, and hormone secretion (melatonin, cortisol) across the 24h cycle.",
+      "template_ids": [
+        "CB-OUTPUT-GATING-005",
+        "CB-HORMONE-RHYTHM-006",
+        "NM-AROUSAL-MODULATION-007"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    }
+  ],
+  "constituent_templates": [],
+  "template_coverage_pct": 0.0,
+  "maturity": "how-actually",
+  "irreducible_residual": null,
+  "rejection_rationale": "IS the CB (Chronobiology) framework itself \u2014 circular reduction. SCN-mediated circadian rhythm mechanisms constitute the core of the CB framework. All chronobiological phenomena in the architectural domain are already addressed by CB as T1.",
+  "child_molecules": [],
+  "google_scholar_count": 15000,
+  "key_references": [
+    "Aschoff, J. (1965). Circadian rhythms in man. Science, 148(3676), 1427-1432. doi:10.1126/science.148.3676.1427 [15000+ citations]",
+    "Moore, R. Y., & Eichler, V. B. (1972). Loss of a circadian adrenal corticosterone rhythm following suprachiasmatic lesions in the rat. Brain Research, 42(1), 201-206. doi:10.1016/0006-8993(72)90054-6 [2850+ citations]",
+    "Czeisler, C. A., & Gooley, J. J. (2007). Sleep and circadian rhythms in humans. Cold Spring Harbor Symposia on Quantitative Biology, 72, 579-597. doi:10.1101/sqb.2007.72.064 [1920+ citations]",
+    "Hastings, M. H., Reddy, A. B., & Maywood, E. S. (2003). A clockwork web: circadian timing in the mammal. Nature Reviews Neuroscience, 4(8), 649-661. doi:10.1038/nrn1173 [2100+ citations]",
+    "Reppert, S. M., & Weaver, D. R. (2002). Coordination of circadian timing in mammals. Nature, 418(6901), 935-941. doi:10.1038/nature00965 [2640+ citations]"
+  ],
+  "reduced_in": "Master paper \u00a778.1",
+  "function_form": {
+    "function_form": "C(t) = A\u00b7sin(2\u03c0\u00b7t/\u03c4 + \u03c6) + offset; \u03c4 \u2248 24.2h; \u03c6 = f(light_history)",
+    "variables": {
+      "C(t)": "Circadian process output at time t",
+      "A": "Amplitude of circadian oscillation",
+      "\u03c4": "Endogenous period (~24.2h without zeitgebers)",
+      "\u03c6": "Phase angle (entrained by light exposure pattern)"
+    },
+    "predictions": [
+      "Alertness follows ~12h sinusoidal cycle, nadir at 2-4 AM",
+      "Bright light exposure (>1000 lux) phase-shifts circadian clock~1h/day"
+    ]
+  }
+}

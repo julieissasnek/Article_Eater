@@ -694,6 +694,12 @@ python3 scripts/gap_tracker.py --report
 - [ ] post_panel_review_cleared false
 - [ ] Status COMPLETE
 
+## NEUROMOD-I cross-panel handoffs (per REVIEW_NEUROMOD_I_post.md)
+- Restoration inputs from VIEW1, daylight, thermal comfort, and creative divergence have been routed to CROSSCUT-I for corpus-level verification (restoration inventory flag). Ensure CROSSCUT-I receipt documents the restoration list.
+- Barrett-Craig two-stage interoception model remains a pending human decision (documented in the NEUROMOD post-review); do not alter STRESS-I templates without explicit direction.
+- AX4_mod ranges [0.6–1.4] on HPA and NE are confirmed by NEUROMOD-I and reused verbatim by CROSSCUT-I (see CROSSCUT output Section 4). No additional AX4 moderators beyond HPA/NE.
+- T29 allostatic formula verification (including additive weights and equal-weight THEORETICAL_DEFAULT flag) lives in `docs/REVIEW_T29_VERIFICATION.md` and provides the functional constraint for pipeline-wide AL calculations.
+
 ---
 
 # SPRINT S-08: CROSSCUT-I

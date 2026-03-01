@@ -142,10 +142,7 @@ export function createTheoryApi(registry: TheoryRegistry): TheoryTierApi {
 
     getConstructsUsingTemplate(templateId) {
       return registry.reductionClaims.filter((claim) => {
-        const viaLegacy =
-          claim.reducing_templates?.some((item) => item.template_id === templateId) ?? false;
-        const viaNodes = claim.template_nodes.includes(templateId);
-        return viaLegacy || viaNodes;
+        return claim.template_nodes.includes(templateId);
       });
     },
 
@@ -168,18 +165,18 @@ export function createTheoryApi(registry: TheoryRegistry): TheoryTierApi {
 
         const matchesLink =
           query.fromLevel === undefined &&
-          query.toLevel === undefined &&
-          query.activity === undefined
+            query.toLevel === undefined &&
+            query.activity === undefined
             ? true
             : template.causal_links.some((link) => {
-                const fromOk =
-                  query.fromLevel === undefined || link.from_level === query.fromLevel;
-                const toOk =
-                  query.toLevel === undefined || link.to_level === query.toLevel;
-                const activityOk =
-                  query.activity === undefined || link.activity === query.activity;
-                return fromOk && toOk && activityOk;
-              });
+              const fromOk =
+                query.fromLevel === undefined || link.from_level === query.fromLevel;
+              const toOk =
+                query.toLevel === undefined || link.to_level === query.toLevel;
+              const activityOk =
+                query.activity === undefined || link.activity === query.activity;
+              return fromOk && toOk && activityOk;
+            });
 
         return matchesMaturity && matchesFramework && matchesLink;
       });

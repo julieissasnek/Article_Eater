@@ -16,7 +16,7 @@ CREA2_INTERACTIONS = {
     "A+B+C": {"sub_additivity": 0.70, "convergent_penalty": 1.80},
 }
 
-CONVERGENCE_TRIAD = {"L3", "MAT4", "VIEW1"}
+CONVERGENCE_TRIAD = {"L3", "NMC1", "VIEW1"}
 TRIAD_MULTIPLIERS = {2: 1.15, 3: 1.22}
 
 

@@ -19,12 +19,8 @@ async function validate() {
 
     // 1. Validate Reductions -> Templates
     reductions.forEach(reduction => {
-        const reductionId = reduction.claim_id || reduction.reduction_id || "UNKNOWN_REDUCTION";
-        const templateIds = reduction.template_nodes.length > 0
-            ? reduction.template_nodes
-            : (reduction.reducing_templates || [])
-                .map((rt: { template_id?: string }) => rt.template_id)
-                .filter((tid): tid is string => typeof tid === 'string' && tid.length > 0);
+        const reductionId = reduction.claim_id || "UNKNOWN_REDUCTION";
+        const templateIds = reduction.template_nodes || [];
 
         templateIds.forEach(tid => {
             if (!api.getTemplate(tid)) {

@@ -62,6 +62,16 @@ except ImportError:
     VOI_AVAILABLE = False
     logger.debug("VOI search not available")
 
+# Optional GapPredictor integration (Sprint QA-1: Honest Answer)
+try:
+    from src.services.gap_predictor import GapPredictor, PredictedGap
+    from src.epistemic.gap_types import GapType as _GapType
+    GAP_PREDICTOR_AVAILABLE = True
+except ImportError:
+    GAP_PREDICTOR_AVAILABLE = False
+    _GapType = None  # type: ignore[assignment, misc]
+    logger.debug("GapPredictor not available")
+
 # Optional InterpretiveEngine integration (TODO 2)
 try:
     from src.services.interpretive_intelligence import (
@@ -119,6 +129,7 @@ class QueryEngine:
         self._parser = QueryParser()
         self._response_gen = None  # Lazy init
         self._voi_scorer = None  # Lazy init
+        self._gap_predictor = None  # Lazy init (Sprint QA-1)
         self._argument_query_handler = argument_query_handler
         # Allow explicit injection; otherwise lazily created per-query below
         self._interpretive_engine = interpretive_engine
@@ -464,6 +475,12 @@ class QueryEngine:
         if response_mode == ResponseMode.DEEP_DIVE:
             response["deep_dive"] = self._build_deep_dive(matched_beliefs)
 
+        # Sprint QA-1: Add open questions for detail and deep_dive modes
+        if response_mode in (ResponseMode.DETAIL, ResponseMode.DEEP_DIVE):
+            response["open_questions"] = self._generate_open_questions(
+                query_text, intent, matched_beliefs
+            )
+
         # Add gaps if requested
         if include_gaps:
             response["gaps"] = self._identify_gaps(intent)
@@ -573,6 +590,309 @@ class QueryEngine:
             "community_credences": {},  # Would come from social epistemology
             "counterfactual_analysis": None
         }
+
+    # =========================================================================
+    # Sprint QA-1: The Honest Answer — Open Questions Generation
+    # =========================================================================
+
+    def _generate_open_questions(
+        self,
+        query_text: str,
+        intent: QueryIntent,
+        matched_beliefs: List[Belief],
+    ) -> Dict[str, Any]:
+        """
+        Generate a structured 'What We Don't Know' section for every answer.
+
+        Sprint QA-1 — The Honest Answer.
+
+        Diagnoses the answer's shortfall as one of:
+        - CORPUS GAP: Papers not in the system
+        - ANALYSIS GAP: Evidence exists but causal chain incomplete
+        - DESIGN GAP: Knowledge present but delivery could be better
+
+        Returns a dict with:
+        - diagnosis: The root cause of any answer limitation
+        - knowledge_limits: Specific gaps with explanations
+        - search_prompts: 3 Google Scholar AI queries to fill gaps
+        - predicted_improvement: Estimated credence change if gaps filled
+        - upload_prompt: Invitation to upload PDFs
+
+        Design Decisions (for panel review):
+        - DD-1: We generate search prompts even when the answer is strong,
+          because a confident answer can still benefit from replication.
+        - DD-2: We estimate credence improvement using a simple heuristic
+          (uncertainty halved) rather than full BN sensitivity analysis,
+          because the sensitivity module requires the live BN which may
+          not be initialized. Full BN integration is Sprint QA-3.
+        - DD-3: We classify gap types using a threshold on matched beliefs
+          count and credence, not via the full gap_predictor, to keep
+          this method fast and always-available. The gap_predictor is
+          used when available for richer analysis.
+        """
+        subject = intent.subject or "this topic"
+        obj = intent.object or ""
+        topic = f"{subject} {obj}".strip()
+
+        # --- Diagnose the root cause ---
+        n_matched = len(matched_beliefs)
+        avg_credence = (
+            sum(b.credence.value for b in matched_beliefs) / n_matched
+            if n_matched > 0 else 0.0
+        )
+        avg_uncertainty = (
+            sum(b.credence.uncertainty for b in matched_beliefs) / n_matched
+            if n_matched > 0 else 1.0
+        )
+
+        # Classify the gap type
+        if n_matched == 0:
+            diagnosis = "corpus_gap"
+            diagnosis_explanation = (
+                f"No evidence found for '{topic}' in our corpus of "
+                f"{len(self.web.beliefs)} beliefs. This topic may not be "
+                f"covered by the papers we have ingested."
+            )
+        elif avg_credence < 0.4 or avg_uncertainty > 0.3:
+            diagnosis = "analysis_gap"
+            diagnosis_explanation = (
+                f"Found {n_matched} relevant beliefs but confidence is low "
+                f"(avg credence: {avg_credence:.2f} ± {avg_uncertainty:.2f}). "
+                f"The evidence base may be thin or contradictory."
+            )
+        else:
+            diagnosis = "strong_but_improvable"
+            diagnosis_explanation = (
+                f"Found {n_matched} beliefs with reasonable confidence "
+                f"(avg credence: {avg_credence:.2f} ± {avg_uncertainty:.2f}). "
+                f"Replication or additional perspectives would strengthen this answer."
+            )
+
+        # --- Identify specific knowledge limits ---
+        knowledge_limits = []
+
+        # Check for abstract-only evidence
+        abstract_beliefs = [
+            b for b in matched_beliefs
+            if hasattr(b, 'source_depth') and
+            hasattr(b.source_depth, 'value') and
+            b.source_depth.value == "abstract"
+        ]
+        if abstract_beliefs:
+            knowledge_limits.append({
+                "limit_type": "evidence_depth",
+                "description": (
+                    f"{len(abstract_beliefs)} of {n_matched} beliefs are derived from "
+                    f"abstracts only. Full-text extraction would provide effect sizes, "
+                    f"methodology details, and scope conditions."
+                ),
+                "severity": "medium",
+                "affected_belief_ids": [b.belief_id for b in abstract_beliefs],
+                "paper_ids": list({pid for b in abstract_beliefs for pid in b.paper_ids}),
+            })
+
+        # Check for high-uncertainty beliefs
+        uncertain = [b for b in matched_beliefs if b.credence.uncertainty > 0.25]
+        if uncertain:
+            knowledge_limits.append({
+                "limit_type": "high_uncertainty",
+                "description": (
+                    f"{len(uncertain)} beliefs have high uncertainty (>0.25). "
+                    f"Replication studies or meta-analyses would reduce this."
+                ),
+                "severity": "high" if len(uncertain) > n_matched / 2 else "medium",
+                "affected_belief_ids": [b.belief_id for b in uncertain],
+                "paper_ids": list({pid for b in uncertain for pid in b.paper_ids}),
+            })
+
+        # Check for missing causal chains
+        causal_beliefs = [b for b in matched_beliefs if self._is_causal_claim(b)]
+        if n_matched > 0 and not causal_beliefs:
+            knowledge_limits.append({
+                "limit_type": "no_causal_evidence",
+                "description": (
+                    f"All {n_matched} matched beliefs are associational. "
+                    f"No interventional or causal evidence found. "
+                    f"RCTs or quasi-experimental studies would establish causation."
+                ),
+                "severity": "high",
+                "affected_belief_ids": [b.belief_id for b in matched_beliefs],
+                "paper_ids": list({pid for b in matched_beliefs for pid in b.paper_ids}),
+            })
+
+        # Use GapPredictor for richer analysis if available
+        predictor_gaps = []
+        if GAP_PREDICTOR_AVAILABLE:
+            try:
+                predictor = self._get_gap_predictor()
+                if predictor is not None:
+                    # Find gaps related to matched beliefs
+                    for belief in matched_beliefs[:5]:
+                        local_ev = predictor.find_local_evidence_for_gap(
+                            PredictedGap(
+                                gap_id=f"oq_{belief.belief_id[:20]}",
+                                gap_type=_GapType.MECHANISM if not causal_beliefs else _GapType.VALIDATION,
+                                description=f"Evidence depth for: {belief.content[:80]}",
+                                suggested_search=f"{topic} mechanism",
+                            )
+                        )
+                        if local_ev.get('unprocessed'):
+                            knowledge_limits.append({
+                                "limit_type": "unprocessed_local_evidence",
+                                "description": (
+                                    f"Found {len(local_ev['unprocessed'])} unprocessed "
+                                    f"local files that may contain relevant evidence. "
+                                    f"Running the extraction pipeline would capture these."
+                                ),
+                                "severity": "low"
+                            })
+                            break  # Only report once
+            except Exception as e:
+                logger.debug(f"GapPredictor analysis failed: {e}")
+
+        # --- Generate search prompts ---
+        search_prompts = self._generate_search_prompts(topic, subject, obj, diagnosis)
+
+        # --- Estimate credence improvement ---
+        # DD-2: Simple heuristic — halve uncertainty if gap is filled
+        if n_matched > 0:
+            improved_credence = min(0.95, avg_credence + avg_uncertainty * 0.4)
+            improved_uncertainty = max(0.05, avg_uncertainty * 0.5)
+            predicted_improvement = {
+                "current_credence": round(avg_credence, 3),
+                "current_uncertainty": round(avg_uncertainty, 3),
+                "estimated_credence_after": round(improved_credence, 3),
+                "estimated_uncertainty_after": round(improved_uncertainty, 3),
+                "assumption": (
+                    "Assumes 1-2 strong RCTs or meta-analyses are uploaded. "
+                    "Full BN sensitivity analysis available in deep_dive mode."
+                )
+            }
+        else:
+            predicted_improvement = {
+                "current_credence": 0.0,
+                "current_uncertainty": 1.0,
+                "estimated_credence_after": 0.55,
+                "estimated_uncertainty_after": 0.20,
+                "assumption": (
+                    "No baseline exists. Estimate assumes first studies on this "
+                    "topic would establish initial credence around 0.55 ± 0.20."
+                )
+            }
+
+        # --- Build provenance chain ---
+        provenance = {
+            "matched_belief_ids": [b.belief_id for b in matched_beliefs],
+            "source_paper_ids": list({
+                pid for b in matched_beliefs for pid in b.paper_ids
+            }),
+            "n_unique_papers": len({
+                pid for b in matched_beliefs for pid in b.paper_ids
+            }),
+            "epistemic_levels": list({
+                b.level.value if hasattr(b.level, 'value') else str(b.level)
+                for b in matched_beliefs
+            }),
+            "diagnosis_basis": (
+                f"Based on {n_matched} beliefs from "
+                f"{len({pid for b in matched_beliefs for pid in b.paper_ids})} "
+                f"unique source papers. Avg credence {avg_credence:.2f} ± {avg_uncertainty:.2f}."
+            ),
+        }
+
+        return {
+            "diagnosis": diagnosis,
+            "diagnosis_explanation": diagnosis_explanation,
+            "knowledge_limits": knowledge_limits,
+            "search_prompts": search_prompts,
+            "predicted_improvement": predicted_improvement,
+            "provenance": provenance,
+            "upload_prompt": (
+                "Upload PDFs containing evidence about this topic. "
+                "The system will extract claims, integrate them into the web of belief, "
+                "and re-compute this answer with updated credence values."
+            ),
+            "n_beliefs_in_corpus": len(self.web.beliefs),
+            "n_matched_for_query": n_matched,
+        }
+
+    def _generate_search_prompts(
+        self,
+        topic: str,
+        subject: str,
+        obj: str,
+        diagnosis: str,
+    ) -> List[Dict[str, str]]:
+        """
+        Generate 3 targeted search prompts for Google Scholar AI.
+
+        Each prompt targets a different type of missing evidence:
+        1. Mechanistic/neural substrate evidence
+        2. Causal/interventional evidence (RCTs)
+        3. Review/meta-analytic evidence
+
+        Design Decision DD-4: We generate prompts for Google Scholar AI
+        specifically because the user has expressed this as their primary
+        acquisition tool. Prompts are structured as natural language queries
+        optimized for Google Scholar AI's search capabilities.
+        """
+        prompts = []
+
+        # Prompt 1: Mechanism-level evidence
+        if obj:
+            mech_query = f"{subject} {obj} neural mechanism pathway"
+            mech_desc = f"Neural/biological mechanism connecting {subject} to {obj}"
+        else:
+            mech_query = f"{subject} neural mechanism neuroscience"
+            mech_desc = f"Neural substrate and biological mechanisms of {subject}"
+        prompts.append({
+            "source": "Google Scholar AI",
+            "query": mech_query,
+            "expected_yield": mech_desc,
+            "priority": "high" if diagnosis == "analysis_gap" else "medium"
+        })
+
+        # Prompt 2: Causal/RCT evidence
+        if obj:
+            rct_query = f"{subject} {obj} randomized controlled trial intervention"
+            rct_desc = f"Causal evidence from RCTs that {subject} affects {obj}"
+        else:
+            rct_query = f"{subject} randomized controlled trial built environment"
+            rct_desc = f"Intervention studies testing {subject} in built environments"
+        prompts.append({
+            "source": "Google Scholar AI",
+            "query": rct_query,
+            "expected_yield": rct_desc,
+            "priority": "high" if diagnosis == "corpus_gap" else "medium"
+        })
+
+        # Prompt 3: Review/meta-analysis
+        if obj:
+            review_query = f"{subject} {obj} systematic review meta-analysis"
+            review_desc = f"Comprehensive review synthesizing {subject}–{obj} evidence"
+        else:
+            review_query = f"{subject} systematic review architectural neuroscience"
+            review_desc = f"Review articles providing theoretical framework for {subject}"
+        prompts.append({
+            "source": "Google Scholar AI or PubMed",
+            "query": review_query,
+            "expected_yield": review_desc,
+            "priority": "high"
+        })
+
+        return prompts
+
+    def _get_gap_predictor(self):
+        """Lazy-initialize the GapPredictor if available."""
+        if not GAP_PREDICTOR_AVAILABLE:
+            return None
+        if self._gap_predictor is None:
+            try:
+                self._gap_predictor = GapPredictor(web=self.web)
+            except Exception as e:
+                logger.debug(f"Could not initialize GapPredictor: {e}")
+                return None
+        return self._gap_predictor
 
     def _get_constraint_subgraph(self, belief_ids: List[str]) -> Dict[str, Any]:
         """Get constraints involving the matched beliefs."""
@@ -764,15 +1084,30 @@ class QueryEngine:
         processing_time_ms: int,
         include_gaps: bool = False
     ) -> Dict[str, Any]:
-        """Build response when no results found."""
+        """Build response when no results found.
+
+        Sprint QA-1: Upgraded to always include open_questions with
+        acquisition prompts, not just when include_gaps=True.
+        A 'no results' answer is the strongest possible signal that
+        the corpus needs expansion.
+        """
         intent = parse_result.primary
+
+        # Sprint QA-1: Always generate open questions for corpus gaps
+        open_questions = self._generate_open_questions(
+            query_text, intent, matched_beliefs=[]
+        )
 
         response = {
             "schema": "ae.query_response.v1",
             "query_id": query_id,
             "status": "no_results",
             "response_mode": "summary",
-            "headline": "No relevant evidence found for this query.",
+            "headline": (
+                f"No relevant evidence found. "
+                f"Searched {len(self.web.beliefs)} beliefs. "
+                f"See 'open_questions' for how to fill this gap."
+            ),
             "metadata": {
                 "processing_time_ms": processing_time_ms,
                 "n_beliefs_searched": len(self.web.beliefs),
@@ -782,6 +1117,7 @@ class QueryEngine:
                 "query_type": intent.query_type.value,
                 "vocabulary_expansions": parse_result.vocabulary_expansions
             },
+            "open_questions": open_questions,
             "follow_ups": [
                 {
                     "question": "What topics does the knowledge base cover?",
@@ -796,7 +1132,7 @@ class QueryEngine:
                 "n_gaps": 1,
                 "top_gaps": [{
                     "gap_id": f"gap_{uuid.uuid4().hex[:8]}",
-                    "gap_type": "unexplored",
+                    "gap_type": "corpus_gap",
                     "description": f"No evidence for query: {query_text}",
                     "priority": 0.8,
                     "suggested_search": query_text

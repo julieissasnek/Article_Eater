@@ -1,0 +1,618 @@
+{
+  "doi": "10.3390/app13052950",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.71,
+  "n_findings": 13,
+  "extracted_at": "2026-02-25T02:13:01.386528+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004099,
+  "title": "Highlight-shading relationship as a cue for the perception of translucent and transparent materials",
+  "authors": "Motoyoshi, I., 2010",
+  "research_question": "What image features are diagnostic of the perceived translucency and transparency of 3D objects, focusing on how variations in opacity affect non-specular (shading) versus specular (highlights) image components?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 9,
+    "description": "Experiment 1: 8 naive paid volunteers (5 females, 3 males) and the author (male), mean age 29.4 (SD=5.4) years old, normal or corrected-to-normal vision. Experiment 2: 7 subjects (all participated in Experiment 1). All Japanese.",
+    "recruitment": "Paid volunteers"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "rendering",
+      "description": "Experiment 1: Computer-generated 3D objects (Bust, Lion, Buddha, Dragon) with complex shapes, glossy, sharp specular reflections. Rendered with two natural illumination types ('Eucalyptus', 'Building') using light-probe images. Varied across 9 translucency settings (6 sub-surface scattering depths: 0, 0.13, 0.25, 0.5, 1, 2 m; 3 transparency parameters: 25%, 50%, 100% in addition to 2m scattering). Refraction coefficient 1.5. Background was a dark uniform field (3.8 cd/m\u00b2). Stimulus subtended 7.3 \u00d7 7.3 deg.",
+      "n_stimuli": 72,
+      "source": "Methods, Figure 1"
+    },
+    {
+      "type": "rendering",
+      "description": "Experiment 2: Two opaque objects (Lion/Eucalyptus, Buddha/Urban) from Experiment 1. Non-specular component image decomposed into low and high spatial frequency bands (low-pass filter at 16 c/image, 2.2 c/deg). Each sub-band image was then multiplied independently by a factor (1.0, 0.6, 0.3, 0.0, -0.3, or -0.6). Specular highlights were left intact.",
+      "n_stimuli": 72,
+      "source": "Methods, Figure 5"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Apparent translucency",
+      "instrument": "Five-point rating scale (0=opaque, 1-2=translucent like marble/wax, 3-4=highly translucent like jelly/glass)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Image statistics of non-specular component",
+      "instrument": "RMS contrast for pixel luminance and sub-bands (4\u201364 cycles/image; 0.6-8.7 cycles/deg); Regression coefficients (slope of joint histogram) between non-specular component of opaque and translucent objects",
+      "type": "observational"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Simulated depth of sub-surface scattering (increasing from 0 to 2m)",
+      "consequent": "Perceived translucency (rating)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "AX7"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 2",
+      "quote": "It is found that the rating increases with the two optical effects."
+    },
+    {
+      "id": 2,
+      "antecedent": "Simulated amount of transparency (increasing from 25% to 100%)",
+      "consequent": "Perceived translucency (rating)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "AX7"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 2",
+      "quote": "It is found that the rating increases with the two optical effects."
+    },
+    {
+      "id": 3,
+      "antecedent": "Object translucency (increasing)",
+      "consequent": "Non-specular image component (shading pattern)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1"
+      ],
+      "mechanism": "Non-specular component tends to have lower contrast and becomes blurred.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 3",
+      "quote": "It is clearly shown that the non-specular component tends to have lower contrast and becomes blurred in objects that appear translucent."
+    },
+    {
+      "id": 4,
+      "antecedent": "Object translucency (highly translucent or transparent)",
+      "consequent": "Non-specular image component (shading pattern)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1"
+      ],
+      "mechanism": "Image becomes sharp and high contrast, but with an opposite sign of contrast to the opaque object.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 3",
+      "quote": "For an object that appears even more translucent, or transparent, the image again becomes sharp and has high contrast, but it appears to have an opposite sign of contrast to the opaque object."
+    },
+    {
+      "id": 5,
+      "antecedent": "Perceived translucency (rating below ~2, i.e., translucent)",
+      "consequent": "RMS contrast of non-specular component (especially high spatial frequency bands)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1",
+        "AX7"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 4a",
+      "quote": "The RMS contrast decreases as the object becomes to be judged as more translucent for the rating below around 2"
+    },
+    {
+      "id": 6,
+      "antecedent": "Perceived translucency (rating above ~2, i.e., highly translucent/transparent)",
+      "consequent": "RMS contrast of non-specular component (especially high spatial frequency bands)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1",
+        "AX7"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4, Figure 4a",
+      "quote": "and increases again as the object becomes to be judged as further translucent or transparent beyond that level."
+    },
+    {
+      "id": 7,
+      "antecedent": "Increasing perceived translucency (rating)",
+      "consequent": "Regression coefficient (correlation) between non-specular component of translucent objects and opaque objects (especially high spatial frequencies)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1"
+      ],
+      "mechanism": "Non-specular image component becomes unpredictable or partially contrast-reversed relative to opaque expectation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.5, Figure 4b",
+      "quote": "At high spatial frequencies in particular, the regression coefficient decreases steadily with the rating and becomes zero or slightly negative at high ratings.",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Objects with variable sub-surface scattering depths",
+      "consequent": "Perceived translucency ratings",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Ratings were relatively lower than for objects with variable transparencies, implying translucency due to sub-surface scattering and transparency due to light transmittance might be assessed as two independent attributes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6, Figure 4a",
+      "quote": "Note that in the plot of Figure 4a, the ratings for objects with variable sub-surface scattering depths (circles) are relatively lower than for objects with variable transparencies (squares)."
+    },
+    {
+      "id": 9,
+      "antecedent": "Reduced contrast of non-specular component at high spatial frequencies (while highlights remain intact)",
+      "consequent": "Perceived translucency (rating)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 6",
+      "quote": "For both spatial frequency bands, the translucency rating increases as the contrast of the non-specular component is decreased."
+    },
+    {
+      "id": 10,
+      "antecedent": "Reduced contrast of non-specular component at low spatial frequencies (while highlights remain intact)",
+      "consequent": "Perceived translucency (rating)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1",
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 6",
+      "quote": "For both spatial frequency bands, the translucency rating increases as the contrast of the non-specular component is decreased."
+    },
+    {
+      "id": 11,
+      "antecedent": "Reduced contrast of non-specular component at high spatial frequencies",
+      "consequent": "Effect on perceived translucency",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "High spatial frequencies have a slightly stronger effect than low spatial frequencies.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "The data also show that the contrast at high spatial frequencies has a slightly stronger effect than at low spatial frequencies"
+    },
+    {
+      "id": 12,
+      "antecedent": "Non-specular component with reversed high spatial frequency contrast (-0.3) and positive low spatial frequency contrast (1.0) (highlights intact)",
+      "consequent": "Perceived surface appearance",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Appears as an opaque body covered with a thick translucent or transparent layer (like porcelain). Spatial congruency of patterns across different spatial frequency bands could be useful for perception of multi-layered surfaces.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 5",
+      "quote": "Interestingly, these objects often appear to have an opaque body covered with a thick translucent or transparent layer, like porcelain."
+    },
+    {
+      "id": 13,
+      "antecedent": "Non-specular component with both high and low spatial frequency contrasts reversed (highlights intact)",
+      "consequent": "Perceived surface appearance",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Appears as a homogeneous translucent material (e.g., jelly or glass).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 5",
+      "quote": "This is in contrast to the observation that objects in which the contrasts of the both frequency bands are reversed appear to be made from a homogeneous translucent material"
+    }
+  ],
+  "mechanisms": [
+    "The relationship between specular highlights (which are largely unaffected by translucency) and non-specular shading patterns (which are affected by translucency) provides a cue for perceived translucency.",
+    "When the non-specular image component is blurred, faint, or contrast-reversed relative to the expected appearance of an opaque object, it signals translucency.",
+    "The mismatch between consistent specular highlights and altered non-specular shading patterns acts as a robust cue.",
+    "The visual system may segregate highlights and shading patterns using layered image representations (e.g., intrinsic images) to estimate surface translucency.",
+    "Spatial congruency of patterns across different spatial frequency bands could be useful for the perception of multi-layered surfaces."
+  ],
+  "moderators": [
+    "Object geometry (e.g., roughness)",
+    "Illumination conditions"
+  ],
+  "implementation_implications": [
+    "Simple image manipulation of the non-specular component's contrast and blur can effectively control the apparent translucency of objects, offering an alternative to complex physical simulations in 3D computer graphics."
+  ],
+  "domains": [
+    "A1_Materials",
+    "A6_Visual_Form",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "PP"
+  ],
+  "tables": [
+    {
+      "table_id": "Figure 2",
+      "description": "Mean translucency ratings of objects as a function of simulated translucency parameters (sub-surface scattering depth and transparency).",
+      "key_stats": [],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Figure 3",
+      "description": "Images of objects with different translucencies, showing original and non-specular components, and joint luminance histograms.",
+      "key_stats": [],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Figure 4a",
+      "description": "RMS contrast of the non-specular component as a function of mean translucency rating for different spatial frequency bands.",
+      "key_stats": [],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Figure 4b",
+      "description": "Regression coefficient in the non-specular component image between opaque and translucent objects as a function of mean translucency rating for different spatial frequency bands.",
+      "key_stats": [],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Figure 5",
+      "description": "Examples of stimuli used in Experiment 2, showing manipulation of non-specular component contrast at high and low spatial frequency bands.",
+      "key_stats": [],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Figure 6",
+      "description": "Translucency rating of objects as functions of the contrast of the non-specular component at high and low spatial frequencies.",
+      "key_stats": [],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Figure 7",
+      "description": "Schematic illustrations of 1D intensity distributions of images of opaque and translucent surfaces, showing overall and non-specular components, and histograms for high spatial frequency band.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "The simple translucency rating task might not fully capture the nuanced variations in surface appearance (e.g., multi-layered vs. homogeneous translucent materials).",
+    "The relative contribution of different spatial frequency bands to perceived translucency can vary with object geometry (e.g., roughness) and illumination conditions.",
+    "It is unclear whether translucency due to sub-surface scattering and transparency due to light transmittance are assessed as two independent attributes by the visual system.",
+    "Simple low-level image statistics, such as histogram moment statistics, cannot account for the perception of highly translucent surfaces that involve contrast reversals in the non-specular component.",
+    "It is still unclear whether or how the visual system can utilize layered representations (e.g., intrinsic images) to estimate surface properties."
+  ],
+  "paper_metadata": {
+    "doi": "10.3390/app13052950",
+    "title": "Improved Stress Classification Using Automatic Feature Selection from Heart Rate and Respiratory Rate Time Signals",
+    "authors": [
+      "Talha Iqbal",
+      "A. Elahi",
+      "William Wijns",
+      "Bilal Amin",
+      "A. Shahzad"
+    ],
+    "year": 2023,
+    "journal": "Applied Sciences",
+    "volume": "13",
+    "issue": "5",
+    "pages": "2950",
+    "publisher": "MDPI AG",
+    "citation_count": 22,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1007/978-1-4939-9098-6",
+      "10.1007/b100334",
+      "10.1007/s00521-019-04278-7",
+      "10.1007/s11831-021-09597-4",
+      "10.1007/s40846-022-00700-z",
+      "10.1016/J.ANBEHAV.2015.01.010",
+      "10.1016/J.EIJ.2013.06.001",
+      "10.1016/J.ESWA.2021.114765",
+      "10.1016/J.NEUCOM.2018.03.067",
+      "10.1016/j.anbehav.2015.01.010",
+      "10.1016/j.compbiomed.2021.104450",
+      "10.1016/j.eij.2013.06.001",
+      "10.1016/j.eswa.2021.114765",
+      "10.1016/j.future.2013.01.010",
+      "10.1016/j.jad.2020.10.006",
+      "10.1016/j.knosys.2014.01.003",
+      "10.1016/j.neucom.2018.03.067",
+      "10.1056/NEJMp1500523",
+      "10.1080/02626667.2011.586948",
+      "10.1080/10911359.2019.1573711",
+      "10.1088/1361-665X/ab85a6",
+      "10.1088/1742-6596/1116/2/022020",
+      "10.1093/bioinformatics/btp493",
+      "10.1093/bioinformatics/btr300",
+      "10.1098/rsif.2013.0048",
+      "10.1098/rsta.2015.0202",
+      "10.1109/ACCESS.2020.2980079",
+      "10.1109/ACCESS.2021.3082423",
+      "10.1109/CIVEMSA.2014.6841441",
+      "10.1109/HICSS.2016.488",
+      "10.1109/ICDMW53433.2021.00137",
+      "10.1109/IDAACS.2019.8924299",
+      "10.1109/JSEN.2013.2291855",
+      "10.1109/MASS.2012.6708514",
+      "10.1109/MELECON53508.2022.9843081",
+      "10.1109/TKDE.2014.2316504",
+      "10.1145/3444690",
+      "10.1183/20734735.009817",
+      "10.1186/s40537-020-00320-x",
+      "10.1214/AOS/1013699998",
+      "10.1214/aos/1013699998",
+      "10.1371/journal.pone.0259448",
+      "10.14814/phy2.15229",
+      "10.2478/v10117-011-0021-1",
+      "10.3389/fmedt.2022.782756",
+      "10.3390/app11167740",
+      "10.3390/bios12060427",
+      "10.3390/brainsci12020153",
+      "10.3390/e23111432",
+      "10.3390/s22218135"
+    ],
+    "cited_by": [
+      "10.1109/MILCOM64451.2025.11310226",
+      "10.1109/JSEN.2025.3591761",
+      "10.3390/info16090718",
+      "10.1016/j.compbiomed.2025.110847",
+      "10.20895/trinistik.v3i2.1448",
+      "10.1117/1.JBO.30.3.037001",
+      "10.1016/j.artmed.2024.103053",
+      "10.18280/ts.410529",
+      "10.1109/JSEN.2024.3435399",
+      "10.3390/diagnostics14192244",
+      "10.1109/ASET60340.2024.10708730",
+      "10.1007/s13369-024-09138-8",
+      "10.1007/s11277-024-11317-7",
+      "10.1371/journal.pdig.0000473",
+      "10.1016/j.heliyon.2024.e30319",
+      "10.3390/electronics13030582",
+      "10.1016/j.hsr.2024.100150",
+      "10.1016/j.compbiomed.2023.107825",
+      "10.3390/en16166096",
+      "10.1063/5.0270077",
+      "10.1109/ACCESS.2024.3446875"
+    ],
+    "semantic_scholar_id": "0d463f026a3d5eef7b2ae3df9cab484ccae8c623",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:49:05.409961+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Improved Stress Classification Using Automatic Feature Selection from Heart Rate and Respiratory Rate Time Signals",
+    "crossref_year": 2023,
+    "crossref_citation_count": 20,
+    "crossref_journal": "Applied Sciences",
+    "crossref_publisher": "MDPI AG",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Time-series features are the characteristics of data periodically collected over time. The calculation of time-series features helps in understanding the underlying patterns and structure of the data, as well as in visualizing the data. The manual calculation and selection of time-series feature from a large temporal dataset are time-consuming. It requires researchers to consider several signal-processing algorithms and time-series analysis methods to identify and extract meaningful features from the given time-series data. These features are the core of a machine learning-based predictive model and are designed to describe the informative characteristics of the time-series signal. For accurate stress monitoring, it is essential that these features are not only informative but also well-distinguishable and interpretable by the classification models. Recently, a lot of work has been carried out on automating the extraction and selection of times-series features. In this paper, a correlation-based time-series feature selection algorithm is proposed and evaluated on the stress-predict dataset. The algorithm calculates a list of 1578 features of heart rate and respiratory rate signals (combined) using the tsfresh library. These features are then shortlisted to the more specific time-series features using Principal Component Analysis (PCA) and Pearson, Kendall, and Spearman correlation ranking techniques. A comparative study of conventional statistical features (like, mean, standard deviation, median, and mean absolute deviation) versus correlation-based selected features is performed using linear (logistic regression), ensemble (random forest), and clustering (k-nearest neighbours) predictive models. The correlation-based selected features achieved higher classification performance with an accuracy of 98.6% as compared to the conventional statistical feature\u2019s 67.4%. The outcome of the proposed study suggests that it is vital to have better analytical features rather than conventional statistical features for accurate stress classification.",
+    "crossref_reference_count": 58,
+    "crossref_issn": [
+      "2076-3417"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.882975+00:00",
+    "_cr_refs_added": 13
+  },
+  "year": 2023,
+  "journal": "Applied Sciences",
+  "authors_structured": [
+    "Talha Iqbal",
+    "A. Elahi",
+    "William Wijns",
+    "Bilal Amin",
+    "A. Shahzad"
+  ],
+  "crossref_title": "Improved Stress Classification Using Automatic Feature Selection from Heart Rate and Respiratory Rate Time Signals",
+  "crossref_authors": [
+    {
+      "name": "Talha Iqbal",
+      "orcid": "https://orcid.org/0000-0001-9505-2732",
+      "affiliation": "Smart Sensor Lab, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Adnan Elahi",
+      "orcid": "https://orcid.org/0000-0003-0988-5776",
+      "affiliation": "Electrical and Electronic Engineering, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "William Wijns",
+      "orcid": null,
+      "affiliation": "Smart Sensor Lab, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Bilal Amin",
+      "orcid": "https://orcid.org/0000-0002-4340-1387",
+      "affiliation": "Smart Sensor Lab, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Atif Shahzad",
+      "orcid": null,
+      "affiliation": "Smart Sensor Lab, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    }
+  ],
+  "crossref_year": 2023,
+  "crossref_journal": "Applied Sciences",
+  "crossref_citation_count": 20,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "MDPI AG",
+  "crossref_subjects": [],
+  "crossref_abstract": "Time-series features are the characteristics of data periodically collected over time. The calculation of time-series features helps in understanding the underlying patterns and structure of the data, as well as in visualizing the data. The manual calculation and selection of time-series feature from a large temporal dataset are time-consuming. It requires researchers to consider several signal-processing algorithms and time-series analysis methods to identify and extract meaningful features from the given time-series data. These features are the core of a machine learning-based predictive model and are designed to describe the informative characteristics of the time-series signal. For accurate stress monitoring, it is essential that these features are not only informative but also well-distinguishable and interpretable by the classification models. Recently, a lot of work has been carried out on automating the extraction and selection of times-series features. In this paper, a correlation-based time-series feature selection algorithm is proposed and evaluated on the stress-predict dataset. The algorithm calculates a list of 1578 features of heart rate and respiratory rate signals (combined) using the tsfresh library. These features are then shortlisted to the more specific time-series features using Principal Component Analysis (PCA) and Pearson, Kendall, and Spearman correlation ranking techniques. A comparative study of conventional statistical features (like, mean, standard deviation, median, and mean absolute deviation) versus correlation-based selected features is performed using linear (logistic regression), ensemble (random forest), and clustering (k-nearest neighbours) predictive models. The correlation-based selected features achieved higher classification performance with an accuracy of 98.6% as compared to the conventional statistical feature\u2019s 67.4%. The outcome of the proposed study suggests that it is vital to have better analytical features rather than conventional statistical features for accurate stress classification.",
+  "crossref_fetched_at": "2026-02-25T12:03:23.846875+00:00"
+}

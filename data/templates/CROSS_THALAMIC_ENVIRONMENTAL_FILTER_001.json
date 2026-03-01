@@ -1,291 +1,188 @@
 {
   "template_id": "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001",
-  "display_id": "T46",
-  "name": "Thalamic Environmental Filtering (Pulvinar)",
-  "structural_pattern": "GATING",
-  "higher_order_principle": "The pulvinar nucleus acts as a dynamic filter on environmental information reaching cortex, implementing attentional modes (focused 'spotlight' vs distributed 'floodlight') that are selected by spatial configuration (e.g., corridor vs atrium) and modulated by top-down goals.",
-  "transferable_to": [
-    "corridor vs atrium design",
-    "safety-critical monitoring environments",
-    "focused work zones",
-    "retail browsing vs purchase"
-  ],
-  "framework_ids": [
-    "MSI",
-    "PP"
-  ],
-  "causal_links": [
+  "phase": "B",
+  "primary_anchor": "Saalmann",
+  "complement_anchor": "Friston",
+  "tier": "B",
+  "depth_justification": "Strong mechanism evidence from animal electrophysiology; weak architectural translation to human fMRI",
+  "mechanism_chain": [
     {
-      "from_variable": "spatial_configuration",
-      "to_variable": "pulvinar_filtering_mode",
-      "activity": "select_attentional_mode",
-      "from_level": "environmental",
-      "to_level": "subcortical",
-      "bridging_quality": "moderate",
-      "maturity": "supported",
-      "key_evidence": "Saalmann & Kastner (2011)",
-      "parameters": {
-        "spotlight_trigger": "narrow_FOV, proximal_goal",
-        "floodlight_trigger": "wide_FOV, ambient_monitoring",
-        "modulation_band": "alpha (8-12 Hz) synchronization"
-      }
-    },
-    {
-      "from_variable": "pulvinar_filtering_mode",
-      "to_variable": "cortical_information_access",
-      "activity": "gate_sensory_throughput",
-      "from_level": "subcortical",
-      "to_level": "neural",
-      "bridging_quality": "strong",
-      "maturity": "established",
-      "key_evidence": "Saalmann et al. (2012)",
-      "parameters": {
-        "mechanism": "alpha-band pulvinar-cortex sync",
-        "effect": "spotlight narrows representation; floodlight broadens"
-      }
-    },
-    {
-      "from_variable": "cortical_information_access",
-      "to_variable": "environmental_awareness_type",
-      "activity": "shape_perceptual_experience",
-      "from_level": "neural",
-      "to_level": "phenomenological",
-      "bridging_quality": "moderate",
-      "maturity": "supported",
-      "key_evidence": "Inferred from Saalmann & Kastner",
-      "parameters": {
-        "spotlight_experience": "focused, detailed, tunnel-like",
-        "floodlight_experience": "ambient, panoramic, peripheral"
-      }
-    }
-  ],
-  "scope_conditions": [
-    "Applies to sighted individuals in illuminated environments",
-    "Top-down goals can override spatial layout cues",
-    "Pulvinar integrates cross-modal info, not just visual"
-  ],
-  "moderators": [
-    "threat_level (threat biases toward floodlight/monitoring)",
-    "reward_location (known reward biases toward spotlight)",
-    "developmental_status (children may default to floodlight due to immature pulvinar)"
-  ],
-  "interactions": [
-    {
-      "template": "DT_ATTENTIONAL_DEMAND_001 (T4)",
-      "type": "INPUT_CONTROL",
-      "description": "Top-down attentional demands (T4) set the gain on the thalamic filter."
-    },
-    {
-      "template": "NM_CHOLINERGIC_GATING_007",
-      "type": "MECHANISM",
-      "description": "Acetylcholine (T26) provides the neuromodulatory signal that switches the thalamic mode."
-    }
-  ],
-  "overall_maturity": "established",
-  "key_references": [
-    "Saalmann, Y. B., & Kastner, S. (2011). Cognitive and perceptual functions of the visual thalamus. Neuron.",
-    "Saalmann, Y. B., et al. (2012). The pulvinar regulates information transmission between cortical areas. Science."
-  ],
-  "short_description": "The pulvinar nucleus acts as a dynamic filter on environmental information reaching cortex, implementing attentional modes (focused 'spotlight' vs distributed 'floodlight') that are selected by spa...",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "process": "multimodal_input \u2192 TRN_gating",
+      "warrant_type": "MECHANISM",
+      "confidence": 0.55,
+      "description": "Thalamic reticular nucleus receives cortical feedback + sensory input; computes gating signal",
+      "justification": {
+        "data": [
+          {
+            "finding": "TRN as gateway for thalamocortical flow",
+            "source": "Crick (1984)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": null,
+            "design": ""
           },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+          {
+            "finding": "TRN circuit mechanisms in sensory gating",
+            "source": "Pinault (2004)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": null,
+            "design": ""
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
+        ],
+        "backing": "Thalamic reticular nucleus receives cortical feedback + sensory input; computes gating signal",
+        "qualifier": "key evidence limited to cited studies",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 10: CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "process": "TRN_gating \u2192 channel_selection",
+      "warrant_type": "MECHANISM",
+      "confidence": 0.55,
+      "description": "Selective amplification/suppression of sensory channels via alpha-band thalamocortical coherence",
+      "justification": {
+        "data": [
+          {
+            "finding": "80% accuracy predicting attentional selection from thalamic gating",
+            "source": "Saalmann et al (2012)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": 2,
+            "design": "macaques"
           },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+          {
+            "finding": "Thalamic modulation of sensory selection",
+            "source": "Kastner et al (2004)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": 6,
+            "design": "fMRI"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
+        ],
+        "backing": "Selective amplification/suppression of sensory channels via alpha-band thalamocortical coherence",
+        "qualifier": "key evidence limited to cited studies",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 10: CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001"
+        }
+      }
+    },
+    {
+      "step": 3,
+      "process": "channel_selection \u2192 cortical_processing_priority",
+      "warrant_type": "MECHANISM",
+      "confidence": 0.5,
+      "description": "Selected channels reach cortex with amplified signal; unselected channels attenuated; feeds into precision-weighting",
+      "justification": {
+        "data": [],
+        "backing": "Selected channels reach cortex with amplified signal; unselected channels attenuated; feeds into precision-weighting",
+        "qualifier": "mechanism plausible but requires further empirical validation",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 10: CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001"
         }
       }
     }
+  ],
+  "calibrated_parameters": {
+    "gating_latency_ms": "~50",
+    "alpha_coherence_threshold": "THEORETICAL_DEFAULT",
+    "channel_capacity_simultaneous": "1-3"
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "residual",
-  "generation": 1,
-  "ecological_validation": false,
-  "panel_docs": [
-    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-    "docs/02-15_20_Panel_V_Social_Brain_V1_0.md",
-    "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md"
+  "constraint_C04_partial_out": {
+    "this_template_owns": "SUBCORTICAL gating mechanism",
+    "NEUROMOD_I_owns": "CORTICAL precision-weighted integration (MULTIMODAL_PE_INTEGRATION_001)",
+    "relationship": "Thalamic gating is upstream pre-filter"
+  },
+  "constraint_C05_IE_DPT": "Level 1 (fully automatic, subcortical, ~50ms \u2014 precedes conscious awareness)",
+  "constraint_C10_differential_mode": {
+    "low_stimulation": "Broad gating (multiple channels pass)",
+    "high_stimulation": "Narrow gating (dominant channel prioritised)"
+  },
+  "constraint_C02_prior_refs": [
+    "MULTI-I multisensory gating",
+    "NEUROMOD-I NM10 multimodal PE",
+    "VISUAL-I visual channel priority"
   ],
-  "panel_source": "Panel IV (Cognitive Control & Reward)",
-  "panel_reasoning_excerpt": "### T46: CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001\n\n**Frameworks**: MSI + PP (cross-framework)\n**Name**: Thalamic Environmental Filtering (Pulvinar)\n**Structural Pattern**: GATING (environmental input \u2192 thalamic filter \u2192 cortical access)\n**Higher-Order Principle**: The pulvinar nucleus acts as a dynamic filter on environmental information reaching cortex, implementing attentional modes (focused \"spotlight\" vs distributed \"floodlight\") that are shaped by spatial configuration and modulated by behavioral goals.\n\n[code block omitted]",
-  "justification_status": "raw_excerpt",
-  "excerpt_source": "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-  "excerpt_char_range": [
-    54405,
-    59994
+  "confidence": 0.5,
+  "display_id": "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001",
+  "name": "Cross Thalamic Environmental Filter",
+  "panel_source": "CROSSCUT-I",
+  "calibration_status": "calibrated",
+  "provenance": "panel_calibrated",
+  "calibration_date": "2026-02-23",
+  "cross_template_interactions": [
+    {
+      "template_id": "AX_DOSE_RESPONSE_007",
+      "interaction_type": "upstream",
+      "description": "Thalamic gating is the earliest environmental filter: stimulus intensity determines thalamic relay activation; determines which sensory channels reach cortex for dose-response processing."
+    },
+    {
+      "template_id": "AX_ATTENTION_MEDIATION_010",
+      "interaction_type": "upstream",
+      "description": "Thalamic pre-filtering (50ms, coarse channel selection) is upstream of attention-mediated post-filtering (200-500ms, fine feature selection). Sequential complementary gating architecture."
+    },
+    {
+      "template_id": "AX_INDIVIDUAL_DIFFERENCES_008",
+      "interaction_type": "receives_from",
+      "description": "Individual differences affect thalamic relay gain: SPS individuals show higher sensory gain (broader channel transmission); neuroticism shows threat-biased thalamic gating (amygdala feedback amplifies threat channels)."
+    },
+    {
+      "template_id": "SALIENCE_NETWORK_SWITCH_001",
+      "interaction_type": "upstream",
+      "description": "Thalamic gating channels information to SN; SN then detects salience within thalamic-admitted streams. Pre-filter determines what information is available for SN salience detection."
+    },
+    {
+      "template_id": "CROSS_WM_GAMMA_BETA_DYNAMICS_001",
+      "interaction_type": "upstream",
+      "description": "Thalamic-admitted channels feed information into working memory encoding (gamma). Only thalamic-passed information becomes available for WM maintenance and manipulation."
+    },
+    {
+      "template_id": "CROSS_HIERARCHICAL_CONTROL_001",
+      "interaction_type": "upstream",
+      "description": "Thalamic gating provides the sensory input streams to hierarchical prediction systems. Gating determines multimodal composition of input; hierarchy processes that input across temporal scales."
+    }
   ],
-  "t1_frameworks": [],
-  "calibration_status": "uncalibrated"
+  "residual_gaps": [],
+  "bridge_warrant": "MECHANISM",
+  "t1_frameworks": [
+    "PP",
+    "NM"
+  ],
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Thalamic_Gating_Theory"
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which cross thalamic environmental filter operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.934895+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "outcome_domains": [
+    "env"
+  ],
+  "outcome_terms": [
+    "env"
+  ]
 }

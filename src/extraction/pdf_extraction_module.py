@@ -62,6 +62,118 @@ except ImportError:
     pass  # We will handle missing tenacity via an error message if it's not installed
 
 # ---------------------------------------------------------------------------
+# ROBUST JSON PARSING — salvages partial/malformed Gemini outputs
+# ---------------------------------------------------------------------------
+
+RAW_FAILURES_DIR = Path(os.environ.get("AE_RAW_FAILURES_DIR", "data/extractions/raw_failures"))
+
+
+def robust_json_parse(text: str) -> Optional[dict]:
+    """
+    Try increasingly aggressive strategies to extract valid JSON.
+
+    Handles:
+    1. Normal JSON (fast path)
+    2. "Extra data" — Gemini outputs two JSON blobs; take first balanced one
+    3. "Unterminated string" — output truncated; close open strings/arrays/objects
+    4. Trailing commas, missing quotes, etc.
+    """
+    if not text or not text.strip():
+        return None
+
+    text = text.strip()
+
+    # Strip markdown code fences
+    if text.startswith("```"):
+        lines = text.split("\n")
+        text = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+        text = text.strip()
+
+    # Strategy 1: Direct parse
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Strategy 2: Balanced-brace extraction (for "Extra data" errors)
+    first_brace = text.find("{")
+    if first_brace >= 0:
+        depth = 0
+        in_string = False
+        escape = False
+        for i, ch in enumerate(text[first_brace:], start=first_brace):
+            if escape:
+                escape = False
+                continue
+            if ch == "\\" and in_string:
+                escape = True
+                continue
+            if ch == '"' and not escape:
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    candidate = text[first_brace:i+1]
+                    try:
+                        return json.loads(candidate)
+                    except json.JSONDecodeError:
+                        break
+
+    # Strategy 3: Truncation repair — close open structures
+    repaired = text
+    if repaired.count('"') % 2 != 0:
+        last_quote = repaired.rfind('"')
+        if last_quote > 0:
+            repaired = repaired[:last_quote+1]
+
+    open_braces = repaired.count("{") - repaired.count("}")
+    open_brackets = repaired.count("[") - repaired.count("]")
+    repaired = repaired.rstrip()
+    if repaired.endswith(","):
+        repaired = repaired[:-1]
+    repaired += "]" * max(0, open_brackets) + "}" * max(0, open_braces)
+
+    try:
+        return json.loads(repaired)
+    except json.JSONDecodeError:
+        pass
+
+    # Strategy 4: Remove trailing garbage after last complete finding
+    last_finding_end = max(repaired.rfind("},"), repaired.rfind("}\n"))
+    if last_finding_end > 0:
+        truncated = repaired[:last_finding_end+1]
+        open_b = truncated.count("{") - truncated.count("}")
+        open_br = truncated.count("[") - truncated.count("]")
+        truncated += "]" * max(0, open_br) + "}" * max(0, open_b)
+        try:
+            return json.loads(truncated)
+        except json.JSONDecodeError:
+            pass
+
+    return None
+
+
+def save_raw_failure(doi: str, raw_text: str, error: str):
+    """Save raw Gemini output for failed extractions."""
+    RAW_FAILURES_DIR.mkdir(parents=True, exist_ok=True)
+    doi_safe = doi.replace("/", "_")
+    raw_file = RAW_FAILURES_DIR / f"{doi_safe}.txt"
+    meta_file = RAW_FAILURES_DIR / f"{doi_safe}.meta.json"
+    raw_file.write_text(raw_text)
+    meta_file.write_text(json.dumps({
+        "doi": doi, "error": error,
+        "raw_chars": len(raw_text),
+        "saved_at": datetime.now(timezone.utc).isoformat(),
+    }, indent=2))
+    return raw_file
+
+
+# ---------------------------------------------------------------------------
 # PROCESS LOCKING (for multi-process safety)
 # ---------------------------------------------------------------------------
 
@@ -741,7 +853,7 @@ methods"""
                 response = self.client.models.generate_content(
                     model=self.model,
                     contents=[uploaded, prompt],
-                    config=types.GenerateContentConfig(temperature=0.1, max_output_tokens=65536),
+                    config=types.GenerateContentConfig(temperature=0.1, max_output_tokens=131072),
                 )
                 return response
             finally:
@@ -753,25 +865,26 @@ methods"""
         try:
             response = _call_gemini_extract()
 
-            # Parse JSON
-            text = response.text
-            if not text:
+            # Parse JSON with robust recovery
+            raw_text = response.text
+            if not raw_text:
                 item.last_error = "Extraction: API returned empty response (possible safety block)"
                 raise ValueError("Empty response from API")
-                
-            text = text.strip()
-            if text.startswith("```"):
-                lines = text.split("\n")
-                text = "\n".join(lines[1:-1] if lines[-1] == "```" else lines[1:])
 
-            data = json.loads(text)
+            data = robust_json_parse(raw_text)
+
+            if data is None:
+                # Save raw output for future salvage
+                save_raw_failure(item.doi, raw_text, "robust_json_parse failed")
+                item.last_error = f"JSON parse failed after robust recovery ({len(raw_text)} chars)"
+                raise ValueError(item.last_error)
 
             # Calculate cost
             cost = 0.0
             if response.usage_metadata:
                 m = response.usage_metadata
                 # Gemini 2.5 Flash pricing
-                cost = (m.prompt_token_count * 0.075 + m.candidates_token_count * 0.30) / 1_000_000
+                cost = (m.prompt_token_count * 0.15 + m.candidates_token_count * 0.60) / 1_000_000
 
             return ExtractionResult(
                 doi=item.doi,
@@ -790,9 +903,6 @@ methods"""
                 model_used=self.model,
             )
 
-        except json.JSONDecodeError as e:
-            item.last_error = f"JSON parse: {str(e)[:50]}"
-            raise
         except Exception as e:
             item.last_error = f"Extraction: {str(e)[:100]}"
             raise
@@ -997,6 +1107,11 @@ methods"""
                 result_file = self.results_dir / f"{item.doi.replace('/', '_')}.json"
                 with open(result_file, "w") as f:
                     json.dump(item.extraction_result, f, indent=2)
+
+                # --- INTEGRATION HOOK (Sprint INTEGRATION-1) ---
+                # Trigger Paper Integration Pipeline for newly accepted papers.
+                # Runs asynchronously: if integration fails, extraction is still saved.
+                self._trigger_integration(item)
 
             elif quality.action == "requeue" and item.attempts < item.max_retries:
                 item.status = QueueStatus.REQUEUED
@@ -1232,6 +1347,75 @@ methods"""
             if doi in self.queue:
                 self.queue[doi].status = QueueStatus.INTEGRATED
         self._save_queue()
+
+    def _trigger_integration(self, item) -> None:
+        """
+        Trigger the Paper Integration Pipeline for a newly accepted paper.
+
+        Sprint INTEGRATION-1: This fires the 14-step cascade that propagates
+        the paper's findings through web of belief, BN, tags, molecules,
+        provenance, QA cache, social epistemology, and VOI gaps.
+
+        Non-blocking: if integration fails, the extraction result is already
+        saved and can be integrated later via get_ready_for_integration().
+        """
+        try:
+            from src.services.paper_integration.orchestrator import PaperIntegrationOrchestrator
+            import sqlite3
+
+            # Use the project's main database
+            db_path = str(self.results_dir.parent / "ae.db")
+            db_conn = sqlite3.connect(db_path)
+
+            orchestrator = PaperIntegrationOrchestrator(
+                db_conn=db_conn,
+                template_dir=str(self.results_dir.parent / "data" / "templates"),
+                molecule_dir=str(self.results_dir.parent / "data" / "molecules"),
+                theory_dir=str(self.results_dir.parent / "data" / "theories"),
+            )
+
+            # Build extraction data from the item's extraction result
+            extraction_data = item.extraction_result or {}
+
+            # Map ExtractionResult fields to orchestrator's expected format
+            claims = extraction_data.get("findings", [])
+            rules = extraction_data.get("rules", []) or extraction_data.get("constraints", [])
+
+            # Extract paper metadata for supersession
+            metadata = {
+                "publication_year": extraction_data.get("year"),
+                "sample_size": extraction_data.get("sample_size"),
+                "study_design": extraction_data.get("study_design", "observational"),
+            }
+
+            paper_id = item.doi.replace("/", "_") if item.doi else f"paper_{item.completed_at}"
+
+            event = orchestrator.integrate_paper(
+                paper_id=paper_id,
+                extraction_data={"claims": claims, "rules": rules},
+                paper_metadata=metadata,
+            )
+
+            if event.status.value == "COMPLETED":
+                # Mark as integrated
+                self.mark_integrated([item.doi])
+                logger.info(
+                    "Paper %s integrated: %d beliefs, %d constraints",
+                    paper_id, len(event.beliefs_added), len(event.constraints_added),
+                )
+            else:
+                logger.warning(
+                    "Paper %s integration %s: %s",
+                    paper_id, event.status.value, event.error_log,
+                )
+
+            db_conn.close()
+
+        except ImportError:
+            logger.debug("Paper integration pipeline not available; skipping auto-integration")
+        except Exception as e:
+            # Integration failure should NOT block extraction
+            logger.warning("Auto-integration failed for %s: %s (extraction preserved)", item.doi, e)
 
 
 # ---------------------------------------------------------------------------

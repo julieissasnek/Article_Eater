@@ -1,0 +1,94 @@
+{
+    "molecule_id": "MULTISENSORY_DESIGN",
+    "name": "Multisensory Design",
+    "short_description": "How sensory channels combine, compete, and compensate in architectural experience, determining the coherence or conflict of environmental perception.",
+    "molecule_type": "MECHANISM",
+    "components": [
+        {
+            "name": "Congruency Enhancement",
+            "template_ids": [
+                "MSI_CONGRUENCY_PRINCIPLE_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "When visual, auditory, haptic, and olfactory cues are congruent, the environmental experience is enhanced beyond any single channel."
+        },
+        {
+            "name": "Inverse Effectiveness",
+            "template_ids": [
+                "MSI_INVERSE_EFFECTIVENESS_002"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "When one sensory channel is degraded, multisensory integration compensates more strongly."
+        },
+        {
+            "name": "Haptic-Material Perception",
+            "template_ids": [
+                "HAP_SURFACE_MATERIAL_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "Surface material properties drive haptic exploration and affective evaluation of architectural surfaces."
+        },
+        {
+            "name": "Thalamic Filtering",
+            "template_ids": [
+                "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001"
+            ],
+            "interaction_type": "PREREQUISITE",
+            "description": "The pulvinar nucleus selectively gates multisensory information flow, filtering environmental salience."
+        },
+        {
+            "name": "Crossmodal Binding",
+            "template_ids": [
+                "CROSSMODAL_CONGRUENCE_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "Crossmodal correspondences (e.g., bright spaces 'feeling' lighter) shape environmental perception."
+        }
+    ],
+    "constituent_templates": [
+        "MSI_CONGRUENCY_PRINCIPLE_001",
+        "MSI_INVERSE_EFFECTIVENESS_002",
+        "HAP_SURFACE_MATERIAL_001",
+        "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001",
+        "CROSSMODAL_CONGRUENCE_001",
+        "AUD_SCENE_ANALYSIS_001"
+    ],
+    "interaction_graph": {
+        "MSI_CONGRUENCY_PRINCIPLE_001": {
+            "CROSSMODAL_CONGRUENCE_001": "SYNERGISTIC"
+        },
+        "MSI_INVERSE_EFFECTIVENESS_002": {
+            "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001": "ADDITIVE"
+        }
+    },
+    "framework_ids": [
+        "MSI",
+        "PP"
+    ],
+    "domain": "perception",
+    "scope_conditions": [
+        "SC1"
+    ],
+    "overall_maturity": "TENTATIVE",
+    "key_references": [
+        "spence_2020",
+        "stein_meredith_1993",
+        "gallace_spence_2014"
+    ],
+    "empirical_support": "PRELIMINARY",
+    "competing_theories": [],
+    "design_implications": [
+        "Ensure sensory cues are congruent: warm lighting with warm materials, not cold fluorescent with wood.",
+        "In acoustically degraded spaces, enhance visual and haptic channels to compensate.",
+        "Design material palettes that reward haptic exploration (varied textures at hand height).",
+        "Avoid sensory conflict zones where visual openness contradicts acoustic enclosure."
+    ],
+    "confidence_intervals": {
+        "cohens_d_range": [
+            0.2,
+            0.6
+        ],
+        "typical_d": 0.35,
+        "note": "Effect sizes for congruent vs incongruent multisensory environments on comfort and performance."
+    }
+}

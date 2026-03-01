@@ -230,7 +230,7 @@ def test_s10_wis_monotonic() -> None:
 
 
 def test_s10_compute_functions_exist() -> None:
-    expected = {"VF3", "L1", "L2", "L3", "MAT1", "MAT2", "MAT4", "SOC2", "SC1", "SC4", "VIEW1", "CREA2"}
+    expected = {"VF3", "L1", "L2", "L3", "MAT1", "MAT2", "NMC1", "SOC2", "SC1", "SC4", "VIEW1", "CREA2"}
     assert expected.issubset(set(TEMPLATE_COMPUTE_FUNCTIONS.keys()))
 
 

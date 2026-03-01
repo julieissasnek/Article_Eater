@@ -96,16 +96,16 @@ Every calibrated parameter is ultimately a component of this product. If the fin
 | ✅ | LIGHT-I | 8 |
 | ✅ | SPATIAL-I | 4 |
 | ✅ | VISUAL-I | 8 |
-| NEXT | **SOCIAL-I** | 11 |
-| — | MEMORY-I | 10 |
-| — | MULTI-I | 9 |
-| — | MUSIC-I | 13 |
-| — | THERMAL-I | 3 |
-| — | CREATIVE-I | 7 |
+| ✅ | **SOCIAL-I** | 11 |
+| ✅ | MEMORY-I | 10 |
+| ✅ | MULTI-I | 9 |
+| ✅ | MUSIC-I | 13 |
+| ✅ | THERMAL-I | 3 |
+| NEXT | **CREATIVE-I** | 7 |
 | — | NEUROMOD-I | 10 |
 | LAST | CROSSCUT-I | 15 |
 
-**23 calibrated / 128 remaining / 151 total**
+**55 calibrated / 111 remaining / 166 total**
 
 ---
 

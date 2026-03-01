@@ -11,9 +11,27 @@
       "step": 1,
       "process": "An occupant perceives the architectural environment through multiple sensory channels. Each channel has a signal-to-noise ratio that varies with environmental conditions: visual clarity degrades in dim lighting, fog, or distance; auditory clarity degrades in noise; haptic clarity degrades with gloves or numbness.",
       "substrate": "Modality-specific sensory processing with variable reliability",
-      "confidence": 0.7,
+      "confidence": 0.6,
       "bridge_warrant": "MECHANISM",
-      "source": "Stein & Meredith (1993)"
+      "source": "Stein & Meredith (1993)",
+      "justification": {
+        "data": [
+          "Occupant perceives environment through multiple channels (visual, auditory, haptic, olfactory)",
+          "Each channel has signal-to-noise ratio (SNR) that varies with conditions",
+          "Visual clarity degrades in dim light, fog, distance",
+          "Auditory clarity degrades in noise",
+          "Haptic clarity degrades with gloves or numbness"
+        ],
+        "backing": "Stein & Meredith (1993) foundational work on signal-to-noise in multisensory integration. Signal detection theory (Green & Swets, 1966) on channel reliability.",
+        "qualifier": "Confidence 0.6 reflects established neurophysiology. MECHANISM warrant: SNR variation in sensory channels is documented.",
+        "rebuttal": "Some observers may not notice channel degradation (top-down compensation, selective attention).",
+        "competing_accounts": [
+          "Sensory channels are independent: refuted by inverse effectiveness showing interaction effects",
+          "Channel degradation always reduces perception: refuted by multisensory compensation"
+        ],
+        "depth_tier": "A",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; Stein & Meredith authority"
+      }
     },
     {
       "step": 2,
@@ -21,21 +39,55 @@
       "substrate": "Superior colliculus multisensory neurons (animal); cortical multisensory areas (human behavioral analogue)",
       "confidence": 0.6,
       "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "source": "Stein & Meredith (1993); Rowland & Stein (2014)"
+      "source": "Stein & Meredith (1993); Rowland & Stein (2014)",
+      "justification": {
+        "data": [
+          "When unisensory signal is weak, addition of congruent signal produces GREATER enhancement",
+          "Multisensory gain is inversely proportional to unisensory signal strength",
+          "Effect is documented in superior colliculus multisensory neurons (cat)",
+          "Behavioral analogues are consistent in humans"
+        ],
+        "backing": "Stein & Meredith (1993) single-unit recordings from cat superior colliculus. Rowland & Stein (2014) comprehensive review. Human behavioral evidence from Rowland et al. (2007) and others.",
+        "qualifier": "Confidence 0.6 reflects neural recording in animals and behavioral evidence in humans. EMPIRICAL_COVARIANCE warrant: inverse effectiveness is directly measured in neural and behavioral data.",
+        "rebuttal": "Human neural mechanism may differ from cat colliculus. Cortical integration may follow different rules.",
+        "competing_accounts": [
+          "Multisensory integration is always additive: refuted by inverse effectiveness and super-additivity",
+          "Weak signals are ignored: refuted by enhancement of weak signals by congruent signals"
+        ],
+        "depth_tier": "A",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; Stein & Meredith animal authority, Rowland behavioral authority"
+      }
     },
     {
       "step": 3,
       "process": "In degraded conditions, multisensory integration can produce super-additive responses: the combined response exceeds the sum of individual channel responses. In strong-signal conditions, integration is typically additive or sub-additive.",
-      "substrate": "Nonlinear multisensory integration — super-additivity requires weak unisensory signals",
+      "substrate": "Nonlinear multisensory integration \u2014 super-additivity requires weak unisensory signals",
       "confidence": 0.55,
       "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "source": "Rowland et al. (2007); Rowland & Stein (2014)"
+      "source": "Rowland et al. (2007); Rowland & Stein (2014)",
+      "justification": {
+        "data": [
+          "Super-additive responses occur when individual channels are below ~50% detection accuracy",
+          "Combined response exceeds the sum of individual responses",
+          "Effect requires congruent (common-cause) signals",
+          "Incongruent signals show sub-additive or inhibitory responses"
+        ],
+        "backing": "Rowland et al. (2007) data on super-additivity conditions. Rowland & Stein (2014) review. Nonlinear integration literature (Avil\u00e9s et al., 2005).",
+        "qualifier": "Confidence 0.55 reflects neural and behavioral measurements. EMPIRICAL_COVARIANCE warrant: super-additivity is measured under specified conditions.",
+        "rebuttal": "Threshold for super-additivity (50% detection) may vary with stimulus type and cortical region. Human thresholds may differ from cat.",
+        "competing_accounts": [
+          "Integration is always linear: refuted by super-additive and sub-additive effects",
+          "Integration effectiveness is independent of signal strength: refuted by inverse effectiveness"
+        ],
+        "depth_tier": "B",
+        "panel_debate_reference": "MULTI-I Panel, Feb 2026; Rowland super-additivity authority"
+      }
     }
   ],
   "calibrated_parameters": {
     "inverse_effectiveness_threshold": {
       "value": "unisensory_detection_within_2x_threshold",
-      "interpretation": "Inverse effectiveness is most pronounced when the unisensory signal is near detection threshold (within ~2× absolute threshold). At this level, adding a congruent cross-modal signal can improve detection by 50–100%.",
+      "interpretation": "Inverse effectiveness is most pronounced when the unisensory signal is near detection threshold (within ~2\u00d7 absolute threshold). At this level, adding a congruent cross-modal signal can improve detection by 50\u2013100%.",
       "confidence": 0.55,
       "bridge_warrant": "EMPIRICAL_COVARIANCE"
     },
@@ -61,22 +113,22 @@
   },
   "population_modifiers": {
     "visual_impairment": {
-      "effect": "Chronically degraded visual channel → enhanced multisensory integration with auditory and haptic channels. Inverse effectiveness predicts that this population benefits MOST from rich haptic and auditory design.",
+      "effect": "Chronically degraded visual channel \u2192 enhanced multisensory integration with auditory and haptic channels. Inverse effectiveness predicts that this population benefits MOST from rich haptic and auditory design.",
       "confidence": 0.55
     },
     "age_group": {
-      "effect": "Multiple sensory channels degrade with age (vision, hearing, touch). Inverse effectiveness predicts that MULTI-SENSORY design is more important for elderly than for young adults — the compensation effect is larger when multiple channels are partially degraded.",
+      "effect": "Multiple sensory channels degrade with age (vision, hearing, touch). Inverse effectiveness predicts that MULTI-SENSORY design is more important for elderly than for young adults \u2014 the compensation effect is larger when multiple channels are partially degraded.",
       "confidence": 0.5
     }
   },
   "IC2_AX4_interaction": {
-    "IC2_body_budget": "Body budget deficit can produce transient sensory degradation (blurred vision from fatigue, reduced tactile sensitivity from cold, auditory masking from tinnitus exacerbated by stress). Under allostatic deficit, inverse effectiveness becomes more architecturally relevant — the building must compensate for stress-degraded sensory channels.",
+    "IC2_body_budget": "Body budget deficit can produce transient sensory degradation (blurred vision from fatigue, reduced tactile sensitivity from cold, auditory masking from tinnitus exacerbated by stress). Under allostatic deficit, inverse effectiveness becomes more architecturally relevant \u2014 the building must compensate for stress-degraded sensory channels.",
     "AX4_perceived_control": "In degraded sensory conditions (dim, noisy, cold), perceived control drops. Multisensory compensation that maintains environmental legibility preserves perceived control. Inverse effectiveness is therefore an indirect support for AX4: by maintaining perception under degradation, it prevents the control loss that occurs when the occupant cannot perceive the environment."
   },
   "cross_template_references": [
-    "MATERIAL_IDENTITY_INTEGRATION_001 — MLE integration is enhanced under inverse effectiveness conditions",
-    "NATURAL_MATERIAL_CONVERGENCE_001 — convergence bonus may be partially explained by inverse effectiveness in partially degraded channels",
-    "VISUAL-I VIEW1 — nature view channels provide visual redundancy"
+    "MATERIAL_IDENTITY_INTEGRATION_001 \u2014 MLE integration is enhanced under inverse effectiveness conditions",
+    "NATURAL_MATERIAL_CONVERGENCE_001 \u2014 convergence bonus may be partially explained by inverse effectiveness in partially degraded channels",
+    "VISUAL-I VIEW1 \u2014 nature view channels provide visual redundancy"
   ],
   "calibration_status": "calibrated",
   "panel_source": "MULTI-I",
@@ -85,7 +137,7 @@
   "architectural_modifiers": {
     "sensory_redundancy_index": {
       "coefficient": 0.25,
-      "interpretation": "Number of sensory channels providing the same spatial/material information. Higher redundancy → more robust perception under degradation. A room where material identity is communicated through vision AND touch AND sound AND smell has maximum redundancy.",
+      "interpretation": "Number of sensory channels providing the same spatial/material information. Higher redundancy \u2192 more robust perception under degradation. A room where material identity is communicated through vision AND touch AND sound AND smell has maximum redundancy.",
       "confidence": 0.45,
       "bridge_warrant": "CAPACITY"
     },
@@ -99,6 +151,33 @@
   "t1_frameworks": [
     "MSI"
   ],
-  "bridge_warrant": "EMPIRICAL_COVARIANCE",
-  "confidence": 0.55
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
+  "confidence": 0.55,
+  "tier": "B",
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Multisensory_Integration_Theory",
+    "Bayesian_Cue_Integration"
+  ],
+  "cross_template_interactions": [
+    {
+      "template_id": "MSI_CONGRUENCY_PRINCIPLE_001",
+      "interaction_type": "complementary",
+      "description": "Inverse effectiveness and congruency jointly determine integration strength"
+    },
+    {
+      "template_id": "NATURAL_MATERIAL_CONVERGENCE_001",
+      "interaction_type": "feeds_into",
+      "description": "Weak unimodal signals boost multisensory integration of natural materials"
+    }
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which inverse effectiveness: degraded unisensory channel enhances multisensory compensation operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.966475+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  }
 }

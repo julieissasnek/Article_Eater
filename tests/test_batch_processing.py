@@ -1,3 +1,4 @@
+import os
 """
 Tests for Batch Processing Script (MVP-2)
 ==========================================

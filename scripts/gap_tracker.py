@@ -19,6 +19,8 @@ import json
 from pathlib import Path
 from datetime import datetime, timezone
 
+from resolve_fields import resolve_field, get_mechanism_chain, get_calibration_status, get_panel_source
+
 
 DATA_DIR = Path("data")
 TEMPLATES_DIR = DATA_DIR / "templates"
@@ -40,11 +42,8 @@ def is_gap(template: dict) -> list[str]:
     """
     reasons = []
 
-    # Check calibration status (canonical field)
-    status = template.get("calibration_status")
-    if not status:
-        # Check legacy status field
-        status = template.get("status")
+    # Check calibration status (use resolver)
+    status = get_calibration_status(template)
 
     if status != "calibrated":
         if status == "scaffold":
@@ -56,8 +55,8 @@ def is_gap(template: dict) -> list[str]:
         else:
             reasons.append(f"unknown_status:{status}")
 
-    # Check mechanism_chain (canonical) or mechanism_steps (legacy)
-    mechanism = template.get("mechanism_chain") or template.get("mechanism_steps", [])
+    # Check mechanism_chain (use resolver)
+    mechanism = get_mechanism_chain(template)
     if not mechanism:
         reasons.append("missing_mechanism_chain")
     elif len(mechanism) < 2:
@@ -68,22 +67,19 @@ def is_gap(template: dict) -> list[str]:
     if not params or params == {}:
         reasons.append("missing_calibrated_parameters")
 
-    # Check bridge_warrant (canonical) or bridge_warrant_type (legacy)
-    warrant = template.get("bridge_warrant") or template.get("bridge_warrant_type")
+    # Check bridge_warrant (use resolver)
+    warrant = resolve_field(template, "bridge_warrant")
     if not warrant:
         reasons.append("missing_bridge_warrant")
 
-    # Check confidence (canonical) or prior_confidence/bridge_prior (legacy)
-    confidence = (template.get("confidence") or
-                  template.get("prior_confidence") or
-                  template.get("bridge_prior"))
+    # Check confidence (use resolver)
+    confidence = resolve_field(template, "confidence")
     if confidence is None:
         reasons.append("missing_confidence")
 
     # Check for missing cross_template_interactions (expected for calibrated)
     if status == "calibrated":
-        interactions = (template.get("cross_template_interactions") or
-                       template.get("super_template_interactions"))
+        interactions = resolve_field(template, "cross_template_interactions")
         if not interactions:
             reasons.append("missing_cross_template_interactions")
 
@@ -157,46 +153,47 @@ def rebuild_registry():
             print(f"Warning: Failed to parse {file_path.name}: {e}")
             continue
 
-        template_id = template.get("template_id", file_path.stem)
-        reasons = is_gap(template)
-        score, level = calculate_triage_score(template, reasons)
+        try:
+            template_id = template.get("template_id", file_path.stem)
+            reasons = is_gap(template)
+            score, level = calculate_triage_score(template, reasons)
 
-        # Get calibration status using canonical field
-        cal_status = template.get("calibration_status") or template.get("status")
-        if template.get("calibrated") is True:
-            cal_status = "calibrated"
+            # Get calibration status using resolver
+            cal_status = get_calibration_status(template)
 
-        # Get panel source using canonical field
-        panel_source = (template.get("panel_source") or
-                       template.get("panel_id") or
-                       template.get("panel"))
+            # Get panel source using resolver
+            panel_source = get_panel_source(template)
 
-        # Count mechanism steps
-        mechanism = template.get("mechanism_chain") or template.get("mechanism_steps", [])
-        mechanism_step_count = len(mechanism)
+            # Count mechanism steps (use resolver)
+            mechanism = get_mechanism_chain(template)
+            mechanism_step_count = len(mechanism)
 
-        # Count missing parameters in mechanism steps
-        missing_step_params = 0
-        for step in mechanism:
-            if isinstance(step, dict):
-                if not step.get("confidence"):
-                    missing_step_params += 1
+            # Count missing parameters in mechanism steps
+            missing_step_params = 0
+            for step in mechanism:
+                if isinstance(step, dict):
+                    if not resolve_field(step, "confidence"):
+                        missing_step_params += 1
 
-        entry = {
-            "template_id": template_id,
-            "display_id": template.get("display_id", ""),
-            "name": template.get("name") or template.get("template_name", "Unknown"),
-            "t1_frameworks": template.get("t1_frameworks", []),
-            "calibration_status": cal_status,
-            "panel_source": panel_source,
-            "calibrated_date": template.get("calibrated_date") or template.get("calibration_date"),
-            "gap_reasons": reasons,
-            "mechanism_step_count": mechanism_step_count,
-            "missing_step_params": missing_step_params,
-            "triage_score": score,
-            "triage_level": level,
-        }
-        registry.append(entry)
+            entry = {
+                "template_id": template_id,
+                "display_id": template.get("display_id", ""),
+                "name": template.get("name", "Unknown"),
+                "t1_frameworks": template.get("t1_frameworks", []),
+                "calibration_status": cal_status,
+                "panel_source": panel_source,
+                "calibrated_date": template.get("calibrated_date"),
+                "gap_reasons": reasons,
+                "mechanism_step_count": mechanism_step_count,
+                "missing_step_params": missing_step_params,
+                "triage_score": score,
+                "triage_level": level,
+            }
+            registry.append(entry)
+        except Exception as e:
+            # Skip corrupt entries gracefully
+            print(f"SKIP (corrupt): {template_id} — {e}", file=__import__('sys').stderr)
+            continue
 
     # Sort by triage score descending
     registry.sort(key=lambda x: x["triage_score"], reverse=True)

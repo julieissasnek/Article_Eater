@@ -26,8 +26,8 @@ CEILINGS = {
     "ANALOGICAL": 0.35,
     "CAPACITY": 0.45,
     "FUNCTIONAL": 0.50,
-    "THEORETICAL_DEFAULT": 0.40,
-    "EMPIRICAL_COVARIANCE": 0.60,
+    "THEORY_DERIVED": 0.40,
+    "EMPIRICAL_ASSOCIATION": 0.60,
     "MECHANISM": 0.60,
     "CONSTITUTIVE": 0.75,
 }
@@ -37,7 +37,7 @@ WARRANT_HIERARCHY = [
     "ANALOGICAL",
     "CAPACITY",
     "FUNCTIONAL",
-    "EMPIRICAL_COVARIANCE",  # Parallel path 1
+    "EMPIRICAL_ASSOCIATION",  # Parallel path 1
     "MECHANISM",              # Parallel path 2
     "CONSTITUTIVE",
 ]
@@ -98,10 +98,10 @@ def is_warrant_mismatch_covariance_to_mechanism(
     confidence: float,
     mechanism_specificity: SPECIFICITY_LEVEL | None = None
 ) -> bool:
-    """Check if EMPIRICAL_COVARIANCE → MECHANISM upgrade is warranted.
+    """Check if EMPIRICAL_ASSOCIATION → MECHANISM upgrade is warranted.
 
     Criteria:
-    1. Confidence ≥ 0.68 (significantly above EMPIRICAL_COVARIANCE ceiling 0.60)
+    1. Confidence ≥ 0.68 (significantly above EMPIRICAL_ASSOCIATION ceiling 0.60)
     2. Mechanism specificity is "specific" or "exceptional"
 
     Returns True if warrant mismatch is likely.
@@ -129,7 +129,7 @@ def adjudicate(
     Parameters:
     -----------
     warrant_type : str
-        One of {ANALOGICAL, CAPACITY, FUNCTIONAL, EMPIRICAL_COVARIANCE, MECHANISM, CONSTITUTIVE}
+        One of {ANALOGICAL, CAPACITY, FUNCTIONAL, EMPIRICAL_ASSOCIATION, MECHANISM, CONSTITUTIVE}
     confidence : float
         Assigned confidence (0.0-1.0)
     ceiling : float
@@ -211,13 +211,13 @@ def adjudicate(
                     f"Evidence suggests definitional or direct functional grounding, not just mechanistic explanation."
                 )
 
-        # Case 2: EMPIRICAL_COVARIANCE → MECHANISM
-        elif warrant == "EMPIRICAL_COVARIANCE":
+        # Case 2: EMPIRICAL_ASSOCIATION → MECHANISM
+        elif warrant == "EMPIRICAL_ASSOCIATION":
             if is_warrant_mismatch_covariance_to_mechanism(confidence, mechanism_specificity):
                 upgrade_warranted = True
                 new_warrant = "MECHANISM"
                 mismatch_reason = (
-                    f"Confidence {confidence:.2f} on EMPIRICAL_COVARIANCE exceeds ceiling (0.60) "
+                    f"Confidence {confidence:.2f} on EMPIRICAL_ASSOCIATION exceeds ceiling (0.60) "
                     f"by Δ = {delta:.3f}. Evidence indicates specific causal mechanism beyond statistical association."
                 )
 

@@ -1,3 +1,4 @@
+import os
 """
 Tests for Sprint 8.0 argument structure and aggregation layer.
 """

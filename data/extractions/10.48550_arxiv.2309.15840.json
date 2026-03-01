@@ -1,0 +1,1155 @@
+{
+  "doi": "10.48550/arxiv.2309.15840",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.83,
+  "n_findings": 30,
+  "extracted_at": "2026-02-25T02:18:22.189003+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.007537,
+  "title": "Enhancing lighting design through the investigation of illuminance and correlated color Temperature's effects on brain activity: An EEG-VR approach",
+  "authors": "Armin Mostafavi et al., 2023",
+  "research_question": "Will brain activity features (i.e., EEG data) be modulated in a predictable fashion during the first seconds of exposure to varied illuminance levels (RQ1a) and CCT (RQ1b)? Will it be possible to associate specific EEG patterns with specific lighting conditions, in terms of illumination and CCT (RQ2)? Will EEG measurements during the first few seconds of observing an indoor environment with different illumination and CCT conditions predict participants' subjective mood responses (RQ3a: pleasure, RQ3b: arousal)? Will EEG measurements during the first few seconds of observing an indoor environment with different illumination and CCT conditions predict participants' behavioral choices of desired vs. non-desired lighting (RQ4)?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 25,
+    "description": "33 healthy adult participants recruited, 8 excluded due to technical problems. Final sample: 25 participants (15 female, 10 male), mean age 24.4 years (SD 8.3), range 18-64 years. All associated with Cornell University (21 undergraduate students, 4 graduate students/faculty members). Majority (64%) intermediate chronotype, 24% moderate evening, 12% moderate morning. All affirmed no medical eye problems, no difficulty distinguishing colors. 64% used eyeglasses/contacts. All reported sufficient sleep (7-9h) prior to experiment.",
+    "recruitment": "convenience sampling method (word-of-mouth and announcements on departmental e-mail lists)"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Modern interior office room (4.0m x 7.4m x 3.0m) in Unreal Engine 4.26, presented via Meta Quest 2 HMD (1832x1920 pixels/eye, 100 nits max brightness, 90Hz refresh rate, 90\u00b0 FOV). Participants seated at a desk. 17 specific artificial lighting conditions were tested from a matrix of 7 illumination levels (300lm to 4500lm) and 7 CCT levels (1500K to 7500K). Lighting sources were six double tube-lights on the ceiling. Illumination measured in lumens (light source strength) as a proxy for lux.",
+      "n_stimuli": 17,
+      "source": "Section 2.1, Fig. 1, Fig. 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Brain activity",
+      "instrument": "Electroencephalography (EEG) with mBraintrain cap (22 channels, Ag/AgCl electrodes, 10-20 international layout, 250 Hz sampling)",
+      "type": "neural"
+    },
+    {
+      "construct": "Emotional valence (pleasure)",
+      "instrument": "Self-Assessment Manikin (SAM) on a 9-point scale (1=unhappy, 9=happy)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Arousal (alertness)",
+      "instrument": "Self-Assessment Manikin (SAM) on a 9-point scale (1=calm, 9=excited)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Lighting preference (behavioral choice)",
+      "instrument": "Participant adjustment of illumination (100lm intervals) and CCT (100K intervals) using VR controllers to optimal preference",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Circadian rhythm (chronotype)",
+      "instrument": "Morningness-Eveningness Questionnaire (MEQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Sense of presence in VR",
+      "instrument": "Igroup Presence Questionnaire (IPQ) (7-point Likert scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Cyber sickness",
+      "instrument": "Simulator Sickness Questionnaire (SSQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Mental workload",
+      "instrument": "NASA Task Load Index (TLX) (1-20 scale)",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG alpha/theta (\u03b1/\u03b8) ratio in central (C4) and parietal (P4) brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.001",
+      "effect_size": 0.95,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1/\u03b8.C4 0.95 5 0.001"
+    },
+    {
+      "id": 2,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG alpha/theta (\u03b1/\u03b8) ratio in central (C4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.001",
+      "effect_size": 0.9,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1, 47.15]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1/\u03b8.C4 6.49e-05 5 [1, 47.15] 0.90 0.88 0.001"
+    },
+    {
+      "id": 3,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG alpha/theta (\u03b1/\u03b8) ratio in parietal (P4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.94,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1/\u03b8. \u03a14 0.94 5 0.002"
+    },
+    {
+      "id": 4,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG alpha/theta (\u03b1/\u03b8) ratio in parietal (P4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.88,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1, 37.93]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1/\u03b8. \u03a14 5.28e-05 5 [1, 37.93] 0.88 0.86 0.002"
+    },
+    {
+      "id": 5,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG beta/theta (\u03b2/\u03b8) ratio in parietal (Pz) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.005",
+      "effect_size": 0.91,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b2/\u03b8. \u03a1\u0396 0.91 5 0.005"
+    },
+    {
+      "id": 6,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG beta/theta (\u03b2/\u03b8) ratio in parietal (Pz) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.005",
+      "effect_size": 0.82,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1, 22.65]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b2/\u03b8. \u03a1\u0396 6.77e-05 5 [1, 22.65] 0.82 0.78 0.005"
+    },
+    {
+      "id": 7,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG theta band strength in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher illumination reduces theta power, consistent with prior findings related to alertness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.12",
+      "quote": "a reduction of theta-band (\u03b8) power in the frontal regions associated with higher illumination"
+    },
+    {
+      "id": 8,
+      "antecedent": "Illumination level (lumens)",
+      "consequent": "EEG alpha/beta (\u03b1/\u03b2) and alpha/gamma (\u03b1/\u03b3) ratios in pre-frontal electrodes",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Light affects brain activity, potentially through non-image-forming pathways.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 4D, p.8",
+      "quote": "in frontal brain regions, illuminance was negatively associated with theta band strength, as well as negatively associated with the \u03b1/\u03b2 and \u03b1/\u03b3 ratios"
+    },
+    {
+      "id": 9,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG alpha (\u03b1) power in frontal (F4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.94,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1. F4 0.94 5 0.002"
+    },
+    {
+      "id": 10,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG alpha (\u03b1) power in frontal (F4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.88,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1, 37.87]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1. F4 3.46e-05 5 [1, 37.87] 0.88 0.86 0.002"
+    },
+    {
+      "id": 11,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG gamma (\u03b3) power in frontal (F4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.003",
+      "effect_size": 0.92,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b3. F4 0.92 5 0.003"
+    },
+    {
+      "id": 12,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG gamma (\u03b3) power in frontal (F4) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.003",
+      "effect_size": 0.85,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1, 28.04]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b3. F4 3.68e-05 5 [1, 28.04] 0.85 0.82 0.003"
+    },
+    {
+      "id": 13,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG gamma (\u03b3) power in frontal (F8) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.004",
+      "effect_size": 0.91,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b3. F8 0.91 5 0.004"
+    },
+    {
+      "id": 14,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG gamma (\u03b3) power in frontal (F8) brain region",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.004",
+      "effect_size": 0.83,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "[1,24.60]",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "AX7"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b3. F8 1.91e-05 5 [1,24.60] 0.83 0.80 0.004"
+    },
+    {
+      "id": 15,
+      "antecedent": "Correlated Color Temperature (CCT) (Kelvin)",
+      "consequent": "EEG alpha/gamma (\u03b1/\u03b3) ratio in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Higher CCT (bluer light) affects brain activity, leading to reductions in \u03b1/\u03b3 ratio.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8, p.12",
+      "quote": "CCT and the ratio of \u03b1/\u03b3 were negatively associated (light toward the blue spectrum was correlated with a lower \u03b1/\u03b3 ratio)."
+    },
+    {
+      "id": 16,
+      "antecedent": "Lighting condition N1 (4500K CCT, 300lm) vs N6 (4500K CCT, 4500lm)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.68,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6A",
+      "quote": "AUC: 0.68",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Lighting condition M1 (2400lm, 1500K CCT) vs M6 (2400lm, 7500K CCT)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.74,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6B",
+      "quote": "AUC: 0.74",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Lighting condition WD5 (1000lm, 2500K CCT) vs WB5 (3800lm, 2500K CCT)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.64,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6C",
+      "quote": "AUC: 0.64",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Lighting condition CD5 (1000lm, 6500K CCT) vs CB5 (3800lm, 6500K CCT)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.74,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L1",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6D",
+      "quote": "AUC: 0.74",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Lighting condition WD5 (1000lm, 2500K CCT) vs CD5 (1000lm, 6500K CCT)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.69,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6E",
+      "quote": "AUC: 0.69",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Lighting condition WB5 (3800lm, 2500K CCT) vs CB5 (3800lm, 6500K CCT)",
+      "consequent": "Brain activity patterns (EEG features)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.64,
+      "effect_size_type": "AUC",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "T1",
+        "L4",
+        "L2"
+      ],
+      "mechanism": "Machine learning classifier can distinguish brain activity patterns associated with different lighting conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "caption",
+      "source": "Fig. 6F",
+      "quote": "AUC: 0.64",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "Brain activity (EEG data from first 10s of exposure)",
+      "consequent": "Self-reported pleasure (binary: negative vs. positive)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.74,
+      "effect_size_type": "cross_validation_accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "NM7",
+        "T12"
+      ],
+      "mechanism": "EEG features are correlated with subjective emotional valence, allowing for classification.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10, Fig. 9A",
+      "quote": "a very high classification accuracy for both the pleasure responses (74% cross-validation accuracy, vs. chance level of 41%)",
+      "outcome_id": "affect.satisfaction",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Brain activity (EEG data from first 10s of exposure)",
+      "consequent": "Self-reported arousal (binary: negative vs. positive)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.81,
+      "effect_size_type": "cross_validation_accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "NM5",
+        "T12"
+      ],
+      "mechanism": "EEG features are correlated with subjective arousal, allowing for classification.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10, Fig. 9A",
+      "quote": "and the arousal responses (81% cross-validation accuracy, vs. chance level of 43%).",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "Brain activity (EEG data from first 10s of exposure)",
+      "consequent": "Desired vs. non-desired illumination level (behavioral choice)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.79,
+      "effect_size_type": "cross_validation_accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "PP4"
+      ],
+      "mechanism": "EEG features are predictive of behavioral lighting preferences.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11, Fig. 9A",
+      "quote": "achieved a very high cross-validation classification accuracy (79%)",
+      "outcome_id": "behav",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Brain activity (EEG data from first 10s of exposure)",
+      "consequent": "Desired vs. non-desired CCT (behavioral choice)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.69,
+      "effect_size_type": "cross_validation_accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "PP4"
+      ],
+      "mechanism": "EEG features are predictive of behavioral lighting preferences.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11, Fig. 9A",
+      "quote": "and the CCT conditions, for which we achieved a lower but still respectable accuracy (69%).",
+      "outcome_id": "behav",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Higher illumination levels",
+      "consequent": "Broadband frontal neural synchronization (higher power) at 4-50 Hz",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Light influences frontal brain activity related to cognitive processing.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Broadband frontal neural synchronization (higher power) at 4-50 Hz, with a smaller effect at the \u03b2-band (13\u201330 Hz), was observed to be positively correlated with color temperature.",
+      "outcome_id": "neural",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Higher illumination levels",
+      "consequent": "Parietal brain region activity (power relative to beta and beta relative to theta)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Light influences parietal brain activity related to spatial perception and environmental information processing.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Parietal brain region activity including (a) a power relative to \u03b2 and (b) \u03b2 power relative to \u03b8, were observed to have a positive and significant correlation with the level of illuminance in the VR space.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 28,
+      "antecedent": "Higher CCT (bluer light)",
+      "consequent": "Broadband frontal neural synchronization (higher power) at 4-50 Hz",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DT"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "T20"
+      ],
+      "mechanism": "Bluer light influences frontal brain activity related to cognitive processing.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Broadband frontal neural synchronization (higher power) at 4-50 Hz, with a smaller effect at the \u03b2-band (13\u201330 Hz), was observed to be positively correlated with color temperature.",
+      "outcome_id": "neural",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Desired vs. not-desired levels of luminosity",
+      "consequent": "Broadband power differences in the frontal regions",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L1",
+        "L2",
+        "PP4"
+      ],
+      "mechanism": "Frontal brain activity is predictive of lighting preferences.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "those broadband power differences in the frontal regions are also predictive of participants' desired vs. not-desired levels of luminosity"
+    },
+    {
+      "id": 30,
+      "antecedent": "Desired vs. not-desired levels of CCT",
+      "consequent": "Parietal alpha power",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L4",
+        "L2",
+        "PP4"
+      ],
+      "mechanism": "Parietal alpha power is predictive of CCT preferences.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "parietal alpha power helped to identify desired vs not-desired levels of CCT (Fig. 8)."
+    }
+  ],
+  "mechanisms": [
+    "Light affects brain activity through non-image-forming pathways, influencing specific EEG band-powers in frontal and parietal brain regions.",
+    "Machine learning models can identify patterns in EEG data that correlate with subjective mood (pleasure, arousal) and behavioral preferences for lighting conditions."
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Findings can assist architects and engineers in developing lighting plans optimized for occupants' subjective states, brain activity, lighting adjustment behavior, and mood.",
+    "VR simulations can be used in the AEC sector for cost-effective testing and optimization of lighting design choices.",
+    "Potential development of Brain-Computer Interface (BCI) systems for automatic lighting adjustment based on individual user's brain responses, enabling personalized and adaptive lighting environments.",
+    "BCI systems could be scientifically feasible and useful for optimizing lighting conditions according to desired moods and performance functions of an indoor space.",
+    "Evidence-based design approaches using VR can become more inexpensive and accessible, leading to larger comparative datasets for building designs and participants."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "CB",
+    "NM",
+    "DT"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Top 3 correlations and their linear regression results for both illumination and CCT.",
+      "key_stats": [
+        "\u03b1/\u03b8.C4 r=0.95, p=0.001",
+        "\u03b1/\u03b8.P4 r=0.94, p=0.002",
+        "\u03b2/\u03b8.PZ r=0.91, p=0.005",
+        "\u03b1.F4 r=0.94, p=0.002",
+        "\u03b3.F4 r=0.92, p=0.003",
+        "\u03b3.F8 r=0.91, p=0.004",
+        "ILLUMINATION Linear Regression \u03b1/\u03b8.C4 R\u00b2=0.90, Adj R\u00b2=0.88, p=0.001",
+        "ILLUMINATION Linear Regression \u03b1/\u03b8.P4 R\u00b2=0.88, Adj R\u00b2=0.86, p=0.002",
+        "ILLUMINATION Linear Regression \u03b2/\u03b8.PZ R\u00b2=0.82, Adj R\u00b2=0.78, p=0.005",
+        "CCT Linear Regression \u03b1.F4 R\u00b2=0.88, Adj R\u00b2=0.86, p=0.002",
+        "CCT Linear Regression \u03b3.F4 R\u00b2=0.85, Adj R\u00b2=0.82, p=0.003",
+        "CCT Linear Regression \u03b3.F8 R\u00b2=0.83, Adj R\u00b2=0.80, p=0.004"
+      ],
+      "n_findings_extracted_from": 14
+    }
+  ],
+  "limitations": [
+    "VR luminance range is limited compared to real-world light sources, diminishing usefulness at very high and very low illuminance extremes (e.g., cannot accurately reflect glare or full scotopic vision range).",
+    "Illumination measures (lumens) in VR were not validated against standard real-world measurement procedures (lux) and are not directly transferable to real-world settings.",
+    "High attrition rate (8 out of 33 participants excluded) due to technical problems (corrupted/unusable EEG data, unprinted timestamps, HMD/EEG battery crashes), primarily human error.",
+    "Convenience sample composed mostly of undergraduate students at Cornell University, limiting generalizability.",
+    "Did not evaluate demographic variables (e.g., age, gender) or other factors (e.g., participant sleep schedules, time of day) that may impact results."
+  ],
+  "paper_metadata": {
+    "doi": "10.48550/arXiv.2309.15840",
+    "title": "How to Catch an AI Liar: Lie Detection in Black-Box LLMs by Asking Unrelated Questions",
+    "authors": [
+      "Lorenzo Pacchiardi",
+      "A. J. Chan",
+      "S. Mindermann",
+      "Ilan Moscovitz",
+      "Alexa Y. Pan",
+      "Y. Gal",
+      "Owain Evans",
+      "J. Brauner"
+    ],
+    "year": 2023,
+    "journal": "arXiv.org",
+    "volume": null,
+    "issue": null,
+    "pages": null,
+    "publisher": null,
+    "citation_count": 80,
+    "influential_citation_count": 4,
+    "references": [
+      "10.1016/j.patter.2024.100988",
+      "10.48550/arXiv.2308.03958",
+      "10.48550/arXiv.2307.13702",
+      "10.48550/arXiv.2308.01404",
+      "10.1109/SaTML59370.2024.00017",
+      "10.48550/arXiv.2305.15852",
+      "10.1111/nyas.15007",
+      "10.48550/arXiv.2305.13669",
+      "10.48550/arXiv.2305.13281",
+      "10.48550/arXiv.2305.04388",
+      "10.18653/v1/2023.findings-emnlp.68",
+      "10.48550/arXiv.2304.03279",
+      "10.1145/3617694.3623226",
+      "10.48550/arXiv.2303.08721",
+      "10.48550/arXiv.2302.09664",
+      "10.48550/arXiv.2212.09251",
+      "10.48550/arXiv.2212.08073",
+      "10.48550/arXiv.2212.03827",
+      "10.48550/arXiv.2209.00626",
+      "10.48550/arXiv.2206.05802",
+      "10.1145/3571730",
+      "10.18653/v1/2022.acl-long.229",
+      "10.18653/V1/2021.NAACL-MAIN.168",
+      "10.18653/v1/W17-4413",
+      "10.1109/ICASSP.2006.1660200"
+    ],
+    "cited_by": [
+      "10.1080/0020174x.2026.2615773",
+      "10.1109/ICA67499.2025.00033",
+      "10.48550/arXiv.2511.22662",
+      "10.1109/FLLM67465.2025.11391110",
+      "10.48550/arXiv.2511.01956",
+      "10.48550/arXiv.2510.24222",
+      "10.48550/arXiv.2510.23245",
+      "10.48550/arXiv.2510.14318",
+      "10.48550/arXiv.2510.12826",
+      "10.48550/arXiv.2510.07774",
+      "10.48550/arXiv.2510.01288",
+      "10.48550/arXiv.2509.21344",
+      "10.48550/arXiv.2509.00096",
+      "10.48550/arXiv.2508.19461",
+      "10.48550/arXiv.2507.22149",
+      "10.48550/arXiv.2508.00881",
+      "10.48550/arXiv.2507.12428",
+      "10.48550/arXiv.2507.12691",
+      "10.48550/arXiv.2507.01786",
+      "10.48550/arXiv.2506.18852",
+      "10.48550/arXiv.2506.13206",
+      "10.48550/arXiv.2506.00823",
+      "10.1007/s11098-025-02302-2",
+      "10.48550/arXiv.2505.13787",
+      "10.48550/arXiv.2505.09807",
+      "10.48550/arXiv.2504.07863",
+      "10.48550/arXiv.2503.11926",
+      "10.18653/v1/2024.emnlp-main.348",
+      "10.18653/v1/2025.findings-emnlp.792",
+      "10.48550/arXiv.2412.17128",
+      "10.1109/BigData62323.2024.10825538",
+      "10.1145/3744238",
+      "10.48550/arXiv.2412.01784",
+      "10.1109/FLLM63129.2024.10852424",
+      "10.48550/arXiv.2410.22071",
+      "10.48550/arXiv.2410.21572",
+      "10.48550/arXiv.2410.16638",
+      "10.48550/arXiv.2410.13562",
+      "10.48550/arXiv.2410.13787",
+      "10.48550/arXiv.2410.02472",
+      "10.48550/arXiv.2409.09013",
+      "10.48550/arXiv.2409.06927",
+      "10.2514/6.2024-4902",
+      "10.48550/arXiv.2407.09221",
+      "10.48550/arXiv.2407.12831",
+      "10.18653/v1/2024.acl-long.250",
+      "10.1613/jair.1.18724",
+      "10.48550/arXiv.2406.07358",
+      "10.48550/arXiv.2406.01931",
+      "10.48550/arXiv.2405.18718",
+      "10.48550/arXiv.2405.13907",
+      "10.48550/arXiv.2405.05466",
+      "10.1109/CogSIMA61085.2024.10554038",
+      "10.48550/arXiv.2404.09971",
+      "10.48550/arXiv.2404.06742",
+      "10.1145/3716846",
+      "10.48550/arXiv.2403.12503",
+      "10.48550/arXiv.2403.08295",
+      "10.48550/arXiv.2403.05973",
+      "10.48550/arXiv.2402.07221",
+      "10.1007/s11098-024-02259-8",
+      "10.48550/arXiv.2312.10029",
+      "10.48550/arXiv.2312.09390",
+      "10.48550/arXiv.2312.07000",
+      "10.48550/arXiv.2312.01350",
+      "10.48550/arXiv.2311.15131",
+      "10.1145/3703155",
+      "10.48550/arXiv.2310.20624",
+      "10.1016/j.patter.2024.100988",
+      "10.48550/arXiv.2308.01263",
+      "10.1111/risa.17665",
+      "10.48550/arXiv.2305.04388",
+      "10.48550/arXiv.2406.13261"
+    ],
+    "semantic_scholar_id": "f148b3a0106cbaba356b9f099f1a10c072c0b3c5",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:51:02.704036+00:00",
+    "enrichment_source": "semantic_scholar"
+  },
+  "year": 2023,
+  "journal": "arXiv.org",
+  "authors_structured": [
+    "Lorenzo Pacchiardi",
+    "A. J. Chan",
+    "S. Mindermann",
+    "Ilan Moscovitz",
+    "Alexa Y. Pan",
+    "Y. Gal",
+    "Owain Evans",
+    "J. Brauner"
+  ]
+}

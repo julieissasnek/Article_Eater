@@ -1,0 +1,834 @@
+{
+  "doi": "10.3390/s22218135",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.794,
+  "n_findings": 16,
+  "extracted_at": "2026-02-25T02:10:12.410620+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00528,
+  "title": "Embodied learning using a tangible user interface: The effects of haptic perception and selective pointing on a spatial learning task",
+  "authors": "Alexander Skulmowski et al., 2015",
+  "research_question": "This study investigates the influence of multimodal haptic input (Tangible User Interface vs. mouse) and interactive label display mode (selective pointing vs. permanent display) on spatial learning performance, cognitive load, motivation, and usability when learning 3D heart anatomy.",
+  "design_type": "between_subjects",
+  "participants": {
+    "n": 96,
+    "description": "University students (Mage = 23.9 years, SDage = 3.43; 65 female, 31 male) at a German university, predominantly in Media Communication and Psychology. 94 native German speakers. 84 right-handed, 9 ambilateral, 3 left-handed. Normal or corrected-to-normal vision.",
+    "recruitment": "Received course credit or 6 \u20ac for participation."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "3D model",
+      "description": "A 3D model of a human heart with 21 floating labels. Presented in a custom-built learning environment with a gray gradient background.",
+      "n_stimuli": 1,
+      "source": "Materials and design"
+    },
+    {
+      "type": "physical_model",
+      "description": "A life-size plastic heart model (200g), painted white, tracked by a Polhemus FASTRAK motion tracking system. Used as a Tangible User Interface (TUI) to control the virtual heart model. A stylus pen was used for pointing interactions with the TUI.",
+      "n_stimuli": 1,
+      "source": "Materials and design"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Prior knowledge of heart anatomy",
+      "instrument": "Multiple-choice test (5 questions) and self-report item",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Spatial ability",
+      "instrument": "Mental cube rotation test from Intelligence-Structure-Test (I-S-T 2000R)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Motivation",
+      "instrument": "QSM/FAM questionnaire (scales: interest, efficacy, challenge)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Learning performance (Retention)",
+      "instrument": "Visual retention test (labeling 31 parts on front and back images of 3D heart model)",
+      "type": "performance"
+    },
+    {
+      "construct": "Learning performance (Transfer)",
+      "instrument": "Three transfer tasks (labeling 17 items on two cross-sections of 3D model, 5 items on heart CT scan)",
+      "type": "performance"
+    },
+    {
+      "construct": "Cognitive load",
+      "instrument": "Cognitive load questionnaire (scales: intrinsic, extraneous, germane, overall load)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Usability",
+      "instrument": "AttrakDiff questionnaire (scales: hedonic quality - stimulation, pragmatic quality)",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Prior knowledge of heart anatomy",
+      "consequent": "Distribution across experimental groups",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": ".895",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3, 92) = .2014",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.69",
+      "quote": "Participants in the four experimental groups did not differ regarding their performance in the prior knowledge test as tested using an ANOVA"
+    },
+    {
+      "id": 2,
+      "antecedent": "Spatial ability",
+      "consequent": "Distribution across experimental groups",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": ".729",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3,92) = .43",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.69",
+      "quote": "there was neither a difference in spatial ability between the groups as revealed through an ANOVA"
+    },
+    {
+      "id": 3,
+      "antecedent": "Tangible User Interface (TUI) for interaction",
+      "consequent": "Retention performance (spatial learning)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": ".018",
+      "effect_size": ".06",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 5.8",
+      "theory_links": [
+        "EC"
+      ],
+      "template_ids": [
+        "T8",
+        "EC2"
+      ],
+      "mechanism": "Being able to hold and touch a complex three-dimensional object with one's hands facilitates the formation of a coherent spatial representation by providing a persistent guide for orientation and integrating visual/verbal information.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.69",
+      "quote": "Retention performance was higher when the TUI was used instead of the mouse"
+    },
+    {
+      "id": 4,
+      "antecedent": "Interaction between input device (TUI/mouse) and label display mode (selective pointing/permanent display)",
+      "consequent": "Retention performance (spatial learning)",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "performance",
+      "p_value": ".011",
+      "effect_size": ".06",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 6.78",
+      "theory_links": [
+        "EC",
+        "MS",
+        "CLT"
+      ],
+      "template_ids": [
+        "T36",
+        "MS2",
+        "EC2"
+      ],
+      "mechanism": "The effect of label display mode is device-dependent: selective pointing improves performance with mouse but decreases it with TUI.",
+      "moderators_reported": [
+        "Input device"
+      ],
+      "provenance_depth": "section",
+      "source": "p.69",
+      "quote": "a significant interaction between input device and label display mode [F(1, 92) = 6.78, p = .011, \u03b7 = .06]"
+    },
+    {
+      "id": 5,
+      "antecedent": "Selective pointing display mode (mouse condition)",
+      "consequent": "Retention performance (spatial learning)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "CLT"
+      ],
+      "template_ids": [
+        "T36",
+        "MS2"
+      ],
+      "mechanism": "Hiding unattended items reduces visual distraction and frees cognitive capacity. It may also promote systematic learning strategies and self-cueing, reducing working memory load.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.69, p.71",
+      "quote": "The performance with selective pointing in the mouse condition is better than the performance with permanent display"
+    },
+    {
+      "id": 6,
+      "antecedent": "Selective pointing display mode (TUI condition)",
+      "consequent": "Retention performance (spatial learning)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "EC",
+        "CLT"
+      ],
+      "template_ids": [
+        "T36",
+        "EC2"
+      ],
+      "mechanism": "The precise motor coordination required for selective pointing with the stylus pen in the TUI condition imposed a high extraneous cognitive load, outweighing any benefits.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.69, p.72",
+      "quote": "in the TUI condition this is exactly the other way around."
+    },
+    {
+      "id": 7,
+      "antecedent": "Input device (TUI/mouse) or label display mode (selective pointing/permanent display)",
+      "consequent": "Transfer task performance",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">=.555",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.69",
+      "quote": "the transfer task ... yielded no significant differences in a 2 \u00d7 2 ANOVA ... all ps \u2265 .555",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Tangible User Interface (TUI) for interaction",
+      "consequent": "Germane cognitive load",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": ".006",
+      "effect_size": ".08",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 8.08",
+      "theory_links": [
+        "EC",
+        "CLT"
+      ],
+      "template_ids": [
+        "T28",
+        "EC2"
+      ],
+      "mechanism": "Additional haptic input from holding the plastic model provides a stable reference frame and landmarks, reducing mental effort for spatial representation and freeing cognitive resources for learning names.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "Using the TUI resulted in a lower germane load ... with a significant main effect of input device, F(1, 92) = 8.08, p = .006, \u03b7 = .08.",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Interaction between input device (TUI/mouse) and label display mode (selective pointing/permanent display)",
+      "consequent": "Extraneous cognitive load",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": ".046",
+      "effect_size": ".04",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 4.11",
+      "theory_links": [
+        "CLT"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "Permanent display mode increases cognitive load with mouse, but lowers it with TUI and pen.",
+      "moderators_reported": [
+        "Input device"
+      ],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "significant interactions between input device and label display mode ... F(1, 92) = 4.11, p = .046, \u03b7 = .04",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Interaction between input device (TUI/mouse) and label display mode (selective pointing/permanent display)",
+      "consequent": "Overall cognitive load",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": ".031",
+      "effect_size": ".05",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 4.79",
+      "theory_links": [
+        "CLT"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "Permanent display mode increases cognitive load with mouse, but lowers it with TUI and pen.",
+      "moderators_reported": [
+        "Input device"
+      ],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "significant interactions between input device and label display mode ... F(1, 92) = 4.79, p = .031, \u03b7 = .05",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Input device (TUI/mouse)",
+      "consequent": "Intrinsic cognitive load",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">=.129",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "no significant effect regarding intrinsic load (all ps \u2265 .129)",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Tangible User Interface (TUI) for interaction",
+      "consequent": "Interest in the learning task",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": ".016",
+      "effect_size": ".06",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 91) = 6",
+      "theory_links": [
+        "EC"
+      ],
+      "template_ids": [
+        "EC2"
+      ],
+      "mechanism": "The TUI's dynamic and natural experience of manipulating a virtual 3D object with a tangible physical object generates interest in the learning materials.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "a main effect of the factor input device on interest [F(1, 91 ) = 6, p = .016, \u03b7 = .06]",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Interaction between input device (TUI/mouse) and label display mode (selective pointing/permanent display)",
+      "consequent": "Self-efficacy",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": ".044",
+      "effect_size": ".04",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 4.17",
+      "theory_links": [
+        "EC",
+        "CLT"
+      ],
+      "template_ids": [
+        "T36",
+        "EC2"
+      ],
+      "mechanism": "Selective pointing has a motivational effect depending on the input device: mouse users feel higher control, while TUI users feel lower efficacy due to motor coordination.",
+      "moderators_reported": [
+        "Input device"
+      ],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "an interaction between input device and label display mode, F(1, 92) = 4.17, p = .044, n\u1e9e = .04."
+    },
+    {
+      "id": 14,
+      "antecedent": "Input device (TUI/mouse) or label display mode (selective pointing/permanent display)",
+      "consequent": "Challenge (motivation)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">=.54",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "No effect was found on the scale challenge (all ps \u2265 .54)."
+    },
+    {
+      "id": 15,
+      "antecedent": "Selective pointing display mode",
+      "consequent": "Hedonic quality \u2013 stimulation (usability)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": ".006",
+      "effect_size": ".08",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 91) = 7.78",
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Both pointing conditions were rated more positively on the 'hedonic quality' scale, indicating a preference for the selective pointing mode.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.70",
+      "quote": "a main effect of selective pointing on the scale \u201chedonic quality \u2013 stimulation\u201d [F(1, 91) = 7.78, p = .006, \u03b7 = .08]"
+    },
+    {
+      "id": 16,
+      "antecedent": "Tangible User Interface (TUI) for interaction",
+      "consequent": "Pragmatic quality (usability)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": ".007",
+      "effect_size": ".08",
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 92) = 7.72",
+      "theory_links": [
+        "EC"
+      ],
+      "template_ids": [
+        "EC2"
+      ],
+      "mechanism": "The TUI offers a multi-sensory user experience perceived as better suited for the learning task.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.71",
+      "quote": "a main effect of input device on \u201cpragmatic quality\u201d [F(1, 92) = 7.72, p = .007, \u03b7 = .08] in favor of the TUI."
+    }
+  ],
+  "mechanisms": [
+    "Multimodal perceptual input (haptic feedback from TUI) facilitates the formation of coherent spatial representations by providing a persistent guide for orientation and integrating visual/verbal information.",
+    "Selective pointing (mouse) reduces cognitive load by forcing users to keep more items in working memory, reducing visual distraction, promoting systematic learning strategies, and allowing self-cueing.",
+    "High motor coordination required for selective pointing with the TUI (stylus pen) imposes extraneous cognitive load, negatively impacting learning performance.",
+    "Haptic input from TUI reduces germane cognitive load by providing landmarks and a stable reference frame, allowing more cognitive resources for learning content.",
+    "Selective display of information can make the learning task seem less demanding, lowering extraneous and overall cognitive load for mouse users.",
+    "Tangible User Interfaces increase interest through a dynamic and natural manipulation experience of virtual 3D objects.",
+    "The effect of selective pointing on self-efficacy is moderated by the input device: mouse users feel more control, while TUI users feel less efficacy due to motor coordination demands.",
+    "TUI is rated higher on pragmatic quality due to its multi-sensory experience being perceived as better suited for the learning task."
+  ],
+  "moderators": [
+    "Input device (Tangible User Interface vs. mouse) moderates the effect of label display mode on retention performance.",
+    "Input device (Tangible User Interface vs. mouse) moderates the effect of label display mode on extraneous cognitive load.",
+    "Input device (Tangible User Interface vs. mouse) moderates the effect of label display mode on overall cognitive load.",
+    "Input device (Tangible User Interface vs. mouse) moderates the effect of label display mode on self-efficacy."
+  ],
+  "implementation_implications": [
+    "Tangible User Interfaces (TUIs) are beneficial for learning complex 3D objects that are small enough to be held in one hand.",
+    "For less complex or unhandy objects, traditional mouse interfaces may be equally or more effective.",
+    "Future TUI learning research should incorporate longer learning times to assess deeper processing of spatial representations.",
+    "Two-handed TUI use, especially with a stylus for pointing, can be detrimental to learning if it requires high motor coordination.",
+    "Selective pointing can improve learning performance by reducing visual clutter and segmenting learning materials, but its effectiveness depends on the input device and motor coordination demands.",
+    "Perceived cognitive load is a better predictor of learning outcomes than perceived usability ratings."
+  ],
+  "domains": [
+    "A7_Haptic_Thermal",
+    "A9_Task_Cognition",
+    "A6_Visual_Form"
+  ],
+  "overall_theory_links": [
+    "CLT",
+    "EC"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Mean transfer scores for each experimental group.",
+      "key_stats": [],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Mean cognitive load scores (Intrinsic, Extraneous, Germane, Overall) for each experimental group.",
+      "key_stats": [
+        "F(1, 92) = 8.08, p = .006, \u03b7 = .08",
+        "F(1, 92) = 4.11, p = .046, \u03b7 = .04",
+        "F(1, 92) = 4.79, p = .031, \u03b7 = .05"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Mean motivation scores (Interest, Challenge, Efficacy) for each experimental group.",
+      "key_stats": [
+        "F(1, 91) = 6, p = .016, \u03b7 = .06",
+        "F(1, 92) = 4.17, p = .044, \u03b7 = .04"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Mean AttrakDiff ratings (Stimulation, Pragmatic quality) for each experimental group.",
+      "key_stats": [
+        "F(1, 91) = 7.78, p = .006, \u03b7 = .08",
+        "F(1, 92) = 7.72, p = .007, \u03b7 = .08"
+      ],
+      "n_findings_extracted_from": 2
+    }
+  ],
+  "limitations": [
+    "The virtual heart's position could not be changed in mouse conditions due to overwhelming complexity in pre-tests, while TUI users could freely translate the model.",
+    "The transfer test might have been too difficult for participants without prior medical training.",
+    "The TUI's effect on cognitively challenging tasks (e.g., labeling cross-sections) might be less pronounced due to other influencing factors like spatial ability or learning strategies, especially with short learning times.",
+    "Longer learning times or repeated presentations are needed to assess if embodied interaction facilitates deeper processing.",
+    "Future research should assess the influence of different learning styles (e.g., kinesthetic/tactile learners) with multimodal user interfaces.",
+    "The learning tests might not have adequately captured motor representations acquired during pointing with the stylus pen.",
+    "Future studies should investigate single-handed 3D pointing devices for comparison.",
+    "More research is needed to disentangle the roles of visual load, motor load, and processing load when using self-cueing techniques like selective pointing.",
+    "Further research is required to validate and formalize the proposed cost-benefit model of Embodied Cognition.",
+    "Additional research on Embodied Cognitive Load Theory (ECLT) is needed to clarify the role of multisensory perception, interactivity, and meta-cognition."
+  ],
+  "paper_metadata": {
+    "doi": "10.3390/s22218135",
+    "title": "Stress Monitoring Using Wearable Sensors: A Pilot Study and Stress-Predict Dataset",
+    "authors": [
+      "Talha Iqbal",
+      "A. Simpkin",
+      "Davood Roshan",
+      "Nicola Glynn",
+      "John Killilea",
+      "J. Walsh",
+      "G. Molloy",
+      "Sandra Ganly",
+      "Hannah Ryman",
+      "Eileen Coen",
+      "M. A. Elahi",
+      "W. Wijns",
+      "A. Shahzad"
+    ],
+    "year": 2022,
+    "journal": "Italian National Conference on Sensors",
+    "volume": "22",
+    "issue": "21",
+    "pages": "8135",
+    "publisher": "MDPI AG",
+    "citation_count": 75,
+    "influential_citation_count": 7,
+    "references": [
+      "10.1007/978-3-030-88244-0_21",
+      "10.1007/978-3-319-07515-0_10",
+      "10.1007/978-3-319-49655-9_34",
+      "10.1007/S12239-018-0086-0",
+      "10.1007/s10916-020-01648-w",
+      "10.1007/s11517-018-1879-z",
+      "10.1007/s12239-018-0086-0",
+      "10.1007/s12668-013-0089-2",
+      "10.1007/s40846-022-00700-z",
+      "10.1016/J.DRUGALCDEP.2003.10.014",
+      "10.1016/S0140-6736(16)31714-7",
+      "10.1016/j.anr.2012.08.004",
+      "10.1016/j.drugalcdep.2003.10.014",
+      "10.1016/j.ijpsycho.2018.07.471",
+      "10.1016/j.ijpsycho.2019.06.013",
+      "10.1016/j.neubiorev.2013.11.005",
+      "10.1016/j.yfrne.2018.03.001",
+      "10.1037/T02889-000",
+      "10.1038/s41597-022-01361-y",
+      "10.1038/sj.bdj.2017.119",
+      "10.1080/24721840.2020.1841564",
+      "10.1097/PSY.0000000000000918",
+      "10.1109/ACCESS.2021.3082423",
+      "10.1109/ICPR.2000.902898",
+      "10.1109/ICTC52510.2021.9620772",
+      "10.1109/TITB.2011.2169804",
+      "10.1136/bmj.m441",
+      "10.1142/S0129065716500416",
+      "10.1145/2663204.2663257",
+      "10.1145/3167132.3167395",
+      "10.1145/3242969.3242985",
+      "10.1177/1359105309346343",
+      "10.1371/journal.pone.0247338",
+      "10.2196/13418",
+      "10.2307/2136404",
+      "10.3389/fmedt.2022.782756",
+      "10.3389/fpsyg.2017.00557",
+      "10.3390/bios12090697",
+      "10.3390/diagnostics11030556",
+      "10.3390/s21072332"
+    ],
+    "cited_by": [
+      "10.1007/s44196-026-01215-0",
+      "10.1061/jcemd4.coeng-17106",
+      "10.1016/j.mtelec.2026.100202",
+      "10.3390/info17010050",
+      "10.3390/technologies14010035",
+      "10.1016/j.mtchem.2025.103316",
+      "10.1016/j.bios.2026.118461",
+      "10.47852/bonviewaia52023878",
+      "10.1109/SMAP66932.2025.00018",
+      "10.47852/bonviewmedin52025592",
+      "10.48550/arXiv.2511.05985",
+      "10.1109/ICECA66444.2025.11383501",
+      "10.3390/mi16111255",
+      "10.1145/3716553.3754337",
+      "10.1007/s00521-025-11605-8",
+      "10.1109/UBMK67458.2025.11206863",
+      "10.1109/ICICIS65613.2025.11371262",
+      "10.1109/JSEN.2025.3591761",
+      "10.1109/INDISCON66021.2025.11252373",
+      "10.48550/arXiv.2508.10468",
+      "10.1016/j.compbiomed.2025.110847",
+      "10.1109/EMBC58623.2025.11253113",
+      "10.2196/67118",
+      "10.1145/3749465",
+      "10.3389/frvir.2025.1530770",
+      "10.1109/I2MTC62753.2025.11078948",
+      "10.3390/buildings15101645",
+      "10.3390/ai6040079",
+      "10.3389/fphys.2025.1584299",
+      "10.1109/TAFFC.2024.3503995",
+      "10.23919/DATE64628.2025.10993058",
+      "10.1177/10998004251325212",
+      "10.1109/BSN66969.2025.11337465",
+      "10.1111/add.70049",
+      "10.3390/bios15030194",
+      "10.1002/sim.70099",
+      "10.3390/mti9010002",
+      "10.3390/app142411997",
+      "10.1016/j.dcmed.2025.01.002",
+      "10.3390/info15120755",
+      "10.1109/NILES63360.2024.10753228",
+      "10.1109/ICNSC62968.2024.10760089",
+      "10.1109/ICBDS61829.2024.10837466",
+      "10.51889/2959-5894.2024.87.3.016",
+      "10.1038/s41598-024-68862-1",
+      "10.1109/ICITCOM62788.2024.10762091",
+      "10.1109/ASET60340.2024.10708730",
+      "10.3390/s24103221",
+      "10.1016/j.fss.2024.109008",
+      "10.1371/journal.pdig.0000473",
+      "10.2196/57025",
+      "10.1007/s00216-023-05047-1",
+      "10.2196/55094",
+      "10.3390/jcm12216735",
+      "10.1145/3631441",
+      "10.1109/BHI58575.2023.10313392",
+      "10.1145/3610892",
+      "10.1109/cvprw59228.2023.00635",
+      "10.3390/s23083984",
+      "10.1109/ICSPC57692.2023.10125951",
+      "10.3390/app13052950",
+      "10.1016/j.ijmedinf.2023.105026",
+      "10.1016/j.bspc.2025.109208",
+      "10.1016/j.bspc.2026.109607",
+      "10.1016/j.bspc.2025.107928",
+      "10.1063/5.0270077",
+      "10.1016/j.procs.2025.07.198",
+      "10.5220/0013717000003985",
+      "10.1051/bioconf/202519501003",
+      "10.1051/epjconf/202534101045",
+      "10.1016/j.ifacol.2025.12.543",
+      "10.1109/ACCESS.2024.3446875",
+      "10.1016/j.procs.2024.09.355"
+    ],
+    "semantic_scholar_id": "497da7a2ba233a82abfb4e074db4a857b1fda29c",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:49:54.766254+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Stress Monitoring Using Wearable Sensors: A Pilot Study and Stress-Predict Dataset",
+    "crossref_year": 2022,
+    "crossref_citation_count": 80,
+    "crossref_journal": "Sensors",
+    "crossref_publisher": "MDPI AG",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "With the recent advancements in the field of wearable technologies, the opportunity to monitor stress continuously using different physiological variables has gained significant interest. The early detection of stress can help improve healthcare and minimizes the negative impact of long-term stress. This paper reports outcomes of a pilot study and associated stress-monitoring dataset, named the \u201cStress-Predict Dataset\u201d, created by collecting physiological signals from healthy subjects using wrist-worn watches with a photoplethysmogram (PPG) sensor. While wearing these watches, 35 healthy volunteers underwent a series of tasks (i.e., Stroop color test, Trier Social Stress Test and Hyperventilation Provocation Test), along with a rest period in-between each task. They also answered questionnaires designed to induce stress levels compatible with daily life. The changes in the blood volume pulse (BVP) and heart rate were recorded by the watch and were labelled as occurring during stress-inducing tasks or a rest period (no stress). Additionally, respiratory rate was estimated using the BVP signal. Statistical models and personalised adaptive reference ranges were used to determine the utility of the proposed stressors and the extracted variables (heart rate and respiratory rate). The analysis showed that the interview session was the most significant stress stimulus, causing a significant variation in heart rate of 27 (77%) participants and respiratory rate of 28 (80%) participants out of 35. The outcomes of this study contribute to the understanding the role of stressors and their association with physiological response and provide a dataset to help develop new wearable solutions for more reliable, valid, and sensitive physio-logical stress monitoring.",
+    "crossref_reference_count": 43,
+    "crossref_issn": [
+      "1424-8220"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.921575+00:00",
+    "_cr_refs_added": 5
+  },
+  "year": 2022,
+  "journal": "Italian National Conference on Sensors",
+  "authors_structured": [
+    "Talha Iqbal",
+    "A. Simpkin",
+    "Davood Roshan",
+    "Nicola Glynn",
+    "John Killilea",
+    "J. Walsh",
+    "G. Molloy",
+    "Sandra Ganly",
+    "Hannah Ryman",
+    "Eileen Coen",
+    "M. A. Elahi",
+    "W. Wijns",
+    "A. Shahzad"
+  ],
+  "crossref_title": "Stress Monitoring Using Wearable Sensors: A Pilot Study and Stress-Predict Dataset",
+  "crossref_authors": [
+    {
+      "name": "Talha Iqbal",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Andrew J. Simpkin",
+      "orcid": null,
+      "affiliation": "School of Mathematical and Statistical Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Davood Roshan",
+      "orcid": "https://orcid.org/0000-0002-6553-640X",
+      "affiliation": "School of Mathematical and Statistical Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Nicola Glynn",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "John Killilea",
+      "orcid": "https://orcid.org/0000-0001-5009-8403",
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Jane Walsh",
+      "orcid": null,
+      "affiliation": "School of Psychology, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Gerard Molloy",
+      "orcid": null,
+      "affiliation": "School of Psychology, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Sandra Ganly",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Hannah Ryman",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Eileen Coen",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Adnan Elahi",
+      "orcid": "https://orcid.org/0000-0003-0988-5776",
+      "affiliation": "Electrical and Electronic Engineering, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "William Wijns",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    },
+    {
+      "name": "Atif Shahzad",
+      "orcid": null,
+      "affiliation": "Smart Sensor Laboratory, Lambe Institute of Translational Research, College of Medicine, Nursing Health Sciences, University of Galway, H91 TK33 Galway, Ireland"
+    }
+  ],
+  "crossref_year": 2022,
+  "crossref_journal": "Sensors",
+  "crossref_citation_count": 80,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "MDPI AG",
+  "crossref_subjects": [],
+  "crossref_abstract": "With the recent advancements in the field of wearable technologies, the opportunity to monitor stress continuously using different physiological variables has gained significant interest. The early detection of stress can help improve healthcare and minimizes the negative impact of long-term stress. This paper reports outcomes of a pilot study and associated stress-monitoring dataset, named the \u201cStress-Predict Dataset\u201d, created by collecting physiological signals from healthy subjects using wrist-worn watches with a photoplethysmogram (PPG) sensor. While wearing these watches, 35 healthy volunteers underwent a series of tasks (i.e., Stroop color test, Trier Social Stress Test and Hyperventilation Provocation Test), along with a rest period in-between each task. They also answered questionnaires designed to induce stress levels compatible with daily life. The changes in the blood volume pulse (BVP) and heart rate were recorded by the watch and were labelled as occurring during stress-inducing tasks or a rest period (no stress). Additionally, respiratory rate was estimated using the BVP signal. Statistical models and personalised adaptive reference ranges were used to determine the utility of the proposed stressors and the extracted variables (heart rate and respiratory rate). The analysis showed that the interview session was the most significant stress stimulus, causing a significant variation in heart rate of 27 (77%) participants and respiratory rate of 28 (80%) participants out of 35. The outcomes of this study contribute to the understanding the role of stressors and their association with physiological response and provide a dataset to help develop new wearable solutions for more reliable, valid, and sensitive physio-logical stress monitoring.",
+  "crossref_fetched_at": "2026-02-25T12:04:18.468884+00:00"
+}

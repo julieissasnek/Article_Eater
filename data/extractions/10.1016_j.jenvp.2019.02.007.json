@@ -1,0 +1,1656 @@
+{
+  "doi": "10.1016/j.jenvp.2019.02.007",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.86,
+  "n_findings": 43,
+  "extracted_at": "2026-02-25T05:27:27.593713+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0115526,
+  "title": "PSYCHOLOGICAL RESPONSES TO NATURAL PATTERNS IN ARCHITECTURE",
+  "authors": "Alexander Coburn et al., 2018",
+  "research_question": "1. Are subjective perceptions of naturalness in architectural scenes driven by objective visual patterns? 2. Do natural patterns influence similarity evaluations of architectural scenes? 3. Do natural patterns influence preference ratings of architectural scenes?",
+  "design_type": "cross_sectional",
+  "participants": {
+    "n": 367,
+    "description": "Experiment 1: 100 American adults (55 Women, 45 men), ages 21-65 (M=34.6, SD=9.6). Half rated interiors (n=50), half exteriors (n=50). Experiment 2: 167 participants (81 from University of Chicago, 86 from New Mexico State University). Divided into 4 groups for image sets (Exteriors A n=43, Exteriors B n=41, Interiors A n=41, Interiors B n=42). Experiment 3: 100 American adults (63 Women, 37 men), ages 20-60 (M=33.3, SD=9.5). Half rated interiors (n=50), half exteriors (n=50). All participants were from the US.",
+    "recruitment": "Amazon's Mechanical Turk (MTurk) for Experiments 1 & 3. University of Chicago and New Mexico State University for Experiment 2."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "photograph",
+      "description": "240 images of architectural scenes (120 interiors, 120 exteriors). Interiors from online public domain, 1000x750 pixels. Exteriors from Google Earth Street View, head-on shots 20-30 feet from fa\u00e7ade, 1175x881 pixels. Images normalized to 4:3 aspect ratio. Minimized vegetation. 20 diverse examples for each of 6 building types (commercial, educational, government, residential, medical, religious). For Experiment 2, images resized to 360x270 pixels.",
+      "n_stimuli": 240,
+      "source": "Methods section, p.10"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Perceived Naturalness",
+      "instrument": "7-point Likert scale (1 'very artificial' to 7 'very natural')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Image Similarity",
+      "instrument": "Spatial Arrangement Method (SpAM), Euclidean distance between arranged images, Multidimensional Scaling (MDS) Dimension 1 weights",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Aesthetic Preference",
+      "instrument": "7-point Likert scale (1 'strong dislike' to 7 'strong preference')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Scaling (objective visual feature)",
+      "instrument": "Combined measure of Edge Density and Fractal Dimension (calculated from Canny edge maps)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Contrast (objective visual feature)",
+      "instrument": "Standard deviation of Hue (sdHue), Saturation (sdSat), and Brightness (sdBright) (HSV model); Principal Component 1 (PC1) of these three for mediation analysis",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Entropy (objective visual feature)",
+      "instrument": "Statistical measure of randomness from intensity histogram",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Hue (objective visual feature)",
+      "instrument": "Average color appearance (dominant wavelength)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Saturation (objective visual feature)",
+      "instrument": "Intensity or purity of colors",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Brightness (objective visual feature)",
+      "instrument": "Average luminance or value",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Explicit Nature (control variable)",
+      "instrument": "Proportion of image area occupied by vegetation (pixel count)",
+      "type": "observational"
+    },
+    {
+      "construct": "Implicit Naturalness (mediator)",
+      "instrument": "Variance in MDS Dimension 1 weights predicted by naturalness ratings",
+      "type": "cognitive"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Low-level visual features (Scaling, Entropy, Hue, Saturation, Brightness, sdHue, sdSat, sdBright, Explicit Nature)",
+      "consequent": "Perceived Naturalness of interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.66,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(9, 110) = 26.40",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level spatial and color patterns evoke associations with environmental naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.17",
+      "quote": "The majority of the variance in mean naturalness ratings was collectively explained by these nine visual features [R\u00b2adj = 0.66, F(9, 110) = 26.40, P < .001)]."
+    },
+    {
+      "id": 2,
+      "antecedent": "Low-level visual features (Scaling, Entropy, Hue, Saturation, Brightness, sdHue, sdSat, sdBright)",
+      "consequent": "Perceived Naturalness of interior architectural scenes (controlling for Explicit Nature)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 0.54,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Naturalistic visual patterns inherent in the buildings themselves drive perceptions of naturalness.",
+      "moderators_reported": [
+        "Explicit Nature"
+      ],
+      "provenance_depth": "section",
+      "source": "p.17",
+      "quote": "Low-level visual features independently explained over half (54%) of the variance in naturalness ratings when controlling for Explicit Nature."
+    },
+    {
+      "id": 3,
+      "antecedent": "Low-level visual features (Scaling, Entropy, Hue, Saturation, Brightness, sdHue, sdSat, sdBright, Explicit Nature)",
+      "consequent": "Perceived Naturalness of exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.52,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(9, 110) = 15.04",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level spatial and color patterns evoke associations with environmental naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.17",
+      "quote": "The nine visual features of exterior images also significantly predicted their mean naturalness ratings [R\u00b2adj = 0.52, F(9, 110) = 15.04, P < .001)]."
+    },
+    {
+      "id": 4,
+      "antecedent": "Low-level visual features (Scaling, Entropy, Hue, Saturation, Brightness, sdHue, sdSat, sdBright)",
+      "consequent": "Perceived Naturalness of exterior architectural scenes (controlling for Explicit Nature)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 0.42,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Naturalistic visual patterns inherent in the buildings themselves drive perceptions of naturalness.",
+      "moderators_reported": [
+        "Explicit Nature"
+      ],
+      "provenance_depth": "section",
+      "source": "p.17",
+      "quote": "low-level visual features independently explained 42% of the variance in naturalness ratings for exterior scenes."
+    },
+    {
+      "id": 5,
+      "antecedent": "Scaling (greater scaling differentiation)",
+      "consequent": "Higher Perceived Naturalness of interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.507,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=7.149",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Incremental scaling is associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Scaling*** 0.452 0.063 0.507 7.149 < .001 0.317"
+    },
+    {
+      "id": 6,
+      "antecedent": "Scaling (greater scaling differentiation)",
+      "consequent": "Higher Perceived Naturalness of exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.352,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=4.543",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Incremental scaling is associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Scaling*** 0.289 0.064 0.352 4.543 < .001 0.158"
+    },
+    {
+      "id": 7,
+      "antecedent": "Brightness",
+      "consequent": "Lower Perceived Naturalness of interior architectural scenes",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.045",
+      "effect_size": -0.139,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-2.031",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Brightness* -0.122 0.060 -0.139 -2.031 0.045 0.036"
+    },
+    {
+      "id": 8,
+      "antecedent": "sdSat (diversity of saturation)",
+      "consequent": "Higher Perceived Naturalness of interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.027",
+      "effect_size": 0.154,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.241",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Greater visual contrast is positively associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "sdSat* 0.136 0.061 0.154 2.241 0.027 0.044"
+    },
+    {
+      "id": 9,
+      "antecedent": "sdBright (diversity of brightness)",
+      "consequent": "Higher Perceived Naturalness of interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.006",
+      "effect_size": 0.196,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.817",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Greater visual contrast is positively associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "sdBright** 0.173 0.061 0.196 2.817 0.006 0.067"
+    },
+    {
+      "id": 10,
+      "antecedent": "Explicit Nature (proportion of vegetation)",
+      "consequent": "Higher Perceived Naturalness of interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.005",
+      "effect_size": 0.157,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.851",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "VIEW1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Explicit Nature** 7.174 2.517 0.157 2.851 0.005 0.069"
+    },
+    {
+      "id": 11,
+      "antecedent": "sdSat (diversity of saturation)",
+      "consequent": "Higher Perceived Naturalness of exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.451,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=4.029",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Greater visual contrast is positively associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "sdSat*** 0.362 0.090 0.451 4.029 < .001 0.129"
+    },
+    {
+      "id": 12,
+      "antecedent": "sdBright (diversity of brightness)",
+      "consequent": "Higher Perceived Naturalness of exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.002",
+      "effect_size": 0.282,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=3.191",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Greater visual contrast is positively associated with the perception of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "sdBright** 0.227 0.071 0.282 3.191 0.002 0.085"
+    },
+    {
+      "id": 13,
+      "antecedent": "Explicit Nature (proportion of vegetation)",
+      "consequent": "Higher Perceived Naturalness of exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.008",
+      "effect_size": 0.189,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.719",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "VIEW1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Explicit Nature** 1.716 0.631 0.189 2.719 0.008 0.063"
+    },
+    {
+      "id": 14,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "MDS Dimension 1 weights (latent perceptions of naturalness) for Interiors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.57,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 64) = 88.02",
+      "theory_links": [
+        "DP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Participants intuitively organized images based on latent perceptions of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.23",
+      "quote": "Naturalness ratings explained over half of the variance in Dimension 1 weights for Interiors A [R\u00b2adj = 0.57, F(1, 64) = 88.02, P < .001]",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "MDS Dimension 1 weights (latent perceptions of naturalness) for Interiors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.53,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 64) = 73.87",
+      "theory_links": [
+        "DP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Participants intuitively organized images based on latent perceptions of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.23",
+      "quote": "Interiors B [R\u00b2adj = 0.53, F(1, 64) = 73.87, P < .001]",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "MDS Dimension 1 weights (latent perceptions of naturalness) for Exteriors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.68,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 64) = 141.1",
+      "theory_links": [
+        "DP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Participants intuitively organized images based on latent perceptions of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.23",
+      "quote": "Exteriors A [R\u00b2adj = 0.68, F(1, 64) = 141.1, P < .001]",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "MDS Dimension 1 weights (latent perceptions of naturalness) for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.73,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 64) = 179.6",
+      "theory_links": [
+        "DP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Participants intuitively organized images based on latent perceptions of naturalness.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.24",
+      "quote": "Exteriors B [R\u00b2adj = 0.73, F(1, 64) = 179.6, P < .001].",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Scaling",
+      "consequent": "MDS Dimension 1 weights for Interiors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.689,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=8.511",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Scaling*** 0.296 0.035 0.689 8.511 < .001 0.547"
+    },
+    {
+      "id": 19,
+      "antecedent": "sdSat",
+      "consequent": "MDS Dimension 1 weights for Interiors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.008",
+      "effect_size": 0.211,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.727",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "sdSat** 0.090 0.033 0.211 2.727 0.008 0.110"
+    },
+    {
+      "id": 20,
+      "antecedent": "Scaling",
+      "consequent": "MDS Dimension 1 weights for Interiors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.594,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=6.468",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Scaling*** 0.247 0.038 0.594 6.468 < .001 0.411"
+    },
+    {
+      "id": 21,
+      "antecedent": "sdSat",
+      "consequent": "MDS Dimension 1 weights for Interiors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.021",
+      "effect_size": 0.22,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.367",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "sdSat* 0.099 0.042 0.22 2.367 0.021 0.085"
+    },
+    {
+      "id": 22,
+      "antecedent": "Scaling",
+      "consequent": "MDS Dimension 1 weights for Exteriors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.41,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=4.548",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Scaling*** 0.186 0.041 0.41 4.548 < .001 0.256"
+    },
+    {
+      "id": 23,
+      "antecedent": "sdSat",
+      "consequent": "MDS Dimension 1 weights for Exteriors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.003",
+      "effect_size": 0.279,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=3.110",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "sdSat** 0.125 0.040 0.279 3.110 0.003 0.139"
+    },
+    {
+      "id": 24,
+      "antecedent": "sdBright",
+      "consequent": "MDS Dimension 1 weights for Exteriors A",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.413,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=4.302",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "sdBright*** 0.179 0.042 0.413 4.302 < .001 0.236"
+    },
+    {
+      "id": 25,
+      "antecedent": "Scaling",
+      "consequent": "MDS Dimension 1 weights for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.036",
+      "effect_size": 0.172,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.142",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Scaling* 0.075 0.035 0.172 2.142 0.036 0.071"
+    },
+    {
+      "id": 26,
+      "antecedent": "sdHue",
+      "consequent": "MDS Dimension 1 weights for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.033",
+      "effect_size": 0.162,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.183",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "sdHue* 0.070 0.032 0.162 2.183 0.033 0.074"
+    },
+    {
+      "id": 27,
+      "antecedent": "sdSat",
+      "consequent": "MDS Dimension 1 weights for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.519,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=5.529",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "sdSat*** 0.193 0.035 0.519 5.529 < .001 0.338"
+    },
+    {
+      "id": 28,
+      "antecedent": "sdBright",
+      "consequent": "MDS Dimension 1 weights for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.014",
+      "effect_size": 0.236,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.534",
+      "theory_links": [
+        "PP",
+        "Biophilia"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Low-level architectural patterns influence perceptions of scene similarity.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "sdBright* 0.098 0.039 0.236 2.534 0.014 0.097"
+    },
+    {
+      "id": 29,
+      "antecedent": "Explicit Nature (proportion of vegetation)",
+      "consequent": "MDS Dimension 1 weights for Exteriors B",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.030",
+      "effect_size": 0.174,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.217",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "VIEW1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Explicit Nature 0.823 0.371 0.174 2.217 0.030 0.076"
+    },
+    {
+      "id": 30,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "Aesthetic Preference for interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.7,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 118) = 275",
+      "theory_links": [
+        "Biophilia",
+        "SRT"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Architectural scenes with more naturalistic qualities are preferred.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.27",
+      "quote": "The perception of naturalness strongly predicted preference for both architectural interiors [R\u00b2 = 0.70, F(1, 118) = 275, P < .001, \u03b2st = 0.836, t = 16.58]"
+    },
+    {
+      "id": 31,
+      "antecedent": "Perceived Naturalness ratings",
+      "consequent": "Aesthetic Preference for exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.45,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 118) = 96.1",
+      "theory_links": [
+        "Biophilia",
+        "SRT"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Architectural scenes with more naturalistic qualities are preferred.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.27",
+      "quote": "exteriors [R\u00b2 = 0.45, F(1, 118) = 96.1, P < .001, \u03b2st = 0.670, t = 9.81]."
+    },
+    {
+      "id": 32,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.666,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.536,
+        0.797
+      ],
+      "test_statistic": "t=10.13",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Nature-like patterns of Scaling correlate positively with aesthetic preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.666 (0.536, 0.797))"
+    },
+    {
+      "id": 33,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for interior architectural scenes (direct effect, controlling for Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.001",
+      "effect_size": 0.211,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.087,
+        0.335
+      ],
+      "test_statistic": "t=3.38",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Implicit Naturalness partially mediates the effect of Scaling on Preference.",
+      "moderators_reported": [
+        "Implicit Naturalness"
+      ],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.211 (0.087, 0.335))"
+    },
+    {
+      "id": 34,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for interior architectural scenes (indirect effect via Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "mediated",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": 0.455,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.36,
+        0.565
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Architectural scenes with greater Scaling are preferred, in part, because they are perceived as more natural-looking.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.455 (0.360, 0.565))"
+    },
+    {
+      "id": 35,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.539,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.369,
+        0.71
+      ],
+      "test_statistic": "t=6.26",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Nature-like patterns of Scaling correlate positively with aesthetic preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.539 (0.369, 0.710))"
+    },
+    {
+      "id": 36,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for exterior architectural scenes (direct effect, controlling for Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.23,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.066,
+        0.394
+      ],
+      "test_statistic": "t=2.78",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Implicit Naturalness partially mediates the effect of Scaling on Preference.",
+      "moderators_reported": [
+        "Implicit Naturalness"
+      ],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.230 (0.066, 0.394))"
+    },
+    {
+      "id": 37,
+      "antecedent": "Scaling",
+      "consequent": "Aesthetic Preference for exterior architectural scenes (indirect effect via Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "mediated",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": 0.309,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.222,
+        0.418
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Architectural scenes with greater Scaling are preferred, in part, because they are perceived as more natural-looking.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Scaling (0.309 (0.222, 0.418))"
+    },
+    {
+      "id": 38,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for interior architectural scenes",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.488,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.326,
+        0.649
+      ],
+      "test_statistic": "t=5.98",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Nature-like patterns of Contrast correlate positively with aesthetic preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (0.488 (0.326, 0.649))"
+    },
+    {
+      "id": 39,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for interior architectural scenes (direct effect, controlling for Implicit Naturalness)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.49",
+      "effect_size": -0.044,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.17,
+        0.083
+      ],
+      "test_statistic": "t=-0.69",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Implicit Naturalness fully mediates the effect of Contrast on Preference.",
+      "moderators_reported": [
+        "Implicit Naturalness"
+      ],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (-0.044 (-0.170, 0.083))"
+    },
+    {
+      "id": 40,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for interior architectural scenes (indirect effect via Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "mediated",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": 0.531,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.402,
+        0.679
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Architectural scenes with greater Contrast are preferred because they are perceived as more natural-looking.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (0.531 (0.402, 0.679))"
+    },
+    {
+      "id": 41,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for exterior architectural scenes",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.614,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.464,
+        0.764
+      ],
+      "test_statistic": "t=8.09",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Nature-like patterns of Contrast correlate positively with aesthetic preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (0.614 (0.464, 0.764))"
+    },
+    {
+      "id": 42,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for exterior architectural scenes (direct effect, controlling for Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.002",
+      "effect_size": 0.281,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.107,
+        0.455
+      ],
+      "test_statistic": "t=3.19",
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Implicit Naturalness partially mediates the effect of Contrast on Preference.",
+      "moderators_reported": [
+        "Implicit Naturalness"
+      ],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (0.281 (0.107, 0.455))"
+    },
+    {
+      "id": 43,
+      "antecedent": "Contrast (PC1 of sdHue, sdSat, sdBright)",
+      "consequent": "Aesthetic Preference for exterior architectural scenes (indirect effect via Implicit Naturalness)",
+      "direction": "increase",
+      "claim_type": "mediated",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": 0.333,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.219,
+        0.477
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Biophilia",
+        "PP"
+      ],
+      "template_ids": [
+        "AX10"
+      ],
+      "mechanism": "Architectural scenes with greater Contrast are preferred because they are perceived as more natural-looking.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 10",
+      "quote": "Contrast (0.333 (0.219, 0.477))"
+    }
+  ],
+  "mechanisms": [
+    "Low-level visual patterns (Scaling, Contrast) in architectural scenes evoke intuitive associations with sensory features of nature.",
+    "Humans are innately attuned to naturalistic features of the built environment (Biophilia Hypothesis).",
+    "Nature-like patterns in architecture, resembling biological growth processes, generate aesthetic pleasure.",
+    "Softly fascinating sensory stimuli in nature (and nature-like architecture) engage attention bottom-up, replenishing cognitive resources (Attention Restoration Theory)."
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Architects can integrate measurable nature-like patterns (Levels of Scale, Contrast) into design schemes to enhance mental health and wellbeing.",
+    "Designing with naturalistic visual patterns can create more pleasurable and restorative spaces.",
+    "Computational methods of image analysis can be used to measure and implement biophilic design features."
+  ],
+  "domains": [
+    "A6_Visual_Form",
+    "A2_Spatial_Scale",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "Biophilia",
+    "ART",
+    "PP",
+    "SRT"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Regression of naturalness ratings vs. image features (interiors)",
+      "key_stats": [
+        "R\u00b2adj = 0.66",
+        "F(9, 110) = 26.40",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Regression of naturalness ratings vs. image features (exteriors)",
+      "key_stats": [
+        "R\u00b2adj = 0.52",
+        "F(9, 110) = 15.04",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 5
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Regression of Dimension 1 weights vs. Scaling and Contrast-related features (Interiors A)",
+      "key_stats": [
+        "R\u00b2adj = 0.68",
+        "F(5, 60) = 28.77",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Regression of Dimension 1 weights vs. Scaling and Contrast-related features (Interiors B)",
+      "key_stats": [
+        "R\u00b2adj = 0.52",
+        "F(5, 60) = 15.02",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 5",
+      "description": "Regression of Dimension 1 weights vs. Scaling and Contrast-related features (Exteriors A)",
+      "key_stats": [
+        "R\u00b2adj = 0.57",
+        "F(5, 60) = 18.41",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 6",
+      "description": "Regression of Dimension 1 weights vs. Scaling and Contrast-related features (Exteriors B)",
+      "key_stats": [
+        "R\u00b2adj = 0.67",
+        "F(5, 60) = 27.56",
+        "P < .001"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Figure 10",
+      "description": "Results of mediation analyses for Scaling and Contrast on Preference, mediated by Implicit Naturalness, for interiors and exteriors.",
+      "key_stats": [],
+      "n_findings_extracted_from": 12
+    }
+  ],
+  "limitations": [
+    "Reliance on 2D images as stimuli may limit generalizability to 3D built spaces.",
+    "Focus on visual perception; non-visual sensory features (e.g., acoustic, haptic, olfactory) were not assessed.",
+    "Dependent variables did not directly test psychological benefits (e.g., cognitive function, working memory tasks)."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/J.JENVP.2019.02.007",
+    "title": "Psychological responses to natural patterns in architecture",
+    "authors": [
+      "Alexander Coburn",
+      "Omid Kardan",
+      "Hiroki Kotabe",
+      "Jason Steinberg",
+      "Michael C. Hout",
+      "Arryn Robbins",
+      "J. MacDonald",
+      "G. Hayn-Leichsenring",
+      "M. Berman"
+    ],
+    "year": 2019,
+    "journal": "Journal of Environmental Psychology",
+    "volume": "62",
+    "issue": null,
+    "pages": "133-145",
+    "publisher": "Elsevier BV",
+    "citation_count": 129,
+    "influential_citation_count": 4,
+    "references": [
+      "10.1002/9781118539415.WBWELL064",
+      "10.1006/JEVP.1998.0089",
+      "10.1006/jevp.1998.0089",
+      "10.1007/978-0-387-73508-5_15",
+      "10.1007/978-1-4020-6754-9_1805",
+      "10.1007/S00004-000-0006-1",
+      "10.1007/s00004-000-0006-1",
+      "10.1007/s00493-016-3326-9",
+      "10.1016/0272-4944(95)90001-2",
+      "10.1016/J.JENVP.2005.07.001",
+      "10.1016/J.JENVP.2009.10.009",
+      "10.1016/J.JENVP.2015.07.001",
+      "10.1016/J.LANDURBPLAN.2008.01.004",
+      "10.1016/J.LANDURBPLAN.2015.02.005",
+      "10.1016/S0140-6736(08)61669-4",
+      "10.1016/j.cognition.2018.01.011",
+      "10.1016/j.jad.2012.03.012",
+      "10.1016/j.jad.2020.12.189",
+      "10.1016/j.jenvp.2005.07.001",
+      "10.1016/j.jenvp.2009.10.009",
+      "10.1016/j.jenvp.2015.07.001",
+      "10.1016/j.landurbplan.2008.01.004",
+      "10.1016/j.landurbplan.2015.02.005",
+      "10.1021/es903183r",
+      "10.1037/0033-2909.86.2.420",
+      "10.1037/1040-3590.6.4.284",
+      "10.1037/1082-989X.7.4.422",
+      "10.1037/1089-2680.11.4.305",
+      "10.1037/a0028860",
+      "10.1037/xge0000144",
+      "10.1037/xge0000240",
+      "10.1037/xge0000321",
+      "10.1037/xhp0000224",
+      "10.1038/NMAT1119",
+      "10.1038/nmat1119",
+      "10.1038/s41598-017-11570-w",
+      "10.1038/srep11610",
+      "10.1068/b31194",
+      "10.1073/pnas.1510459112",
+      "10.1080/09603120500155963",
+      "10.1089/cyber.2009.0308",
+      "10.1089/cyber.2011.0141",
+      "10.1093/BIOMET/52.3-4.591",
+      "10.1093/biomet/52.3-4.591",
+      "10.1111/j.1467-9280.2008.02225.x",
+      "10.1111/j.1749-6632.2011.06400.x",
+      "10.1126/SCIENCE.6143402",
+      "10.1126/SCIENCE.6200934",
+      "10.1126/science.210.4468.390",
+      "10.1126/science.6143402",
+      "10.1162/jocn_a_01146",
+      "10.1167/18.6.10",
+      "10.1177/1745691609356784",
+      "10.1186/1471-2458-10-456",
+      "10.1371/journal.pone.0114572",
+      "10.2307/20646641",
+      "10.3389/fpsyg.2015.00471",
+      "10.3389/fpsyg.2017.00632",
+      "10.3758/BF03207221",
+      "10.3758/s13414-015-1010-6",
+      "10.5860/choice.35-2067"
+    ],
+    "cited_by": [
+      "10.1016/j.jrurstud.2025.103941",
+      "10.1016/j.jenvp.2026.102943",
+      "10.1016/j.jenvp.2026.102952",
+      "10.1016/j.jenvp.2026.102968",
+      "10.1080/10447318.2025.2603627",
+      "10.3389/fpsyg.2025.1645424",
+      "10.3758/s13428-025-02906-w",
+      "10.4995/anuari.2025.24232",
+      "10.3390/architecture5040114",
+      "10.51303/jtbau.vi6.891",
+      "10.1016/j.copsyc.2025.102225",
+      "10.54864/planarch.1718451",
+      "10.1080/17508975.2025.2537730",
+      "10.1016/j.jenvp.2025.102686",
+      "10.1145/3698061.3726930",
+      "10.1016/j.ufug.2025.128931",
+      "10.3390/su17104680",
+      "10.3390/ma18092039",
+      "10.1002/jcpy.1456",
+      "10.1080/08927936.2025.2488601",
+      "10.1016/j.jenvp.2025.102591",
+      "10.1371/journal.pone.0316555",
+      "10.1038/s41598-025-86056-1",
+      "10.1016/j.foar.2025.01.002",
+      "10.1016/j.jenvp.2025.102553",
+      "10.1016/j.buildenv.2025.112650",
+      "10.3390/mti9010002",
+      "10.56261/jars.v22.269283",
+      "10.1016/j.cscm.2024.e03978",
+      "10.3389/fpsyg.2024.1443540",
+      "10.1016/j.asej.2024.103055",
+      "10.1177/10711813241275902",
+      "10.3390/buildings14092733",
+      "10.1080/00038628.2024.2367981",
+      "10.1016/j.asej.2024.102962",
+      "10.25034/ijcua.2024.v8n1-6",
+      "10.63053/ijset.24",
+      "10.1016/j.jenvp.2024.102344",
+      "10.1371/journal.pone.0299326",
+      "10.1016/j.jenvp.2024.102279",
+      "10.1016/j.jum.2024.03.001",
+      "10.1016/j.jobe.2024.108707",
+      "10.3389/fpsyg.2023.1307467",
+      "10.1108/arch-07-2023-0173",
+      "10.1080/23748834.2023.2286741",
+      "10.1016/j.foar.2023.11.004",
+      "10.1016/j.foar.2023.10.002",
+      "10.3390/su151914623",
+      "10.3390/systems11080388",
+      "10.1111/ssqu.13303",
+      "10.1167/jov.23.7.12",
+      "10.5755/j01.sace.32.1.33400",
+      "10.24146/tk.1222569",
+      "10.3390/ijerph20095637",
+      "10.1177/19375867221148168",
+      "10.3390/arts12010012",
+      "10.1177/00420980221138311",
+      "10.1080/13467581.2022.2160203",
+      "10.3389/fpsyg.2022.933344",
+      "10.5755/j01.sace.31.2.30791",
+      "10.26641/2307-0404.2022.3.265960",
+      "10.1155/2022/8184534",
+      "10.11606/gtp.v17i2.185169",
+      "10.1016/j.jenvp.2022.101839",
+      "10.1016/j.healthplace.2022.102825",
+      "10.1002/pan3.10330",
+      "10.3390/architecture2020019",
+      "10.1016/j.jenvp.2022.101810",
+      "10.1016/j.buildenv.2022.109109",
+      "10.3389/fmats.2022.851555",
+      "10.1038/s41598-022-08365-z",
+      "10.3389/fpsyg.2022.833819",
+      "10.1111/cdev.13716",
+      "10.1016/J.JENVP.2021.101676",
+      "10.31234/osf.io/q75eh",
+      "10.1371/journal.pone.0256635",
+      "10.1007/s10339-021-01043-4",
+      "10.3389/fpsyg.2021.717116",
+      "10.1007/978-3-030-81465-6_9",
+      "10.7480/JFDE.2021.2.5540",
+      "10.1177/19375867211007941",
+      "10.3390/BUILDINGS11040163",
+      "10.1016/j.landurbplan.2020.104002",
+      "10.3390/ijerph18084322",
+      "10.1016/J.JENVP.2021.101558",
+      "10.1016/j.tics.2021.03.008",
+      "10.1177/00332941211002135",
+      "10.3390/s21062193",
+      "10.1057/s41262-020-00222-6",
+      "10.1057/s41262-020-00222-6",
+      "10.3389/fpsyg.2021.591403",
+      "10.1177/1477153520981572",
+      "10.1080/00273171.2020.1857216",
+      "10.1016/j.landurbplan.2020.103910",
+      "10.1016/j.sheji.2020.08.005",
+      "10.3389/fpsyg.2020.573220",
+      "10.1016/j.jenvp.2020.101516",
+      "10.1016/j.enbuild.2020.110259",
+      "10.1108/JSM-10-2019-0418",
+      "10.1016/J.SCS.2020.102207",
+      "10.23919/jsc.2020.0003",
+      "10.3390/su12177064",
+      "10.1177/2399808320949885",
+      "10.1371/journal.pone.0235257",
+      "10.3758/s13421-020-01051-3",
+      "10.1080/02697459.2020.1768332",
+      "10.1016/j.cities.2019.102461",
+      "10.1177/1088868319845938",
+      "10.1016/j.cortex.2020.01.009",
+      "10.32839/2304-5809/2021-1-89-5",
+      "10.1016/j.jenvp.2020.101498",
+      "10.3758/s13428-019-01326-x",
+      "10.1016/J.JENVP.2019.101321",
+      "10.1016/J.JENVP.2019.101328",
+      "10.3758/s13414-020-02121-z",
+      "10.3758/s13428-020-01362-y",
+      "10.1007/978-3-030-69020-5_4",
+      "10.47472/i86ecuiw",
+      "10.1007/978-3-030-56926-6_3",
+      "10.18260/1-2--42373"
+    ],
+    "semantic_scholar_id": "5fc0e8e7ab2750e7b2ac3aa2ca2fdbb2e1b44cc2",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:39:35.254197+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Psychological responses to natural patterns in architecture",
+    "crossref_year": 2019,
+    "crossref_citation_count": 112,
+    "crossref_journal": "Journal of Environmental Psychology",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 67,
+    "crossref_issn": [
+      "0272-4944"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.487787+00:00",
+    "_cr_refs_added": 13
+  },
+  "year": 2019,
+  "journal": "Journal of Environmental Psychology",
+  "authors_structured": [
+    "Alexander Coburn",
+    "Omid Kardan",
+    "Hiroki Kotabe",
+    "Jason Steinberg",
+    "Michael C. Hout",
+    "Arryn Robbins",
+    "J. MacDonald",
+    "G. Hayn-Leichsenring",
+    "M. Berman"
+  ],
+  "crossref_title": "Psychological responses to natural patterns in architecture",
+  "crossref_authors": [
+    {
+      "name": "Alexander Coburn",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Omid Kardan",
+      "orcid": "https://orcid.org/0000-0003-4187-5228",
+      "affiliation": null
+    },
+    {
+      "name": "Hiroki Kotabe",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Jason Steinberg",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Michael C. Hout",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Arryn Robbins",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Justin MacDonald",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Gregor Hayn-Leichsenring",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Marc G. Berman",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2019,
+  "crossref_journal": "Journal of Environmental Psychology",
+  "crossref_citation_count": 112,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:54:26.723671+00:00"
+}

@@ -1,0 +1,56 @@
+{
+  "molecule_id": "M_CCT_PREFERENCE",
+  "name": "CCT (Correlated Color Temperature) Preference",
+  "version": "1.0",
+  "description": "How correlated color temperature modulates CVA constraints and valuations. Warm CCT (2700-3000K) reduces ProcessingCost and enhances RestorationValue; cool CCT (5000-6500K) increases InterestValue and ControlEfficacy. Neurotype-dependent: PTSD subjects show stronger warm-CCT preference due to safety associations.",
+  "cva_layer": "constraint",
+  "theoretical_basis": [
+    "Kruithof (1941) on illumination pleasantness",
+    "Knez (1995) on CCT effects on mood and cognition",
+    "Deguchi & Sato (1992) on subjective impressions of illumination",
+    "Veitch & Newsham (2000) on lighting quality and occupant satisfaction"
+  ],
+  "cct_ranges": {
+    "warm": {
+      "min_K": 2700,
+      "max_K": 3000,
+      "processing_cost_mod": -0.15,
+      "restoration_mod": 0.2
+    },
+    "neutral": {
+      "min_K": 3500,
+      "max_K": 4500,
+      "processing_cost_mod": 0.0,
+      "restoration_mod": 0.0
+    },
+    "cool": {
+      "min_K": 5000,
+      "max_K": 6500,
+      "processing_cost_mod": 0.1,
+      "interest_mod": 0.15
+    }
+  },
+  "constraints_affected": [
+    "ProcessingCost",
+    "MultisensoryCoherence"
+  ],
+  "valuations_affected": [
+    "RestorationValue",
+    "InterestValue",
+    "SafetyValue"
+  ],
+  "neurotype_interactions": {
+    "ptsd": "Strong warm-CCT preference; cool CCT increases PredictionError",
+    "older_adult": "Higher CCT needed for contrast; warm preferred for comfort",
+    "depression": "Cool CCT beneficial for circadian regulation"
+  },
+  "templates_linked": [],
+  "status": "active",
+  "source_theories": [
+    "circadian_lighting",
+    "color_emotion",
+    "adaptive_thermal"
+  ],
+  "basis": "Correlated color temperature (CCT) preference varies with time of day, activity, and circadian phase",
+  "derivation": "Links melanopic sensitivity curves with thermal comfort preferences and color-emotion associations"
+}

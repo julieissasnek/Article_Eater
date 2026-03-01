@@ -241,7 +241,7 @@ def evaluate_building(
             "wis": float(score["wis"]),
             "interaction_multiplier": float(score.get("interaction_multiplier", 1.0)),
         }
-        activation.interaction_adjustments = score.get("interaction_adjustments", [])
+        activation.interaction_adjustments = list(score.get("interaction_adjustments", []))
 
         template = template_lookup.get(score["template"])
         if not template:

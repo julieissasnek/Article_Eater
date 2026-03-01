@@ -1,0 +1,317 @@
+{
+  "doi": "10.3389/fams.2021.691582",
+  "article_type": "theoretical",
+  "article_family": "theoretical",
+  "quality_action": "accept",
+  "quality_score": 0.56,
+  "n_findings": 5,
+  "extracted_at": "2026-02-25T04:21:11.377497+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.003151,
+  "title": "Volumetric Lattice Boltzmann Models in General Curvilinear Coordinates: Theoretical Formulation",
+  "authors": "Hudong Chen, 2021",
+  "central_proposition": "This paper presents a theoretical formulation of volumetric lattice Boltzmann models in general curvilinear coordinates that ensures exact mass and momentum conservation, preserves one-to-one particle advection, and recovers the Navier-Stokes equation in the hydrodynamic limit by incorporating a discrete space-time inertial force.",
+  "concept_definitions": [
+    {
+      "name": "Lattice Boltzmann Methods (LBM)",
+      "definition": "A computational fluid dynamics method whose underlying dynamics resides on kinetic theory, involving the motion and interaction of many particles according to the Boltzmann equation."
+    },
+    {
+      "name": "Advection process",
+      "definition": "The process where a particle moves from one location to another according to its microscopic velocity."
+    },
+    {
+      "name": "Collision process",
+      "definition": "The process where particles interact with each other, obeying conservation laws and relaxing to equilibrium."
+    },
+    {
+      "name": "Curvilinear coordinate system",
+      "definition": "A coordinate system where spatial points x are uniquely defined by coordinate values q = (q\u00b9,q\u00b2,q\u00b3) along three non-collinear congruences of parameterized basis curves."
+    },
+    {
+      "name": "Basis tangent vectors (g_i(q))",
+      "definition": "Vectors at a spatial point x(q) along each of the three coordinate directions, constructed from distance vectors between mesh sites."
+    },
+    {
+      "name": "Metric tensor (g_ij(q))",
+      "definition": "A tensor defined by the dot product of basis tangent vectors, g_ij(q) = g_i(q) \u00b7 g_j(q)."
+    },
+    {
+      "name": "Volume (J(q))",
+      "definition": "The volume of the cell centered at x(q), calculated as the scalar triple product of the basis tangent vectors: J(q) = (g_1(q) \u00d7 g_2(q)) \u00b7 g_3(q)."
+    },
+    {
+      "name": "Lattice Boltzmann velocity vectors (e_a(q))",
+      "definition": "Velocity vectors on a general curvilinear mesh, defined as c_a g_i(q) \u2206x/\u2206t, where c_a are constant integer components."
+    },
+    {
+      "name": "Particle density distribution function (f_a(q,t))",
+      "definition": "A function related to the number of particles N_a(q,t) in a cell by J(q)f_a(q,t) = N_a(q,t)."
+    },
+    {
+      "name": "Fluid density (\u03c1(q,t))",
+      "definition": "The sum of all particle density distribution functions at a given location and time, \u03c1(q,t) = \u03a3_a f_a(q,t)."
+    },
+    {
+      "name": "Fluid velocity (u(q,t))",
+      "definition": "The momentum moment of the particle density distribution function, \u03c1(q,t)u(q,t) = \u03a3_a e_a(q)f_a(q,t)."
+    },
+    {
+      "name": "Collision term (\u03a9_a(q,t))",
+      "definition": "A term in the LBM equation that describes particle interactions and satisfies local mass and momentum conservations."
+    },
+    {
+      "name": "Extra term (\u03b4N_a(q,t))",
+      "definition": "A term representing the change of particle distribution due to an effective inertial force associated with the curvature and non-uniformity of a general curvilinear mesh."
+    },
+    {
+      "name": "Christoffel symbol (\u0393^i_jk(q))",
+      "definition": "A geometric quantity defined in differential geometry, representing the coefficients of connection in a curvilinear coordinate system, derived from the derivatives of the basis tangent vectors."
+    }
+  ],
+  "argument_structure": "The paper constructs a theoretical framework for LBM in general curvilinear coordinates. It begins by defining geometric quantities for the curvilinear mesh. It then formulates the LBM evolution equation, introducing a specific 'inertial force' term (\u03b4N_a) to account for the non-Euclidean nature of the coordinate system. The core argument involves a detailed Chapman-Enskog expansion to demonstrate that this formulation rigorously recovers the mass continuity and Navier-Stokes equations in curvilinear coordinates, ensuring exact conservation laws and correct hydrodynamic behavior.",
+  "mechanism_or_causal_logic": "The central mechanism is the introduction of a discrete space-time inertial force (\u03b4N_a) within the LBM equation. This force term is derived from the geometric properties of the curvilinear mesh (curvature and non-uniformity) and is precisely designed to compensate for the momentum changes experienced by particles as they advect along curved paths in the underlying Euclidean space, while their discrete velocities are constant in the non-Euclidean coordinate system. This compensation ensures that mass and momentum are conserved in the Euclidean space and that the macroscopic Navier-Stokes equations are recovered in the hydrodynamic limit. The volumetric formulation further guarantees exact conservation.",
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Volumetric representation in Lattice Boltzmann Models (LBM) on a general curvilinear coordinate system",
+      "consequent": "Mass and momentum conservation",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "The volumetric formulation (J(q)f_a = N_a) inherently accounts for cell volume changes, leading to exact conservation laws at both kinetic and continuum scales.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Abstract, Section 1, Section 2.2, Section 4",
+      "quote": "It is based on a volumetric representation so that mass and momentum are exactly conserved as in the conventional lattice Boltzmann on a Cartesian lattice.",
+      "testable": true,
+      "empirical_support_cited": "Unlike some previous works [16-18], here we use a volumetric representation so that conservation laws are exactly ensured [11]."
+    },
+    {
+      "id": 2,
+      "antecedent": "LBM formulation on a general curvilinear mesh preserving exact one-to-one particle advection",
+      "consequent": "Numerical dissipation",
+      "direction": "decrease",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Preserving the exact one-to-one advection (Lagrangian characteristic) prevents smearing of particle locations, which is a primary source of numerical dissipation in interpolation-based methods.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 1",
+      "quote": "This exact one-to-one advection of a particle on the lattice effectively realizes a Lagrangian advection characteristics... produces an extremely low numerical dissipation (due to no smearing of locations of a single particle).",
+      "testable": true,
+      "empirical_support_cited": "if such a one-to-one advection is relaxed, numerical dissipation has been seen to significantly increase even with the usage of much higher order interpolation schemes."
+    },
+    {
+      "id": 3,
+      "antecedent": "Particle moving along a curved path in Euclidean space (due to constant discrete velocity in non-Euclidean coordinate system)",
+      "consequent": "Effective inertial force",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "The first law of Newton in Euclidean space dictates that a particle changing direction (moving along a curved path) must experience a force. In the non-Euclidean coordinate system, this appears as an inertial force.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 1",
+      "quote": "The key difference between a constant particle velocity on a Euclidean and a non-Euclidean space is that the latter is accompanied with an inertial force, due to the 1st law of Newton in Euclidean space.",
+      "testable": true,
+      "empirical_support_cited": "The key difference between a constant particle velocity on a Euclidean and a non-Euclidean space is that the latter is accompanied with an inertial force, due to the 1st law of Newton in Euclidean space."
+    },
+    {
+      "id": 4,
+      "antecedent": "Introduction of a discrete space-time inertial force term (\u03b4N_a(q,t)) in the LBM equation",
+      "consequent": "Momentum conservation for the underlying Euclidean space",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "The \u03b4N_a(q,t) term is constructed to exactly balance the net momentum change arising from particle advection along curved paths, thereby preserving momentum conservation in the Euclidean space at discrete space-time.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Abstract, Section 2.2",
+      "quote": "A discrete space-time inertial force is derived so that the momentum conservation is exactly ensured for the underlying Euclidean space.",
+      "testable": true,
+      "empirical_support_cited": "the second constraint in Eq. 26 introduces an \"inertial force\" that equals exactly to the amount needed for achieving the momentum conservation in the underlying Euclidean space at any lattice site q and time t."
+    },
+    {
+      "id": 5,
+      "antecedent": "Proper construction and application of the inertial force term (\u03b4N_a(q,t)) at the correct discrete time moment, combined with an appropriate equilibrium distribution function",
+      "consequent": "Correct Navier-Stokes hydrodynamics to the viscous order and mass continuity equation",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "The specific form and timing of the inertial force term, along with the equilibrium distribution function satisfying specific moment conditions, are crucial for the Chapman-Enskog expansion to correctly recover the viscous terms of the Navier-Stokes equation and the mass continuity equation in curvilinear coordinates.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Abstract, Section 1, Section 3, Section 4",
+      "quote": "We theoretically show that the new scheme recovers the Navier-Stokes equation in general curvilinear coordinates in the hydrodynamic limit, along with the correct mass continuity equation.",
+      "testable": true,
+      "empirical_support_cited": "Through a detailed analysis, we have shown that the current LBM formulation recovers the correct Navier-Stokes behavior in the hydrodynamic limit, as long as a discrete lattice velocity set satisfying a sufficient order of isotropy is used."
+    }
+  ],
+  "testable_hypotheses_or_predictions": [
+    "The proposed volumetric LBM in curvilinear coordinates will exhibit lower numerical dissipation compared to interpolation-based LBMs on arbitrary meshes when simulating fluid flows in complex geometries.",
+    "The proposed LBM will accurately recover the Navier-Stokes hydrodynamics and mass continuity equation in curvilinear coordinates for low-speed isothermal flows, as verified through numerical simulations.",
+    "The discrete space-time inertial force term, when correctly implemented, will ensure exact momentum conservation in the underlying Euclidean space, which can be verified by tracking total momentum."
+  ],
+  "bridge_warrants": [
+    "The formulation connects discrete kinetic theories (LBM) to the continuum Boltzmann kinetic theory on Riemannian manifolds, providing a rigorous theoretical foundation.",
+    "It extends the applicability of LBM from simple Euclidean Cartesian meshes to general curvilinear coordinate systems, bridging the gap between idealized lattice models and complex geometry fluid dynamics.",
+    "The approach is presented as analogous to discrete systems found in other branches of physics, such as spin models or lattice field theories, suggesting broader theoretical connections."
+  ],
+  "methodological_critiques": [
+    "The paper critiques previously existing approaches for LBM on arbitrary meshes that rely on interpolation approximations among multiple neighboring cells, stating that this 'destroys the preciseness of a Lagrangian advection characteristics thus resulting in a significantly increased numerical dissipation.'",
+    "It highlights critical differences from previous works (e.g., Mendosa et al. [16-18]), specifically regarding the adoption of a volumetric formulation for exact conservation, the self-consistent construction of the inertial force without relying on outside analytical forms, and the proper timing of force application to recover correct viscous hydrodynamics without extra correction terms."
+  ],
+  "model_structure": "The model is an extended Lattice Boltzmann Equation (Eq. 12) given by N_a(q + c_a, t + 1) = N_a(q, t) + \u03a9_a(q, t) + \u03b4N_a(q, t). It operates on a 'Cartesian' lattice {q} which is a deformation of the original curvilinear mesh {x} in Euclidean space. Key geometric quantities like basis tangent vectors g_i(q), metric tensor g_ij(q), cell volume J(q), and Christoffel symbols \u0393^i_jk(q) are pre-computed based on the curvilinear mesh. The particle distribution function N_a(q,t) is related to f_a(q,t) via J(q). The collision term \u03a9_a satisfies local mass and momentum conservation. The additional term \u03b4N_a represents a discrete space-time inertial force, constructed to ensure exact mass and momentum conservation in the underlying Euclidean space. The equilibrium distribution function f_a^eq is defined to satisfy specific moment isotropy and normalization conditions (Eq. 32) for recovering correct hydrodynamics. The model is designed to recover the Navier-Stokes equation in general curvilinear coordinates through Chapman-Enskog expansion.",
+  "domains": [],
+  "overall_theory_links": [],
+  "limitations": [
+    "The current formulation is restricted to 'one of the simplest situations, namely the low speed isothermal flow'.",
+    "Computational aspects such as scheme stability, numerical dissipation, performance, and boundary conditions treatment, as well as numerical verification of theoretical results, are outside the scope of this study.",
+    "The current work is purely theoretical, with extensive numerical validations for various flows and curvilinear meshes to be presented in future publications."
+  ],
+  "paper_metadata": {
+    "doi": "10.3389/fams.2021.691582",
+    "title": "Volumetric Lattice Boltzmann Models in General Curvilinear Coordinates: Theoretical Formulation",
+    "authors": [
+      "Hudong Chen"
+    ],
+    "year": 2021,
+    "journal": "Frontiers in Applied Mathematics and Statistics",
+    "volume": "7",
+    "issue": null,
+    "pages": null,
+    "publisher": "Frontiers Media SA",
+    "citation_count": 3,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1006/JCPH.1996.0255",
+      "10.1006/jcph.1996.0255",
+      "10.1007/s10915-007-9159-3",
+      "10.1016/0370-1573(92)90090-M",
+      "10.1016/0370-1573(92)90090-m",
+      "10.1016/J.PHYSA.2005.09.008",
+      "10.1016/b978-0-12-814060-4.00005-8",
+      "10.1016/c2011-0-00134-5",
+      "10.1016/j.jocs.2020.101182",
+      "10.1016/j.matcom.2006.05.017",
+      "10.1016/j.physa.2005.09.008",
+      "10.1016/j.physd.2007.11.010",
+      "10.1017/S0022112005008153",
+      "10.1017/s0022112005008153",
+      "10.1038/144993A0",
+      "10.1088/1402-4896/ab4b4d",
+      "10.1098/rsta.2011.0097",
+      "10.1103/PHYSREV.94.511",
+      "10.1103/PHYSREVA.45.R5339",
+      "10.1103/PHYSREVE.58.3955",
+      "10.1103/PHYSREVLETT.67.3776",
+      "10.1103/PhysRevE.74.046703",
+      "10.1103/PhysRevE.90.053308",
+      "10.1103/PhysRevE.93.043316",
+      "10.1103/physrev.94.511",
+      "10.1103/physreva.45.r5339",
+      "10.1103/physreve.58.3955",
+      "10.1103/physreve.74.046703",
+      "10.1103/physreve.90.053308",
+      "10.1103/physreve.93.043316",
+      "10.1103/physrevlett.67.3776",
+      "10.1142/S0129183114410010",
+      "10.1142/S0129183114500466",
+      "10.1142/S0129183197000576",
+      "10.1142/s0129183114410010",
+      "10.1142/s0129183114500466",
+      "10.1142/s0129183197000576",
+      "10.1146/ANNUREV.FLUID.30.1.329",
+      "10.1146/annurev.fluid.30.1.329",
+      "10.1209/0295-5075/17/6/001",
+      "10.2307/2313035",
+      "10.2307/3607024",
+      "10.2307/3618229"
+    ],
+    "cited_by": [
+      "10.1016/j.rinp.2024.107754",
+      "10.3389/fams.2022.1066522",
+      "10.1016/j.ijthermalsci.2025.110403"
+    ],
+    "semantic_scholar_id": "03349ddf69f54bececa69e451660a74833c88cef",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:47:52.001716+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Volumetric Lattice Boltzmann Models in General Curvilinear Coordinates: Theoretical Formulation",
+    "crossref_year": 2021,
+    "crossref_citation_count": 3,
+    "crossref_journal": "Frontiers in Applied Mathematics and Statistics",
+    "crossref_publisher": "Frontiers Media SA",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "A theoretical formulation of lattice Boltzmann models on a general curvilinear coordinate system is presented. It is based on a volumetric representation so that mass and momentum are exactly conserved as in the conventional lattice Boltzmann on a Cartesian lattice. In contrast to some previously existing approaches for arbitrary meshes involving interpolation approximations among multiple neighboring cells, the current formulation preserves the fundamental one-to-one advection feature of a standard lattice Boltzmann method on a uniform Cartesian lattice. The new approach is built on the concept that a particle is moving along a curved path. A discrete space-time inertial force is derived so that the momentum conservation is exactly ensured for the underlying Euclidean space. We theoretically show that the new scheme recovers the Navier-Stokes equation in general curvilinear coordinates in the hydrodynamic limit, along with the correct mass continuity equation.",
+    "crossref_reference_count": 28,
+    "crossref_issn": [
+      "2297-4687"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.836792+00:00",
+    "_cr_refs_added": 15
+  },
+  "year": 2021,
+  "journal": "Frontiers in Applied Mathematics and Statistics",
+  "authors_structured": [
+    "Hudong Chen"
+  ],
+  "crossref_title": "Volumetric Lattice Boltzmann Models in General Curvilinear Coordinates: Theoretical Formulation",
+  "crossref_authors": [
+    {
+      "name": "Hudong Chen",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2021,
+  "crossref_journal": "Frontiers in Applied Mathematics and Statistics",
+  "crossref_citation_count": 3,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Frontiers Media SA",
+  "crossref_subjects": [],
+  "crossref_abstract": "A theoretical formulation of lattice Boltzmann models on a general curvilinear coordinate system is presented. It is based on a volumetric representation so that mass and momentum are exactly conserved as in the conventional lattice Boltzmann on a Cartesian lattice. In contrast to some previously existing approaches for arbitrary meshes involving interpolation approximations among multiple neighboring cells, the current formulation preserves the fundamental one-to-one advection feature of a standard lattice Boltzmann method on a uniform Cartesian lattice. The new approach is built on the concept that a particle is moving along a curved path. A discrete space-time inertial force is derived so that the momentum conservation is exactly ensured for the underlying Euclidean space. We theoretically show that the new scheme recovers the Navier-Stokes equation in general curvilinear coordinates in the hydrodynamic limit, along with the correct mass continuity equation.",
+  "crossref_fetched_at": "2026-02-25T12:02:07.245256+00:00"
+}

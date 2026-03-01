@@ -1,0 +1,148 @@
+{
+  "paper_title": "Using Posterior EEG Theta Band to Assess the Effects of Architectural Designs on Landmark Recognition in an Urban Setting",
+  "authors": [
+    "James D. Rounds",
+    "Jesus Gabriel Cruz-Garza",
+    "Saleh Kalantari"
+  ],
+  "year": 2020,
+  "doi": "10.3389/fnhum.2020.584385",
+  "venue": "Frontiers in Human Neuroscience",
+  "abstract": "The process of urban landmark-based navigation has proven to be difficult to study in a rigorous fashion, primarily due to confounding variables and the problem of obtaining reliable data in real-world contexts. The development of high-resolution, immersive virtual reality technologies has opened exciting new possibilities for gathering data on human wayfinding that could not otherwise be readily obtained. We developed a research platform using a virtual environment and electroencephalography (EEG) to better understand the neural processes associated with landmark usage and recognition during urban navigation tasks. By adjusting the architectural parameters of different buildings in this virtual environment, we isolated and tested specific design features to determine whether or not they served as a target for landmarking. EEG theta band (4-7 Hz) event-related synchronization/desynchronization over posterior scalp areas was evaluated at the time when participants observed each target building along a predetermined self-paced route. A multi-level linear model was used to investigate the effects of salient architectural features on posterior scalp areas. Our results support the conclusion that highly salient architectural features\u2014those that contrast sharply with the surrounding environment\u2014are more likely to attract visual attention, remain in short-term memory, and activate brain regions associated with wayfinding compared with non-salient buildings. After establishing this main aggregate effect, we evaluated specific salient architectural features and neural correlates of navigation processing. The buildings that most strongly associated extended gaze time, location recall accuracy, and changes in theta-band neural patterns with landmarking in our study were those that incorporated rotational twist designs and natural elements such as trees and gardens. Other building features, such as unusual fa\u00e7ade patterns or building heights, were to a lesser extent also associated with landmarking.",
+  "methodology": "The study employed an experimental design using a high-resolution, immersive virtual urban environment developed with Epic Games' Unreal Engine. Participants navigated two pre-determined, self-paced routes through the virtual city using a Microsoft Xbox controller. Twelve target buildings with parametrically manipulated architectural features were integrated into the environment.\n\nBiometric data was collected using a 64-channel ActiCHamp EEG cap (Brain Products GmbH) with Ag/AgCl active electrodes, recorded at 500 Hz. Electro-oculography (EOG) was also recorded for artifact removal. EEG data processing involved EEGLAB software, Cleanline algorithm for 60 Hz noise, PREP Pipeline for re-referencing, and Independent Component Analysis (ICA) to remove artifacts. The mean Event-Related Synchronization/Desynchronization (ERD/ERS) in the theta band (4-7 Hz) was calculated across four posterior scalp regions of interest (Left Posterior Superior, Right Posterior Superior, Left Parietal Inferior, Right Posterior Inferior) as a percentage change from a 1-minute resting baseline.\n\nBehavioral data included gaze tracking (total gaze time and gaze count) using recorded screen-capture video linked to the VR display and participant's gaze direction. Location recall accuracy was measured by asking participants to identify the zone of target buildings on a map after each route. Statistical analysis involved linear models (lm() in R) and multi-level linear models, with paired t-test comparisons using a Tukey method for p-value adjustments.",
+  "sample": {
+    "initial_recruitment": 29,
+    "analyzed_participants": 21,
+    "age_range": "18-55 years (M = 27.65, SD = 10.04)",
+    "gender": "8 women, 13 men",
+    "ethnicity_nationality": "9 Asian, 7 Latino/Hispanic, 1 Middle Eastern, 4 White (Non-Hispanic); common nationalities: U.S., India, Mexico",
+    "occupation": "Majority university students (n=19), rest academic faculty",
+    "health_status": "Healthy, no current neurological conditions, abstained from psychoactive substances (except 2 with caffeine within 1h), 2 on psychological medication",
+    "sleep_patterns": "33% reported 7+ hours, 29% 6-7 hours, 38% 4-6 hours",
+    "vr_familiarity": "No prior familiarity with VR technology",
+    "comfort_ratings": "VR system (M=4.083, SD=2.465), EEG headset (M=3.75, SD=2.156) not uncomfortable/stressful; VR environment realism (M=6.33, SD=1.66)"
+  },
+  "manipulated_features": [
+    "Overall Building Saliency (Salient vs. Non-Salient)",
+    "Relative Height (Same level, Lower, Higher than neighbor buildings)",
+    "Footprint Shape (Rectangular, Triangle, Circle, Pentagon)",
+    "Fa\u00e7ade Design (Horizontal lines, Grid lines, Vertical lines, Nature feature included, Twisted fa\u00e7ade, Voronoi pattern)",
+    "Color Saliency (White for target buildings, gray/opaque for background buildings)"
+  ],
+  "outcomes": [
+    "Gaze Time (total duration in seconds)",
+    "Location Recall Accuracy (percentage of correct identifications)",
+    "EEG Theta Power ERD/ERS (Event-Related Synchronization/Desynchronization in 4-7 Hz band over posterior scalp regions)"
+  ],
+  "key_findings": [
+    {
+      "finding": "High building saliency was associated with significantly longer Gaze Time.",
+      "effect_size": "F(1, 390) = 27.60, p < 0.001"
+    },
+    {
+      "finding": "High building saliency was associated with more accurate visual memory.",
+      "effect_size": "F(1,283) = 22.26, p < 0.001"
+    },
+    {
+      "finding": "High building saliency showed a significant association with theta activation (ERS).",
+      "effect_size": "F(1, 140) = 8.343, p = 0.005"
+    },
+    {
+      "finding": "Theta power changes for more salient buildings were significantly greater in the Left Posterior Superior region.",
+      "effect_size": "t = -2.08, p = 0.04"
+    },
+    {
+      "finding": "Theta power changes for more salient buildings were trending significantly greater in the Right Posterior Superior region.",
+      "effect_size": "t = -1.75, p = 0.08"
+    },
+    {
+      "finding": "Twist fa\u00e7ade designs attracted significantly longer Gaze Times.",
+      "effect_size": "F(1, 54) = 26.74, p < 0.001"
+    },
+    {
+      "finding": "Theta power changes for Twist-fa\u00e7ade condition were significantly greater (ERS) in the Left Posterior Superior region.",
+      "effect_size": "t = 2.08, p = 0.01"
+    },
+    {
+      "finding": "Nature fa\u00e7ade designs attracted significantly longer Gaze Times.",
+      "effect_size": "F(1, 54) = 14.67, p < 0.001"
+    },
+    {
+      "finding": "Nature fa\u00e7ade designs were associated with more accurate visual memory.",
+      "effect_size": "F(1, 56) = 30.19, p < 0.001"
+    },
+    {
+      "finding": "Nature fa\u00e7ade designs yielded a *decrease* in theta activation (ERD) in the Left Posterior Superior region, opposite of expected.",
+      "effect_size": "t = -2.35, p = 0.02"
+    },
+    {
+      "finding": "Contextually taller buildings attracted longer Gaze Times compared to same height level buildings.",
+      "effect_size": "F(2, 109) = 6.74, p < 0.001"
+    },
+    {
+      "finding": "Vertical and Voronoi fa\u00e7ade patterns attracted significantly longer Gaze Times compared to other fa\u00e7ade types.",
+      "effect_size": "all |t|s > |-2.84|, ps < 0.03"
+    },
+    {
+      "finding": "Vertical and Voronoi fa\u00e7ade patterns were associated with more accurate visual memory.",
+      "effect_size": "both ts > 5.2, p < 0.001"
+    },
+    {
+      "finding": "Electrophysiology data did not correspond for Vertical and Voronoi patterns (no significant EEG differences).",
+      "effect_size": "Not reported as significant"
+    }
+  ],
+  "theories_referenced": [
+    "Cognitive maps (Tolman, Lynch)",
+    "Landmark Saliency (Clark, Sorrows & Hirtle, Raubal & Winter, Caduff & Timpf)",
+    "Spatial awareness and memory centers (retrosplenial cortex, hippocampus, occipital place area, parahippocampal cortex)",
+    "Theta band EEG role in navigation and memory (Buzs\u00e1ki, Paller & Wagner, Jaiswal et al., White et al., Belchior et al., Koike et al., Scholz et al.)"
+  ],
+  "mechanisms": [
+    "Saliency: Architectural features that contrast sharply with the surrounding environment are more easily recognized and used as spatial reference points.",
+    "Visual Attention: Salient buildings attract and sustain visual attention, leading to increased gaze duration.",
+    "Memory Formation: Increased visual attention and distinctiveness of salient landmarks contribute to better encoding and retrieval of spatial knowledge, improving location recall accuracy.",
+    "Neural Correlates: Increased posterior superior scalp EEG theta power (synchronization) serves as an indicator of heightened neural processing in response to relevant navigational cues, associated with spatial awareness and memory.",
+    "Retrosplenial Cortex (RSC) Role: The RSC is implicated in integrating egocentric and allocentric spatial information, tagging meaningful spatial cues during memory formation, and is involved in spatial navigation and memory. Theta activity in posterior parietal regions (where RSC is located) is prominent in navigational tasks and goal-directed environmental information processing."
+  ],
+  "limitations": [
+    "Participants were seated and used 'teleporting' navigation, not ambulatory locomotion, which limits generalizations about real-world wayfinding.",
+    "The virtual environment did not allow for truly free navigation, only movement among pre-determined locations.",
+    "EEG's limited spatial resolution makes it difficult to disentangle RSC activity from PHC and posterior parietal cortex in general.",
+    "The distinction between saliency and novelty can be subtle, despite efforts to control for novelty.",
+    "The progression of posterior theta power change from less-salient to more-salient buildings did not appear to be linear.",
+    "Participants sometimes confused similar Twist-fa\u00e7ade buildings during recall, potentially explaining discrepancies between EEG and recall accuracy for this feature.",
+    "EEG results did not always correspond with gaze duration and recall data for some features (e.g., Vertical and Voronoi fa\u00e7ades showed behavioral effects but no corresponding EEG changes; Nature fa\u00e7ade showed ERD instead of ERS)."
+  ],
+  "design_implications": [
+    "Highly salient architectural features are more likely to attract visual attention, be remembered, and activate brain regions associated with wayfinding, making them effective landmarks.",
+    "Rotational twist designs and natural elements (e.g., trees, gardens) are particularly effective architectural features for promoting landmarking, leading to longer gaze times, better location recall, and specific neural activation patterns.",
+    "Unusual fa\u00e7ade patterns (e.g., Vertical, Voronoi) and building heights (taller than surroundings) can also contribute to landmarking, though their neural correlates may be less consistent.",
+    "Urban planners and metropolitan authorities can use these findings to develop more robust, data-driven guidelines for selecting and promoting urban landmarks in wayfinding communications.",
+    "Architectural designs that create sharp contrast with the surrounding environment can serve as effective visual anchors, aiding spatial memory and navigation."
+  ],
+  "topic_tags": [
+    "neuroarchitecture",
+    "wayfinding",
+    "landmark_recognition",
+    "EEG",
+    "virtual_reality",
+    "architectural_design",
+    "saliency",
+    "geometry",
+    "fa\u00e7ade",
+    "height",
+    "nature",
+    "cognitive_maps",
+    "spatial_memory",
+    "visual_attention",
+    "urban_design"
+  ],
+  "_meta": {
+    "source_pdf": "10.3389_fnhum.2020.584385.pdf",
+    "extracted_at": "2026-02-28T21:07:30.226042+00:00",
+    "model": "gemini-2.5-flash",
+    "cost_usd": 0.002373,
+    "elapsed_s": 30.2
+  }
+}

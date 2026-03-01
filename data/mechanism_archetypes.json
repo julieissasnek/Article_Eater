@@ -1,0 +1,492 @@
+{
+  "archetypes": [
+    {
+      "archetype_id": "PC_001",
+      "archetype_type": "predictive_coding",
+      "name": "Predictive Coding",
+      "description": "Prediction error minimization via hierarchical inference and precision-weighted belief updating. Brain generates top-down predictions; mismatches trigger learning.",
+      "theoretical_basis": [
+        "Friston, K. (2010). The free-energy principle. Nature Reviews Neuroscience, 11(2), 127-138.",
+        "Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. Behavioral and Brain Sciences, 36(3), 181-204.",
+        "Rao, R. P., & Ballard, D. H. (1999). Predictive coding in the visual cortex. Nature Neuroscience, 2(5), 490-492."
+      ],
+      "input_variables": [
+        "observation",
+        "prediction",
+        "sensory_input"
+      ],
+      "output_variables": [
+        "prediction_error",
+        "prediction_update",
+        "precision_weighting",
+        "belief_revision"
+      ],
+      "parameters": {
+        "precision_weight": {
+          "name": "precision_weight",
+          "default_value": 0.5,
+          "min_value": 0.0,
+          "max_value": 1.0,
+          "unit": "dimensionless",
+          "description": "Relative weighting of prediction errors by inverse variance. Higher = more weight to high-precision (low-variance) errors."
+        },
+        "learning_rate": {
+          "name": "learning_rate",
+          "default_value": 0.1,
+          "min_value": 0.01,
+          "max_value": 1.0,
+          "unit": "per_update",
+          "description": "Rate at which predictions adjust based on errors."
+        },
+        "hierarchical_depth": {
+          "name": "hierarchical_depth",
+          "default_value": 3,
+          "min_value": 1,
+          "max_value": 5,
+          "unit": "levels",
+          "description": "Number of hierarchical levels in predictive model."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Visual Perception",
+          "template_id": "PP_COMPLEXITY_GOLDILOCKS_002",
+          "description": "Visual complexity preference mediated by prediction error magnitude. Optimal complexity balances novelty (positive prediction error) with comprehension."
+        },
+        {
+          "domain": "Auditory Scene Analysis",
+          "template_id": "AUDITORY_SCENE_ANALYSIS_001",
+          "description": "Grouping of sound components into coherent auditory objects via prediction error minimization. Unexpected acoustic changes trigger reanalysis."
+        },
+        {
+          "domain": "Thermal Comfort",
+          "template_id": "THERMAL_COMFORT_001",
+          "description": "Expected vs. actual thermal sensation generates corrective responses. Habituation reflects updating of thermal predictions."
+        },
+        {
+          "domain": "Social Perception",
+          "template_id": "SOCIAL_EXPECTANCY_001",
+          "description": "Prediction errors about others' behavior drive social learning and theory-of-mind updates."
+        },
+        {
+          "domain": "Navigational Wayfinding",
+          "template_id": "WAYFINDING_PREDICTION_001",
+          "description": "Prediction errors about spatial layout trigger corrective navigation and environmental learning."
+        }
+      ],
+      "computational_signature": "error = observation - prediction; prediction_update = learning_rate * precision_weight * error; belief_t+1 = belief_t + learning_rate * error",
+      "t1_framework_links": [
+        "PP",
+        "IC",
+        "NM"
+      ],
+      "precision_weighted": true,
+      "hierarchical_levels": 3
+    },
+    {
+      "archetype_id": "HR_001",
+      "archetype_type": "homeostatic_regulation",
+      "name": "Homeostatic Regulation",
+      "description": "Deviation from setpoint triggers corrective responses via negative feedback. System returns to equilibrium with adaptation over time.",
+      "theoretical_basis": [
+        "Cannon, W. B. (1932). The wisdom of the body. Norton.",
+        "Barrett, L. F., & Simmons, W. K. (2015). Interoceptive predictions in the brain. Nature Reviews Neuroscience, 16(7), 419-429.",
+        "Stephan, K. E., & Mathys, C. (2014). Computational approaches to major psychiatric disorders. Current Opinion in Behavioral Sciences, 4, 85-92."
+      ],
+      "input_variables": [
+        "current_state",
+        "setpoint",
+        "feedback_signal"
+      ],
+      "output_variables": [
+        "drive",
+        "response_magnitude",
+        "corrective_action"
+      ],
+      "parameters": {
+        "setpoint": {
+          "name": "setpoint",
+          "default_value": 37.0,
+          "min_value": 0.0,
+          "max_value": 50.0,
+          "unit": "domain_specific",
+          "description": "Target value for regulated variable (e.g., temperature in Celsius)."
+        },
+        "gain": {
+          "name": "gain",
+          "default_value": 1.0,
+          "min_value": 0.1,
+          "max_value": 10.0,
+          "unit": "response_per_deviation",
+          "description": "Sensitivity of corrective response to deviation from setpoint."
+        },
+        "adaptation_time_constant": {
+          "name": "adaptation_time_constant",
+          "default_value": 3600,
+          "min_value": 1,
+          "max_value": 86400,
+          "unit": "seconds",
+          "description": "Timescale over which setpoint adapts to sustained deviations."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Thermal Comfort",
+          "template_id": "THERMAL_ADAPTIVE_BAND_001",
+          "description": "Preferred temperature range adapts based on outdoor climate and prior experience. Setpoint shifts seasonally."
+        },
+        {
+          "domain": "Circadian Rhythms",
+          "template_id": "CIRCADIAN_ALIGNMENT_001",
+          "description": "Chronotype setpoint shifts with environmental light exposure. Entrainment to local dawn/dusk."
+        },
+        {
+          "domain": "Arousal Regulation",
+          "template_id": "AROUSAL_OPTIMAL_001",
+          "description": "Preferred arousal level varies by task and context. Deviation triggers compensatory behaviors."
+        },
+        {
+          "domain": "Energy Expenditure",
+          "template_id": "METABOLIC_REGULATION_001",
+          "description": "Caloric intake homeostasis with long-term weight set-point. Adaptation to chronic caloric restriction/surplus."
+        }
+      ],
+      "computational_signature": "drive = |current_state - setpoint|; response = gain * drive; setpoint_t+1 = setpoint_t + adaptation_rate * (mean_recent_state - setpoint_t)",
+      "t1_framework_links": [
+        "IC",
+        "NM",
+        "EC"
+      ],
+      "setpoint_variable": "current_state",
+      "feedback_type": "negative",
+      "adaptation_rate": 0.1
+    },
+    {
+      "archetype_id": "ATB_001",
+      "archetype_type": "accumulation_to_bound",
+      "name": "Accumulation to Bound",
+      "description": "Evidence accumulates over time until reaching a decision threshold. Generates characteristic reaction time distributions with speed-accuracy tradeoff.",
+      "theoretical_basis": [
+        "Ratcliff, R., & McKoon, G. (2008). The diffusion decision model. Psychological Review, 115(2), 236-285.",
+        "Frazier, P., & Yu, A. J. (2008). Optimal knapsack problems with stochastic rewards. Journal of Problem Solving, 2(1), 7.",
+        "Shiffrin, R. M., Lee, M. D., Kim, W., & Wagenmakers, E. J. (2008). A survey of model evaluation approaches with a tutorial on hierarchical Bayesian methods. Cognitive Science, 32(8), 1248-1284."
+      ],
+      "input_variables": [
+        "evidence_stream",
+        "drift_rate",
+        "noise"
+      ],
+      "output_variables": [
+        "decision",
+        "reaction_time",
+        "confidence"
+      ],
+      "parameters": {
+        "threshold": {
+          "name": "threshold",
+          "default_value": 1.0,
+          "min_value": 0.1,
+          "max_value": 10.0,
+          "unit": "evidence_units",
+          "description": "Boundary at which decision is triggered."
+        },
+        "drift_rate": {
+          "name": "drift_rate",
+          "default_value": 0.0,
+          "min_value": -5.0,
+          "max_value": 5.0,
+          "unit": "evidence_units_per_time",
+          "description": "Mean rate of evidence accumulation. Positive = bias toward one decision."
+        },
+        "noise_sigma": {
+          "name": "noise_sigma",
+          "default_value": 0.5,
+          "min_value": 0.01,
+          "max_value": 2.0,
+          "unit": "evidence_units",
+          "description": "Standard deviation of noise in evidence accumulation process."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Aesthetic Judgment",
+          "template_id": "AESTHETIC_PREFERENCE_FORMATION_001",
+          "description": "Initial visual encounter generates weak evidence; dwell time allows accumulation to preference boundary."
+        },
+        {
+          "domain": "Wayfinding Decisions",
+          "template_id": "WAYFINDING_DECISION_POINT_001",
+          "description": "At intersection, accumulating environmental cues (signage, visual continuity) lead to route choice decision."
+        },
+        {
+          "domain": "Spatial Comfort Assessment",
+          "template_id": "COMFORT_THRESHOLD_CROSSING_001",
+          "description": "Accumulation of comfort cues (thermal, social, configurational) determines engagement or withdrawal."
+        },
+        {
+          "domain": "Threat Detection",
+          "template_id": "SAFETY_ASSESSMENT_001",
+          "description": "Evidence of threats accumulates; once threshold crossed, defensive or avoidance behavior triggered."
+        }
+      ],
+      "computational_signature": "evidence(t) = evidence(t-1) + drift_rate*dt + noise*sqrt(dt); decision made when |evidence| >= threshold; RT proportional to (threshold / drift_rate)",
+      "t1_framework_links": [
+        "DP",
+        "PP",
+        "DT"
+      ],
+      "threshold": 1.0,
+      "drift_rate": 0.0,
+      "noise_level": 0.5,
+      "boundary_type": "absorbing"
+    },
+    {
+      "archetype_id": "CS_001",
+      "archetype_type": "competitive_selection",
+      "name": "Competitive Selection",
+      "description": "Multiple options compete via mutual inhibition and lateral interactions until one 'wins'. Implements selective attention and choice.",
+      "theoretical_basis": [
+        "Desimone, R., & Duncan, J. (1995). Neural mechanisms of selective attention. Annual Review of Neuroscience, 18(1), 193-222.",
+        "Usher, M., & McClelland, J. L. (2001). On the time course of perceptual choice. Psychological Review, 108(3), 550-592.",
+        "Gershman, S. J., Horvitz, E. J., & Tenenhaus, J. K. (2015). Computational rationality: A converging paradigm for intelligence in brains, minds, and machines. Science, 349(6245), 273-278."
+      ],
+      "input_variables": [
+        "activations",
+        "inhibition_signal"
+      ],
+      "output_variables": [
+        "winning_option",
+        "selection_strength",
+        "choice_reaction_time"
+      ],
+      "parameters": {
+        "inhibition_strength": {
+          "name": "inhibition_strength",
+          "default_value": 0.3,
+          "min_value": 0.0,
+          "max_value": 1.0,
+          "unit": "dimensionless",
+          "description": "Strength of lateral inhibition between competitors."
+        },
+        "n_alternatives": {
+          "name": "n_alternatives",
+          "default_value": 4,
+          "min_value": 2,
+          "max_value": 20,
+          "unit": "count",
+          "description": "Number of competing options."
+        },
+        "time_to_selection": {
+          "name": "time_to_selection",
+          "default_value": 300,
+          "min_value": 50,
+          "max_value": 5000,
+          "unit": "milliseconds",
+          "description": "Typical time from stimulus to winner determination."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Visual Attention",
+          "template_id": "ATTENTIONAL_SELECTION_001",
+          "description": "Among multiple salient features, lateral inhibition determines which receives attentional resources."
+        },
+        {
+          "domain": "Oculomotor Control",
+          "template_id": "SACCADE_TARGET_SELECTION_001",
+          "description": "Multiple potential saccade targets compete; winner becomes next fixation point."
+        },
+        {
+          "domain": "Route Choice",
+          "template_id": "WAYFINDING_ROUTE_SELECTION_001",
+          "description": "At decision point, multiple route options compete; choice reflects relative salience and familiarity."
+        },
+        {
+          "domain": "Preference Formation",
+          "template_id": "PREFERENCE_COMPETITION_001",
+          "description": "Among aesthetic options, competitive processes amplify subtle differences into clear preferences."
+        },
+        {
+          "domain": "Action Selection",
+          "template_id": "ACTION_COMPETITION_001",
+          "description": "Multiple behavioral options compete; motor system implements winner via winner-take-all dynamics."
+        }
+      ],
+      "computational_signature": "activation_i(t) = input_i - inhibition_strength * sum(activation_j, j≠i); winner = argmax(activation); selection_strength = activation_winner - activation_second_best",
+      "t1_framework_links": [
+        "PP",
+        "DP",
+        "AX"
+      ],
+      "n_competitors": 4,
+      "selection_mechanism": "winner_take_all",
+      "inhibition_type": "lateral"
+    },
+    {
+      "archetype_id": "GP_001",
+      "archetype_type": "gated_propagation",
+      "name": "Gated Propagation",
+      "description": "Information flow is multiplicatively or additively modulated by a gate signal. Implements selective attention, working memory constraints, and stress responses.",
+      "theoretical_basis": [
+        "Miller, E. K., & Cohen, J. D. (2001). An integrative theory of prefrontal cortex function. Annual Review of Neuroscience, 24(1), 167-202.",
+        "Hasher, L., & Zacks, R. T. (1988). Working memory, comprehension, and aging. The Psychology of Learning and Motivation, 22, 193-225.",
+        "Arousal-Modulation Theory: Easterbrook (1959) and modern variants."
+      ],
+      "input_variables": [
+        "information_flow",
+        "gate_signal",
+        "baseline_activation"
+      ],
+      "output_variables": [
+        "gated_output",
+        "information_accessibility",
+        "modulation_factor"
+      ],
+      "parameters": {
+        "gate_threshold": {
+          "name": "gate_threshold",
+          "default_value": 0.5,
+          "min_value": 0.0,
+          "max_value": 1.0,
+          "unit": "signal_strength",
+          "description": "Minimum gate signal strength to allow propagation."
+        },
+        "modulation_gain": {
+          "name": "modulation_gain",
+          "default_value": 1.0,
+          "min_value": 0.1,
+          "max_value": 10.0,
+          "unit": "response_per_gate",
+          "description": "Strength of gate effect on information flow."
+        },
+        "gate_time_constant": {
+          "name": "gate_time_constant",
+          "default_value": 100,
+          "min_value": 10,
+          "max_value": 1000,
+          "unit": "milliseconds",
+          "description": "Timescale over which gate transitions occur."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Attentional Gating",
+          "template_id": "AROUSAL_GATING_ATTENTION_001",
+          "description": "High arousal narrows attention; gate signal from sympathetic system restricts information access."
+        },
+        {
+          "domain": "Working Memory",
+          "template_id": "WORKING_MEMORY_MAINTENANCE_001",
+          "description": "Prefrontal gating determines which information remains active in working memory."
+        },
+        {
+          "domain": "Stress Response",
+          "template_id": "STRESS_GATED_PERCEPTION_001",
+          "description": "HPA axis activation gates down non-essential processing; focuses on threat-relevant information."
+        },
+        {
+          "domain": "Emotional Regulation",
+          "template_id": "EMOTION_REGULATION_GATING_001",
+          "description": "Cognitive control gates emotional information via dorsolateral PFC inhibition."
+        },
+        {
+          "domain": "Perception Under Load",
+          "template_id": "COGNITIVE_LOAD_GATING_001",
+          "description": "High task demand gates out environmental awareness; inattentional blindness results."
+        }
+      ],
+      "computational_signature": "gate_signal_t = f(gate_control); output = gate_signal * input_with_gain + (1 - gate_signal) * baseline; propagation_rate depends on gate_signal",
+      "t1_framework_links": [
+        "NM",
+        "DP",
+        "IE-DPT"
+      ],
+      "gate_variable": "arousal_or_control_signal",
+      "modulation_type": "multiplicative",
+      "default_state": "closed"
+    },
+    {
+      "archetype_id": "CSM_001",
+      "archetype_type": "convergent_state_monitoring",
+      "name": "Convergent State Monitoring",
+      "description": "Multiple noisy sensors or modalities integrate into a coherent state estimate. Confidence reflects agreement (low conflict) among sensors.",
+      "theoretical_basis": [
+        "Stein, B. E., & Meredith, M. A. (1993). The merging of the senses. MIT Press.",
+        "Stein, B. E. (2012). The new handbook of multisensory processes. MIT Press.",
+        "Körding, K. P., & Wolpert, D. M. (2004). Bayesian integration in sensorimotor learning. Nature, 427(6971), 244-247."
+      ],
+      "input_variables": [
+        "sensor_signals",
+        "sensor_reliabilities",
+        "baseline_estimate"
+      ],
+      "output_variables": [
+        "state_estimate",
+        "confidence",
+        "conflict_signal"
+      ],
+      "parameters": {
+        "n_channels": {
+          "name": "n_channels",
+          "default_value": 3,
+          "min_value": 2,
+          "max_value": 10,
+          "unit": "count",
+          "description": "Number of integrated sensory/informational channels."
+        },
+        "conflict_threshold": {
+          "name": "conflict_threshold",
+          "default_value": 0.3,
+          "min_value": 0.0,
+          "max_value": 1.0,
+          "unit": "normalized_variance",
+          "description": "Variance threshold above which conflict signal is generated."
+        },
+        "integration_window": {
+          "name": "integration_window",
+          "default_value": 1000,
+          "min_value": 100,
+          "max_value": 10000,
+          "unit": "milliseconds",
+          "description": "Temporal window over which signals are integrated."
+        }
+      },
+      "domain_examples": [
+        {
+          "domain": "Multisensory Integration",
+          "template_id": "MULTISENSORY_COHERENCE_001",
+          "description": "Visual, auditory, and tactile signals converge into unified percept. Conflict detection generates discordance signals."
+        },
+        {
+          "domain": "Perceived Restorativeness",
+          "template_id": "RESTORATIVE_CONVERGENCE_001",
+          "description": "Safety, nature presence, and fascination converge into restoration judgment. High agreement = strong restorative quality."
+        },
+        {
+          "domain": "Pain as Convergent State",
+          "template_id": "PAIN_INTEGRATION_001",
+          "description": "Nociceptive, affective, and cognitive-evaluative channels integrate into pain experience. Central sensitization = weight shift."
+        },
+        {
+          "domain": "Spatial Coherence",
+          "template_id": "SPATIAL_COHERENCE_ASSESSMENT_001",
+          "description": "Visual continuity, functional logic, and navigational clarity converge into coherence judgment."
+        },
+        {
+          "domain": "Self-Location",
+          "template_id": "SELF_LOCALIZATION_001",
+          "description": "Visual, vestibular, proprioceptive, and landmark information converge to localize self in space."
+        }
+      ],
+      "computational_signature": "state_estimate = sum(weight_i * sensor_i) / sum(weight_i); confidence = 1 - variance(weighted_residuals); conflict_i = (sensor_i - state_estimate)^2",
+      "t1_framework_links": [
+        "IC",
+        "AX",
+        "PP"
+      ],
+      "n_sensors": 3,
+      "convergence_criterion": "weighted_mean",
+      "conflict_resolution": "reliability_weighted"
+    }
+  ]
+}

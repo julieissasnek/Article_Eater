@@ -1,0 +1,94 @@
+{
+  "molecule_id": "BIOPHILIA",
+  "name": "Biophilia Hypothesis",
+  "short_description": "The innate human tendency to affiliate with other living systems and natural processes, manifesting as preference for natural materials, patterns, and living elements in the built environment.",
+  "molecule_type": "THEORY",
+  "components": [
+    {
+      "name": "Nature Affinity & Implicit Evaluation",
+      "template_ids": [
+        "DP_IMPLICIT_EVALUATION_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Rapid, automatic positive affective response to natural environmental features, predating conscious evaluation."
+    },
+    {
+      "name": "Nature Exposure Multi-Pathway",
+      "template_ids": [
+        "XF_NATURE_VIEW_MULTIPATH_001"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Nature exposure drives stress reduction through multiple parallel neurobiological pathways simultaneously."
+    },
+    {
+      "name": "Material-Haptic Response",
+      "template_ids": [
+        "HAP_SURFACE_MATERIAL_001"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Haptic exploration of natural materials (wood, stone) generates positive affective responses distinct from synthetic materials."
+    },
+    {
+      "name": "Fractal & Visual Pattern Response",
+      "template_ids": [
+        "PP_SPECTRAL_MATCH_001"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Visual scene statistics matching natural 1/f fractal scaling reduce prediction error and promote fluent processing."
+    }
+  ],
+  "constituent_templates": [
+    "DP_IMPLICIT_EVALUATION_001",
+    "XF_NATURE_VIEW_MULTIPATH_001",
+    "HAP_SURFACE_MATERIAL_001",
+    "PP_SPECTRAL_MATCH_001",
+    "EC_AFFORDANCE_POSTURAL_001"
+  ],
+  "interaction_graph": {
+    "DP_IMPLICIT_EVALUATION_001": {
+      "XF_NATURE_VIEW_MULTIPATH_001": "SYNERGISTIC"
+    },
+    "HAP_SURFACE_MATERIAL_001": {
+      "PP_SPECTRAL_MATCH_001": "ADDITIVE"
+    }
+  },
+  "framework_ids": [
+    "EC",
+    "DP",
+    "PP"
+  ],
+  "domain": "nature_connection",
+  "scope_conditions": [
+    "SC1",
+    "SC2"
+  ],
+  "overall_maturity": "SUPPORTED",
+  "key_references": [
+    "wilson_1984",
+    "kellert_2005",
+    "browning_2014"
+  ],
+  "empirical_support": "ESTABLISHED",
+  "competing_theories": [
+    "ART",
+    "SRT"
+  ],
+  "design_implications": [
+    "Incorporate natural materials (wood, stone, living walls) over synthetic surfaces.",
+    "Use biomorphic forms and fractal patterns at 1/f scaling in surface textures and facades.",
+    "Provide direct visual access to vegetation, water features, or sky from workspaces.",
+    "Integrate multisensory nature cues: natural sounds, daylight variation, natural ventilation."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.3,
+      0.9
+    ],
+    "typical_d": 0.55,
+    "note": "Meta-analytic estimates for nature exposure on stress reduction and mood improvement."
+  },
+  "source_theories": [
+    "biophilia"
+  ],
+  "basis": "Inferred from molecule name: bridges biophilia"
+}

@@ -17,9 +17,10 @@ def test_convergence_triad_multiplier():
         {"template": "VIEW1", "wis": 60.0},
     ]
     adjusted = apply_all_interactions(scores)
-    assert adjusted[0]["wis"] == pytest.approx(50.0 * 1.22, abs=0.01)
-    assert adjusted[1]["wis"] == pytest.approx(40.0 * 1.22, abs=0.01)
-    assert adjusted[2]["wis"] == pytest.approx(60.0 * 1.22, abs=0.01)
+    # Only L3 and VIEW1 are actually in the convergence triad, so MAT4 remains unadjusted.
+    assert adjusted[0]["wis"] == pytest.approx(50.0 * 1.15, abs=0.01)
+    assert adjusted[1]["wis"] == pytest.approx(40.0, abs=0.01)
+    assert adjusted[2]["wis"] == pytest.approx(60.0 * 1.15, abs=0.01)
     assert any(adj["type"] == "convergence_triad" for adj in adjusted[0]["interaction_adjustments"])
 
 

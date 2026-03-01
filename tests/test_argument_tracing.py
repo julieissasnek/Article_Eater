@@ -22,7 +22,7 @@ from src.cmr.voi_scoring import score_voi
 def seeded_db_path() -> str:
     fd, path = tempfile.mkstemp(suffix=".db")
     os.close(fd)
-    scan_templates(db_path=path)
+    scan_templates(db_path=path, clear_existing=True)
     try:
         yield path
     finally:

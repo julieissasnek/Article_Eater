@@ -82,6 +82,7 @@ class PanelContext(BaseModel):
     paper_id: str
     tasks: List[PanelTask]
     global_notes: Optional[str] = None
+    tags: Optional[List[str]] = None
 
 
 class Indicator(BaseModel):
@@ -95,9 +96,12 @@ class Indicator(BaseModel):
 
 
 class ConstructMapping(BaseModel):
-    construct: str
+    construct_name: str = Field(..., alias="construct")
     indicator_ids: List[str]
     notes: Optional[str] = None
+
+    class Config:
+        populate_by_name = True
 
 
 class PanelMeasures(BaseModel):
@@ -184,4 +188,5 @@ class SevenPanelV2Bundle(BaseModel):
     provider: Optional[str] = None
     model: Optional[str] = None
     cost_usd: Optional[float] = None
+    tags: Optional[List[str]] = None
 

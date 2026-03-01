@@ -25,7 +25,7 @@ from src.cmr.template_computations import (
     compute_crea2_processing_style,
     compute_mat1_ct_afferent,
     compute_mat2_thermal_adaptive,
-    compute_mat4_material_convergence,
+    compute_nmc1_material_convergence,
     compute_soc2_privacy_encounter,
     compute_sc1_spatial_integration,
     compute_sc4_wayfinding_social,
@@ -138,7 +138,7 @@ class TestVF3CeilingHeight:
         # Low ceiling in large room = confinement
         result = compute_vf3_ceiling_height(
             ceiling_height_m=2.4,
-            floor_area_m2=100,
+            floor_area_m2=100.0,
         )
         assert result.value < 0.25
         assert result.zone == "confinement"
@@ -148,7 +148,7 @@ class TestVF3CeilingHeight:
         # High ceiling in standard room = liberating
         result = compute_vf3_ceiling_height(
             ceiling_height_m=3.5,
-            floor_area_m2=50,
+            floor_area_m2=50.0,
         )
         assert 0.35 <= result.value <= 0.50
         assert result.zone == "liberating"
@@ -159,16 +159,16 @@ class TestVF3CeilingHeight:
         # Standard office ceiling
         result = compute_vf3_ceiling_height(
             ceiling_height_m=2.7,
-            floor_area_m2=60,
+            floor_area_m2=60.0,
         )
         # R_h = 2.7 / sqrt(60) ≈ 0.35
         assert 0.25 <= result.value < 0.50
 
     def test_invalid_inputs(self):
         with pytest.raises(ValueError):
-            compute_vf3_ceiling_height(0, 50)
+            compute_vf3_ceiling_height(0.0, 50.0)
         with pytest.raises(ValueError):
-            compute_vf3_ceiling_height(3.0, 0)
+            compute_vf3_ceiling_height(3.0, 0.0)
 
 
 class TestL1LuminanceContrast:
@@ -201,7 +201,7 @@ class TestL2CircadianMEDI:
 
     def test_adequate_morning_light(self):
         result = compute_l2_circadian_medi(
-            medi_lux=300,
+            medi_lux=300.0,
             exposure_duration_hours=3.0,
             time_of_day="morning",
             occupant_age=30,
@@ -212,7 +212,7 @@ class TestL2CircadianMEDI:
 
     def test_insufficient_light(self):
         result = compute_l2_circadian_medi(
-            medi_lux=100,
+            medi_lux=100.0,
             exposure_duration_hours=2.0,
             time_of_day="morning",
             occupant_age=30,
@@ -223,13 +223,13 @@ class TestL2CircadianMEDI:
     def test_age_correction(self):
         # Older adults need more light
         result_young = compute_l2_circadian_medi(
-            medi_lux=300,
+            medi_lux=300.0,
             exposure_duration_hours=3.0,
             time_of_day="morning",
             occupant_age=25,
         )
         result_old = compute_l2_circadian_medi(
-            medi_lux=300,
+            medi_lux=300.0,
             exposure_duration_hours=3.0,
             time_of_day="morning",
             occupant_age=70,
@@ -240,7 +240,7 @@ class TestL2CircadianMEDI:
 
     def test_evening_light_problematic(self):
         result = compute_l2_circadian_medi(
-            medi_lux=300,
+            medi_lux=300.0,
             exposure_duration_hours=3.0,
             time_of_day="evening",
         )
@@ -300,9 +300,9 @@ class TestCREA2ProcessingStyle:
     def test_generative_zone(self):
         # All three pathways active
         result = compute_crea2_processing_style(
-            noise_db=70,
+            noise_db=70.0,
             ceiling_rh=0.42,
-            ambient_lux=150,
+            ambient_lux=150.0,
         )
         assert result.details["matrix_key"] == "A+B+C"
         assert result.value >= 0.5
@@ -312,9 +312,9 @@ class TestCREA2ProcessingStyle:
     def test_evaluative_zone(self):
         # No pathways active (quiet, low ceiling, bright)
         result = compute_crea2_processing_style(
-            noise_db=50,
+            noise_db=50.0,
             ceiling_rh=0.25,
-            ambient_lux=500,
+            ambient_lux=500.0,
         )
         assert result.details["matrix_key"] == "none"
         assert result.value == 0
@@ -323,9 +323,9 @@ class TestCREA2ProcessingStyle:
     def test_single_pathway(self):
         # Only noise pathway active
         result = compute_crea2_processing_style(
-            noise_db=70,
+            noise_db=70.0,
             ceiling_rh=0.25,
-            ambient_lux=500,
+            ambient_lux=500.0,
         )
         assert result.details["matrix_key"] == "A"
         assert result.details["pathway_a_noise"] is True
@@ -333,15 +333,15 @@ class TestCREA2ProcessingStyle:
 
     def test_baseline_creativity_modifier(self):
         result_low = compute_crea2_processing_style(
-            noise_db=70,
+            noise_db=70.0,
             ceiling_rh=0.42,
-            ambient_lux=150,
+            ambient_lux=150.0,
             baseline_creativity="low",
         )
         result_high = compute_crea2_processing_style(
-            noise_db=70,
+            noise_db=70.0,
             ceiling_rh=0.42,
-            ambient_lux=150,
+            ambient_lux=150.0,
             baseline_creativity="high",
         )
         # Low baseline gets bigger boost
@@ -353,16 +353,16 @@ class TestMAT1CTAfferent:
 
     def test_wood_warm_pleasant(self):
         result = compute_mat1_ct_afferent(
-            surface_effusivity=400,  # Wood
-            contact_temperature_c=32,  # Skin temp
+            surface_effusivity=400.0,  # Wood
+            contact_temperature_c=32.0,  # Skin temp
         )
         assert result.zone == "warm_pleasant"
         assert result.details["ct_activation"] is True
 
     def test_metal_cold_aversive(self):
         result = compute_mat1_ct_afferent(
-            surface_effusivity=12000,  # Metal
-            contact_temperature_c=20,
+            surface_effusivity=12000.0,  # Metal
+            contact_temperature_c=20.0,
         )
         assert result.zone == "cold_aversive"
         assert result.details["ct_activation"] is False
@@ -370,13 +370,13 @@ class TestMAT1CTAfferent:
     def test_climate_dependent_valence(self):
         # Stone in hot climate is positive
         result_hot = compute_mat1_ct_afferent(
-            surface_effusivity=2000,  # Stone
-            contact_temperature_c=25,
+            surface_effusivity=2000.0,  # Stone
+            contact_temperature_c=25.0,
             climate="hot",
         )
         result_cold = compute_mat1_ct_afferent(
-            surface_effusivity=2000,
-            contact_temperature_c=25,
+            surface_effusivity=2000.0,
+            contact_temperature_c=25.0,
             climate="cold",
         )
         assert result_hot.value > result_cold.value
@@ -412,11 +412,11 @@ class TestMAT2ThermalAdaptive:
         assert result.zone == "discomfort"
 
 
-class TestMAT4MaterialConvergence:
-    """Tests for MAT4 natural material convergence."""
+class TestNMC1MaterialConvergence:
+    """Tests for NMC1 natural material convergence."""
 
     def test_optimal_wood_ratio(self):
-        result = compute_mat4_material_convergence(
+        result = compute_nmc1_material_convergence(
             material_type="wood",
             surface_ratio=0.45,  # Optimal
         )
@@ -424,7 +424,7 @@ class TestMAT4MaterialConvergence:
         assert result.value >= 0.7
 
     def test_suboptimal_ratio(self):
-        result = compute_mat4_material_convergence(
+        result = compute_nmc1_material_convergence(
             material_type="wood",
             surface_ratio=0.10,
         )
@@ -432,16 +432,16 @@ class TestMAT4MaterialConvergence:
         assert result.value < 0.7
 
     def test_different_materials(self):
-        result_wood = compute_mat4_material_convergence("wood", 0.45)
-        result_stone = compute_mat4_material_convergence("stone", 0.45)
-        result_concrete = compute_mat4_material_convergence("concrete", 0.45)
+        result_wood = compute_nmc1_material_convergence("wood", 0.45)
+        result_stone = compute_nmc1_material_convergence("stone", 0.45)
+        result_concrete = compute_nmc1_material_convergence("concrete", 0.45)
         # All should produce valid scores
         for r in [result_wood, result_stone, result_concrete]:
             assert 0 <= r.value <= 1
 
     def test_invalid_material(self):
         with pytest.raises(ValueError):
-            compute_mat4_material_convergence("plastic", 0.45)
+            compute_nmc1_material_convergence("plastic", 0.45)
 
 
 class TestSOC2PrivacyEncounter:
@@ -636,7 +636,7 @@ class TestRegistry:
     """Tests for template function registry."""
 
     def test_all_templates_implemented(self):
-        expected = ["VF3", "L1", "L2", "L3", "CREA2", "MAT1", "MAT2", "MAT4",
+        expected = ["VF3", "L1", "L2", "L3", "CREA2", "MAT1", "MAT2", "NMC1",
                     "SOC2", "SC1", "SC4", "VIEW1"]
         implemented = list_implemented_templates()
         for tmpl in expected:

@@ -1,0 +1,1196 @@
+{
+  "doi": "10.1257/app.20220532",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.807,
+  "n_findings": 34,
+  "extracted_at": "2026-02-25T00:57:09.086222+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.008683,
+  "title": "Noise, Cognitive Function, and Worker Productivity",
+  "authors": "Joshua T. Dean, 2024",
+  "research_question": "Do noisy workplaces impair workers' cognitive functions, does this lower earnings, and are workers aware of these effects?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 341,
+    "description": "Manual laborers (128 in Exp 1, 213 in Exp 2) from Nairobi, Kenya, accustomed to factory noise and seeking employment in textile factories.",
+    "recruitment": "Recruited from groups of manual laborers gathering at factory gates in Nairobi, Kenya."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "audio",
+      "description": "Engine noise from a car engine (used for automechanic training) added to ambient sewing machine noise. Control condition was ambient sewing machine noise. Noise levels were continuously monitored and did not exceed 80 dB. Treatment increased noise by ~7 dB (Exp 1) or ~9.4 dB (Exp 2), analogous to a dishwasher vs. vacuum cleaner.",
+      "n_stimuli": null,
+      "source": "Section IIIA, Table 1, Table 4, Figure 5"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Productivity",
+      "instrument": "Number of pockets sewn, total points earned (quantity + quality), number of pockets meeting various quality criteria (1-6). Inverse hyperbolic sine transformation used for analysis.",
+      "type": "performance"
+    },
+    {
+      "construct": "Cognitive Function",
+      "instrument": "Index (first factor of common factor analysis of percentage correct and reaction times) derived from a battery of tests measuring attention, working memory, inhibitory control, cognitive flexibility, and higher-level reasoning.",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Effort",
+      "instrument": "Key presses on an A/B alternation task (DellaVigna and Pope 2018) over ten minutes.",
+      "type": "performance"
+    },
+    {
+      "construct": "Willingness to Pay (WTP) for Quiet",
+      "instrument": "Modified Becker, DeGroot, and Marschak (BDM) procedure using a binary search over KSh0-200, deducted from future earnings.",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Beliefs about Productivity in Noise/Quiet",
+      "instrument": "Respondents distributed 10 beans across 10 bins of possible scores for future sessions in quiet and noise under different compensation schemes.",
+      "type": "self_report"
+    },
+    {
+      "construct": "Environmental Conditions",
+      "instrument": "Noise level (A-weighted decibels), CO2 (parts per million), Humidity (percent), Temperature (degrees Celsius).",
+      "type": "observational"
+    },
+    {
+      "construct": "Lasting Effects of Noise",
+      "instrument": "Saving/withdrawal decisions, maize flour purchase decisions (inattention test), willingness to work additional hour for piece rate.",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Engine noise treatment (Experiment 1)",
+      "consequent": "Noise level (10 dB)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "observational",
+      "p_value": "0.036",
+      "effect_size": 0.674,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Treatment: 0.674 (0.036)",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Engine noise treatment (Experiment 1)",
+      "consequent": "CO2 level (ppm)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "24.678",
+      "effect_size": 4.765,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Control procedures for exhaust were effective.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Treatment: 4.765 (24.678)"
+    },
+    {
+      "id": 3,
+      "antecedent": "Engine noise treatment (Experiment 1)",
+      "consequent": "Humidity (percent)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "0.450",
+      "effect_size": 0.038,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Treatment: 0.038 (0.450)"
+    },
+    {
+      "id": 4,
+      "antecedent": "Engine noise treatment (Experiment 1)",
+      "consequent": "Temperature (celsius)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "0.175",
+      "effect_size": 0.048,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Treatment: 0.048 (0.175)",
+      "outcome_id": "physio.thermal_comfort",
+      "outcome_domain": "physio",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.714
+    },
+    {
+      "id": 5,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Total pockets (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0118",
+      "effect_size": -0.0311,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0311 (0.0118)"
+    },
+    {
+      "id": 6,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Total points earned (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0134",
+      "effect_size": -0.0425,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0425 (0.0134)"
+    },
+    {
+      "id": 7,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 1 criterion (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0117",
+      "effect_size": -0.0315,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0315 (0.0117)"
+    },
+    {
+      "id": 8,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 2 criteria (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0113",
+      "effect_size": -0.0378,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0378 (0.0113)"
+    },
+    {
+      "id": 9,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 3 criteria (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0145",
+      "effect_size": -0.057,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0570 (0.0145)"
+    },
+    {
+      "id": 10,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 4 criteria (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0179",
+      "effect_size": -0.0597,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0597 (0.0179)"
+    },
+    {
+      "id": 11,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 5 criteria (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0182",
+      "effect_size": -0.045,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0450 (0.0182)"
+    },
+    {
+      "id": 12,
+      "antecedent": "Engine noise treatment (7 dB increase, Experiment 1)",
+      "consequent": "Pockets meeting 6 criteria (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0189",
+      "effect_size": -0.0137,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Treatment: -0.0137 (0.0189)"
+    },
+    {
+      "id": 13,
+      "antecedent": "10 dB increase in noise level (Experiment 1)",
+      "consequent": "Total pockets (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0161",
+      "effect_size": -0.0534,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Noise level: -0.0534 (0.0161)"
+    },
+    {
+      "id": 14,
+      "antecedent": "10 dB increase in noise level (Experiment 1)",
+      "consequent": "Total points earned (inverse hyperbolic sine transformed)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.0187",
+      "effect_size": -0.0617,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Impaired cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Noise level: -0.0617 (0.0187)"
+    },
+    {
+      "id": 15,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Noise level (10 dB)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "observational",
+      "p_value": "0.049",
+      "effect_size": 0.938,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Treatment: 0.938 (0.049)",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "CO2 level (ppm)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "46.633",
+      "effect_size": -47.956,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Control procedures for exhaust were effective.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Treatment: -47.956 (46.633)"
+    },
+    {
+      "id": 17,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Humidity (percent)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "0.295",
+      "effect_size": -0.552,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Treatment: -0.552 (0.295)"
+    },
+    {
+      "id": 18,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Temperature (celsius)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "observational",
+      "p_value": "0.113",
+      "effect_size": -0.041,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Treatment: -0.041 (0.113)",
+      "outcome_id": "physio.thermal_comfort",
+      "outcome_domain": "physio",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.714
+    },
+    {
+      "id": 19,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Cognitive function (CFA of percentage correct and reaction time, SDs)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "0.0194",
+      "effect_size": -0.0635,
+      "effect_size_type": "Cohen_d",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM",
+        "MS"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Noise impairs cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: -0.0635 (0.0194)",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Cognitive function (Normalized sum of scores)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "0.0128",
+      "effect_size": -0.0304,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM",
+        "MS"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Noise impairs cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: -0.0304 (0.0128)",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Cognitive function (Average of normalized scores)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "0.0092",
+      "effect_size": -0.0239,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM",
+        "MS"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Noise impairs cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: -0.0239 (0.0092)",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Cognitive function (PCA of percent correct and reaction time)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "0.0165",
+      "effect_size": -0.0589,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM",
+        "MS"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Noise impairs cognitive function.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: -0.0589 (0.0165)",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Effort (Key presses)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "19.0984",
+      "effect_size": 1.8234,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Noise does not reduce worker motivation or physical coordination.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: 1.8234 (19.0984)"
+    },
+    {
+      "id": 24,
+      "antecedent": "Engine noise treatment (Experiment 2)",
+      "consequent": "Effort (Normalized score)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "0.0408",
+      "effect_size": 0.0039,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Noise does not reduce worker motivation or physical coordination.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Treatment: 0.0039 (0.0408)"
+    },
+    {
+      "id": 25,
+      "antecedent": "Performance-based pay (piece rate) vs. flat rate (Experiment 1)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "1.4553",
+      "effect_size": 0.4202,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Workers neglect the productive impact of noise, failing to adjust WTP based on performance incentives.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Piece rate: 0.4202 (1.4553)"
+    },
+    {
+      "id": 26,
+      "antecedent": "Performance-based pay (piece rate) vs. flat rate (Experiment 2)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "1.6045",
+      "effect_size": 0.3066,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Workers neglect the productive impact of noise, failing to adjust WTP based on performance incentives.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Piece rate: 0.3066 (1.6045)"
+    },
+    {
+      "id": 27,
+      "antecedent": "Individual-level estimated income gain from quiet \u00d7 performance-based pay (Experiment 1)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.3580",
+      "effect_size": 0.3746,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Even those who would benefit most from quiet do not increase their WTP when facing performance pay, suggesting neglect of productive impact.",
+      "moderators_reported": [
+        "Individual-level estimated income gain from quiet"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "Model predicted Income gain \u00d7 piece rate: 0.3746 (0.3580)"
+    },
+    {
+      "id": 28,
+      "antecedent": "Individual-level estimated income gain from quiet \u00d7 performance-based pay (Experiment 2)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.4441",
+      "effect_size": -0.3504,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Even those who would benefit most from quiet do not increase their WTP when facing performance pay, suggesting neglect of productive impact.",
+      "moderators_reported": [
+        "Individual-level estimated income gain from quiet"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "Model predicted Income gain \u00d7 piece rate: -0.3504 (0.4441)"
+    },
+    {
+      "id": 29,
+      "antecedent": "Prompt to think about beliefs before stating WTP (Experiment 2)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "4.1393",
+      "effect_size": 5.3799,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Simple inattention is not the sole cause; even when prompted, WTP is unresponsive to performance incentives.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "Asked beliefs before WTP: 5.3799 (4.1393)"
+    },
+    {
+      "id": 30,
+      "antecedent": "Prompt to think about beliefs before stating WTP \u00d7 performance-based pay (Experiment 2)",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "3.1913",
+      "effect_size": -6.1101,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Simple inattention is not the sole cause; even when prompted, WTP is unresponsive to performance incentives.",
+      "moderators_reported": [
+        "Prompt to think about beliefs before stating WTP"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "Asked beliefs before WTP \u00d7 piece rate: -6.1101 (3.1913)"
+    },
+    {
+      "id": 31,
+      "antecedent": "Participant predicted score",
+      "consequent": "Realized score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.0468",
+      "effect_size": 0.1535,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [],
+      "mechanism": "Individuals' beliefs have some predictive power over their future scores, but are significantly outperformed by the model.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "Participant Predicted score: 0.1535 (0.0468)"
+    },
+    {
+      "id": 32,
+      "antecedent": "Participant predicted income gain from quiet",
+      "consequent": "Model predicted income gain from quiet",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.0034",
+      "effect_size": -0.0031,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [],
+      "mechanism": "Individuals hold incorrect beliefs about the impact of noise on their productivity, as their predictions are unrelated to the true impact.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "Participant Predicted income gain: -0.0031 (0.0034)"
+    },
+    {
+      "id": 33,
+      "antecedent": "Participant predicted income gain from quiet \u00d7 piece rate",
+      "consequent": "WTP for quiet working conditions",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.0143",
+      "effect_size": -0.0042,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Individuals are unwilling to stake money on their stated beliefs about noise's productive impact, consistent with a failure-to-notice form of inattention.",
+      "moderators_reported": [
+        "Participant predicted income gain from quiet"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "Participant Predicted income gain \u00d7 piece rate: -0.0042 (0.0143)"
+    },
+    {
+      "id": 34,
+      "antecedent": "Disutility from noise (WTP in flat-rate condition)",
+      "consequent": "Productivity loss from noise (individual-level treatment effect)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [],
+      "mechanism": "Disutility from noise and productivity losses from noise are uncorrelated, suggesting inefficient worker sorting.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.355",
+      "quote": "disutility and productivity losses appear to be unrelated.",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Noise impairs cognitive function (attention, working memory, inhibitory control, cognitive flexibility, higher-level reasoning).",
+    "Workers neglect the productive impact of noise, failing to incorporate it into their willingness to pay for quiet working conditions.",
+    "Workers hold incorrect or imprecise beliefs about the impact of noise on their productivity, and are unwilling to stake money on these beliefs."
+  ],
+  "moderators": [
+    "Worker ability (no significant moderation)",
+    "Exposure duration/learning (no significant moderation)",
+    "Typical noise exposure in daily life (no significant moderation)",
+    "Prompting beliefs before WTP elicitation (no significant moderation)"
+  ],
+  "implementation_implications": [
+    "Policymakers should consider noise pollution as a significant impediment to worker productivity in low- and middle-income countries.",
+    "Simple regulations (e.g., limiting car horn volume) could reduce noise levels without significant efficiency costs.",
+    "Governments/NGOs could raise awareness among workers and firms about the potential effects of noise on productivity to improve outcomes at minimal cost."
+  ],
+  "domains": [
+    "A5_Acoustic",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DP",
+    "NM",
+    "MS"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Environmental Effects of Treatment in Experiment One. Shows regressions of environmental variables on a treatment indicator, session fixed effects, and room fixed effects.",
+      "key_stats": [
+        "Treatment (Noise level): 0.674 (0.036)",
+        "Treatment (CO2): 4.765 (24.678)"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Effect of Treatment on Productivity. Shows ordinary least squares regressions of productivity outcome variables on a treatment indicator, wage, session, person, and room fixed effects.",
+      "key_stats": [
+        "Treatment (Total pockets IHS): -0.0311 (0.0118)",
+        "Treatment (Total points earned IHS): -0.0425 (0.0134)"
+      ],
+      "n_findings_extracted_from": 8
+    },
+    {
+      "table_id": "Table 3",
+      "description": "IV Effect of Noise on Productivity\u2014Treatment Indicator Instrument. Shows estimates from a two stage least squares regression of productivity outcome variables on the noise level, instrumented with a treatment indicator.",
+      "key_stats": [
+        "Noise level (Total pockets IHS): -0.0534 (0.0161)",
+        "Noise level (Total points earned IHS): -0.0617 (0.0187)"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Environmental Effects of Treatment in Experiment Two. Shows regressions of environmental variables on a treatment indicator, session fixed effects, and room fixed effects.",
+      "key_stats": [
+        "Treatment (Noise level): 0.938 (0.049)",
+        "Treatment (CO2): -47.956 (46.633)"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 5",
+      "description": "Effect of Noise on Cognitive Function and Effort. Shows estimates from a regression of cognitive outcome and effort task variables on the treatment level, wage, session, person, and room fixed effects.",
+      "key_stats": [
+        "Treatment (CFA of percentage correct and reaction time): -0.0635 (0.0194)",
+        "Treatment (Key presses): 1.8234 (19.0984)"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 6",
+      "description": "WTP by Compensation Scheme. Shows regressions of WTP on an indicator for whether the respondent was facing a piece rate.",
+      "key_stats": [
+        "Piece rate (WTP Exp 1): 0.4202 (1.4553)",
+        "Piece rate (WTP Exp 2): 0.3066 (1.6045)"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 7",
+      "description": "Response to Piece Rate by Productive Value of Quiet. Shows regressions of WTP on piece rate, model predicted income gain, and their interaction.",
+      "key_stats": [
+        "Model predicted Income gain \u00d7 piece rate (WTP Exp 1): 0.3746 (0.3580)",
+        "Model predicted Income gain \u00d7 piece rate (WTP Exp 2): -0.3504 (0.4441)"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 8",
+      "description": "Testing Prompting Consideration of Noise. Shows regressions of WTP on asking beliefs before WTP and its interaction with piece rate.",
+      "key_stats": [
+        "Asked beliefs before WTP: 5.3799 (4.1393)",
+        "Asked beliefs before WTP \u00d7 piece rate: -6.1101 (3.1913)"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 9",
+      "description": "Testing for Incorrect Beliefs. Shows regressions of realized scores on predicted scores, model predicted income gain on participant predicted income gain, and WTP on participant predicted income gain and its interaction with piece rate.",
+      "key_stats": [
+        "Participant Predicted score: 0.1535 (0.0468)",
+        "Participant Predicted income gain: -0.0031 (0.0034)",
+        "Participant Predicted income gain \u00d7 piece rate: -0.0042 (0.0143)"
+      ],
+      "n_findings_extracted_from": 3
+    }
+  ],
+  "limitations": [
+    "Logistical constraints prevented sufficiently long exposure to noise to fully assess adaptation or learning effects.",
+    "Noise levels were kept below dangerous thresholds for ethical reasons, so results may not generalize to higher, unsafe noise levels.",
+    "The production task (sewing pockets) was chosen to minimize communication, limiting generalizability to tasks requiring communication.",
+    "The sample's homogeneity in typical noise exposure may limit the ability to detect heterogeneity in effects.",
+    "The experiment was not specifically designed to test the 'inattention during production' model directly.",
+    "Workers might not have perceived the need to reduce noise further given that experimental noise levels were lower than typical factory noise.",
+    "Workers might form correct beliefs about noise effects given more time than provided in the experiment.",
+    "The study does not assess firms' awareness of noise effects, their screening practices, or abatement decisions."
+  ],
+  "paper_metadata": {
+    "doi": "10.1257/app.20220532",
+    "title": "Noise, Cognitive Function, and Worker Productivity",
+    "authors": [
+      "Joshua T. Dean"
+    ],
+    "year": 2024,
+    "journal": "American Economic Journal: Applied Economics",
+    "volume": "16",
+    "issue": "4",
+    "pages": "322-360",
+    "publisher": "American Economic Association",
+    "citation_count": 21,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/acp.934",
+      "10.1006/cogp.1999.0735",
+      "10.1016/B978-0-12-411595-8.00002-1",
+      "10.1016/B978-012691360-6/50011-2",
+      "10.1016/S0140-6736(05)66660-3",
+      "10.1016/S0140-6736(20)30752-2",
+      "10.1016/j.envint.2010.08.003",
+      "10.1016/j.neuropsychologia.2006.02.006",
+      "10.1017/CBO9781139025751",
+      "10.1017/S135561770410307X",
+      "10.1037/0012-1649.43.6.1428",
+      "10.1037/0022-3514.40.2.331",
+      "10.1037/0033-295X.84.3.231",
+      "10.1037/1082-989X.6.4.430",
+      "10.1037/a0023987",
+      "10.1037/h0059831",
+      "10.1037/t03299-000",
+      "10.1080/01621459.1988.10478575",
+      "10.1080/02678378908256949",
+      "10.1080/10962247.2015.1040138",
+      "10.1080/14640747008401898",
+      "10.1086/683822",
+      "10.1086/717046",
+      "10.1093/qje/qjab013",
+      "10.1093/qje/qjs044",
+      "10.1093/qje/qju015",
+      "10.1093/restud/rdx033",
+      "10.1093/sleep/34.5.581",
+      "10.1097/JOM.0b013e31820d19c0",
+      "10.1111/1467-9280.00483",
+      "10.1111/j.1467-9450.1989.tb01082.x",
+      "10.1111/j.1468-0262.2007.00733.x",
+      "10.1111/jeea.12104",
+      "10.1126/science.1232491",
+      "10.1126/science.1238041",
+      "10.1146/annurev-economics-072413-105148",
+      "10.1146/annurev-psych-113011-143750",
+      "10.1162/rest_a_00886",
+      "10.1177/0022219410371676",
+      "10.1177/0098628316677643",
+      "10.1177/1359105310390247",
+      "10.1196/annals.1412.011",
+      "10.1257/aer.102.7.3652",
+      "10.1257/aer.104.9.2593",
+      "10.1257/aer.20170458",
+      "10.1257/aer.20190920",
+      "10.1257/aer.20210766",
+      "10.1257/aer.p20161101",
+      "10.1257/app.20160436",
+      "10.1257/app.20170286",
+      "10.1257/pol.20150085",
+      "10.1257/rct.1500-3.0",
+      "10.1257/rct.683-3.0",
+      "10.3386/w14607",
+      "10.3386/w19742",
+      "10.3386/w26746",
+      "10.3389/fpsyg.2013.00433",
+      "10.3389/fpsyg.2014.00939",
+      "10.3758/BRM.42.4.1096",
+      "10.3758/s13428-011-0168-7",
+      "10.4103/0019-5278.43260",
+      "10.4103/1463-1741.165057",
+      "10.4103/1463-1741.64971",
+      "10.4236/jgis.2015.75039",
+      "10.5194/amt-2015-331"
+    ],
+    "cited_by": [
+      "10.3390/ijerph23020262",
+      "10.1016/j.jebo.2025.107358",
+      "10.1038/s41598-025-33342-7",
+      "10.1016/j.buildenv.2025.113227",
+      "10.1016/j.socscimed.2025.118149",
+      "10.1016/j.buildenv.2025.113061",
+      "10.1177/09637214241283163",
+      "10.1007/s10640-023-00805-2",
+      "10.1016/j.socscimed.2022.115617",
+      "10.1257/aer.20210766",
+      "10.1086/720466",
+      "10.31222/osf.io/2hn6v",
+      "10.47004/wp.cem.2022.1122",
+      "10.1073/pnas.2102794118",
+      "10.1109/tbcas.2020.3028519",
+      "10.31224/osf.io/mdgyw",
+      "10.1596/1813-9450-8980",
+      "10.3386/W25224",
+      "10.3982/ecta20400"
+    ],
+    "semantic_scholar_id": "a59950e5edb6d53cd39427017abd9724aaac9170",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:46:50.812755+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Noise, Cognitive Function, and Worker Productivity",
+    "crossref_year": 2024,
+    "crossref_citation_count": 6,
+    "crossref_journal": "American Economic Journal: Applied Economics",
+    "crossref_publisher": "American Economic Association",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Noisy workplaces common in low- and middle-income countries can impair workers' cognitive functions. However, whether this lowers earnings depends on the importance of these functions for productivity and whether workers understand these effects. I study these questions with two randomized experiments in Nairobi, Kenya. I find a noise increase of 7 dB reduces productivity in a textile training course by 3 percent, impairs cognitive function, but does not affect effort. I also find willingness to pay for quiet working conditions does not depend on whether pay depends on performance, suggesting participants are not aware that quiet would increase their productivity. (JEL D12, J24, J28, J31, J81, O15, Q53)",
+    "crossref_reference_count": 92,
+    "crossref_issn": [
+      "1945-7782",
+      "1945-7790"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.806861+00:00",
+    "_cr_refs_added": 65
+  },
+  "year": 2024,
+  "journal": "American Economic Journal: Applied Economics",
+  "authors_structured": [
+    "Joshua T. Dean"
+  ],
+  "crossref_title": "Noise, Cognitive Function, and Worker Productivity",
+  "crossref_authors": [
+    {
+      "name": "Joshua T. Dean",
+      "orcid": null,
+      "affiliation": "University of Chicago Booth School of Business (email: )"
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "American Economic Journal: Applied Economics",
+  "crossref_citation_count": 6,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "American Economic Association",
+  "crossref_subjects": [],
+  "crossref_abstract": "Noisy workplaces common in low- and middle-income countries can impair workers' cognitive functions. However, whether this lowers earnings depends on the importance of these functions for productivity and whether workers understand these effects. I study these questions with two randomized experiments in Nairobi, Kenya. I find a noise increase of 7 dB reduces productivity in a textile training course by 3 percent, impairs cognitive function, but does not affect effort. I also find willingness to pay for quiet working conditions does not depend on whether pay depends on performance, suggesting participants are not aware that quiet would increase their productivity. (JEL D12, J24, J28, J31, J81, O15, Q53)",
+  "crossref_fetched_at": "2026-02-25T12:01:16.504791+00:00"
+}

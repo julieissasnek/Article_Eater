@@ -1225,9 +1225,105 @@ class GapPredictor:
         Requires: ClaimV2 fields to be populated by extraction pipeline.
         Currently blocked by: Extraction pipeline not populating these fields.
         """
-        # TODO: Implement when ClaimV2 argument fields are populated
-        logger.debug("find_critical_question_gaps: STUB - not yet implemented (Sprint 10)")
-        return []
+        gaps = []
+
+        if self.web is None:
+            return gaps
+
+        # Walton's critical questions by argument scheme
+        WALTON_CRITICAL_QUESTIONS = {
+            "argument_from_expert_opinion": [
+                "is_credible_expert",
+                "within_field_of_expertise",
+                "expert_consensus",
+                "consistent_with_evidence"
+            ],
+            "argument_from_analogy": [
+                "relevant_similarities",
+                "relevant_differences",
+                "other_analogies"
+            ],
+            "argument_from_sign": [
+                "other_explanations",
+                "sign_reliability",
+                "contradictory_signs"
+            ],
+            "argument_from_cause": [
+                "correlation_vs_causation",
+                "other_causes",
+                "reversed_causation"
+            ],
+            "argument_from_popular_opinion": [
+                "evidence_independent",
+                "sample_representative",
+                "alternative_explanation"
+            ]
+        }
+
+        try:
+            for belief in self.web.beliefs.values():
+                # Check if belief has argument_scheme attribute
+                argument_scheme = getattr(belief, 'argument_scheme', None)
+                if not argument_scheme:
+                    continue
+
+                # Get the critical questions addressed (should be list/set)
+                critical_questions_addressed = getattr(belief, 'critical_questions_addressed', set())
+                if isinstance(critical_questions_addressed, str):
+                    critical_questions_addressed = {critical_questions_addressed}
+                elif not isinstance(critical_questions_addressed, (set, list)):
+                    critical_questions_addressed = set()
+                else:
+                    critical_questions_addressed = set(critical_questions_addressed)
+
+                # Look up required critical questions for this scheme
+                scheme_key = argument_scheme.lower().replace(' ', '_')
+                required_questions = WALTON_CRITICAL_QUESTIONS.get(scheme_key, [])
+
+                if not required_questions:
+                    continue
+
+                # Find unaddressed questions
+                unaddressed = [q for q in required_questions if q not in critical_questions_addressed]
+
+                if unaddressed:
+                    # Determine priority based on scheme type
+                    if "expert" in scheme_key:
+                        priority = GapPriority.HIGH
+                    else:
+                        priority = GapPriority.MEDIUM
+
+                    description = (
+                        f"Belief uses '{argument_scheme}' scheme but {len(unaddressed)} "
+                        f"critical question(s) unaddressed: {', '.join(unaddressed)}"
+                    )
+
+                    explanation = (
+                        f"This belief makes a claim using an '{argument_scheme}' argument, but hasn't "
+                        f"addressed all of Walton's critical questions for this scheme. "
+                        f"Unaddressed questions: {', '.join(unaddressed)}. "
+                        f"Each critical question represents a potential vulnerability to counterargument. "
+                        f"Addressing these questions strengthens the argument by demonstrating awareness "
+                        f"of common objections and providing supporting evidence."
+                    )
+
+                    gaps.append(PredictedGap(
+                        gap_id=self._next_gap_id(),
+                        gap_type=GapType.VALIDATION,
+                        description=description,
+                        explanation=explanation,
+                        priority=priority,
+                        voi_score=0.6,
+                        affected_beliefs=[belief.belief_id] if hasattr(belief, 'belief_id') else [],
+                        suggested_search=f"{argument_scheme} {' '.join(unaddressed[:2])}",
+                        resolution_approach=f"Address critical questions: {', '.join(unaddressed)}"
+                    ))
+
+        except Exception as e:
+            logger.warning(f"Error in find_critical_question_gaps: {e}")
+
+        logger.info(f"find_critical_question_gaps: Found {len(gaps)} gaps")
+        return gaps
 
     def find_argument_attack_gaps(self) -> List[PredictedGap]:
         """
@@ -1246,9 +1342,137 @@ class GapPredictor:
         Requires: AttackType patterns to be matched against belief content.
         Currently blocked by: Need contrast class analysis from argument_attack.py
         """
-        # TODO: Implement when AttackType matching is available
-        logger.debug("find_argument_attack_gaps: STUB - not yet implemented (Sprint 10)")
-        return []
+        gaps = []
+
+        if self.web is None:
+            return gaps
+
+        try:
+            from src.services.argument_attack import AttackType, ShiftClassifier, ContrastShiftType
+
+            for belief in self.web.beliefs.values():
+                # Get belief content/description for text analysis
+                belief_text = getattr(belief, 'claim', '') or getattr(belief, 'description', '') or ""
+                if not belief_text:
+                    continue
+
+                # Detect patterns suggesting vulnerability to specific attacks
+                belief_text_lower = belief_text.lower()
+
+                # 1. Check for BOUNDARY_CONDITION vulnerability
+                # Beliefs with empirical level but no explicit boundary conditions
+                level = self._normalized_level(belief)
+                has_boundary_conditions = getattr(belief, 'scope_conditions', None) or getattr(belief, 'boundary_conditions', None)
+
+                if level in ['EMPIRICAL', 'OBSERVATIONAL'] and not has_boundary_conditions:
+                    # Text-based classification to confirm attack type
+                    shift_type, attack_type, dimensions = ShiftClassifier.classify_from_text(
+                        "Effect may only hold under specific conditions",
+                        belief_text,
+                        ""
+                    )
+
+                    if attack_type == AttackType.BOUNDARY_CONDITION or "condition" in belief_text_lower:
+                        gaps.append(PredictedGap(
+                            gap_id=self._next_gap_id(),
+                            gap_type=GapType.BOUNDARY,
+                            description=f"Empirical belief lacks explicit boundary conditions; may not generalize",
+                            explanation=(
+                                f"This empirical belief claims a relationship but doesn't specify the conditions "
+                                f"under which it holds. Boundary condition attacks argue: 'This effect only occurs "
+                                f"under specific conditions (e.g., certain populations, settings, or baseline states).' "
+                                f"Without explicit boundary conditions, the belief is vulnerable to counterexamples "
+                                f"from different contexts."
+                            ),
+                            priority=GapPriority.MEDIUM,
+                            voi_score=0.55,
+                            affected_beliefs=[belief.belief_id] if hasattr(belief, 'belief_id') else [],
+                            suggested_search="boundary conditions scope limitations when only holds",
+                            resolution_approach="Identify and document the specific conditions under which this effect holds"
+                        ))
+
+                # 2. Check for REPLICATION vulnerability
+                # High credence beliefs without replication mention
+                credence = getattr(belief, 'credence', None)
+                credence_value = 0.5
+                if credence:
+                    if hasattr(credence, 'point_estimate'):
+                        credence_value = credence.point_estimate
+                    elif isinstance(credence, (int, float)):
+                        credence_value = credence
+
+                has_replication_mention = any(word in belief_text_lower for word in ['replicate', 'replication', 'reproduce', 'confirmation'])
+
+                if credence_value > 0.7 and not has_replication_mention:
+                    gaps.append(PredictedGap(
+                        gap_id=self._next_gap_id(),
+                        gap_type=GapType.VALIDATION,
+                        description=f"High-credence belief lacks replication evidence",
+                        explanation=(
+                            f"This belief has high credence (>{credence_value:.1%}) but no mention of replication. "
+                            f"Many findings fail to replicate, especially in social/behavioral sciences. "
+                            f"A replication attack argues: 'Others cannot reproduce this finding under similar conditions.' "
+                            f"Without independent replication, credence should be tempered."
+                        ),
+                        priority=GapPriority.MEDIUM,
+                        voi_score=0.65,
+                        affected_beliefs=[belief.belief_id] if hasattr(belief, 'belief_id') else [],
+                        suggested_search="replication study reproduce confirm findings",
+                        resolution_approach="Search for independent replication studies confirming this finding"
+                    ))
+
+                # 3. Check for MECHANISM vulnerability
+                # Causal claims without mechanism explanation
+                if "cause" in belief_text_lower or "effect" in belief_text_lower:
+                    has_mechanism = any(word in belief_text_lower for word in ['mechanism', 'pathway', 'process', 'mediate', 'mediating'])
+
+                    if not has_mechanism:
+                        gaps.append(PredictedGap(
+                            gap_id=self._next_gap_id(),
+                            gap_type=GapType.MECHANISM,
+                            description=f"Causal claim lacks proposed mechanism",
+                            explanation=(
+                                f"This belief makes a causal claim but doesn't explain the mechanism (HOW or WHY). "
+                                f"A mechanism attack argues: 'The proposed causal pathway is implausible or unknown.' "
+                                f"Without a credible mechanism, the causal claim is vulnerable to challenge."
+                            ),
+                            priority=GapPriority.HIGH,
+                            voi_score=0.7,
+                            affected_beliefs=[belief.belief_id] if hasattr(belief, 'belief_id') else [],
+                            suggested_search="mechanism pathway how why explains",
+                            resolution_approach="Propose or identify the causal mechanism explaining this relationship"
+                        ))
+
+                # 4. Check for CONFOUNDER vulnerability
+                # Claims about relationships without discussion of confounders
+                if "relationship" in belief_text_lower or "association" in belief_text_lower:
+                    has_confounder_discussion = any(word in belief_text_lower for word in ['confounder', 'confound', 'control', 'alternative', 'unmeasured', 'third'])
+
+                    if not has_confounder_discussion:
+                        gaps.append(PredictedGap(
+                            gap_id=self._next_gap_id(),
+                            gap_type=GapType.DIRECTION,
+                            description=f"Relationship claim lacks confounder analysis",
+                            explanation=(
+                                f"This belief claims a relationship but doesn't discuss potential confounders. "
+                                f"A confounder attack argues: 'The observed relationship is actually due to an "
+                                f"unmeasured third variable, not the claimed cause.' Without confounder analysis, "
+                                f"the relationship claim is vulnerable."
+                            ),
+                            priority=GapPriority.MEDIUM,
+                            voi_score=0.6,
+                            affected_beliefs=[belief.belief_id] if hasattr(belief, 'belief_id') else [],
+                            suggested_search="confounder confounding variable control for",
+                            resolution_approach="Identify and rule out potential confounding variables"
+                        ))
+
+        except ImportError:
+            logger.warning("argument_attack module not available, skipping attack gap detection")
+        except Exception as e:
+            logger.warning(f"Error in find_argument_attack_gaps: {e}")
+
+        logger.info(f"find_argument_attack_gaps: Found {len(gaps)} gaps")
+        return gaps
 
 
 # =============================================================================

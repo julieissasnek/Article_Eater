@@ -1,0 +1,280 @@
+{
+  "template_id": "DP_IMPLICIT_EVALUATION_001",
+  "display_id": "T9",
+  "name": "Environmental features \u2192 rapid implicit evaluation \u2192 affective response",
+  "structural_pattern": "stimulus \u2192 fast_automatic_processing \u2192 default_evaluation",
+  "higher_order_principle": "Dual Process Theory (Kahneman) / Zajonc's Affective Primacy",
+  "framework_ids": [
+    "DUAL_PROCESS"
+  ],
+  "transferable_to": [
+    "Product design",
+    "Face perception",
+    "Web UI evaluation"
+  ],
+  "causal_links": [
+    {
+      "id": "link_1",
+      "from_entity": "environmental_features",
+      "activity": "triggers",
+      "to_entity": "subcortical_visual_processing",
+      "from_level": "ecological",
+      "to_level": "circuit",
+      "bridging_quality": "strong",
+      "maturity": "how-actually",
+      "evidence_base": "Bar et al. (2006); Vuilleumier (2003)",
+      "change_produced": "rapid low-spatial-frequency analysis",
+      "parameter_range": "onset ~80-120ms"
+    },
+    {
+      "id": "link_2",
+      "from_entity": "subcortical_visual_processing",
+      "activity": "generates",
+      "to_entity": "implicit_affective_tag",
+      "from_level": "circuit",
+      "to_level": "psychological",
+      "bridging_quality": "moderate",
+      "maturity": "how-plausibly",
+      "evidence_base": "Implicit Association Tests; ERP early components",
+      "change_produced": "approach/avoid tendency"
+    },
+    {
+      "id": "link_3",
+      "from_entity": "implicit_affective_tag",
+      "activity": "biases",
+      "to_entity": "explicit_evaluation",
+      "from_level": "psychological",
+      "to_level": "psychological",
+      "bridging_quality": "moderate",
+      "maturity": "how-plausibly",
+      "evidence_base": "Dual process models (Evans & Stanovich 2013)",
+      "change_produced": "anchoring of conscious judgment"
+    }
+  ],
+  "scope_conditions": [
+    "Most influential for first encounters (<2s exposure)",
+    "Can be overridden by explicit processing over time"
+  ],
+  "moderators": [
+    "Need for Cognition (individual difference)",
+    "Cultural familiarity (shapes implicit associations)"
+  ],
+  "interactions": [
+    "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001 (T12)"
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "citation": "Bar, M., et al. (2006). Very first impressions."
+    },
+    {
+      "citation": "Kahneman, D. (2011). Thinking, fast and slow."
+    }
+  ],
+  "short_description": "We evaluate environments implicitly within 100ms, long before we consciously analyze them.",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "superseded",
+  "generation": 1,
+  "ecological_validation": false,
+  "panel_docs": [
+    "docs/02-15_02_Neuroscience_Panel_Templates_and_Taxonomy_V1.0.md",
+    "docs/02-14_09_CMR_Revised_Spec_Panel_Templates_V2.0.md",
+    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
+    "docs/37_Panel_MAT_I_Materials.md",
+    "docs/42_Panel_TP_I_Temporal.md"
+  ],
+  "panel_source": "CMR (Revised Spec)",
+  "panel_reasoning_excerpt": "## TEMPLATE 22: PP_RAPID_GIST_004\n**\"Low-spatial-frequency scene structure \u2192 rapid associative prediction \u2192 contextual framing\"**\n*Recommended by: Moshe Bar*\n\n**Structural pattern**: coarse_feature_extraction \u2192 top_down_prediction_cascade \u2192 interpretive_frame\n**Higher-order principle**: The brain evaluates the global structure of a scene before processing details, using a fast magnocellular pathway to generate top-down predictions that frame all subsequent processing. First impressions of buildings are determined by gross proportions and light distribution, not by decorative detail.\n**Transferable to**: Auditory scenes (low-frequency spectral envelope \u2192 sound source categorization), social scenes (postural configuration \u2192 social situation categorization)\n\n**Causal chain**:\n1. Scene low-spatial-frequency (LSF) content (overall light distribution, volume proportions, gross geometry, color temperature) \u2192 magnocellular pathway \u2192 rapid V1/V2 \u2192 dorsal stream \u2192 PFC (orbital and lateral prefrontal cortex)\n   - Level: ecological \u2192 circuit\n   - Bridging quality: HIGH\n   - Maturity: **how-actually** (Bar et al., 2006; Kveraga, Boshyan, & Bar, 2007; Mu & Li, 2013)\n   - Parameter range: PFC activation from LSF onset at ~130ms; magnocellular system processes spatial frequencies below ~2 cycles/degree preferentially\n   - Evidence: Direct MEG/fMRI evidence for LSF-driven PFC activation preceding detailed object recognition\n2. PFC activation \u2192 associative memory retrieval \u2192 scene category prediction (\"hospital,\" \"home,\" \"church,\" \"prison\") \u2192 affective prediction (expected valence/arousal)\n   - Level: circuit \u2192 computational\n   - Bridging quality: HIGH\n   - Maturity: **how-actually** (Bar, 2007, 2009; Barrett & Bar, 2009 \u2014 affective predictions accompany perceptual ones)\n   - Evidence: PFC generates predictions that facilitate temporal/parietal object recognition; prediction errors measured when scene contents mismatch category\n3. Scene category prediction + affective prediction \u2192 top-down expectation cascade \u2192 modulates all subsequent detail processing in ventral stream\n   - Level: circuit \u2192 circuit (PFC \u2192 temporal/parietal)\n   - Bridging quality: HIGH\n   - Maturity: **how-actually** (predictive coding framework; fMRI evidence for top-down modulation of scene processing \u2014 Summerfield et al., 2006)\n4. Contextual frame persists and biases interpretation \u2192 detail features interpreted within frame \u2192 confirmation bias for initial gist\n   - Level: computational \u2192 psychological\n   - Bridging quality: MEDIUM\n   - Maturity: **how-plausibly** (consistent with anchoring/framing literature; specific architectural application emerging but not directly tested)\n\n**Moderators**: Viewing duration (frame established at ~130ms but can be overridden with sustained viewing >2-3s if details contradict gist). Prior expectation (knowing you're entering a \"hospital\" vs. a \"spa\" shifts frame before any visual input). Emotional state (anxious observers generate more threat-related gist categories from ambiguous LSF input \u2014 Barrett & Bar, 2009). Cultural familiarity with building type.\n\n**Scope conditions**: Requires sufficient visual information for LSF extraction (not applicable in darkness, extreme fog, or when view is blocked). The gist-frame can be overridden by strongly contradictory details, but this takes additional processing time and cognitive effort. Most effective for first exposure to a space \u2014 repeated exposure builds detailed models that partially bypass gist-based processing.\n**Known interactions**: Connects to PP_SPECTRAL_MATCH_001 (LSF content carries the 1/f information). Connects to DP_IMPLICIT_EVALUATION_001 (rapid gist is the mechanism underlying fast environmental evaluation). Connects to NM_THREAT_HPA_001 (threat-related gist triggers amygdala via magnocellular pathway).\n**Overall maturity**: **how-actually** (neural pathway well-characterized; gist-based prediction well-demonstrated; specific architectural application is the least tested link)\n\n*\n\n[... excerpt truncated at 4000 chars]",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-15_02_Neuroscience_Panel_Templates_and_Taxonomy_V1.0.md",
+  "excerpt_char_range": [
+    3929,
+    8652
+  ],
+  "t1_frameworks": [
+    "DP"
+  ],
+  "calibration_status": "uncalibrated"
+}

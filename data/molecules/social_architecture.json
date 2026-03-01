@@ -1,0 +1,98 @@
+{
+    "molecule_id": "SOCIAL_ARCHITECTURE",
+    "name": "Social Architecture",
+    "short_description": "How spatial configurations shape social behavior, from fostering spontaneous interaction and collaboration to creating isolation and loneliness.",
+    "molecule_type": "DESIGN_PATTERN",
+    "components": [
+        {
+            "name": "Social Affordance Reading",
+            "template_ids": [
+                "XF_SOCIAL_AFFORDANCE_001",
+                "CROSS_SOCIAL_AFFORDANCE_READING_001"
+            ],
+            "interaction_type": "PREREQUISITE",
+            "description": "Spatial layout provides affordances for social interaction (gathering, lingering, passing) that shape behavior patterns."
+        },
+        {
+            "name": "DMN Social Cognition",
+            "template_ids": [
+                "DT_SOCIAL_COGNITION_DMN_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "The default mode network couples spatial processing with social cognition, meaning spatial experience shapes social thinking."
+        },
+        {
+            "name": "Architectural Loneliness",
+            "template_ids": [
+                "CROSS_ARCHITECTURAL_LONELINESS_001"
+            ],
+            "interaction_type": "MULTIPLICATIVE",
+            "description": "Spaces that isolate occupants trigger acute social isolation stress with measurable neurobiological consequences."
+        },
+        {
+            "name": "Social Enrichment/Impoverishment",
+            "template_ids": [
+                "CROSS_SOCIAL_ENRICHMENT_IMPOVERISHMENT_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "Chronic social richness or deprivation in built environments produces lasting neural plasticity effects."
+        },
+        {
+            "name": "Mirror Presence",
+            "template_ids": [
+                "CROSS_SOCIAL_MIRROR_PRESENCE_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "Social presence and mirroring dynamics are modulated by spatial proximity, visibility, and acoustic coupling."
+        }
+    ],
+    "constituent_templates": [
+        "XF_SOCIAL_AFFORDANCE_001",
+        "CROSS_SOCIAL_AFFORDANCE_READING_001",
+        "DT_SOCIAL_COGNITION_DMN_001",
+        "CROSS_ARCHITECTURAL_LONELINESS_001",
+        "CROSS_SOCIAL_ENRICHMENT_IMPOVERISHMENT_001",
+        "CROSS_SOCIAL_MIRROR_PRESENCE_001"
+    ],
+    "interaction_graph": {
+        "XF_SOCIAL_AFFORDANCE_001": {
+            "DT_SOCIAL_COGNITION_DMN_001": "ADDITIVE"
+        },
+        "CROSS_ARCHITECTURAL_LONELINESS_001": {
+            "CROSS_SOCIAL_ENRICHMENT_IMPOVERISHMENT_001": "MULTIPLICATIVE"
+        }
+    },
+    "framework_ids": [
+        "DT",
+        "EC",
+        "NM"
+    ],
+    "domain": "social_behavior",
+    "scope_conditions": [
+        "SC1"
+    ],
+    "overall_maturity": "TENTATIVE",
+    "key_references": [
+        "hillier_hanson_1984",
+        "cacioppo_hawkley_2009",
+        "allen_1977"
+    ],
+    "empirical_support": "PRELIMINARY",
+    "competing_theories": [
+        "PROSPECT_REFUGE"
+    ],
+    "design_implications": [
+        "Create varied social density zones: from intimate alcoves (2-person) to open gathering areas.",
+        "Position circulation paths to generate 'chance encounters' near communal amenities.",
+        "Avoid dead-end corridors and isolated workstations that produce architectural loneliness.",
+        "Provide visual social connectivity (sightlines to others) even in private work zones."
+    ],
+    "confidence_intervals": {
+        "cohens_d_range": [
+            0.2,
+            0.5
+        ],
+        "typical_d": 0.35,
+        "note": "Effect sizes for spatial layout on spontaneous social interaction frequency."
+    }
+}

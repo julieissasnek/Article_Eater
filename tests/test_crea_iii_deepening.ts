@@ -1,5 +1,4 @@
 import { TheoryAPI } from '../src/api';
-import { expect } from 'expect';
 
 /**
  * AG-36: Panel CREA-III Deepening Verification

@@ -1,0 +1,230 @@
+{
+  "template_id": "NM_SEROTONERGIC_MOOD_001",
+  "display_id": "NM7",
+  "name": "Serotonergic Mood Valence and Environmental Affective Tone",
+  "t1_frameworks": [
+    "NM"
+  ],
+  "calibration_status": "calibrated",
+  "panel_source": "NEUROMOD-I",
+  "calibrated_date": "2026-02-23",
+  "primary_anchor": "Cools",
+  "complement": "Dayan",
+  "calibration_constraint": "C-05 (inherit LIGHT-I daylight d = 0.38), C-06 (Coburn ceiling), C-08 (IE-DPT: Level 2, implicit-to-explicit transition \u2014 mood valence has implicit neurochemical substrate but becomes explicit as subjective feeling), C-09 (Barrett-Craig: Stage 2 anterior insula contributes to conscious mood evaluation)",
+  "template_addition_note": "Added per clearance Issue 3 \u2014 serotonin is one of four major neuromodulatory systems and its omission would leave T29 missing a major input channel. Expert Roshan Cools (Donders Institute) added to panel for serotonergic expertise.",
+  "ie_dpt_interaction": "Level 2 \u2014 Implicit-to-explicit transition. The neurochemical substrate (5-HT synthesis and receptor binding) is fully implicit. However, mood valence becomes consciously accessible as subjective feeling state \u2014 'I feel good/bad in this space.' Barrett-Craig Stage 2 (anterior insula) contributes to the evaluative component: the conscious interoceptive inference 'how do I feel?' that emerges from the implicit neurochemical state.",
+  "mechanism_chain": [
+    {
+      "step_number": 1,
+      "step_name": "daylight_exposure \u2192 5HT_synthesis",
+      "description": "Bright daylight exposure drives serotonin synthesis in raphe nuclei via tryptophan hydroxylase activation, providing the neurochemical substrate for positive mood valence",
+      "justification": {
+        "claim": "Daylight exposure increases central serotonin synthesis through a light-driven enzymatic pathway, establishing the neurochemical basis for environmentally-modulated mood",
+        "data": [
+          {
+            "source": "Lambert et al. (2002)",
+            "finding": "Serotonin turnover in human brain (measured via jugular vein 5-HIAA) correlates with daily bright light exposure; turnover 8x higher on bright sunny days vs. dark overcast days; N=101 post-mortem samples",
+            "paradigm": "Post-mortem jugular vein 5-HIAA measurement + ante-mortem weather data",
+            "effect": "8-fold variation in 5-HT turnover between bright and dark days",
+            "n": 101,
+            "design": "Cross-sectional"
+          },
+          {
+            "source": "aan het Rot et al. (2008)",
+            "finding": "Acute tryptophan depletion (reducing 5-HT) produces reliable mood lowering in vulnerable individuals; meta-analysis of 45 studies",
+            "paradigm": "Acute tryptophan depletion (ATD) + mood assessment",
+            "effect": "Mood lowering d = 0.50 in previously depressed; d = 0.15 in never-depressed",
+            "design": "Meta-analysis (N=45 studies)"
+          }
+        ],
+        "backing": "Serotonin is synthesised from tryptophan via tryptophan hydroxylase (TPH), an enzyme whose activity is enhanced by bright light. The raphe nuclei (dorsal and median) are the primary 5-HT production centres, projecting to virtually all cortical and subcortical regions. Lambert et al. (2002) provides the critical link between environmental light and central 5-HT: buildings with good daylight literally produce more serotonin in occupants' brains. This is the neurochemical substrate underlying seasonal affective disorder (SAD) and the well-documented mood benefits of daylight exposure.",
+        "warrant": "MECHANISM",
+        "qualifier": "The Lambert et al. (2002) finding uses post-mortem measurement, which may not perfectly reflect in-vivo dynamics. The 8x variation is between extreme conditions (bright outdoor sun vs. dark overcast); indoor daylight variation between well-daylit and poorly daylit offices is likely to produce a smaller but still meaningful 5-HT difference. Vulnerability to low 5-HT varies by genotype (5-HTTLPR) and history (prior depression).",
+        "rebuttal": "Indoor light levels rarely approach the lux values of outdoor daylight; the 5-HT synthesis effect may be minimal in even the best-daylit offices compared to being outdoors. Exercise, diet (tryptophan intake), and social interaction also strongly modulate 5-HT; lighting may be a minor contributor in the context of these other factors.",
+        "competing_accounts": [
+          {
+            "account": "Circadian phase model",
+            "proponent": "Lewy et al. (2006)",
+            "claim": "Daylight's mood effects are primarily mediated by circadian phase alignment (melatonin suppression, SCN entrainment), not directly via 5-HT synthesis; 5-HT changes are secondary to circadian normalisation",
+            "implication_for_template": "Would reframe the mechanism as daylight \u2192 circadian alignment \u2192 normalised 5-HT (indirect) rather than daylight \u2192 5-HT synthesis (direct); both routes reach the same endpoint but with different timescales"
+          }
+        ],
+        "confidence": 0.55,
+        "depth_tier": "B",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 7 of 11: NM_SEROTONERGIC_MOOD_001"
+      }
+    },
+    {
+      "step_number": 2,
+      "step_name": "5HT_level \u2192 mood_valence_modulation",
+      "description": "5-HT level modulates mood valence: adequate 5-HT supports positive mood, emotional resilience, and reduced reactivity to negative environmental features; low 5-HT produces negative mood bias, increased stress reactivity, and reduced hedonic capacity",
+      "justification": {
+        "claim": "Central 5-HT level establishes affective tone that colours all environmental experience \u2014 a tonic mood valence that influences how architectural features are perceived and evaluated",
+        "data": [
+          {
+            "source": "Cools et al. (2008)",
+            "finding": "5-HT depletion increases punishment sensitivity and negative emotional bias while reducing reward sensitivity; 5-HT enhancement reverses this pattern; review and meta-analysis",
+            "paradigm": "Acute tryptophan depletion + emotional processing tasks",
+            "effect": "Negative mood bias d = 0.50 under tryptophan depletion; reversed by SSRI administration",
+            "design": "Within-subjects, double-blind"
+          },
+          {
+            "source": "Dayan & Huys (2009)",
+            "finding": "Computational model: 5-HT modulates the gain on aversive prediction errors; low 5-HT amplifies negative outcomes, producing pessimistic evaluation of ambiguous stimuli",
+            "paradigm": "Computational model fitted to tryptophan depletion behavioural data",
+            "effect": "5-HT depletion increases aversive PE sensitivity by ~40%",
+            "design": "Computational model"
+          }
+        ],
+        "backing": "5-HT provides a tonic affective background against which all environmental stimuli are evaluated. Adequate 5-HT supports a positive baseline mood that enables neutral or ambiguous environmental features to be evaluated positively; low 5-HT shifts this evaluation toward negative interpretation. In architectural terms: the same office is perceived as 'pleasant and airy' under adequate 5-HT but 'cold and impersonal' under low 5-HT. This is not a bias \u2014 it reflects real changes in affective processing that alter the phenomenological quality of architectural experience.",
+        "warrant": "MECHANISM",
+        "qualifier": "5-HT effects on mood are well-established in pharmacological studies. The magnitude of 5-HT variation from indoor daylight differences (as opposed to pharmacological manipulation) may be insufficient to produce behaviourally meaningful mood changes in healthy individuals.",
+        "rebuttal": "Mood in buildings is primarily determined by social context, task demands, and personal circumstances rather than 5-HT neurochemistry. The 5-HT contribution may be detectable only when other mood determinants are controlled or absent.",
+        "competing_accounts": [],
+        "confidence": 0.5,
+        "depth_tier": "B",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 7 of 11: NM_SEROTONERGIC_MOOD_001"
+      }
+    },
+    {
+      "step_number": 3,
+      "step_name": "mood_valence \u2192 wanting_liking_moderation",
+      "description": "5-HT-mediated mood valence moderates the wanting-liking balance (cross-reference NM2 Step 3): adequate 5-HT favours liking (hedonic evaluation); low 5-HT favours wanting (impulsive approach)",
+      "justification": {
+        "claim": "5-HT modulates the DA wanting / opioid liking balance by enhancing evaluative (liking) over impulsive (wanting) processing",
+        "data": [
+          {
+            "source": "Cools et al. (2008)",
+            "finding": "Tryptophan depletion increases impulsive approach (wanting proxy) while reducing sensitivity to negative outcomes (reduced evaluative caution); N=24, within-subjects",
+            "paradigm": "Probabilistic reversal learning under ATD",
+            "effect": "Win-stay d = 0.55 (wanting proxy increase); lose-shift d = 0.40 (evaluation decrease)",
+            "design": "Within-subjects, double-blind, placebo-controlled"
+          }
+        ],
+        "backing": "This step completes the wanting-liking-5HT triad: DA drives wanting (approach), opioids drive liking (hedonic evaluation), and 5-HT modulates the balance. Buildings with adequate daylight \u2192 higher 5-HT \u2192 better wanting-liking balance \u2192 architectural satisfaction (both wanting to be there AND enjoying being there). Poorly daylit buildings \u2192 lower 5-HT \u2192 wanting-dominant processing \u2192 restless seeking without satisfaction.",
+        "warrant": "EMPIRICAL_COVARIANCE",
+        "qualifier": "The 5-HT \u2192 wanting/liking moderation is demonstrated pharmacologically. The daylight-mediated effect is a three-step chain (daylight \u2192 5-HT \u2192 mood \u2192 wanting/liking balance) that accumulates uncertainty at each step. This cross-references NM2 Step 3 \u2014 the same mechanism described from the wanting-liking perspective. Not double-counted: NM2 owns the wanting-liking dissociation; NM7 owns the 5-HT modulation.",
+        "rebuttal": "The wanting-liking balance may be more directly modulated by acute reward experiences than by tonic 5-HT level. In architecturally rewarding spaces, direct DA and opioid activation may overwhelm any tonic 5-HT moderation.",
+        "competing_accounts": [],
+        "confidence": 0.45,
+        "depth_tier": "B",
+        "theoretical_default_note": "THEORETICAL_DEFAULT: 5-HT moderation of wanting/liking in architectural contexts is inferred from pharmacological studies; confidence <0.50.",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 7 of 11: NM_SEROTONERGIC_MOOD_001"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "daylight_5HT_d": {
+      "value": 0.38,
+      "unit": "Cohen's d (daylight effect on mood/arousal)",
+      "range": [
+        0.2,
+        0.55
+      ],
+      "interpretation": "Inherited from LIGHT-I (C-05). Combined daylight effect on 5-HT-mediated mood and NE-mediated arousal.",
+      "confidence": 0.55,
+      "warrant": "MECHANISM",
+      "source": "LIGHT-I panel calibration; Lambert et al. (2002, N=101)"
+    },
+    "5HT_mood_valence_d": {
+      "value": 0.5,
+      "unit": "Cohen's d (5-HT depletion \u2192 negative mood bias)",
+      "range": [
+        0.15,
+        0.65
+      ],
+      "interpretation": "Effect of 5-HT depletion on mood valence; 0.50 for previously depressed, 0.15 for never-depressed. Population average ~0.30 accounting for base rates.",
+      "confidence": 0.5,
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "source": "aan het Rot et al. (2008, meta-analysis of 45 studies)"
+    },
+    "5HT_wanting_liking_moderation_d": {
+      "value": 0.45,
+      "unit": "Cohen's d",
+      "range": [
+        0.25,
+        0.65
+      ],
+      "interpretation": "5-HT moderation of wanting-liking balance",
+      "confidence": 0.45,
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Cools et al. (2008, N=24)",
+      "theoretical_default_note": "THEORETICAL_DEFAULT: Architectural bridge inferred"
+    }
+  },
+  "cross_template_interactions": [
+    {
+      "template_id": "NM_WANTING_LIKING_DISSOCIATION_001",
+      "interaction_type": "moderates",
+      "description": "5-HT moderates the wanting-liking balance (NM2 Step 3 cross-references NM7 Step 3). NM7 owns the 5-HT mechanism; NM2 owns the wanting-liking dissociation."
+    },
+    {
+      "template_id": "ALLOSTATIC_MASTER_001",
+      "interaction_type": "feeds_into",
+      "description": "5-HT enters T29 as w_5HT term (per clearance Issue 3). Low 5-HT contributes to allostatic load via chronic negative mood bias."
+    },
+    {
+      "template_id": "LIGHT_I (cross-panel)",
+      "interaction_type": "receives_from",
+      "description": "C-05: Daylight drives 5-HT synthesis (Lambert et al., 2002). LIGHT-I d = 0.38 inherited."
+    },
+    {
+      "template_id": "NM_THREAT_HPA_001",
+      "interaction_type": "modulatory",
+      "description": "5-HT interacts with HPA axis: low 5-HT increases stress reactivity (Lowry et al., 2009), amplifying HPA activation in threatening environments."
+    }
+  ],
+  "super_template_interactions": {
+    "AX4_perceived_control": {
+      "interaction": "AX4 does not directly moderate 5-HT (per C-12: AX4 moderates HPA and NE only). Indirect pathway: AX4 \u2192 reduced stress \u2192 reduced HPA \u2192 less 5-HT depletion from chronic stress.",
+      "estimated_moderation": "Indirect, small, THEORETICAL_DEFAULT"
+    }
+  },
+  "residual_gaps": [
+    {
+      "gap_id": "NM7_GAP1",
+      "description": "No direct measurement of 5-HT levels in building occupants as a function of daylight exposure; Lambert et al. (2002) used post-mortem outdoor light data",
+      "severity": "medium",
+      "resolution_path": "Peripheral 5-HT proxy (platelet 5-HT) or metabolite (5-HIAA) measurement in daylight-exposure study in real buildings"
+    },
+    {
+      "gap_id": "NM7_GAP2",
+      "description": "Individual vulnerability to low 5-HT varies by genotype (5-HTTLPR) and depression history; population-level estimates mask large individual differences",
+      "severity": "low",
+      "resolution_path": "Gene-environment interaction studies with architectural daylight as environmental variable"
+    }
+  ],
+  "confidence": 0.45,
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
+  "key_references": [
+    "Lambert, G. W., et al. (2002). Effect of sunlight and season on serotonin turnover in the brain. The Lancet, 360(9348), 1840-1842.",
+    "Cools, R., et al. (2008). Serotonin and dopamine: Unifying affective, activational, and decision functions. Neuropsychopharmacology, 36(1), 98-113.",
+    "Dayan, P., & Huys, Q. J. M. (2009). Serotonin in affective control. Annual Review of Neuroscience, 32, 95-126.",
+    "aan het Rot, M., et al. (2008). Meta-analysis of tryptophan depletion: Effects on mood and cognition. Neuropsychopharmacology, 34(4), 837-849.",
+    "Lowry, C. A., et al. (2009). Serotonergic systems, anxiety, and affective disorder. Annals of the New York Academy of Sciences, 1148(1), 86-94."
+  ],
+  "provenance": "panel_calibrated",
+  "calibration_date": "2026-02-23",
+  "tier": "B",
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Affective_Neuroscience"
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which serotonergic mood valence and environmental affective tone operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.973767+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "outcome_domains": [
+    "affect",
+    "env"
+  ],
+  "outcome_terms": [
+    "affect",
+    "env"
+  ]
+}

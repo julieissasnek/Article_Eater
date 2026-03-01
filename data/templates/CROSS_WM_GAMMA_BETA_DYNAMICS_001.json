@@ -1,317 +1,163 @@
 {
   "template_id": "CROSS_WM_GAMMA_BETA_DYNAMICS_001",
-  "display_id": "T47",
-  "name": "WM Gamma/Beta Dynamics in Environmental Processing",
-  "structural_pattern": "OSCILLATORY_GATING",
-  "higher_order_principle": "WM representations maintained by prefrontal gamma bursts (~60-100 Hz, content encoding) and cleared by beta bursts (~15-30 Hz, gating/clearing). Environmental information load modulates gamma burst frequency; distraction degrades beta gating efficiency. Both are measurable via non-invasive EEG in ecological settings.",
-  "transferable_to": [
-    "open-plan office design (distraction \u2192 degraded beta gating)",
-    "hospital design (information-dense environments \u2192 gamma overload)",
-    "classroom design (optimizing information presentation rate for WM capacity)",
-    "control room design (sustained monitoring demands on WM dynamics)"
-  ],
-  "framework_ids": [
-    "MS",
-    "DT"
-  ],
-  "causal_links": [
+  "phase": "B",
+  "primary_anchor": "Saalmann",
+  "complement_anchor": "Uddin",
+  "tier": "B",
+  "depth_justification": "Working memory oscillatory mechanisms well-established in animal models; architectural application moderate confidence",
+  "mechanism_chain": [
     {
-      "from_variable": "environmental_information_load",
-      "to_variable": "gamma_burst_frequency",
-      "activity": "encode_items_to_WM",
-      "from_level": "environmental",
-      "to_level": "subcortical",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Lundqvist et al., 2016",
-      "parameters": {
-        "frequency_range_Hz": "60-100",
-        "burst_duration_ms": "50-150",
-        "capacity_limit": "3-5 items (gamma bursts per cycle)"
-      }
-    },
-    {
-      "from_variable": "environmental_distraction_level",
-      "to_variable": "beta_gating_efficiency",
-      "activity": "degrade_clearing_mechanism",
-      "from_level": "environmental",
-      "to_level": "subcortical",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Miller, Lundqvist, & Bastos, 2018",
-      "parameters": {
-        "frequency_range_Hz": "15-30",
-        "effect": "distractors trigger gamma bursts that compete with maintained items; insufficient beta fails to clear them"
-      }
-    },
-    {
-      "from_variable": "gamma_burst_frequency",
-      "to_variable": "prefrontal_metabolic_cost",
-      "activity": "scale_energy_consumption",
-      "from_level": "subcortical",
-      "to_level": "subcortical",
-      "bridging_quality": "MEDIUM",
-      "maturity": "how-plausibly",
-      "key_evidence": "Lundqvist et al., 2016; metabolic cost inferred from fMRI BOLD and computational models",
-      "parameters": {
-        "note": "More gamma bursts per second \u2192 higher PFC metabolic demand \u2192 faster cognitive fatigue"
-      }
-    },
-    {
-      "from_variable": "beta_gating_efficiency",
-      "to_variable": "wm_task_accuracy",
-      "activity": "determine_maintenance_fidelity",
-      "from_level": "subcortical",
-      "to_level": "behavioral",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Lundqvist et al., 2016; Miller et al., 2018",
-      "parameters": {
-        "measurable_via": "mobile_EEG_beta_power_over_PFC",
-        "prediction": "lower beta power in open-plan vs enclosed offices"
-      }
-    }
-  ],
-  "scope_conditions": [
-    "Applies to environments requiring active maintenance of information in WM",
-    "Gamma/beta dynamics require intact prefrontal-parietal network",
-    "Ecological measurement via mobile EEG is feasible but requires careful artifact rejection",
-    "Capacity limits are relatively fixed \u2014 architectural design should work within them, not assume they can be expanded"
-  ],
-  "moderators": [
-    "acoustic_environment (speech distractors are especially potent at disrupting beta gating)",
-    "visual_complexity (high visual information density increases gamma load)",
-    "individual_WM_capacity (varies with age, training, and PFC integrity)",
-    "circadian_phase (gamma/beta dynamics degrade with sleep deprivation; links CB)"
-  ],
-  "interactions": [
-    {
-      "template": "T36 (MS_WORKING_MEMORY_LOAD_001)",
-      "type": "MECHANISM",
-      "description": "T36 treats WM load as a capacity-based abstraction. T47 provides the oscillatory mechanism: load = gamma burst frequency; overload = gamma exceeds beta clearing rate."
-    },
-    {
-      "template": "T44 (CROSS_HIERARCHICAL_CONTROL_001)",
-      "type": "SUBSTRATE",
-      "description": "The gamma/beta dynamics implement the lowest level of the control hierarchy (T44 Level 1). Higher control levels recruit additional PFC regions with their own oscillatory dynamics."
-    },
-    {
-      "template": "T29 (ALLOSTATIC_MASTER_001)",
-      "type": "OUTPUT",
-      "description": "Chronic gamma overload (environmentally induced) contributes to allostatic burden. T47 provides a specific, measurable pathway from environment to metabolic cost."
-    },
-    {
-      "template": "T45 (CROSS_PROACTIVE_REACTIVE_001)",
-      "type": "MODE",
-      "description": "Proactive control (T45) maintains goal representations via sustained gamma activity; reactive control triggers transient gamma bursts. Different metabolic signatures at the oscillatory level."
-    }
-  ],
-  "overall_maturity": "how-plausibly",
-  "key_references": [
-    "Lundqvist, Rose, Herman, Brincat, Buschman, & Miller (2016) Neuron",
-    "Miller, Lundqvist, & Bastos (2018) Neuron",
-    "Bastos et al. (2018) eLife",
-    "Kornblith, Buschman, & Miller (2016) Cerebral Cortex"
-  ],
-  "short_description": "WM representations maintained by prefrontal gamma bursts (~60-100 Hz, content encoding) and cleared by beta bursts (~15-30 Hz, gating/clearing)",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
+      "step": 1,
+      "process": "environmental_information \u2192 WM_encoding",
+      "warrant_type": "MECHANISM",
+      "confidence": 0.55,
+      "description": "Environmental features encoded into working memory via gamma oscillations (30-100Hz); gamma power correlates with WM load",
+      "justification": {
+        "data": [
+          {
+            "finding": "Gamma oscillations in WM encoding across species",
+            "source": "Roux & Uhlhaas (2014)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": null,
+            "design": ""
           }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
+        ],
+        "backing": "Environmental features encoded into working memory via gamma oscillations (30-100Hz); gamma power correlates with WM load",
+        "qualifier": "key evidence limited to cited studies",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 11: CROSS_WM_GAMMA_BETA_DYNAMICS_001"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "process": "WM_encoding \u2192 maintenance_beta",
+      "warrant_type": "MECHANISM",
+      "confidence": 0.5,
+      "description": "Beta oscillations (13-30Hz) maintain WM contents against interference",
+      "justification": {
+        "data": [
+          {
+            "finding": "Beta maintenance of WM representations",
+            "source": "Lundqvist et al (2016)",
+            "paradigm": "CROSSCUT-I",
+            "effect": "",
+            "n": 8,
+            "design": "single-unit + LFP recording"
           }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
+        ],
+        "backing": "Beta oscillations (13-30Hz) maintain WM contents against interference",
+        "qualifier": "key evidence limited to cited studies",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 11: CROSS_WM_GAMMA_BETA_DYNAMICS_001"
+        }
+      }
+    },
+    {
+      "step": 3,
+      "process": "maintenance_beta \u2192 environmental_navigation",
+      "warrant_type": "EMPIRICAL_COVARIANCE",
+      "confidence": 0.45,
+      "description": "WM maintenance supports spatial navigation, task sequencing, and goal-directed behaviour in architectural spaces",
+      "justification": {
+        "data": [],
+        "backing": "WM maintenance supports spatial navigation, task sequencing, and goal-directed behaviour in architectural spaces",
+        "qualifier": "mechanism plausible but requires further empirical validation",
+        "rebuttal": [],
+        "competing_accounts": [],
+        "depth_tier": "B",
+        "panel_debate_reference": {
+          "panel": "CROSSCUT-I",
+          "document": "docs/CROSSCUT_I_Panel_Output.md",
+          "relevant_section": "TEMPLATE 11: CROSS_WM_GAMMA_BETA_DYNAMICS_001"
         }
       }
     }
+  ],
+  "calibrated_parameters": {
+    "WM_capacity_chunks": "4\u00b11",
+    "WM_capacity_reference": "Cowan 2001",
+    "gamma_encoding_latency_ms": "100-300",
+    "beta_maintenance_duration_s": "5-30",
+    "environmental_WM_load": "THEORETICAL_DEFAULT \u2014 depends on spatial complexity"
   },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "residual",
-  "generation": 1,
-  "ecological_validation": false,
-  "panel_docs": [
-    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-    "docs/02-15_20_Panel_V_Social_Brain_V1_0.md"
+  "constraint_C04_partial_out": {
+    "this_template_owns": "Oscillatory WM mechanisms",
+    "SPATIAL_I_owns": "Spatial WM content (cognitive maps)",
+    "MEMORY_I_owns": "Long-term encoding from WM to LTM"
+  },
+  "constraint_C05_IE_DPT": {
+    "WM_encoding": "Level 2 (implicit-to-explicit transition \u2014 environmental features become explicitly held representations)",
+    "WM_maintenance": "Level 3 (explicit, effortful)"
+  },
+  "constraint_C02_prior_refs": [
+    "SPATIAL-I cognitive mapping WM demands",
+    "MEMORY-I encoding from WM to LTM",
+    "NEUROMOD-I NM6 ACh gating of WM"
   ],
-  "panel_source": "Panel IV (Cognitive Control & Reward)",
-  "panel_reasoning_excerpt": "### T47: CROSS_WM_GAMMA_BETA_DYNAMICS_001\n\n**Frameworks**: MS + DT (cross-framework)\n**Name**: Working Memory Gamma/Beta Dynamics in Environmental Processing\n**Structural Pattern**: OSCILLATORY GATING (environmental information load \u2192 gamma burst frequency \u00d7 beta gating efficiency \u2192 WM performance and metabolic cost)\n**Higher-Order Principle**: Working memory content is maintained by brief gamma bursts (~60\u2013100 Hz) and cleared by beta bursts (~15\u201330 Hz) in prefrontal-parietal circuits. Environments that overload gamma frequency or degrade beta gating efficiency impose measurable neural costs detectable via non-invasive EEG.\n\n```python\nMechanisticTemplate(\n    template_id=\"CROSS_WM_GAMMA_BETA_DYNAMICS_001\",\n    name=\"WM Gamma/Beta Dynamics in Environmental Processing\",\n    structural_pattern=\"OSCILLATORY_GATING\",\n    higher_order_principle=(\n        \"WM representations maintained by prefrontal gamma bursts \"\n        \"(~60-100 Hz, content encoding) and cleared by beta bursts \"\n        \"(~15-30 Hz, gating/clearing). Environmental information load \"\n        \"modulates gamma burst frequency; distraction degrades beta \"\n        \"gating efficiency. Both are measurable via non-invasive EEG \"\n        \"in ecological settings.\"\n    ),\n    transferable_to=[\n        \"open-plan office design (distraction \u2192 degraded beta gating)\",\n        \"hospital design (information-dense environments \u2192 gamma overload)\",\n        \"classroom design (optimizing information presentation rate for WM capacity)\",\n        \"control room design (sustained monitoring demands on WM dynamics)\"\n    ],\n    framework_ids=[\"MS\", \"DT\"],\n    causal_links=[\n        CausalLink(\n            from_variable=\"environmental_information_load\",\n            to_variable=\"gamma_burst_frequency\",\n            activity=\"encode_items_to_WM\",\n            from_level=\"PERSONAL_EPISTEMIC\",\n            to_level=\"SUBPERSONAL\",\n            bridging_quality=\"HIGH\",\n            maturity=\"how-actually\",\n            key_evidence=\"Lundqvist et al., 2016\",\n            parameters={\"frequency_range_Hz\": \"60-100\",\n                        \"burst_duration_ms\": \"50-150\",\n                        \"capacity_limit\": \"3-5 items (gamma bursts per cycle)\"}\n        ),\n        CausalLink(\n            from_variable=\"environmental_distraction_level\",\n            to_variable=\"beta_gating_efficiency\",\n            activity=\"degrade_clearing_mechanism\",\n            from_level=\"PERSONAL_EPISTEMIC\",\n            to_level=\"SUBPERSONAL\",\n            bridging_quality=\"HIGH\",\n            maturity=\"how-actually\",\n            key_evidence=\"Miller, Lundqvist, & Bastos, 2018\",\n            parameters={\"frequency_range_Hz\": \"15-30\",\n                        \"effect\": \"distractors trigger gamma bursts that compete with maintained items; insufficient beta fails to clear them\"}\n        ),\n        CausalLink(\n            from_variable=\"gamma_burst_frequency\",\n            to_variable=\"prefrontal_metabolic_cost\",\n            activity=\"scale_energy_consumption\",\n            from_level=\"SUBPERSONAL\",\n            to_level=\"SUBPERSONAL\",\n            bridging_quality=\"MEDIUM\",\n            maturity=\"how-plausibly\",\n            key_evidence=\"Lundqvist et al., 2016; metabolic cost inferred from fMRI BOLD and computational models\",\n            parameters={\"note\": \"More gamma bursts per second \u2192 higher PFC metabolic demand \u2192 faster cognitive fatigue\"}\n        ),\n        CausalLink(\n            from_variable=\"beta_gating_efficiency\",\n            to_variable=\"wm_task_accuracy\",\n            activity=\"determine_maintenance_fidelity\",\n            from_level=\"SUBPERSONAL\",\n            to_level=\"PERSONAL_EPISTEMIC\",\n            bridging_quality=\"HIGH\",\n            maturity=\"how-actually\",\n            key_evidence=\"Lundqvist et al., 2016; Miller et al., 2018\",\n            parameters={\"measurable_via\": \"mobile_EEG_beta_power_over_PFC\",\n                        \"prediction\": \"lower beta power in open-plan vs enclosed offices\"}\n        )\n    ],\n    scope_conditions=\n\n[... excerpt truncated at 4000 chars]",
-  "justification_status": "raw_excerpt",
-  "excerpt_source": "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-  "excerpt_char_range": [
-    59995,
-    64995
+  "confidence": 0.5,
+  "display_id": "CROSS_WM_GAMMA_BETA_DYNAMICS_001",
+  "name": "Cross Wm Gamma Beta Dynamics",
+  "panel_source": "CROSSCUT-I",
+  "calibration_status": "calibrated",
+  "provenance": "panel_calibrated",
+  "calibration_date": "2026-02-23",
+  "cross_template_interactions": [
+    {
+      "template_id": "AX_ATTENTION_MEDIATION_010",
+      "interaction_type": "receives_from",
+      "description": "Attention gates what environmental information enters working memory: attended features encoded via gamma oscillations; unattended features remain implicit and don't occupy WM capacity."
+    },
+    {
+      "template_id": "CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001",
+      "interaction_type": "receives_from",
+      "description": "Thalamic gating provides pre-filtered sensory streams; WM gamma encoding then selectively represents subset of thalamic-admitted information. Layered filtering: thalamic \u2192 attentional \u2192 WM."
+    },
+    {
+      "template_id": "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+      "interaction_type": "complementary",
+      "description": "Proactive control relies on sustained WM maintenance (beta oscillations); reactive control operates on transient gamma encoding. WM dynamics support both control modes."
+    },
+    {
+      "template_id": "CROSS_HIERARCHICAL_CONTROL_001",
+      "interaction_type": "moderates",
+      "description": "Architectural complexity determines WM load: complex building floor plans require higher WM capacity (4\u00b11 chunks). Hierarchy level complexity cascades to WM demands."
+    },
+    {
+      "template_id": "AX_DOSE_RESPONSE_007",
+      "interaction_type": "moderates",
+      "description": "Environmental stimulus complexity (high-end dose-response) increases WM load. Optimal environmental stimulation matches WM capacity; overload occurs when stimulation exceeds ~5 chunks."
+    }
   ],
-  "t1_frameworks": [],
-  "calibration_status": "uncalibrated"
+  "residual_gaps": [],
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
+  "t1_frameworks": [
+    "PP",
+    "MS"
+  ],
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Working_Memory_Theory",
+    "Neural_Oscillation_Theory"
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which cross wm gamma beta dynamics operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.935774+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  }
 }

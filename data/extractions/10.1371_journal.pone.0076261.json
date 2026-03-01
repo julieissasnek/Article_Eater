@@ -1,0 +1,659 @@
+{
+  "doi": "10.1371/journal.pone.0076261",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.823,
+  "n_findings": 15,
+  "extracted_at": "2026-02-25T07:06:13.728206+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00573975,
+  "title": "Low-Arousal Speech Noise Improves Performance in N-Back Task: An ERP Study",
+  "authors": "Han L et al., 2013",
+  "research_question": "To investigate the effects of low vs. high emotional arousal speech noises on working memory performance and event-related potentials (ERPs) during an n-back task.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 22,
+    "description": "Twenty-two healthy subjects (12 females; age range = 18 to 24, mean = 21.3 years) who were right-handed, had no history of neurological diseases, were free of regular medication, had normal hearing, and normal or corrected-to-normal vision. Recruited from Beijing Normal University.",
+    "recruitment": "paid participants"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "audio",
+      "description": "Meaningless pseudo-sentences (30 fearful, 30 happy) from a validated Chinese vocal emotional stimuli database, carefully matched for valence, recognition rate, duration, and fundamental frequency. Divided into low-arousal (15 fearful, 15 happy) and high-arousal (15 fearful, 15 happy) groups based on arousal ratings. Presented at 60 dB SPL. A silent condition was also included. The n-back task involved visually presented cardinal numbers (0-9).",
+      "n_stimuli": 60,
+      "source": "Materials section, Table 1"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Reaction Time",
+      "instrument": "E-Prime software",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Accuracy Rate",
+      "instrument": "E-Prime software",
+      "type": "behavioral"
+    },
+    {
+      "construct": "P1 amplitude",
+      "instrument": "EEG",
+      "type": "neural"
+    },
+    {
+      "construct": "N1 amplitude",
+      "instrument": "EEG",
+      "type": "neural"
+    },
+    {
+      "construct": "P2 amplitude",
+      "instrument": "EEG",
+      "type": "neural"
+    },
+    {
+      "construct": "P3 amplitude",
+      "instrument": "EEG",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Memory load (3-back task vs. 1-back task)",
+      "consequent": "Reaction Time",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": ".000",
+      "effect_size": 0.577,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 21) = 28.6",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "Higher memory load requires more cognitive resources, leading to slower responses.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - Behavior",
+      "quote": "Subjects responded faster in the 1-back task (305.3\u00b1125.9 ms) than in the 3-back task (516.7\u00b1143.1 ms).",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 2,
+      "antecedent": "Background speech noise arousal level (low arousal vs. silent/high arousal)",
+      "consequent": "Reaction Time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": ".031",
+      "effect_size": 0.156,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2, 42) = 3.9",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "NM5"
+      ],
+      "mechanism": "Low arousal noise may induce optimal attentional narrowing, facilitating task performance.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - Behavior",
+      "quote": "Subjects responded faster in the low arousal condition (368.3\u00b1129.2 ms) than in the silent (429.8\u00b1130.8 ms, p=.044) and high arousal conditions (434.8\u00b1139.0 ms, p = .089)",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 3,
+      "antecedent": "Background speech noise arousal level (silent vs. high arousal)",
+      "consequent": "Reaction Time",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "1.000",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - Behavior",
+      "quote": "the latter two conditions showed no RT difference (p = 1.000).",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 4,
+      "antecedent": "Memory load (3-back task vs. 1-back task)",
+      "consequent": "Accuracy Rate",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": ".000",
+      "effect_size": 0.637,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 21) = 36.9",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "Higher memory load increases cognitive demands, leading to reduced accuracy.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - Behavior",
+      "quote": "the ACC was larger in the 1-back condition (86.6\u00b112.1%) than in the 3-back condition (74.3\u00b112.2%)."
+    },
+    {
+      "id": 5,
+      "antecedent": "Background speech noise arousal level",
+      "consequent": "P1 amplitude",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "P1 is sensitive to physical characteristics; no difference suggests acoustic features of noise conditions were well-matched.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The results of the ANOVAS showed that there were no significant main or interaction effect for P1 amplitudes (0.75\u00b11.68 \u03bcV; Figure 2, top plots)."
+    },
+    {
+      "id": 6,
+      "antecedent": "Memory load (1-back task vs. 3-back task)",
+      "consequent": "N1 amplitude",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": ".038",
+      "effect_size": 0.189,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 21) = 4.88",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The N1 was larger in 1-back task (-2.93\u00b13.23 \u00b5V) than in 3-back task (-2.60\u00b13.27 \u03bcV) (Figure 2, top plots)."
+    },
+    {
+      "id": 7,
+      "antecedent": "Background speech noise arousal level",
+      "consequent": "P2 amplitude",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": ".047",
+      "effect_size": 0.135,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2, 42) = 3.29",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "NM5"
+      ],
+      "mechanism": "P2 amplitude reflects early attentional processing; a significant main effect suggests overall modulation by arousal, though specific pairwise differences were not significant.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The main effect of arousal level was significant for P2 amplitudes (F(2, 42) = 3.29, p=.047, partial n\u00b2 = 0.135)."
+    },
+    {
+      "id": 8,
+      "antecedent": "Low arousal speech noise vs. silent condition",
+      "consequent": "P2 amplitude",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": ".153",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The P2 was larger in the low arousal condition (5.73\u00b14.37 \u00b5V) than in the no arousal (5.18\u00b14.19 \u00b5V, p=.153)"
+    },
+    {
+      "id": 9,
+      "antecedent": "Low arousal speech noise vs. high arousal speech noise",
+      "consequent": "P2 amplitude",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": ".084",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "and the high arousal conditions (5.10\u00b13.90 \u00b5V, p=.084)"
+    },
+    {
+      "id": 10,
+      "antecedent": "Silent condition vs. high arousal speech noise",
+      "consequent": "P2 amplitude",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "1.000",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "while the latter two conditions showed no P2 amplitude difference (p = 1.000)"
+    },
+    {
+      "id": 11,
+      "antecedent": "Memory load (1-back task vs. 3-back task)",
+      "consequent": "P3 amplitude",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": ".029",
+      "effect_size": 0.206,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 21) = 5.46",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "P3 amplitude reflects cognitive resource allocation; lower memory load allows for greater resource allocation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The P3 was larger in 1-back task (6.29\u00b14.16 \u00b5V) than in 3-back task (5.50\u00b14.07 \u03bcV)"
+    },
+    {
+      "id": 12,
+      "antecedent": "Background speech noise arousal level",
+      "consequent": "P3 amplitude",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": ".002",
+      "effect_size": 0.263,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2, 42) = 7.50",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "NM5"
+      ],
+      "mechanism": "Low arousal noise optimizes cognitive processing, leading to enhanced P3 amplitude, reflecting greater attentional resource allocation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The main effect of arousal level was significant for P3 amplitudes (F(2, 42) = 7.50, p = .002, partial n\u00b2 = 0.263)."
+    },
+    {
+      "id": 13,
+      "antecedent": "Low arousal speech noise vs. silent condition",
+      "consequent": "P3 amplitude",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": ".005",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "NM5"
+      ],
+      "mechanism": "Low arousal noise optimizes cognitive processing, leading to enhanced P3 amplitude.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "The P3 was larger in the low arousal condition (6.52\u00b13.24 \u00b5V) than in the no arousal (5.46\u00b14.07 \u03bcV, p = .005)"
+    },
+    {
+      "id": 14,
+      "antecedent": "Low arousal speech noise vs. high arousal speech noise",
+      "consequent": "P3 amplitude",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": ".028",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "NM5"
+      ],
+      "mechanism": "Low arousal noise optimizes cognitive processing, leading to enhanced P3 amplitude.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "and the high arousal conditions (5.70\u00b13.82 \u00b5V, p=.028)"
+    },
+    {
+      "id": 15,
+      "antecedent": "Silent condition vs. high arousal speech noise",
+      "consequent": "P3 amplitude",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "1.000",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results - ERP",
+      "quote": "while the latter two conditions showed no P3 amplitude difference (p = 1.000)"
+    }
+  ],
+  "mechanisms": [
+    "The attentional narrowing mechanism suggests that noises increase arousal, and at a relatively low arousal level, proper attentional narrowing helps to exclude irrelevant cues, facilitating performance.",
+    "Low-arousal speech noises improved memory performance by facilitating attentional narrowing, which helps to exclude irrelevant cues.",
+    "P2 and P3 amplitudes reflect cognitive resource allocation and attentional processing. Larger amplitudes in low arousal suggest more resources allocated to the task."
+  ],
+  "moderators": [
+    "Memory load (1-back vs. 3-back)",
+    "Arousal level of speech noise (low, high, silent)"
+  ],
+  "implementation_implications": [
+    "Low-arousal speech noises could potentially be used to improve memory performance in certain memory-related tasks.",
+    "The findings improve understanding of background noise effects on human performance and lay the ground for investigation of patients with attention deficits."
+  ],
+  "domains": [
+    "A5_Acoustic",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "NM",
+    "PP",
+    "MS"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Characteristics of low- and high-arousal speech materials, including arousal, valence, recognition rate, duration, and fundamental frequency.",
+      "key_stats": [
+        "t(58) = -23.7, p < .001 (arousal)",
+        "t(58) = 0.12, p = .906 (valence)"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Behavioral results (mean \u00b1 SD) for Reaction Time (RT) and Accuracy Rate (ACC) across silent, low arousal, and high arousal conditions for both 1-back and 3-back tasks.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "The study only investigated the effects of emotional arousal of speech noises on working memory performance in healthy subjects.",
+    "Future studies could investigate the effects of different types of emotional arousal (e.g., positive vs. negative) and different noise intensities.",
+    "The study did not investigate the long-term effects of noise exposure."
+  ],
+  "paper_metadata": {
+    "doi": "10.1371/journal.pone.0076261",
+    "title": "Low-Arousal Speech Noise Improves Performance in N-Back Task: An ERP Study",
+    "authors": [
+      "Longzhu Han",
+      "Yunzhe Liu",
+      "Dandan Zhang",
+      "Yixiang Jin",
+      "Yuejia Luo"
+    ],
+    "year": 2013,
+    "journal": "PLoS ONE",
+    "volume": "8",
+    "issue": "10",
+    "pages": "e76261",
+    "publisher": "Public Library of Science (PLoS)",
+    "citation_count": 35,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1002/ACP.1543",
+      "10.1002/acp.1543",
+      "10.1002/hbm.20131",
+      "10.1016/0013-4694(96)00288-X",
+      "10.1016/0301-0511(85)90185-1",
+      "10.1016/B978-0-12-650351-7.50008-1",
+      "10.1016/S0022-5371(82)90521-7",
+      "10.1016/S0079-7421(08)60452-1",
+      "10.1016/j.heares.2011.10.007",
+      "10.1016/j.ijpsycho.2011.09.019",
+      "10.1016/j.ijpsycho.2012.09.007",
+      "10.1016/j.neuroimage.2010.12.004",
+      "10.1016/j.physbeh.2008.06.016",
+      "10.1016/j.physbeh.2010.01.001",
+      "10.1017/S0048577201990559",
+      "10.1017/S0048577202010223",
+      "10.1037/0033-2909.85.5.1052",
+      "10.1037/0278-7393.16.1.67",
+      "10.1037/H0024492",
+      "10.1037/a0023987",
+      "10.1037/a0028867",
+      "10.1037/a0031243",
+      "10.1037/h0024492",
+      "10.1080/00140130500434986",
+      "10.1093/CERCOR/8.7.563",
+      "10.1093/cercor/8.7.563",
+      "10.1097/00043764-195902000-00042",
+      "10.1111/1469-8986.3860998",
+      "10.1111/1469-8986.3910111",
+      "10.1111/J.1469-7610.2007.01749.X",
+      "10.1111/J.1469-8986.1991.TB00726.X",
+      "10.1111/J.2044-8295.1983.TB01845.X",
+      "10.1111/j.1460-9568.2009.06792.x",
+      "10.1111/j.1469-7610.2007.01749.x",
+      "10.1111/j.1469-8986.1991.tb00726.x",
+      "10.1111/j.2044-8295.1983.tb01845.x",
+      "10.1121/1.1907229",
+      "10.1146/ANNUREV.PS.34.020183.000341",
+      "10.1146/annurev.ps.34.020183.000341",
+      "10.1162/jocn.2008.20078",
+      "10.1186/1744-9081-6-55",
+      "10.1371/journal.pone.0014552",
+      "10.2466/pms.1964.19.2.441",
+      "10.2466/pms.1971.33.3.887",
+      "10.2466/pms.1985.61.2.415",
+      "10.2466/pms.1989.68.3.875",
+      "10.3758/BF03196169",
+      "10.3758/s13428-012-0203-3",
+      "10.4103/1463-1741.70502",
+      "10.4135/9781506307633.n618"
+    ],
+    "cited_by": [
+      "10.1007/s11332-025-01597-2",
+      "10.1101/2025.07.22.663934",
+      "10.7554/eLife.100830",
+      "10.1080/20445911.2025.2457774",
+      "10.1038/s44271-024-00158-6",
+      "10.1371/journal.pone.0288221",
+      "10.1016/j.jecp.2023.105807",
+      "10.1016/j.cortex.2023.11.005",
+      "10.1044/2023_JSLHR-23-00157",
+      "10.1101/2023.06.23.546263",
+      "10.1098/rsos.221128",
+      "10.1177/00187208221139017",
+      "10.3389/fnhum.2021.703422",
+      "10.1016/j.neuropsychologia.2020.107632",
+      "10.3389/fpsyg.2020.00789",
+      "10.1080/10253890.2019.1669557",
+      "10.1111/ejn.15455",
+      "10.3389/fpsyt.2020.00142",
+      "10.1016/j.ijpsycho.2020.01.006",
+      "10.1097/WNR.0000000000001276",
+      "10.1111/jcal.12441/v1/decision1",
+      "10.1111/ejn.14656",
+      "10.1016/j.biopsycho.2019.02.006",
+      "10.3389/fnbeh.2018.00308",
+      "10.1016/J.BUILDENV.2017.07.005",
+      "10.1016/j.neulet.2017.01.022",
+      "10.1038/srep23217",
+      "10.1016/j.heares.2015.08.001",
+      "10.3389/fnsys.2014.00008",
+      "10.12677/ap.2023.133096",
+      "10.1016/B978-0-12-817933-8.00054-2"
+    ],
+    "semantic_scholar_id": "15d9f7de2529185c7d270ebd344d37c5624ec872",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:47:04.468979+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Low-Arousal Speech Noise Improves Performance in N-Back Task: An ERP Study",
+    "crossref_year": 2013,
+    "crossref_citation_count": 37,
+    "crossref_journal": "PLoS ONE",
+    "crossref_publisher": "Public Library of Science (PLoS)",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 44,
+    "crossref_issn": [
+      "1932-6203"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.812461+00:00",
+    "_cr_refs_added": 9
+  },
+  "year": 2013,
+  "journal": "PLoS ONE",
+  "authors_structured": [
+    "Longzhu Han",
+    "Yunzhe Liu",
+    "Dandan Zhang",
+    "Yixiang Jin",
+    "Yuejia Luo"
+  ],
+  "crossref_title": "Low-Arousal Speech Noise Improves Performance in N-Back Task: An ERP Study",
+  "crossref_authors": [
+    {
+      "name": "Longzhu Han",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Yunzhe Liu",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Dandan Zhang",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Yi Jin",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Yuejia Luo",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2013,
+  "crossref_journal": "PLoS ONE",
+  "crossref_citation_count": 37,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Public Library of Science (PLoS)",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T12:01:27.948062+00:00"
+}

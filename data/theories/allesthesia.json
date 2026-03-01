@@ -1,0 +1,81 @@
+{
+  "theory_id": "ALLESTHESIA",
+  "name": "Allesthesia",
+  "originator": "Cabanac",
+  "year": 1971,
+  "citation": "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103-1107.",
+  "status": "REJECTED",
+  "parent_t1_frameworks": {
+    "IC": 80,
+    "NM": 15,
+    "PP": 5
+  },
+  "constructs": [
+    {
+      "construct_name": "Hedonic Contrast",
+      "description": "The reversal of hedonic valence in response to persistent or repeated stimulation. A pleasurable stimulus becomes aversive when homeostatic need is satiated.",
+      "template_ids": [
+        "IC-HOMEOSTASIS-001",
+        "NM-REWARD-003"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Allesthesia-Motivation Link",
+      "description": "Pleasure is contingent on physiological departure from setpoint. Alleviation of need (hunger, cold, pain) produces strong positive affect proportional to deficit magnitude.",
+      "template_ids": [
+        "IC-NEED-DRIVE-002",
+        "NM-MOTIVATIONAL-005"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    }
+  ],
+  "constituent_templates": [],
+  "template_coverage_pct": 0.0,
+  "maturity": "how-actually",
+  "irreducible_residual": null,
+  "rejection_rationale": "Single mechanism, not a theory family \u2014 belongs at T2 level. Allesthesia (pleasure from homeostatic correction) is a single mechanism within IC, not a family of domain-level phenomena with constructs. It is properly a T2 template contributing TO the Adaptive Thermal Comfort T1.5 theory, not a T1.5 theory itself.",
+  "child_molecules": [],
+  "google_scholar_count": 800,
+  "key_references": [
+    "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103-1107. doi:10.1126/science.173.4002.1103 [800+ citations]",
+    "Cabanac, M. (1979). Sensory pleasure. Quarterly Review of Biology, 54(1), 1-29. doi:10.1086/411822 [520+ citations]",
+    "Cabanac, M., Massonnet, B., & Besson, R. (1997). Pleasure in learning. Neuroscience & Biobehavioral Reviews, 21(6), 811-819. doi:10.1016/S0149-7634(97)00017-0 [180+ citations]",
+    "Berridge, K. C., & Kringelbach, M. L. (2013). Neuroscience of affect: brain mechanisms of pleasure and displeasure. Current Opinion in Neurobiology, 23(3), 294-303. doi:10.1016/j.conb.2013.01.017 [1650+ citations]"
+  ],
+  "reduced_in": "Master paper \u00a778.1",
+  "function_form": {
+    "function_form": "H(s, d) = \u03b1\u00b7d\u00b7exp(-\u03b2\u00b7s\u00b2); d = max(0, sp - current)",
+    "variables": {
+      "H(s,d)": "Hedonic response to stimulus s given deficit d",
+      "d": "Homeostatic deficit (distance from set-point sp)",
+      "s": "Stimulus intensity",
+      "\u03b1": "Sensitivity parameter",
+      "\u03b2": "Satiation rate",
+      "sp": "Set-point (adaptable over hours-days)"
+    },
+    "predictions": [
+      "Cold drink pleasure proportional to body heat deficit",
+      "Hedonic reversal: same stimulus \u2192 opposite valence when need satiated"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103-1107.",
+    "predecessor": "Homeostatic theory (Cannon, 1932); hedonic theories of motivation",
+    "historical_context": "Cabanac showed that the pleasantness of a stimulus depends on internal state \u2014 cold water feels pleasant when overheated, unpleasant when cold. Extended to architecture: thermal pleasure varies with thermal deficit.",
+    "key_milestones": [
+      "1971: Original Science paper",
+      "1979: 'Sensory pleasure' review",
+      "2006: Parkinson & de Dear architectural application"
+    ],
+    "influenced_by": [
+      "W.B. Cannon (homeostasis)",
+      "H. Helson (adaptation level)"
+    ],
+    "current_status": "actively_debated",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  }
+}

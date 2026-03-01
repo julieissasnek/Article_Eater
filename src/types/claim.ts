@@ -5,7 +5,7 @@
  */
 
 import { Maturity, BridgingQuality } from './template';
-import { EdgeType, Confidence } from './reduction';
+import { EdgeType, ConfidenceLevel } from './reduction';
 
 /**
  * Concrete instantiation of a template's prediction.
@@ -63,5 +63,5 @@ export interface ReductionEdge {
   edge_type: EdgeType;
 
   /** Confidence in this specific edge */
-  confidence: Confidence;
+  confidence: ConfidenceLevel;
 }

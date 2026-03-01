@@ -22,6 +22,8 @@ from datetime import datetime, timezone
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
+from resolve_fields import resolve_field, get_mechanism_chain, get_confidence, get_bridge_warrant, is_calibrated, get_calibration_status, get_panel_source
+
 
 PROJECT_ROOT = Path(__file__).parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "data" / "templates"
@@ -35,10 +37,10 @@ T1_FRAMEWORKS = {"PP", "SN", "DP", "DT", "NM", "IC", "MS", "EC", "CB", "MSI"}
 BRIDGE_CEILINGS = {
     "CONSTITUTIVE": 0.75,
     "MECHANISM": 0.60,
-    "EMPIRICAL_COVARIANCE": 0.60,
+    "EMPIRICAL_ASSOCIATION": 0.60,
     "FUNCTIONAL": 0.50,
     "CAPACITY": 0.45,
-    "THEORETICAL_DEFAULT": 0.40,
+    "THEORY_DERIVED": 0.40,
     "ANALOGICAL": 0.35,
 }
 
@@ -88,19 +90,10 @@ def derive_name(template_id: str) -> str:
     return name
 
 
-def get_calibration_status(data: dict) -> str:
-    """Extract calibration status from various field names."""
-    if "calibration_status" in data:
-        return data["calibration_status"]
-    if "status" in data:
-        status = data["status"]
-        if status in ("calibrated", "scaffold", "uncalibrated", "partial"):
-            return status
-        if status == "calibrated":
-            return "calibrated"
-    if data.get("calibrated") is True:
-        return "calibrated"
-    return "uncalibrated"
+def get_calibration_status_local(data: dict) -> str:
+    """Extract calibration status from various field names using canonical resolver."""
+    status = get_calibration_status(data)  # Use resolver from resolve_fields
+    return status if status else "uncalibrated"
 
 
 def validate_scaffold(data: dict, result: ValidationResult) -> bool:
@@ -153,8 +146,8 @@ def validate_calibrated(data: dict, result: ValidationResult) -> bool:
     errors = []
     warnings = []
 
-    # Must have mechanism_chain or mechanism_steps
-    chain = data.get("mechanism_chain") or data.get("mechanism_steps", [])
+    # Must have mechanism_chain or mechanism_steps (use resolver)
+    chain = get_mechanism_chain(data)
     if not chain:
         errors.append("Calibrated template missing mechanism_chain")
     else:
@@ -165,15 +158,15 @@ def validate_calibrated(data: dict, result: ValidationResult) -> bool:
             if not step.get("description") and not step.get("process"):
                 errors.append(f"mechanism_chain[{i}] missing description/process")
 
-    # Must have bridge_warrant
-    warrant = data.get("bridge_warrant") or data.get("bridge_warrant_type")
+    # Must have bridge_warrant (use resolver)
+    warrant = get_bridge_warrant(data)
     if not warrant:
         errors.append("Calibrated template missing bridge_warrant")
     elif warrant.upper() not in BRIDGE_CEILINGS:
         errors.append(f"Unknown bridge_warrant type: {warrant}")
 
-    # Must have confidence
-    confidence = data.get("confidence") or data.get("prior_confidence") or data.get("bridge_prior")
+    # Must have confidence (use resolver)
+    confidence = get_confidence(data)
     if confidence is None:
         errors.append("Calibrated template missing confidence/prior_confidence/bridge_prior")
     elif warrant and warrant.upper() in BRIDGE_CEILINGS:
@@ -185,8 +178,8 @@ def validate_calibrated(data: dict, result: ValidationResult) -> bool:
     if not data.get("calibrated_parameters"):
         warnings.append("Calibrated template missing calibrated_parameters")
 
-    # Should have cross_template_interactions
-    interactions = data.get("cross_template_interactions") or data.get("super_template_interactions")
+    # Should have cross_template_interactions (use resolver)
+    interactions = resolve_field(data, "cross_template_interactions")
     if not interactions:
         warnings.append("Calibrated template missing cross_template_interactions")
 
@@ -213,7 +206,7 @@ def validate_template(file_path: Path, verbose: bool = False) -> ValidationResul
         return result
 
     result.template_id = data.get("template_id", file_path.stem)
-    result.calibration_status = get_calibration_status(data)
+    result.calibration_status = get_calibration_status_local(data)
 
     # Validate scaffold tier
     result.scaffold_pass = validate_scaffold(data, result)
@@ -235,15 +228,19 @@ def run_validation(verbose: bool = False) -> dict:
     json_files = sorted(TEMPLATES_DIR.glob("*.json"))
 
     for file_path in json_files:
-        result = validate_template(file_path, verbose)
-        results.append(result)
+        try:
+            result = validate_template(file_path, verbose)
+            results.append(result)
 
-        if verbose and (result.errors or result.warnings):
-            print(f"\n{result.template_id}:")
-            for e in result.errors:
-                print(f"  ERROR: {e}")
-            for w in result.warnings:
-                print(f"  WARN: {w}")
+            if verbose and (result.errors or result.warnings):
+                print(f"\n{result.template_id}:")
+                for e in result.errors:
+                    print(f"  ERROR: {e}")
+                for w in result.warnings:
+                    print(f"  WARN: {w}")
+        except Exception as e:
+            # Gracefully skip corrupt templates instead of crashing
+            print(f"SKIP (corrupt): {file_path.name} — {e}", file=__import__('sys').stderr)
 
     # Compute summary
     total = len(results)

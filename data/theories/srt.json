@@ -1,0 +1,128 @@
+{
+  "theory_id": "SRT",
+  "name": "Stress Recovery Theory",
+  "originator": "Ulrich",
+  "year": 1983,
+  "citation": "Ulrich, R.S. (1983). Aesthetic and affective response to natural environment. In I. Altman & J.F. Wohlwill (Eds.), Behavior and the natural environment (pp. 85-125). Plenum.",
+  "status": "REDUCED",
+  "parent_t1_frameworks": {
+    "IC": 35,
+    "NM": 35,
+    "PP": 30
+  },
+  "constructs": [
+    {
+      "construct_name": "Immediate Affective Response",
+      "description": "Rapid (100ms-5s) positive affective shift via pulvinar low road. Five-stage subcortical cascade: retina \u2192 SC \u2192 pulvinar \u2192 amygdala \u2192 hypothalamus \u2192 autonomic initiation.",
+      "template_ids": [
+        "DP_IMPLICIT_EVALUATION_001",
+        "NM_SAFETY_SIGNALING_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Parasympathetic Activation",
+      "description": "Ventral vagal dominance (not dorsal vagal). vmPFC tonic sympathetic inhibition when amygdala threat detection is low. Measured by RSA, not generic HRV.",
+      "template_ids": [
+        "ALLOSTATIC_MASTER_001",
+        "NM_THREAT_HPA_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Cortisol/HPA Recovery",
+      "description": "HPA axis downregulation \u2014 nature prevents new cortisol release and allows existing cortisol to clear (half-life 60-90 min). Sapolsky's virtuous cycle: recovery enables more recovery.",
+      "template_ids": [
+        "NM_THREAT_HPA_001",
+        "ALLOSTATIC_MASTER_001",
+        "AX_CHRONIC_ACUTE_011"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    }
+  ],
+  "constituent_templates": [
+    "DP_IMPLICIT_EVALUATION_001",
+    "NM_SAFETY_SIGNALING_001",
+    "ALLOSTATIC_MASTER_001",
+    "NM_THREAT_HPA_001",
+    "AX_CHRONIC_ACUTE_011",
+    "AX_CONTROL_STRESS_004",
+    "MULTIMODAL_PE_INTEGRATION_001"
+  ],
+  "template_coverage_pct": 0.85,
+  "maturity": "how-actually",
+  "irreducible_residual": {
+    "schema_gaps": [
+      "Enteric vagal pathway (rest-and-digest) not yet templated"
+    ],
+    "compositional_adequacy": "INTERACTION_DEPENDENT",
+    "narrative": "Minimal residual for mechanism. The residual concerns the subjective quality of the affective shift \u2014 why a safety signal 'feels good' rather than merely reducing arousal. This phenomenological dimension is partially addressable through interoceptive inference (IC framework) but remains a classic hard-problem frontier. The implicit-automatic processing channel \u2014 the claim that stress recovery begins before conscious evaluation \u2014 is the core organizing principle."
+  },
+  "rejection_rationale": "",
+  "child_molecules": [
+    "SRT"
+  ],
+  "google_scholar_count": 3000,
+  "key_references": [
+    "Ulrich, R.S. (1984). View through a window. Science, 224(4647), 420-421.",
+    "Ulrich, R.S. et al. (1991). Stress recovery during exposure. J. Environ. Psychol., 11(3), 201-230.",
+    "Porges, S.W. (2011). The polyvagal theory. Norton."
+  ],
+  "reduced_in": "Master paper \u00a774; Panel T2-B (SRT Reduction, 2026-02-15)",
+  "function_form": {
+    "function_form": "\u03c3(t) = \u03c3\u2080 \u00b7 exp(-\u03bb\u00b7N(t)) + \u03b5(t); N(t) = \u222b\u2080\u1d57 n(s)\u00b7v(s)\u00b7ds",
+    "variables": {
+      "\u03c3(t)": "Physiological stress at time t",
+      "\u03c3\u2080": "Initial stress level",
+      "\u03bb": "Recovery rate constant",
+      "N(t)": "Cumulative nature exposure",
+      "n(s)": "Nature element density",
+      "v(s)": "Visibility/access at time s",
+      "\u03b5(t)": "Stochastic noise term"
+    },
+    "predictions": [
+      "Stress recovery begins within 3-5 minutes of nature view exposure",
+      "Green view through window reduces cortisol ~15% (d \u2248 0.4-0.7)"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "Ulrich, R.S. (1983). Aesthetic and affective response to natural environment. In Behavior and the Natural Environment.",
+    "predecessor": "Zajonc's affective primacy hypothesis; evolutionary aesthetics (Appleton, 1975)",
+    "historical_context": "Proposed that nature triggers automatic positive affective responses that reduce stress. The 1984 hospital study (view through window) became one of the most cited papers in environmental psychology.",
+    "key_milestones": [
+      "1981: Ulrich's scenic beauty study",
+      "1983: SRT formal theory",
+      "1984: Hospital window study"
+    ],
+    "influenced_by": [
+      "Zajonc (affective primacy)",
+      "Appleton (prospect-refuge)",
+      "Berlyne (arousal aesthetics)"
+    ],
+    "current_status": "foundational",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  },
+  "citing_papers": [
+    "10.3389_fpsyg.2022.986627",
+    "10.1016_j.buildenv.2009.05.014",
+    "10.1162_pres.1997.6.6.603",
+    "10.1016_j.landurbplan.2012.12.013",
+    "10.59324_ejtas.2023.1(5).86",
+    "10.1016_j.foar.2019.10.005",
+    "10.1080_00038628.2021.1910480",
+    "10.17863_cam.41365",
+    "10.1016_j.buildenv.2015.02.013",
+    "10.1016_j.healthplace.2018.07.012",
+    "10.1016_j.jenvp.2009.11.001",
+    "10.1080_17508975.2020.1732859",
+    "10.1016_j.envint.2019.105427",
+    "10.1080_02699938708408362",
+    "10.1093_jurban_jtg063"
+  ],
+  "citation_count": 20,
+  "citing_papers_verification": "grounded_from_extractions"
+}

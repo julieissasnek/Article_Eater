@@ -1343,6 +1343,8 @@ async def diff_snapshots(
 # Router Aggregation
 # =============================================================================
 
+from app.routes.api_batch import batch_router
+from app.routes.api_causal import causal_router
 
 def get_extended_router() -> APIRouter:
     """Get the extended API router with all sub-routers."""
@@ -1353,6 +1355,8 @@ def get_extended_router() -> APIRouter:
     router.include_router(graph_router)
     router.include_router(bundles_router)
     router.include_router(history_router)
+    router.include_router(batch_router)
+    router.include_router(causal_router)
 
     return router
 

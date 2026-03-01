@@ -114,8 +114,8 @@ def test_claim_direction_matters(seeded_db_path: str) -> None:
     confirming = evaluate_paper(
         structured_claims=[
             {
-                "iv": "ambient_noise_70dba",
-                "dv": "divergent_creativity",
+                "iv": "ambient_noise_level",
+                "dv": "processing_fluency",
                 "direction": "increase",
                 "effect_size": 0.6,
             }
@@ -125,15 +125,15 @@ def test_claim_direction_matters(seeded_db_path: str) -> None:
     contradicting = evaluate_paper(
         structured_claims=[
             {
-                "iv": "ambient_noise_70dba",
-                "dv": "divergent_creativity",
+                "iv": "ambient_noise_level",
+                "dv": "processing_fluency",
                 "direction": "decrease",
                 "effect_size": -0.6,
             }
         ],
         db_path=seeded_db_path,
     )
-
+    
     assert confirming["findings"][0]["assessment"] != contradicting["findings"][0]["assessment"]
     assert any(update.get("type") == "confirms" for update in confirming["template_system_updates"])
     assert any(update.get("type") == "contradicts" for update in contradicting["template_system_updates"])
@@ -174,8 +174,8 @@ def test_contradiction_detected_correctly(seeded_db_path: str) -> None:
     result = evaluate_paper(
         structured_claims=[
             {
-                "iv": "ceiling_height",
-                "dv": "creativity",
+                "iv": "spatial_enclosure_ratio",
+                "dv": "creative_network_dynamics",
                 "direction": "decrease",
                 "effect_size": -0.5,
             }
@@ -210,8 +210,8 @@ def test_gap_identified_for_unmapped_variables(seeded_db_path: str) -> None:
 
 def test_full_provenance_chain(seeded_db_path: str) -> None:
     claim = {
-        "iv": "ceiling_height",
-        "dv": "creativity",
+        "iv": "spatial_enclosure_ratio",
+        "dv": "creative_network_dynamics",
         "direction": "increase",
         "effect_size": 0.6,
         "sample_n": 80,
@@ -281,8 +281,8 @@ def test_paper_and_building_agree_on_ceiling_direction(seeded_db_path: str) -> N
     paper = evaluate_paper(
         structured_claims=[
             {
-                "iv": "ceiling_height",
-                "dv": "creativity",
+                "iv": "spatial_enclosure_ratio",
+                "dv": "creative_network_dynamics",
                 "direction": "increase",
                 "effect_size": 0.5,
             }
@@ -304,8 +304,8 @@ def test_paper_contradiction_aligns_with_system_prediction(seeded_db_path: str) 
     paper = evaluate_paper(
         structured_claims=[
             {
-                "iv": "ceiling_height",
-                "dv": "creativity",
+                "iv": "spatial_enclosure_ratio",
+                "dv": "creative_network_dynamics",
                 "direction": "decrease",
                 "effect_size": -0.5,
             }

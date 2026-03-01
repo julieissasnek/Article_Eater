@@ -1,0 +1,142 @@
+{
+    "molecule_id": "GOLDILOCKS_PRINCIPLE",
+    "name": "The Goldilocks Principle: Optimal Stimulation Across Modalities",
+    "short_description": "Cross-modal inverted-U preference curves arising from prediction error optimization within metabolic efficiency windows. The unifying mechanism behind Berlyne's Wundt curve, Kaplan's preference matrix, and domain-specific comfort zones across visual, thermal, acoustic, temporal, and social dimensions of architecture.",
+    "components": [
+        {
+            "name": "Visual Complexity Optimum",
+            "template_ids": [
+                "PP_COMPLEXITY_GOLDILOCKS_002",
+                "PP_SPECTRAL_MATCH_001",
+                "LUM_CONTRAST_PE_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "Fractal dimension D approx 1.3 produces maximal processing fluency via V1/V2 efficient coding. Luminance contrast ratio 1:7-1:15 for aesthetic range. Visual rhythm scaling at 1/f^beta (beta approx 2.6). Fractal complexity and luminance contrast are synergistic: optimal fractal D with optimal contrast ratio produces greater preference than either alone."
+        },
+        {
+            "name": "Thermal Comfort Optimum",
+            "template_ids": [
+                "THERMAL_ADAPTIVE_PE_001",
+                "ALLOSTATIC_MASTER_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "Adaptive neutral = 0.31 x T_running_mean + 17.8C. Comfort zone +/-1C; positive alliesthesia (thermal delight) at +/-1-3C when directionally corrective; tolerance +/-3-5C; discomfort beyond +/-5C. Person-dependent via running-mean outdoor temperature expectation."
+        },
+        {
+            "name": "Acoustic Comfort Optimum",
+            "template_ids": [
+                "AUD_SCENE_ANALYSIS_001",
+                "ACOUSTIC_EMOTION_MAPPING_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "Peak pleasantness at 50-60 dB LAeq. Below 45 dB: boring/unsettling. Above 70 dB: aversive. Natural sound content (birdsong, water) shifts optimum upward by +5-10 dB via biophilic reward. Mechanical sound content (traffic, HVAC) shifts optimum downward. ISO 12913 soundscape framework."
+        },
+        {
+            "name": "Temporal Variation Optimum",
+            "template_ids": [
+                "DYNAMIC_LIGHT_TEMPORAL_001",
+                "ARCH_PROMENADE_TEMPORAL_PE_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "Light variation: 0.01-2.0 cycles/min optimal engagement; amplitude 8-35% of mean luminance. Architectural promenade: optimal threshold density along movement path — too many rapid compression-release thresholds produce fatigue, too few produce boredom. Light variation and spatial thresholds are synergistic: temporal light changes coordinated with spatial transitions amplify the promenade experience."
+        },
+        {
+            "name": "Social Density Optimum",
+            "template_ids": [
+                "XF_SOCIAL_AFFORDANCE_DENSITY_001"
+            ],
+            "interaction_type": "ADDITIVE",
+            "description": "Optimal range: 3-5 simultaneous social modes supported by spatial configuration. Dunbar saturation threshold: monitoring cost exceeds benefit when >6 conversational groups occupy the visual field. Below 2 modes: social isolation/loneliness. Person-dependent via introversion-extraversion trait."
+        },
+        {
+            "name": "Cognitive Complexity Optimum",
+            "template_ids": [
+                "CREA2_PROCESSING_STYLE_MODULATION_001",
+                "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+                "ER_ECOLOGICAL_RATIONALITY_001"
+            ],
+            "interaction_type": "SYNERGISTIC",
+            "description": "Environmental complexity for creativity: moderate novelty promotes divergent thinking via exploratory processing style; excessive novelty overwhelms working memory and collapses to convergent/defensive processing. The environmental Goldilocks zone for creativity has different optima than for comfort — creativity requires higher PE than relaxation but lower PE than stress."
+        }
+    ],
+    "constituent_templates": [
+        "PP_COMPLEXITY_GOLDILOCKS_002",
+        "PP_SPECTRAL_MATCH_001",
+        "LUM_CONTRAST_PE_001",
+        "THERMAL_ADAPTIVE_PE_001",
+        "ALLOSTATIC_MASTER_001",
+        "AUD_SCENE_ANALYSIS_001",
+        "ACOUSTIC_EMOTION_MAPPING_001",
+        "DYNAMIC_LIGHT_TEMPORAL_001",
+        "ARCH_PROMENADE_TEMPORAL_PE_001",
+        "XF_SOCIAL_AFFORDANCE_DENSITY_001",
+        "CREA2_PROCESSING_STYLE_MODULATION_001",
+        "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+        "ER_ECOLOGICAL_RATIONALITY_001",
+        "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+        "NM_SAFETY_SIGNALING_001",
+        "AX_CONTROL_STRESS_004"
+    ],
+    "interaction_graph": {
+        "PP_COMPLEXITY_GOLDILOCKS_002": {
+            "LUM_CONTRAST_PE_001": "SYNERGISTIC",
+            "PP_SPECTRAL_MATCH_001": "SYNERGISTIC",
+            "NM_DOPAMINERGIC_NOVELTY_REWARD_001": "PRODUCES"
+        },
+        "THERMAL_ADAPTIVE_PE_001": {
+            "ALLOSTATIC_MASTER_001": "PRODUCES",
+            "PP_COMPLEXITY_GOLDILOCKS_002": "MODULATES"
+        },
+        "AUD_SCENE_ANALYSIS_001": {
+            "ACOUSTIC_EMOTION_MAPPING_001": "SYNERGISTIC",
+            "NM_SAFETY_SIGNALING_001": "PRODUCES"
+        },
+        "DYNAMIC_LIGHT_TEMPORAL_001": {
+            "ARCH_PROMENADE_TEMPORAL_PE_001": "SYNERGISTIC"
+        },
+        "ALLOSTATIC_MASTER_001": {
+            "AX_CONTROL_STRESS_004": "MODULATES"
+        },
+        "NM_DOPAMINERGIC_NOVELTY_REWARD_001": {
+            "NM_SAFETY_SIGNALING_001": "ADDITIVE"
+        }
+    },
+    "framework_ids": ["PP", "IC", "NM", "IE-DPT", "EC"],
+    "domain": "cross_modal_optimization",
+    "molecule_type": "PHENOMENON",
+    "scope_conditions": [
+        "Applies to neurotypical adult populations; optima may differ for neurodivergent individuals (e.g., sensory sensitivity in autism shifts optima leftward)",
+        "Assumes steady-state exposure; transient exposure may not reach equilibrium preference",
+        "Cross-modal interactions (e.g., thermal comfort shifting visual complexity tolerance) are documented but not yet fully quantified",
+        "Cultural and experiential history shifts optima via IE-DPT prior expectations"
+    ],
+    "overall_maturity": "SUPPORTED",
+    "key_references": [
+        "Berlyne, D.E. (1971). Aesthetics and psychobiology. Appleton-Century-Crofts.",
+        "Kaplan, R. & Kaplan, S. (1989). The experience of nature. Cambridge University Press.",
+        "Taylor, R.P. et al. (2011). Front. Hum. Neurosci., 5, 60.",
+        "de Dear, R.J. & Brager, G.S. (1998). ASHRAE Transactions, 104(1), 145-167.",
+        "Sterling, P. (2012). Physiology & Behavior, 106(1), 5-15.",
+        "Friston, K. (2010). Nature Reviews Neuroscience, 11(2), 127-138.",
+        "Vessel, E.A. et al. (2012). Front. Hum. Neurosci., 6, 66.",
+        "Wundt, W. (1874). Grundzüge der physiologischen Psychologie."
+    ],
+    "empirical_support": "SUPPORTED",
+    "competing_theories": [],
+    "design_implications": [
+        "Visual complexity: target fractal dimension D = 1.2-1.5 in surface textures, facade patterns, and interior finishes. Use 1/f scaling in spatial rhythm (window spacing, column rhythm, material transitions).",
+        "Luminance: target global contrast ratio 1:7 to 1:15 for aesthetic spaces; CV of luminance 0.5-1.5 for comfort; permit CV > 1.5 for dramatic/awe spaces only with bright zone < 20% visual field.",
+        "Thermal: design for adaptive neutral +/-1C as the primary comfort target; allow +/-3C excursions only when directionally corrective (warm after cold exposure, cool after heat). Avoid uniform thermal environments — mild thermal variation engages positive alliesthesia.",
+        "Acoustic: target 50-60 dB LAeq for restorative spaces; incorporate natural sound sources (water features, vegetation rustling) to shift pleasantness upward. Maintain speech privacy (STI < 0.20) in individual work zones.",
+        "Temporal: vary lighting at 0.01-2.0 cycles/min to maintain engagement without flicker annoyance. In circulation sequences, space compression-release thresholds to allow recovery (the promenade principle).",
+        "Social: configure spaces to support 3-5 simultaneous social modes. Avoid layouts that force >6 conversational groups into a single visual field (Dunbar saturation).",
+        "General: the optimum is person-dependent — provide controllability so occupants can adjust toward their personal optimum. Spaces with higher controllability have wider effective Goldilocks zones."
+    ],
+    "confidence_intervals": {
+        "visual_complexity_d": {"range": [0.25, 0.55], "typical_d": 0.35, "source": "Taylor et al. 2011; Vessel et al. 2012"},
+        "thermal_comfort_d": {"range": [0.30, 0.80], "typical_d": 0.52, "source": "de Dear & Brager 1998; Cabanac 1971"},
+        "acoustic_pleasantness_d": {"range": [0.20, 0.60], "typical_d": 0.40, "source": "ISO 12913; Axelsson et al. 2010"},
+        "overall_note": "Effect sizes are domain-specific; the cross-modal universality claim is supported at d = 0.35-0.52 per domain"
+    },
+    "parent_t1_5_theory": "GOLDILOCKS_PRINCIPLE"
+}

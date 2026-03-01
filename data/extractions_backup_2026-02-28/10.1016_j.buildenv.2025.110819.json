@@ -1,0 +1,250 @@
+{
+  "paper_title": "Color Matters: Investigating Stress Recovery in VR-Simulated Interior Environments Using fNIRS and Anxiety Measures",
+  "authors": [
+    "Dehan JIA",
+    "Wenan LI",
+    "Xingkai WANG",
+    "Yuyang JIANG",
+    "Guobin XIA",
+    "Luwen YU"
+  ],
+  "year": 2025,
+  "doi": "https://doi.org/10.1016/j.buildenv.2025.113609",
+  "venue": "Building and Environment",
+  "abstract": "Psychological stress is a growing global health concern, contributing to anxiety, burnout, and chronic illness. While traditional interventions focus on individual behaviors, environmental design-especially interior space where people spend most of their time-offers a scalable avenue for stress modulation. Among environmental stimuli, color is a powerful yet underutilized perceptual factor known to influence emotion and cognition. This study examines the impact of wall colors on acute stress recovery using a multimodal approach that combines immersive virtual reality (VR), functional near-infrared spectroscopy (fNIRS), and self-reported anxiety assessments. A total of 38 participants were exposed to seven monochromatic colored-wall conditions (red, blue, orange, yellow, green, purple, and white), representing distinct hues across the visible color spectrum, during a 60-second post-stress recovery period. Brain activation in prefrontal regions and subjective anxiety levels were analyzed. Red and purple walls heightened activation in the DLPFC, PreM&SMC, and FEF, indicating increased cognitive control, motor readiness, and attentional vigilance, which aligned with elevated anxiety (p < .05). In contrast, white and blue reduced activation and supported emotional downregulation (p < .05), suggesting a restorative effect. Time-course analyses revealed early reactivity under red (0-20s) and delayed, stable responses under white (40-60s), highlighting color-specific modulation of stress-related neural functions and offering practical insights for designing stress-mitigating environments.\u2013By integrating neural and behavioral evidence, the findings underscore the importance of color as a time-sensitive environmental variable, offering insights for the evidence-based design of stress-sensitive spaces.",
+  "methodology": {
+    "study_design": "Within-subject experimental design",
+    "methods_used": [
+      "Immersive Virtual Reality (VR) using Oculus Quest 2 headset",
+      "Functional Near-Infrared Spectroscopy (fNIRS) with a 67-channel instrument (KY-A, Wuhan YIRUIDE Group) to measure oxygenated hemoglobin (HbO) and deoxygenated hemoglobin (HbR) concentrations, focusing on HbO.",
+      "Self-reported anxiety assessments using the short-form Spielberger State-Trait Anxiety Inventory (STAIS-5)",
+      "Standardized cognitive stressor: Paced Auditory Serial Addition Task - Computerized (PASAT-C)",
+      "Color manipulation in HSL color space (Hue, Saturation, Lightness) with saturation and lightness held constant, and CIE Lab* values reported for perceptual consistency.",
+      "Data pre-processing with NIRS-KIT toolbox, linear detrending, Temporal Derivative Distribution Repair (TDDR) algorithm, Butterworth band-pass filter, and modified Beer-Lambert law.",
+      "Statistical analyses: Paired-samples t-tests, two-way Repeated Measures ANOVAs (Color \u00d7 Time), Pearson correlation analyses, FDR correction for multiple comparisons."
+    ],
+    "regions_of_interest": [
+      "Frontal Pole Area (FPA)",
+      "Dorsolateral Prefrontal Cortex (DLPFC)",
+      "Premotor and Supplementary Motor Cortex (PreM & SMC)",
+      "Frontal Eye Fields (FEF)"
+    ],
+    "recovery_period_segmentation": [
+      "T1 (0-20 seconds): Early recovery phase",
+      "T2 (20-40 seconds): Mid-recovery phase",
+      "T3 (40-60 seconds): Late recovery phase"
+    ]
+  },
+  "sample": {
+    "size": 38,
+    "demographics": "20 males, 18 females; age 21\u201333; right-handed university students with normal color vision, no neurological or psychiatric history, and prior experience with VR."
+  },
+  "manipulated_features": {
+    "feature_type": "Wall color in VR-simulated interior environments",
+    "colors": [
+      "Red",
+      "Blue",
+      "Orange",
+      "Yellow",
+      "Green",
+      "Purple",
+      "White"
+    ],
+    "control": "Saturation and lightness were held constant across colors. Floor and ceiling remained a neutral gray tone."
+  },
+  "outcomes": {
+    "neurophysiological": [
+      "Changes in oxygenated hemoglobin (HbO) concentrations in DLPFC, FPA, PreM&SMC, and FEF."
+    ],
+    "psychological": [
+      "Subjective anxiety levels measured by STAIS-5 scores (before and after each color exposure)."
+    ]
+  },
+  "key_findings": [
+    {
+      "category": "Stress Induction Validation (HbO activation during stress vs. baseline)",
+      "details": "All four ROIs exhibited significantly increased activation during the stress phase compared to baseline.",
+      "effects": [
+        {
+          "roi": "DLPFC",
+          "t_value": 4.83,
+          "p_value": "<.001"
+        },
+        {
+          "roi": "FPA",
+          "t_value": 3.92,
+          "p_value": "<.001"
+        },
+        {
+          "roi": "PreM&SMC",
+          "t_value": 3.44,
+          "p_value": "<.01"
+        },
+        {
+          "roi": "FEF",
+          "t_value": 4.29,
+          "p_value": "<.001"
+        }
+      ]
+    },
+    {
+      "category": "Main Effect of Wall Color on Cortical Activation (HbO)",
+      "details": "A significant main effect of Color was found in DLPFC, PreM&SMC, and FEF.",
+      "effects": [
+        {
+          "roi": "DLPFC",
+          "f_value": "F(6, 216) = 2.52",
+          "p_value": "<.05",
+          "eta_squared": 0.07,
+          "pairwise_comparison": "Red/Yellow/Purple > White"
+        },
+        {
+          "roi": "PreM&SMC",
+          "f_value": "F(6, 216) = 5.56",
+          "p_value": "<.001",
+          "eta_squared": 0.13,
+          "pairwise_comparison": "Red > Orange/Yellow/Purple/White; Blue/Orange/Yellow/Green > White; Green > Purple"
+        },
+        {
+          "roi": "FEF",
+          "f_value": "F(6, 216) = 2.74",
+          "p_value": "<.01",
+          "eta_squared": 0.07,
+          "pairwise_comparison": "Red > Green/White"
+        }
+      ]
+    },
+    {
+      "category": "Temporal Dynamics of Stress Recovery (HbO activation across time segments)",
+      "details": "A significant main effect of Time was observed in the PreM&SMC.",
+      "effects": [
+        {
+          "roi": "PreM&SMC",
+          "f_value": "F(2, 72) = 4.70",
+          "p_value": "<.05",
+          "eta_squared": 0.13,
+          "pairwise_comparison": "T2 (mid-recovery) > T1 (early recovery); T2 > T3 (late recovery)"
+        }
+      ]
+    },
+    {
+      "category": "Interaction Effect (Color \u00d7 Time) on Brain Activation (HbO)",
+      "details": "Significant Color \u00d7 Time interaction effects were identified in DLPFC and FEF.",
+      "effects": [
+        {
+          "roi": "DLPFC",
+          "f_value": "F(12, 432) = 1.90",
+          "p_value": "<.05",
+          "eta_squared": 0.05,
+          "pairwise_comparison": "T2 (mid-recovery): Yellow > White"
+        },
+        {
+          "roi": "FEF",
+          "f_value": "F(12, 432) = 1.81",
+          "p_value": "<.05",
+          "eta_squared": 0.05,
+          "pairwise_comparison": "T1 (early recovery): Red > Blue/Green/White; T3 (late recovery): White > Purple"
+        }
+      ]
+    },
+    {
+      "category": "Subjective Anxiety (STAIS-5 scores)",
+      "details": "Red and purple significantly increased anxiety compared to baseline. A significant main effect of Color was found.",
+      "effects": [
+        {
+          "color": "Red",
+          "t_value": "t(37) = 2.92",
+          "p_value": "<.05",
+          "comparison": "Significantly increased anxiety vs. baseline"
+        },
+        {
+          "color": "Purple",
+          "t_value": "t(37) = 2.88",
+          "p_value": "<.05",
+          "comparison": "Significantly increased anxiety vs. baseline"
+        },
+        {
+          "overall_color_effect": "F(6, 222) = 6.92",
+          "p_value": "<.001",
+          "eta_squared": 0.16,
+          "pairwise_comparison": "Red > Yellow/Blue/White; Purple > Blue/White"
+        }
+      ]
+    },
+    {
+      "category": "Correlations between HbO and STAIS-5 scores (exploratory findings)",
+      "details": "Several correlations reached statistical significance, but did not survive FDR correction for multiple comparisons.",
+      "effects": [
+        {
+          "roi": "DLPFC",
+          "color": "Yellow",
+          "r_value": -0.35,
+          "p_value": "<.05",
+          "correlation_type": "Negative correlation with anxiety"
+        },
+        {
+          "roi": "PreM&SMC",
+          "color": "White",
+          "r_value": 0.33,
+          "p_value": "<.05",
+          "correlation_type": "Positive correlation with anxiety"
+        },
+        {
+          "roi": "FEF",
+          "color": "Red",
+          "r_value": 0.37,
+          "p_value": "<.05",
+          "correlation_type": "Positive correlation with anxiety"
+        }
+      ]
+    }
+  ],
+  "theories_referenced": [
+    "Attention Restoration Theory (ART)",
+    "Neuroarchitecture",
+    "Visual processing theories"
+  ],
+  "mechanisms": [
+    "Red and Purple hues: Heightened brain activation (DLPFC, PreM&SMC, FEF) indicating increased cognitive control, motor readiness, and attentional vigilance, aligning with elevated anxiety. Warm hues are associated with arousal and cognitive load, potentially sustaining or amplifying stress-related cognitive and emotional demands. Early FEF activation for red may reflect enhanced visual salience, alerting mechanisms, and threat detection.",
+    "White and Blue walls: Reduced cortical activation and supported emotional downregulation, suggesting a restorative effect and lower cortical activity and emotional stability. Low-arousal colors may facilitate restorative attention.",
+    "Yellow walls: Exhibited peak activation in the DLPFC during the mid-recovery phase (T2), suggesting a role in supporting cognitive stability in later recovery stages without significantly altering subjective anxiety.",
+    "Time-sensitive color impacts: Color-induced attentional and emotional effects follow a temporal arc, where high-salience hues exert early influence, and low-arousal hues modulate sustained regulation. Recovery is not a uniform process but features phase-specific cortical dynamics."
+  ],
+  "limitations": [
+    "Fixed recovery duration (60 seconds) and limited exposure time per color may not capture long-term or cumulative effects.",
+    "Sample size (N=38) may limit generalizability.",
+    "Only fNIRS and self-report measures were used; incorporating physiological signals (e.g., heart rate, skin conductance) and real-world behavioral markers would provide a richer understanding.",
+    "Multi-sensory stimuli were not included.",
+    "Need for longer and adaptive exposure sequences.",
+    "Need to validate color timing strategies in real-world or clinical settings.",
+    "Individual differences in color-emotion associations were not fully explored."
+  ],
+  "design_implications": [
+    "Color is a time-sensitive environmental variable for stress regulation, suggesting dynamic color design rather than static application.",
+    "Initiating recovery with calming hues (e.g., white or blue) and transitioning to stabilizing hues (e.g., yellow) can sustain cognitive and emotional regulation.",
+    "In healthcare settings (hospitals, clinics), exposure to blue or white environments during initial recovery may promote down-regulation of stress-related cortical activity.",
+    "In offices, dynamic lighting schemes that shift hue intensity across the day can be used to support attention and relaxation cycles.",
+    "Findings inform evidence-based design strategies for therapeutic, educational, and public spaces, as well as stress-relief rooms and adaptive VR environments."
+  ],
+  "topic_tags": [
+    "color",
+    "virtual_reality",
+    "fNIRS",
+    "stress_recovery",
+    "neuroarchitecture",
+    "environmental_psychology",
+    "interior_design",
+    "anxiety",
+    "cognitive_control",
+    "emotional_regulation",
+    "attention",
+    "built_environment"
+  ],
+  "_meta": {
+    "source_pdf": "10.1016_j.buildenv.2025.110819.pdf",
+    "extracted_at": "2026-02-28T21:04:21.686204+00:00",
+    "model": "gemini-2.5-flash",
+    "cost_usd": 0.003586,
+    "elapsed_s": 32.5
+  }
+}

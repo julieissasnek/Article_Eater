@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 def check_mechanisms():
-    conn = sqlite3.connect("data/web_persistence.db")
+    conn = sqlite3.connect("data/web_persistence_v2.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     

@@ -1,0 +1,384 @@
+{
+  "_metadata": {
+    "description": "CMR Web of Belief — Partial Node/Edge Inventory (Skeleton)",
+    "version": "0.1.0",
+    "date": "2026-02-25",
+    "scope": "T1 frameworks, T1.5 domain theories, working models, axioms, and reduction edges. T2 templates to be populated from panel outputs.",
+    "total_nodes_in_skeleton": 40,
+    "estimated_total_nodes_complete": 130,
+    "total_edges_in_skeleton": 52,
+    "estimated_total_edges_complete": 400
+  },
+
+  "nodes": [
+    {
+      "id": "T1_PP",
+      "name": "Predictive Processing",
+      "tier": "T1",
+      "credence": 0.85,
+      "description": "The brain generates predictions about sensory input and updates models based on prediction errors. Friston 2010, Clark 2013.",
+      "key_references": ["Friston 2010", "Clark 2013", "Rao & Ballard 1999"],
+      "google_scholar_citations_lead": 12000,
+      "panel_source": "pre-pipeline"
+    },
+    {
+      "id": "T1_SAL",
+      "name": "Salience Network Theory",
+      "tier": "T1",
+      "credence": 0.80,
+      "description": "Anterior insula and dACC form a salience network that detects behaviourally relevant stimuli and coordinates large-scale network switching. Menon & Uddin 2010.",
+      "key_references": ["Menon & Uddin 2010", "Seeley et al. 2007"],
+      "google_scholar_citations_lead": 5000,
+      "panel_source": "pre-pipeline"
+    },
+    {
+      "id": "T1_DMN",
+      "name": "Default Mode Network / Place Cells",
+      "tier": "T1",
+      "credence": 0.85,
+      "description": "Hippocampal place cells, grid cells, and the DMN encode spatial context, support episodic memory, and mediate internally-directed cognition. O'Keefe & Nadel 1978, Raichle 2015.",
+      "key_references": ["O'Keefe & Nadel 1978", "Raichle 2015", "Moser et al. 2008"],
+      "google_scholar_citations_lead": 15000,
+      "panel_source": "pre-pipeline"
+    },
+    {
+      "id": "T1_DT",
+      "name": "Dual-Task / Cognitive Load",
+      "tier": "T1",
+      "credence": 0.80,
+      "description": "Working memory and attention have limited capacity; environmental demands that consume these resources degrade cognitive performance. Sweller 1988, Kahneman 1973.",
+      "key_references": ["Sweller 1988", "Kahneman 1973", "Wickens 2002"],
+      "google_scholar_citations_lead": 8000,
+      "panel_source": "pre-pipeline"
+    },
+    {
+      "id": "T1_NM",
+      "name": "Neuromodulation",
+      "tier": "T1",
+      "credence": 0.85,
+      "description": "DA, NE, ACh, and 5-HT systems modulate cortical processing modes. Dayan computational taxonomy: DA = reward PE, NE = unexpected uncertainty, ACh = expected uncertainty, 5-HT = aversive prediction. Yu & Dayan 2005, Schultz 1998.",
+      "key_references": ["Yu & Dayan 2005", "Schultz 1998", "Aston-Jones & Cohen 2005"],
+      "google_scholar_citations_lead": 6000,
+      "panel_source": "NEUROMOD-I"
+    },
+    {
+      "id": "T1_INT",
+      "name": "Interoception / Body Budget",
+      "tier": "T1",
+      "credence": 0.80,
+      "description": "The brain monitors and regulates the body's internal state (allostasis). Interoceptive signals contribute to affect and decision-making. Barrett 2017, Craig 2002.",
+      "key_references": ["Barrett 2017", "Craig 2002", "Sterling 2012"],
+      "google_scholar_citations_lead": 5000,
+      "panel_source": "THERMAL-I"
+    },
+    {
+      "id": "T1_MSI",
+      "name": "Multisensory Integration",
+      "tier": "T1",
+      "credence": 0.80,
+      "description": "The brain integrates information across sensory modalities using statistical inference. Crossmodal correspondences, temporal binding, spatial co-registration. Ernst & Banks 2002.",
+      "key_references": ["Ernst & Banks 2002", "Stein & Meredith 1993"],
+      "google_scholar_citations_lead": 4000,
+      "panel_source": "MULTI-I"
+    },
+    {
+      "id": "T1_EMB",
+      "name": "Embodied Cognition",
+      "tier": "T1",
+      "credence": 0.70,
+      "description": "Cognition is shaped by the body's interactions with the environment. Motor-sensory coupling, enactive perception, extended mind. Clark 1997, Varela et al. 1991.",
+      "key_references": ["Clark 1997", "Varela et al. 1991", "Thompson 2007"],
+      "google_scholar_citations_lead": 6000,
+      "panel_source": "pre-pipeline"
+    },
+    {
+      "id": "T1_CIRC",
+      "name": "Circadian Biology",
+      "tier": "T1",
+      "credence": 0.85,
+      "description": "Light entrains the suprachiasmatic nucleus to regulate circadian rhythms affecting alertness, mood, sleep, and metabolism. Czeisler 1999, Cajochen et al. 2005.",
+      "key_references": ["Czeisler 1999", "Cajochen et al. 2005"],
+      "google_scholar_citations_lead": 5000,
+      "panel_source": "LIGHT-I"
+    },
+    {
+      "id": "T1_MOTOR",
+      "name": "Motor-Sensory Integration",
+      "tier": "T1",
+      "credence": 0.75,
+      "description": "Active movement generates sensory predictions; locomotion and postural control interact with spatial cognition and creativity. Oppezzo & Schwartz 2014 (walking-creativity).",
+      "key_references": ["Oppezzo & Schwartz 2014", "Wolpert et al. 1995"],
+      "google_scholar_citations_lead": 3000,
+      "panel_source": "CREATIVE-I"
+    },
+
+    {
+      "id": "T15_BIOPHILIA",
+      "name": "Biophilia",
+      "tier": "T1.5",
+      "credence": 0.70,
+      "reduces_to": ["T1_PP", "T1_SAL"],
+      "description": "Innate affinity for natural elements and living systems. Wilson 1984. Reduces to PP (natural scenes match evolutionary generative model) and Salience (natural stimuli engage restoration circuits).",
+      "panel_source": "VISUAL-I"
+    },
+    {
+      "id": "T15_PROSPECT_REFUGE",
+      "name": "Prospect-Refuge Theory",
+      "tier": "T1.5",
+      "credence": 0.65,
+      "reduces_to": ["T1_PP", "T1_DMN"],
+      "description": "Preference for spaces offering both overview (prospect) and enclosure (refuge). Appleton 1975. Reduces to PP (spatial prediction of threat) and DMN/Place Cells (hippocampal encoding of refuge locations).",
+      "panel_source": "SPATIAL-I"
+    },
+    {
+      "id": "T15_ART",
+      "name": "Attention Restoration Theory",
+      "tier": "T1.5",
+      "credence": 0.60,
+      "reduces_to": ["T1_DT", "T1_SAL"],
+      "description": "Natural environments restore directed attention by engaging involuntary fascination. Kaplan 1995. DEMOTED from T1 during pre-pipeline assessment — subsumable under cognitive load theory.",
+      "panel_source": "pre-pipeline",
+      "notes": "Demoted from T1. Reduction to DT (attention as limited resource) and SAL (fascination as salience-network engagement)."
+    },
+    {
+      "id": "T15_SRT",
+      "name": "Stress Reduction Theory",
+      "tier": "T1.5",
+      "credence": 0.60,
+      "reduces_to": ["T1_INT", "T1_SAL"],
+      "description": "Natural environments reduce physiological stress. Ulrich 1983. DEMOTED from T1 during pre-pipeline assessment — subsumable under interoceptive regulation.",
+      "panel_source": "pre-pipeline",
+      "notes": "Demoted from T1. Reduction to INT (autonomic regulation) and SAL (threat detection modulation)."
+    },
+    {
+      "id": "T15_FRACTAL",
+      "name": "Fractal Fluency",
+      "tier": "T1.5",
+      "credence": 0.55,
+      "reduces_to": ["T1_PP"],
+      "description": "Mid-range fractal dimension (D ≈ 1.3–1.5) produces perceptual fluency and aesthetic preference. Taylor et al. 2011. Reduces to PP (fractal statistics match the visual system's generative model for natural scenes).",
+      "panel_source": "VISUAL-I"
+    },
+    {
+      "id": "T15_AWE",
+      "name": "Awe / Kama Muta",
+      "tier": "T1.5",
+      "credence": 0.50,
+      "reduces_to": ["T1_PP", "T1_NM", "T1_DMN"],
+      "description": "Vast or powerful stimuli that exceed current schemas trigger awe, involving need for accommodation, small-self experience, and DMN disruption. Keltner & Haidt 2003.",
+      "panel_source": "CROSSCUT-I",
+      "notes": "Multi-parent reduction: PP (schema violation), NM (NE arousal), DMN (self-referential suppression)."
+    },
+    {
+      "id": "T15_SPACE_SYNTAX",
+      "name": "Space Syntax",
+      "tier": "T1.5",
+      "credence": 0.60,
+      "reduces_to": ["T1_DMN", "T1_DT"],
+      "description": "Spatial configuration (integration, connectivity, visibility) predicts movement, wayfinding, and social interaction. Hillier & Hanson 1984. Reduces to DMN (spatial cognition) and DT (wayfinding cognitive load).",
+      "panel_source": "SPATIAL-I"
+    },
+    {
+      "id": "T15_SOUNDSCAPE",
+      "name": "Soundscape Ecology",
+      "tier": "T1.5",
+      "credence": 0.55,
+      "reduces_to": ["T1_MSI", "T1_SAL"],
+      "description": "Acoustic environment composition (geophony, biophony, anthrophony) affects restoration and cognitive performance. Schafer 1977, Pijanowski et al. 2011. Reduces to MSI (auditory-visual integration) and SAL (noise as salience signal).",
+      "panel_source": "MUSIC-I"
+    },
+    {
+      "id": "T15_PLACE_ATTACH",
+      "name": "Place Attachment",
+      "tier": "T1.5",
+      "credence": 0.50,
+      "reduces_to": ["T1_NM", "T1_DMN"],
+      "description": "Repeated positive experiences in a place create affective bonds mediated by mesolimbic DA. Lewicka 2011. Reduces to NM (incentive sensitisation) and DMN (episodic memory of place).",
+      "panel_source": "NEUROMOD-I"
+    },
+    {
+      "id": "T15_AESTHETIC_ANCHORING",
+      "name": "Aesthetic Anchoring (Candidate)",
+      "tier": "T1.5_candidate",
+      "credence": 0.40,
+      "reduces_to": ["T1_PP", "T1_NM"],
+      "description": "First aesthetic impression of a building creates an anchoring reference that modulates subsequent evaluation. CANDIDATE — not yet promoted to formal T1.5 status. Deferred at CREATIVE-I Decision 3, pending CROSSCUT-I evaluation.",
+      "panel_source": "CREATIVE-I",
+      "notes": "DEFERRED. Pending CROSSCUT-I evaluation."
+    },
+
+    {
+      "id": "WM_BARRETT_CRAIG",
+      "name": "Barrett-Craig Two-Stage Interoceptive Processing",
+      "tier": "WM",
+      "credence": 0.70,
+      "description": "Stage 1: modality-specific interoceptive coding (posterior insula, Craig). Stage 2: constructionist affective interpretation (anterior insula, Barrett). Adopted CREATIVE-I, confirmed NEUROMOD-I.",
+      "revision_clause": "Revise if neuroimaging evidence shows anterior insula performing modality-specific coding, or if posterior insula shows context-dependent processing.",
+      "panel_source": "THERMAL-I → CREATIVE-I"
+    },
+    {
+      "id": "WM_DIFF_MODE",
+      "name": "Differential-Mode Model",
+      "tier": "WM",
+      "credence": 0.65,
+      "description": "Low environmental stimulation → divergent/exploratory processing (tonic NE, broad attention); moderate stimulation → convergent/exploitative processing (phasic NE, focused attention). Derived independently from CREATIVE-I (cognitive) and NEUROMOD-I (computational neuromodulation).",
+      "revision_clause": "Revise if evidence shows stimulation level affects divergent/convergent processing identically rather than differentially, or if the NE tonic/phasic mapping to explore/exploit does not hold in architectural contexts.",
+      "panel_source": "CREATIVE-I + NEUROMOD-I"
+    },
+
+    {
+      "id": "AX1_DOSE_RESPONSE",
+      "name": "AX1: Dose-Response Functions",
+      "tier": "AX",
+      "credence": 0.75,
+      "description": "Environmental effects follow dose-response curves (linear, U-shaped, inverted-U, threshold, saturation). Shape varies by domain.",
+      "modulation_range": "Varies by domain; see panel-specific specifications",
+      "panel_source": "cross-panel"
+    },
+    {
+      "id": "AX2_HABITUATION",
+      "name": "AX2: Habituation Dynamics",
+      "tier": "AX",
+      "credence": 0.70,
+      "description": "Neural responses to environmental stimuli habituate over time. Rate varies by mechanism (fast for sensory novelty, slow for biophilic restoration).",
+      "modulation_range": "[0.3, 1.0] — 0.3 = full habituation, 1.0 = no habituation",
+      "panel_source": "cross-panel"
+    },
+    {
+      "id": "AX3_INDIVIDUAL_DIFF",
+      "name": "AX3: Individual Differences",
+      "tier": "AX",
+      "credence": 0.75,
+      "description": "Three-tier model: stable traits (Big Five, sensory sensitivity), developmental (age, neurodiversity), state (current mood, fatigue, task demands).",
+      "modulation_range": "[0.5, 1.5]",
+      "panel_source": "CROSSCUT-I"
+    },
+    {
+      "id": "AX4_PERCEIVED_CONTROL",
+      "name": "AX4: Perceived Control",
+      "tier": "AX",
+      "credence": 0.75,
+      "description": "Occupant perception of control over environmental conditions moderates virtually all environmental effects. Elevated to Tier A cross-cutting moderator at CREATIVE-I Decision 2. 17+ instances across panels.",
+      "modulation_range": "[0.6, 1.4]",
+      "panel_source": "CREATIVE-I (elevation)",
+      "notes": "Implementation triggered by Wave 2 completion."
+    },
+    {
+      "id": "AX5_CULTURAL",
+      "name": "AX5: Cultural Modulation",
+      "tier": "AX",
+      "credence": 0.60,
+      "description": "Cultural background moderates environmental preferences and responses. Effects on spatial density tolerance, nature preference specifics, thermal comfort expectations.",
+      "modulation_range": "[0.7, 1.3]",
+      "panel_source": "SOCIAL-I"
+    },
+    {
+      "id": "AX6_TEMPORAL",
+      "name": "AX6: Acute vs. Chronic Effects",
+      "tier": "AX",
+      "credence": 0.70,
+      "description": "Environmental effects differ in temporal profile: some are acute (minutes), some chronic (months/years). Allostatic load accumulates over chronic exposure.",
+      "modulation_range": "Duration-dependent scaling",
+      "panel_source": "STRESS-I + NEUROMOD-I"
+    },
+    {
+      "id": "AX7_VR_LIMITATION",
+      "name": "AX7: VR Limitation Discount",
+      "tier": "AX",
+      "credence": 0.65,
+      "description": "Evidence from VR studies carries a discount relative to field studies, due to missing multisensory richness, temporal extent, and embodied navigation. Discount is era-dependent (improving over time).",
+      "modulation_range": "[0.5, 0.9] depending on VR generation",
+      "panel_source": "cross-panel"
+    },
+    {
+      "id": "AX8_COBURN_CEILING",
+      "name": "AX8: Coburn R² Ceiling",
+      "tier": "AX",
+      "credence": 0.80,
+      "description": "No single visual parameter explains more than ΔR² ≈ 0.04 of variance in aesthetic/affective response to built environments. Coburn et al. meta-analytic ceiling.",
+      "modulation_range": "Hard ceiling: ΔR² ≤ 0.04 per individual visual parameter",
+      "panel_source": "VISUAL-I"
+    }
+  ],
+
+  "edges": [
+    {"source": "T1_PP", "target": "T15_PROSPECT_REFUGE", "type": "reduction"},
+    {"source": "T1_DMN", "target": "T15_PROSPECT_REFUGE", "type": "reduction"},
+    {"source": "T1_PP", "target": "T15_BIOPHILIA", "type": "reduction"},
+    {"source": "T1_SAL", "target": "T15_BIOPHILIA", "type": "reduction"},
+    {"source": "T1_DT", "target": "T15_ART", "type": "reduction"},
+    {"source": "T1_SAL", "target": "T15_ART", "type": "reduction"},
+    {"source": "T1_INT", "target": "T15_SRT", "type": "reduction"},
+    {"source": "T1_SAL", "target": "T15_SRT", "type": "reduction"},
+    {"source": "T1_PP", "target": "T15_FRACTAL", "type": "reduction"},
+    {"source": "T1_PP", "target": "T15_AWE", "type": "reduction"},
+    {"source": "T1_NM", "target": "T15_AWE", "type": "reduction"},
+    {"source": "T1_DMN", "target": "T15_AWE", "type": "reduction"},
+    {"source": "T1_DMN", "target": "T15_SPACE_SYNTAX", "type": "reduction"},
+    {"source": "T1_DT", "target": "T15_SPACE_SYNTAX", "type": "reduction"},
+    {"source": "T1_MSI", "target": "T15_SOUNDSCAPE", "type": "reduction"},
+    {"source": "T1_SAL", "target": "T15_SOUNDSCAPE", "type": "reduction"},
+    {"source": "T1_NM", "target": "T15_PLACE_ATTACH", "type": "reduction"},
+    {"source": "T1_DMN", "target": "T15_PLACE_ATTACH", "type": "reduction"},
+    {"source": "T1_PP", "target": "T15_AESTHETIC_ANCHORING", "type": "reduction"},
+    {"source": "T1_NM", "target": "T15_AESTHETIC_ANCHORING", "type": "reduction"},
+
+    {"source": "WM_BARRETT_CRAIG", "target": "T1_INT", "type": "working_model", "notes": "Constrains all interoception-dependent templates to use two-stage processing"},
+    {"source": "WM_DIFF_MODE", "target": "T1_NM", "type": "working_model", "notes": "Constrains NE-dependent templates to use explore/exploit framing"},
+    {"source": "WM_DIFF_MODE", "target": "T1_PP", "type": "working_model", "notes": "Prediction error interpreted as mode-dependent"},
+
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_PROSPECT_REFUGE", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_BIOPHILIA", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_ART", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_SRT", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_FRACTAL", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_AWE", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_SPACE_SYNTAX", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_SOUNDSCAPE", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_PLACE_ATTACH", "type": "ax_axiom"},
+    {"source": "AX4_PERCEIVED_CONTROL", "target": "T15_AESTHETIC_ANCHORING", "type": "ax_axiom"},
+
+    {"source": "AX1_DOSE_RESPONSE", "target": "T15_BIOPHILIA", "type": "ax_axiom"},
+    {"source": "AX1_DOSE_RESPONSE", "target": "T15_PROSPECT_REFUGE", "type": "ax_axiom"},
+    {"source": "AX1_DOSE_RESPONSE", "target": "T15_FRACTAL", "type": "ax_axiom"},
+    {"source": "AX1_DOSE_RESPONSE", "target": "T15_SOUNDSCAPE", "type": "ax_axiom"},
+
+    {"source": "AX2_HABITUATION", "target": "T15_BIOPHILIA", "type": "ax_axiom"},
+    {"source": "AX2_HABITUATION", "target": "T15_PLACE_ATTACH", "type": "ax_axiom"},
+    {"source": "AX2_HABITUATION", "target": "T15_AWE", "type": "ax_axiom"},
+
+    {"source": "AX8_COBURN_CEILING", "target": "T15_BIOPHILIA", "type": "ax_axiom"},
+    {"source": "AX8_COBURN_CEILING", "target": "T15_FRACTAL", "type": "ax_axiom"},
+    {"source": "AX8_COBURN_CEILING", "target": "T15_PROSPECT_REFUGE", "type": "ax_axiom"},
+
+    {"source": "T15_ART", "target": "T15_SRT", "type": "competition", "status": "COMPROMISE", "notes": "Both demoted to T1.5; ART handles cognitive restoration, SRT handles physiological stress reduction. Domain partition."},
+    {"source": "T15_BIOPHILIA", "target": "T15_AESTHETIC_ANCHORING", "type": "competition", "status": "EQUILIBRIUM", "notes": "Overlapping claims about why natural materials are preferred. Unresolved pending CROSSCUT-I."},
+
+    {"source": "AX7_VR_LIMITATION", "target": "T15_AWE", "type": "ax_axiom", "notes": "VR studies of awe particularly affected by missing embodied scale cues"},
+    {"source": "AX7_VR_LIMITATION", "target": "T15_SPACE_SYNTAX", "type": "ax_axiom", "notes": "VR wayfinding studies lack proprioceptive navigation cues"}
+  ],
+
+  "_template_for_T2_nodes": {
+    "id": "PANEL_TEMPLATE_ID",
+    "name": "Descriptive name",
+    "tier": "T2",
+    "credence": 0.00,
+    "bridge_warrant": "MECHANISM | EMPIRICAL_ASSOCIATION | FUNCTIONAL | CAPACITY | ANALOGICAL | THEORY_DERIVED",
+    "warrant_ceiling": 0.00,
+    "panel_source": "PANEL-I",
+    "effect_size": "d = X.XX",
+    "mechanism_chain": ["env_feature", "neural_step_1", "neural_step_2", "outcome"],
+    "reduces_to_T15": "T15_ID",
+    "reduces_to_T1": ["T1_ID_1", "T1_ID_2"],
+    "toulmin": {
+      "data": "Primary study citation, N, paradigm, effect size",
+      "backing": "Why data supports the warrant",
+      "qualifier": "Conditions of applicability",
+      "rebuttal": "Conditions of failure",
+      "competing_accounts": ["Alternative explanation 1", "Alternative explanation 2"]
+    },
+    "cross_template_interactions": [],
+    "inheritance_from": [],
+    "partial_out_with": []
+  }
+}

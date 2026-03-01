@@ -1,0 +1,762 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://article-eater.ucsd.edu/schemas/extraction_template.v2.schema.json",
+  "title": "Article Extraction Template v2.0",
+  "description": "JSON Schema for article extraction output. Defines the complete structure of findings extracted from scientific articles using Article Eater, including stimulus descriptions, theory commitments, mechanism chains, and instrument tracking.",
+  "version": "2.0",
+  "type": "object",
+  "required": [
+    "doi",
+    "article_type",
+    "title",
+    "authors",
+    "findings"
+  ],
+  "properties": {
+    "doi": {
+      "type": "string",
+      "pattern": "^10\\.\\d{4,}/.*$",
+      "description": "Digital Object Identifier of the article"
+    },
+    "article_type": {
+      "type": "string",
+      "enum": [
+        "empirical_research",
+        "experimental",
+        "observational",
+        "review",
+        "meta_analysis",
+        "theoretical",
+        "qualitative",
+        "mixed_methods",
+        "report",
+        "commentary"
+      ],
+      "description": "Classification of article type based on methodology and scope"
+    },
+    "article_family": {
+      "type": "string",
+      "description": "Higher-level family grouping (e.g., 'cognition', 'environmental_psychology', 'architecture')"
+    },
+    "quality_action": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "accept_with_flag",
+        "requeue_for_reextraction",
+        "reject_or_manual_review",
+        "pending"
+      ],
+      "description": "Quality control action taken on this extraction batch"
+    },
+    "quality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Overall extraction quality score [0, 1]. Computed as median of finding quality scores."
+    },
+    "n_findings": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of findings extracted from this article"
+    },
+    "extracted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when extraction was performed"
+    },
+    "model": {
+      "type": "string",
+      "description": "LLM model used for extraction (e.g., 'claude-opus-4', 'gpt-4-turbo')"
+    },
+    "cost": {
+      "type": "object",
+      "description": "Extraction cost metrics",
+      "properties": {
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of input tokens used"
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of output tokens generated"
+        },
+        "usd": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Estimated USD cost of API call"
+        }
+      }
+    },
+    "detected_article_type": {
+      "type": "string",
+      "description": "Article type as detected by the model (may differ from article_type if user override)"
+    },
+    "detected_family": {
+      "type": "string",
+      "description": "Article family as detected by the model"
+    },
+    "classification_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Model confidence in article type/family classification"
+    },
+    "classification_signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Signals that drove article classification (e.g., 'METHODS section present', 'empirical n reported')"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Article title"
+    },
+    "authors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "List of author names"
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Finding" },
+      "minItems": 0,
+      "description": "Array of extracted findings from the article"
+    },
+    "domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Outcome domains covered by findings (e.g., 'cognition', 'affect', 'behavior', 'health', 'perception', 'physiology')"
+    },
+    "overall_theory_links": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/TheoryLink" },
+      "description": "High-level theory commitments cited throughout the article"
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Limitations acknowledged by the authors or inferred from the paper"
+    },
+    "minimum_safe_summary": {
+      "type": "string",
+      "description": "A conservative summary of the paper's main claims, suitable for downstream systems with low tolerance for hallucination"
+    },
+    "extraction_metadata": {
+      "type": "object",
+      "description": "Metadata tracking extraction provenance, model details, and inter-rater reliability",
+      "properties": {
+        "extraction_version": {
+          "type": ["string", "null"],
+          "description": "Version of extraction process used (e.g., 'v3.0', 'v2.5')"
+        },
+        "extractor_model": {
+          "type": ["string", "null"],
+          "description": "LLM model used for extraction (e.g., 'gemini-2.5-flash', 'claude-opus-4')"
+        },
+        "extraction_confidence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Model's self-assessed confidence in the extraction (0=very uncertain, 1=very confident)"
+        },
+        "dual_extraction": {
+          "type": ["boolean", "null"],
+          "description": "Whether this article was extracted twice by independent extractors for reliability assessment"
+        },
+        "inter_extraction_agreement": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Inter-rater reliability / agreement score if dual_extraction=true (e.g., Fleiss' kappa, Cronbach's alpha)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "paper_metadata": {
+      "type": "object",
+      "description": "Bibliographic metadata for the paper",
+      "properties": {
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.\\d{4,}/.*$",
+          "description": "DOI of the paper"
+        },
+        "title": {
+          "type": "string",
+          "description": "Paper title"
+        },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Author list"
+        },
+        "year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2100,
+          "description": "Publication year"
+        },
+        "journal": {
+          "type": "string",
+          "description": "Journal name"
+        },
+        "volume": {
+          "type": ["string", "integer", "null"],
+          "description": "Journal volume number"
+        },
+        "issue": {
+          "type": ["string", "integer", "null"],
+          "description": "Journal issue number"
+        },
+        "citation_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Citation count (if available from external database)"
+        },
+        "references": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of references cited in the paper"
+        },
+        "cited_by": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of papers citing this paper (if available)"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Finding": {
+      "type": "object",
+      "required": [
+        "id",
+        "antecedent",
+        "consequent",
+        "claim_type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$",
+          "description": "Unique finding identifier (e.g., 'F1', 'FINDING_1')"
+        },
+        "antecedent": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Independent variable, stimulus, or environmental condition. Must be specific and operationalized."
+        },
+        "consequent": {
+          "type": "string",
+          "minLength": 3,
+          "description": "Dependent variable or outcome measured. Describes the measured response, not the condition."
+        },
+        "direction": {
+          "type": ["string", "null"],
+          "enum": [
+            "increase",
+            "decrease",
+            "no_effect",
+            "mixed",
+            null
+          ],
+          "description": "Effect direction: increase/decrease in consequent, no_effect, or mixed results across conditions"
+        },
+        "claim_type": {
+          "type": "string",
+          "enum": [
+            "empirical_finding",
+            "theoretical_proposition",
+            "causal",
+            "associational",
+            "synthesized",
+            "narrative",
+            "qualitative_theme",
+            "moderated",
+            "pooled_effect",
+            "cited",
+            "vote_count",
+            "methodological",
+            "derived_guideline",
+            "claimed",
+            "statistical",
+            "comparative",
+            "limitation",
+            "theoretical_critique"
+          ],
+          "description": "Classification of claim: empirical (with statistics), theoretical, or narrative"
+        },
+        "measure_type": {
+          "type": ["string", "null"],
+          "enum": [
+            "self_report",
+            "behavioral",
+            "physiological",
+            "cognitive_task",
+            "observational",
+            "mixed",
+            null
+          ],
+          "description": "How the outcome was measured"
+        },
+        "p_value": {
+          "type": ["number", "string", "null"],
+          "description": "P-value from statistical test. Numeric [0,1] preferred; may be string like '< 0.001' if reported that way."
+        },
+        "effect_size": {
+          "type": ["number", "null"],
+          "description": "Magnitude of effect (e.g., Cohen's d, correlation r, odds ratio). Sign should match direction."
+        },
+        "effect_size_type": {
+          "type": ["string", "null"],
+          "enum": [
+            "Cohen's d",
+            "eta_squared",
+            "partial_eta_squared",
+            "r",
+            "r_correlation",
+            "odds_ratio",
+            "Cohen's f",
+            "Cramer's V",
+            "phi",
+            "Hedges' g",
+            "Cliff's delta",
+            "Glass' delta",
+            null
+          ],
+          "description": "Name of the effect size statistic used"
+        },
+        "test_statistic": {
+          "type": ["string", "null"],
+          "description": "Statistical test used (e.g., 't(45) = 2.34', 'F(2, 88) = 5.67', 'χ²(1) = 3.84')"
+        },
+        "sample_size": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "description": "Number of participants or observations in the study"
+        },
+        "sample_size_source": {
+          "type": ["string", "null"],
+          "enum": [
+            "reported",
+            "inferred",
+            "estimated",
+            null
+          ],
+          "description": "Whether sample_size was directly reported, inferred from text, or estimated from context"
+        },
+        "confidence_interval": {
+          "type": ["array", "null"],
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "95% confidence interval as [lower, upper]. Both values must be numeric."
+        },
+        "theory_links": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TheoryLink" },
+          "description": "Theories or frameworks invoked to explain or contextualize this finding"
+        },
+        "template_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of stimulus templates this finding applies to (links to stimulus_template registry)"
+        },
+        "mechanism": {
+          "type": ["string", "null"],
+          "description": "Proposed mechanism explaining the relationship between antecedent and consequent"
+        },
+        "moderators_reported": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "Variables that moderate the antecedent-consequent relationship"
+        },
+        "provenance_depth": {
+          "type": ["string", "null"],
+          "enum": [
+            "direct_quote",
+            "paraphrase",
+            "inferred",
+            "synthesized",
+            null
+          ],
+          "description": "How directly the extraction comes from the paper"
+        },
+        "source": {
+          "type": ["string", "null"],
+          "description": "Source location (e.g., 'Results section', 'Table 3', 'Figure 2')"
+        },
+        "quote": {
+          "type": ["string", "null"],
+          "description": "Direct quote from the paper supporting this finding"
+        },
+        "stimulus_description": {
+          "type": ["object", "null"],
+          "description": "Detailed description of the stimulus or environmental manipulation used in this finding",
+          "$ref": "#/$defs/StimulusDescription"
+        },
+        "stimulus_images": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StimulusImage" },
+          "description": "Images or visualizations of the stimulus"
+        },
+        "theory_commitments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TheoryCommitment" },
+          "description": "How this finding relates to broader theories (tests, extends, contradicts, assumes, proposes)"
+        },
+        "mechanism_chain": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/MechanismStep" },
+          "description": "Step-by-step mechanism linking antecedent to consequent. Conditionally required: required for 'causal' and 'mechanistic' claim_types in empirical papers; expected but not required for theoretical papers if central_proposition is present; optional for qualitative and narrative claims.",
+          "mechanism_expectation": {
+            "type": "string",
+            "enum": ["required", "expected", "optional"],
+            "description": "Expectation level for mechanism_chain based on claim_type and article context"
+          }
+        },
+        "molecule_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Links to rasa_attractors.json entries this finding relates to (semantic/causal molecules)"
+        },
+        "success_conditions": {
+          "type": ["object", "null"],
+          "$ref": "#/$defs/SuccessConditions",
+          "description": "Validation criteria for this finding"
+        },
+        "instruments_used": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/InstrumentUsed" },
+          "description": "Measurement instruments or scales used in this finding"
+        }
+      },
+      "additionalProperties": false
+    },
+    "StimulusDescription": {
+      "type": "object",
+      "description": "Comprehensive description of a stimulus or experimental manipulation",
+      "properties": {
+        "primary_type": {
+          "type": "string",
+          "enum": [
+            "visual_scene",
+            "soundscape",
+            "thermal",
+            "olfactory",
+            "spatial",
+            "lighting",
+            "material",
+            "mixed"
+          ],
+          "description": "Primary sensory modality of the stimulus"
+        },
+        "components": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StimulusComponent" },
+          "minItems": 0,
+          "description": "Individual components or elements of the stimulus"
+        },
+        "equivalence_class_id": {
+          "type": ["string", "null"],
+          "description": "ID linking to other equivalent or comparable stimuli across papers"
+        },
+        "delivery_method": {
+          "type": "string",
+          "enum": [
+            "in_situ",
+            "VR",
+            "photo",
+            "video",
+            "audio",
+            "imagined"
+          ],
+          "description": "How the stimulus was presented to participants"
+        },
+        "duration_seconds": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Duration of stimulus presentation in seconds (null if not applicable)"
+        },
+        "stimulus_temporal": {
+          "type": ["object", "null"],
+          "description": "Temporal properties of the stimulus exposure (critical moderators in environmental psychology)",
+          "properties": {
+            "exposure_frequency": {
+              "type": ["string", "null"],
+              "enum": ["discrete", "continuous", "intermittent", null],
+              "description": "Pattern of exposure: single/discrete, continuous, or intermittent"
+            },
+            "exposure_prior_familiarity": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Participant familiarity with stimulus prior to study (0=novel, 1=very familiar)"
+            },
+            "habituation_control": {
+              "type": ["boolean", "null"],
+              "description": "Whether habituation/adaptation was controlled in the study design"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "StimulusComponent": {
+      "type": "object",
+      "required": ["name", "category", "essential"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name or description of the component (e.g., 'window size', 'color temperature', 'noise level')"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "spatial",
+            "temporal",
+            "thermal",
+            "acoustic",
+            "olfactory",
+            "tactile",
+            "material",
+            "other"
+          ],
+          "description": "Category or domain of the component"
+        },
+        "essential": {
+          "type": "boolean",
+          "description": "Whether this component is essential to the stimulus definition (vs. incidental)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "StimulusImage": {
+      "type": "object",
+      "description": "Reference to an image documenting the stimulus",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "What the image shows (e.g., 'VR scene rendered at 1920x1080')"
+        },
+        "figure_ref": {
+          "type": "string",
+          "description": "Reference in paper (e.g., 'Figure 2A', 'Supplementary Figure S1')"
+        },
+        "image_type": {
+          "type": "string",
+          "enum": [
+            "photo",
+            "rendering",
+            "diagram",
+            "floor_plan",
+            "graph"
+          ],
+          "description": "Type of image"
+        },
+        "vision_attributes": {
+          "type": "object",
+          "description": "Quantified visual attributes (keys like 'brightness', 'complexity', 'hue_variation')",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "TheoryLink": {
+      "type": "object",
+      "required": ["theory_name"],
+      "properties": {
+        "theory_name": {
+          "type": "string",
+          "description": "Name of the theory or framework (e.g., 'Cognitive Load Theory', 'Stress-Reduction Theory')"
+        },
+        "framework_id": {
+          "type": ["string", "null"],
+          "description": "Identifier linking to a theory registry or ontology"
+        },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Original authors of the theory"
+        },
+        "year": {
+          "type": ["integer", "null"],
+          "description": "Year theory was proposed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TheoryCommitment": {
+      "type": "object",
+      "required": ["theory_name", "commitment_type", "specific_claim"],
+      "properties": {
+        "theory_name": {
+          "type": "string",
+          "description": "Name of the theory"
+        },
+        "framework_id": {
+          "type": ["string", "null"],
+          "description": "Reference to theory registry"
+        },
+        "commitment_type": {
+          "type": "string",
+          "enum": [
+            "tests",
+            "extends",
+            "contradicts",
+            "assumes",
+            "proposes"
+          ],
+          "description": "How this finding relates to the theory: tests (empirically evaluates), extends (builds on), contradicts (refutes), assumes (takes as given), proposes (introduces novel claim)"
+        },
+        "specific_claim": {
+          "type": "string",
+          "minLength": 10,
+          "description": "The specific claim or prediction from the theory being engaged with"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MechanismStep": {
+      "type": "object",
+      "required": ["step", "from_construct", "to_construct", "mechanism_type"],
+      "properties": {
+        "step": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sequential step number in the causal chain (must be consecutive integers starting at 1)"
+        },
+        "from_construct": {
+          "type": "string",
+          "description": "Starting construct or variable (antecedent of this step)"
+        },
+        "to_construct": {
+          "type": "string",
+          "description": "Ending construct or variable (consequent of this step)"
+        },
+        "mechanism_type": {
+          "type": "string",
+          "enum": [
+            "neural",
+            "perceptual",
+            "cognitive",
+            "affective",
+            "behavioral",
+            "physiological"
+          ],
+          "description": "Type of mechanism connecting the constructs"
+        },
+        "evidence_strength": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "indirect",
+            "theoretical",
+            "assumed"
+          ],
+          "description": "Strength of evidence for this mechanism step: direct (explicitly tested), indirect (inferred from correlates), theoretical (proposed but not tested), assumed (taken as given)"
+        },
+        "evidence_reference": {
+          "type": ["string", "null"],
+          "description": "Citation or source supporting this mechanism step"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SuccessConditions": {
+      "type": "object",
+      "description": "Criteria for evaluating whether this finding is usable/credible. Separates data-tier requirements (minimum fields and quality) from epistemic-tier expectations (theory and mechanism grounding).",
+      "properties": {
+        "data_tier": {
+          "type": "object",
+          "description": "Data completeness and quality requirements",
+          "properties": {
+            "required_fields": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Fields that must be non-null for this finding to pass data validation (e.g., ['antecedent', 'consequent', 'direction'])"
+            },
+            "min_quality_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Minimum acceptable quality score (varies by article_family)"
+            }
+          }
+        },
+        "epistemic_tier": {
+          "type": "object",
+          "description": "Theoretical grounding and mechanism expectations",
+          "properties": {
+            "theory_link_expected": {
+              "type": "boolean",
+              "description": "Whether this finding should link to at least one theory (varies by claim_type: true for causal/mechanistic, false for narrative)"
+            },
+            "mechanism_expected": {
+              "type": "boolean",
+              "description": "Whether a mechanism explanation is expected (true for causal, false for qualitative_theme)"
+            }
+          }
+        },
+        "min_findings": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Minimum number of replications or supporting findings needed for robust claim"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InstrumentUsed": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Name of the measurement instrument or scale (e.g., 'State-Trait Anxiety Inventory', 'NASA-TLX'). Must not be vague."
+        },
+        "instrument_id": {
+          "type": ["string", "null"],
+          "description": "ID from instruments registry (if available)"
+        },
+        "construct_measured": {
+          "type": "string",
+          "description": "What psychological/physiological construct the instrument measures"
+        },
+        "abbreviation": {
+          "type": ["string", "null"],
+          "description": "Common abbreviation (e.g., 'STAI', 'NASA-TLX')"
+        },
+        "n_items": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "description": "Number of items if it's a scale"
+        },
+        "reliability": {
+          "type": ["object", "null"],
+          "description": "Reliability metrics for this study",
+          "properties": {
+            "cronbach_alpha": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "test_retest": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

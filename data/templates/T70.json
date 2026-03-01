@@ -3,13 +3,13 @@
   "name": "Circadian Architecture and Temporal Light Regulation",
   "status": "calibrated",
   "maturity": "supported",
-  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I — gap stub only; closely related to CIRCADIAN_ARCH_REG_001 (L2) but addresses the design-decision level rather than the biological mechanism level",
+  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I \u2014 gap stub only; closely related to CIRCADIAN_ARCH_REG_001 (L2) but addresses the design-decision level rather than the biological mechanism level",
   "t1_frameworks": [
     "CB"
   ],
   "panel_id": "LIGHT-I",
   "calibration_date": "2026-02-21",
-  "note": "This template encodes the architectural design decision layer — the specific building parameters whose values determine whether the circadian channel delivers adequate stimulus — as distinct from the biological mechanism template (CIRCADIAN_ARCH_REG_001) which encodes the neural pathway. These are complementary templates operating at different levels of the causal chain.",
+  "note": "This template encodes the architectural design decision layer \u2014 the specific building parameters whose values determine whether the circadian channel delivers adequate stimulus \u2014 as distinct from the biological mechanism template (CIRCADIAN_ARCH_REG_001) which encodes the neural pathway. These are complementary templates operating at different levels of the causal chain.",
   "mechanism_chain": [
     {
       "step": 1,
@@ -20,9 +20,16 @@
       "confidence": 0.75,
       "justification": {
         "data": [
-          {"finding": "Window-to-floor ratio, glazing visible transmittance, orientation, and room depth are the primary determinants of daylight availability at the workplane", "source": "Reinhart & Walkenhorst (2001); Reinhart et al. (2006)", "paradigm": "Climate-based daylight modeling validation", "effect": "Architectural parameters predict >85% of variance in annual daylight metrics", "n": null, "design": "Computational simulation with field validation"}
+          {
+            "finding": "Window-to-floor ratio, glazing visible transmittance, orientation, and room depth are the primary determinants of daylight availability at the workplane",
+            "source": "Reinhart & Walkenhorst (2001); Reinhart et al. (2006)",
+            "paradigm": "Climate-based daylight modeling validation",
+            "effect": "Architectural parameters predict >85% of variance in annual daylight metrics",
+            "n": null,
+            "design": "Computational simulation with field validation"
+          }
         ],
-        "backing": "This is a constitutive relationship: the listed parameters mathematically determine the daylight delivery envelope. No empirical study required — physics and geometry constrain the outcome.",
+        "backing": "This is a constitutive relationship: the listed parameters mathematically determine the daylight delivery envelope. No empirical study required \u2014 physics and geometry constrain the outcome.",
         "qualifier": "Occupant behavior (shading deployment, furniture placement) modifies actual delivery within the architectural envelope.",
         "rebuttal": "Would fail if occupant behavior dominates architectural constraints (e.g., all blinds permanently closed).",
         "competing_accounts": [],
@@ -33,12 +40,19 @@
       "step": 2,
       "from": "daylight_delivery_potential",
       "to": "sDA_UDI_distributions",
-      "description": "→ Spatial daylight autonomy (sDA) and Useful Daylight Illuminance (UDI) distributions in occupied zones (Reinhart metrics)",
+      "description": "\u2192 Spatial daylight autonomy (sDA) and Useful Daylight Illuminance (UDI) distributions in occupied zones (Reinhart metrics)",
       "warrant": "MECHANISM",
-      "confidence": 0.70,
+      "confidence": 0.7,
       "justification": {
         "data": [
-          {"finding": "Climate-based daylight modeling (CBDM) predicts annual sDA300/50% and UDI distributions from architectural parameters and TMY weather data", "source": "Reinhart et al. (2006); IES LM-83-12", "paradigm": "Daylight simulation validation against field measurement", "effect": "CBDM predictions correlate r > 0.85 with field-measured illuminance", "n": null, "design": "Simulation validation study"}
+          {
+            "finding": "Climate-based daylight modeling (CBDM) predicts annual sDA300/50% and UDI distributions from architectural parameters and TMY weather data",
+            "source": "Reinhart et al. (2006); IES LM-83-12",
+            "paradigm": "Daylight simulation validation against field measurement",
+            "effect": "CBDM predictions correlate r > 0.85 with field-measured illuminance",
+            "n": null,
+            "design": "Simulation validation study"
+          }
         ],
         "backing": "The Reinhart CBDM method is the industry standard for predicting annual daylight performance. sDA and UDI are established metrics adopted by LEED, WELL, and IES standards.",
         "qualifier": "Simulation accuracy depends on accurate material reflectances, sky model, and shading schedule assumptions.",
@@ -51,12 +65,19 @@
       "step": 3,
       "from": "sDA_UDI_distributions",
       "to": "melanopic_irradiance_distribution",
-      "description": "→ Post-processed via Spitschan CCT-to-melanopic conversion → estimated floor-plate melanopic irradiance distribution",
+      "description": "\u2192 Post-processed via Spitschan CCT-to-melanopic conversion \u2192 estimated floor-plate melanopic irradiance distribution",
       "warrant": "MECHANISM",
       "confidence": 0.68,
       "justification": {
         "data": [
-          {"finding": "CIE S 026:2018 provides standard melanopic action spectrum and conversion factors from photopic illuminance to melanopic EDI for standard illuminants", "source": "CIE S 026:2018; Spitschan et al. (2021)", "paradigm": "Spectral radiometry and photobiological standardization", "effect": "Enables melanopic irradiance estimation from photopic illuminance and CCT", "n": null, "design": "Standards development"}
+          {
+            "finding": "CIE S 026:2018 provides standard melanopic action spectrum and conversion factors from photopic illuminance to melanopic EDI for standard illuminants",
+            "source": "CIE S 026:2018; Spitschan et al. (2021)",
+            "paradigm": "Spectral radiometry and photobiological standardization",
+            "effect": "Enables melanopic irradiance estimation from photopic illuminance and CCT",
+            "n": null,
+            "design": "Standards development"
+          }
         ],
         "backing": "The Spitschan conversion methodology allows post-processing of photopic daylight simulations to estimate melanopic delivery. This is essential because standard CBDM tools output photopic lux, not melanopic EDI.",
         "qualifier": "Conversion accuracy depends on accurate CCT estimation; daylight CCT varies with sky condition, time of day, and glazing spectral transmission.",
@@ -69,15 +90,22 @@
       "step": 4,
       "from": "melanopic_irradiance_distribution",
       "to": "threshold_comparison",
-      "description": "→ Compared against CHRONO_LIGHT_ENTRAINMENT_001 daily integral minimum (150 m-lux·h) and CIRCADIAN_ARCH_REG_001 maintenance threshold (87 m-lux for 2h)",
+      "description": "\u2192 Compared against CHRONO_LIGHT_ENTRAINMENT_001 daily integral minimum (150 m-lux\u00b7h) and CIRCADIAN_ARCH_REG_001 maintenance threshold (87 m-lux for 2h)",
       "warrant": "MECHANISM",
       "confidence": 0.62,
       "justification": {
         "data": [
-          {"finding": "Minimum 150 m-lux·hours daily daytime melanopic dose for stable entrainment maintenance; minimum 87 m-lux for 2 continuous hours for acute maintenance", "source": "Kronauer model derivation; Figueiro et al. (2017); cross-reference to CHRONO_LIGHT_ENTRAINMENT_001 and CIRCADIAN_ARCH_REG_001", "paradigm": "Field dosimetry + mathematical modeling", "effect": "Threshold values derived from circadian physiology templates", "n": 109, "design": "Field study and model synthesis"}
+          {
+            "finding": "Minimum 150 m-lux\u00b7hours daily daytime melanopic dose for stable entrainment maintenance; minimum 87 m-lux for 2 continuous hours for acute maintenance",
+            "source": "Kronauer model derivation; Figueiro et al. (2017); cross-reference to CHRONO_LIGHT_ENTRAINMENT_001 and CIRCADIAN_ARCH_REG_001",
+            "paradigm": "Field dosimetry + mathematical modeling",
+            "effect": "Threshold values derived from circadian physiology templates",
+            "n": 109,
+            "design": "Field study and model synthesis"
+          }
         ],
         "backing": "The threshold comparison links architectural daylight delivery to the biologically-derived thresholds in companion templates. This is the critical bridge from design parameters to physiological outcomes.",
-        "qualifier": "Threshold values have uncertainty ranges (100-250 m-lux·h for integral; 50-125 m-lux for acute). The comparison is probabilistic, not deterministic.",
+        "qualifier": "Threshold values have uncertainty ranges (100-250 m-lux\u00b7h for integral; 50-125 m-lux for acute). The comparison is probabilistic, not deterministic.",
         "rebuttal": "Would fail if individual chronotype variation requires personalized thresholds that cannot be addressed at the architectural design level.",
         "competing_accounts": [],
         "depth_tier": "B"
@@ -87,15 +115,22 @@
       "step": 5,
       "from": "threshold_comparison",
       "to": "circadian_channel_active",
-      "description": "→ If thresholds met: circadian maintenance channel active",
+      "description": "\u2192 If thresholds met: circadian maintenance channel active",
       "warrant": "FUNCTIONAL",
       "confidence": 0.58,
       "justification": {
         "data": [
-          {"finding": "Buildings meeting sDA300/50% in climate zones with adequate daylight availability deliver sufficient melanopic stimulus for circadian maintenance in majority of occupants", "source": "Figueiro et al. (2017); WELL Building Standard v2 circadian lighting requirements", "paradigm": "Field validation of daylight-circadian relationship", "effect": "sDA300 serves as acceptable proxy for circadian adequacy", "n": null, "design": "Cross-sectional field studies"}
+          {
+            "finding": "Buildings meeting sDA300/50% in climate zones with adequate daylight availability deliver sufficient melanopic stimulus for circadian maintenance in majority of occupants",
+            "source": "Figueiro et al. (2017); WELL Building Standard v2 circadian lighting requirements",
+            "paradigm": "Field validation of daylight-circadian relationship",
+            "effect": "sDA300 serves as acceptable proxy for circadian adequacy",
+            "n": null,
+            "design": "Cross-sectional field studies"
+          }
         ],
         "backing": "The WELL standard's adoption of sDA300/50% as a circadian proxy reflects expert consensus that photopic daylight adequacy generally implies melanopic adequacy. This step activates the downstream biological templates.",
-        "qualifier": "sDA300 is an imperfect proxy — it does not guarantee morning timing, which is critical for circadian phase. Orientation and occupancy schedule must also align.",
+        "qualifier": "sDA300 is an imperfect proxy \u2014 it does not guarantee morning timing, which is critical for circadian phase. Orientation and occupancy schedule must also align.",
         "rebuttal": "Would fail if occupants work night shifts; or if building orientation concentrates daylight delivery in afternoon rather than morning.",
         "competing_accounts": [],
         "depth_tier": "B"
@@ -105,12 +140,19 @@
       "step": 6,
       "from": "threshold_comparison",
       "to": "supplementary_lighting_specification",
-      "description": "→ If thresholds not met: gap quantified; supplementary electric lighting specification required",
+      "description": "\u2192 If thresholds not met: gap quantified; supplementary electric lighting specification required",
       "warrant": "FUNCTIONAL",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Circadian-effective electric lighting can supplement inadequate daylight; 300 lux at 4000K delivers approximately 186 m-lux mEDI", "source": "Lucas et al. (2014); CIE S 026 conversion tables", "paradigm": "Spectral engineering for circadian lighting", "effect": "Electric lighting parameters specified to fill melanopic gap", "n": null, "design": "Standards application"}
+          {
+            "finding": "Circadian-effective electric lighting can supplement inadequate daylight; 300 lux at 4000K delivers approximately 186 m-lux mEDI",
+            "source": "Lucas et al. (2014); CIE S 026 conversion tables",
+            "paradigm": "Spectral engineering for circadian lighting",
+            "effect": "Electric lighting parameters specified to fill melanopic gap",
+            "n": null,
+            "design": "Standards application"
+          }
         ],
         "backing": "When daylight is insufficient, electric lighting with appropriate spectrum and intensity can provide the melanopic stimulus. This step quantifies the gap and specifies the supplementary requirement.",
         "qualifier": "Electric lighting supplements are less effective than daylight due to: (a) typically lower irradiance; (b) potentially inappropriate timing (evening use delays phase); (c) reduced dynamic range compared to daylight.",
@@ -128,8 +170,8 @@
         "min": 0.4,
         "max": 0.75
       },
-      "note": "Spatial daylight autonomy of 300 lux (sDA300/50%) — the LEED/WELL standard metric — is a reasonable but imperfect proxy for circadian adequacy. At 300 photopic lux from daylight (approximately 4500–5500K effective CCT under clear sky), melanopic irradiance is approximately 210–270 m-lux mEDI — well above the 87 m-lux threshold. However, sDA300 is met at 50% of occupied hours, which does not guarantee morning delivery timing. Threshold of 0.55 reflects conservative architectural target that correlates with acceptable circadian delivery in most climate zones.",
-      "source": "Reinhart et al. (2006); Spasojević et al. (2021); WELL standard v2",
+      "note": "Spatial daylight autonomy of 300 lux (sDA300/50%) \u2014 the LEED/WELL standard metric \u2014 is a reasonable but imperfect proxy for circadian adequacy. At 300 photopic lux from daylight (approximately 4500\u20135500K effective CCT under clear sky), melanopic irradiance is approximately 210\u2013270 m-lux mEDI \u2014 well above the 87 m-lux threshold. However, sDA300 is met at 50% of occupied hours, which does not guarantee morning delivery timing. Threshold of 0.55 reflects conservative architectural target that correlates with acceptable circadian delivery in most climate zones.",
+      "source": "Reinhart et al. (2006); Spasojevi\u0107 et al. (2021); WELL standard v2",
       "confidence": 0.58,
       "bridge_warrant": "EMPIRICAL_COVARIANCE"
     },
@@ -137,7 +179,7 @@
       "minimum_morning_illuminance_CCT4000K": {
         "value": 300,
         "unit": "photopic_lux_equivalent_to_186_m-lux_mEDI",
-        "note": "300 lux at 4000K delivers approximately 186 m-lux mEDI — above the 87 m-lux maintenance threshold. This is the minimum supplementary lighting specification for circadian adequacy in zones that cannot achieve sDA300 from daylight alone."
+        "note": "300 lux at 4000K delivers approximately 186 m-lux mEDI \u2014 above the 87 m-lux maintenance threshold. This is the minimum supplementary lighting specification for circadian adequacy in zones that cannot achieve sDA300 from daylight alone."
       },
       "minimum_morning_illuminance_CCT2700K": {
         "value": 500,
@@ -154,7 +196,7 @@
         "min": 0.45,
         "max": 0.75
       },
-      "note": "At a room depth equal to 2× the head-of-window height from the floor, the daylit melanopic irradiance falls to approximately 62% of the window-wall value. At 3× ceiling height depth: approximately 35%. Beyond this depth, supplementary lighting is required for circadian adequacy.",
+      "note": "At a room depth equal to 2\u00d7 the head-of-window height from the floor, the daylit melanopic irradiance falls to approximately 62% of the window-wall value. At 3\u00d7 ceiling height depth: approximately 35%. Beyond this depth, supplementary lighting is required for circadian adequacy.",
       "source": "Reinhart CBDM modeling; Boyce (2003) daylight penetration data",
       "confidence": 0.65,
       "bridge_warrant": "EMPIRICAL_COVARIANCE"
@@ -176,15 +218,31 @@
   "ie_dpt_interaction": "No primary T_IE interaction",
   "key_references": [
     "Reinhart et al. (2006). https://doi.org/10.1582/LEUKOS.2006.03.01.001",
-    "Spasojević et al. (2021). https://doi.org/10.1016/j.buildenv.2021.107762",
+    "Spasojevi\u0107 et al. (2021). https://doi.org/10.1016/j.buildenv.2021.107762",
     "WELL Building Standard v2 (2020). https://v2.wellcertified.com"
   ],
   "cross_template_interactions": {
-    "IC2": "Indirect — via CIRCADIAN_ARCH_REG_001; this template establishes the architectural conditions whose adequacy or inadequacy determines the IC2 interaction strength in the circadian cluster",
+    "IC2": "Indirect \u2014 via CIRCADIAN_ARCH_REG_001; this template establishes the architectural conditions whose adequacy or inadequacy determines the IC2 interaction strength in the circadian cluster",
     "AX4": "Direct: shading system design determines whether occupants have AX4 control over their light exposure. Manual Venetian blinds provide high AX4; automated electrochromic glazing without occupant override provides low AX4 despite high apparent sophistication."
   },
   "display_id": "CAR1",
   "calibration_status": "calibrated",
   "panel_source": "LIGHT-I",
-  "confidence": 0.6
+  "confidence": 0.6,
+  "higher_order_principle": "Architectural design parameters \u2192 supplementary lighting specification pathway: The mechanism by which circadian architecture and temporal light regulation operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:52.011155+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "theory_links": [],
+  "molecule_links": [
+    {
+      "molecule_id": "circadian_architecture",
+      "confidence": 0.7
+    }
+  ]
 }

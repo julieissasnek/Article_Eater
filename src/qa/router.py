@@ -23,14 +23,52 @@ class QueryPlan:
 
 class MoleculeAwareRouter:
     """
-     Phase 3: Routes user queries to the appropriate Pre-Computed QA cache
-    or falls back to live synthesis for complex design questions.
+     Phase 3+: Routes user queries through a priority chain:
+     1. Molecule lookup (cached, instant)
+     2. Argument queries (critiques, evidence hierarchies)
+     3. Arbitrary QA (catalog, surprise, dispute, design, AI-routed)
+     All responses enriched with read-next suggestions and relevant images.
     """
     def __init__(self, molecule_dir: str = "data/molecules", cache_dir: str = "data/qa_cache"):
         self.molecule_dir = Path(molecule_dir)
         self.cache_dir = Path(cache_dir)
         self.molecule_registry: Dict[str, Molecule] = self._load_molecules()
         self.cache_index = self._load_cache_index()
+        
+        # Extended handlers (lazy init to avoid circular imports)
+        self._arbitrary_handler = None
+        self._read_next = None
+        self._argument_handler = None
+
+    @property
+    def arbitrary_handler(self):
+        if self._arbitrary_handler is None:
+            try:
+                from src.services.arbitrary_qa_handler import ArbitraryQAHandler
+                self._arbitrary_handler = ArbitraryQAHandler()
+            except Exception:
+                pass
+        return self._arbitrary_handler
+    
+    @property
+    def read_next(self):
+        if self._read_next is None:
+            try:
+                from src.services.read_next_engine import ReadNextEngine
+                self._read_next = ReadNextEngine()
+            except Exception:
+                pass
+        return self._read_next
+    
+    @property
+    def argument_handler(self):
+        if self._argument_handler is None:
+            try:
+                from src.argument.qa_handlers import ArgumentQueryHandler
+                self._argument_handler = ArgumentQueryHandler()
+            except Exception:
+                pass
+        return self._argument_handler
 
     def _load_molecules(self) -> Dict[str, Molecule]:
         molecules = {}
@@ -78,23 +116,25 @@ class MoleculeAwareRouter:
 
     def route_query(self, query: str, requested_depth: int = None) -> Dict[str, Any]:
         """
-        Takes a natural language query, routes it to the specific molecule,
-        and returns the precomputed summary for the website UI.
+        Unified query routing:
+        1. Molecule lookup (fast path — precomputed cache)
+        2. Argument queries (critiques, evidence hierarchies)
+        3. Arbitrary QA (catalog, extended annotations, AI-routed)
+        
+        All responses enriched with read-next suggestions and relevant images.
         """
         classified = self._classify_question(query)
         depth = requested_depth or classified.requested_depth
         
+        response = None
+        
         # 1. Molecule Lookup (Fast Path - Precomputed)
         if classified.target_type == "molecule" and classified.target_id:
             mol_id = classified.target_id
-            
-            # Check cache
             cache_file = self.cache_dir / f"{mol_id}_QA.json"
             if cache_file.exists():
                 with open(cache_file, 'r') as f:
                     cache_data = json.load(f)
-                    
-                    # Return progressive disclosure response
                     response = {
                         "topic": self.molecule_registry[mol_id].name,
                         "query_type": "molecule_lookup",
@@ -103,21 +143,45 @@ class MoleculeAwareRouter:
                         "status": self.cache_index.get(mol_id, {}).get("status", "UNKNOWN"),
                         "available_depths": [1, 2, 3] if "l3_summary" in cache_data else [1, 2]
                     }
-                    return response
-            else:
-                return {"error": f"Molecule {mol_id} found but cache not computed yet. Run precompute_pipeline.py"}
-                
-        # 2. Design Synthesis (Slow Path - Live LLM)
-        elif classified.target_type == "design_synthesis":
-            # Here we would hit the LLM live to route through multiple molecules
-            return {
-                "topic": "Custom Design Synthesis",
-                "query_type": "synthesis",
-                "content": "This feature requires hitting the live LLM endpoint to synthesize multiple molecules.",
-                "status": "LIVE"
+        
+        # 2. Argument Queries (critiques, evidence hierarchies)
+        if response is None and self.argument_handler:
+            try:
+                arg_result = self.argument_handler.handle_query(
+                    query_id=f"live_{hash(query) % 10000}",
+                    query_text=query,
+                    processing_time_ms=0,
+                )
+                if arg_result is not None:
+                    response = arg_result
+            except Exception:
+                pass
+        
+        # 3. Arbitrary QA (catalog, extended annotations, AI-routed)
+        if response is None and self.arbitrary_handler:
+            try:
+                response = self.arbitrary_handler.answer(query)
+            except Exception:
+                pass
+        
+        # 4. Final fallback
+        if response is None:
+            response = {
+                "topic": "Unknown",
+                "query_type": "unrouted",
+                "headline": "Could not route this query. Try asking about theories, cultural differences, or design parameters.",
+                "status": "NO_MATCH",
             }
-            
-        return {"error": "Could not understand or route query."}
+        
+        # Enrich with read-next suggestions and images
+        if self.read_next:
+            try:
+                self.read_next.enrich_qa_response(response, query)
+            except Exception:
+                pass
+        
+        return response
+
 
 if __name__ == "__main__":
     import sys
@@ -126,6 +190,7 @@ if __name__ == "__main__":
         query = " ".join(sys.argv[1:])
         router = MoleculeAwareRouter()
         result = router.route_query(query)
-        print(json.dumps(result, indent=2))
+        print(json.dumps(result, indent=2, default=str))
     else:
         print("Usage: python3 -m src.qa.router 'What is Attention Restoration Theory?'")
+

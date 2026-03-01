@@ -1,0 +1,104 @@
+{
+  "molecule_id": "WAYFINDING",
+  "name": "Spatial Navigation & Cognitive Mapping",
+  "short_description": "How architectural layouts support or hinder cognitive map formation, path integration, and navigation fluency, with downstream effects on stress and spatial anxiety.",
+  "molecule_type": "MECHANISM",
+  "components": [
+    {
+      "name": "Cognitive Map Formation",
+      "template_ids": [
+        "SN_LAYOUT_COGNITIVE_MAP_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Spatial layout legibility directly determines the quality and speed of cognitive map construction."
+    },
+    {
+      "name": "Context-Dependent Memory",
+      "template_ids": [
+        "SN_CONTEXT_MEMORY_002"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Environmental context stability supports encoding and retrieval of spatial memories."
+    },
+    {
+      "name": "Theta Sequence Coherence",
+      "template_ids": [
+        "SN_THETA_SEQUENCE_003"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Path structure influences hippocampal theta sequences that support trajectory planning and navigation fluency."
+    },
+    {
+      "name": "Navigation-Stress Feedback Loop",
+      "template_ids": [
+        "XF_NAVIGATION_STRESS_CYCLE_002"
+      ],
+      "interaction_type": "MULTIPLICATIVE",
+      "description": "Hard-to-navigate environments create stress \u2192 impaired navigation \u2192 more stress, a vicious cycle."
+    },
+    {
+      "name": "Model-Based/Model-Free Arbitration",
+      "template_ids": [
+        "CROSS_MB_MF_ARBITRATION_001"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "The brain arbitrates between map-based (allocentric) and habit-based (egocentric) strategies depending on environmental familiarity."
+    }
+  ],
+  "constituent_templates": [
+    "SN_LAYOUT_COGNITIVE_MAP_001",
+    "SN_CONTEXT_MEMORY_002",
+    "SN_THETA_SEQUENCE_003",
+    "XF_NAVIGATION_STRESS_CYCLE_002",
+    "CROSS_MB_MF_ARBITRATION_001",
+    "EC_COGNITIVE_OFFLOADING_002"
+  ],
+  "interaction_graph": {
+    "SN_LAYOUT_COGNITIVE_MAP_001": {
+      "SN_THETA_SEQUENCE_003": "SYNERGISTIC",
+      "XF_NAVIGATION_STRESS_CYCLE_002": "MULTIPLICATIVE"
+    },
+    "SN_CONTEXT_MEMORY_002": {
+      "CROSS_MB_MF_ARBITRATION_001": "ADDITIVE"
+    }
+  },
+  "framework_ids": [
+    "SN",
+    "XF",
+    "NM"
+  ],
+  "domain": "navigation",
+  "scope_conditions": [
+    "SC1",
+    "SC5"
+  ],
+  "overall_maturity": "SUPPORTED",
+  "key_references": [
+    "okeefe_nadel_1978",
+    "tolman_1948",
+    "weisberg_2014",
+    "carlson_2010"
+  ],
+  "empirical_support": "SUPPORTED",
+  "competing_theories": [
+    "COGNITIVE_LOAD_ARCHITECTURE"
+  ],
+  "design_implications": [
+    "Use clear spatial hierarchies and visible landmarks at decision points.",
+    "Maintain visual access to reference points (atria, exterior views) to support allocentric orientation.",
+    "Avoid repetitive, undifferentiated corridors that prevent cognitive map differentiation.",
+    "Provide environmental legibility cues (signage, material changes) at path-choice nodes."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.25,
+      0.65
+    ],
+    "typical_d": 0.4,
+    "note": "Effect sizes for wayfinding performance in legible vs illegible layouts."
+  },
+  "source_theories": [
+    "wayfinding_cognition"
+  ],
+  "basis": "Inferred from molecule name: bridges wayfinding_cognition"
+}

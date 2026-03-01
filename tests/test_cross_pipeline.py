@@ -119,8 +119,8 @@ def test_cross_pipeline_salk_view_consistency():
         paper = evaluate_paper(
             structured_claims=[
                 {
-                    "iv": "nature_view",
-                    "dv": "restoration",
+                    "iv": "nature_view_quality",
+                    "dv": "autonomic_regulation",
                     "direction": "increase",
                     "effect_size": 0.5,
                 }
@@ -160,8 +160,8 @@ def test_cross_pipeline_claimed_feature_absent_reflects_in_building_domain():
         paper = evaluate_paper(
             structured_claims=[
                 {
-                    "iv": "nature_view",
-                    "dv": "restoration",
+                    "iv": "nature_view_quality",
+                    "dv": "autonomic_regulation",
                     "direction": "increase",
                     "effect_size": 0.5,
                 }

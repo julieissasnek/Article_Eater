@@ -1,0 +1,243 @@
+================================================================================
+ATLAS CORPUS HEALTH AUDIT
+Auditing master document specifications
+================================================================================
+
+Master document: 19035 lines, 2105066 characters
+
+============================================================
+1. TEMPLATE INVENTORY
+============================================================
+
+Total calibrated templates across 12 panels: 116
+  CROSSCUT-I     :  17 templates
+  NEUROMOD-I     :  14 templates
+  MUSIC-I        :  13 templates
+  SOCIAL-I       :  11 templates
+  MEMORY-I       :  10 templates
+  LIGHT-I        :   9 templates
+  MULTI-I        :   9 templates
+  SPATIAL-I      :   8 templates
+  VISUAL-I       :   8 templates
+  STRESS-I       :   7 templates
+  CREATIVE-I     :   7 templates
+  THERMAL-I      :   3 templates
+
+============================================================
+2. CREDENCE FORMULA VERIFICATION
+   P(composite) = P(parent) × P(bridge) × P(CNFA)
+============================================================
+  VIEW1   : P=0.85×0.7×0.7=0.416 vs stated 0.55                      [✗ MISMATCH] Δ=0.134
+  VF2     : P=0.8×0.4×0.5=0.16 vs stated 0.32                        [✗ MISMATCH] Δ=0.160
+  MAT1    : P=0.82×0.65×0.68=0.362 vs stated 0.52                    [✗ MISMATCH] Δ=0.158
+  SC1     : P=0.8×0.6×0.65=0.312 vs stated 0.52                      [✗ MISMATCH] Δ=0.208
+  SOC2    : P=0.78×0.62×0.7=0.339 vs stated 0.62                     [✗ MISMATCH] Δ=0.281
+  L2      : P=0.85×0.68×0.65=0.376 vs stated 0.62                    [✗ MISMATCH] Δ=0.244
+  CREA3   : P=0.76×0.58×0.62=0.273 vs stated 0.48                    [✗ MISMATCH] Δ=0.207
+
+  ⚠ 7 CREDENCE FORMULA MISMATCHES DETECTED
+    VIEW1: computed 0.416 ≠ stated 0.55 (Δ=0.134)
+    VF2: computed 0.16 ≠ stated 0.32 (Δ=0.160)
+    MAT1: computed 0.362 ≠ stated 0.52 (Δ=0.158)
+    SC1: computed 0.312 ≠ stated 0.52 (Δ=0.208)
+    SOC2: computed 0.339 ≠ stated 0.62 (Δ=0.281)
+    L2: computed 0.376 ≠ stated 0.62 (Δ=0.244)
+    CREA3: computed 0.273 ≠ stated 0.48 (Δ=0.207)
+
+============================================================
+3. BRIDGE WARRANT CEILING VIOLATIONS
+============================================================
+
+  ⚠ 6 CEILING VIOLATIONS DETECTED:
+    VIEW1: EMPIRICAL_COVARIANCE ceiling=0.6, P(bridge)=0.7, excess=0.1 [MEDIUM]
+    VF2: ANALOGICAL ceiling=0.35, P(bridge)=0.4, excess=0.05 [MEDIUM]
+    MAT1: MECHANISM ceiling=0.6, P(bridge)=0.65, excess=0.05 [MEDIUM]
+    SOC2: EMPIRICAL_COVARIANCE ceiling=0.6, P(bridge)=0.62, excess=0.02 [MEDIUM]
+    L2: MECHANISM ceiling=0.6, P(bridge)=0.68, excess=0.08 [MEDIUM]
+    CREA3: FUNCTIONAL ceiling=0.5, P(bridge)=0.58, excess=0.08 [MEDIUM]
+
+  ℹ 6 templates have bridge values ABOVE default ceiling (may be documented overrides):
+    VIEW1: EMPIRICAL_COVARIANCE default=0.6, actual=0.7 (+0.1)
+      → Requires: ceiling_override_rationale documented in JSON schema
+    VF2: ANALOGICAL default=0.35, actual=0.4 (+0.05)
+      → Requires: ceiling_override_rationale documented in JSON schema
+    MAT1: MECHANISM default=0.6, actual=0.65 (+0.05)
+      → Requires: ceiling_override_rationale documented in JSON schema
+    SOC2: EMPIRICAL_COVARIANCE default=0.6, actual=0.62 (+0.02)
+      → Requires: ceiling_override_rationale documented in JSON schema
+    L2: MECHANISM default=0.6, actual=0.68 (+0.08)
+      → Requires: ceiling_override_rationale documented in JSON schema
+    CREA3: FUNCTIONAL default=0.5, actual=0.58 (+0.08)
+      → Requires: ceiling_override_rationale documented in JSON schema
+
+============================================================
+4. DOCUMENT CONTENT ANALYSIS
+============================================================
+
+  Unique article citations found:    337
+  Confidence values mentioned:       212
+  Effect sizes mentioned:            326
+  THEORETICAL_DEFAULT flags:         142
+  Templates explicitly mentioned:    115 / 116
+
+  Warrant type mention frequency:
+    THEORETICAL_DEFAULT      :  136 mentions
+    MECHANISM                :  128 mentions
+    EMPIRICAL_COVARIANCE     :   96 mentions
+    ANALOGICAL               :   70 mentions
+    CONSTITUTIVE             :   45 mentions
+    FUNCTIONAL               :   38 mentions
+    CAPACITY                 :   36 mentions
+
+  Toulmin element coverage:
+    data                     :   35 mentions
+    warrant                  :  298 mentions
+    backing                  :   26 mentions
+    qualifier                :   27 mentions
+    rebuttal                 :   27 mentions
+    competing_accounts       :   48 mentions
+
+  Top 20 most-mentioned templates:
+    CIRCADIAN_ALIGNMENT                :   22 mentions
+    COHERENCE                          :   15 mentions
+    SPEECH_INTELLIGIBILITY             :   14 mentions
+    MODERATE_COMPLEXITY                :   13 mentions
+    NOVELTY_OPTIMAL                    :   10 mentions
+    CEILING_HEIGHT                     :    7 mentions
+    STRESS_RECOVERY_OPPORTUNITY        :    7 mentions
+    PREDICTION_ERROR                   :    7 mentions
+    THREAT_SALIENCE                    :    6 mentions
+    PLACE_IDENTITY                     :    6 mentions
+    INTEGRATION                        :    5 mentions
+    CROWDING_STRESS                    :    5 mentions
+    FRACTAL_DIMENSION                  :    5 mentions
+    PROPRIOCEPTIVE_VESTIBULAR_STABILITY:    5 mentions
+    AMBIENT_TEMPERATURE                :    5 mentions
+    COLLABORATION_STRUCTURE            :    5 mentions
+    EMOTIONAL_RESONANCE                :    4 mentions
+    AUDIOVISUAL_CONGRUENCE             :    4 mentions
+    CONTROL_AND_AGENCY                 :    4 mentions
+    PROSPECT                           :    3 mentions
+
+  ⚠ 1 templates NOT MENTIONED in master document:
+    [CROSSCUT-I] CIRCADIAN_ALIGNMENT_CC
+
+============================================================
+5. CROSS-TEMPLATE INTERACTION COVERAGE
+============================================================
+
+  Total templates:            116
+  Possible pairwise combos:   6670
+  Documented interactions:    440
+  Coverage:                   6.6%
+  Gap:                        6230 undocumented pairs
+
+============================================================
+6. PANEL BALANCE ANALYSIS
+============================================================
+
+  Average templates per panel: 9.7
+  ⚠ Imbalanced panels (>50% deviation from mean):
+    THERMAL-I: 3 templates (under-represented)
+    CROSSCUT-I: 17 templates (over-represented)
+
+============================================================
+7. RECONCILIATION WITH AG's HEALTH REPORT
+============================================================
+
+  AG's corpus_health_report.py found:
+    100 missing confidence values
+    103 missing bridge warrants
+    40 unclassified templates
+    1 ceiling violation
+
+  Master doc analysis shows:
+    - All 103 templates are SPECIFIED with credence factors in the prose
+    - But only 51 templates have been converted to canonical JSON schema
+    - GAP: ~52 templates exist in structured markdown but not in JSON
+    - This explains ~50% of AG's missing-field findings
+
+  Root cause hypothesis:
+    The health report runs against JSON files (the implementation).
+    The master doc contains the specifications (the canonical source).
+    The serialization gap between specification and implementation
+    accounts for most of the missing fields.
+
+  Verification needed:
+    1. Which 51 templates are in JSON? (Need access to data/ directory)
+    2. Are the 100 missing confidences concentrated in non-JSON templates?
+    3. Are the 103 missing bridge warrants from pre-V2.1 templates?
+    4. Is the 1 ceiling violation in the JSON data or the master doc?
+
+============================================================
+8. FORMULA DISCREPANCY DEEP DIVE
+============================================================
+
+  VIEW1: stated composite = 0.55, computed = 0.416
+    P(parent)=0.85, P(bridge)=0.7, P(CNFA)=0.7
+    Product = 0.4165
+    Delta = 0.1335
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  VF2: stated composite = 0.32, computed = 0.16
+    P(parent)=0.8, P(bridge)=0.4, P(CNFA)=0.5
+    Product = 0.16
+    Delta = 0.16
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  MAT1: stated composite = 0.52, computed = 0.362
+    P(parent)=0.82, P(bridge)=0.65, P(CNFA)=0.68
+    Product = 0.3624
+    Delta = 0.1576
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  SC1: stated composite = 0.52, computed = 0.312
+    P(parent)=0.8, P(bridge)=0.6, P(CNFA)=0.65
+    Product = 0.312
+    Delta = 0.208
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  SOC2: stated composite = 0.62, computed = 0.339
+    P(parent)=0.78, P(bridge)=0.62, P(CNFA)=0.7
+    Product = 0.3385
+    Delta = 0.2815
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  L2: stated composite = 0.62, computed = 0.376
+    P(parent)=0.85, P(bridge)=0.68, P(CNFA)=0.65
+    Product = 0.3757
+    Delta = 0.2443
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+  CREA3: stated composite = 0.48, computed = 0.273
+    P(parent)=0.76, P(bridge)=0.58, P(CNFA)=0.62
+    Product = 0.2733
+    Delta = 0.2067
+    → Stated composite HIGHER than formula product
+      Possible: rounding, panel override, or additional evidence not in formula
+
+================================================================================
+HEALTH AUDIT SUMMARY
+================================================================================
+
+  Issues found: 7
+  HIGH:   7 credence formula mismatches
+  HIGH:   6 ceiling violations
+  MEDIUM: 6 bridge values above default ceiling (need override documentation)
+  MEDIUM: 1 templates not mentioned in master document
+  LOW:    6230 undocumented cross-template interactions (6.6% coverage)
+  INFO:   ~52 templates need JSON serialization (51 of 103 done)
+  INFO:   142 THEORETICAL_DEFAULT flags in document
+
+  RECOMMENDED ACTIONS:
+  1. Serialize remaining ~52 templates from markdown to JSON
+  2. Document ceiling overrides for 6 elevated bridge warrants
+  3. Verify 7 credence formula discrepancies with panels
+  4. Add master-doc entries for 1 unmentioned templates
+  5. Prioritize cross-template interaction documentation (currently 6.6%)

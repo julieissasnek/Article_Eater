@@ -174,6 +174,16 @@ def convert_claim_to_belief(claim: dict[str, Any], gold_standard_paper_ids: set[
     """Convert an extracted claim into a WebOfBelief belief."""
     gold_standard_paper_ids = gold_standard_paper_ids or set()
     
+    # 0. Synthesize statement if missing (for synthetic tests/older data)
+    if not claim.get("statement"):
+        parts = []
+        if claim.get("iv"): parts.append(str(claim["iv"]))
+        if claim.get("direction"): parts.append(str(claim["direction"]))
+        if claim.get("dv"): parts.append(str(claim["dv"]))
+        if claim.get("r"): parts.append(f"r={claim['r']}")
+        if claim.get("effect_size"): parts.append(f"effect={claim['effect_size']}")
+        claim["statement"] = " | ".join(parts)
+
     # 1. First run the rich extraction mapping
     result = claim_to_belief(claim)
     if not result.success or not result.entity:

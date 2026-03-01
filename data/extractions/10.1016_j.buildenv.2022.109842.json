@@ -1,0 +1,2088 @@
+{
+  "doi": "10.1016/j.buildenv.2022.109842",
+  "article_type": "empirical_v2",
+  "quality_action": "accept",
+  "quality_score": 0.856,
+  "n_findings": 55,
+  "extracted_at": "2026-02-25T11:13:56.897897+00:00",
+  "recovery_source": "retry_with_robust_parse",
+  "model": "gemini-2.5-flash",
+  "cost": 0.010562,
+  "article_family": "empirical",
+  "title": "Temporal tuning of illuminance and spectrum: Effect of a full-day dynamic lighting pattern on well-being, performance and sleep in simulated office environment",
+  "authors": "Taotao Ru et al., 2023",
+  "research_question": "To assess the effects of a daylong dynamic lighting (DL) pattern with modulations in intensity and spectrum vs. static office lighting (SL) on markers of well-being, cognitive performance, visual experiences, and sleep in a simulated office environment.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 21,
+    "description": "21 college students (8 males), average age 21.52 years (SD=2.29, range 19-26), generally healthy, no visual impairments other than corrected myopia/hyperopia, no smoking/medication/drug use, no recent travel/shift-work, habitual sleep 7-9h, BMI <=25, PSQI <=7, non-extreme chronotype, BDI-II <=10.",
+    "recruitment": "Via advertisements on the local university, followed by online screening questionnaires."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "Simulated office environment (3.6x3.6x2.8m) without windows, white walls, light blue floor, 4 workstations. Equipped with six ceiling-mounted tuneable-white Philips RC099V luminaires. Ambient temperature controlled at 26\u00b0C (daytime) and 25-27\u00b0C (evening/night). Two lighting patterns were used:\n\nDynamic Lighting (DL) Pattern:\n- Early morning (~9:00-10:30) & early afternoon (~14:00-15:30): bright cool white light (6500K, 1000 lx at eye, 1650 lx at table, high melanopic EDI).\n- Late morning (~10:30-12:00) & middle afternoon (~15:30-17:00): regular office light (4000K, 345 lx at eye, 500 lx at table).\n- Lunchtime (~12:00-14:00) & later afternoon (~17:00-18:00): dimmer warm white light (3000K, 160 lx at eye, 300 lx at table).\n- After dinner: 3000K, 40 lx at eye, 78 lx at table.\n- Rest phase (19:30-23:00): warm dim white lighting (40 lx, 3000K at eye).\n- Sleep (23:00-7:00): lights turned off (<5 lx).\n\nStatic Lighting (SL) Pattern:\n- Daytime working hours (9:00-18:00): 4000K, 500 lx at table (except for 10:30-12:00 & 15:30-16:00, which matched DL).\n- Early morning (7:00-9:00) & evening (18:00-23:00): Same as DL pattern.\n- Rest phase (19:30-23:00): warm dim white lighting (40 lx, 3000K at eye).\n- Sleep (23:00-7:00): lights turned off (<5 lx).",
+      "n_stimuli": 2,
+      "source": "Figure 1, Table 2, Methods 2.3"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Subjective sleepiness",
+      "instrument": "Karolinska Sleepiness Scale (KSS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Subjective vitality",
+      "instrument": "4-item scale (energetic, lacking in energy (reversed), alert, sleepy (reversed))",
+      "type": "self_report"
+    },
+    {
+      "construct": "Tension",
+      "instrument": "2-item scale (tense, calm (reversed))",
+      "type": "self_report"
+    },
+    {
+      "construct": "Happiness",
+      "instrument": "1-item scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Positive affect",
+      "instrument": "Positive and Negative Affect Schedule (PANAS) (9 items)",
+      "type": "self_report"
+    },
+    {
+      "construct": "State self-control",
+      "instrument": "State Self-Control Capacity (6 items)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Vigilance and sustained attention (response speed)",
+      "instrument": "Auditory Psychomotor Vigilance Test (PVT)",
+      "type": "performance"
+    },
+    {
+      "construct": "Response inhibition (throughput score)",
+      "instrument": "Auditory Go/No-Go task",
+      "type": "performance"
+    },
+    {
+      "construct": "Working memory (accuracy)",
+      "instrument": "Visual 2-Back task",
+      "type": "performance"
+    },
+    {
+      "construct": "Visual comfort",
+      "instrument": "5-point bi-polar scale (comfortable/uncomfortable)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Pleasantness of lighting",
+      "instrument": "5-point bi-polar scale (pleasant/unpleasant)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Activation from lighting",
+      "instrument": "5-point bi-polar scale (stimulating/relaxing)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Likeability of lighting setting",
+      "instrument": "9-point single item",
+      "type": "self_report"
+    },
+    {
+      "construct": "Beliefs on lighting effect on performance",
+      "instrument": "9-point bi-polar scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Beliefs on lighting effect on mood",
+      "instrument": "9-point bi-polar scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Subjective sleep complaints",
+      "instrument": "Groningen Sleep Quality Scale (GSQS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Subjective sleep quality (overall rating)",
+      "instrument": "7-point single item",
+      "type": "self_report"
+    },
+    {
+      "construct": "Objective sleep indicators",
+      "instrument": "Actiwatch Spectrum (sleep onset, sleep offset, sleep onset latency, sleep duration, WASO, sleep efficiency)",
+      "type": "physiological"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Subjective sleepiness",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "There was no statistical main effect of Lighting pattern or interaction effect between Lighting pattern and Day on subjective sleepiness",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Subjective vitality",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "There was no statistical main effect of Lighting pattern or interaction effect between Lighting pattern and Day on subjective... vitality"
+    },
+    {
+      "id": 3,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "State self-control",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "There was no statistical main effect of Lighting pattern or interaction effect between Lighting pattern and Day on subjective... state self-control"
+    },
+    {
+      "id": 4,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during lunchtime assessment on Day 2",
+      "consequent": "Subjective sleepiness",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.03",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 6A",
+      "quote": "significant higher sleepiness in DL vs. SL during the lunchtime assessment on the second day",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during second afternoon assessment on Day 2",
+      "consequent": "Subjective sleepiness",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 6A",
+      "quote": "participants' sleepiness was significantly lower in DL vs. SL during the second assessment in the afternoon on Day 2",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first afternoon assessment on Day 2",
+      "consequent": "Subjective vitality",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 6B",
+      "quote": "participants felt more vital... during the first afternoon assessment on the second day in the DL pattern compared to the SL pattern"
+    },
+    {
+      "id": 7,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first afternoon assessment on Day 2",
+      "consequent": "State self-control",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 6C",
+      "quote": "experienced a higher self-control during the first afternoon assessment on the second day in the DL pattern compared to the SL pattern"
+    },
+    {
+      "id": 8,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Tension",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "no significant main or interaction effect between Lighting pattern and Day on tension",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.75
+    },
+    {
+      "id": 9,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Happiness",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "no significant main or interaction effect between Lighting pattern and Day on... happiness",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 10,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Positive affect (PANAS)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "no significant main or interaction effect between Lighting pattern and Day on... positive affect assessed with PANAS",
+      "outcome_id": "affect.mood.positive",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during lunchtime assessment on Day 1",
+      "consequent": "Happiness",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "DP"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Fig. 6E",
+      "quote": "participants felt happier during the lunchtime assessment on Day 1 in the DL pattern than in the SL pattern",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 12,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "PVT average response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on average response speed"
+    },
+    {
+      "id": 13,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "PVT 10% fastest response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on... 10% fastest... response speed in the PVT"
+    },
+    {
+      "id": 14,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "PVT 10% slowest response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on... 10% slowest response speed in the PVT"
+    },
+    {
+      "id": 15,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first afternoon assessment on Day 2",
+      "consequent": "PVT 10% slowest response speed",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Fig. 7C",
+      "quote": "participants showed the higher slowest response speed during the first afternoon assessment on Day2 under exposure to the DL vs. SL pattern"
+    },
+    {
+      "id": 16,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during third afternoon assessment on Day 1",
+      "consequent": "PVT 10% fastest response speed",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 7B",
+      "quote": "Participants showed the higher fastest response speed during the third afternoon assessment on Day1 in the DL vs. SL pattern"
+    },
+    {
+      "id": 17,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) (per assessment)",
+      "consequent": "PVT average response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "No statistically significant differences between the two lighting patterns on average response speed were found for any of the assessments"
+    },
+    {
+      "id": 18,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Go/No-Go response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "No significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on response speed... were found in the Go/No-Go task"
+    },
+    {
+      "id": 19,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Go/No-Go hit rate",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "No significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on... hit rate... were found in the Go/No-Go task"
+    },
+    {
+      "id": 20,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Go/No-Go false alarm rate",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "No significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on... false alarm rate... were found in the Go/No-Go task"
+    },
+    {
+      "id": 21,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Go/No-Go throughput score (Tput)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "No significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on... Tput were found in the Go/No-Go task"
+    },
+    {
+      "id": 22,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during late morning assessment on Day 2",
+      "consequent": "Go/No-Go throughput score (Tput)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.03",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 7G",
+      "quote": "participants showing lower Tput in DL vs. SL condition"
+    },
+    {
+      "id": 23,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "2-back response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "main effect of Lighting pattern was not significant for the performance indicators of the 2-back task"
+    },
+    {
+      "id": 24,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "2-back throughput score (Tput)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "main effect of Lighting pattern was not significant for the performance indicators of the 2-back task"
+    },
+    {
+      "id": 25,
+      "antecedent": "Lighting pattern (DL vs. SL) * Day (Day1 vs. Day2) interaction",
+      "consequent": "2-back accuracy",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "performance",
+      "p_value": "0.03",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "the interaction effect between Lighting pattern and Day on 2-back accuracy was statistically significant"
+    },
+    {
+      "id": 26,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) on Day 1",
+      "consequent": "2-back accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant difference between the two lighting patterns on either experimental day (Day1)"
+    },
+    {
+      "id": 27,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) on Day 2",
+      "consequent": "2-back accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant difference between the two lighting patterns on either experimental day (...Day2)"
+    },
+    {
+      "id": 28,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) (per assessment)",
+      "consequent": "2-back response speed",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant differences on the performance indicators of the 2-back task"
+    },
+    {
+      "id": 29,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) (per assessment)",
+      "consequent": "2-back throughput score (Tput)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM",
+        "T20"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant differences on the performance indicators of the 2-back task"
+    },
+    {
+      "id": 30,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Visual comfort",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on participants' evaluations of lighting regarding visual comfort",
+      "outcome_id": "physio.pain",
+      "outcome_domain": "physio",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.75
+    },
+    {
+      "id": 31,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Pleasantness of lighting",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on participants' evaluations of lighting regarding... pleasantness"
+    },
+    {
+      "id": 32,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Activation from lighting",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on participants' evaluations of lighting regarding... activation",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 33,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Likeability of lighting setting",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "no significant main effect of Lighting pattern and interaction effect between Lighting pattern and Day on participants' evaluations of lighting regarding... likeability"
+    },
+    {
+      "id": 34,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during second afternoon assessment on Day 2",
+      "consequent": "Visual comfort",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8A",
+      "quote": "DL during the second... afternoon assessment on Day 2 was perceived as more comfortable than the SL",
+      "outcome_id": "physio.pain",
+      "outcome_domain": "physio",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.75
+    },
+    {
+      "id": 35,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during third afternoon assessment on Day 2",
+      "consequent": "Visual comfort",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8A",
+      "quote": "DL during the... third afternoon assessment on Day 2 was perceived as more comfortable than the SL",
+      "outcome_id": "physio.pain",
+      "outcome_domain": "physio",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.75
+    },
+    {
+      "id": 36,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during second afternoon assessment on Day 2",
+      "consequent": "Pleasantness of lighting",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8B",
+      "quote": "Participants evaluated the lighting as more pleasant during the second afternoon assessment in DL vs. SL on Day 2"
+    },
+    {
+      "id": 37,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first morning assessment on Day 1",
+      "consequent": "Activation from lighting",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8C",
+      "quote": "DL setting during the first morning... assessment were experienced as more stimulating than the SL setting",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 38,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first afternoon assessment on Day 1",
+      "consequent": "Activation from lighting",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8C",
+      "quote": "DL setting during the... first afternoon assessment were experienced as more stimulating than the SL setting",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 39,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first morning assessment on Day 1",
+      "consequent": "Likeability of lighting setting",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8D",
+      "quote": "participants liked the lighting setting in the SL better than in the DL during the first morning assessment on Day 1"
+    },
+    {
+      "id": 40,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during second morning assessment on Day 2",
+      "consequent": "Likeability of lighting setting",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8D",
+      "quote": "participants liked the lighting setting better in the DL than in the SL during the second morning assessment... on Day 2"
+    },
+    {
+      "id": 41,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during second afternoon assessment on Day 2",
+      "consequent": "Likeability of lighting setting",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "L5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8D",
+      "quote": "participants liked the lighting setting better in the DL than in the SL during the... second afternoon assessment on Day 2"
+    },
+    {
+      "id": 42,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Beliefs on lighting effect on performance",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Neither Lighting pattern nor the interaction between Lighting pattern and Day yielded a significant effect on the subjective beliefs about the effect of the lighting on performance"
+    },
+    {
+      "id": 43,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Beliefs on lighting effect on mood",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Neither Lighting pattern nor the interaction between Lighting pattern and Day yielded a significant effect on the subjective beliefs about the effect of the lighting on... mood"
+    },
+    {
+      "id": 44,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) during first afternoon assessment on Day 2",
+      "consequent": "Beliefs on lighting effect on performance",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 8E",
+      "quote": "participants showed stronger beliefs that the lighting would benefit their performance in the DL than the SL during the first afternoon assessment on Day 2"
+    },
+    {
+      "id": 45,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL) (per assessment)",
+      "consequent": "Beliefs on lighting effect on mood",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Inspection of the contrasts per assessment for beliefs regarding the effects of the lighting on mood revealed no significant differences"
+    },
+    {
+      "id": 46,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective sleep onset time (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on sleep onset time",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 47,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective sleep offset time (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on... sleep offset time",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 48,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective sleep duration (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on... sleep duration",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 49,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective sleep onset latency (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on... sleep onset latency",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 50,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective wake after sleep onset (WASO) (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on... WASO",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 51,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Objective sleep efficiency (Actiwatch)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "physiological",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "no significant main effect of Lighting pattern nor interaction effect between Lighting pattern and Day on... sleep efficiency",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 52,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Subjective sleep complaints (GSQS score)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.04",
+      "effect_size": 0.06,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,63)=4.21",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "lower scores in DL vs. SL pattern suggesting that participants experienced less sleep complaints in the DL vs. SL pattern",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 53,
+      "antecedent": "Lighting pattern (DL vs. SL) * Day (Day1 vs. Day2) interaction",
+      "consequent": "Subjective sleep complaints (GSQS score)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "The interaction between Lighting pattern and Day was not statistically significant (p < .05).",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 54,
+      "antecedent": "Dynamic lighting pattern (DL) vs. Static lighting pattern (SL)",
+      "consequent": "Subjective sleep quality (overall rating)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": 0.1,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,21)=6.54",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "Participants reported that they slept better in the DL vs. SL pattern",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 55,
+      "antecedent": "Lighting pattern (DL vs. SL) * Day (Day1 vs. Day2) interaction",
+      "consequent": "Subjective sleep quality (overall rating)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L5",
+        "T30",
+        "CSA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Time of day",
+        "Experimental day"
+      ],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "The Lighting pattern and Day interaction was not significant (p > 0.05).",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "The dynamic changes in human psychological and physiological function over the day, influenced by varying homeostatic sleep pressure and internal circadian rhythm, modulate sensitivity to light, implying that high melanopic EDI exposure is not always beneficial and should be applied selectively during the wake episode."
+  ],
+  "moderators": [
+    "Time of day",
+    "Experimental day"
+  ],
+  "implementation_implications": [
+    "A dynamic lighting approach can be a practical strategy to support office workers' daytime well-being and nocturnal sleep.",
+    "High melanopic EDI should be selectively applied during the wake episode, considering dynamic changes in human psychological and physiological function, homeostatic sleep pressure, and circadian rhythm."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A8_Social",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "CB",
+    "NM"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Descriptive statistics of participants including age, BMI, and scores on PSQI, MEQ, BDI, and GHQ.",
+      "key_stats": [
+        "N=21",
+        "Average Age=21.52",
+        "Average BMI=20.14",
+        "Average PSQI=4.19"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Spectrally weighted a-opic equivalent daylight illuminance (EDI) at eye level for each lighting setting (4000K 500lx, 6500K 1780lx, 3000K 500lx, 3000K 300lx, 4000K 200lx, 3000K 78lx) at two test positions (B and D) and in the bedroom, including illuminance, melanopic, S-cone, M-scone, L-cone, and rhodopic EDIs.",
+      "key_stats": [
+        "6500K 1780lx: Melanopic EDI=861-919lx",
+        "3000K 78lx: Melanopic EDI=13-15lx"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Estimated marginal means and standard errors of objective sleep indicators (sleep onset time, sleep offset time, sleep duration, sleep onset latency, WASO, sleep efficiency) per lighting pattern (DL vs. SL) and day (Day1 vs. Day2).",
+      "key_stats": [
+        "DL Day1 Sleep duration=470.00 min",
+        "SL Day1 Sleep duration=472.00 min"
+      ],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "The study was conducted in a well-controlled laboratory setting, restricting participants' activities and preventing exposure to natural light, which may limit ecological validity and generalizability to real operational offices.",
+    "The sample size (N=21) and limited number of observations per assessment resulted in low statistical power for detecting small effects and investigating inter-individual differences or random slopes.",
+    "The experimental design did not allow for disentangling whether the observed time-dependent and metric-dependent effects were caused by changes in illuminance, spectrum, light history, or timing.",
+    "Only one specific dynamic lighting pattern was tested, limiting the generalizability of findings to other potential dynamic lighting scenarios.",
+    "The melanopic EDI during lunchtime (160 lx at eye level, ~85 melanopic EDI) was lower than recent recommendations (250 melanopic EDI for daytime exposure).",
+    "The melanopic EDI during the evening (15 melanopic EDI) was slightly brighter than recent recommendations (<10 melanopic EDI for evening residential environments), which might have tapered potential differences between lighting patterns.",
+    "The 48-hour study duration does not allow for investigating whether the observed effects persist or develop over extended exposure durations (weeks or months) in real-life conditions."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.buildenv.2022.109842",
+    "title": "Temporal tuning of illuminance and spectrum: Effect of a full-day dynamic lighting pattern on well-being, performance and sleep in simulated office environment",
+    "authors": [
+      "T. Ru",
+      "M. Kompier",
+      "Qingwei Chen",
+      "Guofu Zhou",
+      "K. Smolders"
+    ],
+    "year": 2022,
+    "journal": "Building and Environment",
+    "volume": "228",
+    "issue": null,
+    "pages": "109842",
+    "publisher": "Elsevier BV",
+    "citation_count": 45,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1016/0165-1781(89)90047-4",
+      "10.1016/S0304-3940(03)00223-4",
+      "10.1016/j.bbr.2014.08.017",
+      "10.1016/j.bbr.2014.12.043",
+      "10.1016/j.bbr.2015.07.045",
+      "10.1016/j.bbr.2017.09.016",
+      "10.1016/j.buildenv.2018.12.002",
+      "10.1016/j.buildenv.2020.107288",
+      "10.1016/j.buildenv.2020.107326",
+      "10.1016/j.buildenv.2022.108844",
+      "10.1016/j.cub.2006.06.031",
+      "10.1016/j.jenvp.2013.09.004",
+      "10.1016/j.jenvp.2013.12.010",
+      "10.1016/j.jenvp.2017.02.001",
+      "10.1016/j.jenvp.2020.101409",
+      "10.1016/j.jenvp.2021.101583",
+      "10.1016/j.neulet.2012.06.046",
+      "10.1016/j.neuroscience.2013.05.016",
+      "10.1016/j.physbeh.2012.04.028",
+      "10.1016/j.physbeh.2016.05.035",
+      "10.1016/j.physbeh.2020.112999",
+      "10.1016/j.sleep.2007.06.017",
+      "10.1016/j.sleep.2017.01.019",
+      "10.1016/j.sleh.2017.03.005",
+      "10.1016/j.sleh.2021.06.001",
+      "10.1017/S0033291700050996",
+      "10.1037/0022-3514.54.6.1063",
+      "10.1038/s41598-018-36791-5",
+      "10.1038/s41598-019-52352-w",
+      "10.1038/s41598-021-81182-y",
+      "10.1038/s41598-021-92863-z",
+      "10.1038/srep33591",
+      "10.1046/j.1440-1819.1999.00486.x",
+      "10.1046/j.1442-2018.2000.00037.x",
+      "10.1073/pnas.1901824116",
+      "10.1080/00140130410001686320",
+      "10.1080/00140139.2014.983300",
+      "10.1080/00994480.1973.10732231",
+      "10.1080/07420520802118103",
+      "10.1093/sleep/14.6.511",
+      "10.1093/sleep/26.6.695",
+      "10.1111/j.1365-2869.2004.00407.x",
+      "10.1111/j.1469-7793.2000.00695.x",
+      "10.1111/j.1469-7793.2001.t01-1-00261.x",
+      "10.1111/jpi.12714",
+      "10.1111/jsr.12470",
+      "10.1111/jsr.12638",
+      "10.1113/jphysiol.2003.040477",
+      "10.1113/jphysiol.2011.226555",
+      "10.1126/science.1067262",
+      "10.1126/science.1069609",
+      "10.1126/science.1077293",
+      "10.1126/science.1105121",
+      "10.1152/ajpregu.00121.2005",
+      "10.1152/ajpregu.1997.273.5.R1800",
+      "10.1152/ajpregu.2000.279.5.R1574",
+      "10.1159/000477093",
+      "10.1177/0013916511420560",
+      "10.1177/0748730418796443",
+      "10.1177/1477153509355632",
+      "10.1177/1477153510378150",
+      "10.1177/1477153511435961",
+      "10.1177/1477153519828419",
+      "10.1177/1477153519869758",
+      "10.1177/14771535211005832",
+      "10.1177/1477153521990645",
+      "10.1186/1740-3391-5-2",
+      "10.1371/journal.pbio.3001571",
+      "10.1371/journal.pone.0125359",
+      "10.1371/journal.pone.0207488",
+      "10.1371/journal.pone.0243259",
+      "10.1523/JNEUROSCI.21-16-06405.2001",
+      "10.2486/indhealth.2018-0030",
+      "10.3109/00207459008994241",
+      "10.3109/07420528.2012.675850",
+      "10.3109/07420528.2013.793196",
+      "10.3109/07420528.2013.872121",
+      "10.3389/fneur.2021.630553",
+      "10.3390/clockssleep2010008",
+      "10.3390/ijerph15030524",
+      "10.3390/ijerph17093219",
+      "10.5271/sjweh.1268",
+      "10.5271/sjweh.3144",
+      "10.5664/jcsm.3780",
+      "10.5665/sleep.2894"
+    ],
+    "cited_by": [
+      "10.1016/j.buildenv.2025.114146",
+      "10.1016/j.erap.2025.101140",
+      "10.1016/j.buildenv.2025.113839",
+      "10.1016/j.jobe.2025.115023",
+      "10.1016/j.jenvp.2025.102870",
+      "10.1016/j.buildenv.2025.113612",
+      "10.3892/mmr.2025.13726",
+      "10.1016/j.jobe.2025.114415",
+      "10.3390/su17188455",
+      "10.1080/00140139.2025.2544814",
+      "10.1002/pchj.70022",
+      "10.1109/Lighting64836.2025.11081790",
+      "10.1016/j.ijadr.2025.08.002",
+      "10.1007/s40815-025-02043-8",
+      "10.1016/j.dibe.2025.100658",
+      "10.1177/14771535251318750",
+      "10.1177/10519815241305008",
+      "10.1016/j.buildenv.2025.112733",
+      "10.1080/15502724.2024.2434976",
+      "10.1155/ina/8245786",
+      "10.24294/jipd5918",
+      "10.1016/j.enbuild.2024.115180",
+      "10.1109/LS2463127.2024.10881199",
+      "10.1016/j.buildenv.2024.112316",
+      "10.3390/buildings14103313",
+      "10.1186/s12877-023-04594-7",
+      "10.1016/j.heliyon.2024.e38089",
+      "10.1016/j.jobe.2024.110224",
+      "10.48550/arXiv.2406.02728",
+      "10.3390/buildings14041115",
+      "10.3390/buildings14030770",
+      "10.2147/NSS.S442007",
+      "10.1016/j.buildenv.2024.111323",
+      "10.1016/j.buildenv.2024.111185",
+      "10.1111/jsr.14113",
+      "10.1109/SIELMEN59038.2023.10290859",
+      "10.3390/buildings13082112",
+      "10.1177/1420326X231196218",
+      "10.1016/j.buildenv.2023.110616",
+      "10.1109/LS1858153.2023.10170062",
+      "10.1109/EEEIC/ICPSEurope57605.2023.10194800",
+      "10.3390/clockssleep5010012",
+      "10.1016/j.jobe.2024.108902",
+      "10.3724/sp.j.1042.2023.01698"
+    ],
+    "semantic_scholar_id": "1c3d61402664a07f8ceaf599992386af7c569f01",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:15.537952+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Temporal tuning of illuminance and spectrum: Effect of a full-day dynamic lighting pattern on well-being, performance and sleep in simulated office environment",
+    "crossref_year": 2023,
+    "crossref_citation_count": 39,
+    "crossref_journal": "Building and Environment",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 96,
+    "crossref_issn": [
+      "0360-1323"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.431342+00:00",
+    "_cr_refs_added": 85
+  },
+  "year": 2022,
+  "journal": "Building and Environment",
+  "authors_structured": [
+    "T. Ru",
+    "M. Kompier",
+    "Qingwei Chen",
+    "Guofu Zhou",
+    "K. Smolders"
+  ],
+  "crossref_title": "Temporal tuning of illuminance and spectrum: Effect of a full-day dynamic lighting pattern on well-being, performance and sleep in simulated office environment",
+  "crossref_authors": [
+    {
+      "name": "Taotao Ru",
+      "orcid": "https://orcid.org/0000-0002-6097-4160",
+      "affiliation": null
+    },
+    {
+      "name": "Maaike E. Kompier",
+      "orcid": "https://orcid.org/0000-0002-9133-3809",
+      "affiliation": null
+    },
+    {
+      "name": "Qingwei Chen",
+      "orcid": "https://orcid.org/0000-0002-5458-0210",
+      "affiliation": null
+    },
+    {
+      "name": "Guofu Zhou",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Karin C.H.J. Smolders",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2023,
+  "crossref_journal": "Building and Environment",
+  "crossref_citation_count": 39,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:53:05.014538+00:00"
+}

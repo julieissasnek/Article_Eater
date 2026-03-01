@@ -17,7 +17,7 @@ identifies complications, speculates about mechanisms, and notes limitations.
 """
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 from enum import Enum
 
@@ -277,6 +277,9 @@ class IntegratedResponse:
     panel_synthesis: str  # What the panel agrees on
     panel_debates: List[str]  # Where frameworks disagree
     open_questions: List[str]  # What no framework can answer
+
+    # Sprint QA-2/QA-4: Persona-specific enrichment data
+    persona_enrichment: Optional[Dict] = field(default_factory=lambda: None)  # type: ignore[assignment]
 
 
 class IntegratedQueryService:
@@ -679,6 +682,16 @@ class IntegratedQueryService:
             panel_comments = self._generate_panel_comments(template_response)
             panel_synthesis, panel_debates, open_questions = self._synthesize_panel(panel_comments)
 
+        # Sprint QA-2/QA-4: Generate persona enrichment if persona specified
+        persona_enrichment = None
+        if persona is not None:
+            try:
+                persona_enrichment = self.template_service.enrich_response(
+                    template_response, persona
+                )
+            except Exception as e:
+                logger.warning(f"Persona enrichment failed: {e}")
+
         return IntegratedResponse(
             template_response=template_response,
             article_evidence=article_evidence[:10],
@@ -690,7 +703,8 @@ class IntegratedQueryService:
             panel_comments=panel_comments,
             panel_synthesis=panel_synthesis,
             panel_debates=panel_debates,
-            open_questions=open_questions
+            open_questions=open_questions,
+            persona_enrichment=persona_enrichment,
         )
 
     def format_full_response(self, response: IntegratedResponse) -> str:
@@ -852,6 +866,46 @@ class IntegratedQueryService:
                 lines.append(f"  [{gap.priority.upper()}] {gap.description[:55]}...")
                 lines.append(f"       Proposed: {gap.proposed_study[:55]}...")
 
+        # Sprint QA-2/QA-4: Persona Enrichment
+        if response.persona_enrichment:
+            pe = response.persona_enrichment
+            lines.extend([
+                "",
+                "─" * 76,
+                f"PERSONA ENRICHMENT ({pe.get('persona', '?').upper()})",
+                "─" * 76,
+            ])
+            # Display based on persona type
+            if 'thresholds' in pe and pe['thresholds']:
+                lines.append(f"  Quantitative thresholds: {pe.get('n_thresholds', 0)} extracted")
+                for t in pe['thresholds'][:4]:
+                    lines.append(
+                        f"    • {t['parameter']}: {t['value']} {t['unit'][:30]}"
+                        f"  [conf: {t['confidence']:.0%}]"
+                    )
+            if 'grade_ratings' in pe and pe['grade_ratings']:
+                lines.append("  GRADE Evidence Ratings:")
+                for gr in pe['grade_ratings'][:3]:
+                    lines.append(f"    {gr['maturity_source']} → {gr['grade']}")
+            if 'contraindications' in pe and pe['contraindications']:
+                lines.append(f"  ⚠️  Contraindications: {len(pe['contraindications'])} flagged")
+                for c in pe['contraindications'][:3]:
+                    lines.append(f"    {c['severity'].upper()}: {c['condition']}")
+            if 'proxy_metrics' in pe and pe['proxy_metrics']:
+                lines.append("  Measurable KPIs:")
+                for pm in pe['proxy_metrics'][:3]:
+                    lines.append(f"    {pm['scientific_outcome']} → {', '.join(pm['measurable_kpis'][:2])}")
+            if 'glossary' in pe and pe['glossary']:
+                lines.append(f"  Glossary: {len(pe['glossary'])} terms defined")
+            if 'standards' in pe and pe['standards']:
+                lines.append(f"  Applicable standards: {len(pe['standards'])}")
+                for s in pe['standards'][:3]:
+                    lines.append(f"    • {s['standard']} ({s['jurisdiction']})")
+            # Provenance
+            if 'template_provenance' in pe:
+                n_tmpl = len(pe['template_provenance'])
+                lines.append(f"  Provenance: {n_tmpl} templates contributing")
+
         return "\n".join(lines)
 
 
@@ -862,6 +916,7 @@ class IntegratedQueryService:
 def ask_integrated(
     question: str,
     include_panel: bool = True,
+    persona: UserPersona = None,
     verbose: bool = True
 ) -> IntegratedResponse:
     """
@@ -870,9 +925,11 @@ def ask_integrated(
     Usage:
         from src.services.integrated_query_service import ask_integrated
         response = ask_integrated("When do high ceilings increase creativity?")
+        # With persona enrichment:
+        response = ask_integrated("...", persona=UserPersona.ARCHITECT)
     """
     service = IntegratedQueryService()
-    response = service.query(question, include_panel=include_panel)
+    response = service.query(question, include_panel=include_panel, persona=persona)
 
     if verbose:
         print(service.format_full_response(response))
@@ -883,3 +940,4 @@ def ask_integrated(
 if __name__ == "__main__":
     # Demo
     ask_integrated("When do high ceilings increase creativity and for whom?")
+

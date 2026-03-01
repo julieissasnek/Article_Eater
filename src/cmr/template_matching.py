@@ -188,11 +188,20 @@ def build_template_index(template_records: Iterable[TemplateRecord]) -> dict[str
                     outputs.add(dst)
         
         # Extract from mechanism_chain (Gen-2 schema)
-        for step in data.get("mechanism_chain", []):
-            if "from" in step:
-                inputs.add(step["from"])
-            if "to" in step:
-                outputs.add(step["to"])
+        chain_data = data.get("mechanism_chain", [])
+        if isinstance(chain_data, list):
+            for step in chain_data:
+                # Depending on structure, step could be dict or string
+                if isinstance(step, dict):
+                    if "from" in step:
+                        inputs.add(step["from"])
+                    if "to" in step:
+                        outputs.add(step["to"])
+                    desc = step.get("description") or step.get("mechanism")
+                    if desc:
+                        mechanisms.add(desc)
+                elif isinstance(step, str):
+                    mechanisms.add(step)
         
         # Extract mechanism text for mechanistic matching
         if "structural_pattern" in data:

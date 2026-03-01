@@ -214,10 +214,29 @@ app.add_middleware(
     allow_headers=["*"],                   # Allow all headers
 )
 
-# Metrics middleware
+# Metrics middleware and Rate Limiting
+rate_limits: Dict[str, list] = {}
+MAX_REQUESTS_PER_MINUTE = 100
+
 @app.middleware("http")
-async def metrics_middleware(request: Request, call_next):
-    start = time.time()
+async def combined_middleware(request: Request, call_next):
+    # 1. Rate Limiting Logic (IP-based)
+    client_ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    
+    # Clean up old requests
+    if client_ip in rate_limits:
+        rate_limits[client_ip] = [t for t in rate_limits[client_ip] if now - t < 60]
+    else:
+        rate_limits[client_ip] = []
+        
+    # Check limit
+    if len(rate_limits[client_ip]) >= MAX_REQUESTS_PER_MINUTE:
+        return Response(content="Rate limit exceeded", status_code=429)
+        
+    rate_limits[client_ip].append(now)
+
+    # 2. Metrics Logic
     response = await call_next(request)
     try: 
         REQUESTS.labels(request.method, request.url.path).inc()

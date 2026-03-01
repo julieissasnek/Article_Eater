@@ -25,8 +25,7 @@ from datetime import datetime, timezone
 PROJECT_ROOT = Path(__file__).parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "data" / "templates"
 AE_DB = PROJECT_ROOT / "ae.db"
-WEB_DB_V1 = PROJECT_ROOT / "data" / "web_persistence.db"
-WEB_DB_V2 = PROJECT_ROOT / "data" / "web_persistence_v2.db"
+WEB_DB_V2 = Path(os.environ.get("AE_DB_PATH", PROJECT_ROOT / "data" / "web_persistence_v2.db"))
 TRANSFER_DOC = PROJECT_ROOT / "docs" / "TRANSFER_Feb21_Session8_CORRECTED.md"
 VALIDATION_REPORT = PROJECT_ROOT / "data" / "template_validation_report.json"
 
@@ -185,15 +184,15 @@ def reconcile():
     #             print(f"    {status}: {count}")
     # print()
 
-    # Source 3: web_persistence.db (v1)
-    print("SOURCE 3: web_persistence.db (beliefs table)")
+    # Source 3: web_persistence.db (v2)
+    print("SOURCE 3: web_persistence_v2.db (beliefs table)")
     print("-" * 40)
-    web_v1_counts = count_db_templates(WEB_DB_V1)
-    if "error" in web_v1_counts:
-        print(f"  {web_v1_counts['error']}")
+    web_v2_counts = count_db_templates(WEB_DB_V2)
+    if "error" in web_v2_counts:
+        print(f"  {web_v2_counts['error']}")
     else:
-        print(f"  Beliefs: {web_v1_counts.get('beliefs', 'N/A')}")
-        print(f"  Templates: {web_v1_counts.get('total', 'N/A')}")
+        print(f"  Beliefs: {web_v2_counts.get('beliefs', 'N/A')}")
+        print(f"  Templates: {web_v2_counts.get('total', 'N/A')}")
     print()
 
     # Source 4: TRANSFER document

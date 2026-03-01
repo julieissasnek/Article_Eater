@@ -1,0 +1,292 @@
+{
+  "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+  "display_id": "T12",
+  "name": "Interoceptive prediction error \u2192 affect construction",
+  "structural_pattern": "body_state_mismatch \u2192 affect_generation \u2192 conceptual_categorization",
+  "higher_order_principle": "Theory of Constructed Emotion (Barrett) / Interoceptive Inference (Seth)",
+  "framework_ids": [
+    "INTEROCEPTION",
+    "PREDICTIVE_PROCESSING"
+  ],
+  "transferable_to": [
+    "All affective experience",
+    "Thermal comfort",
+    "Acoustic annoyance"
+  ],
+  "causal_links": [
+    {
+      "id": "link_1",
+      "from_entity": "environmental_body_influence",
+      "activity": "modulates",
+      "to_entity": "interoceptive_signals",
+      "from_level": "ecological",
+      "to_level": "systems",
+      "bridging_quality": "strong",
+      "maturity": "how-actually",
+      "evidence_base": "Craig (2009)",
+      "change_produced": "heart rate, respiration, muscle tension changes"
+    },
+    {
+      "id": "link_2",
+      "from_entity": "interoceptive_signals",
+      "activity": "generates",
+      "to_entity": "interoceptive_prediction_error",
+      "from_level": "systems",
+      "to_level": "circuit",
+      "bridging_quality": "strong",
+      "maturity": "how-actually",
+      "evidence_base": "Seth (2013); Barrett & Simmons (2015)",
+      "change_produced": "mismatch signal in anterior insula"
+    },
+    {
+      "id": "link_3",
+      "from_entity": "interoceptive_prediction_error",
+      "activity": "constructed_into",
+      "to_entity": "affective_experience",
+      "from_level": "circuit",
+      "to_level": "phenomenological",
+      "bridging_quality": "moderate",
+      "maturity": "how-plausibly",
+      "evidence_base": "Barrett (2017)",
+      "change_produced": "specific emotion or general valence/arousal"
+    }
+  ],
+  "scope_conditions": [
+    "Depends on interoceptive sensitivity (accuracy)",
+    "Cross-cultural variation in conceptual categories",
+    "Alexithymia impairs categorization (link 3) but not physiology (link 1)"
+  ],
+  "moderators": [
+    "Interoceptive accuracy (individual trait)",
+    "Emotional granularity (learned skill)",
+    "Cultural emotion concepts"
+  ],
+  "interactions": [
+    "ALL TEMPLATES (Bridge Template) - connects physiological effects to subjective feeling",
+    {
+      "template_id": "MOTOR_PREDICTION_ARCH_001",
+      "display_id": "TP1",
+      "nature": "Reverse link added by CX V10 S4 remediation to satisfy bidirectional interaction encoding."
+    }
+  ],
+  "overall_maturity": "how-plausibly",
+  "key_references": [
+    {
+      "citation": "Barrett, L. F. (2017). How emotions are made."
+    },
+    {
+      "citation": "Seth, A. K. (2013). Interoceptive inference."
+    },
+    {
+      "citation": "Craig, A. D. (2009). How do you feel \u2014 now?"
+    }
+  ],
+  "short_description": "We construct emotions by categorizing interoceptive prediction errors; the body speaks, the brain interprets.",
+  "age_band_modifiers": {
+    "toddler_0_3": {
+      "speed": 0.45,
+      "vision": 0.7,
+      "hearing": 0.85,
+      "motor": 0.5,
+      "olfaction": 0.9
+    },
+    "age_3_6": {
+      "speed": 0.6,
+      "vision": 0.8,
+      "hearing": 0.9,
+      "motor": 0.65,
+      "olfaction": 0.95
+    },
+    "age_6_9": {
+      "speed": 0.72,
+      "vision": 0.88,
+      "hearing": 0.94,
+      "motor": 0.78,
+      "olfaction": 0.97
+    },
+    "age_9_12": {
+      "speed": 0.82,
+      "vision": 0.94,
+      "hearing": 0.97,
+      "motor": 0.87,
+      "olfaction": 0.98
+    },
+    "age_12_16": {
+      "speed": 0.9,
+      "vision": 0.97,
+      "hearing": 0.98,
+      "motor": 0.93,
+      "olfaction": 0.99
+    },
+    "emerging_adult_16_25": {
+      "speed": 0.97,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 0.98,
+      "olfaction": 1.0
+    },
+    "young_20_40": {
+      "speed": 1.0,
+      "vision": 1.0,
+      "hearing": 1.0,
+      "motor": 1.0,
+      "olfaction": 1.0
+    },
+    "middle_40_65": {
+      "speed": 0.88,
+      "vision": 0.9,
+      "hearing": 0.92,
+      "motor": 0.9,
+      "olfaction": 0.85
+    },
+    "older_65_80": {
+      "speed": 0.72,
+      "vision": 0.7,
+      "hearing": 0.75,
+      "motor": 0.7,
+      "olfaction": 0.5
+    },
+    "frail_80_plus": {
+      "speed": 0.55,
+      "vision": 0.5,
+      "hearing": 0.55,
+      "motor": 0.5,
+      "olfaction": 0.25
+    }
+  },
+  "vulnerability_index": {
+    "formula": "speed * vision * hearing * motor * olfaction",
+    "interpretation": "lower product indicates higher vulnerability",
+    "reference_band": "young_20_40"
+  },
+  "universal_design_thresholds": {
+    "min_ambient_illuminance_lux": 300,
+    "max_rt60_speech_s": 0.4,
+    "min_snr_db": 15,
+    "min_cof": 0.55,
+    "max_riser_mm": 170,
+    "min_contrast_ratio": 0.7,
+    "min_wayfinding_channels": 3
+  },
+  "challenge_gradient_available": false,
+  "lifespan_sensitivity_multiplier": {
+    "model": "u_curve_piecewise",
+    "reference": "age_25_50",
+    "by_age_range": {
+      "age_0_6": 1.6,
+      "age_6_12": 1.35,
+      "age_12_25": 1.15,
+      "age_25_50": 1.0,
+      "age_50_65": 1.2,
+      "age_65_80": 1.45,
+      "age_80_plus": 1.7
+    },
+    "boundary_rule": {
+      "range": "16-25",
+      "method": "linear_interpolation_to_adult_baseline"
+    }
+  },
+  "developmental_challenge_benefit": false,
+  "context_modes": {
+    "school": {
+      "context": "school",
+      "classroom_parameters": {
+        "daylight_vqi_min": {
+          "primary_5_9": 50,
+          "upper_9_12": 40,
+          "secondary_12_16": 35
+        },
+        "illuminance_lux": {
+          "min": 300,
+          "max": 500
+        },
+        "cct_k": {
+          "primary_5_9": 4000,
+          "upper_9_12": {
+            "min": 4000,
+            "max": 5000
+          },
+          "secondary_12_16": {
+            "min": 4000,
+            "max": 5000
+          }
+        },
+        "acoustic_rt60_s_max": {
+          "primary_5_9": 0.4,
+          "upper_9_12": 0.5,
+          "secondary_12_16": 0.6
+        },
+        "background_noise_dba_max": {
+          "primary_5_9": 35,
+          "upper_9_12": 40,
+          "secondary_12_16": 40
+        },
+        "visual_complexity_target": {
+          "primary_5_9": "moderate_low",
+          "upper_9_12": "moderate",
+          "secondary_12_16": "moderate"
+        },
+        "display_area_m2_per_child": {
+          "primary_5_9": 0.5,
+          "upper_9_12": 0.3,
+          "secondary_12_16": "lockers_desks"
+        },
+        "nature_view_priority": {
+          "primary_5_9": "essential",
+          "upper_9_12": "very_important",
+          "secondary_12_16": "important"
+        },
+        "movement_break_min": {
+          "primary_5_9": "15-20",
+          "upper_9_12": "25-30",
+          "secondary_12_16": "40-45"
+        },
+        "ceiling_height_m": {
+          "primary_5_9": {
+            "min": 2.7,
+            "max": 3.0
+          },
+          "upper_9_12": {
+            "min": 3.0,
+            "max": 3.5
+          },
+          "secondary_12_16": {
+            "min": 3.0,
+            "max": 3.5
+          }
+        },
+        "spatial_clarity": {
+          "primary_5_9": "maximum",
+          "upper_9_12": "high",
+          "secondary_12_16": "moderate"
+        }
+      }
+    }
+  },
+  "pe_contribution": "organizational",
+  "practical_accessibility": "B",
+  "dedup_status": "reference",
+  "generation": 1,
+  "ecological_validation": false,
+  "panel_docs": [
+    "docs/02-14_09_CMR_Revised_Spec_Panel_Templates_V2.0.md",
+    "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
+    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
+    "docs/02-15_20_Panel_V_Social_Brain_V1_0.md",
+    "docs/02-15_25_Panel_VI_Gap_Closure_V1_0.md",
+    "docs/37_Panel_MAT_I_Materials.md",
+    "docs/42_Panel_TP_I_Temporal.md"
+  ],
+  "panel_source": "CMR (Revised Spec)",
+  "panel_reasoning_excerpt": "## TEMPLATE 12: IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001\n**\"Interoceptive prediction error \u2192 affect construction\"**\n\n**Structural pattern**: body_state_mismatch \u2192 affect_generation \u2192 conceptual_categorization\n**Transferable to**: All affective experience (domain-general)\n\n**Causal chain**:\n1. Environmental influences on body state (via any pathway: autonomic, postural, metabolic, thermal) \u2192 change in interoceptive signals (heart rate, respiratory rate, gut motility, muscle tension)\n   - Level: systems \u2192 cellular\n   - Bridging quality: HIGH\n   - Maturity: **how-actually** (Craig, 2009)\n2. Changed interoceptive signals vs. brain's interoceptive predictions \u2192 interoceptive prediction error \u2192 anterior insular cortex processing\n   - Level: cellular \u2192 circuit\n   - Bridging quality: HIGH\n   - Maturity: **how-actually** (Seth, 2013; Barrett & Simmons, 2015)\n3. Interoceptive prediction error + available conceptual categories \u2192 affect construction (categorized as specific emotion, mood, or general valence/arousal)\n   - Level: circuit \u2192 psychological\n   - Bridging quality: MEDIUM\n   - Maturity: **how-plausibly** (Barrett, 2017 \u2014 conceptual act theory; contested by basic emotion theorists)\n   - **CONTESTED**: Basic emotion theory predicts discrete emotion circuits that fire regardless of conceptual categorization. Constructionism predicts that conceptual categories shape the affective experience. This is a live theoretical debate (see Composition Failure with basic emotion framework).\n\n**Scope conditions**: Individuals with poor interoceptive sensitivity (low interoceptive accuracy scores) show reduced affect differentiation. Cross-cultural variation in available conceptual categories produces cross-cultural variation in emotional experience (this is where the Goldilocks cultural calibration framework connects). Clinical populations with alexithymia show intact physiological responses but impaired affective categorization.\n**Known interactions**: THIS IS THE BRIDGE TEMPLATE connecting all other templates (which affect body state) to subjective experience. Every template that changes autonomic state, cortisol, postural tone, or metabolic demand connects to this template via its effects on interoceptive signals.\n**Overall maturity**: **how-plausibly** (limited by the constructionism vs. basic emotions debate at link 3)\n\n**Key references**: Barrett (2017, cited ~4,000); Seth (2013, cited ~2,500); Craig (2009, cited ~6,000); Barrett & Simmons (2015, cited ~1,800)\n\n---",
+  "justification_status": "raw_excerpt",
+  "excerpt_source": "docs/02-14_09_CMR_Revised_Spec_Panel_Templates_V2.0.md",
+  "excerpt_char_range": [
+    55852,
+    58349
+  ],
+  "t1_frameworks": [
+    "IC"
+  ],
+  "calibration_status": "uncalibrated"
+}

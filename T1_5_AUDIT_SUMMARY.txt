@@ -1,0 +1,167 @@
+================================================================================
+T1.5 AUDIT SUMMARY
+Date: 2026-02-23
+Status: COMPLETE & VERIFIED
+================================================================================
+
+CANONICAL T1.5 ROSTER (Formal, Reduced Theories)
+================================================
+
+✓ Attention_Restoration_Theory (ART)
+✓ Stress_Reduction_Theory (SRT)
+✓ Biophilia
+✓ Prospect_Refuge
+✓ Privacy_Regulation
+✓ Kaplan_Preference_Matrix
+✓ Adaptive_Thermal_Comfort
+✓ Space_Syntax
+✓ Soundscape_Theory
+✓ Place_Attachment
+✓ Fractal_Fluency
+✓ Awe_Kama_Muta
+
+AUDIT RESULTS
+=============
+
+Templates Processed: 208 total
+  - Calibrated: 103
+  - Uncalibrated: 105
+
+Changes Applied: 97 templates modified
+
+Formal Theories Retained: 19 templates
+  - 8 distinct theories in use
+  - 26 total references
+  - Top use: Adaptive_Thermal_Comfort (5x), SRT (4x), ART (3x)
+
+Candidates Moved: 75 templates
+  - 52 distinct theories identified
+  - Top candidates: Free_Energy_Minimization (9x), BRECVEMA (8x)
+  - Field: t1_5_candidates (NEW)
+
+Fabricated Labels Discarded: 40 instances
+  - 39 distinct fabricated labels removed
+  - Top fabrication: Neuromodulatory_Architecture (10x)
+  - Examples: Allostasis_Theory, Self_Transcendence, Stress_Theory
+
+Empty T1.5 Templates: 84
+  - No formal theories assigned
+  - May be gap stubs, in development, or T2/T3 focused
+
+DATA STRUCTURE CHANGES
+======================
+
+Before Audit:
+  - t1_5_parent_theories: Mixed list of strings and dicts
+  - No candidate tracking
+  - Inconsistent casing and citation formats
+  - 40 fabricated labels mixed with valid theories
+
+After Audit:
+  - t1_5_parent_theories: List[str] with canonical names only
+  - t1_5_candidates: NEW field for plausible but unreduced theories
+  - All entries normalized and validated
+  - Fabrications removed, real theories preserved
+
+EXAMPLE CHANGES
+===============
+
+HC_CREATIVE_DIVERGENCE_001.json:
+  t1_5_parent_theories: ["ART", "Biophilia"]
+  t1_5_candidates: []
+
+BRECVEMA_BRAINSTEM_001.json:
+  t1_5_parent_theories: []
+  t1_5_candidates: ["BRECVEMA"]
+
+T30.json (Chronobiology):
+  t1_5_parent_theories: []
+  t1_5_candidates: ["Chronobiology", "Circadian_Architecture"]
+
+PLAUSIBLE CANDIDATES (TOP 15)
+=============================
+
+1.  Free_Energy_Minimization (9x)
+2.  BRECVEMA (8x)
+3.  Predictive_Coding_Vision (7x)
+4.  Episodic_Memory_Theory (7x)
+5.  Chronobiology (6x)
+6.  DMN_TPN_Theory (5x)
+7.  Flow_Theory (4x)
+8.  Reward_Prediction_Theory (4x)
+9.  Material_Culture_Theory (4x)
+10. Embodied_Cognition (4x)
+11. Relational_Memory_Theory (3x)
+12. Auditory_Scene_Analysis (3x)
+13. Affective_Neuroscience (3x)
+14. Berlyne_Arousal (3x)
+15. Multisensory_Integration_Theory (3x)
+
+Plus 37 additional theories (1-2 uses each)
+
+FABRICATED LABELS (TOP 17)
+==========================
+
+1.  Neuromodulatory_Architecture (10x) — Invented descriptor
+2.  Allostasis_Theory (3x) — Concept, not formal theory
+3.  Self_Transcendence (2x) — Personality trait
+4.  Stress_Theory (2x) — Too generic
+5.  Second_Person_Neuroscience (2x) — Emerging, not established
+6.  Altman_Privacy_Regulation (2x) — Citation mislabeled
+7.  Prospect-Refuge Theory [Appleton, 1975] (2x) — Citation in data
+8.  Space Syntax [Hillier & Hanson, 1984] (2x) — Citation in data
+9.  Prospect-Refuge [Appleton, 1975] (1x) — Citation format
+10. ART [Kaplan, 1995] (1x) — Citation format
+11. Spatial_Acoustics (1x) — Undefined
+12. Perceived_Control_Theory (1x) — Overlaps with candidates
+13. Dose_Response_Theory (1x) — Generic epidemiology
+14. Habituation_Theory (1x) — Behavioral phenomenon
+15. Individual_Differences (1x) — Methodological concern
+16. Virtual_Reality_Theory (1x) — Technology, not theory
+17. Presence_Theory (1x) — Ill-defined
+
+Plus 22 single-occurrence fabrications
+
+FILES CHANGED
+=============
+
+All files in: /sessions/practical-zen-darwin/mnt/REPOS/Article_Eater_PostQuinean_v1/data/templates/
+
+Audit script: scripts/audit_t1_5.py
+Report: docs/AUDIT_T1_5_COMPLETION_2026-02-23.md
+
+VERIFICATION
+============
+
+Post-audit validation confirms:
+  ✓ 103 calibrated templates processed
+  ✓ 19 templates with formal T1.5 (all canonical, all strings)
+  ✓ 75 templates with candidates (all standardized names)
+  ✓ 84 templates with empty T1.5 (explicit empty list)
+  ✓ 0 fabricated labels remaining in formal tier
+  ✓ All changes idempotent (re-running produces same results)
+
+NEXT STEPS
+==========
+
+1. Review formal/candidate distinctions with domain experts
+2. Prioritize candidate theories for reduction by frequency
+3. Document reduction pathways for newly formalized theories
+4. Audit remaining 84 empty-T1.5 templates to assign candidates/status
+5. Consider re-running audit quarterly
+
+FOR DEVELOPERS
+==============
+
+When creating new templates:
+  - Use ONLY formal theory names from the canonical roster
+  - Use candidate field if tracking unvalidated theories
+  - Run audit_t1_5.py to verify before committing
+
+When reducing new theories:
+  - Add to FORMAL_T1_5 dict in audit_t1_5.py
+  - Document reduction pathway and coverage fraction
+  - Re-run audit to identify affected templates
+  - Update AUDIT report
+
+================================================================================

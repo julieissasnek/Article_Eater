@@ -1,0 +1,114 @@
+{
+  "theory_id": "ADAPTIVE_THERMAL",
+  "name": "Adaptive Thermal Comfort",
+  "originator": "de Dear & Brager",
+  "year": 1998,
+  "citation": "de Dear, R.J. & Brager, G.S. (1998). Developing an adaptive model of thermal comfort. ASHRAE Transactions, 104(1), 145-167.",
+  "status": "REDUCED",
+  "parent_t1_frameworks": {
+    "IC": 35,
+    "PP": 20,
+    "EC": 15,
+    "NM": 15,
+    "IE-DPT": 15
+  },
+  "constructs": [
+    {
+      "construct_name": "Thermal Neutrality",
+      "description": "Deviation from interoceptive thermal set-point generates PE. Set-point is adaptable, not fixed (contra Fanger PMV).",
+      "template_ids": [
+        "IC_THERMAL_COMFORT_001",
+        "THERMAL_ADAPTIVE_PE_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Behavioural Adaptation",
+      "description": "Occupant agency: window opening, clothing changes, activity modulation. EC affordances enable thermal self-regulation.",
+      "template_ids": [
+        "THERMAL_COMFORT_ADAPTIVE_PE_001",
+        "AX_CONTROL_STRESS_004"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Physiological Adaptation",
+      "description": "Vasomotor adjustment, acclimatization. Body calibrates thermal expectations over time.",
+      "template_ids": [
+        "ALLOSTATIC_MASTER_001",
+        "IC_THERMAL_COMFORT_001"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Psychological Adaptation",
+      "description": "Explicit frame (IE-DPT) shifts thermal expectation in NV buildings. NV selection \u2192 recalibrated expectations \u2192 wider comfort band.",
+      "template_ids": [
+        "IC_THERMAL_COMFORT_001",
+        "THERMAL_ADAPTIVE_PE_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    }
+  ],
+  "constituent_templates": [
+    "IC_THERMAL_COMFORT_001",
+    "THERMAL_ADAPTIVE_PE_001",
+    "THERMAL_COMFORT_ADAPTIVE_PE_001",
+    "AX_CONTROL_STRESS_004",
+    "ALLOSTATIC_MASTER_001"
+  ],
+  "template_coverage_pct": 0.85,
+  "maturity": "how-plausibly",
+  "irreducible_residual": {
+    "schema_gaps": [],
+    "compositional_adequacy": "INTERACTION_DEPENDENT",
+    "narrative": "Fanger's PMV model fails in naturally ventilated buildings because it ignores the explicit channel entirely. NV building selection (IE-DPT) \u2192 recalibrated thermal expectations (IC) \u2192 narrower interoceptive PE for wider temperature ranges \u2192 wider comfort band. The allesthesia mechanism (thermal pleasure from homeostatic correction) reveals that extreme temperatures can be pleasurable when explicitly expected and desired."
+  },
+  "rejection_rationale": "",
+  "child_molecules": [],
+  "google_scholar_count": 5000,
+  "key_references": [
+    "de Dear, R.J. & Brager, G.S. (1998). ASHRAE Transactions, 104(1), 145-167.",
+    "de Dear, R.J. & Brager, G.S. (2002). Energy and Buildings, 34(6), 549-561.",
+    "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103-1107."
+  ],
+  "reduced_in": "Master paper \u00a777.3; T1.5 Operationalization (2026-02-20)",
+  "function_form": {
+    "function_form": "PMV*(T, \u03c8) = PMV(T) \u00b7 [1 + \u03b3\u00b7(T_prev - T_ref)] \u00b7 \u03b2_ctrl",
+    "variables": {
+      "PMV*(T,\u03c8)": "Adaptive predicted mean vote",
+      "PMV(T)": "Standard Fanger PMV at temperature T",
+      "\u03b3": "Adaptation coefficient (\u22480.06 per \u00b0C historical exposure)",
+      "T_prev": "Mean outdoor temperature, previous 30 days",
+      "T_ref": "Reference temperature (18\u00b0C)",
+      "\u03b2_ctrl": "Perceived control factor (0.8-1.2)"
+    },
+    "predictions": [
+      "Naturally ventilated buildings accept \u00b13\u00b0C wider comfort range",
+      "Perceived control reduces thermal complaints ~30%"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "de Dear, R.J. & Brager, G.S. (1998). Developing an adaptive model of thermal comfort and preference. ASHRAE Transactions, 104(1).",
+    "predecessor": "Fanger's PMV/PPD model (1970); Humphreys' adaptive approach (1978)",
+    "historical_context": "Challenged Fanger's static thermal comfort model by showing people in naturally ventilated buildings accept wider temperature ranges. Led to ASHRAE Standard 55-2004 adaptive comfort model.",
+    "key_milestones": [
+      "1970: Fanger's PMV model",
+      "1978: Humphreys' field studies",
+      "1998: de Dear & Brager adaptive model",
+      "2004: ASHRAE Standard 55"
+    ],
+    "influenced_by": [
+      "P.O. Fanger (PMV)",
+      "M.A. Humphreys (adaptive approach)",
+      "J.F. Nicol (field studies)"
+    ],
+    "current_status": "foundational",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  }
+}

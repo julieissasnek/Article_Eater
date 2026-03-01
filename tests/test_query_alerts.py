@@ -1405,14 +1405,20 @@ class TestConvenienceFunctions:
     def test_get_alert_manager_singleton(self, temp_db_path):
         """Test that get_alert_manager returns singleton."""
         import src.services.query_alerts as qa_module
+        import os
 
         # Reset singleton
         qa_module._manager = None
-
-        manager1 = get_alert_manager()
-        manager2 = get_alert_manager()
-
-        assert manager1 is manager2
+        os.environ["AE_ALERTS_DB"] = temp_db_path
+        
+        try:
+            manager1 = get_alert_manager()
+            manager2 = get_alert_manager()
+    
+            assert manager1 is manager2
+        finally:
+            if "AE_ALERTS_DB" in os.environ:
+                del os.environ["AE_ALERTS_DB"]
 
 
 # =============================================================================

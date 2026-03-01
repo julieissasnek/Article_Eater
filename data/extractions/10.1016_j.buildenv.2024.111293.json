@@ -1,0 +1,931 @@
+{
+  "doi": "10.1016/j.buildenv.2024.111293",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.798,
+  "n_findings": 21,
+  "extracted_at": "2026-02-25T06:00:44.011779+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00664615,
+  "title": "Effects of architectural interventions on psychological, cognitive, social, and pro-environmental aspects of occupant well-being: Results from an immersive online study",
+  "authors": "Eva Bianchi et al., 2024",
+  "research_question": "To evaluate the influence of built features (materials, windows, and diversity cues) on four well-being outcomes: sense of belonging, stress, creativity, and pro-environmental concern, using an immersive online survey.",
+  "design_type": "between_subjects",
+  "participants": {
+    "n": 411,
+    "description": "Participants were located in the United States and were over 18 years of age. Mean age was 37.5 years (SD 12.3), median 34.0 [18.0, 71.0]. Gender: 60.6% Man, 38.4% Woman, 0.5% Non Binary, 0.5% Prefer Not to Say. Race: 70.8% White, 8.5% Asian, 7.8% Black or African American, 5.1% Latinx, 6.8% Multiple, 1.0% Prefer not to say. Education: 55.5% Bachelor's or higher, 44.0% Less than a Bachelor's, 0.5% Prefer not to say.",
+    "recruitment": "Recruited through Prolific, an online crowdsourcing platform."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "photograph|video",
+      "description": "Participants were shown multiple pictures and a 40-second panoramic video of an indoor office space. The space was manipulated across eight (2x2x2) factorial conditions: 1) Materials (natural: wooden table, chairs, frames vs. artificial: metal table, chairs, frames), 2) Windows (presence vs. absence), and 3) Representation (photographic decor with diverse people vs. non-diverse people).",
+      "n_stimuli": 8,
+      "source": "Figure 2, Section 3.2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Sense of belonging",
+      "instrument": "Revised version of the Sense of Social and Academic Fit scale (6 items)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Self-reported stress",
+      "instrument": "3-item stress scale (10-point Likert)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Positive and negative arousal",
+      "instrument": "Valence (7-point Likert) and Arousal (7-point Likert) items",
+      "type": "self_report"
+    },
+    {
+      "construct": "Positive and negative affect",
+      "instrument": "Positive and Negative Affect Schedules (PANAS) scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Divergent creativity",
+      "instrument": "Brainstorming task (uses for a newspaper)",
+      "type": "performance"
+    },
+    {
+      "construct": "Convergent creativity",
+      "instrument": "Remotes Associates Task (RAT)",
+      "type": "performance"
+    },
+    {
+      "construct": "Self-reported creativity",
+      "instrument": "Adjectives Check List (ACL) creativity scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Connectedness to Nature",
+      "instrument": "Condensed version of the Connectedness to Nature Scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Environmental attitudes",
+      "instrument": "4-item Environmental Attitudes Inventory scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Charitable donation",
+      "instrument": "Percentage of $50 raffle winnings donated to a tree-planting organization",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "presence of windows",
+      "consequent": "perceived sense of belonging",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.037,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=15.77",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "VIEW1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.5",
+      "quote": "participants exposed to windows reported higher belonging scores (p < 0.001***) than those in the no window conditions",
+      "outcome_id": "social.belonging",
+      "outcome_domain": "social",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "natural materials AND diverse representation",
+      "consequent": "belonging scores",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.05",
+      "effect_size": 0.006,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=2.44",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "In the natural materials condition, diverse representation leads to higher (p = 0.05*) belonging scores",
+      "outcome_id": "social.affiliation",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.759
+    },
+    {
+      "id": 3,
+      "antecedent": "artificial materials AND non-diverse representation",
+      "consequent": "perceived belonging",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.02",
+      "effect_size": 0.006,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=2.44",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "in the artificial materials condition, perceived belonging is higher (p = 0.02*) in the presence of non-diverse representation",
+      "outcome_id": "social.crowding",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.757
+    },
+    {
+      "id": 4,
+      "antecedent": "natural materials",
+      "consequent": "negative affect scores (PANAS)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.012",
+      "effect_size": 0.016,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=6.37",
+      "theory_links": [
+        "SRT",
+        "Biophilia",
+        "NM",
+        "MSI"
+      ],
+      "template_ids": [
+        "NMC1",
+        "MAT2",
+        "SRT1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "natural materials lead to significantly lower negative affect scores (p = 0.012*) across our sample compared to artificial materials",
+      "outcome_id": "affect.mood.negative",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "presence of windows",
+      "consequent": "positive affect scores (PANAS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.007",
+      "effect_size": 0.018,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=7.44",
+      "theory_links": [
+        "SRT",
+        "Biophilia",
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "VIEW1",
+        "SRT1",
+        "L2",
+        "L3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "the presence of windows lead to significantly higher positive affect scores (p = 0.007**) compared to the absence of windows",
+      "outcome_id": "affect.mood.positive",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "gender (women)",
+      "consequent": "positive affect",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.045",
+      "effect_size": 0.01,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(395)=4.04",
+      "theory_links": [
+        "NM"
+      ],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "gender appears as a significant predictor of positive affect (F (395) = 4.04, p = 0.045*, ges = 0.01), with scores being lower for women",
+      "outcome_id": "affect.mood.positive",
+      "outcome_domain": "affect",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 7,
+      "antecedent": "absence of windows",
+      "consequent": "convergent creativity scores (RAT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.040",
+      "effect_size": 0.012,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=4.86",
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "opposite direction to our hypotheses",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "participants have higher convergent creativity scores (p = 0.040*) in the absence of windows compared to in the presence of windows",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "artificial materials AND diverse representation",
+      "consequent": "convergent creativity scores (RAT)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "performance",
+      "p_value": "0.018",
+      "effect_size": 0.008,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=3.21",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "the materials by representation interaction leads participants in the artificial materials condition to score significantly higher (p = 0.018*) in the diverse representation condition",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "non-diverse condition AND natural materials",
+      "consequent": "convergent creativity scores (RAT)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "performance",
+      "p_value": "0.008",
+      "effect_size": 0.008,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=3.21",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "in the non-diverse condition, convergent creativity scores are higher (p = 0.008**) in the natural materials conditions",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "race (white)",
+      "consequent": "convergent creativity scores (RAT)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": "0.004",
+      "effect_size": 0.021,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=8.609",
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "race"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "race becomes the only significant predictor of convergent creativity (F = 8.609, p = 0.004**, ges = 0.021) with people identifying as white obtaining higher",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "natural materials",
+      "consequent": "convergent creativity scores (RAT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.076",
+      "effect_size": 0.008,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=3.21",
+      "theory_links": [
+        "Biophilia",
+        "DT"
+      ],
+      "template_ids": [
+        "NMC1",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "natural materials led to marginally higher (p = 0.076\u2020) convergent creativity scores compared to artificial materials",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "diverse representations (photographic decor)",
+      "consequent": "divergent creativity scores (newspaper uses)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "<0.001",
+      "effect_size": 0.044,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=18.6",
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "CREA1",
+        "CREA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "participants' scores are significantly higher (p < 0.001***) when in the presence of diverse representations than in the non-diverse representation condition",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "education level (bachelor's degree or higher)",
+      "consequent": "divergent creativity scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": "0.024",
+      "effect_size": 0.013,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=5.12",
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "education level"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "education level appears as an additional significant predictor of divergent creativity (F = 5.12, p = 0.024*, ges = 0.013), with divergent creativity scores being higher",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 14,
+      "antecedent": "diverse representations (photographic decor)",
+      "consequent": "self-report creativity scores (ACL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.005",
+      "effect_size": 0.02,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=8.05",
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "CREA1",
+        "CREA2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Table 3, p.6",
+      "quote": "self-report creativity scores are significantly higher (p = 0.005**) for participants in the diverse representations condition compared to participants in the non-diverse condition",
+      "outcome_id": "cog.creativity",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "material type, windows, diverse representation",
+      "consequent": "amount donated to charity",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "we find no significant main effect of our independent variables on the amount donated to charity."
+    },
+    {
+      "id": 16,
+      "antecedent": "natural materials AND non-diverse condition",
+      "consequent": "amount donated to charity",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "0.033",
+      "effect_size": 0.004,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=1.22",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "participants in the non-diverse condition donate significantly more money (p = 0.033*) if they are also in presence of natural materials"
+    },
+    {
+      "id": 17,
+      "antecedent": "material type, windows, representation type",
+      "consequent": "Connectedness to Nature Scale (CNS) scores",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "We find no significant predictors when running our ANOVA model prior to removal of outliers on CNS scores."
+    },
+    {
+      "id": 18,
+      "antecedent": "artificial materials AND no windows AND non-diverse representation",
+      "consequent": "Connectedness to Nature Scale (CNS) scores",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.003",
+      "effect_size": 0.02,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=8.7",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "NMC1",
+        "VIEW1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "material type",
+        "windows",
+        "representation type"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "in the artificial materials and no windows conditions, CNS scores were lower in the presence of non-diverse representation (M = 3.28, SD = 0.63), compared to in the presence of diverse representation (M = 3.61, SD = 0.62)"
+    },
+    {
+      "id": 19,
+      "antecedent": "gender (women)",
+      "consequent": "Connectedness to Nature Scale (CNS) score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.050",
+      "effect_size": 0.01,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(395)=3.872",
+      "theory_links": [
+        "Biophilia"
+      ],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "women reporting higher CNS scores (M = 3.53, SD = 0.55) than men (M = 3.34, SD = 0.60, p = 0.022*)."
+    },
+    {
+      "id": 20,
+      "antecedent": "material type, windows, representation type",
+      "consequent": "Environmental Attitudes Inventory (EAI) scores",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "we find no significant predictors.",
+      "outcome_id": "env",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "gender (women)",
+      "consequent": "Environmental Attitudes Inventory (EAI) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.003",
+      "effect_size": 0.022,
+      "effect_size_type": "generalized_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F=8.69",
+      "theory_links": [],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "women having higher EAI scores (M = 6.10, SD = 0.92) than men (M = 5.76, SD = 1.07, p = 0.001**).",
+      "outcome_id": "env",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Diverse representation signaled an inclusive environment, leading to participants feeling psychologically safe and subsequently creating conditions conducive to creative thinking.",
+    "The connection to nature through urban green spaces and biophilia theory suggests indoor natural elements may play a role in building occupant sense of belonging."
+  ],
+  "moderators": [
+    "Gender",
+    "Race",
+    "Education Level",
+    "Material type",
+    "Representation type",
+    "Presence of windows"
+  ],
+  "implementation_implications": [
+    "Immersive online surveys are an effective and efficient approach for built environment research, reducing costs, time, and resources while increasing participant diversity.",
+    "The presence of windows, natural materials, and diverse photographic decor can be used to promote sense of belonging, reduce negative affect, increase positive affect, and enhance divergent and self-reported creativity."
+  ],
+  "domains": [
+    "A1_Materials",
+    "A4_Light",
+    "A6_Visual_Form",
+    "A8_Social",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "Biophilia",
+    "SRT",
+    "ART"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Demographic information of the after-exclusions sample, including gender, age, race, and education level.",
+      "key_stats": [
+        "Mean age 37.5 (SD 12.3)",
+        "60.6% Man",
+        "70.8% White",
+        "55.5% Bachelor's or higher"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Mean and standard deviation of all measured dependent variables across each level of the independent variables (Natural/Artificial materials, Windows/No Windows, Diverse/Non-Diverse Representation).",
+      "key_stats": [
+        "Belonging Mean: 4.97-5.22",
+        "Negative Affect Mean: 17.49-19.55",
+        "Divergent Creativity Mean: 11.97-14.80"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "ANOVA results with outliers included, showing F-statistics, p-values, and partial eta-squared for main effects of Materials, Windows, Representation, and their interactions on all dependent variables.",
+      "key_stats": [
+        "Belonging: F=15.77, p<0.001, partial n\u00b2=0.037 (Windows)",
+        "Negative Affect: F=6.37, p=0.012, partial n\u00b2=0.016 (Materials)",
+        "Positive Affect: F=7.44, p=0.007, partial n\u00b2=0.018 (Windows)",
+        "Divergent Creativity: F=18.6, p<0.001, partial n\u00b2=0.044 (Representation)"
+      ],
+      "n_findings_extracted_from": 15
+    }
+  ],
+  "limitations": [
+    "Inability to control the actual built environment where participants took the survey (e.g., presence of natural light, ambient sounds, other people).",
+    "Online studies are not well-suited for testing tactile and olfactory aspects of the built environment.",
+    "Photographs/videos of windows cannot fully reproduce the biological benefits or negative effects (e.g., glare, thermal discomfort) of true natural light.",
+    "Small effect sizes for significant results, possibly due to limited exposure duration (<1 hour) to built features.",
+    "The study used only two levels for each independent variable (e.g., presence/absence), limiting investigation into the quantity of elements (e.g., number/size of windows)."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.buildenv.2024.111293",
+    "title": "Effects of architectural interventions on psychological, cognitive, social, and pro-environmental aspects of occupant well-being: Results from an immersive online study",
+    "authors": [
+      "Eva Bianchi",
+      "L. Z. Bencharit",
+      "Elizabeth L. Murnane",
+      "Basma Altaf",
+      "Isabella P. Douglas",
+      "J. Landay",
+      "Sarah L. Billington"
+    ],
+    "year": 2024,
+    "journal": "Building and Environment",
+    "volume": "253",
+    "issue": null,
+    "pages": "111293",
+    "publisher": "Elsevier BV",
+    "citation_count": 10,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/hrm.20454",
+      "10.1002/job.571",
+      "10.1007/s002130050517",
+      "10.1007/s10668-015-9629-y",
+      "10.1007/s11606-013-2536-8",
+      "10.1016/0169-2046(93)90016-7",
+      "10.1016/S0140-6736(96)07220-0",
+      "10.1016/j.buildenv.2016.11.041",
+      "10.1016/j.buildenv.2018.01.006",
+      "10.1016/j.buildenv.2021.108575",
+      "10.1016/j.buildenv.2022.109516",
+      "10.1016/j.buildenv.2023.110909",
+      "10.1016/j.compedu.2011.02.004",
+      "10.1016/j.enbuild.2020.110394",
+      "10.1016/j.envint.2019.105427",
+      "10.1016/j.envres.2019.01.034",
+      "10.1016/j.jenvp.2004.10.001",
+      "10.1016/j.jenvp.2009.09.001",
+      "10.1016/j.jenvp.2021.101682",
+      "10.1016/j.jesp.2013.11.007",
+      "10.1016/j.landurbplan.2015.12.015",
+      "10.1016/j.tsc.2009.06.005",
+      "10.1016/j.ufug.2020.126865",
+      "10.1016/j.ufug.2021.127404",
+      "10.1037/0022-3514.51.3.515",
+      "10.1037/0022-3514.54.6.1063",
+      "10.1037/0022-3514.92.1.82",
+      "10.1037/0022-3514.94.4.615",
+      "10.1037/a0016239",
+      "10.1037/apl0000013",
+      "10.1038/s41598-021-85210-9",
+      "10.1038/sj.jea.7500165",
+      "10.1073/pnas.1700616114",
+      "10.1080/00038628.2018.1461060",
+      "10.1080/00140139.2017.1331565",
+      "10.1080/02699930802204677",
+      "10.1080/09613218.2019.1660609",
+      "10.1080/096132199369615",
+      "10.1080/10253890.2017.1335300",
+      "10.1080/15502724.2017.1404918",
+      "10.1080/17508975.2019.1588700",
+      "10.1080/23251042.2015.1020466",
+      "10.1097/00006199-200407000-00011",
+      "10.1111/ina.12593",
+      "10.1111/ina.12936",
+      "10.1111/j.1467-9280.2007.01995.x",
+      "10.1159/000119004",
+      "10.1177/0031512519876395",
+      "10.1177/0146167214524992",
+      "10.1177/0956797614561266",
+      "10.1177/1420326X20927437",
+      "10.1177/193758670800100204",
+      "10.1177/1948550617737601",
+      "10.1186/s40101-015-0082-2",
+      "10.1289/ehp.8988",
+      "10.1523/JNEUROSCI.21-16-06405.2001",
+      "10.1609/hcomp.v1i1.13075",
+      "10.20982/tqmp.08.1.p023",
+      "10.21273/HORTSCI.43.1.183",
+      "10.2196/jmir.1988",
+      "10.2466/pr0.1969.25.1.87",
+      "10.3233/WOR-141876",
+      "10.3389/frsc.2022.780376",
+      "10.3390/buildings5030948",
+      "10.3390/ijerph16030452",
+      "10.3390/ijerph17093219",
+      "10.3758/BRM.40.2.428",
+      "10.3758/s13428-011-0081-0",
+      "10.5664/jcsm.3780"
+    ],
+    "cited_by": [
+      "10.3390/buildings16040726",
+      "10.3390/buildings15234281",
+      "10.1177/00139165251347579",
+      "10.3390/buildings15132203",
+      "10.1016/j.buildenv.2025.113147",
+      "10.3390/su17062342",
+      "10.1016/j.jobe.2025.112102",
+      "10.1016/j.buildenv.2024.112434",
+      "10.1177/00139165241305485",
+      "10.1089/eco.2023.0069"
+    ],
+    "semantic_scholar_id": "9d9218970ece38e0c9f0bf1c5abe7922330334f9",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:23.421308+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Effects of architectural interventions on psychological, cognitive, social, and pro-environmental aspects of occupant well-being: Results from an immersive online study",
+    "crossref_year": 2024,
+    "crossref_citation_count": 11,
+    "crossref_journal": "Building and Environment",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 90,
+    "crossref_issn": [
+      "0360-1323"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.438064+00:00",
+    "_cr_refs_added": 69
+  },
+  "year": 2024,
+  "journal": "Building and Environment",
+  "authors_structured": [
+    "Eva Bianchi",
+    "L. Z. Bencharit",
+    "Elizabeth L. Murnane",
+    "Basma Altaf",
+    "Isabella P. Douglas",
+    "J. Landay",
+    "Sarah L. Billington"
+  ],
+  "crossref_title": "Effects of architectural interventions on psychological, cognitive, social, and pro-environmental aspects of occupant well-being: Results from an immersive online study",
+  "crossref_authors": [
+    {
+      "name": "Eva Bianchi",
+      "orcid": "https://orcid.org/0000-0002-7688-6413",
+      "affiliation": null
+    },
+    {
+      "name": "Lucy Zhang Bencharit",
+      "orcid": "https://orcid.org/0000-0001-9524-8807",
+      "affiliation": null
+    },
+    {
+      "name": "Elizabeth L. Murnane",
+      "orcid": "https://orcid.org/0000-0003-2089-207X",
+      "affiliation": null
+    },
+    {
+      "name": "Basma Altaf",
+      "orcid": "https://orcid.org/0000-0003-1434-2071",
+      "affiliation": null
+    },
+    {
+      "name": "Isabella P. Douglas",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "James A. Landay",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Sarah L. Billington",
+      "orcid": "https://orcid.org/0000-0003-3796-587X",
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Building and Environment",
+  "crossref_citation_count": 11,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:53:16.902225+00:00"
+}

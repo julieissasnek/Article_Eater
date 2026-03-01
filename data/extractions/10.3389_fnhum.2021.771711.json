@@ -1,0 +1,873 @@
+{
+  "doi": "10.3389/fnhum.2021.771711",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.81,
+  "n_findings": 19,
+  "extracted_at": "2026-02-25T02:29:27.037749+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.005915,
+  "title": "The Effects of Working Memory Load on Auditory Distraction in Adults With Attention Deficit Hyperactivity Disorder",
+  "authors": "Rina Blomberg et al., 2021",
+  "research_question": "To investigate whether adults with Attention Deficit Hyperactivity Disorder (aADHD), compared to healthy controls, demonstrate heightened cortical responses to task-irrelevant acoustic stimulation whilst engaged in a visual working memory (WM) task, and to explore whether cortical attenuation of task-irrelevant acoustic stimulation is associated with individual differences in WM capacity. Additionally, to test for between-group differences in auditory-Salience Network (SN) connectivity during an Auditory Target Detection (ATD) task.",
+  "design_type": "mixed_factorial",
+  "participants": {
+    "n": 34,
+    "description": "17 aADHD (11 females, 6 males; M=28 years, SD=7.0) and 17 typically developed controls (13 females, 4 males; M=25.5 years, SD=5.5). All participants had normal hearing thresholds (<20 dB HL). ADHD group had significantly higher ASRS scores (inattentive, hyperactivity/impulsivity, total). 15/17 ADHD participants were on stimulant medication (abstained for 48h prior to testing), 2 unmedicated. 5 ADHD participants had SSRI medication, 1 had lamotrigine.",
+    "recruitment": "Not explicitly stated beyond 'We recruited two groups of participants: clinically stable adults with ADHD and healthy controls.'"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "visual",
+      "description": "Visual n-back task: Sequence of 15 letters (K, M, Q, R, S, T, W) presented for 500ms, followed by 1022ms fixation cross. White text on black background, font size 18 points. 0-back, 1-back, and 2-back conditions.",
+      "n_stimuli": null,
+      "source": "Materials and Experimental Protocol"
+    },
+    {
+      "type": "audio",
+      "description": "Auditory stimuli (n-back task): Monotonous tonal signal with occasional deviant pitch (1000 Hz) amidst standard tones (500 Hz). Tones 150ms (rise/fall 22ms), presented every 104ms. Perceived loudness -16 LUFS, ~75 dB SPL. Participants instructed to ignore.",
+      "n_stimuli": 4,
+      "source": "Materials and Experimental Protocol"
+    },
+    {
+      "type": "audio",
+      "description": "Auditory Target Detection (ATD) task: Participants detected deviant tones (1000 Hz) amidst standard tones (500 Hz) in noise. Tones 150ms (rise/fall 22ms), presented every 104ms. Perceived loudness -16 LUFS, ~75 dB SPL. Participants instructed to attend.",
+      "n_stimuli": 4,
+      "source": "Materials and Experimental Protocol"
+    },
+    {
+      "type": "audio",
+      "description": "Background noise: Echo planar imaging (EPI) gradient noise, attenuated to ~58 dB SPL by active noise canceling headphones.",
+      "n_stimuli": null,
+      "source": "Materials and Experimental Protocol"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Working Memory Maintenance",
+      "instrument": "Reading span task",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Working Memory Gating and Maintenance",
+      "instrument": "Size-comparison span test",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Inattention, Hyperactivity/Impulsivity, Total ADHD Symptoms",
+      "instrument": "Adult ADHD Self-Report Scale (ASRS) v.1.1",
+      "type": "self_report"
+    },
+    {
+      "construct": "ADHD Diagnosis/Subtype",
+      "instrument": "Mini-International Neuropsychiatric Interview (MINI) 7.0.2 DSM-5",
+      "type": "self_report"
+    },
+    {
+      "construct": "Attention (Concentration, Processing speed, Precision)",
+      "instrument": "d2-R Test of Attention",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Task Performance (Response Times, Accuracy, False Alarms) for n-back task",
+      "instrument": "In-scanner task performance",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Task Performance (Response Times, Accuracy, False Alarms) for ATD task",
+      "instrument": "In-scanner task performance",
+      "type": "behavioral"
+    },
+    {
+      "construct": "BOLD Activation",
+      "instrument": "fMRI (CONN toolbox, SPM12)",
+      "type": "neural"
+    },
+    {
+      "construct": "Functional Connectivity (ROI-ROI)",
+      "instrument": "fMRI (CONN toolbox)",
+      "type": "neural"
+    },
+    {
+      "construct": "Hearing Acuity",
+      "instrument": "Pure-tone audiometry",
+      "type": "physiological"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "ASRS Inattention scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.000",
+      "effect_size": 0.75,
+      "effect_size_type": "eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 32) = 97.1",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "ADHD had, as expected, significantly higher ASRS scores on both inattentive F(1, 32) = 97.1, p < 0.000, \u03b7\u00b2 = 0.75",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "ASRS Hyperactivity/Impulsivity scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.000",
+      "effect_size": 0.4,
+      "effect_size_type": "eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 31) = 20.6",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "ADHD had, as expected, significantly higher ASRS scores on both... hyperactivity/impulsivity F(1, 31) = 20.6, p < 0.000, \u03b7\u00b2 = 0.40",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "d2-Test Concentration scores",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.262",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Welch's F(1, 30.4) = 1.3",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "The ADHD group did not however demonstrate significantly poorer performance than Controls on the d2-Test measures of concentration Welch's F(1, 30.4) = 1.3, p = 0.262",
+      "outcome_id": "cog.attention",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "Reading span task performance",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.265",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,32) = 1.29",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "In measures of WM capacity, our sample of aADHD performed on par with Controls.",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "Size comparison span task performance",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.256",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 24.8) = 1.35",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "In measures of WM capacity, our sample of aADHD performed on par with Controls.",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Group (ADHD vs. Controls)",
+      "consequent": "2-back task accuracy",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.001",
+      "effect_size": 0.303,
+      "effect_size_type": "eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,31) = 13.45",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "ADHD group vulnerable to cognitive interference under high WM load.",
+      "moderators_reported": [
+        "WM load"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Group means in accuracy performance were slightly lower in the ADHD group compared to Controls, but the difference in means was only significant in the highest load (2-back) condition (\u03b7\u00b2 = 0.303)."
+    },
+    {
+      "id": 7,
+      "antecedent": "Auditory Target Detection (ATD) task",
+      "consequent": "BOLD activity in Salience Network (SN) hubs (Controls)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "DT1"
+      ],
+      "mechanism": "SN triggered exogenously via communications from sensory processing regions, playing an active role in vigilant anticipation, detection, and response-mediation of behaviorally salient stimuli.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 2",
+      "quote": "Significant increases relative to the resting baseline for the ATD condition were observed in all SN-hubs in Controls",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Auditory Target Detection (ATD) task",
+      "consequent": "BOLD activity in Salience Network (SN) hubs (ADHD)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "DT1"
+      ],
+      "mechanism": "SN triggered exogenously via communications from sensory processing regions, playing an active role in vigilant anticipation, detection, and response-mediation of behaviorally salient stimuli.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 2",
+      "quote": "Significant increases relative to the resting baseline for the ATD condition were observed in... all except the dACC and left rPFC in ADHD",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Group (ADHD vs. Controls) during ATD task",
+      "consequent": "BOLD activity in Salience Network (SN) hubs",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "Between-group comparisons revealed no significant differences for the SN-rest contrast",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Auditory Target Detection (ATD) task",
+      "consequent": "BOLD activity in auditory core and belt ROIs",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Exogenous responses to task-irrelevant changes in pitch activate auditory core and belt regions.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "Initial analysis of the auditory ROIS indicated that only the core, and belt ROIs were significantly more activated than baseline during target detection.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Group (ADHD vs. Controls) during ATD task",
+      "consequent": "Auditory-Salience Network (SN) functional connectivity",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "MSI"
+      ],
+      "template_ids": [
+        "DT1",
+        "MIE2"
+      ],
+      "mechanism": "Increased functional connectivity in aADHD was likely an adaptive mechanism for suboptimal listening conditions (noise interference) to enhance oddball detection and reduce erroneous responding.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7, Figure 3",
+      "quote": "ADHD participants demonstrated stronger auditory-SN connectivity than Controls of which the majority of connections involved left lateralized auditory communications with dACC, al and SMG hubs of the SN"
+    },
+    {
+      "id": 12,
+      "antecedent": "BOLD activity in right Supramarginal Gyrus (SMG)",
+      "consequent": "Response Times (RTs) on ATD task",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.027",
+      "effect_size": -0.39,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "DT1"
+      ],
+      "mechanism": "Faster, accurate RTs were associated with increased activity of the right SMG, which is implicated in mediation of exogenous attention to behaviorally salient events.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Increased activity in the right SMG of the SN was also negatively correlated with individual differences in RTs on the ATD task"
+    },
+    {
+      "id": 13,
+      "antecedent": "Working Memory (WM) load (0-back, 1-back, 2-back)",
+      "consequent": "Auditory attenuation (task-irrelevant sound)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.000",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Fleft(2, 64) = 34.6; Fright(2, 64) = 29.3",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10"
+      ],
+      "mechanism": "Increased WM load leads to greater attentional engagement, deploying inhibitory mechanisms that suppress neural responses to task-irrelevant sounds.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Both hemispheres presented evidence for a main effect of auditory attenuation as a function of WM load: Fleft (2, 64) = 34.6, p = 0.000; Fright (2, 64) = 29.3, p = 0.000)"
+    },
+    {
+      "id": 14,
+      "antecedent": "Interaction: WM load \u00d7 Group (ADHD vs. Controls)",
+      "consequent": "Auditory attenuation (task-irrelevant sound)",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "0.000",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Fleft(2, 64) = 8.8; Fright(2, 64) = 6.2",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10",
+        "AX8"
+      ],
+      "mechanism": "ADHD individuals have less efficient attentional engagement and inhibitory control under high cognitive load.",
+      "moderators_reported": [
+        "Group",
+        "WM load"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Figure 4A",
+      "quote": "The interaction term, WM load \u00d7 Group, was also significant in both hemispheres: Fleft (2, 64) = 8.8, p = 0.000; Fright (2, 64) = 6.2, p = 0.003"
+    },
+    {
+      "id": 15,
+      "antecedent": "High Working Memory (WM) load (2-back) with task-irrelevant sound",
+      "consequent": "Auditory responses to task-irrelevant sound (ADHD vs. Controls)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10",
+        "AX8"
+      ],
+      "mechanism": "Control group's auditory responses were more suppressed compared to ADHD participants during the high-load condition, indicating heightened cortical responses to task-irrelevant sound in ADHD.",
+      "moderators_reported": [
+        "Group",
+        "WM load"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Figure 4A",
+      "quote": "Control group's auditory responses to the task-irrelevant sound source decreased significantly as WM load increased, and was more suppressed compared to ADHD participants in both hemispheres during the high-load condition"
+    },
+    {
+      "id": 16,
+      "antecedent": "High Working Memory (WM) load (2-back) with task-irrelevant sound",
+      "consequent": "Auditory attenuation in Planum Polare (PP) and dysgranular posterior insula (dpI) (ADHD vs. Controls)",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10",
+        "AX8"
+      ],
+      "mechanism": "Attenuation was significantly less evident in PP and dpI for the ADHD group compared to Controls under the high-load condition.",
+      "moderators_reported": [
+        "Group",
+        "WM load",
+        "ROI"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Figure 4B",
+      "quote": "attenuation was significantly less evident in the PP and the dpI for the ADHD group compared to Controls under the high-load condition"
+    },
+    {
+      "id": 17,
+      "antecedent": "Auditory attenuation under high visual WM load (2-back-ATD)",
+      "consequent": "Self-rated inattentiveness (ASRS)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10"
+      ],
+      "mechanism": "Participants who have difficulties suppressing exogenously triggered responses to task-irrelevant auditory stimulation are also highly susceptible to distraction.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Figure 5A",
+      "quote": "the magnitude of auditory attenuation in the high-load condition did correlate significantly with individual differences in self-rated inattentiveness across the majority of auditory ROIs"
+    },
+    {
+      "id": 18,
+      "antecedent": "Auditory attenuation under high visual WM load (2-back-ATD)",
+      "consequent": "2-back task accuracy performance",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "AX10"
+      ],
+      "mechanism": "Better cognitive performance on the high-load WM task was intricately related to participants' capacity to regulate resources between modalities and inhibit distraction.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Figure 5B",
+      "quote": "accuracy performance on the 2-back condition also correlated with attenuation levels in the majority of auditory ROIs"
+    },
+    {
+      "id": 19,
+      "antecedent": "Working Memory (WM) capacity (Reading span, SIC-span)",
+      "consequent": "Auditory attenuation under high visual WM load",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "Possible that WM capacity measures used were not sufficiently sensitive indexes of the type of control mechanisms involved in the 2-back condition.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Contrary to expectations, we did not observe a significant relationship with WM capacity in any auditory ROIs."
+    }
+  ],
+  "mechanisms": [
+    "Cognitive control regulates the locus of attention and ignores environmental distractions.",
+    "Working memory (WM) capacity shields against auditory distraction by maintaining steadfast attention and deploying inhibitory mechanisms that suppress neural responses to task-irrelevant sounds.",
+    "Challenging cognitive requirements increase attentional engagement and decrease susceptibility for distraction.",
+    "The Salience Network (SN) is involved in vigilant anticipation, detection, and response-mediation of behaviorally salient stimuli.",
+    "Increased functional communications between auditory and SN in aADHD during the ATD task may be an adaptive mechanism to facilitate successful oddball detection and reduce erroneous responding under suboptimal listening conditions.",
+    "Heightened cortical responses to task-irrelevant auditory stimulation can negatively impact task performance and contribute to subjective experiences of auditory distraction.",
+    "aADHD individuals may need to deploy more cognitive effort to inhibit distraction, potentially contributing to higher perceived stress and related pathologies."
+  ],
+  "moderators": [
+    "Working Memory Load",
+    "Group (ADHD vs. Controls)",
+    "Region of Interest (ROI)"
+  ],
+  "implementation_implications": [
+    "Clinical interventions should address adapting work/study environments to minimize disturbance for individuals with aADHD.",
+    "Psychoeducation can help improve stress and time-management for aADHD.",
+    "Early interventions are needed to help aADHD adapt study/work environments, develop effective coping strategies, and minimize risk for chronic stress and anxiety."
+  ],
+  "domains": [
+    "A5_Acoustic",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DT",
+    "MS"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Group descriptives for education, hearing acuity and neuropsychological assessments of ADHD-related symptomology.",
+      "key_stats": [
+        "ASRS Inattention: F(1, 32) = 97.1, p < 0.000, \u03b7\u00b2 = 0.75",
+        "ASRS Hyperactivity/Impulsivity: F(1, 31) = 20.6, p < 0.000, \u03b7\u00b2 = 0.40",
+        "d2-Test Concentration: Welch's F(1, 30.4) = 1.3, p = 0.262"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Descriptives and one-way ANOVA results for group comparisons of working memory (WM) capacity and in-scanner task performance on the n-back and auditory target detection (ATD) conditions.",
+      "key_stats": [
+        "Reading span: F(1,32) = 1.29, p = 0.265",
+        "Size comparison span: F(1, 24.8) = 1.35, p = 0.256",
+        "2-back Accuracy: F(1,31) = 13.45, p = 0.001"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Supplementary Table 2",
+      "description": "Univariate ROI analysis for the ATD task.",
+      "key_stats": [],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Supplementary Table 3",
+      "description": "Post hoc results for WM load x Group interaction on auditory attenuation.",
+      "key_stats": [],
+      "n_findings_extracted_from": 2
+    }
+  ],
+  "limitations": [
+    "Comparisons of ROIs and networks are difficult across literature due to differences in nomenclature and methods of definition.",
+    "Scanner noise was audible throughout the experiment, potentially interfering with performance on the ATD task and leading to impulsive false-alarm responding.",
+    "Small sample size and relatively high-functioning ADHD sample limit generalizability and may underestimate overall group differences.",
+    "Gender imbalance in the ADHD sample (more females than males).",
+    "Comorbidities (around half of the ADHD sample were on stable SSRI medication).",
+    "WM capacity measures used might not have been sufficiently sensitive indexes for the type of control mechanisms involved in the 2-back condition."
+  ],
+  "paper_metadata": {
+    "doi": "10.3389/fnhum.2021.771711",
+    "title": "The Effects of Working Memory Load on Auditory Distraction in Adults With Attention Deficit Hyperactivity Disorder",
+    "authors": [
+      "Rina Blomberg",
+      "Andrea Johansson Capusan",
+      "Carine Signoret",
+      "H. Danielsson",
+      "J. R\u00f6nnberg"
+    ],
+    "year": 2021,
+    "journal": "Frontiers in Human Neuroscience",
+    "volume": "15",
+    "issue": null,
+    "pages": null,
+    "publisher": "Frontiers Media SA",
+    "citation_count": 11,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/9781118920497",
+      "10.1002/9781118920497.CH33",
+      "10.1002/9781118920497.ch33",
+      "10.1002/hbm.21457",
+      "10.1002/pchj.47",
+      "10.1007/s00429-010-0262-0",
+      "10.1007/s00429-020-02072-z",
+      "10.1007/s10802-016-0175-3",
+      "10.1016/J.BIOPSYCH.2005.02.006",
+      "10.1016/J.BPSC.2016.03.004",
+      "10.1016/J.JAAC.2009.11.011",
+      "10.1016/J.JML.2017.05.005",
+      "10.1016/J.NEUROIMAGE.2004.12.034",
+      "10.1016/J.NEUROIMAGE.2005.10.050",
+      "10.1016/S0028-3932(03)00122-2",
+      "10.1016/S0140-6736(95)92525-2",
+      "10.1016/S0165-0173(03)00172-3",
+      "10.1016/j.biopsych.2005.02.006",
+      "10.1016/j.bpsc.2016.03.004",
+      "10.1016/j.brainres.2014.12.050",
+      "10.1016/j.clinph.2008.11.029",
+      "10.1016/j.euroneuro.2015.08.010",
+      "10.1016/j.heares.2013.08.001",
+      "10.1016/j.jml.2017.05.005",
+      "10.1016/j.neubiorev.2021.01.022",
+      "10.1016/j.neuroimage.2004.12.034",
+      "10.1016/j.neuroimage.2005.02.018",
+      "10.1016/j.neuroimage.2005.10.050",
+      "10.1016/j.neuroimage.2006.04.204",
+      "10.1016/j.neuroimage.2007.03.060",
+      "10.1016/j.neuron.2008.04.017",
+      "10.1016/j.psychres.2020.113284",
+      "10.1016/j.tics.2012.04.008",
+      "10.1016/s0165-0173(03)00172-3",
+      "10.1017/S0033291704002892",
+      "10.1017/S0033291714001470",
+      "10.1037/0033-2909.121.1.65",
+      "10.1037/0033-2909.132.4.560",
+      "10.1037/0278-7393.30.5.1106",
+      "10.1037/a0029064",
+      "10.1037/a0032371",
+      "10.1038/nrdp.2015.20",
+      "10.1038/nrn755",
+      "10.1038/nrn896",
+      "10.1044/JSHR.3204.725",
+      "10.1044/jshr.3204.725",
+      "10.1044/policy.GL2005-00014",
+      "10.1044/policy.gl2005-00014",
+      "10.1073/pnas.0707741104",
+      "10.1080/08039488.2019.1677771",
+      "10.1080/09658211003601530",
+      "10.1089/brain.2012.0073",
+      "10.1093/arclin/acx055",
+      "10.1093/cercor/bhu143",
+      "10.1101/487306",
+      "10.1111/psyp.12140",
+      "10.1117/12.310835",
+      "10.1152/JN.00324.2005",
+      "10.1152/jn.00324.2005",
+      "10.1162/jocn.2006.18.5.766",
+      "10.1162/jocn_a_00275",
+      "10.1177/0963721415577356",
+      "10.1177/1073858413494269",
+      "10.1177/1087054709347245",
+      "10.1177/1087054711435361",
+      "10.1177/1087054713492563",
+      "10.1177/1087054715604360",
+      "10.1177/1087054716685841",
+      "10.1186/s12888-017-1463-3",
+      "10.12968/hmed.2010.71.11.79663",
+      "10.1371/journal.pone.0052267",
+      "10.1523/JNEUROSCI.3760-14.2015",
+      "10.21203/rs.3.rs-71514/v1",
+      "10.3389/fnhum.2016.00221",
+      "10.3389/fnins.2014.00225",
+      "10.3389/fnins.2016.00136",
+      "10.3389/fpsyg.2019.01536",
+      "10.3758/BF03196169",
+      "10.3758/MC.38.5.651",
+      "10.3758/s13414-020-02056-5",
+      "10.4103/1463-1741.70500",
+      "10.4324/9780203342398",
+      "10.56441/hilbertpress.2207.6598",
+      "10.7146/DPB.V23I482.6975",
+      "10.7551/mitpress/13875.003.0018"
+    ],
+    "cited_by": [
+      "10.1177/27546330251395890",
+      "10.1186/s12888-025-07516-6",
+      "10.1145/3663547.3746386",
+      "10.1017/S0033291724002368",
+      "10.1101/2022.07.01.498421",
+      "10.3390/children11091057",
+      "10.1080/20445911.2024.2313567",
+      "10.1097/OPX.0000000000001989",
+      "10.3389/fnins.2022.972730",
+      "10.3389/fnhum.2022.811547",
+      "10.4236/ojpsych.2024.144019"
+    ],
+    "semantic_scholar_id": "56d9ef4a21e7612b80eee64295edbedf7b941895",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:48:06.511710+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "The Effects of Working Memory Load on Auditory Distraction in Adults With Attention Deficit Hyperactivity Disorder",
+    "crossref_year": 2021,
+    "crossref_citation_count": 12,
+    "crossref_journal": "Frontiers in Human Neuroscience",
+    "crossref_publisher": "Frontiers Media SA",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Cognitive control provides us with the ability tointer alia, regulate the locus of attention and ignore environmental distractions in accordance with our goals. Auditory distraction is a frequently cited symptom in adults with attention deficit hyperactivity disorder (aADHD)\u2013yet few task-based fMRI studies have explored whether deficits in cognitive control (associated with the disorder) impedes on the ability to suppress/compensate for exogenously evoked cortical responses to noise in this population. In the current study, we explored the effects of auditory distraction as function of working memory (WM) load. Participants completed two tasks: an auditory target detection (ATD) task in which the goal was to actively detect salient oddball tones amidst a stream of standard tones in noise, and a visualn-back task consisting of 0-, 1-, and 2-back WM conditions whilst concurrently ignoring the same tonal signal from the ATD task. Results indicated that our sample of young aADHD (n= 17), compared to typically developed controls (n= 17), had difficulty attenuating auditory cortical responses to the task-irrelevant sound when WM demands were high (2-back). Heightened auditory activity to task-irrelevant sound was associated with both poorer WM performance and symptomatic inattentiveness. In the ATD task, we observed a significant increase in functional communications between auditory and salience networks in aADHD. Because performance outcomes were on par with controls for this task, we suggest that this increased functional connectivity in aADHD was likely an adaptive mechanism for suboptimal listening conditions. Taken together, our results indicate that aADHD are more susceptible to noise interference when they are engaged in a primary task. The ability to cope with auditory distraction appears to be related to the WM demands of the task and thus the capacity to deploy cognitive control.",
+    "crossref_reference_count": 76,
+    "crossref_issn": [
+      "1662-5161"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.845458+00:00",
+    "_cr_refs_added": 11
+  },
+  "year": 2021,
+  "journal": "Frontiers in Human Neuroscience",
+  "authors_structured": [
+    "Rina Blomberg",
+    "Andrea Johansson Capusan",
+    "Carine Signoret",
+    "H. Danielsson",
+    "J. R\u00f6nnberg"
+  ],
+  "crossref_title": "The Effects of Working Memory Load on Auditory Distraction in Adults With Attention Deficit Hyperactivity Disorder",
+  "crossref_authors": [
+    {
+      "name": "Rina Blomberg",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Andrea Johansson Capusan",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Carine Signoret",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Henrik Danielsson",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Jerker R\u00f6nnberg",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2021,
+  "crossref_journal": "Frontiers in Human Neuroscience",
+  "crossref_citation_count": 12,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Frontiers Media SA",
+  "crossref_subjects": [],
+  "crossref_abstract": "Cognitive control provides us with the ability tointer alia, regulate the locus of attention and ignore environmental distractions in accordance with our goals. Auditory distraction is a frequently cited symptom in adults with attention deficit hyperactivity disorder (aADHD)\u2013yet few task-based fMRI studies have explored whether deficits in cognitive control (associated with the disorder) impedes on the ability to suppress/compensate for exogenously evoked cortical responses to noise in this population. In the current study, we explored the effects of auditory distraction as function of working memory (WM) load. Participants completed two tasks: an auditory target detection (ATD) task in which the goal was to actively detect salient oddball tones amidst a stream of standard tones in noise, and a visualn-back task consisting of 0-, 1-, and 2-back WM conditions whilst concurrently ignoring the same tonal signal from the ATD task. Results indicated that our sample of young aADHD (n= 17), compared to typically developed controls (n= 17), had difficulty attenuating auditory cortical responses to the task-irrelevant sound when WM demands were high (2-back). Heightened auditory activity to task-irrelevant sound was associated with both poorer WM performance and symptomatic inattentiveness. In the ATD task, we observed a significant increase in functional communications between auditory and salience networks in aADHD. Because performance outcomes were on par with controls for this task, we suggest that this increased functional connectivity in aADHD was likely an adaptive mechanism for suboptimal listening conditions. Taken together, our results indicate that aADHD are more susceptible to noise interference when they are engaged in a primary task. The ability to cope with auditory distraction appears to be related to the WM demands of the task and thus the capacity to deploy cognitive control.",
+  "crossref_fetched_at": "2026-02-25T12:02:22.568006+00:00"
+}

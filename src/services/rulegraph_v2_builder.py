@@ -172,6 +172,7 @@ def build_rulegraph_v2_rules(
             "subject_scope": subject_scope,
             "subject_moderators": subject_moderators or None,
             "theory_links": theory_links,
+            "tags": bundle.tags or (bundle.context.tags if bundle.context else None),
             "graph_version": "2.0",
             "created_at": _now_iso(),
         }

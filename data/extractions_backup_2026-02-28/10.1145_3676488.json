@@ -1,0 +1,639 @@
+{
+  "doi": "10.1145/3676488",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.774,
+  "n_findings": 14,
+  "extracted_at": "2026-02-25T01:43:20.286062+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004638,
+  "title": "An Examination of Ultrasound Mid-air Haptics for Enhanced Material and Temperature Perception in Virtual Environments",
+  "authors": "Steeven Villa et al., 2024",
+  "research_question": "This study investigates the potential of Ultrasound Mid-air Haptics (UMH) for enhancing the perceived congruency of virtual objects and its impact on perceived material state and temperature, and analyzes how participants integrate UMH information physiologically.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 30,
+    "description": "Average age 25.47 years (SD=8.69), 15 female, 15 male. Low familiarity with haptic devices (M=1.33, SD=0.60), low to medium familiarity with VR (M=2.53, SD=1.00).",
+    "recruitment": "University's mailing lists"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Virtual objects rendered in three distinct physical states (Solid cube, Liquid water shader in a colored pot, Gas particle system) and three hue-temperature associations (Blue-cool, White-neutral, Red-warm). Interacted with in two conditions: with Ultrasonic Mid-air Haptic feedback (Visuo-Haptic) and Visual Only (no haptic feedback).",
+      "n_stimuli": 18,
+      "source": "Abstract, Section 3.1, Section 3.4, Figure 1, Figure 3"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Perceived Temperature",
+      "instrument": "Bedford Thermal Scale (extended University of California Berkeley model, 9 distinct levels from 'Very Cold' to 'Very Hot')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Perceived Congruency",
+      "instrument": "9-point Likert scale ('Very Inconsistent' to 'Very Consistent')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Presence",
+      "instrument": "Igroup Presence Questionnaire (IPQ) with subscales (Sense of Being There, Spatial Presence, Involvement, Experienced Realism) and composite score",
+      "type": "self_report"
+    },
+    {
+      "construct": "Perceived Channel Contribution to Temperature",
+      "instrument": "Self-reported questions (Q1: 'My perception of temperature was mainly influenced by the tactile feedback.' vs Q2: 'My perception of temperature was mainly influenced by the visual feedback.')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Perceived Channel Contribution to Material State",
+      "instrument": "Self-reported questions (Q3: 'My perception of the material state was mainly influenced by the tactile feedback.' vs Q4: 'My perception of the material state was mainly influenced by the visual feedback.')",
+      "type": "self_report"
+    },
+    {
+      "construct": "Processed Congruency (Mismatch Negativity)",
+      "instrument": "EEG signal (Event-Related Potential at FCz location)",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Presentation modality (Visuo-Haptic vs. Visual Only)",
+      "consequent": "Perceived Congruency",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(1) = 184.61",
+      "theory_links": [
+        "MSI",
+        "PP"
+      ],
+      "template_ids": [
+        "MCP1"
+      ],
+      "mechanism": "UMH enhances overall perception of object congruency.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 10",
+      "quote": "the inclusion of PRESENTATION led to a statistically significant improvement in model fit",
+      "outcome_id": "social.crowding",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.737
+    },
+    {
+      "id": 2,
+      "antecedent": "Material State (Solid, Liquid, Gas)",
+      "consequent": "Perceived Congruency (under Visuo-Haptic presentation)",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(2) = 61.75",
+      "theory_links": [
+        "MSI",
+        "PP"
+      ],
+      "template_ids": [
+        "MCP1"
+      ],
+      "mechanism": "Objects with lower kinaesthetic complexity (Gas/Liquid) are perceived more congruently.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 10",
+      "quote": "Solid had the lowest mean Congruency rating (M = 3.85, SD = 1.86), followed by Liquid (M = 4.35, SD = 1.78), and Gas had the highest (M = 5.34, SD = 1.47)."
+    },
+    {
+      "id": 3,
+      "antecedent": "Material State (Solid, Liquid, Gas)",
+      "consequent": "Perceived Congruency (under Visual Only presentation)",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(2) = 20.76",
+      "theory_links": [
+        "MSI",
+        "PP"
+      ],
+      "template_ids": [
+        "MCP1"
+      ],
+      "mechanism": "Objects with lower kinaesthetic complexity (Gas/Liquid) are perceived more congruently.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 10",
+      "quote": "The mean Congruency rating for Solid was M = 2.18, SD = 2.06, for Liquid it was M = 2.59, SD = 1.98, and for Gas it was M = 3.04, SD = 1.92."
+    },
+    {
+      "id": 4,
+      "antecedent": "Presentation modality (Visuo-Haptic vs. Visual Only)",
+      "consequent": "Perceived Congruency",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MSI",
+        "PP"
+      ],
+      "template_ids": [
+        "MCP1"
+      ],
+      "mechanism": "UMH significantly enhances the overall perception of object congruency.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 10, Figure 5",
+      "quote": "the average scores for each MATERIAL STATE were higher compared to VISUAL PRESENTATION",
+      "outcome_id": "social.crowding",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.737
+    },
+    {
+      "id": 5,
+      "antecedent": "Presentation modality (Visuo-Haptic vs. Visual Only)",
+      "consequent": "ERP Mismatch Negativity (FCz electrode) for Solid State",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Visuo-Haptic mode heightened negativity for Solid State, suggesting increased physiological congruency.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 11, Figure 6",
+      "quote": "the negativity for the Solid State is heightened during Visuo-Haptic Presentation."
+    },
+    {
+      "id": 6,
+      "antecedent": "Material State (Liquid, Gas)",
+      "consequent": "ERP Mismatch Negativity (FCz electrode)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Liquid and Gas states performed better in terms of congruency across both Presentation modalities, with relatively consistent negativity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 11",
+      "quote": "Liquid and Gas states performed better in terms of congruency across both Presentation modalities."
+    },
+    {
+      "id": 7,
+      "antecedent": "Hue-Temperature association (Blue-Cool, White-Neutral, Red-Warm)",
+      "consequent": "Perceived Temperature",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.005",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(2) = 11.945",
+      "theory_links": [
+        "COL1",
+        "MAT2"
+      ],
+      "template_ids": [],
+      "mechanism": "Participants associated the temperature of the presented object with its color.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 12",
+      "quote": "blue was perceived as cooler (M = 0.22, SD = 0.53) compared to red (M = 0.34, SD = 0.50). However, the neutral color was rated even colder than blue (M = 0.19, SD = 0.45).",
+      "outcome_id": "affect.stress",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.703
+    },
+    {
+      "id": 8,
+      "antecedent": "Presentation modality (Visuo-Haptic vs. Visual Only)",
+      "consequent": "Perceived Temperature",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(2) = 96.17",
+      "theory_links": [
+        "MSI",
+        "IC"
+      ],
+      "template_ids": [
+        "IC_THERMAL_COMFORT"
+      ],
+      "mechanism": "UMH induces an overall shift in perceived temperature, making objects feel warmer.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 12",
+      "quote": "objects in the VISUO-HAPTIC PRESENTATION were rated as warmer (M = 0.44, SD = 0.56) compared to those in the VISUAL PRESENTATION (M = 0.07, SD = 0.34).",
+      "outcome_id": "affect.stress",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.703
+    },
+    {
+      "id": 9,
+      "antecedent": "Presentation modality (Visuo-Haptic vs. Visual Only)",
+      "consequent": "Perceived Temperature (moderated by Hue-Temperature association)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MSI",
+        "IC"
+      ],
+      "template_ids": [
+        "IC_THERMAL_COMFORT"
+      ],
+      "mechanism": "UMH does not amplify the Hue-Temperature association but uniformly elevates perceived temperature across all hue-temperature associations.",
+      "moderators_reported": [
+        "Hue-Temperature association"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 12, Table 1, Figure 7",
+      "quote": "VISUO-HAPTIC PRESENTATION does not amplify the Hue-TEMPERATURE association; rather, it uniformly elevates the perceived TEMPERATURE"
+    },
+    {
+      "id": 10,
+      "antecedent": "Object State (Gas, Liquid, Solid)",
+      "consequent": "Sense Of Being There (IPQ subscale)",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "x\u00b2(2) = 11.877",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 13, Figure 8",
+      "quote": "Only the Sense Of Being There sub-scale exhibited a significant difference across object states"
+    },
+    {
+      "id": 11,
+      "antecedent": "Object State (Gas, Liquid, Solid)",
+      "consequent": "General Presence score, Spatial Presence, Involvement, Experienced Realism (IPQ subscales)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 13",
+      "quote": "No significant variations were observed in the general Presence score across different object states.",
+      "outcome_id": "behav.engagement",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Sensory channel (Tactile vs. Visual)",
+      "consequent": "Perceived Temperature (relative influence)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "V = 311.5",
+      "theory_links": [
+        "MSI"
+      ],
+      "template_ids": [],
+      "mechanism": "Participants placed greater sensory importance on UMH for temperature evaluation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 13, Figure 9b",
+      "quote": "Statistical analysis indicated a significant difference between questions Q1 and Q2 (V = 311.5; p < 0.05)"
+    },
+    {
+      "id": 13,
+      "antecedent": "Sensory channel (Tactile vs. Visual)",
+      "consequent": "Perceived Material State (relative influence)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "V = 35.5",
+      "theory_links": [
+        "MSI"
+      ],
+      "template_ids": [],
+      "mechanism": "Participants relied more on visual cues for determining object state.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 13, Figure 9a",
+      "quote": "Statistical analysis indicated a significant difference [...] between questions Q2 and Q4 (V = 35.5; p < 0.05)"
+    },
+    {
+      "id": 14,
+      "antecedent": "Object State (Gas)",
+      "consequent": "Perceived Temperature (under visuo-haptic presentation)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC"
+      ],
+      "template_ids": [],
+      "mechanism": "The perceived temperature of an object could be influenced by its state, with gas states receiving higher warmth ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14",
+      "quote": "objects in the Gas state received higher warmth ratings compared to those in the Liquid and Solid states."
+    }
+  ],
+  "mechanisms": [
+    "UMH enhances perceived congruency by providing tactile stimuli that reduce the feeling of mismatch between visual and tactile feedback.",
+    "UMH influences temperature perception, causing an overall shift towards warmer perceptions, rather than amplifying hue-temperature associations.",
+    "Cross-modal interactions between visual and haptic channels contribute to the perception of object properties.",
+    "Lower kinaesthetic complexity of objects (Gas, Liquid) leads to higher perceived congruency.",
+    "Physiological responses (Mismatch Negativity) align with self-reported congruency, especially for solid objects in visuo-haptic mode."
+  ],
+  "moderators": [
+    "Object State (Solid, Liquid, Gas)",
+    "Hue-Temperature association (Blue-Cool, White-Neutral, Red-Warm)",
+    "Presentation modality (Visual Only, Visuo-Haptic)"
+  ],
+  "implementation_implications": [
+    "Integrating UMH in visuo-haptic presentations improves the perceived congruency of virtual objects.",
+    "UMH is more effective for objects in gaseous or liquid states; designers should tailor haptic feedback based on object type or attribute gaseous/liquid properties to virtual objects.",
+    "UMH alters perceived temperature of virtual objects; designers should consider this when accurate temperature perception is crucial.",
+    "UMH can be used to intentionally modulate perceived temperature.",
+    "UMH enhances presence and congruency in VR design explorations, allowing simulation of diverse object properties (soft/warm or hard/cold surfaces).",
+    "Facilitates seamless sensory integration without user-worn devices.",
+    "Enables exploration of material affordances (texture, temperature).",
+    "Elevates overall perceptual consistency, outperforming visual-only simulations.",
+    "Provides tailored haptic feedback for optimal use cases (gas, liquid, solid)."
+  ],
+  "domains": [
+    "A1_Materials",
+    "A6_Visual_Form",
+    "A7_Haptic_Thermal",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "MSI",
+    "PP",
+    "IC"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Temperature Associations across all Object States, Hue-Temperature Associations, and Presentation",
+      "key_stats": [
+        "Mean (SD) values for perceived temperature across various conditions"
+      ],
+      "n_findings_extracted_from": 1
+    }
+  ],
+  "limitations": [
+    "Did not manipulate the ambient temperature in the real environment to assess the robustness of findings.",
+    "Focused only on the Hue-Temperature association, not other potential illusions.",
+    "Explored perceived temperature and congruency using two 9-point questions per interaction paradigm, which might not elucidate thresholds or exact shifts.",
+    "Only covered haptic and visual feedback; other sensory modalities such as audition may play an important role in congruency and temperature perception.",
+    "The EEG Mismatch Negativity metric lacks extensive formal validation and is for informative purposes only."
+  ],
+  "paper_metadata": {
+    "doi": "10.1145/3676488",
+    "title": "An Examination of Ultrasound Mid-air Haptics for Enhanced Material and Temperature Perception in Virtual Environments",
+    "authors": [
+      "Steeven Villa",
+      "Yannick Weiss",
+      "Niklas Hirsch",
+      "Alexander Wiethoff"
+    ],
+    "year": 2024,
+    "journal": "Proc. ACM Hum. Comput. Interact.",
+    "volume": "8",
+    "issue": "MHCI",
+    "pages": "1-21",
+    "publisher": "Association for Computing Machinery (ACM)",
+    "citation_count": 5,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/0471264385.wei0406",
+      "10.1007/978--3--319--42321-0_25",
+      "10.1007/978--3--319--93445--7_24",
+      "10.1007/978--3-030--58147--3_30",
+      "10.1007/978--3-030--58147--3_33",
+      "10.1007/s10846-016-0392--6",
+      "10.1016/0001--6918(93)90070--8",
+      "10.1016/0010-0285(90)90009-s",
+      "10.1016/j",
+      "10.1016/j.cag.2018.09.004",
+      "10.1016/j.jneumeth.2012.06.011",
+      "10.1016/j.neuron.2019.02.039",
+      "10.1038/s41598-019--55407-0",
+      "10.1109/ACCESS.2017.2787601",
+      "10.1109/ACCESS.2021.3103598",
+      "10.1109/HAPTICS.2018.8357198",
+      "10.1109/HAVE.2019.8921211",
+      "10.1109/ICRA.2013.6630894",
+      "10.1109/LRA.2020.2972793",
+      "10.1109/LSENS.2023.3296345",
+      "10.1109/SVR",
+      "10.1109/THMS.2014.2348865",
+      "10.1109/TOH.2010.19",
+      "10.1109/TOH.2019.2961883",
+      "10.1109/TOH.2020.2967389",
+      "10.1109/TOH.2020.3018754",
+      "10.1109/TOH.2023.3267096",
+      "10.1109/TUFFC.2017.2769399",
+      "10.1109/TVCG.2020.3002245",
+      "10.1109/WHC.2013.6548379",
+      "10.1109/WHC.2013.6548453",
+      "10.1109/WHC.2015.7177739",
+      "10.1109/WHC.2017.7989903",
+      "10.1109/WHC.2019.8816127",
+      "10.1109/WHC.2019.8816137",
+      "10.1145/1402236.1402238",
+      "10.1145/2501988.2502018",
+      "10.1145/2661229",
+      "10.1145/2671015.2671028",
+      "10.1145/2702123.2702361",
+      "10.1145/2818466.2818491",
+      "10.1145/2858036.2858226",
+      "10.1145/3025453.3025753",
+      "10.1145/3025453.3025824",
+      "10.1145/3136755.3143020",
+      "10.1145/3239060.3239089",
+      "10.1145/3242587.3242657",
+      "10.1145/3290605.3300351",
+      "10.1145/3290605.3300362",
+      "10.1145/3290605.3300550",
+      "10.1145/3290605.3300657",
+      "10.1145/3311823.3311826",
+      "10.1145/3313831.3376195",
+      "10.1145/3313831.3376554",
+      "10.1145/3313831.3376806",
+      "10.1145/3332165.3347939",
+      "10.1145/3340764.3344459",
+      "10.1145/3355049.3360529",
+      "10.1145/3385956.3422108",
+      "10.1145/3415255.3422895",
+      "10.1145/3462244.3479951",
+      "10.1145/3472749.3474800",
+      "10.1145/3476122.3484849",
+      "10.1145/3487563",
+      "10.1145/3489849.3489889",
+      "10.1145/3505284.3532969",
+      "10.1145/3544548.3580668",
+      "10.1145/3544548.3581223",
+      "10.1145/3550471.3558402",
+      "10.1145/3567731",
+      "10.1145/985692.985723",
+      "10.1162/105474698565686",
+      "10.1163/22134808-00002603",
+      "10.1177/1420326X12451186",
+      "10.1371/journal",
+      "10.18637/jss.v082.i13",
+      "10.3389/frobt.2017.00042",
+      "10.3390/robotics10010029",
+      "10.3724/SP.J",
+      "10.3758/BF03211752",
+      "10.3758/s13414-015-0837-1",
+      "10.48550/ARXIV.2001.01445",
+      "10.7551/mitpress/11014.001.0001"
+    ],
+    "cited_by": [
+      "10.1145/3756884.3766009",
+      "10.1109/WHC64065.2025.11123359",
+      "10.1007/s00146-025-02439-y",
+      "10.1109/TOH.2025.3578076",
+      "10.1109/OJID.2025.3622139"
+    ],
+    "semantic_scholar_id": "ac24e4f4e9c9effb82d5aa9abbe0f1a5c5cbc774",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:44:55.379304+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "An Examination of Ultrasound Mid-air Haptics for Enhanced Material and Temperature Perception in Virtual Environments",
+    "crossref_year": 2024,
+    "crossref_citation_count": 4,
+    "crossref_journal": "Proceedings of the ACM on Human-Computer Interaction",
+    "crossref_publisher": "Association for Computing Machinery (ACM)",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Rendering realistic tactile sensations of virtual objects remains a challenge in VR. While haptic interfaces have advanced, particularly with phased arrays, their ability to create realistic object properties like state and temperature remains unclear. This study investigates the potential of Ultrasound Mid-air Haptics (UMH) for enhancing the perceived congruency of virtual objects. In a user study with 30 participants, we assessed how UMH impacts the perceived material state and temperature of virtual objects. We also analyzed EEG data to understand how participants integrate UMH information physiologically. Our results reveal that UMH significantly enhances the perceived congruency of virtual objects, particularly for solid objects, reducing the feeling of mismatch between visual and tactile feedback. Additionally, UMH consistently increases the perceived temperature of virtual objects. These findings offer valuable insights for haptic designers, demonstrating UMH's potential for creating more immersive tactile experiences in VR by addressing key limitations in current haptic technologies.",
+    "crossref_reference_count": 92,
+    "crossref_issn": [
+      "2573-0142"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.731296+00:00",
+    "_cr_refs_added": 83
+  },
+  "year": 2024,
+  "journal": "Proc. ACM Hum. Comput. Interact.",
+  "authors_structured": [
+    "Steeven Villa",
+    "Yannick Weiss",
+    "Niklas Hirsch",
+    "Alexander Wiethoff"
+  ],
+  "crossref_title": "An Examination of Ultrasound Mid-air Haptics for Enhanced Material and Temperature Perception in Virtual Environments",
+  "crossref_authors": [
+    {
+      "name": "Steeven Villa",
+      "orcid": "https://orcid.org/0000-0002-4881-1350",
+      "affiliation": "LMU Munich, Munich, Germany"
+    },
+    {
+      "name": "Yannick Weiss",
+      "orcid": "https://orcid.org/0000-0003-1125-7963",
+      "affiliation": "LMU Munich, Munich, Germany"
+    },
+    {
+      "name": "Niklas Hirsch",
+      "orcid": "https://orcid.org/0009-0002-6404-2296",
+      "affiliation": "LMU Munich, Munich, Germany"
+    },
+    {
+      "name": "Alexander Wiethoff",
+      "orcid": "https://orcid.org/0000-0003-2938-7272",
+      "affiliation": "LMU Munich, Munich, Germany"
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Proceedings of the ACM on Human-Computer Interaction",
+  "crossref_citation_count": 4,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Association for Computing Machinery (ACM)",
+  "crossref_subjects": [],
+  "crossref_abstract": "Rendering realistic tactile sensations of virtual objects remains a challenge in VR. While haptic interfaces have advanced, particularly with phased arrays, their ability to create realistic object properties like state and temperature remains unclear. This study investigates the potential of Ultrasound Mid-air Haptics (UMH) for enhancing the perceived congruency of virtual objects. In a user study with 30 participants, we assessed how UMH impacts the perceived material state and temperature of virtual objects. We also analyzed EEG data to understand how participants integrate UMH information physiologically. Our results reveal that UMH significantly enhances the perceived congruency of virtual objects, particularly for solid objects, reducing the feeling of mismatch between visual and tactile feedback. Additionally, UMH consistently increases the perceived temperature of virtual objects. These findings offer valuable insights for haptic designers, demonstrating UMH's potential for creating more immersive tactile experiences in VR by addressing key limitations in current haptic technologies.",
+  "crossref_fetched_at": "2026-02-25T11:59:25.458052+00:00"
+}

@@ -1,0 +1,1073 @@
+{
+  "doi": "10.1016/j.jobe.2023.106776",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.849,
+  "n_findings": 27,
+  "extracted_at": "2026-02-25T06:02:32.772390+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00856175,
+  "title": "Enhancing lighting design through the investigation of illuminance and correlated color Temperature's effects on brain activity: An EEG-VR approach",
+  "authors": "Armin Mostafavi et al., 2023",
+  "research_question": "Will brain activity features (i.e., EEG data) be modulated in a predictable fashion during the first seconds of exposure to varied illuminance levels (RQ1a) and CCT (RQ1b)? Will it be possible to associate specific EEG patterns with specific lighting conditions, in terms of illumination and CCT (RQ2)? Will EEG measurements during the first few seconds of observing an indoor environment with different illumination and CCT conditions predict participants' subjective mood responses (RQ3a: pleasure, RQ3b: arousal)? Will EEG measurements during the first few seconds of observing an indoor environment with different illumination and CCT conditions predict participants' behavioral choices of desired vs. non-desired lighting (RQ4)?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 25,
+    "description": "25 healthy adult participants (out of 33 recruited, 8 excluded due to technical problems) associated with Cornell University. 21 undergraduate students, 4 graduate students/faculty. 15 female, 10 male. Age range 18-64 years (mean 24.4, SD 8.3). All affirmed no medical eye problems, no difficulty distinguishing colors. 64% used eyeglasses/contact lenses. All reported 7-9h sleep prior to experiment.",
+    "recruitment": "convenience sampling method (word-of-mouth and announcements on departmental e-mail lists)"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "A modern interior office room (4.0 m \u00d7 7.4 m x 3.0 m) designed in Autodesk 3ds Max and Unreal Engine 4.26. Participants experienced the virtual environment from a seated position at a desk using a Meta Quest 2 head-mounted display (1832 \u00d7 1920 pixels per eye, max brightness 100 nits). 17 different artificial lighting conditions were tested, selected from a matrix of 7 illumination levels (300lm to 4500lm) and 7 CCT levels (1500 K to 7500 K). Conditions included neutral illumination (2400lm) across all CCTs, neutral CCT (4500K) across all illuminations, and four quadrant conditions (low/high illumination with low/high CCT).",
+      "n_stimuli": 17,
+      "source": "Section 2.1, Fig. 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Emotional valence and arousal",
+      "instrument": "Self-Assessment Manikin (SAM) (9-point scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Circadian rhythm",
+      "instrument": "Morningness-Eveningness Questionnaire (MEQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Subjective sense of presence in VR",
+      "instrument": "Igroup Presence Questionnaire (IPQ) (7-point Likert scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Cyber sickness",
+      "instrument": "Simulator Sickness Questionnaire (SSQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Mental workload",
+      "instrument": "NASA Task Load Index (NASA-TLX) (1-20 scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Brain activity (EEG band-power features and composite ratios)",
+      "instrument": "mBraintrain EEG cap (22 Ag/AgCl electrodes, 10\u201320 international layout, 250 Hz sampling, downsampled to 100 Hz)",
+      "type": "neural"
+    },
+    {
+      "construct": "Lighting adjustment behavior (desired illumination and CCT)",
+      "instrument": "Participant adjustment of illumination (100 lm intervals) and CCT (100 K intervals) using VR controllers",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG alpha/theta ratio (\u03b1/\u03b8) in parietal and central brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.001",
+      "effect_size": 0.95,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b1/\u03b8.C4 0.95 5 0.001"
+    },
+    {
+      "id": 2,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG beta/theta ratio (\u03b2/\u03b8) in parietal and central brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.005",
+      "effect_size": 0.91,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "\u03b2/\u03b8.Pz 0.91 5 0.005"
+    },
+    {
+      "id": 3,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG theta band strength in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 4D",
+      "quote": "in frontal brain regions, illuminance was negatively associated with theta band strength"
+    },
+    {
+      "id": 4,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG alpha/beta ratio (\u03b1/\u03b2) in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 4D",
+      "quote": "as well as negatively associated with the \u03b1/\u03b2 and \u03b1/\u03b3 ratios"
+    },
+    {
+      "id": 5,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG alpha/gamma ratio (\u03b1/\u03b3) in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 4D",
+      "quote": "as well as negatively associated with the \u03b1/\u03b2 and \u03b1/\u03b3 ratios"
+    },
+    {
+      "id": 6,
+      "antecedent": "Illuminance level (300lm to 4500lm)",
+      "consequent": "EEG features (\u03b1/\u03b8.C4, \u03b1/\u03b8.P4, \u03b2/\u03b8.Pz)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.001",
+      "effect_size": 0.9,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,5)=47.15",
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "a simple linear model explained 90.41% (R-squared) of the variance and that the model was significant"
+    },
+    {
+      "id": 7,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K, 'bluer' light)",
+      "consequent": "EEG alpha power in frontal and left temporal brain regions (F4 electrode)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.94,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "The strongest effects were for alpha power in the F4 electrode"
+    },
+    {
+      "id": 8,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K, 'bluer' light)",
+      "consequent": "EEG gamma power in frontal and left temporal brain regions (F4 and F8 electrodes)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.003",
+      "effect_size": 0.92,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "gamma power in the F4 and F8 electrodes"
+    },
+    {
+      "id": 9,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K, 'bluer' light)",
+      "consequent": "EEG theta band power in frontal and left temporal brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 5D",
+      "quote": "encompassing the theta, alpha, beta and gamma bands"
+    },
+    {
+      "id": 10,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K, 'bluer' light)",
+      "consequent": "EEG beta band power in frontal and left temporal brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 5D",
+      "quote": "encompassing the theta, alpha, beta and gamma bands"
+    },
+    {
+      "id": 11,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K, 'bluer' light)",
+      "consequent": "EEG alpha/gamma ratio (\u03b1/\u03b3) in frontal brain regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 5D",
+      "quote": "CCT and the ratio of \u03b1/\u03b3 were negatively associated"
+    },
+    {
+      "id": 12,
+      "antecedent": "Correlated Color Temperature (1500 K to 7500 K)",
+      "consequent": "EEG features (\u03b1.F4, \u03b3.F4, \u03b3.F8)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": 0.88,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,5)=37.87",
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "a simple linear model explained 88.33% (R-squared) of the variance and that the model was significant"
+    },
+    {
+      "id": 13,
+      "antecedent": "Different lighting conditions (17 combinations of illuminance and CCT)",
+      "consequent": "Classification accuracy of EEG patterns (distinguishing between conditions)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.7,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.12",
+      "quote": "The classification performance achieved an average accuracy of 70% in distinguishing between the different lighting conditions"
+    },
+    {
+      "id": 14,
+      "antecedent": "Lighting condition M1 (2400lm, 1500K) vs M6 (2400lm, 7500K)",
+      "consequent": "Classification accuracy of EEG patterns",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.74,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 6B",
+      "quote": "For the M1 vs. M6 comparison... we achieved 74% classification accuracy."
+    },
+    {
+      "id": 15,
+      "antecedent": "EEG data (first 10s exposure to lighting)",
+      "consequent": "Classification accuracy of self-reported pleasure (positive vs. negative)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.74,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC",
+        "DP"
+      ],
+      "template_ids": [
+        "T12",
+        "T9"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "a very high classification accuracy for both the pleasure responses (74% cross-validation accuracy, vs. chance level of 41%)",
+      "outcome_id": "affect.satisfaction",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Self-reported pleasure",
+      "consequent": "Significant EEG features in frontal and central brain regions",
+      "direction": "associational",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC",
+        "DP"
+      ],
+      "template_ids": [
+        "T12",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 8A",
+      "quote": "For pleasure, the most significant EEG features were found in the frontal and central brain regions"
+    },
+    {
+      "id": 17,
+      "antecedent": "EEG data (first 10s exposure to lighting)",
+      "consequent": "Classification accuracy of self-reported arousal (positive vs. negative)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.81,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "DP"
+      ],
+      "template_ids": [
+        "NM5",
+        "T9"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "and the arousal responses (81% cross-validation accuracy, vs. chance level of 43%).",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Self-reported arousal",
+      "consequent": "Significant EEG features in frontal, central, and parietal brain regions",
+      "direction": "associational",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "DP"
+      ],
+      "template_ids": [
+        "NM5",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 8B",
+      "quote": "and for arousal they were found in the frontal, central, and parietal regions"
+    },
+    {
+      "id": 19,
+      "antecedent": "EEG data (first 10s exposure to lighting)",
+      "consequent": "Classification accuracy of desired vs. non-desired illumination levels",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.79,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L1",
+        "T9"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "illumination conditions, for which we achieved a very high cross-validation classification accuracy (79%)",
+      "outcome_id": "env.lighting",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Desired vs. non-desired illumination",
+      "consequent": "Significant EEG features broadly distributed across multiple bands and brain regions",
+      "direction": "associational",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L1",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 8C",
+      "quote": "For illumination, the most significant EEG features were broadly distributed across multiple bands and brain regions."
+    },
+    {
+      "id": 21,
+      "antecedent": "EEG data (first 10s exposure to lighting)",
+      "consequent": "Classification accuracy of desired vs. non-desired CCT levels",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 0.69,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1",
+        "T9"
+      ],
+      "mechanism": "Machine learning (quadratic kSVM) classification of EEG features",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "and the CCT conditions, for which we achieved a lower but still respectable accuracy (69%)."
+    },
+    {
+      "id": 22,
+      "antecedent": "Desired vs. non-desired CCT",
+      "consequent": "Significant EEG features in alpha and gamma bands in frontal and central brain regions",
+      "direction": "associational",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Fig. 8D",
+      "quote": "For CCT, the most significant features were in the alpha and gamma bands and located in the frontal and central brain regions"
+    },
+    {
+      "id": 23,
+      "antecedent": "Illuminance level",
+      "consequent": "EEG power relative to beta in parietal brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Parietal brain region activity including (a) a power relative to \u03b2... were observed to have a positive and significant correlation with the level of illuminance"
+    },
+    {
+      "id": 24,
+      "antecedent": "Illuminance level",
+      "consequent": "EEG beta power relative to theta in parietal brain regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Parietal brain region activity including (b) \u03b2 power relative to \u03b8, were observed to have a positive and significant correlation with the level of illuminance"
+    },
+    {
+      "id": 25,
+      "antecedent": "Correlated Color Temperature ('bluer' light)",
+      "consequent": "Broadband frontal neural synchronization (4-50 Hz EEG power)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "Broadband frontal neural synchronization (higher power) at 4-50 Hz... was observed to be positively correlated with color temperature.",
+      "outcome_id": "neural",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Broadband frontal EEG power differences",
+      "consequent": "Prediction of desired vs. not-desired luminosity levels",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L1",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "those broadband power differences in the frontal regions are also predictive of participants' desired vs. not-desired levels of luminosity"
+    },
+    {
+      "id": 27,
+      "antecedent": "Parietal alpha EEG power",
+      "consequent": "Prediction of desired vs. not-desired CCT levels",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB",
+        "DP"
+      ],
+      "template_ids": [
+        "L4",
+        "COL1",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "parietal alpha power helped to identify desired vs not-desired levels of CCT"
+    }
+  ],
+  "mechanisms": [
+    "Mental effects of light through non-image-forming pathways",
+    "Stimulation of brain areas involved in emotional processing (medial amygdala, lateral habenula)",
+    "Intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin as primary drivers for non-image-forming effects of light",
+    "Frontal brain regions involved in higher-order cognitive processing (working memory, executive action, decision-making)",
+    "Parietal brain regions associated with spatial perception and environmental information processing"
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Assist architects and engineers in developing lighting plans optimized according to occupants' subjective states (brain activity, lighting adjustment behavior, mood).",
+    "Leverage VR simulations in AEC sector to assess lighting design choices, potentially eliminating need for expensive physical mock-ups.",
+    "Potential development of brain-computer interfaces (BCI) for automatic lighting adjustment based on user's brain responses.",
+    "Tailoring lighting settings in interior spaces using brain responses for optimizing occupant productivity and wellbeing.",
+    "Applications in treatments like direct light therapy for mood disorders.",
+    "Empowering disabled individuals to control lighting through BCIs for easier environmental interaction.",
+    "Combining BCI with VR for fluid interaction with virtual environments and testing interaction systems for real-world spaces.",
+    "Evidence-based design approaches using VR for lighting evaluation can be more inexpensive and accessible, leading to larger comparative datasets."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "CB",
+    "NM",
+    "IC",
+    "DP"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Top 3 correlations and their linear regression results for both illumination and CCT.",
+      "key_stats": [
+        "Illumination Correlation: \u03b1/\u03b8.C4 r=0.95, p=0.001; \u03b1/\u03b8.P4 r=0.94, p=0.002; \u03b2/\u03b8.Pz r=0.91, p=0.005",
+        "Illumination Linear Regression: \u03b1/\u03b8.C4 R\u00b2=0.90, AdjR\u00b2=0.88, F(1,5)=47.15, p=0.001; \u03b1/\u03b8.P4 R\u00b2=0.88, AdjR\u00b2=0.86, F(1,5)=37.93, p=0.002; \u03b2/\u03b8.Pz R\u00b2=0.82, AdjR\u00b2=0.78, F(1,5)=22.65, p=0.005",
+        "CCT Correlation: \u03b1.F4 r=0.94, p=0.002; \u03b3.F4 r=0.92, p=0.003; \u03b3.F8 r=0.91, p=0.004",
+        "CCT Linear Regression: \u03b1.F4 R\u00b2=0.88, AdjR\u00b2=0.86, F(1,5)=37.87, p=0.002; \u03b3.F4 R\u00b2=0.85, AdjR\u00b2=0.82, F(1,5)=28.04, p=0.003; \u03b3.F8 R\u00b2=0.83, AdjR\u00b2=0.80, F(1,5)=24.60, p=0.004"
+      ],
+      "n_findings_extracted_from": 12
+    }
+  ],
+  "limitations": [
+    "Limited luminance range of VR HMDs compared to real-world light sources, diminishing usefulness at very high and very low illuminance extremes.",
+    "VR experience does not accurately reflect blinding effects or glare of real-world lighting.",
+    "VR HMDs' minimum displayable intensities are too high to reliably study scotopic vision range, color shifts, and diminished visual acuity in very low-light environments.",
+    "Infeasibility of studying simulated natural light using current VR technology.",
+    "Illumination measures (lumens) not validated against standard real-world procedures (lux) and not directly transferable to real-world settings.",
+    "Participant reactions in VR environments may not precisely reflect real-world contexts.",
+    "High attrition rate due to loss of data from multiple participants (corrupted/unusable EEG data, unprinted timestamps, HMD/EEG battery crashes).",
+    "Human error on the part of the researchers during the experiment.",
+    "Convenience sample composed mostly of undergraduate students at Cornell University.",
+    "Did not evaluate demographic variables (e.g., age, gender) or other factors (e.g., participant sleep schedules, time of day) that may impact results.",
+    "Number of electrodes used and EEG device may affect quality of brain activity measurements and conclusions."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.jobe.2023.106776",
+    "title": "Enhancing lighting design through the investigation of illuminance and correlated color Temperature's effects on brain activity: An EEG-VR approach",
+    "authors": [
+      "Armin Mostafavi",
+      "Jesus G. Cruz-Garza",
+      "S. Kalantari"
+    ],
+    "year": 2023,
+    "journal": "Journal of Building Engineering",
+    "volume": "75",
+    "issue": null,
+    "pages": "106776",
+    "publisher": "Elsevier BV",
+    "citation_count": 56,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1007/s10548-014-0361-y",
+      "10.1016/0005-7916(94)90063-9",
+      "10.1016/0031-9384(91)90549-4",
+      "10.1016/0272-4944(95)90013-6",
+      "10.1016/S0166-4328(00)00236-9",
+      "10.1016/S0272-4944(88)80008-2",
+      "10.1016/S0272-4944(89)80011-8",
+      "10.1016/j.aei.2022.101718",
+      "10.1016/j.autcon.2015.03.020",
+      "10.1016/j.bbr.2015.07.045",
+      "10.1016/j.brainres.2013.09.031",
+      "10.1016/j.bspc.2021.102587",
+      "10.1016/j.buildenv.2015.02.038",
+      "10.1016/j.buildenv.2018.12.002",
+      "10.1016/j.buildenv.2019.106278",
+      "10.1016/j.buildenv.2019.106409",
+      "10.1016/j.buildenv.2021.108098",
+      "10.1016/j.cell.2018.08.004",
+      "10.1016/j.concog.2014.02.006",
+      "10.1016/j.ergon.2011.09.004",
+      "10.1016/j.ins.2019.06.008",
+      "10.1016/j.jenvp.2013.12.010",
+      "10.1016/j.jenvp.2017.02.001",
+      "10.1016/j.jenvp.2021.101744",
+      "10.1016/j.jneumeth.2003.10.009",
+      "10.1016/j.neulet.2014.09.046",
+      "10.1016/j.neuroimage.2005.04.014",
+      "10.1016/j.neuroimage.2013.08.003",
+      "10.1016/j.neuroimage.2015.07.009",
+      "10.1016/j.neuroimage.2019.05.026",
+      "10.1016/j.physbeh.2013.03.014",
+      "10.1016/j.physbeh.2016.05.035",
+      "10.1016/j.psyneuen.2014.02.009",
+      "10.1016/j.smrv.2007.07.009",
+      "10.1016/j.smrv.2011.09.002",
+      "10.1016/j.tine.2014.09.001",
+      "10.1016/j.tins.2013.10.004",
+      "10.1037/bne0000244",
+      "10.1038/mp.2013.70",
+      "10.1038/s41598-021-89297-y",
+      "10.1038/s41598-021-92246-4",
+      "10.1046/j.1460-9568.2003.02616.x",
+      "10.1080/00994480.1990.10747937",
+      "10.1080/15502724.2016.1159137",
+      "10.1088/1741-2552/aab2f2",
+      "10.1088/1741-2552/ab1876",
+      "10.1093/sleep/26.6.695",
+      "10.1109/TBME.2004.826702",
+      "10.1109/TBME.2019.2930186",
+      "10.1109/TPAMI.2005.159",
+      "10.1109/TVCG.2020.3023604",
+      "10.1111/ejn.15131",
+      "10.1126/science.1069609",
+      "10.1152/japplphysiol.00165.2011",
+      "10.1159/000328950",
+      "10.1177/001391659803000408",
+      "10.1177/096032719002200102",
+      "10.1177/1099800415572873",
+      "10.1177/1477153515576399",
+      "10.1177/1477153518825387",
+      "10.1177/1477153519872801",
+      "10.1177/1477153520902255",
+      "10.1177/1477153520926528",
+      "10.1177/14771535970290030501",
+      "10.1186/1740-3391-5-2",
+      "10.1186/1740-3391-8-2",
+      "10.1186/1756-0500-7-113",
+      "10.1207/s15327108ijap0303_3",
+      "10.12691/ajphr-1-7-3",
+      "10.1371/journal.pone.0016429",
+      "10.2174/1567205014666170608091119",
+      "10.3389/fnhum.2020.577651",
+      "10.3389/fnhum.2020.584385",
+      "10.3389/fninf.2015.00016",
+      "10.3390/brainsci11060698",
+      "10.5271/sjweh.1268",
+      "10.5665/sleep.2894",
+      "10.5665/sleep.3396"
+    ],
+    "cited_by": [
+      "10.1016/j.buildenv.2026.114315",
+      "10.3390/su18021112",
+      "10.1002/cav.70092",
+      "10.1016/j.buildenv.2026.114233",
+      "10.1016/j.jenvp.2025.102821",
+      "10.1016/j.buildenv.2025.114103",
+      "10.1016/j.buildenv.2025.114106",
+      "10.26599/jic.2025.9180104",
+      "10.54097/0z8v4743",
+      "10.1016/j.ergon.2025.103829",
+      "10.1016/j.jobe.2025.113766",
+      "10.3390/buildings15193524",
+      "10.3390/su17188455",
+      "10.1080/00140139.2025.2544814",
+      "10.1016/j.buildenv.2025.113702",
+      "10.3390/buildings15162964",
+      "10.1109/Lighting64836.2025.11081790",
+      "10.1016/j.buildenv.2025.113067",
+      "10.1108/sasbe-08-2024-0303",
+      "10.1177/14771535251314433",
+      "10.1016/j.jobe.2025.112064",
+      "10.1016/j.heliyon.2025.e42064",
+      "10.1155/ina/3122870",
+      "10.1016/j.buildenv.2024.112434",
+      "10.1016/j.buildenv.2024.111980",
+      "10.1016/j.jobe.2024.110487",
+      "10.3390/buildings14103316",
+      "10.1016/j.jenvp.2024.102419",
+      "10.1016/j.buildenv.2024.112124",
+      "10.1038/s41598-024-65754-2",
+      "10.1016/j.jobe.2024.110224",
+      "10.48550/arXiv.2406.02728",
+      "10.1016/j.jobe.2024.108833",
+      "10.1016/j.buildenv.2024.111638",
+      "10.1016/j.buildenv.2024.111694",
+      "10.1016/j.asej.2024.102898",
+      "10.1016/j.jobe.2024.110020",
+      "10.1016/j.apergo.2024.104304",
+      "10.1016/j.ergon.2024.103589",
+      "10.1016/j.buildenv.2024.111555",
+      "10.1002/sdtp.17200",
+      "10.1101/2024.03.22.586309",
+      "10.3390/su16052096",
+      "10.1038/s41598-024-55182-7",
+      "10.1016/j.buildenv.2024.111307",
+      "10.1109/ACCESS.2024.3377135",
+      "10.3389/fbuil.2023.1303028",
+      "10.1016/j.chb.2023.108085",
+      "10.3390/su152216104",
+      "10.48550/arXiv.2311.05028",
+      "10.1016/j.jobe.2023.107878",
+      "10.1109/SIELMEN59038.2023.10290859",
+      "10.48550/arXiv.2307.11023",
+      "10.48550/arXiv.2307.10969",
+      "10.1016/j.jobe.2024.108646",
+      "10.1016/j.jobe.2024.108902"
+    ],
+    "semantic_scholar_id": "f0f51465423ef249c242a00676593e73eaa2865c",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:39:46.083225+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Enhancing lighting design through the investigation of illuminance and correlated color Temperature's effects on brain activity: An EEG-VR approach",
+    "crossref_year": 2023,
+    "crossref_citation_count": 34,
+    "crossref_journal": "Journal of Building Engineering",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 99,
+    "crossref_issn": [
+      "2352-7102"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.496160+00:00",
+    "_cr_refs_added": 78
+  },
+  "year": 2023,
+  "journal": "Journal of Building Engineering",
+  "authors_structured": [
+    "Armin Mostafavi",
+    "Jesus G. Cruz-Garza",
+    "S. Kalantari"
+  ],
+  "crossref_title": "Enhancing lighting design through the investigation of illuminance and correlated color Temperature's effects on brain activity: An EEG-VR approach",
+  "crossref_authors": [
+    {
+      "name": "Armin Mostafavi",
+      "orcid": "https://orcid.org/0000-0003-1163-5557",
+      "affiliation": null
+    },
+    {
+      "name": "Jesus G. Cruz-Garza",
+      "orcid": "https://orcid.org/0000-0002-8440-6416",
+      "affiliation": null
+    },
+    {
+      "name": "Saleh Kalantari",
+      "orcid": "https://orcid.org/0000-0002-0472-5493",
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2023,
+  "crossref_journal": "Journal of Building Engineering",
+  "crossref_citation_count": 34,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:54:40.385947+00:00"
+}

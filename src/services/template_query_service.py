@@ -292,11 +292,12 @@ class TemplateQueryService:
         },
     }
 
-    def __init__(self, templates_dir: str = "data/templates"):
+    def __init__(self, templates_dir: str = "data/templates", annotation_service=None):
         self.templates_dir = Path(templates_dir)
         self.templates: Dict[str, Dict] = {}
         self.templates_by_id: Dict[str, Dict] = {}
         self.display_id_map: Dict[str, str] = {}  # display_id → template_id
+        self.annotation_service = annotation_service  # Optional AnnotationService for EN-0D
         self._load_templates()
 
     def _load_templates(self):
@@ -833,6 +834,778 @@ class TemplateQueryService:
         else:
             return f"Mechanistically linked to {source_id}"
 
+    # =========================================================================
+    # Sprint QA-2: Architect Spec Sheet — Multi-Template Synthesis
+    # =========================================================================
+
+    def extract_calibrated_thresholds(self, template: Dict) -> List[Dict]:
+        """
+        Extract quantitative thresholds from a template's calibrated_parameters.
+
+        Sprint QA-2: Addresses panel finding that architects need numbers
+        (lux, dB, m², °C) not mechanism descriptions.
+
+        Returns a list of threshold dicts, each with:
+        - parameter: name of the parameter
+        - value: the calibrated value
+        - unit: measurement unit
+        - range: [min, max] acceptable range
+        - confidence: calibration confidence (0-1)
+        - note: human-readable context
+        - template_source: display_id of source template
+
+        Design Decision DD-7: We use calibrated_parameters (panel-reviewed
+        values) rather than mining numbers from free text. This ensures
+        every threshold has a confidence level and provenance.
+        """
+        thresholds = []
+        cal = template.get('calibrated_parameters', {})
+        display_id = template.get('display_id', '?')
+
+        for param_name, param_data in cal.items():
+            if not isinstance(param_data, dict):
+                continue
+            thresholds.append({
+                'parameter': param_name.replace('_', ' '),
+                'value': param_data.get('value'),
+                'unit': param_data.get('unit', ''),
+                'range': param_data.get('range', []),
+                'ci_95': param_data.get('ci_95', []),
+                'confidence': param_data.get('confidence', 0.5),
+                'bridge_warrant': param_data.get('bridge_warrant', ''),
+                'note': param_data.get('note', ''),
+                'template_source': display_id,
+                'provenance': {
+                    'calibration_panel': template.get('calibration_panel', 'unknown'),
+                    'calibration_date': template.get('calibration_date', 'unknown'),
+                    'calibration_status': template.get('calibration_status', 'unknown'),
+                    'template_id': template.get('template_id', ''),
+                },
+            })
+
+        return thresholds
+
+    def query_for_building_type(
+        self,
+        building_type: str,
+        keywords: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Find all templates applicable to a specific building type.
+
+        Sprint QA-2: Addresses panel finding that architects need
+        multi-template synthesis per room type.
+
+        Args:
+            building_type: e.g. 'healthcare', 'office', 'education'
+            keywords: Optional additional filter keywords
+
+        Returns:
+            Dict with matched templates, combined thresholds, and
+            mechanism chains organized by domain.
+
+        Design Decision DD-8: We match building_type using substring
+        matching to handle the heterogeneous building_types format
+        (some are exact like 'healthcare', others are descriptive like
+        'hospitals — highest priority, largest documented effect').
+        """
+        bt_lower = building_type.lower()
+        matched_templates = []
+
+        for tid, template in self.templates_by_id.items():
+            building_types = template.get('building_types', [])
+            if not building_types:
+                continue
+
+            # Substring match against building_types entries
+            matches = any(
+                bt_lower in bt.lower() or bt.lower() in bt_lower
+                for bt in building_types
+                if isinstance(bt, str)
+            )
+            # Also check for 'all' or 'all_occupied_buildings'
+            has_all = any(
+                bt.lower().startswith('all')
+                for bt in building_types
+                if isinstance(bt, str)
+            )
+
+            if matches or has_all:
+                relevance = 1.0 if matches else 0.5
+                # If keywords given, boost relevance for keyword matches
+                if keywords:
+                    kw_rel = self._compute_relevance(template, keywords)
+                    relevance = max(relevance, kw_rel)
+                matched_templates.append((relevance, template))
+
+        # Sort by relevance descending
+        matched_templates.sort(key=lambda x: -x[0])
+        templates = [t for _, t in matched_templates]
+
+        return {
+            'building_type': building_type,
+            'n_templates': len(templates),
+            'templates': [
+                {
+                    'display_id': t.get('display_id', '?'),
+                    'name': t.get('name', '?'),
+                    'relevance': rel,
+                }
+                for rel, t in matched_templates[:20]
+            ],
+            'spec_sheet': self.multi_template_synthesis(templates[:10]),
+        }
+
+    def multi_template_synthesis(
+        self,
+        templates: List[Dict],
+    ) -> Dict[str, Any]:
+        """
+        Synthesize a design spec sheet from multiple templates.
+
+        Sprint QA-2: Core method that addresses the Architect panel's
+        #1 gap — multi-template synthesis.
+
+        Combines quantitative thresholds, mechanism chains, scope
+        conditions, and moderators from all input templates into a
+        single design specification.
+
+        Design Decision DD-9: We organize the spec sheet by DOMAIN
+        (acoustic, visual/light, air quality, spatial, biophilic, thermal)
+        inferred from template display_id prefixes and content. This
+        mirrors how architects organize their specifications.
+        """
+        # Collect all thresholds
+        all_thresholds = []
+        for t in templates:
+            all_thresholds.extend(self.extract_calibrated_thresholds(t))
+
+        # Collect all mechanism chains
+        all_chains = []
+        for t in templates:
+            mc = t.get('mechanism_chain', [])
+            if mc:
+                all_chains.append({
+                    'template': t.get('display_id', '?'),
+                    'name': t.get('name', '?'),
+                    'steps': mc,
+                })
+
+        # Collect all scope conditions and moderators
+        all_scope = []
+        all_moderators = []
+        seen_scope = set()
+        seen_mods = set()
+        for t in templates:
+            for sc in t.get('scope_conditions', []):
+                sc_str = str(sc)
+                if sc_str[:50].lower() not in seen_scope:
+                    seen_scope.add(sc_str[:50].lower())
+                    all_scope.append(sc_str)
+            for mod in t.get('moderators', []):
+                mod_str = str(mod)
+                if mod_str[:50].lower() not in seen_mods:
+                    seen_mods.add(mod_str[:50].lower())
+                    all_moderators.append(mod_str)
+
+        # Organize thresholds by domain
+        domains = self._classify_thresholds_by_domain(all_thresholds, templates)
+
+        # Build the spec sheet
+        return {
+            'thresholds_by_domain': domains,
+            'n_thresholds': len(all_thresholds),
+            'mechanism_chains': all_chains[:10],
+            'scope_conditions': all_scope[:15],
+            'moderators': all_moderators[:15],
+            'n_templates_synthesized': len(templates),
+            'template_ids': [t.get('display_id', '?') for t in templates],
+            'confidence_summary': self._summarize_threshold_confidence(all_thresholds),
+        }
+
+    def _classify_thresholds_by_domain(
+        self,
+        thresholds: List[Dict],
+        templates: List[Dict],
+    ) -> Dict[str, List[Dict]]:
+        """
+        Classify thresholds into architectural domains.
+
+        Design Decision DD-10: Domain classification uses template
+        display_id prefixes (AUD_ → acoustic, CB_ → circadian/light)
+        plus unit-based heuristics (dB → acoustic, lux → visual).
+        """
+        domains: Dict[str, List[Dict]] = {
+            'acoustic': [],
+            'visual_light': [],
+            'air_quality': [],
+            'spatial': [],
+            'biophilic': [],
+            'thermal': [],
+            'other': [],
+        }
+
+        for threshold in thresholds:
+            source = threshold.get('template_source', '').upper()
+            unit = threshold.get('unit', '').lower()
+            param = threshold.get('parameter', '').lower()
+
+            # Classify by template prefix first
+            if any(p in source for p in ['AUD', 'SOUND', 'NOISE', 'REVERB']):
+                domains['acoustic'].append(threshold)
+            elif any(p in source for p in ['CB', 'LIGHT', 'CIRCADIAN', 'VIEW']):
+                domains['visual_light'].append(threshold)
+            elif any(p in source for p in ['RESP', 'AIR', 'VENT', 'CO2']):
+                domains['air_quality'].append(threshold)
+            elif any(p in source for p in ['ENCL', 'SPATIAL', 'CEIL', 'PP']):
+                domains['spatial'].append(threshold)
+            elif any(p in source for p in ['BIO', 'NATURE', 'FRACTAL', 'PLANT']):
+                domains['biophilic'].append(threshold)
+            elif any(p in source for p in ['THERM', 'TEMP']):
+                domains['thermal'].append(threshold)
+            # Fall back to unit-based classification
+            elif 'db' in unit or 'decibel' in unit or 'hz' in unit:
+                domains['acoustic'].append(threshold)
+            elif 'lux' in unit or 'kelvin' in unit or 'lumen' in unit:
+                domains['visual_light'].append(threshold)
+            elif 'ppm' in unit or 'cfm' in unit:
+                domains['air_quality'].append(threshold)
+            elif any(u in unit for u in ['meter', 'feet', 'ft', 'ratio']):
+                domains['spatial'].append(threshold)
+            elif '°' in unit or 'celsius' in unit or 'fahrenheit' in unit:
+                domains['thermal'].append(threshold)
+            else:
+                domains['other'].append(threshold)
+
+        # Remove empty domains
+        return {k: v for k, v in domains.items() if v}
+
+    def _summarize_threshold_confidence(
+        self,
+        thresholds: List[Dict],
+    ) -> Dict[str, Any]:
+        """Summarize confidence levels across all thresholds."""
+        if not thresholds:
+            return {'mean_confidence': 0.0, 'n_high': 0, 'n_medium': 0, 'n_low': 0}
+
+        confidences = [t.get('confidence', 0.5) for t in thresholds]
+        return {
+            'mean_confidence': round(sum(confidences) / len(confidences), 3),
+            'n_high': sum(1 for c in confidences if c >= 0.7),
+            'n_medium': sum(1 for c in confidences if 0.4 <= c < 0.7),
+            'n_low': sum(1 for c in confidences if c < 0.4),
+            'strongest_warrant': max(
+                (t.get('bridge_warrant', '') for t in thresholds),
+                key=lambda w: {'MECHANISM': 3, 'EMPIRICAL': 2, 'ANALOGICAL': 1}.get(w, 0),
+                default='',
+            ),
+        }
+
+    # =========================================================================
+    # Sprint QA-3: The Evidence Layer — Effect Sizes & Study Design
+    # =========================================================================
+
+    MATURITY_TO_STUDY_DESIGN = {
+        'established': {'design': 'Multiple RCTs / Meta-analysis', 'badge': '🟢 STRONG', 'level': 5},
+        'supported': {'design': 'RCT / Systematic review', 'badge': '🟢 MODERATE-STRONG', 'level': 4},
+        'how-actually': {'design': 'Quasi-experimental / Strong observation', 'badge': '🟡 MODERATE', 'level': 3},
+        'how-plausibly': {'design': 'Observational / Cross-sectional', 'badge': '🟠 PRELIMINARY', 'level': 2},
+        'how-possibly': {'design': 'Case study / Expert opinion', 'badge': '🔴 WEAK', 'level': 1},
+        'speculative': {'design': 'Theoretical only', 'badge': '🔴 THEORETICAL', 'level': 0},
+        'preliminary': {'design': 'Pilot study / Single study', 'badge': '🟠 PRELIMINARY', 'level': 2},
+        'calibrated': {'design': 'Panel-calibrated (study design varies)', 'badge': '🟡 CALIBRATED', 'level': 3},
+        'uncalibrated': {'design': 'Uncalibrated (study design unknown)', 'badge': '⚪ UNCALIBRATED', 'level': 1},
+    }
+
+    EFFECT_SIZE_LABELS = {
+        # Cohen's d benchmarks
+        'd': [(0.2, 'small'), (0.5, 'medium'), (0.8, 'large'), (1.2, 'very large')],
+        # Correlation r benchmarks
+        'r': [(0.1, 'small'), (0.3, 'medium'), (0.5, 'large')],
+        # Odds ratio benchmarks
+        'or': [(1.5, 'small'), (2.5, 'medium'), (4.0, 'large')],
+    }
+
+    def extract_effect_sizes(self, template: Dict) -> List[Dict[str, Any]]:
+        """
+        Extract effect size data from template calibrated_parameters.
+
+        Sprint QA-3: Addresses Researcher panel's #1 gap — "Where are the
+        effect sizes?"
+
+        Design Decision DD-17: We look for parameters whose names or units
+        contain effect size indicators (d, Cohen's, ratio, proportion,
+        odds, beta). Each gets a magnitude label (small/medium/large) per
+        Cohen's benchmarks.
+        """
+        effect_sizes = []
+        cal = template.get('calibrated_parameters', {})
+        display_id = template.get('display_id', '?')
+
+        for param_name, param_data in cal.items():
+            if not isinstance(param_data, dict):
+                continue
+
+            unit = str(param_data.get('unit', '')).lower()
+            name = param_name.lower()
+            value = param_data.get('value')
+
+            if value is None:
+                continue
+
+            # Detect effect size type
+            es_type = None
+            if "cohen" in unit or "cohen" in name or name.startswith('d_') or unit.startswith('d '):
+                es_type = 'd'
+            elif 'ratio' in unit or 'ratio' in name:
+                es_type = 'or'
+            elif 'proportion' in unit or 'fraction' in unit:
+                es_type = 'r'  # Approximate
+            elif 'beta' in unit or 'beta' in name:
+                es_type = 'r'
+
+            if es_type is None:
+                continue
+
+            # Classify magnitude
+            magnitude = 'unknown'
+            abs_value = abs(float(value))
+            for threshold, label in self.EFFECT_SIZE_LABELS.get(es_type, []):
+                if abs_value >= threshold:
+                    magnitude = label
+
+            effect_sizes.append({
+                'parameter': param_name.replace('_', ' '),
+                'value': value,
+                'unit': param_data.get('unit', ''),
+                'effect_type': es_type,
+                'magnitude': magnitude,
+                'ci_95': param_data.get('ci_95', []),
+                'confidence': param_data.get('confidence', 0.5),
+                'template_source': display_id,
+                'provenance': {
+                    'calibration_panel': template.get('calibration_panel', 'unknown'),
+                    'calibration_date': template.get('calibration_date', 'unknown'),
+                },
+            })
+
+        return effect_sizes
+
+    def classify_study_design(self, template: Dict) -> Dict[str, Any]:
+        """
+        Infer study design level from template maturity and bridge warrant.
+
+        Sprint QA-3: Provides study design "badges" for every template.
+        Since templates don't have a dedicated study_design field, we
+        infer from the maturity/calibration_status hierarchy.
+
+        Design Decision DD-18: Maturity → study design mapping is an
+        approximation. 'established' implies multiple RCTs exist.
+        'how-plausibly' implies observational only. The badge system
+        gives users a quick visual quality indicator.
+        """
+        maturity = template.get('calibration_status', 'uncalibrated').lower()
+        bridge = template.get('bridge_warrant', '').lower()
+
+        design = self.MATURITY_TO_STUDY_DESIGN.get(
+            maturity,
+            {'design': 'Unknown', 'badge': '⚪ UNKNOWN', 'level': 0}
+        )
+
+        # Upgrade if bridge warrant is EMPIRICAL (suggests direct evidence)
+        if bridge == 'empirical' and design['level'] < 3:
+            design = {
+                'design': 'Empirical (study design varies)',
+                'badge': '🟡 EMPIRICAL',
+                'level': 3,
+            }
+
+        return {
+            **design,
+            'maturity_source': maturity,
+            'bridge_warrant': bridge,
+            'template_id': template.get('display_id', '?'),
+            'provenance': {
+                'calibration_panel': template.get('calibration_panel', 'unknown'),
+                'calibration_date': template.get('calibration_date', 'unknown'),
+            },
+        }
+
+    def compute_evidence_strength(
+        self, templates: List[Dict]
+    ) -> Dict[str, Any]:
+        """
+        Compute overall evidence strength from multiple templates.
+
+        Sprint QA-3: Synthesizes maturity levels and effect sizes into
+        a single evidence strength score for the entire answer.
+
+        Design Decision DD-19: Evidence strength = weighted average of
+        study design levels, with established (5) and supported (4)
+        weighted higher. Provides a single 'evidence_strength' label
+        that summarizes the credibility of the entire answer.
+        """
+        if not templates:
+            return {
+                'strength': 'insufficient',
+                'badge': '⚪ NO EVIDENCE',
+                'level': 0,
+                'template_count': 0,
+            }
+
+        designs = [self.classify_study_design(t) for t in templates]
+        levels = [d['level'] for d in designs]
+        n_strong = sum(1 for l in levels if l >= 4)
+        avg_level = sum(levels) / len(levels)
+
+        # Determine badge
+        if avg_level >= 4:
+            badge = '🟢 STRONG EVIDENCE'
+            strength = 'strong'
+        elif avg_level >= 3:
+            badge = '🟡 MODERATE EVIDENCE'
+            strength = 'moderate'
+        elif avg_level >= 2:
+            badge = '🟠 PRELIMINARY EVIDENCE'
+            strength = 'preliminary'
+        else:
+            badge = '🔴 WEAK EVIDENCE'
+            strength = 'weak'
+
+        # Extract effect sizes from all templates
+        all_effects = []
+        for t in templates:
+            all_effects.extend(self.extract_effect_sizes(t))
+
+        return {
+            'strength': strength,
+            'badge': badge,
+            'level': round(avg_level, 1),
+            'template_count': len(templates),
+            'n_strong_evidence': n_strong,
+            'study_designs': designs,
+            'effect_sizes': all_effects,
+            'n_effect_sizes': len(all_effects),
+        }
+
+
+    # =========================================================================
+
+    # --- Clinician: GRADE Evidence Mapping (DD-11) ---
+
+    MATURITY_TO_GRADE = {
+        'established': 'HIGH',
+        'supported': 'MODERATE',
+        'how-actually': 'MODERATE',
+        'how-plausibly': 'LOW',
+        'preliminary': 'LOW',
+        'how-possibly': 'VERY_LOW',
+        'speculative': 'VERY_LOW',
+    }
+
+    GRADE_DESCRIPTIONS = {
+        'HIGH': 'Further research very unlikely to change confidence in the estimate.',
+        'MODERATE': 'Further research likely to change confidence and may change the estimate.',
+        'LOW': 'Further research very likely to change the estimate.',
+        'VERY_LOW': 'Any estimate is very uncertain.',
+    }
+
+    def map_to_grade(self, maturity: str) -> Dict[str, str]:
+        """
+        Map ATLAS maturity level to GRADE evidence rating.
+
+        Sprint QA-4 — Clinician panel demanded GRADE ratings for
+        clinical decision-making. Maturity levels map as:
+        established → HIGH, supported → MODERATE, preliminary → LOW,
+        speculative → VERY_LOW.
+
+        Design Decision DD-11: Direct mapping without intermediate
+        computation. The GRADE system requires structured assessment
+        of risk of bias, inconsistency, indirectness, imprecision,
+        and publication bias — which we cannot fully assess. This
+        mapping provides an APPROXIMATE grade. All GRADE ratings
+        carry a disclaimer.
+        """
+        grade = self.MATURITY_TO_GRADE.get(maturity.lower(), 'LOW')
+        return {
+            'grade': grade,
+            'grade_description': self.GRADE_DESCRIPTIONS[grade],
+            'maturity_source': maturity,
+            'mapping_provenance': 'ATLAS maturity → GRADE mapping v1 (2026-02-27, panel-reviewed)',
+            'disclaimer': (
+                'ATLAS GRADE ratings are approximate mappings from template '
+                'maturity levels. They do not include full GRADE methodology '
+                '(risk of bias, imprecision, indirectness, inconsistency, '
+                'publication bias). Use clinical judgment.'
+            ),
+        }
+
+    # --- Facilities: Proxy Metric Translation (DD-12) ---
+
+    SCIENTIFIC_TO_PROXY_METRICS = {
+        # Scientific outcome → Facilities-measurable KPI
+        'circadian entrainment': ['sick days per quarter', 'self-reported sleep quality score', 'absenteeism rate'],
+        'circadian disruption': ['sick days per quarter', 'absenteeism rate'],
+        'cortisol': ['self-reported stress survey', 'sick leave rate', 'turnover rate'],
+        'stress': ['self-reported stress survey', 'sick leave rate', 'HR exit survey scores'],
+        'attention restoration': ['task completion rate', 'error rate', 'self-reported focus score'],
+        'cognitive performance': ['task completion rate', 'error rate', 'productivity index'],
+        'creativity': ['idea generation count', 'patent/innovation metrics', 'brainstorm output'],
+        'mood': ['satisfaction survey', 'NPS score', 'complaint frequency'],
+        'sleep quality': ['absenteeism rate', 'morning productivity', 'self-reported sleep score'],
+        'pain perception': ['analgesic demand', 'patient pain scores (VAS)', 'length of stay'],
+        'recovery': ['length of stay', 'readmission rate', 'patient satisfaction'],
+        'anxiety': ['self-reported anxiety survey', 'behavioral observation', 'heart rate variability'],
+        'blood pressure': ['annual health screening results', 'hypertension prevalence'],
+        'respiratory': ['sick building syndrome complaints', 'respiratory illness rate'],
+        'thermal comfort': ['comfort survey scores', 'thermostat adjustment frequency', 'complaint rate'],
+        'acoustic comfort': ['noise complaint rate', 'speech privacy satisfaction', 'focus time logged'],
+        'wayfinding': ['time to destination', 'help desk queries', 'visitor satisfaction'],
+        'social interaction': ['collaboration space usage', 'meeting frequency', 'team satisfaction'],
+        'productivity': ['output per employee', 'billable hours', 'task completion rate'],
+        'satisfaction': ['overall satisfaction survey', 'NPS score', 'retention rate'],
+    }
+
+    def translate_to_proxy_metrics(self, scientific_outcomes: List[str]) -> List[Dict[str, Any]]:
+        """
+        Translate scientific outcomes to facilities-measurable KPIs.
+
+        Sprint QA-4 — Facilities panel said: "I can't measure circadian
+        entrainment. Give me absenteeism rate."
+
+        Design Decision DD-12: Static mapping table rather than LLM
+        generation. Ensures consistency and allows facilities auditing
+        of the translation. Table can be extended by domain experts.
+        """
+        translations = []
+        for outcome in scientific_outcomes:
+            outcome_lower = outcome.lower()
+            matched_proxies = []
+            for scientific, proxies in self.SCIENTIFIC_TO_PROXY_METRICS.items():
+                if scientific in outcome_lower or outcome_lower in scientific:
+                    matched_proxies.extend(proxies)
+
+            if matched_proxies:
+                # Deduplicate
+                seen = set()
+                unique = []
+                for p in matched_proxies:
+                    if p not in seen:
+                        seen.add(p)
+                        unique.append(p)
+                translations.append({
+                    'scientific_outcome': outcome,
+                    'measurable_kpis': unique[:4],
+                    'measurement_guidance': (
+                        f'Track these KPIs for 90+ days before/after intervention '
+                        f'to establish effect of changes related to {outcome}.'
+                    ),
+                })
+            else:
+                translations.append({
+                    'scientific_outcome': outcome,
+                    'measurable_kpis': ['custom survey required'],
+                    'measurement_guidance': (
+                        f'No standard proxy metric for "{outcome}". '
+                        f'Design a custom pre/post survey.'
+                    ),
+                })
+
+        return translations
+
+    # --- Student: Technical Term Glossary (DD-13) ---
+
+    GLOSSARY = {
+        'circadian': 'Relating to the ~24-hour biological clock that regulates sleep, hormones, and body temperature.',
+        'melanopic lux': 'A measure of light intensity weighted by its effect on melanopsin-containing retinal cells that regulate circadian rhythm (not the same as visual brightness).',
+        'iprgc': 'Intrinsically photosensitive retinal ganglion cells — specialized light-sensing cells in the eye that signal "time of day" to the brain.',
+        'scn': 'Suprachiasmatic nucleus — the brain\'s master clock, located in the hypothalamus. Receives light signals from ipRGC cells.',
+        'cortisol': 'The primary stress hormone produced by the adrenal glands. Elevated cortisol impairs memory, immune function, and sleep.',
+        'hpa axis': 'Hypothalamic-pituitary-adrenal axis — the body\'s central stress response system. Chronic activation causes health problems.',
+        'amygdala': 'Almond-shaped brain structure that detects threats and triggers the fight-or-flight response. Activated by enclosed or threatening spaces.',
+        'hippocampus': 'Brain structure crucial for memory formation and spatial navigation. Contains "place cells" that map environments.',
+        'place cells': 'Neurons in the hippocampus that fire when an animal is in a specific location. They create a cognitive map of space.',
+        'predictive processing': 'Theory that the brain constantly predicts sensory input and updates when surprised. Unexpected environments increase cognitive load.',
+        'attention restoration': 'Theory (Kaplan, 1995) that natural environments restore directed attention capacity depleted by mental work.',
+        'biophilia': 'The innate human tendency to seek connections with nature and other living systems (E.O. Wilson, 1984).',
+        'prospect-refuge': 'Design principle: humans prefer spaces where they can see (prospect) without being seen (refuge). Reduces threat perception.',
+        'enclosure-threat': 'Perception of being trapped in a small/confining space, triggering amygdala activation and stress response.',
+        'entrenchment': 'In coherentist epistemology: how deeply connected a belief is within the web. Highly entrenched beliefs are harder to revise.',
+        'credence': 'The degree of confidence (0-1) assigned to a belief based on evidence. 0 = certainly false, 1 = certainly true.',
+        'reverberation time': 'Time (in seconds) for sound to decay by 60 dB after source stops (RT60). Key acoustic parameter for room design.',
+        'cohen\'s d': 'A measure of effect size — the standardized difference between two group means. 0.2 = small, 0.5 = medium, 0.8 = large.',
+        'rct': 'Randomized Controlled Trial — the gold standard study design where participants are randomly assigned to treatment or control groups.',
+        'scope conditions': 'The specific circumstances under which a scientific finding applies. Outside these conditions, the effect may not hold.',
+        'moderator': 'A variable that changes the strength or direction of an effect. Example: age moderates the effect of noise on concentration.',
+        'bayesian network': 'A probabilistic graphical model representing relationships between variables. Used to compute updated confidence given new evidence.',
+        'voi': 'Value of Information — how much a piece of missing evidence would change our conclusions if obtained. High VOI = high research priority.',
+        'fractal dimension': 'A measure of spatial complexity. Natural scenes typically have fractal dimension 1.3-1.5, which humans find aesthetically pleasing.',
+    }
+
+    def get_glossary_for_terms(self, text: str) -> List[Dict[str, str]]:
+        """
+        Extract technical terms from text and provide definitions.
+
+        Sprint QA-4 — Student panel said: "The moment I click into detail,
+        I'm hit with jargon."
+
+        Design Decision DD-13: Static glossary rather than LLM-generated
+        definitions. Ensures accuracy and consistency. Terms are matched
+        by substring presence in the answer text.
+        """
+        found = []
+        text_lower = text.lower()
+        for term, definition in self.GLOSSARY.items():
+            if term in text_lower:
+                found.append({
+                    'term': term,
+                    'definition': definition,
+                })
+        return found
+
+    # --- Policy: Building Standards Cross-Reference (DD-14) ---
+
+    STANDARDS_REGISTRY = {
+        'daylight': [
+            {'standard': 'EN 17037', 'requirement': 'Minimum daylight factor 2% for residential, 1.5% for non-residential', 'jurisdiction': 'EU'},
+            {'standard': 'WELL v2 Light L01', 'requirement': 'Minimum 200 melanopic equivalent daylight illuminance (m-EDI) at workstations', 'jurisdiction': 'International'},
+            {'standard': 'LEED v4.1 IEQ Credit', 'requirement': 'Daylight factor ≥2% in 75% of regularly occupied spaces', 'jurisdiction': 'International'},
+        ],
+        'light': [
+            {'standard': 'EN 12464-1', 'requirement': 'Minimum illuminance levels by task type (500 lux writing/reading)', 'jurisdiction': 'EU'},
+            {'standard': 'WELL v2 Light L03', 'requirement': 'Circadian lighting design with melanopic ratios', 'jurisdiction': 'International'},
+        ],
+        'noise': [
+            {'standard': 'ANSI S12.60', 'requirement': 'Maximum 35 dB(A) background noise in classrooms', 'jurisdiction': 'US'},
+            {'standard': 'WELL v2 Sound S01', 'requirement': 'Background noise ≤40 dB(A) in open offices', 'jurisdiction': 'International'},
+            {'standard': 'BB93', 'requirement': 'Acoustic design of schools: RT60 ≤0.8s in classrooms', 'jurisdiction': 'UK'},
+        ],
+        'acoustic': [
+            {'standard': 'WELL v2 Sound S04', 'requirement': 'Reverberation time limits by room type', 'jurisdiction': 'International'},
+            {'standard': 'BREEAM Hea 05', 'requirement': 'Acoustic performance requirements for key spaces', 'jurisdiction': 'UK/International'},
+        ],
+        'air quality': [
+            {'standard': 'ASHRAE 62.1', 'requirement': 'Minimum ventilation rates by occupancy type', 'jurisdiction': 'US'},
+            {'standard': 'WELL v2 Air A01', 'requirement': 'CO₂ levels ≤800 ppm (densely occupied) or ≤600 ppm (low density)', 'jurisdiction': 'International'},
+            {'standard': 'EN 16798-1', 'requirement': 'Indoor air quality categories I-IV with CO₂ limits', 'jurisdiction': 'EU'},
+        ],
+        'thermal': [
+            {'standard': 'ASHRAE 55', 'requirement': 'Thermal comfort: operative temp 68-76°F (20-24°C) for sedentary work', 'jurisdiction': 'US'},
+            {'standard': 'EN ISO 7730', 'requirement': 'PMV-PPD thermal comfort model, Category B: PPD<10%', 'jurisdiction': 'EU/International'},
+            {'standard': 'WELL v2 Thermal T01', 'requirement': 'Meet ASHRAE 55 + seasonal adjustments', 'jurisdiction': 'International'},
+        ],
+        'biophilic': [
+            {'standard': 'WELL v2 Mind M02', 'requirement': 'Access to nature: plants, views, or nature imagery in occupied spaces', 'jurisdiction': 'International'},
+            {'standard': 'LEED v4.1 SS Credit', 'requirement': 'Quality views to nature from 75% of regularly occupied spaces', 'jurisdiction': 'International'},
+        ],
+        'view': [
+            {'standard': 'EN 17037 Section 5', 'requirement': 'View quality assessment: layers, distance, environmental information', 'jurisdiction': 'EU'},
+            {'standard': 'WELL v2 Light L04', 'requirement': 'View at least two types of content from 75% of workstations', 'jurisdiction': 'International'},
+        ],
+    }
+
+    def find_relevant_standards(self, topics: List[str]) -> List[Dict[str, str]]:
+        """
+        Find building standards relevant to given topics.
+
+        Sprint QA-4 — Policy panel said: "No mention of existing standards."
+
+        Design Decision DD-14: Static registry of major international
+        standards. Covers WELL v2, LEED v4.1, BREEAM, ASHRAE, EN/ISO.
+        Extensible by adding entries to STANDARDS_REGISTRY.
+        """
+        matched = []
+        seen_standards = set()
+        for topic in topics:
+            topic_lower = topic.lower()
+            for key, standards in self.STANDARDS_REGISTRY.items():
+                if key in topic_lower or topic_lower in key:
+                    for std in standards:
+                        std_id = std['standard']
+                        if std_id not in seen_standards:
+                            seen_standards.add(std_id)
+                            matched.append(std)
+        return matched
+
+    # --- Clinician: Contraindication Registry (DD-15) ---
+
+    CONTRAINDICATIONS = {
+        'bright_light': [
+            {'condition': 'Photosensitive epilepsy', 'risk': 'Seizure trigger', 'severity': 'critical'},
+            {'condition': 'Migraine with aura', 'risk': 'May trigger or worsen episodes', 'severity': 'high'},
+            {'condition': 'Bipolar disorder (manic phase)', 'risk': 'Bright light may exacerbate mania', 'severity': 'high'},
+            {'condition': 'Retinal conditions (macular degeneration)', 'risk': 'Potential photodamage', 'severity': 'medium'},
+        ],
+        'high_contrast': [
+            {'condition': 'Lewy body dementia', 'risk': 'Visual illusions/hallucinations from high-contrast patterns', 'severity': 'high'},
+            {'condition': 'Autism spectrum (sensory sensitivity)', 'risk': 'Visual overstimulation', 'severity': 'medium'},
+        ],
+        'noise_masking': [
+            {'condition': 'Hearing impairment', 'risk': 'Reduced speech intelligibility', 'severity': 'high'},
+            {'condition': 'Tinnitus', 'risk': 'May worsen or interact with tinnitus frequency', 'severity': 'medium'},
+            {'condition': 'PTSD (noise-triggered)', 'risk': 'Unexpected sound changes may trigger episodes', 'severity': 'high'},
+        ],
+        'open_plan': [
+            {'condition': 'ADHD', 'risk': 'Increased distractibility', 'severity': 'high'},
+            {'condition': 'Autism spectrum', 'risk': 'Sensory overload', 'severity': 'high'},
+            {'condition': 'Social anxiety disorder', 'risk': 'Increased exposure anxiety', 'severity': 'medium'},
+        ],
+        'nature_exposure': [
+            {'condition': 'Allergies (pollen, mold)', 'risk': 'Living plants may trigger reactions', 'severity': 'medium'},
+            {'condition': 'Arachnophobia/entomophobia', 'risk': 'Indoor plants attract insects', 'severity': 'low'},
+        ],
+        'enclosed_space': [
+            {'condition': 'Claustrophobia', 'risk': 'Panic response', 'severity': 'high'},
+            {'condition': 'PTSD (confinement-related)', 'risk': 'Trauma trigger', 'severity': 'critical'},
+        ],
+    }
+
+    def find_contraindications(self, intervention_keywords: List[str]) -> List[Dict[str, str]]:
+        """
+        Find clinical contraindications for environmental interventions.
+
+        Sprint QA-4 — Clinician panel flagged the system as "clinically
+        dangerous" without contraindication information.
+
+        Design Decision DD-15: Static contraindication registry organized
+        by intervention type. Every entry has a severity level (critical,
+        high, medium, low). Critical contraindications should be shown
+        prominently with a ⚠️ warning.
+        """
+        matched = []
+        seen = set()
+        for kw in intervention_keywords:
+            # Normalize: 'bright light' → 'bright_light' for matching
+            kw_lower = kw.lower().replace(' ', '_')
+            kw_natural = kw.lower()
+            for intervention, contras in self.CONTRAINDICATIONS.items():
+                # Match intervention name to keyword (with and without underscores)
+                if (kw_lower in intervention or intervention in kw_lower or
+                    kw_natural in intervention.replace('_', ' ') or
+                    intervention.replace('_', ' ') in kw_natural):
+                    for contra in contras:
+                        key = f"{contra['condition']}_{intervention}"
+                        if key not in seen:
+                            seen.add(key)
+                            matched.append({
+                                **contra,
+                                'intervention': intervention.replace('_', ' '),
+                            })
+
+        # Sort by severity (critical first)
+        severity_order = {'critical': 0, 'high': 1, 'medium': 2, 'low': 3}
+        matched.sort(key=lambda x: severity_order.get(x['severity'], 9))
+
+        # Add provenance disclaimer
+        for m in matched:
+            m['provenance'] = (
+                'ATLAS contraindication registry v1 (2026-02-27). '
+                'Based on published clinical literature. '
+                'This is NOT a substitute for clinical assessment.'
+            )
+
+        return matched
+
     def query(
         self,
         query_text: str,
@@ -1135,6 +1908,144 @@ class TemplateQueryService:
                 lines.append(f"      → {gap.proposed_study[:60]}...")
             lines.append("")
 
+        # =====================================================================
+        # Sprint QA-2/QA-4: Persona-specific enrichment (WIRED IN)
+        # =====================================================================
+
+        if persona == UserPersona.ARCHITECT:
+            # QA-2: Inject quantitative thresholds from matched templates
+            thresholds = []
+            for ta in response.relevant_templates[:5]:
+                template = self.templates_by_id.get(ta.template_id)
+                if template:
+                    thresholds.extend(self.extract_calibrated_thresholds(template))
+            if thresholds:
+                lines.append("QUANTITATIVE DESIGN THRESHOLDS:")
+                for t in thresholds[:8]:
+                    val = t['value']
+                    unit_short = t['unit'][:40] if t['unit'] else ''
+                    rng = f" (range: {t['range']})" if t['range'] else ''
+                    conf = f"  [conf: {t['confidence']:.0%}]"
+                    prov = f"  [source: {t['template_source']}, panel: {t['provenance']['calibration_panel']}]"
+                    lines.append(f"  • {t['parameter']}: {val} {unit_short}{rng}{conf}")
+                    lines.append(f"    {prov}")
+                lines.append("")
+
+        elif persona == UserPersona.CLINICIAN:
+            # QA-4: GRADE evidence mapping
+            maturities = [ta.maturity for ta in response.relevant_templates[:5]
+                          if hasattr(ta, 'maturity') and ta.maturity]
+            if maturities:
+                lines.append("EVIDENCE GRADING (GRADE):")
+                for mat in maturities:
+                    grade_info = self.map_to_grade(mat)
+                    lines.append(f"  • {mat} → {grade_info['grade']} — {grade_info['grade_description'][:60]}")
+                lines.append(f"  ⚠️  {self.map_to_grade(maturities[0])['disclaimer'][:80]}...")
+                lines.append("")
+
+            # QA-4: Contraindications — extract intervention keywords from how
+            intervention_kws = []
+            for ta in response.relevant_templates[:3]:
+                for pathway in ta.how[:2]:
+                    for entity in getattr(pathway, 'entities', []):
+                        intervention_kws.append(str(entity))
+            # Add common intervention keywords from response text
+            how_text = response.how.lower()
+            for kw in ['light', 'noise', 'open plan', 'enclosed', 'nature', 'contrast']:
+                if kw in how_text:
+                    intervention_kws.append(kw)
+            contras = self.find_contraindications(list(set(intervention_kws)))
+            if contras:
+                lines.append("⚠️  CONTRAINDICATIONS:")
+                for c in contras[:5]:
+                    severity_icon = '🔴' if c['severity'] == 'critical' else '🟠' if c['severity'] == 'high' else '🟡'
+                    lines.append(f"  {severity_icon} {c['severity'].upper()}: {c['condition']} — {c['risk']}")
+                    lines.append(f"    (intervention: {c['intervention']})")
+                lines.append(f"  Provenance: {contras[0].get('provenance', 'ATLAS registry')[:60]}")
+                lines.append("")
+
+        elif persona == UserPersona.FACILITIES:
+            # QA-4: Proxy metric translation
+            # Extract scientific outcomes from the how field
+            scientific_outcomes = []
+            how_lower = response.how.lower()
+            for outcome in self.SCIENTIFIC_TO_PROXY_METRICS.keys():
+                if outcome in how_lower:
+                    scientific_outcomes.append(outcome)
+            if not scientific_outcomes:
+                # Fallback: extract from template names
+                for ta in response.relevant_templates[:3]:
+                    for word in ta.name.lower().split():
+                        if word in ['stress', 'mood', 'productivity', 'comfort', 'sleep']:
+                            scientific_outcomes.append(word)
+            if scientific_outcomes:
+                translations = self.translate_to_proxy_metrics(list(set(scientific_outcomes)))
+                lines.append("MEASURABLE KPIs (what to track):")
+                for t in translations[:4]:
+                    lines.append(f"  {t['scientific_outcome']}:")
+                    for kpi in t['measurable_kpis'][:3]:
+                        lines.append(f"    → {kpi}")
+                    lines.append(f"    {t['measurement_guidance'][:60]}...")
+                lines.append("")
+
+        elif persona == UserPersona.RESEARCHER:
+            # QA-3: Study design badges and effect sizes
+            templates_raw = []
+            for ta in response.relevant_templates[:5]:
+                template = self.templates_by_id.get(ta.template_id)
+                if template:
+                    templates_raw.append(template)
+            if templates_raw:
+                evidence = self.compute_evidence_strength(templates_raw)
+                lines.append(f"EVIDENCE STRENGTH: {evidence['badge']}")
+                lines.append(f"  Based on {evidence['template_count']} templates, "
+                             f"{evidence['n_strong_evidence']} with strong evidence")
+                lines.append("")
+                lines.append("STUDY DESIGN BADGES:")
+                for sd in evidence['study_designs'][:5]:
+                    lines.append(f"  {sd['badge']}  {sd['template_id']}: {sd['design']}")
+                    lines.append(f"    Maturity: {sd['maturity_source']}, Warrant: {sd['bridge_warrant'] or 'none'}")
+                lines.append("")
+                if evidence['effect_sizes']:
+                    lines.append(f"EFFECT SIZES ({evidence['n_effect_sizes']} found):")
+                    for es in evidence['effect_sizes'][:6]:
+                        lines.append(f"  • {es['parameter']}: {es['value']} {es['unit'][:30]} "
+                                     f"({es['magnitude']}, {es['effect_type']})")
+                        if es['ci_95']:
+                            lines.append(f"    CI95: {es['ci_95']}")
+                    lines.append("")
+
+        elif persona == UserPersona.STUDENT:
+            # QA-4: Glossary for jargon
+            full_text = f"{response.how} {response.why} {' '.join(response.when)} {' '.join(response.for_whom)}"
+            terms = self.get_glossary_for_terms(full_text)
+            if terms:
+                lines.append("📖 GLOSSARY:")
+                for t in terms[:6]:
+                    lines.append(f"  {t['term'].upper()}: {t['definition'][:100]}...")
+                lines.append("")
+
+        elif persona == UserPersona.POLICY:
+            # QA-4: Standards cross-reference
+            topics = []
+            for ta in response.relevant_templates[:5]:
+                did = ta.display_id.lower()
+                for key in self.STANDARDS_REGISTRY.keys():
+                    if key in did or key in ta.name.lower():
+                        topics.append(key)
+            # Also infer from response text
+            for key in self.STANDARDS_REGISTRY.keys():
+                if key in response.how.lower() or key in response.why.lower():
+                    topics.append(key)
+            if topics:
+                standards = self.find_relevant_standards(list(set(topics)))
+                if standards:
+                    lines.append("APPLICABLE STANDARDS & CODES:")
+                    for s in standards[:6]:
+                        lines.append(f"  • {s['standard']} ({s['jurisdiction']})")
+                        lines.append(f"    {s['requirement'][:70]}...")
+                    lines.append("")
+
         # Evidence
         lines.append("KEY EVIDENCE:")
         for ref in response.key_evidence[:3]:
@@ -1142,9 +2053,650 @@ class TemplateQueryService:
 
         return "\n".join(lines)
 
+    def enrich_response(
+        self,
+        response: QueryResponse,
+        persona: UserPersona,
+    ) -> Dict[str, Any]:
+        """
+        Return structured enrichment data for a persona + response.
 
-# =============================================================================
-# CONVENIENCE FUNCTION
+        Unlike format_for_persona() which returns text, this returns
+        machine-readable dicts for the Streamlit UI and API consumers.
+
+        Sprint QA-2/QA-4 integration point — ensures sprint features
+        are available both as formatted text AND structured data.
+
+        Design Decision DD-16: Dual output (text + structured) so that
+        Streamlit can render custom widgets (e.g., threshold tables,
+        glossary popovers, contraindication alerts) while CLI users
+        get formatted text.
+        """
+        enrichment: Dict[str, Any] = {
+            'persona': persona.value,
+            'query': response.query,
+        }
+
+        # All personas get evidence provenance
+        enrichment['template_provenance'] = [
+            {
+                'template_id': ta.template_id,
+                'display_id': ta.display_id,
+                'maturity': ta.maturity,
+                'relevance': ta.relevance_score,
+                'key_references': ta.key_references[:3],
+            }
+            for ta in response.relevant_templates[:5]
+        ]
+
+        # QA-3: Evidence strength for ALL personas
+        templates_raw = []
+        for ta in response.relevant_templates[:5]:
+            template = self.templates_by_id.get(ta.template_id)
+            if template:
+                templates_raw.append(template)
+        if templates_raw:
+            enrichment['evidence_strength'] = self.compute_evidence_strength(templates_raw)
+
+        if persona == UserPersona.ARCHITECT:
+            thresholds = []
+            for ta in response.relevant_templates[:5]:
+                template = self.templates_by_id.get(ta.template_id)
+                if template:
+                    thresholds.extend(self.extract_calibrated_thresholds(template))
+            enrichment['thresholds'] = thresholds
+            enrichment['n_thresholds'] = len(thresholds)
+
+        elif persona == UserPersona.CLINICIAN:
+            # GRADE ratings
+            enrichment['grade_ratings'] = [
+                {**self.map_to_grade(ta.maturity), 'template': ta.display_id}
+                for ta in response.relevant_templates[:5]
+                if hasattr(ta, 'maturity') and ta.maturity
+            ]
+            # Contraindications
+            kws = set()
+            how_text = response.how.lower()
+            for kw in ['light', 'noise', 'open plan', 'enclosed', 'nature', 'contrast']:
+                if kw in how_text:
+                    kws.add(kw)
+            enrichment['contraindications'] = self.find_contraindications(list(kws))
+
+        elif persona == UserPersona.RESEARCHER:
+            # QA-3: Full evidence layer
+            enrichment['study_designs'] = enrichment.get('evidence_strength', {}).get('study_designs', [])
+            enrichment['effect_sizes'] = enrichment.get('evidence_strength', {}).get('effect_sizes', [])
+            enrichment['n_effect_sizes'] = len(enrichment.get('effect_sizes', []))
+
+        elif persona == UserPersona.FACILITIES:
+            outcomes = [k for k in self.SCIENTIFIC_TO_PROXY_METRICS.keys()
+                        if k in response.how.lower()]
+            enrichment['proxy_metrics'] = self.translate_to_proxy_metrics(outcomes)
+
+        elif persona == UserPersona.STUDENT:
+            full_text = f"{response.how} {response.why}"
+            enrichment['glossary'] = self.get_glossary_for_terms(full_text)
+
+        elif persona == UserPersona.POLICY:
+            topics = set()
+            for key in self.STANDARDS_REGISTRY.keys():
+                if key in response.how.lower() or key in response.why.lower():
+                    topics.add(key)
+            enrichment['standards'] = self.find_relevant_standards(list(topics))
+
+        # EN-0D: Inject annotations if service is available
+        if self.annotation_service:
+            try:
+                template_ids = [
+                    ta.display_id
+                    for ta in response.relevant_templates[:5]
+                    if hasattr(ta, 'display_id')
+                ]
+                annotations_data = []
+                for tid in template_ids:
+                    # Get SENSITIVITY_FLAGs for parameters
+                    from src.services.annotation_service import AnnotationType
+                    flags = self.annotation_service.get_parameter_sensitivity_flags(tid)
+                    for f in flags:
+                        annotations_data.append({
+                            'type': 'SENSITIVITY_FLAG',
+                            'target': f.target_id,
+                            'content': f.content,
+                            'confidence': f.confidence,
+                        })
+                    # Get OPEN_QUESTIONs
+                    questions = self.annotation_service.get_template_annotations(
+                        tid, types=[AnnotationType.OPEN_QUESTION]
+                    )
+                    for q in questions:
+                        annotations_data.append({
+                            'type': 'OPEN_QUESTION',
+                            'target': q.target_id,
+                            'content': q.content,
+                        })
+                if annotations_data:
+                    enrichment['annotations'] = annotations_data
+                    enrichment['n_annotations'] = len(annotations_data)
+            except Exception as e:
+                logger.debug(f"Annotation retrieval failed (non-fatal): {e}")
+
+        return enrichment
+
+    # =========================================================================
+    # Sprint QA-5: Browse ↔ QA Integration
+    # =========================================================================
+
+    def generate_template_questions(
+        self, template: Dict, max_questions: int = 5
+    ) -> List[Dict[str, str]]:
+        """
+        Generate canonical questions that this template can answer.
+
+        Sprint QA-5: Enables batch preprocessing — for each template,
+        generate the questions a user might ask. These can be:
+        1. Pre-computed at build time to populate a "suggested questions" UI
+        2. Used as test queries for regression testing
+        3. Indexed for search-as-you-type
+
+        Design Decision DD-20: Generate questions from template structure
+        (name, mechanism chain, scope conditions) rather than LLM. This is
+        deterministic, auditable, and fast.
+        """
+        display_id = template.get('display_id', '?')
+        name = template.get('name', 'Unknown')
+        pattern = template.get('structural_pattern', '')
+        principle = template.get('higher_order_principle', '')
+        btypes = template.get('building_types', [])
+        if isinstance(btypes, dict):
+            btypes = list(btypes.keys())
+        elif not isinstance(btypes, list):
+            btypes = []
+        mechanism = template.get('mechanism_chain', [])
+
+        # Extract entities from mechanism chain
+        entities = []
+        if isinstance(mechanism, list):
+            for step in mechanism:
+                if isinstance(step, dict):
+                    entities.append(step.get('from', ''))
+                    entities.append(step.get('to', ''))
+                elif isinstance(step, str):
+                    entities.append(step)
+        entities = [e.replace('_', ' ') for e in entities if e]
+
+        questions = []
+
+        # Q1: Direct "how does X affect Y?" from mechanism
+        if len(entities) >= 2:
+            questions.append({
+                'question': f"How does {entities[0]} affect {entities[-1]}?",
+                'type': 'mechanism',
+                'template_source': display_id,
+            })
+
+        # Q2: "When does X matter?" from scope conditions
+        if name:
+            questions.append({
+                'question': f"When does {name.lower()} matter?",
+                'type': 'scope',
+                'template_source': display_id,
+            })
+
+        # Q3: "What is the evidence for X?" — evidence query
+        if name:
+            questions.append({
+                'question': f"What is the evidence for {name.lower()}?",
+                'type': 'evidence',
+                'template_source': display_id,
+            })
+
+        # Q4: Building type questions
+        for bt in btypes[:2]:
+            bt_clean = bt.replace('_', ' ') if isinstance(bt, str) else str(bt)
+            questions.append({
+                'question': f"How does this apply to {bt_clean}?",
+                'type': 'application',
+                'template_source': display_id,
+            })
+
+        # Q5: "What are the design implications of X?"
+        if pattern:
+            questions.append({
+                'question': f"What are the design implications of {pattern.lower()[:60]}?",
+                'type': 'design',
+                'template_source': display_id,
+            })
+
+        return questions[:max_questions]
+
+    def build_vocabulary_bridge(self) -> Dict[str, Any]:
+        """
+        Map Browse taxonomy (display_ids, domains, entities) to QA keywords.
+
+        Sprint QA-5: The vocabulary bridge solves the problem that Browse
+        and QA use different terminology. Browse has template IDs (CLE1, L4)
+        and structured fields. QA has natural language keywords.
+
+        Design Decision DD-21: Build a lookup table keyed by QA keywords
+        that points to template display_ids. This enables:
+        - "Did you mean template CLE1?" when user searches for "circadian"
+        - Browse page showing related QA queries for each template
+        """
+        bridge: Dict[str, List[str]] = {}
+
+        for tid, template in self.templates_by_id.items():
+            if not isinstance(template, dict):
+                continue
+
+            display_id = template.get('display_id', tid)
+            name = template.get('name', '').lower()
+            pattern = template.get('structural_pattern', '').lower()
+            principle = template.get('higher_order_principle', '').lower()
+
+            # Extract keywords from template fields
+            keywords = set()
+
+            # From name
+            for word in name.split():
+                if len(word) > 3:  # Skip short words
+                    keywords.add(word)
+
+            # From mechanism_chain entities
+            for step in template.get('mechanism_chain', []):
+                if isinstance(step, dict):
+                    for key in ['from', 'to']:
+                        entity = step.get(key, '')
+                        if entity:
+                            keywords.add(entity.lower().replace('_', ' '))
+
+            # From calibrated parameter names
+            for param_name in template.get('calibrated_parameters', {}).keys():
+                keywords.add(param_name.lower().replace('_', ' '))
+
+            # Register each keyword → template mapping
+            for kw in keywords:
+                if kw not in bridge:
+                    bridge[kw] = []
+                if display_id not in bridge[kw]:
+                    bridge[kw].append(display_id)
+
+        return {
+            'keyword_to_templates': bridge,
+            'n_keywords': len(bridge),
+            'n_templates_indexed': len(self.templates_by_id),
+        }
+
+    def get_related_templates_for_query(
+        self,
+        response: QueryResponse,
+        max_related: int = 5,
+    ) -> List[Dict[str, Any]]:
+        """
+        Find templates not in the response but related to the query topic.
+
+        Sprint QA-5: Enables QA→Browse navigation. After answering a query,
+        suggest other templates the user might want to browse.
+
+        Design Decision DD-22: Use keyword overlap between the response's
+        matched templates and all other templates to find neighbors. This is
+        a simple but effective approach for small template libraries (<500).
+        """
+        # Collect entities from matched templates
+        matched_ids = set(ta.template_id for ta in response.relevant_templates)
+        matched_entities = set()
+
+        for ta in response.relevant_templates:
+            template = self.templates_by_id.get(ta.template_id, {})
+            for step in template.get('mechanism_chain', []):
+                if isinstance(step, dict):
+                    matched_entities.add(step.get('from', '').lower())
+                    matched_entities.add(step.get('to', '').lower())
+            # Also add building types
+            for bt in template.get('building_types', []):
+                if isinstance(bt, str):
+                    matched_entities.add(bt.lower())
+
+        matched_entities.discard('')
+
+        # Score all other templates by entity overlap
+        candidates = []
+        for tid, template in self.templates_by_id.items():
+            if not isinstance(template, dict):
+                continue
+            if tid in matched_ids:
+                continue
+
+            template_entities = set()
+            for step in template.get('mechanism_chain', []):
+                if isinstance(step, dict):
+                    template_entities.add(step.get('from', '').lower())
+                    template_entities.add(step.get('to', '').lower())
+            for bt in template.get('building_types', []):
+                if isinstance(bt, str):
+                    template_entities.add(bt.lower())
+            template_entities.discard('')
+
+            overlap = len(matched_entities & template_entities)
+            if overlap > 0:
+                candidates.append({
+                    'template_id': tid,
+                    'display_id': template.get('display_id', tid),
+                    'name': template.get('name', ''),
+                    'overlap_score': overlap,
+                    'shared_entities': list(matched_entities & template_entities)[:5],
+                    'maturity': template.get('calibration_status', ''),
+                })
+
+        candidates.sort(key=lambda x: -x['overlap_score'])
+        return candidates[:max_related]
+
+    def batch_generate_all_questions(self) -> List[Dict]:
+        """
+        Generate canonical questions for ALL templates.
+
+        Sprint QA-5/Preprocessing: Produces a list of all questions
+        that can be batch-processed for answers, enabling the
+        "precompute all answers" workflow the user described.
+        """
+        all_questions = []
+        for tid, template in self.templates_by_id.items():
+            if not isinstance(template, dict):
+                continue
+            qs = self.generate_template_questions(template)
+            all_questions.extend(qs)
+        return all_questions
+
+    # =========================================================================
+    # Sprint QA-6: Creative Modes
+    # =========================================================================
+
+    def generate_grant_section(
+        self, response: QueryResponse, funder: str = "NIH"
+    ) -> Dict[str, Any]:
+        """
+        Generate a grant proposal evidence section from a QA response.
+
+        Sprint QA-6: Composes structured grant text by synthesizing
+        template evidence into the standard grant format (Significance,
+        Innovation, Mechanism, Preliminary Data).
+
+        Design Decision DD-23: Template-driven, not LLM-generated.
+        The grant section cites actual template data, ensuring every
+        claim is traceable to the evidence base.
+        """
+        templates_raw = []
+        for ta in response.relevant_templates[:5]:
+            template = self.templates_by_id.get(ta.template_id, {})
+            if isinstance(template, dict):
+                templates_raw.append(template)
+
+        evidence_strength = self.compute_evidence_strength(templates_raw)
+        effect_sizes = evidence_strength.get('effect_sizes', [])
+
+        # Significance section
+        significance = (
+            f"This proposal addresses {response.query}, a question with "
+            f"{evidence_strength['badge'].lower()} ({evidence_strength['template_count']} "
+            f"converging lines of evidence). "
+            f"The mechanism operates through: {response.how[:200]}"
+        )
+
+        # Innovation section
+        gaps = response.research_gaps[:3] if response.research_gaps else [
+            "Integration across architectural domains remains untested",
+            "Dose-response relationships are poorly characterized",
+        ]
+        innovation = (
+            f"Despite {evidence_strength['template_count']} templates documenting "
+            f"this phenomenon, key gaps remain: {'; '.join(gaps[:2])}. "
+            f"This project will fill these gaps through a novel integration of "
+            f"environmental measurement with physiological monitoring."
+        )
+
+        # Preliminary data
+        prelim_data = []
+        for es in effect_sizes[:3]:
+            prelim_data.append(
+                f"{es['parameter']}: {es['value']} {es['unit'][:30]} "
+                f"({es['magnitude']} effect, source: {es['template_source']})"
+            )
+
+        # References
+        references = []
+        for ta in response.relevant_templates[:5]:
+            for ref in ta.key_references[:2]:
+                references.append(ref)
+
+        return {
+            'funder': funder,
+            'significance': significance,
+            'mechanism': response.how[:300],
+            'innovation': innovation,
+            'preliminary_data': prelim_data,
+            'effect_sizes': effect_sizes[:5],
+            'evidence_badge': evidence_strength['badge'],
+            'references': references[:10],
+            'caveats': response.caveats[:3],
+            'provenance': {
+                'templates_used': [ta.display_id for ta in response.relevant_templates[:5]],
+                'n_templates': evidence_strength['template_count'],
+                'generated_from': 'ATLAS template library v1',
+            },
+        }
+
+    def accelerate_systematic_review(
+        self, topic: str
+    ) -> Dict[str, Any]:
+        """
+        Generate systematic review components for a research topic.
+
+        Sprint QA-6: Produces PICO components, search strategy,
+        inclusion/exclusion criteria, and quality assessment framework
+        from the template library.
+
+        Design Decision DD-24: The template library IS effectively a
+        curated systematic review of the built environment → wellbeing
+        literature. We can extract its structure to accelerate a formal
+        systematic review.
+        """
+        # First run a query to find relevant templates
+        response = self.query(topic)
+
+        templates_raw = []
+        for ta in response.relevant_templates[:5]:
+            template = self.templates_by_id.get(ta.template_id, {})
+            if isinstance(template, dict):
+                templates_raw.append(template)
+
+        # Extract PICO components
+        populations = set()
+        interventions = set()
+        outcomes = set()
+        for t in templates_raw:
+            for mod in t.get('moderators', []):
+                if isinstance(mod, str):
+                    populations.add(mod)
+            for step in t.get('mechanism_chain', []):
+                if isinstance(step, dict):
+                    interventions.add(step.get('from', '').replace('_', ' '))
+                    outcomes.add(step.get('to', '').replace('_', ' '))
+        populations.discard('')
+        interventions.discard('')
+        outcomes.discard('')
+
+        # Extract building types as settings
+        settings = set()
+        for t in templates_raw:
+            btypes = t.get('building_types', [])
+            if isinstance(btypes, dict):
+                btypes = list(btypes.keys())
+            for bt in (btypes if isinstance(btypes, list) else []):
+                settings.add(str(bt).replace('_', ' '))
+
+        # Search strategy
+        search_terms = list(interventions)[:5] + list(outcomes)[:5]
+        search_string = ' OR '.join(f'"{term}"' for term in search_terms[:8])
+
+        # Inclusion/exclusion
+        evidence = self.compute_evidence_strength(templates_raw)
+        maturity_levels = [sd['maturity_source'] for sd in evidence.get('study_designs', [])]
+
+        return {
+            'topic': topic,
+            'pico': {
+                'population': list(populations)[:8],
+                'intervention': list(interventions)[:8],
+                'comparison': ['standard conditions', 'pre-intervention baseline'],
+                'outcome': list(outcomes)[:8],
+            },
+            'settings': list(settings),
+            'search_strategy': {
+                'databases': ['PubMed', 'PsycINFO', 'Web of Science', 'Scopus', 'CINAHL'],
+                'search_string': search_string,
+                'n_existing_templates': len(templates_raw),
+            },
+            'inclusion_criteria': [
+                'Peer-reviewed empirical study',
+                'Measured built environment parameter as independent variable',
+                'Human participants',
+                f'Settings: {", ".join(list(settings)[:4])}',
+            ],
+            'exclusion_criteria': [
+                'Reviews or commentaries (use for background only)',
+                'Studies without quantitative outcome measures',
+                'Non-Western settings (consider separately for generalizability)',
+            ],
+            'quality_assessment': {
+                'tool': 'Modified Newcastle-Ottawa Scale',
+                'maturity_levels_found': maturity_levels,
+                'evidence_badge': evidence['badge'],
+            },
+            'existing_evidence': {
+                'effect_sizes': evidence.get('effect_sizes', [])[:5],
+                'key_references': [
+                    ref for ta in response.relevant_templates[:3]
+                    for ref in ta.key_references[:2]
+                ],
+            },
+            'provenance': {
+                'method': 'ATLAS template library systematic extraction',
+                'templates_analyzed': len(templates_raw),
+                'generated_from': 'ATLAS v1',
+            },
+        }
+
+    DISCIPLINE_FRAMES = {
+        'architecture': {
+            'vocabulary': {
+                'effect': 'design impact', 'mechanism': 'design principle',
+                'variable': 'design parameter', 'outcome': 'occupant experience',
+                'evidence': 'post-occupancy evaluation',
+            },
+            'framing': "From an architectural perspective",
+        },
+        'psychology': {
+            'vocabulary': {
+                'effect': 'cognitive/affective effect', 'mechanism': 'psychological process',
+                'variable': 'environmental variable', 'outcome': 'behavioral outcome',
+                'evidence': 'experimental evidence',
+            },
+            'framing': "From a psychological perspective",
+        },
+        'neuroscience': {
+            'vocabulary': {
+                'effect': 'neural response', 'mechanism': 'neural pathway',
+                'variable': 'stimulus parameter', 'outcome': 'brain state change',
+                'evidence': 'neuroimaging/electrophysiological evidence',
+            },
+            'framing': "From a neuroscience perspective",
+        },
+        'public_health': {
+            'vocabulary': {
+                'effect': 'health outcome', 'mechanism': 'exposure pathway',
+                'variable': 'environmental determinant', 'outcome': 'population health indicator',
+                'evidence': 'epidemiological evidence',
+            },
+            'framing': "From a public health perspective",
+        },
+        'environmental_design': {
+            'vocabulary': {
+                'effect': 'environmental impact', 'mechanism': 'design strategy',
+                'variable': 'spatial parameter', 'outcome': 'user wellbeing metric',
+                'evidence': 'design research evidence',
+            },
+            'framing': "From an environmental design perspective",
+        },
+    }
+
+    def translate_across_disciplines(
+        self, response: QueryResponse, target_discipline: str = 'architecture'
+    ) -> Dict[str, Any]:
+        """
+        Translate a QA response into the vocabulary of a target discipline.
+
+        Sprint QA-6: Addresses the interdisciplinary nature of the project.
+        The same finding about "light → circadian entrainment → sleep quality"
+        means different things to an architect, psychologist, and epidemiologist.
+
+        Design Decision DD-25: Use a static vocabulary mapping per discipline.
+        Each discipline gets: reframed headline, reframed mechanism,
+        discipline-specific implications, and translated terminology.
+        """
+        frame = self.DISCIPLINE_FRAMES.get(
+            target_discipline,
+            self.DISCIPLINE_FRAMES['architecture']
+        )
+        vocab = frame['vocabulary']
+
+        # Reframe headline
+        headline = response.headline
+        for generic, specific in vocab.items():
+            headline = headline.replace(generic, specific)
+
+        # Reframe mechanism
+        mechanism = response.how
+        for generic, specific in vocab.items():
+            mechanism = mechanism.replace(generic, specific)
+
+        # Discipline-specific implications
+        implications = []
+        if target_discipline == 'architecture':
+            implications = [
+                f"Design parameter: {response.when[0][:60]}..." if response.when else "No scope conditions specified",
+                f"Confidence for code compliance: {response.overall_confidence:.0%}",
+            ]
+        elif target_discipline == 'psychology':
+            implications = [
+                f"Individual differences: {response.for_whom[0][:60]}..." if response.for_whom else "No moderators specified",
+                f"Effect robustness: {response.overall_confidence:.0%}",
+            ]
+        elif target_discipline == 'neuroscience':
+            if response.neuroscience_details:
+                for nd in response.neuroscience_details[:2]:
+                    implications.append(f"Neural substrate: {nd.neural_substrate or 'TBD'}")
+            else:
+                implications.append("Neural substrates not yet mapped for this template")
+        elif target_discipline == 'public_health':
+            implications = [
+                f"Population scope: {', '.join(response.for_whom[:2])}" if response.for_whom else "General population",
+                f"Evidence strength for policy: {response.overall_confidence:.0%}",
+            ]
+
+        return {
+            'target_discipline': target_discipline,
+            'framing': frame['framing'],
+            'headline': headline,
+            'mechanism': mechanism[:300],
+            'implications': implications,
+            'vocabulary_mapping': vocab,
+            'original_confidence': response.overall_confidence,
+            'provenance': {
+                'translation_method': 'ATLAS discipline vocabulary mapping v1',
+                'source_templates': [ta.display_id for ta in response.relevant_templates[:5]],
+            },
+        }
+
+
 # =============================================================================
 
 def ask(question: str, verbose: bool = True) -> QueryResponse:

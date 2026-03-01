@@ -21,11 +21,25 @@
       "to": "wayfinding_failure",
       "description": "Wayfinding failure (navigational prediction error; SS2 template: low intelligibility environment)",
       "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Space Syntax intelligibility < 0.5 (normalized) corresponds to high navigational uncertainty; effect size for spatial disorientation on self-reported stress d = 0.35-0.50", "source": "Hund & Minarik (2006); Carlson et al. (2010)", "paradigm": "Wayfinding studies with Space Syntax metrics", "effect": "Low intelligibility predicts navigation errors", "n": null, "design": "Field observation and controlled wayfinding tasks"},
-          {"finding": "Low-intelligibility environments amplify wayfinding-stress coupling by 30%", "source": "Panel consensus (Peponis/Hillier)", "paradigm": "Space Syntax applied to hospital settings", "effect": "Intelligibility < 0.5 → coupling multiplier 1.30", "n": null, "design": "Field validation"}
+          {
+            "finding": "Space Syntax intelligibility < 0.5 (normalized) corresponds to high navigational uncertainty; effect size for spatial disorientation on self-reported stress d = 0.35-0.50",
+            "source": "Hund & Minarik (2006); Carlson et al. (2010)",
+            "paradigm": "Wayfinding studies with Space Syntax metrics",
+            "effect": "Low intelligibility predicts navigation errors",
+            "n": null,
+            "design": "Field observation and controlled wayfinding tasks"
+          },
+          {
+            "finding": "Low-intelligibility environments amplify wayfinding-stress coupling by 30%",
+            "source": "Panel consensus (Peponis/Hillier)",
+            "paradigm": "Space Syntax applied to hospital settings",
+            "effect": "Intelligibility < 0.5 \u2192 coupling multiplier 1.30",
+            "n": null,
+            "design": "Field validation"
+          }
         ],
         "backing": "Peponis and Hillier's Space Syntax provides formal metrics for spatial intelligibility. Low-intelligibility environments generate navigational prediction errors at decision points where the layout does not provide confirming cues for the correct path.",
         "qualifier": "Effect sizes for wayfinding failure as a stressor are largely indirect (self-report). Direct physiological evidence (cortisol or HRV) for wayfinding-stress coupling is sparse.",
@@ -38,15 +52,29 @@
       "step": 2,
       "from": "wayfinding_failure",
       "to": "spatial_prediction_error",
-      "description": "→ Spatial PE propagates from hippocampal-entorhinal complex to IC channel (body-budget disruption)",
+      "description": "\u2192 Spatial PE propagates from hippocampal-entorhinal complex to IC channel (body-budget disruption)",
       "warrant": "MECHANISM",
       "confidence": 0.58,
       "justification": {
         "data": [
-          {"finding": "Wayfinding failure = failure of place-cell-based predictive spatial inference; spatial PE propagates via stress-IC bridge (interoceptive body-budget disruption)", "source": "Friston (2010); panel consensus", "paradigm": "Active inference framework", "effect": "Spatial PE generates HPA activation via IC pathway", "n": null, "design": "Computational theory"},
-          {"finding": "Navigational errors produce measurable stress response in hospital wayfinding studies", "source": "Carlson et al. (2010); hospital wayfinding literature", "paradigm": "Field observation with stress measures", "effect": "d = 0.40 wayfinding-stress coupling", "n": null, "design": "Field study"}
+          {
+            "finding": "Wayfinding failure = failure of place-cell-based predictive spatial inference; spatial PE propagates via stress-IC bridge (interoceptive body-budget disruption)",
+            "source": "Friston (2010); panel consensus",
+            "paradigm": "Active inference framework",
+            "effect": "Spatial PE generates HPA activation via IC pathway",
+            "n": null,
+            "design": "Computational theory"
+          },
+          {
+            "finding": "Navigational errors produce measurable stress response in hospital wayfinding studies",
+            "source": "Carlson et al. (2010); hospital wayfinding literature",
+            "paradigm": "Field observation with stress measures",
+            "effect": "d = 0.40 wayfinding-stress coupling",
+            "n": null,
+            "design": "Field study"
+          }
         ],
-        "backing": "In active inference, wayfinding failure generates spatial prediction error that propagates to the interoceptive system (IC2 body-budget). The body-budget registers the failure as a threat signal, triggering HPA activation. This is the SN → IC → NM cascade.",
+        "backing": "In active inference, wayfinding failure generates spatial prediction error that propagates to the interoceptive system (IC2 body-budget). The body-budget registers the failure as a threat signal, triggering HPA activation. This is the SN \u2192 IC \u2192 NM cascade.",
         "qualifier": "The propagation pathway is theoretically grounded in active inference. Direct measurement of the neural pathway from hippocampal PE to interoceptive cortex to HPA in humans is lacking.",
         "rebuttal": "Would fail if spatial prediction error is processed purely cognitively without interoceptive/affective consequences; or if the IC channel is not engaged by navigational failure.",
         "competing_accounts": [],
@@ -57,50 +85,87 @@
       "step": 3,
       "from": "spatial_prediction_error",
       "to": "HPA_activation",
-      "description": "→ HPA activation (T6 pathway; onset lag 20 min)",
+      "description": "\u2192 HPA activation (T6 pathway; onset lag 20 min)",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
         "data": [
-          {"finding": "Spatial disorientation triggers measurable cortisol elevation following standard HPA time course (onset ~20 min)", "source": "Cross-reference to T6; Kirschbaum et al. (1993)", "paradigm": "TSST protocol applied to wayfinding context", "effect": "Wayfinding stress follows standard cortisol dynamics", "n": null, "design": "Protocol adaptation"}
+          {
+            "finding": "Spatial disorientation triggers measurable cortisol elevation following standard HPA time course (onset ~20 min)",
+            "source": "Cross-reference to T6; Kirschbaum et al. (1993)",
+            "paradigm": "TSST protocol applied to wayfinding context",
+            "effect": "Wayfinding stress follows standard cortisol dynamics",
+            "n": null,
+            "design": "Protocol adaptation"
+          }
         ],
         "backing": "The HPA pathway is inherited from T6. Once spatial PE activates the interoceptive threat channel, the downstream cascade follows the same 20-minute onset dynamics. This step links T14 to T6's calibrated cortisol parameters.",
         "qualifier": "The connection assumes that navigational stress activates the same HPA pathway as other stressors. Magnitude may differ; wayfinding stress may produce lower cortisol peaks than TSST.",
         "rebuttal": "Would fail if navigational stress activates primarily sympathetic rather than HPA pathways; or if the cortisol response to wayfinding failure is below detection threshold.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 4,
       "from": "cortisol_elevation",
       "to": "spatial_memory_impairment",
-      "description": "→ Elevated cortisol impairs hippocampal-dependent spatial memory and place-cell encoding fidelity",
+      "description": "\u2192 Elevated cortisol impairs hippocampal-dependent spatial memory and place-cell encoding fidelity",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
         "data": [
-          {"finding": "Acute cortisol elevation impairs hippocampal-dependent memory retrieval; d = 0.35 per SD cortisol elevation", "source": "De Quervain et al. (2000); Lupien et al. (2009)", "paradigm": "RCT with cortisone administration", "effect": "Memory retrieval impairment", "n": 36, "design": "Double-blind RCT"},
-          {"finding": "Stress_navigation_impairment_coupling: d = 0.35; linear within 20-40 nmol/L salivary cortisol range", "source": "Panel consensus", "paradigm": "Dose-response modeling", "effect": "Cortisol impairs spatial navigation", "n": null, "design": "Literature synthesis"}
+          {
+            "finding": "Acute cortisol elevation impairs hippocampal-dependent memory retrieval; d = 0.35 per SD cortisol elevation",
+            "source": "De Quervain et al. (2000); Lupien et al. (2009)",
+            "paradigm": "RCT with cortisone administration",
+            "effect": "Memory retrieval impairment",
+            "n": 36,
+            "design": "Double-blind RCT"
+          },
+          {
+            "finding": "Stress_navigation_impairment_coupling: d = 0.35; linear within 20-40 nmol/L salivary cortisol range",
+            "source": "Panel consensus",
+            "paradigm": "Dose-response modeling",
+            "effect": "Cortisol impairs spatial navigation",
+            "n": null,
+            "design": "Literature synthesis"
+          }
         ],
         "backing": "This is the return loop of the vicious cycle. De Quervain and Lupien demonstrate that cortisol elevation impairs hippocampal function. Because the hippocampus supports cognitive mapping and spatial memory, cortisol elevation from wayfinding stress impairs the very system needed to navigate.",
         "qualifier": "Elderly show 40% greater impairment (multiplier 1.40); anxiety/PTSD populations show 50% greater impairment (multiplier 1.50) due to reduced hippocampal reserve.",
         "rebuttal": "Would fail if spatial navigation relies primarily on non-hippocampal systems (striatal route learning, visual landmark matching) that are not cortisol-sensitive.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 5,
       "from": "spatial_memory_impairment",
       "to": "degraded_cognitive_map",
-      "description": "→ Degraded cognitive map → increased probability of subsequent wayfinding failure",
+      "description": "\u2192 Degraded cognitive map \u2192 increased probability of subsequent wayfinding failure",
       "warrant": "MECHANISM",
       "confidence": 0.55,
       "justification": {
         "data": [
-          {"finding": "Hippocampal impairment degrades cognitive map fidelity; place-cell encoding and path integration are compromised", "source": "Nadel (SC-I panel); O'Keefe & Nadel (1978)", "paradigm": "Cognitive mapping theory", "effect": "Cortisol impairs map formation and retrieval", "n": null, "design": "Theoretical framework"},
-          {"finding": "Degraded cognitive map increases navigational errors at subsequent decision points", "source": "Panel consensus", "paradigm": "Wayfinding modeling", "effect": "Cumulative degradation of navigation performance", "n": null, "design": "Model derivation"}
+          {
+            "finding": "Hippocampal impairment degrades cognitive map fidelity; place-cell encoding and path integration are compromised",
+            "source": "Nadel (SC-I panel); O'Keefe & Nadel (1978)",
+            "paradigm": "Cognitive mapping theory",
+            "effect": "Cortisol impairs map formation and retrieval",
+            "n": null,
+            "design": "Theoretical framework"
+          },
+          {
+            "finding": "Degraded cognitive map increases navigational errors at subsequent decision points",
+            "source": "Panel consensus",
+            "paradigm": "Wayfinding modeling",
+            "effect": "Cumulative degradation of navigation performance",
+            "n": null,
+            "design": "Model derivation"
+          }
         ],
         "backing": "The cognitive map (SN framework) is stored in hippocampal-entorhinal circuits. Cortisol-induced hippocampal impairment degrades the map, making subsequent navigation more error-prone. This is the mechanism that creates the positive feedback loop.",
         "qualifier": "The relationship between acute cortisol elevation and cognitive map degradation is inferred from memory impairment data. Direct measurement of place-cell encoding fidelity under stress is limited to animal models.",
@@ -113,32 +178,61 @@
       "step": 6,
       "from": "increased_failure_probability",
       "to": "vicious_cycle_amplification",
-      "description": "→ Positive feedback loop: each failure increases probability of the next (amplification factor 1.15/iteration)",
+      "description": "\u2192 Positive feedback loop: each failure increases probability of the next (amplification factor 1.15/iteration)",
       "warrant": "CAPACITY",
-      "confidence": 0.50,
+      "confidence": 0.5,
       "justification": {
         "data": [
-          {"finding": "Cycle amplification factor: each iteration increases failure probability by 15% relative to prior cycle", "source": "Panel consensus", "paradigm": "Theoretical estimate combining wayfinding_stress_coupling (d=0.40) and stress_navigation_impairment_coupling (d=0.35)", "effect": "Amplification factor 1.15 per cycle", "n": null, "design": "Model derivation"},
-          {"finding": "Cycle saturates after 3-4 iterations; behavioral withdrawal or help-seeking prevents further escalation", "source": "Panel consensus", "paradigm": "Behavioral observation", "effect": "Natural saturation via behavioral exit", "n": null, "design": "Observation"}
+          {
+            "finding": "Cycle amplification factor: each iteration increases failure probability by 15% relative to prior cycle",
+            "source": "Panel consensus",
+            "paradigm": "Theoretical estimate combining wayfinding_stress_coupling (d=0.40) and stress_navigation_impairment_coupling (d=0.35)",
+            "effect": "Amplification factor 1.15 per cycle",
+            "n": null,
+            "design": "Model derivation"
+          },
+          {
+            "finding": "Cycle saturates after 3-4 iterations; behavioral withdrawal or help-seeking prevents further escalation",
+            "source": "Panel consensus",
+            "paradigm": "Behavioral observation",
+            "effect": "Natural saturation via behavioral exit",
+            "n": null,
+            "design": "Observation"
+          }
         ],
         "backing": "The positive feedback loop is the defining feature of T14. The amplification factor (1.15) is a theoretical estimate derived from the two coupling parameters. After 3-4 cycles, most individuals withdraw behaviorally (ask for help, leave the space), which interrupts the loop.",
         "qualifier": "The amplification factor is CAPACITY-level: we know the system CAN produce positive feedback; the exact magnitude (1.15) is model-derived. Direct measurement of cycle dynamics in real wayfinding contexts is absent.",
         "rebuttal": "Would fail if behavioral adaptation (learning from errors) compensates for cortisol-induced impairment; or if wayfinding aids introduced during the task break the cycle.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 7,
       "from": "escalated_stress",
       "to": "behavioral_consequences",
-      "description": "→ Behavioral: frozen decision-making, withdrawal, help-seeking, panic in severe cases",
+      "description": "\u2192 Behavioral: frozen decision-making, withdrawal, help-seeking, panic in severe cases",
       "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Navigational stress produces observable behavioral consequences: stopping at decision points, backtracking, asking for directions, emotional distress", "source": "Carlson et al. (2010); hospital wayfinding literature", "paradigm": "Field observation in hospital settings", "effect": "Behavioral markers of navigational stress", "n": null, "design": "Naturalistic observation"},
-          {"finding": "Severe cases (elderly, cognitively impaired, high-anxiety) show panic-like responses to spatial disorientation", "source": "Clinical wayfinding literature; eldercare facility studies", "paradigm": "Clinical observation", "effect": "Panic and agitation in vulnerable populations", "n": null, "design": "Case series"}
+          {
+            "finding": "Navigational stress produces observable behavioral consequences: stopping at decision points, backtracking, asking for directions, emotional distress",
+            "source": "Carlson et al. (2010); hospital wayfinding literature",
+            "paradigm": "Field observation in hospital settings",
+            "effect": "Behavioral markers of navigational stress",
+            "n": null,
+            "design": "Naturalistic observation"
+          },
+          {
+            "finding": "Severe cases (elderly, cognitively impaired, high-anxiety) show panic-like responses to spatial disorientation",
+            "source": "Clinical wayfinding literature; eldercare facility studies",
+            "paradigm": "Clinical observation",
+            "effect": "Panic and agitation in vulnerable populations",
+            "n": null,
+            "design": "Case series"
+          }
         ],
         "backing": "The behavioral consequences are directly observable. Frozen decision-making, help-seeking, and withdrawal are adaptive responses that terminate the vicious cycle. Panic occurs when exit options are unavailable or when cognitive resources are insufficient to implement adaptive responses.",
         "qualifier": "Behavioral consequences vary with individual differences, cognitive reserves, and environmental affordances for help-seeking. Panic is primarily observed in vulnerable populations.",
@@ -209,7 +303,7 @@
     "airports",
     "large_complex_buildings"
   ],
-  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
   "bridge_prior": 0.6,
   "interaction_templates": [
     "T6",
@@ -218,7 +312,7 @@
     "SS2",
     "SS3"
   ],
-  "ie_dpt_interaction": "T_IE_010 (Wayfinding × Goal State) — cycle modulated by goal urgency; high-urgency wayfinding amplifies cycle; goal-state clarity partially protects against initial failure by sharpening predictive spatial search. NOTE: T_IE_010 flagged in TRANSFER document as lacking direct empirical support — calibrated T14 parameters (d=0.40 forward, d=0.35 return, amplification factor 1.15) constitute its empirical scaffolding.",
+  "ie_dpt_interaction": "T_IE_010 (Wayfinding \u00d7 Goal State) \u2014 cycle modulated by goal urgency; high-urgency wayfinding amplifies cycle; goal-state clarity partially protects against initial failure by sharpening predictive spatial search. NOTE: T_IE_010 flagged in TRANSFER document as lacking direct empirical support \u2014 calibrated T14 parameters (d=0.40 forward, d=0.35 return, amplification factor 1.15) constitute its empirical scaffolding.",
   "key_references": [
     "Hund, A. M., & Minarik, J. L. (2006). https://doi.org/10.1207/s15427633scc0603_3",
     "De Quervain, D. J.-F., et al. (2000). https://doi.org/10.1038/73873",
@@ -231,7 +325,7 @@
     "docs/VISUAL_I_Panel_Output_Feb21.md"
   ],
   "panel_source": "SC-I (Spatial Configuration)",
-  "panel_reasoning_excerpt": "## Panel Charge\n\nThis panel addresses the gap identified in Document 33 for **A3 Spatial Configuration & Layout** (coverage ★★ Partial). The gap analysis found that while T3 (cognitive mapping) and T14 (navigational stress) provide a foundation, the formal mathematical framework of **Space Syntax** — the most developed quantitative tool for analyzing spatial configuration — has no representation in the template library. The architecture-as-composition thesis (the idea that great buildings orchestrate prediction error over time as the visitor moves through sequential spaces) is articulated but not formalized. And the connection between spatial configuration and social encounter — a central concern of architectural design — is touched on by the Social Brain templates (T48–T52) but not connected to spatial metrics.\n\nThis panel is charged with producing 4–6 mechanistic templates that formalize: (1) how spatial configuration determines cognitive map formation and navigational prediction, (2) how Space Syntax metrics operationalize spatial prediction and prediction error, (3) how the architectural promenade orchestrates multi-modal PE over time, (4) how spatial configuration shapes social encounter and co-presence, (5) how visual access (isovists, visual graph analysis) determines environmental monitoring and threat assessment, and (6) how transitions between spaces produce cross-modal PE events. These templates must connect to the existing infrastructure — particularly T3 (cognitive map), T5 (threat/safety), T14 (navigational stress), T25 (directed attention), AX3 (awe), AX6 (multi-modal PE integration), and the newly produced L1–L5 and MAT1–MAT5 templates.\n\nAdditionally, this panel must address the **light-space interaction** flagged by Panel L-I: spatial configuration determines how daylight enters and distributes through a building (room depth, orientation, window placement, atrium design), so L-templates operate on a luminous environment that spatial configuration creates. And the **material-space interaction** from Panel MAT-I: the architectural promenade involves transitions between material zones (stone corridor → wood-paneled library → glass atrium), and the cross-modal PE at each transition depends on both the spatial sequence and the material change.\n\n---",
+  "panel_reasoning_excerpt": "## Panel Charge\n\nThis panel addresses the gap identified in Document 33 for **A3 Spatial Configuration & Layout** (coverage \u2605\u2605 Partial). The gap analysis found that while T3 (cognitive mapping) and T14 (navigational stress) provide a foundation, the formal mathematical framework of **Space Syntax** \u2014 the most developed quantitative tool for analyzing spatial configuration \u2014 has no representation in the template library. The architecture-as-composition thesis (the idea that great buildings orchestrate prediction error over time as the visitor moves through sequential spaces) is articulated but not formalized. And the connection between spatial configuration and social encounter \u2014 a central concern of architectural design \u2014 is touched on by the Social Brain templates (T48\u2013T52) but not connected to spatial metrics.\n\nThis panel is charged with producing 4\u20136 mechanistic templates that formalize: (1) how spatial configuration determines cognitive map formation and navigational prediction, (2) how Space Syntax metrics operationalize spatial prediction and prediction error, (3) how the architectural promenade orchestrates multi-modal PE over time, (4) how spatial configuration shapes social encounter and co-presence, (5) how visual access (isovists, visual graph analysis) determines environmental monitoring and threat assessment, and (6) how transitions between spaces produce cross-modal PE events. These templates must connect to the existing infrastructure \u2014 particularly T3 (cognitive map), T5 (threat/safety), T14 (navigational stress), T25 (directed attention), AX3 (awe), AX6 (multi-modal PE integration), and the newly produced L1\u2013L5 and MAT1\u2013MAT5 templates.\n\nAdditionally, this panel must address the **light-space interaction** flagged by Panel L-I: spatial configuration determines how daylight enters and distributes through a building (room depth, orientation, window placement, atrium design), so L-templates operate on a luminous environment that spatial configuration creates. And the **material-space interaction** from Panel MAT-I: the architectural promenade involves transitions between material zones (stone corridor \u2192 wood-paneled library \u2192 glass atrium), and the cross-modal PE at each transition depends on both the spatial sequence and the material change.\n\n---",
   "justification_status": "raw_excerpt",
   "excerpt_source": "docs/38_Panel_SC_I_Spatial_Config.md",
   "excerpt_char_range": [
@@ -239,10 +333,42 @@
     2546
   ],
   "cross_template_interactions": {
-    "IC2": "Body Budget Prediction — wayfinding failure registers as body-budget threat; the interoceptive signal is the propagation mechanism from spatial PE to HPA activation",
-    "AX4": "Perceived Control — environments that restore navigational control (clear sightlines, visible landmarks, consistent grammar) break the cycle at node 3"
+    "IC2": "Body Budget Prediction \u2014 wayfinding failure registers as body-budget threat; the interoceptive signal is the propagation mechanism from spatial PE to HPA activation",
+    "AX4": "Perceived Control \u2014 environments that restore navigational control (clear sightlines, visible landmarks, consistent grammar) break the cycle at node 3"
   },
   "display_id": "T14",
   "calibration_status": "calibrated",
-  "confidence": 0.6
+  "confidence": 0.6,
+  "higher_order_principle": "Low intelligibility environment \u2192 behavioral consequences pathway: The mechanism by which navigation-stress vicious cycle operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.987006+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "outcome_domains": [
+    "affect"
+  ],
+  "outcome_terms": [
+    "affect.stress"
+  ],
+  "theory_links": [
+    {
+      "theory_id": "ART",
+      "confidence": 0.7,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": [
+    {
+      "molecule_id": "wayfinding",
+      "confidence": 0.5
+    },
+    {
+      "molecule_id": "art",
+      "confidence": 0.5
+    }
+  ]
 }

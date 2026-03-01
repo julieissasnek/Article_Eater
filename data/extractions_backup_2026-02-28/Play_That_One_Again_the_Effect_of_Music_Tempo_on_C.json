@@ -1,0 +1,525 @@
+{
+  "doi": "Play/That/One/Again/the/Effect/of/Music/Tempo/on/C",
+  "article_type": "empirical_v2",
+  "quality_action": "accept",
+  "quality_score": 0.835,
+  "n_findings": 14,
+  "extracted_at": "2026-02-25T11:09:04.589739+00:00",
+  "recovery_source": "retry_with_robust_parse",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004361,
+  "article_family": "empirical",
+  "title": "The effects of illuminance on students' memory. A neuroarchitecture study",
+  "authors": "Nuria Castilla et al., 2023",
+  "research_question": "To analyse the effect that a classroom's illuminance exerts on university students' memories, comprehensively analysed using students' psychological (a memory task) and neurophysiological responses (EEG, HRV and EDA).",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 142,
+    "description": "58% male, 42% female; average age 23.17 years (SD = 4.04). Spanish university students aged 18-23 years, with normal or corrected-to-normal vision (contact lenses), no colour deficiencies, and no performance-altering substances consumed in the previous 24h.",
+    "recruitment": "Not explicitly stated, but implies university students from Spain."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Three immersive virtual environments (IVEs) simulating a windowless university classroom (16.50 \u00d7 8.50 m, 88-student capacity) with different illuminance levels: 100 lx, 300 lx, and 500 lx. Lighting simulated tubular lamps in 56x56 cm luminaires (4 lamps each, 45 total). Rendered in Rhinoceros/Vray, displayed via HTC Vive HMD. Participants viewed IVEs in a counterbalanced order with 60s breaks.",
+      "n_stimuli": 3,
+      "source": "Section 2.2, Fig. 5"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Sense of presence",
+      "instrument": "SUS questionnaire (6 items, 7-point Likert scale)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Memory performance",
+      "instrument": "Psychological memory task (similar to Deese-Roediger-McDermott paradigm, oral word lists)",
+      "type": "performance"
+    },
+    {
+      "construct": "Alertness / Working Memory related brain activity",
+      "instrument": "EEG-FzHighbeta (highbeta band 21-30 Hz, Fz electrode, relative power)",
+      "type": "neural"
+    },
+    {
+      "construct": "Sympathetic system activation / Arousal",
+      "instrument": "HRV-nLF (low frequency band 0.05-0.15 Hz, normalised units)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Emotional arousal / Sympathetic system activity",
+      "instrument": "EDA-Phasic (phasic component, normalised values)",
+      "type": "physiological"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Immersive Virtual Environments (IVEs) of a classroom",
+      "consequent": "Sense of presence (SUS-Total score)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The IVEs were perceived as satisfactory in terms of presence, with a mean SUS-Total score exceeding 29 points (mean of 5.1 out of 7 for individual items).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.1, Table 3",
+      "quote": "The sum of the six items provides the SUS-Total metric which exceeded the 29 points.",
+      "outcome_id": "behav.engagement",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx vs 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.003",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Higher illuminance leads to a reduction in memory performance.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2",
+      "quote": "The ANOVA test showed significant differences in memory performance as a function of illuminance (p = 0.003).",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.037",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "A significant reduction in memory performance was observed when illuminance increased from 100 lx to 300 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2",
+      "quote": "a significant reduction of memory test performance as illuminance increased from 100 lx to 300 lx (p = 0.037)",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "0.003",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "A significant reduction in memory performance was observed when illuminance increased from 100 lx to 500 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2",
+      "quote": "and from 100 lx to 500 lx (p = 0.003).",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Classroom illuminance (300 lx vs 500 lx)",
+      "consequent": "Memory-correct answers",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": ">0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "No significant difference in memory performance was observed between 300 lx and 500 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2",
+      "quote": "no significant difference was observed between the 300 lx and 500 lx (p > 0.05) levels.",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx vs 500 lx)",
+      "consequent": "EEG-FzHighbeta (relative power)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Higher illuminance was associated with lower EEG-FzHighbeta values, indicating diminished neurophysiological activation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.1",
+      "quote": "The ANOVA showed significant differences (p = 0.002) in this metric as a function of illuminance."
+    },
+    {
+      "id": 7,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "EEG-FzHighbeta (relative power)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "A significant decrease in EEG-FzHighbeta was observed when illuminance increased from 100 lx to 300 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.1",
+      "quote": "this difference arose between the 100 lx and the 300 lx (p = 0.05) conditions"
+    },
+    {
+      "id": 8,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "EEG-FzHighbeta (relative power)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "A significant decrease in EEG-FzHighbeta was observed when illuminance increased from 100 lx to 500 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.1",
+      "quote": "and between the 100 lx and 500 lx (p = 0.002) conditions."
+    },
+    {
+      "id": 9,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx vs 500 lx)",
+      "consequent": "HRV-nLF (heart activation / sympathetic system activation)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.015",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "NM5"
+      ],
+      "mechanism": "As illuminance increased, average levels of heart activation decreased, with 100 lx associated with the highest sympathetic system activation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.2",
+      "quote": "The ANOVA showed significant differences in the HRV-nLF metric based on classroom illuminance (p = 0.015).",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "HRV-nLF (heart activation / sympathetic system activation)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.016",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "CB"
+      ],
+      "template_ids": [
+        "L2",
+        "NM5"
+      ],
+      "mechanism": "A significant decrease in HRV-nLF was observed when illuminance increased from 100 lx to 500 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.2",
+      "quote": "this difference arose between the 100 lx and the 500 lx lighting (p = 0.016) conditions.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx vs 500 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity / emotional arousal)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "L2",
+        "NM5"
+      ],
+      "mechanism": "Higher illuminance was associated with lower EDA-Phasic values, indicating diminished sympathetic system activity and emotional arousal.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.3",
+      "quote": "The ANOVA showed significant differences in this metric as a function of illuminance (p = 0.002).",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Classroom illuminance (100 lx vs 300 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity / emotional arousal)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.004",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "L2",
+        "NM5"
+      ],
+      "mechanism": "A significant decrease in EDA-Phasic was observed when illuminance increased from 100 lx to 300 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.3",
+      "quote": "these differences arose between the 100 lx and the 300 lx (p = 0.004) conditions",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Classroom illuminance (100 lx vs 500 lx)",
+      "consequent": "EDA-Phasic (sympathetic system activity / emotional arousal)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "L2",
+        "NM5"
+      ],
+      "mechanism": "A significant decrease in EDA-Phasic was observed when illuminance increased from 100 lx to 500 lx.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.3.3",
+      "quote": "and between the 100 lx and 500 lx (p = 0.002) conditions.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 14,
+      "antecedent": "Classroom illuminance (100 lx)",
+      "consequent": "Memory task performance, HRV, EEG, and EDA metrics",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance, cognitive, physiological, neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "NM",
+        "CB",
+        "PP"
+      ],
+      "template_ids": [
+        "T20",
+        "L2"
+      ],
+      "mechanism": "The 100 lx scenario was associated with the best memory task performance and the highest neurophysiological activation levels across all measured metrics.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 4",
+      "quote": "The results of the present study showed that the 100 lx scenario was associated with the best memory task performance, and the highest activation levels in the HRV, EEG and EDA metrics.",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Classroom illuminance influences students' memories at psychological and neurophysiological levels.",
+    "Higher illuminance leads to diminished neurophysiological activation, which correlates with deteriorated memory performance.",
+    "Lower illuminance (100 lx) is associated with higher sympathetic system activation (HRV-nLF, EDA-Phasic) and higher brain activity related to alertness/working memory (EEG-FzHighbeta), which in turn supports better memory performance for difficult tasks."
+  ],
+  "moderators": [
+    "Time of day",
+    "Other lighting design variables (e.g., uniformity, CCT)",
+    "Classroom designs",
+    "VR focus on enjoyment vs task performance",
+    "Presence of other students",
+    "Viewpoint positions within the classroom"
+  ],
+  "implementation_implications": [
+    "Reducing illuminance can significantly improve memory performance and sympathetic system activation in educational settings.",
+    "Lighting design guidelines for educational centers should consider lower illuminance levels (e.g., 100 lx) to improve students' cognitive processes, particularly memory.",
+    "Redesigning luminous environments with less energy use can be achieved while also creating lighting conditions better adapted to learning tasks.",
+    "The methodology can be used by architects and designers to establish lighting design guidelines capable of improving students' cognitive processes."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "MS",
+    "NM",
+    "CB",
+    "PP"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 2",
+      "description": "Statistical treatments for Phase 1 (IVE validation) and Phase 2 (psychological and neurophysiological responses).",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Level of sense of presence for each item of the SUS questionnaire (mean and standard deviation) across different illuminance levels.",
+      "key_stats": [],
+      "n_findings_extracted_from": 1
+    }
+  ],
+  "limitations": [
+    "Time of day was not controlled, which might influence results.",
+    "Only lighting level (illuminance) was varied; other lighting variables (e.g., uniformity, CCT) were kept constant.",
+    "Only one classroom design was used, limiting generalizability to other classroom configurations.",
+    "VR environments might induce students to focus more on enjoyment than task performance.",
+    "The presence of other students and different viewpoint positions within the classroom were excluded due to parameterization difficulties, potentially influencing task performance."
+  ]
+}

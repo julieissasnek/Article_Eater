@@ -23,27 +23,56 @@
       "confidence": 0.65,
       "justification": {
         "data": [
-          {"finding": "Uncontrollable, unpredictable noise is reliably more stressogenic than higher-level predictable noise", "source": "Glass & Singer (1972)", "paradigm": "Laboratory stress paradigm", "effect": "Unpredictability > level for stress response", "n": null, "design": "Controlled experiment"},
-          {"finding": "Environmental variability (thermal >1.5 SD, acoustic >10 dBA in 5-min window) triggers anticipatory physiological response", "source": "Panel consensus (Sterling, Friston)", "paradigm": "Computational modeling + field observation", "effect": "Threshold-based anticipatory activation", "n": null, "design": "Model derivation"}
+          {
+            "finding": "Uncontrollable, unpredictable noise is reliably more stressogenic than higher-level predictable noise",
+            "source": "Glass & Singer (1972)",
+            "paradigm": "Laboratory stress paradigm",
+            "effect": "Unpredictability > level for stress response",
+            "n": null,
+            "design": "Controlled experiment"
+          },
+          {
+            "finding": "Environmental variability (thermal >1.5 SD, acoustic >10 dBA in 5-min window) triggers anticipatory physiological response",
+            "source": "Panel consensus (Sterling, Friston)",
+            "paradigm": "Computational modeling + field observation",
+            "effect": "Threshold-based anticipatory activation",
+            "n": null,
+            "design": "Model derivation"
+          }
         ],
         "backing": "Glass & Singer's classic work established that uncontrollability and unpredictability are the critical stressors, not stimulus intensity. Sterling's allostasis framework formalizes this: the brain prepares for anticipated perturbations.",
         "qualifier": "The unpredictability must exceed adaptation thresholds. Familiar unpredictability (known variability range) produces less anticipatory activation than novel unpredictability.",
         "rebuttal": "Would fail if occupants fully habituate to unpredictable environments; or if cognitive appraisal of safety overrides the physiological response.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 2,
       "from": "uncertainty_signal",
       "to": "anticipatory_prediction_error",
-      "description": "→ Predictive model generates anticipatory prediction errors (PP: free-energy elevation)",
+      "description": "\u2192 Predictive model generates anticipatory prediction errors (PP: free-energy elevation)",
       "warrant": "MECHANISM",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "In active inference, environmental unpredictability generates accumulated free-energy (prediction error) even before discrete stressor occurs", "source": "Friston (2010)", "paradigm": "Free-energy principle theoretical framework", "effect": "Anticipatory PE drives preparatory physiological state", "n": null, "design": "Computational theory"},
-          {"finding": "Anticipatory HPA activation precedes identifiable stressor by 2-10 minutes (modal 5 min)", "source": "Sterling (2012); panel consensus", "paradigm": "Anticipatory cortisol literature", "effect": "Substantially shorter lag than reactive 20-min onset", "n": null, "design": "Literature synthesis"}
+          {
+            "finding": "In active inference, environmental unpredictability generates accumulated free-energy (prediction error) even before discrete stressor occurs",
+            "source": "Friston (2010)",
+            "paradigm": "Free-energy principle theoretical framework",
+            "effect": "Anticipatory PE drives preparatory physiological state",
+            "n": null,
+            "design": "Computational theory"
+          },
+          {
+            "finding": "Anticipatory HPA activation precedes identifiable stressor by 2-10 minutes (modal 5 min)",
+            "source": "Sterling (2012); panel consensus",
+            "paradigm": "Anticipatory cortisol literature",
+            "effect": "Substantially shorter lag than reactive 20-min onset",
+            "n": null,
+            "design": "Literature synthesis"
+          }
         ],
         "backing": "Friston's free-energy framework provides the computational account: uncertainty about future states elevates free energy, which must be resolved through action or physiological preparation. The anticipatory lag (5 min) is shorter than reactive onset (20 min) because the brain is preparing, not responding.",
         "qualifier": "The anticipatory mechanism is well-grounded theoretically; direct architectural measurement of anticipatory cortisol (before identifiable stressor) is the critical empirical gap.",
@@ -56,13 +85,27 @@
       "step": 3,
       "from": "anticipatory_prediction_error",
       "to": "interoceptive_body_budget_update",
-      "description": "→ Interoceptive body-budget model updates: preparatory allostatic response (IC framework)",
+      "description": "\u2192 Interoceptive body-budget model updates: preparatory allostatic response (IC framework)",
       "warrant": "MECHANISM",
       "confidence": 0.58,
       "justification": {
         "data": [
-          {"finding": "Allostasis = predictive regulation; the body prepares metabolic and physiological states in anticipation of future demands", "source": "Sterling (2012)", "paradigm": "Allostasis theoretical framework", "effect": "Preparatory physiological state precedes demand", "n": null, "design": "Theoretical framework"},
-          {"finding": "Interoceptive predictions are simultaneous with exteroceptive, not downstream; body-budget updates occur in real-time", "source": "Seth (panel consensus)", "paradigm": "Interoceptive inference framework", "effect": "Body-budget model is continuously updated", "n": null, "design": "Computational theory"}
+          {
+            "finding": "Allostasis = predictive regulation; the body prepares metabolic and physiological states in anticipation of future demands",
+            "source": "Sterling (2012)",
+            "paradigm": "Allostasis theoretical framework",
+            "effect": "Preparatory physiological state precedes demand",
+            "n": null,
+            "design": "Theoretical framework"
+          },
+          {
+            "finding": "Interoceptive predictions are simultaneous with exteroceptive, not downstream; body-budget updates occur in real-time",
+            "source": "Seth (panel consensus)",
+            "paradigm": "Interoceptive inference framework",
+            "effect": "Body-budget model is continuously updated",
+            "n": null,
+            "design": "Computational theory"
+          }
         ],
         "backing": "Sterling's allostasis model and Seth's interoceptive inference framework converge: the body-budget (IC2 super-template) is continuously updated based on anticipated future demands, not just current state.",
         "qualifier": "The IC2 mechanism is well-characterized theoretically; the specific parameters linking environmental unpredictability to body-budget predictions are model-derived rather than directly measured.",
@@ -75,32 +118,61 @@
       "step": 4,
       "from": "interoceptive_body_budget_update",
       "to": "low_grade_HPA_activation",
-      "description": "→ Low-grade HPA and sympathetic activation without discrete stressor",
+      "description": "\u2192 Low-grade HPA and sympathetic activation without discrete stressor",
       "warrant": "CAPACITY",
       "confidence": 0.55,
       "justification": {
         "data": [
-          {"finding": "Anticipatory activations produce lower cortisol peaks than reactive activations; contribute 0.5 weight to allostatic load counter", "source": "McEwen (1998); panel consensus", "paradigm": "Allostatic load modeling", "effect": "Half-weight contribution to cumulative load", "n": null, "design": "Model derivation"},
-          {"finding": "Environments that are temporally unpredictable impose chronically elevated preparatory cost even when individual perturbations are modest", "source": "Sterling (2012)", "paradigm": "Allostasis framework", "effect": "Cumulative cost from sustained anticipation", "n": null, "design": "Theoretical framework"}
+          {
+            "finding": "Anticipatory activations produce lower cortisol peaks than reactive activations; contribute 0.5 weight to allostatic load counter",
+            "source": "McEwen (1998); panel consensus",
+            "paradigm": "Allostatic load modeling",
+            "effect": "Half-weight contribution to cumulative load",
+            "n": null,
+            "design": "Model derivation"
+          },
+          {
+            "finding": "Environments that are temporally unpredictable impose chronically elevated preparatory cost even when individual perturbations are modest",
+            "source": "Sterling (2012)",
+            "paradigm": "Allostasis framework",
+            "effect": "Cumulative cost from sustained anticipation",
+            "n": null,
+            "design": "Theoretical framework"
+          }
         ],
         "backing": "The bridge from anticipatory PE to low-grade HPA activation is capacity-level: we know the system CAN produce anticipatory activation, and we know unpredictable environments should trigger it, but direct measurement of anticipatory cortisol in architectural contexts is sparse.",
         "qualifier": "Confidence is lower (0.55) because direct architectural measurement of anticipatory cortisol is the critical empirical gap identified by the panel.",
         "rebuttal": "Would fail if anticipatory HPA activation requires conscious awareness of threat; or if low-grade activation does not accumulate in the same way as discrete stressor activation.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 5,
       "from": "repeated_anticipatory_activation",
       "to": "allostatic_load_accumulation",
-      "description": "→ If repeated without resolution: allostatic load accumulation (T6 chronic pathway)",
+      "description": "\u2192 If repeated without resolution: allostatic load accumulation (T6 chronic pathway)",
       "warrant": "MECHANISM",
       "confidence": 0.58,
       "justification": {
         "data": [
-          {"finding": "Mild-intensity repeated activations impose chronically elevated preparatory cost; 3-4 activations per day sustained over weeks produces measurable hippocampal effects", "source": "Sterling (2012); McEwen (1998)", "paradigm": "Chronic stress models", "effect": "Cumulative allostatic load from anticipatory activations", "n": null, "design": "Animal model extrapolation"},
-          {"finding": "Allostatic load threshold shared with T6: 4 activations/day standard; anticipatory count at 0.5 weight", "source": "Panel consensus", "paradigm": "Allostatic load modeling", "effect": "Anticipatory activations contribute to shared counter", "n": null, "design": "Model integration"}
+          {
+            "finding": "Mild-intensity repeated activations impose chronically elevated preparatory cost; 3-4 activations per day sustained over weeks produces measurable hippocampal effects",
+            "source": "Sterling (2012); McEwen (1998)",
+            "paradigm": "Chronic stress models",
+            "effect": "Cumulative allostatic load from anticipatory activations",
+            "n": null,
+            "design": "Animal model extrapolation"
+          },
+          {
+            "finding": "Allostatic load threshold shared with T6: 4 activations/day standard; anticipatory count at 0.5 weight",
+            "source": "Panel consensus",
+            "paradigm": "Allostatic load modeling",
+            "effect": "Anticipatory activations contribute to shared counter",
+            "n": null,
+            "design": "Model integration"
+          }
         ],
         "backing": "T7 connects to T6's chronic pathway: anticipatory activations at half-weight still contribute to the allostatic load counter. Repeated anticipatory activation in unpredictable environments can exceed the 4/day threshold when weighted.",
         "qualifier": "The 0.5 weighting is a panel consensus estimate based on anticipatory peaks being lower than reactive peaks. Direct validation is lacking.",
@@ -113,13 +185,27 @@
       "step": 6,
       "from": "anticipatory_stress_state",
       "to": "behavioral_vigilance",
-      "description": "→ Behavioral: vigilance, reduced exploration, shortened dwell time in unpredictable environments",
+      "description": "\u2192 Behavioral: vigilance, reduced exploration, shortened dwell time in unpredictable environments",
       "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Perceived control over environmental conditions reduces anticipatory stress coupling; high control (AX4) multiplier 0.60, low control multiplier 1.40", "source": "Glass & Singer (1972); AX4 cross-template", "paradigm": "Laboratory stress with controllability manipulation", "effect": "Controllability modulates stress response magnitude", "n": null, "design": "Controlled experiment"},
-          {"finding": "Behavioral withdrawal from unpredictable environments is adaptive; shortened dwell time reduces cumulative exposure", "source": "Sterling (2012)", "paradigm": "Allostasis framework", "effect": "Behavioral cost-minimization strategy", "n": null, "design": "Theoretical framework"}
+          {
+            "finding": "Perceived control over environmental conditions reduces anticipatory stress coupling; high control (AX4) multiplier 0.60, low control multiplier 1.40",
+            "source": "Glass & Singer (1972); AX4 cross-template",
+            "paradigm": "Laboratory stress with controllability manipulation",
+            "effect": "Controllability modulates stress response magnitude",
+            "n": null,
+            "design": "Controlled experiment"
+          },
+          {
+            "finding": "Behavioral withdrawal from unpredictable environments is adaptive; shortened dwell time reduces cumulative exposure",
+            "source": "Sterling (2012)",
+            "paradigm": "Allostasis framework",
+            "effect": "Behavioral cost-minimization strategy",
+            "n": null,
+            "design": "Theoretical framework"
+          }
         ],
         "backing": "The behavioral consequences of anticipatory stress are well-documented: vigilance (increased scanning), reduced exploration (conservative movement), and shortened dwell time (leaving unpredictable spaces). These are adaptive responses that minimize allostatic cost.",
         "qualifier": "Behavioral responses vary with individual differences, task demands, and exit availability. Forced exposure (hospital bed, prison cell) prevents behavioral withdrawal, increasing physiological cost.",
@@ -163,18 +249,18 @@
     "allostatic_load": {
       "model": "linear_additive",
       "anticipatory_weight": 0.5,
-      "note": "Anticipatory activations contribute 0.5 units to the allostatic load counter (half-weight of full reactive activation). Justification: anticipatory activations produce lower cortisol peaks; McEwen model weights by magnitude × frequency.",
+      "note": "Anticipatory activations contribute 0.5 units to the allostatic load counter (half-weight of full reactive activation). Justification: anticipatory activations produce lower cortisol peaks; McEwen model weights by magnitude \u00d7 frequency.",
       "threshold_interaction": "Shares T6 allostatic_load_threshold counter (4 activations/day); anticipatory count at 0.5 weight"
     },
     "privacy_gradient": {
       "description": "Perceived control over environmental conditions reduces anticipatory stress coupling",
       "high_control": {
         "multiplier": 0.6,
-        "note": "Thermostat access, acoustic shielding, clear wayfinding — AX4 super-template"
+        "note": "Thermostat access, acoustic shielding, clear wayfinding \u2014 AX4 super-template"
       },
       "low_control": {
         "multiplier": 1.4,
-        "note": "Forced exposure without agency — AX4 inverse"
+        "note": "Forced exposure without agency \u2014 AX4 inverse"
       },
       "source": "Glass & Singer 1972; AX4 cross-template findings"
     }
@@ -196,7 +282,7 @@
     "SOC2",
     "SS2"
   ],
-  "ie_dpt_interaction": "T_IE_005 (Cost-Gated Threshold) — anticipatory load reduces the explicit cognitive threshold for stress-triggered behavioral withdrawal from unpredictable spaces",
+  "ie_dpt_interaction": "T_IE_005 (Cost-Gated Threshold) \u2014 anticipatory load reduces the explicit cognitive threshold for stress-triggered behavioral withdrawal from unpredictable spaces",
   "key_references": [
     "Sterling, P. (2012). https://doi.org/10.1152/physiol.00027.2011",
     "Friston, K. (2010). https://doi.org/10.1038/nrn2787",
@@ -208,7 +294,7 @@
     "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md"
   ],
   "panel_source": "Tier 1 Frameworks",
-  "panel_reasoning_excerpt": "## Summary of Panel-Recommended Template Revisions\n\n| Template | Revision | Source |\n|---|---|---|\n| T1 (PP_SPECTRAL_MATCH) | Add prediction error LEVEL tag (low/intermediate/high hierarchy) | Friston |\n| T2 (PP_COMPLEXITY_GOLDILOCKS) | Mechanism via precision × prediction error interaction, not PE alone; curve shifts with familiarity via prior precision | Friston |\n| T3 (SN_LAYOUT_COGNITIVE_MAP) | Map is affective-spatial, not purely spatial; includes experiential binding | Nadel |\n| T4 (DT_ATTENTIONAL_DEMAND) | Specify DMN subsystems (MTL vs. dmPFC); DMN is not \"rest\" but active model maintenance | Raichle |\n| T5 (NM_THREAT_HPA) | Split ACh pathway from general threat; add cholinergic specificity and temporal dynamics | Chiba |\n| T6 (NM_CORTISOL_HIPPOCAMPAL) | Add temporal distinction: acute (enhances) vs. chronic (impairs) hippocampal function | Nadel |\n| T7 (IC_ALLOSTATIC_ANTICIPATION) | Elevate to master-template status; rename to ALLOSTATIC_EFFICIENCY | Seth, Sterling |\n| T8 (EC_AFFORDANCE_POSTURAL) | Broaden from postural to full sensorimotor; movement IS cognition, not input to it | Clark |\n| T12 (IC_INTEROCEPTIVE_AFFECT) | Fix serial pipeline error: interoceptive predictions are simultaneous with exteroceptive, not downstream | Seth |",
+  "panel_reasoning_excerpt": "## Summary of Panel-Recommended Template Revisions\n\n| Template | Revision | Source |\n|---|---|---|\n| T1 (PP_SPECTRAL_MATCH) | Add prediction error LEVEL tag (low/intermediate/high hierarchy) | Friston |\n| T2 (PP_COMPLEXITY_GOLDILOCKS) | Mechanism via precision \u00d7 prediction error interaction, not PE alone; curve shifts with familiarity via prior precision | Friston |\n| T3 (SN_LAYOUT_COGNITIVE_MAP) | Map is affective-spatial, not purely spatial; includes experiential binding | Nadel |\n| T4 (DT_ATTENTIONAL_DEMAND) | Specify DMN subsystems (MTL vs. dmPFC); DMN is not \"rest\" but active model maintenance | Raichle |\n| T5 (NM_THREAT_HPA) | Split ACh pathway from general threat; add cholinergic specificity and temporal dynamics | Chiba |\n| T6 (NM_CORTISOL_HIPPOCAMPAL) | Add temporal distinction: acute (enhances) vs. chronic (impairs) hippocampal function | Nadel |\n| T7 (IC_ALLOSTATIC_ANTICIPATION) | Elevate to master-template status; rename to ALLOSTATIC_EFFICIENCY | Seth, Sterling |\n| T8 (EC_AFFORDANCE_POSTURAL) | Broaden from postural to full sensorimotor; movement IS cognition, not input to it | Clark |\n| T12 (IC_INTEROCEPTIVE_AFFECT) | Fix serial pipeline error: interoceptive predictions are simultaneous with exteroceptive, not downstream | Seth |",
   "justification_status": "raw_excerpt",
   "excerpt_source": "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
   "excerpt_char_range": [
@@ -216,10 +302,27 @@
     47376
   ],
   "cross_template_interactions": {
-    "IC2": "Body Budget Prediction — primary mechanism; anticipatory allostasis is IC2 operating forward in time",
-    "AX4": "Perceived Control — primary modifier; controllability_modifier parameters are AX4 operationalizations"
+    "IC2": "Body Budget Prediction \u2014 primary mechanism; anticipatory allostasis is IC2 operating forward in time",
+    "AX4": "Perceived Control \u2014 primary modifier; controllability_modifier parameters are AX4 operationalizations"
   },
   "display_id": "T7",
   "calibration_status": "calibrated",
-  "confidence": 0.45
+  "confidence": 0.45,
+  "higher_order_principle": "Environmental unpredictability \u2192 behavioral vigilance pathway: The mechanism by which allostatic anticipation operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:52.010705+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "theory_links": [
+    {
+      "theory_id": "KAPLAN_PREFERENCE",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": []
 }

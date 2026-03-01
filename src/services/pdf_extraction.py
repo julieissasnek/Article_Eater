@@ -68,6 +68,63 @@ class ExtractedFinding:
 
 
 @dataclass
+class PaperMetadata:
+    """
+    Bibliographic metadata for a paper, enriched from Semantic Scholar / CrossRef.
+
+    This is the canonical citation metadata block used across the system:
+    ExtractedPaper, ClaimV2, PaperIntegrationEvent, and setup() all reference it.
+    Fields populated either from PDF extraction or from API enrichment.
+    """
+    doi: str = ""
+    title: str = ""
+    authors: List[str] = field(default_factory=list)
+    year: Optional[int] = None
+    journal: str = ""                           # venue / journal name
+    volume: Optional[str] = None
+    issue: Optional[str] = None
+    pages: Optional[str] = None
+    publisher: Optional[str] = None
+
+    # Citation graph (from Semantic Scholar)
+    citation_count: Optional[int] = None
+    influential_citation_count: Optional[int] = None
+    references: List[str] = field(default_factory=list)   # DOIs this paper cites
+    cited_by: List[str] = field(default_factory=list)      # DOIs citing this paper
+    semantic_scholar_id: Optional[str] = None              # S2 corpus ID
+
+    # Enrichment tracking
+    enriched: bool = False                      # True after API enrichment
+    enriched_at: Optional[str] = None           # ISO timestamp of enrichment
+    enrichment_source: Optional[str] = None     # "semantic_scholar" | "crossref"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'doi': self.doi,
+            'title': self.title,
+            'authors': self.authors,
+            'year': self.year,
+            'journal': self.journal,
+            'volume': self.volume,
+            'issue': self.issue,
+            'pages': self.pages,
+            'publisher': self.publisher,
+            'citation_count': self.citation_count,
+            'influential_citation_count': self.influential_citation_count,
+            'references': self.references,
+            'cited_by': self.cited_by,
+            'semantic_scholar_id': self.semantic_scholar_id,
+            'enriched': self.enriched,
+            'enriched_at': self.enriched_at,
+            'enrichment_source': self.enrichment_source,
+        }
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> 'PaperMetadata':
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+
+@dataclass
 class ExtractedPaper:
     """Complete extraction from a paper."""
     filepath: str
@@ -76,29 +133,32 @@ class ExtractedPaper:
     year: Optional[int] = None
     journal: str = ""
     doi: str = ""
-    
+
     # Paper type
     paper_type: str = ""  # empirical, review, meta-analysis, theoretical
-    
+
+    # Bibliographic metadata (enriched from Semantic Scholar / CrossRef)
+    paper_metadata: Optional[PaperMetadata] = None
+
     # Theories
     theories_referenced: List[TheoryReference] = field(default_factory=list)
-    
+
     # Methods
     sample_size: Optional[int] = None
     study_design: str = ""  # RCT, within-subjects, between-subjects, etc.
     exposure_type: str = ""  # nature, indoor, VR, etc.
     exposure_duration: Optional[TemporalParameter] = None
     outcomes: List[str] = field(default_factory=list)
-    
+
     # Findings
     findings: List[ExtractedFinding] = field(default_factory=list)
     effect_sizes: List[EffectSize] = field(default_factory=list)
     temporal_parameters: List[TemporalParameter] = field(default_factory=list)
-    
+
     # Raw text for further analysis
     abstract: str = ""
     full_text: str = ""
-    
+
     # Extraction metadata
     extraction_date: str = field(default_factory=lambda: datetime.now().isoformat())
     extraction_confidence: float = 0.5
@@ -109,7 +169,10 @@ class ExtractedPaper:
             'title': self.title,
             'authors': self.authors,
             'year': self.year,
+            'journal': self.journal,
+            'doi': self.doi,
             'paper_type': self.paper_type,
+            'paper_metadata': self.paper_metadata.to_dict() if self.paper_metadata else None,
             'theories_referenced': [
                 {'name': t.theory_name, 'relation': t.relation, 'strength': t.strength}
                 for t in self.theories_referenced

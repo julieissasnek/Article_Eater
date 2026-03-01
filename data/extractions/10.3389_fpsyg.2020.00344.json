@@ -1,0 +1,1084 @@
+{
+  "doi": "10.3389/fpsyg.2020.00344",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.798,
+  "n_findings": 25,
+  "extracted_at": "2026-02-25T05:51:14.350587+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0082064,
+  "title": "Room Acoustical Parameters as Predictors of Acoustic Comfort in Outdoor Spaces of Housing Complexes",
+  "authors": "Armin Taghipour et al., 2020",
+  "research_question": "To what extent classic room acoustical parameters (STI, D50, C50, C80, EDT, LF80, EchoD) and A-weighted equivalent continuous sound level (LAeq) are able to predict perceived short-term acoustic comfort in outdoor spaces (i.e., courtyards) of virtual housing complexes, considering the effects of facade absorption, sound source, and observer position.",
+  "design_type": "within_subjects|mixed_factorial",
+  "participants": {
+    "n": 69,
+    "description": "Experiment 1: 27 subjects (7 females, 20 males, aged 19-57, median 38). Experiments 2 & 3: 42 subjects (13 females, 29 males, aged 18-64, median 41). All self-reported normal-hearing.",
+    "recruitment": "Most subjects worked for the authors' research institute."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "audio",
+      "description": "Auralized stimuli from virtual inner yards (100x20x20m, unceiled, brick/concrete walls with glass windows) with varied facade absorption (reflecting, absorbing, exaggerated absorption, aw values 0.05, 0.15, 0.30, 0.55, 0.95) and balcony ceiling absorption (aw values 0.05, 0.30, 0.95). Sound sources included bouncing basketball, doll's pram, German conversation, children playing, crying baby, Swiss German conversation. Stimuli were 8-10s long, normalized to LAeq of 50 dB(A) for ODEON input. Played back via 2D surround sound over 5 loudspeakers and 2 subwoofers.",
+      "n_stimuli": 127,
+      "source": "Figure 4, Section 2.3, 3.1, 3.2, 3.3"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Short-term acoustic comfort",
+      "instrument": "Verbal bipolar 7-point scale (-3: very uncomfortable to +3: very comfortable)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Speech Transmission Index (STI)",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Definition (D50)",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Clarity (Speech), C50",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Clarity (Music), C80",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Early Decay Time (EDT)",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Lateral Energy Fraction (LF80)",
+      "instrument": "ODEON v.15 calculation (average of 125, 250, 500, and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "Dietsch's echo criterion (EchoD)",
+      "instrument": "ODEON v.15 calculation (average of 500 and 1000 Hz octave bands)",
+      "type": "performance"
+    },
+    {
+      "construct": "A-weighted equivalent continuous sound level (LAeq)",
+      "instrument": "ODEON output, MATLAB processing",
+      "type": "performance"
+    },
+    {
+      "construct": "Rating time (response time)",
+      "instrument": "Listening test software",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Inner yard type (absorbing vs. reflecting facade setups)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2.2,57.2)=49.6",
+      "theory_links": [
+        "DP",
+        "IC",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Absorptive materials reduce sound pressure levels and reflections, leading to increased comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Compared to the two reflecting inner yards, acoustic comfort was rated higher for the two absorbing inner yards, p < 0.001.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Sound source type (children sounds vs. other sources)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3.1,79.3)=33.1",
+      "theory_links": [
+        "DP",
+        "IC",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Relatively pleasant sounds (e.g., playing children) are associated with higher comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Acoustic comfort was rated higher for the two children sounds than for the three other sound sources, all p < 0.001.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Observer position (20m in yard & second-floor balcony vs. 5m in yard)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1.2,31.9)=25.8",
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Positions with lower sound pressure levels and/or weaker flutter echoes are more comfortable.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "The observer positions at 20 m distance in the yard and at the second floor balcony were found to be \"more\" and \"less\" comfortable than the position at 5 m distance in the yard, respectively",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Facade's weighted absorption coefficient (aw)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3.0,121.8)=21.0",
+      "theory_links": [
+        "DP",
+        "IC",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Moderate absorption provides optimal acoustic conditions, while too little or too much absorption leads to lower comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "A parabolic relationship was found. That is, acoustic comfort was rated the highest for moderate (i.e., middle) aw values.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Balcony ceiling's weighted absorption coefficient (aw)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.07",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2.0,80.3)=2.8",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Balcony ceiling's aw was not found to affect acoustic comfort significantly, although such a non-significant tendency could be observed",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Balcony ceiling's weighted absorption coefficient (aw) in absence of facade absorption",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP",
+        "IC",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Absorbing materials on balcony ceilings can improve acoustic comfort as a simple solution.",
+      "moderators_reported": [
+        "Facade absorption"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Nevertheless, in the absence of any absorbers on the facade, absorbing balcony ceilings tended to improve acoustic comfort.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Acoustic comfort rating (very uncomfortable/comfortable vs. middle range)",
+      "consequent": "Rating time (response time)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DP"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": "Stronger affective responses (very uncomfortable or very comfortable) lead to faster, more automatic judgments.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "That is, when subjects felt very uncomfortable or very comfortable, they gave their response faster than when they rated their comfort in response to the acoustic stimuli in the middle range of the scale."
+    },
+    {
+      "id": 8,
+      "antecedent": "Playback sequence (order of stimuli's playback)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": -0.06,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM"
+      ],
+      "template_ids": [
+        "AX2",
+        "AX7"
+      ],
+      "mechanism": "Increased cumulative sound exposure level (LAE) with increasing playback sequence leads to lower acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1, p.14",
+      "quote": "overall, acoustic comfort decreased slightly with increasing playback sequence.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Speech Transmission Index (STI)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.18,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher speech intelligibility contributes to perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort 0.18**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Definition (D50)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.15,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher clarity of early sound energy contributes to perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort 0.15**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Clarity (Speech), C50",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.2,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher clarity of speech contributes to perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort 0.20**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Clarity (Music), C80",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.21,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher clarity of music contributes to perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort 0.21**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Early Decay Time (EDT)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": -0.18,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [
+        "AUD_REVERBERATION"
+      ],
+      "mechanism": "Longer early decay times (more reverberation) reduce perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort -0.18**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 14,
+      "antecedent": "Lateral Energy Fraction (LF80)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": -0.11,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher lateral energy fraction (more lateral reflections) reduces perceived acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Acoustic comfort -0.11**",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "Dietsch's echo criterion (EchoD)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "mixed",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Inconsistent correlation across experiments, not a proper predictor.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10",
+      "quote": "Since the correlation between acoustic comfort and the EchoD is rather inconsistent... this criterion was considered not to be a proper predictor of acoustic comfort.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Speech Transmission Index (STI)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 2.27,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "STI is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "STI 2.27",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Definition (D50)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 1.65,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "D50 is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "D50 1.65",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Clarity (Speech), C50",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.06,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "C50 is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "C50 0.06",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Clarity (Music), C80",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": 0.06,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "C80 is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "C80 0.06",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Early Decay Time (EDT)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": -0.31,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [
+        "AUD_REVERBERATION"
+      ],
+      "mechanism": "EDT is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "EDT -0.31",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Lateral Energy Fraction (LF80)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.01",
+      "effect_size": -6.73,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "LF80 is a significant predictor of acoustic comfort in linear mixed-effect models.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "LF80 -6.73",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "A-weighted equivalent continuous sound level (LAeq) for unpleasant sound sources (Experiment 1)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": -0.068,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.136,
+        0.001
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "Higher LAeq from unpleasant sources increases perceived discomfort.",
+      "moderators_reported": [
+        "Sound source"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "\u1e9esrc,i= Basketball 1 -0.068 [-0.136;0.001] 0.051",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "A-weighted equivalent continuous sound level (LAeq) for pleasant children sounds (Experiment 1)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": 0.047,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.002,
+        0.095
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "Higher LAeq from pleasant sources can slightly increase perceived comfort.",
+      "moderators_reported": [
+        "Sound source"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "\u1e9eSrc,i= Children 1 0.047 [-0.002;0.095] 0.058",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "A-weighted equivalent continuous sound level (LAeq) (Experiments 2 & 3)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": -0.164,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.199,
+        -0.129
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "Higher LAeq generally leads to lower acoustic comfort.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Table 6",
+      "quote": "LAeq -0.164 [-0.199;-0.129] 0.000",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Room acoustical parameters (C80, C50, EDT, STI, LF80, D50)",
+      "consequent": "Acoustic comfort ratings",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "ACOUSTIC_EMOTION_MAPPING"
+      ],
+      "template_ids": [],
+      "mechanism": "Models including individual room acoustical parameters were better than the basic model (sound source + random intercept), indicating their predictive power for acoustic comfort.",
+      "moderators_reported": [
+        "Sound source",
+        "Subjects' random intercept"
+      ],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "All models were better than the basic model with sound source and random intercept (without room acoustical parameters).",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Sound is modified and articulated by the materiality and shape of surrounding surfaces, influencing acoustic comfort.",
+    "Absorptive materials reduce sound pressure levels and reflections, leading to increased acoustic comfort.",
+    "Balconies provide protection from noise sources, but reflective surfaces can weaken this effect.",
+    "Relatively pleasant sounds increase comfort, while unpleasant sounds decrease it.",
+    "Higher sound pressure levels (LAeq) are generally associated with lower acoustic comfort.",
+    "Stronger affective responses (very uncomfortable/comfortable) lead to faster, more automatic judgments.",
+    "Increased cumulative sound exposure over time (playback sequence) can lead to decreased comfort."
+  ],
+  "moderators": [
+    "Sound source type (e.g., pleasant vs. unpleasant sounds)",
+    "Facade absorption characteristics (aw)",
+    "Observer position (in yard vs. on balcony)",
+    "Balcony ceiling absorption (tendency observed when facade absorption is absent)"
+  ],
+  "implementation_implications": [
+    "Use materials with moderate absorption characteristics for facades or highly absorbing materials for selected facade portions to improve acoustic comfort.",
+    "Apply absorbing materials on balcony ceilings as a simple and cheap solution to improve acoustic comfort, especially when facade absorption is absent.",
+    "Design facilities that invite relatively pleasant sounds (e.g., playing children, water features, birds, vegetation) and avoid those encouraging unpleasant/noisy activities (e.g., basketball) to improve overall acoustic comfort in inner yards.",
+    "Architects, urban soundscape designers, and acousticians can use estimated room acoustical parameters (C50, C80, EDT, STI) to indicate subjective acoustic comfort and guide design changes for improved acoustic performance in housing complexes."
+  ],
+  "domains": [
+    "A5_Acoustic",
+    "A1_Materials",
+    "A3_Spatial_Config"
+  ],
+  "overall_theory_links": [
+    "DP",
+    "PP",
+    "NM",
+    "IC",
+    "ACOUSTIC_EMOTION_MAPPING"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Pearson's r for correlations between playback sequence and acoustic comfort.",
+      "key_stats": [
+        "r = -0.06, p < 0.01 (Overall)"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Pearson's r for correlations between room acoustical parameters and acoustic comfort (and mean acoustic comfort).",
+      "key_stats": [
+        "STI: r = 0.18, p < 0.01 (Overall)",
+        "D50: r = 0.15, p < 0.01 (Overall)",
+        "C50: r = 0.20, p < 0.01 (Overall)",
+        "C80: r = 0.21, p < 0.01 (Overall)",
+        "EDT: r = -0.18, p < 0.01 (Overall)",
+        "LF80: r = -0.11, p < 0.01 (Overall)",
+        "EchoD: r = -0.08, p < 0.01 (Overall)"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Values of \u03b2 in Equation (1) for different room acoustical parameters in the three experiments (all p < 0.01).",
+      "key_stats": [
+        "STI: \u03b2 = 2.27 (Overall)",
+        "D50: \u03b2 = 1.65 (Overall)",
+        "C50: \u03b2 = 0.06 (Overall)",
+        "C80: \u03b2 = 0.06 (Overall)",
+        "EDT: \u03b2 = -0.31 (Overall)",
+        "LF80: \u03b2 = -6.73 (Overall)"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Experiment 1: model coefficients (Coeff.), their 95% CI, and probabilities (p) of the linear mixed-effects model for acoustic comfort.",
+      "key_stats": [
+        "LAeq x Basketball 1: \u03b2 = -0.068, p = 0.051",
+        "LAeq x Doll's pram: \u03b2 = -0.090, p = 0.001",
+        "LAeq x Children 1: \u03b2 = 0.047, p = 0.058"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 5",
+      "description": "Experiment 2: model coefficients (Coeff.), their 95% CI, and probabilities (p) of the linear mixed-effects model for acoustic comfort.",
+      "key_stats": [
+        "LAeq: \u03b2 = -0.164, p = 0.000"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 6",
+      "description": "Experiment 3: model coefficients (Coeff.), their 95% CI, and probabilities (p) of the linear mixed-effects model for acoustic comfort.",
+      "key_stats": [
+        "LAeq: \u03b2 = -0.107, p = 0.000"
+      ],
+      "n_findings_extracted_from": 1
+    }
+  ],
+  "limitations": [
+    "The room acoustical simulation method (ODEON) based on a geometrical approach has limitations (e.g., regarding diffraction).",
+    "The auralization was 2D (horizontal plane at ear level) instead of 3D.",
+    "The experiments did not include any visual stimuli, preventing investigation of aural-visual interactions.",
+    "There are general differences between laboratory experiments and on-site experience.",
+    "Most subjects worked for the authors' research institute, potentially introducing bias.",
+    "The study focused on short-term comfort, which differs from long-term comfort.",
+    "The study used single static sound sources, whereas reality typically involves a mixture of static and moving sounds.",
+    "The statistical models are not generalizable and require a larger amount of data and further validation for predictive purposes."
+  ],
+  "paper_metadata": {
+    "doi": "10.3389/fpsyg.2020.00344",
+    "title": "Room Acoustical Parameters as Predictors of Acoustic Comfort in Outdoor Spaces of Housing Complexes",
+    "authors": [
+      "Armin Taghipour",
+      "S. Athari",
+      "Arnthrudur Gisladottir",
+      "Tessa Sievers",
+      "K. Eggenschwiler"
+    ],
+    "year": 2020,
+    "journal": "Frontiers in Psychology",
+    "volume": "11",
+    "issue": null,
+    "pages": null,
+    "publisher": "Frontiers Media SA",
+    "citation_count": 7,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1007/978-1-4612-0919-5_38",
+      "10.1007/978-1-4612-1694-0_15",
+      "10.1007/978-3-642-41714-6_132517",
+      "10.1016/J.APACOUST.2003.11.002",
+      "10.1016/J.APACOUST.2004.07.011",
+      "10.1016/J.APACOUST.2004.09.004",
+      "10.1016/J.APACOUST.2006.01.010",
+      "10.1016/J.APACOUST.2008.04.002",
+      "10.1016/J.BUILDENV.2006.10.044",
+      "10.1016/J.BUILDENV.2009.05.014",
+      "10.1016/J.BUILDENV.2015.06.027",
+      "10.1016/J.BUILDENV.2015.11.033",
+      "10.1016/J.BUILDENV.2016.06.028",
+      "10.1016/J.BUILDENV.2019.04.039",
+      "10.1016/J.JSV.2005.11.034",
+      "10.1016/J.LANDURBPLAN.2019.01.014",
+      "10.1016/J.TICS.2004.02.002",
+      "10.1016/S0003-682X(01)00053-6",
+      "10.1016/j.apacoust.2003.11.002",
+      "10.1016/j.apacoust.2004.07.011",
+      "10.1016/j.apacoust.2004.09.004",
+      "10.1016/j.apacoust.2006.01.010",
+      "10.1016/j.apacoust.2008.04.002",
+      "10.1016/j.buildenv.2006.10.044",
+      "10.1016/j.buildenv.2009.05.014",
+      "10.1016/j.buildenv.2015.06.027",
+      "10.1016/j.buildenv.2015.11.033",
+      "10.1016/j.buildenv.2016.06.028",
+      "10.1016/j.buildenv.2019.04.039",
+      "10.1016/j.jsv.2005.11.034",
+      "10.1016/j.landurbplan.2019.01.014",
+      "10.1016/j.scitotenv.2012.12.025",
+      "10.1016/j.tics.2004.02.002",
+      "10.1080/23748834.2019.1624332",
+      "10.1121/1.1913632",
+      "10.1121/1.1931887",
+      "10.1121/1.3298437",
+      "10.1121/1.3567073",
+      "10.1121/1.4900051",
+      "10.1121/1.4949566",
+      "10.1121/1.5090500",
+      "10.1177/1351010X16678219",
+      "10.1177/1351010X18757353",
+      "10.1201/9780203912065.ch47",
+      "10.1201/b19145-9",
+      "10.1214/AOS/1176344136",
+      "10.1214/aos/1176344136",
+      "10.1515/noise-2016-0018",
+      "10.3218/3758-6",
+      "10.3390/APP7020175",
+      "10.3390/APP9091872",
+      "10.3390/app7020175",
+      "10.3390/app9091872",
+      "10.3390/ijerph10051681",
+      "10.3390/ijerph16020249",
+      "10.3390/ijerph7093359",
+      "10.3397/1.3702001",
+      "10.3397/1/1.3761001",
+      "10.3403/30412483",
+      "10.4135/9781483380810.n530"
+    ],
+    "cited_by": [
+      "10.1016/j.buildenv.2025.113107",
+      "10.3390/buildings14103151",
+      "10.3390/su16177855",
+      "10.1109/TASLPRO.2025.3574849",
+      "10.3397/in_2022_0158",
+      "10.1016/j.buildenv.2022.109526",
+      "10.1051/aacus/2024053"
+    ],
+    "semantic_scholar_id": "6b96af27a7d938a0108b533a1b1ab9cabf52bf2d",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:48:40.037247+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Room Acoustical Parameters as Predictors of Acoustic Comfort in Outdoor Spaces of Housing Complexes",
+    "crossref_year": 2020,
+    "crossref_citation_count": 7,
+    "crossref_journal": "Frontiers in Psychology",
+    "crossref_publisher": "Frontiers Media SA",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 58,
+    "crossref_issn": [
+      "1664-1078"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.865959+00:00",
+    "_cr_refs_added": 19
+  },
+  "year": 2020,
+  "journal": "Frontiers in Psychology",
+  "authors_structured": [
+    "Armin Taghipour",
+    "S. Athari",
+    "Arnthrudur Gisladottir",
+    "Tessa Sievers",
+    "K. Eggenschwiler"
+  ],
+  "crossref_title": "Room Acoustical Parameters as Predictors of Acoustic Comfort in Outdoor Spaces of Housing Complexes",
+  "crossref_authors": [
+    {
+      "name": "Armin Taghipour",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Sahand Athari",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Arnthrudur Gisladottir",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Tessa Sievers",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Kurt Eggenschwiler",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2020,
+  "crossref_journal": "Frontiers in Psychology",
+  "crossref_citation_count": 7,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Frontiers Media SA",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T12:02:55.701330+00:00"
+}

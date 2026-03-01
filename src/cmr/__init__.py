@@ -53,7 +53,7 @@ from src.cmr.template_computations import (
     compute_crea2_processing_style,
     compute_mat1_ct_afferent,
     compute_mat2_thermal_adaptive,
-    compute_mat4_material_convergence,
+    compute_nmc1_material_convergence,
     compute_soc2_privacy_encounter,
     compute_sc1_spatial_integration,
     compute_sc4_wayfinding_social,

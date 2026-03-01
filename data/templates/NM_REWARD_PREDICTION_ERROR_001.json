@@ -1,299 +1,271 @@
 {
   "template_id": "NM_REWARD_PREDICTION_ERROR_001",
-  "display_id": "T41",
-  "name": "Environmental Reward Prediction Error",
-  "structural_pattern": "MEDIATION",
-  "higher_order_principle": "Midbrain dopamine neurons compute temporal difference between expected and received environmental reward; phasic RPE updates cached place/route values and modulates exploratory versus exploitative behavior.",
-  "transferable_to": [
-    "wayfinding reward at destination",
-    "view reward upon vista opening",
-    "thermal comfort upon entering conditioned space",
-    "social reward upon encountering others in shared space"
-  ],
-  "framework_ids": [
-    "NM"
-  ],
-  "causal_links": [
-    {
-      "from_variable": "environmental_outcome",
-      "to_variable": "reward_prediction_error",
-      "activity": "compute_temporal_difference",
-      "from_level": "environmental",
-      "to_level": "subcortical",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "Schultz, Dayan, & Montague, 1997",
-      "parameters": {
-        "response_latency_ms": "50-100",
-        "signal_duration_ms": "200-500",
-        "magnitude_range": "\u00b13 SD of baseline firing"
-      }
-    },
-    {
-      "from_variable": "reward_prediction_error",
-      "to_variable": "cached_place_value",
-      "activity": "update_value_estimate",
-      "from_level": "subcortical",
-      "to_level": "subcortical",
-      "bridging_quality": "HIGH",
-      "maturity": "how-actually",
-      "key_evidence": "O'Doherty et al., 2004",
-      "parameters": {
-        "learning_rate_alpha": "0.1-0.4",
-        "discount_factor_gamma": "0.9-0.99"
-      }
-    },
-    {
-      "from_variable": "cached_place_value",
-      "to_variable": "exploration_exploitation_balance",
-      "activity": "modulate_behavioral_policy",
-      "from_level": "subcortical",
-      "to_level": "behavioral",
-      "bridging_quality": "MEDIUM",
-      "maturity": "established",
-      "key_evidence": "Daw et al., 2006",
-      "parameters": {
-        "softmax_temperature_range": "0.1-5.0"
-      }
-    }
-  ],
-  "scope_conditions": [
-    "Applies when environmental outcomes deviate from expectation",
-    "Requires intact VTA/substantia nigra dopaminergic system",
-    "Magnitude scales with unexpectedness, not absolute reward value",
-    "Habituates: repeated identical outcomes \u2192 RPE \u2192 0"
-  ],
-  "moderators": [
-    "prior_expectation_precision (higher precision \u2192 larger RPE for violations)",
-    "metabolic_state (hunger, thermal discomfort amplify reward signals)",
-    "context_novelty (novel environments have less precise priors \u2192 smaller RPE)",
-    "individual_dopaminergic_tone (genetic/pharmacological variation)"
-  ],
-  "interactions": [
-    {
-      "template": "PP_SPECTRAL_MATCH_001 (T1)",
-      "type": "SHARED_MECHANISM",
-      "description": "Perceptual PE (T1) and reward PE (T41) share the temporal difference computation but operate in different domains \u2014 sensory vs motivational. Double dissociation demonstrated in neuroimaging."
-    },
-    {
-      "template": "NM_DOPAMINERGIC_NOVELTY_REWARD_001 (T17)",
-      "type": "EXTENSION",
-      "description": "T17 captures tonic dopamine's role in novelty-seeking; T41 captures phasic dopamine's role in outcome evaluation. They are complementary phases of the same neuromodulatory system."
-    },
-    {
-      "template": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001 (T12)",
-      "type": "INPUT",
-      "description": "Interoceptive signals (thermal comfort, proprioceptive ease) provide the 'received reward' input to the RPE computation."
-    }
-  ],
-  "overall_maturity": "how-actually",
-  "key_references": [
-    "Schultz, Dayan, & Montague (1997) Science",
-    "O'Doherty et al. (2004) Science",
-    "Daw, O'Doherty, Dayan, Seymour, & Dolan (2006) Nature",
-    "Berridge & Robinson (2016) American Psychologist"
-  ],
-  "short_description": "Midbrain dopamine neurons compute temporal difference between expected and received environmental reward; phasic RPE updates cached place/route values and modulates exploratory versus exploitative ...",
-  "age_band_modifiers": {
-    "toddler_0_3": {
-      "speed": 0.45,
-      "vision": 0.7,
-      "hearing": 0.85,
-      "motor": 0.5,
-      "olfaction": 0.9
-    },
-    "age_3_6": {
-      "speed": 0.6,
-      "vision": 0.8,
-      "hearing": 0.9,
-      "motor": 0.65,
-      "olfaction": 0.95
-    },
-    "age_6_9": {
-      "speed": 0.72,
-      "vision": 0.88,
-      "hearing": 0.94,
-      "motor": 0.78,
-      "olfaction": 0.97
-    },
-    "age_9_12": {
-      "speed": 0.82,
-      "vision": 0.94,
-      "hearing": 0.97,
-      "motor": 0.87,
-      "olfaction": 0.98
-    },
-    "age_12_16": {
-      "speed": 0.9,
-      "vision": 0.97,
-      "hearing": 0.98,
-      "motor": 0.93,
-      "olfaction": 0.99
-    },
-    "emerging_adult_16_25": {
-      "speed": 0.97,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 0.98,
-      "olfaction": 1.0
-    },
-    "young_20_40": {
-      "speed": 1.0,
-      "vision": 1.0,
-      "hearing": 1.0,
-      "motor": 1.0,
-      "olfaction": 1.0
-    },
-    "middle_40_65": {
-      "speed": 0.88,
-      "vision": 0.9,
-      "hearing": 0.92,
-      "motor": 0.9,
-      "olfaction": 0.85
-    },
-    "older_65_80": {
-      "speed": 0.72,
-      "vision": 0.7,
-      "hearing": 0.75,
-      "motor": 0.7,
-      "olfaction": 0.5
-    },
-    "frail_80_plus": {
-      "speed": 0.55,
-      "vision": 0.5,
-      "hearing": 0.55,
-      "motor": 0.5,
-      "olfaction": 0.25
-    }
-  },
-  "vulnerability_index": {
-    "formula": "speed * vision * hearing * motor * olfaction",
-    "interpretation": "lower product indicates higher vulnerability",
-    "reference_band": "young_20_40"
-  },
-  "universal_design_thresholds": {
-    "min_ambient_illuminance_lux": 300,
-    "max_rt60_speech_s": 0.4,
-    "min_snr_db": 15,
-    "min_cof": 0.55,
-    "max_riser_mm": 170,
-    "min_contrast_ratio": 0.7,
-    "min_wayfinding_channels": 3
-  },
-  "challenge_gradient_available": false,
-  "lifespan_sensitivity_multiplier": {
-    "model": "u_curve_piecewise",
-    "reference": "age_25_50",
-    "by_age_range": {
-      "age_0_6": 1.6,
-      "age_6_12": 1.35,
-      "age_12_25": 1.15,
-      "age_25_50": 1.0,
-      "age_50_65": 1.2,
-      "age_65_80": 1.45,
-      "age_80_plus": 1.7
-    },
-    "boundary_rule": {
-      "range": "16-25",
-      "method": "linear_interpolation_to_adult_baseline"
-    }
-  },
-  "developmental_challenge_benefit": false,
-  "context_modes": {
-    "school": {
-      "context": "school",
-      "classroom_parameters": {
-        "daylight_vqi_min": {
-          "primary_5_9": 50,
-          "upper_9_12": 40,
-          "secondary_12_16": 35
-        },
-        "illuminance_lux": {
-          "min": 300,
-          "max": 500
-        },
-        "cct_k": {
-          "primary_5_9": 4000,
-          "upper_9_12": {
-            "min": 4000,
-            "max": 5000
-          },
-          "secondary_12_16": {
-            "min": 4000,
-            "max": 5000
-          }
-        },
-        "acoustic_rt60_s_max": {
-          "primary_5_9": 0.4,
-          "upper_9_12": 0.5,
-          "secondary_12_16": 0.6
-        },
-        "background_noise_dba_max": {
-          "primary_5_9": 35,
-          "upper_9_12": 40,
-          "secondary_12_16": 40
-        },
-        "visual_complexity_target": {
-          "primary_5_9": "moderate_low",
-          "upper_9_12": "moderate",
-          "secondary_12_16": "moderate"
-        },
-        "display_area_m2_per_child": {
-          "primary_5_9": 0.5,
-          "upper_9_12": 0.3,
-          "secondary_12_16": "lockers_desks"
-        },
-        "nature_view_priority": {
-          "primary_5_9": "essential",
-          "upper_9_12": "very_important",
-          "secondary_12_16": "important"
-        },
-        "movement_break_min": {
-          "primary_5_9": "15-20",
-          "upper_9_12": "25-30",
-          "secondary_12_16": "40-45"
-        },
-        "ceiling_height_m": {
-          "primary_5_9": {
-            "min": 2.7,
-            "max": 3.0
-          },
-          "upper_9_12": {
-            "min": 3.0,
-            "max": 3.5
-          },
-          "secondary_12_16": {
-            "min": 3.0,
-            "max": 3.5
-          }
-        },
-        "spatial_clarity": {
-          "primary_5_9": "maximum",
-          "upper_9_12": "high",
-          "secondary_12_16": "moderate"
-        }
-      }
-    }
-  },
-  "pe_contribution": "organizational",
-  "practical_accessibility": "B",
-  "dedup_status": "residual",
-  "generation": 1,
-  "ecological_validation": false,
-  "panel_docs": [
-    "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-    "docs/02-15_20_Panel_V_Social_Brain_V1_0.md"
-  ],
-  "panel_source": "Panel IV (Cognitive Control & Reward)",
-  "panel_reasoning_excerpt": "### T41: NM_REWARD_PREDICTION_ERROR_001\n\n**Framework**: NM (Neuromodulatory Systems)\n**Name**: Environmental Reward Prediction Error\n**Structural Pattern**: MEDIATION (environment \u2192 RPE signal \u2192 approach/avoid behavior)\n**Higher-Order Principle**: Midbrain dopamine neurons compute the temporal difference between expected and received environmental reward, producing phasic signals that update cached values and guide exploration.\n\n[code block omitted]",
-  "justification_status": "raw_excerpt",
-  "excerpt_source": "docs/02-15_14_Panel_IV_Cognitive_Control_Reward_V1_0.md",
-  "excerpt_char_range": [
-    27267,
-    31762
-  ],
+  "display_id": "NM1",
+  "name": "Reward Prediction Error \u2014 Dopaminergic Novelty Response",
   "t1_frameworks": [
     "NM"
   ],
-  "calibration_status": "uncalibrated"
+  "calibration_status": "calibrated",
+  "panel_source": "NEUROMOD-I",
+  "calibrated_date": "2026-02-23",
+  "primary_anchor": "Schultz",
+  "complement": "Dayan",
+  "calibration_constraint": "C-04 (PE encoding partial-out: NEUROMOD-I owns DA mechanism; MEMORY-I owns encoding), C-06 (Coburn ceiling d < 0.80), C-07 (scope: phasic novelty response, single encounter), C-08 (IE-DPT: Level 1, fully implicit)",
+  "ie_dpt_interaction": "Level 1 \u2014 Fully implicit. Phasic DA RPE operates below conscious awareness; occupants experience novelty-driven approach motivation without conscious recognition of the prediction error mechanism. Architectural implication: novel spatial configurations produce automatic approach behaviour that habituates with repeated exposure.",
+  "mechanism_chain": [
+    {
+      "step_number": 1,
+      "step_name": "architectural_novelty \u2192 sensory_prediction_error",
+      "description": "Novel architectural features (unexpected spatial configuration, material, vista) generate sensory prediction errors relative to the brain's generative model of the built environment",
+      "justification": {
+        "claim": "Encountering an architectural feature that deviates from the brain's prior spatial model generates a sensory prediction error signal",
+        "data": [
+          {
+            "source": "Schultz (1998)",
+            "finding": "Unexpected reward or sensory stimulus produces phasic midbrain DA neuron firing above baseline (50-100ms latency, 100-200ms duration); N=multiple single-unit studies in non-human primates",
+            "paradigm": "Single-unit recording, classical conditioning paradigm",
+            "effect": "RPE signal magnitude proportional to surprise magnitude",
+            "design": "Within-subjects (single neuron recording)"
+          },
+          {
+            "source": "Bunzeck & D\u00fczel (2006)",
+            "finding": "Novel visual scenes activate substantia nigra/ventral tegmental area (SN/VTA) in humans; novelty bonus additive with reward expectation; N=18",
+            "paradigm": "fMRI, novel scene viewing",
+            "effect": "SN/VTA BOLD signal d = 0.65 for novel vs. familiar scenes",
+            "design": "Within-subjects"
+          }
+        ],
+        "backing": "Predictive processing theory posits that the brain maintains a generative model of the environment; deviations from this model produce prediction errors that are signalled by phasic DA neuron firing. Architectural novelty (unusual spatial configurations, unexpected vistas, surprising material textures) constitutes a class of sensory prediction errors processed through the visual-spatial system before reaching mesolimbic DA circuits.",
+        "warrant": "MECHANISM",
+        "qualifier": "The RPE mechanism is well-established in animal models and confirmed in human fMRI. Bridge from laboratory visual novelty to architectural novelty is EMPIRICAL_COVARIANCE \u2014 the stimuli differ in complexity, multimodality, and ecological validity. Architectural spaces engage multiple sensory modalities simultaneously, potentially producing larger or more sustained RPEs than single-modality laboratory stimuli. However, architectural RPEs have not been directly measured.",
+        "rebuttal": "Architectural novelty may engage different neural circuits than the simple visual novelty used in Bunzeck & D\u00fczel (2006). Complex spaces may produce distributed cortical prediction errors (hippocampal mismatch, cortical surprise) that do not converge on mesolimbic DA. The bridge from SN/VTA activation to experienced approach motivation in architectural contexts is a two-step inference.",
+        "competing_accounts": [
+          {
+            "account": "Curiosity-driven exploration",
+            "proponent": "Gottlieb, Oudeyer, Lopes & Baranes (2013)",
+            "claim": "Novelty-seeking is driven by information gain computation, not RPE per se; the DA signal indexes learning progress, not raw surprise",
+            "implication_for_template": "If curiosity-driven, the DA signal should be proportional to expected learning gain, not raw novelty magnitude; highly complex but uninformative spaces would not sustain DA response"
+          }
+        ],
+        "confidence": 0.55,
+        "depth_tier": "A",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 1 of 11: NM_REWARD_PREDICTION_ERROR_001"
+      }
+    },
+    {
+      "step_number": 2,
+      "step_name": "sensory_prediction_error \u2192 phasic_DA_release",
+      "description": "Sensory prediction error propagates to VTA/SN, triggering phasic dopamine release in nucleus accumbens and prefrontal cortex",
+      "justification": {
+        "claim": "Sensory prediction errors reach VTA/SN midbrain dopamine neurons, which respond with phasic firing that releases DA in target regions (NAcc, PFC)",
+        "data": [
+          {
+            "source": "Schultz (2016)",
+            "finding": "Comprehensive review confirming DA neuron phasic firing encodes RPE across reward, sensory, and cognitive domains; >200 studies synthesised",
+            "paradigm": "Review of single-unit, optogenetic, pharmacological, and fMRI studies",
+            "effect": "Phasic DA response scales linearly with RPE magnitude in the range -2 to +4 standard surprise units",
+            "design": "Multiple paradigms"
+          },
+          {
+            "source": "Guitart-Masip et al. (2010)",
+            "finding": "Human fMRI shows SN/VTA activation to novel visual stimuli that predicts subsequent memory encoding; N=24",
+            "paradigm": "fMRI novelty-encoding paradigm",
+            "effect": "SN/VTA-hippocampal connectivity r = 0.35 (novelty > familiar contrast)",
+            "design": "Within-subjects"
+          }
+        ],
+        "backing": "The VTA-NAcc-PFC circuit is the canonical mesolimbic pathway. Phasic DA in NAcc drives approach motivation (wanting); phasic DA in PFC supports working memory updating for the novel stimulus. This circuit is constitutive of the reward prediction error signal.",
+        "warrant": "CONSTITUTIVE",
+        "qualifier": "VTA-NAcc circuit is the best-characterised neuromodulatory pathway in neuroscience. The constitutive warrant reflects that phasic DA IS the RPE signal (Schultz, 2016). However, from-architectural-novelty-to-VTA activation involves intermediary processing (visual cortex \u2192 hippocampal comparator \u2192 VTA) that is less well-characterised for complex architectural stimuli.",
+        "rebuttal": "Non-DA mechanisms (norepinephrine, serotonin) also respond to novelty and could contribute to approach motivation independently of DA RPE. In particular, LC-NE novelty responses (Sara, 2009) overlap temporally with DA RPE and may be confounded in fMRI studies.",
+        "competing_accounts": [],
+        "confidence": 0.65,
+        "depth_tier": "A",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 1 of 11: NM_REWARD_PREDICTION_ERROR_001"
+      }
+    },
+    {
+      "step_number": 3,
+      "step_name": "phasic_DA_release \u2192 approach_motivation",
+      "description": "Phasic DA release in nucleus accumbens generates approach motivation (wanting) toward the novel architectural feature, driving exploration and engagement",
+      "justification": {
+        "claim": "DA release in NAcc produces incentive salience that motivates approach toward the novel stimulus source",
+        "data": [
+          {
+            "source": "Berridge (2007)",
+            "finding": "Mesolimbic DA mediates incentive salience (wanting) rather than hedonic pleasure (liking); DA depletion eliminates approach motivation while preserving consummatory pleasure",
+            "paradigm": "Animal models: DA depletion, microinjection, genetic manipulation",
+            "effect": "DA depletion reduces approach behaviour by ~80% while hedonic reactions preserved",
+            "design": "Between-subjects (lesion vs. sham)"
+          },
+          {
+            "source": "Wittmann et al. (2008)",
+            "finding": "Novelty-related SN/VTA activation predicts subsequent exploratory behaviour in humans; N=20",
+            "paradigm": "fMRI + behavioural exploration task",
+            "effect": "SN/VTA novelty response predicts exploration choice, \u03b2 = 0.42",
+            "design": "Within-subjects"
+          }
+        ],
+        "backing": "The wanting/liking dissociation (Berridge, 2007) is one of the most robust findings in affective neuroscience. DA mediates the motivational component \u2014 the urge to approach, explore, and interact with the stimulus. In architectural terms, this translates to movement toward, visual engagement with, and exploration of the novel feature.",
+        "warrant": "MECHANISM",
+        "qualifier": "The DA-wanting link is established in animal models and supported by human fMRI. The architectural bridge (DA release \u2192 physical approach and exploration of spatial features) is FUNCTIONAL \u2014 we infer that the same motivational mechanism drives exploration of architectural novelty as drives approach toward laboratory reward stimuli.",
+        "rebuttal": "Approach motivation in buildings is also driven by goal-directed behaviour (need to reach a destination), social attraction (following others), and habit (familiar route). DA-driven novelty approach may be a minor component of total movement behaviour in most architectural contexts.",
+        "competing_accounts": [
+          {
+            "account": "Goal-directed approach",
+            "proponent": "Daw, Niv & Dayan (2005)",
+            "claim": "Approach behaviour is model-based (goal-directed), not model-free (DA-driven); people approach novel architecture because they consciously decide to explore, not because DA compels them",
+            "implication_for_template": "If primarily model-based, the DA RPE contributes information (novelty detection) but the decision to approach is mediated by PFC deliberation, reducing the direct DA\u2192behaviour link"
+          }
+        ],
+        "confidence": 0.5,
+        "depth_tier": "A",
+        "theoretical_default_note": "THEORETICAL_DEFAULT: Architectural approach motivation attributed to DA RPE is extrapolated from laboratory novelty paradigms. No direct measurement of DA-driven exploration behaviour in architectural settings. Confidence capped at 0.50 per C-07 (limited paradigms for architectural-specific evidence).",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 1 of 11: NM_REWARD_PREDICTION_ERROR_001"
+      }
+    },
+    {
+      "step_number": 4,
+      "step_name": "approach_motivation \u2192 RPE_habituation",
+      "description": "With repeated exposure, the architectural feature becomes predicted; RPE diminishes toward zero, and approach motivation habituates",
+      "justification": {
+        "claim": "RPE habituates as the brain's generative model updates to incorporate the formerly novel feature; approach motivation driven by RPE diminishes",
+        "data": [
+          {
+            "source": "Schultz (1998)",
+            "finding": "DA neuron response transfers from reward to reward-predicting cue with learning; once the reward is fully predicted, phasic response to reward = 0",
+            "paradigm": "Single-unit recording, classical conditioning over multiple sessions",
+            "effect": "Complete habituation of RPE to fully predicted stimuli (5-15 trials for simple stimuli)",
+            "design": "Within-subjects (longitudinal single-unit)"
+          },
+          {
+            "source": "Bunzeck & D\u00fczel (2006)",
+            "finding": "SN/VTA novelty response diminishes with repeated presentation (habituation); 2nd presentation shows ~50% reduction",
+            "paradigm": "fMRI, repeated novel scene exposure",
+            "effect": "~50% signal reduction on 2nd exposure, ~80% by 4th exposure",
+            "design": "Within-subjects"
+          }
+        ],
+        "backing": "RPE habituation is a defining feature of the prediction error mechanism \u2014 it IS the signal that learning has occurred. For architecture, this means that the initial novelty-driven approach (the 'wow' of first encounter) necessarily fades as the building becomes familiar. Sustained engagement requires either ongoing unpredictable rewards (varied daylight, changing social context) or mechanisms beyond RPE (incentive sensitisation, see NM_WANTING_LIKING_DISSOCIATION_001).",
+        "warrant": "MECHANISM",
+        "qualifier": "Habituation rate depends on stimulus complexity. Architecturally complex buildings with multiple discoverable features (Zumthor's Therme Vals, Aalto's S\u00e4yn\u00e4tsalo Town Hall) may sustain RPE over many visits because the full spatial model takes longer to learn. Simple buildings may habituate in 1-3 visits.",
+        "rebuttal": "Some environmental features (seasonal light changes, living materials that patina, changing vegetation) continually update the sensory input, potentially sustaining RPE indefinitely. Buildings are not static stimuli; weather, occupancy, and time of day produce ongoing prediction errors.",
+        "competing_accounts": [],
+        "confidence": 0.6,
+        "depth_tier": "A",
+        "panel_debate_reference": "docs/NEUROMOD_I_Panel_Output.md \u2014 Template 1 of 11: NM_REWARD_PREDICTION_ERROR_001"
+      }
+    }
+  ],
+  "calibrated_parameters": {
+    "RPE_habituation_rate": {
+      "value": 0.5,
+      "unit": "proportion signal reduction per repeated exposure",
+      "range": [
+        0.3,
+        0.8
+      ],
+      "interpretation": "~50% reduction on 2nd exposure for simple architectural features; slower habituation for complex, multi-feature spaces",
+      "confidence": 0.55,
+      "warrant": "EMPIRICAL_COVARIANCE",
+      "source": "Bunzeck & D\u00fczel (2006, N=18)"
+    },
+    "novelty_approach_d": {
+      "value": 0.42,
+      "unit": "standardised beta (SN/VTA \u2192 exploration choice)",
+      "range": [
+        0.25,
+        0.6
+      ],
+      "interpretation": "Novelty-related DA activation predicts subsequent exploration behaviour",
+      "confidence": 0.5,
+      "warrant": "MECHANISM",
+      "source": "Wittmann et al. (2008, N=20)",
+      "theoretical_default_note": "THEORETICAL_DEFAULT: Laboratory exploration paradigm extrapolated to architectural exploration"
+    }
+  },
+  "cross_template_interactions": [
+    {
+      "template_id": "NM_WANTING_LIKING_DISSOCIATION_001",
+      "interaction_type": "sequential",
+      "description": "RPE habituation outcome feeds into wanting/liking balance; habituated RPE reduces wanting component, but incentive sensitisation (NM2) may sustain or amplify wanting via separate mechanism"
+    },
+    {
+      "template_id": "NM_DOPAMINE_NOVELTY_002",
+      "interaction_type": "scope_partition",
+      "description": "NM1 owns phasic single-encounter RPE; NM3 owns phasic novelty in single encounter scope (C-07). Partial overlap managed by: NM1 = mechanism (how RPE works), NM3 = design parameter (novelty as architectural variable)"
+    },
+    {
+      "template_id": "MULTIMODAL_PE_INTEGRATION_001",
+      "interaction_type": "feeds_into",
+      "description": "Single-modality RPE from NM1 is one input to multimodal PE convergence (NM10)"
+    },
+    {
+      "template_id": "MS_ENCODING_PE_001",
+      "interaction_type": "partial_out",
+      "description": "C-04: NEUROMOD-I owns DA mechanism; MEMORY-I owns encoding outcome. NM1 stops at approach_motivation; encoding effects are MS_ENCODING_PE_001's domain"
+    }
+  ],
+  "super_template_interactions": {
+    "AX4_perceived_control": {
+      "interaction": "Minimal \u2014 RPE is an automatic signal not directly moderated by perceived control (C-12: AX4 moderates HPA and NE, not DA)",
+      "estimated_moderation": "Not applicable"
+    },
+    "IC2_interoceptive": {
+      "interaction": "Visceral prediction errors may amplify or compete with architectural RPE for DA resources; Barrett-Craig Stage 1 (posterior insula) processes bodily prediction errors that could gate architectural RPE processing",
+      "estimated_moderation": "Low (d < 0.15), THEORETICAL_DEFAULT"
+    }
+  },
+  "residual_gaps": [
+    {
+      "gap_id": "NM1_GAP1",
+      "description": "No direct measurement of DA RPE in architectural contexts; bridge from laboratory novelty to architectural novelty is inferred",
+      "severity": "medium",
+      "resolution_path": "Mobile fNIRS or PET studies in real architectural settings"
+    },
+    {
+      "gap_id": "NM1_GAP2",
+      "description": "Habituation rate for complex architectural stimuli unknown; laboratory rates may not transfer",
+      "severity": "low",
+      "resolution_path": "Longitudinal tracking of novelty responses across building visits"
+    }
+  ],
+  "confidence": 0.5,
+  "bridge_warrant": "MECHANISM",
+  "key_references": [
+    "Schultz, W. (1998). Predictive reward signal of dopamine neurons. Journal of Neurophysiology, 80(1), 1-27.",
+    "Schultz, W. (2016). Dopamine reward prediction-error signalling: A two-component response. Nature Reviews Neuroscience, 17(3), 183-195.",
+    "Bunzeck, N., & D\u00fczel, E. (2006). Absolute coding of stimulus novelty in the human substantia nigra/VTA. Neuron, 51(3), 369-379.",
+    "Berridge, K. C. (2007). The debate over dopamine's role in reward: The case for incentive salience. Psychopharmacology, 191(3), 391-431.",
+    "Wittmann, B. C., et al. (2008). Mesolimbic interaction of emotional valence and reward improves memory formation. Neuropsychologia, 46(4), 1000-1008."
+  ],
+  "provenance": "panel_calibrated",
+  "calibration_date": "2026-02-23",
+  "tier": "A",
+  "t1_5_parent_theories": [],
+  "t1_5_candidates": [
+    "Reward_Prediction_Theory"
+  ],
+  "higher_order_principle": " \u2192  pathway: The mechanism by which reward prediction error \u2014 dopaminergic novelty response operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.972920+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "theory_links": [
+    {
+      "theory_id": "ART",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": [
+    {
+      "molecule_id": "art",
+      "confidence": 0.5
+    }
+  ]
 }

@@ -1,0 +1,803 @@
+{
+  "doi": "10.3390/ijerph17093219",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.793,
+  "n_findings": 12,
+  "extracted_at": "2026-02-25T01:17:37.562650+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004602,
+  "title": "The Impact of Optimized Daylight and Views on the Sleep Duration and Cognitive Performance of Office Workers",
+  "authors": "Mohamed Boubekri et al., 2020",
+  "research_question": "To explore the impact of optimized daylight and views (achieved via electrochromic glass) on the sleep duration and cognitive performance of office workers, compared to traditional blinds.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 30,
+    "description": "30 knowledge workers (21-65 years old) from Durham, North Carolina, working Monday-Friday, 8 hours/day, primarily on computers. Exclusions: sleep apnea, insomnia, depression, claustrophobia, schizophrenia, significant childcare responsibilities, anxiety/ADHD/sleep medication, abnormal sleep patterns.",
+    "recruitment": "Advertised through flyers and e-mail notifications to building occupants at two coworking offices."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "Two adjacent, identical office suites (layout, furnishings, orientation). One suite had windows with 1.5% visible transmittance dark fabric roller blinds, kept 75% deployed (40.6 EML, 4122 K CCT). The other suite had electrochromic (EC) glazing (View Inc.) with four tint states (58% down to 0.5% visible transmittance), automatically tinting to mitigate glare while maintaining views and increasing blue light (316 EML, 7485 K CCT).",
+      "n_stimuli": 2,
+      "source": "Section 2.1, Section 2.3, Figure 1, Table 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Total sleep time",
+      "instrument": "ActiGraph wgt3x (wrist-worn actigraph device) processed with ActiLife software (Cole-Kripke algorithm)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Cognitive function (across nine domains: basic activity level, applied activity level, focused activity level, task orientation, crisis management, information seeking, information usage, breadth of approach, strategy, average)",
+      "instrument": "Strategic Management Simulation (SMS) assessment software",
+      "type": "performance"
+    },
+    {
+      "construct": "Indoor environmental quality (temperature, relative humidity, CO2, PM2.5, TVOCs, noise)",
+      "instrument": "Awair Omni devices",
+      "type": "observational"
+    },
+    {
+      "construct": "Lighting conditions (horizontal illuminance, vertical illuminance, CCT, photon flux density, equivalent melanopic lux (EML), Circadian Stimulus (CS))",
+      "instrument": "Awair Omni devices, LI-COR model LI-180 spectrometer",
+      "type": "observational"
+    },
+    {
+      "construct": "Lifestyle factors (melatonin intake, evening exercise, alcoholic drinks, caffeine intake after noon, evening screen time duration)",
+      "instrument": "Qualtrics platform (daily surveys)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Baseline sleep quality",
+      "instrument": "PSQI (Pittsburgh Sleep Quality Index) global score",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Working in optimized daylight and views condition (EC glass) compared to traditional blinds condition",
+      "consequent": "Total sleep time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": 36.96,
+      "effect_size_type": "minutes",
+      "sample_size": 24,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1"
+      ],
+      "mechanism": "Optimized daylight conditions (higher EML, higher CCT, more blue light) entrain circadian rhythms, leading to increased sleep duration.",
+      "moderators_reported": [
+        "melatonin use",
+        "evening exercise",
+        "alcoholic drinks",
+        "caffeine intake after 12 pm",
+        "evening screen time duration"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Condition: Optimized Daylight & Views (\u03b21) 36.96 <0.001",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Working in optimized daylight and views condition (EC glass) for one day (Monday) compared to baseline",
+      "consequent": "Total sleep time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 24,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1"
+      ],
+      "mechanism": "Immediate circadian entrainment from optimized daylight.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9, Figure 4",
+      "quote": "consistently longer sleep duration in the optimized daylight office, even after only one day of exposure",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Working in optimized daylight and views condition (EC glass) over the course of the work week compared to baseline",
+      "consequent": "Total sleep time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 24,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2",
+        "AX2"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1",
+        "AX7"
+      ],
+      "mechanism": "Sustained circadian entrainment and reduced sleep debt over time.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.10, Figure 4",
+      "quote": "sleep debt or sleep benefit accumulated over the course of the work week in each condition",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Working in traditional blinds condition for one day (Monday) compared to baseline",
+      "consequent": "Total sleep time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 24,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1"
+      ],
+      "mechanism": "Insufficient daylight exposure in the blinds condition negatively impacts circadian rhythm entrainment.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9, Figure 4",
+      "quote": "shorter sleep duration observed on Monday night in the blinds condition compared to baseline",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Working in traditional blinds condition over the course of the work week compared to baseline",
+      "consequent": "Total sleep time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 24,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2",
+        "AX2"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1",
+        "AX7"
+      ],
+      "mechanism": "Sustained insufficient daylight exposure leads to accumulated sleep debt.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.10, Figure 4",
+      "quote": "sleep debt or sleep benefit accumulated over the course of the work week in each condition",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Poor sleepers (PSQI global score > 5) working in optimized daylight and views condition (EC glass) compared to traditional blinds condition",
+      "consequent": "Total sleep time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": 52.8,
+      "effect_size_type": "minutes",
+      "sample_size": 15,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2",
+        "AX8"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1"
+      ],
+      "mechanism": "Poor sleepers, starting with lower baseline sleep, experience a greater benefit from optimized daylight for circadian entrainment.",
+      "moderators_reported": [
+        "baseline sleep quality (poor sleepers)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Poor Sleepers... Condition: Optimized Daylight and Views (\u03b21) 52.80 <0.001",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Good sleepers (PSQI global score <= 5) working in optimized daylight and views condition (EC glass) compared to traditional blinds condition",
+      "consequent": "Total sleep time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "0.214",
+      "effect_size": 18.08,
+      "effect_size_type": "minutes",
+      "sample_size": 9,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB",
+        "L2",
+        "CSA2",
+        "AX8"
+      ],
+      "template_ids": [
+        "T30",
+        "CLE1",
+        "CAR1"
+      ],
+      "mechanism": "Good sleepers, starting with adequate baseline sleep, experience a smaller, non-significant benefit from optimized daylight.",
+      "moderators_reported": [
+        "baseline sleep quality (good sleepers)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "Good Sleepers... Condition: Optimized Daylight and Views (\u03b21) 18.08 0.214",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Working in optimized daylight and views condition (EC glass) compared to traditional blinds condition",
+      "consequent": "Average cognitive function scores (SMS assessment)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": "<0.0001",
+      "effect_size": 0.42,
+      "effect_size_type": "beta",
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "L1",
+        "T20"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Improved daylight and views reduce cognitive load, enhance alertness (short wavelength light), and support higher-order decision-making.",
+      "moderators_reported": [
+        "indoor temperature"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Condition: Optimized Daylight & Views (\u03b21) 0.42 <0.0001",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Exposure to optimized daylight and views for one day",
+      "consequent": "Cognitive function scores",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.07,
+      "effect_size_type": "percentage",
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "L1",
+        "Biophilia",
+        "VIEW1",
+        "T20"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Immediate impact of improved views outdoors and alerting effects of short wavelength light.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "The effect after one day of optimized daylight exposure was 7%",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Exposure to optimized daylight and views over the course of the work week (by Friday)",
+      "consequent": "Cognitive function scores",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.79,
+      "effect_size_type": "percentage",
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "L1",
+        "Biophilia",
+        "VIEW1",
+        "AX7",
+        "T20"
+      ],
+      "template_ids": [
+        "T20",
+        "AX7"
+      ],
+      "mechanism": "Cumulative effect of sustained optimized daylight and views on cognitive performance.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "By Friday, the difference in cognitive function scores was 79%, suggesting a cumulative effect",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Indoor temperature",
+      "consequent": "Average cognitive function scores (SMS assessment)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": "0.006",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC_THERMAL_COMFORT",
+        "T74"
+      ],
+      "template_ids": [],
+      "mechanism": "Optimal cognitive function occurs within a specific thermal comfort range (72-73\u00b0F).",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 5, Figure 7, p.12",
+      "quote": "s(Temp) 0.006",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Spending more time in the traditional blinds condition over the week",
+      "consequent": "Cognitive function scores",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "L1",
+        "T20"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Sustained daylight deprivation negatively impacts cognitive performance.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.11, Figure 6",
+      "quote": "performance improved as they spent the week in the optimized daylight and views condition, while it declined as they spent more time in the blinds condition",
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Optimized daylight (higher EML, higher CCT, more blue light) helps entrain circadian rhythms.",
+    "Circadian rhythm entrainment impacts sleep quality and duration.",
+    "Improved sleep quality and duration positively impact cognitive function.",
+    "Improved views outdoors and alerting effects of short wavelength light contribute to cognitive benefits.",
+    "Reduced cognitive load and enhanced alertness from optimized daylight and views.",
+    "Optimal temperature range for cognitive function."
+  ],
+  "moderators": [
+    "Baseline sleep quality (poor sleepers showed greater benefit for sleep duration)",
+    "Indoor temperature (curvilinear relationship with cognitive function)"
+  ],
+  "implementation_implications": [
+    "Developers and architects should consider the substantial benefits of access to daylight and views when designing, constructing, and renovating office buildings.",
+    "There is a significant opportunity to improve sleep quality and office worker performance through the use of EC technology, which optimizes daylight and views while mitigating glare."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A10_Temporal",
+    "A6_Visual_Form",
+    "A7_Haptic_Thermal"
+  ],
+  "overall_theory_links": [
+    "CB",
+    "DT",
+    "PP",
+    "Biophilia",
+    "SRT"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Summary of Participant Demographics.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Environmental conditions in the two office environments.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Linear mixed-effects model of sleep duration by office condition and lifestyle factors.",
+      "key_stats": [
+        "p<0.001 for condition"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Linear mixed effects model of sleep duration by office condition and lifestyle factors, stratified by baseline sleep quality.",
+      "key_stats": [
+        "Poor Sleepers: p<0.001 for condition",
+        "Good Sleepers: p=0.214 for condition"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 5",
+      "description": "Generalized additive mixed effect model of the effect of condition on average cognitive function scores, controlling for temperature and treating participant as a random effect.",
+      "key_stats": [
+        "p<0.0001 for condition",
+        "p=0.006 for temperature (spline)"
+      ],
+      "n_findings_extracted_from": 2
+    }
+  ],
+  "limitations": [
+    "Some effects might be due to a placebo effect, though this would be present in real-world use of EC glass or blinds.",
+    "Findings may not generalize to different office configurations or window treatments.",
+    "The study design (comparing blinds to EC glass) does not allow for determining the impact of windowless offices or offices with no blinds.",
+    "Window orientation can impact blind usage and EC glass tinting timing, which was not varied.",
+    "Blinds position was fixed, which may not reflect typical user behavior.",
+    "Findings may not be generalizable to other settings like schools or hospitals, as only knowledge workers were recruited.",
+    "The study did not investigate other environmental and behavioral variables (CO2, VOCs, ventilation rates, internet use, recreational drug use) known to influence sleep or cognition.",
+    "Only two conditions were tested, preventing the determination of a dose-response relationship between daylight/view quality and cognition.",
+    "Participants could not be fully blinded to conditions due to visual differences between the window treatments."
+  ],
+  "paper_metadata": {
+    "doi": "10.3390/ijerph17093219",
+    "title": "The Impact of Optimized Daylight and Views on the Sleep Duration and Cognitive Performance of Office Workers",
+    "authors": [
+      "M. Boubekri",
+      "Jaewook Lee",
+      "P. MacNaughton",
+      "May K Woo",
+      "Lauren Schuyler",
+      "Brandon Tinianov",
+      "U. Satish"
+    ],
+    "year": 2020,
+    "journal": "International Journal of Environmental Research and Public Health",
+    "volume": "17",
+    "issue": "9",
+    "pages": "3219",
+    "publisher": "MDPI AG",
+    "citation_count": 105,
+    "influential_citation_count": 2,
+    "references": [
+      "10.1001/ARCHINTE.166.16.1768",
+      "10.1001/archinte.166.16.1768",
+      "10.1007/978-3-642-25950-0_13",
+      "10.1007/s40572-015-0063-y",
+      "10.1016/J.BUILDENV.2018.01.006",
+      "10.1016/J.BUILDENV.2018.07.002",
+      "10.1016/S0924-977X(02)00175-X",
+      "10.1016/j.ajp.2017.03.025",
+      "10.1016/j.buildenv.2018.01.006",
+      "10.1016/j.buildenv.2018.07.002",
+      "10.1016/j.csbj.2015.07.001",
+      "10.1016/j.sleep.2015.07.037",
+      "10.1016/j.sleep.2017.04.008",
+      "10.1016/j.tins.2013.10.004",
+      "10.1016/j.yebeh.2008.04.024",
+      "10.1016/j.ypmed.2013.06.017",
+      "10.1038/sj.jea.7500165",
+      "10.1046/J.1365-2869.2000.00228.X",
+      "10.1046/j.1365-2869.2000.00228.x",
+      "10.1046/j.1398-9995.2003.00360.x",
+      "10.1093/SLEEP/11.1.100",
+      "10.1093/SLEEP/15.5.461",
+      "10.1093/SLEEP/17.1.84",
+      "10.1093/sleep/11.1.100",
+      "10.1093/sleep/15.5.461",
+      "10.1093/sleep/17.1.84",
+      "10.1093/sleep/zsy221",
+      "10.1108/14725960810847459",
+      "10.1111/J.1744-6570.1988.TB00643.X",
+      "10.1111/ina.12593",
+      "10.1111/j.1365-2869.2009.00816.x",
+      "10.1111/j.1744-6570.1988.tb00643.x",
+      "10.1115/1.4052871",
+      "10.1126/SCIENCE.6143402",
+      "10.1126/science.6143402",
+      "10.1158/1055-9965.EPI-18-1018",
+      "10.1177/0013916586185003",
+      "10.1177/036063251604601009",
+      "10.1177/036063251904900517",
+      "10.1177/1477153516682368",
+      "10.1210/JCEM.83.12.5326",
+      "10.1289/ehp.1104789",
+      "10.1289/ehp.1510037",
+      "10.1371/journal.pmed.1002605",
+      "10.2147/NSS.S151085",
+      "10.3390/clockssleep1030024",
+      "10.3390/ijerph16224315",
+      "10.5664/jcsm.3780"
+    ],
+    "cited_by": [
+      "10.1108/sl-08-2025-0269",
+      "10.1061/9780784486610.018",
+      "10.69484/rcz/v5/n1/165",
+      "10.3390/buildings16030515",
+      "10.1117/12.3097505",
+      "10.3390/su18021112",
+      "10.3389/frsle.2025.1722557",
+      "10.64691/qpwew082",
+      "10.3390/buildings15234373",
+      "10.1016/j.buildenv.2025.114106",
+      "10.15627/jd.2025.29",
+      "10.15627/jd.2025.26",
+      "10.1080/09613218.2025.2563272",
+      "10.1128/aem.00973-25",
+      "10.1080/07420528.2025.2556842",
+      "10.3390/buildings15162955",
+      "10.48550/arXiv.2508.11335",
+      "10.1016/j.buildenv.2025.113227",
+      "10.3390/buildings15142577",
+      "10.1080/15502724.2025.2515558",
+      "10.47470/0016-9900-2025-104-5-572-576",
+      "10.52131/jer.2025.v6i1.2721",
+      "10.1016/j.buildenv.2025.113147",
+      "10.1016/j.dibe.2025.100658",
+      "10.1016/j.solcom.2025.100116",
+      "10.1080/15502724.2024.2434976",
+      "10.37705/TechTrans/e2025010",
+      "10.3390/land13122090",
+      "10.1080/13467581.2024.2412120",
+      "10.1016/j.jobe.2024.110487",
+      "10.3390/app14219798",
+      "10.1016/j.scitotenv.2024.177212",
+      "10.1017/ash.2024.344",
+      "10.1016/j.buildenv.2024.112156",
+      "10.1016/j.rineng.2024.103190",
+      "10.1016/j.solener.2024.112816",
+      "10.31893/multirev.2024289",
+      "10.1038/s41598-024-69026-x",
+      "10.56061/fbujohs.1487835",
+      "10.1177/14771535241261270",
+      "10.32350/jaabe.71.04",
+      "10.3390/architecture4020024",
+      "10.1016/j.buildenv.2024.111638",
+      "10.33383/2023-086",
+      "10.23919/ANNSIM61499.2024.10732831",
+      "10.3390/buildings14051248",
+      "10.3390/su16093691",
+      "10.1016/j.jenvp.2024.102274",
+      "10.15627/jd.2024.1",
+      "10.1016/j.jobe.2024.108648",
+      "10.1016/j.buildenv.2024.111293",
+      "10.1016/j.buildenv.2024.111214",
+      "10.1016/j.rser.2023.113796",
+      "10.3992/jgb.18.4.99",
+      "10.48550/arXiv.2311.05028",
+      "10.3390/buildings13112742",
+      "10.1371/journal.pone.0287051",
+      "10.1016/j.buildenv.2023.110984",
+      "10.26868/25222708.2023.1174",
+      "10.26868/25222708.2023.1241",
+      "10.1080/17508975.2024.2306273",
+      "10.1080/09613218.2023.2204413",
+      "10.3390/buildings13020471",
+      "10.1016/j.buildenv.2023.110098",
+      "10.3390/buildings13010042",
+      "10.1590/s1678-86212022000400635",
+      "10.3390/ijerph192416772",
+      "10.1038/s41598-022-24509-7",
+      "10.1016/j.buildenv.2022.109842",
+      "10.1088/1755-1315/1101/2/022001",
+      "10.1016/j.energy.2022.125699",
+      "10.3992/jgb.17.4.151",
+      "10.1080/00140139.2022.2108905",
+      "10.1016/j.buildenv.2022.109516",
+      "10.1080/15502724.2022.2055428",
+      "10.1016/j.buildenv.2022.109044",
+      "10.1371/journal.pbio.3001571",
+      "10.3992/jgb.17.2.181",
+      "10.3389/fbuil.2022.787289",
+      "10.1101/2022.01.14.476401",
+      "10.3389/fpsyg.2021.765750",
+      "10.2147/NSS.S251712",
+      "10.3992/1943-4618.17.1.105",
+      "10.3389/fphys.2021.771605",
+      "10.1111/jasp.12771",
+      "10.1111/jasp.12777",
+      "10.1111/jasp.12765",
+      "10.1016/j.buildenv.2021.108505",
+      "10.3390/buildings11100439",
+      "10.3390/ijerph18199980",
+      "10.3389/frsc.2021.690055",
+      "10.1016/J.BUILDENV.2021.107720",
+      "10.14710/jkli.20.2.74-81",
+      "10.1111/JASP.12764",
+      "10.3389/fneur.2021.630553",
+      "10.20944/preprints202012.0037.v1",
+      "10.1136/bmj.m3000",
+      "10.1136/bmj.m2936",
+      "10.1016/j.wss.2025.100242",
+      "10.2139/ssrn.4894690",
+      "10.24404/623c3d976d3e6122e0bb764c"
+    ],
+    "semantic_scholar_id": "9284220e0d7e2cfb4624d5115829d47f7f50b40e",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:49:38.924383+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "The Impact of Optimized Daylight and Views on the Sleep Duration and Cognitive Performance of Office Workers",
+    "crossref_year": 2020,
+    "crossref_citation_count": 99,
+    "crossref_journal": "International Journal of Environmental Research and Public Health",
+    "crossref_publisher": "MDPI AG",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "A growing awareness has recently emerged on the health benefits of exposure to daylight and views. Daylight exposure is linked to circadian rhythm regulation, which can have significant impacts on sleep quality and cognitive function. Views of nature have also been shown to impact emotional affect and performance. This study explores the impact of optimized daylight and views on the sleep and cognitive performance of office workers. Thirty knowledge workers spent one week working in each of two office environments with identical layouts, furnishings, and orientations; however, one was outfitted with electrochromic glass and the other with traditional blinds, producing lighting conditions of 40.6 and 316 equivalent melanopic lux, respectively. Participants in the optimized daylight and views condition slept 37 min longer as measured by wrist-worn actigraphs and scored 42% higher on cognitive simulations designed to test their higher order decision-making performance. Both sleep and cognitive function were impacted after one day in the space, yet the impacts became more significant over the course of the week. The positive effect of optimized daylight and views on cognitive function was comparable for almost all participants, while increases in sleep duration were significantly greater for those with the lowest baseline sleep duration. This study stresses the significance of designing with daylight in order to optimize the sleep quality and performance of office workers.",
+    "crossref_reference_count": 47,
+    "crossref_issn": [
+      "1660-4601"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.905545+00:00",
+    "_cr_refs_added": 9
+  },
+  "year": 2020,
+  "journal": "International Journal of Environmental Research and Public Health",
+  "authors_structured": [
+    "M. Boubekri",
+    "Jaewook Lee",
+    "P. MacNaughton",
+    "May K Woo",
+    "Lauren Schuyler",
+    "Brandon Tinianov",
+    "U. Satish"
+  ],
+  "crossref_title": "The Impact of Optimized Daylight and Views on the Sleep Duration and Cognitive Performance of Office Workers",
+  "crossref_authors": [
+    {
+      "name": "Mohamed Boubekri",
+      "orcid": null,
+      "affiliation": "School of Architecture, University of Illinois Urbana-Champaign, Champaign, IL 61820, USA"
+    },
+    {
+      "name": "Jaewook Lee",
+      "orcid": "https://orcid.org/0000-0001-6519-1985",
+      "affiliation": "School of Architecture, University of Illinois Urbana-Champaign, Champaign, IL 61820, USA"
+    },
+    {
+      "name": "Piers MacNaughton",
+      "orcid": null,
+      "affiliation": "Department of Environmental Health, Harvard T.H. Chan School of Public Health, Boston, MA 02115, USA"
+    },
+    {
+      "name": "May Woo",
+      "orcid": null,
+      "affiliation": "View Inc., Milpitas, CA 95035, USA"
+    },
+    {
+      "name": "Lauren Schuyler",
+      "orcid": null,
+      "affiliation": "View Inc., Milpitas, CA 95035, USA"
+    },
+    {
+      "name": "Brandon Tinianov",
+      "orcid": "https://orcid.org/0000-0002-7004-6827",
+      "affiliation": "View Inc., Milpitas, CA 95035, USA"
+    },
+    {
+      "name": "Usha Satish",
+      "orcid": null,
+      "affiliation": "Psychiatry and Behavioral Sciences, SUNY Upstate Medical University, Syracuse, NY 13210, USA"
+    }
+  ],
+  "crossref_year": 2020,
+  "crossref_journal": "International Journal of Environmental Research and Public Health",
+  "crossref_citation_count": 99,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "MDPI AG",
+  "crossref_subjects": [],
+  "crossref_abstract": "A growing awareness has recently emerged on the health benefits of exposure to daylight and views. Daylight exposure is linked to circadian rhythm regulation, which can have significant impacts on sleep quality and cognitive function. Views of nature have also been shown to impact emotional affect and performance. This study explores the impact of optimized daylight and views on the sleep and cognitive performance of office workers. Thirty knowledge workers spent one week working in each of two office environments with identical layouts, furnishings, and orientations; however, one was outfitted with electrochromic glass and the other with traditional blinds, producing lighting conditions of 40.6 and 316 equivalent melanopic lux, respectively. Participants in the optimized daylight and views condition slept 37 min longer as measured by wrist-worn actigraphs and scored 42% higher on cognitive simulations designed to test their higher order decision-making performance. Both sleep and cognitive function were impacted after one day in the space, yet the impacts became more significant over the course of the week. The positive effect of optimized daylight and views on cognitive function was comparable for almost all participants, while increases in sleep duration were significantly greater for those with the lowest baseline sleep duration. This study stresses the significance of designing with daylight in order to optimize the sleep quality and performance of office workers.",
+  "crossref_fetched_at": "2026-02-25T12:04:00.501312+00:00"
+}

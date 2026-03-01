@@ -1,0 +1,689 @@
+{
+  "doi": "10.48550/arxiv.2102.03629",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.775,
+  "n_findings": 20,
+  "extracted_at": "2026-02-25T01:46:09.512474+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00615,
+  "title": "EEG-based Investigation of the Impact of Classroom Design on Cognitive Performance of Students",
+  "authors": "Jesus G. Cruz-Garza et al., 2021",
+  "research_question": "To investigate the neural dynamics associated with short-term exposure to different virtual classroom designs (window placement and room dimension) and evaluate their impact on cognitive performance and EEG signatures.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 23,
+    "description": "23 healthy human adults (18-55 years, M=26.17, SD=10.4; 8 female, 13 male) with normal or corrected-to-normal vision. Majority were university students (n=21) from the University of Houston, with diverse national and ethnic backgrounds (Asian, Latinx/Hispanic, Middle Eastern, White non-Hispanic). Participants reported low fatigue and no neurological conditions.",
+    "recruitment": "convenience sampling method (word-of-mouth and announcements on departmental e-mail lists)."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Four virtual classroom designs created in Epic Games' Unreal Engine and experienced via Oculus Rift headset: (a) 'Neutral' (no windows, 15 ft x 50 ft), (b) 'One Window' (neutral classroom + one side window with natural scenery view), (c) 'Two Windows' (neutral classroom + extended room width + two front windows with natural scenery view), (d) 'Wide' (neutral classroom + extended room width, no windows). Other environmental variables (temperature, noise, air quality) were held constant.",
+      "n_stimuli": 4,
+      "source": "Figure 2A, p. 5-6"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Cognitive performance",
+      "instrument": "Digit Span Test (DST)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Cognitive performance",
+      "instrument": "Benton Test (BT)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Cognitive performance",
+      "instrument": "Stroop Color Interference Test (ST)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Cognitive performance",
+      "instrument": "Arithmetic Test (AT)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Cognitive performance",
+      "instrument": "Visual Memory Test (VMT)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Neural activity (frequency band-power)",
+      "instrument": "63-channel actiCHamp EEG system (57 scalp electrodes), Delta (1-4 Hz), Theta (4-8 Hz), Alpha (8-12 Hz), Beta (12-30 Hz), Gamma (30-40 Hz) frequency bands",
+      "type": "neural"
+    },
+    {
+      "construct": "Neural activity (connectivity)",
+      "instrument": "63-channel actiCHamp EEG system (57 scalp electrodes), Partial Directed Coherence (PDC)",
+      "type": "neural"
+    },
+    {
+      "construct": "Mental fatigue and stress level",
+      "instrument": "1-10 Likert scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "VR experience discomfort/realism, EEG headset discomfort",
+      "instrument": "1-10 Likert scale",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension)",
+      "consequent": "participants' test response accuracy, number of responses, completion time, inverse efficiency scores (DST, BT, VMT, ST, AT)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "AX7",
+        "AX12"
+      ],
+      "template_ids": [
+        "T20",
+        "AX12"
+      ],
+      "mechanism": "Participants were not sufficiently challenged by these tasks, had achieved mastery, and/or were very focused, leading to a ceiling effect. Short exposure duration in VR may have limited restorative effects.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 13, Figure 4",
+      "quote": "No overall significant effects were found for the different classroom conditions in relation to the participants' test response accuracy, the number of responses, completion time, or inverse efficiency scores",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension)",
+      "consequent": "EEG features (frequency band-power, connectivity) classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "significant",
+      "effect_size": 51.5,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": [
+        51.5,
+        61.3
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T1",
+        "T20"
+      ],
+      "mechanism": "EEG features can identify neural patterns associated with environmental conditions, even without behavioral performance differences, suggesting subtle cognitive, neural, and/or psychological effects.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "The classification results located consistent differences in the EEG features across participants in the different classroom design conditions, with a predictive power (test-set accuracy: 51.5%-61.3%)"
+    },
+    {
+      "id": 3,
+      "antecedent": "interaction between classroom design conditions and cognitive test performed",
+      "consequent": "predictive power of EEG features to identify classroom design condition",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "MS2",
+        "T36",
+        "AX10"
+      ],
+      "mechanism": "The assessment of an architectural design element in an indoor environment is dependent on the task performed by the participants.",
+      "moderators_reported": [
+        "cognitive test performed"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 14, 17",
+      "quote": "The predictive power of the EEG features to identify the classroom design condition was specific to the cognitive test performed."
+    },
+    {
+      "id": 4,
+      "antecedent": "One-Window classroom design vs Neutral classroom design during Visual Memory Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 55.0,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "the test-set median classification accuracies for the three design conditions evaluated were: 55.0% Neutral vs One-Window"
+    },
+    {
+      "id": 5,
+      "antecedent": "Two-Windows classroom design vs Neutral classroom design during Visual Memory Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 57.5,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "57.5% Neutral vs One-Window"
+    },
+    {
+      "id": 6,
+      "antecedent": "Wide classroom design vs Neutral classroom design during Visual Memory Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 61.3,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "61.3% Neutral vs One-Window"
+    },
+    {
+      "id": 7,
+      "antecedent": "One-Window classroom design vs Neutral classroom design during Benton Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 61.3,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "The classifier also distinguished, significantly higher than chance (p < 0.003), the design conditions evaluated for the Benton Test in the Neutral vs One-Window comparison"
+    },
+    {
+      "id": 8,
+      "antecedent": "Two-Windows classroom design vs Neutral classroom design during Benton Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 56.3,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "with test-set median classification accuracies of 61.3% and 56.3%, respectively."
+    },
+    {
+      "id": 9,
+      "antecedent": "One-Window classroom design vs Neutral classroom design during Digit Span Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 53.8,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "The Digit Span Test also yielded EEG features that differed between the Neutral vs One-Window comparison, and in the Neutral vs Two-Windows comparison; with test-set median classification accuracies of 53.8% and 51.3%, respectively."
+    },
+    {
+      "id": 10,
+      "antecedent": "Two-Windows classroom design vs Neutral classroom design during Digit Span Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.003",
+      "effect_size": 51.3,
+      "effect_size_type": "accuracy",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Kruskal-Wallis test",
+      "theory_links": [
+        "MS",
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "EPEP1",
+        "SCM2"
+      ],
+      "mechanism": "Memory encoding specificity, where the context of the environment influences neural representations during memory tasks.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 14, Figure 5",
+      "quote": "with test-set median classification accuracies of 53.8% and 51.3%, respectively."
+    },
+    {
+      "id": 11,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension) during Stroop Test and Arithmetic Test",
+      "consequent": "EEG features classification accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": "These tasks rely on executive control and arithmetic ability, not primarily on holding recently presented information in memory, unlike the working memory tasks where effects were found.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract, p. 18-19",
+      "quote": "These findings were most robust during the Visual Memory Test, and were not found during the Stroop Test and the Arithmetic Test."
+    },
+    {
+      "id": 12,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension)",
+      "consequent": "most discriminative EEG features",
+      "direction": "observed in specific regions and bands",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Features were found in bilateral occipital, parietal, and frontal regions in the theta (4-8 Hz) and alpha (8-12 Hz) frequency bands, suggesting involvement of brain regions associated with attention, memory, and environmental processing.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract, p. 15-16, Figure 6",
+      "quote": "The most discriminative EEG features were observed in bilateral occipital, parietal, and frontal regions in the theta (4-8 Hz) and alpha (8-12 Hz) frequency bands."
+    },
+    {
+      "id": 13,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension)",
+      "consequent": "transfer of information from centro-parietal to frontal electrodes",
+      "direction": "changes",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "DT1",
+        "T38"
+      ],
+      "mechanism": "Connectivity analysis reinforced findings, suggesting changes in information flow within the Dorsal Attention Network and cognitive control hierarchy.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract, p. 15",
+      "quote": "Connectivity analysis reinforced these findings by showing that there were changes in the transfer of information from centro-parietal to frontal electrodes in the different classroom conditions."
+    },
+    {
+      "id": 14,
+      "antecedent": "EEG feature type (frequency band-power vs PDC connectivity)",
+      "consequent": "discriminative power between design conditions",
+      "direction": "band-power more discriminative",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 15",
+      "quote": "Frequency band-power features were more discriminative between design conditions than the PDC connectivity features evaluated here."
+    },
+    {
+      "id": 15,
+      "antecedent": "One-Window classroom design vs Neutral classroom design",
+      "consequent": "relative alpha and beta power in centro-parietal and frontal regions of the scalp",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "DT1",
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 15",
+      "quote": "For the Neutral vs. One-Window comparison, the EEG band-power feature changes were characterized by an increase in relative alpha and beta power in the centro-parietal and frontal regions of the scalp."
+    },
+    {
+      "id": 16,
+      "antecedent": "Two-Windows classroom design and Wide classroom design vs Neutral classroom design",
+      "consequent": "relative alpha and beta power in centro-parietal and frontal regions of the scalp",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "DT1",
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 15",
+      "quote": "In contrast, the Neutral vs. Two Windows, and the Neutral vs Wide, both showed a decrease in relative alpha and beta power in these same regions."
+    },
+    {
+      "id": 17,
+      "antecedent": "different virtual classroom design conditions (window placement, room dimension) during Visual Memory Test",
+      "consequent": "discriminative power of occipital electrodes",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "EPEP1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 15, Figure 6",
+      "quote": "The VMT was the only cognitive test for which the occipital electrodes had the most discriminative power between the different design conditions (Figure 6)."
+    },
+    {
+      "id": 18,
+      "antecedent": "Design condition vs Neutral classroom during Digit Span Test",
+      "consequent": "alpha-band synchronization (increase in band-power) in parietal and right-frontal regions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "MS2",
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 17, Figure 7",
+      "quote": "For the DST, there was alpha-band synchronization within the parietal area, and among right-frontal electrodes, identified by an increase in band-power in the Design condition compared with the Neutral classroom (Figure 7).",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Design condition vs Neutral classroom during Benton Test",
+      "consequent": "alpha-band desynchronization (decrease in band-power) in parietal and right-frontal regions",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "MS2",
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 17, Figure 7",
+      "quote": "In the BT a similar pattern was found as for the DST, but parietal and right-frontal locations showed desynchronization in the alpha band in the design condition evaluated.",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Design condition vs Neutral classroom during Visual Memory Test",
+      "consequent": "overall desynchronization in alpha power with largest decrease in centro-parietal and mid-frontal electrodes, coupled with localized right-parietal and right-frontal alpha-band synchronization",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS",
+        "DT",
+        "PP"
+      ],
+      "template_ids": [
+        "MS2",
+        "T36",
+        "DT1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p. 17-18, Figure 7",
+      "quote": "The VMT was found to yield the largest number of features that reached the significance threshold. These features are distributed across the scalp, with an overall desynchronization in alpha power with the largest decrease in power in centro-parietal and mid-frontal electrodes. This overall desynchronization is coupled with localized right-parietal and right-frontal alpha-band synchronization.",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "The lack of behavioral differences may be due to short exposure duration, insufficient contemplative time for restorative effects of nature views, or the virtual environment omitting holistic features responsible for cognitive restoration (e.g., robust complexity, physical/tactile relationship, conscious awareness of nature).",
+    "The ceiling effect in cognitive task performance (participants scoring near perfectly) suggests tasks were not challenging enough, or participants had achieved mastery through practice, masking potential environmental effects.",
+    "EEG features can detect subtle cognitive, neural, and/or psychological effects of architectural designs even when behavioral performance shows no significant differences.",
+    "Differentiated neural differences were primarily observed in tasks requiring working memory (Benton, Visual Memory, Digit Span) due to the encoding-specificity hypothesis, where storing task-relevant information in memory strengthens mental representations of the surrounding classroom context. This is supported by the neural reinstatement hypothesis.",
+    "The specific EEG features (band-power, connectivity) found to be informative for environment classification converge with theories about the role of the environment in task-specific cognitive functioning, such as the Parietal-Frontal Integration Theory and the Dorsal Attention Network."
+  ],
+  "moderators": [
+    "cognitive test performed"
+  ],
+  "implementation_implications": [
+    "EEG-based approaches can strengthen evidence-based design by providing neurophysiological evidence of environmental impacts.",
+    "This approach can evaluate environmental design decisions prior to physical construction by collecting physiological and conscious reactions.",
+    "Controlled changes in virtual environments can optimize design elements for distance learning.",
+    "Future studies can examine granular interventions to optimize parameters for general or specific demographic groups.",
+    "Different educational tasks and student learning styles may be best supported by different classroom design features.",
+    "Virtual environments allow for rapid adjustment, enabling students to switch between optimized environments.",
+    "Findings from virtual environments can be translated and tested in the physical world."
+  ],
+  "domains": [
+    "A2_Spatial_Scale",
+    "A4_Light",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "ART",
+    "SRT",
+    "MS",
+    "PP",
+    "DT"
+  ],
+  "tables": [],
+  "limitations": [
+    "Small number of participants (n=23) increases the likelihood of Type II errors (false negative findings).",
+    "Majority of participants were male university students with high computer experience, potentially mediating responses to VR architectural designs (e.g., gender, prior VR experience).",
+    "Cognitive tests, while reliable, have unclear implications for long-term learning outcomes.",
+    "Short exposure duration (1-2 minutes) for each environmental condition may have limited restorative effects of window views.",
+    "A 'ceiling effect' in cognitive performance (many participants scored perfectly) limits conclusions about environmental influence."
+  ]
+}

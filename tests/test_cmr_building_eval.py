@@ -113,11 +113,11 @@ def test_building_eval_applies_convergence_triad_adjustment(tmp_path):
     session = get_session(str(db_path))
 
     l3_path = _write_template(tmp_path / "l3.json", display_id="L3", required_inputs=[], domain="L")
-    mat4_path = _write_template(tmp_path / "mat4.json", display_id="MAT4", required_inputs=[], domain="MAT")
+    nmc1_path = _write_template(tmp_path / "nmc1.json", display_id="NMC1", required_inputs=[], domain="NMC")
     view1_path = _write_template(tmp_path / "view1.json", display_id="VIEW1", required_inputs=[], domain="VIEW")
 
     _insert_template_record(session, "L3", l3_path, series="L")
-    _insert_template_record(session, "MAT4", mat4_path, series="MAT")
+    _insert_template_record(session, "NMC1", nmc1_path, series="NMC")
     _insert_template_record(session, "VIEW1", view1_path, series="VIEW")
     session.commit()
     session.close()
@@ -127,7 +127,7 @@ def test_building_eval_applies_convergence_triad_adjustment(tmp_path):
             "target_description": "Convergence triad check",
             "template_wis_overrides": {
                 "L3": 50.0,
-                "MAT4": 40.0,
+                "NMC1": 40.0,
                 "VIEW1": 60.0,
             },
         },
@@ -150,5 +150,5 @@ def test_building_eval_applies_convergence_triad_adjustment(tmp_path):
 
     domains = {row["domain"]: row for row in report["domain_scores"]}
     assert domains["L"]["wis"] == pytest.approx(50.0 * 1.22, abs=0.01)
-    assert domains["MAT"]["wis"] == pytest.approx(40.0 * 1.22, abs=0.01)
+    assert domains["NMC"]["wis"] == pytest.approx(40.0 * 1.22, abs=0.01)
     assert domains["VIEW"]["wis"] == pytest.approx(60.0 * 1.22, abs=0.01)

@@ -84,6 +84,13 @@ from src.services.bn_coherence_client import (
     BNCoherenceClient,
 )
 
+# OC-3: Outcome Resolver Integration
+try:
+    from lib.outcome_resolver import resolve_outcome
+    _HAS_OUTCOME_RESOLVER = True
+except ImportError:
+    _HAS_OUTCOME_RESOLVER = False
+
 logger = logging.getLogger(__name__)
 
 # Coherence check configuration
@@ -687,6 +694,14 @@ def compute_credence_from_statistics(
 
     # Adjust for p-value if available
     p_value = statistics.get("p_value")
+    if p_value is not None:
+        # Coerce string p-values (e.g., "<0.001", "0.05") to float
+        if isinstance(p_value, str):
+            p_str = p_value.strip().lstrip("<>≤≥~ ")
+            try:
+                p_value = float(p_str)
+            except (ValueError, TypeError):
+                p_value = None
     if p_value is not None:
         if p_value < 0.001:
             base_value = min(0.9, base_value * 1.1)
@@ -1308,11 +1323,25 @@ def _extract_outcome_id(claim: Dict[str, Any]) -> Optional[str]:
 
     Maps ae.claim.v1 constructs.outcomes to canonical ID.
     Used for taxonomy-based matching and theory inference.
+
+    OC-3: Resolves outcome IDs to canonical form via outcome_resolver.
     """
     constructs = claim.get("constructs", {})
     outcomes = constructs.get("outcomes", [])
     if outcomes and isinstance(outcomes, list) and len(outcomes) > 0:
-        return outcomes[0].get("id")
+        raw_id = outcomes[0].get("id")
+        if raw_id and _HAS_OUTCOME_RESOLVER:
+            try:
+                paper_id = claim.get("paper_id")
+                claim_id = claim.get("node_id") or claim.get("id")
+                resolved = resolve_outcome(str(raw_id))
+                if resolved:
+                    canonical_id = resolved['canonical_id']
+                    logger.info(f"Resolved outcome: {raw_id} → {canonical_id}")
+                    return canonical_id
+            except Exception as e:
+                logger.warning(f"Outcome resolution failed for {raw_id}: {e}")
+        return raw_id
     return None
 
 

@@ -1,29 +1,29 @@
 {
-  "generated_at_utc": "2026-02-20T20:00:20.709001+00:00",
+  "generated_at_utc": "2026-03-01T02:11:21.380821+00:00",
   "paths": {
-    "web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
-    "finding_web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
-    "bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
-    "links_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/finding_template_theory_links.json",
-    "templates_dir": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/templates",
-    "thresholds": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json",
-    "stress_baseline_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/web_health_stress_baseline.json"
+    "web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+    "finding_web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
+    "bn_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
+    "links_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/finding_template_theory_links.json",
+    "templates_dir": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/templates",
+    "thresholds": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json",
+    "stress_baseline_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/web_health_stress_baseline.json"
   },
   "finding_db_selection": {
     "mode": "auto",
     "selection_basis": "max(annotation_match, belief_match, belief_count)",
     "candidates": [
       {
-        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
-        "annotation_match": 382,
-        "belief_match": 382,
-        "belief_count": 382
+        "path": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
+        "annotation_match": 116,
+        "belief_match": 116,
+        "belief_count": 116
       },
       {
-        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+        "path": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
         "annotation_match": 0,
         "belief_match": 0,
-        "belief_count": 12628
+        "belief_count": 4888
       }
     ]
   },
@@ -31,30 +31,30 @@
     "sanity_check": {
       "name": "sanity_check",
       "ok": true,
-      "duration_seconds": 1.5593794159940444,
+      "duration_seconds": 0.0,
       "exit_code": 0,
-      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n[sanity_check] repo root: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\n[sanity_check] OK\n[sanity_check] WARNINGS (non-fatal):\n - Import warning: apps.user_rules_gui.app: No module named 'flask'\n - Allowlisted TODO markers detected:\n- src/services/gap_predictor.py contains TODO\n- src/services/voi_search.py contains TODO\n- src/services/prediction_generator.py contains TODO\n- src/services/credibility_feedback.py contains TODO\n- src/services/vocabulary_bridge.py contains TODO\n- src/services/integrated_query_service.py contains TODO\n- src/services/interpretive_intelligence.py contains TODO\n- src/services/epistemic_causal_bridge.py contains TODO\n- src/services/credibility_testing.py contains TODO"
+      "detail": "skipped"
     },
     "offline_pipeline_smoke": {
       "name": "offline_pipeline_smoke",
       "ok": true,
-      "duration_seconds": 0.16224187501939014,
+      "duration_seconds": 0.0,
       "exit_code": 0,
-      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/scripts/offline_pipeline_smoke.py:123: PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/\n  seven_items = [item.dict() for item in artifact.items]\n[offline_pipeline_smoke] OK\n - events in graph.jsonl: 4\n - calibration files: 1"
+      "detail": "skipped"
     },
     "offline_pipeline_v2_smoke": {
       "name": "offline_pipeline_v2_smoke",
       "ok": true,
-      "duration_seconds": 0.16854262497508898,
+      "duration_seconds": 0.0,
       "exit_code": 0,
-      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/src/contracts/schemas.py:97: UserWarning: Field name \"construct\" in \"ConstructMapping\" shadows an attribute in parent \"BaseModel\"\n  class ConstructMapping(BaseModel):\n[offline_pipeline_v2_smoke] OK\n - events in graph.jsonl: 3\n - v2 rules emitted: 1"
+      "detail": "skipped"
     },
     "web_of_belief_invariants": {
       "name": "web_of_belief_invariants",
       "ok": true,
-      "duration_seconds": 0.18061366700567305,
+      "duration_seconds": 0.0,
       "exit_code": 0,
-      "detail": "run_probe passed with counters={\"add_belief\": 125, \"add_constraint\": 144, \"add_evidence\": 124, \"beliefs\": 252, \"constraints\": 516, \"seek_equilibrium\": 107, \"theory_worlds\": 8}"
+      "detail": "skipped"
     },
     "web_bn_minimum_viable": {
       "name": "web_bn_minimum_viable",
@@ -65,61 +65,61 @@
     },
     "finding_template_contracts": {
       "name": "finding_template_contracts",
-      "ok": true,
+      "ok": false,
       "duration_seconds": 0.0,
-      "exit_code": 0,
-      "detail": "all finding-template contracts passed"
+      "exit_code": 1,
+      "detail": "unique_tier1 7 < 10; tier2_coverage 0.000 < 0.900"
     }
   },
   "score": {
-    "overall_score": 76.14,
-    "band": "YELLOW",
-    "overall_ok": true,
-    "hard_gates_ok": true,
+    "overall_score": 49.0,
+    "band": "RED",
+    "overall_ok": false,
+    "hard_gates_ok": false,
     "subscores": {
-      "contract": 85.71,
-      "pipeline": 72.55,
-      "web_bn": 52.43,
-      "theory": 85.46,
-      "stability": 100.0
+      "contract": 97.14,
+      "pipeline": 40.0,
+      "web_bn": 72.37,
+      "theory": 20.0,
+      "stability": 84.17
     },
     "inputs": {
       "minimum_ratio": 1.0,
-      "target_ratio": 0.2857,
-      "cci_ratio": 0.3901,
-      "hard_gate_pass_rate": 1.0,
-      "runtime_ratio_to_baseline": 0.1077
+      "target_ratio": 0.8571,
+      "cci_ratio": 0.0,
+      "hard_gate_pass_rate": 0.8333,
+      "runtime_ratio_to_baseline": null
     }
   },
   "web_bn_report": {
     "metrics": {
       "web": {
-        "beliefs": 12628,
-        "constraints": 28314,
-        "bridges": 1555,
-        "supports_count": 8705,
-        "explains_count": 17083,
-        "contradicts_count": 171,
-        "supports_share_pct": 30.74450801723529,
-        "explains_share_pct": 60.334110334110335,
-        "contradicts_share_pct": 0.6039415130324222,
-        "isolated_count": 2841,
-        "isolated_pct": 22.49762432689262,
-        "both_sides_count": 3761,
-        "both_sides_pct": 29.783021856192587,
-        "avg_indeg": 2.2421602787456445,
-        "avg_outdeg": 2.2421602787456445,
+        "beliefs": 4888,
+        "constraints": 8442,
+        "bridges": 1898,
+        "supports_count": 2565,
+        "explains_count": 3197,
+        "contradicts_count": 298,
+        "supports_share_pct": 30.383795309168445,
+        "explains_share_pct": 37.87017294479981,
+        "contradicts_share_pct": 3.5299692016109927,
+        "isolated_count": 1225,
+        "isolated_pct": 25.061374795417347,
+        "both_sides_count": 1185,
+        "both_sides_pct": 24.2430441898527,
+        "avg_indeg": 1.7270867430441899,
+        "avg_outdeg": 1.7270867430441899,
         "bridge_with_source_pct": 100.0
       },
       "bn": {
-        "nodes": 6194,
-        "edges": 4271,
+        "nodes": 6340,
+        "edges": 11925,
         "dangling_edges": 0,
         "has_cycle": 0,
-        "isolated_count": 0,
-        "isolated_pct": 0.0,
-        "largest_component_count": 1543,
-        "largest_component_pct": 24.911204391346466,
+        "isolated_count": 6,
+        "isolated_pct": 0.0946372239747634,
+        "largest_component_count": 6328,
+        "largest_component_pct": 99.81072555205047,
         "unresolved_count": 0,
         "unresolved_pct": 0.0
       }
@@ -132,23 +132,23 @@
           "metric": "web.beliefs",
           "op": ">=",
           "value": 1000,
-          "actual": 12628,
+          "actual": 4888,
           "ok": true,
           "description": "Sufficient web size"
         },
         {
           "metric": "web.constraints",
           "op": ">=",
-          "value": 8000,
-          "actual": 28314,
+          "value": 7500,
+          "actual": 8442,
           "ok": true,
           "description": "Sufficient web relation count"
         },
         {
           "metric": "web.isolated_pct",
           "op": "<=",
-          "value": 25.0,
-          "actual": 22.49762432689262,
+          "value": 30.0,
+          "actual": 25.061374795417347,
           "ok": true,
           "description": "Isolation not excessive"
         },
@@ -156,7 +156,7 @@
           "metric": "web.explains_count",
           "op": ">=",
           "value": 100,
-          "actual": 17083,
+          "actual": 3197,
           "ok": true,
           "description": "Explanatory relations present"
         },
@@ -164,7 +164,7 @@
           "metric": "web.contradicts_count",
           "op": ">=",
           "value": 20,
-          "actual": 171,
+          "actual": 298,
           "ok": true,
           "description": "Contradiction relations present"
         },
@@ -172,7 +172,7 @@
           "metric": "web.bridges",
           "op": ">=",
           "value": 100,
-          "actual": 1555,
+          "actual": 1898,
           "ok": true,
           "description": "Bridge layer active"
         },
@@ -188,7 +188,7 @@
           "metric": "bn.nodes",
           "op": ">=",
           "value": 500,
-          "actual": 6194,
+          "actual": 6340,
           "ok": true,
           "description": "BN node coverage"
         },
@@ -196,7 +196,7 @@
           "metric": "bn.edges",
           "op": ">=",
           "value": 1000,
-          "actual": 4271,
+          "actual": 11925,
           "ok": true,
           "description": "BN edge coverage"
         },
@@ -228,14 +228,14 @@
       "ok": true
     },
     "target": {
-      "passed": 2,
-      "failed": 5,
+      "passed": 6,
+      "failed": 1,
       "results": [
         {
           "metric": "web.isolated_pct",
           "op": "<=",
           "value": 10.0,
-          "actual": 22.49762432689262,
+          "actual": 25.061374795417347,
           "ok": false,
           "description": "Strong web integration"
         },
@@ -243,23 +243,23 @@
           "metric": "web.contradicts_count",
           "op": ">=",
           "value": 200,
-          "actual": 171,
-          "ok": false,
+          "actual": 298,
+          "ok": true,
           "description": "Substantial contradiction coverage"
         },
         {
           "metric": "web.contradicts_share_pct",
           "op": ">=",
           "value": 2.0,
-          "actual": 0.6039415130324222,
-          "ok": false,
+          "actual": 3.5299692016109927,
+          "ok": true,
           "description": "Contradiction share not negligible"
         },
         {
           "metric": "web.bridges",
           "op": ">=",
           "value": 1500,
-          "actual": 1555,
+          "actual": 1898,
           "ok": true,
           "description": "Deep bridge coverage"
         },
@@ -267,8 +267,8 @@
           "metric": "bn.edges",
           "op": ">=",
           "value": 5000,
-          "actual": 4271,
-          "ok": false,
+          "actual": 11925,
+          "ok": true,
           "description": "Dense BN evidence graph"
         },
         {
@@ -283,8 +283,8 @@
           "metric": "bn.largest_component_pct",
           "op": ">=",
           "value": 50.0,
-          "actual": 24.911204391346466,
-          "ok": false,
+          "actual": 99.81072555205047,
+          "ok": true,
           "description": "BN not heavily fragmented"
         }
       ],
@@ -292,72 +292,53 @@
     }
   },
   "finding_metrics": {
-    "findings_total": 382,
-    "findings_with_tier2": 379,
-    "tier2_coverage": 0.9921465968586387,
-    "unique_tier1_count": 18,
+    "findings_total": 3420,
+    "findings_with_tier2": 0,
+    "tier2_coverage": 0.0,
+    "unique_tier1_count": 7,
     "non_music_music_top_count": 0,
-    "beliefs_total": 382,
-    "beliefs_with_annotation": 382,
+    "beliefs_total": 116,
+    "beliefs_with_annotation": 116,
     "persisted_ratio": 1.0,
     "unique_tier1_values": [
-      "AFFECTIVE_EMOTION",
-      "ARCHITECTURAL_PHENOMENOLOGY",
       "ART",
-      "AUDIO_COGNITION",
       "BIOPHILIA",
-      "CIRCADIAN_REGULATION",
-      "COGNITIVE_CONTROL",
-      "CREATIVE_COGNITION",
-      "EMBODIED_ECOLOGICAL",
       "MATERIAL_HAPTIC_THERMAL",
-      "MEMORY_LEARNING",
-      "MULTISENSORY_INTEGRATION",
-      "NEUROMODULATORY_REWARD",
       "PREDICTIVE_PROCESSING",
       "SOCIAL_COGNITION",
       "SPATIAL_COGNITION",
-      "SRT",
-      "VISUAL_PERCEPTION_AESTHETICS"
+      "SRT"
     ]
   },
   "chain_completeness": {
     "counts": {
-      "findings_total": 382,
-      "has_belief_id": 382,
-      "belief_exists": 382,
-      "has_annotation": 382,
-      "has_tier1": 379,
-      "has_tier2": 379,
-      "has_templates": 382,
-      "bn_touched": 149,
-      "complete_chain": 149
+      "findings_total": 3420,
+      "has_belief_id": 3420,
+      "belief_exists": 116,
+      "has_annotation": 116,
+      "has_tier1": 298,
+      "has_tier2": 0,
+      "has_templates": 0,
+      "bn_touched": 0,
+      "complete_chain": 0
     },
     "ratios": {
       "has_belief_id_ratio": 1.0,
-      "belief_exists_ratio": 1.0,
-      "has_annotation_ratio": 1.0,
-      "has_tier1_ratio": 0.9921465968586387,
-      "has_tier2_ratio": 0.9921465968586387,
-      "has_templates_ratio": 1.0,
-      "bn_touched_ratio": 0.3900523560209424,
-      "complete_chain_ratio": 0.3900523560209424
+      "belief_exists_ratio": 0.03391812865497076,
+      "has_annotation_ratio": 0.03391812865497076,
+      "has_tier1_ratio": 0.0871345029239766,
+      "has_tier2_ratio": 0.0,
+      "has_templates_ratio": 0.0,
+      "bn_touched_ratio": 0.0,
+      "complete_chain_ratio": 0.0
     }
   },
   "template_grounding": {
-    "active_templates": 95,
-    "adequately_grounded_templates": 79,
-    "weakly_grounded_templates": 16,
-    "adequate_ratio": 0.8315789473684211,
-    "findings_with_templates": 382
+    "active_templates": 0,
+    "adequately_grounded_templates": 0,
+    "weakly_grounded_templates": 0,
+    "adequate_ratio": 0.0,
+    "findings_with_templates": 0
   },
-  "web_probe_counters": {
-    "add_belief": 125,
-    "add_constraint": 144,
-    "add_evidence": 124,
-    "seek_equilibrium": 107,
-    "beliefs": 252,
-    "constraints": 516,
-    "theory_worlds": 8
-  }
+  "web_probe_counters": {}
 }

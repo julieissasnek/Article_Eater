@@ -1,0 +1,1860 @@
+{
+  "doi": "10.1068/p5292",
+  "article_type": "theoretical",
+  "article_family": "theoretical",
+  "quality_action": "accept",
+  "quality_score": 0.705,
+  "n_findings": 55,
+  "extracted_at": "2026-02-25T04:22:30.348060+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.010082,
+  "title": "Optic flow based perception of two-dimensional trajectories and the effects of a single landmark.",
+  "authors": "R.J.V. Bertin, I. Isra\u00ebl, 2000",
+  "central_proposition": "Human perception of two-dimensional trajectories from optic flow involves an integration of instantaneous heading information, which is susceptible to illusory percepts under ambiguous conditions, but can be improved by additional environmental cues such as a single landmark.",
+  "concept_definitions": [
+    {
+      "name": "Optic flow",
+      "definition": "the continuous retinal image changes (a vector field of local retinal image velocities) that are caused by movements relative to the external world, and from which information about these movements can be extracted."
+    },
+    {
+      "name": "Heading",
+      "definition": "where we are going"
+    },
+    {
+      "name": "Manoeuvre",
+      "definition": "a specific combination of trajectory and orientation along that trajectory."
+    },
+    {
+      "name": "Observer's orientation in space (\u03a6o)",
+      "definition": "independent of the trajectory"
+    },
+    {
+      "name": "Orientation of the trajectory (\u03a6p)",
+      "definition": "the angle in space of the tangent to the trajectory, i.e. the direction of movement"
+    },
+    {
+      "name": "Observer's orientation relative to the trajectory (\u03a6r)",
+      "definition": "\u03a6r = \u03a6o - \u03a6p"
+    },
+    {
+      "name": "Yaw (\u03a8o)",
+      "definition": "rotation of the observer's orientation in space"
+    },
+    {
+      "name": "Path rotation (\u03a8p)",
+      "definition": "rotation of the trajectory"
+    },
+    {
+      "name": "Globally correct (response)",
+      "definition": "stimulus-specific combinations of yaw and trajectory"
+    },
+    {
+      "name": "Trajectory correct (response)",
+      "definition": "reproduced trajectories of the correct type (i.e. linear, 'circular' or 'in place')"
+    },
+    {
+      "name": "Figural distance (Df)",
+      "definition": "quantifies the difference between stimulus and response, with zero indicating a perfect overlap."
+    },
+    {
+      "name": "Spatial figural distance (Dfs)",
+      "definition": "average of the pair-wise, squared distances between all points on the two trajectories"
+    },
+    {
+      "name": "Angular figural distance (Dfa)",
+      "definition": "average squared difference (maintaining the sign) between the orientations \u03a8o in radians at the corresponding points"
+    }
+  ],
+  "argument_structure": "The paper presents an empirical study across three experiments: (1) basic perception and reconstruction of 2D trajectories from optic flow, (2) the effect of varying yaw amounts relative to path rotation, and (3) the influence of a single landmark. The argument is built by comparing performance metrics (correctness, quantitative errors in yaw and path rotation, figural distance) across these conditions to demonstrate how optic flow is integrated over time and how additional cues influence perception, especially in ambiguous situations.",
+  "mechanism_or_causal_logic": "The core mechanism involves the continuous integration of retinal image velocity changes (optic flow) to construct a representation of ego-motion and path. In ambiguous situations, such as unyoked translation and yaw, the perceptual system tends to attribute perceived rotation to path rotation, leading to illusory trajectory percepts, possibly due to a prior assumption of fixed orientation relative to the path or a preference for simpler motion interpretations. The presence of a landmark provides additional visual (e.g., parallax) and/or extra-retinal (e.g., eye movement) information, which helps disambiguate the optic flow, reducing prediction error and leading to more veridical perception of both observer yaw and path rotation.",
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Optic flow stimulus (simulating 2D trajectories)",
+      "consequent": "Perception and reconstruction of passively travelled 2D trajectories",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "EC",
+        "SN"
+      ],
+      "template_ids": [
+        "T20",
+        "EC2"
+      ],
+      "mechanism": "Human observers integrate instantaneous heading perceptions over time.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "human observers can detect their heading direction on a very short time scale on the basis of optic flow... Can they also integrate these perceptions over time to reconstruct a 2D trajectory simulated by the optic flow stimulus?",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Ambiguous optic flow stimuli (translation + yaw unyoked)",
+      "consequent": "Illusory percepts (misperception of trajectory/orientation)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Misattribution of perceived rotation (yaw) to path rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "Stimuli in which translation and yaw are unyoked can give rise to illusory percepts",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Single landmark presence",
+      "consequent": "Perception of 2D trajectories and orientation",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Provides additional visual and/or extra-retinal information to disambiguate optic flow.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "A single landmark could improve perception.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Simulated orientation fixed in space or relative to trajectory",
+      "consequent": "Perception of travelled path",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Optic flow provides sufficient information for veridical perception in these less ambiguous conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "Perception of the travelled path was less accurate, but still good when the simulated orientation was fixed in space or relative to the trajectory.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Amount of yaw not equal to path rotation, or in opposite direction",
+      "consequent": "Perceived orientation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Subjects attribute yaw to path rotation, causing trajectory misperception.",
+      "moderators_reported": [],
+      "provenance_depth": "abstract",
+      "source": "abstract",
+      "quote": "When the amount of yaw was not equal to the rotation of the path, or in the opposite direction, subjects still perceived orientation as fixed relative to the trajectory. This caused trajectory misperception because yaw was wrongly attributed to a rotation of the path.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Optic flow (simulating travelled paths)",
+      "consequent": "Reconstruction of travelled paths",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "EC",
+        "SN"
+      ],
+      "template_ids": [
+        "T20",
+        "EC2"
+      ],
+      "mechanism": "Visual processing of optic flow allows for integration of motion cues.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: General observations",
+      "quote": "Our results indicate that it is possible to reconstruct travelled paths from optic flow.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 7,
+      "antecedent": "Task of reconstructing travelled paths from optic flow",
+      "consequent": "Perceived difficulty",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "The task requires complex integration and interpretation of optic flow.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: General observations",
+      "quote": "almost all subjects indicated that this was a difficult task.",
+      "testable": true,
+      "empirical_support_cited": "Subject reports.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.722
+    },
+    {
+      "id": 8,
+      "antecedent": "Stimulus simulating relatively large yaw relative to translation",
+      "consequent": "Reproduced manoeuvre",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "High yaw relative to translation may overwhelm translation cues or be interpreted as pure rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: General observations",
+      "quote": "When the stimulus simulated a relatively large amount of yaw relative to the simulated translation, subjects often reproduced a rotation in place.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 9,
+      "antecedent": "Landmark presence (specifically 'fixated' in field of view)",
+      "consequent": "Perceived helpfulness of task",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Fixated landmarks provide a stable reference frame and additional visual/extra-retinal cues.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: General observations",
+      "quote": "The presence of a landmark was perceived as helpful, but only in the cases where it was stationary in the field of view ('fixated'); otherwise it was considered a distraction.",
+      "testable": true,
+      "empirical_support_cited": "Subject reports."
+    },
+    {
+      "id": 10,
+      "antecedent": "Observer's orientation fixed in space (semicircle no-turn) or linear lateral/oblique",
+      "consequent": "Performance (globally correct)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Less ambiguous optic flow allows for more accurate perception.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Response classification",
+      "quote": "When the observer's orientation is fixed in space (conditions linear lateral or oblique and semicircle no-turn), performance is generally good.",
+      "testable": true,
+      "empirical_support_cited": "Figure 2a, Table 2."
+    },
+    {
+      "id": 11,
+      "antecedent": "Observer's orientation fixed only relative to trajectory, or not at all (e.g., semicircle inward, semicircle forward)",
+      "consequent": "Performance (globally correct)",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Increased ambiguity in optic flow makes perception more difficult.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Response classification",
+      "quote": "Performance decreases when the orientation is fixed only relative to the trajectory, or not at all.",
+      "testable": true,
+      "empirical_support_cited": "Figure 2a, Table 2."
+    },
+    {
+      "id": 12,
+      "antecedent": "Semicircle outward condition (large radius)",
+      "consequent": "Perceived manoeuvre",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "The specific optic flow pattern for semicircle outward (large radius) is less ambiguous than inward/forward, but still can be confused with lateral translation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Response classification",
+      "quote": "Condition semicircle outward has exactly the same amount of yaw (\u03a8o) as the two aforementioned conditions, but is perceived more correctly (but the large radius version is often mistaken for a lateral translation, which leads to a lower globally correct score).",
+      "testable": true,
+      "empirical_support_cited": "Figure 2a, Table 2.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Larger radius (curvilinear trajectories)",
+      "consequent": "Performance (globally correct)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Larger radius means less curvature, potentially making the optic flow less ambiguous or easier to interpret.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Response classification",
+      "quote": "Performance is generally better at the larger radius.",
+      "testable": true,
+      "empirical_support_cited": "Figure 2a, Table 2."
+    },
+    {
+      "id": 14,
+      "antecedent": "Landmark presence (semicircle inward, semicircle no-turn conditions)",
+      "consequent": "Performance (globally correct)",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark provides additional cues to disambiguate optic flow.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Response classification",
+      "quote": "In most cases, there is a clear increase in performance when a landmark is present.",
+      "testable": true,
+      "empirical_support_cited": "Figure 2b."
+    },
+    {
+      "id": 15,
+      "antecedent": "Linear trajectories without yaw (orientation fixed in space)",
+      "consequent": "Path-relative orientation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Optic flow is unambiguous in these conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Quantitative analyses",
+      "quote": "Subjects can accurately perceive the path-relative orientation when the orientation in space remains fixed (linear trajectories without yaw).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Curvilinear paths",
+      "consequent": "Perception of path-relative orientation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Ambiguity in optic flow increases with complex motion, requiring more sophisticated interpretation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Quantitative analyses",
+      "quote": "On curvilinear paths, perception depends on the proportion of simulated rotation vs. translation, and on the simulated orientation relative to the path.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Large semicircle outward",
+      "consequent": "Perception of path-relative orientation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Specific optic flow characteristics of 'outward' motion are less ambiguous than 'inward' or 'forward'.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Quantitative analyses",
+      "quote": "perception was better for a large semicircle outward (but path rotation, \u03a8p, was undershot) than for a semicircle forward, that was in turn better than perception for a semicircle inward.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Small radius (curvilinear paths)",
+      "consequent": "Responses",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Small radius curvilinear motion with yaw can be highly ambiguous, leading to interpretation as pure rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Quantitative analyses",
+      "quote": "When the radius was small, there were instead many rotation-in-place responses.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 19,
+      "antecedent": "Complex manoeuvres (with yaw)",
+      "consequent": "Perceived yaw (\u03a8o)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "EC"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Optic flow provides information for yaw detection, even if not perfectly veridical.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "Subjects appear to be capable to approximate the angle over which they are rotated, even during complex manoeuvres (figure 3).",
+      "testable": true,
+      "empirical_support_cited": "Figure 3."
+    },
+    {
+      "id": 20,
+      "antecedent": "Linear+yaw stimuli (smaller rotations)",
+      "consequent": "Perceived yaw (\u03a8o)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Possible perceptual bias for smaller rotations.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "A small range effect occurs for the linear+yaw stimuli: overshoot for the smaller rotations, and undershoot for the large rotation (\u03a8o=360\u00b0).",
+      "testable": true,
+      "empirical_support_cited": "Figure 3."
+    },
+    {
+      "id": 21,
+      "antecedent": "Linear+yaw stimuli (large rotation, \u03a8o=360\u00b0)",
+      "consequent": "Perceived yaw (\u03a8o)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Possible perceptual bias for larger rotations, or difficulty in reproduction.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "A small range effect occurs for the linear+yaw stimuli: overshoot for the smaller rotations, and undershoot for the large rotation (\u03a8o=360\u00b0).",
+      "testable": true,
+      "empirical_support_cited": "Figure 3."
+    },
+    {
+      "id": 22,
+      "antecedent": "Stimulus does not simulate any observer rotation (\u03a8o=0\u00b0)",
+      "consequent": "Perceived yaw",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Absence of yaw in optic flow leads to no perception of yaw.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "Yaw is never perceived when the stimulus does not simulate any observer rotation (also cf. Bertin et al. 2000).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.759
+    },
+    {
+      "id": 23,
+      "antecedent": "Orientation fixed in environment (\u03a8o \u2248 0\u00b0) or tangential to trajectory (\u03a6r \u2248 0\u00b0)",
+      "consequent": "Perception of path rotation (\u03a8p)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Less ambiguous optic flow allows for more accurate perception of path rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "Perception is close to veridical when orientation remains approximately fixed in the environment (\u03a8o \u2248 0\u00b0), and when it is tangential to the trajectory.",
+      "testable": true,
+      "empirical_support_cited": "Figure 4.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "Yaw (\u03a8o) in direction of path rotation (\u03a8p) but \u03a8o > \u03a8p (e.g., linear+yaw conditions where \u03a8p=0\u00b0)",
+      "consequent": "Perceived rotation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Subjects assume detected rotation is primarily due to path rotation, leading to misperception of trajectory.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "When the orientation changes relative to the trajectory, such that \u03a8o>\u03a8p (this includes the linear+yaw conditions, where \u03a8p=0\u00b0), subjects seem to assume that the detected rotation results (mostly) from a rotation of the trajectory.",
+      "testable": true,
+      "empirical_support_cited": "Figure 4.",
+      "outcome_id": "social.crowding",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.778
+    },
+    {
+      "id": 25,
+      "antecedent": "Simulated yaw (\u03a8o) in direction opposite to path rotation (\u03a8p)",
+      "consequent": "Perceived path",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Strong misattribution of yaw to path rotation, overriding actual path cues.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "They respond in a similar manner when the simulated yaw is in the direction opposite to the direction in which the trajectory rotates. In this case, the number of reports of straight paths, or even paths curving in the wrong direction, increase with the presented \u03a8o.",
+      "testable": true,
+      "empirical_support_cited": "Figure 4.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Semicircle 64-counter condition (clockwise semicircle with 64\u00b0 counterclockwise yaw)",
+      "consequent": "Average perceived path",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Misattribution of yaw to path rotation (180\u00b0 path rotation - 64\u00b0 yaw = 116\u00b0, perceived 130\u00b0).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Influence of yaw (experiment 2)",
+      "quote": "This effect is already significant in condition semicircle 64-counter, but not when a landmark is present.",
+      "testable": true,
+      "empirical_support_cited": "Figure 4."
+    },
+    {
+      "id": 27,
+      "antecedent": "Single, salient landmark presence",
+      "consequent": "Perceived manoeuvre (resemblance to actual stimulus)",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark provides additional visual/extra-retinal information, reducing ambiguity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Landmark effects (experiment 3)",
+      "quote": "the reproductions indeed resembled the actually presented manoeuvres more when a landmark was present than when it was absent.",
+      "testable": true,
+      "empirical_support_cited": "F(2,30)=4.58, p<0.0184 (for normalised figural distance)."
+    },
+    {
+      "id": 28,
+      "antecedent": "Landmark presence (linear+yaw conditions)",
+      "consequent": "Perception of yaw (\u03a8o) and path rotation (\u03a8p)",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark provides disambiguating cues.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Results: Landmark effects (experiment 3) and Figure 5 captions",
+      "quote": "There are significant improvements in yaw and path perception for the linear+yaw conditions, when a landmark is present (figures 5a and 5b)... significant increase in performance... (landmark/size interaction; p<0.03).",
+      "testable": true,
+      "empirical_support_cited": "p<0.03 (for short trajectory stimuli, landmark/size interaction).",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Landmark presence (linear+yaw, short translations)",
+      "consequent": "Improvement of path perception",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark helps perception of the 'relatively weak' ego-motion component (translation/path) in short movements.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Landmark effects (experiment 3)",
+      "quote": "The improvement of the perception of the path is largest for the short translations...",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 30,
+      "antecedent": "Landmark presence (linear+yaw, long translations)",
+      "consequent": "Improvement of yaw perception",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark helps perception of the 'relatively weak' ego-motion component (rotation/yaw) in long movements.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Landmark effects (experiment 3)",
+      "quote": "...whereas the improvement in yaw is largest for the long translations.",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 31,
+      "antecedent": "Shifting landmark (vs. fixated landmark) in linear+yaw conditions",
+      "consequent": "Errors in \u03a8o and \u03a8p perception",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Shifting landmarks might provide more dynamic parallax cues or a richer visual field for disambiguation.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Results: Landmark effects (experiment 3) and Figure 5 captions",
+      "quote": "The results suggest that the errors are smaller for a shifting landmark than for a fixated one... especially for a shifting landmark (p<0.035 for the large translations)... Benefit is largest for a shifting landmark.",
+      "testable": true,
+      "empirical_support_cited": "p<0.035 (for large translations, shifting landmark benefit for yaw); 'Benefit is largest for a shifting landmark' (for \u03a8p in small conditions).",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 32,
+      "antecedent": "Fixated landmark presence (semicircular conditions)",
+      "consequent": "Angular figural distance (yaw perception measure)",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Fixated landmark provides a stable reference, aiding yaw perception.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Landmark effects (experiment 3)",
+      "quote": "the angular figural distance (a measure of yaw perception) decreases in those conditions when a fixated landmark is present (ANOVA, F(1,14)=6.26; p<0.0254).",
+      "testable": true,
+      "empirical_support_cited": "F(1,14)=6.26, p<0.0254.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 33,
+      "antecedent": "Landmark presence (none vs. shifting vs. fixated)",
+      "consequent": "Number of erroneous rotation-in-place (RIP) responses",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmarks help disambiguate motion, reducing misinterpretations as pure rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results: Landmark effects (experiment 3)",
+      "quote": "The number of erroneous RIP responses decrease when a landmark is present (ANOVA none vs. shifting vs. fixated; F(2,30)=4.81, p<0.0154).",
+      "testable": true,
+      "empirical_support_cited": "F(2,30)=4.81, p<0.0154."
+    },
+    {
+      "id": 34,
+      "antecedent": "Optic flow",
+      "consequent": "Qualitative nature of simulated manoeuvre (correct directions, form of trajectory, average orientation relative to trajectory)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "EC",
+        "SN"
+      ],
+      "template_ids": [
+        "T20",
+        "EC2"
+      ],
+      "mechanism": "Human observers integrate instantaneous perceptions of heading.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Our results show that subjects could perceive the qualitative nature of a simulated manoeuvre; correct directions, the correct form of trajectory and sometimes also the correct average orientation relative to the trajectory (<\u0424r>).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 35,
+      "antecedent": "Optic flow",
+      "consequent": "Absolute linear ego-motion speed or distances travelled",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Optic flow specifies direction and rotation, but not absolute speed or distance without additional scaling information.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "optic flow alone does not provide information on absolute linear ego-motion speed. An absolute judgement of the distance travelled can therefore not be made.",
+      "testable": true,
+      "empirical_support_cited": "Physics of optic flow, cited literature (Bremmer & Lappe, 1999; Bremmer et al. 1999; Redlick, Jenkin et al., 2001).",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 36,
+      "antecedent": "Optic flow",
+      "consequent": "Rotation (turned angles, \u03a8o)",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Optic flow fully specifies rotation, no integration over time is necessary.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "It can easily be seen that the optic flow fully specifies rotation... Our results suggest that subjects could indeed correctly detect the angle (\u03a8o) over which they were turned.",
+      "testable": true,
+      "empirical_support_cited": "Physics of optic flow, this study's results."
+    },
+    {
+      "id": 37,
+      "antecedent": "Simulated trajectory is linear",
+      "consequent": "Reconstruction of travelled trajectory",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Optic flow for linear trajectories is less ambiguous.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "The reconstruction of the travelled trajectory was correct when the simulated trajectory was linear.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 38,
+      "antecedent": "Optic flow corresponds to manoeuvre maintaining fixed orientation relative to travelled path (all rotation caused by path rotation)",
+      "consequent": "Perception of path rotation (\u03a8p)",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Optic flow is less ambiguous in these conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Subjects were indeed capable of correctly judging the rotation of the path when orientation was yoked to the path, but only when it was tangential to the trajectory.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 39,
+      "antecedent": "Orientation either inward (towards center of rotation) or outward (away from center of rotation)",
+      "consequent": "Perception of path rotation (\u03a8p)",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Ambiguity in optic flow leads to misinterpretation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Perception was much less veridical when the orientation was either inward (towards the centre of rotation, causing unreliable perception; perceived as rotations in place) or outward (away from the centre of rotation; perceived as rotations in place or as lateral translations when the radius was large).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 40,
+      "antecedent": "Yaw (in same direction as path rotation) increased",
+      "consequent": "Perception of path rotation",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Increased yaw introduces ambiguity, leading to undershooting of path rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "When yaw (in the same direction as the path rotation) increased, perception became less veridical (path rotation was undershot), until there was more than half as much yaw as path rotation.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 41,
+      "antecedent": "Average reported path rotation (for stimuli discussed above)",
+      "consequent": "Presented value",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "General tendency to undershoot curvature of simulated path.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "The average reported path rotation was always less than the presented value for the stimuli discussed above, even if the difference was not always significant.",
+      "testable": true,
+      "empirical_support_cited": "This study's results, cited literature (van den Berg et al., 2001)."
+    },
+    {
+      "id": 42,
+      "antecedent": "Stimuli with yaw but no path rotation (linear trajectories), or more yaw than path rotation, or yaw opposite to path rotation",
+      "consequent": "Illusory perception (curvilinear tangential manoeuvres, curvilinear in opposite direction, straight line)",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Optic flow resembles that of an illusory manoeuvre, and insufficient information to choose alternatives.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "We also presented stimuli in which there was yaw but no path rotation (linear trajectories), or more yaw than path rotation, or yaw in the direction opposite to the rotation of the path. Some of these stimuli are ambiguous, and give rise to illusory perception \u2013 that is they induce the perception of being on a trajectory other than the one actually simulated.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 43,
+      "antecedent": "Linear+yaw stimulus (simulating linear path with yaw)",
+      "consequent": "Perceived manoeuvre",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Subjects attribute perceived rotation to path rotation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "For such a stimulus, subjects are known to perceive curvilinear, tangential manoeuvres: they attribute the perceived rotation to a rotation of the path. We also found this behaviour in response to our version of this stimulus.",
+      "testable": true,
+      "empirical_support_cited": "This study's results, cited literature.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 44,
+      "antecedent": "Semicircle 64-counter (64\u00b0 counter clockwise yaw and a clockwise semicircular path, no landmark)",
+      "consequent": "Average perceived path rotation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Misattribution of yaw to path rotation (180\u00b0 path rotation - 64\u00b0 yaw = 116\u00b0, perceived 130\u00b0).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "For condition semicircle 64-counter (64\u00b0 counter clockwise yaw and a clockwise semicircular path, no landmark), subjects on average perceived approximately 130\u00b0 of path rotation.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 45,
+      "antecedent": "Longer, more complex stimuli giving rise to illusory perception",
+      "consequent": "Path perception",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Additional cues help disambiguate complex optic flow.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Can path perception from our longer, more complex stimuli that give rise to illusory perception also benefit from additional, visual or extra-retinal information, as it can in shorter stimuli? To study this, we placed a single landmark in a number of our stimuli.",
+      "testable": true,
+      "empirical_support_cited": "This study's results (landmark experiment).",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 46,
+      "antecedent": "Landmark presence (stationary in field of view)",
+      "consequent": "Task facilitation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Provides a stable reference frame.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "In general, the subjects reported that the presence of a landmark facilitated the task, but only when it remained stationary in the field of view.",
+      "testable": true,
+      "empirical_support_cited": "Subject reports, figural distance measure.",
+      "outcome_id": "social.affiliation",
+      "outcome_domain": "social",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.714
+    },
+    {
+      "id": 47,
+      "antecedent": "Landmark presence (linear+yaw conditions)",
+      "consequent": "Perception of path rotation and yaw",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark provides disambiguating cues.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "For the linear+yaw conditions, perception of path rotation and yaw was more veridical when a landmark was present.",
+      "testable": true,
+      "empirical_support_cited": "This study's results, cited literature (Li and Warren, 2000; van den Berg, 1996).",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 48,
+      "antecedent": "Simulated manoeuvre contained proportionally more yaw (short trajectory version)",
+      "consequent": "Perception of path rotation",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmarks are more helpful when the primary cue (optic flow for path rotation) is more ambiguous due to high yaw.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "the perception of path rotation benefited more from the presence of a landmark when the simulated manoeuvre contained proportionally more yaw (that is, more in the short trajectory version than in the long version).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 49,
+      "antecedent": "Simulated manoeuvre contained proportionally less yaw (long trajectory version)",
+      "consequent": "Perception of yaw",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmarks are more helpful when the primary cue (optic flow for yaw) is weaker due to less yaw.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Perception of yaw improved more due to a landmark when the simulated manoeuvre contained proportionally less yaw (that is, more in the long version than in the short version).",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 50,
+      "antecedent": "Landmark presence (some curvilinear conditions)",
+      "consequent": "Responses excluded from analysis (due to erroneous rotation in place)",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark helps disambiguate motion, reducing misinterpretations.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Much less responses to the conditions semicircle inward were excluded from analysis when the stimulus contained a landmark that only served as a reference for the movement of the other points, compared to when there was no landmark.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 51,
+      "antecedent": "Landmark presence",
+      "consequent": "Erroneous rotation in place responses",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Landmark helps disambiguate motion, reducing misinterpretations.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "There were also less erroneous rotation in place responses when a landmark was present.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 52,
+      "antecedent": "Landmark presence (majority of curvilinear conditions)",
+      "consequent": "Effect on perception",
+      "direction": "decrease",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Additional information from landmark was not useful or interfered with ego-motion perception.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "In the majority of these conditions, however, there was little effect of adding a landmark, and sometimes even a negative effect.",
+      "testable": true,
+      "empirical_support_cited": "This study's results.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 53,
+      "antecedent": "Shifting landmark (linear+yaw conditions)",
+      "consequent": "Improvement of path rotation perception",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Shifting landmarks provide more dynamic parallax cues.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Yet we have some tentative evidence for these conditions that the improvement of path rotation perception was bigger for a shifting landmark than for a non-shifting landmark.",
+      "testable": true,
+      "empirical_support_cited": "tentative evidence from this study.",
+      "outcome_id": "cog.perception",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 54,
+      "antecedent": "Stimuli simulating 64\u00b0 yaw against 180\u00b0 path-rotation in the other direction",
+      "consequent": "Reported path rotation",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Suggests accuracy of rotation perception is not solely due to rough 90\u00b0 categorization.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "But for stimuli simulating 64\u00b0 yaw against 180\u00b0 path-rotation in the other direction, the reported path rotation was around 130\u00b0. This was not significantly different from 180\u00b0-64\u00b0=116\u00b0, which suggests that the accuracy of rotation perception that we found was not solely due to a rough 90\u00b0 categorisation.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    },
+    {
+      "id": 55,
+      "antecedent": "Semicircle 30-turn condition",
+      "consequent": "Average reproduced yaw",
+      "direction": "mixed",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T_IE_001"
+      ],
+      "mechanism": "Despite verbal reports of 'no yaw', subjects' reproductions showed accurate yaw.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "For instance, in the semicircle 30-turn condition, many subjects declared having seen a semicircle no-turn manoeuvre, and yet the average reproduced yaw was approximately -32\u00b0 almost perfectly correct.",
+      "testable": true,
+      "empirical_support_cited": "This study's results."
+    }
+  ],
+  "testable_hypotheses_or_predictions": [
+    "The degree to which subjects rely on initial percepts versus continuous monitoring of optic flow for trajectory reconstruction can be tested by introducing conflicts later in the stimulus and observing adjustment behaviors.",
+    "The specific visual and extra-retinal information provided by different types of landmarks (e.g., static vs. dynamic, near vs. far, single vs. multiple) differentially influences the disambiguation of optic flow for yaw and path perception, particularly in complex curvilinear trajectories.",
+    "The 'negative effect' of landmarks observed in some curvilinear conditions suggests that task-irrelevant or conflicting landmark information can increase cognitive load or prediction error, leading to worse performance. This could be tested by systematically varying landmark relevance and congruence with ego-motion."
+  ],
+  "bridge_warrants": [
+    "The paper connects to previous work on heading perception from optic flow (Gibson, Lee, Warren, Banks, etc.), extending it to 2D trajectory reconstruction.",
+    "It relates to studies on ambiguous optic flow and illusory percepts (Banks et al., Crowell, Cutting et al., Royden et al., van den Berg, Warren & Hannon, Wann et al.), providing empirical evidence for misattribution mechanisms.",
+    "It compares findings with vestibular studies (Ivanenko et al.), suggesting potential cross-modal influences or shared perceptual mechanisms.",
+    "It references work on figural distance measures (Conditt et al.), applying quantitative methods to assess perceptual accuracy.",
+    "It connects to studies on landmark effects (Li & Warren, van den Berg), contributing to understanding how additional cues disambiguate self-motion perception."
+  ],
+  "methodological_critiques": [
+    "The vehicle's orientation could not be determined when it was not in contact with the tablet.",
+    "The HMDs used (VR4 and Datavisor LCD) had cushion distortion in the corners of the view, a common problem with HMDs.",
+    "It was impossible to definitively determine if subjects' reproductions matched their actual perception or if verbal descriptions were categorizations or sloppy reproductions, posing an inherent problem for psychophysical methods."
+  ],
+  "model_structure": "The paper implicitly tests a model where optic flow is integrated over time to reconstruct ego-motion and path. This process is subject to ambiguity and misinterpretation (e.g., attributing yaw to path rotation) but can be improved by additional, disambiguating cues from environmental landmarks (visual and/or extra-retinal information).",
+  "domains": [
+    "A9_Task_Cognition",
+    "A6_Visual_Form",
+    "A3_Spatial_Config",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "EC",
+    "SN",
+    "MSI"
+  ],
+  "limitations": [
+    "Subjects could not see the tablet or the vehicle they were manipulating, making initial positioning and control difficult.",
+    "The experimental design prevented presenting all stimuli both with and without a landmark.",
+    "Quantitative analysis was limited to responses that were not rotations in place and did not contain changes in direction.",
+    "The results on path rotation are not directly comparable to some previous studies (e.g., van den Berg et al., 2001) due to differences in stimulus duration (reconstruction vs. instantaneous heading) and measurement of scale (radius).",
+    "The good perception of yaw might partly be an artifact of the observational/response strategy, as subjects tended to categorize rotations in steps of 90\u00b0 and 180\u00b0."
+  ],
+  "paper_metadata": {
+    "doi": "10.1068/p5292",
+    "title": "Optic-Flow-Based Perception of Two-Dimensional Trajectories and the Effects of a Single Landmark",
+    "authors": [
+      "R. Bertin",
+      "I. Isra\u00ebl"
+    ],
+    "year": 2005,
+    "journal": "Perception",
+    "volume": "34",
+    "issue": "4",
+    "pages": "453-475",
+    "publisher": "SAGE Publications",
+    "citation_count": 13,
+    "influential_citation_count": 2,
+    "references": [
+      "10.1007/BF00216964",
+      "10.1007/s00221-003-1524-3",
+      "10.1007/s002210050236",
+      "10.1016/0042-6989(92)90223-6",
+      "10.1016/0042-6989(94)90084-1",
+      "10.1016/0042-6989(94)90085-X",
+      "10.1016/0042-6989(94)90261-5",
+      "10.1016/0042-6989(94)90324-7",
+      "10.1016/0042-6989(95)00122-0",
+      "10.1016/0042-6989(95)00247-2",
+      "10.1016/S0042-6989(00)00115-2",
+      "10.1016/S0042-6989(00)00134-6",
+      "10.1016/S0042-6989(00)00196-6",
+      "10.1016/S0042-6989(00)00243-1",
+      "10.1016/S0042-6989(01)00023-2",
+      "10.1016/S0042-6989(03)00337-7",
+      "10.1016/S0042-6989(96)00204-0",
+      "10.1016/S0042-6989(96)00284-2",
+      "10.1016/S1364-6613(99)01364-9",
+      "10.1037/0096-1523.14.4.646",
+      "10.1037/0096-1523.17.1.28",
+      "10.1037/0096-1523.24.6.1690",
+      "10.1038/360583a0",
+      "10.1038/371700a0",
+      "10.1038/3732",
+      "10.1068/p240315",
+      "10.1098/rstb.1980.0089",
+      "10.1111/j.1469-7793.1997.223bl.x",
+      "10.1111/j.1749-6632.1999.tb09191.x",
+      "10.1152/jn.1997.78.1.554",
+      "10.1364/JOSA.73.000339",
+      "10.1364/JOSAA.16.002079",
+      "10.1364/JOSAA.7.000160",
+      "10.3758/BF03205187",
+      "10.3758/BF03205487",
+      "10.3758/BF03211909"
+    ],
+    "cited_by": [
+      "10.1167/18.4.1",
+      "10.1016/j.displa.2012.10.007",
+      "10.1167/12.3.12",
+      "10.1167/10.13.25",
+      "10.3233/VES-2008-185-602",
+      "10.3233/VES-2008-18401",
+      "10.1007/s00422-008-0224-2",
+      "10.1088/1748-3182/2/4/S03",
+      "10.1007/978-3-319-54446-5_5",
+      "10.1167/11.1.22"
+    ],
+    "semantic_scholar_id": "1fd2c57f15301ec290cac9a6e7e7658ada62df50",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:42:09.813708+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Optic-Flow-Based Perception of Two-Dimensional Trajectories and the Effects of a Single Landmark",
+    "crossref_year": 2005,
+    "crossref_citation_count": 5,
+    "crossref_journal": "Perception",
+    "crossref_publisher": "SAGE Publications",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Human observers can detect their heading direction on a short time scale on the basis of optic flow. We investigated the visual perception and reconstruction of visually travelled two-dimensional (2-D) trajectories from optic flow, with and without a landmark. As in our previous study, seated, stationary subjects wore a head-mounted display in which optic-flow stimuli were shown that simulated various manoeuvres: linear or curvilinear 2-D trajectories over a horizontal plane, with observer orientation either fixed in space, fixed relative to the path, or changing relative to both. Afterwards, they reproduced the perceived manoeuvre with a model vehicle, whose position and orientation were recorded. Previous results had suggested that our stimuli can induce illusory percepts when translation and yaw are unyoked. We tested that hypothesis and investigated how perception of the travelled trajectory depends on the amount of yaw and the average path-relative orientation. Using a structured visual environment instead of only dots, or making available additional extra-retinal information, can improve perception of ambiguous optic-flow stimuli. We investigated the amount of necessary structuring, specifically the effect of additional visual and/or extra-retinal information provided by a single landmark in conditions where illusory percepts occur. While yaw was perceived correctly, the travelled path was less accurately perceived, but still adequately when the simulated orientation was fixed in space or relative to the trajectory. When the amount of yaw was not equal to the rotation of the path, or in the opposite direction, subjects still perceived orientation as fixed relative to the trajectory. This caused trajectory misperception because yaw was wrongly attributed to a rotation of the path: path perception is governed by the amount of yaw in the manoeuvre. Trajectory misperception also occurs when orientation is fixed relative to a curvilinear path, but not tangential to it. A single landmark could improve perception. Our results confirm and extend previous findings that, for unambiguous perception of ego-motion from optic flow, additional information is required in many cases, which can take the form of fairly minimal, visual information.",
+    "crossref_reference_count": 39,
+    "crossref_issn": [
+      "0301-0066",
+      "1468-4233"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.622357+00:00",
+    "_cr_refs_added": 36
+  },
+  "year": 2005,
+  "journal": "Perception",
+  "authors_structured": [
+    "R. Bertin",
+    "I. Isra\u00ebl"
+  ],
+  "crossref_title": "Optic-Flow-Based Perception of Two-Dimensional Trajectories and the Effects of a Single Landmark",
+  "crossref_authors": [
+    {
+      "name": "Ren\u00e9 J V Bertin",
+      "orcid": null,
+      "affiliation": "Coll\u00e8ge de France/L.P.P.A., 11 place Marcelin Berthelot, 75005 Paris, France"
+    },
+    {
+      "name": "Isabelle Isra\u00ebl",
+      "orcid": null,
+      "affiliation": "Coll\u00e8ge de France/L.P.P.A., 11 place Marcelin Berthelot, 75005 Paris, France"
+    }
+  ],
+  "crossref_year": 2005,
+  "crossref_journal": "Perception",
+  "crossref_citation_count": 5,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "SAGE Publications",
+  "crossref_subjects": [],
+  "crossref_abstract": "Human observers can detect their heading direction on a short time scale on the basis of optic flow. We investigated the visual perception and reconstruction of visually travelled two-dimensional (2-D) trajectories from optic flow, with and without a landmark. As in our previous study, seated, stationary subjects wore a head-mounted display in which optic-flow stimuli were shown that simulated various manoeuvres: linear or curvilinear 2-D trajectories over a horizontal plane, with observer orientation either fixed in space, fixed relative to the path, or changing relative to both. Afterwards, they reproduced the perceived manoeuvre with a model vehicle, whose position and orientation were recorded. Previous results had suggested that our stimuli can induce illusory percepts when translation and yaw are unyoked. We tested that hypothesis and investigated how perception of the travelled trajectory depends on the amount of yaw and the average path-relative orientation. Using a structured visual environment instead of only dots, or making available additional extra-retinal information, can improve perception of ambiguous optic-flow stimuli. We investigated the amount of necessary structuring, specifically the effect of additional visual and/or extra-retinal information provided by a single landmark in conditions where illusory percepts occur. While yaw was perceived correctly, the travelled path was less accurately perceived, but still adequately when the simulated orientation was fixed in space or relative to the trajectory. When the amount of yaw was not equal to the rotation of the path, or in the opposite direction, subjects still perceived orientation as fixed relative to the trajectory. This caused trajectory misperception because yaw was wrongly attributed to a rotation of the path: path perception is governed by the amount of yaw in the manoeuvre. Trajectory misperception also occurs when orientation is fixed relative to a curvilinear path, but not tangential to it. A single landmark could improve perception. Our results confirm and extend previous findings that, for unambiguous perception of ego-motion from optic flow, additional information is required in many cases, which can take the form of fairly minimal, visual information.",
+  "crossref_fetched_at": "2026-02-25T11:56:48.857978+00:00"
+}

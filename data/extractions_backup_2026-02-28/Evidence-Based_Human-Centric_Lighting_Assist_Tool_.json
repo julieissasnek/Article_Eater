@@ -1,0 +1,1037 @@
+{
+  "doi": "Evidence-Based/Human-Centric/Lighting/Assist/Tool/",
+  "article_type": "mixed_methods",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.734,
+  "n_findings": 35,
+  "extracted_at": "2026-02-25T07:50:10.552889+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.01381985,
+  "title": "EVIDENCE-BASED HUMAN-CENTRIC LIGHTING ASSIST TOOL TOWARDS A HEALTHIER LIT ENVIRONMENT",
+  "authors": "Armin Amirazar, 2021",
+  "research_question": "How to equip lighting designers and architects with accessible and affordable tools to evaluate critical parameters related to non-visual aspects of light exposures at the individual level in the building?",
+  "design_type": "longitudinal",
+  "participants": {
+    "n": 51,
+    "description": "Overall: 51 participants aged 31-60 years (23 female, 28 male). Spectrometer field study: 2 office workers (male: 36 years, female: 36 years) in Seattle, WA. Dashboard development: Phase 1 (Relevance Cycle) 34 participants (19 lighting designers, 15 office workers). Phase 3 (Design Cycle) 15 participants (5 for low-fidelity, 5 for medium-fidelity, 5 for high-fidelity prototypes) plus 2 expert reviewers for medium-fidelity.",
+    "recruitment": "Participants for the field study volunteered. Participants for the dashboard usability testing were recruited from previous participants in the relevance cycle."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "Experiment 1: 30 LEDs (various colors) in a controlled dark laboratory environment, measured in an integrated sphere. Experiment 2: 106 different light sources (54 LEDs, 5 Fluorescent, 11 Incandescent, 3 Halogen, 33 daylight samples) in a semi-real-world environment, measured in an integrated sphere. Experiment 3: 40 real-world lighting conditions (30 indoors, 10 outdoors) including warm/cool LEDs, daylight, and mixed light, with various colored background surfaces (red, blue, green, yellow). Field Study: Home-office environment with a West-facing window, warm LED (2700K) for Day 1-6, and an ilumi BR30 Bluetooth LED Smart bulb (2700K-6500K) for Day 7-8. Blind conditions varied (fully retracted, fully closed, adaptable).",
+      "n_stimuli": 106,
+      "source": "p. 27-29, p. 33, p. 65-67"
+    },
+    {
+      "type": "other",
+      "description": "Low-fidelity, medium-fidelity, and high-fidelity prototypes of an interactive dashboard for visualizing lighting data.",
+      "n_stimuli": 3,
+      "source": "p. 87-89"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Spectral Power Distribution (SPD)",
+      "instrument": "Developed low-cost wearable spectrometer (AS7265X spectral sensor), Ocean Insight WaveGo light spectrum meter (reference), AvaSpec-Mini2048CL spectrometer (reference)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Wavelength accuracy",
+      "instrument": "Spectrofluorophotometer",
+      "type": "performance"
+    },
+    {
+      "construct": "Training error",
+      "instrument": "Mean Square Error (MSE)",
+      "type": "performance"
+    },
+    {
+      "construct": "Training time",
+      "instrument": "Time in seconds",
+      "type": "performance"
+    },
+    {
+      "construct": "Accuracy of SPD reconstruction",
+      "instrument": "Normalized Root-Mean-Square Error (NRMSE), Root-Mean-Square Error (RMSE), Sum of Squared Errors (SSE), Correlation Coefficient (R-value), Maximum Error",
+      "type": "performance"
+    },
+    {
+      "construct": "Circadian Stimulus (CS)",
+      "instrument": "Calculated from SPD using Rea et al. mathematical model",
+      "type": "physiological"
+    },
+    {
+      "construct": "Luminance distribution",
+      "instrument": "High Dynamic Range Image (HDRI) sensors with fisheye cameras, false-color luminance mapping",
+      "type": "observational"
+    },
+    {
+      "construct": "Daily schedule and locations",
+      "instrument": "Self-reported logs (bedtimes, waketimes, working times)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Usability",
+      "instrument": "System Usability Scale (SUS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Usability issues and feedback",
+      "instrument": "Semi-structured interviews, observations, content analysis, rainbow spreadsheet",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "AS7265X spectral sensor (developed spectrometer)",
+      "consequent": "Wavelength accuracy",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 37",
+      "quote": "wavelength accuracy of lower than \u00b15 nm for 12 channels (out of 14) except for two channels with a wavelength accuracy of \u00b110 nm."
+    },
+    {
+      "id": 2,
+      "antecedent": "AS7265X spectral sensor (wavelengths 560 nm and 680 nm)",
+      "consequent": "Channel interference",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 36",
+      "quote": "the channel interference was considerably high for the wavelengths 560 nm and 680 nm as the adjacent channels were highly activated."
+    },
+    {
+      "id": 3,
+      "antecedent": "Non-linear activation function (Tansig) combined with Trainlm Levenberg-Marquardt algorithm (for MLP training in Experiment 1)",
+      "consequent": "Training error (MSE)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 6.87e-08,
+      "effect_size_type": "MSE",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "This combination was found to be the most efficient method with non-linear characteristics to learn the features based on related datasets.",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 2.2, p. 39",
+      "quote": "The non-linear activation function (Tansig) combined with the Trainlm Levenberg\u00e2Marquardt algorithm had the lowest training error"
+    },
+    {
+      "id": 4,
+      "antecedent": "Non-linear activation function (Tansig) combined with Trainlm Levenberg-Marquardt algorithm (for MLP training in Experiment 1)",
+      "consequent": "Training time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 348265,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 2.2, p. 39",
+      "quote": "while it had the highest training time."
+    },
+    {
+      "id": 5,
+      "antecedent": "MLP network with one hidden layer and 20 neurons per layer (Tansig, Trainlm Levenberg-Marquardt in Experiment 1)",
+      "consequent": "Training error",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Deviation from this optimum size (less than 10 neurons or more than 20 neurons, especially for multi-hidden layers) led to under-fitting or over-fitting.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 40, Figure 2.10",
+      "quote": "the network with one hidden layer and 20 neurons per layer has the lowest training error."
+    },
+    {
+      "id": 6,
+      "antecedent": "MLP model (Tansig, Trainlm Levenberg-Marquardt) for SPD reconstruction (Experiment 1)",
+      "consequent": "Accuracy of SPD reconstruction (NRMSE)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.02,
+      "effect_size_type": "NRMSE",
+      "sample_size": 30,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Neural networks have a remarkable ability to improve the accuracy of the developed spectrometer.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 41, Figure 2.12 (e)",
+      "quote": "the maximum NRMSE is 0.6%, and the minimum NRMSE is 0.02%."
+    },
+    {
+      "id": 7,
+      "antecedent": "MLP model (Tansig, Trainlm Levenberg-Marquardt) for SPD reconstruction (Experiment 1)",
+      "consequent": "Correlation Coefficient (R-value) for SPD reconstruction",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 1.0,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 41, Figure 2.12 (a)",
+      "quote": "most of the samples have a correlation coefficient (R-value) near 1.0",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Non-linear activation function (Logsig) combined with Trainlm Levenberg-Marquardt algorithm (for MLP training in Experiment 2)",
+      "consequent": "Training error (MSE)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 7.154e-06,
+      "effect_size_type": "MSE",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Non-linear activation functions perform better than linear activation functions.",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 2.3, p. 45",
+      "quote": "the neural network with one hidden layer and 25 neurons per layer with Logsig activation function and Trainlm Levenberg\u00e2Marquardt algorithm has the lowest training error."
+    },
+    {
+      "id": 9,
+      "antecedent": "MLP model (Logsig, Trainlm Levenberg-Marquardt) in semi-real-world conditions with stray light (Experiment 2)",
+      "consequent": "Accuracy of SPD reconstruction (NRMSE)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.0989,
+      "effect_size_type": "NRMSE",
+      "sample_size": 106,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The presence of significant stray light increased the NRMSE compared to controlled lab conditions.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 44, Table 2.3",
+      "quote": "In experiment 2, 85% of samples (all light sources) have NRMSE under 20%, and the Mean NRMSE is below 10%."
+    },
+    {
+      "id": 10,
+      "antecedent": "MLP model (Logsig, Trainlm Levenberg-Marquardt) in semi-real-world conditions (Experiment 2)",
+      "consequent": "Correlation Coefficient (R-value) for SPD reconstruction",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.922,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Type of light source"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2.3, p. 45",
+      "quote": "all light sources have a high correlation coefficient above 0.9, except Halogen, which is around 0.8.",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "MLP model (from Experiment 2) for real-world electric lighting (Experiment 3)",
+      "consequent": "Accuracy of SPD reconstruction (NRMSE)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.11,
+      "effect_size_type": "NRMSE",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The MLP model could learn from recognized patterns in data under electric lighting.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 48, Figure 2.16 (e)",
+      "quote": "the lowest NRMSE was approximately 11% by measuring SPD in the indoor environment under electric light."
+    },
+    {
+      "id": 12,
+      "antecedent": "MLP model (from Experiment 2) for real-world daylight (Experiment 3)",
+      "consequent": "Accuracy of SPD reconstruction (NRMSE)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.4,
+      "effect_size_type": "NRMSE",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Higher error rate when exposed to SPDs with unrecognizable patterns due to the complexity and uniqueness of daylight SPD.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 48, Figure 2.16 (e)",
+      "quote": "the highest NRMSE was 40% in the outdoor environment under daylight."
+    },
+    {
+      "id": 13,
+      "antecedent": "MLP model (from Experiment 2) for real-world electric lighting (Experiment 3)",
+      "consequent": "Correlation Coefficient (R-value) for SPD reconstruction",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.85,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 48, Figure 2.16 (a)",
+      "quote": "All of the measurements under electric light have an R-value above 0.85 that indicates a perfect positive correlation",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 14,
+      "antecedent": "MLP model (from Experiment 2) for real-world daylight (Experiment 3)",
+      "consequent": "Correlation Coefficient (R-value) for SPD reconstruction",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 0.64,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 49",
+      "quote": "a lower R-value, between 0.64 and 0.81, compared with that SPD measured in the indoor environment under electric light.",
+      "outcome_id": "affect.joy",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "MLP model (from Experiment 2) for real-world electric lighting (Experiment 3)",
+      "consequent": "Mean Maximum Error in SPD reconstruction",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 109.3,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        null,
+        23.7
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 49",
+      "quote": "the indoor measurements under electric light had a mean Maximum Error of 109.3% \u00b1 23.7%"
+    },
+    {
+      "id": 16,
+      "antecedent": "MLP model (from Experiment 2) for real-world daylight (Experiment 3)",
+      "consequent": "Mean Maximum Error in SPD reconstruction",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 338.9,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        null,
+        207.1
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 49",
+      "quote": "the outdoor measurements had a higher mean Maximum Error of 338.9% \u00b1 207.1%."
+    },
+    {
+      "id": 17,
+      "antecedent": "Outdoor lighting conditions (clear sky, no cloud cover) between Day 1 and Day 8",
+      "consequent": "Consistency of outdoor lighting conditions",
+      "direction": "no_effect",
+      "claim_type": "associational",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 69",
+      "quote": "outdoor lighting conditions were almost the same among all eight days with a clear sky and no cloud cover."
+    },
+    {
+      "id": 18,
+      "antecedent": "Blind fully closed (Day 7) vs. fully retracted (Day 6, 8) in home-office",
+      "consequent": "Window light exposures (luminance)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "observational",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 69, Figure 3.5 (a)",
+      "quote": "a significant decrease in window light exposures during Day 7 compared to Days 6 and 8, as the blind was fully closed for the entire day.",
+      "outcome_id": "env.lighting",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Participants' behavior (closing blind during afternoon between Day 1 and Day 5)",
+      "consequent": "Excessive sunlight entering window",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 69",
+      "quote": "the participants closed the blind mainly during the afternoon between Day 1 and Day 5 to reduce the excessive sunlight entering the window."
+    },
+    {
+      "id": 20,
+      "antecedent": "Lighting intervention days (Day 7, Day 8) vs. baseline days (Day 1-6)",
+      "consequent": "Mean CS levels",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(7, 43261)=163.665",
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "T30"
+      ],
+      "mechanism": "Dynamic electric lighting in combination with daylight impacts the circadian stimulus potential of indoor lighting.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 71, Figure 3.6",
+      "quote": "the one-way ANOVA revealed significant differences in CS values for the study days, F(7, 43261)=163.665, p<0.001."
+    },
+    {
+      "id": 21,
+      "antecedent": "Lighting intervention days (Day 7, Day 8)",
+      "consequent": "Mean CS level during waking and working hours",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 71, Figure 3.7",
+      "quote": "the mean CS level dramatically increased from Day 6 to Day 8 during waking and working hours."
+    },
+    {
+      "id": 22,
+      "antecedent": "Working hours vs. waking hours",
+      "consequent": "Amount of circadian-effective light (CS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 76, Figure 3.7",
+      "quote": "participants were exposed to higher amounts of circadian-effective light during working hours compared to waking hours"
+    },
+    {
+      "id": 23,
+      "antecedent": "Lighting intervention days (Day 7, Day 8)",
+      "consequent": "Mean CS level during morning and evening",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 71, Figure 3.8",
+      "quote": "there is a surge in mean CS level from Day 6 to Day 8 during morning and evening"
+    },
+    {
+      "id": 24,
+      "antecedent": "Lighting intervention days (Day 7, Day 8)",
+      "consequent": "Mean CS level during afternoon",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 0.31,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "T30"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 71, Figure 3.8",
+      "quote": "except for afternoon as there was a slight decrease from CS = 0.31 to CS = 0.3 between Day 7 and Day 8"
+    },
+    {
+      "id": 25,
+      "antecedent": "Participant's schedule (sleep, waking, and working)",
+      "consequent": "Mean CS level",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(2, 43130)=4697.851",
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 74",
+      "quote": "The two-way ANOVA revealed significant main effects of the participant's schedule, F(2, 43130)=4697.851, p<0.001."
+    },
+    {
+      "id": 26,
+      "antecedent": "Participant 2 vs. Participant 1 (during working hours)",
+      "consequent": "Mean CS values",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 0.3,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": "Differences in personal lighting conditions between participants may be explained by mixed physiological/behavioral differences and workspace characteristics.",
+      "moderators_reported": [
+        "Participant identity"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 74, Figure 3.12",
+      "quote": "mean CS values during working hours were significantly higher for participant 2 during all study periods (CS > 0.3), except Day 3, compared with participant 1."
+    },
+    {
+      "id": 27,
+      "antecedent": "Daytime periods (Morning, Afternoon, Evening, Night)",
+      "consequent": "Mean CS level",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(3, 43130)=203.431",
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 74",
+      "quote": "There was a significant main effect of daytime periods, F(3, 43130)=203.431, p<0.001."
+    },
+    {
+      "id": 28,
+      "antecedent": "Daytime periods (Morning to Night) for Participant 1",
+      "consequent": "Mean CS level",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Participant identity"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 74, Figure 3.13 (a)",
+      "quote": "For participant 1, the mean CS level decreased from morning to night during all three study days."
+    },
+    {
+      "id": 29,
+      "antecedent": "Daytime periods (Morning to Night) for Participant 2",
+      "consequent": "Mean CS level",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Participant identity"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 74, Figure 3.13 (b)",
+      "quote": "For participant 2, the mean CS level increased between morning and afternoon, followed by a decrease towards the night during all eight-study days, except for an unexpected surge on mean CS level during the evening on Day 7."
+    },
+    {
+      "id": 30,
+      "antecedent": "Participant 2 (afternoon)",
+      "consequent": "Amount of circadian-effective light (CS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Participant identity"
+      ],
+      "provenance_depth": "section",
+      "source": "p. 79",
+      "quote": "Participant 2 received a higher amount of circadian-effective light in the afternoon than other daytime periods during all eight-day study periods"
+    },
+    {
+      "id": 31,
+      "antecedent": "Increasing distance to West-facing window (2-meter)",
+      "consequent": "Mean CS level (when daylight was source)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "L3"
+      ],
+      "mechanism": "The CS level reduces for an increasing distance can be explained by the limited penetration depths of daylight in a room.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 79",
+      "quote": "The CS level reduces for an increasing distance can be explained by the limited penetration depths of daylight in a room [146]."
+    },
+    {
+      "id": 32,
+      "antecedent": "Home-office environment (building design, narrow facade, small window-to-wall ratio, West-facing window with only two hours of direct sunlight, lack of sufficient electric lighting)",
+      "consequent": "Circadian-effective light levels (CS) during waking hours",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 0.3,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "L3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 78",
+      "quote": "both office workers were generally exposed to low circadian-effective light levels (CS \u2264 0.3) during waking hours (Fig. 3.11)."
+    },
+    {
+      "id": 33,
+      "antecedent": "Medium-fidelity prototype of interactive dashboard",
+      "consequent": "System Usability Scale (SUS) score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 76,
+      "effect_size_type": null,
+      "sample_size": 5,
+      "confidence_interval": [
+        null,
+        5.48
+      ],
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 4.3, p. 94",
+      "quote": "The median SUS score of 76 (SD = 5.48) indicated that the medium-fidelity prototype was relatively intuitive"
+    },
+    {
+      "id": 34,
+      "antecedent": "High-fidelity prototype of interactive dashboard (after modifications based on feedback)",
+      "consequent": "System Usability Scale (SUS) score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 79.5,
+      "effect_size_type": null,
+      "sample_size": 5,
+      "confidence_interval": [
+        null,
+        4.47
+      ],
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Refinement and modifications of the prototype based on end-users recommendations.",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 4.3, p. 94",
+      "quote": "the median SUS score was slightly improved from 76 (SD=5.48) to 79.5 (SD=4.47) after modification of the interactive dashboard"
+    },
+    {
+      "id": 35,
+      "antecedent": "High-fidelity prototype of interactive dashboard",
+      "consequent": "Usability issues (visibility, usefulness, and navigation)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p. 104",
+      "quote": "Testing of the high-fidelity prototype of the interactive dashboard revealed more concerns regarding visibility, usefulness, and navigation.",
+      "outcome_id": "env.visual_access",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Artificial Neural Networks (ANNs) improve the accuracy of low-cost spectral sensors by learning patterns in Spectral Power Distribution (SPD) data.",
+    "Downsampling and normalizing SPD data reduces the output size of the ANN model and decreases the effect of noises, thereby increasing speed and accuracy.",
+    "Non-linear activation functions (Tansig, Logsig) are more effective than linear functions for learning complex features in SPD data.",
+    "The Trainlm Levenberg-Marquardt algorithm is an efficient method for training ANNs with non-linear characteristics.",
+    "MLP models can be under-fitted (too few neurons) or over-fitted (too many neurons), affecting their accuracy.",
+    "Dynamic electric lighting and daylight significantly impact the circadian stimulus potential of indoor lighting.",
+    "Increased distance from a window reduces Circadian Stimulus (CS) due to limited penetration depths of daylight.",
+    "Individual differences in sleep-wake patterns and work schedules contribute to variations in personal lighting conditions and their circadian effectiveness.",
+    "A user-centered design approach, involving end-users throughout the development process, leads to a more usable, useful, and acceptable interactive dashboard."
+  ],
+  "moderators": [
+    "Type of light source (electric light vs. daylight) on ANN accuracy.",
+    "Participant's daily schedule (sleep, waking, working hours) on mean CS levels.",
+    "Time of day (morning, afternoon, evening, night) on mean CS levels.",
+    "Individual participant identity (e.g., Participant 1 vs. Participant 2) on mean CS levels.",
+    "Distance to window on mean CS levels from daylight."
+  ],
+  "implementation_implications": [
+    "The developed low-cost, wearable spectrometer can be integrated into IoT-based intelligent lighting systems to tailor indoor lighting conditions according to individual circadian needs in real-time.",
+    "The spectrometer can serve as a 'dosimeter' for continuous monitoring of spectral irradiance in various settings, including long-term care facilities for light therapy.",
+    "The interactive dashboard provides non-expert users with meaningful and easy-to-understand information about circadian-effective lighting, enabling them to manage their health and promote healthy behavior change.",
+    "The tool can be a valuable resource for lighting designers and architects for post-design evaluation of buildings, promoting healthier lit environments.",
+    "The system can be used as a connected technology with an app to monitor how light affects individuals' health and provide tips for controlling living conditions."
+  ],
+  "domains": [
+    "A4_Light",
+    "A10_Temporal",
+    "A9_Task_Cognition",
+    "A3_Spatial_Config",
+    "A6_Visual_Form",
+    "A8_Social",
+    "A7_Haptic_Thermal"
+  ],
+  "overall_theory_links": [
+    "CB",
+    "PP",
+    "DT",
+    "NM"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 2.1",
+      "description": "Characteristics of the AS7265X spectral sensor.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2.2",
+      "description": "The training error and training time for the ANNs trained with three different activation functions and eight different learning algorithms for experiment 1.",
+      "key_stats": [
+        "MSE: 6.87E-08 (Tansig, Trainlm)",
+        "Training time: 348,265 sec (Tansig, Trainlm)"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 2.3",
+      "description": "Specifications of neural network with the best performance in experiment 1 vs. experiment 2.",
+      "key_stats": [
+        "Exp 1 MSE: 0.000000069, NRMSE: 0.0046, R-value: 0.999",
+        "Exp 2 MSE: 0.000007154, NRMSE: 0.0989, R-value: 0.922"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 4.1",
+      "description": "Sociodemographic characteristics of the participants (n=51).",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 4.2",
+      "description": "Findings from interviews with intended end-users (functional requirements categories and content).",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 4.3",
+      "description": "System usability scale score for medium- and high-fidelity prototypes.",
+      "key_stats": [
+        "Medium-fidelity SUS: 76 (SD=5.48)",
+        "High-fidelity SUS: 79.50 (SD=4.47)"
+      ],
+      "n_findings_extracted_from": 2
+    },
+    {
+      "table_id": "Table 4.4",
+      "description": "Modifiable usability issues identified by participants with related themes after testing the medium- and high-fidelity prototype.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "Limited number of light sources (30 in Experiment 1, 106 in Experiment 2) used for ANN training, potentially limiting generalization to all types of light sources.",
+    "Limited ANNs architectures, activation functions, and learning algorithms were explored for MLP training.",
+    "The accuracy of the MLP model decreases when exposed to unique and complex SPDs, particularly daylight, compared to known patterns.",
+    "The field study had a limited number of participants (N=2) due to the COVID-19 pandemic, restricting the investigation of inter-individual differences.",
+    "The field study was conducted in summer, and results regarding circadian-effective light levels may vary in other seasons or geographical locations.",
+    "Usability testing of the interactive dashboard was conducted with a small sample size (5 participants per prototype iteration), which might not identify all usability issues or significant differences in SUS scores.",
+    "The usability testing was limited to medium- and high-fidelity prototypes, not a fully functional application, due to funding constraints."
+  ]
+}

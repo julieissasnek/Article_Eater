@@ -1,0 +1,549 @@
+{
+  "doi": "10.1016/s0272-4944(05)80104-5",
+  "article_type": "conceptual_framework",
+  "article_family": "theoretical",
+  "quality_action": "accept",
+  "quality_score": 0.685,
+  "n_findings": 12,
+  "extracted_at": "2026-02-25T03:40:51.279477+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004438,
+  "title": "A BIOLOGICALLY BASED MODEL OF SPATIAL COGNITION AND WAYFINDING",
+  "authors": "MICHAEL O'NEILL, 1991",
+  "central_proposition": "A biologically based model, utilizing an artificial neural network mechanism of spatial representation, can generate externally valid decision-making behavior in wayfinding tasks within small-scale settings, offering a physiologically plausible alternative to computational process models.",
+  "concept_definitions": [
+    {
+      "name": "cognitive map",
+      "definition": "a psychological process for storing and retrieving spatial information"
+    },
+    {
+      "name": "computer metaphor",
+      "definition": "cognitive processes are conceptualized as sets of rules that act on symbolic representations (usually semantic or propositional) of spatial information"
+    },
+    {
+      "name": "Computational Process Modeling (CPM)",
+      "definition": "an approach where rules governing cognitive processes models are developed through empirical observations of people engaged in information processing tasks, and reliance on broadly accepted psychological theories of human information processing"
+    },
+    {
+      "name": "biological metaphor",
+      "definition": "a view of cognition that is constrained by physiological considerations, attempting to model spatial cognition through lower level, physiologically plausible mechanisms rather than rules"
+    },
+    {
+      "name": "transduction / information pickup",
+      "definition": "the process of the translation of perceptual information"
+    },
+    {
+      "name": "activity (in cognitive representation)",
+      "definition": "controlled by physiologically based processes that are integral to the representation"
+    },
+    {
+      "name": "choice point",
+      "definition": "a location where the user must choose between two or more directions of travel"
+    },
+    {
+      "name": "route representation",
+      "definition": "contain topological knowledge about individual places and the way they are connected through experience; the 'travelability' between places"
+    },
+    {
+      "name": "survey representation",
+      "definition": "contain knowledge about metrical relations, such as the distance and direction of places in relation to each other"
+    },
+    {
+      "name": "cell assembly",
+      "definition": "a group of neurons, or a 'recurrent circuit' which allows activity to persist over time and to spread to other groups of neurons"
+    },
+    {
+      "name": "lateral inhibition",
+      "definition": "occurs when two or more highly stimulated nodes compete to cross the threshold for activation, where a highly stimulated node reduces the activity of concurrently stimulated nodes"
+    },
+    {
+      "name": "global inhibition",
+      "definition": "functions to increase or decrease the threshold at which any of the nodes in the system can become active"
+    },
+    {
+      "name": "fatigue (neural)",
+      "definition": "a process where active nodes cease activity, permitting thought to move on to other content"
+    },
+    {
+      "name": "regional nodes",
+      "definition": "higher level, abstract nodes which encode the spatial relations between groups of places"
+    }
+  ],
+  "argument_structure": "The paper first contrasts the 'computer' and 'biological' metaphors for spatial cognition, developing criteria for analysis based on translation and activity control. It then presents a biologically based neural network model (NAPS-PC) as an exemplar of the biological metaphor, detailing its hierarchical structure, learning mechanisms (contiguity rule), and activity control (fatigue, inhibition). Finally, it describes two experiments comparing the simulation's wayfinding and sketchmap performance to human behavior in real-world settings to evaluate the model's usefulness and validate its predictions.",
+  "mechanism_or_causal_logic": "The biological model (NAPS-PC) proposes that spatial cognition arises from physiologically plausible mechanisms within an associative neural network. Spatial information is represented as a structural analog of the environment, with 'nodes' (cell assemblies) and 'links' (synaptic connections) that transmit activity. Learning occurs through the contiguity rule, where repeated co-activation of places strengthens their associative links. Activity is controlled by neural fatigue (nodes cease activity after stimulation) and inhibition (lateral inhibition for pattern recognition, global inhibition for adjusting activation thresholds), which together focus attention and facilitate decision-making. Hierarchical processing involves lower-level 'place' nodes forming higher-level 'regional' nodes, enabling the development of survey representations. Wayfinding involves stimulating start and goal nodes, with activity spreading until an intermediate subgoal is recognized, effectively reducing the search space.",
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "environmental knowledge gained after pretraining (matched with simulation)",
+      "consequent": "path most frequently sketched by human participants vs. path generated by NAPS-PC",
+      "direction": "modulates",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "NAPS-PC's physiologically plausible network generates paths based on learned topological connections, which align with human cognitive map representations only in specific environmental configurations at baseline experience.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 1, Results",
+      "quote": "Only in the case of setting 2 is this hypothesis supported... In the case of settings 1 and 3, the simulation correctly predicted the less frequently drawn paths.",
+      "testable": true,
+      "empirical_support_cited": "Supported only for setting 2; for settings 1 and 3, simulation predicted less frequently drawn paths."
+    },
+    {
+      "id": 2,
+      "antecedent": "environmental knowledge gained after pretraining (matched with simulation)",
+      "consequent": "paths most often selected by human participants in the first wayfinding trial vs. paths generated by NAPS-PC",
+      "direction": "modulates",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "NAPS-PC's physiologically plausible network generates paths based on learned topological connections and activity propagation, which align with human wayfinding behavior only in specific environmental configurations at baseline experience.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 1, Results",
+      "quote": "only in setting 2 did the model accurately predict the most often occuring human decision making behavior.",
+      "testable": true,
+      "empirical_support_cited": "Supported only for setting 2."
+    },
+    {
+      "id": 3,
+      "antecedent": "level of experience within the environment (increased)",
+      "consequent": "simulation's choice of alternate paths",
+      "direction": "increase",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T3",
+        "AX7"
+      ],
+      "mechanism": "Increased experience strengthens associative links within the network, allowing for more flexible activity propagation and the exploration of alternative routes during searches.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 2, Results",
+      "quote": "The results shown in Figure 7 clearly support the hypothesis that the simulation has the flexibility to generate alternative searches.",
+      "testable": true,
+      "empirical_support_cited": "The results shown in Figure 7 clearly support the hypothesis that the simulation has the flexibility to generate alternative searches."
+    },
+    {
+      "id": 4,
+      "antecedent": "increased environmental exposure (9 exposures)",
+      "consequent": "range of paths selected by the model vs. paths drawn in by participants on their sketchmaps",
+      "direction": "no significant difference",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "The biologically based model's representation of topological connections, refined with increased experience, aligns with human cognitive map representations as measured by sketchmaps.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 2, Results",
+      "quote": "There is no significant difference in the paths people drew and those selected by the simulation in setting 1 (df = 2, x\u00b2 = 3\u00b707, N.S.); setting 2, (df = 1, x\u00b2 = 0.05, N.S.); or setting 3, (df = 1, x\u00b2 = 0-04, N.S.)",
+      "testable": true,
+      "empirical_support_cited": "No significant difference in paths drawn by people and those selected by simulation in setting 1 (df = 2, x\u00b2 = 3\u00b707, N.S.); setting 2 (df = 1, x\u00b2 = 0.05, N.S.); or setting 3 (df = 1, x\u00b2 = 0-04, N.S.)."
+    },
+    {
+      "id": 5,
+      "antecedent": "increased environmental exposure (9 exposures)",
+      "consequent": "range of paths selected by the model vs. paths chosen by human participants",
+      "direction": "no significant difference",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "The biologically based model's activity propagation and decision-making, refined with increased experience, aligns with human wayfinding behavior in functionally equivalent real-world settings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 2, Results",
+      "quote": "There is no significant difference in decision making between the choices people made in actual wayfinding tasks in setting 1 (first trial) and the range of decisions made by the simulation (df = 2, x\u00b2 = 0.08, NS).",
+      "testable": true,
+      "empirical_support_cited": "No significant difference in decision making between choices made by people in actual wayfinding tasks and decisions made by simulation in setting 1 (df = 2, x\u00b2 = 0.08, NS), setting 2 (df = 3, x\u00b2 = 2\u00b700, NS), setting 3 (df = 2, x\u00b2 = 0.55, NS), and combined human data."
+    },
+    {
+      "id": 6,
+      "antecedent": "biologically based model (NAPS-PC)",
+      "consequent": "human wayfinding and sketchmap behavior",
+      "direction": "predict",
+      "claim_type": "empirical_finding",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS",
+        "PP"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "The model's physiologically plausible mechanisms for spatial representation and activity control effectively simulate human cognitive processes in wayfinding, demonstrating external validity within constrained environments.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Experiment 2, Results",
+      "quote": "These results support the notion that the model is able to predict human wayfinding and sketchmap behavior, at least within relatively small, constrained environments.",
+      "testable": true,
+      "empirical_support_cited": "Results support the notion that the model is able to predict human wayfinding and sketchmap behavior, at least within relatively small, constrained environments."
+    },
+    {
+      "id": 7,
+      "antecedent": "biological metaphor for spatial cognition",
+      "consequent": "translation of perceptual stimuli from the spatial environment into a usable format",
+      "direction": "does not require",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": "Perceptual input is encoded as patterns of activation between groups of neurons, which are generalized to represent events/locations, forming a structural analog of the environment, thus bypassing a separate translation step.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "Such a system does not requires a translation process for perceptual information.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 8,
+      "antecedent": "biological metaphor for spatial cognition",
+      "consequent": "control of activity within the cognitive representation",
+      "direction": "is controlled by",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Activity is controlled by integral physiological processes like neural fatigue and inhibition, rather than external rule-based processes, making control intrinsic to the representation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "activity is controlled by physiologically based processes that are integral to the representation.",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "biologically based model utilizing an artificial neural network mechanism",
+      "consequent": "rules governing psychological processes",
+      "direction": "are emergent from",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": "Lower-level physiologically based mechanisms generate higher-level cognitive activity, meaning 'rules' are not explicitly specified but arise from the dynamic interactions within the network.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "General Discussion",
+      "quote": "any 'rules' governing psychological processes are emergent from the activity of the system, rather than specified as explicit rules as is the case for computational models.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 10,
+      "antecedent": "computational process model",
+      "consequent": "translation of perceptual stimulation",
+      "direction": "requires",
+      "claim_type": "theoretical_critique",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Reliance on a symbolic representational format necessitates an explicit mechanism (a 'proposition generator') to convert sensory input into propositional encodings, which is a complex and unresolved problem.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "The problem of translation appears to be unique to the computer metaphor due to its reliance on the symbolic representational format. Such a system requires a 'proposition generator'...",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 11,
+      "antecedent": "computational process model implementation (Navigator)",
+      "consequent": "control of cognitive processes",
+      "direction": "requires",
+      "claim_type": "theoretical_critique",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Rule-based systems often need a higher-level external mechanism (like 'working memory') to manage rule execution and information flow, which is unlikely to scale effectively in natural systems due to the enormous number of rules required.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion",
+      "quote": "the implementation of that theory in the form of a computer simulation does require such a mechanism (Gopal et al., 1989).",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "cog",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "NAPS-PC with increased experience within an environment",
+      "consequent": "search time performance",
+      "direction": "degrades",
+      "claim_type": "limitation",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "The current rudimentary learning mechanism lacks a compensatory component, leading to less efficient searches as the network becomes more complex with increased experience.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Future directions",
+      "quote": "its search time performance degrades with increased experience within an environment.",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "behav.learning",
+      "outcome_domain": "behav",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.744
+    }
+  ],
+  "testable_hypotheses_or_predictions": [
+    "There will be no significant difference between the path most frequently sketched by human participants and the path generated by NAPS-PC at a matched baseline level of environmental knowledge.",
+    "There will be no significant difference between the paths most often selected by human participants in the first wayfinding trial and those generated by NAPS-PC at a matched baseline level of environmental knowledge.",
+    "The NAPS-PC simulation will choose alternate paths as its level of experience within the environment increases.",
+    "There will be no significant difference between the range of paths selected by the NAPS-PC model and the paths drawn in by human participants on their sketchmaps after increased environmental exposure.",
+    "There will be no significant difference between the range of paths selected by the NAPS-PC model and the paths chosen by human participants in wayfinding tasks after increased environmental exposure."
+  ],
+  "bridge_warrants": [
+    "The biological model's 'nodes' and 'links' are analogous to groups of neurons and synaptic connections, bridging psychological concepts to neurophysiological mechanisms.",
+    "The hierarchical organization of 'place' nodes and 'regional' nodes in the biological model provides a mechanism for the development from route to survey representations, connecting to established theories of cognitive map development.",
+    "Neural fatigue and inhibition in the biological model provide a physiologically plausible basis for attention control and decision-making, linking to psychological theories of information processing.",
+    "The contiguity rule for learning in the biological model directly implements Hebbian learning principles in a spatial context."
+  ],
+  "methodological_critiques": [
+    "The computational process model, with its emphasis on rule-based control systems and symbolic representational format, fails to address the translation of perceptual stimuli into a usable format.",
+    "The computational process model implementation (Navigator) requires an external controller ('working memory') to manage cognitive processes, which is unlikely to occur in natural systems due to the enormous number of rules required.",
+    "The computational process model is only indirectly physiologically plausible, describing processes like pattern recognition and activation in terms of symbol processing rather than underlying mechanisms.",
+    "The CPM approach, while useful for evaluating psychological processes, does not address an explanation of these processes at the physiological level, making it difficult to infer internal system structure."
+  ],
+  "model_structure": "The NAPS-PC model consists of a 'builder' and a 'searcher'. The builder creates a hierarchical associative network (cognitive map) from environmental input (choice point sequences), preserving topological relationships. This network comprises 'nodes' (cell assemblies) and 'links' (synaptic connections) with variable activity levels. The searcher uses this cognitive map to solve wayfinding tasks by propagating activity from start and goal nodes until a subgoal is recognized. Activity is controlled by neural fatigue and lateral/global inhibition. With experience, higher-level 'regional' nodes are created, representing groups of lower-level places, enabling survey-like representations.",
+  "domains": [
+    "A3_Spatial_Config",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "SN",
+    "PP",
+    "MS",
+    "DT",
+    "NM"
+  ],
+  "limitations": [
+    "The NAPS-PC model has only a long-term memory structure and a rudimentary learning module.",
+    "The NAPS-PC model does not model short-term memory or perceptual processes.",
+    "The biological modeling approach is difficult to implement due to its lack of modularity.",
+    "Many fundamental questions about the specific mechanisms governing neural activity have not been experimentally validated.",
+    "NAPS-PC's search time performance degrades with increased experience within an environment due to the lack of a compensatory learning mechanism.",
+    "The current NAPS-PC model is limited to examining topological plan configuration and does not yet incorporate other environmental variables like choice point salience."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/S0272-4944(05)80104-5",
+    "title": "A biologically based model of spatial cognition and wayfinding",
+    "authors": [
+      "Michael J. O'Neill"
+    ],
+    "year": 1991,
+    "journal": "Journal of Environmental Psychology",
+    "volume": "11",
+    "issue": "4",
+    "pages": "299-320",
+    "publisher": "Elsevier BV",
+    "citation_count": 41,
+    "influential_citation_count": 5,
+    "references": [
+      "10.1016/S0272-4944(85)80014-1",
+      "10.1016/S0272-4944(86)80001-9",
+      "10.1016/S0272-4944(89)80012-X",
+      "10.1016/S0272-4944(89)80036-2",
+      "10.1037/h0061626",
+      "10.1111/j.1538-4632.1982.tb00750.x",
+      "10.1177/0013916581132004",
+      "10.1177/0013916589214004",
+      "10.1177/0013916591233001",
+      "10.1207/s15516709cog0401_2",
+      "10.3758/BF03197683",
+      "10.7551/mitpress/5236.001.0001"
+    ],
+    "cited_by": [
+      "10.48550/arXiv.2504.08806",
+      "10.1080/15230406.2024.2405596",
+      "10.1177/10717641231207031",
+      "10.7454/arsnet.v3i2.82",
+      "10.1007/s10055-021-00523-4",
+      "10.3389/fpsyg.2020.549628",
+      "10.1177/1937586720932276",
+      "10.1016/J.CITIES.2017.12.006",
+      "10.1109/TCYB.2016.2530407",
+      "10.1016/j.apergo.2008.06.009",
+      "10.1207/s15427633scc0403_2",
+      "10.1201/9781420042283.ch3",
+      "10.1007/3-540-48384-5_8",
+      "10.1016/S0042-6989(98)00175-8",
+      "10.1177/105971239900700102",
+      "10.1177/0013916597295001",
+      "10.1016/0272-4944(95)90012-8",
+      "10.1016/S0272-4944(05)80212-9",
+      "10.1016/S0272-4944(05)80080-5",
+      "10.1177/154193129203600703",
+      "10.6100/IR738927",
+      "10.1016/S0004-3702(03)00114-0",
+      "10.1016/S0198-9715(00)00036-3",
+      "10.1007/978-0-585-33485-1_5",
+      "10.1146/ANNUREV.PSYCH.47.1.485",
+      "10.1207/s15516709cog1901_1"
+    ],
+    "semantic_scholar_id": "ce89a522be48bb7609d7bbb424df29211fc4789c",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:40:53.941216+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "A biologically based model of spatial cognition and wayfinding",
+    "crossref_year": 1991,
+    "crossref_citation_count": 25,
+    "crossref_journal": "Journal of Environmental Psychology",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 33,
+    "crossref_issn": [
+      "0272-4944"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.573380+00:00",
+    "_cr_refs_added": 12
+  },
+  "year": 1991,
+  "authors_structured": [
+    "Michael J. O'Neill"
+  ],
+  "crossref_title": "A biologically based model of spatial cognition and wayfinding",
+  "crossref_authors": [
+    {
+      "name": "Michael O'Neill",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 1991,
+  "crossref_journal": "Journal of Environmental Psychology",
+  "crossref_citation_count": 25,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:55:43.878445+00:00",
+  "journal": "Journal of Environmental Psychology"
+}

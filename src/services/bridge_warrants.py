@@ -23,14 +23,24 @@ Bridge Types (from Cartwright's typology, extended):
 - CAPACITY: Entity has stable capacity independent of mechanism (F2.1 per Cartwright)
   Example: "Plants have the capacity to reduce stress" - doesn't specify mechanism
 
-Bridge-Weighted Credence Formula:
-    P(CNFA effect) = P(parent theory) x P(bridge) x P(CNFA-specific)
+Bridge-Weighted Credence Formula (ATLAS log-odds formulation):
+    logit(p_target) = d(τ) · ω · δ(pop, pop_target) · logit(p_lab)
 
-Default P(bridge) values:
-- Constitutive: 0.85 (target literally contains source; transfer near-certain)
-- Mechanism: 0.60 (mechanisms often conserved, but scale/context can disrupt)
-- Functional: 0.50 (functions often achieved by different mechanisms)
-- Analogical: 0.35 (analogies suggestive but frequently fail under scrutiny)
+Where:
+- d(τ) = discount factor for bridge type τ (canonical values below)
+- ω = effect size modifier
+- δ(pop, pop_target) = population distance function
+- p_lab = laboratory effect probability
+- p_target = target population effect probability
+
+Canonical ATLAS discount factors (transfer reliability values):
+- Constitutive: 0.95 (identity/definitional; near-perfect transfer)
+- Mechanism: 0.80 (known causal pathway; robust to context via Woodward invariance)
+- Empirical Association: 0.80 (replicated association; robust but confound risk)
+- Functional: 0.65 (known function, unknown mechanism; moderate transfer)
+- Capacity: 0.55 (system CAN produce effect; conservative)
+- Analogical: 0.40 (cross-domain analogy; fragile transfer)
+- Theory-Derived: 0.25 (prediction from named theory; speculative)
 
 Bridge Lifecycle:
     hypothesized -> supported (if evidence_for grows)
@@ -63,24 +73,29 @@ logger = logging.getLogger(__name__)
 
 class BridgeType(Enum):
     """
-    Canonical CMR bridge warrant types (6 levels).
-    Ceiling priors defined in OPUS_REVIEW_GUIDE.md:9-17.
+    Canonical ATLAS bridge warrant types (7 levels).
+    Discount factors defined in CANONICAL_DISCOUNT_FACTORS dictionary.
     For evidence evaluation types, see EvidenceEvaluationType.
     """
-    MECHANISM = "mechanism"        # Same causal pathway in both domains
-    FUNCTIONAL = "functional"      # Same outcome, different mechanisms
-    ANALOGICAL = "analogical"      # Structural similarity
-    CONSTITUTIVE = "constitutive"  # Target contains source
-    # F2.1: Capacity bridge type per Cartwright (ruthless review 2026-01-22)
-    CAPACITY = "capacity"          # Entity has stable capacity (not mechanism-based)
-    EMPIRICAL_COVARIANCE = "empirical_covariance"  # Sprint 8: Co-tested in same study
-    THEORETICAL_DEFAULT = "theoretical_default"     # Panel-estimated with no direct empirical support
+    MECHANISM = "mechanism"                         # Same causal pathway in both domains
+    FUNCTIONAL = "functional"                       # Same outcome, different mechanisms
+    ANALOGICAL = "analogical"                       # Structural similarity
+    CONSTITUTIVE = "constitutive"                   # Target contains source
+    CAPACITY = "capacity"                           # Entity has stable capacity (not mechanism-based)
+    EMPIRICAL_ASSOCIATION = "empirical_association" # Canonical name (2026-02-27): Co-tested in same study
+    THEORY_DERIVED = "theory_derived"               # Canonical name (2026-02-27): Prediction from named theory
+
+
+# Backward-compatible aliases for deprecated names
+# (Python enums don't permit duplicate member names, so we alias at module level)
+EMPIRICAL_COVARIANCE = BridgeType.EMPIRICAL_ASSOCIATION  # DEPRECATED: use EMPIRICAL_ASSOCIATION
+THEORETICAL_DEFAULT = BridgeType.THEORY_DERIVED          # DEPRECATED: use THEORY_DERIVED
 
 
 class EvidenceEvaluationType(str, Enum):
     """
     Types for evaluating evidence quality in Article Eater.
-    These are NOT CMR bridge warrant types and do not have ceiling priors.
+    These are NOT ATLAS bridge warrant types and do not have discount factors.
     They evaluate how trustworthy/well-structured evidence is,
     not the strength of a theory-to-architecture bridge.
     """
@@ -106,23 +121,24 @@ class ConfidenceSource(Enum):
     EVIDENCE_UPDATED = "evidence_updated"  # Updated based on evidence
 
 
-# Default P(bridge) values per expert panel (2026-01-18)
-# F2.1: Updated per Cartwright (ruthless review 2026-01-22):
-#   - CONSTITUTIVE reduced from 0.85 to 0.75 (definitional bridges can be contested)
-#   - CAPACITY added at 0.45 (entities have stable capacities, but often unfalsifiable)
-# Panel validation (2026-01-22): CAPACITY reduced from 0.55 to 0.45 per Cartwright
-# Ceiling priors per OPUS_REVIEW_GUIDE.md:9-17
-DEFAULT_BRIDGE_CONFIDENCE: Dict[BridgeType, float] = {
-    BridgeType.CONSTITUTIVE: 0.75,        # Target literally contains source (reduced per Cartwright)
-    BridgeType.MECHANISM: 0.60,           # Mechanisms often conserved
-    BridgeType.EMPIRICAL_COVARIANCE: 0.60,  # Sprint 8: Co-tested in same study
-    BridgeType.FUNCTIONAL: 0.50,          # Functions via different mechanisms
-    BridgeType.CAPACITY: 0.45,            # Entity has stable capacity - reduced per Cartwright panel validation
-    BridgeType.THEORETICAL_DEFAULT: 0.40, # Panel-estimated with no direct empirical support
-    BridgeType.ANALOGICAL: 0.35,          # Suggestive but often fail
+# Canonical discount factors per Woodward invariance framework (2026-02-27)
+# See docs/02-27_04_Exchange_Summary_Session2.md for philosophical justification
+# These are TRANSFER RELIABILITY values (d), not credences
+# d determines how much evidence of this TYPE survives transfer to a new context
+CANONICAL_DISCOUNT_FACTORS: Dict[BridgeType, float] = {
+    BridgeType.CONSTITUTIVE: 0.95,           # Identity/definitional; near-perfect transfer
+    BridgeType.MECHANISM: 0.80,              # Known causal pathway; robust to context (Woodward invariance)
+    BridgeType.EMPIRICAL_ASSOCIATION: 0.80,  # Replicated association; robust but confound risk
+    BridgeType.FUNCTIONAL: 0.65,             # Known function, unknown mechanism; moderate transfer
+    BridgeType.CAPACITY: 0.55,               # System CAN produce effect; conservative
+    BridgeType.ANALOGICAL: 0.40,             # Cross-domain analogy; fragile transfer
+    BridgeType.THEORY_DERIVED: 0.25,         # Prediction from named theory; speculative
 }
 
-# Evidence evaluation type confidences (separate from CMR bridge priors)
+# Backward compatibility alias
+DEFAULT_BRIDGE_CONFIDENCE = CANONICAL_DISCOUNT_FACTORS
+
+# Evidence evaluation type confidences (separate from ATLAS bridge discount factors)
 EVIDENCE_EVALUATION_CONFIDENCE: Dict[EvidenceEvaluationType, float] = {
     EvidenceEvaluationType.ARGUMENTATIVE: 0.70,          # Survived scrutiny = higher confidence
     EvidenceEvaluationType.EPISTEMIC_VIGILANCE: 0.65,    # Source quality check = good confidence

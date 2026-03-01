@@ -1,3 +1,4 @@
+import os
 """
 Tests for WebAccumulator (MVP-1)
 ================================

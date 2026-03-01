@@ -1,0 +1,66 @@
+================================================================================
+CEILING DECISIONS APPLICATION - EXECUTION SUMMARY
+Date: 2026-02-23
+================================================================================
+
+SCRIPT LOCATION:
+  /scripts/apply_remaining_ceiling_decisions.py
+
+EXECUTION RESULTS:
+  Total Decisions Processed:     69
+  Successfully Applied:           46 (66.7%)
+  Failed to Apply:                23 (33.3%)
+  Templates Modified:             18 out of 209 available
+
+DECISION TYPES APPLIED:
+  Type A (Warrant Upgrade):       2 decisions
+  Type B (Override Documented):   44 decisions
+
+WARRANT UPGRADES:
+  T6 Step 3: MECHANISM → CONSTITUTIVE
+  T6 Step 5: CONSTITUTIVE → CONSTITUTIVE
+
+TOP MODIFIED TEMPLATES:
+  1. T6.json                           (6 decisions)
+  2. L2_circadian_architectural_regulation.json (5 decisions)
+  3. BRECVEMA_RHYTHMIC_ENTRAINMENT_002.json (4 decisions)
+  4. T22.json, T14.json, IC_THERMAL_COMFORT_001.json, PRIVACY_GRADIENT_REGULATION_001.json (3 each)
+
+FAILED DECISIONS (23):
+  - CB_SLEEP_ARCHITECTURE_002:         5 decisions (steps 1,2,4,5,7 not found)
+  - CIRCADIAN_ARCH_REG_001:           6 decisions (steps 1,4,5,6,9 not found)
+  - CIRCADIAN_ARCH_REGULATION_001:    3 decisions (steps 4,5,6 not found)
+  - LUM_CONTRAST_PE_001:              2 decisions (steps 1,4 not found)
+  - CCT_TEMPORAL_ECOLOGICAL_001:      2 decisions (steps 5,7 not found)
+  - CHRONO_LIGHT_ENTRAINMENT_001:     2 decisions (steps 4,5 not found)
+  - PP_SPECTRAL_MATCH_001:            2 decisions (steps 1,2 not found)
+  - PP_COMPLEXITY_GOLDILOCKS_002:     1 decision (step 1 not found)
+  - NM_CIRCADIAN_ENTRAINMENT_001:     1 decision (step 5 not found)
+
+ROOT CAUSE:
+  - All 23 failures are due to step numbers not existing in the target
+    template's mechanism_chain
+  - Template files were successfully resolved via mapping
+  - Issue is mismatch between decision step numbers and actual template structure
+
+DATA INTEGRITY:
+  - All JSON files preserved using json.load() and json.dump(indent=2)
+  - No fields deleted or corrupted
+  - All ceiling_override_rationale fields populated correctly
+  - All warrant upgrades applied correctly
+
+DETAILED REPORT:
+  See: docs/CEILING_DECISIONS_APPLICATION_REPORT_2026-02-23.md
+
+NEXT STEPS FOR REMAINING 23 DECISIONS:
+  1. Manual validation of template-to-decision mappings
+  2. Verify step numbers in target templates match decision records
+  3. Consider field_path matching as fallback (match by description)
+  4. Update mapping file with confirmed matches
+  5. Re-run script after corrections
+
+USAGE:
+  cd /sessions/practical-zen-darwin/mnt/REPOS/Article_Eater_PostQuinean_v1
+  python3 scripts/apply_remaining_ceiling_decisions.py
+
+================================================================================

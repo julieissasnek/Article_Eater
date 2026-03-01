@@ -1,0 +1,1297 @@
+{
+  "doi": "Acoustics/of/Sequential/Spaces",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.669,
+  "n_findings": 48,
+  "extracted_at": "2026-02-25T07:28:20.814568+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0106947,
+  "title": "Acoustic modeling of sequential spaces: A parametric study",
+  "authors": "Tingting Yang, Jian Kang, 2022",
+  "research_question": "To explore the efficiency of using contextual factors (opening dimension and position, number of rooms), acoustic factors (absorption coefficient and distribution), and source factors (directional radiation from the opening and an additional source) to predict the performance of sound attenuation through rectangular openings in sequential spaces, and to determine the influence of increasing the number of rooms.",
+  "design_type": "other",
+  "participants": {
+    "n": null,
+    "description": "No human participants; this is a parametric simulation study using a finite element model.",
+    "recruitment": null
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "model",
+      "description": "2D Finite Element Model (FEM) of five rectangular rooms (5.0m width, 8.0m length) connected by openings, with rigid boundary conditions. Parameters varied include: opening/partition area ratio (dop: 0-100%), opening/partition position ratio (Pop: 0-(1-dop)/2%), number of rooms (N: 1-10), absorption coefficient (ab: 0-1.0, low=0.01, high=0.5), absorption distribution (uniform/non-uniform), sound incidence angle (\u03b8: 0\u00b0/60\u00b0), and presence/type of additional sound source (omnidirectional/directional point source in room 1).",
+      "n_stimuli": null,
+      "source": "Section 2.1, 2.2, Fig. 1, Fig. 5"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Average Sound Pressure Level (SPL)",
+      "instrument": "FEM simulation output",
+      "type": "performance"
+    },
+    {
+      "construct": "Level difference between rooms",
+      "instrument": "FEM simulation output",
+      "type": "performance"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 20% (small opening)",
+      "consequent": "Level differences between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "MSI"
+      ],
+      "template_ids": [],
+      "mechanism": "weak coupling effect, spaces acoustically separated with limited sound flow, non-diffuse sound field confined near opening",
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "For low room absorption and a small opening (dop = 0-20%), the coupling effect is weak, i.e., the spaces are acoustically separated with limited sound flow"
+    },
+    {
+      "id": 2,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 20% (small opening)",
+      "consequent": "Average SPL in a room",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 7a",
+      "quote": "the average SPL in a room attenuates with increasing source-receiver distance, i.e., the level decreases from the highest in room 1 to the lowest in room 5"
+    },
+    {
+      "id": 3,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Average SPL in a room",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "coupling effects between rooms (strong, medium, weak)",
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 7a",
+      "quote": "the average SPL in a room corresponding to an increasing dop appears to increase up to a certain value of dop and then to in an unpredictable pattern"
+    },
+    {
+      "id": 4,
+      "antecedent": "Opening/partition area ratio (dop) from 60% to 100% (large opening)",
+      "consequent": "Sound levels",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "separated spaces act as a single space",
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "for a large opening (dop > 60%), the separated spaces act as a single space, and any change in the opening dimension does not significantly affect the sound levels.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Average SPL in a room",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "sound flow from the other side of the spaces decreases",
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 7b",
+      "quote": "in the case of high room absorption, the average SPL in a room clearly attenuates from highest to lowest from room 1 to room 5, and the values gradually increases with increasing dop."
+    },
+    {
+      "id": 6,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Level differences between rooms",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 7b",
+      "quote": "The level differences between rooms gradually and continuously decrease before stabilizing."
+    },
+    {
+      "id": 7,
+      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0) at the opening",
+      "consequent": "Average SPL in rooms 2-5",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 8",
+      "quote": "the average SPL in room 1 is the same, while those of rooms 2-5 are considerably reduced compared to those at \u03b8 = 0\u00b0."
+    },
+    {
+      "id": 8,
+      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0) at the opening",
+      "consequent": "Level differences between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "direct sound component",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 8",
+      "quote": "The level differences between rooms are larger than those at \u03b8 = 0\u00b0 at all frequencies."
+    },
+    {
+      "id": 9,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Average SPL in a room",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)",
+        "oblique incidence (\u03b8=60\u00b0)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 8b",
+      "quote": "In the case of high room absorption, as shown in Fig. 8b, trends in which the average SPL in a room increases... with increasing dop are observed"
+    },
+    {
+      "id": 10,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Level differences between rooms",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)",
+        "oblique incidence (\u03b8=60\u00b0)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6, Fig. 8b",
+      "quote": "the level difference decreases to a stable value with increasing dop are observed"
+    },
+    {
+      "id": 11,
+      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0)",
+      "consequent": "Stable value of level difference between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 10.0,
+      "effect_size_type": "null",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.6",
+      "quote": "the stable value of the level difference increases, being, e.g., close to 10.0 dB at \u03b8 = 60\u00b0 rather than close to 0 dB as at \u03b8 = 0\u00b0."
+    },
+    {
+      "id": 12,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Average SPL in room 1 (with additional source)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional omnidirectional source in room 1",
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7, Fig. 9a",
+      "quote": "with increasing dop, only the sound energy in room 1 gradually decreases"
+    },
+    {
+      "id": 13,
+      "antecedent": "Opening/partition area ratio (dop) from 0% to 100%",
+      "consequent": "Average SPL in successive rooms (2-5)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional omnidirectional source in room 1",
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7, Fig. 9a",
+      "quote": "whereas it increases in the successive rooms."
+    },
+    {
+      "id": 14,
+      "antecedent": "Additional source (e.g., HVAC system or human speech) in a room",
+      "consequent": "Level differences between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "With an additional source (e.g., an HVAC system or human speech) at a particular location, the level differences between rooms increase, indicating greater sound attenuation across the spaces."
+    },
+    {
+      "id": 15,
+      "antecedent": "Opening dimension (dop)",
+      "consequent": "Average SPL in the room with additional source",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional source in room 1"
+      ],
+      "provenance_depth": "section",
+      "source": "p.7",
+      "quote": "only the average SPL in the room that contains the additional source exhibits a flat decrease rather than a sharp increase with increasing opening dimension"
+    },
+    {
+      "id": 16,
+      "antecedent": "Opening dimension (dop)",
+      "consequent": "Average SPL in other rooms (without additional source)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional source in room 1",
+        "room absorption (high)"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.11, Table 2",
+      "quote": "whereas those of other rooms increase with increasing opening dimension, especially for rooms with high absorption."
+    },
+    {
+      "id": 17,
+      "antecedent": "Opening position (Pop) from middle to side",
+      "consequent": "Average SPL in a room",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Fig. 11a",
+      "quote": "the average SPL varies randomly with increasing Pop when the opening moves from middle to the side of the separating partition"
+    },
+    {
+      "id": 18,
+      "antecedent": "Opening position (Pop) from middle to side",
+      "consequent": "Sound attenuation with increasing source-receiver distance",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8, Fig. 11a",
+      "quote": "attenuation with the increasing source-receiver distance can be observed."
+    },
+    {
+      "id": 19,
+      "antecedent": "Opening position (Pop) from middle to side",
+      "consequent": "Average SPL in a room",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "relative lack of reflection",
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 11b",
+      "quote": "In the case of high room absorption, the average SPL in a room remains unchanged with increasing Pop"
+    },
+    {
+      "id": 20,
+      "antecedent": "Opening position (Pop) from middle to side",
+      "consequent": "Level differences between rooms",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 11b",
+      "quote": "the level differences between rooms decrease with increasing frequency"
+    },
+    {
+      "id": 21,
+      "antecedent": "Opening/partition area ratio (dop=40%)",
+      "consequent": "Average SPL in rooms 2-5",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 12",
+      "quote": "the average SPL in rooms 2-5 for dop = 40% are significantly lower than those for dop = 20%"
+    },
+    {
+      "id": 22,
+      "antecedent": "Opening/partition area ratio (dop=40%)",
+      "consequent": "Average SPL in room 1",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 12",
+      "quote": "those average SPL in room 1 are roughly equivalent for both dop values."
+    },
+    {
+      "id": 23,
+      "antecedent": "Absorption coefficient (ab)",
+      "consequent": "Average SPL",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 12",
+      "quote": "the average SPL decreases within a certain range as ab increases."
+    },
+    {
+      "id": 24,
+      "antecedent": "Absorption coefficient (ab)",
+      "consequent": "Magnitude of sound level change",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "source-receiver distance"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "The larger the source-receiver distance is, the larger the magnitude of the sound level change.",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Small absorption coefficients (ab)",
+      "consequent": "Rate of change in average SPL",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "the rate of change is higher at smaller ab values than that at larger values."
+    },
+    {
+      "id": 26,
+      "antecedent": "Smaller opening size (dop=20%)",
+      "consequent": "Level differences between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 12",
+      "quote": "the level differences between rooms at dop = 20% (i.e., for a smaller opening size) are much larger at all frequencies than those at dop = 40% (i.e., a large opening size)."
+    },
+    {
+      "id": 27,
+      "antecedent": "Nonuniform absorption distribution (along sound attenuation direction) vs uniform absorption distribution",
+      "consequent": "Average SPL",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "opening dimension (small, dop=20%)",
+        "equivalent amount of absorption"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 13",
+      "quote": "there are significant differences in the average SPL between the cases in which the absorptive areas are positioned only along the direction of sound attenuation and the case in which they are evenly distributed in the room when dop is small"
+    },
+    {
+      "id": 28,
+      "antecedent": "Nonuniform absorption distribution (along sound attenuation direction) vs uniform absorption distribution",
+      "consequent": "Average SPL",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "opening dimension (large, dop=40%)",
+        "equivalent amount of absorption"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 13",
+      "quote": "these differences are negligible for a large dop."
+    },
+    {
+      "id": 29,
+      "antecedent": "Absorption coefficient (ab) from 0 to 1",
+      "consequent": "Average SPLs",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "opening dimension (small, dop=20%)",
+        "nonuniform absorption distribution"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 13a",
+      "quote": "for a smaller dop, the average SPLs decrease with increasing ab over the entire range from 0 to 1"
+    },
+    {
+      "id": 30,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Average SPLs in existing and added rooms",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 14a",
+      "quote": "with increasing N, the average SPLs in the existing and added rooms changes depending on the room absorption conditions. In the case of low room absorption, as shown in Fig. 14a, the average SPL in the existing and added rooms are different for different N."
+    },
+    {
+      "id": 31,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Pattern of sound attenuation",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 14a",
+      "quote": "the pattern of sound attenuation is similar irrespective of the number of rooms."
+    },
+    {
+      "id": 32,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Average SPLs and pattern of sound attenuation",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 14b",
+      "quote": "In the case of high room absorption, as shown in Fig. 14b, not only the pattern of sound attenuation but also the average SPL remain the same at all frequencies"
+    },
+    {
+      "id": 33,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Level range",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9, Fig. 14b",
+      "quote": "the level range decreases with increasing frequency."
+    },
+    {
+      "id": 34,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Average SPL in room 1",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low, ab=0.01)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "with increasing N, the average SPL in room 1 changes for low room absorption"
+    },
+    {
+      "id": 35,
+      "antecedent": "Number of rooms (N) from 1 to 10",
+      "consequent": "Average SPL in room 1",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "remains constant for high room absorption."
+    },
+    {
+      "id": 36,
+      "antecedent": "Opening/partition area ratio (dop)",
+      "consequent": "Average SPL in a room",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The average SPL in a room increases as the opening/partition area ratio increases for rooms with high absorption"
+    },
+    {
+      "id": 37,
+      "antecedent": "Opening/partition area ratio (dop)",
+      "consequent": "Level difference between rooms",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "the level difference between rooms stabilizes."
+    },
+    {
+      "id": 38,
+      "antecedent": "Oblique incidence (source and receiver at different heights)",
+      "consequent": "Level difference between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The level difference between rooms is larger for oblique incidence than for horizontal incidence"
+    },
+    {
+      "id": 39,
+      "antecedent": "Oblique incidence (source and receiver at different heights)",
+      "consequent": "Level difference between rooms closer to the source",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "particularly for rooms close to the source."
+    },
+    {
+      "id": 40,
+      "antecedent": "Opening/partition area ratio (dop)",
+      "consequent": "Average SPL in room with additional source",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 10.0,
+      "effect_size_type": "null",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional source",
+        "room absorption (low)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "the average SPL in a room either remains the same or decreases by approximately 10 dB with increasing opening/partition area ratio."
+    },
+    {
+      "id": 41,
+      "antecedent": "Opening/partition area ratio (dop)",
+      "consequent": "Average SPL in other rooms (without additional source)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "additional source",
+        "room absorption (high)"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "Table 2",
+      "quote": "The level in other rooms increase for high room absorption."
+    },
+    {
+      "id": 42,
+      "antecedent": "Additional source",
+      "consequent": "Level difference between rooms",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The level difference between rooms becomes larger with an additional source."
+    },
+    {
+      "id": 43,
+      "antecedent": "Opening position",
+      "consequent": "Average SPL in a room",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (low)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Changes in the opening position affect the average SPL only for rooms with low absorption"
+    },
+    {
+      "id": 44,
+      "antecedent": "Opening position",
+      "consequent": "Average SPL in a room",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "not for those with high absorption."
+    },
+    {
+      "id": 45,
+      "antecedent": "Small absorption coefficients",
+      "consequent": "Changes in average SPL",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "Adjustments made to small absorption coefficients result in greater changes in the average SPL than those made to large absorption coefficients."
+    },
+    {
+      "id": 46,
+      "antecedent": "Nonuniform absorption distribution vs uniform absorption distribution (for a given amount of absorption)",
+      "consequent": "Difference in average SPL",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "opening dimension (small)",
+        "equivalent amount of absorption"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "the difference in the average SPL between the case of uniform and nonuniform absorption distributions is larger for a smaller opening dimension."
+    },
+    {
+      "id": 47,
+      "antecedent": "Number of rooms (N)",
+      "consequent": "Average SPL in the first receiving room",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "room absorption (high, ab=0.5)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The average SPL in the first receiving room remains constant for high room absorption"
+    },
+    {
+      "id": 48,
+      "antecedent": "Different absorption coefficients",
+      "consequent": "Maximum difference in average SPL",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "performance",
+      "p_value": null,
+      "effect_size": 6.0,
+      "effect_size_type": "null",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "number of rooms (N)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "The maximum difference between cases with different absorption coefficients is about 6 dB, depending on the number of rooms."
+    }
+  ],
+  "mechanisms": [
+    "weak coupling effect, spaces acoustically separated with limited sound flow, non-diffuse sound field confined near opening",
+    "separated spaces act as a single space",
+    "sound flow from the other side of the spaces decreases",
+    "direct sound component",
+    "relative lack of reflection",
+    "coupling effects between rooms (strong, medium, weak)"
+  ],
+  "moderators": [
+    "room absorption (low, ab=0.01)",
+    "room absorption (high, ab=0.5)",
+    "oblique incidence (\u03b8=60\u00b0)",
+    "additional omnidirectional source in room 1",
+    "source-receiver distance",
+    "opening dimension (small, dop=20%)",
+    "opening dimension (large, dop=40%)",
+    "equivalent amount of absorption",
+    "number of rooms (N)"
+  ],
+  "implementation_implications": [
+    "If a large opening is required, one should expect a high average SPL in a room and a small level difference between rooms for rooms with high room absorption, while no such pattern is found for rooms with low absorption.",
+    "If the source and receiver are at different heights, the level differences between rooms are larger than if the source and receiver are at the same height, and larger for rooms closer to the source.",
+    "To reduce the average SPL in a room with an additional source (e.g., an HVAC system and human speech), increasing the opening dimension could be useful, whereas those of other rooms increase with increasing opening dimension, especially for rooms with high absorption.",
+    "To determine the path of crowd across the spaces, the opening position needs to be considered only for rooms with low absorption.",
+    "The strategy of absorption adjustment as a remedial measure yields limited benefits for rooms with high absorption.",
+    "Ensuring an equivalent amount of absorption between cases of uniform and nonuniform distributions does not ensure consistent performance, especially for rooms with a small opening dimension.",
+    "In the case of increasing the scale of the entire space (e.g., the number of rooms), to avoid interference in the first receiving room, high room absorption is necessary.",
+    "Absorbent surfaces can help prevent sound travelling by reflections along corridors.",
+    "Insulated walls help prevent sound transfer within buildings.",
+    "The greater the distance a room is from the source, the larger the magnitude of the level changes that can be achieved by modifying various parametric factors.",
+    "For ideal sound attenuation, absorbers used for surface treatment must be evenly placed in long spaces."
+  ],
+  "domains": [
+    "A3_Spatial_Config",
+    "A5_Acoustic"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "MSI"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Three parametrizations of the contextual, acoustic and source factors and the simulation input used in COMSOL.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Results of each scheme showing the assumptions that should be considered, as well as the applications and guidelines that should be used by professionals during the design phase.",
+      "key_stats": [],
+      "n_findings_extracted_from": 13
+    }
+  ],
+  "limitations": [
+    "The amount of calculation confines the prediction to 2D modeling in the validity tests.",
+    "Future work could involve more effective methods that could enable 3D simulations to be conducted under high-frequency conditions so that issues such as the height of the spaces could be investigated.",
+    "Other related aspects to consider in the future include rooms with circular and irregular shapes and rooms that are connected at the corner."
+  ]
+}

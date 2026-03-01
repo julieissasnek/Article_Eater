@@ -10,7 +10,7 @@
     "EC"
   ],
   "t1_5_parent_theories": [
-    "Altman_Privacy_Regulation"
+    "Privacy_Regulation"
   ],
   "panel_id": "SOCIAL-I",
   "calibration_date": "2026-02-22",
@@ -19,12 +19,19 @@
       "step": 1,
       "from": "spatial_configuration",
       "to": "privacy_gradient",
-      "description": "Walls, doors, screens, spatial depth, acoustic barriers, visual permeability create a gradient from public to intimate. Five levels: public → semi-public → semi-private → private → intimate.",
+      "description": "Walls, doors, screens, spatial depth, acoustic barriers, visual permeability create a gradient from public to intimate. Five levels: public \u2192 semi-public \u2192 semi-private \u2192 private \u2192 intimate.",
       "warrant": "CONSTITUTIVE",
       "confidence": 0.75,
       "justification": {
         "data": [
-          {"finding": "Privacy is a dual-channel phenomenon: visual exposure (% body visible from boundary) and acoustic exposure (STI)", "source": "Gifford (2014); Sundstrom et al. (1980)", "paradigm": "Environmental psychology field studies", "effect": "Architectural features directly determine privacy level", "n": null, "design": "Field observation"}
+          {
+            "finding": "Privacy is a dual-channel phenomenon: visual exposure (% body visible from boundary) and acoustic exposure (STI)",
+            "source": "Gifford (2014); Sundstrom et al. (1980)",
+            "paradigm": "Environmental psychology field studies",
+            "effect": "Architectural features directly determine privacy level",
+            "n": null,
+            "design": "Field observation"
+          }
         ],
         "backing": "This is a constitutive relationship: the architectural features (wall opacity, aperture size, spatial depth, acoustic barriers) mathematically determine the visual and acoustic permeability that constitutes privacy.",
         "qualifier": "Perceived privacy includes psychological factors beyond physical barriers (sense of control, familiarity, social context).",
@@ -37,19 +44,27 @@
       "step": 2,
       "from": "privacy_gradient",
       "to": "privacy_regulation",
-      "description": "Altman's dynamic regulation model: individuals continuously adjust achieved privacy toward an optimum that varies by activity and state. Architectural features provide the adjustment mechanism — door closing, blind drawing, spatial retreat.",
+      "description": "Altman's dynamic regulation model: individuals continuously adjust achieved privacy toward an optimum that varies by activity and state. Architectural features provide the adjustment mechanism \u2014 door closing, blind drawing, spatial retreat.",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
         "data": [
-          {"finding": "Privacy is not a fixed need but a dynamic regulatory process; individuals continuously adjust achieved privacy toward an optimal point", "source": "Altman (1975); Gifford (2014)", "paradigm": "Privacy regulation theory", "effect": "Architectural features serve as privacy adjustment mechanisms", "n": null, "design": "Theoretical framework with field validation"}
+          {
+            "finding": "Privacy is not a fixed need but a dynamic regulatory process; individuals continuously adjust achieved privacy toward an optimal point",
+            "source": "Altman (1975); Gifford (2014)",
+            "paradigm": "Privacy regulation theory",
+            "effect": "Architectural features serve as privacy adjustment mechanisms",
+            "n": null,
+            "design": "Theoretical framework with field validation"
+          }
         ],
         "backing": "Altman's privacy regulation theory holds that individuals have a dynamic optimal privacy level that varies with activity, mood, and social context. Architectural features (operable doors, screens, spatial options) are the primary regulatory mechanism.",
         "qualifier": "The theory assumes occupants have access to privacy adjustment mechanisms. Fixed architectural features (no doors, no spatial options) prevent regulation.",
         "rebuttal": "Would fail if privacy needs are fixed rather than dynamic; or if non-architectural mechanisms (social signals) dominate privacy regulation.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 3,
@@ -57,17 +72,25 @@
       "to": "autonomic_regulation",
       "description": "When achieved privacy < desired (unwanted intrusion): amygdala vigilance, RSA drop, behavioral withdrawal or territorial defense. When achieved privacy > desired (unwanted isolation): isolation biology onset per NM_SOCIAL_ISOLATION_ALLOSTATIC_001.",
       "warrant": "EMPIRICAL_COVARIANCE",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Privacy violation produces immediate autonomic response: RSA drop, heart rate increase, skin conductance rise", "source": "Porges (panel contribution); environmental psychology literature", "paradigm": "Autonomic measurement during privacy manipulation", "effect": "Privacy mismatch produces stress response", "n": null, "design": "Laboratory studies"}
+          {
+            "finding": "Privacy violation produces immediate autonomic response: RSA drop, heart rate increase, skin conductance rise",
+            "source": "Porges (panel contribution); environmental psychology literature",
+            "paradigm": "Autonomic measurement during privacy manipulation",
+            "effect": "Privacy mismatch produces stress response",
+            "n": null,
+            "design": "Laboratory studies"
+          }
         ],
         "backing": "Privacy violation in either direction (too little or too much) incurs autonomic cost. Intrusion triggers vigilance (amygdala-mediated); isolation triggers CTRA biology (see NM_SOCIAL_ISOLATION_ALLOSTATIC_001).",
         "qualifier": "The bidirectional autonomic response is well-documented; the specific architectural-autonomic pathway involves inference from laboratory to field settings.",
         "rebuttal": "Would fail if autonomic responses habituate rapidly to privacy mismatch; but evidence shows sustained mismatch produces chronic effects.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "Circadian architecture involving hypothalamic-pituitary-adrenal axis regulation; robust evidence for cortisol rhythm entrainment."
     }
   ],
   "calibrated_parameters": {
@@ -106,7 +129,7 @@
       "sharp_edge": {
         "visual_transition": "<0.5m",
         "acoustic_transition": "<0.3m",
-        "description": "Solid door, wall — binary privacy change"
+        "description": "Solid door, wall \u2014 binary privacy change"
       },
       "soft_edge": {
         "visual_transition": "2-5m",
@@ -123,7 +146,7 @@
       "bridge_type": "EMPIRICAL_COVARIANCE"
     },
     "visual_complexity": {
-      "formula": "aperture_width × tan(viewing_angle)",
+      "formula": "aperture_width \u00d7 tan(viewing_angle)",
       "unit": "meters",
       "description": "Distance into a space from which an outsider can see occupants. Critical parameter for perceived privacy.",
       "confidence": 0.6
@@ -153,14 +176,14 @@
     "schools",
     "eldercare"
   ],
-  "bridge_warrant": "EMPIRICAL_COVARIANCE",
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
   "bridge_prior": 0.6,
   "interaction_templates": [
     "TERRITORIAL_AFFORDANCE_SOCIAL_001",
     "PROXEMIC_PE_ARCH_001",
     "NM_SOCIAL_ISOLATION_ALLOSTATIC_001"
   ],
-  "ie_dpt_interaction": "T_IE_002 (Privacy × Activity Demand) — the optimal privacy level is activity-contingent; a single privacy level for all activities is always suboptimal",
+  "ie_dpt_interaction": "T_IE_002 (Privacy \u00d7 Activity Demand) \u2014 the optimal privacy level is activity-contingent; a single privacy level for all activities is always suboptimal",
   "population_modifiers": {
     "sensory_sensitivity": {
       "preferred_privacy_level": "private_or_intimate",
@@ -183,11 +206,26 @@
   "calibrated": true,
   "calibrated_date": "2026-02-22T12:58:19.856805+00:00",
   "cross_template_interactions": {
-    "IC2": "Body Budget Prediction — privacy mismatch (too little or too much) incurs IC2 cost. Unwanted exposure produces vigilance-arousal cost; unwanted isolation produces social-deprivation cost. The optimal privacy gradient minimizes total IC2 expenditure across the activity cycle.",
-    "AX4": "Perceived Control — the critical feature is OPERABLE privacy boundaries. Fixed open-plan with no occupant-controllable privacy adjustment is a maximal AX4 violation. Operable doors, adjustable screens, and spatial choices restore AX4."
+    "IC2": "Body Budget Prediction \u2014 privacy mismatch (too little or too much) incurs IC2 cost. Unwanted exposure produces vigilance-arousal cost; unwanted isolation produces social-deprivation cost. The optimal privacy gradient minimizes total IC2 expenditure across the activity cycle.",
+    "AX4": "Perceived Control \u2014 the critical feature is OPERABLE privacy boundaries. Fixed open-plan with no occupant-controllable privacy adjustment is a maximal AX4 violation. Operable doors, adjustable screens, and spatial choices restore AX4."
   },
   "display_id": "PGR1",
   "calibration_status": "calibrated",
   "panel_source": "SOCIAL-I",
-  "confidence": 0.6
+  "confidence": 0.6,
+  "higher_order_principle": "Spatial configuration \u2192 autonomic regulation pathway: The mechanism by which architectural privacy gradient operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.977955+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "outcome_domains": [
+    "social"
+  ],
+  "outcome_terms": [
+    "social.privacy"
+  ]
 }

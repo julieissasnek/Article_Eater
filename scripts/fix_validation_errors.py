@@ -32,7 +32,7 @@ def fix_all_templates():
             
         if data.get("calibration_status") in ["calibrated", "partial"]:
             if "bridge_warrant" not in data:
-                data["bridge_warrant"] = "THEORETICAL_DEFAULT"
+                data["bridge_warrant"] = "THEORY_DERIVED"
                 modified = True
             if "confidence" not in data:
                 data["confidence"] = 0.50

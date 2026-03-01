@@ -1,0 +1,182 @@
+================================================================================
+CROSSCUT-I CALIBRATED TEMPLATES - QUICK REFERENCE
+================================================================================
+
+Status: 17/17 templates successfully extracted from CROSSCUT_I_Panel_Output.md
+Date: 2026-02-23
+Location: data/templates/
+Total Size: 130.3 KB
+
+================================================================================
+PHASE A: AXIOM AXIOMS (8 templates)
+================================================================================
+
+1. AX_DOSE_RESPONSE_007
+   File: data/templates/AX_DOSE_RESPONSE_007.json
+   Size: 16 KB
+   Name: Environmental dose-response typology (three-class)
+   Scope: Dose-response relationships in nature exposure (Berman, Barton, Friston)
+
+2. AX_HABITUATION_002
+   File: data/templates/AX_HABITUATION_002.json
+   Size: 15 KB
+   Name: Habituation dynamics (novel-to-baseline transition)
+   Scope: Temporal habituation curves in repeated environmental engagement
+
+3. AX_CONTROL_STRESS_004
+   File: data/templates/AX_CONTROL_STRESS_004.json
+   Size: 34 KB
+   Name: Perceived control × stress (canonical AX4 interaction specificity)
+   Scope: Control × stressor interaction; Kaplan, Lazarus frameworks
+
+4. AX_CHRONIC_ACUTE_011
+   File: data/templates/AX_CHRONIC_ACUTE_011.json
+   Size: 25 KB
+   Name: Temporal typology: acute vs. chronic environmental response
+   Scope: Acute vs. chronic timeframe distinctions in environmental psychology
+
+5. AX_INDIVIDUAL_DIFFERENCES_008
+   File: data/templates/AX_INDIVIDUAL_DIFFERENCES_008.json
+   Size: 2 KB
+   Name: Individual Differences
+   Scope: Personality, cognitive style, and sensory processing differences
+
+6. AX_CULTURAL_MODULATION_009
+   File: data/templates/AX_CULTURAL_MODULATION_009.json
+   Size: 3 KB
+   Name: Cultural Modulation
+   Scope: Cross-cultural variation in environmental response patterns
+
+7. AX_ATTENTION_MEDIATION_010
+   File: data/templates/AX_ATTENTION_MEDIATION_010.json
+   Size: 2 KB
+   Name: Attention Mediation
+   Scope: Attentional mechanisms mediating environment-psychology relationships
+
+8. AX_VR_LIMITATION_012
+   File: data/templates/AX_VR_LIMITATION_012.json
+   Size: 2 KB
+   Name: VR Limitation
+   Scope: Constraints of virtual reality in nature exposure research
+
+================================================================================
+PHASE B: CROSS/MECHANISM TEMPLATES (9 templates)
+================================================================================
+
+9. SALIENCE_NETWORK_SWITCH_001
+   File: data/templates/SALIENCE_NETWORK_SWITCH_001.json
+   Size: 4 KB
+   Name: Salience Network Switch
+   Scope: Switching between default-mode and task-positive networks
+
+10. CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001
+    File: data/templates/CROSS_THALAMIC_ENVIRONMENTAL_FILTER_001.json
+    Size: 3 KB
+    Name: Cross Thalamic Environmental Filter
+    Scope: Thalamic gating of environmental stimuli; sensory filtering
+
+11. CROSS_WM_GAMMA_BETA_DYNAMICS_001
+    File: data/templates/CROSS_WM_GAMMA_BETA_DYNAMICS_001.json
+    Size: 3 KB
+    Name: Cross Wm Gamma Beta Dynamics
+    Scope: Working memory gamma-beta oscillatory dynamics
+
+12. CROSS_PROACTIVE_REACTIVE_CONTROL_001
+    File: data/templates/CROSS_PROACTIVE_REACTIVE_CONTROL_001.json
+    Size: 2 KB
+    Name: Cross Proactive Reactive Control
+    Scope: Proactive vs. reactive control mode switching
+
+13. CROSS_HIERARCHICAL_CONTROL_001
+    File: data/templates/CROSS_HIERARCHICAL_CONTROL_001.json
+    Size: 3 KB
+    Name: Cross Hierarchical Control
+    Scope: Hierarchical organization of cognitive control
+
+14. TEMPORAL_HIERARCHY_ARCH_PE_001
+    File: data/templates/TEMPORAL_HIERARCHY_ARCH_PE_001.json
+    Size: 3 KB
+    Name: Temporal Hierarchy Arch Pe
+    Scope: Temporal hierarchy in architecture and prediction error
+
+15. ER_ECOLOGICAL_RATIONALITY_001
+    File: data/templates/ER_ECOLOGICAL_RATIONALITY_001.json
+    Size: 4 KB
+    Name: Er Ecological Rationality
+    Scope: Ecological rationality framework (Gigerenzer, Todd)
+
+16. AX3_AWE_MECHANISM_001
+    File: data/templates/AX3_AWE_MECHANISM_001.json
+    Size: 5 KB
+    Name: Awe Mechanism
+    Scope: Awe aesthetic processing and small-self response mechanisms
+
+17. AX3_SMALL_SELF_001
+    File: data/templates/AX3_SMALL_SELF_001.json
+    Size: 4 KB
+    Name: Small Self
+    Scope: Small self mechanism (vastness perception → ego dissolution)
+
+================================================================================
+CANONICAL FIELDS APPLIED TO ALL TEMPLATES
+================================================================================
+
+Field Resolution:
+  mechanism_steps       → mechanism_chain
+  status                → calibration_status
+  bridge_warrant_type   → bridge_warrant
+  prior_confidence      → confidence
+
+Added Fields:
+  display_id                    Derived from template_id
+  name                          Human-readable name
+  panel_source                  "CROSSCUT-I"
+  calibration_status            "calibrated"
+  provenance                    "panel_calibrated"
+  calibration_date              "2026-02-23"
+  cross_template_interactions   Empty list (for panel annotations)
+  residual_gaps                 Empty list (for panel annotations)
+
+================================================================================
+USAGE IN ARTICLE_EATER PIPELINE
+================================================================================
+
+These templates serve as reference schemas for:
+1. Warrant extraction (evidence type classification)
+2. Mechanism specification (causal chain validation)
+3. Confidence calibration (panel-vetted confidence values)
+4. Cross-template annotation (interactions marked by panelists)
+
+Load templates in Python:
+  import json
+  with open('data/templates/AX_DOSE_RESPONSE_007.json') as f:
+      template = json.load(f)
+
+Iterate all Phase A axioms:
+  templates = ['AX_DOSE_RESPONSE_007', 'AX_HABITUATION_002', ...]
+  for tid in templates:
+      with open(f'data/templates/{tid}.json') as f:
+          data = json.load(f)
+
+================================================================================
+VERIFICATION STATUS
+================================================================================
+
+✓ All 17 templates extracted cleanly
+✓ No JSON parsing errors
+✓ All canonical fields present and verified
+✓ All field resolutions applied
+✓ All templates ready for integration
+✓ Manifest created: data/CALIBRATED_TEMPLATES_MANIFEST.json
+
+================================================================================
+NOTES
+================================================================================
+
+- Old scaffold AX*.json files (AX1, AX2, etc.) remain but are overwritten
+- Use new calibrated versions (AX_DOSE_RESPONSE_007 format) for warrant inference
+- Panel review annotations can be added via cross_template_interactions
+- Residual gaps identified during extraction are available in each template
+- All templates sourced from CROSSCUT-I panel consensus (2026-02-23)
+
+================================================================================

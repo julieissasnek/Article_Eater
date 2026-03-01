@@ -1,6 +1,6 @@
 
 import { Template, BridgingQuality } from '../types/template';
-import { ReductionClaim, Confidence, EdgeType } from '../types/reduction';
+import { ReductionClaim, ConfidenceLevel, EdgeType } from '../types/reduction';
 import { MechanisticClaim, ReductionEdge } from '../types/claim';
 import * as crypto from 'crypto';
 
@@ -54,53 +54,41 @@ function derivePriorBridging(template: Template): BridgingQuality {
  * @param reduction The reduction claim to process.
  */
 export function createEdgesFromReduction(reduction: ReductionClaim): ReductionEdge[] {
-    const reductionId = reduction.reduction_id || reduction.claim_id;
+    const reductionId = reduction.claim_id;
     const confidence = normalizeConfidence(reduction);
-    const legacyTemplates = Array.isArray(reduction.reducing_templates)
-        ? reduction.reducing_templates.filter(rt => typeof rt?.template_id === "string")
-        : [];
-
-    if (legacyTemplates.length > 0) {
-        return legacyTemplates.map(rt => ({
-            reduction_id: reductionId,
-            from_construct: reduction.tier2_construct,
-            to_template: rt.template_id,
-            edge_type: normalizeEdgeType(rt.edge_type),
-            confidence
-        }));
-    }
 
     return reduction.template_nodes.map(templateId => ({
         reduction_id: reductionId,
         from_construct: reduction.tier2_construct,
         to_template: templateId,
-        edge_type: "modulates",
+        edge_type: "MODULATES",
         confidence
     }));
 }
 
 function normalizeEdgeType(value: unknown): EdgeType {
-    return value === "implements" ||
-        value === "enables" ||
-        value === "modulates" ||
-        value === "partially_implements"
-        ? value
-        : "modulates";
+    const v = String(value).toUpperCase();
+    return v === "IMPLEMENTS" ||
+        v === "ENABLES" ||
+        v === "MODULATES" ||
+        v === "PARTIALLY_IMPLEMENTS"
+        ? v as EdgeType
+        : "MODULATES";
 }
 
-function normalizeConfidence(reduction: ReductionClaim): Confidence {
+function normalizeConfidence(reduction: ReductionClaim): ConfidenceLevel {
     const legacy = (reduction as { confidence?: unknown }).confidence;
-    if (legacy === "high" || legacy === "moderate" || legacy === "low") {
-        return legacy;
+    if (legacy === "HIGH" || legacy === "MEDIUM" || legacy === "LOW") {
+        return legacy as ConfidenceLevel;
     }
 
     switch (reduction.overall_confidence) {
         case "HIGH":
-            return "high";
+            return "HIGH";
         case "LOW":
-            return "low";
+            return "LOW";
         case "MEDIUM":
         default:
-            return "moderate";
+            return "MEDIUM";
     }
 }

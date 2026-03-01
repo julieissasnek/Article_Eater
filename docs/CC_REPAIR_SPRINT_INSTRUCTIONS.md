@@ -442,16 +442,16 @@ This is the gate for resuming Cowork.
 # ACCEPTANCE CRITERIA FOR COWORK RESUME
 
 ALL of the following must be true:
-- [ ] E-01 schema exists and validates
-- [ ] M-01 migration complete (all templates pass scaffold)
-- [ ] E-02 ceiling lint exists and runs
-- [ ] M-02b ceiling violations adjudicated by HUMAN
-- [ ] M-04 gap tracker uses current schema
-- [ ] E-04 template counts reconciled
-- [ ] TJ-01 Toulmin schema extension in place
-- [ ] TJ-07 forward integration complete (panel prompt updated)
-- [ ] G-03 sprint brief consolidated
-- [ ] Variable ontology at least DRAFTED (E-03a from AG)
+- [x] E-01 schema exists and validates
+- [x] M-01 migration complete (all templates pass scaffold)
+- [x] E-02 ceiling lint exists and runs
+- [x] M-02b ceiling violations adjudicated by HUMAN
+- [x] M-04 gap tracker uses current schema
+- [x] E-04 template counts reconciled
+- [x] TJ-01 Toulmin schema extension in place
+- [x] TJ-07 forward integration complete (panel prompt updated)
+- [x] G-03 sprint brief consolidated
+- [x] Variable ontology at least DRAFTED (E-03a from AG)
 
 When these are met, update PROJECT_STATE.md Phase 4 to ACTIVE.
 

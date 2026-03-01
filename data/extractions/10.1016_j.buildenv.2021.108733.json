@@ -1,0 +1,456 @@
+{
+  "doi": "10.1016/j.buildenv.2021.108733",
+  "article_type": "theoretical",
+  "article_family": "theoretical",
+  "quality_action": "accept",
+  "quality_score": 0.665,
+  "n_findings": 11,
+  "extracted_at": "2026-02-25T04:22:32.271081+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.003299,
+  "title": "Acoustic modeling of sequential spaces: A parametric study",
+  "authors": "Tingting Yang, Jian Kang, 2022",
+  "central_proposition": "The sound field performance in sequential spaces is modulated by contextual (opening dimension and position, number of rooms), acoustic (absorption coefficient and distribution), and source (directional radiation from opening and additional source) factors, with distinct and often complex effects depending on the specific combination of these parameters.",
+  "concept_definitions": [
+    {
+      "name": "Sequential spaces",
+      "definition": "Spatial systems consisting of multiple spaces connected by an opening in between"
+    },
+    {
+      "name": "Opening/partition area ratio (dop)",
+      "definition": "The ratio of the width of the opening to the width of the entire separating partition"
+    },
+    {
+      "name": "Opening/partition position ratio (Pop)",
+      "definition": "The relative distance between the centre of the opening and the centre of the separating partition"
+    },
+    {
+      "name": "Absorption coefficient (ab)",
+      "definition": "Applied uniformly to the boundaries of each room"
+    },
+    {
+      "name": "Absorption distribution",
+      "definition": "Uniform or nonuniformly (only along the sound attenuation direction)"
+    },
+    {
+      "name": "Directional radiation from the opening",
+      "definition": "The incidence angle @ on the transparent boundary"
+    },
+    {
+      "name": "Directional radiation from an additional source",
+      "definition": "The placement of an omnidirectional or directional point source in the corner of room 1"
+    }
+  ],
+  "argument_structure": "The paper establishes a 2D Finite Element Method (FEM) simulation model for five sequential rooms, validates it against in-situ measurements, and then systematically varies contextual, acoustic, and source parameters to observe their effects on sound pressure level (SPL) and level differences across the rooms.",
+  "mechanism_or_causal_logic": "The causal logic is based on acoustic wave propagation and energy attenuation principles. Sound energy propagates through openings, reflects off surfaces (modulated by absorption), and diffracts around obstacles. The interaction of these phenomena, influenced by opening geometry, material properties, and source characteristics, determines the resulting SPL distribution and attenuation patterns across sequential spaces. Coupling effects between rooms also play a role, transitioning from weak to strong coupling depending on opening size and absorption.",
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Rooms with high absorption and a larger opening dimension",
+      "consequent": "Average Sound Pressure Level (SPL) in a room",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Increased sound flow between spaces due to larger opening, and reduced reflections due to high absorption, leading to a more uniform sound field.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (i)",
+      "quote": "for rooms with high absorption, the average SPL in a room is higher",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 7b)"
+    },
+    {
+      "id": 2,
+      "antecedent": "Rooms with high absorption and a larger opening dimension",
+      "consequent": "Level difference between rooms",
+      "direction": "decrease",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Increased sound flow between spaces due to larger opening, and reduced reflections due to high absorption, leading to a more uniform sound field.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (i)",
+      "quote": "the level difference between rooms is smaller with a larger opening dimension",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 7b)"
+    },
+    {
+      "id": 3,
+      "antecedent": "Rooms with low absorption",
+      "consequent": "Changes in average SPL with varying opening dimension",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Complex coupling effects and significant reflections in low absorption rooms lead to unpredictable sound field patterns, especially at low opening dimensions where coupling is weak.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (i)",
+      "quote": "whereas for rooms with low absorption the changes in average SPL are more complicated.",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 7a)"
+    },
+    {
+      "id": 4,
+      "antecedent": "Opening position",
+      "consequent": "Average SPL in rooms",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": "The opening position significantly affects sound field patterns and sound attenuation paths, particularly when reflections are prevalent in low absorption rooms.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (i)",
+      "quote": "The opening position has a significant impact for rooms with low absorption",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 11a)"
+    },
+    {
+      "id": 5,
+      "antecedent": "Oblique radiation from the opening (e.g., 60\u00b0 incidence angle)",
+      "consequent": "Level difference between rooms",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The direct sound component is more significant for oblique incidence, leading to greater attenuation across spaces, especially for rooms closer to the source.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (ii)",
+      "quote": "the level difference between rooms is larger for oblique radiation than for horizontal radiation, especially for rooms close to the source.",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 8)"
+    },
+    {
+      "id": 6,
+      "antecedent": "Additional source (e.g., HVAC system or human speech) in a room AND increasing opening dimension",
+      "consequent": "Average SPL in that room (containing the additional source)",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The sound energy from the additional source interacts with the main source and opening, leading to a maintained or reduced SPL in the source room, depending on absorption.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (ii)",
+      "quote": "the average SPL is maintained or reduced by approximately 10 dB with increasing opening",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 9, Fig. 10)"
+    },
+    {
+      "id": 7,
+      "antecedent": "Additional source (e.g., HVAC system or human speech) in a room AND increasing opening dimension AND high room absorption",
+      "consequent": "Average SPL in other rooms (not containing the additional source)",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Increased sound flow from the source room to successive rooms due to larger opening, with high absorption helping to distribute the sound more evenly.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (ii)",
+      "quote": "whereas the average SPLs in other rooms increase for high room absorption",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 9b, Fig. 10b)"
+    },
+    {
+      "id": 8,
+      "antecedent": "Adjusting small absorption coefficients",
+      "consequent": "Changes in the average SPL",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Small changes in absorption have a more pronounced effect when the overall absorption is low, as reflections play a larger role in shaping the sound field.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (iii)",
+      "quote": "the changes in the average SPL achieved by adjusting the absorption are more significant for cases of small absorption coefficients.",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 12)"
+    },
+    {
+      "id": 9,
+      "antecedent": "Given absorption amount AND smaller opening dimension",
+      "consequent": "Difference in average SPL between uniform and nonuniform absorption distributions",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "With smaller openings, the sound field is less diffuse, making the spatial distribution of absorption more critical and leading to greater differences between uniform and nonuniform cases.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (iii)",
+      "quote": "the difference in the average SPL between uniform and nonuniform absorption distributions is greater with a smaller opening dimension",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 13)"
+    },
+    {
+      "id": 10,
+      "antecedent": "Addition of more connected rooms AND high absorption (e.g., ab=0.5) in the added rooms",
+      "consequent": "Effects on the average SPL in the first receiving room",
+      "direction": "decrease",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "High absorption in subsequent rooms effectively dampens sound propagation, limiting the cumulative impact of additional rooms on the initial receiving space.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (iv)",
+      "quote": "the effects on the average SPL in the first receiving room is lesser when the absorption in the added rooms is high",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 14b)"
+    },
+    {
+      "id": 11,
+      "antecedent": "Number of rooms",
+      "consequent": "Maximum difference in average SPL with different absorption coefficients",
+      "direction": "mixed",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "The cumulative effect of absorption across multiple rooms influences the overall sound field, leading to a maximum difference of ~6 dB depending on the total number of rooms.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 5, Conclusion (iv)",
+      "quote": "the maximum difference with different absorption coefficients is ~6 dB, depending on the number of rooms.",
+      "testable": true,
+      "empirical_support_cited": "FEM simulation results (Fig. 14)"
+    }
+  ],
+  "testable_hypotheses_or_predictions": [
+    "If a large opening is required, one should expect a high average SPL in a room and a small level difference between rooms for rooms with high room absorption, while no such pattern is found for rooms with low absorption.",
+    "If the source and receiver are at different heights, the level differences between rooms are larger than if the source and receiver are at the same height, and larger for rooms closer to the source.",
+    "To reduce the average SPL in a room with an additional source (e.g., an HVAC system and human speech), increasing the opening dimension could be useful, whereas those of other rooms increase with increasing opening dimension, especially for rooms with high absorption.",
+    "To determine the path of crowd across the spaces, the opening position needs to be considered only for rooms with low absorption.",
+    "The strategy of absorption adjustment as a remedial measure yields limited benefits for rooms with high absorption.",
+    "Ensuring an equivalent amount of absorption between cases of uniform and nonuniform distributions does not ensure consistent performance, especially for rooms with a small opening dimension.",
+    "In the case of increasing the scale of the entire space (e.g., the number of rooms), to avoid interference in the first receiving room, high room absorption is necessary."
+  ],
+  "bridge_warrants": [
+    "The paper implicitly connects to the concept of 'just-noticeable difference (JND)' in sound perception when discussing the magnitude of SPL changes, suggesting a link to perceptual thresholds and cognitive processing of sound.",
+    "The discussion of 'coupling effects' between rooms implies a complex interaction of acoustic fields, which can be related to how environmental features influence the overall acoustic 'scene' and its processing.",
+    "The mention of 'sound flow' and 'reflections' relates to fundamental principles of architectural acoustics that underpin how environmental features shape the acoustic experience."
+  ],
+  "methodological_critiques": [
+    "The amount of calculation confines the prediction to 2D modeling in the validity tests.",
+    "Future work could involve more effective methods that could be enable 3D simulations to be conducted under high-frequency conditions so that issues such as the height of the spaces could be investigated.",
+    "Other related aspects to consider in the future include rooms with circular and irregular shapes and rooms that are connected at the corner."
+  ],
+  "model_structure": "A 2D Finite Element Method (FEM) computational model representing a cross-section of five rectangular rooms (width 5.0 m, length 8.0 m) separated by solid walls (thickness 0.2 m) and connected by openings (width 2.0 m, initially 40% dop, middle position). Perfectly Matched Layers (PMLs) enclose the end walls to emulate free-field conditions.",
+  "domains": [
+    "A5_Acoustic",
+    "A3_Spatial_Config",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "MSI",
+    "SN"
+  ],
+  "limitations": [
+    "The simulations were confined to 2D modeling, limiting the investigation of 3D effects like room height.",
+    "The study did not investigate rooms with circular, irregular shapes, or corner connections."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.buildenv.2021.108733",
+    "title": "Acoustic modeling of sequential spaces: A parametric study",
+    "authors": [
+      "Tingting Yang",
+      "Jian Kang"
+    ],
+    "year": 2021,
+    "journal": "Building and Environment",
+    "volume": "212",
+    "issue": null,
+    "pages": "108733",
+    "publisher": "Elsevier BV",
+    "citation_count": 1,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1006/jsvi.1999.2988",
+      "10.1006/jsvi.2001.3938",
+      "10.1016/S0003-682X(01)00063-9",
+      "10.1016/j.apacoust.2010.07.005",
+      "10.1016/j.apacoust.2013.01.007",
+      "10.1016/j.apacoust.2018.02.024",
+      "10.1016/j.apacoust.2019.107139",
+      "10.1016/j.apacoust.2021.108248",
+      "10.1016/j.buildenv.2020.107176",
+      "10.1016/j.enganabound.2014.03.006",
+      "10.1016/j.jsv.2012.09.044",
+      "10.1016/j.jsv.2018.01.024",
+      "10.1121/1.1320476",
+      "10.1121/1.1906653",
+      "10.1121/1.1907814",
+      "10.1121/1.1916070",
+      "10.1121/1.2000772",
+      "10.1121/1.2338814",
+      "10.1121/1.3008066",
+      "10.1121/1.400320",
+      "10.1121/1.418527",
+      "10.1121/1.4887442",
+      "10.1121/1.4934267",
+      "10.1121/1.4966626",
+      "10.1121/2.0001041",
+      "10.1177/1351010X17743642",
+      "10.12693/APhysPolA.118.123",
+      "10.2514/1.10975",
+      "10.3390/app11093728",
+      "10.3813/AAA.919010"
+    ],
+    "cited_by": [
+      "10.1016/j.apacoust.2024.110352"
+    ],
+    "semantic_scholar_id": "c75c24cd46864d7a35d2679fd5e24d1868ab6bd7",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:10.463545+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Acoustic modeling of sequential spaces: A parametric study",
+    "crossref_year": 2022,
+    "crossref_citation_count": 1,
+    "crossref_journal": "Building and Environment",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 35,
+    "crossref_issn": [
+      "0360-1323"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.426417+00:00",
+    "_cr_refs_added": 30
+  },
+  "year": 2021,
+  "journal": "Building and Environment",
+  "authors_structured": [
+    "Tingting Yang",
+    "Jian Kang"
+  ],
+  "crossref_title": "Acoustic modeling of sequential spaces: A parametric study",
+  "crossref_authors": [
+    {
+      "name": "Tingting Yang",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Jian Kang",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2022,
+  "crossref_journal": "Building and Environment",
+  "crossref_citation_count": 1,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:52:58.633168+00:00"
+}

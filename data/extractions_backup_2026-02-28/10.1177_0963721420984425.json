@@ -1,0 +1,1670 @@
+{
+  "doi": "10.1177/0963721420984425",
+  "article_type": "empirical_research",
+  "article_family": "empirical_research",
+  "quality_action": "accept",
+  "quality_score": 0.71,
+  "n_findings": 50,
+  "extracted_at": "2026-02-25T04:14:45.469841+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.008102,
+  "title": "Edge-Orientation Entropy Predicts Preference for Diverse Types of Man-Made Images",
+  "authors": "Maria Grebenkina et al., 2018",
+  "research_questions": [
+    "Is edge-orientation entropy associated with aesthetic preference in a wide variety of man-made visual patterns and scenes?",
+    "How does edge-orientation entropy relate to curvilinearity in predicting aesthetic preference?",
+    "What are the relative contributions of curvilinearity and edge-orientation entropy to aesthetic ratings?"
+  ],
+  "hypotheses": [
+    "Edge-orientation entropy is a predictor for aesthetic ratings in at least some man-made visual stimuli.",
+    "Human observers prefer a high degree of edge-orientation entropy in more complex visual stimuli, including photographs of man-made objects and scenes.",
+    "Edge-orientation entropy and curvilinearity share predicted variance of preference for visual stimuli.",
+    "Curved stimuli will be rated more highly than angular patterns.",
+    "Stimuli with high 2nd-order entropy will be rated more highly than stimuli with low 2nd-order entropy."
+  ],
+  "methodology": {
+    "participants": "20-31 participants per experiment (total 147 unique participants across experiments 2,3,5,6; Experiment 1 and 4 used existing data). Mostly university students/graduates, younger than 40 years, normal/corrected-to-normal vision, no art professionals.",
+    "stimuli": "Six sets of man-made images: 1) Simple irregular geometric shapes (curved/angular, N=180); 2) Artificial ornamental patterns (Taprats, N=100); 3) Photographs of building facades (N=50); 4) Interior architectural scenes (N=200); 5) Music album covers (classic, pop, metal, N=150); 6) Complex line stimuli (angular/curved, systematically varied in 2nd-order entropy, N=100).",
+    "measures": {
+      "objective_image_properties": [
+        "1st-order edge-orientation entropy (uniformity of edge orientations)",
+        "2nd-order edge-orientation entropy (independence of edge orientations, calculated for 20-240 pixels and >240 pixels distances)",
+        "Edge density (sum of Gabor filter responses, related to complexity)",
+        "Self-similarity of gradient orientations (PHOG method)",
+        "Shape (binary: curved/angular) for Experiments 1, 6",
+        "Contour (binary: curvilinear/rectilinear) for Experiment 4",
+        "Openness of space (binary: open/closed) for Experiment 4",
+        "Ceiling height (binary: high/low) for Experiment 4",
+        "Music genre (categorical: metal, pop, classic) for Experiment 5"
+      ],
+      "subjective_aesthetic_ratings": [
+        "Liking (Experiment 1)",
+        "Pleasantness (Experiment 4)",
+        "Beauty (Experiment 4)",
+        "Pleasing (Experiments 2, 3, 5, 6)",
+        "Interesting (Experiments 2, 3, 5, 6)",
+        "Harmonious (Experiments 2, 3, 5, 6)"
+      ]
+    },
+    "analysis": "Multiple linear regression (lm package in R) to predict aesthetic ratings from image properties. R\u00b2 and adjusted R\u00b2 values, Akaike Information Criterion (AIC), standardized regression coefficients (\u03b2i), t-values, and p-values were reported. ANOVA (R\u00b2 difference test) for model comparisons. Mann-Whitney U test for entropy differences between curved/angular stimuli."
+  },
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Shape (curved/angular)",
+      "consequent": "Preference rating (simple shapes)",
+      "direction": "modulates",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF1",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Curved shapes are generally preferred over angular shapes.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2, Model 4",
+      "quote": "Shape (curved) \u03b2i: 0.86, t-value: 22.83, p-value: < 0.0001, R\u00b2adj: 0.74",
+      "testable": true,
+      "empirical_support_cited": "Bertamini et al., 2016"
+    },
+    {
+      "id": 2,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Preference rating (simple shapes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher uniformity of edge orientations is associated with higher preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2, Model 2",
+      "quote": "1st-order entropy \u03b2i: 0.56, t-value: 7.16, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 3,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Preference rating (simple shapes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher independence of edge orientations is associated with higher preference.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2, Model 2",
+      "quote": "2nd-order entropy \u03b2i: 0.24, t-value: 3.10, p-value: 0.002",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 4,
+      "antecedent": "Curved shapes",
+      "consequent": "1st-order edge-orientation entropy",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF1",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Curved shapes tend to have a more uniform distribution of edge orientations compared to angular shapes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion, Experiment 1",
+      "quote": "First-order entropy was higher for the curved stimuli (median: 4.47) than for the angular ones (median: 4.35; Mann-Whitney test, U = 80, p < 0.0001).",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Curved shapes",
+      "consequent": "2nd-order edge-orientation entropy",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF1",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Curved shapes tend to have more independent edge orientations compared to angular shapes.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion, Experiment 1",
+      "quote": "A similar relation was obtained for 2nd-order entropy (median: 4.26 and 4.15, respectively; U = 674, p = 0.0001).",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Edge-orientation entropies (1st-order and 2nd-order)",
+      "consequent": "Preference ratings (simple shapes)",
+      "direction": "modulates",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Entropy measures together predict preference ratings about as well as curved/angular shape.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion, Experiment 1",
+      "quote": "our findings suggest that the two measures of entropy together predict the preference ratings of the stimuli about as well as their curved/angular shape",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 7,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Pleasing rating (ornamental patterns)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher independence of edge orientations is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Pleasing, Model 1",
+      "quote": "2nd-order entropy \u03b2i: 0.36, t-value: 3.171, p-value: 0.0021",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 8,
+      "antecedent": "Self-similarity",
+      "consequent": "Pleasing rating (ornamental patterns)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower self-similarity is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Pleasing, Model 1",
+      "quote": "Self-similarity \u03b2i: -0.23, t-value: -2.153, p-value: 0.034",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 9,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Interesting rating (ornamental patterns)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher independence of edge orientations is associated with higher interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Interesting, Model 1",
+      "quote": "2nd-order entropy \u03b2i: 0.45, t-value: 4.221, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Self-similarity",
+      "consequent": "Interesting rating (ornamental patterns)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower self-similarity is associated with higher interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Interesting, Model 1",
+      "quote": "Self-similarity \u03b2i: -0.28, t-value: -2.769, p-value: 0.0068",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Harmonious rating (ornamental patterns)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher uniformity of edge orientations is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Harmonious, Model 1",
+      "quote": "1st-order entropy \u03b2i: 0.24, t-value: 2.557, p-value: 0.0121",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 12,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Harmonious rating (ornamental patterns)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower independence of edge orientations (more predictable spatial distribution) is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Harmonious, Model 1",
+      "quote": "2nd-order entropy \u03b2i: -0.32, t-value: -3.544, p-value: 0.0006",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 13,
+      "antecedent": "Self-similarity",
+      "consequent": "Harmonious rating (ornamental patterns)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher self-similarity is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Harmonious, Model 1",
+      "quote": "Self-similarity \u03b2i: 0.60, t-value: 6.903, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 14,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Pleasing rating (building facades)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "More evenly distributed edge orientations (higher 1st-order entropy) lead to higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, Pleasing, Model 1",
+      "quote": "1st-order entropy \u03b2i: 0.72, t-value: 1.891, p-value: 0.065",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 15,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Interesting rating (building facades)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "More evenly distributed edge orientations (higher 1st-order entropy) lead to higher interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, Interesting, Model 1",
+      "quote": "1st-order entropy \u03b2i: 0.88, t-value: 2.209, p-value: 0.032",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Pleasing rating (building facades)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "1st-order entropy alone explains 49% of the variance in pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "For pleasing, interesting, and harmonious, 1st-order entropy alone explains 49, 45, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 17,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Interesting rating (building facades)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "1st-order entropy alone explains 45% of the variance in interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "For pleasing, interesting, and harmonious, 1st-order entropy alone explains 49, 45, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Harmonious rating (building facades)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "1st-order entropy alone explains 42% of the variance in harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "For pleasing, interesting, and harmonious, 1st-order entropy alone explains 49, 45, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 19,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Pleasing rating (building facades)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "2nd-order entropy alone explains 42% of the variance in pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "and 2nd-order entropy alone 42, 38, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 20,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Interesting rating (building facades)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "2nd-order entropy alone explains 38% of the variance in interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "and 2nd-order entropy alone 42, 38, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Harmonious rating (building facades)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "2nd-order entropy alone explains 42% of the variance in harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Results, Experiment 3",
+      "quote": "and 2nd-order entropy alone 42, 38, and 42% of the variance, respectively.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 22,
+      "antecedent": "Openness of space",
+      "consequent": "Pleasantness rating (interior scenes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF3"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "Openness is a strong predictor for pleasantness ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Pleasantness, Model 1",
+      "quote": "Openness \u03b2i: 0.20, t-value: 2.897, p-value: 0.0042",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 23,
+      "antecedent": "Edge density",
+      "consequent": "Pleasantness rating (interior scenes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher edge density is associated with higher pleasantness ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Pleasantness, Model 1",
+      "quote": "Edge density \u03b2i: 0.24, t-value: 3.243, p-value: 0.0014",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 24,
+      "antecedent": "Self-similarity",
+      "consequent": "Pleasantness rating (interior scenes)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower self-similarity is associated with higher pleasantness ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Pleasantness, Model 1",
+      "quote": "Self-similarity \u03b2i: -0.18, t-value: -2.580, p-value: 0.0106",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 25,
+      "antecedent": "Openness of space",
+      "consequent": "Beauty rating (interior scenes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF3"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "Openness is a strong predictor for beauty ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Beauty, Model 1",
+      "quote": "Openness \u03b2i: 0.18, t-value: 2.619, p-value: 0.0095",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 26,
+      "antecedent": "Edge density",
+      "consequent": "Beauty rating (interior scenes)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher edge density is associated with higher beauty ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Beauty, Model 1",
+      "quote": "Edge density \u03b2i: 0.22, t-value: 3.061, p-value: 0.0025",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 27,
+      "antecedent": "Self-similarity",
+      "consequent": "Beauty rating (interior scenes)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower self-similarity is associated with higher beauty ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5, Beauty, Model 1",
+      "quote": "Self-similarity \u03b2i: -0.18, t-value: -2.544, p-value: 0.0117",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 28,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Pleasing rating (music album covers)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher uniformity of edge orientations is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Pleasing, Model 1",
+      "quote": "1st-order entropy \u03b2i: 0.38, t-value: 2.376, p-value: 0.0188",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 29,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Pleasing rating (music album covers)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower independence of edge orientations is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Pleasing, Model 1",
+      "quote": "2nd-order entropy \u03b2i: -0.370, t-value: -2.371, p-value: 0.0191",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 30,
+      "antecedent": "Music genre (metal)",
+      "consequent": "Interesting rating (music album covers)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "M14"
+      ],
+      "template_ids": [
+        "M14"
+      ],
+      "mechanism": "Metal music genre covers are rated as more interesting, possibly due to exciting/shocking content.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Interesting, Model 1",
+      "quote": "Genre metal \u03b2i: 0.833, t-value: 5.448, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 31,
+      "antecedent": "1st-order edge-orientation entropy",
+      "consequent": "Harmonious rating (music album covers)",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher uniformity of edge orientations is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Harmonious, Model 1",
+      "quote": "1st-order entropy \u03b2i: 0.39, t-value: 2.511, p-value: 0.0131",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 32,
+      "antecedent": "2nd-order edge-orientation entropy",
+      "consequent": "Harmonious rating (music album covers)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower independence of edge orientations is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Harmonious, Model 1",
+      "quote": "2nd-order entropy \u03b2i: -0.37, t-value: -2.458, p-value: 0.0152",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 33,
+      "antecedent": "Edge density",
+      "consequent": "Harmonious rating (music album covers)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower edge density is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Harmonious, Model 1",
+      "quote": "Edge density \u03b2i: -0.18, t-value: -1.969, p-value: 0.0509",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 34,
+      "antecedent": "Music genre (metal)",
+      "consequent": "Harmonious rating (music album covers)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "M14"
+      ],
+      "template_ids": [
+        "M14"
+      ],
+      "mechanism": "Metal music genre covers are rated as less harmonious.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Harmonious, Model 1",
+      "quote": "Genre metal \u03b2i: -0.37, t-value: -2.182, p-value: 0.0308",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 35,
+      "antecedent": "Music genre (pop)",
+      "consequent": "Harmonious rating (music album covers)",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "M14"
+      ],
+      "template_ids": [
+        "M14"
+      ],
+      "mechanism": "Pop music genre covers are rated as less harmonious.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6, Harmonious, Model 1",
+      "quote": "Genre pop \u03b2i: -0.12, t-value: -2.440, p-value: 0.0159",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 36,
+      "antecedent": "Shape (curved) (complex line patterns)",
+      "consequent": "Pleasing rating",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF1",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Angular stimuli were rated as more pleasing than curved stimuli in this context.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Pleasing, Model 1",
+      "quote": "Shape (curved) \u03b2i: -0.27, t-value: -2.86, p-value: 0.0052",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 37,
+      "antecedent": "2nd-order edge-orientation entropy (20-240 pixels) (complex line patterns)",
+      "consequent": "Pleasing rating",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower independence of edge orientations at shorter distances is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Pleasing, Model 1",
+      "quote": "2nd-order entropy (20-240 pixels) \u03b2i: -0.34, t-value: -2.91, p-value: 0.0045",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 38,
+      "antecedent": "2nd-order edge-orientation entropy (>240 pixels) (complex line patterns)",
+      "consequent": "Pleasing rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher independence of edge orientations at longer distances is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Pleasing, Model 1",
+      "quote": "2nd-order entropy (>240 pixels) \u03b2i: 0.20, t-value: 2.11, p-value: 0.038",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 39,
+      "antecedent": "Edge density (complex line patterns)",
+      "consequent": "Pleasing rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher edge density is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Pleasing, Model 1",
+      "quote": "Edge density \u03b2i: 0.41, t-value: 4.90, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 40,
+      "antecedent": "Self-similarity (complex line patterns)",
+      "consequent": "Pleasing rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher self-similarity is associated with higher pleasing ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Pleasing, Model 1",
+      "quote": "Self-similarity \u03b2i: 0.26, t-value: 3.46, p-value: 0.0008",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 41,
+      "antecedent": "Shape (curved) (complex line patterns)",
+      "consequent": "Interesting rating",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "VF1",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Angular stimuli were rated as more interesting than curved stimuli in this context.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Interesting, Model 1",
+      "quote": "Shape (curved) \u03b2i: -0.33, t-value: -3.19, p-value: 0.002",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 42,
+      "antecedent": "2nd-order edge-orientation entropy (>240 pixels) (complex line patterns)",
+      "consequent": "Interesting rating",
+      "direction": "decrease",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Lower independence of edge orientations at longer distances is associated with higher interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Interesting, Model 1",
+      "quote": "2nd-order entropy (>240 pixels) \u03b2i: -0.24, t-value: -2.30, p-value: 0.024",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 43,
+      "antecedent": "Edge density (complex line patterns)",
+      "consequent": "Interesting rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher edge density is associated with higher interesting ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Interesting, Model 1",
+      "quote": "Edge density \u03b2i: 0.71, t-value: 7.64, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 44,
+      "antecedent": "2nd-order edge-orientation entropy (>240 pixels) (complex line patterns)",
+      "consequent": "Harmonious rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher independence of edge orientations at longer distances is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Harmonious, Model 1",
+      "quote": "2nd-order entropy (>240 pixels) \u03b2i: 0.32, t-value: 3.90, p-value: 0.0002",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 45,
+      "antecedent": "Edge density (complex line patterns)",
+      "consequent": "Harmonious rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher edge density is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Harmonious, Model 1",
+      "quote": "Edge density \u03b2i: 0.27, t-value: 3.69, p-value: 0.0004",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 46,
+      "antecedent": "Self-similarity (complex line patterns)",
+      "consequent": "Harmonious rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Higher self-similarity is associated with higher harmonious ratings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 7, Harmonious, Model 1",
+      "quote": "Self-similarity \u03b2i: 0.47, t-value: 7.12, p-value: < 0.0001",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 47,
+      "antecedent": "Edge-orientation entropies",
+      "consequent": "Pleasing and harmonious ratings (complex line patterns)",
+      "direction": "modulates",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Edge-orientation entropies are more powerful predictors for pleasing and harmonious ratings than curvilinearity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Discussion, Experiment 6",
+      "quote": "Experiment 6 indicates that the edge-orientation entropies are more powerful predictors for ratings of pleasing and harmonious than curvilinearity.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 48,
+      "antecedent": "Edge-orientation entropies",
+      "consequent": "Aesthetic ratings",
+      "direction": "modulates",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2",
+        "AX7",
+        "AX9"
+      ],
+      "mechanism": "The magnitude of the effect of edge-orientation entropy on aesthetic ratings depends on image category, range of entropy values, and type of aesthetic rating.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "General Conclusions and Experimental Limitations",
+      "quote": "The magnitude of this effect, however, depends on the category of images analyzed, on the range of entropy values encountered, and on the type of aesthetic ratings (pleasing, interesting, or harmonious).",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "affect.aesthetic_pleasure",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.765
+    },
+    {
+      "id": 49,
+      "antecedent": "Higher edge-orientation entropies (covering a wide range and not approaching upper bound)",
+      "consequent": "Higher aesthetic rating",
+      "direction": "increase",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "A wider distribution of edge orientations, especially when not saturated, is generally preferred.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "General Conclusions and Experimental Limitations",
+      "quote": "In general, higher edge-orientation entropies correlate with higher aesthetic rating, in particular, if entropy values cover a wide range and do not approach their upper bound.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 50,
+      "antecedent": "Edge-orientation entropies",
+      "consequent": "Curvilinearity variable (shape or contour)",
+      "direction": "substitutes_for",
+      "claim_type": "empirical_result",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Entropies can partly operationalize and substitute for curvilinearity in predicting aesthetic ratings, suggesting shared variance.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "General Discussion, Differences Between the Image Properties and How They Affect the Ratings",
+      "quote": "for most of the ratings in Experiments 1, 4, and 6, the entropies can substitute for the curvilinearity variable (shape or contour), at least in part, to predict the aesthetic ratings.",
+      "testable": true,
+      "empirical_support_cited": null
+    }
+  ],
+  "limitations": [
+    "Findings are specific to the laboratory setting.",
+    "Analysis was restricted to six special types of man-made images, limiting generalizability.",
+    "Aesthetic ratings can be domain-specific, requiring further study for generalization to other man-made or natural patterns/scenes.",
+    "Participants were undergraduates or recent graduates, all younger than 40 years, potentially introducing idiosyncratic taste effects, especially for images with cultural content.",
+    "The study focused on group-level differences, not addressing inter-individual variability in preference for high edge-orientation entropy."
+  ],
+  "domains": [
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A3_Spatial_Config",
+    "A5_Acoustic"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "VF1",
+    "DP",
+    "M14"
+  ],
+  "paper_metadata": {
+    "doi": "10.1177/0963721420984425",
+    "title": "Progress in Joint-Action Research",
+    "authors": [
+      "N. Sebanz",
+      "G. Knoblich"
+    ],
+    "year": 2021,
+    "journal": "Current Directions in Psychological Science",
+    "volume": "30",
+    "issue": "2",
+    "pages": "138-143",
+    "publisher": "SAGE Publications",
+    "citation_count": 92,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/9781119170174.epcn305",
+      "10.1007/978-3-540-74479-5_14",
+      "10.1016/S0010-0277(03)00043-X",
+      "10.1016/j.cognition.2010.10.007",
+      "10.1016/j.cognition.2016.05.002",
+      "10.1016/j.cognition.2018.05.012",
+      "10.1016/j.cognition.2018.08.008",
+      "10.1016/j.cognition.2019.02.006",
+      "10.1016/j.cognition.2019.03.016",
+      "10.1016/j.neuropsychologia.2019.05.029",
+      "10.1016/j.tics.2015.01.005",
+      "10.1017/CBO9780511620539",
+      "10.1017/S0140525X05000129",
+      "10.1037/a0027523",
+      "10.1037/a0028066",
+      "10.1037/a0036925",
+      "10.1037/xge0000379",
+      "10.1037/xhp0000041",
+      "10.1037/xhp0000505",
+      "10.1038/s41598-018-23275-9",
+      "10.1038/s41598-020-60307-9",
+      "10.1073/pnas.1108155108",
+      "10.1093/acprof:oso/9780199897933.001.0001",
+      "10.1126/science.1185718",
+      "10.1162/jocn_a_00388",
+      "10.1162/jocn_a_00634",
+      "10.1177/0956797618807674",
+      "10.1177/0956797619842550",
+      "10.1371/journal.pone.0022377",
+      "10.1371/journal.pone.0079876",
+      "10.1515/jso-2014-0021",
+      "10.1561/2300000049",
+      "10.3389/fpsyg.2015.01968"
+    ],
+    "cited_by": [
+      "10.64898/2025.12.30.695445",
+      "10.1080/23311886.2026.2631821",
+      "10.5334/joc.483",
+      "10.1371/journal.pone.0338934",
+      "10.1016/j.neuropsychologia.2026.109372",
+      "10.1111/cogs.70175",
+      "10.1016/j.entcom.2025.101065",
+      "10.1038/s41467-025-67853-8",
+      "10.48550/arXiv.2511.10835",
+      "10.1038/s41539-025-00368-5",
+      "10.1371/journal.pone.0333709",
+      "10.3389/fpsyg.2025.1642312",
+      "10.1038/s44271-025-00348-w",
+      "10.1016/j.neuroimage.2025.121527",
+      "10.3758/s13423-025-02754-x",
+      "10.3389/fpsyg.2025.1595908",
+      "10.1109/RO-MAN63969.2025.11217675",
+      "10.1016/j.neubiorev.2025.106280",
+      "10.1057/s41599-025-05244-6",
+      "10.1016/j.psychsport.2025.102915",
+      "10.1007/s13164-025-00773-0",
+      "10.1016/j.plrev.2025.03.009",
+      "10.1111/cogs.70040",
+      "10.1111/cogs.70049",
+      "10.1016/j.actpsy.2025.104724",
+      "10.1101/2024.05.06.592342",
+      "10.1016/j.isci.2024.111683",
+      "10.1075/is.24015.nag",
+      "10.1093/icc/dtae039",
+      "10.1016/j.cobeha.2025.101519",
+      "10.1109/SMC54092.2024.10831740",
+      "10.1145/3698237",
+      "10.1109/MetaCom62920.2024.00023",
+      "10.1177/01461672241238418",
+      "10.3390/s24102995",
+      "10.1017/9781009386630",
+      "10.1016/j.cognition.2024.105785",
+      "10.1093/scan/nsae026",
+      "10.1080/24740500.2024.2485533",
+      "10.1016/j.biopsycho.2024.108804",
+      "10.1007/s00221-024-06813-y",
+      "10.1080/1463922X.2024.2328062",
+      "10.3389/fpsyg.2024.1327992",
+      "10.1016/j.cognition.2024.105747",
+      "10.1186/s13019-024-02558-5",
+      "10.1111/cogs.13405",
+      "10.3389/fnhum.2023.1305331",
+      "10.1002/pchj.699",
+      "10.1007/s00426-023-01895-9",
+      "10.1145/3607822.3614541",
+      "10.1016/j.dr.2023.101091",
+      "10.1080/09298215.2024.2339244",
+      "10.48550/arXiv.2308.01889",
+      "10.1111/tops.12687",
+      "10.1177/17456916231182923",
+      "10.1111/cogs.13303",
+      "10.1016/j.humov.2023.103100",
+      "10.3389/fpsyg.2023.1147296",
+      "10.31234/osf.io/8za3r",
+      "10.3758/s13423-023-02297-z",
+      "10.1016/j.concog.2023.103521",
+      "10.3389/fpsyg.2023.1068404",
+      "10.1038/s41598-023-31807-1",
+      "10.1098/rstb.2021.0470",
+      "10.1177/00483931221150486",
+      "10.1016/j.neuropsychologia.2023.108492",
+      "10.1371/journal.pone.0280265",
+      "10.1007/s00426-022-01768-7",
+      "10.1007/s10803-022-05851-1",
+      "10.1016/j.jecp.2022.105592",
+      "10.1016/j.cognition.2022.105307",
+      "10.1016/j.actpsy.2022.103758",
+      "10.1016/j.neubiorev.2022.104924",
+      "10.1016/j.isci.2022.105413",
+      "10.1098/rstb.2021.0092",
+      "10.3389/fpsyg.2022.897015",
+      "10.48550/arXiv.2206.02739",
+      "10.3389/fnhum.2022.837495",
+      "10.1007/s10071-022-01622-8",
+      "10.3389/fpsyg.2022.786899",
+      "10.1007/s44202-022-00037-3",
+      "10.1007/s10339-022-01082-5",
+      "10.3758/s13423-021-02051-3",
+      "10.1080/13506285.2021.2013146",
+      "10.1038/s44159-021-00008-w",
+      "10.1016/j.actpsy.2021.103475",
+      "10.1098/rspb.2021.2094",
+      "10.3389/fpsyg.2021.718237",
+      "10.1162/jocn_a_01760",
+      "10.1038/s42003-021-02319-3",
+      "10.3389/fnbot.2021.686010"
+    ],
+    "semantic_scholar_id": "dea66ec3415990252be06932a2de31a49ba85365",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:46:01.884268+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Progress in Joint-Action Research",
+    "crossref_year": 2021,
+    "crossref_citation_count": 103,
+    "crossref_journal": "Current Directions in Psychological Science",
+    "crossref_publisher": "SAGE Publications",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "Humans have a striking ability to coordinate their actions with each other to achieve joint goals. The tight interpersonal coordination that characterizes joint actions is achieved through processes that help with preparing for joint action as well as processes that are active while joint actions are being performed. To prepare for joint action, partners form representations of each other\u2019s actions and tasks and the relation between them. This enables them to predict each other\u2019s upcoming actions, which, in turn, facilitates coordination. While performing joint actions, partners\u2019 coordination is maintained by (a) monitoring whether individual and joint outcomes correspond to what was planned, (b) predicting partners\u2019 action parameters on the basis of familiarity with their individual actions, (c) communicating task-relevant information unknown to partners in an action-based fashion, and (d) relying on coupling of predictions through dense perceptual-information flow between coactors. The next challenge for the field of joint action is to generate an integrated perspective that links coordination mechanisms to normative, evolutionary, and communicative frameworks.",
+    "crossref_reference_count": 34,
+    "crossref_issn": [
+      "0963-7214",
+      "1467-8721"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.774699+00:00",
+    "_cr_refs_added": 33
+  },
+  "year": 2021,
+  "journal": "Current Directions in Psychological Science",
+  "authors_structured": [
+    "N. Sebanz",
+    "G. Knoblich"
+  ],
+  "crossref_title": "Progress in Joint-Action Research",
+  "crossref_authors": [
+    {
+      "name": "Natalie Sebanz",
+      "orcid": "https://orcid.org/0000-0003-1280-8974",
+      "affiliation": "Department of Cognitive Science, Central European University"
+    },
+    {
+      "name": "G\u00fcnther Knoblich",
+      "orcid": null,
+      "affiliation": "Department of Cognitive Science, Central European University"
+    }
+  ],
+  "crossref_year": 2021,
+  "crossref_journal": "Current Directions in Psychological Science",
+  "crossref_citation_count": 103,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "SAGE Publications",
+  "crossref_subjects": [],
+  "crossref_abstract": "Humans have a striking ability to coordinate their actions with each other to achieve joint goals. The tight interpersonal coordination that characterizes joint actions is achieved through processes that help with preparing for joint action as well as processes that are active while joint actions are being performed. To prepare for joint action, partners form representations of each other\u2019s actions and tasks and the relation between them. This enables them to predict each other\u2019s upcoming actions, which, in turn, facilitates coordination. While performing joint actions, partners\u2019 coordination is maintained by (a) monitoring whether individual and joint outcomes correspond to what was planned, (b) predicting partners\u2019 action parameters on the basis of familiarity with their individual actions, (c) communicating task-relevant information unknown to partners in an action-based fashion, and (d) relying on coupling of predictions through dense perceptual-information flow between coactors. The next challenge for the field of joint action is to generate an integrated perspective that links coordination mechanisms to normative, evolutionary, and communicative frameworks.",
+  "crossref_fetched_at": "2026-02-25T12:00:27.429360+00:00"
+}

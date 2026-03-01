@@ -268,6 +268,84 @@
     83015
   ],
   "confidence": 0.85,
-  "t1_frameworks": [],
-  "calibration_status": "uncalibrated"
+  "calibration_status": "calibrated",
+  "tier": "scaffold",
+  "t1_frameworks": [
+    "IC",
+    "NM"
+  ],
+  "t1_assignment_date": "2026-02-23T23:06:34.701358+00:00",
+  "t1_assignment_method": "expert_panel_reasoning_e02",
+  "mechanism_chain": [
+    {
+      "step": 1,
+      "from": "environmental",
+      "to": "neural",
+      "description": "Physical pain OR social exclusion signals both activate anterior insula via distinct input pathways",
+      "warrant": "ANALOGICAL",
+      "confidence": 0.75,
+      "bridge_inferred": true,
+      "source_link_id": "AX1.L1"
+    },
+    {
+      "step": 2,
+      "from": "neural",
+      "to": "affective",
+      "description": "Insula generates unified negative affect signal regardless of pain source (physical/social)",
+      "warrant": "ANALOGICAL",
+      "confidence": 0.75,
+      "bridge_inferred": true,
+      "source_link_id": "AX1.L2"
+    },
+    {
+      "step": 3,
+      "from": "affective",
+      "to": "behavioral",
+      "description": "Shared affect pathway explains why social isolation mimics physical pain in behavioral avoidance",
+      "warrant": "ANALOGICAL",
+      "confidence": 0.55,
+      "bridge_inferred": true,
+      "source_link_id": "AX1.L3"
+    }
+  ],
+  "bridge_warrant": "EMPIRICAL_ASSOCIATION",
+  "bridge_warrant_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.906854+00:00",
+    "fields_inferred": [
+      "mechanism_chain (3 steps from 3 causal_links)",
+      "bridge_warrant"
+    ]
+  },
+  "outcome_domains": [
+    "affect",
+    "neural",
+    "social"
+  ],
+  "outcome_terms": [
+    "affect.stress",
+    "neural",
+    "social"
+  ],
+  "theory_links": [
+    {
+      "theory_id": "KAPLAN_PREFERENCE",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": [],
+  "calibration_date": "2026-03-01T00:28:44.608953+00:00",
+  "calibration_method": "evidence_based_auto",
+  "evidence_count": 1,
+  "calibrated_parameters": {
+    "direction_consensus": 1.0,
+    "majority_direction": "increase",
+    "n_supporting_papers": 1,
+    "total_findings": 1
+  },
+  "evidence_paper_ids": [
+    "10.1201_9780203426340"
+  ]
 }

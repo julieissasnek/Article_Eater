@@ -1,0 +1,484 @@
+{
+  "doi": "10.3390/s24123944",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.79,
+  "n_findings": 10,
+  "extracted_at": "2026-02-25T02:04:08.372914+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.003261,
+  "title": "The effect on emotions and brain activity by the direct/indirect lighting in the residential environment",
+  "authors": "Yu-Bin Shin et al., 2015",
+  "research_question": "To explore how direct/indirect lighting affects emotions and brain oscillations compared to direct lighting, when brightness and color temperature are controlled, and to investigate the influence of direct/indirect lighting on subjects' affective and neurophysiological responses in a residential environment.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 28,
+    "description": "28 subjects (12 females; mean age 22.5) from Seoul, South Korea.",
+    "recruitment": "Written informed consent was obtained after a complete description of the study. Study carried out under IRB guidelines at Gangnam Severance Hospital, Yonsei University."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "A furnished living room (4.7m x 4.4m, height 3.1m) with windows shielded. Two lighting conditions: 1) Direct/indirect lighting (400 lx downlight, 300 lx uplight) and 2) Direct lighting (700 lx downlight). Both conditions maintained 700 lx illuminance and 5000K color temperature. Each condition was presented for 4 minutes after a 4-minute dark (0 lx) adaptation period.",
+      "n_stimuli": 2,
+      "source": "Methods 2.2, 2.3, Fig. 1"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Valence",
+      "instrument": "Self-Assessment Manikin (SAM) nine-point graphical rating scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Arousal",
+      "instrument": "Self-Assessment Manikin (SAM) nine-point graphical rating scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Cool rating",
+      "instrument": "100-mm pen-and-paper visual analog scale (VAS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Refresh rating",
+      "instrument": "100-mm pen-and-paper visual analog scale (VAS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Comfort rating",
+      "instrument": "100-mm pen-and-paper visual analog scale (VAS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Theta frequency band power",
+      "instrument": "Electroencephalography (EEG) from 40-channel Quik-cap electrode system (F4, F8, T4, TP7 electrodes)",
+      "type": "neural"
+    },
+    {
+      "construct": "Alpha, Beta, Gamma frequency band power",
+      "instrument": "Electroencephalography (EEG)",
+      "type": "neural"
+    },
+    {
+      "construct": "Drowsiness rating",
+      "instrument": "100-mm VAS",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Valence ratings (SAM)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.005",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=3.074",
+      "theory_links": [
+        "DP",
+        "IC"
+      ],
+      "template_ids": [
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Table 1, p.3",
+      "quote": "The valence ratings for direct/indirect lighting (mean = 6.4, SD = 1.2) were significantly higher (P=0.005) than those for direct lighting (mean = 5.4, SD = 1.4)."
+    },
+    {
+      "id": 2,
+      "antecedent": "Direct/indirect lighting environment vs. direct lighting environment",
+      "consequent": "Arousal ratings (SAM)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=0.532",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Table 1, p.3",
+      "quote": "However, arousal did not significantly differ between both conditions.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Cool ratings (VAS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.045",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=2.104",
+      "theory_links": [
+        "IC"
+      ],
+      "template_ids": [
+        "IC_THERMAL_COMFORT"
+      ],
+      "mechanism": "Different lighting conditions induce different emotional states, specifically feeling cooler.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Table 1, p.3",
+      "quote": "The cool scores for direct/indirect lighting (mean = 6.9, SD = 1.6) were significantly higher (P=0.045) than those for direct lighting (mean = 6.0; SD=1.9)"
+    },
+    {
+      "id": 4,
+      "antecedent": "Direct/indirect lighting environment vs. direct lighting environment",
+      "consequent": "Refresh and Comfort ratings (VAS)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=1.052 (Refresh), t=0.873 (Comfort)",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Table 1, p.3",
+      "quote": "but the refresh and comfort scores on the VAS were not significantly different between the two conditions (Table 1)."
+    },
+    {
+      "id": 5,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Theta power spectral values on F4 electrode (EEG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.036",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Theta oscillatory activity is associated with affective processing and increased with greater task demands.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.3",
+      "quote": "Comparisons of theta bands between the direct/indirect and direct lighting conditions revealed increased theta power spectral values in the right fronto-temporal and left temporo-parietal regions (F4: P=0.036 uncorrected..."
+    },
+    {
+      "id": 6,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Theta power spectral values on F8 electrode (EEG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.035",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Theta oscillatory activity is associated with affective processing and increased with greater task demands.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.3",
+      "quote": "...F8: P=0.035 uncorrected..."
+    },
+    {
+      "id": 7,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Theta power spectral values on T4 electrode (EEG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.022",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Theta oscillatory activity is associated with affective processing and increased with greater task demands.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.3",
+      "quote": "...T4: P=0.022 uncorrected..."
+    },
+    {
+      "id": 8,
+      "antecedent": "Direct/indirect lighting environment",
+      "consequent": "Theta power spectral values on TP7 electrode (EEG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.039",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Theta oscillatory activity is associated with affective processing and increased with greater task demands.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.3",
+      "quote": "...TP7: P=0.039 uncorrected) under the FDR threshold (Fig. 2)."
+    },
+    {
+      "id": 9,
+      "antecedent": "Direct/indirect lighting environment vs. direct lighting environment",
+      "consequent": "Power in alpha, beta, and gamma frequency bands (EEG)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.3",
+      "quote": "A significant difference was observed in the theta frequency band, but there was no significant difference between the two conditions with regard to power in the alpha, beta, and gamma frequency bands."
+    },
+    {
+      "id": 10,
+      "antecedent": "Cool ratings on VAS scale",
+      "consequent": "Theta power spectral value in F8 electrode (EEG)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.019",
+      "effect_size": 0.44,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC",
+        "DT"
+      ],
+      "template_ids": [],
+      "mechanism": "Theta oscillatory activity can be used as a biological marker that reflects emotional status in different lighting environments.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Fig. 3, p.3",
+      "quote": "Correlational analysis demonstrated that the cool ratings on the VAS scale were positively correlated with theta power spectral value (F8, P=0.019) (Fig. 3)."
+    }
+  ],
+  "mechanisms": [
+    "Theta oscillatory activity is associated with affective processing, orientation, attention, memory, and increased with greater task demands.",
+    "Theta oscillatory activity can serve as a biological marker that reflects emotional status in different lighting environments."
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Further research into how other lighting variables (brightness, color, lighting arrangement, ratio of upward/downward light) affect psychophysiology is required to make recommendations for optimizing different lighting environments."
+  ],
+  "domains": [
+    "A4_Light",
+    "A2_Spatial_Scale",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DT",
+    "IC"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Within-group subjective parameter comparisons for Refreshing, Cool, Comfort, Arousal, and Valence between direct/indirect and direct lighting conditions.",
+      "key_stats": [
+        "t=1.052 (Refreshing)",
+        "t=2.104, P=0.045 (Cool)",
+        "t=0.873 (Comfort)",
+        "t=0.532 (Arousal)",
+        "t=3.074, P=0.005 (Valence)"
+      ],
+      "n_findings_extracted_from": 4
+    }
+  ],
+  "limitations": [
+    "Subjective feelings toward the environment can be altered depending on various factors like amount of sunshine, lighting hardware, suspended lighting length, interior decoration, and other variables.",
+    "The study did not employ multiple comparisons due to its explorative nature, increasing the possibility of Type 1 error.",
+    "Participants may have assumed the hypothesis, which could have influenced the results.",
+    "The sample size, while sufficient for EEG activity, is small for generalizing results."
+  ],
+  "paper_metadata": {
+    "doi": "10.3390/s24123944",
+    "title": "Using Graphs to Perform Effective Sensor-Based Human Activity Recognition in Smart Homes",
+    "authors": [
+      "Srivatsa P",
+      "Thomas Ploetz"
+    ],
+    "year": 2024,
+    "journal": "Italian National Conference on Sensors",
+    "volume": "24",
+    "issue": "12",
+    "pages": "3944",
+    "publisher": "MDPI AG",
+    "citation_count": 11,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1002/widm.1254",
+      "10.1007/978-0-387-93808-0",
+      "10.1007/978-0-387-93808-0_1",
+      "10.1007/978-3-642-15552-9_51",
+      "10.1007/978-3-642-25446-8_4",
+      "10.1007/978-981-16-0575-8_9",
+      "10.1007/s12652-014-0219-x",
+      "10.1007/s12652-019-01236-y",
+      "10.1007/s42452-020-2025-8",
+      "10.1016/0893-6080(89)90020-8",
+      "10.1016/J.NEUCOM.2018.10.104",
+      "10.1016/S0169-2070(00)00065-0",
+      "10.1016/j.future.2017.11.029",
+      "10.1016/j.ins.2011.12.028",
+      "10.1016/j.ins.2013.01.021",
+      "10.1016/j.neucom.2018.10.104",
+      "10.1016/j.patcog.2023.109528",
+      "10.1016/j.patrec.2018.02.010",
+      "10.1016/j.pmcj.2009.04.001",
+      "10.1016/j.pmcj.2014.02.003",
+      "10.1037/1082-989X.7.2.147",
+      "10.1038/s41598-018-24271-9",
+      "10.1109/ACCESS.2020.2982225",
+      "10.1109/BIBM55620.2022.9995660",
+      "10.1109/FSKD.2009.407",
+      "10.1109/GLOBECOM38437.2019.9013934",
+      "10.1109/ICPR.2014.241",
+      "10.1109/IE.2016.43",
+      "10.1109/JBHI.2018.2833618",
+      "10.1109/JSEN.2020.3015726",
+      "10.1109/MC.2012.328",
+      "10.1109/MC.2018.2381112",
+      "10.1109/MIS.2010.112",
+      "10.1109/TBME.2018.2874712",
+      "10.1109/TKDE.2019.2891659",
+      "10.1109/TSMCB.2012.2216873",
+      "10.1109/TSMCC.2012.2198883",
+      "10.1137/1.9781611976236.6",
+      "10.1142/S1793351X16500045",
+      "10.1145/1390156.1390235",
+      "10.1145/2750858.2807551",
+      "10.1145/3267242.3267246",
+      "10.1145/3308558.3313714",
+      "10.1145/3389189.3397991",
+      "10.1146/ANNUREV-STATISTICS-010814-020120",
+      "10.1146/annurev-statistics-010814-020120",
+      "10.1177/1550147716665520",
+      "10.1609/AAAI.V34I01.5400",
+      "10.1609/aaai.v32i1.12328",
+      "10.1609/aaai.v34i01.5400",
+      "10.17863/CAM.48429",
+      "10.2991/978-94-91216-05-3",
+      "10.3233/978-1-61499-672-9-107",
+      "10.3390/electronics10202498",
+      "10.3390/ijgi10070485",
+      "10.3390/s130202682",
+      "10.3390/s17112556",
+      "10.3390/s23031626",
+      "10.48550/arXiv.2302.14781",
+      "10.5694/j.1326-5377.1954.tb66294.x"
+    ],
+    "cited_by": [
+      "10.3390/electronics15020428",
+      "10.48550/arXiv.2512.17453",
+      "10.48550/arXiv.2511.05773",
+      "10.48550/arXiv.2510.16988",
+      "10.3390/s25196082",
+      "10.3390/s25185765",
+      "10.1177/18761364251339587",
+      "10.3390/jsan14020042",
+      "10.1007/978-3-032-10554-7",
+      "10.1016/j.procs.2025.07.161",
+      "10.1016/j.procs.2025.10.217"
+    ],
+    "semantic_scholar_id": "f655f6cba69b49a818af6478aa64149f9955823f",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:49:55.740707+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Using Graphs to Perform Effective Sensor-Based Human Activity Recognition in Smart Homes",
+    "crossref_year": 2024,
+    "crossref_citation_count": 9,
+    "crossref_journal": "Sensors",
+    "crossref_publisher": "MDPI AG",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "There has been a resurgence of applications focused on human activity recognition (HAR) in smart homes, especially in the field of ambient intelligence and assisted-living technologies. However, such applications present numerous significant challenges to any automated analysis system operating in the real world, such as variability, sparsity, and noise in sensor measurements. Although state-of-the-art HAR systems have made considerable strides in addressing some of these challenges, they suffer from a practical limitation: they require successful pre-segmentation of continuous sensor data streams prior to automated recognition, i.e., they assume that an oracle is present during deployment, and that it is capable of identifying time windows of interest across discrete sensor events. To overcome this limitation, we propose a novel graph-guided neural network approach that performs activity recognition by learning explicit co-firing relationships between sensors. We accomplish this by learning a more expressive graph structure representing the sensor network in a smart home in a data-driven manner. Our approach maps discrete input sensor measurements to a feature space through the application of attention mechanisms and hierarchical pooling of node embeddings. We demonstrate the effectiveness of our proposed approach by conducting several experiments on CASAS datasets, showing that the resulting graph-guided neural network outperforms the state-of-the-art method for HAR in smart homes across multiple datasets and by large margins. These results are promising because they push HAR for smart homes closer to real-world applications.",
+    "crossref_reference_count": 84,
+    "crossref_issn": [
+      "1424-8220"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.922606+00:00",
+    "_cr_refs_added": 4
+  },
+  "year": 2024,
+  "journal": "Italian National Conference on Sensors",
+  "authors_structured": [
+    "Srivatsa P",
+    "Thomas Ploetz"
+  ],
+  "crossref_title": "Using Graphs to Perform Effective Sensor-Based Human Activity Recognition in Smart Homes",
+  "crossref_authors": [
+    {
+      "name": "Srivatsa P",
+      "orcid": null,
+      "affiliation": "Georgia Institute of Technology, Atlanta, GA 30332, USA"
+    },
+    {
+      "name": "Thomas Pl\u00f6tz",
+      "orcid": "https://orcid.org/0000-0002-1243-7563",
+      "affiliation": "Georgia Institute of Technology, Atlanta, GA 30332, USA"
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Sensors",
+  "crossref_citation_count": 9,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "MDPI AG",
+  "crossref_subjects": [],
+  "crossref_abstract": "There has been a resurgence of applications focused on human activity recognition (HAR) in smart homes, especially in the field of ambient intelligence and assisted-living technologies. However, such applications present numerous significant challenges to any automated analysis system operating in the real world, such as variability, sparsity, and noise in sensor measurements. Although state-of-the-art HAR systems have made considerable strides in addressing some of these challenges, they suffer from a practical limitation: they require successful pre-segmentation of continuous sensor data streams prior to automated recognition, i.e., they assume that an oracle is present during deployment, and that it is capable of identifying time windows of interest across discrete sensor events. To overcome this limitation, we propose a novel graph-guided neural network approach that performs activity recognition by learning explicit co-firing relationships between sensors. We accomplish this by learning a more expressive graph structure representing the sensor network in a smart home in a data-driven manner. Our approach maps discrete input sensor measurements to a feature space through the application of attention mechanisms and hierarchical pooling of node embeddings. We demonstrate the effectiveness of our proposed approach by conducting several experiments on CASAS datasets, showing that the resulting graph-guided neural network outperforms the state-of-the-art method for HAR in smart homes across multiple datasets and by large margins. These results are promising because they push HAR for smart homes closer to real-world applications.",
+  "crossref_fetched_at": "2026-02-25T12:04:19.612217+00:00"
+}

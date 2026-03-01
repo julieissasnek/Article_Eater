@@ -1,0 +1,502 @@
+ARTICLE EATER POST-QUINEAN V1 + ARTICLE FINDER V3.2.3
+PIPELINE AUDIT REPORT
+=====================
+
+Generated: 2026-02-26
+Auditor: Claude Code
+Scope: Article discovery, PDF extraction, table ingestion, and integration into web of belief + BN
+
+================================================================================
+SECTION 1: ARTICLE FINDER PIPELINE (Article_Finder_v3_2_3)
+================================================================================
+
+REPOSITORY: /sessions/keen-busy-turing/mnt/REPOS/Article_Finder_v3_2_3
+Purpose: Discover and fetch research articles from multiple sources
+
+1.1 CORE ARTICLE DISCOVERY COMPONENTS
+--------------------------------------
+
+File: ingest/zotero_bridge.py (867 lines)
+- Two-way bidirectional sync with Zotero library
+- OUTBOUND: Export papers needing PDFs to Zotero format (for "Find Available PDF" with UCSD SSO)
+- INBOUND: Import PDFs from Zotero storage back to Article Finder
+- Reads from ~/Zotero/zotero.sqlite metadata database
+- Handles PDF cataloging and DOI-based matching
+- STATUS: IMPLEMENTED, PASSIVE (watches Zotero changes)
+
+File: ingest/pdf_cataloger.py (944 lines)
+- Catalogs PDF files in data/pdfs directory
+- Extracts metadata: title, authors, DOI, abstract
+- Matches PDFs to existing Article Finder records
+- Creates new paper records if unmatched
+- STATUS: IMPLEMENTED
+
+File: ingest/smart_importer.py (776 lines)
+- Intelligent paper importing from various sources
+- Deduplication using DOI, title, and citation patterns
+- Abstract enrichment and author parsing
+- STATUS: IMPLEMENTED
+
+AUTOMATION LEVEL: PASSIVE (watches directories)
+- Zotero watcher monitors ~/Zotero for new additions
+- PDF catalog watcher monitors data/pdfs for new files
+- No continuous scheduler found; relies on manual invocation or external cron
+
+NO WISHLIST FOUND: Article Finder appears to have no declared "wishlist of desirable articles"
+- The Article_Eater queue service (below) maintains research targets, but Article_Finder 
+  does not have a mechanism to feed back "papers we want to find" upstream
+
+================================================================================
+SECTION 2: RESEARCH QUEUE SERVICE (Article_Eater_PostQuinean_v1)
+================================================================================
+
+REPOSITORY: /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/src/queue
+Purpose: Maintain a research target queue and coordinate collector activities
+
+2.1 QUEUE INFRASTRUCTURE
+------------------------
+
+File: queue/service.py (938 lines)
+  - ResearchQueueService: Central queue management
+  - Key classes:
+    * ResearchTarget: Article gap to be filled (gap_type, VOI score, priority)
+    * SearchGuidance: Directives for collectors (queries, study types, databases)
+    * ClosureAssessment: Outcome after collector reports results
+    * ResearchOpportunity: Gaps flagged as new primary research opportunities
+  - Maintains persistent state in data/production/research_queue_state.json
+  - Integrates with GapPredictor (web-based gaps) and Tier1Frameworks (theory-driven gaps)
+  - STATUS: IMPLEMENTED, PERSISTENT
+
+File: queue/models.py (200+ lines)
+  - Data contracts for all queue types
+  - Priority levels: HIGH, MEDIUM, LOW (based on VOI)
+  - TargetStatus: OPEN → SEARCHING → FOUND/STALE/CLOSED
+  - SearchResultType: FOUND_RELEVANT, FOUND_TANGENTIAL, NOT_FOUND, INCONCLUSIVE
+  - OpportunityStatus: PROPOSED → VALIDATED → IN_PROGRESS → PUBLISHED
+  - STATUS: DEFINED
+
+File: queue/automated_searcher.py (188 lines)
+  - AutomatedQueueSearcher: Bot that claims targets and runs bulk searches
+  - Uses Semantic Scholar API for candidate discovery
+  - Relevance scoring: 55% abstract presence + 45% citation count
+  - Configurable: max 3 targets/run, 3 queries/target, 10 results/query
+  - run_once() method: claims a target, runs queries, reports results back to queue
+  - STATUS: IMPLEMENTED, EXECUTABLE
+
+File: queue/zotero_watcher.py (150+ lines)
+  - ZoteroWatcher: Passive sync of Zotero additions to queue targets
+  - scan_new_entries(): Detects new BibTeX entries by DOI/cite_key/title
+  - match_entries_to_targets(): Matches new entries to open queue targets
+  - sync_to_queue(): Auto-reports matched papers as search results
+  - min_score: 0.18 (very lenient to capture tangential papers)
+  - STATUS: IMPLEMENTED, PASSIVE
+
+2.2 QUEUE AUTOMATION STATUS
+---------------------------
+
+IS THE ARTICLE FINDER AUTOMATED? 
+  ✓ Partially: Zotero watcher is passive (watches for new Zotero additions)
+  ✗ No scheduler found in Article_Finder for continuous discovery
+  ✗ No scheduled queries to Semantic Scholar, PubMed, etc.
+  ✗ No integration between queue targets and Article_Finder search directives
+
+WISHLIST OF DESIRABLE ARTICLES?
+  ✓ YES: ResearchTarget queue maintains prioritized list of gaps to fill
+    - Each target has gap_description, suggested_queries, voi_score, priority
+    - Targets can be OPEN (unclaimed), SEARCHING (assigned to collector), FOUND, STALE
+    - Theory-driven targets come from Tier1 framework predictions
+    - Gap-driven targets come from GapPredictor (coherence analysis)
+  ✓ Collector coordination: researchQueueService.claim_target() and report_search_result()
+    - Allows human researchers OR automated bots to claim targets
+    - AutomatedQueueSearcher provides a default bot implementation
+  ✗ NO two-way integration: Queue targets not sent back to Article_Finder as search queries
+
+SCHEDULING:
+  ✗ NO BUILT-IN SCHEDULER: All automation requires manual script invocation
+    - run_automated_searcher() must be called manually (or via external cron/Celery)
+    - zotero_watcher.sync_to_queue() must be called manually
+    - No observed APScheduler, Celery, or systemd timers
+  ✗ NO CRON FILES: No @daily/@hourly decorators or cron job definitions
+  ✗ RECOMMENDATION: Set up external scheduler (APScheduler, Celery, or cron) 
+                    to invoke queue refresh + automated searcher on schedule
+
+================================================================================
+SECTION 3: GEMINI PDF EXTRACTION PIPELINE
+================================================================================
+
+REPOSITORY: /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/src/extraction
+Purpose: Extract claims, tables, and structured findings from PDFs using Gemini AI
+
+3.1 EXTRACTION ORCHESTRATION
+-----------------------------
+
+File: scripts/gemini_triage_papers.py (384 lines)
+  - Classifies article type from first few pages of PDF
+  - Uses gemini-2.5-flash for speed/cost (cheap, fast initial pass)
+  - Returns: article_type, subtype, confidence, domain tags, estimated table count
+  - Cost tracking: $0.15/$0.60 per 1M tokens (input/output)
+  - Supports: --sample 10, --all, --resume flags
+  - STATUS: IMPLEMENTED, STANDALONE SCRIPT
+
+File: scripts/gemini_extraction_queue.py (799 lines)
+  - Main extraction pipeline manager
+  - Queue item states: PENDING → IN_PROGRESS → COMPLETED/FAILED/NEEDS_VERIFICATION
+  - Article-type-specific prompts (empirical, meta_analysis, systematic_review, etc.)
+  - Per-type expected fields:
+    * Empirical: findings list with antecedent, consequent, p-value, effect_size, theory_links
+    * Meta-analysis: pooled_effects with k, N, CI, heterogeneity
+    * Systematic review: included_studies list
+    * Narrative review: key_claims with confidence scores
+    * Theoretical: propositions and mechanisms
+  - TWO-RUN VERIFICATION: run1, run2, optional run3 (configurable)
+  - Merges/compares extraction results across runs
+  - Persists queue_state.json for resumption
+  - STATUS: IMPLEMENTED, MAIN ORCHESTRATOR
+
+File: scripts/run_full_extraction.py (338 lines)
+  - Simple wrapper: calls gemini_extraction_queue functions
+  - extract_paper(): single paper → PDF upload → prompt-based extraction
+  - process_paper(): includes 2-run verification with optional merge
+  - Cost/usage tracking per paper
+  - STATUS: IMPLEMENTED, HIGHER-LEVEL WRAPPER
+
+File: scripts/two_pass_extraction.py (375 lines)
+  - Simplified parallel extraction with ThreadPoolExecutor (not asyncio)
+  - Classify → Extract flow (classification first, then article-specific prompt)
+  - Retry logic: 3 attempts per paper, 1s delay between requests
+  - JSON extraction robustness: handles markdown, regex fallback
+  - MAX_WORKERS: 3 (reduced to avoid API rate limiting and truncation)
+  - STATUS: IMPLEMENTED, PARALLELIZED VARIANT
+
+File: src/extraction/llm_extraction_service.py (88 lines)
+  - Thin adapter layer using MultiAIOrchestrator/ModelRegistry
+  - Supports Anthropic, OpenAI, Google providers
+  - extract_claims_from_text(): runs LLM with system/user prompts
+  - Default model: gpt-4o (configurable)
+  - STATUS: IMPLEMENTED, ADAPTER LAYER
+
+3.2 EXTRACTION END-TO-END STATUS
+--------------------------------
+
+IS GEMINI PIPELINE INTEGRATED END-TO-END?
+  ✓ PARTIALLY: Yes, all steps defined; NO automated orchestration
+  
+  Flow:
+  1. Triage papers (classify by type)
+     → Output: article_type_triage.json
+  2. Extract per-type (run Gemini with type-specific prompt)
+     → Output: individual extraction JSONs
+  3. Verify (optional 2-run verification with merge logic)
+     → Output: final_result with consensus findings
+  4. [MISSING] → Integration into web of belief
+     
+  Connection Points:
+  ✓ gemini_extraction_queue.py maintains persistent queue_state.json (resumable)
+  ✓ two_pass_extraction.py supports parallel runs (efficient)
+  ✓ Both use type-aware prompts (domain-specific accuracy)
+  ✗ NO SCHEDULER: Must call manually or invoke via external cron
+  ✗ NO TRIGGER: Extraction does not auto-start when new PDFs arrive
+  ✗ NO FEEDBACK: Extracted findings not automatically integrated downstream
+
+3.3 WHAT GETS EXTRACTED
+-----------------------
+
+Per article type (from gemini_extraction_queue.py):
+
+EMPIRICAL STUDIES:
+  - findings[]: antecedent, consequent, direction, claim_type, measure_type, p_value, effect_size, 
+               confidence_interval, sample_size, theory_links, mechanism, source (Table/text), quote
+  - study_design: experiment, survey, field_study, observational, case_study, mixed
+  - n_participants: total sample size
+  - stimuli[]: type, description, source
+  - domains: CNFA domains affected (A1_Materials, A2_Spatial_Scale, A4_Light, etc.)
+  - overall_theory_links: frameworks guiding hypotheses
+
+META-ANALYSIS:
+  - pooled_effects[]: effect_size, CI, heterogeneity (I²), k (number of studies), N (total participants)
+  - comparison: comparison being made
+  - publication_bias_assessment
+  - study_list: component studies included
+
+SYSTEMATIC REVIEW:
+  - included_studies[]: doi, title, year, n_participants, study_design, outcomes
+  - selection_process: PRISMA compliance, inclusion/exclusion criteria
+  - quality_assessment: risk of bias for key studies
+
+NARRATIVE REVIEW:
+  - key_claims[]: claim text, support_strength, references
+  - research_gaps: identified gaps
+  - methodological_issues: quality assessment
+
+THEORETICAL:
+  - propositions[]: proposition text, logical form, supporting constructs
+  - mechanisms: causal pathways proposed
+  - scope_conditions: when/where the theory applies
+  - falsifiability_assessment
+
+All results tagged with:
+  - confidence (0.0-1.0)
+  - source (page number or table/figure reference)
+  - theory_links (which of 10 T1 + 5 domain theories apply)
+
+================================================================================
+SECTION 4: TABLE EXTRACTION & SEMANTIC CLASSIFICATION
+================================================================================
+
+File: src/extraction/table_classifier.py (344 lines)
+  - Classifies extracted table types via regex pattern matching
+  - Types: RESULTS_ANOVA, RESULTS_REGRESSION, RESULTS_CORRELATION, RESULTS_TTEST, 
+           RESULTS_DESCRIPTIVE, LITERATURE_REVIEW, META_ANALYTIC, DEMOGRAPHICS, 
+           MODEL_FIT, PROTOCOL, MATERIALS, MEASUREMENT_SPECS, GARBAGE, OTHER
+  - Extractable: statistical results, correlation, regression, descriptive, literature, meta-analytic
+  - Patterns for F(df,df), β/r values, M/SD/N, correlation matrices, etc.
+  - STATUS: IMPLEMENTED
+
+File: src/extraction/table_semantics_codex.py (292 lines)
+  - Semantic profiling: classifies table content by statistical semantics
+  - Types: statistical_results, correlation_matrix, regression_coefficients, 
+           stepwise_regression, study_summary, demographics, model_fit, references, artifact
+  - Extractable: statistical_results, correlation_matrix, regression, stepwise, summary
+  - Row-level profiling (STAT_ROW, CITATION_ROW, JUNK_ROW, DEMOGRAPHIC_ROW, MODEL_FIT_ROW)
+  - Density thresholds: junk ≥35% → artifact; model_fit ≥45% → model_fit; citation ≥50% → references
+  - STATUS: IMPLEMENTED
+
+File: src/services/table_extractor.py (1220 lines)
+  - Unified table extraction service
+  - ExtractionMethod: AI_API (primary), PDFPLUMBER (fallback), HYBRID
+  - TableType: STUDY_CHARACTERISTICS, RESULTS, DEMOGRAPHICS, INTERVENTION, OUTCOMES, QUALITY_ASSESSMENT
+  - ExtractedTable: cell-level data with page number, headers, rows, confidence
+  - Outputs: to_dict() for JSON, to_markdown() for preview
+  - STATUS: IMPLEMENTED
+
+File: src/services/table_to_claims.py (488 lines)
+  - Converts extracted tables → structured claims
+  - TableClaim: claim_id, claim_type (finding, methodology, sample, effect), content, source_table_id
+  - TableClaimGenerator: type-aware conversion
+    * RESULTS → effect/finding claims
+    * STUDY_CHARACTERISTICS → methodology/sample claims
+    * DEMOGRAPHICS → sample claims
+    * QUALITY_ASSESSMENT → methodology claims
+  - to_claim_schema(): outputs ae.claim.v1 format compatible with web integration
+  - STATUS: IMPLEMENTED
+
+Scripts for table intake:
+
+File: scripts/run_realtime_table_rule_intake.py (51KB)
+  - Real-time ingestion of tables from newly discovered articles
+  - For each new AF paper:
+    1. Create abstract-based provisional table record immediately
+    2. Create abstract-based provisional rule record immediately
+    3. Enqueue paper for PDF completion
+  - Classifies template family: empirical_v2, mixed_methods, observational_field, case_study
+  - Creates placeholder rules from abstract+title before PDF extraction
+  - STATUS: IMPLEMENTED, REAL-TIME (but manual invocation)
+
+================================================================================
+SECTION 5: WEB OF BELIEF INTEGRATION
+================================================================================
+
+File: src/services/extraction_to_web.py (1795 lines)
+  - Maps ae.claim.v1 → Belief nodes in web of belief
+  - Maps ae.rule.v1 → Constraint edges in web
+  - Claim-type → EpistemicLevel mapping:
+    * "mechanistic" → INTERMEDIATE (not THEORETICAL)
+    * "causal" → INTERMEDIATE
+    * "associational" → EMPIRICAL
+    * "null" → EMPIRICAL
+  - Theory inference: attachment to theories if score ≥ 0.4 (configurable)
+  - Multi-theory support: secondary theories if score ≥ 0.3
+  - Mechanistic boost: +0.15 entrenchment for mechanistic claims
+  - Null findings: treated as CONTRADICTS (not ANOMALOUS), strength 0.6
+  - BN coherence integration (optional, configurable via AE_BN_COHERENCE_ENABLED)
+  - STATUS: IMPLEMENTED
+
+File: src/services/web_accumulator.py (644 lines)
+  - Accumulator service: loads/maintains web of belief
+  - get_accumulator(): lazily loads master web from persistence
+  - add_belief(), add_constraint(): mutating operations
+  - STATUS: IMPLEMENTED
+
+File: src/services/paper_integration/orchestrator.py (1350 lines)
+  - 14-STEP CASCADE for approved papers:
+    1. Pre-validate extraction artifacts
+    2. Snapshot current web state
+    3. Detect supersession (newer paper replaces older)
+    4. Map claims → beliefs (via extraction_to_web)
+    5. Integrate into web of belief
+    6. Apply supersession rules
+    7. Assign 3D taxonomy tags
+    8. Match to molecules + T1.5 theories
+    9. Update BN parameters
+    10. Recompute QA cache
+    11. Update social epistemology
+    12. Refresh VOI gaps
+    13. Post-validate (invariant checks)
+    14. Snapshot post-integration state
+  - Critical (abort on failure): steps 1,2,3,4,5,6,13,14
+  - Non-critical (log, continue): steps 7,8,9,10,11,12
+  - Design: atomic per-paper, idempotent, triggered on-demand (not polled)
+  - STATUS: IMPLEMENTED
+
+Integation scripts:
+
+File: scripts/migrate_rules_to_web.py (567 lines)
+  - Migrates pre-extracted rules → web beliefs + edges
+  - Handles rule template families and rule_family versioning
+  - STATUS: IMPLEMENTED, MIGRATION TOOL
+
+File: scripts/reprocess_web_relations_and_bridges.py (486 lines)
+  - Reprocesses web state: bridge warrants, supersession, coherence
+  - For recovery or schema updates
+  - STATUS: IMPLEMENTED, MAINTENANCE TOOL
+
+================================================================================
+SECTION 6: GAP SUMMARY - WHERE MANUAL STEPS EXIST
+================================================================================
+
+AUTOMATION GAPS:
+
+1. DISCOVERY PIPELINE (Article_Finder → Research Queue)
+   ✗ No automatic query expansion from queue targets to Article_Finder
+   ✗ No scheduled Semantic Scholar searches for high-VOI gaps
+   ✗ Manual invocation required for: run_automated_searcher(), zotero_watcher.sync_to_queue()
+   → RECOMMENDATION: Add APScheduler task to run queue refresh + searcher every 6-24 hours
+
+2. PDF TRIAGE & EXTRACTION
+   ✗ No auto-trigger when new PDFs arrive (must invoke scripts manually)
+   ✗ No scheduled gemini_triage_papers.py runs on new PDFs
+   ✗ No automatic gemini_extraction_queue processing for PENDING items
+   → RECOMMENDATION: Add file watcher (watchdog) or polling to trigger triage/extraction
+
+3. TABLE INGESTION
+   ✓ run_realtime_table_rule_intake.py exists (creates provisional tables/rules from abstract)
+   ✗ But still requires manual invocation
+   ✗ No scheduler for periodic scanning of NEW papers in Article_Finder
+   → RECOMMENDATION: Schedule this script to run after new papers are discovered
+
+4. WEB INTEGRATION
+   ✓ orchestrator.py provides full 14-step cascade
+   ✗ But triggered manually (no on-demand signal when extraction is ACCEPTED)
+   ✗ No approval workflow visible (unclear when a paper becomes "ACCEPTED")
+   → RECOMMENDATION: Add approval state machine + auto-trigger orchestrator on ACCEPT
+
+5. BN PARAMETER UPDATES
+   ✓ orchestrator step 9 updates BN parameters (incremental_bn.py)
+   ✗ No full retraining pipeline visible
+   ✗ No validation of learned parameters against test set
+   → RECOMMENDATION: Add separate monthly full-retraining job with evaluation
+
+================================================================================
+SECTION 7: DATA FLOW SUMMARY
+================================================================================
+
+HAPPY PATH (End-to-End):
+
+1. Article Discovery
+   (Automated) Zotero watches ~/Zotero → new entries added to Article Finder
+   (Manual) Collector claims target from research queue
+   (Automated) AutomatedQueueSearcher queries Semantic Scholar
+   → Papers arrive in Article_Finder DB with metadata
+
+2. PDF Acquisition
+   (Passive) Papers waiting for PDFs listed in queue
+   (Manual) User exports to Zotero, uses "Find Available PDF" (with UCSD SSO)
+   (Passive) Zotero Bridge imports downloaded PDFs back to Article_Finder
+   → PDFs available in data/pdfs/
+
+3. PDF Triage & Extraction
+   (Manual) Invoke gemini_triage_papers.py
+   → Creates article_type_triage.json
+   (Manual) Invoke gemini_extraction_queue.py
+   → Runs type-specific extraction, creates extraction JSONs
+   (Manual) Invoke run_realtime_table_rule_intake.py
+   → Creates abstract-based provisional tables/rules
+
+4. Web Integration
+   (Manual) Paper marked ACCEPTED in dashboard/UI
+   (Manual) Invoke orchestrator.run_integration_cascade()
+   → 14-step integration: extract → beliefs → web → BN → epochs
+   
+5. Downstream Analysis
+   ✓ Web of belief available for coherence analysis
+   ✓ BN updated with learned parameters
+   ✓ VOI gaps refreshed based on new beliefs
+   ✓ New targets may appear in queue from gap detection
+
+CURRENT BOTTLENECK: All manual steps (3, 4) are blocking. None are scheduled.
+
+================================================================================
+SECTION 8: KEY FINDINGS & RECOMMENDATIONS
+================================================================================
+
+AUTOMATION READINESS:
+
+✓ GOOD: All components are implemented and interconnected
+✓ GOOD: Data contracts are well-defined (ae.claim.v1, ae.rule.v1, research_queue.v1)
+✓ GOOD: Persistence layers in place (queue_state.json, web_persistence.db)
+✓ GOOD: Error handling and retry logic present (two_pass_extraction.py)
+✓ GOOD: Cost tracking implemented (Gemini usage)
+
+✗ CRITICAL GAP: No scheduling layer
+  - No APScheduler tasks, Celery workers, or cron jobs observed
+  - All workflow steps require manual invocation
+  - Pipeline is MANUAL end-to-end, not AUTOMATED
+
+✗ IMPORTANT GAP: No approval state machine
+  - Unclear how papers transition from "extraction_complete" → "ACCEPT" → "integrate"
+  - Orchestrator expects papers marked "ACCEPTED" but no state tracking visible
+
+✗ IMPORTANT GAP: No feedback loop from queue to Article_Finder
+  - Research targets exist but aren't fed back as search directives to AF
+  - Article_Finder does not receive "find papers matching gap X"
+
+✗ MODERATE GAP: Limited parallel extraction
+  - two_pass_extraction.py uses MAX_WORKERS=3 (safety limit)
+  - No larger parallelization framework (Ray, Dask) for bulk runs
+
+RECOMMENDATIONS (PRIORITY ORDER):
+
+TIER 1 (ENABLES BASIC AUTOMATION):
+1. Add APScheduler configuration
+   - Queue refresh: every 6 hours (refresh_queue + gaps)
+   - Automated searcher: every 6-12 hours (run_automated_searcher)
+   - PDF triage: every 4 hours on new PDFs (gemini_triage_papers)
+   - PDF extraction: every 4 hours on new PDFs (gemini_extraction_queue)
+   - Table intake: every 4 hours on new papers (run_realtime_table_rule_intake)
+
+2. Add approval workflow
+   - Define ExtractionStatus.AWAITING_APPROVAL state
+   - Create dashboard widget for human approval/rejection
+   - Auto-trigger orchestrator.run_integration_cascade() on ACCEPT
+
+3. Connect queue targets to Article_Finder
+   - After refresh_queue(), export top K targets as search directives
+   - Article_Finder consumes these directives in automated_searcher
+   - Creates feedback loop: gaps → searches → papers → extraction → web → new gaps
+
+TIER 2 (INCREASES ROBUSTNESS):
+4. Add file watchers
+   - watchdog library on data/pdfs/ and data/triage/
+   - Auto-trigger extraction on new files (debounced)
+
+5. Add monitoring & alerting
+   - Log extraction success/failure rates
+   - Alert if queue growth > threshold (gaps not being closed)
+   - Alert if BN parameters diverge significantly (data quality issue)
+
+6. Implement bulk extraction scaling
+   - Consider Ray or Dask for parallel extraction across many papers
+   - Monitor API costs and rate limits
+
+TIER 3 (POLISH):
+7. Add paper lifecycle dashboard
+   - Show paper journey: discovery → PDF → triage → extraction → approval → integration
+   - Display extraction cost per paper
+   - Show theory coverage over time
+
+8. Add validation suite
+   - Spot-check extracted claims against source (random sampling)
+   - Compare 2-run extractions (agreement metrics)
+   - Validate BN against held-out test set
+
+================================================================================

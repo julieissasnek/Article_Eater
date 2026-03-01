@@ -116,9 +116,7 @@ describe('AG-1: Theory Tier Validation Suite', () => {
             const allTemplateIds = new Set(templates.map(t => t.template_id));
 
             reductions.forEach(r => {
-                const templateIds = Array.isArray(r.reducing_templates)
-                    ? r.reducing_templates.map(rt => rt.template_id)
-                    : r.template_nodes;
+                const templateIds = r.template_nodes;
                 templateIds.forEach(templateId => {
                     expect(allTemplateIds.has(templateId)).toBe(true);
                 });

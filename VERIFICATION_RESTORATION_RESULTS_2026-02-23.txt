@@ -1,0 +1,24 @@
+PANEL RESULTS APPLICATION VERIFICATION (RESTORATION & QUARANTINE)
+================================================================
+Date: 2026-02-23
+Status: SUCCESS
+
+1. RESTORATION OF CLAMPED CONFIDENCE VALUES
+   ✓ `scripts/restore_clamped_values.py` executed successfully.
+   ✓ 69 confidence score restorations were performed across 20+ templates.
+   ✓ Reverted `data/templates/` to the `90a53c6` baseline states where values matched the clamping ceilings exactly.
+   ✓ Confirmed that `VIEW1.json` retained its manual panel edits during the selective restoration logic (only specific fields were restored).
+   ✓ Root confidence scores recalculated correctly dynamically based on restored chain steps.
+   ✓ `ceiling_status` flags added ("exceeds") on restored steps for subsequent panel review.
+   ✓ Full log generated at `data/restorations.json`.
+
+2. DESTRUCTIVE SCRIPTS QUARANTINE
+   ✓ Created `scripts/quarantine/` directory to isolate hazardous codebase elements.
+   ✓ Moved the following ceiling-capping scripts to prevent accidental future data loss:
+     - `auto_cap_ceilings.py`
+     - `repair_bridge_ceilings.py`
+     - `repair_bridge_ceilings2.py`
+     - `apply_ceiling_decisions.py`
+   ✓ Re-verified `lint_bridge_ceilings.py` remains active but is strictly a REPORTING-ONLY script, posing no risk to data integrity.
+
+COMPLETION STATUS: ALL REQUIREMENTS MET

@@ -1,0 +1,646 @@
+{
+    "_meta": {
+        "version": "0.1.0",
+        "description": "Bidirectional mapping: Image Tagger features ↔ CVA constraints/valuations",
+        "created": "2026-02-28",
+        "directions": {
+            "image_to_science": "Given an image with these features, what does science say about its cognitive effects?",
+            "science_to_image": "Given a scientific finding about this constraint, what should the environment look like?"
+        }
+    },
+    "feature_to_cva": {
+        "cnfa.light.diffuse_vs_direct_ratio": {
+            "primary_constraints": [
+                "prediction_error",
+                "load_rate"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low_when_diffuse",
+                "load_rate": "low_when_diffuse"
+            },
+            "primary_valuations": [
+                "SafetyValue",
+                "ComfortValue"
+            ],
+            "valuation_direction": {
+                "SafetyValue": "+",
+                "ComfortValue": "+"
+            },
+            "relevant_molecules": [
+                "M_BEAUTY_COMPRESSION"
+            ],
+            "relevant_templates": [
+                "L1",
+                "L3",
+                "L5"
+            ],
+            "relevant_outcomes": [
+                "affect.stress",
+                "cog.attention.sustained"
+            ],
+            "image_search_queries": [
+                "soft diffuse lighting interior",
+                "indirect lighting workspace"
+            ],
+            "science_summary": "Diffuse lighting reduces visual prediction error and processing load, promoting safety/comfort valuations"
+        },
+        "cnfa.light.warm_vs_cool_ratio": {
+            "primary_constraints": [
+                "prediction_error",
+                "temporal_coherence"
+            ],
+            "constraint_direction": {
+                "prediction_error": "context_dependent",
+                "temporal_coherence": "high_when_consistent"
+            },
+            "primary_valuations": [
+                "ComfortValue",
+                "InterestValue"
+            ],
+            "valuation_direction": {
+                "ComfortValue": "+warm",
+                "InterestValue": "+cool"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "L2",
+                "L4"
+            ],
+            "relevant_outcomes": [
+                "physio.alertness",
+                "affect.mood.positive"
+            ],
+            "image_search_queries": [
+                "warm light interior evening",
+                "cool daylight office"
+            ],
+            "science_summary": "Warm light (< 3000K) promotes relaxation/comfort; cool light (> 5000K) promotes alertness. Circadian alignment crucial."
+        },
+        "cnfa.spatial.prospect_to_refuge_ratio": {
+            "primary_constraints": [
+                "control_efficacy",
+                "prediction_error",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "control_efficacy": "high_when_balanced",
+                "prediction_error": "low_when_balanced",
+                "affordance_density": "high"
+            },
+            "primary_valuations": [
+                "SafetyValue",
+                "AutonomySupportValue"
+            ],
+            "valuation_direction": {
+                "SafetyValue": "+",
+                "AutonomySupportValue": "+"
+            },
+            "relevant_molecules": [
+                "M_PROSPECT_REFUGE"
+            ],
+            "relevant_templates": [
+                "VIEW1",
+                "SC2",
+                "ENCLOSURE_SAFETY_030"
+            ],
+            "relevant_outcomes": [
+                "affect.stress",
+                "affect.mood.positive",
+                "cog.attention.sustained"
+            ],
+            "image_search_queries": [
+                "window seat reading nook",
+                "alcove overlooking landscape",
+                "cozy corner with view"
+            ],
+            "science_summary": "Balanced prospect-refuge (see without being seen) optimizes safety + autonomy. Strongest environmental effect in the literature."
+        },
+        "cnfa.spatial.enclosure_index": {
+            "primary_constraints": [
+                "control_efficacy",
+                "prediction_error"
+            ],
+            "constraint_direction": {
+                "control_efficacy": "high_when_moderate",
+                "prediction_error": "low_when_high"
+            },
+            "primary_valuations": [
+                "SafetyValue"
+            ],
+            "valuation_direction": {
+                "SafetyValue": "+high_enclosure"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "ENCLOSURE_SAFETY_030",
+                "PRIVACY_GRADIENT_REGULATION_001"
+            ],
+            "relevant_outcomes": [
+                "affect.stress",
+                "affect.anxiety"
+            ],
+            "image_search_queries": [
+                "enclosed cozy space",
+                "booth seating restaurant",
+                "private alcove"
+            ],
+            "science_summary": "High enclosure = refuge cue, reduces threat-monitoring. But too high → claustrophobia. Optimal varies by neurotype (anxiety: higher preferred)."
+        },
+        "cnfa.spatial.ceiling_height_avg": {
+            "primary_constraints": [
+                "prediction_error",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "prediction_error": "context_dependent",
+                "affordance_density": "high_when_high_ceiling"
+            },
+            "primary_valuations": [
+                "InterestValue",
+                "AutonomySupportValue"
+            ],
+            "valuation_direction": {
+                "InterestValue": "+high",
+                "AutonomySupportValue": "+high"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "T1"
+            ],
+            "relevant_outcomes": [
+                "cog.performance",
+                "cog.attention.selective"
+            ],
+            "image_search_queries": [
+                "high ceiling lobby",
+                "cathedral ceiling interior",
+                "low ceiling cozy room"
+            ],
+            "science_summary": "High ceilings (>3m) prime abstract thought, awe. Low ceilings (<2.5m) prime concrete/focused thought. 'Cathedral effect' (Meyers-Levy & Zhu)."
+        },
+        "cnfa.cognitive.legibility_score": {
+            "primary_constraints": [
+                "prediction_error",
+                "load_rate"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low_when_legible",
+                "load_rate": "low_when_legible"
+            },
+            "primary_valuations": [
+                "SafetyValue",
+                "AutonomySupportValue"
+            ],
+            "valuation_direction": {
+                "SafetyValue": "+",
+                "AutonomySupportValue": "+"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "SC2",
+                "SC4"
+            ],
+            "relevant_outcomes": [
+                "affect.stress",
+                "cog.performance"
+            ],
+            "image_search_queries": [
+                "clear sightlines building",
+                "legible circulation",
+                "wayfinding architecture"
+            ],
+            "science_summary": "High legibility (Lynch) reduces cognitive load and prediction error. Users feel safe when they can mentally map the space."
+        },
+        "cnfa.haptic.soft_surface_ratio": {
+            "primary_constraints": [
+                "prediction_error",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low_when_high_soft",
+                "affordance_density": "high_when_varied"
+            },
+            "primary_valuations": [
+                "ComfortValue",
+                "SafetyValue"
+            ],
+            "valuation_direction": {
+                "ComfortValue": "+soft",
+                "SafetyValue": "+soft"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "HAP_SURFACE_MATERIAL_001",
+                "CT_AFFECTIVE_TOUCH_001"
+            ],
+            "relevant_outcomes": [
+                "affect.mood.positive",
+                "affect.stress"
+            ],
+            "image_search_queries": [
+                "soft furnishings interior",
+                "textile rich room",
+                "rug curtain sofa"
+            ],
+            "science_summary": "Soft surfaces provide haptic comfort, acoustic damping, and thermal warmth cues. CT afferent fibers respond to soft textures."
+        },
+        "cnfa.haptic.texture_variation_index": {
+            "primary_constraints": [
+                "load_rate",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "load_rate": "moderate_when_varied",
+                "affordance_density": "high_when_varied"
+            },
+            "primary_valuations": [
+                "InterestValue",
+                "BeautyValue"
+            ],
+            "valuation_direction": {
+                "InterestValue": "+",
+                "BeautyValue": "+moderate"
+            },
+            "relevant_molecules": [
+                "M_BEAUTY_COMPRESSION"
+            ],
+            "relevant_templates": [
+                "HAP_SURFACE_MATERIAL_001",
+                "NATURAL_MATERIAL_CONVERGENCE_001"
+            ],
+            "relevant_outcomes": [
+                "affect.mood.positive"
+            ],
+            "image_search_queries": [
+                "mixed material interior wood stone wool",
+                "rich texture interior",
+                "craft material detail"
+            ],
+            "science_summary": "Varied textures provide sensory richness (Barsalou grounded cognition). Moderate variation = beauty; excessive = clutter."
+        },
+        "cnfa.fluency.edge_clarity_mean": {
+            "primary_constraints": [
+                "prediction_error"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low_when_clear"
+            },
+            "primary_valuations": [
+                "BeautyValue",
+                "ComfortValue"
+            ],
+            "valuation_direction": {
+                "BeautyValue": "+",
+                "ComfortValue": "+"
+            },
+            "relevant_molecules": [
+                "M_BEAUTY_COMPRESSION"
+            ],
+            "relevant_templates": [
+                "VF1",
+                "VF2"
+            ],
+            "relevant_outcomes": [
+                "affect.mood.positive"
+            ],
+            "image_search_queries": [
+                "crisp clean interior lines",
+                "sharp edge architecture",
+                "high contrast interior"
+            ],
+            "science_summary": "Sharp edges fulfill visual predictions easily → high perceptual fluency → positive affect. Ambiguous edges create prediction error."
+        },
+        "cnfa.fluency.visual_entropy_spatial": {
+            "primary_constraints": [
+                "load_rate",
+                "prediction_error"
+            ],
+            "constraint_direction": {
+                "load_rate": "high_when_entropic",
+                "prediction_error": "high_when_entropic"
+            },
+            "primary_valuations": [
+                "ComfortValue",
+                "SafetyValue"
+            ],
+            "valuation_direction": {
+                "ComfortValue": "-high_entropy",
+                "SafetyValue": "-high_entropy"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "T1"
+            ],
+            "relevant_outcomes": [
+                "affect.stress",
+                "cog.attention.selective"
+            ],
+            "image_search_queries": [
+                "cluttered messy room",
+                "organized minimal interior",
+                "chaotic vs orderly space"
+            ],
+            "science_summary": "High spatial entropy = cognitive overload. Objects scattered randomly require more processing than organized layouts."
+        },
+        "cnfa.dynamic.revelation_rate": {
+            "primary_constraints": [
+                "prediction_error",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "prediction_error": "controlled_by_rate",
+                "affordance_density": "high_when_revealing"
+            },
+            "primary_valuations": [
+                "InterestValue",
+                "BeautyValue"
+            ],
+            "valuation_direction": {
+                "InterestValue": "+high_rate",
+                "BeautyValue": "+moderate_rate"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "ARCH_PROMENADE_TEMPORAL_PE_001"
+            ],
+            "relevant_outcomes": [
+                "affect.mood.positive",
+                "cog.attention.sustained"
+            ],
+            "image_search_queries": [
+                "curved corridor reveal",
+                "layered depth architecture",
+                "mystery architecture path"
+            ],
+            "science_summary": "Kaplan's 'Mystery'. Rate of new information revealed by movement. High sustained rate = engaging/fascinating. Zero rate = boring."
+        },
+        "style.japandi": {
+            "primary_constraints": [
+                "prediction_error",
+                "load_rate"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low",
+                "load_rate": "low"
+            },
+            "primary_valuations": [
+                "ComfortValue",
+                "BeautyValue"
+            ],
+            "valuation_direction": {
+                "ComfortValue": "+",
+                "BeautyValue": "+"
+            },
+            "relevant_molecules": [
+                "M_BEAUTY_COMPRESSION"
+            ],
+            "relevant_templates": [],
+            "relevant_outcomes": [
+                "affect.stress",
+                "affect.mood.positive"
+            ],
+            "image_search_queries": [
+                "japandi interior"
+            ],
+            "science_summary": "Low complexity, biophilic materials (wood/rattan), calm. Combines minimalism with wabi-sabi imperfection."
+        },
+        "component.ceiling.vaulted": {
+            "primary_constraints": [
+                "prediction_error",
+                "affordance_density"
+            ],
+            "constraint_direction": {
+                "prediction_error": "context_dependent",
+                "affordance_density": "high"
+            },
+            "primary_valuations": [
+                "InterestValue",
+                "TranscendenceValue"
+            ],
+            "valuation_direction": {
+                "InterestValue": "+",
+                "TranscendenceValue": "+"
+            },
+            "relevant_molecules": [],
+            "relevant_templates": [
+                "T1"
+            ],
+            "relevant_outcomes": [
+                "cog.performance",
+                "affect.mood.positive"
+            ],
+            "image_search_queries": [
+                "vaulted ceiling cathedral",
+                "cathedral ceiling interior"
+            ],
+            "science_summary": "'Cathedral Effect' (Meyers-Levy). Primes abstract thought, awe, openness. Can reduce coziness."
+        },
+        "component.wall.material.wood_slat": {
+            "primary_constraints": [
+                "prediction_error",
+                "load_rate"
+            ],
+            "constraint_direction": {
+                "prediction_error": "low_rhythmic",
+                "load_rate": "low_repetitive"
+            },
+            "primary_valuations": [
+                "BeautyValue",
+                "ComfortValue"
+            ],
+            "valuation_direction": {
+                "BeautyValue": "+",
+                "ComfortValue": "+"
+            },
+            "relevant_molecules": [
+                "M_BEAUTY_COMPRESSION"
+            ],
+            "relevant_templates": [
+                "VF2",
+                "NATURAL_MATERIAL_CONVERGENCE_001"
+            ],
+            "relevant_outcomes": [
+                "affect.mood.positive",
+                "affect.stress"
+            ],
+            "image_search_queries": [
+                "wood slat wall interior",
+                "acoustic wood panel"
+            ],
+            "science_summary": "Regular rhythm → perceptually simple → high fluency. Biophilic (natural material). Acoustic benefit. Brain models with one simple rule."
+        }
+    },
+    "cva_to_features": {
+        "prediction_error": {
+            "description": "Mismatch between sensory prediction and actual input",
+            "high_PE_features": [
+                "cnfa.fluency.visual_entropy_spatial",
+                "cnfa.fluency.clutter_density_count",
+                "cnfa.dynamic.path_glare_max"
+            ],
+            "low_PE_features": [
+                "cnfa.fluency.edge_clarity_mean",
+                "cnfa.fluency.pattern_rhythm_regularity",
+                "cnfa.fluency.symmetry_score_horizontal",
+                "cnfa.light.diffuse_vs_direct_ratio",
+                "component.wall.material.wood_slat"
+            ],
+            "search_queries_high": [
+                "chaotic disorganized cluttered interior",
+                "confusing wayfinding",
+                "glaring harsh lighting"
+            ],
+            "search_queries_low": [
+                "orderly minimal clean interior",
+                "clear sightlines",
+                "soft even lighting"
+            ]
+        },
+        "control_efficacy": {
+            "description": "Sense of control over the environment",
+            "high_features": [
+                "cnfa.spatial.prospect_to_refuge_ratio",
+                "cnfa.cognitive.legibility_score",
+                "cnfa.spatial.enclosure_index"
+            ],
+            "low_features": [
+                "cnfa.fluency.visual_entropy_spatial"
+            ],
+            "search_queries_high": [
+                "panoramic view control room",
+                "command position overlook",
+                "legible open plan"
+            ],
+            "search_queries_low": [
+                "maze-like confusing corridor",
+                "windowless room",
+                "disorienting space"
+            ]
+        },
+        "load_rate": {
+            "description": "Rate of information processing demanded by environment",
+            "high_features": [
+                "cnfa.fluency.visual_entropy_spatial",
+                "cnfa.fluency.clutter_density_count",
+                "cnfa.fluency.color_palette_entropy",
+                "cnfa.haptic.texture_variation_index"
+            ],
+            "low_features": [
+                "cnfa.light.diffuse_vs_direct_ratio",
+                "cnfa.fluency.edge_clarity_mean",
+                "style.minimalist",
+                "style.japandi"
+            ],
+            "search_queries_high": [
+                "busy colorful complex interior",
+                "maximalist design",
+                "overstimulating environment"
+            ],
+            "search_queries_low": [
+                "minimalist serene space",
+                "monochromatic calm interior",
+                "Japandi simple"
+            ]
+        },
+        "affordance_density": {
+            "description": "Richness of action possibilities in the environment",
+            "high_features": [
+                "cnfa.spatial.prospect_to_refuge_ratio",
+                "cnfa.cognitive.activity_zones_count",
+                "cnfa.haptic.texture_variation_index",
+                "cnfa.dynamic.revelation_rate"
+            ],
+            "low_features": [
+                "style.minimalist",
+                "cnfa.spatial.enclosure_index"
+            ],
+            "search_queries_high": [
+                "multifunctional space",
+                "rich varied environment",
+                "mixed-use interior"
+            ],
+            "search_queries_low": [
+                "bare empty room",
+                "single function space",
+                "featureless corridor"
+            ]
+        },
+        "temporal_coherence": {
+            "description": "Consistency of environmental cues over time",
+            "high_features": [
+                "cnfa.light.warm_vs_cool_ratio",
+                "cnfa.fluency.pattern_rhythm_regularity"
+            ],
+            "low_features": [
+                "cnfa.dynamic.reflection_flow",
+                "cnfa.dynamic.optic_flow_magnitude"
+            ],
+            "search_queries_high": [
+                "consistent calm interior",
+                "steady state environment"
+            ],
+            "search_queries_low": [
+                "flashing dynamic lighting",
+                "constantly changing display"
+            ]
+        },
+        "symmetry_regularity": {
+            "description": "Structural order and bilateral symmetry",
+            "high_features": [
+                "cnfa.fluency.symmetry_score_horizontal",
+                "cnfa.fluency.pattern_rhythm_regularity",
+                "style.traditional"
+            ],
+            "low_features": [
+                "style.bohemian",
+                "cnfa.fluency.visual_entropy_spatial"
+            ],
+            "search_queries_high": [
+                "symmetrical formal interior",
+                "classical architecture symmetry"
+            ],
+            "search_queries_low": [
+                "asymmetric organic design",
+                "bohemian eclectic layout"
+            ]
+        },
+        "figure_ground_separation": {
+            "description": "Clarity of object-background distinction",
+            "high_features": [
+                "cnfa.fluency.figure_ground_clarity",
+                "cnfa.fluency.edge_clarity_mean"
+            ],
+            "low_features": [],
+            "search_queries_high": [
+                "high contrast interior",
+                "clear furniture against contrasting wall"
+            ],
+            "search_queries_low": [
+                "monochromatic tonal interior",
+                "camouflaged furniture"
+            ]
+        },
+        "spatial_frequency_match": {
+            "description": "How well scene statistics match natural 1/f distribution",
+            "high_features": [
+                "component.wall.material.wood_slat",
+                "component.wall.material.brick_exposed",
+                "component.wall.material.stone_wall"
+            ],
+            "low_features": [
+                "style.minimalist",
+                "component.ceiling.tray"
+            ],
+            "search_queries_high": [
+                "natural material texture fractal",
+                "wood grain stone texture",
+                "biophilic design detail"
+            ],
+            "search_queries_low": [
+                "plain smooth surfaces",
+                "featureless drywall",
+                "uniform glass wall"
+            ]
+        }
+    }
+}

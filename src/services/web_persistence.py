@@ -660,7 +660,6 @@ class WebPersistenceService:
             self._persistent_conn.row_factory = sqlite3.Row
             self._persistent_conn.execute("PRAGMA foreign_keys = ON")
 
-        print(f"DEBUG: Opening DB at {db_path}")
         self._ensure_schema()
 
     @contextmanager

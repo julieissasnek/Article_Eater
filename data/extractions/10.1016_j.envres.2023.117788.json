@@ -1,0 +1,432 @@
+{
+  "doi": "10.1016/j.envres.2023.117788",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.796,
+  "n_findings": 7,
+  "extracted_at": "2026-02-25T05:46:22.124592+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00506765,
+  "title": "Impact of exposure to natural versus urban soundscapes on brain functional connectivity, BOLD entropy and behavior",
+  "authors": "Emil Stobbe et al., 2024",
+  "research_question": "To investigate the influence of exposure to natural versus urban soundscapes on brain activity (BOLD entropy and whole brain functional connectivity) and behavior (affect and cognitive performance) at rest.",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 35,
+    "description": "12 female, mean age = 27.6 years, normal or corrected-to-normal vision, not taking psychotropic medication. Participants were from Berlin, Germany.",
+    "recruitment": "Participant pool of the Max Planck Institute for Human Development"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "audio",
+      "description": "Forty natural soundscapes (birdsongs, moving water, insects, wind) and forty urban soundscapes (traffic sounds, caf\u00e9 ambiance, machinery sounds). Each soundscape was 20s duration with a 500-ms linear fade in and fade out. Amplitude was normalized. Soundscapes were previously categorized as natural/urban.",
+      "n_stimuli": 80,
+      "source": "Methods 2.2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Positive and Negative Affect",
+      "instrument": "Positive and Negative Affect Schedule (PANAS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Perceived Stress",
+      "instrument": "Perceived Stress Scale (PSS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Working Memory / Directed Attention Performance",
+      "instrument": "Dual n-back (DNB) task",
+      "type": "performance"
+    },
+    {
+      "construct": "Working Memory / Directed Attention Performance",
+      "instrument": "Backward Digit-Span (DBS) task",
+      "type": "performance"
+    },
+    {
+      "construct": "Composite Cognitive Performance",
+      "instrument": "z-score average of DNB and DBS performance (post-pre difference)",
+      "type": "performance"
+    },
+    {
+      "construct": "Brain Entropy (BOLD signal complexity)",
+      "instrument": "Sample Entropy (BEN) per voxel",
+      "type": "neural"
+    },
+    {
+      "construct": "Whole Brain Functional Connectivity (FC)",
+      "instrument": "Pearson's correlation coefficients between ROI time series (Gordon atlas 333 nodes)",
+      "type": "neural"
+    },
+    {
+      "construct": "Subjective Beauty and Pleasantness",
+      "instrument": "Aesthetic ratings",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Listening to urban soundscapes (compared to nature soundscapes)",
+      "consequent": "Brain Entropy (BEN) in posterior cingulate gyrus, cuneus, precuneus, occipital lobe/calcarine",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "T = 5.09",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "listening to urban sounds increases the complexity of the BOLD signal dynamics.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.1, Fig. 2 A and B",
+      "quote": "We found higher BEN when listening to urban sounds in posterior cingulate gyrus, cuneus and precuneus, occipital lobe/calcarine as compared to nature sounds"
+    },
+    {
+      "id": 2,
+      "antecedent": "Mean BEN when listening to urban soundscapes",
+      "consequent": "Change in positive affect (PANAS) from before to after urban sound exposure",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.04",
+      "effect_size": -0.4,
+      "effect_size_type": "r",
+      "sample_size": 21,
+      "confidence_interval": null,
+      "test_statistic": "r(21)",
+      "theory_links": [
+        "PP",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "T2",
+        "NM7"
+      ],
+      "mechanism": "the higher the BEN, the stronger the decrease in positive affect in the urban sound condition.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.3.1, Fig. 2C",
+      "quote": "We found a negative correlation (p value = 0.04 uncorrected) between the mean entropy when listening to urban sounds and the change in positive affect (PANAS)",
+      "outcome_id": "affect.mood.positive",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Listening to nature soundscapes (compared to urban soundscapes)",
+      "consequent": "Functional Connectivity (FC) between areas in auditory, cinguloopercular, somatomotor hand and mouth networks (Gordon atlas)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F = 15",
+      "theory_links": [
+        "DT",
+        "MSI"
+      ],
+      "template_ids": [
+        "T4",
+        "AUD_SCENE_ANALYSIS"
+      ],
+      "mechanism": "lower FC between areas in the auditory, cinguloopercular, and somatomotor hand and mouth networks when listening to urban sounds compared to nature sounds",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.2, Fig. 3 A and B",
+      "quote": "We observed differences in FC, namely, lower FC between areas in the auditory, cinguloopercular, and somatomotor hand and mouth networks when listening to urban sounds compared to nature sounds"
+    },
+    {
+      "id": 4,
+      "antecedent": "Mean FC when listening to nature soundscapes (in auditory, cinguloopercular, somatomotor hand and mouth networks)",
+      "consequent": "Change in composite score of Digit span and N-back (post-pre)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "0.04",
+      "effect_size": 0.46,
+      "effect_size_type": "r",
+      "sample_size": 21,
+      "confidence_interval": null,
+      "test_statistic": "r(19)",
+      "theory_links": [
+        "ART",
+        "DT",
+        "MS"
+      ],
+      "template_ids": [
+        "T20",
+        "T4",
+        "DT2"
+      ],
+      "mechanism": "a gain in working memory performance is associated with higher connectivity within - among others - the auditory functional brain network while listening to nature.",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.3.2, Fig. 3C",
+      "quote": "We observed a positive correlation between the mean FC when listening to nature sounds and difference (post-pre) of the composite score of Digit span and Nback"
+    },
+    {
+      "id": 5,
+      "antecedent": "Natural vs urban soundscapes",
+      "consequent": "Whole brain FC (using anatomical atlas AAL)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.2",
+      "quote": "No robust differences were found using the anatomical atlas (AAL)."
+    },
+    {
+      "id": 6,
+      "antecedent": "Mean BEN when listening to urban sounds",
+      "consequent": "Change in negative affect (PANAS), cognitive performance (DNB, DBS, composite), or Perceived Stress Scale (PSS)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": ">0.3",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.3.1",
+      "quote": "No correlations were found with the remaining variables (p-values >0.3).",
+      "outcome_id": "affect.mood.negative",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Mean FC when listening to nature/urban sounds",
+      "consequent": "Change in positive/negative affect (PANAS) or Perceived Stress Scale (PSS)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": ">0.15",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "Results 3.3.2",
+      "quote": "No correlations were found with the remaining variables (p-values >0.15).",
+      "outcome_id": "affect.mood.negative",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Urban sounds convey a lot of uncertainty which might be translated into a more chaotic processing of information, leading to greater Brain Entropy (BEN).",
+    "Increased BEN can be an essential driver of neural and cognitive decline.",
+    "The brain needs to maintain relatively low levels of BEN to function properly, requiring escape from high entropy states while remaining flexible.",
+    "Natural environments are perceived as more coherent and restorative, potentially aligning with enhanced neural information processing.",
+    "Higher functional connectivity in auditory, cinguloopercular, somatomotor networks during nature sound exposure is associated with improved working memory performance, suggesting boosted brain processing efficiency."
+  ],
+  "moderators": [
+    "Frame-wise displacement (FD) as a covariate for motion"
+  ],
+  "implementation_implications": [
+    "Exposure to natural soundscapes is associated with gains in cognitive performance and higher functional connectivity.",
+    "Exposure to urban soundscapes is associated with increased brain entropy and reduced positive affect, suggesting negative consequences of noise pollution."
+  ],
+  "domains": [
+    "A5_Acoustic",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "ART",
+    "SRT",
+    "PP",
+    "DT",
+    "NM",
+    "MS",
+    "IC"
+  ],
+  "tables": [],
+  "limitations": [
+    "The study lacks the methodological framework to determine whether experience with nature is beneficial or if urbanicity is detrimental, as resting-state brain data was only acquired during soundscape exposure, not before and after.",
+    "Future studies should acquire resting-state data before and after natural versus urban soundscape exposure to complement this.",
+    "Correlations with behavioral variables did not survive multiple comparison correction and need to be treated with caution.",
+    "Further research is needed to unravel the specific active ingredients of auditory stimuli that drive changes in BEN and brain connectivity.",
+    "It remains to be investigated whether the effect of soundscapes is due to the sound pattern itself or belief-based construction by the listener."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.envres.2023.117788",
+    "title": "Impact of exposure to natural versus urban soundscapes on brain functional connectivity, BOLD entropy and behavior.",
+    "authors": [
+      "Emil Stobbe",
+      "Caroline Garcia Forlim",
+      "Simone K\u00fchn"
+    ],
+    "year": 2023,
+    "journal": "Environmental Research",
+    "volume": "244",
+    "issue": null,
+    "pages": "117788",
+    "publisher": "Elsevier BV",
+    "citation_count": 21,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1002/dev.420020304",
+      "10.1006/nimg.2001.0978",
+      "10.1007/s12264-014-1502-8",
+      "10.1016/S0920-9964(97)00140-0",
+      "10.1016/j.artmed.2011.06.007",
+      "10.1016/j.brainres.2021.147435",
+      "10.1016/j.comppsych.2018.11.015",
+      "10.1016/j.dcn.2018.10.004",
+      "10.1016/j.euroneuro.2010.03.008",
+      "10.1016/j.jenvp.2013.08.004",
+      "10.1016/j.jenvp.2023.102141",
+      "10.1016/j.neuroimage.2010.06.041",
+      "10.1016/j.neuroimage.2011.10.018",
+      "10.1016/j.neuroimage.2014.10.037",
+      "10.1016/j.neuroimage.2022.118875",
+      "10.1016/j.neuroscience.2005.08.023",
+      "10.1016/j.newideapsych.2022.100946",
+      "10.1016/j.physbeh.2013.09.010",
+      "10.1016/j.pscychresns.2013.10.001",
+      "10.1037/0022-3514.54.6.1063",
+      "10.1038/s41598-021-83246-5",
+      "10.1038/s41598-022-20841-0",
+      "10.1093/cercor/bhu239",
+      "10.1093/schbul/sbi060",
+      "10.1093/schbul/sbs096",
+      "10.1097/SMJ.0b013e3180318be5",
+      "10.1097/WNR.0000000000000942",
+      "10.1103/PhysRevE.71.021906",
+      "10.1111/j.1467-9280.2008.02225.x",
+      "10.1152/ajpheart.1994.266.4.H1643",
+      "10.1152/ajpheart.2000.278.6.H2039",
+      "10.1212/01.wnl.0000240127.89601.83",
+      "10.1289/ehp.1307272",
+      "10.1371/journal.pone.0025031",
+      "10.1371/journal.pone.0068910",
+      "10.1523/JNEUROSCI.0333-10.2010",
+      "10.2307/2136404",
+      "10.3389/fnhum.2014.00020",
+      "10.3389/fnins.2019.01052",
+      "10.3389/fpsyt.2023.1143780",
+      "10.3390/e22090917",
+      "10.3390/e23121591",
+      "10.3390/ijerph17186792",
+      "10.3390/ijerph7031036",
+      "10.3758/s13423-018-1539-1",
+      "10.5582/bst.2019.01190",
+      "10.7717/peerj.2210"
+    ],
+    "cited_by": [
+      "10.1016/j.ufug.2026.129306",
+      "10.1121/10.0042188",
+      "10.1016/j.neubiorev.2026.106565",
+      "10.3389/ffgc.2025.1651800",
+      "10.1101/2025.11.04.685163",
+      "10.3389/fpsyg.2025.1670804",
+      "10.1038/s41598-025-11469-x",
+      "10.1111/aphw.70081",
+      "10.1016/j.neuroimage.2025.121439",
+      "10.1016/j.ajp.2025.104631",
+      "10.3389/fnhum.2025.1575102",
+      "10.1038/s41598-025-96591-6",
+      "10.1016/j.jenvp.2025.102608",
+      "10.1016/j.foar.2025.01.008",
+      "10.1016/j.trd.2024.104583",
+      "10.22227/2305-5502.2024.4.80-97",
+      "10.1016/j.buildenv.2024.112171",
+      "10.1016/j.ecolind.2024.112547",
+      "10.1016/j.buildenv.2024.111694",
+      "10.1016/j.enbuild.2024.114456",
+      "10.1016/j.compenvurbsys.2026.102412"
+    ],
+    "semantic_scholar_id": "4cfd29dc486ebd72eb9555ffb0bfd42e3b429d97",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:49.358498+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Impact of exposure to natural versus urban soundscapes on brain functional connectivity, BOLD entropy and behavior",
+    "crossref_year": 2024,
+    "crossref_citation_count": 20,
+    "crossref_journal": "Environmental Research",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 60,
+    "crossref_issn": [
+      "0013-9351"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.459013+00:00",
+    "_cr_refs_added": 47
+  },
+  "year": 2023,
+  "journal": "Environmental Research",
+  "authors_structured": [
+    "Emil Stobbe",
+    "Caroline Garcia Forlim",
+    "Simone K\u00fchn"
+  ],
+  "crossref_title": "Impact of exposure to natural versus urban soundscapes on brain functional connectivity, BOLD entropy and behavior",
+  "crossref_authors": [
+    {
+      "name": "Emil Stobbe",
+      "orcid": "https://orcid.org/0000-0002-8256-0567",
+      "affiliation": null
+    },
+    {
+      "name": "Caroline Garcia Forlim",
+      "orcid": "https://orcid.org/0000-0003-4709-7797",
+      "affiliation": null
+    },
+    {
+      "name": "Simone K\u00fchn",
+      "orcid": "https://orcid.org/0000-0001-6823-7969",
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2024,
+  "crossref_journal": "Environmental Research",
+  "crossref_citation_count": 20,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:53:47.681259+00:00"
+}

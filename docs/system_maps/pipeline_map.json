@@ -1,0 +1,145 @@
+{
+  "pipelines": [
+    {
+      "id": "discovery",
+      "name": "Article Discovery",
+      "stages": [
+        "gap_prediction",
+        "wishlist_check",
+        "doi_auto_lookup",
+        "unpaywall_oa_check",
+        "ag_acquisition_pipeline",
+        "zotero_watcher"
+      ],
+      "input": "research_gaps + wishlist",
+      "output": "data/extraction_pipeline/extraction_queue.json",
+      "scripts": [
+        {
+          "path": "scripts/scheduled_pipeline.py (discovery stage)",
+          "exists": true
+        },
+        {
+          "path": "scripts/run_acquisition_pipeline.py",
+          "exists": true
+        }
+      ],
+      "hitl": false
+    },
+    {
+      "id": "triage",
+      "name": "Article Triage",
+      "stages": [
+        "gemini_classification",
+        "article_type_detection",
+        "priority_scoring"
+      ],
+      "input": "extraction_queue (status=pending)",
+      "output": "extraction_queue (status=triaged)",
+      "scripts": [
+        {
+          "path": "scripts/gemini_triage_papers.py",
+          "exists": true
+        }
+      ],
+      "hitl": false
+    },
+    {
+      "id": "extraction",
+      "name": "Claim Extraction",
+      "stages": [
+        "gemini_extraction",
+        "claim_validation",
+        "claimv2_normalization"
+      ],
+      "input": "extraction_queue (status=triaged)",
+      "output": "extraction_queue (status=accepted)",
+      "scripts": [
+        {
+          "path": "scripts/gemini_extraction_queue.py",
+          "exists": true
+        }
+      ],
+      "hitl": false
+    },
+    {
+      "id": "approval",
+      "name": "Human Approval (HITL)",
+      "stages": [
+        "review_summary",
+        "human_review",
+        "approve_or_reject"
+      ],
+      "input": "extraction_queue (status=accepted)",
+      "output": "extraction_queue (status=approved|rejected)",
+      "scripts": [
+        {
+          "path": "scripts/review_extractions.py",
+          "exists": true
+        }
+      ],
+      "hitl": true,
+      "notification": "EXTRACTION_REVIEW"
+    },
+    {
+      "id": "integration",
+      "name": "14-Step Integration Cascade",
+      "stages": [
+        "schema_validation",
+        "node_classification",
+        "warrant_assignment",
+        "ceiling_enforcement",
+        "bridge_construction",
+        "credence_computation",
+        "web_insertion",
+        "constraint_wiring",
+        "coherence_assessment",
+        "entrenchment_update",
+        "bn_projection",
+        "theory_world_update",
+        "post_integration_check",
+        "notification"
+      ],
+      "input": "extraction_queue (status=approved)",
+      "output": "web_of_belief.db + bn updates",
+      "scripts": [
+        {
+          "path": "src/services/paper_integration/orchestrator.py",
+          "exists": true
+        },
+        {
+          "path": "src/services/extraction_approval.py",
+          "exists": true
+        }
+      ],
+      "hitl": false
+    },
+    {
+      "id": "overseer",
+      "name": "Overseer Nightly",
+      "stages": [
+        "system_health",
+        "web_bn_health",
+        "ceiling_lint",
+        "corpus_health",
+        "periodic_audit",
+        "pipeline_registry",
+        "trend_comparison",
+        "notifications"
+      ],
+      "input": "all databases + previous reports",
+      "output": "docs/overseer_reports/unified_health_{date}.md",
+      "scripts": [
+        {
+          "path": "scripts/overseer_nightly_v2.py",
+          "exists": true
+        }
+      ],
+      "hitl": false
+    }
+  ],
+  "flow": "discovery \u2192 triage \u2192 extraction \u2192 [HITL approval] \u2192 integration \u2192 overseer",
+  "total_stages": 37,
+  "hitl_gates": [
+    "approval"
+  ]
+}

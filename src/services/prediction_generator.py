@@ -602,19 +602,225 @@ class PredictionGenerator:
     # ================================================================
     # STEP 5: EMPIRICAL EVIDENCE
     # ================================================================
+
+    def _fetch_finding_by_iv_dv(
+        self,
+        iv: str,
+        dv: str
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Query findings database to find empirical findings matching IV → DV.
+
+        Supports multiple data sources:
+        - SQLite database (findings table)
+        - JSONL files in data/extracted_findings/
+        - Dict-based findings collection
+
+        Uses fuzzy matching on variable names (LIKE %name%).
+
+        Args:
+            iv: Independent variable name
+            dv: Dependent variable name
+
+        Returns:
+            Best-matching finding dict or None
+        """
+        import json
+        import sqlite3
+        from pathlib import Path
+
+        # Normalize variable names for matching
+        iv_lower = iv.lower().strip()
+        dv_lower = dv.lower().strip()
+
+        best_finding = None
+        best_score = 0.0
+
+        # Case 1: SQLite database connection
+        if self.findings_db is not None and isinstance(self.findings_db, sqlite3.Connection):
+            try:
+                cursor = self.findings_db.cursor()
+                # Query findings table for antecedent → consequent matches
+                query = """
+                    SELECT id, antecedents, consequent, measure_direction,
+                           effect_size, p_value, sample_size,
+                           confidence_interval_lower, confidence_interval_upper
+                    FROM findings
+                    WHERE LOWER(consequent) LIKE ? OR LOWER(consequent) LIKE ?
+                    LIMIT 20
+                """
+                # Use LIKE with wildcards for fuzzy matching
+                cursor.execute(query, (f"%{dv_lower}%", f"%{dv_lower.replace('_', ' ')}%"))
+
+                for row in cursor.fetchall():
+                    finding_id, antecedents_raw, consequent, direction, effect, pval, n, ci_lower, ci_upper = row
+
+                    # Parse antecedents (stored as JSON list or comma-separated)
+                    antecedents = []
+                    try:
+                        antecedents = json.loads(antecedents_raw) if isinstance(antecedents_raw, str) else antecedents_raw
+                    except (json.JSONDecodeError, TypeError):
+                        if isinstance(antecedents_raw, str):
+                            antecedents = [a.strip() for a in antecedents_raw.split(',')]
+
+                    # Score based on antecedent match
+                    for ant in antecedents:
+                        ant_lower = ant.lower() if isinstance(ant, str) else str(ant).lower()
+                        if iv_lower in ant_lower or ant_lower in iv_lower:
+                            # Strong match
+                            score = 1.0
+                            if score > best_score:
+                                best_score = score
+                                best_finding = {
+                                    'id': finding_id,
+                                    'antecedents': antecedents,
+                                    'consequent': consequent,
+                                    'measure_direction': direction,
+                                    'statistics': {
+                                        'effect_size': effect,
+                                        'p_value': pval,
+                                        'sample_size': n,
+                                        'ci_lower': ci_lower,
+                                        'ci_upper': ci_upper,
+                                    }
+                                }
+                            break
+
+            except Exception as e:
+                logger.warning(f"Error querying SQLite findings database: {e}")
+
+        # Case 2: File-based findings (JSONL files in data/extracted_findings/)
+        # Always try file-based search as fallback or primary method
+        if best_score < 0.3:
+            findings_dir = Path("data/extracted_findings")
+            if not findings_dir.exists():
+                findings_dir = Path(__file__).parents[2] / "data" / "extracted_findings"
+
+            if findings_dir.exists():
+                try:
+                    for jsonl_file in findings_dir.glob("*.jsonl"):
+                        try:
+                            with open(jsonl_file, 'r') as f:
+                                for line in f:
+                                    if not line.strip():
+                                        continue
+
+                                    try:
+                                        finding = json.loads(line.strip())
+                                    except json.JSONDecodeError:
+                                        continue
+
+                                    consequent = finding.get('consequent', '').lower()
+                                    antecedents = finding.get('antecedents', [])
+
+                                    # Score consequent match
+                                    if dv_lower in consequent or consequent in dv_lower:
+                                        consequent_score = 1.0
+                                    else:
+                                        # Check for partial word matches
+                                        dv_words = set(dv_lower.split('_'))
+                                        consequent_words = set(consequent.split('_'))
+                                        overlap = dv_words & consequent_words
+                                        consequent_score = len(overlap) / max(len(dv_words), len(consequent_words), 1)
+
+                                    if consequent_score < 0.3:
+                                        continue
+
+                                    # Score antecedent match
+                                    antecedent_score = 0.0
+                                    for ant in antecedents:
+                                        ant_lower = ant.lower() if isinstance(ant, str) else str(ant).lower()
+                                        if iv_lower in ant_lower or ant_lower in iv_lower:
+                                            antecedent_score = 1.0
+                                            break
+                                        # Partial match
+                                        iv_words = set(iv_lower.split('_'))
+                                        ant_words = set(ant_lower.split('_'))
+                                        overlap = iv_words & ant_words
+                                        partial_score = len(overlap) / max(len(iv_words), len(ant_words), 1)
+                                        if partial_score > antecedent_score:
+                                            antecedent_score = partial_score
+
+                                    # Combined score: weighted by both matches
+                                    combined_score = (0.6 * consequent_score) + (0.4 * antecedent_score)
+
+                                    if combined_score > best_score:
+                                        best_score = combined_score
+                                        best_finding = finding
+
+                        except Exception as e:
+                            logger.debug(f"Error reading {jsonl_file}: {e}")
+
+                except Exception as e:
+                    logger.warning(f"Error accessing findings directory: {e}")
+
+        return best_finding if best_score > 0.3 else None
     
     def _get_empirical_evidence(self, query: Query) -> Optional[EmpiricalEvidence]:
-        """Retrieve empirical evidence for the query."""
-        # This would query the findings database
-        # For now, return None (no empirical evidence)
-        
-        if self.findings_db is None:
+        """
+        Retrieve empirical evidence for the query by searching findings database.
+
+        Attempts to find extraction data matching the IV and DV. Returns None
+        only if no finding is available; returns EmpiricalEvidence even with
+        sparse statistical data (e.g., from literature reviews).
+        """
+        # Try to fetch a finding matching the IV and DV
+        finding = self._fetch_finding_by_iv_dv(
+            query.independent_variable,
+            query.dependent_variable
+        )
+
+        if not finding:
             return None
-        
-        # TODO: Implement actual database query
-        # Would search for findings matching IV → DV
-        
-        return None
+
+        # Convert finding dict to EmpiricalEvidence
+        stats = finding.get('statistics', {})
+
+        # Extract pooled effect from effect_size if available
+        pooled_effect = stats.get('effect_size')
+        pooled_se = None
+
+        # Calculate SE from confidence interval if available
+        if stats.get('ci_lower') is not None and stats.get('ci_upper') is not None:
+            # 95% CI: ci_upper - ci_lower = 2 * 1.96 * SE
+            ci_lower = stats.get('ci_lower', 0)
+            ci_upper = stats.get('ci_upper', 0)
+            if (ci_upper - ci_lower) > 0:
+                pooled_se = (ci_upper - ci_lower) / (2 * 1.96)
+
+        # Sample size and study count
+        sample_size = stats.get('sample_size')
+        n_studies = 1  # We found at least one finding/paper
+
+        # Assess quality based on what's available
+        quality = "low"
+
+        # Check for statistical evidence
+        if stats.get('p_value') is not None:
+            if stats.get('p_value') < 0.05:
+                quality = "high"
+            else:
+                quality = "moderate"
+        elif sample_size is not None:
+            if sample_size > 30:
+                quality = "moderate"
+        elif finding.get('article_type') == 'empirical':
+            # Empirical studies (without stats) are higher quality than reviews
+            quality = "moderate"
+
+        # If direction is explicitly stated, it's evidence of some kind
+        if finding.get('measure_direction') in ('positive', 'negative'):
+            if quality == "low":
+                quality = "low"  # Keep low if no other indicators
+
+        return EmpiricalEvidence(
+            n_studies=n_studies,
+            pooled_effect=pooled_effect,
+            pooled_se=pooled_se,
+            heterogeneity=None,  # Not provided in findings
+            quality_summary=quality,
+            study_ids=[finding.get('paper_id', 'unknown')],
+        )
     
     # ================================================================
     # STEP 6: BAYESIAN UPDATE

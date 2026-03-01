@@ -195,7 +195,6 @@ def _build_template_system_updates(composed_claims: list[dict]) -> list[dict]:
                         "detail": f"Claim contradicts {template_id}: {claim_text}",
                     }
                 )
-            continue
 
         if supporting:
             for template_id in supporting:
@@ -206,6 +205,10 @@ def _build_template_system_updates(composed_claims: list[dict]) -> list[dict]:
                         "detail": f"Claim confirms {template_id}: {claim_text}",
                     }
                 )
+
+        if status == "contradicted" and contradicting:
+            continue
+        if supporting:
             continue
 
         if _is_air_quality_gap_claim(claim):

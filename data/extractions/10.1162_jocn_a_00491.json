@@ -1,0 +1,417 @@
+{
+  "doi": "10.1162/jocn/a/00491",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.833,
+  "n_findings": 11,
+  "extracted_at": "2026-02-25T09:16:12.034569+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.00537425,
+  "title": "Neural Network Configuration and Efficiency Underlies Individual Differences in Spatial Orientation Ability",
+  "authors": "Aiden E. G. F. Arnold et al., 2013",
+  "research_question": "Does variability in neural network configuration and efficiency relate to individual differences in spatial orientation accuracy?",
+  "design_type": "cross_sectional",
+  "participants": {
+    "n": 13,
+    "description": "13 healthy, right-handed volunteers (7 women, mean age = 21.77 years, age range = 18\u201336 years) with no psychiatric or neurological disorders and normal or corrected-to-normal vision. (Initially 16, 3 excluded for inability to recall landmark locations).",
+    "recruitment": "All participants provided written informed consent as approved by the local research ethics board (CHREB 22848)."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "video",
+      "description": "Nine 1-min video clips of random passive movement in first-person perspective through a virtual city with four unique landmarks in a 5x5 rectangular grid of identical buildings. Three control clips of a virtual city with no unique landmarks in a similar 5x5 grid. (Figure 1)",
+      "n_stimuli": 12,
+      "source": "p.2, Figure 1"
+    },
+    {
+      "type": "rendering",
+      "description": "Still images of landmarks from the virtual city, presented with a question asking participants to indicate whether the starting landmark (e.g., the building in central image) to get to the target landmark (i.e., the building on the right side) by following the shortest path was 'left' or 'right'. (Figure 2)",
+      "n_stimuli": null,
+      "source": "p.3, Figure 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Spatial orientation accuracy",
+      "instrument": "Proportion of correct orientation decisions in a virtual city task",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Brain activity during orientation decisions",
+      "instrument": "fMRI BOLD signal, analyzed with Partial Least Squares (PLS)",
+      "type": "neural"
+    },
+    {
+      "construct": "Global efficiency of resting-state brain networks",
+      "instrument": "Graph theory metric (inverse average shortest path length) computed from resting-state fMRI data",
+      "type": "neural"
+    },
+    {
+      "construct": "Closeness centrality of resting-state brain network nodes",
+      "instrument": "Graph theory metric (inverse average path length from a node to all others) computed from resting-state fMRI data",
+      "type": "neural"
+    },
+    {
+      "construct": "Brain activity correlated with orientation accuracy",
+      "instrument": "fMRI BOLD signal, analyzed with Behavior PLS",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Orientation decision task",
+      "consequent": "Increased brain activity in precuneus, cerebellum, retrosplenial cortex (RSC), right lingual gyrus, right parahippocampal gyrus, right angular gyrus, left middle frontal gyrus, and left occipital gyrus (group-level core network)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "LV p < .01",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": "These regions form a core network for processing spatial information, landmark recognition, and route planning during orientation decisions.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.6, Table 1, Figure 3",
+      "quote": "Dominant positive saliences\u2014brain areas showing significant increased activity while making orientation decisions\u2014with a BSR of 3.3 (p < .001)",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Higher global efficiency within the task-defined resting-state network",
+      "consequent": "Higher accuracy in making orientation decisions",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.66,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = 4.62",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Increased global efficiency indicates a greater integrative and communicative capacity of the network to share information, supporting better orientation performance.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8, Figure 4B",
+      "quote": "increased global efficiency within this network supported more accurate orientation decision-making.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Global efficiency within the task-defined resting-state network",
+      "consequent": "Orientation accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.78",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = 0.29",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Differences in global efficiency within this network were not related to gender",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Global efficiency within the task-defined resting-state network",
+      "consequent": "Orientation accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.88",
+      "effect_size": null,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "age"
+      ],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "or the age of participants, r = -0.05, p = .88.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Global efficiency of the orientation decision network",
+      "consequent": "Performance on a face identity task",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "0.88",
+      "effect_size": 0.15,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = -1.27",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": "Suggests specificity of global efficiency effects to spatial orientation, not general perceptual skills.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "Global efficiency of the orientation decision network was not significantly related to performance on the face identity task"
+    },
+    {
+      "id": 6,
+      "antecedent": "Global efficiency of the orientation decision network",
+      "consequent": "Performance on an emotion recognition task",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "0.67",
+      "effect_size": 0.02,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = -0.45",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": "Suggests specificity of global efficiency effects to spatial orientation, not general perceptual skills.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.8",
+      "quote": "or the emotion recognition task, t(11) = -0.45, p = .67, R\u00b2 = 0.02.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Higher orientation accuracy (individual differences)",
+      "consequent": "Increased brain activity in right premotor cortex, right supramarginal gyrus (SMG), left hippocampus, and right primary motor cortex (behavior PLS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "LV p < .05",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [
+        "AX8"
+      ],
+      "mechanism": "High-performing individuals engage additional brain areas involved in spatial processing, conferring a behavioral advantage.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.9, Table 2, Figure 5",
+      "quote": "brain regions that were more active in the context of greater accuracy on the orientation decision task, including right premotor cortex, right supramarginal gyrus (SMG), left hippocampus, and right primary motor cortex.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Higher closeness centrality in the left hippocampus (MNI peak = -36, -22, -10)",
+      "consequent": "Higher accuracy on the orientation decision task",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.049",
+      "effect_size": 0.28,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = 2.08",
+      "theory_links": [
+        "SN",
+        "MS"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Increased centrality in the hippocampus suggests a greater ability for this region to integrate information within the task network, facilitating spatial memory and orientation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10, Figure 6B",
+      "quote": "The closeness centrality of the cluster within the left hippocampus... was found to be significantly related to accuracy",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Higher closeness centrality in the right supramarginal gyrus (SMG) (MNI peak = 56, -20, 26)",
+      "consequent": "Higher accuracy on the orientation decision task",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.019",
+      "effect_size": 0.47,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(11) = 3.10",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Increased centrality in the SMG suggests a greater ability for this region to integrate information within the task network, facilitating egocentric spatial imagery and manipulation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10, Figure 6C",
+      "quote": "the right SMG... was found to be significantly related to accuracy on the orientation decision task.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Higher closeness centrality in the right primary motor cortex (MNI peak = 24, -22, 52)",
+      "consequent": "Higher accuracy on the orientation decision task",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.02",
+      "effect_size": 0.41,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(9) = 2.77",
+      "theory_links": [
+        "SN",
+        "EC"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "Increased centrality in the primary motor cortex suggests a greater ability for this region to integrate information within the task network, facilitating the translation of spatial representations into motor intentions.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.10, Figure 6D",
+      "quote": "the right primary motor cortex... was found to be significantly related to accuracy on the orientation decision task.",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Closeness centrality in the right premotor cortex (MNI peak = 42, 4, 42)",
+      "consequent": "Orientation accuracy",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.19",
+      "effect_size": 0.07,
+      "effect_size_type": "R_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t(10) = 0.92",
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "The cluster in the right premotor cortex... was not significantly related to orientation accuracy",
+      "outcome_id": "behav.wayfinding",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Individual differences in the configuration of task-evoked networks (which brain regions are recruited) strongly relate to performance. High-performing individuals engage additional brain areas involved in spatial processing, conferring a behavioral advantage.",
+    "Topological variability in the capacity of brain networks to integrate information (measured by global efficiency and node centrality) contributes to the expression of behaviors and cognitive processes that rely on those networks.",
+    "Increased global efficiency indicates a greater integrative and communicative capacity of a network to share information, supporting better orientation performance.",
+    "Increased closeness centrality of specific nodes (e.g., hippocampus, SMG, primary motor cortex) indicates a greater ability for these regions to efficiently integrate information within the task network, facilitating spatial memory, imagery, and motor intentions."
+  ],
+  "moderators": [
+    "Gender",
+    "Age",
+    "Performance on non-spatial perceptual tasks (face identity, emotion recognition)"
+  ],
+  "implementation_implications": [
+    "Understanding neural network variability in spatial orientation could help identify early symptoms of neurodegenerative disorders like Alzheimer's disease, which are associated with topographical disorientation.",
+    "Future research could investigate how topological components of spatial orientation networks change in neurodegenerative disorders and whether these changes are indicative of clinical severity and predictive of further cognitive decline."
+  ],
+  "domains": [
+    "A3_Spatial_Config",
+    "A9_Task_Cognition"
+  ],
+  "overall_theory_links": [
+    "SN"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Dominant Positive and Negative Saliences from the Decision-phase Task PLS",
+      "key_stats": [
+        "BSR > 3.3"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Cluster Peaks Correlated with High Accuracy in Making Orientation Decisions",
+      "key_stats": [
+        "BSR > 3.753"
+      ],
+      "n_findings_extracted_from": 1
+    }
+  ],
+  "limitations": [
+    "The orientation decision task used is novel and has only been reported once before, requiring more research to clarify specific cognitive processes underlying orientation decisions.",
+    "Nodes within the task-related networks are only characterized by one measure of centrality (closeness centrality), while other topological properties (degree, motif fingerprint, betweenness centrality) could provide further insights.",
+    "The study is cross-sectional, limiting causal inferences about network development or changes over time."
+  ]
+}

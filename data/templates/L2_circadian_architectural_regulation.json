@@ -4,7 +4,7 @@
   "name": "Circadian Architectural Regulation via Non-Visual Photoreception",
   "status": "calibrated",
   "maturity": "established",
-  "mechanism_chain_provenance": "INHERITED from Document 34 (L2) — causal chain structure preserved at 'established' maturity; quantitative parameters newly established in LIGHT-I",
+  "mechanism_chain_provenance": "INHERITED from Document 34 (L2) \u2014 causal chain structure preserved at 'established' maturity; quantitative parameters newly established in LIGHT-I",
   "t1_frameworks": [
     "CB",
     "NM"
@@ -19,13 +19,13 @@
       "step": 1,
       "from": "architectural_design",
       "to": "corneal_melanopic_irradiance",
-      "description": "Architectural design decisions → spectral power distribution + corneal melanopic irradiance (m-EDI)",
+      "description": "Architectural design decisions \u2192 spectral power distribution + corneal melanopic irradiance (m-EDI)",
       "warrant": "MECHANISM",
       "confidence": 0.72,
       "justification": {
         "data": [
           {
-            "finding": "For a D65 reference illuminant (6500K), 1 photopic lux ≈ 0.9 m-lux mEDI; for warm white LED (2700K), 1 photopic lux ≈ 0.31 m-lux mEDI",
+            "finding": "For a D65 reference illuminant (6500K), 1 photopic lux \u2248 0.9 m-lux mEDI; for warm white LED (2700K), 1 photopic lux \u2248 0.31 m-lux mEDI",
             "source": "CIE S 026:2018; Spitschan (panel statement)",
             "paradigm": "Standardized melanopic dosimetry",
             "effect": "3:1 ratio in melanopic content between warm and cool sources at same photopic illuminance",
@@ -46,19 +46,20 @@
         "rebuttal": "This step would fail if: (a) the CIE S 026 melanopic weighting function does not accurately capture the spectral sensitivity of human ipRGCs; (b) occupant behavior systematically modifies light exposure in ways not captured by static architectural calculations.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "Daylight spectral sensitivity mechanisms involve ipRGC, M/P pathways, and SCN integration; converging neurophysiology and molecular evidence."
     },
     {
       "step": 2,
       "from": "corneal_melanopic_irradiance",
       "to": "M1_ipRGC_activation",
-      "description": "→ M1 ipRGC melanopsin phototransduction (Gq/11 → PLCβ4 → IP3/DAG → TRP channel depolarization)",
+      "description": "\u2192 M1 ipRGC melanopsin phototransduction (Gq/11 \u2192 PLC\u03b24 \u2192 IP3/DAG \u2192 TRP channel depolarization)",
       "warrant": "CONSTITUTIVE",
       "confidence": 0.75,
       "justification": {
         "data": [
           {
-            "finding": "Melanopsin is a bistable opsin using Gq/11 signaling to activate PLCβ4 and open TRPC6/7 channels; peak sensitivity ~480nm",
+            "finding": "Melanopsin is a bistable opsin using Gq/11 signaling to activate PLC\u03b24 and open TRPC6/7 channels; peak sensitivity ~480nm",
             "source": "Berson et al. (2002); Do & Yau (2010)",
             "paradigm": "Single-cell electrophysiology and molecular biology",
             "effect": "Sustained depolarization response with minutes-scale integration",
@@ -79,13 +80,14 @@
         "rebuttal": "This step would fail if: (a) human melanopsin signaling differs substantially from mouse; (b) other opsins (cone opsins, rhodopsin) contribute substantially to the circadian signal in ways not captured by melanopic weighting.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "Daylight spectral convergence mechanisms involve multiple photoreceptor types; ipRGC, M, and S cone pathways integrated in SCN."
     },
     {
       "step": 3,
       "from": "M1_ipRGC_activation",
       "to": "SCN_core_input",
-      "description": "→ M1 axon projection via retinohypothalamic tract → glutamate + PACAP co-release at SCN core",
+      "description": "\u2192 M1 axon projection via retinohypothalamic tract \u2192 glutamate + PACAP co-release at SCN core",
       "warrant": "CONSTITUTIVE",
       "confidence": 0.75,
       "justification": {
@@ -104,15 +106,16 @@
         "rebuttal": "This step would fail if: (a) human RHT has different projection patterns; (b) other retinal cell types contribute significantly to SCN input.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 4,
       "from": "SCN_core_input",
       "to": "clock_gene_transcription",
-      "description": "→ SCN core (retinorecipient shell): NMDA-R + PAC1-R → CREB phosphorylation → Per1/Per2 transcription (phase-shifting signal)",
+      "description": "\u2192 SCN core (retinorecipient shell): NMDA-R + PAC1-R \u2192 CREB phosphorylation \u2192 Per1/Per2 transcription (phase-shifting signal)",
       "warrant": "MECHANISM",
-      "confidence": 0.70,
+      "confidence": 0.7,
       "justification": {
         "data": [
           {
@@ -143,7 +146,7 @@
       "step": 5,
       "from": "SCN_core_clock",
       "to": "SCN_population_oscillator",
-      "description": "→ SCN shell (non-retinorecipient): VIP interneuron synchronization of core-to-shell coupling → coherent population oscillator",
+      "description": "\u2192 SCN shell (non-retinorecipient): VIP interneuron synchronization of core-to-shell coupling \u2192 coherent population oscillator",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
@@ -168,7 +171,7 @@
       "step": 6,
       "from": "SCN_output",
       "to": "melatonin_rhythm",
-      "description": "→ SCN output: PVN → superior cervical ganglion → pineal (NE → β-AR → melatonin synthesis suppression/release timing)",
+      "description": "\u2192 SCN output: PVN \u2192 superior cervical ganglion \u2192 pineal (NE \u2192 \u03b2-AR \u2192 melatonin synthesis suppression/release timing)",
       "warrant": "MECHANISM",
       "confidence": 0.72,
       "justification": {
@@ -195,15 +198,16 @@
         "rebuttal": "This step would fail if: (a) melatonin suppression has no functional consequence for sleep or circadian phase; (b) pineal melatonin production is regulated by non-photic factors that dominate over light input.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 7,
       "from": "SCN_output",
       "to": "cortisol_rhythm",
-      "description": "→ SCN output: corticotrophin-releasing hormone rhythm → HPA cortisol awakening response timing",
+      "description": "\u2192 SCN output: corticotrophin-releasing hormone rhythm \u2192 HPA cortisol awakening response timing",
       "warrant": "MECHANISM",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
           {
@@ -220,13 +224,14 @@
         "rebuttal": "This step would fail if: (a) CAR timing is dominated by sleep timing rather than circadian phase; (b) the HPA axis adapts to chronic misalignment such that CAR recovers despite persistent phase delay.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 8,
       "from": "aligned_rhythms",
       "to": "health_outcomes",
-      "description": "→ Aligned melatonin + cortisol rhythms → sleep architecture quality + daytime alertness + metabolic function",
+      "description": "\u2192 Aligned melatonin + cortisol rhythms \u2192 sleep architecture quality + daytime alertness + metabolic function",
       "warrant": "EMPIRICAL_COVARIANCE",
       "confidence": 0.58,
       "justification": {
@@ -235,7 +240,7 @@
             "finding": "Workers with higher morning circadian stimulus (CS > 0.3) showed better sleep quality and mood than those with lower exposure (CS < 0.15)",
             "source": "Figueiro et al. (2017)",
             "paradigm": "Field study with light dosimetry and outcomes",
-            "effect": "d ≈ 0.30 on Pittsburgh Sleep Quality Index",
+            "effect": "d \u2248 0.30 on Pittsburgh Sleep Quality Index",
             "n": 109,
             "design": "Cross-sectional with objective exposure"
           },
@@ -249,7 +254,7 @@
           }
         ],
         "backing": "The health consequences of circadian alignment are supported by both field studies in occupied buildings and laboratory/epidemiological studies of misalignment. The architectural translation is more uncertain than the basic physiology.",
-        "qualifier": "Effect sizes in field studies (d ≈ 0.30) are modest and subject to confounding. Individual variation in chronotype and sleep need modulates the relationship between architectural light and outcomes.",
+        "qualifier": "Effect sizes in field studies (d \u2248 0.30) are modest and subject to confounding. Individual variation in chronotype and sleep need modulates the relationship between architectural light and outcomes.",
         "rebuttal": "This step would fail if: (a) the field study correlations are confounded by socioeconomic or job type differences; (b) individual chronotype differences are larger than architectural effects; (c) behavioral adaptation eliminates the architectural influence.",
         "competing_accounts": [],
         "depth_tier": "B"
@@ -259,7 +264,7 @@
       "step": 9,
       "from": "misaligned_rhythms",
       "to": "allostatic_load",
-      "description": "→ Misaligned rhythms (insufficient daytime melanopic irradiance) → persistent temporal PE → allostatic load via T7 pathway",
+      "description": "\u2192 Misaligned rhythms (insufficient daytime melanopic irradiance) \u2192 persistent temporal PE \u2192 allostatic load via T7 pathway",
       "warrant": "FUNCTIONAL",
       "confidence": 0.52,
       "justification": {
@@ -290,7 +295,7 @@
           "min": 0.5,
           "max": 1.4
         },
-        "note": "Advance direction (morning light → phase advance). Maximum PRC advance region ≈ 1.5–2.0h for a single 3-hour 100 m-lux pulse; distributed architectural exposure produces approximately 0.85h/day on average.",
+        "note": "Advance direction (morning light \u2192 phase advance). Maximum PRC advance region \u2248 1.5\u20132.0h for a single 3-hour 100 m-lux pulse; distributed architectural exposure produces approximately 0.85h/day on average.",
         "source": "Kronauer et al. (1999); Czeisler et al. (1989)",
         "confidence": 0.62,
         "bridge_warrant": "MECHANISM"
@@ -302,11 +307,11 @@
           "min": 0.7,
           "max": 1.8
         },
-        "note": "Delay direction (evening light → phase delay). Intrinsically faster than advance; consistent with free-running period > 24h.",
+        "note": "Delay direction (evening light \u2192 phase delay). Intrinsically faster than advance; consistent with free-running period > 24h.",
         "confidence": 0.65,
         "bridge_warrant": "MECHANISM"
       },
-      "architectural_implication": "A new occupant entering a building with substantially different light timing than their prior environment will require 3–10 days to re-entrain, depending on the magnitude of the phase difference and the quality of the architectural circadian stimulus."
+      "architectural_implication": "A new occupant entering a building with substantially different light timing than their prior environment will require 3\u201310 days to re-entrain, depending on the magnitude of the phase difference and the quality of the architectural circadian stimulus."
     },
     "hpa_axis_activation": {
       "value": 0.25,
@@ -316,10 +321,10 @@
         "max": 0.4
       },
       "note": "Each hour of accumulated circadian phase delay (from evening light exposure or insufficient morning light) delays the cortisol awakening response (CAR) peak by approximately 0.25 hours. CAR blunting has direct cognitive consequence: peak alertness delayed, morning performance impaired.",
-      "source": "Scheer et al. (2009); Figueiro et al. (2017) — indirect derivation",
+      "source": "Scheer et al. (2009); Figueiro et al. (2017) \u2014 indirect derivation",
       "confidence": 0.5,
       "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "flag": "THEORETICAL_DEFAULT — the 0.25 coefficient is derived from the relationship between circadian phase delay and CAR timing in shift-work studies; direct architectural measurement is absent"
+      "flag": "THEORETICAL_DEFAULT \u2014 the 0.25 coefficient is derived from the relationship between circadian phase delay and CAR timing in shift-work studies; direct architectural measurement is absent"
     },
     "temporal_rhythm": {
       "value": 0.23,
@@ -332,7 +337,7 @@
       "source": "Figueiro & Rea (2016); Rea et al. (2021)",
       "confidence": 0.65,
       "bridge_warrant": "EMPIRICAL_COVARIANCE",
-      "conversion_note": "CS 0.23 ≈ 65 m-lux mEDI for cool-white LED (4000K); ≈ 105 m-lux for warm-white (2700K). Source CCT matters substantially."
+      "conversion_note": "CS 0.23 \u2248 65 m-lux mEDI for cool-white LED (4000K); \u2248 105 m-lux for warm-white (2700K). Source CCT matters substantially."
     }
   },
   "building_types": [
@@ -348,7 +353,7 @@
     "CB_SLEEP_ARCHITECTURE_002",
     "ALLOSTATIC_MASTER_001"
   ],
-  "ie_dpt_interaction": "T_IE_001 (Activity-Frame Complexity Retuning) — explicit awareness of circadian health benefits from daylight modulates willingness to seek window-adjacent workstations and to use shading controls appropriately",
+  "ie_dpt_interaction": "T_IE_001 (Activity-Frame Complexity Retuning) \u2014 explicit awareness of circadian health benefits from daylight modulates willingness to seek window-adjacent workstations and to use shading controls appropriately",
   "key_references": [
     "Berson et al. (2002). https://doi.org/10.1126/science.1067262",
     "Brainard et al. (2001). https://doi.org/10.1523/JNEUROSCI.21-16-06405.2001",
@@ -361,7 +366,7 @@
     "docs/42_Panel_TP_I_Temporal.md"
   ],
   "panel_source": "Panel V (Social Brain)",
-  "panel_reasoning_excerpt": "## Panel Charge\n\nRoger Ulrich's finding that hospital patients with a view of trees recovered faster than those with a view of a brick wall (Ulrich, 1984, ~7,000 citations) is the single most cited study in the architecture-wellbeing literature. Yet the project has no dedicated template for the VIEW mechanism. Ulrich's finding is referenced by T1 (fractal fluency of natural scenes), the Biophilia reduction (Doc 19), SC2 (isovist as visual prediction horizon), and T25 (directed attention and ART). But the specific mechanism — how the CONTENT of what is visible through a window affects the occupant — has not been formalized as a template.\n\nThe gap is not merely that Ulrich is uncited but that the VIEW mechanism involves a convergence of multiple existing templates that has not been made explicit: a window view of nature simultaneously engages fractal fluency (T1), prospect/refuge balance (T5/SC2), attention restoration (T25/ART), circadian light entrainment (L2), dynamic temporal variation (L5), and ecological familiarity (MAT4's convergence principle applied to visual scenes). The view is a multi-channel stimulus, and the convergence is what makes it powerful.\n\nThe panel is charged with producing 1–2 templates covering: (a) view content as a PE mechanism — how the brain generates predictions about what should be visible from a window and how different view contents (nature, urban, wall, sky) modulate PE, attention restoration, and affect, and (b) the window as a multi-channel environmental mediator — how windows provide not just a view but daylight (L2/L3), temporal information (L5), acoustic connection, and olfactory access to the outdoors. These must connect to T1 (fractal fluency), T25 (directed attention/ART), T29 (allostatic regulation), L2/L3 (circadian/daylight), SC2 (isovist), and the Biophilia reduction (Doc 19).\n\n---",
+  "panel_reasoning_excerpt": "## Panel Charge\n\nRoger Ulrich's finding that hospital patients with a view of trees recovered faster than those with a view of a brick wall (Ulrich, 1984, ~7,000 citations) is the single most cited study in the architecture-wellbeing literature. Yet the project has no dedicated template for the VIEW mechanism. Ulrich's finding is referenced by T1 (fractal fluency of natural scenes), the Biophilia reduction (Doc 19), SC2 (isovist as visual prediction horizon), and T25 (directed attention and ART). But the specific mechanism \u2014 how the CONTENT of what is visible through a window affects the occupant \u2014 has not been formalized as a template.\n\nThe gap is not merely that Ulrich is uncited but that the VIEW mechanism involves a convergence of multiple existing templates that has not been made explicit: a window view of nature simultaneously engages fractal fluency (T1), prospect/refuge balance (T5/SC2), attention restoration (T25/ART), circadian light entrainment (L2), dynamic temporal variation (L5), and ecological familiarity (MAT4's convergence principle applied to visual scenes). The view is a multi-channel stimulus, and the convergence is what makes it powerful.\n\nThe panel is charged with producing 1\u20132 templates covering: (a) view content as a PE mechanism \u2014 how the brain generates predictions about what should be visible from a window and how different view contents (nature, urban, wall, sky) modulate PE, attention restoration, and affect, and (b) the window as a multi-channel environmental mediator \u2014 how windows provide not just a view but daylight (L2/L3), temporal information (L5), acoustic connection, and olfactory access to the outdoors. These must connect to T1 (fractal fluency), T25 (directed attention/ART), T29 (allostatic regulation), L2/L3 (circadian/daylight), SC2 (isovist), and the Biophilia reduction (Doc 19).\n\n---",
   "justification_status": "raw_excerpt",
   "excerpt_source": "docs/02-16_01_47_Panel_VIEW_I_Nature_View_V1_0.md",
   "excerpt_char_range": [
@@ -369,9 +374,59 @@
     2059
   ],
   "cross_template_interactions": {
-    "IC2": "Body Budget Prediction — primary interaction: circadian alignment is the temporal backbone of the interoceptive body-budget model. The cortisol awakening response, temperature rhythm, and melatonin cycle collectively constitute the predictive scaffold for body-budget regulation across the day. Misalignment produces persistent body-budget prediction errors that accumulate into allostatic load via T6 and T7.",
-    "AX4": "Perceived Control — operable shading, task lighting, and window access give occupants the ability to modulate their circadian light dose. High AX4 reduces allostatic cost of circadian misalignment by allowing active correction."
+    "IC2": "Body Budget Prediction \u2014 primary interaction: circadian alignment is the temporal backbone of the interoceptive body-budget model. The cortisol awakening response, temperature rhythm, and melatonin cycle collectively constitute the predictive scaffold for body-budget regulation across the day. Misalignment produces persistent body-budget prediction errors that accumulate into allostatic load via T6 and T7.",
+    "AX4": "Perceived Control \u2014 operable shading, task lighting, and window access give occupants the ability to modulate their circadian light dose. High AX4 reduces allostatic cost of circadian misalignment by allowing active correction."
   },
   "calibration_status": "calibrated",
-  "confidence": 0.6
+  "confidence": 0.6,
+  "higher_order_principle": "Architectural design \u2192 allostatic load pathway: The mechanism by which circadian architectural regulation via non-visual photoreception operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.951866+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "theory_links": [
+    {
+      "theory_id": "ART",
+      "confidence": 0.9,
+      "match_type": "keyword"
+    },
+    {
+      "theory_id": "SRT",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    },
+    {
+      "theory_id": "BIOPHILIA",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    },
+    {
+      "theory_id": "PROSPECT_REFUGE",
+      "confidence": 0.7,
+      "match_type": "keyword"
+    },
+    {
+      "theory_id": "KAPLAN_PREFERENCE",
+      "confidence": 0.5,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": [
+    {
+      "molecule_id": "allostatic_regulation",
+      "confidence": 0.7
+    },
+    {
+      "molecule_id": "art",
+      "confidence": 0.5
+    },
+    {
+      "molecule_id": "biophilia",
+      "confidence": 0.5
+    }
+  ]
 }

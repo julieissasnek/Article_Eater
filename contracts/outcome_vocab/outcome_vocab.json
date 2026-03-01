@@ -1,7 +1,7 @@
 {
   "schema": "oc.export.v1",
-  "version": "1.0.0",
-  "generated_at": "2026-01-02T03:55:48.134380Z",
+  "version": "2.0.0",
+  "generated_at": "2026-02-28T16:25:24.509959+00:00",
   "description": "Canonical vocabulary for human responses to built environment",
   "domains": [
     {
@@ -38,9 +38,427 @@
       "id": "health",
       "name": "Health",
       "description": "Wellbeing and health outcomes"
+    },
+    {
+      "id": "env",
+      "name": "Environmental",
+      "description": "Environmental perception and quality outcomes"
     }
   ],
   "terms": [
+    {
+      "term_id": "cog",
+      "name": "Cognitive",
+      "domain": "cog",
+      "parent_id": null,
+      "definition": "Mental processes and capacities",
+      "level": 1,
+      "cognates": [],
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.attention",
+      "name": "Attention",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Capacity to selectively focus",
+      "level": 2,
+      "cognates": [
+        "focus",
+        "concentration"
+      ],
+      "operationalizations": [
+        "Attention Network Test (ANT)",
+        "Continuous Performance Test (CPT)",
+        "d-prime signal detection"
+      ],
+      "instrument_ids": [
+        "ANT",
+        "CPT"
+      ]
+    },
+    {
+      "term_id": "cog.attention.broad",
+      "name": "Broad Attention",
+      "domain": "cog",
+      "parent_id": "cog.attention",
+      "definition": "Awareness of multiple environmental stimuli simultaneously",
+      "level": 3,
+      "cognates": [
+        "global attention",
+        "distributed attention",
+        "wide focus"
+      ],
+      "operationalizations": [
+        "Global/local Navon task (global bias)",
+        "Useful Field of View (UFOV)",
+        "Attentional breadth paradigm"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.attention.divided",
+      "name": "Divided Attention",
+      "domain": "cog",
+      "parent_id": "cog.attention",
+      "definition": "Simultaneous attention to multiple stimuli",
+      "level": 3,
+      "cognates": [
+        "multitasking",
+        "parallel processing"
+      ],
+      "operationalizations": [
+        "Dual-task paradigm",
+        "Multiple Object Tracking (MOT)",
+        "Divided attention RT cost"
+      ],
+      "instrument_ids": [
+        "MOT"
+      ]
+    },
+    {
+      "term_id": "cog.attention.selective",
+      "name": "Selective Attention",
+      "domain": "cog",
+      "parent_id": "cog.attention",
+      "definition": "Focusing while filtering distractors",
+      "level": 3,
+      "cognates": [
+        "filtering",
+        "distraction resistance"
+      ],
+      "operationalizations": [
+        "Stroop task",
+        "Flanker task",
+        "Visual search RT"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.attention.sustained",
+      "name": "Sustained Attention",
+      "domain": "cog",
+      "parent_id": "cog.attention",
+      "definition": "Maintaining focus over time",
+      "level": 3,
+      "cognates": [
+        "continuous attention",
+        "sustained focus",
+        "vigilance"
+      ],
+      "operationalizations": [
+        "Sustained Attention to Response Task (SART)",
+        "Psychomotor Vigilance Task (PVT)",
+        "Continuous Performance Test (CPT)"
+      ],
+      "instrument_ids": [
+        "CPT",
+        "PVT",
+        "SART"
+      ]
+    },
+    {
+      "term_id": "cog.cognitive_load",
+      "name": "Cognitive Load",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Mental effort required to process environmental information",
+      "level": 2,
+      "cognates": [
+        "mental load",
+        "mental effort",
+        "information overload",
+        "processing demand"
+      ],
+      "operationalizations": [
+        "NASA-TLX",
+        "Dual-task paradigm",
+        "Pupil dilation"
+      ],
+      "instrument_ids": [
+        "NASA-TLX"
+      ]
+    },
+    {
+      "term_id": "cog.creativity",
+      "name": "Creativity",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Generation of novel ideas and solutions",
+      "level": 2,
+      "cognates": [
+        "creative thinking",
+        "divergent thinking",
+        "innovation"
+      ],
+      "operationalizations": [
+        "Alternate Uses Task (AUT)",
+        "Remote Associates Test (RAT)",
+        "Torrance Tests of Creative Thinking (TTCT)"
+      ],
+      "instrument_ids": [
+        "AUT",
+        "RAT",
+        "TTCT"
+      ]
+    },
+    {
+      "term_id": "cog.executive",
+      "name": "Executive Function",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Higher-order control of thought and action",
+      "level": 2,
+      "cognates": [
+        "executive control",
+        "planning",
+        "decision making"
+      ],
+      "operationalizations": [
+        "Trail Making Test (TMT-B)",
+        "Wisconsin Card Sorting Test (WCST)",
+        "Digit Span Backward"
+      ],
+      "instrument_ids": [
+        "WCST"
+      ]
+    },
+    {
+      "term_id": "cog.executive.inhibition",
+      "name": "Inhibition",
+      "domain": "cog",
+      "parent_id": "cog.executive",
+      "definition": "Suppression of prepotent responses",
+      "level": 3,
+      "cognates": [
+        "impulse control",
+        "response inhibition"
+      ],
+      "operationalizations": [
+        "Go/No-Go task",
+        "Stop-Signal Reaction Time (SSRT)",
+        "Stroop interference score"
+      ],
+      "instrument_ids": [
+        "SSRT"
+      ]
+    },
+    {
+      "term_id": "cog.executive.planning",
+      "name": "Planning",
+      "domain": "cog",
+      "parent_id": "cog.executive",
+      "definition": "Ability to organize future actions",
+      "level": 3,
+      "cognates": [
+        "organization",
+        "goal setting"
+      ],
+      "operationalizations": [
+        "Tower of London/Hanoi",
+        "Maze completion time",
+        "Route Planning Task"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.language",
+      "name": "Language",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Language comprehension and expression",
+      "level": 2,
+      "cognates": [
+        "verbal processing",
+        "linguistic ability",
+        "language skills"
+      ],
+      "operationalizations": [
+        "Verbal fluency (FAS)",
+        "Boston Naming Test",
+        "Reading comprehension score"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.memory",
+      "name": "Memory",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Encoding, storage, retrieval",
+      "level": 2,
+      "cognates": [
+        "recall",
+        "recognition"
+      ],
+      "operationalizations": [
+        "Rey Auditory Verbal Learning Test (RAVLT)",
+        "Recognition memory d-prime",
+        "Free recall score"
+      ],
+      "instrument_ids": [
+        "RAVLT"
+      ]
+    },
+    {
+      "term_id": "cog.memory.episodic",
+      "name": "Episodic Memory",
+      "domain": "cog",
+      "parent_id": "cog.memory",
+      "definition": "Memory for events and experiences",
+      "level": 3,
+      "cognates": [
+        "event memory",
+        "contextual memory"
+      ],
+      "operationalizations": [
+        "Autobiographical Memory Test",
+        "Source memory task",
+        "Recollection/familiarity paradigm"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.memory.working",
+      "name": "Working Memory",
+      "domain": "cog",
+      "parent_id": "cog.memory",
+      "definition": "Short-term maintenance and manipulation",
+      "level": 3,
+      "cognates": [
+        "short-term memory",
+        "working memory capacity"
+      ],
+      "operationalizations": [
+        "N-back task",
+        "Operation Span (OSPAN)",
+        "Digit span forward/backward"
+      ],
+      "instrument_ids": [
+        "NBACK",
+        "OSPAN"
+      ]
+    },
+    {
+      "term_id": "cog.perception",
+      "name": "Perception",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Sensory interpretation and understanding",
+      "level": 2,
+      "cognates": [
+        "sensory processing",
+        "visual perception",
+        "spatial awareness"
+      ],
+      "operationalizations": [
+        "Psychophysical threshold",
+        "Signal Detection Theory (SDT) sensitivity",
+        "Perceptual discrimination task"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.performance",
+      "name": "Cognitive Performance",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "General cognitive task performance",
+      "level": 2,
+      "cognates": [
+        "cognitive function",
+        "cognitive functioning",
+        "mental performance"
+      ],
+      "operationalizations": [
+        "Composite Cognitive Assessment Battery",
+        "Montreal Cognitive Assessment (MoCA)",
+        "Cognitive Failures Questionnaire (CFQ)"
+      ],
+      "instrument_ids": [
+        "CFQ"
+      ]
+    },
+    {
+      "term_id": "cog.place_recognition",
+      "name": "Place Recognition",
+      "domain": "cog",
+      "parent_id": "cog.memory",
+      "definition": "Ability to identify and remember locations",
+      "level": 3,
+      "cognates": [
+        "landmark recognition",
+        "place memory",
+        "environmental familiarity"
+      ],
+      "operationalizations": [
+        "Scene recognition task",
+        "Familiarity rating"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "cog.processing_speed",
+      "name": "Processing Speed",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Rate of cognitive information processing",
+      "level": 2,
+      "cognates": [
+        "reaction time",
+        "speed of processing"
+      ],
+      "operationalizations": [
+        "Symbol Digit Modalities Test (SDMT)",
+        "Simple/Choice Reaction Time",
+        "Coding task (WAIS)"
+      ],
+      "instrument_ids": [
+        "SDMT"
+      ]
+    },
+    {
+      "term_id": "cog.reasoning",
+      "name": "Reasoning",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Logical inference and problem solving",
+      "level": 2,
+      "cognates": [
+        "logical thinking",
+        "deductive reasoning",
+        "inference"
+      ],
+      "operationalizations": [
+        "Raven's Progressive Matrices",
+        "Wason Selection Task",
+        "Syllogistic reasoning accuracy"
+      ],
+      "instrument_ids": [
+        "RAVENS"
+      ]
+    },
+    {
+      "term_id": "cog.spatial_cognition",
+      "name": "Spatial Cognition",
+      "domain": "cog",
+      "parent_id": "cog",
+      "definition": "Mental representation and reasoning about space",
+      "level": 2,
+      "cognates": [
+        "spatial awareness",
+        "spatial reasoning",
+        "mental rotation",
+        "cognitive map"
+      ],
+      "operationalizations": [
+        "Mental rotation task",
+        "Pointing task",
+        "Map drawing"
+      ],
+      "instrument_ids": []
+    },
     {
       "term_id": "affect",
       "name": "Affective",
@@ -49,7 +467,27 @@
       "definition": "Emotional states and moods",
       "level": 1,
       "cognates": [],
-      "operationalizations": []
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "affect.aesthetic_pleasure",
+      "name": "Aesthetic Pleasure",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Positive response to beauty and visual harmony",
+      "level": 2,
+      "cognates": [
+        "beauty appreciation",
+        "aesthetic experience",
+        "visual pleasure",
+        "aesthetic emotion"
+      ],
+      "operationalizations": [
+        "Aesthetic rating scale",
+        "Semantic differential (beautiful-ugly)"
+      ],
+      "instrument_ids": []
     },
     {
       "term_id": "affect.anxiety",
@@ -58,8 +496,167 @@
       "parent_id": "affect",
       "definition": "Apprehension and worry",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "nervous",
+        "worried",
+        "apprehensive"
+      ],
+      "operationalizations": [
+        "State-Trait Anxiety Inventory (STAI)",
+        "Visual Analogue Scale (VAS-Anxiety)",
+        "Skin conductance level"
+      ],
+      "instrument_ids": [
+        "STAI"
+      ]
+    },
+    {
+      "term_id": "affect.awe",
+      "name": "Awe",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Profound emotion of wonder and majesty",
+      "level": 2,
+      "cognates": [
+        "wonder",
+        "reverence",
+        "amazement"
+      ],
+      "operationalizations": [
+        "Awe Experience Scale (Yaden et al. 2019)",
+        "Self-report awe intensity",
+        "Goosebumps/chills frequency"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "affect.being_away",
+      "name": "Being Away",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Psychological distance from routine demands and mental fatigue sources",
+      "level": 2,
+      "cognates": [
+        "escape",
+        "getting away",
+        "psychological distance",
+        "mental respite"
+      ],
+      "operationalizations": [
+        "Being Away subscale (PRS)",
+        "Escape motivation scale",
+        "Self-report detachment rating"
+      ],
+      "instrument_ids": [
+        "PRS"
+      ]
+    },
+    {
+      "term_id": "affect.compatibility",
+      "name": "Compatibility",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Perceived fit between environmental affordances and individual purposes or inclinations",
+      "level": 2,
+      "cognates": [
+        "person-environment fit",
+        "environmental affordance",
+        "functional resonance",
+        "congruence"
+      ],
+      "operationalizations": [
+        "Compatibility subscale (PRS)",
+        "Person-Environment Fit scale",
+        "Affordance match rating"
+      ],
+      "instrument_ids": [
+        "PRS"
+      ]
+    },
+    {
+      "term_id": "affect.extent",
+      "name": "Extent",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Sense of being in a richly connected, coherent whole \u2014 a whole other world",
+      "level": 2,
+      "cognates": [
+        "scope",
+        "connectedness",
+        "immersion",
+        "whole other world"
+      ],
+      "operationalizations": [
+        "Extent subscale (PRS)",
+        "Immersion rating",
+        "Environmental scope scale"
+      ],
+      "instrument_ids": [
+        "PRS"
+      ]
+    },
+    {
+      "term_id": "affect.fascination",
+      "name": "Fascination",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Effortless attention capture by environmental features",
+      "level": 2,
+      "cognates": [
+        "soft fascination",
+        "captivation",
+        "interest",
+        "intrigue"
+      ],
+      "operationalizations": [
+        "Fascination subscale (PRS)",
+        "Interest rating"
+      ],
+      "instrument_ids": [
+        "PRS"
+      ]
+    },
+    {
+      "term_id": "affect.frustration",
+      "name": "Frustration",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Negative emotion from thwarted goals",
+      "level": 2,
+      "cognates": [
+        "annoyance",
+        "irritation",
+        "exasperation"
+      ],
+      "operationalizations": [
+        "Frustration Discomfort Scale",
+        "NASA-TLX frustration subscale",
+        "Self-report VAS"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "affect.joy",
+      "name": "Joy",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Intense positive emotion and delight",
+      "level": 2,
+      "cognates": [
+        "happiness",
+        "delight",
+        "cheerfulness",
+        "elation"
+      ],
+      "operationalizations": [
+        "Positive and Negative Affect Schedule (PANAS-Positive)",
+        "Facial Action Coding System (FACS)",
+        "Experience Sampling Method (ESM)"
+      ],
+      "instrument_ids": [
+        "ESM",
+        "FACS"
+      ]
     },
     {
       "term_id": "affect.mood",
@@ -68,8 +665,19 @@
       "parent_id": "affect",
       "definition": "Diffuse, longer-lasting affective state",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "emotional state",
+        "affective state"
+      ],
+      "operationalizations": [
+        "Profile of Mood States (POMS)",
+        "Affect Grid (Russell et al. 1989)",
+        "Day Reconstruction Method (DRM)"
+      ],
+      "instrument_ids": [
+        "DRM",
+        "POMS"
+      ]
     },
     {
       "term_id": "affect.mood.negative",
@@ -84,7 +692,14 @@
         "negative emotions",
         "unpleasant mood"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "PANAS Negative Affect subscale",
+        "Depression Anxiety Stress Scale (DASS-21)",
+        "Ecological Momentary Assessment"
+      ],
+      "instrument_ids": [
+        "DASS-21"
+      ]
     },
     {
       "term_id": "affect.mood.positive",
@@ -99,7 +714,201 @@
         "positive affect",
         "positive emotions"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "PANAS Positive Affect subscale",
+        "Subjective Happiness Scale (Lyubomirsky)",
+        "Ecological Momentary Assessment"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "affect.mystery",
+      "name": "Mystery",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Promise of further information if one explores deeper",
+      "level": 2,
+      "cognates": [
+        "environmental mystery",
+        "cognitive mystery",
+        "exploration promise"
+      ],
+      "operationalizations": [
+        "Mystery subscale (PRS)",
+        "Exploration willingness rating"
+      ],
+      "instrument_ids": [
+        "PRS"
+      ]
+    },
+    {
+      "term_id": "affect.place_attachment",
+      "name": "Place Attachment",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Emotional bond between person and place",
+      "level": 2,
+      "cognates": [
+        "sense of place",
+        "place identity",
+        "place dependence",
+        "topophilia"
+      ],
+      "operationalizations": [
+        "Place Attachment Inventory",
+        "Sense of Place Scale"
+      ],
+      "instrument_ids": [
+        "SOP-SCALE"
+      ]
+    },
+    {
+      "term_id": "affect.preference",
+      "name": "Environmental Preference",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Overall evaluative judgment of environmental desirability",
+      "level": 2,
+      "cognates": [
+        "liking",
+        "environmental evaluation",
+        "scenic preference",
+        "place preference"
+      ],
+      "operationalizations": [
+        "Scenic Beauty Estimation (SBE)",
+        "Preference rating (Likert)",
+        "Forced-choice pair comparison"
+      ],
+      "instrument_ids": [
+        "SBE"
+      ]
+    },
+    {
+      "term_id": "affect.relaxation",
+      "name": "Relaxation",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Ease and freedom from tension",
+      "level": 2,
+      "cognates": [
+        "calmness",
+        "tranquility",
+        "composure",
+        "peace of mind"
+      ],
+      "operationalizations": [
+        "Relaxation Inventory (Crist et al. 1989)",
+        "VAS-Relaxation",
+        "EMG muscle tension"
+      ],
+      "instrument_ids": [
+        "EMG"
+      ]
+    },
+    {
+      "term_id": "affect.resilience",
+      "name": "Emotional Resilience",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Ability to recover from emotional distress",
+      "level": 2,
+      "cognates": [
+        "emotional recovery",
+        "emotional strength",
+        "coping"
+      ],
+      "operationalizations": [
+        "Connor-Davidson Resilience Scale (CD-RISC)",
+        "Brief Resilience Scale (BRS)",
+        "Ego Resiliency Scale"
+      ],
+      "instrument_ids": [
+        "BRS",
+        "CD-RISC"
+      ]
+    },
+    {
+      "term_id": "affect.restorativeness",
+      "name": "Perceived Restorativeness",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Subjective experience of mental resource recovery",
+      "level": 2,
+      "cognates": [
+        "restorative quality",
+        "restorative potential",
+        "restorative experience"
+      ],
+      "operationalizations": [
+        "PRS (Perceived Restorativeness Scale)",
+        "ROS (Restoration Outcome Scale)"
+      ],
+      "instrument_ids": [
+        "PRS",
+        "ROS"
+      ]
+    },
+    {
+      "term_id": "affect.safety_perception",
+      "name": "Perceived Safety",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Subjective sense of security in an environment",
+      "level": 2,
+      "cognates": [
+        "safety feeling",
+        "perceived danger",
+        "security",
+        "threat perception"
+      ],
+      "operationalizations": [
+        "Safety perception scale",
+        "Fear of crime survey"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "affect.satisfaction",
+      "name": "Satisfaction",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Contentment with environment or experience",
+      "level": 2,
+      "cognates": [
+        "contentment",
+        "gratification",
+        "fulfillment",
+        "pleasure"
+      ],
+      "operationalizations": [
+        "Environmental Satisfaction Scale",
+        "Likert satisfaction rating",
+        "Building Occupant Survey (BUS)"
+      ],
+      "instrument_ids": [
+        "BUS"
+      ]
+    },
+    {
+      "term_id": "affect.serenity",
+      "name": "Serenity",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Peaceful calm state of mind",
+      "level": 2,
+      "cognates": [
+        "peacefulness",
+        "tranquility",
+        "calmness",
+        "equanimity"
+      ],
+      "operationalizations": [
+        "Serenity Scale (Roberts & Aspy 1993)",
+        "VAS-Calm",
+        "PANAS serenity subscale"
+      ],
+      "instrument_ids": []
     },
     {
       "term_id": "affect.stress",
@@ -113,7 +922,36 @@
         "psychological stress",
         "stress levels"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "Perceived Stress Scale (PSS-10)",
+        "Salivary cortisol",
+        "VAS-Stress"
+      ],
+      "instrument_ids": [
+        "PSS-10"
+      ]
+    },
+    {
+      "term_id": "affect.valence",
+      "name": "Affective Valence",
+      "domain": "affect",
+      "parent_id": "affect",
+      "definition": "Pleasantness-unpleasantness dimension of core affect",
+      "level": 2,
+      "cognates": [
+        "hedonic tone",
+        "pleasantness",
+        "positive-negative",
+        "core affect valence"
+      ],
+      "operationalizations": [
+        "Self-Assessment Manikin (SAM) valence",
+        "Affect Grid valence axis",
+        "Semantic differential (pleasant-unpleasant)"
+      ],
+      "instrument_ids": [
+        "SAM"
+      ]
     },
     {
       "term_id": "behav",
@@ -123,7 +961,124 @@
       "definition": "Actions and activity patterns",
       "level": 1,
       "cognates": [],
-      "operationalizations": []
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.activity",
+      "name": "Activity",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Physical movement and action level",
+      "level": 2,
+      "cognates": [
+        "movement",
+        "physical activity",
+        "motion"
+      ],
+      "operationalizations": [
+        "Accelerometer (ActiGraph)",
+        "International Physical Activity Questionnaire (IPAQ)",
+        "Pedometer step count"
+      ],
+      "instrument_ids": [
+        "IPAQ"
+      ]
+    },
+    {
+      "term_id": "behav.comfort_seeking",
+      "name": "Comfort Seeking",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Behavioral actions to enhance comfort",
+      "level": 2,
+      "cognates": [
+        "comfort behavior",
+        "adjustment behavior",
+        "thermoregulation"
+      ],
+      "operationalizations": [
+        "Behavioral observation coding",
+        "Window/thermostat adjustment frequency",
+        "Clothing adjustment log"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.dwell_time",
+      "name": "Dwell Time",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Duration of voluntary staying in a location",
+      "level": 2,
+      "cognates": [
+        "length of stay",
+        "occupancy duration",
+        "time spent"
+      ],
+      "operationalizations": [
+        "Time in zone (seconds)",
+        "Stay/leave ratio"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.engagement",
+      "name": "Engagement",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Level of involvement and focused attention",
+      "level": 2,
+      "cognates": [
+        "involvement",
+        "occupancy",
+        "presence",
+        "participation"
+      ],
+      "operationalizations": [
+        "Behavioral Engagement Scale",
+        "Time-on-task",
+        "Interaction frequency coding"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.exploration",
+      "name": "Exploration Behavior",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Voluntary movement and investigation of environments",
+      "level": 2,
+      "cognates": [
+        "environmental exploration",
+        "spatial exploration",
+        "curiosity behavior"
+      ],
+      "operationalizations": [
+        "Distance walked",
+        "Areas visited",
+        "Dwell time distribution"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.learning",
+      "name": "Learning Behavior",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Acquisition of knowledge and skills",
+      "level": 2,
+      "cognates": [
+        "knowledge acquisition",
+        "skill development",
+        "learning performance"
+      ],
+      "operationalizations": [
+        "Pre-post knowledge test",
+        "Grades/test scores",
+        "Time to criterion"
+      ],
+      "instrument_ids": []
     },
     {
       "term_id": "behav.productivity",
@@ -135,9 +1090,37 @@
       "cognates": [
         "task performance",
         "work output",
-        "work performance"
+        "work performance",
+        "efficiency"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "Task completion rate",
+        "Output quantity/quality metrics",
+        "Self-reported productivity scale"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.risk_taking",
+      "name": "Risk Taking",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Tendency to engage in risky behavior",
+      "level": 2,
+      "cognates": [
+        "risk behavior",
+        "hazard acceptance"
+      ],
+      "operationalizations": [
+        "Balloon Analogue Risk Task (BART)",
+        "Domain-Specific Risk-Taking Scale (DOSPERT)",
+        "Iowa Gambling Task"
+      ],
+      "instrument_ids": [
+        "BART",
+        "DOSPERT",
+        "IGT"
+      ]
     },
     {
       "term_id": "behav.sleep",
@@ -146,89 +1129,628 @@
       "parent_id": "behav",
       "definition": "Sleep quality and patterns",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "sleep quality",
+        "sleep duration",
+        "rest"
+      ],
+      "operationalizations": [
+        "Pittsburgh Sleep Quality Index (PSQI)",
+        "Actigraphy",
+        "Sleep diary"
+      ],
+      "instrument_ids": [
+        "ACTIGRAPHY",
+        "PSQI"
+      ]
     },
     {
-      "term_id": "cog",
-      "name": "Cognitive",
-      "domain": "cog",
+      "term_id": "behav.social_behavior",
+      "name": "Social Behavior",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Observable interpersonal actions",
+      "level": 2,
+      "cognates": [
+        "social conduct",
+        "interpersonal behavior",
+        "social action"
+      ],
+      "operationalizations": [
+        "Social interaction coding (Bales IPA)",
+        "Conversation frequency/duration",
+        "Proximity sensor data"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "behav.wayfinding",
+      "name": "Wayfinding Performance",
+      "domain": "behav",
+      "parent_id": "behav",
+      "definition": "Ability to navigate through built environments",
+      "level": 2,
+      "cognates": [
+        "navigation performance",
+        "route finding",
+        "orientation",
+        "path selection"
+      ],
+      "operationalizations": [
+        "Completion time",
+        "Wrong turns",
+        "Distance traveled ratio"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social",
+      "name": "Social",
+      "domain": "social",
       "parent_id": null,
-      "definition": "Mental processes and capacities",
+      "definition": "Interpersonal dynamics",
       "level": 1,
       "cognates": [],
-      "operationalizations": []
+      "operationalizations": [],
+      "instrument_ids": []
     },
     {
-      "term_id": "cog.attention",
-      "name": "Attention",
-      "domain": "cog",
-      "parent_id": "cog",
-      "definition": "Capacity to selectively focus",
-      "level": 2,
-      "cognates": [],
-      "operationalizations": []
-    },
-    {
-      "term_id": "cog.attention.selective",
-      "name": "Selective Attention",
-      "domain": "cog",
-      "parent_id": "cog.attention",
-      "definition": "Focusing while filtering distractors",
-      "level": 3,
-      "cognates": [],
-      "operationalizations": []
-    },
-    {
-      "term_id": "cog.attention.sustained",
-      "name": "Sustained Attention",
-      "domain": "cog",
-      "parent_id": "cog.attention",
-      "definition": "Maintaining focus over time",
-      "level": 3,
-      "cognates": [
-        "continuous attention",
-        "sustained focus",
-        "vigilance"
-      ],
-      "operationalizations": []
-    },
-    {
-      "term_id": "cog.memory",
-      "name": "Memory",
-      "domain": "cog",
-      "parent_id": "cog",
-      "definition": "Encoding, storage, retrieval",
-      "level": 2,
-      "cognates": [],
-      "operationalizations": []
-    },
-    {
-      "term_id": "cog.memory.working",
-      "name": "Working Memory",
-      "domain": "cog",
-      "parent_id": "cog.memory",
-      "definition": "Short-term maintenance and manipulation",
-      "level": 3,
-      "cognates": [
-        "short-term memory",
-        "working memory capacity"
-      ],
-      "operationalizations": []
-    },
-    {
-      "term_id": "cog.performance",
-      "name": "Cognitive Performance",
-      "domain": "cog",
-      "parent_id": "cog",
-      "definition": "General cognitive task performance",
+      "term_id": "social.affiliation",
+      "name": "Affiliation",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Sense of belonging and group identity",
       "level": 2,
       "cognates": [
-        "cognitive function",
-        "cognitive functioning",
-        "mental performance"
+        "belongingness",
+        "group identity",
+        "community belonging"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "Inclusion of Other in Self Scale (IOS)",
+        "Social Identity Scale",
+        "Group identification measure"
+      ],
+      "instrument_ids": [
+        "IOS"
+      ]
+    },
+    {
+      "term_id": "social.belonging",
+      "name": "Sense of Belonging",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Feeling of being accepted and included in a place",
+      "level": 2,
+      "cognates": [
+        "environmental belonging",
+        "inclusion",
+        "community feeling"
+      ],
+      "operationalizations": [
+        "Belonging scale",
+        "Community attachment"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social.cohesion",
+      "name": "Social Cohesion",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Bonding and unity within groups",
+      "level": 2,
+      "cognates": [
+        "group cohesion",
+        "unity",
+        "solidarity"
+      ],
+      "operationalizations": [
+        "Group Environment Questionnaire (GEQ)",
+        "Sociometric choice measure",
+        "Social cohesion index"
+      ],
+      "instrument_ids": [
+        "GEQ"
+      ]
+    },
+    {
+      "term_id": "social.collaboration",
+      "name": "Collaboration",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Working together effectively",
+      "level": 2,
+      "cognates": [
+        "teamwork",
+        "joint effort",
+        "cooperation"
+      ],
+      "operationalizations": [
+        "Team performance score",
+        "Coordination frequency coding",
+        "Collaborative problem-solving task"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social.crowding",
+      "name": "Perceived Crowding",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Negative evaluation of spatial density",
+      "level": 2,
+      "cognates": [
+        "density perception",
+        "overcrowding",
+        "spatial density"
+      ],
+      "operationalizations": [
+        "Crowding scale",
+        "Density preference rating"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social.interaction",
+      "name": "Social Interaction",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Interpersonal communication",
+      "level": 2,
+      "cognates": [
+        "communication",
+        "social contact",
+        "connection"
+      ],
+      "operationalizations": [
+        "Social interaction diary",
+        "Behavioral observation (interaction frequency/duration)",
+        "Social Network Analysis (degree centrality)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social.privacy",
+      "name": "Privacy",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Control over personal information and social access",
+      "level": 2,
+      "cognates": [
+        "personal space",
+        "visual privacy",
+        "acoustic privacy"
+      ],
+      "operationalizations": [
+        "Privacy satisfaction scale",
+        "Interruption frequency"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "social.trust",
+      "name": "Trust",
+      "domain": "social",
+      "parent_id": "social",
+      "definition": "Belief in reliability and honesty",
+      "level": 2,
+      "cognates": [
+        "trustworthiness",
+        "confidence in others"
+      ],
+      "operationalizations": [
+        "Generalized Trust Scale",
+        "Trust Game (behavioral economics)",
+        "Interpersonal Trust Scale (Rotter)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio",
+      "name": "Physiological",
+      "domain": "physio",
+      "parent_id": null,
+      "definition": "Bodily states and processes",
+      "level": 1,
+      "cognates": [],
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.alertness",
+      "name": "Alertness",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Physiological arousal level",
+      "level": 2,
+      "cognates": [
+        "arousal",
+        "activation"
+      ],
+      "operationalizations": [
+        "Karolinska Sleepiness Scale (KSS)",
+        "Pupillometry",
+        "EEG alpha suppression"
+      ],
+      "instrument_ids": [
+        "EEG",
+        "KSS",
+        "PUPILLOMETRY"
+      ]
+    },
+    {
+      "term_id": "physio.arousal",
+      "name": "Arousal",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Level of physiological and psychological activation",
+      "level": 2,
+      "cognates": [
+        "activation",
+        "alertness-drowsiness",
+        "energetic arousal",
+        "tense arousal"
+      ],
+      "operationalizations": [
+        "Self-Assessment Manikin (SAM) arousal",
+        "Skin conductance level (SCL)",
+        "EEG beta/alpha ratio"
+      ],
+      "instrument_ids": [
+        "EEG",
+        "SAM"
+      ]
+    },
+    {
+      "term_id": "physio.blood_pressure",
+      "name": "Blood Pressure",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Vascular pressure and cardiovascular response",
+      "level": 2,
+      "cognates": [
+        "systolic pressure",
+        "diastolic pressure",
+        "hypertension"
+      ],
+      "operationalizations": [
+        "Sphygmomanometer (systolic/diastolic mmHg)",
+        "Ambulatory BP monitoring (24h)",
+        "Mean arterial pressure"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.eye_movement",
+      "name": "Eye Movement",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Ocular behavior and gaze patterns",
+      "level": 2,
+      "cognates": [
+        "gaze",
+        "saccades",
+        "fixation",
+        "pupil dilation"
+      ],
+      "operationalizations": [
+        "Eye tracker (fixation count/duration)",
+        "Saccade amplitude",
+        "Pupil diameter change"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.fatigue",
+      "name": "Fatigue",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Physical and mental tiredness",
+      "level": 2,
+      "cognates": [
+        "tiredness",
+        "exhaustion",
+        "weariness"
+      ],
+      "operationalizations": [
+        "Chalder Fatigue Scale",
+        "Visual Analogue Scale (VAS-Fatigue)",
+        "Critical Flicker Fusion (CFF)"
+      ],
+      "instrument_ids": [
+        "CFF",
+        "CFS-CHALDER"
+      ]
+    },
+    {
+      "term_id": "physio.heart_rate",
+      "name": "Heart Rate",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Cardiac rhythm and variability",
+      "level": 2,
+      "cognates": [
+        "heart rate variability",
+        "HRV",
+        "cardiac response"
+      ],
+      "operationalizations": [
+        "ECG R-R intervals",
+        "Photoplethysmography (PPG)",
+        "Resting heart rate (bpm)"
+      ],
+      "instrument_ids": [
+        "PPG"
+      ]
+    },
+    {
+      "term_id": "physio.heart_rate.hrv",
+      "name": "Heart Rate Variability",
+      "domain": "physio",
+      "parent_id": "physio.heart_rate",
+      "definition": "Variation in time between heartbeats",
+      "level": 3,
+      "cognates": [
+        "HRV",
+        "cardiac variability",
+        "parasympathetic tone"
+      ],
+      "operationalizations": [
+        "RMSSD (time-domain HRV)",
+        "HF power (0.15-0.40 Hz)",
+        "LF/HF ratio"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.pain",
+      "name": "Pain",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Unpleasant sensory experience",
+      "level": 2,
+      "cognates": [
+        "discomfort",
+        "ache",
+        "soreness"
+      ],
+      "operationalizations": [
+        "Visual Analogue Scale (VAS-Pain)",
+        "McGill Pain Questionnaire",
+        "Numerical Rating Scale (NRS)"
+      ],
+      "instrument_ids": [
+        "MCGILL-PAIN"
+      ]
+    },
+    {
+      "term_id": "physio.respiration",
+      "name": "Respiration",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Breathing patterns and rate",
+      "level": 2,
+      "cognates": [
+        "breathing rate",
+        "respiratory pattern"
+      ],
+      "operationalizations": [
+        "Respiratory belt (breaths/min)",
+        "End-tidal CO2",
+        "Respiratory sinus arrhythmia (RSA)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.skin_conductance",
+      "name": "Skin Conductance",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Electrodermal activity and arousal",
+      "level": 2,
+      "cognates": [
+        "galvanic skin response",
+        "GSR",
+        "electrodermal response"
+      ],
+      "operationalizations": [
+        "Electrodermal Activity (EDA) tonic level",
+        "Skin Conductance Response (SCR) amplitude",
+        "Number of spontaneous SCRs"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.stress_hormones",
+      "name": "Stress Hormones",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Biological stress response markers",
+      "level": 2,
+      "cognates": [
+        "cortisol",
+        "adrenaline",
+        "stress biomarkers"
+      ],
+      "operationalizations": [
+        "Salivary cortisol (\u00b5g/dL)",
+        "Salivary alpha-amylase",
+        "Urinary catecholamines"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.stress_hormones.cortisol",
+      "name": "Cortisol",
+      "domain": "physio",
+      "parent_id": "physio.stress_hormones",
+      "definition": "Primary stress hormone measurement",
+      "level": 3,
+      "cognates": [
+        "salivary cortisol",
+        "cortisol levels",
+        "HPA axis"
+      ],
+      "operationalizations": [
+        "Salivary cortisol diurnal curve",
+        "Cortisol Awakening Response (CAR)",
+        "Hair cortisol (chronic stress)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "physio.thermal_comfort",
+      "name": "Thermal Comfort",
+      "domain": "physio",
+      "parent_id": "physio",
+      "definition": "Perception and experience of environmental temperature",
+      "level": 2,
+      "cognates": [
+        "temperature sensation",
+        "thermal sensation",
+        "thermal preference"
+      ],
+      "operationalizations": [
+        "PMV/PPD (Fanger model)",
+        "Thermal sensation vote (ASHRAE 7-point)",
+        "Skin temperature (infrared)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "neural",
+      "name": "Neural",
+      "domain": "neural",
+      "parent_id": null,
+      "definition": "Brain activity and structure",
+      "level": 1,
+      "cognates": [],
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "neural.activation",
+      "name": "Brain Activation",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Neural activity and engagement patterns",
+      "level": 2,
+      "cognates": [
+        "fMRI activation",
+        "brain activity",
+        "neural engagement"
+      ],
+      "operationalizations": [
+        "fMRI BOLD signal",
+        "PET regional cerebral blood flow",
+        "fNIRS oxygenation"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "neural.connectivity",
+      "name": "Neural Connectivity",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Functional and structural brain connectivity",
+      "level": 2,
+      "cognates": [
+        "network connectivity",
+        "brain networks",
+        "neural coupling"
+      ],
+      "operationalizations": [
+        "fMRI functional connectivity (FC)",
+        "DTI structural connectivity",
+        "Graph-theoretic network metrics"
+      ],
+      "instrument_ids": [
+        "DTI"
+      ]
+    },
+    {
+      "term_id": "neural.default_mode",
+      "name": "Default Mode Network Activity",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Activity in DMN during environmental experience",
+      "level": 2,
+      "cognates": [
+        "DMN",
+        "mind wandering",
+        "self-referential",
+        "resting state"
+      ],
+      "operationalizations": [
+        "fMRI DMN connectivity",
+        "EEG alpha power"
+      ],
+      "instrument_ids": [
+        "EEG"
+      ]
+    },
+    {
+      "term_id": "neural.eeg",
+      "name": "EEG Signatures",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Electrical brain activity patterns",
+      "level": 2,
+      "cognates": [
+        "brainwave patterns",
+        "oscillations"
+      ],
+      "operationalizations": [
+        "EEG power spectral density (alpha/beta/theta)",
+        "Event-Related Potentials (ERP)",
+        "EEG frontal asymmetry index"
+      ],
+      "instrument_ids": [
+        "EEG",
+        "ERP"
+      ]
+    },
+    {
+      "term_id": "neural.reward",
+      "name": "Neural Reward Response",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Activation of reward circuits to environmental stimuli",
+      "level": 2,
+      "cognates": [
+        "dopaminergic response",
+        "nucleus accumbens",
+        "ventral striatum"
+      ],
+      "operationalizations": [
+        "fMRI reward ROI",
+        "ERP reward positivity"
+      ],
+      "instrument_ids": [
+        "ERP"
+      ]
+    },
+    {
+      "term_id": "neural.synchrony",
+      "name": "Neural Synchrony",
+      "domain": "neural",
+      "parent_id": "neural",
+      "definition": "Coordinated firing patterns across neurons",
+      "level": 2,
+      "cognates": [
+        "coupling",
+        "coherence",
+        "synchronization"
+      ],
+      "operationalizations": [
+        "Phase-Locking Value (PLV)",
+        "EEG coherence",
+        "Cross-frequency coupling"
+      ],
+      "instrument_ids": [
+        "EEG"
+      ]
     },
     {
       "term_id": "health",
@@ -238,7 +1760,108 @@
       "definition": "Wellbeing and health outcomes",
       "level": 1,
       "cognates": [],
-      "operationalizations": []
+      "operationalizations": [],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "health.circadian_health",
+      "name": "Circadian Health",
+      "domain": "health",
+      "parent_id": "health",
+      "definition": "Alignment of biological rhythms with environmental light",
+      "level": 2,
+      "cognates": [
+        "circadian rhythm",
+        "chronobiology",
+        "light exposure health"
+      ],
+      "operationalizations": [
+        "Actigraphy",
+        "Melatonin onset",
+        "Sleep-wake timing"
+      ],
+      "instrument_ids": [
+        "ACTIGRAPHY"
+      ]
+    },
+    {
+      "term_id": "health.immunity",
+      "name": "Immune Function",
+      "domain": "health",
+      "parent_id": "health",
+      "definition": "Biological immunity and disease resistance",
+      "level": 2,
+      "cognates": [
+        "immune response",
+        "immune system",
+        "infection resistance"
+      ],
+      "operationalizations": [
+        "Salivary IgA",
+        "NK cell activity assay",
+        "Self-reported illness frequency"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "health.recovery",
+      "name": "Recovery",
+      "domain": "health",
+      "parent_id": "health",
+      "definition": "Restoration after illness or effort",
+      "level": 2,
+      "cognates": [
+        "healing",
+        "recuperation",
+        "restoration"
+      ],
+      "operationalizations": [
+        "Length of hospital stay",
+        "Analgesic medication usage",
+        "Recovery satisfaction scale"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "health.resilience",
+      "name": "Resilience",
+      "domain": "health",
+      "parent_id": "health",
+      "definition": "Capacity to bounce back from adversity",
+      "level": 2,
+      "cognates": [
+        "bouncing back",
+        "coping ability"
+      ],
+      "operationalizations": [
+        "Connor-Davidson Resilience Scale (CD-RISC)",
+        "Brief Resilience Scale (BRS)",
+        "Allostatic load index"
+      ],
+      "instrument_ids": [
+        "BRS",
+        "CD-RISC"
+      ]
+    },
+    {
+      "term_id": "health.sick_building",
+      "name": "Sick Building Symptoms",
+      "domain": "health",
+      "parent_id": "health",
+      "definition": "Health symptoms attributed to building environment",
+      "level": 2,
+      "cognates": [
+        "SBS",
+        "building-related illness",
+        "indoor environment symptoms"
+      ],
+      "operationalizations": [
+        "SBS symptom checklist",
+        "MM-040 questionnaire"
+      ],
+      "instrument_ids": [
+        "SBS-CHECKLIST"
+      ]
     },
     {
       "term_id": "health.wellbeing",
@@ -252,73 +1875,449 @@
         "well-being",
         "wellness"
       ],
-      "operationalizations": []
+      "operationalizations": [
+        "WHO-5 Well-Being Index",
+        "Warwick-Edinburgh Mental Well-being Scale (WEMWBS)",
+        "SF-36 Health Survey"
+      ],
+      "instrument_ids": [
+        "WEMWBS"
+      ]
     },
     {
-      "term_id": "physio",
-      "name": "Physiological",
-      "domain": "physio",
+      "term_id": "env",
+      "name": "Environmental",
+      "domain": "env",
       "parent_id": null,
-      "definition": "Bodily states and processes",
+      "definition": "Environmental perception and quality",
       "level": 1,
       "cognates": [],
-      "operationalizations": []
+      "operationalizations": [],
+      "instrument_ids": []
     },
     {
-      "term_id": "physio.alertness",
-      "name": "Alertness",
-      "domain": "physio",
-      "parent_id": "physio",
-      "definition": "Physiological arousal level",
+      "term_id": "env.acoustic_quality",
+      "name": "Acoustic Quality",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Overall perception of sound environment",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "soundscape quality",
+        "acoustic comfort",
+        "aural environment"
+      ],
+      "operationalizations": [
+        "Soundscape questionnaire",
+        "Acoustic satisfaction scale"
+      ],
+      "instrument_ids": []
     },
     {
-      "term_id": "physio.fatigue",
-      "name": "Fatigue",
-      "domain": "physio",
-      "parent_id": "physio",
-      "definition": "Physical and mental tiredness",
+      "term_id": "env.air_quality",
+      "name": "Air Quality",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Perception and objective measures of air quality",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "air freshness",
+        "air purity",
+        "ventilation"
+      ],
+      "operationalizations": [
+        "CO2 concentration (ppm)",
+        "PM2.5 sensor",
+        "Perceived air quality rating"
+      ],
+      "instrument_ids": [
+        "CO2-SENSOR"
+      ]
     },
     {
-      "term_id": "social",
-      "name": "Social",
-      "domain": "social",
-      "parent_id": null,
-      "definition": "Interpersonal dynamics",
-      "level": 1,
-      "cognates": [],
-      "operationalizations": []
-    },
-    {
-      "term_id": "social.collaboration",
-      "name": "Collaboration",
-      "domain": "social",
-      "parent_id": "social",
-      "definition": "Working together effectively",
+      "term_id": "env.coherence",
+      "name": "Environmental Coherence",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Orderliness and unity of environmental composition",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "visual order",
+        "unity",
+        "harmony",
+        "organization"
+      ],
+      "operationalizations": [
+        "Coherence rating",
+        "Order scale"
+      ],
+      "instrument_ids": []
     },
     {
-      "term_id": "social.interaction",
-      "name": "Social Interaction",
-      "domain": "social",
-      "parent_id": "social",
-      "definition": "Interpersonal communication",
+      "term_id": "env.color",
+      "name": "Color Quality",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Color appearance and chromatic properties",
       "level": 2,
-      "cognates": [],
-      "operationalizations": []
+      "cognates": [
+        "color preference",
+        "hue",
+        "saturation"
+      ],
+      "operationalizations": [
+        "Munsell color system rating",
+        "Color preference ranking",
+        "Semantic differential (warm-cool, pleasant-unpleasant)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.complexity",
+      "name": "Visual Complexity",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Perceptual complexity and information richness",
+      "level": 2,
+      "cognates": [
+        "visual richness",
+        "pattern complexity",
+        "information density"
+      ],
+      "operationalizations": [
+        "Fractal dimension (D)",
+        "Edge density",
+        "Subjective complexity rating"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.enclosure",
+      "name": "Enclosure",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Degree to which space is bounded by vertical surfaces",
+      "level": 2,
+      "cognates": [
+        "containment",
+        "openness",
+        "boundedness",
+        "volumetric quality"
+      ],
+      "operationalizations": [
+        "Vertical/horizontal surface ratio",
+        "Sky visible fraction"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.legibility",
+      "name": "Legibility",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Ease of understanding and forming a mental map of spatial organization",
+      "level": 2,
+      "cognates": [
+        "imageability",
+        "readability",
+        "spatial clarity",
+        "cognitive mapping ease"
+      ],
+      "operationalizations": [
+        "Legibility rating scale",
+        "Sketch map accuracy",
+        "Orientation task performance"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.lighting",
+      "name": "Lighting Quality",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Light levels and color quality perception",
+      "level": 2,
+      "cognates": [
+        "brightness",
+        "illumination",
+        "light exposure"
+      ],
+      "operationalizations": [
+        "Illuminance (lux meter)",
+        "Correlated Color Temperature (CCT)",
+        "Lighting satisfaction questionnaire"
+      ],
+      "instrument_ids": [
+        "CCT-METER"
+      ]
+    },
+    {
+      "term_id": "env.materiality",
+      "name": "Materiality",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Tactile and material properties of surfaces",
+      "level": 2,
+      "cognates": [
+        "material texture",
+        "surface quality",
+        "haptic experience"
+      ],
+      "operationalizations": [
+        "Material preference rating",
+        "Haptic evaluation scale",
+        "Perceived naturalness rating"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.natural_features",
+      "name": "Natural Features",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Presence and visibility of natural elements",
+      "level": 2,
+      "cognates": [
+        "nature visibility",
+        "biophilic features",
+        "greenery"
+      ],
+      "operationalizations": [
+        "Biophilic design checklist",
+        "Nature dose (% green visible)",
+        "View content analysis"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.naturalness",
+      "name": "Perceived Naturalness",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Degree to which environment is perceived as natural versus artificial",
+      "level": 2,
+      "cognates": [
+        "nature content",
+        "biophilic quality",
+        "greenness",
+        "natural character"
+      ],
+      "operationalizations": [
+        "Perceived Naturalness Scale",
+        "Nature dose (% green visible)",
+        "Green View Index (GVI)"
+      ],
+      "instrument_ids": [
+        "GVI",
+        "PNS"
+      ]
+    },
+    {
+      "term_id": "env.noise",
+      "name": "Noise",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Sound level and acoustic quality perception",
+      "level": 2,
+      "cognates": [
+        "sound level",
+        "acoustic comfort",
+        "noise disturbance"
+      ],
+      "operationalizations": [
+        "Sound Pressure Level (dB(A))",
+        "Noise Annoyance Scale (ISO 15666)",
+        "Speech Transmission Index (STI)"
+      ],
+      "instrument_ids": [
+        "STI"
+      ]
+    },
+    {
+      "term_id": "env.perceived_control",
+      "name": "Perceived Environmental Control",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Sense of control over environmental conditions such as lighting, temperature, and noise",
+      "level": 2,
+      "cognates": [
+        "environmental controllability",
+        "personal control",
+        "adaptive opportunity",
+        "adjustment capacity"
+      ],
+      "operationalizations": [
+        "Perceived control scale (Paciuk 1990)",
+        "Environmental control satisfaction",
+        "Number of available controls"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.privacy",
+      "name": "Privacy",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Control and protection from unwanted observation",
+      "level": 2,
+      "cognates": [
+        "visual privacy",
+        "acoustic privacy",
+        "solitude"
+      ],
+      "operationalizations": [
+        "Privacy satisfaction scale",
+        "Visual exposure index",
+        "Acoustic privacy rating (STC)"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.prospect_refuge",
+      "name": "Prospect-Refuge",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Balance of openness and enclosure in space",
+      "level": 2,
+      "cognates": [
+        "spatial openness",
+        "enclosure",
+        "visual access"
+      ],
+      "operationalizations": [
+        "Prospect-Refuge Rating Scale (Dosen & Ostwald)",
+        "Isovist analysis (area, perimeter)",
+        "Viewshed extent"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.spaciousness",
+      "name": "Spaciousness",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Perceived and actual space availability",
+      "level": 2,
+      "cognates": [
+        "space perception",
+        "room size",
+        "crowding"
+      ],
+      "operationalizations": [
+        "Room volume estimation",
+        "Perceived spaciousness scale",
+        "Ceiling height ratio"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.visual_access",
+      "name": "Visual Access",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Extent of unobstructed visual field in environment",
+      "level": 2,
+      "cognates": [
+        "view extent",
+        "visibility",
+        "openness",
+        "prospect"
+      ],
+      "operationalizations": [
+        "Isovist area",
+        "Visual field angle",
+        "Sightline count"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.openness",
+      "name": "Openness",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Perceived openness and spaciousness of environments",
+      "level": 2,
+      "cognates": [
+        "spaciousness",
+        "openness perception",
+        "spatial expansiveness",
+        "feeling of space"
+      ],
+      "operationalizations": [
+        "Perceived spaciousness scales",
+        "Open-plan satisfaction measures",
+        "Stamps spaciousness ratings"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.perceived_hazard",
+      "name": "Perceived Hazard",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Perceived danger and risk in built environments",
+      "level": 2,
+      "cognates": [
+        "perceived danger",
+        "environmental risk",
+        "safety perception",
+        "threat appraisal",
+        "fear of crime"
+      ],
+      "operationalizations": [
+        "Safety perception scales",
+        "Fear of crime surveys",
+        "Environmental risk assessment",
+        "Prospect-refuge threat appraisal"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.water_features",
+      "name": "Water Features",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Presence and quality of water elements in environments",
+      "level": 2,
+      "cognates": [
+        "water presence",
+        "aquatic elements",
+        "water quality",
+        "hydrological features"
+      ],
+      "operationalizations": [
+        "Water feature preference rating",
+        "Soundscape quality with water",
+        "Restorative quality of water views",
+        "BlueHealth water measures"
+      ],
+      "instrument_ids": []
+    },
+    {
+      "term_id": "env.glare",
+      "name": "Glare",
+      "domain": "env",
+      "parent_id": "env",
+      "definition": "Discomfort or disability glare from light sources",
+      "level": 2,
+      "cognates": [
+        "light discomfort",
+        "visual disability",
+        "light glare",
+        "brightness perception"
+      ],
+      "operationalizations": [
+        "Unified Glare Rating (UGR)",
+        "Daylight Glare Probability (DGP)",
+        "CIE Glare Index",
+        "Post-occupancy glare complaint frequency"
+      ],
+      "instrument_ids": []
     }
   ],
   "stats": {
-    "terms_count": 24,
-    "cognates_count": 25,
-    "operationalizations_count": 0,
-    "domains_count": 7
+    "terms_count": 116,
+    "cognates_count": 341,
+    "operationalizations_count": 311
   }
 }

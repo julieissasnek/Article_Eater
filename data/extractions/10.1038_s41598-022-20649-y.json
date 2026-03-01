@@ -1,0 +1,1673 @@
+{
+  "doi": "10.1038/s41598-022-20649-y",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.825,
+  "n_findings": 34,
+  "extracted_at": "2026-02-25T01:38:20.206542+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.009453,
+  "title": "A mobile EEG study on the psychophysiological effects of walking and crowding in indoor and outdoor urban environments",
+  "authors": "Panagiotis Mavros et al., 2022",
+  "research_question": "To examine the psychophysiological effects of physical (outdoor or indoor) and social (crowded versus uncrowded) urban environments in healthy young adults, to validate the use of mobile EEG and EDA measurements during active walking, and to understand how active walking influences psychological and neurophysiological responses to these environments.",
+  "design_type": "mixed_factorial",
+  "participants": {
+    "n": 42,
+    "description": "Healthy young adults (20 female; mean age 22.3, range 19-32 years) from Singapore. Participants were right-handed with normal or corrected-to-normal vision. 6 EEG datasets and 8 EDA datasets were excluded due to technical issues.",
+    "recruitment": "Advertisements on an online portal for research studies and serendipitous methods."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "video",
+      "description": "Six 1-minute (64s including fade-in/out) first-person walk-through videos of urban walkways, projected onto a wall. Environments included: green space (Gr), urban indoor crowded (IC), urban outdoor crowded (OC), urban indoor uncrowded (IU), and urban outdoor uncrowded (OU). Green space and urban environments were each presented twice.",
+      "n_stimuli": 6,
+      "source": "Figure 4, Methods"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Self-reported arousal",
+      "instrument": "Self-Assessment Manikin (SAM) (1=excited to 9=calm)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Self-reported valence",
+      "instrument": "Self-Assessment Manikin (SAM) (1=positive to 9=negative)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Perceived spatial presence",
+      "instrument": "MEC-Spatial Presence Questionnaire (MEC-SPQ) - SPSL subscale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Frontal alpha power (FA)",
+      "instrument": "Mobile EEG (8-12.5 Hz from frontal electrodes F3, F4, F7, F8, FP1, FP2, AFz, Fz)",
+      "type": "neural"
+    },
+    {
+      "construct": "Frontal Midline Theta (FMT)",
+      "instrument": "Mobile EEG (4-7.5 Hz from Fz and AFz)",
+      "type": "neural"
+    },
+    {
+      "construct": "Theta/beta ratio (TBR)",
+      "instrument": "Mobile EEG (frontal theta/beta power ratio)",
+      "type": "neural"
+    },
+    {
+      "construct": "Frontal alpha asymmetry (FAA)",
+      "instrument": "Mobile EEG (log alpha F4 - log alpha F3)",
+      "type": "neural"
+    },
+    {
+      "construct": "Skin Conductance Levels (SCL)",
+      "instrument": "Mobile electrodermal activity (EDA) - tonic component",
+      "type": "physiological"
+    },
+    {
+      "construct": "Integrated Skin Conductance Responses (ISCR)",
+      "instrument": "Mobile electrodermal activity (EDA) - phasic component",
+      "type": "physiological"
+    },
+    {
+      "construct": "EEG Signal-to-noise ratio (SNR)",
+      "instrument": "Calculated on cleaned EEG datasets",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Physical activity (walking vs. standing)",
+      "consequent": "Skin Conductance Levels (SCL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 3999,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.169,
+        0.503
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "EC"
+      ],
+      "template_ids": [
+        "T8",
+        "TP1"
+      ],
+      "mechanism": "physical activity itself increases physiological arousal",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "SCL (posterior probability = 1.0) ... were higher in the walking group",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Physical activity (walking vs. standing)",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 15.39,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.03,
+        1.045
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "EC"
+      ],
+      "template_ids": [
+        "T8",
+        "TP1"
+      ],
+      "mechanism": "physical activity itself increases physiological arousal",
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "ISCR (posterior probability = 0.94) ... were higher in the walking group",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Physical activity (walking vs. standing)",
+      "consequent": "Perceived spatial presence (MEC-SPQ)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 0.97,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.318,
+        0.334
+      ],
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "did not find evidence for a difference between the standing and the walking groups in terms of perceived spatial presence",
+      "outcome_id": "behav.engagement",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Physical activity (walking vs. standing)",
+      "consequent": "EEG Signal-to-noise ratio (SNR)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 7.15,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.445,
+        2.438
+      ],
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "found a trend for a difference between the two groups in terms of the EEG signal-to-noise ratio",
+      "outcome_id": "env.noise",
+      "outcome_domain": "env",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Environment type (green space vs. urban indoor/outdoor spaces)",
+      "consequent": "Self-reported arousal (SAM, more calm)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 420.053,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.421,
+        2.786
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "SRT",
+        "Biophilia",
+        "DT"
+      ],
+      "template_ids": [
+        "T4",
+        "T16"
+      ],
+      "mechanism": "restorative effects of nature",
+      "moderators_reported": [
+        "group (walking/standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "green space is perceived as more calming (i.e. higher ratings) than either indoor or outdoor spaces.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Urban environment type (outdoor vs. indoor) and social density (crowded/uncrowded)",
+      "consequent": "Self-reported arousal (SAM, more calm)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 532.333,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.598,
+        3.09
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Prospect-Refuge",
+        "SN"
+      ],
+      "template_ids": [
+        "SN2"
+      ],
+      "mechanism": "spatial characteristics (spaciousness, boundary height, sense of enclosure)",
+      "moderators_reported": [
+        "group (walking/standing)",
+        "social density (crowded/uncrowded)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.4, Table 2",
+      "quote": "the outdoor spaces were perceived as more calm than indoor spaces for each level of crowding (OC> IC; OU> IU), apart from the walking condition and uncrowded scenes.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Social density (crowded vs. uncrowded)",
+      "consequent": "Self-reported arousal (SAM, less calm)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -4.432,
+        -1.484
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Privacy",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "PPA1",
+        "T12",
+        "T29"
+      ],
+      "mechanism": "excessive social stimulation, lack of control, cognitive overload",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.4, Table 2",
+      "quote": "both indoor and outdoor crowded spaces were less calming than uncrowded spaces (OC < OU; IC < IU).",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Environment type (green space vs. urban indoor/outdoor spaces)",
+      "consequent": "Self-reported valence (SAM, more positive)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -10.441,
+        -4.916
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "SRT",
+        "Biophilia",
+        "DT"
+      ],
+      "template_ids": [
+        "T4",
+        "T16"
+      ],
+      "mechanism": "restorative effects of nature",
+      "moderators_reported": [
+        "group (walking/standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "green space is perceived more positively (i.e., lower rating on the 1-9 scale) than either the indoor spaces or the outdoor spaces"
+    },
+    {
+      "id": 9,
+      "antecedent": "Social density (crowded vs. uncrowded), moderated by environment type and group",
+      "consequent": "Self-reported valence (SAM, more negative)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 999.0,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.96,
+        4.784
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Privacy",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "PPA1",
+        "T12",
+        "T29"
+      ],
+      "mechanism": "excessive social stimulation, lack of control, cognitive overload",
+      "moderators_reported": [
+        "group (walking/standing)",
+        "environment type (indoor/outdoor)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.4, Table 3",
+      "quote": "Crowded spaces (either indoor or outdoor) were perceived more negatively than the uncrowded spaces (IC> IU; OC> OU), apart from the outdoor space for the walking group."
+    },
+    {
+      "id": 10,
+      "antecedent": "Urban environment type (indoor vs. outdoor) in crowded conditions",
+      "consequent": "Self-reported valence (SAM, more negative in indoor)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 1141.857,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -4.7,
+        -0.963
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "Prospect-Refuge",
+        "SN"
+      ],
+      "template_ids": [
+        "SN2"
+      ],
+      "mechanism": "spatial characteristics (spaciousness, boundary height, sense of enclosure)",
+      "moderators_reported": [
+        "social density (crowded)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.4, Table 3",
+      "quote": "the indoor urban spaces were perceived more negatively compared to outdoor urban spaces (OC < IC) in the crowded condition"
+    },
+    {
+      "id": 11,
+      "antecedent": "Environment type (green space vs. urban indoor/outdoor) for standing group",
+      "consequent": "Frontal alpha power (FA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 32.473,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.366,
+        7.707
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "ART",
+        "DT"
+      ],
+      "template_ids": [
+        "DT2"
+      ],
+      "mechanism": "attention restoration",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "the green environment led to higher alpha power than urban indoor and outdoor (both crowded and uncrowded), but the evidence for an effect was substantial only for the standing group."
+    },
+    {
+      "id": 12,
+      "antecedent": "Environment type (indoor crowded vs. green space) for standing group",
+      "consequent": "Frontal midline theta (FMT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 10.331,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -10.245,
+        1.702
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "recruited more cognitive and attentional resources",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "FMT was higher in the indoor crowded compared to green for the standing group"
+    },
+    {
+      "id": 13,
+      "antecedent": "Environment type (urban outdoor uncrowded vs. green space) for walking group",
+      "consequent": "Frontal midline theta (FMT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -4.387,
+        -1.405
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "recruited more cognitive and attentional resources",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "higher in the urban outdoor excess for walking in the outdoor uncrowded."
+    },
+    {
+      "id": 14,
+      "antecedent": "Social density (indoor crowded vs. indoor uncrowded) for standing group",
+      "consequent": "Frontal midline theta (FMT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 30.373,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.662,
+        14.147
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "recruited more cognitive and attentional resources",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "for the standing group, the indoor crowded evoked higher FMT than the indoor uncrowded"
+    },
+    {
+      "id": 15,
+      "antecedent": "Environment type (outdoor uncrowded vs. indoor uncrowded) for standing group",
+      "consequent": "Frontal midline theta (FMT)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 75.19,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        1.085,
+        15.424
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "recruited more cognitive and attentional resources",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "the outdoor uncrowded higher than the indoor uncrowded."
+    },
+    {
+      "id": 16,
+      "antecedent": "Social density (crowded vs. uncrowded), moderated by group and environment type",
+      "consequent": "Theta/beta ratio (TBR)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 34.242,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0,
+        0.344
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "Privacy"
+      ],
+      "template_ids": [
+        "T4",
+        "PPA1"
+      ],
+      "mechanism": "reduced attentional control, increased cognitive load",
+      "moderators_reported": [
+        "group (walking/standing)",
+        "environment type (indoor/outdoor)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "decisive evidence for higher TBR in the crowded space (both outdoor and indoor) compared to the uncrowded scenes, except for the walking group and urban outdoor."
+    },
+    {
+      "id": 17,
+      "antecedent": "Environment type (indoor crowded vs. green space) for standing group",
+      "consequent": "Theta/beta ratio (TBR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 379.952,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.322,
+        0.06
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "reduced attentional control, increased cognitive load",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "TBR was higher in the indoor crowded compared to green for both groups"
+    },
+    {
+      "id": 18,
+      "antecedent": "Environment type (green space vs. uncrowded urban) for standing group",
+      "consequent": "Theta/beta ratio (TBR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 53.795,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.015,
+        0.261
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "ART"
+      ],
+      "template_ids": [
+        "T4",
+        "DT2"
+      ],
+      "mechanism": "attention restoration",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "TBR was higher in the green (vs indoor uncrowded and the outdoor uncrowed) for the standing group."
+    },
+    {
+      "id": 19,
+      "antecedent": "Environment type (indoor crowded vs. outdoor crowded) for standing group",
+      "consequent": "Theta/beta ratio (TBR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 12.491,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.285,
+        0.048
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "T4",
+        "SN2"
+      ],
+      "mechanism": "reduced attentional control, increased cognitive load due to enclosure",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "It was also higher for the indoor crowded compared to outdoor crowded for the standing group."
+    },
+    {
+      "id": 20,
+      "antecedent": "Environment type (green space vs. indoor crowded/uncrowded) for standing group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 3999.0,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.063,
+        0.209
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "DT"
+      ],
+      "template_ids": [
+        "NM7"
+      ],
+      "mechanism": "more positive/approach affective states",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "for the standing group FAA was higher in the green compared to indoor crowded and indoor uncrowded"
+    },
+    {
+      "id": 21,
+      "antecedent": "Environment type (outdoor crowded/indoor uncrowded vs. green space) for walking group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 86.912,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.135,
+        0.009
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "DT"
+      ],
+      "template_ids": [
+        "NM7"
+      ],
+      "mechanism": "more positive/approach affective states",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "for the walking group FAA was higher in the outdoor crowded and indoor uncrowded compared to the green."
+    },
+    {
+      "id": 22,
+      "antecedent": "Social density (outdoor crowded vs. uncrowded) for walking group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 17.605,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.009,
+        0.122
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "Privacy"
+      ],
+      "template_ids": [
+        "NM7",
+        "PPA1"
+      ],
+      "mechanism": "more positive/approach affective states",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "FAA was higher in the outdoor crowded compared to uncrowded"
+    },
+    {
+      "id": 23,
+      "antecedent": "Social density (crowded vs. uncrowded) and environment type (indoor/outdoor) for walking group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 17.605,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.009,
+        0.122
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "Privacy"
+      ],
+      "template_ids": [
+        "NM7",
+        "PPA1"
+      ],
+      "mechanism": "complex interaction between walking, social density, and affective responses",
+      "moderators_reported": [
+        "group (walking)",
+        "environment type (indoor/outdoor)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.4, Table 7",
+      "quote": "FAA was higher in the outdoor crowded compared to uncrowded but higher in the uncrowded compared to crowded for the walking group"
+    },
+    {
+      "id": 24,
+      "antecedent": "Social density (indoor crowded vs. indoor uncrowded) for standing group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 48.689,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.008,
+        0.169
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "Privacy"
+      ],
+      "template_ids": [
+        "NM7",
+        "PPA1"
+      ],
+      "mechanism": "more positive/approach affective states",
+      "moderators_reported": [
+        "group (standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 7",
+      "quote": "for the standing group FAA was higher in the indoor crowded compared to uncrowded."
+    },
+    {
+      "id": 25,
+      "antecedent": "Environment type (outdoor uncrowded vs. indoor uncrowded) for standing group",
+      "consequent": "Frontal alpha asymmetry (FAA)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": null,
+      "effect_size": 1999.0,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.064,
+        0.209
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "Prospect-Refuge",
+        "SN"
+      ],
+      "template_ids": [
+        "NM7",
+        "SN2"
+      ],
+      "mechanism": "more positive/approach affective states due to openness/sky view",
+      "moderators_reported": [
+        "group (standing)",
+        "social density (uncrowded)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.4, Table 7",
+      "quote": "FAA was higher in the outdoor compared to indoor (both crowded and uncrowded) for the standing group"
+    },
+    {
+      "id": 26,
+      "antecedent": "Environment type (indoor crowded vs. green space) for walking group",
+      "consequent": "Skin Conductance Levels (SCL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 18.9,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.324,
+        0.042
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "T12",
+        "T29"
+      ],
+      "mechanism": "increased physiological arousal due to crowding",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "for the walking group, we found that SCL was higher in the indoor crowded compared to green",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Environment type (green space vs. outdoor uncrowded) for walking group",
+      "consequent": "Skin Conductance Levels (SCL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 189.476,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.052,
+        0.357
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "ART",
+        "SRT"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "SRT1"
+      ],
+      "mechanism": "reduced physiological arousal in nature",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "higher in the green compared to outdoor uncrowded.",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 28,
+      "antecedent": "Social density (crowded vs. uncrowded) for walking group",
+      "consequent": "Skin Conductance Levels (SCL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 42.243,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        0.007,
+        0.365
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "Privacy"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "PPA1"
+      ],
+      "mechanism": "increased physiological arousal due to crowding",
+      "moderators_reported": [
+        "group (walking)",
+        "environment type (indoor/outdoor)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "SCL was higher in the in the crowded compared to the uncrowded conditions (both for indoor and outdoor)",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Urban environment type (indoor vs. outdoor) for walking group",
+      "consequent": "Skin Conductance Levels (SCL)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 28.197,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.025,
+        0.399
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "SN2"
+      ],
+      "mechanism": "increased physiological arousal due to enclosure",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 8",
+      "quote": "and higher in the indoor compared to the outdoor conditions.",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 30,
+      "antecedent": "Environment type (green space vs. uncrowded urban) for both groups",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 12.699,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.804,
+        5.701
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "T12",
+        "T29"
+      ],
+      "mechanism": "increased physiological arousal in green spaces compared to uncrowded urban",
+      "moderators_reported": [
+        "group (walking/standing)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "The green condition elicited higher compared to the indoor and the outdoor uncrowded (both groups)",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 31,
+      "antecedent": "Environment type (indoor crowded vs. green space) for walking group",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -9.688,
+        -3.249
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "T12",
+        "T29"
+      ],
+      "mechanism": "increased physiological arousal due to crowding",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "Indoor crowded elicited higher ISCR than the green for the walking group.",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 32,
+      "antecedent": "Social density (crowded vs. uncrowded) for walking group",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.382,
+        7.115
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "Privacy"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "PPA1"
+      ],
+      "mechanism": "increased physiological arousal due to crowding",
+      "moderators_reported": [
+        "group (walking)",
+        "environment type (indoor/outdoor)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "ISCR was higher in the crowded compared to uncrowded condition (for both indoor and outdoor)",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 33,
+      "antecedent": "Environment type (indoor crowded vs. indoor uncrowded) for walking group",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": "BF10",
+      "sample_size": null,
+      "confidence_interval": [
+        4.703,
+        12.346
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "Privacy"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "PPA1"
+      ],
+      "mechanism": "increased physiological arousal due to crowding and enclosure",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "and higher in the indoor crowded than the indoor uncrowded.",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 34,
+      "antecedent": "Environment type (outdoor crowded vs. indoor crowded) for walking group",
+      "consequent": "Integrated Skin Conductance Responses (ISCR)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": 319.0,
+      "effect_size_type": "BF01",
+      "sample_size": null,
+      "confidence_interval": [
+        -9.408,
+        -1.898
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "IC",
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "T12",
+        "T29",
+        "SN2"
+      ],
+      "mechanism": "reduced physiological arousal due to openness",
+      "moderators_reported": [
+        "group (walking)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 9",
+      "quote": "higher in the indoor crowded than the indoor uncrowded. Other contrasts were unclear.",
+      "outcome_id": "physio.skin_conductance",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Restorative effects of nature reduce attentional demands and physiological stress.",
+    "Spatial characteristics like openness, boundary height, and enclosure influence emotional and cognitive responses.",
+    "Excessive social stimulation, lack of control, and cognitive overload contribute to negative psychological effects of crowding.",
+    "Physical activity (walking) may shift affective processing of environments and influence attention allocation.",
+    "Walking may mitigate negative effects of crowding by providing a sense of agency or control.",
+    "People subconsciously require less peri-personal space in outdoor compared to indoor settings.",
+    "Outdoor environments, compared to indoor, improve executive functioning due to spatial attributes like openness and sky view.",
+    "Cognitive complexity associated with crowding acts as a distractor effect, recruiting more attentional resources."
+  ],
+  "moderators": [
+    "Group (walking vs. standing)",
+    "Environment type (green, urban indoor, urban outdoor)",
+    "Social density (crowded vs. uncrowded)"
+  ],
+  "implementation_implications": [
+    "Urban planning should consider the psychological effects of different urban environments beyond the nature-urban dichotomy.",
+    "Understanding the interaction between active movement, social density, and environment type is crucial for designing public spaces.",
+    "The findings encourage additional research into more types of urban environments and the influence of different levels of human activity."
+  ],
+  "domains": [
+    "A8_Social",
+    "A3_Spatial_Config",
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A10_Temporal",
+    "A2_Spatial_Scale"
+  ],
+  "overall_theory_links": [
+    "ART",
+    "SRT",
+    "Privacy Regulation",
+    "DT",
+    "NM",
+    "IC",
+    "EC",
+    "SN",
+    "PP"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Hypothesis tests on the effects of walking on EEG SNR, SCL, ISCR, and MEC-SPQ.",
+      "key_stats": [
+        "SNR: PP=0.88, ER01=7.15",
+        "SCL: PP=1.0, ER01=3999.00",
+        "ISCR: PP=0.94, ER01=15.39",
+        "MEC_SPQ: PP=0.49, ER01=0.97"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Contrasts for self-reported arousal (SAM) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IC Stand: Median=7.529, PP=1.0, ER01=Inf",
+        "OC-OU Stand: Median=2.919, PP=0.000, ER10=Inf",
+        "IC-IU Stand: Median=-3.482, PP=0.000, ER10=Inf"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Contrasts for self-reported valence (SAM) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IC Stand: Median=-7.397, PP=0.000, ER10=Inf",
+        "OC-OU Walk: Median=2.311, PP=0.996, ER01=274.862",
+        "OC-IC Stand: Median=-2.670, PP=0.001, ER10=1141.857"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Contrasts for frontal alpha (FA) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IC Stand: Median=3.583, PP=0.970, ER01=32.473",
+        "Gr-IU Stand: Median=3.869, PP=0.966, ER01=28.304"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 5",
+      "description": "Contrasts for frontal midline theta (FMT) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IC Stand: Median=-4.168, PP=0.088, ER10=10.331",
+        "Gr-OU Walk: Median=-2.809, PP=0.000, ER10=Inf",
+        "IC-IU Stand: Median=7.063, PP=0.968, ER01=30.373",
+        "OU-IU Stand: Median=8.331, PP=0.987, ER01=75.190"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 6",
+      "description": "Contrasts for theta beta ratio (TBR) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "IC-IU Stand: Median=0.322, PP=1.0, ER01=Inf",
+        "Gr-IC Stand: Median=-0.188, PP=0.003, ER10=379.952",
+        "Gr-IU Stand: Median=0.135, PP=0.982, ER01=53.795",
+        "OC-IC Stand: Median=-0.120, PP=0.074, ER10=12.491"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 7",
+      "description": "Contrasts for frontal alpha asymmetry (FAA) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IU Stand: Median=0.137, PP=1.0, ER01=3999.000",
+        "Gr-OC Walk: Median=0.073, PP=0.011, ER10=86.912",
+        "OC-OU Walk: Median=0.052, PP=0.946, ER01=17.605",
+        "IC-IU Stand: Median=0.082, PP=0.980, ER01=48.689",
+        "OU-IU Stand: Median=0.138, PP=1.0, ER01=1999.000"
+      ],
+      "n_findings_extracted_from": 6
+    },
+    {
+      "table_id": "Table 8",
+      "description": "Contrasts for skin conductance levels (SCL) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IC Walk: Median=-0.150, PP=0.050, ER10=18.900",
+        "Gr-OU Walk: Median=0.204, PP=0.995, ER01=189.476",
+        "OC-OU Walk: Median=0.181, PP=0.977, ER01=42.243",
+        "IC-IU Walk: Median=0.199, PP=0.966, ER01=28.197"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 9",
+      "description": "Contrasts for integrated skin conductance response (ISCR) between different environment types and social densities, for standing and walking groups.",
+      "key_stats": [
+        "Gr-IU Stand: Median=3.848, PP=0.917, ER01=11.121",
+        "Gr-IC Walk: Median=-6.487, PP=0.000, ER10=Inf",
+        "OC-OU Walk: Median=3.360, PP=0.960, ER01=23.691",
+        "IC-IU Walk: Median=8.399, PP=1.0, ER01=Inf",
+        "OC-IC Walk: Median=-5.535, PP=0.003, ER10=319.000"
+      ],
+      "n_findings_extracted_from": 5
+    }
+  ],
+  "limitations": [
+    "The experimental setup used a small number of stimuli, limiting the range of environments presented.",
+    "Treadmill-walking attentional demands are lower than actual walking, potentially leading to less pronounced differences between groups.",
+    "Cultural factors and individual preferences may have influenced how crowds were appraised.",
+    "Practical constraints prevented filming crowds in green environments, limiting understanding of social influence in nature.",
+    "The effect of walking on subjective experience and appraisal of environments could only be studied in a between-subjects analysis."
+  ],
+  "paper_metadata": {
+    "doi": "10.1038/s41598-022-20649-y",
+    "title": "A mobile EEG study on the psychophysiological effects of walking and crowding in indoor and outdoor urban environments",
+    "authors": [
+      "P. Mavros",
+      "Michel J W\u00e4lti",
+      "M. Nazemi",
+      "Crystal Huiyi Ong",
+      "C. H\u00f6lscher"
+    ],
+    "year": 2022,
+    "journal": "Scientific Reports",
+    "volume": "12",
+    "issue": "1",
+    "pages": null,
+    "publisher": "Springer Science and Business Media LLC",
+    "citation_count": 58,
+    "influential_citation_count": 2,
+    "references": [
+      "10.1006/JEVP.2001.0225",
+      "10.1006/jevp.2001.0225",
+      "10.1007/BF00987547",
+      "10.1007/BF01127013",
+      "10.1007/s00426-016-0819-5",
+      "10.1007/s11524-019-00407-8",
+      "10.1016/0005-7916(94)90063-9",
+      "10.1016/0272-4944(95)90001-2",
+      "10.1016/0278-2626(92)90065-T",
+      "10.1016/B978-0-12-811926-6.00010-5",
+      "10.1016/J.BIOPSYCHO.2004.03.002",
+      "10.1016/J.BIOPSYCHO.2004.03.008",
+      "10.1016/J.JBUSRES.2004.01.005",
+      "10.1016/J.JENVP.2003.12.005",
+      "10.1016/J.JENVP.2012.09.003",
+      "10.1016/J.JENVP.2013.08.005",
+      "10.1016/J.JENVP.2014.02.007",
+      "10.1016/J.JENVP.2014.11.006",
+      "10.1016/J.JENVP.2015.11.003",
+      "10.1016/J.JENVP.2019.01.007",
+      "10.1016/J.JNEUMETH.2003.10.009",
+      "10.1016/J.JTH.2018.02.003",
+      "10.1016/J.LANDURBPLAN.2007.09.010",
+      "10.1016/J.LANDURBPLAN.2008.01.004",
+      "10.1016/J.LANDURBPLAN.2015.02.005",
+      "10.1016/J.TRA.2005.07.001",
+      "10.1016/J.TRA.2017.04.022",
+      "10.1016/J.TRF.2018.06.032",
+      "10.1016/J.UFUG.2013.01.004",
+      "10.1016/J.UFUG.2017.02.009",
+      "10.1016/S0272-4944(02)00111-1",
+      "10.1016/S0272-4944(05)80184-7",
+      "10.1016/b978-0-12-136650-6.50007-1",
+      "10.1016/j.apergo.2016.09.009",
+      "10.1016/j.biopsycho.2004.03.002",
+      "10.1016/j.biopsycho.2004.03.008",
+      "10.1016/j.biopsycho.2016.09.008",
+      "10.1016/j.biopsycho.2018.11.003",
+      "10.1016/j.buildenv.2020.106779",
+      "10.1016/j.copsyc.2020.02.005",
+      "10.1016/j.healthplace.2010.09.003",
+      "10.1016/j.healthplace.2013.01.001",
+      "10.1016/j.ijpsycho.2013.09.003",
+      "10.1016/j.ijpsycho.2016.11.005",
+      "10.1016/j.jbusres.2004.01.005",
+      "10.1016/j.jenvp.2003.12.005",
+      "10.1016/j.jenvp.2012.09.003",
+      "10.1016/j.jenvp.2013.08.005",
+      "10.1016/j.jenvp.2014.02.007",
+      "10.1016/j.jenvp.2014.11.006",
+      "10.1016/j.jenvp.2015.11.003",
+      "10.1016/j.jenvp.2019.01.007",
+      "10.1016/j.jenvp.2019.101344",
+      "10.1016/j.jenvp.2020.101498",
+      "10.1016/j.jneumeth.2003.10.009",
+      "10.1016/j.jneumeth.2010.04.028",
+      "10.1016/j.jth.2018.02.003",
+      "10.1016/j.landurbplan.2007.09.010",
+      "10.1016/j.landurbplan.2008.01.004",
+      "10.1016/j.landurbplan.2015.02.005",
+      "10.1016/j.neuroimage.2020.117555",
+      "10.1016/j.pneurobio.2008.09.005",
+      "10.1016/j.tics.2014.04.012",
+      "10.1016/j.tra.2005.07.001",
+      "10.1016/j.trf.2018.06.032",
+      "10.1016/j.tust.2020.103526",
+      "10.1016/j.ufug.2013.01.004",
+      "10.1016/j.ufug.2017.02.009",
+      "10.1017/CBO9780511546396.007",
+      "10.1017/cbo9780511546396",
+      "10.1037/H0032706",
+      "10.1037/h0032706",
+      "10.1038/467912a",
+      "10.1038/s41370-019-0188-4",
+      "10.1038/s41598-019-45876-8",
+      "10.1038/s41598-019-51996-y",
+      "10.1038/s41598-021-83277-y",
+      "10.1057/PALGRAVE.UDI.9000162",
+      "10.1057/palgrave.udi.9000162",
+      "10.1068/a110731",
+      "10.1073/pnas.1510459112",
+      "10.1073/pnas.1900648116",
+      "10.1080/00223980.1984.9923667",
+      "10.1080/02815739708730435",
+      "10.1080/10937404.2018.1505571",
+      "10.1080/13574800802451155",
+      "10.1080/17437199.2020.1760728",
+      "10.1080/23748834.2019.1619893",
+      "10.1080/23748834.2020.1839302",
+      "10.1088/1741-2560/12/4/046022",
+      "10.1093/intqhc/mzx148",
+      "10.1093/jurban/jtg063",
+      "10.1098/rsos.180172",
+      "10.1101/2020.06.08.139469",
+      "10.1101/2023.04.11.23288411",
+      "10.1109/EMBC.2018.8512547",
+      "10.1111/1469-8986.00011",
+      "10.1111/J.1559-1816.1979.TB00793.X",
+      "10.1111/J.1559-1816.1987.TB00306.X",
+      "10.1111/ejn.14992",
+      "10.1111/ejn.15037",
+      "10.1111/ejn.15095",
+      "10.1111/j.1467-9280.2008.02225.x",
+      "10.1111/j.1469-8986.2012.01384.x",
+      "10.1111/j.1469-8986.2012.01471.x",
+      "10.1111/j.1559-1816.1979.tb00793.x",
+      "10.1111/j.1559-1816.1987.tb00306.x",
+      "10.1111/j.1600-0447.2009.01438.x",
+      "10.1111/psyp.12878",
+      "10.1111/psyp.13331",
+      "10.1123/jpah.3.s1.s223",
+      "10.1136/bjsports-2012-091877",
+      "10.1162/jocn.2009.21369",
+      "10.1163/156856897X00357",
+      "10.1163/156856897X00366",
+      "10.1177/001391602237246",
+      "10.1177/0013916509354696",
+      "10.1177/0013916512446808",
+      "10.1177/0013916518807274",
+      "10.1177/0013916519879773",
+      "10.1177/001391657500700203",
+      "10.1177/0013916581135001",
+      "10.1177/009430610803700406",
+      "10.1177/0265813515600121",
+      "10.1177/03010066070360S101",
+      "10.1177/1368430220936759",
+      "10.1207/15327660051044231",
+      "10.1207/S15327663JCP0901_3",
+      "10.12688/wellcomeopenres.15191.1",
+      "10.12688/wellcomeopenres.15191.2",
+      "10.12988/ES.2013.3109",
+      "10.1371/journal.pbio.3000511",
+      "10.1371/journal.pone.017732",
+      "10.1371/journal.pone.0177328",
+      "10.17815/cd.2019.23",
+      "10.18637/JSS.V076.I01",
+      "10.18637/JSS.V080.I01",
+      "10.18637/jss.v076.i01",
+      "10.18637/jss.v080.i01",
+      "10.2139/ssrn.2707043",
+      "10.3389/fnhum.2014.00288",
+      "10.3389/fnhum.2017.00477",
+      "10.3389/fnhum.2019.00141",
+      "10.3389/fphys.2018.00098",
+      "10.3389/fpsyg.2019.00142",
+      "10.3389/fpsyg.2020.02200",
+      "10.3389/fpsyt.2018.00317",
+      "10.3390/APP1010001",
+      "10.3390/SU13116464",
+      "10.3390/as1010001",
+      "10.3390/ijerph13040363",
+      "10.3390/ijerph15112358",
+      "10.3390/su13116464",
+      "10.3414/ME9108",
+      "10.3929/ETHZ-B-000446909",
+      "10.7717/peerj.38"
+    ],
+    "cited_by": [
+      "10.1016/j.cities.2025.106768",
+      "10.3390/buildings16040819",
+      "10.3389/fpubh.2026.1741191",
+      "10.48175/ijarsct-30908",
+      "10.2196/84919",
+      "10.3390/buildings16020248",
+      "10.1016/j.neuroscience.2026.01.034",
+      "10.3390/app152212103",
+      "10.3390/buildings15224087",
+      "10.1016/j.rineng.2025.107642",
+      "10.1007/s11355-025-00666-5",
+      "10.1109/EMBC58623.2025.11253034",
+      "10.1080/15230406.2025.2512075",
+      "10.1007/s00484-025-02942-3",
+      "10.3390/brainsci15050531",
+      "10.1080/23748834.2025.2493399",
+      "10.1101/2025.04.13.648607",
+      "10.1371/journal.pmen.0000203",
+      "10.3390/ijerph22060824",
+      "10.1080/23748834.2025.2457847",
+      "10.3389/fpsyg.2025.1527691",
+      "10.3390/s25030748",
+      "10.3389/frvir.2024.1502802",
+      "10.1117/1.NPh.12.1.015016",
+      "10.17816/humeco643220",
+      "10.1080/12265934.2024.2438189",
+      "10.1016/j.jenvman.2024.123661",
+      "10.3390/s24237838",
+      "10.1016/j.jobe.2024.111644",
+      "10.1016/j.buildenv.2024.111928",
+      "10.1016/j.ufug.2024.128553",
+      "10.1080/00038628.2024.2410741",
+      "10.1016/j.jenvp.2024.102453",
+      "10.1016/j.jenvp.2024.102466",
+      "10.1145/3675094.3677598",
+      "10.1016/j.cities.2024.105169",
+      "10.1101/2024.08.30.610386",
+      "10.3389/fnhum.2024.1466853",
+      "10.1016/j.aei.2024.102534",
+      "10.3390/buildings14061560",
+      "10.3390/fi16060182",
+      "10.1097/YCO.0000000000000941",
+      "10.1371/journal.pone.0297986",
+      "10.37766/inplasy2024.4.0004",
+      "10.1101/2024.03.22.586309",
+      "10.3390/ijerph21030329",
+      "10.1016/j.cities.2023.104619",
+      "10.3390/su152216104",
+      "10.1080/23729333.2023.2253645",
+      "10.1016/j.jenvp.2023.102146",
+      "10.5194/ica-proc-5-2-2023",
+      "10.1016/j.envint.2023.108095",
+      "10.1016/j.scs.2023.104695",
+      "10.1038/s41583-023-00692-y",
+      "10.1016/j.tbs.2025.101210",
+      "10.1016/j.tbs.2026.101238",
+      "10.1016/j.landurbplan.2025.105368",
+      "10.1016/j.cities.2025.106346"
+    ],
+    "semantic_scholar_id": "3692d5bc5430d3c4dc450a08273338d6fa1d8b78",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:41:42.257248+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "A mobile EEG study on the psychophysiological effects of walking and crowding in indoor and outdoor urban environments",
+    "crossref_year": 2022,
+    "crossref_citation_count": 70,
+    "crossref_journal": "Scientific Reports",
+    "crossref_publisher": "Springer Science and Business Media LLC",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": "AbstractEnvironmental psychologists have established multiple psychological benefits of interaction with natural, compared to urban, environments on emotion, cognition, and attention. Yet, given the increasing urbanisation worldwide, it is equally important to understand how differences within different urban environments influence human psychological experience. We developed a laboratory experiment to examine the psychophysiological effects of the physical (outdoor or indoor) and social (crowded versus uncrowded) environment in healthy young adults, and to validate the use of mobile electroencephalography (EEG) and electrodermal activity (EDA) measurements during active walking. Participants (N = 42) were randomly assigned into a walking or a\u00a0standing group, and watched six 1-min walk-through videos of green, urban indoor and urban outdoor environments, depicting high or low levels of social density. Self-reported emotional states show that green spaces is perceived as more calm and positive, and reduce attentional demands. Further, the outdoor urban space is perceived more positively than the indoor environment. These findings are consistent with earlier studies on the psychological benefits of nature and confirm the effectiveness of our paradigm and stimuli. In addition, we hypothesised that even short-term exposure to crowded scenes would have negative psychological effects. We found that crowded scenes evoked higher self-reported arousal, more negative self-reported valence, and recruited more cognitive and attentional resources. However, in walking participants, they evoked higher frontal alpha asymmetry, suggesting more positive affective responses. Furthermore, we found that using recent signal-processing methods, the EEG data produced a comparable signal-to-noise ratio between walking and standing, and that despite differences between walking and standing, skin-conductance also captured effectively psychophysiological responses to stimuli. These results suggest that emotional responses to visually presented stimuli can be measured effectively using mobile EEG and EDA in ambulatory settings, and that there is complex interaction between active walking, the social density of urban spaces, and direct and indirect affective responses to such environments.",
+    "crossref_reference_count": 132,
+    "crossref_issn": [
+      "2045-2322"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.606965+00:00",
+    "_cr_refs_added": 34
+  },
+  "year": 2022,
+  "journal": "Scientific Reports",
+  "authors_structured": [
+    "P. Mavros",
+    "Michel J W\u00e4lti",
+    "M. Nazemi",
+    "Crystal Huiyi Ong",
+    "C. H\u00f6lscher"
+  ],
+  "crossref_title": "A mobile EEG study on the psychophysiological effects of walking and crowding in indoor and outdoor urban environments",
+  "crossref_authors": [
+    {
+      "name": "Panagiotis Mavros",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Michel J W\u00e4lti",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Mohsen Nazemi",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Crystal Huiyi Ong",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Christoph H\u00f6lscher",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2022,
+  "crossref_journal": "Scientific Reports",
+  "crossref_citation_count": 70,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Springer Science and Business Media LLC",
+  "crossref_subjects": [],
+  "crossref_abstract": "AbstractEnvironmental psychologists have established multiple psychological benefits of interaction with natural, compared to urban, environments on emotion, cognition, and attention. Yet, given the increasing urbanisation worldwide, it is equally important to understand how differences within different urban environments influence human psychological experience. We developed a laboratory experiment to examine the psychophysiological effects of the physical (outdoor or indoor) and social (crowded versus uncrowded) environment in healthy young adults, and to validate the use of mobile electroencephalography (EEG) and electrodermal activity (EDA) measurements during active walking. Participants (N = 42) were randomly assigned into a walking or a\u00a0standing group, and watched six 1-min walk-through videos of green, urban indoor and urban outdoor environments, depicting high or low levels of social density. Self-reported emotional states show that green spaces is perceived as more calm and positive, and reduce attentional demands. Further, the outdoor urban space is perceived more positively than the indoor environment. These findings are consistent with earlier studies on the psychological benefits of nature and confirm the effectiveness of our paradigm and stimuli. In addition, we hypothesised that even short-term exposure to crowded scenes would have negative psychological effects. We found that crowded scenes evoked higher self-reported arousal, more negative self-reported valence, and recruited more cognitive and attentional resources. However, in walking participants, they evoked higher frontal alpha asymmetry, suggesting more positive affective responses. Furthermore, we found that using recent signal-processing methods, the EEG data produced a comparable signal-to-noise ratio between walking and standing, and that despite differences between walking and standing, skin-conductance also captured effectively psychophysiological responses to stimuli. These results suggest that emotional responses to visually presented stimuli can be measured effectively using mobile EEG and EDA in ambulatory settings, and that there is complex interaction between active walking, the social density of urban spaces, and direct and indirect affective responses to such environments.",
+  "crossref_fetched_at": "2026-02-25T11:56:27.605866+00:00"
+}

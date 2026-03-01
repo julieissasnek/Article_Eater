@@ -1,0 +1,94 @@
+{
+  "theory_id": "AUDITORY_SCENE_ANALYSIS",
+  "name": "Auditory Scene Analysis",
+  "originator": "Bregman",
+  "year": 1990,
+  "citation": "Bregman, A.S. (1990). Auditory scene analysis: The perceptual organization of sound. MIT Press.",
+  "status": "DEFERRED",
+  "parent_t1_frameworks": {
+    "PP": 45,
+    "IC": 35,
+    "NM": 20
+  },
+  "constructs": [
+    {
+      "construct_name": "Stream Segregation",
+      "description": "Perceptual grouping of acoustic elements into coherent streams based on frequency proximity, temporal continuity, and timbre similarity. Core mechanism for parsing complex auditory scenes.",
+      "template_ids": [
+        "PP-GROUPING-004",
+        "PP-TEMPORAL-006",
+        "IC-ORGANIZATION-008"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Auditory Streaming Primitives",
+      "description": "Low-level heuristics for stream formation: onset synchrony, harmonic relationships, spectral continuity, and amplitude comodulation. Integrate at A1/A2 levels.",
+      "template_ids": [
+        "PP-FEATURE-BINDING-009",
+        "NM-AUDITORY-CORTEX-012",
+        "IC-HIERARCHY-007"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-actually"
+    },
+    {
+      "construct_name": "Figure-Ground Auditory",
+      "description": "Selective attention to one acoustic stream (figure) while suppressing competing streams (ground). Enables speech intelligibility in noise and acoustic privacy perception.",
+      "template_ids": [
+        "IE-ATTENTION-GATE-005",
+        "PP-SALIENCE-010",
+        "NM-FOCUS-014"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-plausibly"
+    }
+  ],
+  "constituent_templates": [],
+  "template_coverage_pct": 0.014,
+  "maturity": "how-plausibly",
+  "irreducible_residual": null,
+  "rejection_rationale": "Strongest deferred candidate at 1.4% template coverage. ASA has clear independent domain content (how auditory streams are segregated and grouped), strong neural evidence (A1 streaming mechanisms), and clear architectural applications (open-plan speech intelligibility, acoustic privacy). Needs ~120 new templates to reach 60% coverage threshold. Path forward: Prioritize ASA template development in the auditory domain expansion. Should be first promoted when template mass is sufficient.",
+  "child_molecules": [],
+  "google_scholar_count": 12000,
+  "key_references": [
+    "Bregman, A. S. (1990). Auditory scene analysis: The perceptual organization of sound. MIT Press. ISBN 978-0-262-02313-7 [12000+ citations]",
+    "Darwin, C. J., & Carlyon, R. P. (1995). Auditory grouping. In B. C. J. Moore (Ed.), Hearing (2nd ed., pp. 387-424). Academic Press. [890+ citations]",
+    "Cusack, R., Deeks, J., Aikman, G., & Carlyon, R. P. (2004). Effects of location, frequency region, and time on the stream segregation of tone sequences. Journal of Experimental Psychology: Human Perception and Performance, 30(3), 563-574. doi:10.1037/0096-1523.30.3.563 [210+ citations]",
+    "Shinn-Cunningham, B. G. (2008). Object-based auditory attention. Current Opinion in Neurobiology, 18(4), 437-443. doi:10.1016/j.conb.2008.09.010 [480+ citations]",
+    "Carlyon, R. P., Cusack, R., Foxton, J. M., & Robertson, I. H. (2001). Effects of attention and unilateral neglect on auditory stream segregation. Journal of Neuroscience, 21(17), 6895-6901. doi:10.1523/JNEUROSCI.21-17-06895.2001 [340+ citations]"
+  ],
+  "reduced_in": "T1.5 Candidate Assessment Report (2026-02-23)",
+  "function_form": {
+    "function_form": "S(f, t) = \u03a3\u2096 s\u2096\u00b7\u03a8\u2096(f, t); Stream(k) = {(f,t) : P(k|f,t) > 0.5}",
+    "variables": {
+      "S(f,t)": "Auditory scene in frequency-time space",
+      "s\u2096": "Source amplitude for stream k",
+      "\u03a8\u2096(f,t)": "Time-frequency mask for stream k",
+      "P(k|f,t)": "Posterior probability that (f,t) point belongs to stream k"
+    },
+    "predictions": [
+      "Stream segregation requires >3 semitone frequency separation",
+      "Speech intelligibility drops ~50% when SNR < 10 dB in open offices"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "Bregman, A.S. (1990). Auditory Scene Analysis. MIT Press.",
+    "predecessor": "Gestalt grouping principles applied to audition; Cherry's cocktail party problem (1953)",
+    "historical_context": "Bregman showed how the auditory system parses complex sound environments into separate streams. Essential for understanding speech intelligibility in open offices and acoustic design.",
+    "key_milestones": [
+      "1953: Cherry's cocktail party",
+      "1990: Auditory Scene Analysis",
+      "2006: ISO 3382 room acoustics"
+    ],
+    "influenced_by": [
+      "A.S. Bregman (psychology)",
+      "E.C. Cherry (selective attention)",
+      "Gestalt psychologists"
+    ],
+    "current_status": "foundational",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  }
+}

@@ -329,7 +329,7 @@ def scan_template_file(json_path: Path) -> Optional[TemplateRecord]:
     name = data.get("name")
 
     if not all([template_id, display_id, name]):
-        logger.warning(
+        logger.debug(
             f"Skipping {json_path}: missing required fields "
             f"(template_id={template_id}, display_id={display_id}, name={name})"
         )
@@ -405,17 +405,37 @@ def scan_templates(
 
         # Scan all JSON files
         json_files = sorted(templates_path.glob("*.json"))
-        logger.info(f"Found {len(json_files)} template JSON files")
+        logger.debug(f"Found {len(json_files)} template JSON files")
 
         records = []
+        records = []
+        seen_template_ids = set()
+        seen_display_ids = set()
+        
         for json_path in json_files:
             record = scan_template_file(json_path)
-            if record:
-                records.append(record)
+            if not record:
+                continue
+
+            # Prevent in-memory overlaps caused by manually cloned JSON files carrying identical IDs
+            if record.template_id in seen_template_ids or record.display_id in seen_display_ids:
+                logger.debug(f"Skipping duplicate schema in {json_path}: template_id={record.template_id}, display_id={record.display_id}")
+                continue
+
+            # Quick pre-check: does it exist already?
+            with session.no_autoflush:
+                existing = session.query(TemplateRecord).filter_by(template_id=record.template_id).first()
+            if existing:
+                records.append(existing)
+            else:
                 session.add(record)
+                records.append(record)
+                
+            seen_template_ids.add(record.template_id)
+            seen_display_ids.add(record.display_id)
 
         session.commit()
-        logger.info(f"Inserted {len(records)} TemplateRecord entries")
+        logger.debug(f"Inserted {len(records)} TemplateRecord entries")
 
         # Expunge records from session so they remain usable after close
         # First refresh all attributes, then make transient

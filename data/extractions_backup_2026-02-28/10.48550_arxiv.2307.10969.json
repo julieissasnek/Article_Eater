@@ -1,0 +1,968 @@
+{
+  "doi": "10.48550/arxiv.2307.10969",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.809,
+  "n_findings": 22,
+  "extracted_at": "2026-02-25T02:00:18.122525+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.007852,
+  "title": "Assessing the Effects of Illuminance and Correlated Color Temperature on Emotional Responses and Lighting Preferences Using Virtual Reality",
+  "authors": "Armin Mostafavi et al., null",
+  "research_question": "How will Preferred Lighting Conditions (PLC) (brightness and color temperature) be affected by Initial Lighting Conditions (ILC)? What influence will the order effect of the presented lighting conditions have on the preferred lighting condition in VR? How will the self-reported level of arousal and emotional valence be affected by given illuminance and CCT of the ILC, and are these effects moderated by gender? How does the lighting preference profile of users in the given virtual environment differ in different lighting conditions?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 27,
+    "description": "Thirty-three healthy adult participants were recruited, with 6 excluded due to technical problems, resulting in a final sample of 27. Twenty-three were undergraduate university students, with the remainder being graduate students and faculty members. 16 (59%) were female, and 11 (41%) were male. Age ranged from 18\u201364 years (mean 24.16, SD 8.09). All reported no medical eye problems, no difficulty distinguishing colors, and sufficient sleep (7\u20139 hours). 59% used eyeglasses (75% for seeing far, 18% for seeing far and close). Most were students/researchers (66.6%) and programmers (25%), with daily tasks including typing (92%), computer use (77%), and reading (62%).",
+    "recruitment": "convenience methods (word-of-mouth and announcements on departmental e-mail lists)"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "A contemporary interior office space (3.7 m x 7.2 m x 3.0 m) created in Unreal Engine 4.26 (UE4). Participants experienced the VR environment seated, using a Meta Quest 2 head-mounted display. 17 distinct lighting conditions were simulated using six luminaires, varying in Correlated Color Temperature (CCT) from 1500 K to 7500 K and luminous flux from 300lm to 4500lm (corresponding to 45lx to 780lx illuminance). Conditions included constant illumination with different CCTs, constant CCT with different illumination intensities, and 'quadrant' conditions (Warm-Dark, Cold-Dark, Warm-Bright, Cold-Bright).",
+      "n_stimuli": 17,
+      "source": "Figure 1, Figure 2, 2.1 Virtual Reality Development, 2.2 Lighting Conditions"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Demographic information",
+      "instrument": "Demographic form",
+      "type": "self_report"
+    },
+    {
+      "construct": "Arousal",
+      "instrument": "Self-Assessment Manikin (SAM)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Emotional Valence",
+      "instrument": "Self-Assessment Manikin (SAM)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Chronotype",
+      "instrument": "Morningness-Eveningness Questionnaire (MEQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Sense of Presence in Virtual Environment",
+      "instrument": "Igroup Presence Questionnaire (IPQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Spatial Presence",
+      "instrument": "Igroup Presence Questionnaire (IPQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Involvement",
+      "instrument": "Igroup Presence Questionnaire (IPQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Experienced Realism",
+      "instrument": "Igroup Presence Questionnaire (IPQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Cybersickness",
+      "instrument": "Simulator Sickness Questionnaire (SSQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Task Load",
+      "instrument": "NASA Task Load Index (NASA-TLX)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Mental Fatigue",
+      "instrument": "1-9 scale",
+      "type": "self_report"
+    },
+    {
+      "construct": "Preferred CCT",
+      "instrument": "User adjustment via hand-held controllers",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Preferred Illuminance (Luminous Flux)",
+      "instrument": "User adjustment via hand-held controllers",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Adjustment Uncertainty (Illuminance)",
+      "instrument": "Calculated from keystroke dynamics (wrong clicks / correct clicks)",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Adjustment Uncertainty (CCT)",
+      "instrument": "Calculated from keystroke dynamics (wrong clicks / correct clicks)",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Initial illuminance level",
+      "consequent": "Preferred illuminance level",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "0.000",
+      "effect_size": 0.294,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 429.00)=178.697",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "The stimulus range and anchor point employed in the adjustment task substantially impacted the participants' preferred illuminances.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "We found the main effect of initial illuminance on preferred illuminance... significant."
+    },
+    {
+      "id": 2,
+      "antecedent": "Initial CCT",
+      "consequent": "Preferred CCT",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "0.000",
+      "effect_size": 0.467,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 429.000)=375.188",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": "The stimulus range used in the adjustment task significantly influences the preferred CCT chosen by participants.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "as well as initial CCT on preferred CCT significant."
+    },
+    {
+      "id": 3,
+      "antecedent": "Gender",
+      "consequent": "Preferred illuminance level",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.952",
+      "effect_size": 0.0,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 29.63)=0.004",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "we did not find the main effects of gender on our dependent variables significant."
+    },
+    {
+      "id": 4,
+      "antecedent": "Gender",
+      "consequent": "Preferred CCT",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.852",
+      "effect_size": 0.001,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 35.196)=0.035",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "we did not find the main effects of gender on our dependent variables significant."
+    },
+    {
+      "id": 5,
+      "antecedent": "Initial CCT, Gender",
+      "consequent": "Preferred CCT",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "0.010",
+      "effect_size": 0.015,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 429.000)=6.707",
+      "theory_links": [
+        "PP",
+        "AX9"
+      ],
+      "template_ids": [
+        "T15"
+      ],
+      "mechanism": "Preferred values for each lighting condition differed between males and females; males preferred higher CCT compared to women.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3, p.18-19",
+      "quote": "we found a significant gender by initial CCT interaction effect on the preferred CCT, f(1, 429) = 6.71, p = .010"
+    },
+    {
+      "id": 6,
+      "antecedent": "Initial illuminance level, Gender",
+      "consequent": "Preferred illuminance level",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "0.003",
+      "effect_size": 0.021,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 429.00)=9.232",
+      "theory_links": [
+        "PP",
+        "AX9"
+      ],
+      "template_ids": [
+        "T15"
+      ],
+      "mechanism": "Preferred values for each lighting condition differed between males and females; men preferred a higher level of illuminance compared to women.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 3, p.19",
+      "quote": "we found a significant gender by initial illuminance interaction effect on the preferred illuminance, f(1,429) = 9.23, p = .003"
+    },
+    {
+      "id": 7,
+      "antecedent": "Order of presented lighting condition (from 1 to 17)",
+      "consequent": "Preferred CCT",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.086",
+      "effect_size": 0.007,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": [
+        -16.71,
+        1.08
+      ],
+      "test_statistic": "F(1, 429)=2.96",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "AX2"
+      ],
+      "mechanism": "Lighting adaptation, habituation, and fatigue in VR could explain the participant's preference for lower values for later presented conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, p.19",
+      "quote": "The order of presented lighting condition was a marginally significant predictor of preferred CCT with an estimated coefficient of -7.82"
+    },
+    {
+      "id": 8,
+      "antecedent": "Order of presented lighting condition (from 1 to 17)",
+      "consequent": "Preferred illuminance level",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 0.043,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": [
+        -28.52,
+        -10.87
+      ],
+      "test_statistic": "F(1, 429)=19.08",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "AX2"
+      ],
+      "mechanism": "Lighting adaptation, habituation, and fatigue in VR could explain the participant's preference for lower illuminance for later presented conditions.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, p.19-20",
+      "quote": "It was a significant predictor of preferred illuminance with an estimated coefficient of -19.69"
+    },
+    {
+      "id": 9,
+      "antecedent": "Given CCT",
+      "consequent": "Emotional Valence",
+      "direction": "mixed",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.000",
+      "effect_size": 0.06,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=27.090",
+      "theory_links": [
+        "COL2",
+        "IC"
+      ],
+      "template_ids": [
+        "COL2"
+      ],
+      "mechanism": "The vividness and richness of the light color play a significant role in the level of arousal experienced.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": null,
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Given Illuminance (Intensity)",
+      "consequent": "Emotional Valence",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.000",
+      "effect_size": 0.143,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=70.993",
+      "theory_links": [
+        "PP",
+        "IC"
+      ],
+      "template_ids": [
+        "T12"
+      ],
+      "mechanism": "Participants reported their preference to work in the environment with lower brightness.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, p.21",
+      "quote": "females presented a decrease in the emotional valence mean score with an increase in illuminance level",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Gender",
+      "consequent": "Emotional Valence",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.000",
+      "effect_size": 0.054,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 233.148)=13.202",
+      "theory_links": [
+        "IC"
+      ],
+      "template_ids": [
+        "T12"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "ANOVA Emotional Valence: Gender F Value 13.202 P Value 0.000",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Given CCT, Gender",
+      "consequent": "Emotional Valence",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.002",
+      "effect_size": 0.023,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=10.067",
+      "theory_links": [
+        "COL2",
+        "IC",
+        "AX9"
+      ],
+      "template_ids": [
+        "COL2",
+        "T12"
+      ],
+      "mechanism": "Females displayed an irregular pattern in emotional valence with changing color temperatures, while males showed a slight increase with higher CCT.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "For valence, we found a significant gender by initial CCT interaction effect, f(1, 427) = 10.07, p = .002",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 13,
+      "antecedent": "Given Illuminance (Intensity), Gender",
+      "consequent": "Emotional Valence",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.000",
+      "effect_size": 0.031,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=13.765",
+      "theory_links": [
+        "PP",
+        "IC",
+        "AX9"
+      ],
+      "template_ids": [
+        "T12"
+      ],
+      "mechanism": "Both genders showed a decrease in emotional valence with increased illuminance, but females displayed a greater change in arousal levels compared to males.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "a significant gender by initial illuminance interaction effect, f(1, 429) = 13.76, p < .001",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 14,
+      "antecedent": "Order of presented lighting condition",
+      "consequent": "Emotional Valence",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.867",
+      "effect_size": 0.0,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=0.028",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "The effect of order was not significant, f(1, 427) = 0.03, p = .867",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "Given CCT",
+      "consequent": "Arousal",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.001",
+      "effect_size": 0.028,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=12.267",
+      "theory_links": [
+        "COL2",
+        "NM"
+      ],
+      "template_ids": [
+        "COL2",
+        "NM5"
+      ],
+      "mechanism": "Arousal levels for both genders seemed to decrease with increasing color temperature.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "Arousal levels for both genders seemed to decrease with increasing color temperature",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 16,
+      "antecedent": "Given Illuminance (Intensity)",
+      "consequent": "Arousal",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.000",
+      "effect_size": 0.194,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=102.560",
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "NM5"
+      ],
+      "mechanism": "The effect of higher brightness on arousal and alertness has been proved not only with subjective emotional measurements such as SAM in this study but also through physiological measurements.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, p.21",
+      "quote": "an increasing trend was observed for females with the increase in illuminance.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 17,
+      "antecedent": "Gender",
+      "consequent": "Arousal",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.176",
+      "effect_size": 0.014,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 128.002)=1.854",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "ANOVA Arousal: Gender F Value 1.854 P Value 0.176",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 18,
+      "antecedent": "Given CCT, Gender",
+      "consequent": "Arousal",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.050",
+      "effect_size": 0.009,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=3.861",
+      "theory_links": [
+        "COL2",
+        "NM",
+        "AX9"
+      ],
+      "template_ids": [
+        "COL2",
+        "NM5"
+      ],
+      "mechanism": "Females' arousal decreased then rebounded, while males showed a consistent decrease with increasing CCT.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "For arousal, we found a marginally significant gender by initial CCT interaction effect, f(1, 427) = 3.86, p = .050",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 19,
+      "antecedent": "Given Illuminance (Intensity), Gender",
+      "consequent": "Arousal",
+      "direction": "moderated",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": "0.006",
+      "effect_size": 0.018,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=7.661",
+      "theory_links": [
+        "PP",
+        "NM",
+        "AX9"
+      ],
+      "template_ids": [
+        "NM5"
+      ],
+      "mechanism": "Females displayed a greater change in arousal levels compared to males with increased illuminance.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "a significant gender by initial illuminance interaction effect, f(1,429) = 7.66, p = .006",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 20,
+      "antecedent": "Order of presented lighting condition",
+      "consequent": "Arousal",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "0.282",
+      "effect_size": 0.003,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 427.000)=1.159",
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4, p.22",
+      "quote": "The effect of order was not significant, f(1, 427) = 1.158, p = .282",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 21,
+      "antecedent": "Lighting intensity (illuminance)",
+      "consequent": "Level of Adjustment Uncertainty for illuminance",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Both females and males experience a reduction in uncertainty as the lighting intensity increases, suggesting less challenge in adjusting at higher intensities.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.24",
+      "quote": "both females and males experience a reduction in uncertainty as the lighting intensity increases."
+    },
+    {
+      "id": 22,
+      "antecedent": "CCT",
+      "consequent": "Level of Adjustment Uncertainty for CCT",
+      "direction": "curvilinear",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "Uncertainty peaks at mid-range CCT levels for both genders, suggesting these ranges are more challenging for adjustment decisions.",
+      "moderators_reported": [
+        "Gender"
+      ],
+      "provenance_depth": "section",
+      "source": "p.24",
+      "quote": "for both illuminance and CCT, there is a pattern of uncertainty peaking at mid-range levels, followed by a decrease as the lighting parameter increases."
+    }
+  ],
+  "mechanisms": [
+    "Lighting adaptation, habituation, and fatigue in VR could explain the participant's preference for lower illuminance.",
+    "The vividness and richness of the light color play a significant role in the level of arousal experienced.",
+    "Differences in responses between genders suggest gender-specific impacts on emotional and preference outcomes.",
+    "The stimulus range and anchor point employed in the adjustment task substantially impacted the participants' preferred illuminances and CCTs.",
+    "Analyzing user control actions provides insights into individual preference profiles."
+  ],
+  "moderators": [
+    "Gender",
+    "Initial Lighting Conditions (Illuminance and CCT)",
+    "Order of presentation"
+  ],
+  "implementation_implications": [
+    "Lighting settings have profound implications for creating conducive environments for work or healing.",
+    "Understanding user lighting preferences (illuminance, CCT) can inform personalized lighting solutions, enhancing comfort and satisfaction.",
+    "Gender-specific design considerations are necessary for more inclusive environmental design.",
+    "Awareness of how lighting conditions influence arousal can aid in designing environments that promote productivity, focus, and general wellbeing.",
+    "Insights from user adjustment profiles can help optimize lighting design in various contexts.",
+    "Designers can use information about user uncertainty patterns to create more intuitive interfaces and lighting systems."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A6_Visual_Form",
+    "A8_Social",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "NM",
+    "IC",
+    "CB"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "The luminous flux for 6 luminaires and the corresponding illuminance of the working plane.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "F-Test results of the predictors of the preferred light illuminance and CCT.",
+      "key_stats": [
+        "ANOVA Light CCT: Gender F(1, 35.196)=0.035, p=0.852, partial \u03b7\u00b2=0.001",
+        "ANOVA Light CCT: Initial CCT F(1, 429.000)=375.188, p=0.000, partial \u03b7\u00b2=0.467",
+        "ANOVA Light CCT: Order F(1, 429.000)=2.959, p=0.086, partial \u03b7\u00b2=0.007",
+        "ANOVA Light CCT: Gender: Initial CCT F(1, 429.000)=6.707, p=0.010, partial \u03b7\u00b2=0.015",
+        "ANOVA Light Intensity: Gender F(1, 29.63)=0.004, p=0.952, partial \u03b7\u00b2=0.000",
+        "ANOVA Light Intensity: Initial Intensity F(1, 429.00)=178.697, p=0.000, partial \u03b7\u00b2=0.294",
+        "ANOVA Light Intensity: Order F(1, 429.00)=19.081, p=0.000, partial \u03b7\u00b2=0.043",
+        "ANOVA Light Intensity: Gender: Initial Intensity F(1, 429.00)=9.232, p=0.003, partial \u03b7\u00b2=0.021"
+      ],
+      "n_findings_extracted_from": 8
+    },
+    {
+      "table_id": "Table 4",
+      "description": "F-Test results of the predictors of emotional valence and arousal",
+      "key_stats": [
+        "ANOVA Emotional Valence: Gender F(1, 233.148)=13.202, p=0.000, partial \u03b7\u00b2=0.054",
+        "ANOVA Emotional Valence: Given CCT F(1, 427.000)=27.090, p=0.000, partial \u03b7\u00b2=0.060",
+        "ANOVA Emotional Valence: Given Intensity F(1, 427.000)=70.993, p=0.000, partial \u03b7\u00b2=0.143",
+        "ANOVA Emotional Valence: Order F(1, 427.000)=0.028, p=0.867, partial \u03b7\u00b2=0.000",
+        "ANOVA Emotional Valence: Gender: Given CCT F(1, 427.000)=10.067, p=0.002, partial \u03b7\u00b2=0.023",
+        "ANOVA Emotional Valence: Gender:Given Intensity F(1, 427.000)=13.765, p=0.000, partial \u03b7\u00b2=0.031",
+        "ANOVA Arousal: Gender F(1, 128.002)=1.854, p=0.176, partial \u03b7\u00b2=0.014",
+        "ANOVA Arousal: Given CCT F(1, 427.000)=12.267, p=0.001, partial \u03b7\u00b2=0.028",
+        "ANOVA Arousal: Given Intensity F(1, 427.000)=102.560, p=0.000, partial \u03b7\u00b2=0.194",
+        "ANOVA Arousal: Order F(1, 427.000)=1.159, p=0.282, partial \u03b7\u00b2=0.003",
+        "ANOVA Arousal: Gender: Given CCT F(1, 427.000)=3.861, p=0.050, partial \u03b7\u00b2=0.009",
+        "ANOVA Arousal: Gender:Given Intensity F(1, 427.000)=7.661, p=0.006, partial \u03b7\u00b2=0.018"
+      ],
+      "n_findings_extracted_from": 12
+    }
+  ],
+  "limitations": [
+    "The range of luminance that VR HMDs can create is still constrained compared to actual light sources, decreasing utility at very high and very low illuminance extremes.",
+    "The study did not address the comparison or validation of physical versus virtual illumination modeling.",
+    "Current VR systems do not provide great dynamic range compared to the human eye.",
+    "Rapidly evolving lighting simulation methods in UE4 may create barriers to generalizing results or comparing them with other game engines.",
+    "The study experienced a higher-than-expected attrition rate due to corrupted VR log file data (missing timestamps) and technical difficulties like HMD battery crashes, often caused by researcher error.",
+    "The study used a convenience sample primarily of undergraduate students, limiting generalizability.",
+    "Demographic variables or other elements such as participant sleep schedules or time of day were not assessed, which may impact preferred illuminance and CCT results, especially given participant diversity."
+  ],
+  "paper_metadata": {
+    "doi": "10.48550/arXiv.2307.10969",
+    "title": "Assessing the Effects of Illuminance and Correlated Color Temperature on Emotional Responses and Lighting Preferences Using Virtual Reality",
+    "authors": [
+      "Armin Mostafavi",
+      "Tong Xu",
+      "S. Kalantari"
+    ],
+    "year": 2023,
+    "journal": "arXiv.org",
+    "volume": null,
+    "issue": null,
+    "pages": null,
+    "publisher": null,
+    "citation_count": 4,
+    "influential_citation_count": 0,
+    "references": [
+      "10.1016/j.jobe.2023.106776",
+      "10.1016/j.scitotenv.2023.161933",
+      "10.1016/j.jretconser.2022.103080",
+      "10.1016/j.buildenv.2022.109833",
+      "10.1145/3544548.3581262",
+      "10.1016/j.buildenv.2022.109591",
+      "10.1145/3532721.3535566",
+      "10.1080/15502724.2022.2059669",
+      "10.1016/j.buildenv.2021.108674",
+      "10.3390/brainsci12020269",
+      "10.1016/j.jobe.2022.103998",
+      "10.1080/00038628.2021.2008300",
+      "10.1016/j.jenvp.2021.101744",
+      "10.1177/19375867211063481",
+      "10.1016/J.AUTCON.2021.103898",
+      "10.1016/j.jobe.2021.103573",
+      "10.1109/ICSMD53520.2021.9670788",
+      "10.1080/15502724.2020.1726183",
+      "10.1038/s41598-021-89297-y",
+      "10.3389/fpsyt.2021.652161",
+      "10.1177/1477153521999592",
+      "10.1177/1477153521990039",
+      "10.1177/1477153521990645",
+      "10.1038/s41598-021-81182-y",
+      "10.3389/fneur.2021.630553",
+      "10.1016/J.IJLEO.2020.165675",
+      "10.1177/1477153520958448",
+      "10.1177/1937586720946669",
+      "10.1016/j.buildenv.2020.106932",
+      "10.1109/EMBC44109.2020.9176514",
+      "10.1177/1477153520926528",
+      "10.1177/1477153519872801",
+      "10.1177/0018720819892383",
+      "10.1016/j.buildenv.2019.106409",
+      "10.1016/J.BUILDENV.2019.106278",
+      "10.1080/15502724.2017.1404918",
+      "10.1016/J.BUILDENV.2018.12.061",
+      "10.1177/1477153518825387",
+      "10.1080/15502724.2018.1550365",
+      "10.1016/J.BUILDENV.2019.01.024",
+      "10.1177/0013916517738077",
+      "10.1016/J.BUILDENV.2018.12.013",
+      "10.1016/J.BUILDENV.2018.12.002",
+      "10.1080/15502724.2018.1558065",
+      "10.1016/J.BUILDENV.2018.10.040",
+      "10.1016/J.ENBUILD.2018.09.006",
+      "10.1016/J.BUILDENV.2018.10.005",
+      "10.1037/bne0000244",
+      "10.1016/J.BUILDENV.2018.03.022",
+      "10.1080/15502724.2017.1377085",
+      "10.1002/14651858.CD012243.pub2",
+      "10.5220/0006615402320239",
+      "10.1186/S40327-017-0058-X",
+      "10.1038/s41598-017-13973-1",
+      "10.2174/1567205014666170608091119",
+      "10.1016/j.displa.2017.05.001",
+      "10.1016/J.AUTCON.2017.05.003",
+      "10.1016/J.JENVP.2017.02.001",
+      "10.1016/J.BUILDENV.2017.01.033",
+      "10.1177/1477153515616435",
+      "10.1080/15502724.2016.1159137",
+      "10.1016/j.physbeh.2016.05.035",
+      "10.1117/12.2237897",
+      "10.1016/J.BUILDENV.2016.05.032",
+      "10.1177/1477153515576399",
+      "10.1061/9780784479827.113",
+      "10.1016/J.BUILDENV.2015.02.038",
+      "10.1061/9780784479247.059",
+      "10.1016/J.ENBUILD.2015.02.053",
+      "10.1016/J.BUILDENV.2015.01.002",
+      "10.4324/9781315756882",
+      "10.1177/1477153513514425",
+      "10.1177/1477153513514424",
+      "10.1080/0144929X.2014.949422",
+      "10.1016/j.tine.2014.09.001",
+      "10.1016/J.JENVP.2013.12.010",
+      "10.1016/J.BUILDENV.2014.03.024",
+      "10.1016/j.concog.2014.02.006",
+      "10.1201/b16707",
+      "10.1080/15502724.2013.855614",
+      "10.1186/1756-0500-7-113",
+      "10.5665/sleep.3396",
+      "10.9758/cpn.2013.11.3.126",
+      "10.1080/00038628.2012.724380",
+      "10.1016/J.BUILDENV.2013.08.022",
+      "10.5539/JSD.V6N9P36",
+      "10.1582/LEUKOS.2013.09.04.003",
+      "10.1002/COL.20714",
+      "10.1016/j.physbeh.2012.04.028",
+      "10.1177/1477153510380879",
+      "10.1177/1477153511400971",
+      "10.1371/journal.pone.0016429",
+      "10.1177/1477153509356018",
+      "10.5271/SJWEH.1268",
+      "10.1186/1740-3391-5-2",
+      "10.1002/BDM.535",
+      "10.1191/1365782806lrt161oa",
+      "10.1191/1365782804li122oa",
+      "10.1093/SLEEP/26.6.695",
+      "10.1145/566570.566575",
+      "10.1006/JEVP.2000.0198",
+      "10.1177/0013916500326005",
+      "10.1016/S0166-4328(00)00236-9",
+      "10.1177/001391659803000408",
+      "10.1016/0272-4944(95)90013-6",
+      "10.1145/192161.192286",
+      "10.1016/0005-7916(94)90063-9",
+      "10.1207/S15327108IJAP0303_3",
+      "10.1016/S0272-4944(05)80096-9",
+      "10.1177/096032719002200102",
+      "10.1016/S0272-4944(89)80011-8",
+      "10.1177/0013916587196003",
+      "10.1177/147715356703200104",
+      "10.1007/978-3-031-04987-3_10",
+      "10.1177/1477153517734280",
+      "10.52842/conf.caadria.2014.729",
+      "10.1007/978-88-470-5388-5_2",
+      "10.1016/J.JEEM.2011.09.001",
+      "10.1016/J.ERGON.2011.09.004",
+      "10.1007/978-90-481-3258-4_5",
+      "10.1080/00994480.2000.10748488",
+      "10.1007/978-1-4471-0563-3_30",
+      "10.1080/00994480.1990.10747937",
+      "10.1016/S0166-4115(08)62386-9"
+    ],
+    "cited_by": [
+      "10.1109/AICCSA66935.2025.11315474",
+      "10.3390/buildings15152585",
+      "10.1109/LS2463127.2024.10881485",
+      "10.1038/s41598-024-55182-7"
+    ],
+    "semantic_scholar_id": "203d2aeca7b7f07996b333f1426f8ed3910f4f3b",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:51:01.732909+00:00",
+    "enrichment_source": "semantic_scholar"
+  },
+  "year": 2023,
+  "journal": "arXiv.org",
+  "authors_structured": [
+    "Armin Mostafavi",
+    "Tong Xu",
+    "S. Kalantari"
+  ]
+}

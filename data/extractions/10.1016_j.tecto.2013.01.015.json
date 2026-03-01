@@ -1,0 +1,428 @@
+{
+  "doi": "10.1016/j.tecto.2013.01.015",
+  "article_type": "conceptual_framework",
+  "article_family": "theoretical",
+  "quality_action": "accept",
+  "quality_score": 0.71,
+  "n_findings": 6,
+  "extracted_at": "2026-02-25T04:20:17.812491+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.003316,
+  "title": "A parametric method to model 3D displacements around faults with volumetric vector fields",
+  "authors": "Gautier Laurent et al., 2013",
+  "central_proposition": "This paper presents a parametric method for modeling 3D displacement fields around faults, leveraging a curvilinear fault frame, attenuation profiles, and time integration to achieve kinematically consistent and geologically plausible structural models.",
+  "concept_definitions": [
+    {
+      "name": "Fault frame (F)",
+      "definition": "A 3D curvilinear coordinate system (g0, g1, g2) whose axes are oriented according to the orientation of the fault surface and the displacement direction, implicitly mapping the actual fault geometry to a regular, canonical fault space."
+    },
+    {
+      "name": "Near-field displacement",
+      "definition": "An additional, localized displacement around the fault that affects surrounding rocks and produces flanking structures like normal and reverse drag, representing the discontinuous part of the displacement field."
+    },
+    {
+      "name": "Far-field displacement",
+      "definition": "The global displacement field in which a fault occurs, perceptible at a large scale, representing the continuous part of the displacement field."
+    },
+    {
+      "name": "Normal drag",
+      "definition": "A decrease of apparent displacement near the fault surface, causing bending towards the opposite direction of the block displacement."
+    },
+    {
+      "name": "Reverse drag",
+      "definition": "An increase of apparent displacement near the fault surface, causing bending towards the direction of displacement."
+    },
+    {
+      "name": "Attenuation profiles (p0, p1, p2)",
+      "definition": "Parametric curves that explicitly control how the amplitude of displacement decreases along the three principal directions (g0, g1, g2) of the curvilinear fault frame."
+    },
+    {
+      "name": "Time integration scheme",
+      "definition": "A discrete time scheme that progressively sums small, instantaneous displacement steps over time, rather than directly applying a complete displacement, to ensure geometric consistency and allow for accumulation of effects."
+    }
+  ],
+  "argument_structure": "The paper argues for a new parametric fault modeling method by first identifying limitations in current geomodeling workflows (lack of kinematic/mechanic control, implausibility, computational cost). It then introduces its core components: a 3D curvilinear fault frame, displacement attenuation profiles, and a time integration scheme, detailing how each contributes to kinematically consistent and geologically plausible models. The argument is supported by synthetic applications demonstrating the method's ability to reproduce natural fault structures and improve stochastic simulations.",
+  "mechanism_or_causal_logic": "The core mechanism involves decoupling complex fault geometry from displacement description by mapping the actual fault to a canonical fault space using a 3D curvilinear fault frame. In this simplified space, displacement amplitude is controlled by a small set of parameters defining attenuation profiles along principal directions. The final displacement is achieved by progressively integrating instantaneous displacement steps over time, which prevents non-physical self-intersections, preserves structural continuity, and allows for the accumulation of effects from multiple tectonic events or varying displacement directions.",
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Complex fault geometries and associated displacement fields",
+      "consequent": "Kinematically consistent 3D displacement models",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN"
+      ],
+      "template_ids": [
+        "T3",
+        "T20"
+      ],
+      "mechanism": "The proposed parametric method, using a 3D curvilinear fault frame, attenuation profiles, and time integration, allows for explicit control over kinematics and mechanics, leading to more plausible and consistent structural models.",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "Abstract, Section 5",
+      "quote": "This paper presents a 3D parametric fault representation for modeling the displacement field associated with faults in accordance with their geometry.",
+      "testable": true,
+      "empirical_support_cited": "Mentions comparison to observations of natural objects described in the literature (e.g., Hamblin, 1965)."
+    },
+    {
+      "id": 2,
+      "antecedent": "Curvilinear fault frame (F) with coordinates g0, g1, g2",
+      "consequent": "Decoupling of fault geometry from displacement field description",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN",
+        "PP"
+      ],
+      "template_ids": [
+        "T3"
+      ],
+      "mechanism": "The fault frame implicitly maps the actual geometry (G) to a regular fault space (F), where the fault appears as an ideal elliptical fault, simplifying the description of displacement patterns.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2",
+      "quote": "These three coordinates define an implicit mapping between the actual geometry G and the regular fault space F where the fault appears as an ideal elliptical fault (Fig.3).",
+      "testable": true,
+      "empirical_support_cited": null,
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Displacement attenuation profiles (p0, p1, p2) in the fault frame",
+      "consequent": "Modeling of complex, theoretical, and observed displacement patterns (e.g., normal/reverse drag)",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "These profiles explicitly control how displacement amplitude decreases along the three principal directions of the fault frame, allowing for flexible and realistic representation of near-field deformation.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.4",
+      "quote": "The fault frame makes it possible to map complex fault geometries onto canonical cases, and the attenuation profiles enable the modeling of complex, theoretical and/or observed, displacement patterns.",
+      "testable": true,
+      "empirical_support_cited": "Mentions adaptation to specific observations and models (Barnett et al., 1987; Walsh and Watterson, 1987; Reches and Eidelman, 1995; Cowie and Shipton, 1998)."
+    },
+    {
+      "id": 4,
+      "antecedent": "Time integration scheme for instantaneous displacement fields",
+      "consequent": "Avoidance of non-physical self-intersection, preservation of detailed geometry, combination of multiple tectonic elements, and representation of fault evolution",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": "By progressively summing small displacement steps, the method ensures geometric consistency, allows for varying displacement directions/intensities over time, and can integrate different tectonic origins (e.g., far-field effects).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.5",
+      "quote": "This approach has numerous interesting properties... It avoids non-physical self-intersection of the displaced material. It keeps the detailed geometry and continuity of the surrounding structures.",
+      "testable": true,
+      "empirical_support_cited": null
+    },
+    {
+      "id": 5,
+      "antecedent": "Large, non-planar (listric) faults",
+      "consequent": "Modeling of roll-over anticlines and normal drag",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "The method adapts displacement intensity to fault geometry and integrates a global displacement vector, allowing the emergence of complex flanking structures like roll-over anticlines, similar to natural observations.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 4.2, Figure 10 caption",
+      "quote": "The accentuated curvature of the fault surface produces reverse or normal drag that are not directly explained by the attenuation of the displacement orthogonally to the fault, such as roll-over anticlines observed in the down-thrown block of listric faults (Hamblin, 1965).",
+      "testable": true,
+      "empirical_support_cited": "Compares to Hamblin (1965) observations."
+    },
+    {
+      "id": 6,
+      "antecedent": "Integration of displacement fields during stochastic sequential fault simulations",
+      "consequent": "Improved kinematic consistency and likelihood of output structural models, better understanding of reservoir connectivity",
+      "direction": "increase",
+      "claim_type": "theoretical_proposition",
+      "measure_type": null,
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN"
+      ],
+      "template_ids": [
+        "T3",
+        "T20"
+      ],
+      "mechanism": "By considering the displacement field of younger faults when simulating older ones (sequential data restoration), the method aligns fault markers more realistically, influencing fault network geometry and connectivity.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 4.3",
+      "quote": "Applying this concept to the present example tends to align yellow and blue markers. The probability that they correspond to a single fault thus becomes non-neglegible (Fig. 11, Scenario 2).",
+      "testable": true,
+      "empirical_support_cited": "Demonstrates with a synthetic example (Fig. 11)."
+    }
+  ],
+  "testable_hypotheses_or_predictions": [
+    "The parametric method will produce 3D structural models that are more kinematically consistent and geologically plausible than models generated by traditional interpolation methods.",
+    "Models generated using the time integration scheme will avoid non-physical self-intersections and better preserve the continuity of surrounding structures compared to direct displacement application.",
+    "The method can accurately reproduce observed flanking structures (e.g., normal drag, reverse drag, roll-over anticlines) by adapting attenuation profiles and integrating global displacement vectors.",
+    "Integrating displacement fields during stochastic fault network simulations will lead to more realistic fault network geometries and improved predictions of reservoir connectivity."
+  ],
+  "bridge_warrants": [
+    "The method bridges geological observations of fault kinematics and associated drag structures with a computational modeling framework, enabling quantitative representation.",
+    "It connects the need for a limited number of parameters in uncertainty modeling and inverse problems to the design of a simplified yet powerful parametric fault model.",
+    "The framework links the concept of 'kinematic consistency' in structural geology to the mathematical representation and integration of volumetric displacement fields."
+  ],
+  "methodological_critiques": [
+    "Current quantitative 3D modeling processes often prioritize fitting data and minimizing curvature, lacking explicit control on kinematics and mechanics, which can lead to implausible structures.",
+    "Retro-deformation approaches, while highlighting inconsistencies, typically involve a repeated trial-and-error process, leading to prohibitive computational time for achieving kinematically compatible models."
+  ],
+  "model_structure": "The proposed model's architecture comprises: 1) Fault Geometry, defined by a fault surface and a fault center (C). 2) A 3D Curvilinear Fault Frame (F) with coordinates g0 (signed distance to fault), g1 (along fault in slip direction), and g2 (orthogonal to g0 and g1 on the fault surface), implicitly mapping complex geometries to a canonical space. 3) Displacement Direction (u), derived from the cross product of gradients of g0 and g1, scaled by a polarity factor. 4) Displacement Amplitude (||v||), calculated by multiplying a maximum displacement by a partition factor and an attenuation function. 5) An Attenuation Function (\u03c1), composed of three parametric profiles (p0, p1, p2) controlling attenuation along g0, g1, and g2. 6) A Time Integration Scheme that progressively applies instantaneous displacement steps to points, allowing for accumulation of effects and ensuring geometric consistency. Far-field effects can be optionally integrated as an additional vector field.",
+  "domains": [
+    "A3_Spatial_Config",
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "SN",
+    "DT",
+    "EC"
+  ],
+  "limitations": [
+    "Modeling the far-field displacement is challenging as it cannot be directly deduced from fault geometry and depends on the tectonic context, which is beyond the scope of this study.",
+    "The model does not make assumptions on local or global volume conservation; instead, it relies on assumptions about the extension rate in a given direction.",
+    "The underlying hypothesis that tectonic features can be considered independent is a strong assumption.",
+    "The far-field modeling is delicate, especially concerning data conditioning, suggesting an inverse approach might be needed.",
+    "The evolution of the fault cannot be properly represented if the integration does not start with an actual geometry of the horizon.",
+    "There is no guarantee that the parameters for near-field displacements are consistent with underlying far-field displacements in the continuous horizon.",
+    "The specific listric fault example presented (Fig. 10) may not be representative of most listric faults due to its accentuated difference in dip."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/J.TECTO.2013.01.015",
+    "title": "A parametric method to model 3D displacements around faults with volumetric vector fields",
+    "authors": [
+      "G. Laurent",
+      "G. Caumon",
+      "A. Bouziat",
+      "M. Jessell"
+    ],
+    "year": 2013,
+    "journal": "Tectonophysics",
+    "volume": "590",
+    "issue": null,
+    "pages": "83-93",
+    "publisher": "Elsevier BV",
+    "citation_count": 57,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1007/s10596-011-9257-z",
+      "10.1007/s11004-008-9201-5",
+      "10.1007/s11004-009-9244-2",
+      "10.1007/s11004-012-9389-2",
+      "10.1016/0040-1951(94)00170-E",
+      "10.1016/0191-8141(87)90012-5",
+      "10.1016/0191-8141(96)00035-1",
+      "10.1016/S0098-3004(98)00125-3",
+      "10.1016/S0191-8141(01)00165-1",
+      "10.1016/S0191-8141(02)00012-3",
+      "10.1016/S0191-8141(02)00057-3",
+      "10.1016/S0191-8141(02)00161-X",
+      "10.1016/S0191-8141(02)00181-5",
+      "10.1016/S0191-8141(98)00029-7",
+      "10.1016/S0191-8141(98)00122-9",
+      "10.1016/S0191-8141(99)00026-7",
+      "10.1016/S0191-8141(99)00056-5",
+      "10.1016/S0928-8937(02)80013-3",
+      "10.1016/S1874-561X(96)80027-7",
+      "10.1016/j.cageo.2006.11.014",
+      "10.1016/j.cageo.2009.07.007",
+      "10.1016/j.crte.2010.04.008",
+      "10.1016/j.earscirev.2004.06.003",
+      "10.1016/j.jsg.2004.08.011",
+      "10.1016/j.jsg.2005.04.006",
+      "10.1016/j.jsg.2008.07.005",
+      "10.1016/j.jsg.2009.03.003",
+      "10.1016/j.pepi.2008.06.014",
+      "10.1016/j.tecto.2010.05.020",
+      "10.1023/B:MATG.0000011584.51162.69",
+      "10.1023/B:MATG.0000016228.75495.7c",
+      "10.1029/98TC01907",
+      "10.1109/TGRS.2012.2207727",
+      "10.1109/TVCG.2005.68",
+      "10.1130/0016-7606(1965)76[1145:OORDOT]2.0.CO;2",
+      "10.1130/0091-7613(1989)017<0893:SF>2.3.CO;2",
+      "10.1139/e69-069",
+      "10.1145/1141911.1142002",
+      "10.1306/02240605116",
+      "10.2516/ogst:2006021"
+    ],
+    "cited_by": [
+      "10.1016/j.cageo.2026.106133",
+      "10.1016/j.enggeo.2026.108617",
+      "10.1016/j.cageo.2025.105911",
+      "10.1016/j.jsg.2025.105420",
+      "10.1007/s10064-024-03794-8",
+      "10.1016/j.cag.2024.103920",
+      "10.5194/gmd-17-1975-2024",
+      "10.5194/se-15-63-2024",
+      "10.1016/j.jsg.2023.105045",
+      "10.1007/s11053-023-10269-2",
+      "10.1016/j.tecto.2023.230032",
+      "10.1016/j.jsg.2023.104868",
+      "10.1007/s11004-022-10027-9",
+      "10.1007/s11004-022-10016-y",
+      "10.1016/j.jsg.2022.104685",
+      "10.1016/j.cad.2022.103267",
+      "10.5194/gmd-14-6197-2021",
+      "10.1111/bre.12621",
+      "10.1007/s12665-021-09902-1",
+      "10.1190/segam2021-3583427.1",
+      "10.5194/gmd-14-5063-2021",
+      "10.1002/9781119163091.ch9",
+      "10.1016/J.JSG.2021.104302",
+      "10.3390/APP11031321",
+      "10.5194/gmd-2020-336",
+      "10.1029/2020JB020022",
+      "10.1109/ACCESS.2020.2993050",
+      "10.1080/22020586.2019.12072997",
+      "10.1190/SEGAM2019-3214282.1",
+      "10.1016/J.JSG.2018.11.010",
+      "10.1007/s11004-018-9764-8",
+      "10.1007/978-3-319-78999-6_28",
+      "10.1111/mice.12343",
+      "10.1029/2017JB015177",
+      "10.1190/INT-2017-0059.1",
+      "10.1371/journal.pone.0176215",
+      "10.2118/182687-MS",
+      "10.1016/J.EPSL.2016.09.040",
+      "10.1007/s12517-016-2594-4",
+      "10.1007/s11004-016-9637-y",
+      "10.5194/GMD-9-1019-2016",
+      "10.1190/INT-2015-0060.1",
+      "10.1144/petgeo2013-030",
+      "10.1016/j.cageo.2014.10.008",
+      "10.4233/UUID:E5932FEA-CE78-4AA7-8224-7EAAD640B843",
+      "10.1016/j.measurement.2025.118461",
+      "10.5194/gmd-2021-112",
+      "10.1109/ACCESS.2019.2936811",
+      "10.1016/BS.AGPH.2018.09.001",
+      "10.1190/SEGAM2016-13880830.1",
+      "10.1016/j.cageo.2014.10.011",
+      "10.5382/sp.18.13"
+    ],
+    "semantic_scholar_id": "3e1b0df8ba91d0c8bf724329511aedd512c1b6da",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:40:33.926260+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "A parametric method to model 3D displacements around faults with volumetric vector fields",
+    "crossref_year": 2013,
+    "crossref_citation_count": 51,
+    "crossref_journal": "Tectonophysics",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 50,
+    "crossref_issn": [
+      "0040-1951"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.552012+00:00",
+    "_cr_refs_added": 40
+  },
+  "year": 2013,
+  "authors_structured": [
+    "G. Laurent",
+    "G. Caumon",
+    "A. Bouziat",
+    "M. Jessell"
+  ],
+  "crossref_title": "A parametric method to model 3D displacements around faults with volumetric vector fields",
+  "crossref_authors": [
+    {
+      "name": "Gautier Laurent",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Guillaume Caumon",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Antoine Bouziat",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Mark Jessell",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2013,
+  "crossref_journal": "Tectonophysics",
+  "crossref_citation_count": 51,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:55:25.016008+00:00",
+  "journal": "Tectonophysics"
+}

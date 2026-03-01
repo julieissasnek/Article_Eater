@@ -1,0 +1,729 @@
+{
+  "doi": "10.1093/cercor/bhm007",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.835,
+  "n_findings": 18,
+  "extracted_at": "2026-02-25T00:46:53.942622+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.004712,
+  "title": "Wavelength-Dependent Modulation of Brain Responses to a Working Memory Task by Daytime Light Exposure",
+  "authors": "G. Vandewalle et al., 2007",
+  "research_question": "Does the spectral quality (blue vs. green monochromatic light) of short daytime light exposure differentially modulate nonvisual brain activity related to a complex cognitive task (auditory working memory) in humans?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 18,
+    "description": "Healthy, young subjects (10 females; age: 18-29, median: 23; BMI: 18.7-29.7, median: 22.85). Nonsmokers, moderate caffeine/alcohol consumers, not on medication. No medical, traumatic, psychiatric, or sleep disorders. No color blindness. No night shifts or travel across time zones in last year/2 months. Not extreme morning/evening types. Right-handed.",
+    "recruitment": "Volunteers"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "physical_space",
+      "description": "Short (18 min) daytime exposure to blue (470 nm) or green (550 nm) monochromatic light. Photon density was identical for both: 3 \u00d7 10^13 photons/cm\u00b2/s. Only one eye was exposed, through a 4 x 5.5 cm frame placed 3-4 cm away from the eye. Order of blue/green light was counterbalanced.",
+      "n_stimuli": 2,
+      "source": "Materials and Methods - Light Exposure"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Subjective alertness",
+      "instrument": "Karolinska Sleepiness Scale (KSS)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Working memory performance (accuracy)",
+      "instrument": "Auditory 2-back task",
+      "type": "performance"
+    },
+    {
+      "construct": "Working memory performance (reaction times)",
+      "instrument": "Auditory 2-back task",
+      "type": "performance"
+    },
+    {
+      "construct": "Brain activity",
+      "instrument": "fMRI BOLD signal",
+      "type": "neural"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Session progression (from S1 to S3)",
+      "consequent": "Subjective alertness (KSS scores)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT"
+      ],
+      "template_ids": [
+        "T4"
+      ],
+      "mechanism": "Progressive decline in alertness over time, potentially due to cognitive fatigue or time-of-day effects.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4",
+      "quote": "a significant effect of repetition was observed on KSS scores.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Light exposure (blue vs. green)",
+      "consequent": "Subjective alertness (KSS scores)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "self_report",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4",
+      "quote": "light did not significantly affect alertness",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 3,
+      "antecedent": "Light exposure (blue vs. green)",
+      "consequent": "Working memory performance (accuracy)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4",
+      "quote": "did not reveal any main effect of light condition nor any light condition by session interaction",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Light exposure (blue vs. green)",
+      "consequent": "Working memory performance (reaction times)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "performance",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.4",
+      "quote": "did not reveal any main effect of light condition nor any light condition by session interaction",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) during illumination period (Session 2 vs. Session 1 baseline)",
+      "consequent": "Brain responses in left intraparietal sulcus (IPS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.004",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=4.03",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Melanopsin-dependent photoreception system modulation of brain areas involved in working memory.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 1) interaction"
+    },
+    {
+      "id": 6,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) during illumination period (Session 2 vs. Session 1 baseline)",
+      "consequent": "Brain responses in left supramarginal gyrus",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.016",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.58",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Melanopsin-dependent photoreception system modulation of brain areas involved in working memory.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 1) interaction"
+    },
+    {
+      "id": 7,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) during illumination period (Session 2 vs. Session 1 baseline)",
+      "consequent": "Brain responses in left thalamus",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.049",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.16",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Melanopsin-dependent photoreception system modulation of arousal and cognition via thalamus.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 1) interaction"
+    },
+    {
+      "id": 8,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) during illumination period (Session 2 vs. Session 1 baseline)",
+      "consequent": "Brain responses in left middle frontal gyrus (MFG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.014",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.63",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Melanopsin-dependent photoreception system modulation of brain areas involved in executive functions.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 1) interaction"
+    },
+    {
+      "id": 9,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) during illumination period (Session 2 vs. Session 1 baseline)",
+      "consequent": "Brain responses in right insula",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.033",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.31",
+      "theory_links": [
+        "CB",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "L2",
+        "T12"
+      ],
+      "mechanism": "Melanopsin-dependent photoreception system modulation of brain areas involved in working memory and arousal.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 1) interaction"
+    },
+    {
+      "id": 10,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in left intraparietal sulcus (IPS)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.027",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=4.30",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 11,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in left intraparietal sulcus (IPS)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.023",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.45",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 12,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in left supramarginal gyrus",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.005",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.93",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 13,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in left thalamus",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=4.16",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 14,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in left middle frontal gyrus (MFG)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=4.20",
+      "theory_links": [
+        "CB",
+        "NM"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 15,
+      "antecedent": "Blue light exposure (470 nm) vs. Green light exposure (550 nm) from illumination (Session 2) to post-exposure (Session 3)",
+      "consequent": "Brain responses in right insula",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "0.008",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Z score=3.77",
+      "theory_links": [
+        "CB",
+        "NM",
+        "IC"
+      ],
+      "template_ids": [
+        "L2",
+        "T12"
+      ],
+      "mechanism": "Cessation of melanopsin-dependent light exposure leads to rapid dissipation of its effects.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 1",
+      "quote": "Light condition (blue > green) by session (2 > 3) interaction"
+    },
+    {
+      "id": 16,
+      "antecedent": "Light conditions (blue vs. green) in post-exposure period (Session 3) vs. baseline (Session 1)",
+      "consequent": "Brain activity",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "L2"
+      ],
+      "mechanism": "The effects of monochromatic light exposure dissipated swiftly after lights were turned off.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.5",
+      "quote": "no significant difference in brain activity was identified in the contrast comparing the postexposure sessions with the baseline sessions",
+      "outcome_id": "neural.activation",
+      "outcome_domain": "neural",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 17,
+      "antecedent": "Light conditions (blue vs. green) during illumination period",
+      "consequent": "Brain activity in occipital cortex",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "L1"
+      ],
+      "mechanism": "The classical visual system was not involved in the observed nonvisual effects.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.5",
+      "quote": "no difference between light conditions was found in the occipital cortex for any of the comparisons.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Light exposure (blue vs. green)",
+      "consequent": "Within-session temporal modulation of brain responses",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "L5"
+      ],
+      "mechanism": "Light-related differences in brain activity appeared almost immediately after lights were switched on and dissipated very quickly after lights were turned off.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.5",
+      "quote": "we did not identify any brain areas where responses changed with time within each session and differently between light conditions"
+    }
+  ],
+  "mechanisms": [
+    "Melanopsin-expressing light-sensitive ganglion cells, maximally sensitive to blue light (470-480 nm), mediate nonvisual brain responses.",
+    "Transmission of irradiance signals to hypothalamic nuclei (SCN) and nonhypothalamic structures (e.g., superior colliculi, lateral geniculate nuclei, medial amygdala) by melanopsin-expressing ganglion cells.",
+    "Indirect projections from the SCN to cholinergic, orexin, and aminergic cell groups involved in arousal regulation in the forebrain and brainstem.",
+    "Direct projections of melanopsin retinal ganglion cells to the lateral geniculate of the thalamus.",
+    "Thalamus and anterior insula are key structures mediating the effects of light on brain activity related to cognitive functions.",
+    "The swift dynamics of observed effects are likely related to the low dose of light administered.",
+    "The effects are independent of behavioral modifications (alertness, performance) and not mediated by the classical visual system (occipital cortex activity was unchanged)."
+  ],
+  "moderators": [],
+  "implementation_implications": [
+    "Future research should establish the optimal light regime (wavelength, duration, photon density, and light history) required to efficiently enhance human cognition during daytime, especially for demanding tasks (e.g., education, military personnel, healthcare professional, police, spaceship crew, and plane crews)."
+  ],
+  "domains": [
+    "A4_Light",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "CB",
+    "NM"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Comparison of brain region responses to blue and green light exposure (MNI coordinates) for two interactions: (blue > green) by session (2 > 1) and (blue > green) by session (2 > 3).",
+      "key_stats": [
+        "Z score=4.03, Psvc=0.004",
+        "Z score=3.58, Psvc=0.016",
+        "Z score=3.16, Psvc=0.049",
+        "Z score=3.63, Psvc=0.014",
+        "Z score=3.31, Psvc=0.033",
+        "Z score=4.30, Psvc=0.027",
+        "Z score=3.45, Psvc=0.023",
+        "Z score=3.93, Psvc=0.005",
+        "Z score=4.16, Psvc=0.002",
+        "Z score=4.20, Psvc=0.002",
+        "Z score=3.77, Psvc=0.008"
+      ],
+      "n_findings_extracted_from": 10
+    }
+  ],
+  "limitations": [
+    "The study design, while consistent with melanopsin system involvement, could not assess the specific contribution of each photoreceptor (cones, rods, melanopsin-expressing ganglion cells).",
+    "Current knowledge about the effects of green light exposures is limited, leading to speculative interpretations of observed deactivations.",
+    "Pupil size was not assessed, though arguments are made that it would not explain blue light superiority."
+  ],
+  "crossref_title": "Wavelength-Dependent Modulation of Brain Responses to a Working Memory Task by Daytime Light Exposure",
+  "crossref_authors": [
+    {
+      "name": "G. Vandewalle",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "S. Gais",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "M. Schabus",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "E. Balteau",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "J. Carrier",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "A. Darsaud",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "V. Sterpenich",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "G. Albouy",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "D. J. Dijk",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Pierre Maquet",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2007,
+  "crossref_journal": "Cerebral Cortex",
+  "crossref_citation_count": 231,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Oxford University Press (OUP)",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:58:13.812866+00:00",
+  "paper_metadata": {
+    "enriched": true,
+    "enrichment_source": "crossref",
+    "enriched_at": "2026-02-25T12:07:06.679301+00:00",
+    "doi": "10.1093/cercor/bhm007",
+    "title": "Wavelength-Dependent Modulation of Brain Responses to a Working Memory Task by Daytime Light Exposure",
+    "authors": [
+      "G. Vandewalle",
+      "S. Gais",
+      "M. Schabus",
+      "E. Balteau",
+      "J. Carrier",
+      "A. Darsaud",
+      "V. Sterpenich",
+      "G. Albouy",
+      "D. J. Dijk",
+      "Pierre Maquet"
+    ],
+    "year": 2007,
+    "journal": "Cerebral Cortex",
+    "volume": "17",
+    "issue": "12",
+    "pages": "2788-2795",
+    "publisher": "Oxford University Press (OUP)",
+    "citation_count": 231,
+    "reference_count": 58,
+    "type": "journal-article",
+    "subjects": [],
+    "abstract": null,
+    "issn": [
+      "1460-2199",
+      "1047-3211"
+    ],
+    "references": [
+      "10.1002/cne.20970",
+      "10.1002/hbm.20118",
+      "10.1006/nimg.2001.0791",
+      "10.1016/0028-3932(71)90067-4",
+      "10.1016/0031-9384(90)90320-4",
+      "10.1016/0031-9384(91)90549-4",
+      "10.1016/0165-1781(89)90047-4",
+      "10.1016/S0960-9822(02)00659-0",
+      "10.1016/S1053-8119(03)00144-7",
+      "10.1016/S1389-9457(05)80002-4",
+      "10.1016/j.cub.2004.09.082",
+      "10.1016/j.cub.2006.06.031",
+      "10.1016/j.neuroimage.2003.12.022",
+      "10.1016/j.neuroimage.2004.01.048",
+      "10.1016/j.neuroimage.2004.03.052",
+      "10.1016/j.neuroscience.2004.08.030",
+      "10.1016/j.neuroscience.2005.05.035",
+      "10.1016/j.tins.2004.12.009",
+      "10.1037/0022-006X.56.6.893",
+      "10.1038/11239",
+      "10.1038/386604a0",
+      "10.1038/72991",
+      "10.1038/88443",
+      "10.1038/nature01761",
+      "10.1038/nature03344",
+      "10.1038/nature03345",
+      "10.1038/nature03387",
+      "10.1038/nn1392",
+      "10.1038/nn993",
+      "10.1093/sleep/14.6.540",
+      "10.1093/sleep/26.6.695",
+      "10.1097/00001756-200102120-00048",
+      "10.1111/j.1469-7793.2001.t01-1-00261.x",
+      "10.1113/jphysiol.1996.sp021593",
+      "10.1126/science.1067262",
+      "10.1126/science.1069609",
+      "10.1126/science.1105121",
+      "10.1152/ajpregu.00121.2005",
+      "10.1152/japplphysiol.00924.2001",
+      "10.1162/08989290051137585",
+      "10.1167/iovs.05-1459",
+      "10.1177/074873049701200608",
+      "10.1210/jc.2003-030570",
+      "10.1210/jc.2004-0957",
+      "10.1523/JNEUROSCI.20-02-00600.2000",
+      "10.1523/JNEUROSCI.20-20-07790.2000",
+      "10.1523/JNEUROSCI.21-01-00300.2001",
+      "10.1523/JNEUROSCI.21-16-06405.2001",
+      "10.1523/JNEUROSCI.23-18-07093.2003",
+      "10.2466/pr0.1997.80.2.443",
+      "10.3109/00207459008994241",
+      "10.3758/CABN.3.4.255"
+    ],
+    "cited_by": [],
+    "_cr_refs_added": 52
+  },
+  "year": 2007,
+  "journal": "Cerebral Cortex"
+}

@@ -1,3 +1,4 @@
+import os
 """
 Tests for Query Engine (MVP-3)
 ==============================

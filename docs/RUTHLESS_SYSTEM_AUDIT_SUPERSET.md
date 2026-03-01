@@ -25,12 +25,11 @@ This audit has two jobs:
 **Current state (update these numbers before running):**
 
 - T1 frameworks: 10
-- T1.5 theories: 10 formally reduced + candidates
-- Total template JSON files: ~184 (verify: `ls data/templates/*.json | wc -l`)
-- Calibrated templates: ~53 (verify against canonical schema validator)
-- Completed panels: 7 (VISUAL-I, SPATIAL-I, LIGHT-I, STRESS-I, SOCIAL-I,
-  MEMORY-I, MULTI-I)
-- Remaining panels: 5 (MUSIC-I, THERMAL-I, CREATIVE-I, NEUROMOD-I, CROSSCUT-I)
+- T1.5 theories: 12
+- Total template JSON files: 208
+- Calibrated templates: 103
+- Completed panels: 8 (VISUAL-I, SPATIAL-I, LIGHT-I, STRESS-I, SOCIAL-I, MEMORY-I, MULTI-I, CREATIVE-I)
+- Remaining panels: 4 (MUSIC-I, THERMAL-I, NEUROMOD-I, CROSSCUT-I)
 - Cowork status: HALTED (waiting for Phase 4 ACTIVE in PROJECT_STATE.md)
 - Extraction findings in ae.db: ~172,091
 - Web persistence: status depends on M-05b consolidation decision

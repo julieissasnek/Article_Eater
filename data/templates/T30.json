@@ -1,9 +1,9 @@
 {
   "template_id": "CHRONO_LIGHT_ENTRAINMENT_001",
-  "name": "Architectural Light → Circadian Entrainment Quality",
+  "name": "Architectural Light \u2192 Circadian Entrainment Quality",
   "status": "calibrated",
   "maturity": "supported",
-  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I — gap stub only; no prior structural template",
+  "mechanism_chain_provenance": "NEWLY ESTABLISHED in LIGHT-I \u2014 gap stub only; no prior structural template",
   "t1_frameworks": [
     "CB",
     "NM"
@@ -20,7 +20,14 @@
       "confidence": 0.72,
       "justification": {
         "data": [
-          {"finding": "Building design determines spectral composition, irradiance levels, and timing of light exposure across occupancy period", "source": "Reinhart et al. (2006)", "paradigm": "Climate-based daylight modeling", "effect": "WFR, glazing, orientation determine daylight delivery", "n": null, "design": "Computational simulation"}
+          {
+            "finding": "Building design determines spectral composition, irradiance levels, and timing of light exposure across occupancy period",
+            "source": "Reinhart et al. (2006)",
+            "paradigm": "Climate-based daylight modeling",
+            "effect": "WFR, glazing, orientation determine daylight delivery",
+            "n": null,
+            "design": "Computational simulation"
+          }
         ],
         "backing": "Architectural parameters directly control the light environment. This is the input layer of the circadian system.",
         "qualifier": "Occupant behavior (shading use, outdoor breaks) modifies architectural delivery.",
@@ -33,12 +40,19 @@
       "step": 2,
       "from": "photophase_light",
       "to": "daily_melanopic_integral",
-      "description": "→ Daily melanopic lux integral (m-lux·hours) during photophase determines cumulative SCN phase-stabilization signal",
+      "description": "\u2192 Daily melanopic lux integral (m-lux\u00b7hours) during photophase determines cumulative SCN phase-stabilization signal",
       "warrant": "MECHANISM",
-      "confidence": 0.60,
+      "confidence": 0.6,
       "justification": {
         "data": [
-          {"finding": "Minimum 150 m-lux·hours daily daytime melanopic dose for stable entrainment maintenance", "source": "Kronauer model; Figueiro et al. (2017)", "paradigm": "Field dosimetry + mathematical modeling", "effect": "Below 100 m-lux·h: progressive drift; above 250: diminishing returns", "n": 109, "design": "Field study"}
+          {
+            "finding": "Minimum 150 m-lux\u00b7hours daily daytime melanopic dose for stable entrainment maintenance",
+            "source": "Kronauer model; Figueiro et al. (2017)",
+            "paradigm": "Field dosimetry + mathematical modeling",
+            "effect": "Below 100 m-lux\u00b7h: progressive drift; above 250: diminishing returns",
+            "n": 109,
+            "design": "Field study"
+          }
         ],
         "backing": "The cumulative daily melanopic dose determines entrainment strength. Kronauer's model predicts entrainment as a function of light integral.",
         "qualifier": "Minimum threshold derived from model extrapolation; direct measurement in occupied buildings is limited.",
@@ -51,12 +65,19 @@
       "step": 3,
       "from": "evening_light",
       "to": "phase_delay",
-      "description": "→ Evening melanopic lux above threshold (>30 m-lux) delays SCN phase via PRC delay region",
+      "description": "\u2192 Evening melanopic lux above threshold (>30 m-lux) delays SCN phase via PRC delay region",
       "warrant": "MECHANISM",
       "confidence": 0.68,
       "justification": {
         "data": [
-          {"finding": "Evening light above 30 m-lux mEDI contributes to SCN delay region of PRC", "source": "Arendt (panel); Gooley et al. (2011)", "paradigm": "Controlled evening exposure", "effect": "Threshold 30 m-lux in evening sensitivity window", "n": 116, "design": "Within-subjects"}
+          {
+            "finding": "Evening light above 30 m-lux mEDI contributes to SCN delay region of PRC",
+            "source": "Arendt (panel); Gooley et al. (2011)",
+            "paradigm": "Controlled evening exposure",
+            "effect": "Threshold 30 m-lux in evening sensitivity window",
+            "n": 116,
+            "design": "Within-subjects"
+          }
         ],
         "backing": "The PRC delay region is activated by evening light. This partially offsets morning advance contributions.",
         "qualifier": "Threshold varies with circadian phase; lower at peak sensitivity.",
@@ -69,12 +90,19 @@
       "step": 4,
       "from": "advance_delay_contributions",
       "to": "net_phase_correction",
-      "description": "→ Net daily phase correction = advance contribution (morning light) minus delay contribution (evening light)",
+      "description": "\u2192 Net daily phase correction = advance contribution (morning light) minus delay contribution (evening light)",
       "warrant": "MECHANISM",
       "confidence": 0.62,
       "justification": {
         "data": [
-          {"finding": "Phase response curve integrates morning advance and evening delay contributions", "source": "Kronauer et al. (1999)", "paradigm": "Limit-cycle oscillator modeling", "effect": "Net correction depends on timing-weighted light exposure", "n": null, "design": "Mathematical model"}
+          {
+            "finding": "Phase response curve integrates morning advance and evening delay contributions",
+            "source": "Kronauer et al. (1999)",
+            "paradigm": "Limit-cycle oscillator modeling",
+            "effect": "Net correction depends on timing-weighted light exposure",
+            "n": null,
+            "design": "Mathematical model"
+          }
         ],
         "backing": "Kronauer's limit-cycle model formalizes the advance-delay integration.",
         "qualifier": "Model validated in controlled conditions; architectural translation involves additional uncertainty.",
@@ -87,12 +115,19 @@
       "step": 5,
       "from": "sufficient_correction",
       "to": "stable_entrainment",
-      "description": "→ If net correction ≥ intrinsic period deviation (0.17–0.22 h/day): stable entrainment maintained",
+      "description": "\u2192 If net correction \u2265 intrinsic period deviation (0.17\u20130.22 h/day): stable entrainment maintained",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
         "data": [
-          {"finding": "Human intrinsic circadian period averages 24.2h; requires 0.2h/day correction for entrainment", "source": "Czeisler et al. (1999)", "paradigm": "Forced desynchrony studies", "effect": "Mean intrinsic period 24.18h", "n": 24, "design": "Controlled laboratory"}
+          {
+            "finding": "Human intrinsic circadian period averages 24.2h; requires 0.2h/day correction for entrainment",
+            "source": "Czeisler et al. (1999)",
+            "paradigm": "Forced desynchrony studies",
+            "effect": "Mean intrinsic period 24.18h",
+            "n": 24,
+            "design": "Controlled laboratory"
+          }
         ],
         "backing": "Stable entrainment requires daily phase correction to match the intrinsic period deviation.",
         "qualifier": "Individual variation in intrinsic period affects minimum light requirement.",
@@ -105,12 +140,19 @@
       "step": 6,
       "from": "insufficient_correction",
       "to": "social_jetlag",
-      "description": "→ If net correction < intrinsic period deviation: progressive phase drift → social jetlag → chronic misalignment",
+      "description": "\u2192 If net correction < intrinsic period deviation: progressive phase drift \u2192 social jetlag \u2192 chronic misalignment",
       "warrant": "EMPIRICAL_COVARIANCE",
       "confidence": 0.55,
       "justification": {
         "data": [
-          {"finding": "Social jetlag (mismatch between biological and social clock) prevalent in modern populations; associated with inadequate daytime light exposure", "source": "Wittmann et al. (2006)", "paradigm": "Epidemiological survey", "effect": "Social jetlag correlates with indoor work and low light exposure", "n": 501, "design": "Cross-sectional"}
+          {
+            "finding": "Social jetlag (mismatch between biological and social clock) prevalent in modern populations; associated with inadequate daytime light exposure",
+            "source": "Wittmann et al. (2006)",
+            "paradigm": "Epidemiological survey",
+            "effect": "Social jetlag correlates with indoor work and low light exposure",
+            "n": 501,
+            "design": "Cross-sectional"
+          }
         ],
         "backing": "Wittmann's social jetlag concept captures the cumulative misalignment that results from inadequate entrainment.",
         "qualifier": "Epidemiological association; direct architectural causation is inferred.",
@@ -123,12 +165,19 @@
       "step": 7,
       "from": "chronic_misalignment",
       "to": "allostatic_load",
-      "description": "→ Chronic misalignment → allostatic load via cortisol CAR blunting, sleep architecture degradation (CB_SLEEP_ARCHITECTURE_002), metabolic dysregulation (Panda pathway)",
+      "description": "\u2192 Chronic misalignment \u2192 allostatic load via cortisol CAR blunting, sleep architecture degradation (CB_SLEEP_ARCHITECTURE_002), metabolic dysregulation (Panda pathway)",
       "warrant": "EMPIRICAL_COVARIANCE",
       "confidence": 0.52,
       "justification": {
         "data": [
-          {"finding": "Circadian misalignment associated with metabolic syndrome, cognitive impairment, increased disease risk", "source": "Scheer et al. (2009); Panda (panel)", "paradigm": "Laboratory misalignment and epidemiology", "effect": "Multiple adverse outcomes from chronic misalignment", "n": null, "design": "Mixed"}
+          {
+            "finding": "Circadian misalignment associated with metabolic syndrome, cognitive impairment, increased disease risk",
+            "source": "Scheer et al. (2009); Panda (panel)",
+            "paradigm": "Laboratory misalignment and epidemiology",
+            "effect": "Multiple adverse outcomes from chronic misalignment",
+            "n": null,
+            "design": "Mixed"
+          }
         ],
         "backing": "The health consequences of chronic misalignment are documented in shift-work and epidemiological literature. Panda's gene-expression pathway adds molecular mechanism.",
         "qualifier": "Architectural extrapolation involves assumptions about equivalence between shift-work and inadequate-light misalignment.",
@@ -146,7 +195,7 @@
         "min": 100,
         "max": 250
       },
-      "note": "Minimum cumulative daily daytime melanopic dose for stable entrainment maintenance. Equivalent to approximately 87 m-lux for 2 continuous hours, or 50 m-lux for 3–4 hours. Below 100 m-lux·h: progressive circadian drift expected over weeks. Above 250 m-lux·h: diminishing returns; ceiling effects in entrainment quality.",
+      "note": "Minimum cumulative daily daytime melanopic dose for stable entrainment maintenance. Equivalent to approximately 87 m-lux for 2 continuous hours, or 50 m-lux for 3\u20134 hours. Below 100 m-lux\u00b7h: progressive circadian drift expected over weeks. Above 250 m-lux\u00b7h: diminishing returns; ceiling effects in entrainment quality.",
       "source": "Kronauer model derivation; Figueiro et al. (2017) field data",
       "confidence": 0.6,
       "bridge_warrant": "MECHANISM"
@@ -159,7 +208,7 @@
         "max": 55
       },
       "note": "Evening light above 30 m-lux mEDI in the 2 hours before habitual sleep onset begins contributing to the SCN delay region of the PRC, partially offsetting the morning advance contribution. This threshold is lower than the daytime maintenance threshold due to the circadian phase-dependent sensitivity of the SCN in the evening.",
-      "source": "Arendt; Münch et al. (2006); Gooley et al. (2011)",
+      "source": "Arendt; M\u00fcnch et al. (2006); Gooley et al. (2011)",
       "confidence": 0.68,
       "bridge_warrant": "MECHANISM"
     },
@@ -170,11 +219,11 @@
         "min": 0.08,
         "max": 0.4
       },
-      "note": "Rate of social jetlag accumulation in occupants working in buildings with daytime melanopic integral below the minimum threshold (150 m-lux·h/day). Each week of subthreshold exposure produces approximately 12 minutes of progressive phase delay. After 4 weeks: ~48 min delay; this represents the equivalent of living 1 time zone west of local clock time.",
+      "note": "Rate of social jetlag accumulation in occupants working in buildings with daytime melanopic integral below the minimum threshold (150 m-lux\u00b7h/day). Each week of subthreshold exposure produces approximately 12 minutes of progressive phase delay. After 4 weeks: ~48 min delay; this represents the equivalent of living 1 time zone west of local clock time.",
       "source": "Kronauer model projection; Wittmann et al. (2006) social jetlag epidemiology",
       "confidence": 0.48,
       "bridge_warrant": "CAPACITY",
-      "flag": "THEORETICAL_DEFAULT — directly measured architectural accumulation rate absent; derived from free-running period × entrainment failure model"
+      "flag": "THEORETICAL_DEFAULT \u2014 directly measured architectural accumulation rate absent; derived from free-running period \u00d7 entrainment failure model"
     }
   },
   "building_types": [
@@ -189,7 +238,7 @@
     "T6",
     "T7"
   ],
-  "ie_dpt_interaction": "No primary T_IE interaction; T_IE_001 secondary — occupant scheduling behavior (choosing indoor vs. outdoor breaks) modulates daily melanopic integral",
+  "ie_dpt_interaction": "No primary T_IE interaction; T_IE_001 secondary \u2014 occupant scheduling behavior (choosing indoor vs. outdoor breaks) modulates daily melanopic integral",
   "key_references": [
     "Kronauer et al. (1999). https://doi.org/10.1152/jappl.1999.87.1.428",
     "Wittmann et al. (2006). https://doi.org/10.1016/j.cub.2006.01.063",
@@ -200,7 +249,7 @@
     "docs/02-15_02_Neuroscience_Panel_Templates_and_Taxonomy_V1.0.md"
   ],
   "panel_source": "Tier 1 Frameworks",
-  "panel_reasoning_excerpt": "## Summary of Panel-Recommended New Templates\n\n| New Template | Content | Source | Maturity |\n|---|---|---|---|\n| PP_ACTIVE_INFERENCE_003 | Environmental controllability → action policy availability → expected free energy reduction | Friston | how-plausibly |\n| PP_RAPID_GIST_004 | Low-spatial-frequency scene structure → fast PFC associative activation → contextual frame | Bar | how-actually |\n| SN_CONTEXT_MEMORY_002 | Environmental context stability → context-dependent encoding → retrieval efficiency | Nadel | how-actually |\n| SN_THETA_SEQUENCE_003 | Path structure → theta sequence coherence → navigational fluency | Buzsáki | how-actually |\n| MS_RIPPLE_REPLAY_002 | Environmental rest opportunities → SPW-R replay → spatial knowledge consolidation | Buzsáki | how-actually/plausibly |\n| NM_CHOLINERGIC_GATING_007 | Environmental salience → BF-ACh → selective cortical precision enhancement | Chiba | how-actually |\n| DT_DMN_MAINTENANCE_002 | Low-demand periods → DMN subsystem re-engagement → model maintenance | Raichle | how-plausibly |\n| EC_COGNITIVE_OFFLOADING_002 | Environmental legibility → information in environment → reduced internal processing | Clark | how-plausibly |\n| ALLOSTATIC_MASTER_001 | Sum of environmental demands → total allostatic cost → available resources for function | Sterling, Seth | how-plausibly |\n| CHRONO_LIGHT_ENTRAINMENT_001 | Architectural light exposure → SCN entrainment → circadian regulation quality | Sterling, panel consensus | how-actually |",
+  "panel_reasoning_excerpt": "## Summary of Panel-Recommended New Templates\n\n| New Template | Content | Source | Maturity |\n|---|---|---|---|\n| PP_ACTIVE_INFERENCE_003 | Environmental controllability \u2192 action policy availability \u2192 expected free energy reduction | Friston | how-plausibly |\n| PP_RAPID_GIST_004 | Low-spatial-frequency scene structure \u2192 fast PFC associative activation \u2192 contextual frame | Bar | how-actually |\n| SN_CONTEXT_MEMORY_002 | Environmental context stability \u2192 context-dependent encoding \u2192 retrieval efficiency | Nadel | how-actually |\n| SN_THETA_SEQUENCE_003 | Path structure \u2192 theta sequence coherence \u2192 navigational fluency | Buzs\u00e1ki | how-actually |\n| MS_RIPPLE_REPLAY_002 | Environmental rest opportunities \u2192 SPW-R replay \u2192 spatial knowledge consolidation | Buzs\u00e1ki | how-actually/plausibly |\n| NM_CHOLINERGIC_GATING_007 | Environmental salience \u2192 BF-ACh \u2192 selective cortical precision enhancement | Chiba | how-actually |\n| DT_DMN_MAINTENANCE_002 | Low-demand periods \u2192 DMN subsystem re-engagement \u2192 model maintenance | Raichle | how-plausibly |\n| EC_COGNITIVE_OFFLOADING_002 | Environmental legibility \u2192 information in environment \u2192 reduced internal processing | Clark | how-plausibly |\n| ALLOSTATIC_MASTER_001 | Sum of environmental demands \u2192 total allostatic cost \u2192 available resources for function | Sterling, Seth | how-plausibly |\n| CHRONO_LIGHT_ENTRAINMENT_001 | Architectural light exposure \u2192 SCN entrainment \u2192 circadian regulation quality | Sterling, panel consensus | how-actually |",
   "justification_status": "raw_excerpt",
   "excerpt_source": "docs/02-15_01_Neuroscience_Panel_Tier1_Frameworks_V1.0.md",
   "excerpt_char_range": [
@@ -208,10 +257,27 @@
     48871
   ],
   "cross_template_interactions": {
-    "IC2": "Primary interaction: social jetlag accumulation is a persistent body-budget phase-misalignment — the strongest IC2 interaction in the circadian template cluster. The body budget model generates predictions timed to clock time; when the circadian clock is phase-delayed from social schedule, the predictions systematically miss, producing a structural source of body-budget prediction error.",
-    "AX4": "Occupant control of break timing, lunch location (indoor vs. outdoor), and desk proximity to windows all modulate the daily melanopic integral. AX4 modifier: high control → occupant can compensate for subthreshold architectural delivery via outdoor exposure."
+    "IC2": "Primary interaction: social jetlag accumulation is a persistent body-budget phase-misalignment \u2014 the strongest IC2 interaction in the circadian template cluster. The body budget model generates predictions timed to clock time; when the circadian clock is phase-delayed from social schedule, the predictions systematically miss, producing a structural source of body-budget prediction error.",
+    "AX4": "Occupant control of break timing, lunch location (indoor vs. outdoor), and desk proximity to windows all modulate the daily melanopic integral. AX4 modifier: high control \u2192 occupant can compensate for subthreshold architectural delivery via outdoor exposure."
   },
   "display_id": "CLE1",
   "calibration_status": "calibrated",
-  "confidence": 0.6
+  "confidence": 0.6,
+  "higher_order_principle": "Building light environment \u2192 allostatic load pathway: The mechanism by which architectural light \u2192 circadian entrainment quality operates",
+  "higher_order_principle_inferred": true,
+  "bridge_provenance": {
+    "bridge_version": "bridge_v1_2026-02-27",
+    "bridged_at": "2026-02-28T00:59:51.996209+00:00",
+    "fields_inferred": [
+      "higher_order_principle (from mechanism chain)"
+    ]
+  },
+  "theory_links": [
+    {
+      "theory_id": "KAPLAN_PREFERENCE",
+      "confidence": 0.7,
+      "match_type": "keyword"
+    }
+  ],
+  "molecule_links": []
 }

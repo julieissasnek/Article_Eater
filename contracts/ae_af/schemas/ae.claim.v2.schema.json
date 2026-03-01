@@ -225,6 +225,41 @@
         "type": "string"
       },
       "description": "Walton: Critical questions that probe the argument's strength"
+    },
+    "publication_year": {
+      "type": ["integer", "null"],
+      "description": "Year of publication (from Semantic Scholar / CrossRef enrichment). Enables temporal ordering for Quinean revision."
+    },
+    "publication_authors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Structured author list (from enrichment). Enables co-authorship community detection."
+    },
+    "publication_journal": {
+      "type": ["string", "null"],
+      "description": "Journal / venue name (from enrichment)."
+    },
+    "citation_count": {
+      "type": ["integer", "null"],
+      "description": "Total citation count (from Semantic Scholar). Proxy for community acceptance."
+    },
+    "influential_citation_count": {
+      "type": ["integer", "null"],
+      "description": "Influential citation count (from Semantic Scholar). Citations that meaningfully engage with this work."
+    },
+    "references_dois": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "DOIs of papers cited by this paper (from Semantic Scholar). Enables argumentation graph reconstruction."
+    },
+    "cited_by_dois": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "DOIs of papers citing this paper (from Semantic Scholar). Enables forward citation tracking."
+    },
+    "semantic_scholar_id": {
+      "type": ["string", "null"],
+      "description": "Semantic Scholar corpus ID for this paper."
     }
   },
   "$defs": {

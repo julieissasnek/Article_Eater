@@ -11,18 +11,24 @@ from typing import Any
 POSITIVE_KEYWORDS = {
     "increase",
     "increases",
+    "increased",
     "enhance",
     "enhances",
+    "enhanced",
     "more",
     "positive",
     "facilitate",
     "facilitates",
+    "facilitated",
     "promote",
     "promotes",
+    "promoted",
     "improve",
     "improves",
+    "improved",
     "boost",
     "boosts",
+    "boosted",
     "better",
     "primes",
     "activates",
@@ -31,24 +37,34 @@ POSITIVE_KEYWORDS = {
 NEGATIVE_KEYWORDS = {
     "decrease",
     "decreases",
+    "decreased",
     "reduce",
     "reduces",
+    "reduced",
     "lower",
+    "lowered",
     "less",
     "negative",
     "inhibit",
     "inhibits",
+    "inhibited",
     "impair",
     "impairs",
+    "impaired",
     "suppress",
     "suppresses",
+    "suppressed",
     "diminish",
     "diminishes",
+    "diminished",
     "worse",
     "attenuates",
+    "attenuated",
     "avoids",
+    "avoided",
     "prevent",
     "prevents",
+    "prevented",
 }
 
 
@@ -81,6 +97,18 @@ def _find_relevant_link(iv: str, dv: str, template_data: dict) -> dict | None:
         dv_in_dst = dv.lower() in dst.lower() or dst.lower() in dv.lower()
         if iv_in_src and dv_in_dst:
             return link
+    
+    chain = template_data.get("mechanism_chain", [])
+    if isinstance(chain, list):
+        for step in chain:
+            if isinstance(step, dict):
+                src = str(step.get("from") or "")
+                dst = str(step.get("to") or "")
+                iv_in_src = iv.lower() in src.lower() or src.lower() in iv.lower()
+                dv_in_dst = dv.lower() in dst.lower() or dst.lower() in dv.lower()
+                if iv_in_src and dv_in_dst:
+                    return step
+    
     return None
 
 
@@ -230,7 +258,7 @@ def trace_claim(claim: dict, template_data: dict) -> dict:
         }
     """
     claim_desc = claim.get("description", "") or (
-        f"{claim.get('iv', '')} {claim.get('relationship', '')} {claim.get('dv', '')}"
+        f"{claim.get('iv', '')} {claim.get('relationship', '')} {claim.get('direction', '')} {claim.get('dv', '')}"
     )
     claim_direction = extract_direction(claim_desc)
 
@@ -246,11 +274,22 @@ def trace_claim(claim: dict, template_data: dict) -> dict:
     link = _find_relevant_link(iv, dv, template_data)
 
     if link:
-        notes = link.get("notes", "")
+        notes = link.get("notes", "") or link.get("description", "") or link.get("mechanism", "") or link.get("evidence_base", "")
         activity = link.get("activity", "")
-        template_direction = extract_direction(f"{activity} {notes}")
+        template_text = f"{activity} {notes}"
+        template_direction = extract_direction(template_text)
     else:
         structural = template_data.get("structural_pattern", "")
+        if not structural:
+            chain = template_data.get("mechanism_chain", [])
+            chain_texts = []
+            if isinstance(chain, list):
+                for step in chain:
+                    if isinstance(step, dict):
+                        chain_texts.append(str(step.get("description") or step.get("mechanism") or step.get("notes") or ""))
+                    elif isinstance(step, str):
+                        chain_texts.append(step)
+            structural = " ".join(chain_texts)
         template_direction = extract_direction(structural)
 
     if template_direction == "unknown":

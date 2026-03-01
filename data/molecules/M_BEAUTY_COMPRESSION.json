@@ -1,0 +1,52 @@
+{
+  "molecule_id": "M_BEAUTY_COMPRESSION",
+  "name": "Beauty as Compression",
+  "version": "1.0",
+  "description": "Beauty readout B = L(v) models: linear, quadratic, neural, and rasa readouts. The compression hypothesis proposes that beauty is experienced when the valuation vector achieves a compact, low-dimensional representation \u2014 maximum information in minimum complexity.",
+  "cva_layer": "beauty_readout",
+  "theoretical_basis": [
+    "Schmidhuber (2009) on compression and curiosity",
+    "Reber et al. (2004) on processing fluency and aesthetic pleasure",
+    "Van de Cruys & Wagemans (2011) on predictive coding and liking",
+    "Kirsh (2022) on Goldilocks optimal complexity"
+  ],
+  "readout_models": [
+    {
+      "name": "linear",
+      "formula": "B = w \u00b7 v",
+      "params": 9
+    },
+    {
+      "name": "quadratic",
+      "formula": "B = v^T Q v + w \u00b7 v",
+      "params": 45
+    },
+    {
+      "name": "neural",
+      "formula": "B = MLP(v)",
+      "params": 61
+    },
+    {
+      "name": "rasa",
+      "formula": "B = max(rasa_i(v))",
+      "params": 81
+    }
+  ],
+  "constraints_affected": [
+    "ProcessingCost",
+    "PredictionError"
+  ],
+  "valuations_affected": [
+    "InterestValue",
+    "CompetenceSupportValue"
+  ],
+  "templates_linked": [],
+  "status": "active",
+  "source_theories": [
+    "predictive_processing",
+    "processing_fluency",
+    "fractal_fluency"
+  ],
+  "basis": "Beauty emerges from efficient neural coding \u2014 stimuli that compress well in the brain's predictive model",
+  "derivation": "Combines Schmidhuber's compression progress theory with predictive processing and fluency aesthetics"
+}

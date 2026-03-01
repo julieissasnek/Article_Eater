@@ -1,0 +1,2229 @@
+{
+  "doi": "10.1016/j.jenvp.2022.101802",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.818,
+  "n_findings": 66,
+  "extracted_at": "2026-02-25T01:28:25.887238+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.013271,
+  "title": "The emotional influence of different geometries in virtual spaces: A neurocognitive examination",
+  "authors": "Avishag Shemesh et al., 2022",
+  "research_question": "How do geometric criteria (protrusion, curvature, scale, and proportion) in virtual architectural spaces influence human emotional and cognitive reactions, as measured by physiological, behavioral, and self-report methods?",
+  "design_type": "within_subjects",
+  "participants": {
+    "n": 112,
+    "description": "45 male (M=27.82, SD=5.46), 67 female (M=26.54, SD=5.27). Age range 21-46 years. 12 designers (M=33.8, SD=5.72) and 100 non-designers (M=26.24, SD=4.73). Exclusions: ADHD, visual deficits (uncorrected), heart disease, pregnancy, vertigo, claustrophobia.",
+    "recruitment": "Advertisements published on the web, in social media, and by word-of-mouth."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "27 virtual 3D models (scenes) with varying degrees of protrusion (P=0,4), curvature (C=0,4), scale (S=1,3), and proportion (height P(H): H1,H1b,H2,H3; width P(W): W1,W1b,W2,W3). Generated using Grasshopper plugin for Rhino and exported to Unity real-time engine. Experienced via HTC Vive VR headset.",
+      "n_stimuli": 27,
+      "source": "p.7, Fig. 4"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Brain activity (Beta Band Power Ratio)",
+      "instrument": "EEG (Emotive Insight system, AF3, AF4, T7, T8, Pz electrodes)",
+      "type": "neural"
+    },
+    {
+      "construct": "Skin conductance (Maximal GSR amplitude peak, Rate of GSR peaks)",
+      "instrument": "GSR (Shimmer 3 GSR sensor)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Pupillary response (Mean Pupil Diameter, Maximal Pupil Diameter)",
+      "instrument": "Eye-tracking (Pupil-Labs binocular 200 Hz eye tracking cameras)",
+      "type": "physiological"
+    },
+    {
+      "construct": "Eye movements (Rate of Fixations, Duration of Fixations)",
+      "instrument": "Eye-tracking (Pupil-Labs binocular 200 Hz eye tracking cameras)",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Dwelling time / Presence in scene",
+      "instrument": "PIS (Presence in sec) - calculated from Unix time",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Liking score",
+      "instrument": "LS (1-7 ranking via VR controller)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Activity fit",
+      "instrument": "7 positive vs. negative uses (self-report via VR controller)",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Designer vs. Non-designer group",
+      "consequent": "Fixation duration (FD) for protrusion, curvature, and scale MEVs",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "0.0489",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,107)=3.9695",
+      "theory_links": [
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "The D group obtained higher results than those of ND, only in their fixation duration (FD) measurements of measurable environmental variables (MEVs) of protrusion (F = 3.2590; df, 107; p < 0.0738), curvature (F = 3.2601; df, 107; p < 0.0738), and scale (F = 3.9695; df, 107; p < 0.0489)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "Non-symmetric (P=4) vs. Symmetric (P=0) virtual spaces",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "0.0361",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,85)=4.53413",
+      "theory_links": [
+        "PP",
+        "DP",
+        "AX8"
+      ],
+      "template_ids": [
+        "VF1",
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (NDs vs Ds)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "symmetric (protrusion (P) = 0) and non-symmetric (P = 4) showed a significantly higher \u00dfratio among NDs, compared to Ds"
+    },
+    {
+      "id": 3,
+      "antecedent": "Curved (C=4) vs. Sharp (C=0) virtual spaces",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "0.0360",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,85)=4.53796",
+      "theory_links": [
+        "PP",
+        "DP",
+        "AX8",
+        "NM"
+      ],
+      "template_ids": [
+        "VF1",
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (NDs vs Ds)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Significantly higher \u00dfratio was also found among NDs in curved virtual spaces (VSs) (Curvature (C) = 4) and sharp spaces (C = 0)"
+    },
+    {
+      "id": 4,
+      "antecedent": "Large (S=3) vs. Small (S=1) virtual spaces",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "0.0157",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,85)=6.07521",
+      "theory_links": [
+        "PP",
+        "DP",
+        "AX8",
+        "NM"
+      ],
+      "template_ids": [
+        "VF3",
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (NDs vs Ds)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "in large spaces (scale (S) = 3) and small spaces (S = 1), (F = 6.07521; df, 85; p < 0.0157)"
+    },
+    {
+      "id": 5,
+      "antecedent": "Different proportions of width (P(W)) or height (P(H))",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "neural",
+      "p_value": "0.0143",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,86)=6.24984",
+      "theory_links": [
+        "PP",
+        "DP",
+        "AX8",
+        "NM"
+      ],
+      "template_ids": [
+        "VF3",
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (NDs vs Ds)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "in the different proportions of width (P(W)) or height (P(H)) of VSs (F = 6.24984; df, 86; p < 0.0143)."
+    },
+    {
+      "id": 6,
+      "antecedent": "Protruded (asymmetric, P=4) vs. Non-protruded (symmetrical, P=0) virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=49.251",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "mean pupillary diameter (PD) was significantly higher in protruded (asymmetric) VSs (P = 4) than in non-protruded (symmetrical) VSs (P = 0)"
+    },
+    {
+      "id": 7,
+      "antecedent": "Sharp (C=0) vs. Curved (C=4) virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=273.823",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "PD was significantly higher in sharp VSs (C = 0) than in curved spaces (C = 4)"
+    },
+    {
+      "id": 8,
+      "antecedent": "Large (S=3) vs. Small (S=1) virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=96.903",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "large VSs (S = 3) compared to small spaces (S = 1), (F = 96.903; df, 325; p < 0.0001)"
+    },
+    {
+      "id": 9,
+      "antecedent": "Low proportion virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-14.046",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "PD was significantly larger in low VSs (df, 757; t = -14.046; p < 0.0001)"
+    },
+    {
+      "id": 10,
+      "antecedent": "Narrow proportion virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=10.100",
+      "theory_links": [
+        "NM",
+        "PP",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "and in narrow VSs (df, 757; t = 10.100; p < 0.0001, see Fig. 7)."
+    },
+    {
+      "id": 11,
+      "antecedent": "Protruded (P=4) vs. Non-protruded (P=0) virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=18.287",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "maximal pupil diameter (MPD)... protrusion (P4 > P0, F = 18.287; df, 325, p < 0.0001)"
+    },
+    {
+      "id": 12,
+      "antecedent": "Sharp (C=0) vs. Curved (C=4) virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=131.067",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "curvature (C0 > C4, F = 131.067; df, 325, p < 0.0001)"
+    },
+    {
+      "id": 13,
+      "antecedent": "Large (S=3) vs. Small (S=1) virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=73.411",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "scale (S3 > S1; F = 73.411, df, 325; p < 0.0001)"
+    },
+    {
+      "id": 14,
+      "antecedent": "Low proportion virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0002",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-4.190",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "PD was larger in low VSs (SE = 0.223; t = -4.190; df, 757, p < 0.0002)"
+    },
+    {
+      "id": 15,
+      "antecedent": "Narrow proportion virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=5.013",
+      "theory_links": [
+        "NM",
+        "PP",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "and in narrow VSS (SE = 0.223; t = 5.013; df, 757, p < 0.0001, see Fig. 8)."
+    },
+    {
+      "id": 16,
+      "antecedent": "Small (S=1) vs. Large (S=3) virtual spaces",
+      "consequent": "Rate of Fixation (FR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "5.855769e-05",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "z=4.018549",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "VF2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "A significantly higher FR was found in small VSs (S1 > S3; SE = 0.04175817; z-value 4.018549 Pr(> z) 5.855769e-05).",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Low height (H1) vs. High height (H3) virtual spaces",
+      "consequent": "Rate of Fixation (FR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "0.0101",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "z=-3.109",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "VF2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "A significantly higher FR was also evident in low VSs (H1 > H3; SE 0.0393; z.ratio -3.109; p < 0.0101)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Narrow width (W1) vs. Wide width (W3) virtual spaces",
+      "consequent": "Rate of Fixation (FR)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "z=7.124",
+      "theory_links": [
+        "PP",
+        "DT",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "and in narrow VSs (W1 > W3; SE = 0.0415; z.ratio 7.124; p < 0.0001; see Fig. 9).",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Small (S=1) vs. Large (S=3) virtual spaces",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0106",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,754)=6.6165",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "VF2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "Significant difference in FD was found between large and small VSs (S1 > S3; F = 6.6165; df, 754; p < 0.0106)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Narrow (W1) vs. Wide (W3) virtual spaces",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=8.233",
+      "theory_links": [
+        "PP",
+        "DT",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "and narrow and wide VSs (W1 > W3; SE = 0.812; df, 754; t. ratio 8.233; p < 0.0001).",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Large (S=3) vs. Small (S=1) virtual spaces",
+      "consequent": "Scene duration (PIS)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0121",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,325)=6.3602",
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "participants from both groups stayed significantly longer in large VSs (S3 > S1; F = 6.3602; df, 325; p < 0.0121)",
+      "outcome_id": "behav.sleep",
+      "outcome_domain": "behav",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.706
+    },
+    {
+      "id": 22,
+      "antecedent": "Non-designer vs. Designer group",
+      "consequent": "Physiological measures (composite for protrusion, curvature, scale, proportion width/height)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,88)=16.164515",
+      "theory_links": [
+        "DP",
+        "AX8"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "higher values for NDs (P: F = 16.164515; df, 88; p < 0.0001, C: F = 16.247940; df, 88; p < 0.0001, S: F = 14.295772; df, 88, p < 0.0003, P(W) and P(H): F = 9.762352; df, 88, p < 0.0024).",
+      "outcome_id": "physio",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Sharp (C=0) vs. Curved (C=4) virtual spaces",
+      "consequent": "Maximal pupil diameter (MPD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-6.444",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "MPD was the highest... in sharp spaces (C = 0) and the lowest... in curved spaces (C = 4)"
+    },
+    {
+      "id": 24,
+      "antecedent": "Large (S=3) virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0981",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-1.655",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "In large VSs (S = 3) PD... were significantly high"
+    },
+    {
+      "id": 25,
+      "antecedent": "Large (S=3) virtual spaces",
+      "consequent": "GSR amplitude",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "GSR amplitude were significantly high"
+    },
+    {
+      "id": 26,
+      "antecedent": "Large (S=3) virtual spaces",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0009",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-3.330",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "VF2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "FD and \u1e9eratio were significantly low. (FD: SE = 0.0756; df, 1628; t.ratio -3.330 0.0009; p < 0.0009)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Large (S=3) virtual spaces",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=3.867",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "MPD: SE = 0.0753; df, 1628; t.ratio 3.867; p < 0.0001"
+    },
+    {
+      "id": 28,
+      "antecedent": "Small (S=1) virtual spaces",
+      "consequent": "Mean pupil diameter (PD)",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "<0.0981",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-1.655",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "In small VSs (S = 1), PD was significantly low (sensorPz: SE = 0.0794; df, 1628; t.ratio -1.655; p < 0.0981)"
+    },
+    {
+      "id": 29,
+      "antecedent": "Small (S=1) virtual spaces",
+      "consequent": "GSR amplitude",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "GSR amplitude... were significantly high"
+    },
+    {
+      "id": 30,
+      "antecedent": "Small (S=1) virtual spaces",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0009",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=-3.330",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "VF2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "FD... were significantly high (FD: SE = 0.0756; df, 1628; t.ratio -3.330 0.0009; p < 0.0009)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 31,
+      "antecedent": "Small (S=1) virtual spaces",
+      "consequent": "Beta ratio (EEG)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "neural",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=3.867",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "MPD: SE = 0.0753; df, 1628; t.ratio 3.867; p < 0.0001"
+    },
+    {
+      "id": 32,
+      "antecedent": "Narrow virtual spaces",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.0001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "t=10.024",
+      "theory_links": [
+        "PP",
+        "DT",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.9",
+      "quote": "In narrow spaces, FD was significantly high... (FD: SE = 0.0735; df, 3344; t.ratio 10.024; p < 0.0001)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 33,
+      "antecedent": "Virtual spaces (H3, COPOS1H1, H1b, H2, C4P0S1, W1, W1b, W2) viewed for <10s",
+      "consequent": "Liking score (LS)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 2.1,
+      "effect_size_type": "other",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "AX2",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "dwelling time (<10s)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "For example, for the scenes- H3, COPOS1H1, H1b, H2, C4P0S1, W1,W1b,W2 that were viewed less than 10 s, the model predicted an average satisfaction score of 2.1."
+    },
+    {
+      "id": 34,
+      "antecedent": "Virtual spaces (COPOS2, C1P0S2, C3P4S2, C4P4S2, C4P2S2, C4P1S2, C4P0S2, W3) viewed 4th to 27th (longer duration)",
+      "consequent": "Liking score (LS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 3.5,
+      "effect_size_type": "other",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "AX2",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "dwelling time (4th to 27th)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "For the scenes COPOS2, C1P0S2, C3P4S2, C4P4S2, C4P2S2, C4P1S2, C4P0S2, W3 \u2013 that were viewed 4th to 27th, the model predicted an average satisfaction score of 3.5."
+    },
+    {
+      "id": 35,
+      "antecedent": "Virtual spaces (C2P0S2, C3POS2, C1P4S2, C2P4S2, COP1S2, COP2S2, COP3S2, COP4S2, C4P3S2, COPOS3, C4P0S3) viewed 4th to 27th (longer duration)",
+      "consequent": "Liking score (LS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 3.8,
+      "effect_size_type": "other",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "AX2",
+        "T9"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "dwelling time (4th to 27th)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.11",
+      "quote": "For the scenes- C2P0S2, C3POS2, C1P4S2, C2P4S2, COP1S2, COP2S2, COP3S2, COP4S2, C4P3S2, COPOS3, C4P0S3- that were viewed 4th to 27th, the model predicted an average satisfaction score of 3.8."
+    },
+    {
+      "id": 36,
+      "antecedent": "Different virtual scenes (27 types)",
+      "consequent": "Beta ratio (EEG) ranks (sensor A3)",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.0114",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Friedman test",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.12",
+      "quote": "A statistically significant difference was found among the mean \u1e9e ratio ranks of the 27 scenes of sensor A3 (Friedman test, p < 0.0114)."
+    },
+    {
+      "id": 37,
+      "antecedent": "Different virtual scenes (27 types)",
+      "consequent": "Mean pupil diameter (PD) ranks",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=1469.208",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.12",
+      "quote": "A statistically significant difference was found among the mean ranks of the 27 scenes (PD: Chi\u00b2 = 1469.208; df, 26; p. Chi\u00b2 = 0; p < 0.01, see Fig. 14a)"
+    },
+    {
+      "id": 38,
+      "antecedent": "Different virtual scenes (27 types)",
+      "consequent": "Maximal pupil diameter (MPD) ranks",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=799.8781",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.12",
+      "quote": "(MPD: Chi\u00b2 = 799.8781; df, 26; p. Chi\u00b2 = 0; p < 0.01, see Fig. 14b)."
+    },
+    {
+      "id": 39,
+      "antecedent": "Different virtual scenes (27 types)",
+      "consequent": "Rate of Fixation (FR) ranks",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=124.7323",
+      "theory_links": [
+        "PP",
+        "DT"
+      ],
+      "template_ids": [
+        "T1",
+        "VF2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.13",
+      "quote": "A statistically significant difference was found among the mean ranks of the 27 scenes (FR: Chi\u00b2 = 124.7323; df, 26; p. Chi\u00b2 = 7.327472e-15; p < 0.01, see Fig. 15)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 40,
+      "antecedent": "Zero curvature virtual spaces",
+      "consequent": "Maximal GSR amplitude (MGSR) ranks",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=103.9765",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.14",
+      "quote": "all VSs with zero curvature had a significantly lower ranked score (the lowest MGSR) than those with maximum curvature (the highest MGSR ranked score)"
+    },
+    {
+      "id": 41,
+      "antecedent": "Maximum curvature virtual spaces",
+      "consequent": "Maximal GSR amplitude (MGSR) ranks",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=103.9765",
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.14",
+      "quote": "all VSs with zero curvature had a significantly lower ranked score (the lowest MGSR) than those with maximum curvature (the highest MGSR ranked score)"
+    },
+    {
+      "id": 42,
+      "antecedent": "Different virtual scenes (27 types)",
+      "consequent": "Scene duration (PIS) ranks",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": "<0.01",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "Chi\u00b2=149.2634",
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.14",
+      "quote": "A statistically significant difference was found among the mean ranks of the 27 scenes, (Chi\u00b2 = 149.2634; df, 26; p. Chi\u00b2 = 0; p < 0.01, see Fig. 17)."
+    },
+    {
+      "id": 43,
+      "antecedent": "More curved virtual spaces",
+      "consequent": "Pupillary diameter (PD)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.14, Fig. 18a",
+      "quote": "the more curved the shape of space (in both symmetric and asymmetrical VSs), the smaller the pupillary diameter."
+    },
+    {
+      "id": 44,
+      "antecedent": "Greater protrusion in curved virtual spaces",
+      "consequent": "Pupillary diameter (PD)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.15, Fig. 18b",
+      "quote": "the greater the protrusion of a space (in curved VSs), the wider the pupillary diameter."
+    },
+    {
+      "id": 45,
+      "antecedent": "Larger, simple, symmetric virtual spaces",
+      "consequent": "Emotional response",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "T2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "The larger the simple and symmetric VS, the more positive the response",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 46,
+      "antecedent": "Smaller, simple, symmetric virtual spaces",
+      "consequent": "Emotional response",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "T2",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "the smaller the symmetric VS, the more negative the emotional response.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 47,
+      "antecedent": "Curved, large-scale virtual spaces vs. Large square virtual spaces",
+      "consequent": "Emotional response",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "A curved, large-scale VS is associated with a more positive emotional response than a large square VS.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 48,
+      "antecedent": "Curved, large-scale virtual spaces",
+      "consequent": "Positive interest",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "non-immediate peak shift effect",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "Positive interest in curvature in this scale could be explained by the existence of a non-immediate peak shift effect, according to high measures of PIS, LS and GSR.",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 49,
+      "antecedent": "Large virtual spaces (size criterion)",
+      "consequent": "Mean pupil diameter (PD), Scene duration (PIS), Liking score (LS)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "Significantly high measures of PD, PIS and LS percentage provided the size criterion"
+    },
+    {
+      "id": 50,
+      "antecedent": "Proportion of virtual space",
+      "consequent": "Emotional responsivity",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.16",
+      "quote": "There exists an inverse relationship between the proportion of the VS and emotional responsivity.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 51,
+      "antecedent": "More protruded, complex, asymmetric virtual spaces",
+      "consequent": "Emotional response",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1",
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "The more protruded the complex and asymmetric VS, the more positive the emotional response.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 52,
+      "antecedent": "Sharper (non-curved) virtual spaces",
+      "consequent": "Emotional response",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "The sharper (non-curved) the VS, the more positive the response.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 53,
+      "antecedent": "Non-curved virtual spaces",
+      "consequent": "Positive interest",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "NM",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "large MPD, high PIS and LS",
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "Positive interest in non-curvature could be explained by a large MPD, as well as by high measures of PIS and LS.",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 54,
+      "antecedent": "Non-curved virtual spaces",
+      "consequent": "Arousal, Liking evaluation",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (D vs ND)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "their level of arousal, and their liking evaluation of the VS differ.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 55,
+      "antecedent": "Simplicity (of virtual space)",
+      "consequent": "Arousal",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "simplicity was associated with a lower level of arousal.",
+      "outcome_id": "physio.alertness",
+      "outcome_domain": "physio",
+      "outcome_match_type": "exact",
+      "outcome_confidence": 1.0
+    },
+    {
+      "id": 56,
+      "antecedent": "Complexity or asymmetry (of virtual space)",
+      "consequent": "Curiosity",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "complexity or asymmetry evoked more curiosity.",
+      "outcome_id": "affect.safety_perception",
+      "outcome_domain": "affect",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.706
+    },
+    {
+      "id": 57,
+      "antecedent": "Extreme proportionality (extremely narrow/low or wide/high)",
+      "consequent": "Level of interest",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "a relationship between the variables of proportionality (extremely narrow/low or wide/high) and the level of interest (high) was significant.",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 58,
+      "antecedent": "Narrow proportion virtual spaces (associated with threat)",
+      "consequent": "Impact on emotional response",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM",
+        "ENCLOSURE_SAFETY"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "Criteria changes associated with actual threat (especially narrow proportion) demonstrated a significantly greater impact",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 59,
+      "antecedent": "Familiarity and high fluency (zero curvature and zero protrusion)",
+      "consequent": "Impact on emotional response",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "physiological",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "than criteria associated with familiarity and high fluency (zero curvature and zero protrusion).",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 60,
+      "antecedent": "Designer vs. Non-designer group",
+      "consequent": "Reported thoughts/feelings toward spaces, notions about space uses",
+      "direction": "mixed",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "significant difference between designers (Ds) and non-designers (NDs) related to reported thoughts and feelings toward spaces"
+    },
+    {
+      "id": 61,
+      "antecedent": "Non-designer vs. Designer group",
+      "consequent": "Physiological measurements (composite)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "differences between these groups in their physiological measurements indicates that these are significantly greater among ND group participants",
+      "outcome_id": "physio",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 62,
+      "antecedent": "Designer group",
+      "consequent": "Fixation Duration (FD)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "with the exception of FD (designers tend to fixate longer)",
+      "outcome_id": "physio.eye_movement",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 63,
+      "antecedent": "Non-conformist shapes (asymmetry, high ceilings)",
+      "consequent": "Liking evaluation",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP",
+        "PP"
+      ],
+      "template_ids": [
+        "T_IE_002",
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "group (D vs ND)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "The D group tended to be more positive toward non-conformist shapes, characterized by asymmetry or high ceilings, as they evaluated them higher"
+    },
+    {
+      "id": 64,
+      "antecedent": "Designer group",
+      "consequent": "Physiological reaction to space criteria manipulations",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "physiological",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "AX8",
+        "DP"
+      ],
+      "template_ids": [
+        "T_IE_002"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "notwithstanding their significantly weaker physiological reaction, relative to the ND participants.",
+      "outcome_id": "physio",
+      "outcome_domain": "physio",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 65,
+      "antecedent": "Extreme spaces (e.g., extreme height)",
+      "consequent": "Emotional response",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "NM"
+      ],
+      "template_ids": [
+        "AX7"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "more extreme spaces are needed to significantly effect a response (evident in the height of the LS percentage, for example).",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 66,
+      "antecedent": "Narrow virtual spaces",
+      "consequent": "Distress",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "ENCLOSURE_SAFETY",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": null,
+      "provenance_depth": "section",
+      "source": "p.18",
+      "quote": "narrow spaces, we have found, are experienced significantly more often as distressing, regardless of expertise or advance familiarity.",
+      "outcome_id": "affect.stress",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "non-immediate peak shift effect",
+    "large MPD, high PIS and LS",
+    "actual threat (especially narrow proportion)",
+    "familiarity and high fluency (zero curvature and zero protrusion)",
+    "difference in the process of perception",
+    "immunity to space criteria manipulations"
+  ],
+  "moderators": [
+    "group (designers vs non-designers)",
+    "dwelling time"
+  ],
+  "implementation_implications": [
+    "Implications for residential, education, and rehabilitation settings are evidenced.",
+    "Designing large spaces is a commonly used technique to create a dramatic effect and gain a sense of awe.",
+    "Large spaces are suitable for multitudes, not only due to their large capacity but also due to their tendency to attract participants to stay in those spaces longer.",
+    "To design spaces which create a high level of excitement, extreme proportions or scale may be used.",
+    "Narrow spaces are experienced significantly more often as distressing.",
+    "Design more affectively sympathetic spaces with potential applications for special needs children, educational structures, geriatric and rehabilitation spaces, public and living spaces."
+  ],
+  "domains": [
+    "A2_Spatial_Scale",
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DP",
+    "NM",
+    "ENCLOSURE_SAFETY"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Analysis of emotional response upon recognition of a VS, summarizing physiological and human-centered measurable variables and geometrical space criteria.",
+      "key_stats": [
+        "BBPR*",
+        "PD*",
+        "MPD*",
+        "ROF*",
+        "FD*",
+        "GSRR*",
+        "MGSR*"
+      ],
+      "n_findings_extracted_from": 0
+    }
+  ],
+  "limitations": [
+    "Inability to precisely evaluate measures according to their relative contribution to the total variance.",
+    "Difficulty in determining the actual contribution of dominant measures (e.g., high FD and high \u03b2BP).",
+    "Difficulty in distinguishing if negative emotion is easier to recognize or if physiology is more engaged in signaling negative emotions.",
+    "The study used limited parametric change in form and specific participant orientation towards VSs.",
+    "Impossibility to attach a single measurement to a specific emotional state."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.jenvp.2022.101802",
+    "title": "The emotional influence of different geometries in virtual spaces: A neurocognitive examination",
+    "authors": [
+      "Avishag Shemesh",
+      "Gerry Leisman",
+      "M. Bar",
+      "Y. Grobman"
+    ],
+    "year": 2022,
+    "journal": "Journal of Environmental Psychology",
+    "volume": "81",
+    "issue": null,
+    "pages": "101802",
+    "publisher": "Elsevier BV",
+    "citation_count": 43,
+    "influential_citation_count": 1,
+    "references": [
+      "10.1002/cb.254",
+      "10.1002/j.1538-7305.1978.tb02136.x",
+      "10.1007/BF00287729",
+      "10.1007/BF00986947",
+      "10.1007/s10484-005-6386-y",
+      "10.1007/s12061-015-9181-z",
+      "10.1016/0001-6918(85)90042-3",
+      "10.1016/0013-4694(78)90190-6",
+      "10.1016/S0005-7967(97)10006-7",
+      "10.1016/S0028-3932(99)00045-7",
+      "10.1016/S0165-1838(96)00108-7",
+      "10.1016/S0272-4944(02)00109-3",
+      "10.1016/S1071-5819(03)00017-X",
+      "10.1016/S1469-0292(01)00035-8",
+      "10.1016/j.aei.2021.101358",
+      "10.1016/j.autcon.2004.07.009",
+      "10.1016/j.autcon.2016.05.014",
+      "10.1016/j.autcon.2017.12.027",
+      "10.1016/j.bandc.2008.08.004",
+      "10.1016/j.bandc.2011.07.002",
+      "10.1016/j.biopsycho.2004.03.008",
+      "10.1016/j.buildenv.2004.11.026",
+      "10.1016/j.buildenv.2014.10.003",
+      "10.1016/j.buildenv.2019.106285",
+      "10.1016/j.cell.2006.10.012",
+      "10.1016/j.cognition.2011.02.009",
+      "10.1016/j.concog.2007.06.003",
+      "10.1016/j.concog.2017.11.003",
+      "10.1016/j.cortex.2020.01.009",
+      "10.1016/j.foar.2019.10.005",
+      "10.1016/j.jenvp.2019.101344",
+      "10.1016/j.landurbplan.2014.07.011",
+      "10.1016/j.landurbplan.2015.02.005",
+      "10.1016/j.neucli.2016.07.002",
+      "10.1016/j.neuroimage.2010.04.256",
+      "10.1016/j.neuropsychologia.2011.06.018",
+      "10.1016/j.neuropsychologia.2011.06.019",
+      "10.1016/j.neuropsychologia.2011.08.015",
+      "10.1016/j.paid.2019.01.010",
+      "10.1016/j.physbeh.2014.05.034",
+      "10.1016/j.uclim.2015.09.004",
+      "10.1016/j.ufug.2016.10.011",
+      "10.1017/CBO9780511978098.007",
+      "10.1027/1618-3169/a000350",
+      "10.1037/0022-3514.54.6.1063",
+      "10.1037/0882-7974.23.1.181",
+      "10.1037/h0025369",
+      "10.1037/h0025848",
+      "10.1037/h0035233",
+      "10.1038/nn.4108",
+      "10.1038/s41467-019-13599-z",
+      "10.1038/srep40201",
+      "10.1068/p6160",
+      "10.1068/p6845",
+      "10.1073/pnas.1301227110",
+      "10.1075/aicr.44.05win",
+      "10.1080/00038628.1998.9697403",
+      "10.1080/00038628.2002.9697511",
+      "10.1080/00038628.2013.809689",
+      "10.1080/00038628.2016.1221499",
+      "10.1080/00038628.2016.1266597",
+      "10.1080/00038628.2018.1523129",
+      "10.1080/02699931.2014.881327",
+      "10.1080/17508975.2013.807767",
+      "10.1080/17508975.2013.818763",
+      "10.1089/cpb.1999.2.135",
+      "10.1098/rsbl.2007.0149",
+      "10.1098/rstb.2008.0312",
+      "10.1109/MEMB.2003.1213626",
+      "10.1109/TBME.2014.2375292",
+      "10.1109/TPAMI.2008.52",
+      "10.1109/TSP.2015.2432731",
+      "10.1111/bjop.12427",
+      "10.1111/j.1467-9280.2008.02225.x",
+      "10.1111/j.1469-7580.2009.01164.x",
+      "10.1111/j.1469-8986.1972.tb01788.x",
+      "10.1111/jpr.12206",
+      "10.11113/ijbes.v6.n3.360",
+      "10.1126/science.3992243",
+      "10.1162/002409400552234",
+      "10.1162/jocn_a_01146",
+      "10.1163/156856808782713762",
+      "10.1163/156856888X00104",
+      "10.1177/00139160021972739",
+      "10.1177/0013916509354696",
+      "10.1177/0276237415621185",
+      "10.1177/1745691615576761",
+      "10.1177/193758670800100208",
+      "10.1177/193758670900200210",
+      "10.1177/1937586715624210",
+      "10.1207/s15327957pspr0804_3",
+      "10.1348/0007126042369811",
+      "10.1371/journal.pone.0178899",
+      "10.14786/flr.v5i3.259",
+      "10.1523/JNEUROSCI.2270-15.2015",
+      "10.1523/JNEUROSCI.4802-13.2014",
+      "10.3389/fnhum.2017.00477",
+      "10.3389/fphys.2018.00098",
+      "10.3389/fpsyg.2015.01944",
+      "10.3389/fpsyg.2016.00481",
+      "10.3389/fpsyg.2016.00866",
+      "10.3389/fpsyg.2018.01280",
+      "10.3389/fpsyt.2018.00317",
+      "10.3389/frvir.2021.644683",
+      "10.3390/app11041475",
+      "10.3390/as1010001",
+      "10.3390/ijerph17020394",
+      "10.3390/ijerph18168308",
+      "10.3390/s21062193",
+      "10.3758/s13423-014-0617-2"
+    ],
+    "cited_by": [
+      "10.1080/13467581.2026.2629664",
+      "10.3389/fpsyg.2026.1666480",
+      "10.1016/j.buildenv.2026.114405",
+      "10.3390/brainsci16020131",
+      "10.3390/buildings16010036",
+      "10.1016/j.buildenv.2025.114103",
+      "10.3390/buildings15203694",
+      "10.1016/j.wss.2025.100305",
+      "10.4995/vitruvio-ijats.2025.24201",
+      "10.3390/buildings15122063",
+      "10.1016/j.vrih.2025.04.002",
+      "10.1002/sdtp.18970",
+      "10.17759/jmfp.2025140102",
+      "10.1080/13467581.2025.2465824",
+      "10.3390/brainsci15020201",
+      "10.1016/j.jenvp.2025.102550",
+      "10.3390/electronics14020251",
+      "10.1155/hbe2/7410855",
+      "10.33042/2522-1809-2024-6-187-63-68",
+      "10.1080/00038628.2024.2438185",
+      "10.3390/land13121978",
+      "10.1057/s41599-024-04064-4",
+      "10.62617/mcb.v21i2.401",
+      "10.1016/j.buildenv.2024.111928",
+      "10.1080/13467581.2024.2407589",
+      "10.1109/ICSIPA62061.2024.10686974",
+      "10.1080/00038628.2024.2367981",
+      "10.1016/j.foar.2024.06.004",
+      "10.1016/j.asej.2024.102898",
+      "10.1080/13467581.2024.2344728",
+      "10.1101/2024.03.22.586309",
+      "10.3389/fcomp.2023.1237531",
+      "10.1080/17508975.2024.2407319",
+      "10.1016/j.jobe.2024.108611",
+      "10.1016/j.visres.2024.108539",
+      "10.3390/virtualworlds2030015",
+      "10.56166/remici.2023.7.v2n5.7.48",
+      "10.1016/j.aei.2022.101868",
+      "10.1016/j.asej.2022.102102",
+      "10.1002/pan3.10411",
+      "10.1016/j.landurbplan.2024.105256",
+      "10.4236/adr.2024.121008"
+    ],
+    "semantic_scholar_id": "668cc12df2b5cae1d88b5acf574b5f6987ea407e",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:39:40.124374+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "The emotional influence of different geometries in virtual spaces: A neurocognitive examination",
+    "crossref_year": 2022,
+    "crossref_citation_count": 49,
+    "crossref_journal": "Journal of Environmental Psychology",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 170,
+    "crossref_issn": [
+      "0272-4944"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.491617+00:00",
+    "_cr_refs_added": 110
+  },
+  "year": 2022,
+  "journal": "Journal of Environmental Psychology",
+  "authors_structured": [
+    "Avishag Shemesh",
+    "Gerry Leisman",
+    "M. Bar",
+    "Y. Grobman"
+  ],
+  "crossref_title": "The emotional influence of different geometries in virtual spaces: A neurocognitive examination",
+  "crossref_authors": [
+    {
+      "name": "Avishag Shemesh",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Gerry Leisman",
+      "orcid": "https://orcid.org/0000-0002-9975-7331",
+      "affiliation": null
+    },
+    {
+      "name": "Moshe Bar",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Yasha Jacob Grobman",
+      "orcid": "https://orcid.org/0000-0003-4683-4601",
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2022,
+  "crossref_journal": "Journal of Environmental Psychology",
+  "crossref_citation_count": 49,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:54:33.112788+00:00"
+}

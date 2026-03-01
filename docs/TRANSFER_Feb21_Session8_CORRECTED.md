@@ -153,8 +153,8 @@ treated as T1 #11). See Session 6 transfer §4 for full error list.
 
 # §5. THE GAP TEMPLATE LANDSCAPE (CURRENT STATE — POST VISUAL-I)
 
-- **Total templates tracked**: 151
-- **Calibrated**: 34 total:
+- **Total templates tracked**: 166
+- **Calibrated**: 55 total:
 
 | Panel | Session | Templates Calibrated | Count |
 |-------|---------|---------------------|-------|
@@ -172,7 +172,7 @@ treated as T1 #11). See Session 6 transfer §4 for full error list.
 
 **Note (Feb 22, 2026):** After deduplication, unique calibrated templates = 52. SPATIAL_SOCIAL_ENCOUNTER_001 was calibrated by both SPATIAL-I and SOCIAL-I; keeping SPATIAL-I version (more recent calibration with valence-mechanism parameters).
 
-- **Remaining**: **99** (151 − 52)
+- **Remaining**: **111** (166 − 55)
 - **High severity gaps**: ~113
 - **Medium severity gaps**: ~15
 
@@ -200,10 +200,10 @@ The corrected panel sequence from the master plan is:
 | ✅ | VISUAL-I | 13.24 | COMPLETE (8 templates; Doc 65) |
 | ✅ | SOCIAL-I | 13.18 | COMPLETE (11 templates; Doc 66) |
 | ✅ | MEMORY-I | 13.19 | COMPLETE (10 templates; Doc 67) |
-| 1 | MULTI-I | 13.20 | NEXT |
-| 4 | MUSIC-I | 13.21 | — |
-| 5 | THERMAL-I | 13.22 | — |
-| 6 | CREATIVE-I | 13.23 | — |
+| ✅ | MULTI-I | 13.20 | COMPLETE (9 templates; Doc 68) |
+| ✅ | MUSIC-I | 13.21 | COMPLETE (13 templates) |
+| ✅ | THERMAL-I | 13.22 | COMPLETE (3 templates) |
+| 6 | CREATIVE-I | 13.23 | NEXT |
 | 7 | NEUROMOD-I | 13.25 | — |
 | 8 | CROSSCUT-I | 13.26 | LAST (includes AX3 awe templates) |
 

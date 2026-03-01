@@ -1,0 +1,1171 @@
+{
+  "doi": "10.1016/j.cortex.2020.01.009",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.827,
+  "n_findings": 29,
+  "extracted_at": "2026-02-25T05:22:12.373927+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0086421,
+  "title": "Psychological and neural responses to architectural interiors",
+  "authors": "Alexander Coburn et al., 2020",
+  "research_question": "1) Can aesthetic responses to architectural scenes be reduced to a few key psychological dimensions? 2) Are these dimensions sensitive to salient design features and Global Image Properties (GIPs)? 3) Do these psychological dimensions correlate with neural activation patterns, and to what extent are these correlations modulated by task?",
+  "design_type": "mixed_factorial",
+  "participants": {
+    "n": 1420,
+    "description": "Experiment 1: 798 US-based adults (391 women, 401 men, 6 other; M=38.06 years, SD=11.96). Experiment 2: 614 American adults (305 women, 307 men, 2 other; M=35.68 years, SD=10.87). Experiment 3: 18 healthy participants (12 females, 6 males; M=23.39 years, SD=4.49) from the Canary Islands.",
+    "recruitment": "Amazon's Mechanical Turk for Experiments 1 and 2. Not specified for Experiment 3 (reanalysis of previous fMRI studies)."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "photograph",
+      "description": "200 images of interior architectural spaces, counterbalanced on perceived enclosure (open/closed), ceiling height (high/low), and contour (round/square). This yielded 8 experimental conditions (25 images per condition).",
+      "n_stimuli": 200,
+      "source": "Section 2.1.1, Figure 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Aesthetic response measures",
+      "instrument": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability) on a 7-point sliding semantic differential scale.",
+      "type": "self_report"
+    },
+    {
+      "construct": "Psychological dimensions of architectural experience",
+      "instrument": "Principal Component Analysis (PCA) scores for Coherence, Hominess, and Fascination.",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Global Image Properties (GIPs)",
+      "instrument": "Self-similarity (Pyramidal Histogram of Oriented Gradients - PHOG method) and Complexity (HOG Complexity method).",
+      "type": "computational"
+    },
+    {
+      "construct": "Neural activity",
+      "instrument": "fMRI BOLD signal",
+      "type": "neural"
+    },
+    {
+      "construct": "Beauty judgment",
+      "instrument": "Button press: 'beautiful' or 'not beautiful'",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Approach-avoidance decision",
+      "instrument": "Button press: 'enter' or 'exit' the space",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability)",
+      "consequent": "Latent psychological dimensions of architectural experience",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Psychometric Network Analysis (PNA) revealed three communities: Coherence, Hominess, and Fascination.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.1",
+      "quote": "three communities were found. Community 1 was closely associated with three aesthetic response measures (organization, modernity, and beauty)"
+    },
+    {
+      "id": 2,
+      "antecedent": "16 aesthetic rating scales (reduced to 9 non-redundant variables)",
+      "consequent": "Latent psychological dimensions of architectural experience",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Principal Component Analysis (PCA) identified three components: Coherence (PC1), Hominess (PC2), and Fascination (PC3).",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.2",
+      "quote": "The first three components were retained, given that all three had eigenvalues exceeding Jolliffe's criterion of .7 and together explained 90% of the variance."
+    },
+    {
+      "id": 3,
+      "antecedent": "Ceiling height (high vs. low)",
+      "consequent": "Fascination (PC3) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.08,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=13.56",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 7, Section 2.2.3",
+      "quote": "There were significant main effects of ceiling height [F (1,192) = 13.56, p < .001, \u03b7p2 = .08]... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Fascination (PC3) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "0.024",
+      "effect_size": 0.03,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=5.21",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 7, Section 2.2.3",
+      "quote": "enclosure [F (1,192) = 5.21, p = .024, \u03b7p2 = .03]... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Curvature (round vs. square)",
+      "consequent": "Fascination (PC3) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.09,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=14.94",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 7, Section 2.2.3",
+      "quote": "curvature [F (1,192) = 14.94, p < .001, \u03b7p2 = .09] on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Coherence (PC1) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "0.012",
+      "effect_size": 0.03,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=6.39",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 7, Section 2.2.3",
+      "quote": "significant main effects of enclosure on PC1 [coherence; F (1,192) = 6.39, p = .012, \u03b7p2 = .03]",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Hominess (PC2) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "0.001",
+      "effect_size": 0.05,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=10.94",
+      "theory_links": [
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 7, Section 2.2.3",
+      "quote": "PC2 [hominess; F (1,192) = 10.94, p = .001, \u03b7p2 = .05]"
+    },
+    {
+      "id": 8,
+      "antecedent": "Self-similarity (high degree)",
+      "consequent": "Fascination (PC3) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.242,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Section 2.2.4",
+      "quote": "Self-similarity was found to correlate positively with PC3 (Fascination) scores (r = .242, p < .001)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 9,
+      "antecedent": "Self-similarity (high degree)",
+      "consequent": "Coherence (PC1) scores",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "0.005",
+      "effect_size": -0.198,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Section 2.2.4",
+      "quote": "negatively with PC1 (Coherence) scores (r = -.198, p = .005)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Complexity (high degree)",
+      "consequent": "Hominess (PC2) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "0.013",
+      "effect_size": 0.175,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Section 2.2.4",
+      "quote": "Complexity correlated positively with PC2 (Hominess) scores (r = .175, p = .013)"
+    },
+    {
+      "id": 11,
+      "antecedent": "Complexity (high degree)",
+      "consequent": "Fascination (PC3) scores",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.519,
+      "effect_size_type": "r",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3, Section 2.2.4",
+      "quote": "Complexity correlated positively with... PC3 (Fascination) scores (r = .519, p < .001)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Ceiling height (high vs. low)",
+      "consequent": "Hominess (PC1) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.002,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=15.23",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "significant main effects of ceiling height [F (1, 9816) = 15.23, p < .001, \u03b7p2 = .002]... on PC1 (hominess)"
+    },
+    {
+      "id": 13,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Hominess (PC1) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.012,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=118.43",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "enclosure [F (1, 9816) = 118.43, p < .001, \u03b7p2 = .012]... on PC1 (hominess)"
+    },
+    {
+      "id": 14,
+      "antecedent": "Curvature (round vs. square)",
+      "consequent": "Hominess (PC1) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.002,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=20.95",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "curvature [F (1, 9816) = 20.95, p < .001, \u03b7p2 = .002] on PC1 (hominess)"
+    },
+    {
+      "id": 15,
+      "antecedent": "Ceiling height (high vs. low)",
+      "consequent": "Coherence (PC2) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.003,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=28.25",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "significant main effects... of ceiling height [F (1, 9816) = 28.25, p < .001, \u03b7p2 = .003], enclosure [F (1, 9816) = 180.39, p < .001, \u03b7p2 = .018], and curvature [F (1, 9816) = 13.58, p < .001, \u03b7p2 = .001] on PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Coherence (PC2) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.018,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=180.39",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "enclosure [F (1, 9816) = 180.39, p < .001, \u03b7p2 = .018]... on PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 17,
+      "antecedent": "Curvature (round vs. square)",
+      "consequent": "Coherence (PC2) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.001,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=13.58",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "curvature [F (1, 9816) = 13.58, p < .001, \u03b7p2 = .001] on PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 18,
+      "antecedent": "Ceiling height (high vs. low)",
+      "consequent": "Fascination (PC3) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.024,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=243.00",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "significant main effects were found for ceiling height [F (1, 9816) = 243.00, p < .001, \u03b7p2 = .024]... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 19,
+      "antecedent": "Enclosure (open vs. closed)",
+      "consequent": "Fascination (PC3) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.006,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=61.21",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "enclosure [F (1, 9816) = 61.21, p < .001, \u03b7p2 = .006]... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Curvature (round vs. square)",
+      "consequent": "Fascination (PC3) scores (Experiment 2)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.023,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=232.83",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Figure 9, Section 3.2.2",
+      "quote": "curvature [F (1, 9816) = 232.83, p < .001, \u03b7p2 = .023] on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Fascination scores",
+      "consequent": "Neural activity in right lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": "T=6.70",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5, Section 4.2.1",
+      "quote": "in beauty judgments brain activation in the right lingual gyrus covaried with fascination scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "Fascination scores",
+      "consequent": "Neural activity in left lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": "T=9.04",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (approach-avoidance decisions)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5, Section 4.2.1",
+      "quote": "in approach-avoidance decisions brain activation in the left lingual gyrus covaried with fascination scores",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Fascination scores",
+      "consequent": "Neural activity in bilateral lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": "T=6.65",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment and approach-avoidance decisions)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5, Section 4.2.1",
+      "quote": "conjunction analysis demonstrated that brain activation encompassing the right lingual gyrus covaried with fascination scores under both beauty judgment and approach-avoidance conditions",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "Hominess scores",
+      "consequent": "Neural activity in left cuneus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": "T=5.45",
+      "theory_links": [
+        "IC"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (approach-avoidance decisions)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5, Section 4.2.2",
+      "quote": "when making approach-avoidance decisions, brain activation encompassing the left cuneus covaried with hominess scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Hominess scores",
+      "consequent": "Neural activity in left cuneus",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "IC"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment)"
+      ],
+      "provenance_depth": "section",
+      "source": "Section 4.2.2",
+      "quote": "when making beauty judgments, brain activation did not covary with hominess scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Coherence scores",
+      "consequent": "Neural activity in left inferior occipital gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": "T=5.08",
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5, Section 4.2.3",
+      "quote": "when making beauty judgments, brain activation encompassing the left inferior occipital gyrus covaried with coherence scores",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Coherence scores",
+      "consequent": "Neural activity in left inferior occipital gyrus",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (approach-avoidance decisions)"
+      ],
+      "provenance_depth": "section",
+      "source": "Section 4.2.3",
+      "quote": "when making approach-avoidance decisions, brain activation did not covary with coherence scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 28,
+      "antecedent": "Self-similarity scores",
+      "consequent": "Neural activity in lingual gyrus, cuneus, or inferior occipital gyrus",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment and approach-avoidance decisions)"
+      ],
+      "provenance_depth": "section",
+      "source": "Section 4.2.4",
+      "quote": "brain activation did not covary with self-similarity or complexity scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Complexity scores",
+      "consequent": "Neural activity in lingual gyrus, cuneus, or inferior occipital gyrus",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [
+        "Task (beauty judgment and approach-avoidance decisions)"
+      ],
+      "provenance_depth": "section",
+      "source": "Section 4.2.4",
+      "quote": "brain activation did not covary with self-similarity or complexity scores.",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Fluency theory: ordered arrangements increase efficiency of information processing, heightening aesthetic appeal (for Coherence).",
+    "Hygge concept: feelings of coziness, warmth, and togetherness from intimate spaces (for Hominess).",
+    "Attention Restoration Theory (ART): informational richness and complexity capture involuntary attention, allowing directed attention mechanisms to replenish (for Fascination).",
+    "Integration of cognitive, emotional, and sensory information: psychological experiences in the built environment are generated by the integration of these processes.",
+    "Top-down influence on object processing: neural responses in visual cortex are likely driven by top-down valuation rather than bottom-up psychophysical properties."
+  ],
+  "moderators": [
+    "Task (beauty judgment vs. approach-avoidance decisions)",
+    "Architectural variables (ceiling height, enclosure, curvature)",
+    "Global Image Properties (self-similarity, complexity)"
+  ],
+  "implementation_implications": [
+    "Architects can use the identified psychological components (coherence, fascination, hominess) to test the psychological impact of proposed design schemes before construction.",
+    "These components can be used for post-occupancy evaluations of buildings to gather behavioral feedback for future interior design and construction decisions.",
+    "Architects may weigh these components differently depending on the building type (e.g., home, hospital, library, museum)."
+  ],
+  "domains": [
+    "A2_Spatial_Scale",
+    "A3_Spatial_Config",
+    "A6_Visual_Form",
+    "A9_Task_Cognition",
+    "A8_Social",
+    "A7_Haptic_Thermal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "ART",
+    "Prospect-Refuge",
+    "Biophilia",
+    "DP",
+    "IC"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Prompts and end anchors of 7-point rating scales for the aesthetic rating scales.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Factor loadings on the three principal components (Experiment 1).",
+      "key_stats": [
+        "Eigenvalue: 3.57 (PC1), 2.39 (PC2), 2.16 (PC3)",
+        "Variance Explained: 40% (PC1), 27% (PC2), 24% (PC3)"
+      ],
+      "n_findings_extracted_from": 1
+    },
+    {
+      "table_id": "Table 3",
+      "description": "GIPs predicting Principal Component Scores (Experiment 1).",
+      "key_stats": [
+        "Self-similarity: r=-.198, p=.005 (PC1); r=.242, p<.001 (PC3)",
+        "Complexity: r=.175, p=.013 (PC2); r=.519, p<.001 (PC3)"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Factor loadings on the three principal components (Experiment 2).",
+      "key_stats": [
+        "Eigenvalue: 2.73 (PC1), 2.28 (PC2), 1.83 (PC3)",
+        "Variance Explained: 30% (PC1), 25% (PC2), 20% (PC3)"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 5",
+      "description": "The neuroanatomical correlates of Fascination, Hominess, and Coherence (Experiment 3).",
+      "key_stats": [
+        "Fascination (BJ): Lingual gyrus, T=6.70",
+        "Fascination (AA): Lingual gyrus, T=9.04",
+        "Fascination (CJN): Lingual gyrus, T=6.65",
+        "Hominess (AA): Cuneus, T=5.45",
+        "Coherence (BJ): Occipital gyrus, T=5.08"
+      ],
+      "n_findings_extracted_from": 5
+    }
+  ],
+  "limitations": [
+    "The use of two-dimensional images limits the generalizability of findings to three-dimensional built spaces.",
+    "The study focused on visual perception of architecture, being agnostic about the contribution of nonvisual senses to architectural experiences.",
+    "Only three basic architectural design variables were considered, capturing a limited proportion of a building's visual properties."
+  ],
+  "paper_metadata": {
+    "doi": "10.1016/j.cortex.2020.01.009",
+    "title": "Psychological and neural responses to architectural interiors",
+    "authors": [
+      "Alexander Coburn",
+      "O. Vartanian",
+      "Yoed N. Kenett",
+      "Marcos Nadal",
+      "Franziska Hartung",
+      "G. Hayn-Leichsenring",
+      "G. Navarrete",
+      "J. Gonz\u00e1lez-Mora",
+      "A. Chatterjee"
+    ],
+    "year": 2020,
+    "journal": "Cortex",
+    "volume": "126",
+    "issue": null,
+    "pages": "217-241",
+    "publisher": "Elsevier BV",
+    "citation_count": 126,
+    "influential_citation_count": 8,
+    "references": [
+      "10.1002/acp.1088",
+      "10.1002/sd.388",
+      "10.1006/jesp.1999.1382",
+      "10.1006/jevp.1996.0029",
+      "10.1006/jevp.1998.0089",
+      "10.1006/jevp.1999.0155",
+      "10.1007/BF00844845",
+      "10.1007/BF02884961",
+      "10.1007/s00004-004-0004-9",
+      "10.1016/0272-4944(95)90001-2",
+      "10.1016/B978-008045046-9.00241-2",
+      "10.1016/S0272-4944(05)80079-9",
+      "10.1016/S0272-4944(05)80184-7",
+      "10.1016/S0378-7788(02)00006-3",
+      "10.1016/S1364-6613(03)00028-7",
+      "10.1016/j.actpsy.2019.102936",
+      "10.1016/j.bandc.2008.08.004",
+      "10.1016/j.buildenv.2004.07.016",
+      "10.1016/j.cognition.2007.05.010",
+      "10.1016/j.cognition.2018.06.009",
+      "10.1016/j.emospa.2014.11.003",
+      "10.1016/j.jad.2012.03.012",
+      "10.1016/j.jenvp.2005.07.001",
+      "10.1016/j.jenvp.2009.10.009",
+      "10.1016/j.jenvp.2013.08.005",
+      "10.1016/j.jenvp.2013.11.008",
+      "10.1016/j.jenvp.2013.12.005",
+      "10.1016/j.jenvp.2014.11.006",
+      "10.1016/j.jenvp.2016.05.001",
+      "10.1016/j.jenvp.2019.02.007",
+      "10.1016/j.landurbplan.2015.02.005",
+      "10.1016/j.newideapsych.2011.02.007",
+      "10.1016/j.physbeh.2014.05.034",
+      "10.1016/j.tics.2013.04.010",
+      "10.1016/j.tics.2014.03.003",
+      "10.1016/j.tics.2016.06.003",
+      "10.1016/j.visres.2010.05.002",
+      "10.1037/0021-9010.63.6.719",
+      "10.1037/0022-3514.38.3.471",
+      "10.1037/1089-2680.11.4.305",
+      "10.1037/a0014430",
+      "10.1037/aca0000150",
+      "10.1037/h0055538",
+      "10.1037/h0072647",
+      "10.1037/h0073513",
+      "10.1037/xge0000240",
+      "10.1038/20833",
+      "10.1038/srep11610",
+      "10.1038/srep40201",
+      "10.1068/b12822",
+      "10.1073/pnas.0500298102",
+      "10.1073/pnas.1301227110",
+      "10.1080/00038628.2016.1266597",
+      "10.1086/519146",
+      "10.1093/scan/nsu097",
+      "10.1093/schbul/sbw049",
+      "10.1093/schbul/sbw055",
+      "10.1101/gr.1239303",
+      "10.1111/bjop.12084",
+      "10.1111/j.0956-7976.2005.01575.x",
+      "10.1111/j.1467-6494.1997.tb00326.x",
+      "10.1111/j.1467-8721.2008.00548.x",
+      "10.1111/j.1467-9280.2006.01759.x",
+      "10.1111/j.1467-9280.2008.02225.x",
+      "10.1111/j.1751-9004.2008.00098.x",
+      "10.1126/science.1169144",
+      "10.1126/science.6143402",
+      "10.1146/annurev-clinpsy-050212-185608",
+      "10.1146/annurev-psych-120710-100504",
+      "10.1155/2019/2108423",
+      "10.1162/jocn_a_01146",
+      "10.1167/15.12.123",
+      "10.1177/00139160021972658",
+      "10.1177/0013916505276741",
+      "10.1177/0013916509354696",
+      "10.1177/0013916511402063",
+      "10.1177/0013916587191001",
+      "10.1177/1088868313518487",
+      "10.1177/1745691609356784",
+      "10.1177/1745691615576761",
+      "10.1186/s40410-016-0033-1",
+      "10.1207/s15327957pspr0804_3",
+      "10.1348/0007126042369811",
+      "10.1371/journal.pone.0001201",
+      "10.1371/journal.pone.0021852",
+      "10.1371/journal.pone.0023912",
+      "10.1371/journal.pone.0114572",
+      "10.1523/JNEUROSCI.2270-15.2015",
+      "10.2190/12AV-AH2P-MCEH-289E",
+      "10.2190/EM.28.2.d",
+      "10.26687/archnet-ijar.v8i2.436",
+      "10.3389/fbuil.2019.00028",
+      "10.3389/fnhum.2016.00112",
+      "10.3389/fnhum.2017.00477",
+      "10.3389/fpsyg.2013.00808",
+      "10.3389/fpsyg.2015.00471",
+      "10.3389/fpsyg.2017.00632",
+      "10.3390/bs3040536",
+      "10.3758/BF03206076",
+      "10.3758/BF03207221",
+      "10.3758/BF03211042",
+      "10.3758/BF03212593"
+    ],
+    "cited_by": [],
+    "semantic_scholar_id": "4eb07fcb6c77f4b7535e3f8fe6ef3807af5f3803",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:38:34.980224+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "Psychological and neural responses to architectural interiors",
+    "crossref_year": 2020,
+    "crossref_citation_count": 133,
+    "crossref_journal": "Cortex",
+    "crossref_publisher": "Elsevier BV",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 169,
+    "crossref_issn": [
+      "0010-9452"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.446564+00:00",
+    "_cr_refs_added": 102
+  },
+  "year": 2020,
+  "journal": "Cortex",
+  "authors_structured": [
+    "Alexander Coburn",
+    "O. Vartanian",
+    "Yoed N. Kenett",
+    "Marcos Nadal",
+    "Franziska Hartung",
+    "G. Hayn-Leichsenring",
+    "G. Navarrete",
+    "J. Gonz\u00e1lez-Mora",
+    "A. Chatterjee"
+  ],
+  "crossref_title": "Psychological and neural responses to architectural interiors",
+  "crossref_authors": [
+    {
+      "name": "Alexander Coburn",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Oshin Vartanian",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Yoed N. Kenett",
+      "orcid": "https://orcid.org/0000-0003-3872-7689",
+      "affiliation": null
+    },
+    {
+      "name": "Marcos Nadal",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Franziska Hartung",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Gregor Hayn-Leichsenring",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Gorka Navarrete",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Jos\u00e9 L. Gonz\u00e1lez-Mora",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Anjan Chatterjee",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2020,
+  "crossref_journal": "Cortex",
+  "crossref_citation_count": 133,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Elsevier BV",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:53:31.005205+00:00"
+}

@@ -1,5 +1,5 @@
 """
-Seed beliefs from calibrated template JSON files into the Web of Belief.
+Seed beliefs from template JSON files into the Web of Belief.
 
 Addresses Audit Structural Risk #3: calibrated templates sit on disk
 but never populate the beliefs table.
@@ -45,10 +45,12 @@ logger = logging.getLogger(__name__)
 BRIDGE_WARRANT_PRIORS: Dict[str, float] = {
     "CONSTITUTIVE": 0.75,
     "MECHANISM": 0.60,
-    "EMPIRICAL_COVARIANCE": 0.60,
+    "EMPIRICAL_ASSOCIATION": 0.60,
+    "EMPIRICAL_ASSOCIATION": 0.60,
     "FUNCTIONAL": 0.50,
     "CAPACITY": 0.45,
     "ANALOGICAL": 0.35,
+    "THEORY_DERIVED": 0.25,  # For uncalibrated templates
 }
 
 # Default T1 framework prior credence (established neurally-grounded frameworks)
@@ -196,6 +198,17 @@ def _build_content_summary(payload: Dict[str, Any]) -> str:
         if len(steps) > 4:
             chain_summary += " → ..."
         return f"{name}: {chain_summary}"
+    # Fallback: use causal_links for uncalibrated templates
+    causal_links = payload.get("causal_links", [])
+    if isinstance(causal_links, list) and causal_links:
+        link_summaries = []
+        for link in causal_links[:3]:
+            if isinstance(link, dict):
+                cause = link.get("cause", "?")
+                effect = link.get("effect", "?")
+                link_summaries.append(f"{cause} → {effect}")
+        if link_summaries:
+            return f"{name}: {'; '.join(link_summaries)}"
     return name
 
 
@@ -233,11 +246,47 @@ def scan_calibrated_templates(
     return results
 
 
+def scan_all_templates(
+    templates_dir: Path,
+) -> Tuple[List[Tuple[Path, Dict[str, Any]]], List[Tuple[Path, Dict[str, Any]]]]:
+    """
+    Scan templates directory and return calibrated and uncalibrated separately.
+
+    Returns (calibrated, uncalibrated) tuple.
+    EN-0B extension.
+    """
+    calibrated = []
+    uncalibrated = []
+    for template_path in sorted(templates_dir.glob("*.json")):
+        try:
+            payload = json.loads(template_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning("Skipping %s: %s", template_path.name, exc)
+            continue
+
+        tid = _get_template_id(payload)
+        if not tid:
+            logger.warning("Skipping %s: no template_id", template_path.name)
+            continue
+
+        if _is_calibrated(payload):
+            calibrated.append((template_path, payload))
+        else:
+            uncalibrated.append((template_path, payload))
+
+    return calibrated, uncalibrated
+
+
 def create_belief_from_template(
     payload: Dict[str, Any],
     source_path: Path,
+    is_uncalibrated: bool = False,
 ) -> Belief:
-    """Create a Belief object from a calibrated template JSON payload."""
+    """Create a Belief object from a template JSON payload.
+
+    For uncalibrated templates (EN-0B), assigns lower epistemic level
+    and provisional status with appropriate provenance tags.
+    """
     tid = _get_template_id(payload)
     assert tid is not None
 
@@ -250,20 +299,30 @@ def create_belief_from_template(
 
     # Build tags
     tags = ["template_seeded"]
+    if is_uncalibrated:
+        tags.append("uncalibrated")
+        tags.append("en-0b-seeded")
     panel_id = payload.get("panel_id")
     if panel_id:
         tags.append(f"panel:{panel_id}")
     bridge_warrant = payload.get("bridge_warrant")
     if bridge_warrant:
         tags.append(f"bridge:{bridge_warrant}")
+    bridge_inferred = payload.get("bridge_inferred", False)
+    if bridge_inferred:
+        tags.append("bridge_inferred")
     status_field = payload.get("status") or payload.get("calibration_status") or ""
     tags.append(f"calibration:{status_field}")
+
+    # Uncalibrated templates get lower epistemic standing
+    level = EpistemicLevel.INTERMEDIATE if is_uncalibrated else EpistemicLevel.THEORETICAL
+    status = BeliefStatus.TENTATIVE if is_uncalibrated else BeliefStatus.ESTABLISHED
 
     return Belief(
         belief_id=f"{TEMPLATE_BELIEF_PREFIX}{tid}",
         content=_build_content_summary(payload),
-        level=EpistemicLevel.THEORETICAL,
-        status=BeliefStatus.ESTABLISHED,
+        level=level,
+        status=status,
         credence=Credence(value=credence_value, uncertainty=uncertainty),
         theory_id=theory_id,
         domain="cnfa",
@@ -327,29 +386,51 @@ def seed_beliefs(
     db_path: str = "data/web_persistence_v2.db",
     dry_run: bool = False,
     clear_existing: bool = False,
+    include_uncalibrated: bool = False,
 ) -> Dict[str, Any]:
     """
     Main entry point: scan templates, create beliefs, persist to WoB.
 
     Returns summary dict with counts and details.
+
+    If include_uncalibrated=True (EN-0B), also seeds beliefs from
+    uncalibrated templates at lower epistemic standing.
     """
-    # 1. Scan calibrated templates
-    calibrated = scan_calibrated_templates(templates_dir)
-    logger.info("Found %d calibrated templates", len(calibrated))
+    # 1. Scan templates
+    if include_uncalibrated:
+        calibrated, uncalibrated = scan_all_templates(templates_dir)
+        logger.info("Found %d calibrated + %d uncalibrated templates",
+                    len(calibrated), len(uncalibrated))
+        all_templates = [
+            (path, payload, False) for path, payload in calibrated
+        ] + [
+            (path, payload, True) for path, payload in uncalibrated
+        ]
+    else:
+        calibrated = scan_calibrated_templates(templates_dir)
+        logger.info("Found %d calibrated templates", len(calibrated))
+        all_templates = [(path, payload, False) for path, payload in calibrated]
 
     # 2. Create beliefs
     beliefs: Dict[str, Belief] = {}
     templates_by_tid: Dict[str, Dict[str, Any]] = {}
     per_theory: Counter = Counter()
     per_warrant: Counter = Counter()
+    n_calibrated = 0
+    n_uncalibrated = 0
 
-    for path, payload in calibrated:
+    for path, payload, is_uncal in all_templates:
         tid = _get_template_id(payload)
         assert tid is not None
 
-        belief = create_belief_from_template(payload, path)
+        belief = create_belief_from_template(payload, path, is_uncalibrated=is_uncal)
         beliefs[tid] = belief
         templates_by_tid[tid] = payload
+
+        if is_uncal:
+            n_uncalibrated += 1
+        else:
+            n_calibrated += 1
 
         if belief.theory_id:
             per_theory[belief.theory_id] += 1
@@ -363,28 +444,38 @@ def seed_beliefs(
     # 4. Build summary
     summary = {
         "templates_scanned": len(list(templates_dir.glob("*.json"))),
-        "calibrated_found": len(calibrated),
+        "calibrated_seeded": n_calibrated,
+        "uncalibrated_seeded": n_uncalibrated,
         "beliefs_created": len(beliefs),
         "constraints_created": len(constraints),
         "per_theory": dict(sorted(per_theory.items())),
         "per_warrant": dict(sorted(per_warrant.items())),
         "belief_ids": sorted(beliefs.keys()),
+        "include_uncalibrated": include_uncalibrated,
     }
 
     if dry_run:
         summary["mode"] = "DRY_RUN"
-        print("\n=== DRY RUN — Template → Belief Seeder ===\n")
-        print(f"Templates directory: {templates_dir}")
-        print(f"Calibrated templates found: {len(calibrated)}")
-        print(f"Beliefs that would be created: {len(beliefs)}")
+        print("\n=== DRY RUN — Template → Belief Seeder ===")
+        if include_uncalibrated:
+            print("(EN-0B: including uncalibrated templates)")
+        print(f"\nTemplates directory: {templates_dir}")
+        print(f"Calibrated templates: {n_calibrated}")
+        if include_uncalibrated:
+            print(f"Uncalibrated templates: {n_uncalibrated}")
+        print(f"Total beliefs that would be created: {len(beliefs)}")
         print(f"Constraints that would be created: {len(constraints)}")
         print(f"\nPer T1 framework: {dict(per_theory)}")
         print(f"Per bridge warrant: {dict(per_warrant)}")
-        print("\nBeliefs:")
-        for tid, belief in sorted(beliefs.items()):
+        print("\nBeliefs (first 20):")
+        for i, (tid, belief) in enumerate(sorted(beliefs.items())):
+            if i >= 20:
+                print(f"  ... and {len(beliefs) - 20} more")
+                break
+            uncal_marker = " [UNCAL]" if "uncalibrated" in belief.tags else ""
             print(f"  {belief.belief_id}: credence={belief.credence.value:.3f} "
                   f"±{belief.credence.uncertainty:.2f} | theory={belief.theory_id} | "
-                  f"{belief.content[:80]}")
+                  f"{belief.content[:70]}{uncal_marker}")
         print("\nConstraints:")
         for c in constraints:
             print(f"  {c.constraint_id}: {c.source_id} → {c.target_id} "
@@ -393,7 +484,9 @@ def seed_beliefs(
 
     # 5. Persist to WebOfBelief via WebPersistenceService
     summary["mode"] = "LIVE"
-    print(f"\n=== LIVE — Seeding {len(beliefs)} beliefs to {db_path} ===\n")
+    print(f"\n=== LIVE — Seeding {len(beliefs)} beliefs to {db_path} ===")
+    if include_uncalibrated:
+        print(f"  ({n_calibrated} calibrated + {n_uncalibrated} uncalibrated)")
 
     service = WebPersistenceService(db_path)
     master_web_id = service.create_or_get_master_web()
@@ -495,6 +588,11 @@ def main() -> int:
         help="Clear existing template-seeded beliefs before re-seeding",
     )
     parser.add_argument(
+        "--include-uncalibrated",
+        action="store_true",
+        help="EN-0B: Also seed beliefs from uncalibrated/scaffold templates (at lower epistemic standing)",
+    )
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging",
@@ -512,6 +610,7 @@ def main() -> int:
         db_path=args.db_path,
         dry_run=args.dry_run,
         clear_existing=args.clear_existing,
+        include_uncalibrated=args.include_uncalibrated,
     )
 
     print(f"\nDone. Summary: {summary['beliefs_created']} beliefs, "

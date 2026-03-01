@@ -1,0 +1,1939 @@
+{
+  "doi": "10.1038/sdata.2014.6",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.776,
+  "n_findings": 46,
+  "extracted_at": "2026-02-25T06:51:10.165050+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0116629,
+  "title": "Impacts of Illuminance and Correlated Color Temperature on Cognitive Performance: A VR-Lighting Study",
+  "authors": "Armin Mostafavi et al., null",
+  "research_question": "How do different lighting conditions (illuminance and CCT) influence auditory memory scores (RQ1a), visual memory scores (RQ1b), auditory memory response time (RQ2a), and visual memory response time (RQ2b)? Do architectural context (RQ1c, RQ2c) and experiment time (RQ1d, RQ2d) moderate these influences?",
+  "design_type": "mixed_factorial",
+  "participants": {
+    "n": 35,
+    "description": "Thirty-five healthy adult participants (M=26.51, SD=4.31, range 19-38 years). Majority were students and researchers (n=24), with engineers (n=4) and programmers (n=3). 19 male, 15 female, 1 non-binary. Around half (48.5%) used eyeglasses or contact lenses. All reported sufficient sleep and no medical problems. Most associated with Vienna University of Technology.",
+    "recruitment": "convenience sampling method (word-of-mouth and announcements through the university transmission system)"
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "VR",
+      "description": "Two distinct architectural contexts (modern interior classroom and meeting room) with identical dimensions (7m x 8m x 3m). Furniture and layout varied to convey room function. Five different artificial lighting conditions were simulated in each context, ranging from 600 lm to 4200 lm luminous flux and 2000 K to 7200 K CCT. These conditions corresponded to average illuminance levels of 100 lx, 400 lx, and 700 lx on the work plane. The conditions were: Warm-Dark (2000 K-600 lm/100 lx), Cold-Dark (7200 K-600 lm/100 lx), Neutral-Moderate (4600 K-2400 lm/400 lx), Warm-Bright (2000 K-4200 lm/700 lx), and Cold-Bright (7200 K-4200 lm/700 lx). The VR environment was developed in Unreal Engine 4.26 and presented via Meta Quest 2 head-mounted display.",
+      "n_stimuli": 10,
+      "source": "Section 2.1, 2.2, Table 1"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Auditory memory performance",
+      "instrument": "Backward Digit Span Task (BDST) score (0-1 scale)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Auditory memory reaction time",
+      "instrument": "Backward Digit Span Task (BDST) reaction time (milliseconds, 0-15 seconds)",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Visual memory performance",
+      "instrument": "Visual Dot Task (VMT) score (0-1 scale)",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Visual memory reaction time",
+      "instrument": "Visual Dot Task (VMT) reaction time (milliseconds, 0-15 seconds)",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Chronotype and alertness peaks",
+      "instrument": "Morningness-Eveningness Questionnaire (MEQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Sense of presence in virtual environment",
+      "instrument": "Igroup Presence Questionnaire (IPQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Cybersickness symptoms",
+      "instrument": "Simulator Sickness Questionnaire (SSQ)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Subjective mental workload",
+      "instrument": "NASA Task Load Index",
+      "type": "self_report"
+    },
+    {
+      "construct": "Emotional valence",
+      "instrument": "Self-Assessment Manikin (SAM)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Arousal",
+      "instrument": "Self-Assessment Manikin (SAM)",
+      "type": "self_report"
+    },
+    {
+      "construct": "Spatial presence",
+      "instrument": "Presence Measurement, Effects, Conditions of Spatial Presence Questionnaire (MEC-SPC)",
+      "type": "self_report"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB)",
+      "consequent": "BDST score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.254",
+      "effect_size": 0.008,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 645.48)=1.339",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.18, Table 4",
+      "quote": "we did not find the main effect of lighting conditions on the BDST score significant."
+    },
+    {
+      "id": 2,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB) interacted with Experiment Time (morning, afternoon, evening)",
+      "consequent": "BDST score",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": "0.003",
+      "effect_size": 0.035,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(8, 645.99)=2.939",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.19, Table 4",
+      "quote": "we found the lighting condition by experiment time interaction effect to be significant for BDST"
+    },
+    {
+      "id": 3,
+      "antecedent": "Lighting Condition interacted with Architectural Context",
+      "consequent": "BDST score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.667",
+      "effect_size": 0.004,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 645.50)=0.594",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Architectural Context"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.19, Table 4",
+      "quote": "Other interaction effects were not significant."
+    },
+    {
+      "id": 4,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the morning",
+      "consequent": "BDST score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.86,
+        1.05
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "in the morning, the NM (Neutral-Moderate) condition has the best test score of 0.95"
+    },
+    {
+      "id": 5,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the afternoon",
+      "consequent": "BDST score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.85,
+        1.02
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "in the afternoon, the NM (Neutral-Moderate) condition has the best test score of 0.94"
+    },
+    {
+      "id": 6,
+      "antecedent": "Warm-Bright lighting (2000 K, 700 lx) in the evening",
+      "consequent": "BDST score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.85,
+        1.06
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.19",
+      "quote": "in the evening, WB (Warm-Bright) condition has the best test score of 0.96"
+    },
+    {
+      "id": 7,
+      "antecedent": "Warm light (2000 K CCT) in the afternoon",
+      "consequent": "BDST score",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)",
+        "CCT"
+      ],
+      "provenance_depth": "section",
+      "source": "p.24",
+      "quote": "warm light has resulted in significantly lower BDST scores in the afternoon session"
+    },
+    {
+      "id": 8,
+      "antecedent": "Warm light (2000 K CCT) vs. natural (4600 K) and cold (7200 K) light in the afternoon",
+      "consequent": "BDST score",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)",
+        "CCT"
+      ],
+      "provenance_depth": "section",
+      "source": "p.24",
+      "quote": "warm light (2000 K) led to a lower BDST score in comparison with natural (4600 K) and cold (7200 K) light."
+    },
+    {
+      "id": 9,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB)",
+      "consequent": "VMT score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.104",
+      "effect_size": 0.012,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 646.07)=1.928",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.19, Table 4",
+      "quote": "the effect of lighting conditions on VMT... was not significant."
+    },
+    {
+      "id": 10,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB) interacted with Experiment Time (morning, afternoon, evening)",
+      "consequent": "VMT score",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": "0.007",
+      "effect_size": 0.032,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(8,646.53)=2.657",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.19, Table 4",
+      "quote": "We found the interaction effect of lighting condition and experiment time significant"
+    },
+    {
+      "id": 11,
+      "antecedent": "Lighting Condition interacted with Architectural Context",
+      "consequent": "VMT score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.611",
+      "effect_size": 0.004,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 646.09)=0.673",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Architectural Context"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.19, Table 4",
+      "quote": "Other interaction effects were not significant"
+    },
+    {
+      "id": 12,
+      "antecedent": "Warm-Dark lighting (2000 K, 100 lx) in the morning",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.9,
+        1.03
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the morning, the WD (Warm-Dark) condition has the best test score of 0.96"
+    },
+    {
+      "id": 13,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the afternoon",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.9,
+        1.03
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the afternoon, the NM (Neutral-Moderate) condition has the best test score of 0.96"
+    },
+    {
+      "id": 14,
+      "antecedent": "Cold-Bright lighting (7200 K, 700 lx) in the evening",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        0.91,
+        1.06
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the evening, CB (Cold-Bright) condition has the best test score of 0.99"
+    },
+    {
+      "id": 15,
+      "antecedent": "Bright light (700 lx, WB and CB) vs. moderate light (400 lx, NM) in morning and evening",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "T20"
+      ],
+      "mechanism": "higher contrast ratio in the VMT",
+      "moderators_reported": [
+        "Experiment Time (morning, evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.25",
+      "quote": "the bright light (i.e., WB and CB, 700 lx) improves VMT scores compared to moderate lighting (i.e., NM, 400 lx) in the morning and evening sessions"
+    },
+    {
+      "id": 16,
+      "antecedent": "Dark conditions (100 lx) vs. moderate light (400 lx)",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L1",
+        "T20"
+      ],
+      "mechanism": "higher contrast ratio in the VMT",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.25",
+      "quote": "A similar trend was found for dark conditions (100 lx) compared to moderate light intensity (400 lx)."
+    },
+    {
+      "id": 17,
+      "antecedent": "Higher CCT (~7000K) vs. lower CCT (~4000K)",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "p.25",
+      "quote": "showing the score improvement for higher CCT."
+    },
+    {
+      "id": 18,
+      "antecedent": "Lower CCT (warm light) in morning and evening",
+      "consequent": "VMT performance",
+      "direction": "increase",
+      "claim_type": "moderated",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning, evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.25",
+      "quote": "lower CCT increased the visual memory performance of the visual task.",
+      "outcome_id": "cog.performance",
+      "outcome_domain": "cog",
+      "outcome_match_type": "fuzzy",
+      "outcome_confidence": 0.848
+    },
+    {
+      "id": 19,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB) interacted with Experiment Time (morning, afternoon, evening)",
+      "consequent": "BDST reaction time",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "0.088",
+      "effect_size": 0.021,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(8, 645.48)=1.730",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.20, Table 5",
+      "quote": "a marginally significant interaction between lighting conditions and experiment time was found for BDST reaction time",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Lighting Condition interacted with Architectural Context",
+      "consequent": "BDST reaction time",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.985",
+      "effect_size": 0.001,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 645.45)=0.093",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Architectural Context"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.20, Table 5",
+      "quote": "Other interaction effects were not significant.",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the morning",
+      "consequent": "BDST reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        9.57,
+        11.0
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the morning, the NM (Neutral-Moderate) condition has the fastest response of 10.29",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the afternoon",
+      "consequent": "BDST reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        9.44,
+        10.76
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the afternoon, the NM (Neutral-Moderate) condition has the fastest response of 10.10",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Cold-Bright lighting (7200 K, 700 lx) in the evening",
+      "consequent": "BDST reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        8.89,
+        10.47
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.20",
+      "quote": "in the evening, CB (Cold-Bright) condition has the fastest response of 9.68",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB)",
+      "consequent": "VMT reaction time",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.182",
+      "effect_size": 0.01,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 645.97)=1.566",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.21, Table 5",
+      "quote": "The main effect of lighting conditions on reaction time was not significant for VMT",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Lighting Condition (WD, WB, NM, CD, CB) interacted with Experiment Time (morning, afternoon, evening)",
+      "consequent": "VMT reaction time",
+      "direction": "mixed",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "0.022",
+      "effect_size": 0.027,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(8, 646.13)=2.265",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.21, Table 5",
+      "quote": "The interaction effect of lighting condition with the experiment time for VMT was found significant",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Lighting Condition interacted with Architectural Context",
+      "consequent": "VMT reaction time",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "behavioral",
+      "p_value": "0.204",
+      "effect_size": 0.009,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(4, 646.01)=1.486",
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Architectural Context"
+      ],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.21, Table 5",
+      "quote": "Other interaction effects were not significant.",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Warm-Dark lighting (2000 K, 100 lx) in the morning",
+      "consequent": "VMT reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        6.55,
+        7.85
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.21",
+      "quote": "in the morning, the WD (Warm-Dark) condition has the fastest response of 7.20",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 28,
+      "antecedent": "Neutral-Moderate lighting (4600 K, 400 lx) in the afternoon",
+      "consequent": "VMT reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        6.31,
+        7.55
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (afternoon)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.21",
+      "quote": "in the afternoon, the NM (Neutral-Moderate) condition has the fastest response of 6.93",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Cold-Bright lighting (7200 K, 700 lx) in the evening",
+      "consequent": "VMT reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": [
+        5.75,
+        7.23
+      ],
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (evening)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.21",
+      "quote": "in the evening, the CB (Cold-Bright) condition has the fastest response of 6.49",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 30,
+      "antecedent": "Cold-Bright (7200 K, 700 lx) and Warm-Dark (2000 K, 100 lx) lighting vs. Neutral-Moderate (4600 K, 400 lx) in the morning",
+      "consequent": "VMT reaction time",
+      "direction": "decrease",
+      "claim_type": "moderated",
+      "measure_type": "behavioral",
+      "p_value": "significant",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "MS",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Experiment Time (morning)"
+      ],
+      "provenance_depth": "section",
+      "source": "p.25",
+      "quote": "In the morning session, reaction time was significantly faster for Cold-Bright and Warm-Dark than Neutral-Moderate conditions",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 31,
+      "antecedent": "Classroom architectural context vs. Meeting room architectural context",
+      "consequent": "Visual memory task reaction time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "0.018",
+      "effect_size": 0.008,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": "F(1, 652.92)=5.580",
+      "theory_links": [
+        "PP",
+        "SN",
+        "DT"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, p.28, Table 5",
+      "quote": "the main effect of architectural context was significant for visual memory task reaction time, with participants responding faster in the classroom compared to the meeting room.",
+      "outcome_id": "cog.memory",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 32,
+      "antecedent": "Lighting conditions interacted with architectural context",
+      "consequent": "Task performance (BDST score, VMT score, BDST RT, VMT RT)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "SN",
+        "DT"
+      ],
+      "template_ids": [
+        "AX7",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [
+        "Architectural Context"
+      ],
+      "provenance_depth": "section",
+      "source": "p.28",
+      "quote": "no significant interaction between lighting conditions and architectural context was observed",
+      "outcome_id": "behav.productivity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 33,
+      "antecedent": "Increased task difficulty (BDST)",
+      "consequent": "BDST score",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "0.002",
+      "effect_size": -0.07,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.11,
+        -0.03
+      ],
+      "test_statistic": "t(647.49)=-3.12",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "increasing task difficulty by adding an extra digit to BDST decreased scores"
+    },
+    {
+      "id": 34,
+      "antecedent": "Increased task difficulty (BDST)",
+      "consequent": "BDST reaction time",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": 2.07,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        1.81,
+        2.32
+      ],
+      "test_statistic": "t(645.05)=15.48",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "increased reaction time",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 35,
+      "antecedent": "Task difficulty (VMT)",
+      "consequent": "VMT score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": "0.793",
+      "effect_size": 0.0,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.03,
+        0.03
+      ],
+      "test_statistic": "t(645.89)=0.26",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "AX7",
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "task difficulty did not significantly affect visual memory task scores."
+    },
+    {
+      "id": 36,
+      "antecedent": "Lighting condition order",
+      "consequent": "BDST score",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.01,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.01,
+        0.02
+      ],
+      "test_statistic": "t(645.31)=3.34",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "learning effect over time",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "revealing a significant learning effect over time."
+    },
+    {
+      "id": 37,
+      "antecedent": "Lighting condition order",
+      "consequent": "VMT score",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "cognitive",
+      "p_value": "<0.001",
+      "effect_size": 0.02,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        0.01,
+        0.02
+      ],
+      "test_statistic": "t(648.14)=6.09",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "learning effect over time",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "revealing a significant learning effect over time."
+    },
+    {
+      "id": 38,
+      "antecedent": "Lighting condition order",
+      "consequent": "BDST reaction time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": -0.13,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.18,
+        -0.09
+      ],
+      "test_statistic": "t(649.61)=-5.52",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "learning effect over time",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "revealing a significant learning effect over time.",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 39,
+      "antecedent": "Lighting condition order",
+      "consequent": "VMT reaction time",
+      "direction": "decrease",
+      "claim_type": "causal",
+      "measure_type": "behavioral",
+      "p_value": "<0.001",
+      "effect_size": -0.2,
+      "effect_size_type": "beta",
+      "sample_size": null,
+      "confidence_interval": [
+        -0.24,
+        -0.15
+      ],
+      "test_statistic": "t(649.48)=-8.32",
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": "learning effect over time",
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.24, Table 7",
+      "quote": "revealing a significant learning effect over time.",
+      "outcome_id": "cog.processing_speed",
+      "outcome_domain": "cog",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 40,
+      "antecedent": "Correlated Color Temperature (CCT)",
+      "consequent": "VMT Score, VMT RT, BDST RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.25, Table 6",
+      "quote": "CCT emerged as a more crucial predictor than illuminance for various cognitive performance measures, including test scores and reaction times."
+    },
+    {
+      "id": 41,
+      "antecedent": "Correlated Color Temperature (CCT) vs. Illuminance",
+      "consequent": "BDST score",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "CB"
+      ],
+      "template_ids": [
+        "L4",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "fulltext_multi",
+      "source": "p.25, Table 6",
+      "quote": "This pattern held true for all aspects except for the BDST score"
+    },
+    {
+      "id": 42,
+      "antecedent": "Daytime (Afternoon)",
+      "consequent": "BDST Score, BDST RT, VMT Score, VMT RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Daytime: Afternoon* 0.130 <.001 0.007 <.001"
+    },
+    {
+      "id": 43,
+      "antecedent": "Daytime (Evening)",
+      "consequent": "BDST RT, VMT RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "CB"
+      ],
+      "template_ids": [
+        "AX10",
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Daytime: Evening* <.001 0.065 <.001 0.090"
+    },
+    {
+      "id": 44,
+      "antecedent": "Difficulty level",
+      "consequent": "BDST Score, BDST RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [
+        "T36"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Difficulty level 0.205 0.755 <.001 0.023"
+    },
+    {
+      "id": 45,
+      "antecedent": "Architectural Context",
+      "consequent": "BDST RT, VMT RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "behavioral",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "SN"
+      ],
+      "template_ids": [
+        "T20"
+      ],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Architectural Context 0.028 0.001 0.007 0.018"
+    },
+    {
+      "id": 46,
+      "antecedent": "Order of lighting conditions",
+      "consequent": "BDST Score, VMT Score, VMT RT",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "cognitive",
+      "p_value": null,
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": null,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "MS"
+      ],
+      "template_ids": [],
+      "mechanism": null,
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 6",
+      "quote": "Order 0.548 0.157 0.941 0.851"
+    }
+  ],
+  "mechanisms": [
+    "Well-lit environments lead to faster and more accurate visual processing by triggering rapid chemical reactions in the retina, facilitating swift responses to stimuli.",
+    "Exposure to bright light or changes in lighting conditions can affect circadian rhythms and alter physiological state, impacting reaction time.",
+    "Poorly lit settings with reduced visibility and increased visual noise can slow reaction times by causing details to be overlooked and delaying visual information processing.",
+    "Motor responses and cognition depend on the integration of visual information and cognitive processing, which is influenced by light quality and availability.",
+    "Higher contrast ratio in the Visual Memory Task (VMT) is assumed to cause improved VMT scores under bright and dark conditions compared to moderate lighting."
+  ],
+  "moderators": [
+    "Experiment Time (morning, afternoon, evening)",
+    "Architectural Context (classroom, meeting room)",
+    "Task Difficulty (low, high)",
+    "Order (of lighting conditions)"
+  ],
+  "implementation_implications": [
+    "Architects and engineers should develop lighting designs sensitive to occupants' cognitive performance.",
+    "Lighting systems can be developed to promote better cognitive function and overall wellbeing.",
+    "Further research on lighting in educational spaces should focus on daytime contribution and task type during exposure to specific light conditions.",
+    "Evidence-based design methods using VR can become more affordable and accessible for pre-construction testing, analyzing user responses to lighting factors.",
+    "Lighting settings can be tailored for specific space use during the daytime based on user cognitive performance knowledge.",
+    "Results can be integrated with physiological measurements for a comprehensive understanding.",
+    "Combining VR with lighting offers possibilities for research with fully customizable environments and user interactions."
+  ],
+  "domains": [
+    "A4_Light",
+    "A3_Spatial_Config",
+    "A9_Task_Cognition",
+    "A10_Temporal"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DT",
+    "MS",
+    "CB",
+    "T20"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Lighting condition specifications for twelve luminaires in VE, including Luminance (lm), Average Illuminance (lx), and Correlated Color Temperature (K) for Warm-Dark, Cold-Dark, Neutral-Moderate, Warm-Bright, and Cold-Bright conditions.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Demographic Characteristics by Daytime, showing mean age (SD) and gender distribution (N, %) for morning, afternoon, evening, and overall groups, with F-test and Fisher's Exact Test results for differences.",
+      "key_stats": [
+        "F(2, 32)=0.61, p=.549",
+        "p=.658 (Fisher's Exact Test)"
+      ],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 3",
+      "description": "Descriptive Results of Outcome Measures by Group, showing Mean (SD) for BDST Score, BDST RT, VMT Score, and VMT RT across Cold-Bright, Cold-Dark, Neutral-Moderate, Warm-Bright, Warm-Dark, and Overall conditions.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 4",
+      "description": "F-test Results of Predictors of BDST and VMT Scores, showing Numerator DF, Denominator DF, F Value, P Value, Partial \u03b72, and \u03c92 for Lighting Condition, Experiment Time, Architectural Context, and their interactions (LC:ET, LC:AC), as well as Task Difficulty and Order.",
+      "key_stats": [
+        "F(4, 645.48)=1.339, p=.254",
+        "F(8, 645.99)=2.939, p=.003",
+        "F(4, 645.50)=0.594, p=.667",
+        "F(4, 646.07)=1.928, p=.104",
+        "F(8, 646.53)=2.657, p=.007",
+        "F(4, 646.09)=0.673, p=.611"
+      ],
+      "n_findings_extracted_from": 8
+    },
+    {
+      "table_id": "Table 5",
+      "description": "F-test Results of Predictors of BDST and VMT Reaction Time, showing Numerator DF, Denominator DF, F Value, P Value, Partial \u03b72, and \u03c92 for Lighting Condition, Experiment Time, Architectural Context, and their interactions (LC:ET, LC:AC), as well as Task Difficulty and Order.",
+      "key_stats": [
+        "F(8, 645.48)=1.730, p=.088",
+        "F(4, 645.45)=0.093, p=.985",
+        "F(1, 652.92)=5.580, p=.018",
+        "F(4, 646.01)=1.486, p=.204",
+        "F(8, 646.13)=2.265, p=.022"
+      ],
+      "n_findings_extracted_from": 7
+    },
+    {
+      "table_id": "Table 6",
+      "description": "Importance of Predictors of BDST and VMT Score and Reaction Time, showing importance scores for Daytime: Afternoon, Daytime: Evening, Difficulty level, CCT, Illuminance, Architectural Context, and Order.",
+      "key_stats": [],
+      "n_findings_extracted_from": 7
+    },
+    {
+      "table_id": "Table 7",
+      "description": "The direction of control variables (i.e., lighting order and task difficulty), showing Coefficient (95% CI), t-statistic, df, and P value for Task Difficulty and Order on BDST score, VMT Score, BDST RT, and VMT RT.",
+      "key_stats": [
+        "t(647.49)=-3.12, p=.002",
+        "t(645.31)=3.34, p<.001",
+        "t(645.89)=0.26, p=.793",
+        "t(648.14)=6.09, p<.001",
+        "t(645.05)=15.48, p<.001",
+        "t(649.61)=-5.52, p<.001",
+        "t(645.68)=1.83, p=.068",
+        "t(649.48)=-8.32, p<.001"
+      ],
+      "n_findings_extracted_from": 8
+    }
+  ],
+  "limitations": [
+    "Measurements utilized in the study have yet to be validated against real-world measurement methods and should not be directly applied in real environments.",
+    "The potential limitations of the VR simulation could be a minor concern, requiring further research for validation in real-world environments.",
+    "The participant pool consisted mainly of university students (convenience sampling), limiting generalizability to a broader population.",
+    "The age distribution (young adults) and proportion of participants wearing eyeglasses might differ from the general population, potentially leading to different effects of lighting on task performance.",
+    "VR, while offering control, limits the number of participants tested at once, making broad conclusions challenging.",
+    "Data collection was constrained by geographical location, suggesting replication in different countries.",
+    "The experiment used relatively low-difficulty tasks, and future studies will involve more difficult trials."
+  ],
+  "paper_metadata": {
+    "doi": "10.1038/sdata.2014.6",
+    "title": "microclim: Global estimates of hourly microclimate based on long-term monthly climate averages",
+    "authors": [
+      "M. Kearney",
+      "Andrew P Isaac",
+      "W. Porter"
+    ],
+    "year": 2014,
+    "journal": "Scientific Data",
+    "volume": "1",
+    "issue": "1",
+    "pages": null,
+    "publisher": "Springer Science and Business Media LLC",
+    "citation_count": 174,
+    "influential_citation_count": 13,
+    "references": [
+      "10.1002/joc.1276",
+      "10.1007/978-0-387-78341-3",
+      "10.1007/978-1-4612-6024-0",
+      "10.1007/978-3-642-41714-6_51304",
+      "10.1007/978-94-009-2221-1",
+      "10.1007/BF00379617",
+      "10.1007/s00442-003-1445-7",
+      "10.1016/J.ECOLMODEL.2012.12.020",
+      "10.1016/S0304-3800(00)00354-9",
+      "10.1016/S0304-3800(02)00205-3",
+      "10.1016/j.ecolmodel.2012.12.020",
+      "10.1086/523949",
+      "10.1093/icb/42.3.431",
+      "10.1097/ID.0000000000000115",
+      "10.1098/rstb.2010.0034",
+      "10.1111/1365-2435.12020",
+      "10.1111/2041-210X.12148",
+      "10.1111/J.1461-0248.2005.00792.X",
+      "10.1111/j.1365-2699.2011.02659.x",
+      "10.1111/j.1461-0248.2005.00792.x",
+      "10.1111/j.1461-0248.2008.01277.x",
+      "10.1111/j.1461-0248.2010.01479.x",
+      "10.1111/j.1461-0248.2010.01506.x",
+      "10.1111/j.2041-210X.2011.00134.x",
+      "10.1115/1.3450037",
+      "10.1146/annurev.ecolsys.110308.120159",
+      "10.1175/2007JTECHA930.1",
+      "10.1242/jeb.058958",
+      "10.1242/jeb.059634",
+      "10.1523/JNEUROSCI.5954-10.2011",
+      "10.1890/03-0820",
+      "10.1890/08-0579.1",
+      "10.2134/agronj1957.00021962004900090022x",
+      "10.22499/2.5804.003",
+      "10.2307/1445691",
+      "10.2307/1933806",
+      "10.2307/1948545",
+      "10.2307/633873",
+      "10.3354/CR021001",
+      "10.3354/cr021001",
+      "10.6084/m9.figshare.878253"
+    ],
+    "cited_by": [
+      "10.1002/ecog.08337",
+      "10.1111/gcb.70687",
+      "10.64898/2025.12.12.694062",
+      "10.1002/ecog.07617",
+      "10.1101/2025.10.11.681837",
+      "10.1111/gcb.70500",
+      "10.1111/btp.70077",
+      "10.1038/s44358-025-00067-4",
+      "10.1016/j.ecss.2025.109468",
+      "10.1111/1365-2435.70038",
+      "10.1111/gcb.17434",
+      "10.1101/2024.01.03.574109",
+      "10.1111/geb.13884",
+      "10.1029/2023JG007674",
+      "10.1007/s10340-024-01777-y",
+      "10.1111/ele.14421",
+      "10.1016/j.gecco.2024.e02866",
+      "10.1111/brv.13037",
+      "10.1242/jeb.245543",
+      "10.1016/j.ecoinf.2023.102367",
+      "10.3390/insects14110849",
+      "10.3390/insects14110843",
+      "10.1016/j.ecolind.2023.110749",
+      "10.1101/2023.09.16.558057",
+      "10.1371/journal.pclm.0000139",
+      "10.1098/rspb.2023.0529",
+      "10.1038/s41467-023-38329-4",
+      "10.1093/jisesa/iead040",
+      "10.1002/ecs2.4506",
+      "10.1093/iob/obad009",
+      "10.1111/2041-210X.14062",
+      "10.1111/gcb.16557",
+      "10.3390/biology11101506",
+      "10.1111/ecog.06082",
+      "10.1093/jmammal/gyac043",
+      "10.1093/iob/obac016",
+      "10.1093/conphys/coac020",
+      "10.1111/een.13118",
+      "10.1101/2021.11.30.468083",
+      "10.1016/J.ECOLMODEL.2021.109687",
+      "10.1016/j.pecon.2021.10.003",
+      "10.1002/ps.6494",
+      "10.1093/aesa/saab018",
+      "10.1111/evo.14246",
+      "10.1134/S2079086421030075",
+      "10.1242/bio.058619",
+      "10.1111/1365-2656.13472",
+      "10.3390/insects12030222",
+      "10.1242/bio.058503",
+      "10.1242/jeb.236018",
+      "10.1242/jeb.238352",
+      "10.1111/ddi.13434",
+      "10.1111/2041-210X.13528",
+      "10.1002/jez.2396",
+      "10.1086/709558",
+      "10.1007/s00227-020-03686-x",
+      "10.1007/s00227-020-03686-x",
+      "10.1111/gcb.15123",
+      "10.1111/oik.07123",
+      "10.1093/femsec/fiaa051",
+      "10.1111/evo.13959",
+      "10.1016/j.marpolbul.2020.110915",
+      "10.1111/jbi.13799",
+      "10.1016/j.jtherbio.2020.102522",
+      "10.1002/ece3.5933",
+      "10.1111/2041-210X.13330",
+      "10.1007/s10682-019-10022-3",
+      "10.1111/ddi.12999",
+      "10.1111/1365-2435.13410",
+      "10.1093/icb/icz084",
+      "10.1111/GEB.12953",
+      "10.1111/gcb.14791",
+      "10.1038/s41467-019-11943-x",
+      "10.1016/J.JTHERBIO.2019.102398",
+      "10.1016/j.cub.2019.06.038",
+      "10.1111/GEB.12911",
+      "10.1111/JVS.12759",
+      "10.1111/ECOG.04616",
+      "10.3390/AGRONOMY9060337",
+      "10.1177/1940082919854058",
+      "10.1111/ddi.12939",
+      "10.1098/rspb.2019.0174",
+      "10.1111/ECOG.04226",
+      "10.1017/S0266467419000099",
+      "10.1016/j.tree.2018.12.012",
+      "10.1186/s13020-019-0226-0",
+      "10.1038/s41598-018-36761-x",
+      "10.1080/09670874.2018.1547460",
+      "10.1111/ddi.12883",
+      "10.1093/conphys/coz028",
+      "10.3897/RIO.4.E32449",
+      "10.1111/AEC.12689",
+      "10.1111/1365-2656.12914",
+      "10.1111/ecog.03427",
+      "10.1111/GEB.12811",
+      "10.1007/s40823-018-0034-8",
+      "10.1126/sciadv.aar5471",
+      "10.1111/1365-2656.12818",
+      "10.1111/1749-4877.12315",
+      "10.1093/icb/icy018",
+      "10.1111/2041-210X.13035",
+      "10.1111/jbi.13363",
+      "10.1111/GEB.12730",
+      "10.1016/J.JHYDROL.2018.04.040",
+      "10.1111/1365-2656.12812",
+      "10.1111/1365-2435.13030",
+      "10.1111/GEB.12703",
+      "10.1016/J.ACTAO.2018.03.005",
+      "10.1111/btp.12519",
+      "10.1111/ele.12901",
+      "10.1111/rec.12561",
+      "10.1111/brv.12344",
+      "10.1073/pnas.1715598115",
+      "10.1007/s00484-017-1471-5",
+      "10.1101/217497",
+      "10.1111/OIK.04203",
+      "10.1111/btp.12457",
+      "10.1038/s41598-017-08514-9",
+      "10.1007/s10144-017-0591-4",
+      "10.1111/ECOG.02360",
+      "10.1371/journal.pone.0172939",
+      "10.1111/gcb.13454",
+      "10.1016/J.ECOLMODEL.2016.11.008",
+      "10.1002/ECM.1240",
+      "10.1111/ECOG.02788",
+      "10.1007/s13355-017-0480-5",
+      "10.1007/s00248-017-0934-x",
+      "10.1111/icad.12211",
+      "10.1017/cbo9781316155318",
+      "10.1111/GEB.12516",
+      "10.1111/gcb.13313",
+      "10.1016/J.BIOCON.2016.04.004",
+      "10.1093/conphys/cow053",
+      "10.1038/sdata.2016.87",
+      "10.1007/s10584-016-1780-4",
+      "10.1038/ncomms12643",
+      "10.1038/nplants.2016.129",
+      "10.5194/BG-13-3869-2016",
+      "10.1093/icb/icw016",
+      "10.1086/686628",
+      "10.3389/fphys.2016.00139",
+      "10.1111/2041-210X.12488",
+      "10.1111/ECOG.01576",
+      "10.1111/ele.12579",
+      "10.21425/F5FBG27849",
+      "10.1016/j.tree.2015.09.006",
+      "10.1515/eje-2015-0014",
+      "10.1016/j.jtherbio.2014.10.002",
+      "10.1002/ece3.1848",
+      "10.1111/jbi.12573",
+      "10.1016/J.SPASTA.2015.05.008",
+      "10.1016/j.cois.2015.09.013",
+      "10.1098/rspb.2015.0837",
+      "10.1086/682359",
+      "10.1099/vir.0.000073",
+      "10.1111/1365-2435.12389",
+      "10.1007/s00360-015-0909-5",
+      "10.3389/fgene.2014.00477",
+      "10.1098/rsbl.2014.0576",
+      "10.1371/journal.pone.0105541",
+      "10.1073/pnas.1405766111",
+      "10.1017/9781139019606.006",
+      "10.1017/sus.2018.16",
+      "10.1016/B978-0-12-803555-9.00012-8",
+      "10.26686/wgtn.17060450.v1",
+      "10.1016/BS.AECR.2016.08.003",
+      "10.1016/B978-0-12-384719-5.00318-X"
+    ],
+    "semantic_scholar_id": "5b8b0643f05f345af4385dcf4108e49a9b1eda36",
+    "enriched": true,
+    "enriched_at": "2026-02-25T11:41:45.225288+00:00",
+    "enrichment_source": "semantic_scholar+crossref",
+    "crossref_title": "microclim: Global estimates of hourly microclimate based on long-term monthly climate averages",
+    "crossref_year": 2014,
+    "crossref_citation_count": 173,
+    "crossref_journal": "Scientific Data",
+    "crossref_publisher": "Springer Science and Business Media LLC",
+    "crossref_type": "journal-article",
+    "crossref_subjects": [],
+    "crossref_abstract": null,
+    "crossref_reference_count": 43,
+    "crossref_issn": [
+      "2052-4463"
+    ],
+    "crossref_enriched_at": "2026-02-25T12:07:06.609434+00:00",
+    "_cr_refs_added": 8
+  },
+  "year": 2014,
+  "journal": "Scientific Data",
+  "authors_structured": [
+    "M. Kearney",
+    "Andrew P Isaac",
+    "W. Porter"
+  ],
+  "crossref_title": "microclim: Global estimates of hourly microclimate based on long-term monthly climate averages",
+  "crossref_authors": [
+    {
+      "name": "Michael R Kearney",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Andrew P Isaac",
+      "orcid": null,
+      "affiliation": null
+    },
+    {
+      "name": "Warren P Porter",
+      "orcid": null,
+      "affiliation": null
+    }
+  ],
+  "crossref_year": 2014,
+  "crossref_journal": "Scientific Data",
+  "crossref_citation_count": 173,
+  "crossref_type": "journal-article",
+  "crossref_publisher": "Springer Science and Business Media LLC",
+  "crossref_subjects": [],
+  "crossref_abstract": null,
+  "crossref_fetched_at": "2026-02-25T11:56:31.238071+00:00"
+}

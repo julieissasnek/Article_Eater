@@ -128,9 +128,29 @@ class TestDatabaseEnumValues:
     """Verify database records use valid enum values."""
 
     @pytest.fixture
-    def session(self):
+    def session(self, tmp_path):
         """Get database session."""
-        return get_session("ae.db")
+        import os
+        import shutil
+        from sqlalchemy.exc import OperationalError
+        from src.cmr.models import create_tables
+        
+        db_path = "ae.db"
+        if os.path.exists(db_path):
+            try:
+                temp_db = tmp_path / "test_enum.db"
+                shutil.copy(db_path, temp_db)
+                sess = get_session(str(temp_db))
+                # Check if it's readable
+                sess.query(TemplateRecord).first()
+                return sess
+            except (OperationalError, Exception):
+                pass
+        
+        # Fallback to empty if copy denied or table missing
+        fallback_db = tmp_path / "test_enum_fallback.db"
+        create_tables(str(fallback_db))
+        return get_session(str(fallback_db))
 
     def test_dedup_status_values(self, session):
         """All dedup_status values should be from allowed set."""

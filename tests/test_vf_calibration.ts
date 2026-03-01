@@ -1,6 +1,5 @@
 
 import { TheoryAPI } from '../src/api/index';
-import { expect } from 'expect';
 
 // Helper to parse strings like "0.40-0.80"
 function parseRange(str: string): { min: number, max: number } | null {

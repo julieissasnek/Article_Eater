@@ -78,6 +78,300 @@ def _m004_add_index_constraints_web_id(cursor: sqlite3.Cursor) -> None:
 
 
 # =============================================================================
+# SPRINT INTEGRATION-1: Paper Integration Pipeline (2026-02-25)
+# =============================================================================
+
+@migration(5)
+def _m005_create_paper_integration_events(cursor: sqlite3.Cursor) -> None:
+    """Create paper_integration_events table for audit trail."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS paper_integration_events (
+            event_id TEXT PRIMARY KEY,
+            paper_id TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            action TEXT NOT NULL,
+            status TEXT NOT NULL,
+            pre_snapshot_id TEXT,
+            post_snapshot_id TEXT,
+            supersedes_paper_id TEXT,
+            beliefs_added TEXT,
+            beliefs_retired TEXT,
+            constraints_added TEXT,
+            constraints_retired TEXT,
+            bn_edges_updated TEXT,
+            molecules_affected TEXT,
+            tags_assigned TEXT,
+            cascade_log TEXT,
+            supersession_records TEXT,
+            error_log TEXT,
+            rollback_of_event_id TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_pie_paper_id
+        ON paper_integration_events(paper_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_pie_status
+        ON paper_integration_events(status)
+    """)
+    LOGGER.info("Created paper_integration_events table with indices")
+
+
+@migration(6)
+def _m006_create_belief_versions(cursor: sqlite3.Cursor) -> None:
+    """Create belief_versions table for per-belief version tracking."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS belief_versions (
+            version_id TEXT PRIMARY KEY,
+            belief_id TEXT NOT NULL,
+            paper_id TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            credence_mean REAL,
+            credence_se REAL,
+            status TEXT,
+            scope_json TEXT,
+            is_current INTEGER DEFAULT 1
+        )
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_bv_belief_id
+        ON belief_versions(belief_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_bv_paper_id
+        ON belief_versions(paper_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_bv_is_current
+        ON belief_versions(is_current)
+    """)
+    LOGGER.info("Created belief_versions table with indices")
+
+
+@migration(7)
+def _m007_create_supersession_records(cursor: sqlite3.Cursor) -> None:
+    """Create supersession_records table for paper replacement tracking."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS supersession_records (
+            record_id TEXT PRIMARY KEY,
+            superseding_paper_id TEXT NOT NULL,
+            superseded_paper_id TEXT NOT NULL,
+            reason TEXT NOT NULL,
+            construct_overlap REAL,
+            confidence REAL,
+            beliefs_superseded TEXT,
+            beliefs_retained TEXT,
+            timestamp TEXT NOT NULL,
+            rolled_back INTEGER DEFAULT 0
+        )
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_sr_superseding
+        ON supersession_records(superseding_paper_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_sr_superseded
+        ON supersession_records(superseded_paper_id)
+    """)
+    LOGGER.info("Created supersession_records table with indices")
+
+
+@migration(8)
+def _m008_create_tag_assignments(cursor: sqlite3.Cursor) -> None:
+    """Create tag_assignments table for 3D taxonomy."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tag_assignments (
+            belief_id TEXT NOT NULL,
+            tag_dimension TEXT NOT NULL,
+            tag_value TEXT NOT NULL,
+            paper_id TEXT NOT NULL,
+            confidence REAL,
+            timestamp TEXT NOT NULL,
+            PRIMARY KEY (belief_id, tag_dimension, tag_value)
+        )
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_ta_dimension
+        ON tag_assignments(tag_dimension)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_ta_paper_id
+        ON tag_assignments(paper_id)
+    """)
+    LOGGER.info("Created tag_assignments table with indices")
+
+
+# =============================================================================
+# Migration 023: OVERSEER schema (from 023_paper_metadata_and_overseer.sql)
+# =============================================================================
+
+@migration(9)
+def _m009_overseer_health_metrics(cursor: sqlite3.Cursor) -> None:
+    """Create overseer_health_metrics, violations, quarantine, snapshots tables."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS overseer_health_metrics (
+            metric_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            mode TEXT NOT NULL,
+            trigger_paper_id TEXT,
+            global_coherence REAL,
+            per_theory_coherence_json TEXT,
+            coherence_delta REAL,
+            conflict_count INTEGER,
+            conflict_rate REAL,
+            new_conflicts_json TEXT,
+            total_beliefs INTEGER,
+            orphan_belief_count INTEGER,
+            total_templates INTEGER,
+            templates_with_evidence INTEGER,
+            coverage_ratio REAL,
+            total_qa_caches INTEGER,
+            stale_qa_caches INTEGER,
+            cache_freshness REAL,
+            bn_edge_count INTEGER,
+            bn_web_sync_violations INTEGER,
+            beliefs_with_provenance INTEGER,
+            beliefs_without_provenance INTEGER,
+            provenance_coverage REAL
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_overseer_health_ts ON overseer_health_metrics(timestamp DESC)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_overseer_health_mode ON overseer_health_metrics(mode)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS overseer_invariant_violations (
+            violation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            invariant_code TEXT NOT NULL,
+            severity TEXT NOT NULL,
+            description TEXT,
+            affected_belief_ids_json TEXT,
+            trigger_paper_id TEXT,
+            resolved BOOLEAN DEFAULT 0,
+            resolved_at TEXT,
+            resolution_notes TEXT
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_overseer_violations_inv ON overseer_invariant_violations(invariant_code)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS overseer_quarantine (
+            quarantine_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            belief_id TEXT NOT NULL,
+            quarantined_at TEXT NOT NULL DEFAULT (datetime('now')),
+            reason TEXT NOT NULL,
+            violation_id INTEGER,
+            review_deadline TEXT,
+            status TEXT DEFAULT 'QUARANTINED',
+            reviewed_at TEXT,
+            reviewer_notes TEXT,
+            original_credence REAL,
+            original_status TEXT
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_overseer_quarantine_status ON overseer_quarantine(status)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS overseer_snapshots (
+            snapshot_id TEXT PRIMARY KEY,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            snapshot_type TEXT NOT NULL,
+            global_coherence REAL,
+            total_beliefs INTEGER,
+            total_constraints INTEGER,
+            total_theories INTEGER,
+            metadata_json TEXT
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_overseer_snapshots_ts ON overseer_snapshots(timestamp DESC)")
+    LOGGER.info("Created overseer tables: health_metrics, violations, quarantine, snapshots")
+
+
+# =============================================================================
+# Migration 024: CVA Persistence Tables
+# =============================================================================
+
+@migration(10)
+def _m010_cva_persistence_tables(cursor: sqlite3.Cursor) -> None:
+    """Create CVA persistence tables for storing computed states."""
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cva_constraint_states (
+            state_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            subject_id TEXT,
+            scene_id TEXT,
+            activity_frame TEXT,
+            tier1_json TEXT,
+            tier2_json TEXT,
+            mean_json TEXT,
+            precision_json TEXT,
+            entropy REAL,
+            neurotype TEXT,
+            culture TEXT,
+            age INTEGER
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_cs_subject ON cva_constraint_states(subject_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_cs_frame ON cva_constraint_states(activity_frame)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_cs_ts ON cva_constraint_states(timestamp DESC)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cva_valuation_states (
+            state_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            constraint_state_id INTEGER REFERENCES cva_constraint_states(state_id),
+            subject_id TEXT,
+            activity_frame TEXT,
+            cultural_variant TEXT,
+            core_json TEXT,
+            auxiliary_json TEXT,
+            precision_gains_json TEXT,
+            beauty_score REAL,
+            beauty_model TEXT,
+            dominant_rasa TEXT
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_vs_subject ON cva_valuation_states(subject_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_vs_culture ON cva_valuation_states(cultural_variant)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cva_attractor_states (
+            state_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+            subject_id TEXT,
+            attractor_name TEXT,
+            fixed_point_json TEXT,
+            is_stable INTEGER,
+            kappa_loop REAL,
+            max_real_eigenvalue REAL,
+            basin_volume REAL,
+            coupling_matrices_json TEXT
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_as_subject ON cva_attractor_states(subject_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_as_attractor ON cva_attractor_states(attractor_name)")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cva_annotations (
+            annotation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            belief_id TEXT,
+            paper_id TEXT,
+            measurement_modality TEXT,
+            stimulus_type TEXT,
+            molecule_link TEXT,
+            constraint_tags_json TEXT,
+            valuation_tags_json TEXT,
+            timestamp TEXT NOT NULL DEFAULT (datetime('now'))
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_ann_belief ON cva_annotations(belief_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cva_ann_modality ON cva_annotations(measurement_modality)")
+
+    LOGGER.info("Created CVA persistence tables: constraint_states, valuation_states, attractor_states, annotations")
+
+
+# =============================================================================
 # MIGRATION MANAGER
 # =============================================================================
 

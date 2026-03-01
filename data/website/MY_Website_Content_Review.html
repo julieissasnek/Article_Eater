@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY Website — Content Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0d0d1a;
+    color: #e0e0e0;
+  }
+
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    border-bottom: 3px solid #e86c37;
+    position: relative;
+    page-break-after: always;
+  }
+
+  .slide-number {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #555;
+    font-size: 14px;
+  }
+
+  .title-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 { color: #e86c37; font-size: 42px; margin-bottom: 16px; }
+  h2 { color: #e86c37; font-size: 28px; margin-bottom: 12px; }
+  h3 { color: #4ec9b0; font-size: 18px; margin-bottom: 8px; font-weight: 600; }
+  .subtitle { color: #999; font-size: 18px; line-height: 1.6; }
+
+  .status-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .status-red { background: #3d1515; color: #e04e4e; border: 1px solid #e04e4e; }
+  .status-green { background: #153d1f; color: #4ec9b0; border: 1px solid #4ec9b0; }
+  .status-yellow { background: #3d3515; color: #ffd700; border: 1px solid #ffd700; }
+  .status-new { background: #15253d; color: #59a5ff; border: 1px solid #59a5ff; }
+
+  .content-box {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    border-left: 4px solid #e86c37;
+  }
+
+  .content-box.keep { border-left-color: #4ec9b0; }
+  .content-box.needs { border-left-color: #e04e4e; }
+  .content-box.video { border-left-color: #ffd700; }
+
+  ul { list-style: none; padding: 0; }
+  ul li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #e86c37;
+  }
+  ul li.check::before { content: "✅"; }
+  ul li.red::before { content: "🔴"; color: #e04e4e; }
+  ul li.video::before { content: "🎬"; }
+  ul li.yellow::before { content: "🟡"; }
+  ul li.new::before { content: "🆕"; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .finding {
+    background: #16213e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-size: 14px;
+    border-left: 3px solid #59a5ff;
+  }
+
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #222;
+    font-size: 15px;
+  }
+  .toc-item:hover { background: #1a1a2e; }
+  .toc-status { color: #888; font-size: 13px; }
+
+  .quote {
+    font-style: italic;
+    color: #aaa;
+    padding: 16px 24px;
+    border-left: 3px solid #e86c37;
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .nav-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    background: #1a1a2e;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #888;
+    border: 1px solid #333;
+    z-index: 100;
+  }
+
+  @media print {
+    .slide { min-height: auto; padding: 30px 40px; }
+    .nav-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-hint">Scroll to review each page ↓</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- SLIDE 1: TITLE -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide title-slide">
+  <span class="slide-number">1</span>
+  <h1>MY Website — Content Review</h1>
+  <p class="subtitle">
+    kirsh.anfarch.org &nbsp;•&nbsp; David Kirsh &nbsp;•&nbsp; February 2026<br><br>
+    Scroll through each page to review proposed content.<br>
+    Mark up anything to change, flag, or approve.
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- SLIDE 2: TABLE OF CONTENTS -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide">
+  <span class="slide-number">2</span>
+  <h2>Content Plan Overview</h2>
+  <p style="color: #888; margin-bottom: 20px;">All pages of kirsh.anfarch.org — current status and what we've generated</p>
+
+  <div class="toc-item"><span>🏠 Homepage</span><span class="toc-status">🟡 Partial — Travel Schedule empty</span></div>
+  <div class="toc-item"><span>🔬 Research: Architecture</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>💃 Research: Choreography</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>💡 Research: Creativity</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>🧠 Research: Embodied/Extended/Situated</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>🤝 Research: Interactivity</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>🗺️ Research: Planning</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>📊 Research: Representation</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>👁️ Research: Perceptual Thinking</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>🔒 Research: Implicit/Explicit</span><span class="toc-status">🔴 Lorem Ipsum → <b style="color:#4ec9b0">NEW content ready</b></span></div>
+  <div class="toc-item"><span>🔬 Lab</span><span class="toc-status">✅ Complete — could expand</span></div>
+  <div class="toc-item"><span>📚 Publications</span><span class="toc-status">✅ Complete — real, categorized</span></div>
+  <div class="toc-item"><span>🎓 Teaching</span><span class="toc-status">🟡 Stale (Fall '21)</span></div>
+  <div class="toc-item"><span>🎤 Speaker/Consultant</span><span class="toc-status">🔴 Entirely Lorem Ipsum</span></div>
+  <div class="toc-item"><span>👤 About Me</span><span class="toc-status">✅ Complete — rich narrative</span></div>
+  <div class="toc-item"><span>🆕 CMR / Web of Belief</span><span class="toc-status"><b style="color:#59a5ff">NEW section proposed</b></span></div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- SLIDE 3: HOMEPAGE -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide">
+  <span class="slide-number">3</span>
+  <h2>🏠 Homepage</h2>
+  <span class="status-badge status-yellow">Partial</span>
+
+  <div class="two-col">
+    <div class="content-box keep">
+      <h3>✅ Current Content (Keep)</h3>
+      <ul>
+        <li class="check">Hero: Rothko-inspired sunset with profile photo</li>
+        <li class="check">"David Kirsh — PROFESSOR • RESEARCHER • CONSULTANT"</li>
+        <li class="check">Who Am I: Professor UCSD, President ANFA, Visiting Prof UCL Bartlett</li>
+        <li class="check">Research Interests: Embodied cognition, Design thinking, Visual thinking, Creativity</li>
+        <li class="check">Education: MIT AI Lab, Oxford D.Phil, U of Toronto</li>
+      </ul>
+    </div>
+    <div class="content-box needs">
+      <h3>🔴 Needs Updating</h3>
+      <ul>
+        <li class="red">"Currently Working On" → Update to CMR / Web of Belief</li>
+        <li class="red">Travel Schedule dropdown → Empty (needs 2026 dates or remove)</li>
+        <li class="yellow">Research Interest buttons → Verify links to sub-pages</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- RESEARCH PAGES (9 slides) -->
+<!-- ═══════════════════════════════════ -->
+
+<div class="slide" id="architecture">
+  <span class="slide-number">4</span>
+  <h2>🔬 Research: Architecture</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview (short abstract)</h3>
+    <p>How do buildings shape cognition? My work explores the cognitive and neural mechanisms through which architectural features—ceiling height, natural light, spatial layout, material texture—affect how people think, feel, and behave. This research bridges cognitive science, neuroscience, and architectural design, asking how we can design buildings that actively support human wellbeing, creativity, and social interaction.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Architectural space is 'lightweight reconfigurable'—people reshape spatial ensembles dozens of times daily, unlike fixed digital interfaces</div>
+  <div class="finding">Buildings create 'intimacy gradients' through ceiling height, room size, and natural light that shape our sense of privacy and social openness</div>
+  <div class="finding">The Web of Belief framework maps 180+ design templates from neuroscience findings to specific architectural features with calibrated confidence</div>
+  <div class="finding">Architects think about interactivity as a 3D spatial ensemble rather than a state-space of forced choices</div>
+  <div class="finding">Environmental features affect perception through embodied mechanisms—tools, spaces, and bodily states change what we see</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Leverhulme/Bartlett lecture on architecture + cognition; ANFA talk on neuroscience for design</p>
+  </div>
+</div>
+
+<div class="slide" id="choreography">
+  <span class="slide-number">5</span>
+  <h2>💃 Research: Choreography</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>Dance is thinking with the body. My research with world-class choreographers—particularly a decade-long collaboration with Wayne McGregor and Random Dance—reveals how expert movers use their bodies as cognitive instruments: marking movements to reduce complexity, distributing memory across dancers, and using physical exploration to generate ideas that could never arise from purely mental deliberation.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Marking in dance is an epistemic action—a way of thinking with the body, not just conserving energy</div>
+  <div class="finding">Choreographic creativity is distributed across multiple dancers' bodies, spatial layout, and sonic environment</div>
+  <div class="finding">Memory for dance is socially distributed—no single dancer holds the entire piece</div>
+  <div class="finding">Physical exploration generates movement ideas that purely mental deliberation cannot</div>
+  <div class="finding">Spatial landmarks in the studio serve as external memory anchors for movement sequences</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Wayne McGregor collaboration video; Wellcome Foundation talk; V&A Museum 'Thinking with Tools' keynote</p>
+  </div>
+</div>
+
+<div class="slide" id="creativity">
+  <span class="slide-number">6</span>
+  <h2>💡 Research: Creativity</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>Creativity is not a purely internal flash of insight—it is deeply interactive. My research shows that creative cognition depends on working with external things: sketches, prototypes, instruments, other people. By interacting with materials and ideas in their environment, creative thinkers recruit resources that broaden and deepen their thinking in ways that purely mental deliberation cannot match.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Creative cognition depends on interaction with external materials—sketches, prototypes, instruments, other people</div>
+  <div class="finding">Deep processing is better understood as interactive coupling with external resources than purely internal activation</div>
+  <div class="finding">Chance encounters with environmental side-effects significantly increase creative insight (Duncker's candle problem)</div>
+  <div class="finding">Architects, mathematicians, dancers, and musicians all create through cyclical externalization-reflection loops</div>
+  <div class="finding">The longer and more varied the interaction with materials, the broader the set of resources recruited</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Florence 2018 creativity talk; Viasat study presentation; Laban Annual Lecture 2016</p>
+  </div>
+</div>
+
+<div class="slide" id="embodied">
+  <span class="slide-number">7</span>
+  <h2>🧠 Research: Embodied, Extended, Situated</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>What does it mean to think with your body—and with the things around you? My work on the 4E's (Embodied, Embedded, Extended, Enactive cognition) explores how tools, environments, and bodily states reshape perception, expand our cognitive capacities, and blur the boundary between mind and world. When we wield a tool, our brain literally incorporates it into our body schema, changing what we perceive and how we act.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Tools change perception—a chisel in hand lets you 'see' where cement should go; a heavy backpack makes hills look steeper</div>
+  <div class="finding">Our body schema can incorporate tools, vehicles, and even virtual body parts, changing perceived reachable space</div>
+  <div class="finding">Genuine cognitive extension requires tight coupling: reliable availability, easy access, and functional integration</div>
+  <div class="finding">Skill with a tool partly determines which affordances are visible—experts detect more tool-relevant features</div>
+  <div class="finding">Goals and attention hyperbolically warp perceived space—we exaggerate what we care about and compress what we don't</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>CHI 2011 embodied cognition workshop; Dagstuhl on-body interaction keynote 2018</p>
+  </div>
+</div>
+
+<div class="slide" id="interactivity">
+  <span class="slide-number">8</span>
+  <h2>🤝 Research: Interactivity</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>Interactivity is the engine of thought. My theory of interactivity explains how people amplify their cognitive powers by physically manipulating their environment—rearranging Scrabble tiles, gesturing while speaking, sketching while designing. These are not idle fidgets; they are epistemic actions that make thinking faster, more reliable, and more creative than pure mental deliberation alone.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Epistemic actions—actions that change the world to simplify thought—are as fundamental as pragmatic actions</div>
+  <div class="finding">Rearranging Scrabble tiles, gesturing while talking, and mise en place are all interactive cognition</div>
+  <div class="finding">Interactive cognition is more powerful than detached deliberation: offloads memory, reduces complexity, creates new representations</div>
+  <div class="finding">ACM Notable Publication 2013 for 'Embodied Cognition and the Magical Future of Interaction Design'</div>
+  <div class="finding">Practical implications for HCI, architecture, dance, and educational design</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Theory of Interactivity lecture (Nice 2019, UCL Bartlett); Book talk when published</p>
+  </div>
+</div>
+
+<div class="slide" id="planning">
+  <span class="slide-number">9</span>
+  <h2>🗺️ Research: Planning</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>How do people plan in complex, dynamic environments? My early work at MIT's AI Lab investigated how intelligent agents plan actions in real-time when the world changes unpredictably. This research bridged artificial intelligence and cognitive science, showing that effective planning requires continuous interaction with the environment rather than complete mental simulation before acting.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Effective planning requires interleaving planning and execution rather than complete mental simulation</div>
+  <div class="finding">Exploratory actions that reveal environmental information are as important as goal-directed actions</div>
+  <div class="finding">Environmental structure simplifies planning—people exploit spatial layout to reduce search</div>
+  <div class="finding">Anticipates the theory of epistemic actions: intelligence emerges from agent-environment coupling</div>
+  <div class="finding">Grounds later work on how architects use sketches and models as externalized planning tools</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Talk on planning and situated cognition (MIT era if recorded, or recent overview)</p>
+  </div>
+</div>
+
+<div class="slide" id="representation">
+  <span class="slide-number">10</span>
+  <h2>📊 Research: Representation</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>How do external representations—diagrams, notations, maps, models—shape thought? My research investigates why some representations make problems easy and others make them hard, and how the choice of representational format affects what people can see, infer, and discover. This work connects cognitive science to practical questions about information design, data visualization, and architectural drawing.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Representational format profoundly affects problem-solving speed, accuracy, and the insights people can reach</div>
+  <div class="finding">Diagrams support different inferences than sentential representations—making spatial relationships visible</div>
+  <div class="finding">People actively modify external representations as a problem-solving strategy (representational tinkering)</div>
+  <div class="finding">Representational choice is an epistemic action—changing the display changes what you can think</div>
+  <div class="finding">Practical implications for information architecture, data visualization, and notation design</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Talk on visual reasoning, diagrams, or notation design</p>
+  </div>
+</div>
+
+<div class="slide" id="perceptual">
+  <span class="slide-number">11</span>
+  <h2>👁️ Research: Perceptual Thinking</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>Can you think with your eyes? My research on perceptual thinking investigates how visual and spatial reasoning go beyond passive seeing. When experts look at a chess board, an architectural plan, or a mathematical diagram, they are not just registering what's there—they are actively projecting, imagining, and reasoning through what they see. Perception itself is a form of cognition.</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Perception is an active cognitive process—experts see possibilities, threats, and affordances, not just objects</div>
+  <div class="finding">Projection allows people to mentally overlay imagined alternatives onto perceived scenes</div>
+  <div class="finding">Physical thinking (forces, balance) and visual thinking (spatial transformation) engage different neural resources</div>
+  <div class="finding">Design cognition fundamentally depends on projecting alternatives onto current perceptions</div>
+  <div class="finding">Implications for visualization tools, architectural drawing, and educational design</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Talk on imagination, projection, or design cognition</p>
+  </div>
+</div>
+
+<div class="slide" id="implicit">
+  <span class="slide-number">12</span>
+  <h2>🔒 Research: Implicit/Explicit</h2>
+  <span class="status-badge status-red">Was Lorem Ipsum</span>
+  <span class="status-badge status-green" style="margin-left:8px">NEW content ready</span>
+
+  <div class="content-box">
+    <h3>Card Preview</h3>
+    <p>Much of what we know, we know without knowing that we know it. My research on implicit and explicit cognition explores the boundary between conscious, deliberate thought and the vast unconscious processes that shape our behavior. How much of skilled performance is explicitly planned versus implicitly guided? When can implicit knowledge be made explicit—and does doing so help or hinder performance?</p>
+  </div>
+
+  <h3 style="margin-top: 16px;">Key Findings</h3>
+  <div class="finding">Skilled performance depends on implicit motor and perceptual knowledge that cannot be fully verbalized</div>
+  <div class="finding">Making implicit knowledge explicit sometimes helps (teaching) and sometimes hurts (overthinking)</div>
+  <div class="finding">Buildings affect cognition through implicit channels—ceiling height, light, materials operate below awareness</div>
+  <div class="finding">Creative breakthroughs often involve sudden explicit recognition of implicitly known patterns</div>
+  <div class="finding">Epistemic actions work partly by making implicit possibilities explicit—rearranging reveals hidden structure</div>
+
+  <div class="content-box video">
+    <h3>🎬 Video Needed</h3>
+    <p>Talk on implicit cognition or skilled performance</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- NON-RESEARCH PAGES -->
+<!-- ═══════════════════════════════════ -->
+
+<div class="slide" id="lab">
+  <span class="slide-number">13</span>
+  <h2>🔬 Lab — Interactive Cognition Lab</h2>
+  <span class="status-badge status-green">Complete</span>
+
+  <div class="two-col">
+    <div class="content-box keep">
+      <h3>✅ Current Content (Keep)</h3>
+      <ul>
+        <li class="check">Lab name: Interactive Cognition Lab</li>
+        <li class="check">Focus: cognitive science experiments, computational models, interactive installations</li>
+        <li class="check">Address: SSRB 100, 9500 Gilman Drive, UCSD</li>
+        <li class="check">Google Map embed working</li>
+        <li class="check">Contact: kirsh@ucsd.edu</li>
+      </ul>
+    </div>
+    <div class="content-box video">
+      <h3>🟡 Could Expand</h3>
+      <ul>
+        <li class="yellow">Team members / current students</li>
+        <li class="yellow">Current projects (CMR, VR experiments)</li>
+        <li class="yellow">Lab photos (155 images in ~/Documents/Lab/)</li>
+        <li class="new">Link to QA Browse System / Knowledge Base</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="publications">
+  <span class="slide-number">14</span>
+  <h2>📚 Publications</h2>
+  <span class="status-badge status-green">Complete</span>
+
+  <div class="content-box keep">
+    <h3>✅ Current Content (Keep)</h3>
+    <ul>
+      <li class="check">Comprehensive list categorized by topic</li>
+      <li class="check">Abstract + PDF link buttons (Google Drive hosted)</li>
+      <li class="check">Covers: Architecture, Choreography, Creativity, Embodied, Interactivity, Planning, Representation</li>
+    </ul>
+  </div>
+
+  <div class="content-box video">
+    <h3>🟡 Could Improve</h3>
+    <ul>
+      <li class="yellow">Add post-2021 publications (56 found in CV)</li>
+      <li class="yellow">Cross-link publications to their research topic pages</li>
+      <li class="yellow">Add citation counts from Google Scholar</li>
+      <li class="yellow">Verify all PDF links are still active</li>
+    </ul>
+  </div>
+</div>
+
+<div class="slide" id="teaching">
+  <span class="slide-number">15</span>
+  <h2>🎓 Teaching</h2>
+  <span class="status-badge status-yellow">Stale — Fall '21</span>
+
+  <div class="content-box needs">
+    <h3>Current Content (Stale)</h3>
+    <ul>
+      <li>COGS 100: Cyborgs Now and in the Future</li>
+      <li>COGS 187A/B: Usability & Information Architecture</li>
+      <li>COGS 199: Independent Study</li>
+      <li>COGS 260: 4E Cognition</li>
+    </ul>
+    <p style="color: #e04e4e; margin-top: 12px;">⚠️ Canvas links likely outdated</p>
+  </div>
+
+  <div class="content-box video">
+    <h3>🔴 Action Required</h3>
+    <ul>
+      <li class="red"><b>USER TO PROVIDE:</b> Current semester courses and times</li>
+      <li class="yellow">Add course descriptions (23 course folders found in ~/Documents)</li>
+      <li class="yellow">Update Canvas links</li>
+    </ul>
+  </div>
+</div>
+
+<div class="slide" id="speaker">
+  <span class="slide-number">16</span>
+  <h2>🎤 Speaker / Consultant</h2>
+  <span class="status-badge status-red">Entirely Placeholder</span>
+
+  <div class="content-box needs">
+    <h3>Current Content: ALL Lorem Ipsum</h3>
+    <p>YouTube embed is a "Build Youtube in React" tutorial — needs real talk video</p>
+  </div>
+
+  <div class="content-box keep">
+    <h3>Proposed New Content</h3>
+    <ul>
+      <li>Speaking topics: 4E Cognition, Architecture & the Brain, Creativity & Interaction, Dance & Thinking</li>
+      <li>From CV: 61 grants, 8 major awards document expertise</li>
+      <li>Key affiliations: ANFA President, UCL Bartlett Leverhulme Fellow</li>
+      <li>Notable partners: Steelcase, Rockefeller Foundation, IBM, DARPA, Disney</li>
+    </ul>
+  </div>
+
+  <div class="content-box video">
+    <h3>🎬 Videos Needed (User to Provide YouTube Links)</h3>
+    <ul>
+      <li class="video">Leverhulme Lecture Series (Bartlett UCL, 2017–2019)</li>
+      <li class="video">V&A Museum 'Thinking with Tools' keynote (2019)</li>
+      <li class="video">Any TEDx or public lecture recording</li>
+      <li class="video">ANFA conference keynotes</li>
+    </ul>
+  </div>
+</div>
+
+<div class="slide" id="about">
+  <span class="slide-number">17</span>
+  <h2>👤 About Me</h2>
+  <span class="status-badge status-green">Complete</span>
+
+  <div class="content-box keep">
+    <h3>✅ Current Content (all real, all good)</h3>
+    <ul>
+      <li class="check"><b>Personally:</b> Early interest in Ouspenski/Gurdjieff, shift from economics to philosophy</li>
+      <li class="check"><b>Artist's Entrance:</b> Reflections on making life a work of art</li>
+      <li class="check"><b>Traveling:</b> Meditation and breaking sameness</li>
+      <li class="check"><b>Food Delight:</b> Personal interests</li>
+      <li class="check"><b>Working for Money vs. Fun:</b> Essay</li>
+      <li class="check"><b>3D Video Game:</b> Thought experiment</li>
+    </ul>
+  </div>
+
+  <div class="content-box video">
+    <h3>🟡 Could Add</h3>
+    <ul>
+      <li class="yellow">Updated bio reflecting current work (CMR / ANFA presidency)</li>
+      <li class="yellow">Professional headshot (current one works, could update)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- NEW: CMR / WEB OF BELIEF -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide" id="cmr">
+  <span class="slide-number">18</span>
+  <h2>🆕 NEW SECTION: CMR / Web of Belief</h2>
+  <span class="status-badge status-new">New Section Proposed</span>
+
+  <div class="content-box keep">
+    <h3>Content Available from Article Eater Repo</h3>
+    <ul>
+      <li class="check"><b>186 evidence-backed design templates</b> — neuroscience → architectural features</li>
+      <li class="check"><b>13 thematic molecules</b> — Biophilia, Wayfinding, Prospect-Refuge, etc.</li>
+      <li class="check"><b>812+ papers</b> with citation graph (1,735 edges)</li>
+      <li class="check"><b>MASTER_DOC:</b> 8,662 lines of original prose on how neuroscience informs design</li>
+      <li class="check"><b>Interactive Knowledge Base</b> with search and topic pages (Streamlit)</li>
+      <li class="check"><b>30 worked examples:</b> Salk Institute, Fallingwater, Guggenheim, etc.</li>
+    </ul>
+  </div>
+
+  <div class="content-box video">
+    <h3>🎬 Videos</h3>
+    <ul>
+      <li class="video">ANFA talks on neuroscience for architecture</li>
+      <li class="video">Bartlett lectures on evidence-based design</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- VIDEO STRATEGY -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide" id="videos">
+  <span class="slide-number">19</span>
+  <h2>🎬 Video Strategy — Talks to Embed</h2>
+
+  <p style="color: #ffd700; margin-bottom: 20px; font-weight: 600;">User to provide YouTube links for each research page</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div class="finding"><b>Architecture:</b> Leverhulme/Bartlett lecture; ANFA talk</div>
+    <div class="finding"><b>Choreography:</b> Wayne McGregor video; Wellcome talk; V&A keynote</div>
+    <div class="finding"><b>Creativity:</b> Florence 2018; Viasat; Laban lecture</div>
+    <div class="finding"><b>Embodied/Extended:</b> CHI 2011 workshop; Dagstuhl keynote</div>
+    <div class="finding"><b>Interactivity:</b> Nice 2019 or UCL Bartlett lecture</div>
+    <div class="finding"><b>Planning:</b> MIT AI Lab era or recent overview</div>
+    <div class="finding"><b>Representation:</b> Visual reasoning or notation talk</div>
+    <div class="finding"><b>Perceptual Thinking:</b> Imagination/projection talk</div>
+    <div class="finding"><b>Implicit/Explicit:</b> Skilled performance talk</div>
+    <div class="finding"><b>Speaker page:</b> Curated highlight reel</div>
+    <div class="finding"><b>CMR section:</b> ANFA neuroscience talk</div>
+  </div>
+
+  <div class="content-box" style="margin-top: 20px;">
+    <h3>Also Check</h3>
+    <ul>
+      <li class="yellow">~/Documents/DK Website/ Video's/ — for existing video assets</li>
+      <li class="yellow">YouTube channel (if any) — for existing uploads</li>
+      <li class="yellow">~/Documents/Video for Presentations/ — presentation recordings</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- NEXT STEPS -->
+<!-- ═══════════════════════════════════ -->
+<div class="slide title-slide">
+  <span class="slide-number">20</span>
+  <h1>Next Steps</h1>
+  <div style="text-align: left; max-width: 600px;">
+    <div class="finding" style="font-size: 16px; margin: 12px 0;">1. Review these slides — mark up anything to change</div>
+    <div class="finding" style="font-size: 16px; margin: 12px 0;">2. Provide the React codebase (zip from offsite)</div>
+    <div class="finding" style="font-size: 16px; margin: 12px 0;">3. Share YouTube links for talk videos</div>
+    <div class="finding" style="font-size: 16px; margin: 12px 0;">4. Confirm current courses for Teaching page</div>
+    <div class="finding" style="font-size: 16px; margin: 12px 0;">5. We inject content, fix images, deploy 🚀</div>
+  </div>
+</div>
+
+</body>
+</html>

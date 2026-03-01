@@ -1,0 +1,96 @@
+{
+  "paper_title": "EEG-based Investigation of the Impact of Classroom Design on Cognitive Performance of Students",
+  "authors": [
+    "Jesus G. Cruz-Garza",
+    "Michael Darfler",
+    "James D. Rounds",
+    "Elita Gao",
+    "Saleh Kalantari"
+  ],
+  "year": 2021,
+  "doi": null,
+  "venue": null,
+  "abstract": "This study investigated the neural dynamics associated with short-term exposure to different virtual classroom designs with different window placement and room dimension. Participants engaged in five brief cognitive tasks in each design condition including the Stroop Test, the Digit Span Test, the Benton Test, a Visual Memory Test, and an Arithmetic Test. Performance on the cognitive tests and Electroencephalogram (EEG) data were analyzed by contrasting various classroom design conditions. The cognitive-test-performance results showed no significant differences related to the architectural design features studied. We computed frequency band-power and connectivity EEG features to identify neural patterns associated to environmental conditions. A leave-one-out machine-learning classification scheme was implemented to assess the robustness of the EEG features, with the classification accuracy evaluation of the trained model repeatedly performed against an unseen participant's data. The classification results located consistent differences in the EEG features across participants in the different classroom design conditions, with a predictive power (test-set accuracy: 51.5%-61.3%) that was significantly higher compared to a baseline classification learning outcome using scrambled data. These findings were most robust during the Visual Memory Test, and were not found during the Stroop Test and the Arithmetic Test. The most discriminative EEG features were observed in bilateral occipital, parietal, and frontal regions in the theta (4-8 Hz) and alpha (8-12 Hz) frequency bands. Connectivity analysis reinforced these findings by showing that there were changes in the transfer of information from centro-parietal to frontal electrodes in the different classroom conditions. While the implications of these findings for student learning are yet to be determined, this study provides rigorous evidence that brain activity features during cognitive tasks are affected by the design elements of window placement and room dimensions. The ongoing development of this EEG-based approach has the potential to strengthen evidence-based design through the use of solid neurophysiological evidence.",
+  "methodology": "This study used an experimental, within-subjects design where participants experienced four different virtual classroom conditions. The virtual environment was developed using Epic Games' Unreal Engine and presented via an Oculus Rift head-mounted display. Physiological data was collected using a 63-channel actiCHamp EEG system (57 scalp electrodes, 4 EOG, 2 EKG). Participants performed five brief cognitive tasks: Stroop Test (ST), Digit Span Test (DST), Benton Test (BT), Visual Memory Test (VMT), and Arithmetic Test (AT). EEG data was preprocessed (band-pass filtered, artifact subspace reconstruction, ICA for artifact removal). Two types of EEG features were extracted: frequency band-power (Delta, Theta, Alpha, Beta, Gamma) and partial directed coherence (PDC) connectivity. A machine-learning classification approach using a kernel support vector machine (k-SVM) with a polynomial kernel of degree 2 was implemented. A leave-one-out cross-validation scheme was used, training the model on 22 participants and testing on an unseen participant's data, iterated 23 times. Classification accuracy was compared against scrambled data for statistical significance using a Kruskal-Wallis test. Cognitive test performance metrics (response accuracy, number of responses, completion time, Inverse Efficiency Scores) were also analyzed using Kruskal-Wallis tests.",
+  "sample": "Twenty-nine healthy human adults were initially recruited. Five were excluded due to technical issues and two due to extremely low task accuracy (<10%), resulting in a final sample of 23 participants. Age ranged from 18 to 55 years (M=26.17, SD=10.4). The majority were university students (n=21). Eight participants identified as female, and 13 as male. Participants had diverse national backgrounds (U.S., India, Mexico most common; 11 Asian, 7 Latinx/Hispanic, 1 Middle Eastern, 4 White non-Hispanic). Self-reported sleep patterns: 26% (7+ hours), 30% (6-7 hours), 44% (4-6 hours). Self-reported fatigue levels were relatively low (M=4.1, SD=1.9). Reported discomfort with VR system (M=4.1, SD=2.3) and EEG headset (M=3.8, SD=2.3) was low. Participants found the VR environment reasonably realistic (M=6.2, SD=1.5).",
+  "manipulated_features": [
+    "Window placement: Neutral (no windows), One Window (left-hand wall, side view of natural scenery), Two Windows (front of the room, direct forward views of natural scenery)",
+    "Room dimension: Neutral (narrow classroom: 15 ft x 50 ft), Wide (wide classroom: 22 ft x 50 ft)",
+    "Ceiling height: Held constant at 12 ft across all conditions"
+  ],
+  "outcomes": [
+    "Cognitive test performance (response accuracy, number of correct responses, completion time, Inverse Efficiency Scores)",
+    "EEG frequency band-power (Delta: 1-4 Hz, Theta: 4-8 Hz, Alpha: 8-12 Hz, Beta: 12-30 Hz, Gamma: 30-40 Hz)",
+    "EEG connectivity (Partial Directed Coherence - PDC)",
+    "Self-reported mental fatigue and stress levels"
+  ],
+  "key_findings": [
+    "Cognitive test performance: No overall significant differences were found across the different classroom conditions for response accuracy, number of responses, completion time, or inverse efficiency scores (Kruskal-Wallis test, p < 0.05 and p < 0.01). A strong skewness toward perfect scores was observed for BT, VMT, ST, and AT.",
+    "EEG classification: Different classroom design conditions were associated with consistent changes in participants' EEG data, allowing a classification model to identify the design condition a new participant is experiencing (predictive power: test-set accuracy 51.5%-61.3%, significantly higher than scrambled data baseline).",
+    "EEG predictive power was specific to cognitive tasks: Most robust during the Visual Memory Test (VMT) (median classification accuracies: 55.0% Neutral vs One-Window, 57.5% Neutral vs Two-Windows, 61.3% Neutral vs Wide, all p < 0.003).",
+    "EEG predictive power for Benton Test (BT): Significantly higher than chance (p < 0.003) for Neutral vs One-Window (61.3%) and Neutral vs Two-Windows (56.3%).",
+    "EEG predictive power for Digit Span Test (DST): EEG features differed for Neutral vs One-Window (53.8%) and Neutral vs Two-Windows (51.3%).",
+    "No significant EEG classification differences were found during the Stroop Test (ST) and Arithmetic Test (AT).",
+    "Most discriminative EEG features were observed in bilateral occipital, parietal, and frontal regions, primarily in the theta (4-8 Hz) and alpha (8-12 Hz) frequency bands.",
+    "Connectivity analysis showed changes in information transfer from centro-parietal to frontal electrodes in different classroom conditions.",
+    "For Neutral vs One-Window, EEG band-power changes were characterized by an increase in relative alpha and beta power in centro-parietal and frontal regions.",
+    "For Neutral vs Two Windows and Neutral vs Wide, a decrease in relative alpha and beta power was observed in these same regions.",
+    "The VMT was the only cognitive test for which occipital electrodes had the most discriminative power between different design conditions (Figure 6).",
+    "For DST, alpha-band synchronization was found in the parietal area and among right-frontal electrodes (increase in band-power in Design condition vs Neutral).",
+    "For BT, a similar pattern to DST was found, but parietal and right-frontal locations showed desynchronization in the alpha band.",
+    "For VMT, an overall desynchronization in alpha power was observed across the scalp, coupled with localized right-parietal and right-frontal alpha-band synchronization."
+  ],
+  "theories_referenced": [
+    "Attention Restoration Theory (ART) (Kaplan, 1995)",
+    "Stress Reduction Theory (Ulrich, 1991)",
+    "Encoding-specificity hypothesis",
+    "Neural reinstatement hypothesis",
+    "Parietal-Frontal Integration Theory (Vakhtin et al., 2014)"
+  ],
+  "mechanisms": [
+    "Environmental features (e.g., suboptimal thermal conditions, poor air quality) can impair cognitive performance through physical pathways and psychological distraction.",
+    "Natural environments can restore mental focus by promoting relaxed attention (Attention Restoration Theory).",
+    "The ability to differentiate neural activity between environments during memory tasks is potentially linked to a stronger mental representation of the surrounding context (encoding-specificity hypothesis).",
+    "Neural activity associated with a context and environment may be stronger when a memory task is involved compared to non-memory tasks (neural reinstatement hypothesis).",
+    "The environment's role in task-specific cognitive functioning is suggested by the Parietal-Frontal Integration Theory.",
+    "The Dorsal Attention Network, specifically connectivity between dorso-medial pre-frontal cortex and superior parietal areas, and alpha power differences in visual and motor-planning networks, are implicated in brain responses to architectural designs."
+  ],
+  "limitations": [
+    "Relatively small number of participants (23), increasing the likelihood of Type II errors (false negative findings).",
+    "The majority of participants were male university students with a high degree of computer experience, which might mediate responses to VR architectural designs based on sex/gender and prior VR experience.",
+    "The cognitive tests used, while reliable and valid in laboratory settings, have implications for long-term learning outcomes that are not straightforward.",
+    "Short exposure duration (1-2 minutes) for each environmental condition may have limited any restorative effect of window views.",
+    "The \"ceiling effect\" in cognitive test performance (many participants scored nearly perfectly) limits conclusions about the influence of different environments.",
+    "The unique demands of each cognitive task might dominate the results, potentially obscuring subtle cognitive effects of different classroom designs."
+  ],
+  "design_implications": [
+    "Brain activity features during cognitive tasks are demonstrably affected by specific design elements like window placement and room dimensions.",
+    "The EEG-based approach offers a promising pathway to strengthen evidence-based design with solid neurophysiological evidence.",
+    "Immersive VR environments provide a precise and controlled method for evaluating architectural design impacts before physical construction.",
+    "Future research can optimize specific design parameters (e.g., width, depth, height) for general populations or specific demographic groups.",
+    "There is potential for customized virtual learning spaces tailored to individual student needs and learning styles, which could then be translated to physical environments."
+  ],
+  "topic_tags": [
+    "EEG",
+    "Virtual Reality",
+    "Classroom Design",
+    "Window Placement",
+    "Room Dimension",
+    "Cognitive Performance",
+    "Neuroarchitecture",
+    "Environmental Psychology",
+    "Alpha Band",
+    "Theta Band",
+    "Brain Connectivity",
+    "Working Memory",
+    "Attention",
+    "Built Environment"
+  ],
+  "_meta": {
+    "source_pdf": "10.1016_j.jobe.2022.104552.pdf",
+    "extracted_at": "2026-02-28T21:04:58.650295+00:00",
+    "model": "gemini-2.5-flash",
+    "cost_usd": 0.002702,
+    "elapsed_s": 30.6
+  }
+}

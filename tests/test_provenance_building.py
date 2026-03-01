@@ -51,6 +51,10 @@ BASE_FEATURES = {
     "surface_type": "level",
     "step_height_mm": 160.0,
     "coefficient_of_friction": 0.75,
+    "has_daylight_variation": True,
+    "has_designed_dynamics": False,
+    "static_exposure_hours": 8.0,
+    "change_rate_hz": 0.2,
 }
 
 
@@ -141,9 +145,9 @@ def test_l2_threshold_uses_calibration_values_from_template_data() -> None:
     try:
         template_path = Path("data/templates/L2_circadian_architectural_regulation.json")
         payload = json.loads(template_path.read_text(encoding="utf-8"))
-        calibration = payload.get("calibration_parameters", {})
-        assert calibration.get("standard_dose_response", {}).get("medi_threshold")
-        assert calibration.get("age_corrected_dose_response", {}).get("medi_threshold")
+        calibration = payload.get("calibrated_parameters", {})
+        assert calibration.get("circadian_entrainment", {}).get("advance_direction")
+        assert calibration.get("circadian_entrainment", {}).get("delay_direction")
 
         young = _evaluate(session, path, age=25)
         old = _evaluate(session, path, age=65)
@@ -224,3 +228,31 @@ def test_interaction_adjustments_are_persisted_when_triggered() -> None:
     finally:
         session.close()
         os.unlink(path)
+
+
+def test_no_unmapped_canonical_variables() -> None:
+    from src.cmr.feature_mapping import STANDARD_BUILDING_FEATURES, get_required_template_args, list_implemented_templates, FEATURE_TO_TEMPLATE_INPUT
+
+    all_required_args = set()
+    for template_id in list_implemented_templates():
+        for arg in get_required_template_args(template_id):
+            if arg == "occupant_age":
+                continue
+            all_required_args.add(arg)
+
+    mapped_args = set()
+    for template_map in FEATURE_TO_TEMPLATE_INPUT.values():
+        for arg_name, canonical_name in template_map.items():
+            mapped_args.add(arg_name)
+            assert canonical_name in STANDARD_BUILDING_FEATURES, f"Canonical variable '{canonical_name}' mapped for arg '{arg_name}' but missing in STANDARD_BUILDING_FEATURES."
+
+    # Identify args that are required by a template but have no mapping configured
+    unmapped = all_required_args - mapped_args
+
+    # Check for direct matches where arg name == feature key
+    truly_unmapped = set()
+    for arg in unmapped:
+        if arg not in STANDARD_BUILDING_FEATURES:
+            truly_unmapped.add(arg)
+
+    assert not truly_unmapped, f"New templates introduced required arguments that are not mapped to canonical features: {truly_unmapped}"

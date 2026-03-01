@@ -123,7 +123,7 @@ def _compute_classroom_overrides(age: int) -> Dict[str, float]:
     l1 = compute_l1_luminance_contrast(0.8, age)
     l2 = compute_l2_circadian_medi(350.0, 3.0, "morning", age)
     view1 = compute_view1_vqi("nature", 3, 0.30, 0.75, True, age)
-    mat2 = compute_mat2_thermal_adaptive(23.5, 20.0, age)
+    mat2 = compute_mat2_thermal_adaptive(23.5, 20.0, "mixed", age)
     sc1 = compute_sc1_spatial_integration(0.72, 0.78, 2, False, False, age)
     soc2 = compute_soc2_privacy_encounter(0.48, 0.13, 0.05, 0.72, 50.0, age)
     tp1 = compute_tp1_motor_pe("stairs_optimal", 165, 0.65, age)

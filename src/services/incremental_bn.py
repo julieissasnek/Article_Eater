@@ -108,6 +108,7 @@ class BetaBernoulliEdge:
     last_updated: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     n_papers: int = 0  # Number of papers contributing evidence
     paper_ids: Set[str] = field(default_factory=set)
+    tags: Set[str] = field(default_factory=set)  # Explicit rule topics/categories
 
     # Evidence quality weighting
     total_weight: float = 0.0  # Sum of evidence weights
@@ -116,7 +117,8 @@ class BetaBernoulliEdge:
         self,
         supports: bool,
         weight: float = 1.0,
-        paper_id: Optional[str] = None
+        paper_id: Optional[str] = None,
+        tags: Optional[List[str]] = None
     ) -> None:
         """
         Update edge estimate with new evidence.
@@ -125,6 +127,7 @@ class BetaBernoulliEdge:
             supports: True if evidence supports edge, False if contradicts
             weight: Evidence quality weight (0-1, higher = more reliable)
             paper_id: Source paper for tracking
+            tags: List of topic/category tags from the evidence source
         """
         weighted_evidence = weight
 
@@ -139,13 +142,17 @@ class BetaBernoulliEdge:
 
         if paper_id:
             self.paper_ids.add(paper_id)
+            
+        if tags:
+            self.tags.update(tags)
 
     def update_batch(
         self,
         n_supporting: int,
         n_contradicting: int,
         avg_weight: float = 1.0,
-        paper_ids: Optional[List[str]] = None
+        paper_ids: Optional[List[str]] = None,
+        tags: Optional[List[str]] = None
     ) -> None:
         """
         Update with batch of evidence (e.g., from meta-analysis).
@@ -155,6 +162,7 @@ class BetaBernoulliEdge:
             n_contradicting: Number of studies contradicting edge
             avg_weight: Average quality weight of studies
             paper_ids: Source papers
+            tags: Mixed tags/topics across the batch
         """
         self.alpha += n_supporting * avg_weight
         self.beta += n_contradicting * avg_weight
@@ -164,6 +172,9 @@ class BetaBernoulliEdge:
 
         if paper_ids:
             self.paper_ids.update(paper_ids)
+            
+        if tags:
+            self.tags.update(tags)
 
     @property
     def mean(self) -> float:
@@ -267,6 +278,7 @@ class BetaBernoulliEdge:
             'is_reliable': self.is_reliable,
             'n_papers': self.n_papers,
             'paper_ids': list(self.paper_ids),
+            'tags': list(self.tags),
             'created_at': self.created_at,
             'last_updated': self.last_updated,
         }
@@ -284,6 +296,7 @@ class BetaBernoulliEdge:
             last_updated=data.get('last_updated', ''),
             n_papers=data.get('n_papers', 0),
             paper_ids=set(data.get('paper_ids', [])),
+            tags=set(data.get('tags', [])),
             total_weight=data.get('total_weight', 0.0),
         )
 
@@ -385,7 +398,8 @@ class IncrementalBNBuilder:
         supports: bool,
         weight: float = 1.0,
         paper_id: Optional[str] = None,
-        edge_type: EdgeType = EdgeType.UNKNOWN
+        edge_type: EdgeType = EdgeType.UNKNOWN,
+        tags: Optional[List[str]] = None
     ) -> BetaBernoulliEdge:
         """
         Observe evidence for an edge.
@@ -397,12 +411,13 @@ class IncrementalBNBuilder:
             weight: Quality weight (0-1)
             paper_id: Source paper
             edge_type: Type of edge
+            tags: Topic classification tags
 
         Returns:
             Updated edge
         """
         edge = self.get_or_create_edge(source, target, edge_type)
-        edge.update(supports=supports, weight=weight, paper_id=paper_id)
+        edge.update(supports=supports, weight=weight, paper_id=paper_id, tags=tags)
 
         logger.debug(
             f"Updated edge {source}→{target}: "
@@ -444,7 +459,7 @@ class IncrementalBNBuilder:
                 supports = True  # Default to supporting
 
             paper_ids = getattr(belief, 'paper_ids', [])
-            paper_id = paper_ids[0] if paper_ids else None
+            tags = getattr(belief, 'tags', [])
 
             edge = self.observe_evidence(
                 source=env_id,
@@ -452,7 +467,8 @@ class IncrementalBNBuilder:
                 supports=supports,
                 weight=weight,
                 paper_id=paper_id,
-                edge_type=EdgeType.CAUSAL
+                edge_type=EdgeType.CAUSAL,
+                tags=tags
             )
             updated_edges.append(edge)
 
@@ -486,12 +502,15 @@ class IncrementalBNBuilder:
         else:
             supports = True
 
+        tags = getattr(constraint, 'tags', [])
+
         edge = self.observe_evidence(
             source=source_id,
             target=target_id,
             supports=supports,
             weight=weight,
-            edge_type=EdgeType.CORRELATIONAL
+            edge_type=EdgeType.CORRELATIONAL,
+            tags=tags
         )
 
         return edge

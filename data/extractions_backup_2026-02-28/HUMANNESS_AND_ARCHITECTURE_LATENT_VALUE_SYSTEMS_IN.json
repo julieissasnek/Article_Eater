@@ -1,0 +1,987 @@
+{
+  "doi": "HUMANNESS/AND/ARCHITECTURE/LATENT/VALUE/SYSTEMS/IN",
+  "article_type": "empirical_v2",
+  "article_family": "empirical",
+  "quality_action": "accept",
+  "quality_score": 0.828,
+  "n_findings": 30,
+  "extracted_at": "2026-02-25T08:47:30.145335+00:00",
+  "model": "gemini-2.5-flash",
+  "cost": 0.0093913,
+  "title": "Psychological and neural responses to architectural interiors",
+  "authors": "Alexander Coburn et al., 2020",
+  "research_question": "1) Can aesthetic responses to architectural scenes be reduced to a few key psychological dimensions? 2) Are these dimensions sensitive to salient design features and Global Image Properties (GIPs)? 3) Do these psychological dimensions correlate with neural activation patterns, and to what extent are these correlations modulated by task?",
+  "design_type": "mixed_factorial",
+  "participants": {
+    "n": 798,
+    "description": "Experiment 1: 798 US-based adults (391 women, 401 men, 6 other), M=38.06 years (SD=11.96). Experiment 2: 614 American adults (305 women, 307 men, 2 other), M=35.68 years (SD=10.87). Experiment 3: 18 healthy participants (12 females, 6 males), M=23.39 years (SD=4.49). Experiment 3 participants were from the Canary Islands.",
+    "recruitment": "Amazon's Mechanical Turk for Experiments 1 and 2. Not specified for Experiment 3 (reanalysis of previous studies)."
+  },
+  "stimuli_or_exposures": [
+    {
+      "type": "photograph",
+      "description": "200 images of interior architectural spaces, counterbalanced for ceiling height (high/low), enclosure (open/closed), and contour (round/square). This yielded 8 experimental conditions (25 images per condition).",
+      "n_stimuli": 200,
+      "source": "Section 2.1.1, Fig. 2"
+    }
+  ],
+  "measures": [
+    {
+      "construct": "Aesthetic response measures",
+      "instrument": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability) on a 7-point semantic differential scale.",
+      "type": "self_report"
+    },
+    {
+      "construct": "Psychological dimensions of architectural experience",
+      "instrument": "Principal Components Analysis (PCA) derived scores for Coherence, Hominess, and Fascination.",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Global Image Properties (GIPs)",
+      "instrument": "Computed measures of self-similarity (Pyramidal Histogram of Oriented Gradients - PHOG) and complexity (HOG Complexity method).",
+      "type": "cognitive"
+    },
+    {
+      "construct": "Neural activity",
+      "instrument": "Functional Magnetic Resonance Imaging (fMRI) BOLD signal.",
+      "type": "neural"
+    },
+    {
+      "construct": "Beauty judgment",
+      "instrument": "Button press ('beautiful'/'not beautiful').",
+      "type": "behavioral"
+    },
+    {
+      "construct": "Approach-avoidance decision",
+      "instrument": "Button press ('enter'/'exit').",
+      "type": "behavioral"
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "antecedent": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability)",
+      "consequent": "Psychological dimension: Coherence",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 3.57,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Identified as PC1 in Experiment 1, explaining 40% of variance. Strongly loaded by Organization (1.04), Beauty (0.76), Valence (0.74), Approachability (0.69).",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "PC1 (Coherence) ... Variance Explained 40%",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 2,
+      "antecedent": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability)",
+      "consequent": "Psychological dimension: Hominess",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 2.39,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Identified as PC2 in Experiment 1, explaining 27% of variance. Strongly loaded by Naturalness (0.90), Personalness (0.83), Hominess (0.73).",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "PC2 (Hominess) ... Variance Explained 27%"
+    },
+    {
+      "id": 3,
+      "antecedent": "16 aesthetic rating scales (Complexity, Organization, Naturalness, Beauty, Personalness, Interest, Modernity, Valence, Stimulation, Vitality, Comfort, Relaxation, Hominess, Uplift, Approachability, Explorability)",
+      "consequent": "Psychological dimension: Fascination",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 2.16,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "ART"
+      ],
+      "template_ids": [],
+      "mechanism": "Identified as PC3 in Experiment 1, explaining 24% of variance. Strongly loaded by Complexity (1.02), Interest (0.71).",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 2",
+      "quote": "PC3 (Fascination) ... Variance Explained 24%",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 4,
+      "antecedent": "Ceiling height (high)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.08,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=13.56",
+      "theory_links": [
+        "VF3",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "High ceilings increase perceptions of spaciousness and prime thoughts of freedom, contributing to fascination.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.3, p. 10, Fig. 7",
+      "quote": "significant main effects of ceiling height [F (1,192) = 13.56, p < .001, \u03b7p\u00b2 = .08] ... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 5,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.024",
+      "effect_size": 0.03,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=5.21",
+      "theory_links": [
+        "Prospect-Refuge",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces afford greater visual prospect, stimulating exploration and interest.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.3, p. 10, Fig. 7",
+      "quote": "enclosure [F (1,192) = 5.21, p = .024, \u03b7p\u00b2 = .03] ... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 6,
+      "antecedent": "Curvature (round contours)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.09,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=14.94",
+      "theory_links": [
+        "Biophilia",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Curved forms are more commonly found in nature, potentially feeling more natural and stimulating interest.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.3, p. 10, Fig. 7",
+      "quote": "curvature [F (1,192) = 14.94, p < .001, \u03b7p\u00b2 = .09] on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 7,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Coherence (PC1 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.012",
+      "effect_size": 0.03,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=6.39",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces may be perceived as more organized or easier to comprehend.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.3, p. 10, Fig. 7",
+      "quote": "significant main effects of enclosure on PC1 [coherence; F (1,192) = 6.39, p = .012, \u03b7p\u00b2 = .03]",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 8,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Hominess (PC2 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "0.001",
+      "effect_size": 0.05,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": "F(1,192)=10.94",
+      "theory_links": [
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces may contribute to feelings of coziness and personalness, possibly due to other uncontrolled environmental variables.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 2.2.3, p. 10, Fig. 7",
+      "quote": "PC2 [hominess; F (1,192) = 10.94, p = .001, \u03b7p\u00b2 = .05]"
+    },
+    {
+      "id": 9,
+      "antecedent": "Self-similarity (high)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.242,
+      "effect_size_type": "r",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Images with high self-similarity are perceived as more fascinating.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Self-Similarity ... r = .242; p < .001",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 10,
+      "antecedent": "Self-similarity (high)",
+      "consequent": "Coherence (PC1 scores)",
+      "direction": "decrease",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.005",
+      "effect_size": -0.198,
+      "effect_size_type": "r",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T1"
+      ],
+      "mechanism": "Images with high self-similarity are perceived as less coherent. Possibly due to strong focus points being less self-similar.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Self-Similarity ... r = -.198; p = .005",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 11,
+      "antecedent": "Complexity (high)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.519,
+      "effect_size_type": "r",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [
+        "T2"
+      ],
+      "mechanism": "More complex scenes are perceived as more fascinating.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Complexity ... r = .519; p < .001",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 12,
+      "antecedent": "Complexity (high)",
+      "consequent": "Hominess (PC2 scores)",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": "0.013",
+      "effect_size": 0.175,
+      "effect_size_type": "r",
+      "sample_size": 798,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "More complex scenes are perceived as more home-like.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 3",
+      "quote": "Complexity ... r = .175; p = .013"
+    },
+    {
+      "id": 13,
+      "antecedent": "9 non-redundant aesthetic rating scales",
+      "consequent": "Psychological dimension: Hominess",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 2.73,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Identified as PC1 in Experiment 2, explaining 30% of variance. Strongly loaded by Naturalness (0.90), Personalness (0.79), Hominess (0.74). Replicated Exp 1 findings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "PC1 (Hominess) ... Variance Explained 30%"
+    },
+    {
+      "id": 14,
+      "antecedent": "9 non-redundant aesthetic rating scales",
+      "consequent": "Psychological dimension: Coherence",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 2.28,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Identified as PC2 in Experiment 2, explaining 25% of variance. Strongly loaded by Organization (0.97), Beauty (0.57), Valence (0.53), Approachability (0.52). Replicated Exp 1 findings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "PC2 (Coherence) ... Variance Explained 25%",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 15,
+      "antecedent": "9 non-redundant aesthetic rating scales",
+      "consequent": "Psychological dimension: Fascination",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "self_report",
+      "p_value": null,
+      "effect_size": 1.83,
+      "effect_size_type": "Eigenvalue",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "DT",
+        "ART"
+      ],
+      "template_ids": [],
+      "mechanism": "Identified as PC3 in Experiment 2, explaining 20% of variance. Strongly loaded by Complexity (0.98), Interest (0.59). Replicated Exp 1 findings.",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 4",
+      "quote": "PC3 (Fascination) ... Variance Explained 20%",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 16,
+      "antecedent": "Ceiling height (high)",
+      "consequent": "Hominess (PC1 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.002,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=15.23",
+      "theory_links": [
+        "VF3"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "High ceilings contribute to higher hominess scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "main effects of ceiling height [F (1, 9816) = 15.23, p < .001, \u03b7p\u00b2 = .002] ... on PC1 (hominess)"
+    },
+    {
+      "id": 17,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Hominess (PC1 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.012,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=118.43",
+      "theory_links": [
+        "Prospect-Refuge"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces contribute to higher hominess scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "enclosure [F (1, 9816) = 118.43, p < .001, \u03b7p\u00b2 = .012] ... on PC1 (hominess)"
+    },
+    {
+      "id": 18,
+      "antecedent": "Curvature (round contours)",
+      "consequent": "Hominess (PC1 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.002,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=20.95",
+      "theory_links": [
+        "Biophilia",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Round contours contribute to higher hominess scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "curvature [F (1, 9816) = 20.95, p < .001, \u03b7p\u00b2 = .002] on PC1 (hominess)"
+    },
+    {
+      "id": 19,
+      "antecedent": "Ceiling height (high)",
+      "consequent": "Coherence (PC2 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.003,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=28.25",
+      "theory_links": [
+        "VF3",
+        "PP"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "High ceilings contribute to higher coherence scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "main effects of ceiling height [F (1, 9816) = 28.25, p < .001, \u03b7p\u00b2 = .003] ... for PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 20,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Coherence (PC2 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.018,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=180.39",
+      "theory_links": [
+        "Prospect-Refuge",
+        "PP"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces contribute to higher coherence scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "enclosure [F (1, 9816) = 180.39, p < .001, \u03b7p\u00b2 = .018] ... for PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 21,
+      "antecedent": "Curvature (round contours)",
+      "consequent": "Coherence (PC2 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.001,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=13.58",
+      "theory_links": [
+        "Biophilia",
+        "VF1",
+        "PP"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Round contours contribute to higher coherence scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "curvature [F (1, 9816) = 13.58, p < .001, \u03b7p\u00b2 = .001] ... for PC2 (coherence)",
+      "outcome_id": "neural.synchrony",
+      "outcome_domain": "neural",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 22,
+      "antecedent": "Ceiling height (high)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.024,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=243.00",
+      "theory_links": [
+        "VF3",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [
+        "VF3"
+      ],
+      "mechanism": "High ceilings contribute to higher fascination scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "ceiling height [F (1, 9816) = 243.00, p < .001, \u03b7p\u00b2 = .024] ... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 23,
+      "antecedent": "Enclosure (open spaces)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.006,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=61.21",
+      "theory_links": [
+        "Prospect-Refuge",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [
+        "ENCLOSURE_SAFETY"
+      ],
+      "mechanism": "Open spaces contribute to higher fascination scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "enclosure [F (1, 9816) = 61.21, p < .001, \u03b7p\u00b2 = .006] ... on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 24,
+      "antecedent": "Curvature (round contours)",
+      "consequent": "Fascination (PC3 scores)",
+      "direction": "increase",
+      "claim_type": "causal",
+      "measure_type": "self_report",
+      "p_value": "<0.001",
+      "effect_size": 0.023,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 614,
+      "confidence_interval": null,
+      "test_statistic": "F(1,9816)=232.83",
+      "theory_links": [
+        "Biophilia",
+        "VF1"
+      ],
+      "template_ids": [
+        "VF1"
+      ],
+      "mechanism": "Round contours contribute to higher fascination scores.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 3.2.2, p. 14, Fig. 9",
+      "quote": "curvature [F (1, 9816) = 232.83, p < .001, \u03b7p\u00b2 = .023] on PC3 (fascination)",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 25,
+      "antecedent": "Fascination (psychological dimension)",
+      "consequent": "Neural activity in right lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": 6.7,
+      "effect_size_type": "T_score",
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [],
+      "mechanism": "Fascination covaried with neural activity in the right lingual gyrus during beauty judgments.",
+      "moderators_reported": [
+        "Task (beauty judgment)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Fascination ... BJ ... Lingual gyrus ... T-score 6.70",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 26,
+      "antecedent": "Fascination (psychological dimension)",
+      "consequent": "Neural activity in left lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": 9.04,
+      "effect_size_type": "T_score",
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [],
+      "mechanism": "Fascination covaried with neural activity in the left lingual gyrus during approach-avoidance decisions.",
+      "moderators_reported": [
+        "Task (approach-avoidance decisions)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Fascination ... AA ... Lingual gyrus ... T-score 9.04",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 27,
+      "antecedent": "Fascination (psychological dimension)",
+      "consequent": "Neural activity in right lingual gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": 6.65,
+      "effect_size_type": "T_score",
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP",
+        "DT",
+        "ART"
+      ],
+      "template_ids": [],
+      "mechanism": "Fascination covaried with neural activity in the right lingual gyrus regardless of task (conjunction analysis).",
+      "moderators_reported": [],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Fascination ... CJN ... Lingual gyrus ... T-score 6.65",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 28,
+      "antecedent": "Hominess (psychological dimension)",
+      "consequent": "Neural activity in left cuneus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": 5.45,
+      "effect_size_type": "T_score",
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [],
+      "template_ids": [],
+      "mechanism": "Hominess covaried with neural activity in the left cuneus when making approach-avoidance decisions.",
+      "moderators_reported": [
+        "Task (approach-avoidance decisions)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Hominess ... AA ... Cuneus ... T-score 5.45",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 29,
+      "antecedent": "Coherence (psychological dimension)",
+      "consequent": "Neural activity in left inferior occipital gyrus",
+      "direction": "increase",
+      "claim_type": "associational",
+      "measure_type": "neural",
+      "p_value": "<0.001",
+      "effect_size": 5.08,
+      "effect_size_type": "T_score",
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Coherence covaried with neural activity in the left inferior occipital gyrus when participants judged beauty.",
+      "moderators_reported": [
+        "Task (beauty judgment)"
+      ],
+      "provenance_depth": "table",
+      "source": "Table 5",
+      "quote": "Coherence ... BJ ... Occipital gyrus ... T-score 5.08",
+      "outcome_id": "behav.activity",
+      "outcome_domain": "behav",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    },
+    {
+      "id": 30,
+      "antecedent": "Global Image Properties (Self-similarity, Complexity)",
+      "consequent": "Neural activity in lingual gyrus, cuneus, or inferior occipital gyrus (regions identified for Coherence, Hominess, Fascination)",
+      "direction": "no_effect",
+      "claim_type": "null",
+      "measure_type": "neural",
+      "p_value": "ns",
+      "effect_size": null,
+      "effect_size_type": null,
+      "sample_size": 18,
+      "confidence_interval": null,
+      "test_statistic": null,
+      "theory_links": [
+        "PP"
+      ],
+      "template_ids": [],
+      "mechanism": "Neural activation patterns for Coherence, Hominess, and Fascination are not directly driven by these low-level psychophysical properties of the images.",
+      "moderators_reported": [],
+      "provenance_depth": "section",
+      "source": "Section 4.2.4, p. 16",
+      "quote": "brain activation did not covary with self-similarity or complexity scores.",
+      "outcome_id": "affect.fascination",
+      "outcome_domain": "affect",
+      "outcome_match_type": "substring",
+      "outcome_confidence": 0.8
+    }
+  ],
+  "mechanisms": [
+    "Aesthetic experiences in the built environment are mediated by three large-scale neural systems: knowledge-meaning (cognition), emotion-valuation (emotion), and sensorimotor (behavior).",
+    "Coherence is primarily driven by the perception of organization and relates to fluency theory, involving cognitive, affective, and behavioral responses.",
+    "Hominess relates to the Danish concept of 'hygge' (coziness, warmth, togetherness), depending on interactions between sensory inputs (naturalistic stimuli) and affective processing (belonging).",
+    "Fascination is a vector sum of complexity and interest, akin to Kaplan's exploration dimension, where informational richness triggers interest and motivates exploration.",
+    "The visual brain harbors sensitivities to psychological dimensions of coherence, fascination, and hominess, with valuation varying by dimension and task.",
+    "Neural signatures represent top-down influences on visual valuation rather than bottom-up psychophysical properties of the visual images."
+  ],
+  "moderators": [
+    "Task (beauty judgment vs. approach-avoidance decisions)"
+  ],
+  "implementation_implications": [
+    "Architects can test the psychological impact of proposed design schemes (pre-construction) along the dimensions of coherence, fascination, and hominess.",
+    "The identified components can be used for post-occupancy evaluations of buildings.",
+    "Architects can weigh the importance of these components differently based on the building type (e.g., home, hospital, library, museum)."
+  ],
+  "domains": [
+    "A6_Visual_Form",
+    "A2_Spatial_Scale",
+    "A3_Spatial_Config",
+    "A9_Task_Cognition",
+    "A8_Social"
+  ],
+  "overall_theory_links": [
+    "PP",
+    "DP",
+    "DT",
+    "ART",
+    "Prospect-Refuge",
+    "Biophilia"
+  ],
+  "tables": [
+    {
+      "table_id": "Table 1",
+      "description": "Prompts and end anchors of 7-point rating scales for the aesthetic rating scales.",
+      "key_stats": [],
+      "n_findings_extracted_from": 0
+    },
+    {
+      "table_id": "Table 2",
+      "description": "Factor loadings on the three principal components (Coherence, Hominess, Fascination) from Experiment 1.",
+      "key_stats": [
+        "Eigenvalue: 3.57 (PC1), 2.39 (PC2), 2.16 (PC3)",
+        "Variance Explained: 40% (PC1), 27% (PC2), 24% (PC3)",
+        "Cumulative Variance: 90%"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 3",
+      "description": "GIPs predicting Principal Component Scores from Experiment 1.",
+      "key_stats": [
+        "Self-Similarity: r=-.198, p=.005 (PC1); r=.242, p<.001 (PC3)",
+        "Complexity: r=.175, p=.013 (PC2); r=.519, p<.001 (PC3)"
+      ],
+      "n_findings_extracted_from": 4
+    },
+    {
+      "table_id": "Table 4",
+      "description": "Factor loadings on the three principal components (Hominess, Coherence, Fascination) from Experiment 2.",
+      "key_stats": [
+        "Eigenvalue: 2.73 (PC1), 2.28 (PC2), 1.83 (PC3)",
+        "Variance Explained: 30% (PC1), 25% (PC2), 20% (PC3)",
+        "Cumulative Variance: 76%"
+      ],
+      "n_findings_extracted_from": 3
+    },
+    {
+      "table_id": "Table 5",
+      "description": "The neuroanatomical correlates of Fascination, Hominess, and Coherence (Experiment 3).",
+      "key_stats": [
+        "Fascination: Lingual gyrus (BJ: T=6.70, AA: T=9.04, CJN: T=6.65)",
+        "Hominess: Cuneus (AA: T=5.45)",
+        "Coherence: Occipital gyrus (BJ: T=5.08)"
+      ],
+      "n_findings_extracted_from": 5
+    }
+  ],
+  "limitations": [
+    "Used two-dimensional images, limiting generalizability to three-dimensional built spaces.",
+    "Focused on visual perception of architecture, not accounting for nonvisual senses.",
+    "Considered only three basic architectural design variables (ceiling height, enclosure, curvature), which capture a limited proportion of a building's visual properties."
+  ]
+}

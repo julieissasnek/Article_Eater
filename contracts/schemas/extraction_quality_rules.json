@@ -1,0 +1,1393 @@
+{
+  "version": "1.0",
+  "description": "Machine-readable validation rules for extraction quality (from EXTRACTION_FIELD_QUALITY_FRAMEWORK_2026-02-28.md)",
+  "generated_at": "2026-02-28T18:00:00Z",
+  "severity_levels": {
+    "critical": "Field is invalid and breaks interpretation. Must be fixed.",
+    "error": "Field violates constraints. Should be flagged for re-extraction.",
+    "warning": "Field is usable but has quality concerns. Flag for review.",
+    "info": "Field is fine but could be improved."
+  },
+  "fields": {
+    "antecedent": {
+      "description": "Independent variable / stimulus / environmental condition",
+      "criticality": "critical",
+      "type": "string",
+      "required_for_claim_types": [
+        "all"
+      ],
+      "rules": [
+        {
+          "rule_id": "A1_NULL_ANTECEDENT",
+          "severity": "critical",
+          "description": "Antecedent must not be null or empty",
+          "check_type": "not_empty",
+          "error_message": "Antecedent cannot be null or empty string"
+        },
+        {
+          "rule_id": "A2_VAGUE_ANTECEDENT",
+          "severity": "error",
+          "description": "Antecedent must not be vague or use catch-all terms",
+          "check_type": "regex_pattern_not_match",
+          "patterns": [
+            "environmental features",
+            "various\\s+\\w+",
+            "multiple\\s+factors",
+            "different\\s+\\w+",
+            "various\\s+conditions",
+            "^conditions?$",
+            "^factors?$"
+          ],
+          "error_message": "Antecedent uses vague terms like 'environmental features' or 'various'. Must be specific."
+        },
+        {
+          "rule_id": "A3_OUTCOME_IN_ANTECEDENT",
+          "severity": "error",
+          "description": "Antecedent must not contain outcome language. Expanded set includes: improved, enhanced, facilitated, promoted, reduced, decreased, modulated, suppressed",
+          "check_type": "substring_match",
+          "forbidden_terms": [
+            "improved",
+            "increased well-being",
+            "better",
+            "worse",
+            "reduced stress",
+            "better performance",
+            "higher anxiety",
+            "lower depression",
+            "increased",
+            "enhanced",
+            "facilitated",
+            "promoted",
+            "reduced",
+            "decreased",
+            "modulated",
+            "suppressed"
+          ],
+          "error_message": "Antecedent contains outcome language (e.g., 'improved', 'better'). Must describe the environmental condition, not the result."
+        },
+        {
+          "rule_id": "A4_BARE_DEMOGRAPHIC",
+          "severity": "warning",
+          "description": "Demographic used as antecedent without factorial design (confound risk)",
+          "check_type": "regex_pattern_match_with_context",
+          "patterns": [
+            "^age\\s+group",
+            "^gender",
+            "^education\\s+level",
+            "^socioeconomic"
+          ],
+          "applicable_claim_types": [
+            "causal",
+            "empirical_finding"
+          ],
+          "warning_message": "Demographic variable used as IV. Check: is this the actual independent variable (architectural feature) or a moderator?",
+          "severity_conditions": {
+            "ERROR": "article_family='experimental' AND antecedent is bare demographic AND no_factorial_design",
+            "WARNING": "article_family='observational' AND demographic used as moderator"
+          }
+        },
+        {
+          "rule_id": "A5_LENGTH_CHECK",
+          "severity": "warning",
+          "description": "Antecedent should be reasonably detailed (not too short or too long)",
+          "check_type": "length_range",
+          "min_length": 5,
+          "max_length": 500,
+          "warning_message": "Antecedent length unusual. Should be 5-500 characters."
+        }
+      ]
+    },
+    "consequent": {
+      "description": "Dependent variable / outcome / measured variable",
+      "criticality": "critical",
+      "type": "string",
+      "required_for_claim_types": [
+        "all"
+      ],
+      "rules": [
+        {
+          "rule_id": "C1_NULL_CONSEQUENT",
+          "severity": "critical",
+          "description": "Consequent must not be null or empty",
+          "check_type": "not_empty",
+          "error_message": "Consequent cannot be null or empty"
+        },
+        {
+          "rule_id": "C2_RESTATEMENT_OF_ANTECEDENT",
+          "severity": "error",
+          "description": "Consequent must not be a restatement of antecedent",
+          "check_type": "token_overlap_threshold",
+          "max_overlap_ratio": 0.6,
+          "error_message": "Consequent is too similar to antecedent (>60% token overlap). Consequent should describe the outcome, not restate the IV."
+        },
+        {
+          "rule_id": "C3_DOMAIN_MISMATCH",
+          "severity": "error",
+          "description": "Consequent must align with stated outcome_domain",
+          "check_type": "domain_keyword_match",
+          "outcome_domains": {
+            "health": [
+              "health",
+              "well-being",
+              "wellbeing",
+              "illness",
+              "disease",
+              "disorder"
+            ],
+            "affect": [
+              "mood",
+              "emotion",
+              "affect",
+              "anxiety",
+              "depression",
+              "stress",
+              "happiness",
+              "satisfaction"
+            ],
+            "cognition": [
+              "memory",
+              "attention",
+              "working memory",
+              "cognitive",
+              "mental",
+              "learning",
+              "comprehension",
+              "performance",
+              "reasoning"
+            ],
+            "behavior": [
+              "behavior",
+              "action",
+              "activity",
+              "engagement",
+              "avoidance",
+              "approach",
+              "movement"
+            ],
+            "perception": [
+              "perception",
+              "aesthetic",
+              "preference",
+              "liking",
+              "judgment",
+              "beauty",
+              "appeal",
+              "valence"
+            ],
+            "physiology": [
+              "cortisol",
+              "heart rate",
+              "blood pressure",
+              "EEG",
+              "fMRI",
+              "pupil",
+              "galvanic",
+              "respiration",
+              "HPA axis",
+              "hormone"
+            ]
+          },
+          "error_message": "Consequent does not match stated outcome_domain. Check: is outcome_domain correct, or is consequent description wrong?"
+        },
+        {
+          "rule_id": "C4_MEASURE_TYPE_MISMATCH",
+          "severity": "warning",
+          "description": "Consequent should align with stated measure_type",
+          "check_type": "measure_type_consistency",
+          "measure_keywords": {
+            "physiological": [
+              "cortisol",
+              "heart rate",
+              "EEG",
+              "fMRI",
+              "pupil",
+              "respiration",
+              "blood pressure",
+              "galvanic",
+              "HPA",
+              "amygdala"
+            ],
+            "behavioral": [
+              "behavior",
+              "action",
+              "movement",
+              "choice",
+              "approach",
+              "avoidance"
+            ],
+            "self_report": [
+              "reported",
+              "self-reported",
+              "perceived",
+              "subjective",
+              "rated",
+              "questionnaire"
+            ]
+          },
+          "warning_message": "Consequent description does not match stated measure_type."
+        },
+        {
+          "rule_id": "C5_LENGTH_CHECK",
+          "severity": "warning",
+          "description": "Consequent should be concise but descriptive",
+          "check_type": "length_range",
+          "min_length": 3,
+          "max_length": 300,
+          "warning_message": "Consequent length unusual. Should be 3-300 characters."
+        }
+      ]
+    },
+    "direction": {
+      "description": "Effect direction: increase, decrease, no_effect, mixed",
+      "criticality": "critical",
+      "type": "string",
+      "allowed_values": [
+        "increase",
+        "decrease",
+        "no_effect",
+        "mixed",
+        null
+      ],
+      "rules": [
+        {
+          "rule_id": "D1_INVALID_DIRECTION",
+          "severity": "critical",
+          "description": "Direction must be one of: increase, decrease, no_effect, mixed, null",
+          "check_type": "enum_value",
+          "allowed_values": [
+            "increase",
+            "decrease",
+            "no_effect",
+            "mixed",
+            null
+          ],
+          "error_message": "Invalid direction value. Must be one of: increase, decrease, no_effect, mixed. Do NOT use synonyms like 'enhance', 'facilitate', 'modulate', 'affect'."
+        },
+        {
+          "rule_id": "D2_MIXED_WITH_EFFECT_SIZE",
+          "severity": "error",
+          "description": "If direction is 'mixed', effect_size must be null",
+          "check_type": "conditional",
+          "condition": "direction == 'mixed'",
+          "dependent_field": "effect_size",
+          "dependent_value": null,
+          "error_message": "Direction='mixed' cannot be paired with numeric effect_size. Either: (1) use 'mixed' with null ES, or (2) report separate findings per condition."
+        },
+        {
+          "rule_id": "D3_DIRECTION_EFFECT_MISMATCH",
+          "severity": "error",
+          "description": "Direction must match effect_size sign",
+          "check_type": "sign_consistency",
+          "consistency_rules": {
+            "increase": {
+              "min_effect_size": -0.01,
+              "description": "effect_size should be >= -0.01"
+            },
+            "decrease": {
+              "max_effect_size": 0.01,
+              "description": "effect_size should be <= 0.01"
+            },
+            "no_effect": {
+              "max_absolute_effect_size": 0.05,
+              "description": "effect_size should be close to 0"
+            }
+          },
+          "error_message": "Direction does not match effect_size sign. E.g., direction='increase' but effect_size=-0.45."
+        },
+        {
+          "rule_id": "D4_SIGNIFICANCE_MISMATCH",
+          "severity": "warning",
+          "description": "Direction should align with p_value significance for empirical claims",
+          "check_type": "conditional",
+          "applicable_claim_types": [
+            "causal",
+            "empirical_finding",
+            "associational"
+          ],
+          "condition": "direction in ['increase', 'decrease'] and p_value >= 0.05",
+          "warning_message": "Direction implies significant effect, but p_value >= 0.05 (not significant). Verify reported values."
+        },
+        {
+          "rule_id": "D5_NULL_DIRECTION_EMPIRICAL",
+          "severity": "error",
+          "description": "Empirical claims must have a direction",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "causal",
+            "empirical_finding"
+          ],
+          "error_message": "Direction is null but claim_type indicates empirical finding. Must specify direction."
+        }
+      ]
+    },
+    "claim_type": {
+      "description": "Classification of the claim",
+      "criticality": "warning",
+      "type": "string",
+      "allowed_values": [
+        "empirical_finding",
+        "theoretical_proposition",
+        "causal",
+        "associational",
+        "synthesized",
+        "narrative",
+        "qualitative_theme",
+        "null",
+        "moderated",
+        "pooled_effect",
+        "cited",
+        "vote_count",
+        "methodological",
+        "derived_guideline",
+        "claimed",
+        "statistical",
+        "comparative",
+        "limitation",
+        "theoretical_critique"
+      ],
+      "rules": [
+        {
+          "rule_id": "CT1_INVALID_CLAIM_TYPE",
+          "severity": "error",
+          "description": "claim_type must be a recognized value",
+          "check_type": "enum_value",
+          "allowed_values": [
+            "empirical_finding",
+            "theoretical_proposition",
+            "causal",
+            "associational",
+            "synthesized",
+            "narrative",
+            "qualitative_theme",
+            "null",
+            "moderated",
+            "pooled_effect",
+            "cited",
+            "vote_count",
+            "methodological",
+            "derived_guideline",
+            "claimed",
+            "statistical",
+            "comparative",
+            "limitation",
+            "theoretical_critique"
+          ],
+          "error_message": "Invalid claim_type. Must be one of the allowed values."
+        },
+        {
+          "rule_id": "CT2_EMPIRICAL_WITHOUT_STATS",
+          "severity": "error",
+          "description": "claim_type='empirical_finding' must have statistics",
+          "check_type": "conditional",
+          "condition": "claim_type == 'empirical_finding'",
+          "must_have_at_least_one": [
+            "p_value",
+            "effect_size",
+            "test_statistic"
+          ],
+          "error_message": "claim_type='empirical_finding' but no statistics (p_value, effect_size, test_statistic) provided."
+        },
+        {
+          "rule_id": "CT3_ARTICLE_CLAIM_TYPE_MISMATCH",
+          "severity": "warning",
+          "description": "Check consistency between article_type and claim_type distribution",
+          "check_type": "context_check",
+          "article_type_expectations": {
+            "empirical_research": {
+              "dominant_claim_types": [
+                "empirical_finding",
+                "causal"
+              ],
+              "allowed_others": [
+                "synthesized",
+                "narrative"
+              ]
+            },
+            "experimental": {
+              "dominant_claim_types": [
+                "causal",
+                "empirical_finding"
+              ],
+              "allowed_others": [
+                "theoretical_proposition"
+              ]
+            },
+            "review": {
+              "dominant_claim_types": [
+                "narrative",
+                "synthesized"
+              ],
+              "allowed_others": [
+                "cited",
+                "theoretical_proposition"
+              ]
+            }
+          },
+          "warning_message": "Article type and claim type combination seems unusual. Verify extraction is correct."
+        }
+      ]
+    },
+    "measure_type": {
+      "description": "How the outcome was measured",
+      "criticality": "error",
+      "type": "string",
+      "allowed_values": [
+        "self_report",
+        "behavioral",
+        "physiological",
+        "cognitive_task",
+        "observational",
+        "mixed",
+        null
+      ],
+      "rules": [
+        {
+          "rule_id": "MT1_INVALID_MEASURE_TYPE",
+          "severity": "error",
+          "description": "measure_type must be one of the allowed values",
+          "check_type": "enum_value",
+          "allowed_values": [
+            "self_report",
+            "behavioral",
+            "physiological",
+            "cognitive_task",
+            "observational",
+            "mixed",
+            null
+          ],
+          "error_message": "Invalid measure_type. Must be one of: self_report, behavioral, physiological, cognitive_task, observational, mixed."
+        },
+        {
+          "rule_id": "MT2_NULL_MEASURE_EMPIRICAL",
+          "severity": "error",
+          "description": "Empirical claims should have measure_type specified",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "error_message": "measure_type is null for empirical claim. Should specify how outcome was measured."
+        },
+        {
+          "rule_id": "MT3_MEASURE_CONSEQUENT_MISMATCH",
+          "severity": "warning",
+          "description": "measure_type should align with consequent field",
+          "check_type": "consistency_check",
+          "measure_keywords": {
+            "physiological": [
+              "cortisol",
+              "heart rate",
+              "EEG",
+              "blood pressure"
+            ],
+            "behavioral": [
+              "behavior",
+              "action",
+              "movement",
+              "choice"
+            ],
+            "self_report": [
+              "reported",
+              "perceived",
+              "rated"
+            ]
+          },
+          "warning_message": "measure_type does not match consequent description."
+        }
+      ]
+    },
+    "p_value": {
+      "description": "Statistical significance (p-value)",
+      "criticality": "error",
+      "type": [
+        "number",
+        "string",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "PV1_OUT_OF_RANGE",
+          "severity": "error",
+          "description": "p_value must be in range [0, 1]",
+          "check_type": "numeric_range",
+          "min": 0,
+          "max": 1,
+          "error_message": "p_value out of range [0, 1]. Verify value."
+        },
+        {
+          "rule_id": "PV2_STRING_FORMAT",
+          "severity": "warning",
+          "description": "p_value stored as string (e.g., '< 0.05') instead of numeric",
+          "check_type": "type_check",
+          "expected_type": "number",
+          "actual_type": "string",
+          "warning_message": "p_value is a string. Should be numeric float for consistency."
+        },
+        {
+          "rule_id": "PV3_DIRECTION_MISMATCH",
+          "severity": "warning",
+          "description": "p_value should be consistent with direction",
+          "check_type": "conditional",
+          "condition": "p_value >= 0.05 and direction in ['increase', 'decrease']",
+          "warning_message": "p_value >= 0.05 (not significant) but direction suggests significant effect. Verify."
+        },
+        {
+          "rule_id": "PV4_NULL_P_EMPIRICAL",
+          "severity": "error",
+          "description": "Empirical findings should have p_value",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "error_message": "p_value is null for empirical claim. APA 7th ed. requires p-value reporting."
+        },
+        {
+          "rule_id": "PV5_P_IN_NARRATIVE",
+          "severity": "warning",
+          "description": "Narrative/theoretical claims should not have p_value",
+          "check_type": "conditional",
+          "condition": "claim_type in ['narrative', 'theoretical_proposition'] and p_value is not null",
+          "warning_message": "p_value present for narrative/theoretical claim. Unusual."
+        }
+      ]
+    },
+    "effect_size": {
+      "description": "Magnitude of effect",
+      "criticality": "error",
+      "type": [
+        "number",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "ES1_RANGE_VALIDATION",
+          "severity": "error",
+          "description": "effect_size must be in valid range for its type",
+          "check_type": "type_dependent_range",
+          "ranges_by_type": {
+            "eta_squared": {
+              "min": 0,
+              "max": 1
+            },
+            "r": {
+              "min": -1,
+              "max": 1
+            },
+            "r_correlation": {
+              "min": -1,
+              "max": 1
+            },
+            "cohen_d": {
+              "min": -3,
+              "max": 3,
+              "warning_threshold": 3
+            },
+            "odds_ratio": {
+              "min": 0,
+              "max": 1000,
+              "warning_threshold": 100
+            },
+            "cohen_f": {
+              "min": 0,
+              "max": 1,
+              "warning_threshold": 0.5
+            }
+          },
+          "error_message": "effect_size out of valid range for its effect_size_type."
+        },
+        {
+          "rule_id": "ES2_DIRECTION_MISMATCH",
+          "severity": "error",
+          "description": "effect_size sign must match direction",
+          "check_type": "sign_consistency",
+          "consistency_rules": {
+            "increase": "effect_size >= -0.01",
+            "decrease": "effect_size <= 0.01",
+            "no_effect": "abs(effect_size) <= 0.05",
+            "mixed": "effect_size must be null"
+          },
+          "error_message": "effect_size sign does not match direction."
+        },
+        {
+          "rule_id": "ES3_NULL_ES_EMPIRICAL",
+          "severity": "error",
+          "description": "Empirical findings should report effect_size",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "error_message": "effect_size is null for empirical claim. APA 7th ed. recommends effect size reporting."
+        },
+        {
+          "rule_id": "ES4_NULL_TYPE_WITH_ES",
+          "severity": "error",
+          "description": "effect_size_type must be specified if effect_size is present",
+          "check_type": "paired_field_required",
+          "paired_field": "effect_size_type",
+          "error_message": "effect_size is present but effect_size_type is null."
+        }
+      ]
+    },
+    "effect_size_type": {
+      "description": "Name of the effect size statistic",
+      "criticality": "warning",
+      "type": [
+        "string",
+        "null"
+      ],
+      "allowed_values": [
+        "Cohen's d",
+        "eta_squared",
+        "partial_eta_squared",
+        "r",
+        "r_correlation",
+        "odds_ratio",
+        "Cohen's f",
+        "Cramer's V",
+        "phi",
+        "Hedges' g",
+        "Cliff's delta",
+        "Glass' delta",
+        null
+      ],
+      "rules": [
+        {
+          "rule_id": "EST1_REQUIRED_WITH_ES",
+          "severity": "error",
+          "description": "effect_size_type must be specified if effect_size is present",
+          "check_type": "paired_field_required",
+          "paired_field": "effect_size",
+          "error_message": "effect_size is present but effect_size_type is null."
+        },
+        {
+          "rule_id": "EST2_STANDARDIZATION",
+          "severity": "warning",
+          "description": "Use standard names for effect size types",
+          "check_type": "standardization",
+          "standard_names": {
+            "Cohen's d": [
+              "cohens d",
+              "cohen d",
+              "d"
+            ],
+            "eta_squared": [
+              "eta squared",
+              "eta2",
+              "eta^2"
+            ],
+            "partial_eta_squared": [
+              "partial eta squared",
+              "partial eta-squared"
+            ],
+            "r": [
+              "correlation coefficient",
+              "pearson r"
+            ]
+          },
+          "warning_message": "effect_size_type should use standard naming convention."
+        }
+      ]
+    },
+    "sample_size": {
+      "description": "Number of participants or observations",
+      "criticality": "warning",
+      "type": [
+        "integer",
+        "number",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "SS1_TYPE_RANGE",
+          "severity": "error",
+          "description": "sample_size must be positive integer",
+          "check_type": "numeric_type_and_range",
+          "must_be": "integer",
+          "min": 1,
+          "max": 1000000,
+          "error_message": "sample_size must be a positive integer."
+        },
+        {
+          "rule_id": "SS2_NULL_FOR_EMPIRICAL",
+          "severity": "warning",
+          "description": "Empirical findings should report sample_size",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "warning_message": "sample_size is null for empirical claim. APA 7th ed. requires N reporting."
+        },
+        {
+          "rule_id": "SS3_N_IN_NARRATIVE",
+          "severity": "info",
+          "description": "Narrative claims should not have sample_size",
+          "check_type": "conditional",
+          "condition": "claim_type in ['narrative', 'theoretical_proposition'] and sample_size is not null",
+          "info_message": "sample_size present for narrative claim. Unusual but not invalid."
+        }
+      ]
+    },
+    "sample_size_source": {
+      "description": "Source of sample_size information (reported, inferred, or estimated)",
+      "criticality": "warning",
+      "type": [
+        "string",
+        "null"
+      ],
+      "allowed_values": [
+        "reported",
+        "inferred",
+        "estimated",
+        null
+      ],
+      "rules": [
+        {
+          "rule_id": "SSS1_VALID_SOURCE",
+          "severity": "warning",
+          "description": "sample_size_source must be one of allowed values",
+          "check_type": "enum_value",
+          "allowed_values": [
+            "reported",
+            "inferred",
+            "estimated",
+            null
+          ],
+          "warning_message": "sample_size_source has unrecognized value. Should be 'reported', 'inferred', or 'estimated'."
+        },
+        {
+          "rule_id": "SSS2_SOURCE_WITH_N",
+          "severity": "info",
+          "description": "When sample_size is present, source should be specified",
+          "check_type": "conditional",
+          "condition": "sample_size is not null and sample_size_source is null",
+          "info_message": "sample_size is present but sample_size_source not specified. Recommended to track origin."
+        },
+        {
+          "rule_id": "SSS3_ESTIMATED_CONFIDENCE",
+          "severity": "info",
+          "description": "Estimated sample sizes lower confidence",
+          "check_type": "conditional",
+          "condition": "sample_size_source == 'estimated'",
+          "info_message": "sample_size was estimated rather than directly reported. May reduce finding reliability."
+        }
+      ]
+    },
+    "stimulus_description": {
+      "description": "Description of stimulus or environmental manipulation used in finding",
+      "criticality": "warning",
+      "type": [
+        "object",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "SD1_PRIMARY_TYPE_EMPIRICAL",
+          "severity": "error",
+          "description": "Empirical claims should specify primary stimulus type",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "conditional_requirement": "if stimulus_description is present",
+          "must_have_field": "primary_type",
+          "error_message": "stimulus_description present but primary_type is missing. Must specify visual_scene, soundscape, thermal, olfactory, spatial, lighting, material, or mixed."
+        },
+        {
+          "rule_id": "SD2_MIN_COMPONENTS",
+          "severity": "warning",
+          "description": "Stimulus description should include at least one component",
+          "check_type": "array_length",
+          "field": "stimulus_description.components",
+          "min_length": 1,
+          "applicable_to": "stimulus_description",
+          "warning_message": "stimulus_description present but components array is empty. Should describe what stimulus elements compose the manipulation."
+        },
+        {
+          "rule_id": "SD3_DELIVERY_METHOD_REQUIRED",
+          "severity": "error",
+          "description": "Stimulus description must specify delivery method",
+          "check_type": "required_field",
+          "field": "stimulus_description.delivery_method",
+          "applicable_to": "stimulus_description",
+          "error_message": "stimulus_description present but delivery_method not specified. Must be in_situ, VR, photo, video, audio, or imagined."
+        }
+      ]
+    },
+    "stimulus_images": {
+      "description": "Array of images documenting the stimulus",
+      "criticality": "info",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "SI1_VALID_TYPES",
+          "severity": "warning",
+          "description": "Stimulus images should have recognized image types",
+          "check_type": "enum_per_item",
+          "field": "image_type",
+          "allowed_values": [
+            "photo",
+            "rendering",
+            "diagram",
+            "floor_plan",
+            "graph"
+          ],
+          "warning_message": "Image has unrecognized image_type. Should be photo, rendering, diagram, floor_plan, or graph."
+        },
+        {
+          "rule_id": "SI2_FIGURE_REFERENCE",
+          "severity": "info",
+          "description": "Stimulus images should reference paper figure",
+          "check_type": "conditional_per_item",
+          "condition": "stimulus_images[].figure_ref is null",
+          "info_message": "Stimulus image does not reference a figure in the paper. Helpful for traceability."
+        }
+      ]
+    },
+    "theory_commitments": {
+      "description": "How finding relates to theories (tests, extends, contradicts, assumes, proposes)",
+      "criticality": "warning",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "TC1_MIN_COMMITMENTS",
+          "severity": "warning",
+          "description": "Empirical/causal findings should link to at least one theory",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "empirical_finding",
+            "causal"
+          ],
+          "condition": "if article mentions theoretical framework",
+          "must_have": "at least one theory_commitment",
+          "warning_message": "Finding does not link to any theory even though article presents theoretical framework. Should specify which theory the finding tests/extends/contradicts."
+        },
+        {
+          "rule_id": "TC2_VALID_COMMITMENT_TYPE",
+          "severity": "error",
+          "description": "theory_commitment commitment_type must be valid",
+          "check_type": "enum_per_item",
+          "field": "commitment_type",
+          "allowed_values": [
+            "tests",
+            "extends",
+            "contradicts",
+            "assumes",
+            "proposes"
+          ],
+          "error_message": "theory_commitment has invalid commitment_type. Must be tests, extends, contradicts, assumes, or proposes."
+        },
+        {
+          "rule_id": "TC3_SPECIFIC_CLAIM_REQUIRED",
+          "severity": "error",
+          "description": "Each theory_commitment must specify what claim is being engaged",
+          "check_type": "required_field_per_item",
+          "field": "specific_claim",
+          "error_message": "theory_commitment missing specific_claim. Should state the precise claim from the theory being tested/extended."
+        },
+        {
+          "rule_id": "TC4_CLAIM_LENGTH",
+          "severity": "warning",
+          "description": "specific_claim should be substantive",
+          "check_type": "length_per_item",
+          "field": "specific_claim",
+          "min_length": 10,
+          "warning_message": "specific_claim is too brief. Should be a complete statement of the theoretical claim (min. 10 characters)."
+        }
+      ]
+    },
+    "mechanism_chain": {
+      "description": "Step-by-step mechanism linking antecedent to consequent",
+      "criticality": "warning",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "MC1_STEPS_FOR_CAUSAL",
+          "severity": "warning",
+          "description": "Causal claims should explain mechanism with at least 2 steps",
+          "check_type": "required_for_claim_type",
+          "applicable_claim_types": [
+            "causal",
+            "empirical_finding"
+          ],
+          "condition": "if claim_type is causal",
+          "minimum_steps": 2,
+          "warning_message": "Causal claim lacks mechanism_chain or has fewer than 2 steps. Should explain how antecedent leads to consequent through intermediate constructs."
+        },
+        {
+          "rule_id": "MC2_SEQUENTIAL_STEPS",
+          "severity": "error",
+          "description": "mechanism_chain step numbers must be sequential starting from 1",
+          "check_type": "sequential_integers",
+          "field": "step",
+          "start_from": 1,
+          "error_message": "mechanism_chain steps are not sequential (e.g., 1, 2, 3). Steps must be consecutive integers starting at 1."
+        },
+        {
+          "rule_id": "MC3_VALID_MECHANISM_TYPE",
+          "severity": "error",
+          "description": "mechanism_type must be recognized",
+          "check_type": "enum_per_item",
+          "field": "mechanism_type",
+          "allowed_values": [
+            "neural",
+            "perceptual",
+            "cognitive",
+            "affective",
+            "behavioral",
+            "physiological"
+          ],
+          "error_message": "mechanism_chain step has invalid mechanism_type. Must be neural, perceptual, cognitive, affective, behavioral, or physiological."
+        },
+        {
+          "rule_id": "MC4_VALID_EVIDENCE_STRENGTH",
+          "severity": "warning",
+          "description": "evidence_strength should indicate basis for mechanism",
+          "check_type": "enum_per_item",
+          "field": "evidence_strength",
+          "allowed_values": [
+            "direct",
+            "indirect",
+            "theoretical",
+            "assumed"
+          ],
+          "warning_message": "mechanism_chain step has invalid or missing evidence_strength. Should indicate if mechanism is direct, indirect, theoretical, or assumed."
+        }
+      ]
+    },
+    "molecule_ids": {
+      "description": "Links to rasa_attractors.json entries (semantic/causal molecules)",
+      "criticality": "info",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "MID1_VALID_FORMAT",
+          "severity": "info",
+          "description": "molecule_ids should follow naming convention",
+          "check_type": "format_per_item",
+          "pattern": "^[A-Z_][A-Z0-9_]*$",
+          "info_message": "molecule_id should use SCREAMING_SNAKE_CASE format (e.g., VISUAL_COMPLEXITY_AROUSAL)."
+        },
+        {
+          "rule_id": "MID2_REGISTRY_CHECK",
+          "severity": "info",
+          "description": "molecule_ids should be registered in rasa_attractors.json",
+          "check_type": "registry_lookup",
+          "registry_file": "rasa_attractors.json",
+          "info_message": "Consider registering this molecule_id in rasa_attractors.json for broader use."
+        }
+      ]
+    },
+    "success_conditions": {
+      "description": "Validation criteria for this finding",
+      "criticality": "info",
+      "type": [
+        "object",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "SC1_REQUIRED_FIELDS_EXIST",
+          "severity": "warning",
+          "description": "All fields in required_fields should exist in the finding",
+          "check_type": "field_existence",
+          "error_message": "success_conditions specifies required_fields that are missing from the finding."
+        },
+        {
+          "rule_id": "SC2_THEORY_LINK_CHECK",
+          "severity": "warning",
+          "description": "If theory_link_expected is true, theory_links should be non-empty",
+          "check_type": "conditional",
+          "condition": "success_conditions.theory_link_expected == true",
+          "must_have": "at least one theory_link",
+          "warning_message": "success_conditions expects theory link but theory_links is null or empty."
+        },
+        {
+          "rule_id": "SC3_MECHANISM_CHECK",
+          "severity": "warning",
+          "description": "If mechanism_expected is true, mechanism or mechanism_chain should be present",
+          "check_type": "conditional",
+          "condition": "success_conditions.mechanism_expected == true",
+          "must_have_at_least_one": [
+            "mechanism",
+            "mechanism_chain"
+          ],
+          "warning_message": "success_conditions expects mechanism but neither mechanism nor mechanism_chain is present."
+        }
+      ]
+    },
+    "instruments_used": {
+      "description": "Measurement instruments or scales used in the finding",
+      "criticality": "warning",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "IU1_INSTRUMENT_ID_REGISTRY",
+          "severity": "warning",
+          "description": "instrument_id should match registered instruments where possible",
+          "check_type": "registry_lookup",
+          "registry_file": "instruments_registry.json",
+          "warning_message": "instrument_id does not match any registered instrument. Consider adding to instruments registry."
+        },
+        {
+          "rule_id": "IU2_NAME_NOT_VAGUE",
+          "severity": "error",
+          "description": "Instrument names must be specific, not vague or generic",
+          "check_type": "pattern_not_match_per_item",
+          "field": "name",
+          "forbidden_patterns": [
+            "^questionnaire$",
+            "^scale$",
+            "^survey$",
+            "^measure$",
+            "^test$",
+            "^task$",
+            "^assessment$"
+          ],
+          "error_message": "instrument name is too vague (e.g., just 'questionnaire', 'scale', 'survey'). Must specify the actual instrument (e.g., 'Perceived Stress Scale', 'State-Trait Anxiety Inventory')."
+        },
+        {
+          "rule_id": "IU3_CONSTRUCT_CLARITY",
+          "severity": "warning",
+          "description": "construct_measured should be specified for instruments",
+          "check_type": "required_field_per_item",
+          "field": "construct_measured",
+          "warning_message": "Instrument missing construct_measured. Should specify what psychological/physiological construct it measures."
+        },
+        {
+          "rule_id": "IU4_RELIABILITY_REPORTED",
+          "severity": "info",
+          "description": "Instruments should report reliability metrics when available",
+          "check_type": "conditional_per_item",
+          "condition": "reliability is not null",
+          "info_message": "Good practice to report Cronbach's alpha or test-retest reliability for instruments used."
+        }
+      ]
+    },
+    "confidence_interval": {
+      "description": "95% CI for effect estimate [lower, upper]",
+      "criticality": "warning",
+      "type": [
+        "array",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "CI1_FORMAT",
+          "severity": "error",
+          "description": "CI must be [lower, upper] array of two numeric values",
+          "check_type": "format",
+          "must_be": "array_of_two_numbers",
+          "error_message": "confidence_interval must be [lower, upper] with two numeric values."
+        },
+        {
+          "rule_id": "CI2_ORDERING",
+          "severity": "error",
+          "description": "CI lower bound must be less than upper bound",
+          "check_type": "ordering",
+          "condition": "ci[0] < ci[1]",
+          "error_message": "confidence_interval lower bound >= upper bound."
+        },
+        {
+          "rule_id": "CI3_ES_CONTAINMENT",
+          "severity": "warning",
+          "description": "effect_size should fall within CI",
+          "check_type": "containment",
+          "containment_condition": "ci[0] <= effect_size <= ci[1]",
+          "warning_message": "effect_size is outside the reported CI. Verify values."
+        },
+        {
+          "rule_id": "CI4_PLAUSIBILITY",
+          "severity": "warning",
+          "description": "CI width should be reasonable",
+          "check_type": "width_plausibility",
+          "max_width": 100,
+          "warning_message": "confidence_interval is very wide, indicating low precision."
+        }
+      ]
+    },
+    "test_statistic": {
+      "description": "Name and value of statistical test",
+      "criticality": "warning",
+      "type": [
+        "string",
+        "null"
+      ],
+      "rules": [
+        {
+          "rule_id": "TS1_FORMAT",
+          "severity": "warning",
+          "description": "test_statistic should follow standard format",
+          "check_type": "format_pattern",
+          "expected_patterns": [
+            "t(\\d+)",
+            "F(\\d+,\\s*\\d+)",
+            "χ²(\\d+)",
+            "z\\s*=",
+            "r\\s*="
+          ],
+          "warning_message": "test_statistic format unusual. Expected: t(df), F(df1, df2), χ²(df), etc."
+        },
+        {
+          "rule_id": "TS2_DF_VS_N",
+          "severity": "warning",
+          "description": "Degrees of freedom should be consistent with sample_size",
+          "check_type": "consistency",
+          "df_max_relation": "df <= n",
+          "warning_message": "Degrees of freedom seem inconsistent with reported sample_size."
+        },
+        {
+          "rule_id": "TS3_VALUE_P_CONSISTENCY",
+          "severity": "warning",
+          "description": "test_statistic value should be consistent with p_value",
+          "check_type": "consistency",
+          "rough_rule": "if p < 0.001 then |test_stat_value| should be substantial",
+          "warning_message": "test_statistic value seems inconsistent with p_value."
+        },
+        {
+          "rule_id": "TS4_NULL_WITH_DATA",
+          "severity": "info",
+          "description": "test_statistic should be present for empirical findings",
+          "check_type": "conditional",
+          "condition": "sample_size is not null and test_statistic is null",
+          "info_message": "test_statistic is null despite sample_size being present. If from table, should extract test_statistic."
+        }
+      ]
+    }
+  },
+  "quality_scoring": {
+    "description": "How to compute field and finding quality scores",
+    "field_weights": {
+      "critical_fields": {
+        "fields": [
+          "antecedent",
+          "consequent",
+          "direction"
+        ],
+        "weight": 3,
+        "rationale": "Semantic core of a finding. Without these, interpretation is impossible."
+      },
+      "empirical_fields": {
+        "fields": [
+          "effect_size",
+          "p_value",
+          "sample_size"
+        ],
+        "weight": 2,
+        "rationale": "Required for empirical claims, may be null for narrative claims."
+      },
+      "supporting_fields": {
+        "fields": [
+          "measure_type",
+          "confidence_interval",
+          "test_statistic",
+          "effect_size_type"
+        ],
+        "weight": 1,
+        "rationale": "Quality modifiers. Important but not deal-breakers."
+      }
+    },
+    "field_scores": {
+      "no_errors_no_warnings": 1.0,
+      "warnings_only": 0.7,
+      "errors": 0.3,
+      "critical_errors": 0.0
+    },
+    "finding_quality_score": "weighted_mean(field_scores)",
+    "article_quality_score": "median(finding_quality_scores)",
+    "thresholds": {
+      "excellent": {
+        "min": 0.9,
+        "action": "accept"
+      },
+      "good": {
+        "min": 0.75,
+        "max": 0.89,
+        "action": "accept_with_flag"
+      },
+      "needs_repair": {
+        "min": 0.5,
+        "max": 0.74,
+        "action": "requeue_for_reextraction"
+      },
+      "broken": {
+        "max": 0.5,
+        "action": "reject_or_manual_review"
+      }
+    },
+    "family_thresholds": {
+      "empirical": {
+        "excellent": 0.9,
+        "good": 0.8,
+        "acceptable": 0.7,
+        "blocking": 0.7
+      },
+      "synthesis": {
+        "excellent": 0.9,
+        "good": 0.8,
+        "acceptable": 0.7,
+        "blocking": 0.7
+      },
+      "theoretical": {
+        "excellent": 0.85,
+        "good": 0.75,
+        "acceptable": 0.65,
+        "blocking": 0.65
+      },
+      "qualitative": {
+        "excellent": 0.85,
+        "good": 0.75,
+        "acceptable": 0.65,
+        "blocking": 0.65
+      },
+      "methods": {
+        "excellent": 0.85,
+        "good": 0.75,
+        "acceptable": 0.65,
+        "blocking": 0.65
+      }
+    },
+    "family_thresholds_description": "Quality acceptance thresholds vary by article family. Empirical/experimental papers (e.g., RCTs, surveys) have higher thresholds (0.70 blocking) because statistical rigor is primary. Qualitative and theoretical papers have lower thresholds (0.65 blocking) because robustness criteria differ. 'blocking' is the minimum for acceptance."
+  },
+  "quality_gates": {
+    "description": "Invariants for pipeline control",
+    "gates": [
+      {
+        "gate_id": "max_broken_articles",
+        "description": "Do not exceed 10% broken articles in a batch",
+        "threshold": 0.1,
+        "metric": "articles_with_score < 0.5 / total_articles"
+      },
+      {
+        "gate_id": "direction_canonicalization",
+        "description": "Do not exceed 5% non-canonical direction values",
+        "threshold": 0.05,
+        "metric": "findings_with_invalid_direction / total_findings"
+      },
+      {
+        "gate_id": "effect_size_direction_consistency",
+        "description": "Do not exceed 5% direction/effect_size mismatches",
+        "threshold": 0.05,
+        "metric": "mismatches / total_findings_with_both_fields"
+      },
+      {
+        "gate_id": "vague_antecedent_rate",
+        "description": "Do not exceed 10% vague antecedents",
+        "threshold": 0.1,
+        "metric": "vague_antecedents / total_findings"
+      }
+    ]
+  },
+  "panel_review_questions": [
+    {
+      "q_id": "Q1",
+      "title": "Antecedent Specificity",
+      "question": "Should antecedent specificity be measured against outcome vocabulary or independently?",
+      "panelists": [
+        "Haack (clarity)",
+        "Kirsh (operationalization)"
+      ]
+    },
+    {
+      "q_id": "Q2",
+      "title": "Mixed Direction Findings",
+      "question": "For mixed-direction findings, should we create separate findings per condition or flag for re-extraction?",
+      "panelists": [
+        "Pollock (conceptual clarity)"
+      ]
+    },
+    {
+      "q_id": "Q3",
+      "title": "Effect Size / Direction Tolerance",
+      "question": "What is the tolerance for effect_size/direction consistency given rounding in reporting?",
+      "panelists": [
+        "Spohn (precision)"
+      ]
+    },
+    {
+      "q_id": "Q4",
+      "title": "P-value Mandatoriness",
+      "question": "Should null p_value be allowed for causal claims if direction and effect_size are clearly reported?",
+      "panelists": [
+        "Russell (APA compliance vs. pragmatism)"
+      ]
+    },
+    {
+      "q_id": "Q5",
+      "title": "Claim Atomicity",
+      "question": "How should we handle claims spanning multiple outcome domains (health AND cognition)?",
+      "panelists": [
+        "Kirsh (systems thinking)",
+        "Pollock (decomposition)"
+      ]
+    }
+  ],
+  "consistency_rules": {
+    "description": "Cross-field validation rules that check relationships between multiple fields",
+    "rules": [
+      {
+        "rule_id": "CONSIST-1",
+        "severity": "error",
+        "description": "Direction vs. effect_size consistency",
+        "check_type": "conditional",
+        "condition": "direction == 'increase' AND effect_size < 0 AND effect_size_type in ['Cohen\\'s d', 'r', 'Hedges\\' g']",
+        "error_message": "Direction is 'increase' but effect_size is negative. This is contradictory.",
+        "fix_suggestion": "Review the reported effect size and direction in the paper."
+      },
+      {
+        "rule_id": "CONSIST-2",
+        "severity": "error",
+        "description": "P-value vs. direction consistency for causal claims",
+        "check_type": "conditional",
+        "condition": "p_value > 0.05 AND direction in ['increase', 'decrease'] AND claim_type == 'causal'",
+        "error_message": "Effect is not statistically significant (p > 0.05) but direction implies a causal claim. This overclaims causality from non-significant data.",
+        "fix_suggestion": "Verify claim_type; if truly causal, effect should be p < 0.05. Otherwise downgrade to 'associational'."
+      },
+      {
+        "rule_id": "CONSIST-3",
+        "severity": "warning",
+        "description": "Causal claim in qualitative paper",
+        "check_type": "conditional",
+        "condition": "claim_type == 'causal' AND article_family == 'qualitative'",
+        "error_message": "Article is qualitative but claim is marked 'causal'. Qualitative studies typically cannot establish causality.",
+        "fix_suggestion": "Change claim_type to 'qualitative_theme', 'narrative', or 'theoretical_proposition'."
+      },
+      {
+        "rule_id": "CONSIST-4",
+        "severity": "error",
+        "description": "Effect size type specified but no effect size value",
+        "check_type": "conditional",
+        "condition": "effect_size_type is not null AND effect_size is null",
+        "error_message": "effect_size_type is specified (e.g., 'Cohen\\'s d') but effect_size is null. Incomplete data.",
+        "fix_suggestion": "Extract the numeric effect_size from the paper, or set effect_size_type to null if not reported."
+      },
+      {
+        "rule_id": "CONSIST-5",
+        "severity": "warning",
+        "description": "Underpowered causal claim",
+        "check_type": "conditional",
+        "condition": "sample_size < 10 AND claim_type == 'causal'",
+        "error_message": "Sample size is very small (N < 10) but claim is causal. This is likely underpowered.",
+        "fix_suggestion": "If sample is small, downgrade claim_type or note as exploratory."
+      }
+    ]
+  }
+}

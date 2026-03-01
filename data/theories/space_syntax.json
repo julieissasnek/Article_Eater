@@ -1,0 +1,112 @@
+{
+  "theory_id": "SPACE_SYNTAX",
+  "name": "Space Syntax Theory",
+  "originator": "Hillier & Hanson",
+  "year": 1984,
+  "citation": "Hillier, B. & Hanson, J. (1984). The social logic of space. Cambridge University Press.",
+  "status": "REDUCED",
+  "parent_t1_frameworks": {
+    "SN": 40,
+    "PP": 25,
+    "EC": 20,
+    "IE-DPT": 15
+  },
+  "constructs": [
+    {
+      "construct_name": "Integration and Movement",
+      "description": "Syntactic integration predicts pedestrian movement flows (R\u00b2 = 0.50-0.80). Grid cell metric coding and hippocampal cognitive maps route through well-connected nodes.",
+      "template_ids": [
+        "SN_CONTEXT_MEMORY_002",
+        "ED_HIPPOCAMPAL_ENCODING_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Intelligibility and Wayfinding",
+      "description": "Spatial coherence predicts navigation success. Low spatial PE \u2192 confident mapping \u2192 reduced navigational stress.",
+      "template_ids": [
+        "PP_SPECTRAL_MATCH_001",
+        "SN_CONTEXT_MEMORY_002"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "Isovist Properties",
+      "description": "Visible area and compactness predict perceived spaciousness, surveillance, and comfort. Affordance richness from syntactic structure.",
+      "template_ids": [
+        "PP_RAPID_GIST_004",
+        "AX_CONTROL_STRESS_004"
+      ],
+      "reduction_confidence": "MEDIUM",
+      "maturity": "how-plausibly"
+    },
+    {
+      "construct_name": "IE-DPT Override",
+      "description": "Goal-state override: purposeful shoppers with specific destinations override natural movement patterns. Expertise effects and cultural-semantic overlay.",
+      "template_ids": [
+        "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+        "ER_ECOLOGICAL_RATIONALITY_001"
+      ],
+      "reduction_confidence": "HIGH",
+      "maturity": "how-plausibly"
+    }
+  ],
+  "constituent_templates": [
+    "SN_CONTEXT_MEMORY_002",
+    "ED_HIPPOCAMPAL_ENCODING_001",
+    "PP_SPECTRAL_MATCH_001",
+    "PP_RAPID_GIST_004",
+    "AX_CONTROL_STRESS_004",
+    "CROSS_PROACTIVE_REACTIVE_CONTROL_001",
+    "ER_ECOLOGICAL_RATIONALITY_001"
+  ],
+  "template_coverage_pct": 0.7,
+  "maturity": "how-plausibly",
+  "irreducible_residual": {
+    "schema_gaps": [
+      "Topological vs. metric debate unresolved"
+    ],
+    "compositional_adequacy": "INTERACTION_DEPENDENT",
+    "narrative": "Irreducible residual ~35%: sociological logic by which spatial configuration encodes social structure across time (~20%), topological-versus-metric debate (~5%), and cultural variation in integration-movement correlations (~10%). These reflect the sociological dimension of Space Syntax that sits outside the neural-mechanistic framework."
+  },
+  "rejection_rationale": "",
+  "child_molecules": [],
+  "google_scholar_count": 7000,
+  "key_references": [
+    "Hillier, B. & Hanson, J. (1984). The social logic of space. Cambridge University Press."
+  ],
+  "reduced_in": "Master paper \u00a776.1; Three New Reductions (2026-02-21)",
+  "function_form": {
+    "function_form": "Movement(e) = \u03b1\u00b7Integration(e) + \u03b2\u00b7Connectivity(e); Integration = 1/mean_depth",
+    "variables": {
+      "Movement(e)": "Pedestrian movement rate on edge e",
+      "Integration(e)": "Global accessibility (inverse mean topological depth)",
+      "Connectivity(e)": "Local connections (number of directly connected spaces)",
+      "\u03b1, \u03b2": "Model weights (\u03b1 typically dominates)"
+    },
+    "predictions": [
+      "Integration predicts pedestrian flow (r \u2248 0.7-0.9 in many cities)",
+      "High-integration spaces attract 4-5\u00d7 more foot traffic than low-integration"
+    ]
+  },
+  "provenance": {
+    "seminal_paper": "Hillier, B. & Hanson, J. (1984). The Social Logic of Space. Cambridge University Press.",
+    "predecessor": "Graph theory; March & Steadman's geometry of environments (1971)",
+    "historical_context": "Quantified the relationship between spatial layout and human movement, visibility, and social interaction. Integration (topological accessibility) predicts pedestrian flow with r \u2248 0.7-0.9.",
+    "key_milestones": [
+      "1984: The Social Logic of Space",
+      "1993: Space Syntax Laboratory UCL",
+      "2012: depthmapX software"
+    ],
+    "influenced_by": [
+      "B. Hillier (architecture)",
+      "L. March (architectural morphology)",
+      "C. Alexander (pattern language)"
+    ],
+    "current_status": "foundational",
+    "verification_status": "unverified_llm_knowledge",
+    "verification_notes": "This provenance was generated from LLM knowledge, NOT verified against actual source documents. Seminal papers, dates, and predecessor claims need verification against the cited PDFs."
+  }
+}

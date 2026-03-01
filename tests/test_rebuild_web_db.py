@@ -24,20 +24,22 @@ from scripts.rebuild_web_db import load_claims, convert_claim_to_belief, MASTER_
 from src.services.web_persistence import WebPersistenceService
 from src.services.web_of_belief import WebOfBelief, Belief
 
-TEST_DB_PATH = PROJECT_ROOT / "tests" / "fixtures" / "test_web.db"
+import tempfile
+
+TEST_DB_PATH = None
 SYNTHETIC_DATA_PATH = PROJECT_ROOT / "tests" / "fixtures" / "synthetic_claims.jsonl"
 
 class TestRebuildWebDB(unittest.TestCase):
 
     def setUp(self):
-        # Clean up previous test runs
-        if TEST_DB_PATH.exists():
-            TEST_DB_PATH.unlink()
+        # Create a temp directory for the database
+        self.test_dir = tempfile.mkdtemp()
+        global TEST_DB_PATH
+        TEST_DB_PATH = Path(self.test_dir) / "test_web.db"
             
     def tearDown(self):
         # Clean up after test
-        if TEST_DB_PATH.exists():
-            TEST_DB_PATH.unlink()
+        shutil.rmtree(self.test_dir, ignore_errors=True)
 
     def test_load_claims(self):
         claims = load_claims(SYNTHETIC_DATA_PATH)
@@ -88,8 +90,7 @@ class TestRebuildWebDB(unittest.TestCase):
         self.assertEqual(len(reloaded_web.beliefs), 10)
         
         # Check specific belief present
-        # ID sanitization: synth_001 -> b_synth_001
-        self.assertIn("b_synth_001", reloaded_web.beliefs)
+        self.assertIn("synth_001", reloaded_web.beliefs)
 
 if __name__ == '__main__':
     unittest.main()

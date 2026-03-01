@@ -98,6 +98,19 @@ class ClaimV2:
     contrast_class: Optional[str] = None
     difference_maker: Optional[str] = None
 
+    # === BIBLIOGRAPHIC METADATA (Sprint METADATA-1) ===
+    # Populated from Semantic Scholar / CrossRef enrichment or PDF extraction.
+    # Enables temporal ordering (Quine), citation graph (argumentation structure),
+    # community detection (Cartwright), and recency weighting (DerSimonian).
+    publication_year: Optional[int] = None
+    publication_authors: List[str] = field(default_factory=list)
+    publication_journal: Optional[str] = None
+    citation_count: Optional[int] = None
+    influential_citation_count: Optional[int] = None
+    references_dois: List[str] = field(default_factory=list)   # DOIs this paper cites
+    cited_by_dois: List[str] = field(default_factory=list)      # DOIs citing this paper
+    semantic_scholar_id: Optional[str] = None
+
     # === WEB INTEGRATION METADATA ===
     extraction_difficulty: Optional[str] = None
     source_zone: Optional[str] = None
@@ -140,6 +153,14 @@ class ClaimV2:
             "critical_questions_unaddressed": self.critical_questions_unaddressed,
             "contrast_class": self.contrast_class,
             "difference_maker": self.difference_maker,
+            "publication_year": self.publication_year,
+            "publication_authors": self.publication_authors,
+            "publication_journal": self.publication_journal,
+            "citation_count": self.citation_count,
+            "influential_citation_count": self.influential_citation_count,
+            "references_dois": self.references_dois,
+            "cited_by_dois": self.cited_by_dois,
+            "semantic_scholar_id": self.semantic_scholar_id,
             "extraction_difficulty": self.extraction_difficulty,
             "source_zone": self.source_zone,
             "article_type_family": self.article_type_family,
@@ -183,6 +204,14 @@ class ClaimV2:
             critical_questions_unaddressed=data.get("critical_questions_unaddressed", []),
             contrast_class=data.get("contrast_class"),
             difference_maker=data.get("difference_maker"),
+            publication_year=data.get("publication_year"),
+            publication_authors=data.get("publication_authors", []),
+            publication_journal=data.get("publication_journal"),
+            citation_count=data.get("citation_count"),
+            influential_citation_count=data.get("influential_citation_count"),
+            references_dois=data.get("references_dois", []),
+            cited_by_dois=data.get("cited_by_dois", []),
+            semantic_scholar_id=data.get("semantic_scholar_id"),
             extraction_difficulty=data.get("extraction_difficulty"),
             source_zone=data.get("source_zone"),
             article_type_family=data.get("article_type_family"),

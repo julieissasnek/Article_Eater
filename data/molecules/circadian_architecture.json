@@ -1,0 +1,76 @@
+{
+  "molecule_id": "CIRCADIAN_ARCHITECTURE",
+  "name": "Circadian Architecture",
+  "short_description": "How architectural light exposure patterns entrain circadian rhythms, affecting physiological coordination, alertness cycles, and long-term health outcomes.",
+  "molecule_type": "MECHANISM",
+  "components": [
+    {
+      "name": "Photoentrainment",
+      "template_ids": [
+        "CHRONO_LIGHT_ENTRAINMENT_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Architectural light spectrum, intensity, and timing drive circadian clock synchronization via ipRGC melanopsin pathways."
+    },
+    {
+      "name": "Subcortical Auditory Plasticity",
+      "template_ids": [
+        "AUD_SUBCORTICAL_ENCODING_002"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Chronic acoustic environment shapes subcortical auditory processing with implications for cognitive health across the lifespan."
+    },
+    {
+      "name": "Temporal Processing Architecture",
+      "template_ids": [
+        "ARCH_PROMENADE_TEMPORAL_PE_001"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Architectural promenades and sequential spatial experiences create temporal prediction errors that structure the subjective experience of time."
+    }
+  ],
+  "constituent_templates": [
+    "CHRONO_LIGHT_ENTRAINMENT_001",
+    "AUD_SUBCORTICAL_ENCODING_002",
+    "ARCH_PROMENADE_TEMPORAL_PE_001"
+  ],
+  "interaction_graph": {
+    "CHRONO_LIGHT_ENTRAINMENT_001": {
+      "ARCH_PROMENADE_TEMPORAL_PE_001": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "CB"
+  ],
+  "domain": "temporal_regulation",
+  "scope_conditions": [
+    "SC1",
+    "SC6"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "czeisler_1999",
+    "brainard_2001",
+    "figueiro_2016"
+  ],
+  "empirical_support": "SUPPORTED",
+  "competing_theories": [],
+  "design_implications": [
+    "Provide high melanopic lux (>250 EML) during morning hours via east-facing glazing or tunable LED systems.",
+    "Reduce blue-enriched light exposure in evening spaces (bedrooms, residential areas).",
+    "Design daylight penetration to vary throughout the day, mimicking natural solar arc.",
+    "Consider light exposure duration and spectral content as a design variable, not just illuminance levels."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.4,
+      1.2
+    ],
+    "typical_d": 0.7,
+    "note": "Effect sizes for circadian-aligned lighting on sleep quality, alertness, and mood."
+  },
+  "source_theories": [
+    "circadian_lighting"
+  ],
+  "basis": "Inferred from molecule name: bridges circadian_lighting"
+}
