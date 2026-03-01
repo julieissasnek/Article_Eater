@@ -611,7 +611,8 @@ def load_template_profiles(templates_dir: Path) -> list[TemplateProfile]:
         template_id = str(payload.get("template_id") or path.stem)
         display_id = str(payload.get("display_id") or template_id)
         name = str(payload.get("name") or display_id)
-        frameworks = [str(item) for item in (payload.get("framework_ids") or []) if item]
+        # Load frameworks from either framework_ids or t1_frameworks (most templates use t1_frameworks)
+        frameworks = [str(item) for item in (payload.get("framework_ids") or payload.get("t1_frameworks") or []) if item]
         declared_domains = _extract_declared_template_domains(payload)
 
         input_terms: set[str] = set()
