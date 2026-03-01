@@ -665,6 +665,66 @@
           "rationale": "Annotation persistence was zero because function was never called; validates integration fix"
         }
       ]
+    },
+    "scripts/backfill_belief_ids.py": {
+      "description": "Backfill environment_id and outcome_id for all beliefs from extraction consequents and outcome vocabulary",
+      "script_entry_point": "python scripts/backfill_belief_ids.py",
+      "conditions": [
+        {
+          "id": "BEL-SC1",
+          "name": "All beliefs have non-null environment_id",
+          "description": "100% of beliefs in web_persistence_v2.db have environment_id populated (hashed from belief_id)",
+          "metric": "beliefs_with_environment_id / total_beliefs",
+          "threshold": ">= 0.99",
+          "test_name": "test_backfill_environment_id_complete",
+          "rationale": "Template matcher requires environment_id to compute relevance scores; null values cause 0% coverage"
+        },
+        {
+          "id": "BEL-SC2",
+          "name": "High coverage of outcome_id from outcome vocabulary mapping",
+          "description": ">=90% of beliefs have outcome_id mapped from their consequent via outcome_lookup.json",
+          "metric": "beliefs_with_outcome_id / total_beliefs",
+          "threshold": ">= 0.90",
+          "test_name": "test_backfill_outcome_id_coverage",
+          "rationale": "Outcome vocabulary mapping is lossy; 90% coverage validates mapping quality"
+        },
+        {
+          "id": "BEL-SC3",
+          "name": "Outcome mappings are semantically valid",
+          "description": "Sample check: mapped outcome_ids exist in outcome_vocab.json and are at valid hierarchy levels",
+          "metric": "all([outcome_id in vocab for outcome_id in sample_outcomes])",
+          "threshold": "100% of sample",
+          "test_name": "test_backfill_outcome_ids_valid",
+          "rationale": "Invalid outcome_ids would cause referential integrity issues"
+        },
+        {
+          "id": "BEL-SC4",
+          "name": "Extraction-based beliefs resolve consequents from original extraction files",
+          "description": "For doi:*-based beliefs, consequent is successfully loaded from data/extractions/*.json",
+          "metric": "extraction_beliefs_with_consequent / extraction_beliefs_total",
+          "threshold": ">= 0.95",
+          "test_name": "test_backfill_extraction_file_lookup",
+          "rationale": "File lookup failure would leave many beliefs with null outcome_id"
+        },
+        {
+          "id": "BEL-SC5",
+          "name": "Template belief IDs are preserved and not modified",
+          "description": "Beliefs with belief_id starting 'template:' are not overwritten; template content is preserved",
+          "metric": "template_beliefs_before == template_beliefs_after",
+          "threshold": "100% preserved",
+          "test_name": "test_backfill_preserves_templates",
+          "rationale": "Data loss if template beliefs are modified"
+        },
+        {
+          "id": "BEL-SC6",
+          "name": "Database transactions are atomic and consistent",
+          "description": "No partial updates; either all beliefs are updated or none (rollback on error)",
+          "metric": "beliefs_count_after == beliefs_count_before",
+          "threshold": "100% consistent",
+          "test_name": "test_backfill_atomicity",
+          "rationale": "Partial updates leave database in inconsistent state"
+        }
+      ]
     }
   },
   "meta": {

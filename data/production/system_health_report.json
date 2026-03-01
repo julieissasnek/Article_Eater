@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-01T02:11:21.380821+00:00",
+  "generated_at_utc": "2026-03-01T06:31:27.312441+00:00",
   "paths": {
     "web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
     "finding_web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
@@ -31,30 +31,30 @@
     "sanity_check": {
       "name": "sanity_check",
       "ok": true,
-      "duration_seconds": 0.0,
+      "duration_seconds": 4.130052471999079,
       "exit_code": 0,
-      "detail": "skipped"
+      "detail": "[sanity_check] repo root: /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1\n[sanity_check] OK\n[sanity_check] WARNINGS (non-fatal):\n - Import warning: apps.user_rules_gui.app: No module named 'flask'\n - Allowlisted TODO markers detected:\n- src/services/query_engine.py contains TODO\n- src/services/voi_search.py contains TODO\n- src/services/credibility_feedback.py contains TODO\n- src/services/vocabulary_bridge.py contains TODO\n- src/services/integrated_query_service.py contains TODO\n- src/services/interpretive_intelligence.py contains TODO\n- src/services/epistemic_causal_bridge.py contains TODO\n- src/services/credibility_testing.py contains TODO"
     },
     "offline_pipeline_smoke": {
       "name": "offline_pipeline_smoke",
       "ok": true,
-      "duration_seconds": 0.0,
+      "duration_seconds": 0.2055156389978947,
       "exit_code": 0,
-      "detail": "skipped"
+      "detail": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/scripts/offline_pipeline_smoke.py:123: PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/\n  seven_items = [item.dict() for item in artifact.items]\n[offline_pipeline_smoke] OK\n - events in graph.jsonl: 4\n - calibration files: 1"
     },
     "offline_pipeline_v2_smoke": {
       "name": "offline_pipeline_v2_smoke",
       "ok": true,
-      "duration_seconds": 0.0,
+      "duration_seconds": 0.20992922799632652,
       "exit_code": 0,
-      "detail": "skipped"
+      "detail": "[offline_pipeline_v2_smoke] OK\n - events in graph.jsonl: 3\n - v2 rules emitted: 1"
     },
     "web_of_belief_invariants": {
       "name": "web_of_belief_invariants",
       "ok": true,
-      "duration_seconds": 0.0,
+      "duration_seconds": 0.31147434600279666,
       "exit_code": 0,
-      "detail": "skipped"
+      "detail": "run_probe passed with counters={\"add_belief\": 125, \"add_constraint\": 144, \"add_evidence\": 124, \"beliefs\": 252, \"constraints\": 516, \"seek_equilibrium\": 107, \"theory_worlds\": 8}"
     },
     "web_bn_minimum_viable": {
       "name": "web_bn_minimum_viable",
@@ -68,7 +68,7 @@
       "ok": false,
       "duration_seconds": 0.0,
       "exit_code": 1,
-      "detail": "unique_tier1 7 < 10; tier2_coverage 0.000 < 0.900"
+      "detail": "tier2_coverage 0.236 < 0.900; non_music_music_top 8 > 0"
     }
   },
   "score": {
@@ -78,17 +78,17 @@
     "hard_gates_ok": false,
     "subscores": {
       "contract": 97.14,
-      "pipeline": 40.0,
+      "pipeline": 55.12,
       "web_bn": 72.37,
-      "theory": 20.0,
-      "stability": 84.17
+      "theory": 33.07,
+      "stability": 94.17
     },
     "inputs": {
       "minimum_ratio": 1.0,
       "target_ratio": 0.8571,
-      "cci_ratio": 0.0,
+      "cci_ratio": 0.0026,
       "hard_gate_pass_rate": 0.8333,
-      "runtime_ratio_to_baseline": null
+      "runtime_ratio_to_baseline": 0.1798
     }
   },
   "web_bn_report": {
@@ -293,21 +293,31 @@
   },
   "finding_metrics": {
     "findings_total": 3420,
-    "findings_with_tier2": 0,
-    "tier2_coverage": 0.0,
-    "unique_tier1_count": 7,
-    "non_music_music_top_count": 0,
+    "findings_with_tier2": 807,
+    "tier2_coverage": 0.23596491228070177,
+    "unique_tier1_count": 17,
+    "non_music_music_top_count": 8,
     "beliefs_total": 116,
     "beliefs_with_annotation": 116,
     "persisted_ratio": 1.0,
     "unique_tier1_values": [
+      "AFFECTIVE_EMOTION",
       "ART",
+      "AUDIO_COGNITION",
       "BIOPHILIA",
+      "CIRCADIAN_REGULATION",
+      "COGNITIVE_CONTROL",
+      "CREATIVE_COGNITION",
+      "EMBODIED_ECOLOGICAL",
       "MATERIAL_HAPTIC_THERMAL",
+      "MEMORY_LEARNING",
+      "MULTISENSORY_INTEGRATION",
+      "NEUROMODULATORY_REWARD",
       "PREDICTIVE_PROCESSING",
       "SOCIAL_COGNITION",
       "SPATIAL_COGNITION",
-      "SRT"
+      "SRT",
+      "VISUAL_PERCEPTION_AESTHETICS"
     ]
   },
   "chain_completeness": {
@@ -316,29 +326,37 @@
       "has_belief_id": 3420,
       "belief_exists": 116,
       "has_annotation": 116,
-      "has_tier1": 298,
-      "has_tier2": 0,
-      "has_templates": 0,
-      "bn_touched": 0,
-      "complete_chain": 0
+      "has_tier1": 964,
+      "has_tier2": 807,
+      "has_templates": 3017,
+      "bn_touched": 169,
+      "complete_chain": 9
     },
     "ratios": {
       "has_belief_id_ratio": 1.0,
       "belief_exists_ratio": 0.03391812865497076,
       "has_annotation_ratio": 0.03391812865497076,
-      "has_tier1_ratio": 0.0871345029239766,
-      "has_tier2_ratio": 0.0,
-      "has_templates_ratio": 0.0,
-      "bn_touched_ratio": 0.0,
-      "complete_chain_ratio": 0.0
+      "has_tier1_ratio": 0.2818713450292398,
+      "has_tier2_ratio": 0.23596491228070177,
+      "has_templates_ratio": 0.8821637426900585,
+      "bn_touched_ratio": 0.04941520467836257,
+      "complete_chain_ratio": 0.002631578947368421
     }
   },
   "template_grounding": {
-    "active_templates": 0,
-    "adequately_grounded_templates": 0,
-    "weakly_grounded_templates": 0,
-    "adequate_ratio": 0.0,
-    "findings_with_templates": 0
+    "active_templates": 80,
+    "adequately_grounded_templates": 73,
+    "weakly_grounded_templates": 7,
+    "adequate_ratio": 0.9125,
+    "findings_with_templates": 3017
   },
-  "web_probe_counters": {}
+  "web_probe_counters": {
+    "add_belief": 125,
+    "add_constraint": 144,
+    "add_evidence": 124,
+    "seek_equilibrium": 107,
+    "beliefs": 252,
+    "constraints": 516,
+    "theory_worlds": 8
+  }
 }

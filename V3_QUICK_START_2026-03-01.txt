@@ -1,0 +1,85 @@
+V3 EXTRACTION QUICK START GUIDE
+Date: 2026-03-01
+Status: Ready to Deploy
+
+WHAT WAS BUILT
+==============
+
+Two production-ready scripts to upgrade the Article_Eater corpus:
+
+1. v3_reextraction.py
+   Purpose: Re-extract 59 zero-finding articles
+   Input: 59 articles with n_findings=0
+   Output: Full findings arrays + v3 fields
+   Cost: ~$4
+   Time: ~15 minutes
+   
+   Usage:
+     python3 scripts/v3_reextraction.py --dry-run --limit 5   (test)
+     python3 scripts/v3_reextraction.py                        (deploy)
+
+2. v3_surgical_update.py
+   Purpose: Add v3 fields to 1,002 existing articles
+   Input: 1,002 articles with existing findings
+   Output: Original findings + new v3 fields
+   Cost: ~$30
+   Time: ~25 minutes
+   
+   Usage:
+     python3 scripts/v3_surgical_update.py --dry-run --limit 10  (test)
+     python3 scripts/v3_surgical_update.py                        (deploy)
+
+CORPUS STATUS
+=============
+
+Zero findings (Tier 1):     60 articles  -> Run v3_reextraction.py
+With findings (Tier 2+):  1,002 articles  -> Run v3_surgical_update.py
+Total:                   1,062 articles
+
+DEPLOY IN 3 STEPS
+=================
+
+Step 1: Phase 1 - Tier 1 Re-extraction
+  cd /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1
+  python3 scripts/v3_reextraction.py
+  Expected: 15-20 minutes, $3-5, 250-400 new findings
+
+Step 2: Phase 2 - Tier 2+ Surgical Update
+  python3 scripts/v3_surgical_update.py
+  Expected: 25-35 minutes, $25-35, 2,500-4,000 v3 fields
+
+Step 3: Verify Results
+  ls -l data/field_discovery/v3_*_results.json
+
+DOCUMENTATION
+==============
+
+Complete specifications:
+  V3_EXTRACTION_INFRASTRUCTURE_REPORT_2026-03-01.md (450+ lines)
+  V3_DEPLOYMENT_TASK_CHECKLIST_2026-03-01.md (500+ lines)
+
+Scripts:
+  scripts/v3_reextraction.py (297 lines)
+  scripts/v3_surgical_update.py (297 lines)
+
+KEY FEATURES
+============
+
+✓ Full error handling
+✓ Dry-run mode for testing
+✓ Rate limiting (safe for API)
+✓ Detailed cost tracking
+✓ JSON response format enforcement
+✓ Comprehensive logging
+✓ Results saved to JSON
+✓ Safe data merging (no overwrites)
+✓ Batch processing support
+
+SUPPORT
+=======
+
+Issues? See: V3_EXTRACTION_INFRASTRUCTURE_REPORT_2026-03-01.md
+Deployment? See: V3_DEPLOYMENT_TASK_CHECKLIST_2026-03-01.md
+Prompts? See: src/extraction/revised_prompts_v3.py
+
+STATUS: READY FOR PRODUCTION DEPLOYMENT

@@ -1,0 +1,281 @@
+================================================================================
+RUTHLESS V7 AUDIT — EXECUTIVE BRIEF
+Article_Eater PostQuinean System
+Created: 2026-03-01
+================================================================================
+
+OVERALL SCORE: 3.8 / 10 (FAILING)
+
+System demonstrates sophisticated individual components but fails to integrate
+them into a functioning whole. Users cannot perform primary research tasks
+without external LLM fallback.
+
+================================================================================
+QUICK VERDICT
+================================================================================
+
+Research Ready?      NO  ❌
+Demo Ready?          YES ✓
+Production Ready?    NO  ❌
+User Value Today?    NO  ❌
+
+================================================================================
+THE 5 CRITICAL BREAKS (Why It Doesn't Work)
+================================================================================
+
+1. THEORY EXTRACTION BROKEN
+   Problem: 100% of findings have empty theory_commitments
+   Impact:  Web of Belief never updates, new papers are invisible
+   Test:    10.1002_ad.2031.json: 54 findings, 0 have theory links
+   Fix:     2-3 weeks (requires NLP or LLM enhancement)
+
+2. QUERY ANSWERING REQUIRES LLM
+   Problem: 95% of queries fall back to "requires gemini-2.5-flash"
+   Impact:  System is not standalone, needs external API keys
+   Test:    Query "ceiling height" → "connect an LLM"
+   Fix:     2-3 weeks (implement semantic search)
+
+3. EXTRACTION-TO-BN PIPELINE MISSING
+   Problem: No integration between extraction and web of belief
+   Impact:  Knowledge base is static, new papers don't change beliefs
+   Test:    Code review finds no extraction_to_web.py
+   Fix:     1 week (implement integration pipeline)
+
+4. EXTRACTION FIELD QUALITY NOT ENFORCED
+   Problem: Validation passes 0.62/1.0 score despite 164 violations
+   Impact:  Low-quality data flows through unchanged
+   Test:    Single article passes with empty instruments/effects
+   Fix:     1-2 days (adjust violation weights)
+
+5. CULTURAL CALIBRATION DISCONNECTED
+   Problem: Calibration files and CVA code exist but aren't wired
+   Impact:  System is culturally monolithic (English-default only)
+   Test:    No culture parameter in query API
+   Fix:     1 week (wire to API and handlers)
+
+================================================================================
+DATA QUALITY SNAPSHOT
+================================================================================
+
+Sample File: data/extractions/10.1002_ad.2031.json (54 findings)
+
+Field                 Populated    Empty    % Complete
+─────────────────────────────────────────────────────
+antecedent               54         0         100% ✓
+consequent               54         0         100% ✓
+direction                54         0         100% ✓
+theory_commitments        0        54           0% ✗ CRITICAL
+instruments_used          0        54           0% ✗ CRITICAL
+effect_size               0        54           0% ✗
+sample_context            2        52           4%
+─────────────────────────────────────────────────────
+
+Basic extraction works. Rich linking fields are systematically empty.
+
+================================================================================
+USER PERSONAS: CAN THEY USE THIS?
+================================================================================
+
+User 1: Psychology Researcher
+  Needs: Effect sizes + instruments for biophilic design findings
+  Result: NO — both fields empty, requires LLM
+
+User 2: Architect (Hospital Design)
+  Needs: Evidence-based design guidelines with confidence levels
+  Result: NO — no confidence calculation, requires LLM
+
+User 3: Meta-Analyst
+  Needs: PANAS data (n, p-values) for meta-analysis
+  Result: NO — no p-values, no instruments, no export format
+
+User 4: Policy Maker
+  Needs: Strongest evidence for workplace design, plain language
+  Result: NO — no evidence ranking, no confidence labels, requires LLM
+
+User 5: PhD Student
+  Needs: Theories + findings mapped to show landscape
+  Result: PARTIAL — can list theories, but can't link to findings
+
+SUCCESS RATE: 0/5 personas fully supported (0%)
+
+================================================================================
+AUDIT DOCUMENTS
+================================================================================
+
+1. RUTHLESS_V7_END_TO_END_AUDIT.md (31 KB, 20 min read)
+   └─ 5 end-to-end scenarios with code traces
+   └─ 5 user personas tested
+   └─ Dimension scoring with evidence
+   └─ Tier 1-4 blocking issues
+   └─ Recommended actions (Priority 1-3)
+
+2. RUTHLESS_V7_CRITICAL_PATH_ANALYSIS.md (9.8 KB, 10 min read)
+   └─ 5 critical path breaks explained
+   └─ Data quality snapshot
+   └─ Query failure analysis
+   └─ Files where fixes are needed
+   └─ Time estimates for each fix
+
+3. RUTHLESS_V7_SCORECARD.md (13 KB, 15 min read)
+   └─ Overall score: 3.8/10
+   └─ 8 dimension scores (each with evidence)
+   └─ By-the-numbers summary
+   └─ Comparison to V5
+   └─ Recommendation for next phase
+
+4. RUTHLESS_V7_INDEX.md (11 KB, 5 min read)
+   └─ Navigation guide for all documents
+   └─ Quick finding summary
+   └─ Reading paths by role
+   └─ Next actions by team
+
+================================================================================
+BLOCKING ISSUES RANKED BY SEVERITY
+================================================================================
+
+TIER 1 — System Cannot Function (Affects All Users)
+  □ Theory commitments not extracted (0/54)
+  □ Query answering requires LLM (95% fallback)
+  □ Instruments not extracted (0/54)
+  □ Effect sizes not extracted (0/54)
+
+TIER 2 — Features Don't Work (Affects Specific Users)
+  □ Dashboard missing (no health UI)
+  □ Cultural calibration disconnected (orphaned code)
+  □ Evidence strength ranking missing (can't prioritize)
+  □ Molecule QA cache incomplete (3/18 molecules)
+
+TIER 3 — Data Quality Issues (Degrades Experience)
+  □ Validation has no teeth (164 violations pass)
+  □ Minimum safe summary not populated
+  □ Sample size/p-values not cleanly extracted
+  □ Cross-references not utilized
+
+TIER 4 — Missing Integrations (Gaps in Design)
+  □ Extraction-to-Web pipeline missing
+  □ Reflex auto-fix not implemented
+  □ No semantic search infrastructure
+  □ No meta-analysis export format
+
+Total Issues: 16 (4 critical, 4 high, 4 medium, 4 low)
+
+================================================================================
+TIME TO FIX
+================================================================================
+
+Critical Path (Unblock Core Functionality)
+  Theory extraction:       2-3 weeks
+  Extraction-to-BN:        1 week
+  Semantic search:         2-3 weeks
+  ────────────────────────────────
+  TOTAL:                   5-7 weeks to restore basic system value
+
+Feature Completion (All User Personas)
+  Data quality improvements:       2 weeks
+  Evidence ranking:               1 week
+  Cultural calibration wiring:     1 week
+  Dashboard:                       1 week
+  Export formats:                  1 week
+  ────────────────────────────────
+  TOTAL:                           6 weeks
+
+GRAND TOTAL TO "USER READY": 11-13 weeks of focused development
+
+================================================================================
+WHAT THIS MEANS
+================================================================================
+
+GOOD NEWS:
+  ✓ Individual components are well-designed (extraction, validation, web, CVA)
+  ✓ No fundamental architecture problems
+  ✓ All required pieces exist in code
+  ✓ This is integration work, not research work
+
+BAD NEWS:
+  ✗ System doesn't function end-to-end
+  ✗ 0/5 user personas can get value today
+  ✗ 95% of queries require external LLM
+  ✗ Theory linking broken → knowledge base static
+  ✗ Designed features are disconnected stubs
+
+THE VERDICT:
+Article_Eater is like a car where the engine, transmission, and frame are
+perfect — but they're never connected. Components are excellent. System doesn't
+work.
+
+================================================================================
+NEXT STEPS FOR DAVID KIRSH
+================================================================================
+
+Week 1:
+  [ ] Read RUTHLESS_V7_SCORECARD.md (15 min)
+  [ ] Read RUTHLESS_V7_CRITICAL_PATH_ANALYSIS.md (10 min)
+  [ ] Decide: Fix it, fork it, or pivot?
+
+If Fixing:
+  [ ] Commit resources to 8-14 week fix cycle
+  [ ] Prioritize Tier 1 issues (theory extraction, semantic search)
+  [ ] Assign AG/CW to extract integration work
+
+If Forking (Specific Use Case):
+  [ ] Identify which user persona to prioritize
+  [ ] Implement MVP for that persona (3-4 weeks)
+  [ ] Deploy and iterate
+
+If Pivoting:
+  [ ] Document current state (done by this audit)
+  [ ] Plan new direction based on lessons learned
+  [ ] Consider component reuse (extraction, validation, web code)
+
+================================================================================
+KEY METRICS
+================================================================================
+
+System Health
+  Overall Score:              3.8 / 10 (FAILING)
+  Components Working:         ~70% (individually)
+  System Working:             ~30% (integrated)
+  User Value:                 0% (production)
+
+Data Quality
+  theory_commitments:         0% populated
+  instruments_used:           0% populated
+  effect_size:                0% populated
+  sample_context:             4% populated
+  Extraction validation:       0.62 / 1.0 (passing but weak)
+
+User Success
+  User personas supported:    0 / 5 (0%)
+  Queries without LLM:        ~5%
+  End-to-end scenarios:       0 / 5 (0%)
+
+Code Quality
+  Unit tests passing:         ~4500
+  Integration tests:          0
+  Test files with errors:     8 (import issues)
+
+================================================================================
+CONFIDENCE LEVEL: HIGH
+================================================================================
+
+Every finding in this audit is:
+  ✓ Reproducible (code paths exist and can be re-tested)
+  ✓ Evidence-based (real data, real execution)
+  ✓ Not speculative (only what the code actually does)
+  ✓ Actionable (specific files and line numbers provided)
+
+This is NOT:
+  ✗ Developer intent (only code matters)
+  ✗ Theoretical possibility (only actual results)
+  ✗ Partial analysis (5 scenarios, 5 personas, 8 dimensions tested)
+
+================================================================================
+END EXECUTIVE BRIEF
+
+Full documents available:
+  - RUTHLESS_V7_END_TO_END_AUDIT.md
+  - RUTHLESS_V7_CRITICAL_PATH_ANALYSIS.md
+  - RUTHLESS_V7_SCORECARD.md
+  - RUTHLESS_V7_INDEX.md
+
+Questions? All findings include code references and are reproducible.

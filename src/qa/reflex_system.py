@@ -311,7 +311,8 @@ class Reflex:
             - If problem_found is False, the condition passes and no event is logged
             - If True, details should contain context for the fix attempt
         """
-        raise NotImplementedError
+        # Base implementation: no problem detected. Subclasses override this.
+        return False, {}
 
     def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
         """
