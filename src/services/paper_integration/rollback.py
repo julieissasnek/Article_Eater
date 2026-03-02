@@ -204,6 +204,28 @@ class IntegrationRollback:
         else:
             rollback_event.mark_completed()
 
+            # Step 7: Post-rollback QA recheck (AG 2026-03-01, QA Spec integration)
+            step_qa = CascadeStep(
+                step_number=7,
+                step_name="qa_recheck",
+                is_critical=False,
+            )
+            step_qa.start()
+            try:
+                qa_result = self._post_rollback_qa_recheck(
+                    original_event.beliefs_added, paper_id
+                )
+                step_qa.complete(items_processed=qa_result.get("checked", 0))
+                rollback_event.cascade_steps.append(step_qa)
+                logger.info(
+                    "Post-rollback QA recheck: %s",
+                    qa_result.get("summary", "completed"),
+                )
+            except Exception as e:
+                step_qa.fail(str(e))
+                rollback_event.cascade_steps.append(step_qa)
+                logger.warning("Post-rollback QA recheck failed (non-critical): %s", e)
+
         self._persist_event(rollback_event)
 
         logger.info(
@@ -376,6 +398,131 @@ class IntegrationRollback:
             return updated
         except sqlite3.OperationalError:
             return 0
+
+    def _post_rollback_qa_recheck(
+        self, affected_belief_ids: List[str], paper_id: str
+    ) -> Dict[str, Any]:
+        """Post-rollback QA: check if remaining beliefs lost support.
+
+        After rolling back a paper's contributions, check whether any
+        affected beliefs have become UNGROUNDED (lost all support) or
+        have reduced support. Creates SENSITIVITY_FLAG annotations for
+        impacted beliefs and reports to overseer.
+
+        This is a non-critical step — failures here don't block rollback.
+        """
+        result: Dict[str, Any] = {
+            "checked": 0,
+            "newly_ungrounded": [],
+            "reduced_support": [],
+            "annotations_created": 0,
+            "summary": "",
+        }
+
+        if not affected_belief_ids:
+            result["summary"] = "no affected beliefs"
+            return result
+
+        cursor = self.db_conn.cursor()
+
+        # Check each affected belief for remaining support
+        for belief_id in affected_belief_ids:
+            result["checked"] += 1
+            try:
+                # Count remaining active versions from other papers
+                cursor.execute("""
+                    SELECT COUNT(*) FROM belief_versions
+                    WHERE belief_id = ? AND is_current = 1
+                """, (belief_id,))
+                remaining = cursor.fetchone()[0]
+
+                # Check belief status
+                cursor.execute("""
+                    SELECT status FROM beliefs WHERE belief_id = ?
+                """, (belief_id,))
+                row = cursor.fetchone()
+                status = row[0] if row else "UNKNOWN"
+
+                if status == "RETIRED" or remaining == 0:
+                    result["newly_ungrounded"].append(belief_id)
+                elif remaining == 1:
+                    # Down to single source — fragile
+                    result["reduced_support"].append(belief_id)
+
+            except sqlite3.OperationalError:
+                pass
+
+        # Create annotations for impacted beliefs
+        try:
+            from src.services.annotation_service import AnnotationService, AnnotationType
+            ann_svc = AnnotationService()
+
+            for belief_id in result["newly_ungrounded"]:
+                try:
+                    ann_svc.create_annotation(
+                        type=AnnotationType.SENSITIVITY_FLAG,
+                        target_type="belief",
+                        target_id=belief_id,
+                        content=(
+                            f"Post-rollback QA: belief lost all support after "
+                            f"rollback of paper {paper_id}. Now UNGROUNDED."
+                        ),
+                        author="qa_rollback_hook",
+                        confidence=1.0,
+                        metadata={"trigger": "rollback", "paper_id": paper_id},
+                    )
+                    result["annotations_created"] += 1
+                except Exception as e:
+                    logger.debug(f"Failed to create annotation for {belief_id}: {e}")
+
+            for belief_id in result["reduced_support"]:
+                try:
+                    ann_svc.create_annotation(
+                        type=AnnotationType.SENSITIVITY_FLAG,
+                        target_type="belief",
+                        target_id=belief_id,
+                        content=(
+                            f"Post-rollback QA: belief reduced to single source "
+                            f"after rollback of paper {paper_id}. Fragile."
+                        ),
+                        author="qa_rollback_hook",
+                        confidence=0.8,
+                        metadata={"trigger": "rollback", "paper_id": paper_id},
+                    )
+                    result["annotations_created"] += 1
+                except Exception as e:
+                    logger.debug(f"Failed to create annotation for {belief_id}: {e}")
+        except ImportError:
+            logger.debug("AnnotationService not available for post-rollback annotations")
+
+        # Report to overseer via reflex event logging
+        try:
+            from pathlib import Path
+            log_dir = Path("logs") / "reflexes"
+            log_dir.mkdir(parents=True, exist_ok=True)
+            import datetime as _dt
+            log_file = log_dir / f"rollback_qa_{_dt.date.today().isoformat()}.jsonl"
+            with open(log_file, "a") as f:
+                f.write(json.dumps({
+                    "event": "post_rollback_qa_recheck",
+                    "paper_id": paper_id,
+                    "newly_ungrounded": result["newly_ungrounded"],
+                    "reduced_support": result["reduced_support"],
+                    "annotations_created": result["annotations_created"],
+                    "timestamp": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+                }) + "\n")
+        except Exception as e:
+            logger.debug(f"Swallowed in {fpath}: {e}")
+
+        n_ug = len(result["newly_ungrounded"])
+        n_rs = len(result["reduced_support"])
+        result["summary"] = (
+            f"checked {result['checked']} beliefs: "
+            f"{n_ug} newly ungrounded, {n_rs} reduced support, "
+            f"{result['annotations_created']} annotations created"
+        )
+
+        return result
 
     def _mark_event_rolled_back(self, event_id: str) -> None:
         """Mark the original integration event as ROLLED_BACK."""

@@ -2,9 +2,13 @@
 Template Quality Assurance Service — Sprint 7
 ==============================================
 Created: 2026-02-28
+Phase γ wiring: 2026-03-01 (Sprint A)
 
 Validates T2 templates against archetype registry and checks
 mechanism chain completeness and conformance.
+
+Phase γ addition: Consumes SENSITIVITY_FLAG annotations from the unified
+annotation service (AN-SC-05, SC-QA-12).
 """
 
 from __future__ import annotations
@@ -31,6 +35,7 @@ class QAReport:
     warnings: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
     matched_archetypes: List[tuple[str, float]] = field(default_factory=list)
+    sensitivity_flags: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -43,6 +48,7 @@ class QAReport:
                 {"archetype_id": aid, "score": score}
                 for aid, score in self.matched_archetypes
             ],
+            "sensitivity_flags": self.sensitivity_flags,
         }
 
 
@@ -51,20 +57,30 @@ class QAReport:
 # =============================================================================
 
 class TemplateQA:
-    """Quality assurance service for T2 templates."""
+    """Quality assurance service for T2 templates.
 
-    def __init__(self, archetype_registry_path: Optional[Path] = None):
+    Phase γ: Now consumes SENSITIVITY_FLAG annotations from the unified
+    annotation service to flag parameters that are uncertain or variable.
+    """
+
+    def __init__(
+        self,
+        archetype_registry_path: Optional[Path] = None,
+        annotation_service=None,
+    ):
         """
         Initialize QA service.
 
         Args:
             archetype_registry_path: Path to mechanism_archetypes.json.
                 If None, will try default location.
+            annotation_service: Optional AnnotationService instance.
+                If provided, SENSITIVITY_FLAGs are included in QA reports.
         """
         self.registry = T2ArchetypeRegistry()
+        self.annotation_service = annotation_service
 
         if archetype_registry_path is None:
-            # Try default location
             archetype_registry_path = Path(__file__).parent.parent.parent / (
                 "data" / "mechanism_archetypes.json"
             )
@@ -164,6 +180,38 @@ class TemplateQA:
                     report.warnings.append(
                         f"Step {i}: justification has no warrant"
                     )
+
+        # Phase γ: Check SENSITIVITY_FLAG annotations from unified store
+        if self.annotation_service is not None:
+            try:
+                flags = self.annotation_service.get_parameter_sensitivity_flags(
+                    template_id
+                )
+                for flag in flags:
+                    msg = f"SENSITIVITY: {flag.content}"
+                    report.sensitivity_flags.append(msg)
+                    report.warnings.append(msg)
+
+                # Also check for template-level sensitivity flags
+                template_flags = self.annotation_service.get_template_annotations(
+                    template_id,
+                    types=[self.annotation_service.__class__._get_sensitivity_type()]
+                    if hasattr(self.annotation_service.__class__, '_get_sensitivity_type')
+                    else None,
+                )
+                # Filter to SENSITIVITY_FLAG type
+                for tf in template_flags:
+                    type_val = tf.type.value if hasattr(tf.type, 'value') else str(tf.type)
+                    if type_val == "SENSITIVITY_FLAG" and tf.content not in [
+                        f.content for f in flags
+                    ]:
+                        msg = f"SENSITIVITY (template-level): {tf.content}"
+                        report.sensitivity_flags.append(msg)
+                        report.warnings.append(msg)
+            except Exception as e:
+                logger.debug(
+                    f"Could not check sensitivity flags for {template_id}: {e}"
+                )
 
         return report
 

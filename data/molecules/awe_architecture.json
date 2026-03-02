@@ -1,94 +1,92 @@
 {
-    "molecule_id": "AWE_ARCHITECTURE",
-    "name": "Architectural Awe",
-    "short_description": "The experience of awe elicited by vast, complex, or sublime architectural spaces, involving self-diminishment, attentional broadening, and prosocial behavior shifts.",
-    "molecule_type": "PHENOMENON",
-    "components": [
-        {
-            "name": "Vastness Perception",
-            "template_ids": [
-                "AX1"
-            ],
-            "interaction_type": "PREREQUISITE",
-            "description": "Perceived vastness of an architectural space (scale, height, openness) is the primary elicitor of architectural awe."
-        },
-        {
-            "name": "Small-Self Effect",
-            "template_ids": [
-                "AX3_SMALL_SELF_001"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "Awe-inducing environments trigger a diminished sense of self, promoting humility and perspective-taking."
-        },
-        {
-            "name": "Attentional Broadening",
-            "template_ids": [
-                "AX_ATTENTION_MEDIATION_010"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Awe shifts attention from narrow, self-focused processing to broad, accommodative processing."
-        },
-        {
-            "name": "Dose-Response",
-            "template_ids": [
-                "AX_DOSE_RESPONSE_007"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Awe effects show a dose-response relationship with exposure duration and intensity."
-        }
-    ],
-    "constituent_templates": [
-        "AX1",
-        "AX2",
-        "AX3",
-        "AX3_AWE_MECHANISM_001",
-        "AX3_SMALL_SELF_001",
-        "AX4",
-        "AX_ATTENTION_MEDIATION_010",
-        "AX_DOSE_RESPONSE_007",
-        "AX_INDIVIDUAL_DIFFERENCES_008",
-        "AX_CULTURAL_MODULATION_009"
-    ],
-    "interaction_graph": {
-        "AX1": {
-            "AX3_SMALL_SELF_001": "SYNERGISTIC"
-        },
-        "AX3_SMALL_SELF_001": {
-            "AX_ATTENTION_MEDIATION_010": "ADDITIVE"
-        }
+  "molecule_id": "AWE_ARCHITECTURE",
+  "name": "Architectural Awe",
+  "short_description": "The experience of awe elicited by vast, complex, or sublime architectural spaces, involving self-diminishment, attentional broadening, and prosocial behavior shifts.",
+  "molecule_type": "PHENOMENON",
+  "components": [
+    {
+      "name": "Vastness Perception",
+      "template_ids": [
+        "AX1"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Perceived vastness of an architectural space (scale, height, openness) is the primary elicitor of architectural awe."
     },
-    "framework_ids": [
-        "AX"
-    ],
-    "domain": "awe_sublime",
-    "scope_conditions": [
-        "SC1",
-        "SC8"
-    ],
-    "overall_maturity": "TENTATIVE",
-    "key_references": [
-        "keltner_haidt_2003",
-        "piff_2015",
-        "chirico_2017",
-        "joye_dewitte_2016"
-    ],
-    "empirical_support": "PRELIMINARY",
-    "competing_theories": [
-        "BIOPHILIA",
-        "PROSPECT_REFUGE"
-    ],
-    "design_implications": [
-        "Use disproportionate vertical scale (high ceilings, tall atriums) to elicit vastness.",
-        "Employ complexity that requires accommodation — patterns too rich to be immediately grasped.",
-        "Design transitional compression-to-expansion sequences (low corridor → tall hall) to amplify the awe moment.",
-        "Consider cultural and individual differences in awe susceptibility when designing for diverse populations."
-    ],
-    "confidence_intervals": {
-        "cohens_d_range": [
-            0.3,
-            0.7
-        ],
-        "typical_d": 0.45,
-        "note": "Effect sizes for architectural awe induction on self-reported emotion and prosocial behavior."
+    {
+      "name": "Small-Self Effect",
+      "template_ids": [
+        "AX3_SMALL_SELF_001"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Awe-inducing environments trigger a diminished sense of self, promoting humility and perspective-taking."
+    },
+    {
+      "name": "Attentional Broadening",
+      "template_ids": [
+        "AX_ATTENTION_MEDIATION_010"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Awe shifts attention from narrow, self-focused processing to broad, accommodative processing."
+    },
+    {
+      "name": "Dose-Response",
+      "template_ids": [
+        "AX_DOSE_RESPONSE_007"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Awe effects show a dose-response relationship with exposure duration and intensity."
     }
+  ],
+  "constituent_templates": [
+    "AX1",
+    "AX2",
+    "AX3",
+    "AX3_AWE_MECHANISM_001",
+    "AX3_SMALL_SELF_001",
+    "AX4",
+    "AX_ATTENTION_MEDIATION_010",
+    "AX_DOSE_RESPONSE_007",
+    "AX_INDIVIDUAL_DIFFERENCES_008",
+    "AX_CULTURAL_MODULATION_009"
+  ],
+  "interaction_graph": {
+    "AX1": {
+      "AX3_SMALL_SELF_001": "SYNERGISTIC"
+    },
+    "AX3_SMALL_SELF_001": {
+      "AX_ATTENTION_MEDIATION_010": "ADDITIVE"
+    }
+  },
+  "framework_ids": [],
+  "domain": "awe_sublime",
+  "scope_conditions": [
+    "SC1",
+    "SC8"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "keltner_haidt_2003",
+    "piff_2015",
+    "chirico_2017",
+    "joye_dewitte_2016"
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [
+    "BIOPHILIA",
+    "PROSPECT_REFUGE"
+  ],
+  "design_implications": [
+    "Use disproportionate vertical scale (high ceilings, tall atriums) to elicit vastness.",
+    "Employ complexity that requires accommodation \u2014 patterns too rich to be immediately grasped.",
+    "Design transitional compression-to-expansion sequences (low corridor \u2192 tall hall) to amplify the awe moment.",
+    "Consider cultural and individual differences in awe susceptibility when designing for diverse populations."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.3,
+      0.7
+    ],
+    "typical_d": 0.45,
+    "note": "Effect sizes for architectural awe induction on self-reported emotion and prosocial behavior."
+  }
 }

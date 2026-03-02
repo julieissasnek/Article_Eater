@@ -4,11 +4,12 @@ import sqlite3
 import json
 import logging
 from datetime import datetime, timezone
+from src.services.db_locator import get_web_db
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-DB_PATH = "data/web_persistence.db"
+DB_PATH = get_web_db()  # Centralized: was hardcoded
 CSV_PATH = "data/review/tranche80_confirmed_rows.csv"
 
 def get_db_connection():

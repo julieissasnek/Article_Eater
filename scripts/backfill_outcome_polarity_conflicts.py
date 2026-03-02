@@ -84,8 +84,8 @@ def first_paper_id(raw: str) -> str:
         vals = json.loads(raw or "[]")
         if isinstance(vals, list) and vals:
             return str(vals[0])
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return ""
 
 
@@ -98,8 +98,8 @@ def infer_direction(content: str, tags_raw: str) -> str:
                     v = t.split(":", 1)[1].strip().lower()
                     if v:
                         return v
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     text = normalize(content)
     if any(m in text for m in NULL_MARKERS):

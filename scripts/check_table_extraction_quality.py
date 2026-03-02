@@ -78,7 +78,8 @@ def read_jsonl_rows(path: Path) -> List[Dict[str, Any]]:
                 continue
             try:
                 obj = json.loads(line)
-            except Exception:
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
                 continue
             if isinstance(obj, dict):
                 rows.append(obj)

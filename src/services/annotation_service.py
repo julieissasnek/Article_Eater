@@ -1,9 +1,10 @@
 """
-Annotation Service — General-Purpose Annotation Layer for the Web of Belief
-============================================================================
+Annotation Service — Unified Annotation Layer for the Web of Belief
+====================================================================
 
 Created: 2026-02-27
 Sprint: EN-0D (merges Sprint 0.5)
+Phase α unification: 2026-03-01 (Sprint A)
 
 Design Decisions (approved by David via Cowork):
   - Storage: Separate SQLite table (NOT in template JSONs)
@@ -13,10 +14,17 @@ Design Decisions (approved by David via Cowork):
   - Molecule links: As annotations (lightweight, versionable)
   - Preprocessing: Applied at query time (always fresh)
 
-Annotation Types (3 layers):
+Annotation Types (5 layers, 23 types):
   Layer 1 Evidence:    CALIBRATION_NOTE, SENSITIVITY_FLAG, EVIDENCE_OVERRIDE, PROVENANCE_PATCH
   Layer 2 Relational:  CROSS_REFERENCE, MOLECULE_LINK, CLINICAL_CAUTION
   Layer 3 QA/User:     OPEN_QUESTION, SEARCH_PROMPT, USER_FEEDBACK
+  Layer 4 CVA:         MEASUREMENT_MODALITY, STIMULUS_DESCRIPTION, MOLECULE_T15_LINK
+  Layer 5 Extended:    SURPRISE_FLAG, DESIGN_IMPLICATION, DISPUTE, ANALOGICAL_BRIDGE,
+                       REPLICATION_STATUS, EFFECT_MAGNITUDE, CROSS_DOMAIN,
+                       HISTORICAL_CONTEXT, NARRATIVE_HOOK, UNANSWERED_QUESTION
+
+Phase α (additive): All types can be stored in SQLite. L2 JSON and L3 data models
+still work as before. Phase β will switch consumers to unified API.
 """
 
 from __future__ import annotations
@@ -39,7 +47,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 class AnnotationType(str, Enum):
-    """The 10 annotation types across 3 layers."""
+    """23 annotation types across 5 layers."""
     # Layer 1: Evidence
     CALIBRATION_NOTE = "CALIBRATION_NOTE"
     SENSITIVITY_FLAG = "SENSITIVITY_FLAG"
@@ -53,31 +61,66 @@ class AnnotationType(str, Enum):
     OPEN_QUESTION = "OPEN_QUESTION"
     SEARCH_PROMPT = "SEARCH_PROMPT"
     USER_FEEDBACK = "USER_FEEDBACK"
+    # Layer 4: CVA (previously L2 JSON-backed)
+    MEASUREMENT_MODALITY = "MEASUREMENT_MODALITY"
+    STIMULUS_DESCRIPTION = "STIMULUS_DESCRIPTION"
+    MOLECULE_T15_LINK = "MOLECULE_T15_LINK"
+    # Layer 5: Extended A9-A18 (previously L3 no persistence)
+    SURPRISE_FLAG = "SURPRISE_FLAG"                # A9
+    DESIGN_IMPLICATION = "DESIGN_IMPLICATION"      # A10
+    DISPUTE = "DISPUTE"                            # A11
+    ANALOGICAL_BRIDGE = "ANALOGICAL_BRIDGE"        # A12
+    REPLICATION_STATUS = "REPLICATION_STATUS"       # A13
+    EFFECT_MAGNITUDE = "EFFECT_MAGNITUDE"          # A14
+    CROSS_DOMAIN = "CROSS_DOMAIN"                  # A15
+    HISTORICAL_CONTEXT = "HISTORICAL_CONTEXT"      # A16
+    NARRATIVE_HOOK = "NARRATIVE_HOOK"              # A17
+    UNANSWERED_QUESTION = "UNANSWERED_QUESTION"    # A18
 
 
 class AnnotationLayer(str, Enum):
     EVIDENCE = "evidence"
     RELATIONAL = "relational"
     QA_USER = "qa_user"
+    CVA = "cva"
+    EXTENDED = "extended"
 
 
 TYPE_TO_LAYER = {
+    # Layer 1: Evidence
     AnnotationType.CALIBRATION_NOTE: AnnotationLayer.EVIDENCE,
     AnnotationType.SENSITIVITY_FLAG: AnnotationLayer.EVIDENCE,
     AnnotationType.EVIDENCE_OVERRIDE: AnnotationLayer.EVIDENCE,
     AnnotationType.PROVENANCE_PATCH: AnnotationLayer.EVIDENCE,
+    # Layer 2: Relational
     AnnotationType.CROSS_REFERENCE: AnnotationLayer.RELATIONAL,
     AnnotationType.MOLECULE_LINK: AnnotationLayer.RELATIONAL,
     AnnotationType.CLINICAL_CAUTION: AnnotationLayer.RELATIONAL,
+    # Layer 3: QA/User
     AnnotationType.OPEN_QUESTION: AnnotationLayer.QA_USER,
     AnnotationType.SEARCH_PROMPT: AnnotationLayer.QA_USER,
     AnnotationType.USER_FEEDBACK: AnnotationLayer.QA_USER,
+    # Layer 4: CVA
+    AnnotationType.MEASUREMENT_MODALITY: AnnotationLayer.CVA,
+    AnnotationType.STIMULUS_DESCRIPTION: AnnotationLayer.CVA,
+    AnnotationType.MOLECULE_T15_LINK: AnnotationLayer.CVA,
+    # Layer 5: Extended A9-A18
+    AnnotationType.SURPRISE_FLAG: AnnotationLayer.EXTENDED,
+    AnnotationType.DESIGN_IMPLICATION: AnnotationLayer.EXTENDED,
+    AnnotationType.DISPUTE: AnnotationLayer.EXTENDED,
+    AnnotationType.ANALOGICAL_BRIDGE: AnnotationLayer.EXTENDED,
+    AnnotationType.REPLICATION_STATUS: AnnotationLayer.EXTENDED,
+    AnnotationType.EFFECT_MAGNITUDE: AnnotationLayer.EXTENDED,
+    AnnotationType.CROSS_DOMAIN: AnnotationLayer.EXTENDED,
+    AnnotationType.HISTORICAL_CONTEXT: AnnotationLayer.EXTENDED,
+    AnnotationType.NARRATIVE_HOOK: AnnotationLayer.EXTENDED,
+    AnnotationType.UNANSWERED_QUESTION: AnnotationLayer.EXTENDED,
 }
 
 
 VALID_TARGET_TYPES = frozenset([
     "template", "belief", "answer", "causal_link", "parameter",
-    "molecule", "theory",
+    "molecule", "theory", "finding", "extraction",
 ])
 
 
@@ -124,7 +167,13 @@ class AnnotationService:
         / "migrations" / "024_annotation_system.sql"
     )
 
-    def __init__(self, db_path: str = "data/web_persistence_v2.db"):
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            try:
+                from src.services.db_locator import resolve_web_db
+                db_path = str(resolve_web_db(prefer="integrated"))
+            except Exception:
+                db_path = str(get_web_db())
         self.db_path = db_path
         self._ensure_schema()
 
@@ -136,7 +185,7 @@ class AnnotationService:
         return conn
 
     def _ensure_schema(self) -> None:
-        """Apply migration 024 if tables don't exist."""
+        """Apply migration 024 if tables don't exist, then register new types."""
         conn = self._get_connection()
         try:
             # Check if table exists
@@ -155,6 +204,9 @@ class AnnotationService:
             conn.commit()
         finally:
             conn.close()
+        # Phase α: ensure L4 (CVA) and L5 (A9-A18) types are registered
+        # even on databases that already had the original 10 types
+        self.ensure_new_types_registered()
 
     def _create_tables_inline(self, conn: sqlite3.Connection) -> None:
         """Fallback: create tables directly if migration file not found."""
@@ -164,17 +216,39 @@ class AnnotationService:
                 layer TEXT NOT NULL,
                 description TEXT NOT NULL
             );
+            -- Layer 1: Evidence
             INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES
-                ('CALIBRATION_NOTE',  'evidence',    'Expert commentary on calibration quality'),
-                ('SENSITIVITY_FLAG',  'evidence',    'Marks parameters that are uncertain or vary widely'),
-                ('EVIDENCE_OVERRIDE', 'evidence',    'Manual upgrade/downgrade of maturity level'),
-                ('PROVENANCE_PATCH',  'evidence',    'Backfills missing provenance'),
-                ('CROSS_REFERENCE',   'relational',  'Links interacting templates'),
-                ('MOLECULE_LINK',     'relational',  'Connects template to molecule/T1.5'),
-                ('CLINICAL_CAUTION',  'relational',  'Safety-relevant annotation'),
-                ('OPEN_QUESTION',     'qa_user',     'Knowledge gap marker'),
-                ('SEARCH_PROMPT',     'qa_user',     'Directed search suggestion'),
-                ('USER_FEEDBACK',     'qa_user',     'User quality rating');
+                ('CALIBRATION_NOTE',      'evidence',    'Expert commentary on calibration quality'),
+                ('SENSITIVITY_FLAG',      'evidence',    'Marks parameters that are uncertain or vary widely'),
+                ('EVIDENCE_OVERRIDE',     'evidence',    'Manual upgrade/downgrade of maturity level'),
+                ('PROVENANCE_PATCH',      'evidence',    'Backfills missing provenance');
+            -- Layer 2: Relational
+            INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES
+                ('CROSS_REFERENCE',       'relational',  'Links interacting templates'),
+                ('MOLECULE_LINK',         'relational',  'Connects template to molecule/T1.5'),
+                ('CLINICAL_CAUTION',      'relational',  'Safety-relevant annotation');
+            -- Layer 3: QA/User
+            INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES
+                ('OPEN_QUESTION',         'qa_user',     'Knowledge gap marker'),
+                ('SEARCH_PROMPT',         'qa_user',     'Directed search suggestion'),
+                ('USER_FEEDBACK',         'qa_user',     'User quality rating');
+            -- Layer 4: CVA (Phase α — migrated from JSON backing store)
+            INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES
+                ('MEASUREMENT_MODALITY',  'cva',         'How a finding was measured (fMRI, EEG, behavioral, etc.)'),
+                ('STIMULUS_DESCRIPTION',  'cva',         'Stimulus type used in study (visual, auditory, spatial, etc.)'),
+                ('MOLECULE_T15_LINK',     'cva',         'Links finding to T1.5 molecule via CVA analysis');
+            -- Layer 5: Extended A9-A18 (Phase α — now has persistence)
+            INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES
+                ('SURPRISE_FLAG',         'extended',    'A9: Counterintuitive finding that challenges common assumptions'),
+                ('DESIGN_IMPLICATION',    'extended',    'A10: Actionable design guidance derived from finding'),
+                ('DISPUTE',               'extended',    'A11: Active disagreement between researchers on a claim'),
+                ('ANALOGICAL_BRIDGE',     'extended',    'A12: Maps technical concept to everyday experience'),
+                ('REPLICATION_STATUS',    'extended',    'A13: Tracks replication history for key findings'),
+                ('EFFECT_MAGNITUDE',      'extended',    'A14: Human-interpretable effect size (NNT, Cohens d)'),
+                ('CROSS_DOMAIN',          'extended',    'A15: Finding bridges two or more research domains'),
+                ('HISTORICAL_CONTEXT',    'extended',    'A16: Historical development of research on this topic'),
+                ('NARRATIVE_HOOK',        'extended',    'A17: Compelling story angle for science communication'),
+                ('UNANSWERED_QUESTION',   'extended',    'A18: Open research question identified from this finding');
             CREATE TABLE IF NOT EXISTS annotations (
                 id TEXT PRIMARY KEY,
                 type TEXT NOT NULL REFERENCES annotation_types(type),
@@ -631,3 +705,135 @@ class AnnotationService:
             return [self._row_to_annotation(r) for r in rows]
         finally:
             conn.close()
+
+    # -----------------------------------------------------------------
+    # UNIFIED QUERY API (Phase α — Sprint A)
+    # -----------------------------------------------------------------
+
+    def get_all_annotations(
+        self,
+        target_id: str,
+        target_type: Optional[str] = None,
+        layers: Optional[List[AnnotationLayer]] = None,
+        include_inactive: bool = False,
+    ) -> List[Annotation]:
+        """
+        Unified query: get ALL annotations for a target across all layers.
+
+        This is the primary API for Phase β+ consumers. It replaces the need
+        to query L1 (SQLite), L2 (JSON), and L3 (in-memory) separately.
+
+        Args:
+            target_id: The entity ID (belief ID, template ID, finding ID, etc.)
+            target_type: Optional filter by target type (belief, template, etc.)
+                         If None, returns annotations across all target types.
+            layers: Optional filter by annotation layers.
+                    If None, returns annotations from all 5 layers.
+            include_inactive: If True, includes superseded and retracted.
+
+        Returns:
+            List of Annotation objects, ordered by creation time.
+        """
+        conn = self._get_connection()
+        try:
+            conditions = ["a.target_id = ?"]
+            params: list = [target_id]
+
+            if target_type:
+                conditions.append("a.target_type = ?")
+                params.append(target_type)
+
+            if not include_inactive:
+                conditions.append("a.status = 'active'")
+
+            if layers:
+                layer_values = [l.value for l in layers]
+                placeholders = ",".join("?" for _ in layer_values)
+                conditions.append(f"at.layer IN ({placeholders})")
+                params.extend(layer_values)
+
+            where = " AND ".join(conditions)
+            rows = conn.execute(
+                f"""SELECT a.* FROM annotations a
+                    LEFT JOIN annotation_types at ON a.type = at.type
+                    WHERE {where}
+                    ORDER BY a.created""",
+                params,
+            ).fetchall()
+            return [self._row_to_annotation(r) for r in rows]
+        finally:
+            conn.close()
+
+    def get_annotation_coverage(self) -> Dict[str, Any]:
+        """
+        Report annotation coverage across the system.
+
+        Returns counts of annotated vs unannotated targets,
+        useful for AN-SC-04 (>50% beliefs have annotations).
+        """
+        conn = self._get_connection()
+        try:
+            # Count unique targets with active annotations
+            by_target_type = {}
+            for row in conn.execute(
+                """SELECT target_type, COUNT(DISTINCT target_id) as targets,
+                          COUNT(*) as annotations
+                   FROM annotations WHERE status = 'active'
+                   GROUP BY target_type"""
+            ).fetchall():
+                by_target_type[row["target_type"]] = {
+                    "unique_targets": row["targets"],
+                    "total_annotations": row["annotations"],
+                }
+
+            # Count by layer
+            by_layer = {}
+            for row in conn.execute(
+                """SELECT at.layer, COUNT(*) as n
+                   FROM annotations a
+                   JOIN annotation_types at ON a.type = at.type
+                   WHERE a.status = 'active'
+                   GROUP BY at.layer"""
+            ).fetchall():
+                by_layer[row["layer"]] = row["n"]
+
+            return {
+                "by_target_type": by_target_type,
+                "by_layer": by_layer,
+                "total_active": sum(
+                    v["total_annotations"] for v in by_target_type.values()
+                ),
+            }
+        finally:
+            conn.close()
+
+    def ensure_new_types_registered(self) -> int:
+        """
+        Ensure all AnnotationType enum values are registered in the
+        annotation_types table. Useful for upgrading existing databases.
+
+        Returns the number of newly registered types.
+        """
+        conn = self._get_connection()
+        added = 0
+        try:
+            existing = set(
+                row["type"]
+                for row in conn.execute(
+                    "SELECT type FROM annotation_types"
+                ).fetchall()
+            )
+            for ann_type in AnnotationType:
+                if ann_type.value not in existing:
+                    layer = TYPE_TO_LAYER.get(ann_type, AnnotationLayer.EXTENDED)
+                    conn.execute(
+                        "INSERT OR IGNORE INTO annotation_types (type, layer, description) VALUES (?, ?, ?)",
+                        (ann_type.value, layer.value, f"Auto-registered: {ann_type.value}"),
+                    )
+                    added += 1
+            conn.commit()
+            if added:
+                logger.info("Registered %d new annotation types in DB", added)
+        finally:
+            conn.close()
+        return added

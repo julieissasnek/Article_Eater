@@ -1,0 +1,146 @@
+================================================================================
+VOCABULARY MISMATCH INVESTIGATION - EXECUTIVE SUMMARY
+================================================================================
+
+PROBLEM STATEMENT
+-----------------
+Template relevance matcher achieves:
+  - 86.9% Tier2 coverage when matching against raw extraction text
+  - 29.9% Tier2 coverage when matching against DB fields (environment_id, outcome_id)
+  - Performance cliff: 57 percentage points
+
+ROOT CAUSE
+----------
+COMPLETE VOCABULARY DISJUNCTION
+
+Template Input/Output Vocabulary:
+  - 51 environmental input terms (e.g., "ceiling_height", "ambient_noise_level")
+  - 115 outcome output terms (e.g., "aesthetic_emotion", "divergent_thinking")
+  - Source: causal_links in 166 template JSON files
+  - Standard: natural language domain terminology
+
+Database Field Vocabulary:
+  - 442 environment_id values (e.g., "env.ae.high_ceiling", "env.complexity.spatial_entropy")
+  - 30 outcome_id values (e.g., "out.cog.attention", "out.affect.mood")
+  - Source: beliefs table in web_persistence.db
+  - Standard: hierarchical notation with prefixes
+
+OVERLAP ANALYSIS
+----------------
+Input terms overlap:    0 / 51  (0.0%)
+Output terms overlap:   0 / 115 (0.0%)
+
+No template input_term matches any environment_id.
+No template output_term matches any outcome_id.
+
+WHY RAW TEXT WORKS (86.9%)
+--------------------------
+When matching against extraction file content (antecedent/consequent text):
+
+1. Template matcher tokenizes raw text
+2. Template mechanism_terms extracted from descriptions use natural language
+3. Raw text and mechanism_terms can overlap (e.g., both mention "attention", "ceiling")
+4. Content-based matching enables decent coverage despite vocabulary gap
+
+EXAMPLE:
+  Extraction: "High ceilings with daylighting improve attention"
+  Tokens: {high, ceilings, daylighting, attention}
+  Template mechanism_terms: {attention, ceiling, insula, pain}
+  Overlap: {attention} ✓ matches
+
+WHY DB FIELDS DON'T WORK (29.9%)
+---------------------------------
+When matching against DB normalized fields:
+
+1. Database uses hierarchical IDs: env.ae.high_ceiling, out.cog.attention
+2. Template vocabulary uses natural language: ceiling_height, cognitive_attention
+3. No token overlap (env.ae.high_ceiling vs ceiling_height: "ceiling" is substring)
+4. No bridge rules map normalized IDs to template terms
+5. Matching fails unless raw content is used
+
+VOCABULARY STANDARDS MISMATCH
+-----------------------------
+Templates:  Natural language domain terms from causal_link specifications
+           "ceiling_height", "mood_valence_shift", "aesthetic_emotion"
+
+Database:   Hierarchical canonical IDs
+           "env.ae.high_ceiling", "out.affect.mood", "out.cog.attention"
+
+These were designed independently without a common vocabulary layer.
+
+MISSING INFRASTRUCTURE
+----------------------
+✗ No mapping: template output_terms → outcome_id
+✗ No mapping: template input_terms → environment_id
+✗ outcome_lookup.json has keys like "cognitive", "attention" but NOT "out.cog.attention"
+✗ No environment_id mapping exists anywhere
+✗ Hard-coded ENV_BRIDGES (21 total) cannot scale to 442 environment_ids
+
+RECOMMENDED SOLUTION: EXTRACTION-TIME NORMALIZATION
+----------------------------------------------------
+Design and implement normalizers that map raw text → canonical IDs during
+extraction ingestion:
+
+1. environment_id_normalizer.py
+   - Map raw antecedent tokens to environment_ids
+   - Token: "ceiling" + "high" → env.ae.high_ceiling
+   - Token: "daylighting" → env.ae.daylighting
+
+2. outcome_id_normalizer.py
+   - Map raw consequent tokens to outcome_ids
+   - Token: "attention" → out.cog.attention
+   - Token: "mood" → out.affect.mood
+
+3. Augment outcome_lookup.json
+   - Add compound mappings: "working memory" → "cog.memory"
+   - Add synonyms: "focus" → "cog.attention"
+
+BENEFITS
+--------
+- Maps at source (raw text → canonical ID)
+- Aligns with template vocabulary naturally
+- One-time cost per paper extraction
+- Enables future template additions without rework
+- Preserves raw text in content field for auditing
+
+EFFORT ESTIMATE
+---------------
+Design + Implementation: 300-500 hours
+- Normalizer logic design: 80 hours
+- Testing against 4,888 beliefs: 40 hours
+- Edge case handling: 80 hours
+- Validation and docs: 100+ hours
+
+COMPARISON TO ALTERNATIVES
+---------------------------
+Option A (Reverse Bridge):
+  Pros: Non-destructive, preserves DB schema
+  Cons: 442 environment_ids × 51 template terms = expensive manual curation
+  Effort: 40-60 hours of expert mapping
+  Risk: Cannot discover new mappings; unmaintainable long-term
+
+Option C (Template Realignment):
+  Pros: Direct alignment, no bridge logic
+  Cons: Destructive to 166 templates, loses domain semantics
+  Not recommended: Too expensive, too lossy
+
+CURRENT COVERAGE TARGETS
+------------------------
+Baseline (raw text):  86.9%
+Current (DB fields):  29.9%
+Post-normalization:   ≥75% (estimated, pending implementation)
+
+SCALE OF THE GAP
+----------------
+Total unique vocabulary items:  557
+  - 51 template input_terms
+  - 442 environment_ids
+  - 115 template output_terms
+  - 30 outcome_ids
+Intersection: 0
+
+This is not a minor mapping problem; it's a fundamental vocabulary design issue.
+
+================================================================================
+Full detailed report: VOCABULARY_MISMATCH_REPORT_2026-03-01.md
+================================================================================

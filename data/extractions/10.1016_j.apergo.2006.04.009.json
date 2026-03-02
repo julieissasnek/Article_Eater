@@ -2,7 +2,7 @@
   "doi": "10.1016/j.apergo.2006.04.009",
   "article_type": "unknown",
   "article_family": "unknown",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.693,
   "n_findings": 21,
   "extracted_at": "2026-02-25T05:05:21.251315+00:00",
@@ -13,7 +13,7 @@
   "classification_confidence": 0.95,
   "classification_signals": [
     "The paper reviews existing medical and biological research on light's non-visual effects (Sections 1, 2).",
-    "It frequently cites numerous external studies (e.g., Berson et al., 2002; Zeitzer et al., 2000; K\u00fcller and Wetterberg, 1993).",
+    "It frequently cites numerous external studies (e.g., Berson et al., 2002; Zeitzer et al., 2000; Küller and Wetterberg, 1993).",
     "Figures and tables presented (e.g., Fig. 2, 4, 5, 6, 7, Table 2) explicitly attribute their data/source to other published works, not new data from this paper.",
     "Sections 3, 4, and 5 discuss the 'practical meaning' and 'health-related quality aspects' based on the synthesized literature, proposing new lighting scenarios and standards."
   ],
@@ -1798,5 +1798,47 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Non-image-forming (NIF) effects of light / Circadian phototransduction",
+      "commitment_type": "assumes|proposes",
+      "specific_claim": "Light, independent of visual perception, influences human physiology and behavior, primarily through the regulation of circadian rhythms, alertness, and mood, mediated by a distinct retinal pathway."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The causal pathway by which light entering the eyes leads to non-visual biological effects on the human body.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "light entering human eyes",
+        "to_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "to_construct": "signaling to the suprachiasmatic nucleus (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "signaling to the suprachiasmatic nucleus (SCN)",
+        "to_construct": "modulation of circadian rhythms and neuroendocrine responses (e.g., melatonin suppression)",
+        "mechanism_type": "neural|physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "modulation of circadian rhythms and neuroendocrine responses",
+        "to_construct": "non-visual biological effects on human body (e.g., alertness, sleep, mood, performance)",
+        "mechanism_type": "physiological|affective|behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:16:24.394051+00:00"
 }

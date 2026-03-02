@@ -2,7 +2,7 @@
   "doi": "10.1134/s0081543811080086",
   "article_type": "theoretical",
   "article_family": "theoretical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.56,
   "n_findings": 8,
   "extracted_at": "2026-02-25T07:00:38.440532+00:00",
@@ -30,15 +30,15 @@
     },
     {
       "name": "Edge of regression",
-      "definition": "A curve on a developable surface where the ruling direction l is collinear with the tangent vector t of the directrix r(s), implying sin \u03c8 = 0."
+      "definition": "A curve on a developable surface where the ruling direction l is collinear with the tangent vector t of the directrix r(s), implying sin ψ = 0."
     },
     {
       "name": "Piecewise smooth surface",
-      "definition": "A surface composed of smooth pieces, where each smooth piece is at least C\u00b2 smooth and each curvilinear edge is at least C\u00b3 smooth."
+      "definition": "A surface composed of smooth pieces, where each smooth piece is at least C² smooth and each curvilinear edge is at least C³ smooth."
     }
   ],
   "argument_structure": "The paper begins by defining developable surfaces and deriving the conditions for developability in terms of the directrix's Frenet frame and ruling directions. It then introduces a constant of integration (C) that allows for one-parameter bending while preserving the intrinsic metric. This theoretical framework is then applied to construct specific examples of bendable developable surfaces with curvilinear edges, including closed surfaces like tori and spheres, and contrasted with rigid counterexamples.",
-  "mechanism_or_causal_logic": "The core mechanism for one-parameter bending lies in the integration of the developability condition (l'N = 0), which introduces an arbitrary constant C. This constant parameterizes a family of surfaces that are isometric (i.e., have the same intrinsic metric) but differ in their extrinsic shape in R\u00b3. By continuously varying C within an admissible range, the surface undergoes a continuous deformation (bending) without stretching or tearing, while its curvilinear edge and rectilinear generators remain stationary on the surface itself.",
+  "mechanism_or_causal_logic": "The core mechanism for one-parameter bending lies in the integration of the developability condition (l'N = 0), which introduces an arbitrary constant C. This constant parameterizes a family of surfaces that are isometric (i.e., have the same intrinsic metric) but differ in their extrinsic shape in R³. By continuously varying C within an admissible range, the surface undergoes a continuous deformation (bending) without stretching or tearing, while its curvilinear edge and rectilinear generators remain stationary on the surface itself.",
   "findings": [
     {
       "id": 1,
@@ -61,12 +61,48 @@
       "source": "Section 1",
       "quote": "The surface R = r + vl is developable if and only if the vectors r, l, and l' are coplanar, or l'N = 0.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.311,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2932,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_CHOLINERGIC_GATING_007",
+          "display_id": "T26",
+          "score": 0.2929,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.2897,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.2892,
+          "reasons": []
+        }
+      ],
+      "tier2_relevance": {
+        "HC": 0.1555,
+        "IC": 0.1555
+      }
     },
     {
       "id": 2,
-      "antecedent": "A developable surface R = r + vl with a directrix r(s) that is not an edge of regression (sin \u03c8 \u2260 0)",
-      "consequent": "The relationship between the angle \u03c6 (defining ruling direction), curvature k, and torsion \u03ba of the directrix",
+      "antecedent": "A developable surface R = r + vl with a directrix r(s) that is not an edge of regression (sin ψ ≠ 0)",
+      "consequent": "The relationship between the angle φ (defining ruling direction), curvature k, and torsion κ of the directrix",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
       "measure_type": null,
@@ -78,11 +114,11 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "Derived from the developability condition l'N = 0, the relationship (\u03c6' + \u03ba) sin \u03c8 \u2212 k sin \u03c8 cos \u03c8 = 0 simplifies to \u03c6' + \u03ba = k sin \u03c8 cot \u03c8, which uniquely defines \u03c6 given r(s) and \u03c8(s).",
+      "mechanism": "Derived from the developability condition l'N = 0, the relationship (φ' + κ) sin ψ − k sin ψ cos ψ = 0 simplifies to φ' + κ = k sin ψ cot ψ, which uniquely defines φ given r(s) and ψ(s).",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 1",
-      "quote": "(\u03c6' + \u03ba) sin \u03c8 \u2212 k sin \u03c8 cos \u03c8 = 0. ... Hence, (2) implies \u03c6' + \u03ba = k sin \u03c8 cot \u03c8.",
+      "quote": "(φ' + κ) sin ψ − k sin ψ cos ψ = 0. ... Hence, (2) implies φ' + κ = k sin ψ cot ψ.",
       "testable": true,
       "empirical_support_cited": null,
       "outcome_id": "affect.joy",
@@ -92,7 +128,7 @@
     },
     {
       "id": 3,
-      "antecedent": "A curve r = r(s) in R\u00b3 with a prescribed geodesic curvature kg on a developable surface",
+      "antecedent": "A curve r = r(s) in R³ with a prescribed geodesic curvature kg on a developable surface",
       "consequent": "Construction of the smooth developable surface R = r + vl",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -105,17 +141,37 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "From the relation k cos \u03c8 = kg, the angle \u03c8 can be determined. Subsequently, using the developability condition \u03c6' + \u03ba = k sin \u03c8 cot \u03c8, the angle \u03c6 can be calculated. These angles then define the ruling direction l, allowing the construction of the surface R = r + vl.",
+      "mechanism": "From the relation k cos ψ = kg, the angle ψ can be determined. Subsequently, using the developability condition φ' + κ = k sin ψ cot ψ, the angle φ can be calculated. These angles then define the ruling direction l, allowing the construction of the surface R = r + vl.",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 1",
-      "quote": "It follows from the aforesaid that here we have solved another problem, namely, the problem of constructing a smooth developable surface on which a curve r = r(s) defined in R\u00b3 has a prescribed geodesic\u00b2 curvature kg.",
+      "quote": "It follows from the aforesaid that here we have solved another problem, namely, the problem of constructing a smooth developable surface on which a curve r = r(s) defined in R³ has a prescribed geodesic² curvature kg.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2672,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2596,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.2561,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 4,
-      "antecedent": "A developable surface R = r + vl with a curvilinear edge, where the angle \u03c6 defining the ruling direction is related to an arbitrary constant C (from integration)",
+      "antecedent": "A developable surface R = r + vl with a curvilinear edge, where the angle φ defining the ruling direction is related to an arbitrary constant C (from integration)",
       "consequent": "The surface admits a one-parameter bending",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -128,13 +184,48 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "The constant C arises from the integration of the differential equations defining the surface. A continuous variation of C within an admissible interval leads to a continuous deformation of the surface in R\u00b3 while its intrinsic metric remains invariant, thus constituting a one-parameter bending.",
+      "mechanism": "The constant C arises from the integration of the differential equations defining the surface. A continuous variation of C within an admissible interval leads to a continuous deformation of the surface in R³ while its intrinsic metric remains invariant, thus constituting a one-parameter bending.",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 4",
-      "quote": "Then, under a continuous variation of the constant C in the interval (C\u2080, C\u2081), where C\u2080 = 0, we obtain a one-parameter bending of the surface S_C.",
+      "quote": "Then, under a continuous variation of the constant C in the interval (C₀, C₁), where C₀ = 0, we obtain a one-parameter bending of the surface S_C.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2971,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2795,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2612,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.256,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.2555,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6
+      }
     },
     {
       "id": 5,
@@ -151,13 +242,45 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "The coefficients of the first quadratic form, which define the intrinsic metric, depend only on the arc-length parameter s, the generator parameter v, the angle \u03c8(s), and the geodesic curvature kg(s), but not on the bending parameter C. Therefore, as C varies, the intrinsic metric does not change.",
+      "mechanism": "The coefficients of the first quadratic form, which define the intrinsic metric, depend only on the arc-length parameter s, the generator parameter v, the angle ψ(s), and the geodesic curvature kg(s), but not on the bending parameter C. Therefore, as C varies, the intrinsic metric does not change.",
       "moderators_reported": [],
       "provenance_depth": "fulltext_multi",
       "source": "Section 4, Section 5",
       "quote": "Hence, the coefficients of the first quadratic form of the bendable surface S_C in no way depend on the arbitrary constant C. This means that under the one-parameter bending of S_C corresponding to a continuous variation of C, the intrinsic metric of the surface S_C is not changed.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.2992,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2913,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2912,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_CHOLINERGIC_GATING_007",
+          "display_id": "T26",
+          "score": 0.2801,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2797,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 6,
@@ -180,11 +303,43 @@
       "source": "Section 5, Examples 1, 2, 3",
       "quote": "Now, using all what has been said above, we present three specific examples of one-parameter bendings of a piecewise smooth developable surface with one curvilinear edge in the particular case when the surface is homeomorphic to a disk.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2821,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.2765,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.2618,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2601,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2559,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 7,
-      "antecedent": "A hypothetical development of a surface where the maximum value M of the function f(s) (related to geodesic curvature and angles) is infinite (M = \u221e)",
+      "antecedent": "A hypothetical development of a surface where the maximum value M of the function f(s) (related to geodesic curvature and angles) is infinite (M = ∞)",
       "consequent": "The development is rigid (does not admit one-parameter bending)",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -197,11 +352,11 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "If M = \u221e, the admissible range for the bending constant C (e.g., [-1/M, 1/M]) collapses to C=0, meaning no continuous variation is possible. This often corresponds to geometric obstructions where angles defining ruling directions vanish at certain points.",
+      "mechanism": "If M = ∞, the admissible range for the bending constant C (e.g., [-1/M, 1/M]) collapses to C=0, meaning no continuous variation is possible. This often corresponds to geometric obstructions where angles defining ruling directions vanish at certain points.",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 6, Remark 4, Counterexample 1",
-      "quote": "Since sup(\u221a2 sin t \u2212 1)\u207b\u00b9 = M = \u221e for t \u2208 [\u03c0/4, 3\u03c0/4], we have C = 0 (see Remark 4). Hence, this development with a prescribed hypothetical preimage of the edge and the preimages of all rectilinear generators defined on it is rigid.",
+      "quote": "Since sup(√2 sin t − 1)⁻¹ = M = ∞ for t ∈ [π/4, 3π/4], we have C = 0 (see Remark 4). Hence, this development with a prescribed hypothetical preimage of the edge and the preimages of all rectilinear generators defined on it is rigid.",
       "testable": true,
       "empirical_support_cited": null
     },
@@ -224,16 +379,30 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 7, \"Bendable torus\", \"Bendable sphere\"",
-      "quote": "Now, let us produce piecewise smooth closed surfaces that admit one-parameter bendings in the space R\u00b3.",
+      "quote": "Now, let us produce piecewise smooth closed surfaces that admit one-parameter bendings in the space R³.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2713,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.2559,
+          "reasons": []
+        }
+      ]
     }
   ],
   "testable_hypotheses_or_predictions": [
-    "The derived mathematical conditions (e.g., l'N = 0, \u03c6' + \u03ba = k sin \u03c8 cot \u03c8) are necessary and sufficient for a ruled surface to be developable and admit one-parameter bending.",
+    "The derived mathematical conditions (e.g., l'N = 0, φ' + κ = k sin ψ cot ψ) are necessary and sufficient for a ruled surface to be developable and admit one-parameter bending.",
     "Any developable surface constructed using the proposed method, incorporating the constant C, will exhibit one-parameter bending while its intrinsic metric remains invariant.",
     "Physical models of the specific examples of bendable surfaces (disk sector, sinusoid, circular arc, torus, sphere) will demonstrate the predicted continuous bending behavior.",
-    "Surfaces for which the bending constant C is constrained to a single value (e.g., C=0 due to M=\u221e) will be mathematically rigid and resist continuous deformation."
+    "Surfaces for which the bending constant C is constrained to a single value (e.g., C=0 due to M=∞) will be mathematically rigid and resist continuous deformation."
   ],
   "bridge_warrants": [
     "The paper's work on bendable polyhedra relates to Aleksandrov's earlier constructions of flexible polyhedra.",
@@ -241,7 +410,7 @@
     "The constructed bendable sphere resembles Bricard's octahedron, a known example of a flexible polyhedron."
   ],
   "methodological_critiques": [
-    "The global conditions for embedding bendable surfaces in R\u00b3 are not fully resolved in the general case.",
+    "The global conditions for embedding bendable surfaces in R³ are not fully resolved in the general case.",
     "The paper identifies that a hypothetical development might be rigid, meaning a corresponding developable surface cannot be constructed, highlighting limitations in development design."
   ],
   "model_structure": "The paper proposes a constructive mathematical model for generating and bending developable surfaces. It starts with a directrix curve and defines ruling directions using its Frenet frame and two angle functions. The developability condition is translated into a differential equation whose integration introduces a constant C, serving as the bending parameter. The model demonstrates that the intrinsic metric is independent of C, ensuring isometric bending. This framework is then extended to piecewise smooth and closed surfaces by combining such bendable developable pieces.",
@@ -252,10 +421,10 @@
   ],
   "overall_theory_links": [],
   "limitations": [
-    "The global conditions for embedding bendable surfaces in R\u00b3 are not fully explored.",
-    "The analysis assumes specific smoothness conditions (C\u00b2 for surface pieces, C\u00b3 for curvilinear edges).",
-    "The investigations are restricted to small segments of the angle intervals for \u03c6 and \u03b8.",
-    "Some constructed surfaces (e.g., the torus and sphere) exhibit self-intersections in R\u00b3."
+    "The global conditions for embedding bendable surfaces in R³ are not fully explored.",
+    "The analysis assumes specific smoothness conditions (C² for surface pieces, C³ for curvilinear edges).",
+    "The investigations are restricted to small segments of the angle intervals for φ and θ.",
+    "Some constructed surfaces (e.g., the torus and sphere) exhibit self-intersections in R³."
   ],
   "paper_metadata": {
     "doi": "10.1134/S0081543811080086",
@@ -327,5 +496,13 @@
   "crossref_subjects": [],
   "crossref_abstract": null,
   "crossref_fetched_at": "2026-02-25T11:59:17.370198+00:00",
-  "journal": "Proceedings of the Steklov Institute of Mathematics"
+  "journal": "Proceedings of the Steklov Institute of Mathematics",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T21:39:54.815315+00:00"
 }

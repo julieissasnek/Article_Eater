@@ -107,7 +107,8 @@ def build_hierarchy_registry_from_dir(
     for template_file in sorted(template_dir.glob("*.json")):
         try:
             data = json.loads(template_file.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
 
         template_key = data.get("display_id") or data.get("template_id") or template_file.stem

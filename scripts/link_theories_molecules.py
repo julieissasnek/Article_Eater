@@ -54,8 +54,8 @@ def load_catalog():
                 "keywords": t.get("keywords", []),
                 "description": t.get("description", "")[:200],
             }
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     
     molecules = {}
     for mf in MOLECULES_DIR.glob("*.json"):
@@ -66,8 +66,8 @@ def load_catalog():
                 "description": m.get("description", "")[:200],
                 "source_theories": m.get("source_theories", []),
             }
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     
     return theories, molecules
 
@@ -182,8 +182,8 @@ def main():
                 needs_linking.append(ef)
             elif has_links or has_molecules:
                 already_linked += 1
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     
     log.info(f"Total extractions: {len(files)}")
     log.info(f"Already linked: {already_linked}")

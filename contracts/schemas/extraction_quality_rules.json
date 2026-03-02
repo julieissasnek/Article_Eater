@@ -1171,6 +1171,315 @@
           "info_message": "test_statistic is null despite sample_size being present. If from table, should extract test_statistic."
         }
       ]
+    },
+    "causal_tier": {
+      "description": "Pearl causal design hierarchy (P5). Determines permitted causal language: EXPERIMENTAL allows 'X causes Y', QUASI allows 'X likely contributes to Y', CORRELATIONAL allows only 'X is associated with Y'.",
+      "criticality": "high",
+      "type": "enum",
+      "enum_values": ["EXPERIMENTAL", "QUASI_EXPERIMENTAL", "CORRELATIONAL", "REVIEW", null],
+      "required_for_claim_types": ["empirical_finding", "causal", "associational"],
+      "rules": [
+        {
+          "rule_id": "CT1_NULL",
+          "severity": "error",
+          "description": "Causal tier must not be null for empirical findings",
+          "check_type": "conditional",
+          "condition": "causal_tier is null AND claim_type in ['empirical_finding', 'causal', 'associational']",
+          "error_message": "causal_tier is null but claim_type indicates empirical data. Must specify causal design tier."
+        },
+        {
+          "rule_id": "CT2_LANGUAGE_MISMATCH",
+          "severity": "error",
+          "description": "Causal language in finding text must match causal_tier",
+          "check_type": "regex_conditional",
+          "causal_language_patterns": ["causes?", "leads? to", "produces?", "results? in", "determines"],
+          "condition": "finding_text matches causal_language_patterns AND causal_tier == 'CORRELATIONAL'",
+          "error_message": "Finding text uses causal language (e.g., 'causes', 'leads to') but causal_tier is CORRELATIONAL. Correlational designs support only 'is associated with'.",
+          "fix_suggestion": "Either upgrade causal_tier to match language (if design supports it) or downgrade language to 'is associated with'."
+        },
+        {
+          "rule_id": "CT3_EXPERIMENTAL_WITHOUT_MANIPULATION",
+          "severity": "warning",
+          "description": "EXPERIMENTAL tier should include evidence of manipulation/intervention",
+          "check_type": "conditional",
+          "condition": "causal_tier == 'EXPERIMENTAL' AND (mechanism is null OR antecedent does not mention manipulation keywords)",
+          "manipulation_keywords": ["manipulated", "assigned", "randomly assigned", "experimental condition", "intervention", "treatment"],
+          "warning_message": "Causal tier is EXPERIMENTAL but finding lacks clear evidence of manipulation. Verify study design supports experimental classification."
+        }
+      ]
+    },
+    "scope_conditions": {
+      "description": "Cartwright scope conditions (P4). Specifies the populations, settings, and contexts where this finding holds. Unknown scope ≠ universal scope.",
+      "criticality": "high",
+      "type": "object",
+      "required_for_claim_types": ["empirical_finding", "causal", "associational"],
+      "rules": [
+        {
+          "rule_id": "SC1_MISSING_FOR_EMPIRICAL",
+          "severity": "error",
+          "description": "Scope conditions required for empirical findings with at least 2 dimensions specified",
+          "check_type": "conditional",
+          "condition": "claim_type in ['empirical_finding', 'causal', 'associational'] AND scope_conditions is null",
+          "min_dimensions": 2,
+          "dimension_fields": ["setting", "population", "climate", "duration", "measurement_type"],
+          "error_message": "scope_conditions is null for empirical finding. Must specify at least 2 scope dimensions (setting, population, climate, duration, measurement_type)."
+        },
+        {
+          "rule_id": "SC2_SETTING_VAGUE",
+          "severity": "warning",
+          "description": "Setting should not be vague or overly general",
+          "check_type": "regex_pattern_match",
+          "vague_patterns": ["^indoor$", "^outdoor$", "^lab$", "^field$", "various settings", "multiple settings"],
+          "field": "scope_conditions.setting",
+          "warning_message": "Setting is vague ('indoor', 'outdoor', 'lab', 'field'). Specify setting type more precisely (e.g., 'office building', 'university laboratory', 'residential homes in coastal California')."
+        },
+        {
+          "rule_id": "SC3_POPULATION_UNDERSPECIFIED",
+          "severity": "warning",
+          "description": "Population should be specific enough for replication",
+          "check_type": "regex_pattern_match",
+          "field": "scope_conditions.population",
+          "underspecified_patterns": ["^people$", "^participants$", "^subjects$", "general population", "various groups"],
+          "warning_message": "Population is underspecified. Should include demographic descriptors (age range, profession, education level, cultural context)."
+        },
+        {
+          "rule_id": "SC4_SCOPE_UNKNOWN_DIMENSIONS",
+          "severity": "info",
+          "description": "Explicitly track unknown scope dimensions per Cartwright principle",
+          "check_type": "conditional",
+          "condition": "scope_conditions exists AND scope_unknown_dimensions is empty",
+          "info_message": "Consider explicitly listing which scope dimensions are unknown in scope_unknown_dimensions array. Per Cartwright: unknown scope ≠ universal scope."
+        }
+      ]
+    },
+    "justification_status": {
+      "description": "Haack foundherentist classification (P2). GROUNDED = independent empirical anchor + coherence. COHERENT_ONLY = fits web but no independent evidence (Haack warning). UNJUSTIFIED = no support. EXPERIENTIAL_CLAIM = direct observation without theoretical framing.",
+      "criticality": "medium",
+      "type": "enum",
+      "enum_values": ["GROUNDED", "COHERENT_ONLY", "UNJUSTIFIED", "EXPERIENTIAL_CLAIM", null],
+      "required_for_claim_types": ["empirical_finding", "causal", "associational", "theoretical_proposition"],
+      "rules": [
+        {
+          "rule_id": "JS1_NULL",
+          "severity": "warning",
+          "description": "Justification status should be specified for all findings",
+          "check_type": "conditional",
+          "condition": "justification_status is null AND claim_type != 'narrative'",
+          "warning_message": "justification_status is null. Should be specified to track grounding level."
+        },
+        {
+          "rule_id": "JS2_GROUNDED_WITHOUT_DATA",
+          "severity": "error",
+          "description": "GROUNDED status requires cited empirical data",
+          "check_type": "conditional",
+          "condition": "justification_status == 'GROUNDED' AND (p_value is null AND effect_size is null AND sample_size is null)",
+          "error_message": "justification_status is GROUNDED but no empirical data (p_value, effect_size, or sample_size) is reported. GROUNDED requires independent empirical evidence.",
+          "fix_suggestion": "Either extract the empirical statistics from the paper, or downgrade to COHERENT_ONLY if no direct empirical support exists in this paper."
+        },
+        {
+          "rule_id": "JS3_COHERENT_CLUSTER_CHECK",
+          "severity": "info",
+          "description": "Flag for review if >30% of article findings are COHERENT_ONLY",
+          "check_type": "aggregate",
+          "scope": "article",
+          "condition": "COUNT(justification_status == 'COHERENT_ONLY') / COUNT(all findings) > 0.30",
+          "threshold": 0.30,
+          "info_message": "More than 30% of this article's findings are COHERENT_ONLY (no independent empirical support). Flag for review: article may be over-relying on theoretical coherence without empirical anchoring."
+        },
+        {
+          "rule_id": "JS4_EXPERIENTIAL_WITHOUT_QUOTE",
+          "severity": "warning",
+          "description": "EXPERIENTIAL_CLAIM should be directly quoted from text",
+          "check_type": "conditional",
+          "condition": "justification_status == 'EXPERIENTIAL_CLAIM' AND quote is null",
+          "warning_message": "justification_status is EXPERIENTIAL_CLAIM but no direct quote is provided. Experiential claims should be supported by direct text evidence."
+        }
+      ]
+    },
+    "defeat_relationships": {
+      "description": "Pollock defeat relationships (P1). Any known rebutting or undercutting defeaters for this finding, either reported in the paper or discovered across the corpus.",
+      "criticality": "medium",
+      "type": "array",
+      "required_for_claim_types": ["empirical_finding", "causal"],
+      "rules": [
+        {
+          "rule_id": "DR1_HIGH_CREDENCE_NO_DEFEATER",
+          "severity": "warning",
+          "description": "High-credence findings should document any known defeaters",
+          "check_type": "conditional",
+          "condition": "credence >= 0.70 AND defeat_relationships.length == 0 AND defeater_search_status != 'none_reported'",
+          "credence_threshold": 0.70,
+          "warning_message": "Finding has high credence (≥0.70) but no defeat_relationships documented and defeater_search_status is not 'none_reported'. Should actively search for and document any known defeaters."
+        },
+        {
+          "rule_id": "DR2_DEFEAT_DESCRIPTION_REQUIRED",
+          "severity": "error",
+          "description": "Each defeat relationship must have substantive description",
+          "check_type": "conditional",
+          "condition": "defeat_relationships exists AND defeat_relationships.items(description.length < 10)",
+          "min_description_length": 10,
+          "error_message": "Defeat relationship description is too brief (<10 characters). Must provide substantive description of how this defeater attacks the finding."
+        },
+        {
+          "rule_id": "DR3_SEVERITY_MISMATCH",
+          "severity": "info",
+          "description": "Defeat severity should correspond to effect on credence",
+          "check_type": "conditional",
+          "condition": "defeat_relationships.severity == 'strong' AND credence > 0.50",
+          "info_message": "Defeat relationship marked as 'strong' but finding credence is >0.50. Consider whether credence should be lower given strong defeater."
+        }
+      ]
+    },
+    "defeater_search_status": {
+      "description": "Mayo severe testing status (P3). Whether defeaters (null results, boundary conditions, replication failures) were actively sought and what was found.",
+      "criticality": "medium",
+      "type": "enum",
+      "enum_values": ["defeaters_found", "none_reported", "not_searched", null],
+      "required_for_claim_types": ["empirical_finding", "causal", "associational"],
+      "rules": [
+        {
+          "rule_id": "DS1_NULL_FOR_EMPIRICAL",
+          "severity": "warning",
+          "description": "Empirical findings should specify defeater search status",
+          "check_type": "conditional",
+          "condition": "defeater_search_status is null AND claim_type in ['empirical_finding', 'causal', 'associational']",
+          "warning_message": "defeater_search_status is null for empirical finding. Should indicate whether defeaters were actively sought (severe testing per Mayo)."
+        },
+        {
+          "rule_id": "DS2_FOUND_BUT_EMPTY",
+          "severity": "error",
+          "description": "If defeaters_found, defeat_relationships array must not be empty",
+          "check_type": "conditional",
+          "condition": "defeater_search_status == 'defeaters_found' AND (defeat_relationships is null OR defeat_relationships.length == 0)",
+          "error_message": "defeater_search_status is 'defeaters_found' but defeat_relationships array is empty. Must document the defeaters that were found.",
+          "fix_suggestion": "Add the found defeaters to defeat_relationships array, or change status to 'none_reported' if no defeaters actually exist."
+        },
+        {
+          "rule_id": "DS3_NOT_SEARCHED_WITHOUT_JUSTIFICATION",
+          "severity": "info",
+          "description": "not_searched status should be rare and justified",
+          "check_type": "conditional",
+          "condition": "defeater_search_status == 'not_searched' AND claim_type in ['causal', 'empirical_finding']",
+          "info_message": "defeater_search_status is 'not_searched' for causal/empirical finding. For severe testing (Mayo), defeaters should be actively searched. Recommend: change to 'none_reported' after conducting search, or document reasons search was not performed."
+        }
+      ]
+    },
+    "source_quality_indicators": {
+      "description": "Longino+Cartwright source quality assessment (P6). Quality-weighted evidence assessment: rigor, independence, replication, commitment penalty.",
+      "criticality": "medium",
+      "type": "object",
+      "required_for_claim_types": ["empirical_finding", "causal", "associational"],
+      "rules": [
+        {
+          "rule_id": "SQ1_INDEPENDENCE_MISSING",
+          "severity": "warning",
+          "description": "Independence flag should be specified when multiple studies on same relationship exist",
+          "check_type": "conditional",
+          "condition": "source_quality_indicators.independence_flag is null AND claim_type in ['empirical_finding', 'causal']",
+          "warning_message": "independence_flag is null. Should specify whether this study is independent from other studies on the same IV→DV (different lab, paradigm, population per Longino)."
+        },
+        {
+          "rule_id": "SQ2_BLINDING_INCONSISTENT",
+          "severity": "error",
+          "description": "Blinding status must be logically consistent with causal design",
+          "check_type": "conditional",
+          "condition": "source_quality_indicators.blinding == 'double_blind' AND causal_tier == 'CORRELATIONAL'",
+          "error_message": "Blinding status is 'double_blind' but causal_tier is CORRELATIONAL. Blinding is only possible in experimental designs with interventions. Correlational/observational studies cannot be blinded.",
+          "fix_suggestion": "Change blinding to 'not_applicable' or 'unblinded' for correlational studies."
+        },
+        {
+          "rule_id": "SQ3_REPLICATION_COHERENCE",
+          "severity": "info",
+          "description": "Replication status should inform credence/justification assessment",
+          "check_type": "conditional",
+          "condition": "source_quality_indicators.replication_status == 'failed_replication' AND credence > 0.60",
+          "info_message": "Replication status is 'failed_replication' but finding credence is >0.60. Consider whether credence should be lower given failed replication."
+        },
+        {
+          "rule_id": "SQ4_EXPLORATORY_WITHOUT_ADJUSTMENT",
+          "severity": "warning",
+          "description": "Exploratory studies should note Longino commitment penalty",
+          "check_type": "conditional",
+          "condition": "source_quality_indicators.study_type_for_commitment_penalty == 'exploratory' AND credence > 0.65",
+          "penalty_threshold": 0.65,
+          "warning_message": "Study type is 'exploratory' (receives half Longino commitment penalty) but credence is >0.65. Consider whether credence appropriately reflects exploratory status (typically capped lower than confirmatory)."
+        }
+      ]
+    },
+    "conflict_type": {
+      "description": "Cartwright conflict typology (P10). When this finding conflicts with other findings on the same IV→DV, classify the disagreement type. CONTRADICTS = opposite conclusions, same scope. PRECISION_DIFFERENCE = same direction, different magnitude (not a true conflict).",
+      "criticality": "low",
+      "type": "enum",
+      "enum_values": ["CONTRADICTS", "WEAKENS", "BOUNDARY_VIOLATION", "DIRECTION_CONFLICT", "PRECISION_DIFFERENCE", null],
+      "required_for_claim_types": ["empirical_finding", "causal", "associational"],
+      "rules": [
+        {
+          "rule_id": "CF1_RAW_CONTRADICTS",
+          "severity": "warning",
+          "description": "CONTRADICTS should be further typed when possible",
+          "check_type": "conditional",
+          "condition": "conflict_type == 'CONTRADICTS' AND (direction == 'mixed' OR mechanism is null)",
+          "warning_message": "conflict_type is generic 'CONTRADICTS'. When possible, specify further using DIRECTION_CONFLICT, BOUNDARY_VIOLATION, or PRECISION_DIFFERENCE to clarify the nature of the conflict."
+        },
+        {
+          "rule_id": "CF2_CONFLICT_WITHOUT_EVIDENCE",
+          "severity": "error",
+          "description": "Conflict type must be accompanied by description of conflicting finding",
+          "check_type": "conditional",
+          "condition": "conflict_type is not null AND conflict_type != null AND (defeat_relationships.length == 0 OR defeat_relationships.items(description is null))",
+          "error_message": "conflict_type is specified but no corresponding defeat_relationships with description. Must document which other finding this conflicts with and how."
+        },
+        {
+          "rule_id": "CF3_PRECISION_NOT_TRUE_CONFLICT",
+          "severity": "info",
+          "description": "PRECISION_DIFFERENCE is not a true conflict per Cartwright",
+          "check_type": "conditional",
+          "condition": "conflict_type == 'PRECISION_DIFFERENCE'",
+          "info_message": "conflict_type is PRECISION_DIFFERENCE (same direction, different magnitude). Per Cartwright, this is not a true conflict. Consider whether this should be resolved through effect size meta-analysis rather than conflict classification."
+        }
+      ]
+    },
+    "epistemic_level": {
+      "description": "Cartwright+Haack level classification (P9). Different epistemic levels have different evidential standards and credence thresholds.",
+      "criticality": "medium",
+      "type": "enum",
+      "enum_values": ["OBSERVATIONAL", "EMPIRICAL", "INTERMEDIATE", "THEORETICAL", null],
+      "required_for_claim_types": ["empirical_finding", "causal", "theoretical_proposition"],
+      "rules": [
+        {
+          "rule_id": "EL1_NULL",
+          "severity": "warning",
+          "description": "Epistemic level should be specified for all findings",
+          "check_type": "conditional",
+          "condition": "epistemic_level is null AND claim_type in ['empirical_finding', 'causal', 'theoretical_proposition']",
+          "warning_message": "epistemic_level is null. Should specify to clarify evidentiary standard and credence ceiling."
+        },
+        {
+          "rule_id": "EL2_CREDENCE_THRESHOLD",
+          "severity": "warning",
+          "description": "OBSERVATIONAL findings should not exceed credence ceiling of 0.85",
+          "check_type": "conditional",
+          "condition": "epistemic_level == 'OBSERVATIONAL' AND credence > 0.85",
+          "ceiling": 0.85,
+          "warning_message": "epistemic_level is OBSERVATIONAL but credence is >0.85. Per Cartwright+Haack, observational claims have an evidential ceiling around 0.85 (no unobserved mechanisms can be claimed). Consider whether credence should be capped at this level."
+        },
+        {
+          "rule_id": "EL3_THEORETICAL_REQUIRES_MECHANISM",
+          "severity": "warning",
+          "description": "THEORETICAL epistemic level should include mechanism chain",
+          "check_type": "conditional",
+          "condition": "epistemic_level == 'THEORETICAL' AND (mechanism is null AND mechanism_chain is null)",
+          "warning_message": "epistemic_level is THEORETICAL but no mechanism or mechanism_chain is provided. Theoretical claims should explain the underlying mechanism."
+        },
+        {
+          "rule_id": "EL4_EMPIRICAL_WITHOUT_STATS",
+          "severity": "warning",
+          "description": "EMPIRICAL findings should report statistics",
+          "check_type": "conditional",
+          "condition": "epistemic_level == 'EMPIRICAL' AND (p_value is null AND effect_size is null AND test_statistic is null)",
+          "warning_message": "epistemic_level is EMPIRICAL but no statistics (p_value, effect_size, or test_statistic) are reported. Empirical claims should be grounded in quantitative results."
+        }
+      ]
     }
   },
   "quality_scoring": {

@@ -1,0 +1,515 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Image Tag Record Schema",
+  "description": "JSON Schema for validating image tag records produced by image_tag_service.py",
+  "type": "object",
+  "required": [
+    "tag_record_id",
+    "image_id",
+    "tagged_at",
+    "tags",
+    "domain_scores"
+  ],
+  "properties": {
+    "tag_record_id": {
+      "type": "string",
+      "description": "Unique identifier for this tag record (UUID or hyphenated-name format)",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "image_id": {
+      "type": "string",
+      "description": "Reference to the image being tagged (path, URL, or database ID)"
+    },
+    "source_paper_id": {
+      "type": "string",
+      "description": "Optional: DOI or paper ID if image extracted from paper"
+    },
+    "image_source_description": {
+      "type": "string",
+      "description": "Brief description of image source (e.g., 'Fig 3 from Ulrich 1983', 'office environment photo')"
+    },
+    "tagged_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of tag creation"
+    },
+    "tagged_by": {
+      "type": "string",
+      "description": "Identifier of tagger (rater ID, researcher name, or AI system identifier)"
+    },
+    "tagging_method": {
+      "type": "string",
+      "enum": [
+        "human-manual",
+        "human-guided-computational",
+        "computational-automated",
+        "crowd-sourced",
+        "expert-panel"
+      ],
+      "description": "How tags were generated"
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "expert"
+      ],
+      "description": "Overall confidence in tag quality"
+    },
+    "tags": {
+      "type": "object",
+      "description": "Nested object organizing tags by domain",
+      "properties": {
+        "spatial-properties": {
+          "type": "object",
+          "properties": {
+            "spatial-volume": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "spatial-enclosure-degree": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "spatial-openness-prospect": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "spatial-mystery": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "spatial-legibility": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            }
+          }
+        },
+        "lighting": {
+          "type": "object",
+          "properties": {
+            "lighting-source-type": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "lighting-illuminance": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "lighting-color-temperature": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "lighting-uniformity": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "lighting-shadow-character": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            }
+          }
+        },
+        "materials-texture": {
+          "type": "object",
+          "properties": {
+            "materials-dominant-types": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "materials-naturalness-ratio": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "materials-surface-finish": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "materials-texture-visual-complexity": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            }
+          }
+        },
+        "vegetation": {
+          "type": "object",
+          "properties": {
+            "vegetation-presence": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "vegetation-types": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "vegetation-density": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "vegetation-healthfulness": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "vegetation-spatial-arrangement": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            }
+          }
+        },
+        "color": {
+          "type": "object",
+          "properties": {
+            "color-dominant-hues": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "color-saturation": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "color-contrast": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "color-warm-cool-ratio": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "color-naturalness": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            }
+          }
+        },
+        "complexity-information": {
+          "type": "object",
+          "properties": {
+            "complexity-visual": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "complexity-clutter-orderliness": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "complexity-information-density": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "complexity-pattern-coherence": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            }
+          }
+        },
+        "view-perceptual-space": {
+          "type": "object",
+          "properties": {
+            "view-depth-cues": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "view-layering": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "view-focal-point": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "view-vertical-horizontal-balance": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "view-visual-flow": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            }
+          }
+        },
+        "environmental-context": {
+          "type": "object",
+          "properties": {
+            "environment-built-natural-ratio": {
+              "$ref": "#/definitions/continuousAttributeTag"
+            },
+            "environment-setting-type": {
+              "$ref": "#/definitions/categoricalAttributeTag"
+            },
+            "environment-scale-human": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "environment-accessibility": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            },
+            "environment-activity-evidence": {
+              "$ref": "#/definitions/ordinalAttributeTag"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "domain_scores": {
+      "type": "object",
+      "description": "Computed summary scores for each domain",
+      "properties": {
+        "naturalness": {
+          "$ref": "#/definitions/scoringResult"
+        },
+        "visual-complexity": {
+          "$ref": "#/definitions/scoringResult"
+        },
+        "prospect-refuge-index": {
+          "$ref": "#/definitions/scoringResult"
+        },
+        "restorative-capacity": {
+          "$ref": "#/definitions/scoringResult"
+        },
+        "human-centeredness": {
+          "$ref": "#/definitions/scoringResult"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relevant_templates": {
+      "type": "array",
+      "description": "T2 templates where visual attributes have explanatory power",
+      "items": {
+        "type": "object",
+        "required": [
+          "template_id",
+          "relevance_score",
+          "predicted_sensitive_attributes"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "description": "ID of relevant T2 template (e.g., AX1, COL2)"
+          },
+          "relevance_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Likelihood (0-1) that this template's mechanism explains visual attribute effects"
+          },
+          "predicted_sensitive_attributes": {
+            "type": "array",
+            "description": "Which visual attributes this template would predict to matter",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of relevance"
+          }
+        }
+      }
+    },
+    "validation_notes": {
+      "type": "string",
+      "description": "Any validation issues detected (missing attributes, inconsistencies, etc.)"
+    },
+    "inter_rater_agreement": {
+      "type": "object",
+      "description": "If multiple raters tagged same image, store agreement metrics",
+      "properties": {
+        "number_of_raters": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "icc_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Intraclass Correlation Coefficient (ICC 3,1)"
+        },
+        "icc_interpretation": {
+          "type": "string",
+          "enum": [
+            "poor",
+            "fair",
+            "moderate",
+            "good",
+            "excellent"
+          ]
+        },
+        "disagreement_summary": {
+          "type": "string",
+          "description": "Summary of attributes with rater disagreement"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the tagging session",
+      "properties": {
+        "image_dimensions": {
+          "type": "object",
+          "properties": {
+            "width_px": {
+              "type": "integer"
+            },
+            "height_px": {
+              "type": "integer"
+            }
+          }
+        },
+        "image_file_hash": {
+          "type": "string",
+          "description": "SHA-256 hash of image file for integrity verification"
+        },
+        "tagging_duration_seconds": {
+          "type": "number",
+          "description": "How long the tagging took"
+        },
+        "image_quality_notes": {
+          "type": "string",
+          "description": "Notes on image quality (resolution, clarity, artifacts) that may affect tag reliability"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "continuousAttributeTag": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Measured or estimated numeric value"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement"
+        },
+        "uncertainty": {
+          "type": "number",
+          "description": "Optional: standard deviation or 95% CI range if quantifiable"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high"
+          ],
+          "description": "Confidence in this measurement"
+        },
+        "measurement_method": {
+          "type": "string",
+          "enum": [
+            "instrumented",
+            "visual-estimation",
+            "computational-algorithm",
+            "expert-judgment"
+          ],
+          "description": "How the value was obtained"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes or caveats"
+        }
+      }
+    },
+    "categoricalAttributeTag": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Multiple values for non-exclusive attributes"
+            }
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high"
+          ],
+          "description": "Confidence in category assignment"
+        },
+        "alternative_values": {
+          "type": "array",
+          "description": "Other plausible categories if rater uncertainty",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string",
+          "description": "Rationale or caveats"
+        }
+      }
+    },
+    "ordinalAttributeTag": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "Ordinal category value"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high"
+          ]
+        },
+        "numeric_equivalent": {
+          "type": "integer",
+          "description": "Optional: numeric score if ordinal levels are ranked (e.g., 1=low, 2=moderate, 3=high)"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "scoringResult": {
+      "type": "object",
+      "required": [
+        "score",
+        "computed_at"
+      ],
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Domain summary score (0-100)"
+        },
+        "computed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When score was computed"
+        },
+        "contributing_attributes": {
+          "type": "array",
+          "description": "Which tagged attributes were included in computation",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute_id": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              },
+              "value": {
+                "type": "number"
+              },
+              "weighted_contribution": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "missing_attributes": {
+          "type": "array",
+          "description": "Attributes needed for this score but not tagged",
+          "items": {
+            "type": "string"
+          }
+        },
+        "completeness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of expected attributes that were tagged (affects confidence)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Caveat about score reliability"
+        }
+      }
+    }
+  }
+}

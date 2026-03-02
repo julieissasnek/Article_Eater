@@ -13,7 +13,7 @@ from src.services.web_persistence import WebPersistenceService
 try:
     DEFAULT_DB = resolve_web_db(prefer="integrated")
 except Exception:
-    DEFAULT_DB = Path("data/web_persistence.db")
+    DEFAULT_DB = Path("data/web_persistence.db")  # Static fallback
 
 
 def _normalize_theory(theory: Optional[str]) -> str:

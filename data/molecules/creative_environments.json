@@ -1,95 +1,95 @@
 {
-    "molecule_id": "CREATIVE_ENVIRONMENTS",
-    "name": "Creative Environments",
-    "short_description": "How physical spaces modulate creative cognition through network dynamics, processing style shifts, incubation support, and collaborative affordances.",
-    "molecule_type": "DESIGN_PATTERN",
-    "components": [
-        {
-            "name": "Creative Network Dynamics",
-            "template_ids": [
-                "CREA1_creative_network_dynamics",
-                "CROSS_CREATIVE_NETWORK_DYNAMICS_001"
-            ],
-            "interaction_type": "PREREQUISITE",
-            "description": "Environments can tip the balance between default mode (generative) and executive control (evaluative) networks."
-        },
-        {
-            "name": "Processing Style Modulation",
-            "template_ids": [
-                "CREA2_processing_style_modulation",
-                "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "Environmental features (ceiling height, openness, color) shift processing between divergent and convergent thinking."
-        },
-        {
-            "name": "Incubation Architecture",
-            "template_ids": [
-                "CREA3_incubation_architecture"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Low-demand, mildly stimulating environments support unconscious incubation of creative problems."
-        },
-        {
-            "name": "Collaborative Creativity",
-            "template_ids": [
-                "CREA4_collaborative_creativity_architecture",
-                "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Spatial layout determines the balance between focused individual work and serendipitous social interaction needed for group creativity."
-        }
-    ],
-    "constituent_templates": [
+  "molecule_id": "CREATIVE_ENVIRONMENTS",
+  "name": "Creative Environments",
+  "short_description": "How physical spaces modulate creative cognition through network dynamics, processing style shifts, incubation support, and collaborative affordances.",
+  "molecule_type": "DESIGN_PATTERN",
+  "components": [
+    {
+      "name": "Creative Network Dynamics",
+      "template_ids": [
         "CREA1_creative_network_dynamics",
-        "CREA2_processing_style_modulation",
-        "CREA3_incubation_architecture",
-        "CREA4_collaborative_creativity_architecture",
-        "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
-        "CROSS_CREATIVE_NETWORK_DYNAMICS_001",
-        "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001"
-    ],
-    "interaction_graph": {
-        "CREA1_creative_network_dynamics": {
-            "CREA2_processing_style_modulation": "SYNERGISTIC"
-        },
-        "CREA3_incubation_architecture": {
-            "CREA4_collaborative_creativity_architecture": "ADDITIVE"
-        }
+        "CROSS_CREATIVE_NETWORK_DYNAMICS_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Environments can tip the balance between default mode (generative) and executive control (evaluative) networks."
     },
-    "framework_ids": [
-        "CREA",
-        "DT",
-        "PP"
-    ],
-    "domain": "creativity",
-    "scope_conditions": [
-        "SC1",
-        "SC9"
-    ],
-    "overall_maturity": "TENTATIVE",
-    "key_references": [
-        "meyers_levy_zhu_2007",
-        "steidle_werth_2013",
-        "allen_henn_2013"
-    ],
-    "empirical_support": "PRELIMINARY",
-    "competing_theories": [
-        "COGNITIVE_LOAD_ARCHITECTURE",
-        "ART"
-    ],
-    "design_implications": [
-        "Use high ceilings and open spaces for divergent thinking tasks (brainstorming rooms).",
-        "Use lower ceilings and more enclosed spaces for convergent thinking (detail-oriented work).",
-        "Provide 'incubation zones' (gardens, lounges) near workspaces for unconscious creative processing.",
-        "Balance private focus spaces with chance-encounter corridors to optimize serendipitous collaboration."
-    ],
-    "confidence_intervals": {
-        "cohens_d_range": [
-            0.15,
-            0.55
-        ],
-        "typical_d": 0.30,
-        "note": "Effect sizes for ceiling height and environmental features on creativity measures."
+    {
+      "name": "Processing Style Modulation",
+      "template_ids": [
+        "CREA2_processing_style_modulation",
+        "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Environmental features (ceiling height, openness, color) shift processing between divergent and convergent thinking."
+    },
+    {
+      "name": "Incubation Architecture",
+      "template_ids": [
+        "CREA3_incubation_architecture"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Low-demand, mildly stimulating environments support unconscious incubation of creative problems."
+    },
+    {
+      "name": "Collaborative Creativity",
+      "template_ids": [
+        "CREA4_collaborative_creativity_architecture",
+        "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Spatial layout determines the balance between focused individual work and serendipitous social interaction needed for group creativity."
     }
+  ],
+  "constituent_templates": [
+    "CREA1_creative_network_dynamics",
+    "CREA2_processing_style_modulation",
+    "CREA3_incubation_architecture",
+    "CREA4_collaborative_creativity_architecture",
+    "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+    "CROSS_CREATIVE_NETWORK_DYNAMICS_001",
+    "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001"
+  ],
+  "interaction_graph": {
+    "CREA1_creative_network_dynamics": {
+      "CREA2_processing_style_modulation": "SYNERGISTIC"
+    },
+    "CREA3_incubation_architecture": {
+      "CREA4_collaborative_creativity_architecture": "ADDITIVE"
+    }
+  },
+  "framework_ids": [
+    "CREA",
+    "default-mode-dynamics",
+    "predictive-processing"
+  ],
+  "domain": "creativity",
+  "scope_conditions": [
+    "SC1",
+    "SC9"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "meyers_levy_zhu_2007",
+    "steidle_werth_2013",
+    "allen_henn_2013"
+  ],
+  "empirical_support": "PRELIMINARY",
+  "competing_theories": [
+    "COGNITIVE_LOAD_ARCHITECTURE",
+    "ART"
+  ],
+  "design_implications": [
+    "Use high ceilings and open spaces for divergent thinking tasks (brainstorming rooms).",
+    "Use lower ceilings and more enclosed spaces for convergent thinking (detail-oriented work).",
+    "Provide 'incubation zones' (gardens, lounges) near workspaces for unconscious creative processing.",
+    "Balance private focus spaces with chance-encounter corridors to optimize serendipitous collaboration."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.15,
+      0.55
+    ],
+    "typical_d": 0.3,
+    "note": "Effect sizes for ceiling height and environmental features on creativity measures."
+  }
 }

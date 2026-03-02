@@ -345,8 +345,8 @@ def triage_papers(
                         "title": row.get("title"),
                         "abstract": row.get("abstract"),
                     }
-        except Exception:
-            pass  # No articles table or other error
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")  # No articles table or other error
 
     # Group by paper_id and classify each
     paper_triages = []

@@ -32,8 +32,8 @@ def _resolve_outcome_id(raw_id, paper_id=None):
         try:
             result = resolve_or_queue(str(raw_id), paper_id=paper_id)
             return result['canonical_id']
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return str(raw_id)
 
 

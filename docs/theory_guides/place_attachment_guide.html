@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Place Attachment Theory — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html">PAD Model</a>
+<a href="place_attachment_guide.html" class="current">Place Attachment</a>
+<a href="privacy_regulation_guide.html">Privacy Regulation</a>
+<a href="proxemics_guide.html">Proxemics</a>
+</nav>
+
+<h1>Place Attachment Theory</h1>
+<div class="subtitle">Scannell & Gifford (2010) — Scannell, L. & Gifford, R. (2010). Defining place attachment: A tripartite organ...</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> Irwin Altman (environmental psychologist, place and privacy)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 2010</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> 3,000</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-possibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-reduced">REDUCED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Place Attachment Theory?</h2>
+  <p>Place attachment is the emotional bond that forms between people and the places that matter to them — your childhood home, your favorite cafe, the park where you walk each morning. It's more than just liking a place; it involves identity (the place is part of who you are), dependence (the place supports your activities and goals), and social bonding (the place connects you to other people and to your community).</p>
+  <p>For designers, place attachment explains why some environments become beloved over time while others remain anonymous. The qualities that foster attachment — distinctiveness, personal meaning, social affordances, sensory richness, and the possibility of appropriation (making the space one's own) — are directly designable. Place attachment also explains resistance to change: people fight hardest to preserve places they're attached to.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>The concept has roots in humanistic geography (Yi-Fu Tuan's 'topophilia,' 1974) and environmental psychology (Proshansky's 'place identity,' 1978). Irwin Altman and Setha Low's edited volume 'Place Attachment' (1992) established it as a formal research area, integrating perspectives from psychology, anthropology, geography, and urban planning. Leila Scannell and Robert Gifford's 2010 paper 'Defining Place Attachment: A Tripartite Organizing Framework' provided the current standard definition, organizing place attachment into Person (individual and group), Process (affect, cognition, behavior), and Place (physical and social features).</p>
+
+  <h2>How It Works</h2>
+  <p>Place attachment develops through three interacting processes. The affective component involves emotional associations — feelings of comfort, security, belonging, and pride connected to specific places. The cognitive component involves place identity — incorporating the place into one's self-concept, memories, and personal narrative. The behavioral component involves place dependence — the practical ways the place supports one's activities, goals, and routines. Attachment strengthens with duration of association (following an approximately logarithmic function: PA ∝ log(1 + t/τ) with τ ≈ 2 years), but can also form rapidly through intense or transformative experiences.</p>
+
+  <h2>Applications in Design</h2>
+  <p>Place attachment theory informs community planning (preserving attachment-bearing features during renovation), housing design (supporting personalization and territorial marking), workplace design (allowing employees to appropriate their workspace), healthcare design (creating environments that feel like 'home'), and disaster recovery (understanding the psychological impact of place loss). Research shows that place attachment predicts environmental stewardship — people protect places they're bonded to.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1974:</span> Yi-Fu Tuan&#x27;s Topophilia concept (geographic humanism)</div>
+<div class="timeline-item"><span class="timeline-year">1970s-1980s:</span> Emerging research on human-place bonds and identity</div>
+<div class="timeline-item"><span class="timeline-year">1992:</span> Altman &amp; Low landmark edited volume establishing comprehensive framework</div>
+<div class="timeline-item"><span class="timeline-year">1990s-2000s:</span> Extensive empirical research on attachment across place types</div>
+<div class="timeline-item"><span class="timeline-year">2010:</span> Scannell &amp; Gifford tripartite framework synthesis and organizational model</div>
+<div class="timeline-item"><span class="timeline-year">2000s-Present:</span> Applications to heritage conservation, urban planning, relocation research</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Irwin Altman (environmental psychologist, place and privacy)</li>
+<li>Setha M. Low (anthropologist, place and culture)</li>
+<li>Yi-Fu Tuan (humanistic geography, topophilia)</li>
+<li>David Brown &amp; Penny Perkins (empirical validation framework)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>Formally: PA(p, ψ, t) = [PD(p,ψ), PI(p,ψ)] · log(1 + t/τ), where PA is attachment strength, p is the place, ψ is individual/cultural parameters, t is duration of association, τ ≈ 2 years is the half-saturation time, PD is place dependence (functional support), and PI is place identity (self-concept integration). The logarithmic temporal function captures the empirical finding that attachment grows rapidly in the first few years and then asymptotes.</p>
+
+  <div class="formula-box">
+    PA(p, ψ, t) = [PD(p,ψ), PI(p,ψ)] · log(1 + t/τ); τ ≈ 2 years
+<div class="var-def"><strong>PA(p,ψ,t)</strong> = Place attachment strength<br><strong>PD(p,ψ)</strong> = Place dependence (functional fit)<br><strong>PI(p,ψ)</strong> = Place identity (self-concept congruence)<br><strong>t</strong> = Duration of continuous exposure<br><strong>τ</strong> = Saturation time constant</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Place attachment grows logarithmically (rapid early, plateau ~5 years)<br>• Involuntary displacement causes grief proportional to PA strength</div>
+  </div>
+
+  <h2>Theoretical Constructs</h2>
+<div class="construct-card">
+  <div class="construct-name">Episodic Memory Binding</div>
+  <div class="construct-desc">Events become autobiographically tied to spatial context via hippocampal place cell reinstatement during retrieval.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: ED_HIPPOCAMPAL_ENCODING_001, SN_CONTEXT_MEMORY_002, ED_SCHEMA_ENCODING_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Allostatic Calibration</div>
+  <div class="construct-desc">Body&#x27;s allostatic calibration built over years of habituation to specific spatial, thermal, acoustic, and social patterns.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-possibly | Templates: ALLOSTATIC_MASTER_001, IC_THERMAL_COMFORT_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Displacement Grief</div>
+  <div class="construct-desc">Forced relocation produces massive interoceptive disruption — body-budget crisis (IC) + hippocampal reinstatement failure + SN disorientation.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-possibly | Templates: ALLOSTATIC_MASTER_001, NM_THREAT_HPA_001, AX_CHRONIC_ACUTE_011</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Biographical Explicit Integration</div>
+  <div class="construct-desc">IE-DPT requires temporal extension: explicit evaluations over months/years sediment into implicit embodied security. Novel meta-template requirement.</div>
+  <div class="construct-meta">Confidence: LOW-MEDIUM | Maturity: how-possibly | Templates: ED_SYSTEMS_CONSOLIDATION_001, ED_SCHEMA_ENCODING_001</div>
+</div>
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, Place Attachment has status REDUCED with four constructs: Place Dependence (maps to EC ecological affordances — functional support for goals), Place Identity (maps to DP self-concept integration — identity-relevant environmental features), Social Bonding (maps to IC interoceptive social signals — attachment-related neural circuits), and Temporal Accumulation (maps to MS memory consolidation — episodic memory strengthening place bonds over time). The irreducible residual is the interaction between these components — the emergent quality of holistic place attachment that exceeds the sum of its parts.</p>
+
+  <details><summary>Irreducible Residual</summary><div class="details-content">
+<p>Largest irreducible residual (~40%) of any formal T1.5 reduction. Cultural specification of attachment objects (~15%), social-relational attachment where community bonds are load-bearing (~15%), and narrative/cultural heritage attachment (~10%). People are often attached to COMMUNITIES IN PLACES more than to physical places themselves, and this social dimension resists neural-architectural reduction.</p>
+<p><strong>Schema gaps:</strong></p><ul>
+<li>Biographical Explicit Integration meta-template not yet implemented</li>
+<li>Olfactory and proprioceptive channels of place memory untemplate</li>
+</ul>
+</div></details>
+
+  
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Scannell, L. &amp; Gifford, R. (2010). J. Environ. Psychol., 30(1), 1-10.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Foundational Altman &amp; Low (1992) volume verified via Plenum Press archives and multiple academic citations. Scannell &amp; Gifford (2010) modern synthesis verified via Journal of Environmental Psychology. Timeline of related concepts verified (Tuan 1974 Topophilia, Yi-Fu Tuan pioneering work in humanistic geography). Google Scholar citation count for modern work confirmed at 3,000+. Multidisciplinary integration verified across environmental psychology, geography, and anthropology literature.</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

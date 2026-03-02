@@ -2,7 +2,7 @@
   "doi": "10.1016/j.jrurstud.2021.02.007",
   "article_type": "interview_study",
   "article_family": "qualitative",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.63,
   "n_findings": 3,
   "extracted_at": "2026-02-25T04:58:27.226389+00:00",
@@ -66,7 +66,18 @@
       "outcome_id": "social.cohesion",
       "outcome_domain": "social",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2504,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.3
+      }
     },
     {
       "id": 2,
@@ -146,7 +157,27 @@
         "completely different mindset, providing for a completely different type of person, and a different design",
         "the number of rural developments they're involved in and the differences in the architecture of the properties. We saw a company that built homes that fit an area."
       ],
-      "saturation": "saturated"
+      "saturation": "saturated",
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.267,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.2663,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2658,
+          "reasons": []
+        }
+      ]
     }
   ],
   "themes_or_constructs": [
@@ -375,5 +406,54 @@
       "soundscape"
     ],
     "date": "2026-03-01T06:32:46.586795+00:00"
-  }
+  },
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Place Attachment Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Place attachment motivates individuals to protect their local community and environment, particularly in response to perceived threats to place, leading to actions such as forming Community Land Trusts."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Perceived threats to local community character and sustainability, which are integral to residents' place attachment, evoke a sense of loss or disruption, thereby motivating collective action to protect the place, specifically through the formation and participation in Community Land Trusts.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Perceived detrimental impacts of rural housing affordability and supply on local community character and sustainability",
+        "to_construct": "Threat to place attachment",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Threat to place attachment",
+        "to_construct": "Motivation to protect place and community",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Motivation to protect place and community",
+        "to_construct": "Formation and participation in Community Land Trusts (CLTs)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Semi-structured interview guide",
+      "construct": "Perceptions of rural housing issues, place attachment, motivations for community action, and experiences with Community Land Trusts",
+      "description": "A set of open-ended questions used to explore participants' perspectives on local challenges, their connection to their community, and their involvement in forming or participating in CLTs.",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:41:11.464403+00:00"
 }

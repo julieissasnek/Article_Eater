@@ -181,8 +181,8 @@ def load_cache() -> dict:
     if CROSSREF_CACHE.exists():
         try:
             return json.loads(CROSSREF_CACHE.read_text())
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return {}
 
 
@@ -203,8 +203,8 @@ def get_all_dois() -> list[str]:
             doi = data.get("doi")
             if doi:
                 dois.add(doi)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Also check non-DOI extraction files for doi field
     for f in EXTRACTIONS_DIR.glob("*.json"):
@@ -217,8 +217,8 @@ def get_all_dois() -> list[str]:
             doi = data.get("doi")
             if doi and doi.startswith("10."):
                 dois.add(doi)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return sorted(dois)
 

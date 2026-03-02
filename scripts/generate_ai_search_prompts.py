@@ -60,7 +60,8 @@ def load_mechanism_terms() -> list[str]:
                     # Extract short mechanism phrases
                     words = stmt.split()[:6]
                     terms.add(" ".join(words))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
     return list(terms)[:15]
 

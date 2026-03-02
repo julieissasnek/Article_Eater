@@ -531,8 +531,8 @@ def verify_backup(backup_path: Path, original_path: Path) -> Dict[str, Any]:
                         "backup_rows": backup_count,
                         "match": False,
                     })
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
 
         orig_conn.close()
         conn.close()

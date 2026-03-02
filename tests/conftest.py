@@ -61,7 +61,9 @@ def pytest_configure(config):
 
     # Known optional dependencies — skip modules that fail only because of these
     OPTIONAL_DEPS = {'structlog', 'streamlit', 'google', 'google.genai', 
-                     'scipy', 'numpy', 'sklearn', 'flask', 'fastapi', 'uvicorn'}
+                     'scipy', 'numpy', 'sklearn', 'flask', 'fastapi', 'uvicorn',
+                     'cv2', 'PIL', 'torch', 'torchvision', 'skimage',
+                     'tensorflow', 'keras', 'midas'}
 
     for mod_name in modules:
         try:

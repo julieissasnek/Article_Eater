@@ -6,10 +6,10 @@
   "citation": "de Dear, R.J. & Brager, G.S. (1998). Developing an adaptive model of thermal comfort. ASHRAE Transactions, 104(1), 145-167.",
   "status": "REDUCED",
   "parent_t1_frameworks": {
-    "IC": 35,
-    "PP": 20,
-    "EC": 15,
-    "NM": 15,
+    "interoceptive-constructionist-affect": 35,
+    "predictive-processing": 20,
+    "embodied-cognition": 15,
+    "neuromodulatory-systems": 15,
     "IE-DPT": 15
   },
   "constructs": [
@@ -45,7 +45,7 @@
     },
     {
       "construct_name": "Psychological Adaptation",
-      "description": "Explicit frame (IE-DPT) shifts thermal expectation in NV buildings. NV selection \u2192 recalibrated expectations \u2192 wider comfort band.",
+      "description": "Explicit frame (IE-DPT) shifts thermal expectation in NV buildings. NV selection → recalibrated expectations → wider comfort band.",
       "template_ids": [
         "IC_THERMAL_COMFORT_001",
         "THERMAL_ADAPTIVE_PE_001"
@@ -66,7 +66,7 @@
   "irreducible_residual": {
     "schema_gaps": [],
     "compositional_adequacy": "INTERACTION_DEPENDENT",
-    "narrative": "Fanger's PMV model fails in naturally ventilated buildings because it ignores the explicit channel entirely. NV building selection (IE-DPT) \u2192 recalibrated thermal expectations (IC) \u2192 narrower interoceptive PE for wider temperature ranges \u2192 wider comfort band. The allesthesia mechanism (thermal pleasure from homeostatic correction) reveals that extreme temperatures can be pleasurable when explicitly expected and desired."
+    "narrative": "Fanger's PMV model fails in naturally ventilated buildings because it ignores the explicit channel entirely. NV building selection (IE-DPT) → recalibrated thermal expectations (IC) → narrower interoceptive PE for wider temperature ranges → wider comfort band. The allesthesia mechanism (thermal pleasure from homeostatic correction) reveals that extreme temperatures can be pleasurable when explicitly expected and desired."
   },
   "rejection_rationale": "",
   "child_molecules": [],
@@ -76,19 +76,19 @@
     "de Dear, R.J. & Brager, G.S. (2002). Energy and Buildings, 34(6), 549-561.",
     "Cabanac, M. (1971). Physiological role of pleasure. Science, 173(4002), 1103-1107."
   ],
-  "reduced_in": "Master paper \u00a777.3; T1.5 Operationalization (2026-02-20)",
+  "reduced_in": "Master paper §77.3; T1.5 Operationalization (2026-02-20)",
   "function_form": {
-    "function_form": "PMV*(T, \u03c8) = PMV(T) \u00b7 [1 + \u03b3\u00b7(T_prev - T_ref)] \u00b7 \u03b2_ctrl",
+    "function_form": "PMV*(T, ψ) = PMV(T) · [1 + γ·(T_prev - T_ref)] · β_ctrl",
     "variables": {
-      "PMV*(T,\u03c8)": "Adaptive predicted mean vote",
+      "PMV*(T,ψ)": "Adaptive predicted mean vote",
       "PMV(T)": "Standard Fanger PMV at temperature T",
-      "\u03b3": "Adaptation coefficient (\u22480.06 per \u00b0C historical exposure)",
+      "γ": "Adaptation coefficient (≈0.06 per °C historical exposure)",
       "T_prev": "Mean outdoor temperature, previous 30 days",
-      "T_ref": "Reference temperature (18\u00b0C)",
-      "\u03b2_ctrl": "Perceived control factor (0.8-1.2)"
+      "T_ref": "Reference temperature (18°C)",
+      "β_ctrl": "Perceived control factor (0.8-1.2)"
     },
     "predictions": [
-      "Naturally ventilated buildings accept \u00b13\u00b0C wider comfort range",
+      "Naturally ventilated buildings accept ±3°C wider comfort range",
       "Perceived control reduces thermal complaints ~30%"
     ]
   },

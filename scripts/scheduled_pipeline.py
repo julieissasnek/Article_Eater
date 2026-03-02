@@ -39,6 +39,13 @@ DATA_DIR = REPO_ROOT / "data"
 LOGS_DIR = REPO_ROOT / "logs"
 WISHLIST_PATH = DATA_DIR / "article_wishlist.json"
 
+# Centralized DB resolution
+try:
+    from src.services.db_locator import get_web_db
+    _WEB_DB = get_web_db()
+except Exception:
+    _WEB_DB = DATA_DIR / "web_persistence.db"
+
 # Ensure directories exist
 LOGS_DIR.mkdir(exist_ok=True)
 
@@ -228,8 +235,14 @@ def run_discovery():
         # Fallback: run individual components if orchestrator missing
         try:
             from src.queue.automated_searcher import AutomatedQueueSearcher
-            searcher = AutomatedQueueSearcher()
-            log.info("AutomatedQueueSearcher initialized (fallback)")
+            from src.queue.service import ResearchQueueService
+            log.info("Running AutomatedQueueSearcher (fallback)...")
+            queue = ResearchQueueService()
+            searcher = AutomatedQueueSearcher(queue_service=queue)
+            runs = searcher.run_once()
+            log.info(f"AutomatedQueueSearcher completed: {len(runs)} target(s) processed")
+            for run in runs:
+                log.info(f"  - {run.target_id}: {run.status} ({run.n_candidates} candidates)")
         except Exception as e:
             log.warning(f"AutomatedQueueSearcher not available: {e}")
 
@@ -243,6 +256,91 @@ def run_discovery():
         log.warning(f"ZoteroWatcher not available: {e}")
 
     return True
+
+
+def run_recommendation_loop():
+    """Stage 1.4: Run recommendation loop to harvest interpretation space gaps."""
+    log.info("=== STAGE 1.4: RECOMMENDATION LOOP ===")
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.services.recommendation_loop import RecommendationLoopService
+
+        # Initialize service
+        db_path = REPO_ROOT / "web_persistence_v2.db" if (REPO_ROOT / "web_persistence_v2.db").exists() else _WEB_DB
+        web_db_path = DATA_DIR / "article_eater.db"
+
+        service = RecommendationLoopService(
+            db_path=str(db_path),
+            web_db_path=str(web_db_path),
+        )
+
+        # Run single pass cycle
+        log.info("Running recommendation loop (interpretation space → search queue)...")
+        result = service.run_single_pass(top_n=5)
+
+        # Log results
+        harvest_count = result.get("steps", {}).get("harvest_gaps", {}).get("count", 0)
+        qa_count = result.get("steps", {}).get("harvest_qa", {}).get("count", 0)
+        insert_count = result.get("steps", {}).get("insert", {}).get("inserted_count", 0)
+        dispatch = result.get("steps", {}).get("dispatch", {})
+        dispatch_count = dispatch.get("dispatched_count", 0)
+
+        log.info(
+            f"Recommendation loop completed: "
+            f"harvested {harvest_count} gaps, {qa_count} QA items, "
+            f"inserted {insert_count} suggestions, "
+            f"dispatched {dispatch_count} searches"
+        )
+
+        return True
+
+    except ImportError as e:
+        log.warning(f"Recommendation loop service not available: {e}")
+        return True
+    except Exception as e:
+        log.error(f"Recommendation loop error: {e}")
+        return False
+
+
+def run_automated_search():
+    """Stage 1.5: Run automated queue searcher for VOI-prioritized targets."""
+    log.info("=== STAGE 1.5: AUTOMATED SEARCH ===")
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.queue.service import ResearchQueueService
+        from src.queue.automated_searcher import AutomatedQueueSearcher
+
+        # Initialize queue and searcher
+        queue = ResearchQueueService()
+        searcher = AutomatedQueueSearcher(queue_service=queue)
+
+        # Run one cycle of automated search
+        log.info("Running automated searcher for high-VOI targets...")
+        runs = searcher.run_once()
+
+        if runs:
+            log.info(f"Automated search completed: {len(runs)} target(s) processed")
+            for run in runs:
+                status_color = "PASS" if run.status == "found" else "STALE"
+                log.info(
+                    f"  - {run.target_id}: {status_color} ({run.n_candidates} candidate articles)"
+                )
+                if run.top_titles:
+                    for title in run.top_titles[:2]:
+                        log.info(f"      * {title[:70]}")
+        else:
+            log.info("Automated search: no open targets available")
+
+        return True
+
+    except ImportError as e:
+        log.warning(f"Automated searcher not available: {e}")
+        return True
+    except Exception as e:
+        log.error(f"Automated search error: {e}")
+        return False
 
 
 def run_triage():
@@ -496,8 +594,7 @@ def run_cva_enrichment():
         # Run pending migrations first
         db_path = None
         for candidate in [
-            DATA_DIR / "web_persistence_v2.db",
-            DATA_DIR / "production" / "web_persistence_v2.db",
+            _WEB_DB,
             DATA_DIR / "web.db",
         ]:
             if candidate.exists():
@@ -556,6 +653,8 @@ def run_cva_enrichment():
 
 STAGES = {
     "discovery": run_discovery,
+    "recommendation": run_recommendation_loop,
+    "search": run_automated_search,
     "triage": run_triage,
     "extract": run_extraction,
     "qa_gate": run_extraction_quality_gate,

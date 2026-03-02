@@ -2,7 +2,7 @@
   "doi": "10.3389/fams.2021.691582",
   "article_type": "theoretical",
   "article_family": "theoretical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.56,
   "n_findings": 5,
   "extracted_at": "2026-02-25T04:21:11.377497+00:00",
@@ -26,7 +26,7 @@
     },
     {
       "name": "Curvilinear coordinate system",
-      "definition": "A coordinate system where spatial points x are uniquely defined by coordinate values q = (q\u00b9,q\u00b2,q\u00b3) along three non-collinear congruences of parameterized basis curves."
+      "definition": "A coordinate system where spatial points x are uniquely defined by coordinate values q = (q¹,q²,q³) along three non-collinear congruences of parameterized basis curves."
     },
     {
       "name": "Basis tangent vectors (g_i(q))",
@@ -34,43 +34,43 @@
     },
     {
       "name": "Metric tensor (g_ij(q))",
-      "definition": "A tensor defined by the dot product of basis tangent vectors, g_ij(q) = g_i(q) \u00b7 g_j(q)."
+      "definition": "A tensor defined by the dot product of basis tangent vectors, g_ij(q) = g_i(q) · g_j(q)."
     },
     {
       "name": "Volume (J(q))",
-      "definition": "The volume of the cell centered at x(q), calculated as the scalar triple product of the basis tangent vectors: J(q) = (g_1(q) \u00d7 g_2(q)) \u00b7 g_3(q)."
+      "definition": "The volume of the cell centered at x(q), calculated as the scalar triple product of the basis tangent vectors: J(q) = (g_1(q) × g_2(q)) · g_3(q)."
     },
     {
       "name": "Lattice Boltzmann velocity vectors (e_a(q))",
-      "definition": "Velocity vectors on a general curvilinear mesh, defined as c_a g_i(q) \u2206x/\u2206t, where c_a are constant integer components."
+      "definition": "Velocity vectors on a general curvilinear mesh, defined as c_a g_i(q) ∆x/∆t, where c_a are constant integer components."
     },
     {
       "name": "Particle density distribution function (f_a(q,t))",
       "definition": "A function related to the number of particles N_a(q,t) in a cell by J(q)f_a(q,t) = N_a(q,t)."
     },
     {
-      "name": "Fluid density (\u03c1(q,t))",
-      "definition": "The sum of all particle density distribution functions at a given location and time, \u03c1(q,t) = \u03a3_a f_a(q,t)."
+      "name": "Fluid density (ρ(q,t))",
+      "definition": "The sum of all particle density distribution functions at a given location and time, ρ(q,t) = Σ_a f_a(q,t)."
     },
     {
       "name": "Fluid velocity (u(q,t))",
-      "definition": "The momentum moment of the particle density distribution function, \u03c1(q,t)u(q,t) = \u03a3_a e_a(q)f_a(q,t)."
+      "definition": "The momentum moment of the particle density distribution function, ρ(q,t)u(q,t) = Σ_a e_a(q)f_a(q,t)."
     },
     {
-      "name": "Collision term (\u03a9_a(q,t))",
+      "name": "Collision term (Ω_a(q,t))",
       "definition": "A term in the LBM equation that describes particle interactions and satisfies local mass and momentum conservations."
     },
     {
-      "name": "Extra term (\u03b4N_a(q,t))",
+      "name": "Extra term (δN_a(q,t))",
       "definition": "A term representing the change of particle distribution due to an effective inertial force associated with the curvature and non-uniformity of a general curvilinear mesh."
     },
     {
-      "name": "Christoffel symbol (\u0393^i_jk(q))",
+      "name": "Christoffel symbol (Γ^i_jk(q))",
       "definition": "A geometric quantity defined in differential geometry, representing the coefficients of connection in a curvilinear coordinate system, derived from the derivatives of the basis tangent vectors."
     }
   ],
-  "argument_structure": "The paper constructs a theoretical framework for LBM in general curvilinear coordinates. It begins by defining geometric quantities for the curvilinear mesh. It then formulates the LBM evolution equation, introducing a specific 'inertial force' term (\u03b4N_a) to account for the non-Euclidean nature of the coordinate system. The core argument involves a detailed Chapman-Enskog expansion to demonstrate that this formulation rigorously recovers the mass continuity and Navier-Stokes equations in curvilinear coordinates, ensuring exact conservation laws and correct hydrodynamic behavior.",
-  "mechanism_or_causal_logic": "The central mechanism is the introduction of a discrete space-time inertial force (\u03b4N_a) within the LBM equation. This force term is derived from the geometric properties of the curvilinear mesh (curvature and non-uniformity) and is precisely designed to compensate for the momentum changes experienced by particles as they advect along curved paths in the underlying Euclidean space, while their discrete velocities are constant in the non-Euclidean coordinate system. This compensation ensures that mass and momentum are conserved in the Euclidean space and that the macroscopic Navier-Stokes equations are recovered in the hydrodynamic limit. The volumetric formulation further guarantees exact conservation.",
+  "argument_structure": "The paper constructs a theoretical framework for LBM in general curvilinear coordinates. It begins by defining geometric quantities for the curvilinear mesh. It then formulates the LBM evolution equation, introducing a specific 'inertial force' term (δN_a) to account for the non-Euclidean nature of the coordinate system. The core argument involves a detailed Chapman-Enskog expansion to demonstrate that this formulation rigorously recovers the mass continuity and Navier-Stokes equations in curvilinear coordinates, ensuring exact conservation laws and correct hydrodynamic behavior.",
+  "mechanism_or_causal_logic": "The central mechanism is the introduction of a discrete space-time inertial force (δN_a) within the LBM equation. This force term is derived from the geometric properties of the curvilinear mesh (curvature and non-uniformity) and is precisely designed to compensate for the momentum changes experienced by particles as they advect along curved paths in the underlying Euclidean space, while their discrete velocities are constant in the non-Euclidean coordinate system. This compensation ensures that mass and momentum are conserved in the Euclidean space and that the macroscopic Navier-Stokes equations are recovered in the hydrodynamic limit. The volumetric formulation further guarantees exact conservation.",
   "findings": [
     {
       "id": 1,
@@ -93,7 +93,54 @@
       "source": "Abstract, Section 1, Section 2.2, Section 4",
       "quote": "It is based on a volumetric representation so that mass and momentum are exactly conserved as in the conventional lattice Boltzmann on a Cartesian lattice.",
       "testable": true,
-      "empirical_support_cited": "Unlike some previous works [16-18], here we use a volumetric representation so that conservation laws are exactly ensured [11]."
+      "empirical_support_cited": "Unlike some previous works [16-18], here we use a volumetric representation so that conservation laws are exactly ensured [11].",
+      "template_matches": [
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3318,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3266,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.3229,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3174,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.3152,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.1587,
+        "CREATIVE_COGNITION": 0.1587,
+        "EMBODIED_ECOLOGICAL": 0.1587,
+        "COGNITIVE_CONTROL": 0.1576
+      },
+      "tier2_relevance": {
+        "CULTURAL_PSYCHOLOGY": 0.1659,
+        "DMN_TPN_DYNAMICS": 0.1633,
+        "HC": 0.1615,
+        "ATTENTION_RESTORATION_THEORY": 0.1587,
+        "EMBODIED_COGNITION": 0.1587,
+        "INCUBATION_THEORY": 0.1587,
+        "COGNITIVE_CONTROL": 0.1576
+      }
     },
     {
       "id": 2,
@@ -116,7 +163,57 @@
       "source": "Section 1",
       "quote": "This exact one-to-one advection of a particle on the lattice effectively realizes a Lagrangian advection characteristics... produces an extremely low numerical dissipation (due to no smearing of locations of a single particle).",
       "testable": true,
-      "empirical_support_cited": "if such a one-to-one advection is relaxed, numerical dissipation has been seen to significantly increase even with the usage of much higher order interpolation schemes."
+      "empirical_support_cited": "if such a one-to-one advection is relaxed, numerical dissipation has been seen to significantly increase even with the usage of much higher order interpolation schemes.",
+      "template_matches": [
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.3712,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3634,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.347,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3441,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_COGNITIVE_OVERRIDE_002",
+          "display_id": "DP2",
+          "score": 0.3377,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.4214,
+        "NEUROMODULATORY_REWARD": 0.3257,
+        "PREDICTIVE_PROCESSING": 0.3237,
+        "MULTISENSORY_INTEGRATION": 0.1817,
+        "CIRCADIAN_REGULATION": 0.1721,
+        "COGNITIVE_CONTROL": 0.1689
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3257,
+        "IC": 0.1817,
+        "MS": 0.1817,
+        "PP": 0.1817,
+        "ATTENTION_RESTORATION_THEORY": 0.1735,
+        "PREDICTIVE_PROCESSING": 0.1735,
+        "CHRONOBIOLOGICAL": 0.1721,
+        "DUAL_PROCESS": 0.1689
+      }
     },
     {
       "id": 3,
@@ -139,11 +236,67 @@
       "source": "Section 1",
       "quote": "The key difference between a constant particle velocity on a Euclidean and a non-Euclidean space is that the latter is accompanied with an inertial force, due to the 1st law of Newton in Euclidean space.",
       "testable": true,
-      "empirical_support_cited": "The key difference between a constant particle velocity on a Euclidean and a non-Euclidean space is that the latter is accompanied with an inertial force, due to the 1st law of Newton in Euclidean space."
+      "empirical_support_cited": "The key difference between a constant particle velocity on a Euclidean and a non-Euclidean space is that the latter is accompanied with an inertial force, due to the 1st law of Newton in Euclidean space.",
+      "template_matches": [
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3778,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.3447,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3127,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3115,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3014,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4184,
+        "ART": 0.4055,
+        "MULTISENSORY_INTEGRATION": 0.3013,
+        "MATERIAL_HAPTIC_THERMAL": 0.1889,
+        "SPATIAL_COGNITION": 0.1724,
+        "CREATIVE_COGNITION": 0.1507,
+        "EMBODIED_ECOLOGICAL": 0.1507
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3111,
+        "INTEROCEPTION": 0.1889,
+        "MULTISENSORY_INTEGRATION": 0.1724,
+        "SPATIAL_NAVIGATION": 0.1724,
+        "DMN_TPN_DYNAMICS": 0.1563,
+        "IC": 0.1557,
+        "MS": 0.1557,
+        "PP": 0.1557,
+        "ATTENTION_RESTORATION": 0.1507,
+        "CREATIVE_COGNITION": 0.1507,
+        "EMBODIED_COGNITION": 0.1507
+      }
     },
     {
       "id": 4,
-      "antecedent": "Introduction of a discrete space-time inertial force term (\u03b4N_a(q,t)) in the LBM equation",
+      "antecedent": "Introduction of a discrete space-time inertial force term (δN_a(q,t)) in the LBM equation",
       "consequent": "Momentum conservation for the underlying Euclidean space",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -156,17 +309,59 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "The \u03b4N_a(q,t) term is constructed to exactly balance the net momentum change arising from particle advection along curved paths, thereby preserving momentum conservation in the Euclidean space at discrete space-time.",
+      "mechanism": "The δN_a(q,t) term is constructed to exactly balance the net momentum change arising from particle advection along curved paths, thereby preserving momentum conservation in the Euclidean space at discrete space-time.",
       "moderators_reported": [],
       "provenance_depth": "fulltext_multi",
       "source": "Abstract, Section 2.2",
       "quote": "A discrete space-time inertial force is derived so that the momentum conservation is exactly ensured for the underlying Euclidean space.",
       "testable": true,
-      "empirical_support_cited": "the second constraint in Eq. 26 introduces an \"inertial force\" that equals exactly to the amount needed for achieving the momentum conservation in the underlying Euclidean space at any lattice site q and time t."
+      "empirical_support_cited": "the second constraint in Eq. 26 introduces an \"inertial force\" that equals exactly to the amount needed for achieving the momentum conservation in the underlying Euclidean space at any lattice site q and time t.",
+      "template_matches": [
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3113,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_ACTIVE_INFERENCE_003",
+          "display_id": "T21",
+          "score": 0.2929,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2907,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.2791,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2774,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "CREATIVE_COGNITION": 0.1557,
+        "PREDICTIVE_PROCESSING": 0.1557
+      },
+      "tier2_relevance": {
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1557,
+        "GROUP_CREATIVITY": 0.1557,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1557,
+        "PREDICTIVE_PROCESSING": 0.1557
+      }
     },
     {
       "id": 5,
-      "antecedent": "Proper construction and application of the inertial force term (\u03b4N_a(q,t)) at the correct discrete time moment, combined with an appropriate equilibrium distribution function",
+      "antecedent": "Proper construction and application of the inertial force term (δN_a(q,t)) at the correct discrete time moment, combined with an appropriate equilibrium distribution function",
       "consequent": "Correct Navier-Stokes hydrodynamics to the viscous order and mass continuity equation",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -185,7 +380,15 @@
       "source": "Abstract, Section 1, Section 3, Section 4",
       "quote": "We theoretically show that the new scheme recovers the Navier-Stokes equation in general curvilinear coordinates in the hydrodynamic limit, along with the correct mass continuity equation.",
       "testable": true,
-      "empirical_support_cited": "Through a detailed analysis, we have shown that the current LBM formulation recovers the correct Navier-Stokes behavior in the hydrodynamic limit, as long as a discrete lattice velocity set satisfying a sufficient order of isotropy is used."
+      "empirical_support_cited": "Through a detailed analysis, we have shown that the current LBM formulation recovers the correct Navier-Stokes behavior in the hydrodynamic limit, as long as a discrete lattice velocity set satisfying a sufficient order of isotropy is used.",
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2674,
+          "reasons": []
+        }
+      ]
     }
   ],
   "testable_hypotheses_or_predictions": [
@@ -202,7 +405,7 @@
     "The paper critiques previously existing approaches for LBM on arbitrary meshes that rely on interpolation approximations among multiple neighboring cells, stating that this 'destroys the preciseness of a Lagrangian advection characteristics thus resulting in a significantly increased numerical dissipation.'",
     "It highlights critical differences from previous works (e.g., Mendosa et al. [16-18]), specifically regarding the adoption of a volumetric formulation for exact conservation, the self-consistent construction of the inertial force without relying on outside analytical forms, and the proper timing of force application to recover correct viscous hydrodynamics without extra correction terms."
   ],
-  "model_structure": "The model is an extended Lattice Boltzmann Equation (Eq. 12) given by N_a(q + c_a, t + 1) = N_a(q, t) + \u03a9_a(q, t) + \u03b4N_a(q, t). It operates on a 'Cartesian' lattice {q} which is a deformation of the original curvilinear mesh {x} in Euclidean space. Key geometric quantities like basis tangent vectors g_i(q), metric tensor g_ij(q), cell volume J(q), and Christoffel symbols \u0393^i_jk(q) are pre-computed based on the curvilinear mesh. The particle distribution function N_a(q,t) is related to f_a(q,t) via J(q). The collision term \u03a9_a satisfies local mass and momentum conservation. The additional term \u03b4N_a represents a discrete space-time inertial force, constructed to ensure exact mass and momentum conservation in the underlying Euclidean space. The equilibrium distribution function f_a^eq is defined to satisfy specific moment isotropy and normalization conditions (Eq. 32) for recovering correct hydrodynamics. The model is designed to recover the Navier-Stokes equation in general curvilinear coordinates through Chapman-Enskog expansion.",
+  "model_structure": "The model is an extended Lattice Boltzmann Equation (Eq. 12) given by N_a(q + c_a, t + 1) = N_a(q, t) + Ω_a(q, t) + δN_a(q, t). It operates on a 'Cartesian' lattice {q} which is a deformation of the original curvilinear mesh {x} in Euclidean space. Key geometric quantities like basis tangent vectors g_i(q), metric tensor g_ij(q), cell volume J(q), and Christoffel symbols Γ^i_jk(q) are pre-computed based on the curvilinear mesh. The particle distribution function N_a(q,t) is related to f_a(q,t) via J(q). The collision term Ω_a satisfies local mass and momentum conservation. The additional term δN_a represents a discrete space-time inertial force, constructed to ensure exact mass and momentum conservation in the underlying Euclidean space. The equilibrium distribution function f_a^eq is defined to satisfy specific moment isotropy and normalization conditions (Eq. 32) for recovering correct hydrodynamics. The model is designed to recover the Navier-Stokes equation in general curvilinear coordinates through Chapman-Enskog expansion.",
   "domains": [],
   "overall_theory_links": [],
   "limitations": [
@@ -318,5 +521,20 @@
     "hasya"
   ],
   "linked_date": "2026-03-01T04:43:12.936413+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "local_pattern_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Lattice Boltzmann Method",
+      "commitment_type": "extends",
+      "specific_claim": "The volumetric formulation of LBM in general curvilinear coordinates ensures mass and momentum conservation."
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:52:33.592605+00:00"
 }

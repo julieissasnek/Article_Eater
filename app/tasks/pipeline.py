@@ -101,6 +101,18 @@ try:
 except ImportError:
     BRIDGE_WARRANTS_AVAILABLE = False
 
+# Extraction Field Validation (H1 QA Infrastructure)
+try:
+    from src.qa.extraction_field_validator import (
+        ExtractionFieldValidator,
+        ArticleReport,
+    )
+    EXTRACTION_FIELD_VALIDATOR_AVAILABLE = True
+except ImportError:
+    EXTRACTION_FIELD_VALIDATOR_AVAILABLE = False
+    _pipeline_logger = _pipeline_logger if '_pipeline_logger' in locals() else logging.getLogger("ae.pipeline")
+    _pipeline_logger.debug("Extraction field validator not available")
+
 # Sprint B: Credibility Testing integration (TODO 1)
 try:
     from src.services.credibility_testing import (
@@ -1745,6 +1757,119 @@ def _run_from_contract_bundle_impl(
         _pipeline_logger.debug("Table extraction skipped: module not available", extra={"paper_id": paper_id})
     elif not pdf_path.exists():
         _pipeline_logger.debug("Table extraction skipped: no PDF file", extra={"paper_id": paper_id})
+
+    # Stage 1.7: Extraction Field Quality Validation (H1 QA Infrastructure)
+    # Validates all extraction fields per EXTRACTION_FIELD_QUALITY_FRAMEWORK_2026-02-28.md
+    field_validation_report = None
+    field_validation_blocked = False
+    n_critical = 0
+    if EXTRACTION_FIELD_VALIDATOR_AVAILABLE and findings:
+        try:
+            validator = ExtractionFieldValidator()
+
+            # Create a temporary extraction document in the expected format
+            extraction_doc = {
+                "article_type": "empirical_research",
+                "findings": findings if isinstance(findings, list) else [],
+            }
+
+            # Write to temporary file and validate
+            import tempfile
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp:
+                json.dump(extraction_doc, tmp)
+                tmp_path = tmp.name
+
+            try:
+                # Validate via file-based API
+                field_validation_report = validator.validate_article(tmp_path)
+
+                # Log validation results
+                quality_score = field_validation_report.quality_score if hasattr(field_validation_report, 'quality_score') else 0.0
+                n_critical = len(field_validation_report.critical_errors) if hasattr(field_validation_report, 'critical_errors') else 0
+                n_warnings = len([v for v in field_validation_report.all_violations
+                                if hasattr(v, 'severity') and v.severity.value == 'warning']) if hasattr(field_validation_report, 'all_violations') else 0
+
+                _pipeline_logger.info(
+                    f"Field validation complete: {quality_score:.2%} quality, {n_critical} critical, {n_warnings} warnings",
+                    extra={
+                        "paper_id": paper_id,
+                        "quality_score": quality_score,
+                        "n_critical": n_critical,
+                        "n_warnings": n_warnings,
+                    }
+                )
+
+                # Decision: Block on critical errors if threshold exceeded
+                FIELD_VALIDATION_CRITICAL_THRESHOLD = float(os.environ.get("AE_FIELD_VALIDATION_CRITICAL_THRESHOLD", "10"))
+                FIELD_VALIDATION_QUALITY_THRESHOLD = float(os.environ.get("AE_FIELD_VALIDATION_QUALITY_THRESHOLD", "0.65"))
+
+                if n_critical >= FIELD_VALIDATION_CRITICAL_THRESHOLD:
+                    field_validation_blocked = True
+                    _pipeline_logger.error(
+                        f"Field validation BLOCK: {n_critical} >= {FIELD_VALIDATION_CRITICAL_THRESHOLD} critical errors",
+                        extra={"paper_id": paper_id, "n_critical": n_critical}
+                    )
+                elif quality_score < FIELD_VALIDATION_QUALITY_THRESHOLD:
+                    _pipeline_logger.warning(
+                        f"Field validation WARNING: quality {quality_score:.2%} < {FIELD_VALIDATION_QUALITY_THRESHOLD:.0%}",
+                        extra={"paper_id": paper_id, "quality_score": quality_score}
+                    )
+
+                # Export validation report
+                validation_report_path = out_dir / "extraction_field_validation.json"
+                if hasattr(field_validation_report, 'to_dict'):
+                    with open(validation_report_path, 'w') as f:
+                        json.dump(field_validation_report.to_dict(), f, indent=2, default=str)
+
+                audits.append(
+                    _audit_event(
+                        run_id,
+                        paper_id,
+                        "field_validation",
+                        "done",
+                        {
+                            "quality_score": quality_score,
+                            "n_critical": n_critical,
+                            "n_warnings": n_warnings,
+                            "blocked": field_validation_blocked,
+                            "path": "extraction_field_validation.json",
+                        },
+                    )
+                )
+            finally:
+                # Clean up temporary file
+                try:
+                    import os as _os
+                    _os.unlink(tmp_path)
+                except Exception:
+                    pass
+        except Exception as val_err:
+            _pipeline_logger.warning(
+                f"Field validation failed: {val_err}",
+                extra={"paper_id": paper_id},
+                exc_info=True
+            )
+            if PIPELINE_LOGGING_AVAILABLE:
+                error_collector.record(
+                    ValidationError(f"Field validation failed: {val_err}", paper_id=paper_id, recoverable=True),
+                    ErrorSeverity.WARNING,
+                    "field_validation",
+                )
+            audits.append(_audit_event(run_id, paper_id, "field_validation", "fail", {"reason": str(val_err)}))
+    elif not findings:
+        _pipeline_logger.debug("Field validation skipped: no findings", extra={"paper_id": paper_id})
+    elif not EXTRACTION_FIELD_VALIDATOR_AVAILABLE:
+        _pipeline_logger.debug("Field validation skipped: validator not available", extra={"paper_id": paper_id})
+
+    # Block integration if field validation failed critically
+    if field_validation_blocked:
+        _pipeline_logger.error(f"[{paper_id}] Field validation BLOCK - halting integration")
+        return make_error_result(
+            "field_validation",
+            "FieldValidationBlock",
+            f"Field validation failed: {n_critical} critical errors",
+            recoverable=True
+        )
 
     # Lifecycle tracking: Mark extraction complete, start synthesis
     if lifecycle_service:

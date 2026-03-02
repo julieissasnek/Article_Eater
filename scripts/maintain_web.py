@@ -140,8 +140,8 @@ def load_templates() -> List[Dict[str, Any]]:
         try:
             with open(fp) as f:
                 templates.append(json.load(f))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return templates
 
 
@@ -425,8 +425,8 @@ def phase_contradictions(conn: sqlite3.Connection, dry_run: bool) -> Dict[str, A
                     edge["provenance"]
                 ))
                 added += 1
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         conn.commit()
         print(f"  ✅ Inserted {added} contradiction edges")
     elif dry_run:
@@ -535,8 +535,8 @@ def _load_panel_docs_cache() -> Dict[str, str]:
         if full_path.exists():
             try:
                 docs[pd] = full_path.read_text(encoding="utf-8", errors="replace")
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return docs
 
 
@@ -585,8 +585,8 @@ def phase_narrative_extraction(dry_run: bool) -> Dict[str, Any]:
             with open(fp) as f:
                 t = json.load(f)
             template_paths[t.get("template_id", "")] = fp
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     extracted = 0
     missing = 0

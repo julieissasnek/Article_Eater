@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from pathlib import Path
 
 def check_db(db_path):
     print(f"--- Investigating {db_path} ---")
@@ -28,6 +29,8 @@ def check_db(db_path):
         print(f"Error: {e}")
     print()
 
-check_db("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db")
-check_db("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db")
-check_db("/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/ae.db")
+repo_root = Path(__file__).resolve().parent.parent
+check_db(str(repo_root / "data" / "web_persistence.db"))
+check_db(str(repo_root / "data" / "web_persistence_v2.db"))
+check_db(str(repo_root / "ae.db"))
+

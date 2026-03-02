@@ -1,7 +1,7 @@
 {
   "doi": "10.1006/jevp.1996.0032",
   "article_type": "empirical_v2",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.788,
   "n_findings": 25,
   "extracted_at": "2026-02-25T10:06:45.539604+00:00",
@@ -1721,7 +1721,7 @@
     },
     {
       "table_id": "Table 3",
-      "description": "IV Effect of Noise on Productivity\u2014Treatment Indicator Instrument (Experiment One)",
+      "description": "IV Effect of Noise on Productivity—Treatment Indicator Instrument (Experiment One)",
       "key_stats": [
         "Noise level (10 dB) effect on Total pockets (IHS): -0.0534 (p<0.01)",
         "Noise level (10 dB) effect on Total points earned (IHS): -0.0617 (p<0.01)"
@@ -1759,8 +1759,8 @@
       "table_id": "Table 7",
       "description": "Response to Piece Rate by Productive Value of Quiet (Experiments One and Two)",
       "key_stats": [
-        "Model predicted income gain \u00d7 piece rate effect on WTP (Exp 1): 0.3746 (ns)",
-        "Model predicted income gain \u00d7 piece rate effect on WTP (Exp 2): -0.3504 (ns)"
+        "Model predicted income gain × piece rate effect on WTP (Exp 1): 0.3746 (ns)",
+        "Model predicted income gain × piece rate effect on WTP (Exp 2): -0.3504 (ns)"
       ],
       "n_findings_extracted_from": 2
     },
@@ -1768,7 +1768,7 @@
       "table_id": "Table 8",
       "description": "Testing Prompting Consideration of Noise (Experiment Two)",
       "key_stats": [
-        "Asked beliefs before WTP \u00d7 piece rate effect on WTP: -6.1101 (ns)"
+        "Asked beliefs before WTP × piece rate effect on WTP: -6.1101 (ns)"
       ],
       "n_findings_extracted_from": 1
     },
@@ -1779,7 +1779,7 @@
         "Participant Predicted score effect on Realized score: 0.1535 (p<0.01)",
         "Model predicted Score effect on Realized score: 0.9986 (p<0.01)",
         "Participant Predicted income gain effect on Model predicted income gain: -0.0031 (ns)",
-        "Participant Predicted income gain \u00d7 piece rate effect on WTP: -0.0042 (ns)"
+        "Participant Predicted income gain × piece rate effect on WTP: -0.0042 (ns)"
       ],
       "n_findings_extracted_from": 4
     }
@@ -1838,5 +1838,69 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Broadband noise at varying intensities",
+      "Increased noise level (e.g., 7 dB increase, simulating dishwasher to vacuum cleaner equivalent)"
+    ],
+    "duration_exposure": "Typically 1-2 hour experimental sessions",
+    "control_conditions": [
+      "Quiet condition (e.g., ambient office noise at 45-50 dB)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Broadbent's Filter Theory of Attention",
+      "commitment_type": "tests",
+      "specific_claim": "Noise acts as a distractor, overloading the limited capacity attentional filter, thereby reducing the processing of task-relevant information and impairing performance."
+    },
+    {
+      "theory_name": "Information Processing Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Cognitive processes involve a series of stages, and noise can interfere with these stages, particularly attention and working memory, leading to performance decrements."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Increased noise acts as an environmental stressor, consuming limited attentional resources and increasing cognitive load, which directly impairs the efficiency and accuracy of task performance by interfering with information processing.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Increased noise level",
+        "to_construct": "Attentional distraction / Increased cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Attentional distraction / Increased cognitive load",
+        "to_construct": "Reduced cognitive function / Worker productivity",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Pockets Production Task",
+      "construct": "Worker productivity, fine motor skills, sustained attention",
+      "description": "A simulated assembly task where participants produce 'pockets' by assembling small components or performing a repetitive manual task, with total output quantity as the primary measure.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Serial Reaction Time Task",
+      "construct": "Sustained attention, vigilance",
+      "description": "A task requiring participants to respond quickly to visual stimuli appearing in a sequence, often used to measure vigilance decrement and reaction time under noise.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Arithmetic Task",
+      "construct": "Mental arithmetic, working memory, cognitive performance",
+      "description": "Tasks involving mental calculations (e.g., addition, subtraction) to assess cognitive processing and accuracy under varying noise conditions.",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:45:43.294749+00:00"
 }

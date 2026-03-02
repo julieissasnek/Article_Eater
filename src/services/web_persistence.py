@@ -1292,8 +1292,8 @@ class WebPersistenceService:
                 if 'provenance_v2' in v2_data:
                     from src.models.provenance import Provenance
                     belief.provenance_v2 = Provenance.from_dict(v2_data['provenance_v2'])
-            except Exception:
-                pass  # Graceful degradation if v2 parsing fails
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")  # Graceful degradation if v2 parsing fails
 
         return belief
 

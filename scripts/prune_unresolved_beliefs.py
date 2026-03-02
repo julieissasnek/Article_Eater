@@ -12,9 +12,10 @@ import argparse
 import sqlite3
 import sys
 from pathlib import Path
+from src.services.db_locator import get_web_db
 
 PROJECT_ROOT = Path(__file__).parent.parent
-DB_PATH = PROJECT_ROOT / "data" / "web_persistence.db"
+DB_PATH = get_web_db()  # Centralized: was hardcoded
 
 def prune_web_persistence(db_path: Path, dry_run: bool = False):
     print(f"\nTarget Database: {db_path}")

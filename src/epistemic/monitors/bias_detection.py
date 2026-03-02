@@ -280,8 +280,8 @@ def _extract_evidence_metadata(web: Any, node_id: str) -> List[Dict]:
     if hasattr(web, 'get_supporting_evidence'):
         try:
             return web.get_supporting_evidence(node_id)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Try to extract from constraints
     if hasattr(web, 'constraints'):
@@ -299,8 +299,8 @@ def _extract_evidence_metadata(web: Any, node_id: str) -> List[Dict]:
                                 'method': getattr(source, 'method', 'unknown'),
                                 'author_affiliations': getattr(source, 'author_affiliations', []),
                             })
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return evidence
 

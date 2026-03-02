@@ -103,6 +103,13 @@ class EdgeType(str, Enum):
     ARGUMENTATIVE_CHALLENGE = "argumentative_challenge"  # Finding challenges via argument
 
     # =========================================================================
+    # FINDING-MECHANISM EDGES — CMR Integration (Sprint 8)
+    # Link empirical findings to mechanisms explaining them
+    # =========================================================================
+    FINDING_MECHANISM_EXPLAINS = "finding_mechanism_explains"          # Mechanism explains finding
+    FINDING_MECHANISM_CONTRADICTS = "finding_mechanism_contradicts"    # Mechanism contradicts finding
+
+    # =========================================================================
     # REVIEW/SYNTHESIS EDGES — Meta-analysis relations
     # =========================================================================
     INCLUDES_IN_SYNTHESIS = "includes_in_synthesis"
@@ -361,6 +368,18 @@ EDGE_COMPATIBILITY: Dict[EdgeType, EdgeCompatibility] = {
         valid_target_types=["theoretical_proposition", "derived_hypothesis"],
         category=EdgeTypeCategory.ARGUMENTATIVE
     ),
+
+    # Finding-Mechanism Edges (Sprint 8 — CMR integration)
+    EdgeType.FINDING_MECHANISM_EXPLAINS: EdgeCompatibility(
+        valid_source_types=["template_chain", "mechanistic_template"],
+        valid_target_types=["empirical_finding", "synthesis_conclusion"],
+        category=EdgeTypeCategory.EPISTEMIC
+    ),
+    EdgeType.FINDING_MECHANISM_CONTRADICTS: EdgeCompatibility(
+        valid_source_types=["template_chain", "mechanistic_template"],
+        valid_target_types=["empirical_finding", "synthesis_conclusion"],
+        category=EdgeTypeCategory.EPISTEMIC
+    ),
 }
 
 
@@ -479,57 +498,147 @@ def get_review_synthesis_edges() -> List[EdgeType]:
 
 
 # =============================================================================
-# SCHEMA_PENDING_CMR_SPEC: FINDING–MECHANISM LINKS
+# CMR SPECIFICATION INTEGRATION (Sprint 8)
+# FINDING–MECHANISM LINKS
 # =============================================================================
 #
-# This section is a PLACEHOLDER for Sprint 7: Theory Architecture.
+# Per CMR_SPECIFICATION_2026-03-02.md, FindingMechanismLink connects
+# empirical findings (Tier 3) to theoretical mechanisms (Tier 1 frameworks
+# and Tier 2 templates) that explain them.
 #
-# WHAT THIS WILL CONTAIN:
-# Links connecting empirical findings to theoretical mechanisms. When a study
-# finds that "nature exposure reduces stress" (Tier 3 finding), these links
-# specify WHICH Tier 1 mechanism explains HOW:
-#   - Predictive Processing: nature statistics match evolved priors → uncertainty reduction
-#   - Neuromodulatory: parasympathetic activation via vagal pathway
-#   - DMN/TPN: nature allows DMN activation due to low attentional demand
+# This enables:
+# 1. Tracing which mechanisms CMR used to generate predictions
+# 2. Computing confidence based on multi-framework convergence
+# 3. Auditable derivation chains from finding → prediction
+# 4. Discrimination between alternative explanations
 #
-# WHY THIS IS PENDING:
-# The schema for these links will be determined by the Compositional Mechanistic
-# Reasoning (CMR) specification, which is being developed separately. CMR will define:
-#   - Template library: canonical compositional reasoning patterns
-#   - Prediction grammar: how to compose mechanism claims into testable predictions
-#   - Link structure: what fields each finding–mechanism link requires
+# See: docs/CMR_SPECIFICATION_2026-03-02.md for full specification
 #
-# DEPENDENCIES:
-# Sprint 7 requires BOTH:
-#   1. Sprint 6 complete (node types, edge types) — provides web infrastructure
-#   2. CMR specification ready — provides template library and grammar
-#
-# DO NOT IMPLEMENT until both dependencies are met.
-#
-# PLANNED STRUCTURE (TENTATIVE — subject to CMR spec):
-#
-# @dataclass
-# class FindingMechanismLink:
-#     """Link between an empirical finding and a theoretical mechanism."""
-#     link_id: str
-#     finding_id: str  # Tier 3 finding being explained
-#     mechanism_id: str  # Tier 1 mechanism doing the explaining
-#     framework_id: str  # Which Tier 1 framework this mechanism belongs to
-#     composition_template: str  # CMR template ID — PENDING CMR SPEC
-#     prediction_grammar: dict  # How this generates predictions — PENDING CMR SPEC
-#     confidence: float  # How confident is this mechanistic explanation
-#     evidence_type: str  # What kind of evidence supports this link
-#
-# class MechanismLinkType(str, Enum):
-#     """Types of finding–mechanism relationships."""
-#     DIRECTLY_EXPLAINS = "directly_explains"  # Mechanism M explains finding F
-#     PARTIALLY_EXPLAINS = "partially_explains"  # M explains aspect of F
-#     MODULATES = "modulates"  # M modulates magnitude/direction of F
-#     MEDIATES = "mediates"  # M is on causal pathway for F
-#     CONTRADICTS = "contradicts"  # M predicts opposite of F
-#
-# FINDING_MECHANISM_LINKS: Dict[str, FindingMechanismLink] = {}
-#
-# =============================================================================
-# END SCHEMA_PENDING_CMR_SPEC
-# =============================================================================
+
+from enum import Enum
+from dataclasses import dataclass, field, asdict
+from typing import List, Optional, Dict, Any
+
+
+class MechanismExplanationType(str, Enum):
+    """Types of finding-mechanism relationships (from CMR spec §2.2)."""
+    DIRECTLY_EXPLAINS = "directly_explains"        # Mechanism M fully explains finding F
+    PARTIALLY_EXPLAINS = "partially_explains"      # M explains aspect of F
+    MODULATES = "modulates"                        # M modulates magnitude/direction of F
+    MEDIATES = "mediates"                          # M is on causal pathway for F
+    CONTRADICTS = "contradicts"                    # M predicts opposite of F
+    CONDITIONAL_EXPLAINS = "conditional_explains"  # M explains F under specific conditions
+
+
+class MechanismStepEvidence(str, Enum):
+    """Type of evidence supporting a mechanism step (from CMR spec §2.2.1)."""
+    DIRECT_TEST = "direct_test"           # Finding directly tests this step
+    INDIRECT_SUPPORT = "indirect_support" # Finding supports via proxy measure
+    LOGICAL_INFERENCE = "logical_inference" # Step logically required but unmeasured
+    ANALOGY = "analogy"                   # Step inferred by analogy
+
+
+class MechanismStepMaturity(str, Enum):
+    """Maturity level of mechanism step (from Darden, CMR spec §2.2.1)."""
+    HOW_ACTUALLY = "how-actually"          # Empirically confirmed
+    HOW_PLAUSIBLY = "how-plausibly"        # Supported conjecture
+    HOW_POSSIBLY = "how-possibly"          # Speculative
+
+
+@dataclass
+class MechanismStep:
+    """Single step in a mechanism chain (from CMR spec §2.2)."""
+    step_number: int                                # Position in chain (0-indexed)
+    from_entity: str                                # Entity performing activity
+    activity: str                                   # What the entity does
+    to_entity: str                                  # Entity that changes
+    change_produced: str                            # How entity changes
+    level: str                                      # Level: ecological/computational/circuit/cellular/molecular
+    maturity: str                                   # how-actually/how-plausibly/how-possibly
+    evidence_type: str                              # direct_test/indirect_support/logical_inference/analogy
+    evidence_citation: Optional[str] = None        # Paper or study
+    confidence: float = 0.5                         # 0-1: confidence in this step
+    bridging_quality: str = "MEDIUM"               # Cross-level bridge quality: LOW/MEDIUM/HIGH
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for serialization."""
+        return asdict(self)
+
+
+@dataclass
+class FindingMechanismLink:
+    """
+    Connects empirical finding (Tier 3) to mechanisms (Tier 1→2) that explain it.
+
+    This is the primary data structure enabling CMR evidence propagation.
+    See: CMR_SPECIFICATION_2026-03-02.md §2.2
+    """
+
+    # === IDENTITY ===
+    link_id: str                                    # Unique ID (finding_id + template_id)
+    finding_id: str                                 # Tier 3 finding being explained
+    finding_description: str                        # Human-readable finding text
+
+    # === MECHANISTIC EXPLANATION ===
+    template_id: str                                # Tier 2 template doing explaining
+    template_name: str                              # Human name (e.g., "predictive-processing-visual-stats")
+    framework_id: str                               # Tier 1 framework
+    framework_name: str                             # Human name (e.g., "predictive-processing")
+
+    # === EXPLANATION TYPE AND EVIDENCE CHAIN ===
+    explanation_type: str                           # MechanismExplanationType value
+    mechanism_steps: List[MechanismStep]            # Causal chain from stimulus → outcome
+
+    # === CONFIDENCE ===
+    overall_confidence: float                       # 0-1: how confident is this explanation
+    confidence_justification: str                   # Why we have this confidence level
+
+    # === EVIDENCE AT INTERFACE ===
+    finding_measure_type: str                       # What was measured in finding
+    mechanism_prediction: str                       # What mechanism predicts
+    measure_alignment: str                          # perfect/adequate/loose/misaligned
+
+    # === SCOPE AND CONDITIONS ===
+    scope_conditions: Dict[str, Any] = field(default_factory=dict)  # When applies
+
+    # === PREDICTION GENERATION ===
+    derived_predictions: List[str] = field(default_factory=list)    # Predictions from this
+    prediction_grammar_operations: List[str] = field(default_factory=list)  # w-question operations
+
+    # === CONVERGENCE INFORMATION ===
+    converges_with_frameworks: List[str] = field(default_factory=list)  # Other frameworks supporting
+    convergence_independence: str = "medium"        # low/medium/high
+
+    # === CROSS-CHECKING ===
+    alternatives_considered: List[str] = field(default_factory=list)  # Other mechanisms evaluated
+    why_best_explanation: str = ""                  # Why this is best fit
+
+    # === METADATA ===
+    source_paper: Optional[str] = None              # Which paper provided finding
+    created_at: str = ""                            # ISO timestamp
+    maturity_status: str = "proposal"               # proposal/validated/refuted
+    notes: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for serialization."""
+        result = asdict(self)
+        # Convert MechanismStep dataclass objects to dicts
+        result["mechanism_steps"] = [
+            step.to_dict() if isinstance(step, MechanismStep) else step
+            for step in self.mechanism_steps
+        ]
+        return result
+
+    def __hash__(self) -> int:
+        """Allow use in sets and dicts."""
+        return hash(self.link_id)
+
+    def __eq__(self, other: Any) -> bool:
+        """Equality based on link_id."""
+        if not isinstance(other, FindingMechanismLink):
+            return NotImplemented
+        return self.link_id == other.link_id
+
+
+# === REGISTRY ===
+FINDING_MECHANISM_LINKS: Dict[str, FindingMechanismLink] = {}

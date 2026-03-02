@@ -77,7 +77,6 @@ class TheoryRegistry:
         # Try multiple paths to find the schema
         possible_paths = [
             Path(__file__).parent.parent.parent / "db" / "sql" / "017_theories.sql",
-            Path("/home/claude/article_eater/db/sql/017_theories.sql"),
         ]
         
         schema_path = None

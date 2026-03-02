@@ -13,7 +13,9 @@ required = [
 errors = []
 for p in pages:
     try: s = p.read_text(encoding='utf-8', errors='ignore')
-    except: continue
+    except Exception:
+
+        continue
     for pat,msg in required:
         if not pat.search(s): errors.append(f"{p.relative_to(root)}: {msg}")
 if errors:

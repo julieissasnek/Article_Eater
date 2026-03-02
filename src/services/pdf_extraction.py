@@ -597,9 +597,12 @@ class PDFExtractor:
 
 
 if __name__ == "__main__":
+    import os
     from pathlib import Path
-    
-    pdf_dir = Path("/home/claude/article_eater/data/pdfs")
+
+    # Use env var or default to data/pdfs relative to project root
+    project_root = Path(__file__).parent.parent.parent
+    pdf_dir = Path(os.environ.get("ARTICLE_EATER_PDF_DIR", project_root / "data" / "pdfs"))
     
     extractor = PDFExtractor()
     

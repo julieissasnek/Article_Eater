@@ -2,7 +2,7 @@
   "doi": "10.1016/j.buildenv.2018.01.006",
   "article_type": "unknown",
   "article_family": "unknown",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.846,
   "n_findings": 11,
   "extracted_at": "2026-02-25T04:44:01.475283+00:00",
@@ -193,7 +193,7 @@
       "moderators_reported": [],
       "provenance_depth": "fulltext_multi",
       "source": "Abstract, Section 3.2, Table 1",
-      "quote": "In addition, their skin conductance decreased 0.18 \u00b5S greater than when they experienced the non-biophilic setting.",
+      "quote": "In addition, their skin conductance decreased 0.18 µS greater than when they experienced the non-biophilic setting.",
       "evidence_type": "statistical",
       "outcome_id": "physio.skin_conductance",
       "outcome_domain": "physio",
@@ -1404,5 +1404,103 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "potted plants",
+      "green wall",
+      "bamboo floor",
+      "external views of green space",
+      "external views of a river"
+    ],
+    "duration_exposure": "20 minutes",
+    "control_conditions": [
+      "standard office environment (white walls, no plants, no specific views)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments restore directed attention better than urban environments"
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments can reduce physiological stress"
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Biophilic elements in the indoor environment lead to perceived restorativeness and reduced stress, which in turn improve physiological regulation and cognitive performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Biophilic indoor environment (visual contact with nature)",
+        "to_construct": "Perceived restorativeness and reduced psychological stress",
+        "mechanism_type": "perceptual|affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived restorativeness and reduced psychological stress",
+        "to_construct": "Improved physiological regulation (e.g., lower SBP, better HRV)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived restorativeness and reduced psychological stress",
+        "to_construct": "Enhanced cognitive performance (e.g., attention, working memory)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Blood Pressure Monitor",
+      "construct": "Systolic Blood Pressure (SBP), Diastolic Blood Pressure (DBP), Heart Rate (HR)",
+      "description": "Measures blood pressure and heart rate",
+      "type": "physiological"
+    },
+    {
+      "name": "ECG/HRV device",
+      "construct": "Heart Rate Variability (HRV)",
+      "description": "Measures heart rate variability for autonomic nervous system activity",
+      "type": "physiological"
+    },
+    {
+      "name": "Stroop Test",
+      "construct": "Selective attention, cognitive flexibility, processing speed",
+      "description": "A neuropsychological test assessing executive functions",
+      "type": "behavioral"
+    },
+    {
+      "name": "Digit Span Test",
+      "construct": "Working memory capacity",
+      "description": "A test of verbal working memory, forward and backward",
+      "type": "behavioral"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "Perceived restorativeness of an environment",
+      "description": "Self-report questionnaire assessing feelings of being away, fascination, extent, and compatibility",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective Stress Scale (SSS)",
+      "construct": "Perceived stress level",
+      "description": "Self-report scale to assess subjective stress",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:17:34.290846+00:00"
 }

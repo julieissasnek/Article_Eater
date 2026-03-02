@@ -462,7 +462,8 @@ def build_citation_graph(extractions_dir: Path) -> Dict[str, Any]:
                 data = json.load(f)
             doi = data.get("doi", fpath.stem.replace("_", "/", 1))
             corpus_dois.add(doi)
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
 
     # Second pass: build graph
@@ -491,7 +492,8 @@ def build_citation_graph(extractions_dir: Path) -> Dict[str, Any]:
                 if citer_doi in corpus_dois:
                     edges.append({"source": citer_doi, "target": doi, "type": "cites"})
 
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
 
     # Deduplicate edges

@@ -188,13 +188,13 @@ class TestCREA2Sensitivity:
         moderate = compute_crea2_processing_style(
             noise_db=50.0,
             ceiling_rh=0.6,
-            ambient_lux=400,
+            ambient_lux=400.0,
             occupant_age=35,
         )
         loud = compute_crea2_processing_style(
             noise_db=70.0,
             ceiling_rh=0.6,
-            ambient_lux=400,
+            ambient_lux=400.0,
             occupant_age=35,
         )
 

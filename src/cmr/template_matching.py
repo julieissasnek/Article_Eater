@@ -165,7 +165,8 @@ def build_template_index(template_records: Iterable[TemplateRecord]) -> dict[str
             
         try:
             data = json.loads(json_path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
             
         inputs = set()

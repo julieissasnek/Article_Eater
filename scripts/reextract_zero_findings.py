@@ -90,8 +90,8 @@ def find_zero_finding_articles():
             data = json.load(open(ef))
             if not data.get("findings"):
                 zeros.append(ef)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return zeros
 
 

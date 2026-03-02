@@ -63,6 +63,50 @@ class WebMutationOperations:
     def __init__(self, contracts: MutationContracts):
         self._contracts = contracts
 
+    def _compute_source_quality_modifier(self, paper_id: str) -> float:
+        """Compute source quality modifier for credence updates (Task 7).
+
+        Returns a value in [0.3, 1.0] that scales evidence_quality.
+        Per EPISTEMIC_PRINCIPLES.md P6 (Longino+Cartwright):
+          SQ = 0.35×rigor + 0.30×independence + 0.20×replication + 0.15×(1-commitment)
+
+        Falls back to 1.0 (neutral) if source quality data is unavailable.
+        Floor of 0.3 ensures even low-quality evidence gets some voice.
+        """
+        try:
+            from src.epistemic.source_quality import compute_source_quality
+            # Try to load source quality from extraction data
+            import json
+            from pathlib import Path
+            extractions_dir = Path(__file__).resolve().parents[3] / "data" / "extractions"
+            # Map paper_id to extraction file
+            for ext_file in extractions_dir.glob("*.json"):
+                try:
+                    data = json.loads(ext_file.read_text(encoding="utf-8"))
+                    file_paper_id = data.get("paper_id") or data.get("doi") or ""
+                    if file_paper_id and file_paper_id == paper_id:
+                        # Extract source quality inputs from the extraction
+                        rigor = data.get("methodological_rigor", 0.5)
+                        independence = data.get("independence", 0.5)
+                        replication = data.get("replication_status", 0.0)
+                        commitment = data.get("theoretical_commitment", 0.5)
+                        sq = (
+                            0.35 * float(rigor)
+                            + 0.30 * float(independence)
+                            + 0.20 * float(replication)
+                            + 0.15 * (1.0 - float(commitment))
+                        )
+                        return max(0.3, min(1.0, sq))
+                except Exception as e:
+                    logger.debug(f"Skipped in {ext_file}: {e}")
+                    continue
+        except ImportError:
+            pass
+        except Exception as e:
+            logger.debug(f"Swallowed in _compute_source_quality_modifier: {e}")
+        # Fallback: neutral modifier (no SQ data available)
+        return 1.0
+
     def _remove_belief_indexes(self, web: Any, belief: Any) -> None:
         belief_id = getattr(belief, "belief_id", "")
         if not belief_id:
@@ -394,6 +438,11 @@ class WebMutationOperations:
         evidence_paper_id = evidence_input.paper_id
         evidence_credence = evidence_input.credence
 
+        # Task 7 (AG 2026-03-01): Compute source quality modifier for credence updates.
+        # Per EPISTEMIC_PRINCIPLES.md P6 (Longino+Cartwright), evidence quality should
+        # modulate how much a study shifts credence. SQ composite blends with raw credence.
+        sq_modifier = self._compute_source_quality_modifier(evidence_paper_id)
+
         if evidence_id in web.beliefs:
             evidence_belief = web.beliefs[evidence_id]
             if evidence_paper_id not in evidence_belief.paper_ids:
@@ -419,7 +468,9 @@ class WebMutationOperations:
                 continue
             target = web.beliefs[target_id]
             old_credence = target.credence.value
-            target.credence = target.credence.update(True, strength, evidence_belief.credence.value)
+            # Task 7: Blend evidence credence with source quality
+            evidence_quality = evidence_belief.credence.value * sq_modifier
+            target.credence = target.credence.update(True, strength, evidence_quality)
             updates["belief_updates"].append(
                 self._contracts.make_belief_update_record(
                     belief_id=target_id,
@@ -449,7 +500,9 @@ class WebMutationOperations:
                 continue
             target = web.beliefs[target_id]
             old_credence = target.credence.value
-            target.credence = target.credence.update(False, strength, evidence_belief.credence.value)
+            # Task 7: Blend evidence credence with source quality
+            evidence_quality = evidence_belief.credence.value * sq_modifier
+            target.credence = target.credence.update(False, strength, evidence_quality)
             updates["belief_updates"].append(
                 self._contracts.make_belief_update_record(
                     belief_id=target_id,

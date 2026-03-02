@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proxemics — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html">PAD Model</a>
+<a href="place_attachment_guide.html">Place Attachment</a>
+<a href="privacy_regulation_guide.html">Privacy Regulation</a>
+<a href="proxemics_guide.html" class="current">Proxemics</a>
+</nav>
+
+<h1>Proxemics</h1>
+<div class="subtitle">Hall (1966) — Hall, E.T. (1966). The hidden dimension. Anchor Books.</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> Edward T. Hall (cultural anthropologist, 1914-2009)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 1966</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> 8,000</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-possibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-rejected">REJECTED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Proxemics?</h2>
+  <p>Proxemics is the study of how people use physical space in social interactions. Anthropologist Edward T. Hall observed that people maintain characteristic distances from others depending on the relationship: intimate distance (touching to 18 inches, reserved for close relationships), personal distance (1.5 to 4 feet, for friends), social distance (4 to 12 feet, for acquaintances and colleagues), and public distance (12+ feet, for strangers and public speaking).</p>
+  <p>For architecture, proxemics provides concrete spatial dimensions for design. The size of a conference table determines whether participants are in social or personal distance zones. The width of a corridor determines whether passing strangers must enter personal space. The layout of a waiting room determines whether strangers can maintain comfortable public distance. These aren't arbitrary numbers — they reflect deep biological and cultural patterns in how humans manage interpersonal space.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>Hall coined the term 'proxemics' in 1963 and published his notation system for recording proxemic behavior in the American Anthropologist. His 1966 book 'The Hidden Dimension' provided the comprehensive theoretical treatment, drawing on his extensive cross-cultural fieldwork. Hall emphasized that proxemic behavior is largely culturally conditioned: Latin Americans interact at closer distances than Northern Europeans, Japanese maintain larger social distances than Americans, and contact cultures (Mediterranean, Middle Eastern, Latin American) have systematically different norms than non-contact cultures (Northern European, East Asian). The biological underpinning parallels animal territoriality research — proximity triggers autonomic nervous system responses.</p>
+
+  <h2>How It Works</h2>
+  <p>Proxemic behavior is regulated by a combination of biological and cultural mechanisms. Biologically, proximity to others triggers physiological responses: close approach by strangers increases cortisol and skin conductance (stress), while close approach by intimates reduces cortisol (social buffering). Culturally, these biological responses are calibrated by lifelong learning — the zones are not universal constants but culturally tuned parameters. Hall's four zones correspond roughly to different sensory modalities: intimate distance involves touch and smell, personal distance involves detailed vision, social distance involves normal conversational voice, and public distance involves loud voice and reduced facial detail.</p>
+
+  <h2>Applications in Design</h2>
+  <p>Proxemics directly informs furniture layout, corridor width, workspace design, waiting room configuration, and public space planning. For example: restaurant booths (personal distance) encourage intimate dining, while communal tables (social-public boundary) encourage casual interaction. Library carrels (below personal distance) need visual barriers to compensate for spatial proximity. Open-plan offices violate personal distance norms for non-intimate relationships, which partly explains their unpopularity.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1963:</span> Hall coins &#x27;proxemics&#x27; term and develops notation system</div>
+<div class="timeline-item"><span class="timeline-year">1966:</span> The Hidden Dimension (comprehensive theoretical work)</div>
+<div class="timeline-item"><span class="timeline-year">1970s-1980s:</span> Cross-cultural validation research (Hall&#x27;s students)</div>
+<div class="timeline-item"><span class="timeline-year">1980s-Present:</span> Applications in communication, architecture, organizational psychology, HCI</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Edward T. Hall (cultural anthropologist, 1914-2009)</li>
+<li>Animal territoriality researchers</li>
+<li>Anthropological fieldwork tradition</li>
+<li>Konrad Lorenz (animal behavior)</li>
+<li>Charles Darwin (evolutionary basis of behavior)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>Formally: Zone(d, ψ) = {intimate: d<0.45m, personal: 0.45-1.2m, social: 1.2-3.6m, public: >3.6m} · κ(culture), where d is interpersonal distance, ψ is the individual/cultural parameter vector, and κ is a cultural scaling factor. Predictions: Japanese social distance is approximately 15% larger than US norms (non-contact culture offset), while Latin American intimate zone is approximately 30% smaller than Northern European norms.</p>
+
+  <div class="formula-box">
+    Zone(d, ψ) = {intimate: d&lt;0.45m, personal: 0.45-1.2m, social: 1.2-3.6m, public: &gt;3.6m} · κ(culture)
+<div class="var-def"><strong>Zone(d,ψ)</strong> = Proxemic zone classification<br><strong>d</strong> = Interpersonal distance in meters<br><strong>κ(culture)</strong> = Cultural scaling factor (contact vs non-contact culture)</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Japanese social distance ~15% larger than US (non-contact culture offset)<br>• Latin American intimate zone ~30% smaller than Northern European</div>
+  </div>
+
+  
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, Proxemics has status REJECTED — it collapses fully into Privacy Regulation (Altman) + SN (Spatial Navigation) framework without independent residual. Hall's four distance zones are fully explained by IC interoceptive boundary management (the biological stress response to spatial proximity) plus SN peripersonal space coding (the neural representation of near-body space). The cultural variation captured by κ(culture) is handled by the ψ cultural calibration parameters in the Privacy Regulation framework. Maturity level is 'how-possibly' — the descriptive zones are well documented, but the mechanistic account is underdetermined.</p>
+
+  
+
+  <details><summary>Rejection Rationale</summary>
+<div class="details-content"><p>Collapses into Privacy Regulation (Altman) + Spatial Navigation (SN framework). Hall&#x27;s four distance zones (intimate, personal, social, public) are fully explained by IC interoceptive boundary management + SN peripersonal space coding. No independent T1.5 residual remains after this decomposition.</p></div></details>
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Hall, E.T. (1966). The Hidden Dimension. Garden City, NY: Doubleday.</li>
+<li>Hall, E.T. (1966). The hidden dimension. Anchor Books.</li>
+<li>Hall, E.T. (1963). A system for the notation of proxemic behavior. American Anthropologist, 65(5), 1003-1026.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Seminal work (1966) verified via Doubleday publisher records and library archives. Hall (1963) foundational notation paper verified via American Anthropologist journal. Term &#x27;proxemics&#x27; coinage in 1963 confirmed. Four-zone distance framework (intimate, personal, social, public) verified across multiple academic sources. Cross-cultural variations (Latin American vs. Northern European, Japanese vs. US) documented in communication and anthropology literature. Google Scholar citation count confirmed at 8,000+.</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

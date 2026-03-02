@@ -49,10 +49,20 @@ DATA_DIR = PROJECT_ROOT / "data"
 CACHE_DIR = DATA_DIR / "cache"
 TEMP_PATTERNS = ["*.tmp", "*.bak", "*.swp", "*~"]
 CACHE_MAX_AGE_DAYS = 7
-DB_FILES = [
-    DATA_DIR / "web_persistence.db",
-    DATA_DIR / "web_persistence_v2.db",
-]
+
+# Use centralized DB resolver
+try:
+    from src.services.db_locator import get_web_db
+    _canonical = get_web_db()
+    DB_FILES = [_canonical]
+    # Also check v1 if different
+    _v1 = DATA_DIR / "web_persistence.db"
+    if _v1 != _canonical and _v1.exists():
+        DB_FILES.append(_v1)
+except Exception:
+    DB_FILES = [
+        DATA_DIR / "web_persistence.db",
+    ]
 
 
 def task_migrations(check_only: bool = False) -> dict:

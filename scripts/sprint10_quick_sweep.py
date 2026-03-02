@@ -4,6 +4,7 @@ import os
 import sqlite3
 import subprocess
 from sqlalchemy import create_engine, text
+from src.services.db_locator import get_web_db
 
 def check_template_db():
     print("\n=== 3.1a Template DB Validation ===")
@@ -35,11 +36,11 @@ def check_template_db():
 
 def check_staging_links():
     print("\n=== 3.1b Staging Links Validation ===")
-    db_path = "data/web_persistence.db"
+    db_path = str(get_web_db())  # Centralized: was hardcoded
     
     # Check constraints table
     if not os.path.exists(db_path) and os.path.exists("web_persistence.db"):
-        db_path = "web_persistence.db"
+        db_path = str(get_web_db())
         
     try:
         conn = sqlite3.connect(db_path)

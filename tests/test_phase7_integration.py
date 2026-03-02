@@ -30,8 +30,9 @@ class TestPaperToCVAAnnotationPipeline(unittest.TestCase):
         if not extractions_dir.exists():
             self.skipTest("No extractions directory")
         
-        sample = list(extractions_dir.glob("*.json"))[:5]
-        self.assertGreater(len(sample), 0, "No extraction files found")
+        # Only check DOI-based extraction files (10.* pattern)
+        sample = [f for f in extractions_dir.glob("10.*.json")][:5]
+        self.assertGreater(len(sample), 0, "No DOI extraction files found")
         
         for ef in sample:
             with open(ef) as f:

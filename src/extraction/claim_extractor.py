@@ -548,7 +548,8 @@ def _infer_sample_size_from_stats(stats: dict[str, Any]) -> int | None:
                 # One-way ANOVA approximation: n ~= df1 + df2 + 1.
                 df1 = int(float(stats.get("df1", 1)))
                 return max(2, df1 + df2 + 1)
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
     return None
 

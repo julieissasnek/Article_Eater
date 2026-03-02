@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Article Eater Theory Hierarchy",
+    "description": "Defines the multi-tier explanatory structure that organises all theoretical knowledge in the system.",
+    "version": "1.0.0",
+    "last_updated": "2026-03-01",
+    "tiers": {
+        "T1": {
+            "name": "Framework Theories",
+            "count": 10,
+            "definition": "Neurally grounded, cross-domain frameworks. Every architectural effect must operate through one or more of these. Each satisfies three criteria: (1) mechanistic specificity — connects to neural implementation, (2) cross-domain generativity — predictions across multiple domains, (3) convergent multi-method support — fMRI, EEG, lesion, computational, behavioral evidence.",
+            "taxonomy_file": "tier1_frameworks.json",
+            "examples": [
+                "PP (Predictive Processing)",
+                "NM (Neuromodulatory Systems)",
+                "IC (Interoceptive/Constructionist Affect)"
+            ]
+        },
+        "T1.5": {
+            "name": "Domain Theories",
+            "count": 4,
+            "definition": "Phenomenological organizing schemas that describe effects within a domain. They are EXPLAINED BY Tier 1 frameworks, not explanatory themselves. Each has a published author, established constructs, and formal reduction mappings showing how T1 mechanisms account for the domain theory's constructs. Useful labels, but not fundamental mechanisms.",
+            "taxonomy_file": "tier1_5_domain_theories.json",
+            "relationship_to_T1": "Reduced to T1 frameworks via explicit coverage fractions and irreducible residuals.",
+            "examples": [
+                "ART (Attention Restoration Theory; Kaplan 1995)",
+                "SRT (Stress Recovery Theory; Ulrich 1983)"
+            ]
+        },
+        "Molecule": {
+            "name": "Molecules",
+            "count": 18,
+            "definition": "Compositional units that package multiple T2 templates into coherent effect bundles. A molecule defines HOW a set of mechanism chains (templates) combine — additively, synergistically, or as prerequisites — to produce an integrated architectural effect. All T1.5 domain theories are expressed as molecules, but molecules also include system-defined composites that are not established named theories (e.g. M_BEAUTY_COMPRESSION, GOLDILOCKS_PRINCIPLE). Molecules are the primary unit for translating theory into design guidance.",
+            "taxonomy_file": "molecule_taxonomy.json",
+            "data_directory": "data/molecules/",
+            "relationship_to_T1_5": "T1.5 theories are a strict subset of molecules — those with established literature authorship and formal construct definitions. Other molecules are system-generated or emerging composites.",
+            "examples": [
+                "ART (= T1.5)",
+                "M_BEAUTY_COMPRESSION (system-defined)",
+                "GOLDILOCKS_PRINCIPLE (cross-modal composite)"
+            ]
+        },
+        "T2": {
+            "name": "CMR Templates (Mechanism Chains)",
+            "count_approx": 150,
+            "definition": "Specific mechanism pathways encoding: Architectural Feature → Neural/Cognitive Process → Psychological Outcome. Each template specifies from_entity, activity, to_entity, change_produced, parameter_range, evidence_base, and interactions. Templates are the atomic unit of mechanistic explanation. They are composed by molecules and grounded in T1 frameworks.",
+            "taxonomy_file": "tier2_mechanisms.json",
+            "data_directory": "data/templates/",
+            "examples": [
+                "T1 (Visual Scene Statistics: 1/f spectra → V1 efficient coding → reduced PE)",
+                "T5 (Threat → HPA → Cortisol)"
+            ]
+        },
+        "T3": {
+            "name": "Empirical Beliefs",
+            "definition": "Lower-level, well-supported empirical beliefs in the Web of Belief. Each T3 belief is a specific, evidence-backed claim about an environment-outcome relationship (e.g. 'ceiling height > 3m increases creative output'). Multiple articles can support the same T3 belief, giving it higher entrenchment. T3 beliefs are the ground-level evidence that templates predict and domain theories organise.",
+            "taxonomy_file": "tier3_empirical_beliefs.json",
+            "storage": "Web of Belief (web_persistence.db)",
+            "relationship_to_T2": "T3 beliefs provide empirical support for T2 template predictions. A template predicts a class of effects; T3 beliefs are the individual instantiations observed in specific studies.",
+            "examples": [
+                "'Nature views reduce cortisol by 15-20% within 10 min' (supported by 12 articles)",
+                "'Curved contours preferred over angular at 65-75% rate' (supported by 8 articles)"
+            ]
+        }
+    },
+    "causal_direction": "T1 explains → T2 specifies → Molecules compose → T1.5 organises → T3 provides evidence",
+    "key_principle": "Higher tiers are MORE explanatory but LESS specific. Lower tiers are MORE specific but LESS explanatory. The system achieves both depth and breadth by linking all levels."
+}

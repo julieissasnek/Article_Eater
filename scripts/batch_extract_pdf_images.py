@@ -256,8 +256,8 @@ def link_figures_to_findings(doi: str, images: list) -> list:
                                     "figure_ref": f"Fig {ref_num}",
                                     "finding_text": text[:150],
                                 })
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
             break
     
     return links

@@ -271,6 +271,16 @@ class TestArticleValidation:
             "effect_size_type": "Cohen's d",
             "sample_size": 120,
             "measure_type": "self_report",
+            "test_statistic": "t(118) = 3.42",
+            "causal_tier": "EXPERIMENTAL",
+            "scope_conditions": {
+                "setting": "open-plan office",
+                "population": "office workers aged 25-55",
+                "climate": "temperate",
+            },
+            "justification_status": "GROUNDED",
+            "defeater_search_status": "none_reported",
+            "epistemic_level": "EMPIRICAL",
         }
         report = validator.validate_finding(finding)
         assert report.score >= 0.9  # May get minor warnings but should be high

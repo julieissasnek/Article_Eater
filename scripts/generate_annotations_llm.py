@@ -74,8 +74,8 @@ def parse_json_response(text):
         r = json.loads(text)
         if isinstance(r, list):
             return r
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(f"Non-critical: {e}")
     
     # Strategy 2: Code block extraction (multiple patterns)
     # Handle: ```json\n...\n```, ```\n...\n```, ```json  \n...\n```
@@ -87,8 +87,8 @@ def parse_json_response(text):
                 r = json.loads(candidate)
                 if isinstance(r, list):
                     return r
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
     
     # Strategy 3: Bracket extraction (find outermost [...])
     start = text.find('[')
@@ -98,8 +98,8 @@ def parse_json_response(text):
             r = json.loads(text[start:end+1])
             if isinstance(r, list):
                 return r
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     # Strategy 4: Try after removing common Gemini artifacts
     for prefix in ['Here is the JSON', 'Here are the', 'Below is']:
@@ -110,8 +110,8 @@ def parse_json_response(text):
                     r = json.loads(cleaned[:cleaned.rfind(']')+1])
                     if isinstance(r, list):
                         return r
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Non-critical: {e}")
     
     return None
 
@@ -152,8 +152,8 @@ def load_progress():
     if PROGRESS_FILE.exists():
         try:
             return json.load(open(PROGRESS_FILE))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     return {"a10": [], "a11": [], "a15": [], "a16": [], "a17": [], "a18": [],
             "status": "starting"}
 
@@ -206,8 +206,8 @@ def generate_a17(progress):
             constructs = [c.get("construct_name", str(c)) if isinstance(c, dict) else str(c) 
                          for c in t.get("constructs", [])[:3]]
             theories.append(f"- {name} ({orig}): {', '.join(constructs)}")
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     prompt = f"""You are a science communicator writing for architects.
 For each theory, create a compelling narrative hook.
@@ -235,16 +235,16 @@ def generate_a18(progress):
     for tf in sorted(THEORIES_DIR.glob("*.json"))[:15]:
         try:
             theories.append(json.load(open(tf)).get("name", tf.stem))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     sample = []
     for ef in sorted(EXTRACTIONS_DIR.glob("10.*.json"))[:30]:
         try:
             for f in json.load(open(ef)).get("findings", [])[:1]:
                 sample.append(f"{f.get('antecedent','')[:50]} → {f.get('consequent','')[:50]}")
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     prompt = f"""You are a research strategist for an architectural cognition lab.
 Theories: {', '.join(theories)}
@@ -312,8 +312,8 @@ def generate_a15(progress):
             ff = t.get("function_form", {})
             equation = ff.get("function_form", "") if isinstance(ff, dict) else ""
             theory_data.append(f"- {name}: constructs={', '.join(constructs)}; equation={equation[:80]}")
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     prompt = f"""You are an interdisciplinary research analyst. These theories are all about how built environments affect humans:
 
@@ -348,8 +348,8 @@ def generate_a16(progress):
                 "originator": t.get("originator", "unknown"),
                 "year": t.get("year", "unknown"),
             })
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     theory_text = "\n".join(
         f"- {t['name']} by {t['originator']} ({t['year']})"
@@ -391,8 +391,8 @@ def generate_a10(progress):
                         "consequent": f.get("consequent", "")[:80],
                         "paper_id": ef.stem,
                     })
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     if not mechanisms:
         logger.warning("No mechanisms for A10"); return

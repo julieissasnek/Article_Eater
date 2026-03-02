@@ -1,0 +1,168 @@
+{
+  "framework_id": "circadian-biology",
+  "full_name": "Circadian Biology & Chronobiological Regulation",
+  "core_claim": "Circadian rhythms (≈24-hour oscillations) are entrained by environmental light; the suprachiasmatic nucleus (SCN) synchronizes neuroendocrine, metabolic, and behavioral rhythms. Architectural light exposure affects melatonin, cortisol, alertness, and sleep architecture.",
+  "key_theorists": [
+    "Charles A. Czeisler",
+    "Till Roenneberg",
+    "Samer Hattar",
+    "Russell Foster",
+    "David Brainard"
+  ],
+  "seminal_works": [
+    {
+      "author": "Czeisler, C. A., & Gooley, J. J.",
+      "year": 2007,
+      "title": "Sleep and circadian rhythms in humans",
+      "doi": "10.1016/S0140-6736(07)60527-7",
+      "full_citation": "Czeisler, C. A., & Gooley, J. J. (2007). Sleep and circadian rhythms in humans. Cold Spring Harbor Symposia on Quantitative Biology, 72, 579-597."
+    },
+    {
+      "author": "Brainard, G. C., Hanifin, J. P., Greeson, J. M., et al.",
+      "year": 2001,
+      "title": "Action spectrum for melatonin regulation in humans: evidence for melanopsin photoreception",
+      "doi": "10.1523/JNEUROSCI.21-16-06405.2001",
+      "full_citation": "Brainard, G. C., Hanifin, J. P., Greeson, J. M., et al. (2001). Action spectrum for melatonin regulation in humans: evidence for melanopsin photoreception. Journal of Neuroscience, 21(16), 6405-6412."
+    },
+    {
+      "author": "Foster, R. G., & Kreitzman, L.",
+      "year": 2004,
+      "title": "Rhythms of Life: The Biological Clocks That Control the Daily Lives of Every Living Thing",
+      "doi": null,
+      "full_citation": "Foster, R. G., & Kreitzman, L. (2004). Rhythms of Life: The Biological Clocks That Control the Daily Lives of Every Living Thing. Yale University Press."
+    },
+    {
+      "author": "Roenneberg, T., & Merrow, M.",
+      "year": 2016,
+      "title": "The Circadian Clock and Human Health",
+      "doi": "10.1016/j.csbj.2016.01.006",
+      "full_citation": "Roenneberg, T., & Merrow, M. (2016). The Circadian Clock and Human Health. Current Biology, 26(10), R432-R443."
+    }
+  ],
+  "core_constructs": [
+    "circadian_oscillation",
+    "entrainment",
+    "phase_angle",
+    "SCN_master_clock",
+    "ipRGC_photoreception",
+    "melatonin_secretion",
+    "cortisol_rhythm",
+    "sleep_homeostasis",
+    "chronotype",
+    "circadian_misalignment"
+  ],
+  "epistemic_commitments": {
+    "preferred_warrant_types": [
+      "CHRONOBIOLOGICAL",
+      "NEUROENDOCRINE",
+      "SLEEP_POLYSOMNOGRAPHY"
+    ],
+    "evidence_weighting": {
+      "melatonin_salivary_assay": 1.0,
+      "cortisol_salivary": 0.95,
+      "polysomnography_sleep": 0.95,
+      "ipRGC_light_response": 0.92,
+      "circadian_phase_markers": 0.9,
+      "actigraphy": 0.85,
+      "sleep_quality_self_report": 0.65,
+      "correlational": 0.4
+    },
+    "falsification_criteria": [
+      "Morning bright light exposure does not phase-advance circadian rhythm or increase alertness compared to control",
+      "Evening light exposure (blue-spectrum) does not suppress melatonin or delay sleep onset",
+      "Chronic circadian misalignment (due to shift work, poor light exposure) does not degrade sleep quality or health outcomes"
+    ],
+    "scope_boundaries": [
+      "Applies to nearly all organisms (cyanobacteria to humans); mechanisms vary",
+      "Does NOT fully explain acute sleep needs (sleep homeostasis is separate, though linked)",
+      "Individual differences (chronotype, age, light sensitivity) are substantial; generalizations are population-level"
+    ]
+  },
+  "environmental_predictions": [
+    {
+      "prediction_id": "cb-pred-001",
+      "statement": "Workplaces/homes with morning bright light exposure (≥1,000 lux, especially 460-490nm wavelength) show earlier circadian phase, improved sleep timing, higher daytime alertness, and lower evening melatonin compared to dim/evening-only light",
+      "mechanism": "ipRGC (intrinsically photosensitive retinal ganglion cells) detect 460-490nm light and signal to SCN. Morning light advances circadian phase; evening avoidance prevents phase delay.",
+      "testable": true,
+      "relevant_templates": [
+        "CB_LIGHT_EXPOSURE_001",
+        "CB_PHASE_ADVANCE_002",
+        "SLEEP_QUALITY_001"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "neuromodulatory-systems",
+          "prediction": "Alertness benefits are due to acute norepinephrine/dopamine response, not circadian phase shift"
+        }
+      ]
+    },
+    {
+      "prediction_id": "cb-pred-002",
+      "statement": "Environments with evening blue light (screens, bright artificial light) suppress melatonin and delay sleep onset by 30-60 minutes; effect is dose-dependent (brightness) and timing-dependent (closer to sleep, larger effect)",
+      "mechanism": "Blue light activates ipRGCs; evening ipRGC signaling inhibits melatonin synthesis in pineal gland, delaying sleep onset and shortening total sleep.",
+      "testable": true,
+      "relevant_templates": [
+        "CB_BLUE_LIGHT_SUPPRESSION_003",
+        "CB_SLEEP_ONSET_DELAY_004"
+      ],
+      "competing_predictions": null
+    },
+    {
+      "prediction_id": "cb-pred-003",
+      "statement": "Chronic circadian misalignment (e.g., night shift work or low daytime light exposure) produces sustained melatonin disruption, shortened/fragmented sleep, and long-term health risk (metabolic, cancer, cardiovascular)",
+      "mechanism": "Misalignment prevents proper SCN entrainment. Melatonin rhythm decouples from sleep-wake cycle. Chronic desynchrony degrades multiple physiological systems (glucose homeostasis, immune function, tumor suppression).",
+      "testable": true,
+      "relevant_templates": [
+        "CB_CIRCADIAN_MISALIGNMENT_005",
+        "CB_HEALTH_RISK_006"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "interoceptive-construction",
+          "prediction": "Sleep disruption is felt as body budget dysregulation, not driven by circadian mechanisms"
+        }
+      ]
+    }
+  ],
+  "characteristic_questions": [
+    "What is the light exposure profile of this environment (timing, intensity, spectrum)?",
+    "Is there morning bright light (≥1,000 lux, optimal 460-490nm) to entrain circadian rhythm?",
+    "What evening light exposure occurs (blue-enriched screens, artificial lighting)?",
+    "Does the environment support consistent sleep-wake timing, or demand shift-work schedules?",
+    "Are there windows for natural light access, or is the space artificially lit?"
+  ],
+  "panel_persona": {
+    "voice": "I evaluate environments through the lens of circadian entrainment: Does the light exposure pattern align with human biology, or does it create misalignment? What are the consequences for sleep, alertness, and health?",
+    "typical_critiques": [
+      "Light intensity, spectrum (wavelength), timing, and duration all matter; specify all four in predictions.",
+      "Melatonin suppression does NOT always produce insomnia; effects are real but variable.",
+      "Circadian misalignment is a major health risk, but causality is sometimes hard to disentangle from sleep loss itself.",
+      "Individual chronotypes vary; morning light benefits evening-chronotype people but may disrupt morning-chronotype people."
+    ],
+    "blind_spots": [
+      "Tendency to treat light exposure as the only circadian input; food timing, social cues, and activity also entrain",
+      "May underestimate role of sleep homeostasis (separately from circadian timing)",
+      "Limited account of how aging changes light sensitivity and circadian timing",
+      "Does not explain why some people adjust to shift work better than others (neuroticism, personality)"
+    ],
+    "complementary_frameworks": [
+      "neuromodulatory-systems (SCN entrainment drives dopamine/norepinephrine/serotonin rhythms)",
+      "interoceptive-construction (sleep quality is constructed from body state and arousal prediction)",
+      "default-mode-dynamics (circadian timing modulates DMN-TPN switching; sleep deprivation impairs TPN)",
+      "neuromodulatory-systems (melatonin is neuromodulator; cortisol rhythm reflects HPA circadian output)"
+    ]
+  },
+  "molecule_affinities": [
+    "sleep-architecture-support",
+    "alertness-promotion",
+    "circadian-alignment",
+    "health-risk-reduction"
+  ],
+  "meta": {
+    "profile_version": "1.0.0",
+    "created": "2026-03-02",
+    "last_reviewed": null,
+    "confidence": 0.94,
+    "notes": "Circadian biology is robustly confirmed across species. Light effects on melatonin and sleep are well-established. Growing evidence for health consequences of misalignment (shift-work disease)."
+  }
+}

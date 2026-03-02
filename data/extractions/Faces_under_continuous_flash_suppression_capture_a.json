@@ -2,7 +2,7 @@
   "doi": "Faces/under/continuous/flash/suppression/capture/a",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.817,
   "n_findings": 20,
   "extracted_at": "2026-02-25T08:59:49.653002+00:00",
@@ -20,7 +20,7 @@
   "stimuli_or_exposures": [
     {
       "type": "photograph",
-      "description": "Greyscale, 200x200 jpeg images (72 pixels/inch), mean luminance matched (M=135, SD=45), with a cyan filter. Presented using red-cyan anaglyph glasses. Continuous flash suppression (CFS) mask was a 20x20 matrix of 20px\u00b2 cells, re-randomized every 166.67ms. Images presented at 6 Hz, with oddball stimuli presented every fifth image (1.2 Hz). Stimuli included: neutral faces (MR2 Face Database), fearful faces (Averaged Karolinska Directed Emotional Faces), common objects (Brady et al., 2008), curvilinear objects (e.g., dartboard), rectilinear objects (e.g., chessboard), and scrambled objects.",
+      "description": "Greyscale, 200x200 jpeg images (72 pixels/inch), mean luminance matched (M=135, SD=45), with a cyan filter. Presented using red-cyan anaglyph glasses. Continuous flash suppression (CFS) mask was a 20x20 matrix of 20px² cells, re-randomized every 166.67ms. Images presented at 6 Hz, with oddball stimuli presented every fifth image (1.2 Hz). Stimuli included: neutral faces (MR2 Face Database), fearful faces (Averaged Karolinska Directed Emotional Faces), common objects (Brady et al., 2008), curvilinear objects (e.g., dartboard), rectilinear objects (e.g., chessboard), and scrambled objects.",
       "n_stimuli": null,
       "source": "Figure 1, Methods 2.2, 2.3.1, 2.3.2, 2.3.3"
     }
@@ -297,7 +297,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 15",
-      "quote": "fearFace_noCFS (M = .022 \u03bcV, SD = .10, BF = .614)"
+      "quote": "fearFace_noCFS (M = .022 μV, SD = .10, BF = .614)"
     },
     {
       "id": 12,
@@ -343,7 +343,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 15",
-      "quote": "object_noCFS (M < .001 \u03bcV, SD = .06, BF = .243)"
+      "quote": "object_noCFS (M < .001 μV, SD = .06, BF = .243)"
     },
     {
       "id": 14,
@@ -541,5 +541,45 @@
     "The curvilinearity effect might be due to contrast with rectilinear CFS stimuli, as no condition included curvilinear CFS masks.",
     "The data cannot rule out subcortical nonconscious processing of fearful faces.",
     "The data cannot speak to the importance of convexity vs. concavity, only curvilinear over rectilinear contours."
-  ]
+  ],
+  "stimulus_description": {
+    "environmental_features": [
+      "faces",
+      "objects",
+      "continuous flash suppression (CFS)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "objects presented under continuous flash suppression (CFS)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "mechanism_chain": {
+    "description": "The paper investigates whether the curvilinear features inherent in faces (compared to objects) are the underlying mechanism responsible for their faster capture of attention (shorter breakthrough time) when presented under continuous flash suppression.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "curvilinearity of visual stimuli (e.g., faces)",
+        "to_construct": "enhanced attentional processing",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Electroencephalography (EEG)",
+      "construct": "steady-state visual potential (SSVEP)",
+      "description": "Measures brain electrical activity, specifically oscillatory responses to visual stimuli.",
+      "type": "eeg"
+    },
+    {
+      "name": "Continuous Flash Suppression (CFS) task",
+      "construct": "breakthrough time / attentional capture speed",
+      "description": "Measures the duration until a suppressed stimulus becomes consciously perceived.",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T21:52:14.413272+00:00"
 }

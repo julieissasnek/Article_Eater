@@ -34,7 +34,8 @@ def read_latest_audit_by_paper(path: Path) -> Dict[str, Dict[str, str]]:
                 continue
             try:
                 obj = json.loads(line)
-            except Exception:
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
                 continue
             if not isinstance(obj, dict):
                 continue

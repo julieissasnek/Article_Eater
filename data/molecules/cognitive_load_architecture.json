@@ -1,91 +1,91 @@
 {
-    "molecule_id": "COGNITIVE_LOAD_ARCHITECTURE",
-    "name": "Cognitive Load Architecture",
-    "short_description": "How environmental information demands interact with working memory capacity limits, determining task performance, decision quality, and cognitive fatigue.",
-    "molecule_type": "MECHANISM",
-    "components": [
-        {
-            "name": "Working Memory Load",
-            "template_ids": [
-                "HC_WORKING_MEMORY_LOAD_001"
-            ],
-            "interaction_type": "PREREQUISITE",
-            "description": "Environmental information demands consume working memory capacity; when demands exceed capacity, performance degrades."
-        },
-        {
-            "name": "Ecological Rationality",
-            "template_ids": [
-                "ER_ECOLOGICAL_RATIONALITY_001"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "When environmental information structure matches the heuristic tools available, decision quality improves despite limited processing."
-        },
-        {
-            "name": "Hierarchical Control",
-            "template_ids": [
-                "HC_HIERARCHICAL_CONTROL_002"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Environmental task structure interacts with the cognitive control hierarchy, shaping error patterns and performance."
-        },
-        {
-            "name": "Cognitive Offloading",
-            "template_ids": [
-                "EC_COGNITIVE_OFFLOADING_002"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "Legible environments allow offloading of information storage to the environment, freeing internal processing."
-        }
-    ],
-    "constituent_templates": [
-        "HC_WORKING_MEMORY_LOAD_001",
-        "ER_ECOLOGICAL_RATIONALITY_001",
-        "HC_HIERARCHICAL_CONTROL_002",
-        "EC_COGNITIVE_OFFLOADING_002",
-        "DT_ATTENTIONAL_DEMAND_001"
-    ],
-    "interaction_graph": {
-        "HC_WORKING_MEMORY_LOAD_001": {
-            "EC_COGNITIVE_OFFLOADING_002": "SYNERGISTIC",
-            "DT_ATTENTIONAL_DEMAND_001": "MULTIPLICATIVE"
-        },
-        "ER_ECOLOGICAL_RATIONALITY_001": {
-            "HC_HIERARCHICAL_CONTROL_002": "ADDITIVE"
-        }
+  "molecule_id": "COGNITIVE_LOAD_ARCHITECTURE",
+  "name": "Cognitive Load Architecture",
+  "short_description": "How environmental information demands interact with working memory capacity limits, determining task performance, decision quality, and cognitive fatigue.",
+  "molecule_type": "MECHANISM",
+  "components": [
+    {
+      "name": "Working Memory Load",
+      "template_ids": [
+        "HC_WORKING_MEMORY_LOAD_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Environmental information demands consume working memory capacity; when demands exceed capacity, performance degrades."
     },
-    "framework_ids": [
-        "HC",
-        "EC",
-        "DT"
-    ],
-    "domain": "cognition",
-    "scope_conditions": [
-        "SC1",
-        "SC7"
-    ],
-    "overall_maturity": "SUPPORTED",
-    "key_references": [
-        "sweller_1988",
-        "gigerenzer_todd_1999",
-        "risko_gilbert_2016",
-        "kirsh_1995"
-    ],
-    "empirical_support": "SUPPORTED",
-    "competing_theories": [
-        "WAYFINDING"
-    ],
-    "design_implications": [
-        "Minimize extraneous environmental complexity in high-cognitive-demand spaces (hospitals, control rooms).",
-        "Provide external information scaffolding (checklists, spatial cues) that reduces reliance on internal memory.",
-        "Design task-environment fit: align information layout with the natural decision hierarchy.",
-        "Use progressive disclosure in physical spaces — reveal complexity gradually rather than all at once."
-    ],
-    "confidence_intervals": {
-        "cohens_d_range": [
-            0.3,
-            0.8
-        ],
-        "typical_d": 0.50,
-        "note": "Effect sizes for environmental cognitive load manipulation on task performance."
+    {
+      "name": "Ecological Rationality",
+      "template_ids": [
+        "ER_ECOLOGICAL_RATIONALITY_001"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "When environmental information structure matches the heuristic tools available, decision quality improves despite limited processing."
+    },
+    {
+      "name": "Hierarchical Control",
+      "template_ids": [
+        "HC_HIERARCHICAL_CONTROL_002"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Environmental task structure interacts with the cognitive control hierarchy, shaping error patterns and performance."
+    },
+    {
+      "name": "Cognitive Offloading",
+      "template_ids": [
+        "EC_COGNITIVE_OFFLOADING_002"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Legible environments allow offloading of information storage to the environment, freeing internal processing."
     }
+  ],
+  "constituent_templates": [
+    "HC_WORKING_MEMORY_LOAD_001",
+    "ER_ECOLOGICAL_RATIONALITY_001",
+    "HC_HIERARCHICAL_CONTROL_002",
+    "EC_COGNITIVE_OFFLOADING_002",
+    "DT_ATTENTIONAL_DEMAND_001"
+  ],
+  "interaction_graph": {
+    "HC_WORKING_MEMORY_LOAD_001": {
+      "EC_COGNITIVE_OFFLOADING_002": "SYNERGISTIC",
+      "DT_ATTENTIONAL_DEMAND_001": "MULTIPLICATIVE"
+    },
+    "ER_ECOLOGICAL_RATIONALITY_001": {
+      "HC_HIERARCHICAL_CONTROL_002": "ADDITIVE"
+    }
+  },
+  "framework_ids": [
+    "spatial-navigation",
+    "embodied-cognition",
+    "default-mode-dynamics"
+  ],
+  "domain": "cognition",
+  "scope_conditions": [
+    "SC1",
+    "SC7"
+  ],
+  "overall_maturity": "SUPPORTED",
+  "key_references": [
+    "sweller_1988",
+    "gigerenzer_todd_1999",
+    "risko_gilbert_2016",
+    "kirsh_1995"
+  ],
+  "empirical_support": "SUPPORTED",
+  "competing_theories": [
+    "WAYFINDING"
+  ],
+  "design_implications": [
+    "Minimize extraneous environmental complexity in high-cognitive-demand spaces (hospitals, control rooms).",
+    "Provide external information scaffolding (checklists, spatial cues) that reduces reliance on internal memory.",
+    "Design task-environment fit: align information layout with the natural decision hierarchy.",
+    "Use progressive disclosure in physical spaces \u2014 reveal complexity gradually rather than all at once."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.3,
+      0.8
+    ],
+    "typical_d": 0.5,
+    "note": "Effect sizes for environmental cognitive load manipulation on task performance."
+  }
 }

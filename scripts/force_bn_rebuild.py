@@ -6,8 +6,9 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 from src.services.incremental_bn import IncrementalBNBuilder
+from src.services.db_locator import get_web_db
 
-WEB_DB = PROJECT_ROOT / "data" / "web_persistence.db"
+WEB_DB = get_web_db()  # Centralized: was hardcoded
 BN_JSON = PROJECT_ROOT / "data" / "production" / "realtime_incremental_bn.json"
 
 class DummyBelief:

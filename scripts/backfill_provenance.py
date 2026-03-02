@@ -248,8 +248,8 @@ def main() -> int:
                 continue
             templates.append(t)
             template_paths[t.get("template_id", "")] = fp
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     print(f"  Templates to process: {len(templates)}")
 

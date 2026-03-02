@@ -107,8 +107,8 @@ def main() -> None:
     for p in calib_dir.glob("*.json"):
         try:
             p.unlink()
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     paper_text = "This is a dummy paper used only for the offline smoke test."
     abstract = "Dummy abstract for offline smoke test."

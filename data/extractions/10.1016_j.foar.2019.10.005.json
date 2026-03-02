@@ -66,14 +66,67 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "Mart\u00ednez-Soto et al. (2013)",
+        "Martínez-Soto et al. (2013)",
         "Hekmatmanesh et al. (2019)",
         "Higuera-Trujillo et al. (2019)"
       ],
       "outcome_id": "affect.stress",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.34,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3018,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.2715,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2673,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.2669,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.668,
+        "SRT": 0.6604,
+        "BIOPHILIA": 0.6,
+        "CREATIVE_COGNITION": 0.17,
+        "EMBODIED_ECOLOGICAL": 0.17,
+        "PREDICTIVE_PROCESSING": 0.17,
+        "NEUROMODULATORY_REWARD": 0.1509
+      },
+      "tier2_relevance": {
+        "ATTENTION_RESTORATION": 0.17,
+        "CREATIVE_COGNITION": 0.17,
+        "EMBODIED_COGNITION": 0.17,
+        "PREDICTIVE_PROCESSING": 0.17,
+        "NEUROMODULATORY": 0.1509,
+        "STRESS_RECOVERY_THEORY": 0.1509
+      }
     },
     {
       "id": 2,
@@ -119,7 +172,29 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.2903,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "EC_AFFORDANCE_POSTURAL_001",
+          "display_id": "T8",
+          "score": 0.2664,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.2608,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 3,
@@ -168,7 +243,11 @@
       "outcome_id": "affect.anxiety",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.72,
+        "BIOPHILIA": 0.6
+      }
     },
     {
       "id": 4,
@@ -294,7 +373,12 @@
       "outcome_id": "affect.anxiety",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "tier1_relevance": {
+        "ART": 0.72,
+        "BIOPHILIA": 0.6,
+        "SRT": 0.6
+      }
     }
   ],
   "synthesis_conclusions": [
@@ -656,5 +740,11 @@
       "processing_fluency"
     ],
     "date": "2026-03-01T06:27:18.798927+00:00"
+  },
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
   }
 }

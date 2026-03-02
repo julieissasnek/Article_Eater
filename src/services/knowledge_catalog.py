@@ -360,8 +360,8 @@ class KnowledgeCatalog:
             try:
                 with open(mp) as f:
                     molecules[mp.stem] = json.load(f)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         return molecules
     
     def _load_theory_links(self) -> Dict:
@@ -417,6 +417,6 @@ class KnowledgeCatalog:
                     text = f.read()[:2000].lower()
                 if "cultur" in text and any(kw in text for kw in kws):
                     count += 1
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         return count

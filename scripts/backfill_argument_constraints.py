@@ -145,8 +145,8 @@ def first_paper_id(raw: str) -> str:
         vals = json.loads(raw or "[]")
         if isinstance(vals, list) and vals:
             return str(vals[0])
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return ""
 
 

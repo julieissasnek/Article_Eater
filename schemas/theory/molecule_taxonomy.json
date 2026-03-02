@@ -1,0 +1,365 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Molecule Taxonomy",
+    "description": "Molecules are latent variables that explain correlated patterns of T2 template co-activation. They package multiple mechanism chains into coherent effect bundles. Some are theoretically proposed (hand-defined from domain knowledge); others could be computationally discovered from template co-occurrence across findings.",
+    "version": "1.0.0",
+    "ontological_status": {
+        "what_they_are": "Latent variables — not directly observed, but inferred from patterns of template co-activation across empirical findings.",
+        "how_they_relate_to_T1_5": "All T1.5 domain theories (ART, SRT, Biophilia, Prospect-Refuge) are molecules with established literature authorship. Other molecules are system-defined or computationally discovered composites without a canonical published theory backing them.",
+        "discoverability": "New molecules can be discovered by analysing template co-occurrence patterns across the corpus. If templates X, Y, Z consistently co-activate across many findings, the underlying latent factor is a candidate molecule. Existing molecules are hypothesised latent structures awaiting empirical confirmation or refinement.",
+        "interaction_types": [
+            "ADDITIVE (effects sum)",
+            "SYNERGISTIC (combined effect > sum of parts)",
+            "PREREQUISITE (one must precede another)",
+            "ANTAGONISTIC (effects partially cancel)"
+        ],
+        "maturity_levels": [
+            "HYPOTHESISED (proposed, not yet tested)",
+            "TENTATIVE (some support)",
+            "SUPPORTED (strong evidence)",
+            "ESTABLISHED (canonical)"
+        ]
+    },
+    "data_directory": "data/molecules/",
+    "molecules": {
+        "ART": {
+            "name": "Attention Restoration Theory",
+            "domain": "restoration",
+            "is_t1_5": true,
+            "t1_frameworks": [
+                "PP",
+                "DT",
+                "SN"
+            ],
+            "constituent_templates": [
+                "T27",
+                "T31",
+                "T2",
+                "T23",
+                "T29",
+                "T3",
+                "T14",
+                "T8",
+                "T1",
+                "T37"
+            ],
+            "n_components": 4,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/art.json"
+        },
+        "SRT": {
+            "name": "Stress Recovery Theory",
+            "domain": "restoration",
+            "is_t1_5": true,
+            "t1_frameworks": [
+                "NM",
+                "IC",
+                "PP"
+            ],
+            "constituent_templates": [
+                "T5",
+                "T9",
+                "T65",
+                "T66",
+                "T7"
+            ],
+            "n_components": 3,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/srt.json"
+        },
+        "BIOPHILIA": {
+            "name": "Biophilia Hypothesis",
+            "domain": "nature_connection",
+            "is_t1_5": true,
+            "t1_frameworks": [
+                "EC",
+                "DP",
+                "PP"
+            ],
+            "constituent_templates": [
+                "VIEW1",
+                "VF1",
+                "VF2",
+                "MAT3",
+                "MAT4"
+            ],
+            "n_components": 4,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/biophilia.json"
+        },
+        "PROSPECT_REFUGE": {
+            "name": "Prospect-Refuge Theory",
+            "domain": "safety",
+            "is_t1_5": true,
+            "t1_frameworks": [
+                "SN",
+                "NM"
+            ],
+            "constituent_templates": [
+                "SC2",
+                "ENCLOSURE"
+            ],
+            "n_components": 2,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/prospect_refuge.json"
+        },
+        "GOLDILOCKS_PRINCIPLE": {
+            "name": "The Goldilocks Principle: Optimal Stimulation Across Modalities",
+            "domain": "cross_modal_optimization",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "PP",
+                "IC",
+                "NM",
+                "EC"
+            ],
+            "constituent_templates": [
+                "T1",
+                "T9",
+                "T22",
+                "VF1",
+                "VF2",
+                "L1",
+                "L5",
+                "T31",
+                "T39",
+                "T57",
+                "T74",
+                "AX7",
+                "AX10",
+                "AX11",
+                "MAT1",
+                "COL1"
+            ],
+            "n_components": 6,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/goldilocks_principle.json"
+        },
+        "M_BEAUTY_COMPRESSION": {
+            "name": "Beauty as Compression",
+            "domain": "aesthetics",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "PP"
+            ],
+            "constituent_templates": [],
+            "n_components": 0,
+            "maturity": "HYPOTHESISED",
+            "file": "data/molecules/M_BEAUTY_COMPRESSION.json"
+        },
+        "M_RASA": {
+            "name": "Rasa Aesthetic States",
+            "domain": "aesthetics",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "IC",
+                "NM"
+            ],
+            "constituent_templates": [],
+            "n_components": 0,
+            "maturity": "HYPOTHESISED",
+            "file": "data/molecules/M_RASA.json"
+        },
+        "M_ATTRACTOR_TRANSITION": {
+            "name": "Attractor Transition Dynamics",
+            "domain": "dynamical_systems",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "PP",
+                "DT"
+            ],
+            "constituent_templates": [],
+            "n_components": 0,
+            "maturity": "HYPOTHESISED",
+            "file": "data/molecules/M_ATTRACTOR_TRANSITION.json"
+        },
+        "M_CCT_PREFERENCE": {
+            "name": "CCT (Correlated Color Temperature) Preference",
+            "domain": "lighting",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "CB",
+                "PP"
+            ],
+            "constituent_templates": [],
+            "n_components": 0,
+            "maturity": "HYPOTHESISED",
+            "file": "data/molecules/M_CCT_PREFERENCE.json"
+        },
+        "M_CULTURAL_VALUATION": {
+            "name": "Cultural Valuation Structure",
+            "domain": "cultural",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "EC",
+                "MS"
+            ],
+            "constituent_templates": [],
+            "n_components": 0,
+            "maturity": "HYPOTHESISED",
+            "file": "data/molecules/M_CULTURAL_VALUATION.json"
+        },
+        "ALLOSTATIC_REGULATION": {
+            "name": "Allostatic Regulation",
+            "domain": "physiological_regulation",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "IC",
+                "NM"
+            ],
+            "constituent_templates": [
+                "T7",
+                "T29",
+                "IC2",
+                "T5"
+            ],
+            "n_components": 3,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/allostatic_regulation.json"
+        },
+        "AWE_ARCHITECTURE": {
+            "name": "Architectural Awe",
+            "domain": "awe_sublime",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "PP",
+                "IC",
+                "NM"
+            ],
+            "constituent_templates": [
+                "T56",
+                "VF3",
+                "SC2",
+                "ENCLOSURE",
+                "T9",
+                "VF2",
+                "L1",
+                "T39",
+                "MAT4",
+                "T31"
+            ],
+            "n_components": 4,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/awe_architecture.json"
+        },
+        "CIRCADIAN_ARCHITECTURE": {
+            "name": "Circadian Architecture",
+            "domain": "temporal_regulation",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "CB"
+            ],
+            "constituent_templates": [
+                "T30",
+                "L2",
+                "L3"
+            ],
+            "n_components": 3,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/circadian_architecture.json"
+        },
+        "COGNITIVE_LOAD_ARCHITECTURE": {
+            "name": "Cognitive Load Architecture",
+            "domain": "cognition",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "DT",
+                "EC",
+                "PP"
+            ],
+            "constituent_templates": [
+                "T4",
+                "MS2",
+                "T36",
+                "T28",
+                "T37"
+            ],
+            "n_components": 4,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/cognitive_load_architecture.json"
+        },
+        "CREATIVE_ENVIRONMENTS": {
+            "name": "Creative Environments",
+            "domain": "creativity",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "DT",
+                "PP",
+                "EC"
+            ],
+            "constituent_templates": [
+                "CREA1",
+                "CREA3",
+                "T27",
+                "VF3",
+                "NM2",
+                "T37",
+                "T8"
+            ],
+            "n_components": 4,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/creative_environments.json"
+        },
+        "MULTISENSORY_DESIGN": {
+            "name": "Multisensory Design",
+            "domain": "perception",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "MSI",
+                "PP"
+            ],
+            "constituent_templates": [
+                "T39",
+                "T40",
+                "MAT3",
+                "MAT4",
+                "T31",
+                "T33"
+            ],
+            "n_components": 5,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/multisensory_design.json"
+        },
+        "SOCIAL_ARCHITECTURE": {
+            "name": "Social Architecture",
+            "domain": "social_behavior",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "DT",
+                "EC",
+                "NM"
+            ],
+            "constituent_templates": [
+                "T48",
+                "T49",
+                "T50",
+                "SC4",
+                "T52",
+                "T65"
+            ],
+            "n_components": 5,
+            "maturity": "TENTATIVE",
+            "file": "data/molecules/social_architecture.json"
+        },
+        "WAYFINDING": {
+            "name": "Spatial Navigation & Cognitive Mapping",
+            "domain": "navigation",
+            "is_t1_5": false,
+            "t1_frameworks": [
+                "SN",
+                "NM"
+            ],
+            "constituent_templates": [
+                "SC1",
+                "SC2",
+                "SC3",
+                "SN1",
+                "SN2",
+                "T28"
+            ],
+            "n_components": 5,
+            "maturity": "SUPPORTED",
+            "file": "data/molecules/wayfinding.json"
+        }
+    }
+}

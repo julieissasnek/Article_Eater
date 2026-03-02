@@ -378,7 +378,8 @@ def seed_annotations(dry_run: bool = True) -> Dict[str, int]:
         try:
             with open(ep) as f:
                 data = json.load(f)
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
         
         ext_id = ep.stem

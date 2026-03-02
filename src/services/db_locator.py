@@ -67,10 +67,10 @@ def candidate_web_dbs(explicit: Path | str | None = None) -> list[Path]:
             explicit,
             os.getenv("AE_DB_PATH"),  # Check explicitly overridden path first
             os.getenv("AE_WEB_DB"),
-            Path("web_persistence.db").resolve(),
+            PROJECT_ROOT / "data" / "web_persistence_v2.db",  # v2 schema is canonical
+            PROJECT_ROOT / "data" / "web_persistence.db",  # Legacy fallback
             PROJECT_ROOT / "web_persistence.db",
-            PROJECT_ROOT / "data" / "web_persistence.db",
-            PROJECT_ROOT / "data" / "web_persistence_v2.db",
+            Path("web_persistence.db").resolve(),  # CWD fallback - must NOT call get_web_db (recursion)
         ]
     )
 
@@ -87,6 +87,14 @@ def profile_web_db(path: Path) -> WebDbProfile | None:
     try:
         conn = sqlite3.connect(str(path))
         cur = conn.cursor()
+
+        # Verify the DB actually has a beliefs table before scoring
+        tables = {row[0] for row in cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "beliefs" not in tables:
+            conn.close()
+            return None  # Skip DBs without a beliefs table
+
         beliefs = _count_query(
             cur,
             "SELECT COUNT(*) FROM beliefs WHERE web_id = ?",
@@ -141,7 +149,8 @@ def profile_web_db(path: Path) -> WebDbProfile | None:
             contradicts=contradicts,
             mtime=path.stat().st_mtime,
         )
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 
@@ -204,3 +213,26 @@ def resolve_article_finder_db(explicit: Path | str | None = None) -> Path:
     scored = [(int(_papers_count(path)), float(path.stat().st_mtime), path) for path in candidates]
     return max(scored, key=lambda item: (item[0], item[1]))[2]
 
+
+# ============================================================================
+# Convenience functions — the canonical API for all scripts
+# ============================================================================
+
+def get_web_db(explicit: Path | str | None = None) -> Path:
+    """Get the canonical web DB path. Never raises — falls back to v2 default.
+
+    This is the ONE function every script should use instead of hardcoding paths.
+
+    Usage in any script:
+        from src.services.db_locator import get_web_db
+        db_path = get_web_db()
+    """
+    try:
+        return resolve_web_db(explicit, prefer="integrated")
+    except FileNotFoundError:
+        return PROJECT_ROOT / "data" / "web_persistence_v2.db"
+
+
+def get_web_db_str(explicit: str | None = None) -> str:
+    """String version of get_web_db() for scripts that need str paths."""
+    return str(get_web_db(Path(explicit) if explicit else None))

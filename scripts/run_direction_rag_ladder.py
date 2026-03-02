@@ -150,8 +150,8 @@ def _codex_complete(model: str, system: str, user: str, timeout_s: int = 180) ->
     finally:
         try:
             Path(tmp_path).unlink(missing_ok=True)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
 
 def _provider_complete(
@@ -200,8 +200,8 @@ def _parse_json_object(raw: str) -> dict[str, Any] | None:
         payload = json.loads(text)
         if isinstance(payload, dict):
             return payload
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     m = re.search(r"\{.*\}", raw, re.DOTALL)
     if not m:
         return None
@@ -209,7 +209,8 @@ def _parse_json_object(raw: str) -> dict[str, Any] | None:
         payload = json.loads(m.group(0))
         if isinstance(payload, dict):
             return payload
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
     return None
 
@@ -263,7 +264,8 @@ def _infer_direction_from_signed_stats(text: str) -> str:
     for m in matches:
         try:
             v = float(m)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         if v > 0:
             pos += 1

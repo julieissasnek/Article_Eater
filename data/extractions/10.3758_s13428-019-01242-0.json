@@ -2,7 +2,7 @@
   "doi": "10.3758/s13428-019-01242-0",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.83,
   "n_findings": 10,
   "extracted_at": "2026-02-25T02:09:10.579680+00:00",
@@ -20,7 +20,7 @@
   "stimuli_or_exposures": [
     {
       "type": "VR",
-      "description": "Multisensory Immersive Virtual Environment (MIVE) simulating a semi-outdoor environment (SkyPark, Melbourne CBD, Australia). Visuals included detailed 3D models of buildings, greenery, animated objects, realistic material shaders, and atmospheric conditions (sunlight, daylight, wind cues like falling leaves, grass/tree movement). Auditory stimuli included ambient traffic noise, bird songs (Magpie, Golden Whistler), pedestrian crossing signals, tram bells, and breeze rustling tree leaves, rendered binaurally using HRTFs. Thermal stimuli included ambient air temperature (28\u00b0C, 60% RH) delivered by constant air volume AC, direct solar radiation simulated by 10 quartz tungsten halogen lamps (250W each) achieving mean radiant temperatures (Tmrt) between 35.0-39.6\u00b0C, and wind simulated by bladeless fans achieving 0.95 m/s. Two scenarios were presented: 'sunlight only' and 'sunlight + shade' (offering adaptive opportunity to move between sun and shade).",
+      "description": "Multisensory Immersive Virtual Environment (MIVE) simulating a semi-outdoor environment (SkyPark, Melbourne CBD, Australia). Visuals included detailed 3D models of buildings, greenery, animated objects, realistic material shaders, and atmospheric conditions (sunlight, daylight, wind cues like falling leaves, grass/tree movement). Auditory stimuli included ambient traffic noise, bird songs (Magpie, Golden Whistler), pedestrian crossing signals, tram bells, and breeze rustling tree leaves, rendered binaurally using HRTFs. Thermal stimuli included ambient air temperature (28°C, 60% RH) delivered by constant air volume AC, direct solar radiation simulated by 10 quartz tungsten halogen lamps (250W each) achieving mean radiant temperatures (Tmrt) between 35.0-39.6°C, and wind simulated by bladeless fans achieving 0.95 m/s. Two scenarios were presented: 'sunlight only' and 'sunlight + shade' (offering adaptive opportunity to move between sun and shade).",
       "n_stimuli": 2,
       "source": "Section 4, Fig. 3, Fig. 4, Fig. 6, Table 1, Table 2"
     }
@@ -100,7 +100,7 @@
   "findings": [
     {
       "id": 1,
-      "antecedent": "Exposure to 'Sunlight Only' VR scenario (simulated 28\u00b0C air temp, 39.6\u00b0C Tmrt)",
+      "antecedent": "Exposure to 'Sunlight Only' VR scenario (simulated 28°C air temp, 39.6°C Tmrt)",
       "consequent": "Self-reported thermal pleasure",
       "direction": "decrease",
       "claim_type": "causal",
@@ -128,11 +128,64 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3942,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3327,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3188,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3041,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2895,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3307,
+        "NEUROMODULATORY_REWARD": 0.2992,
+        "MATERIAL_HAPTIC_THERMAL": 0.1971,
+        "SRT": 0.1971,
+        "AFFECTIVE_EMOTION": 0.1663,
+        "CIRCADIAN_REGULATION": 0.1663
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3307,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1971,
+        "ALLOSTATIC_REGULATION": 0.1971,
+        "METABOLIC_HEALTH": 0.1971,
+        "AROUSAL_THEORY": 0.1663,
+        "PAD_EMOTIONAL_MODEL": 0.1663,
+        "RETINAL_ACTIVATION": 0.1663,
+        "NM_REWARD": 0.1594,
+        "IC": 0.152
+      }
     },
     {
       "id": 2,
-      "antecedent": "Exposure to 'Sunlight + Shade' VR scenario (simulated 28\u00b0C air temp, 35.0-39.6\u00b0C Tmrt with adaptive opportunity)",
+      "antecedent": "Exposure to 'Sunlight + Shade' VR scenario (simulated 28°C air temp, 35.0-39.6°C Tmrt with adaptive opportunity)",
       "consequent": "Self-reported thermal pleasure",
       "direction": "increase",
       "claim_type": "causal",
@@ -160,7 +213,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3807,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3171,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3139,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3001,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2868,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3187,
+        "NEUROMODULATORY_REWARD": 0.2848,
+        "MATERIAL_HAPTIC_THERMAL": 0.1903,
+        "SRT": 0.1903,
+        "AFFECTIVE_EMOTION": 0.1585,
+        "CIRCADIAN_REGULATION": 0.1585
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3187,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1903,
+        "ALLOSTATIC_REGULATION": 0.1903,
+        "METABOLIC_HEALTH": 0.1903,
+        "AROUSAL_THEORY": 0.1585,
+        "PAD_EMOTIONAL_MODEL": 0.1585,
+        "RETINAL_ACTIVATION": 0.1585,
+        "IC": 0.157,
+        "NM_REWARD": 0.15
+      }
     },
     {
       "id": 3,
@@ -189,7 +295,62 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Fig. 9, Section 6",
-      "quote": "Statistically significant differences have been found in participants'... cognitive performance responses between various MIVE scenarios."
+      "quote": "Statistically significant differences have been found in participants'... cognitive performance responses between various MIVE scenarios.",
+      "template_matches": [
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3759,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.3549,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3193,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3121,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3056,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4194,
+        "SRT": 0.3176,
+        "ART": 0.3,
+        "PREDICTIVE_PROCESSING": 0.2908,
+        "MULTISENSORY_INTEGRATION": 0.1774,
+        "MATERIAL_HAPTIC_THERMAL": 0.1596,
+        "AFFECTIVE_EMOTION": 0.156,
+        "CIRCADIAN_REGULATION": 0.156
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2908,
+        "NEUROMODULATORY": 0.188,
+        "STRESS_RECOVERY_THEORY": 0.188,
+        "MS": 0.1774,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1596,
+        "ALLOSTATIC_REGULATION": 0.1596,
+        "METABOLIC_HEALTH": 0.1596,
+        "AROUSAL_THEORY": 0.156,
+        "PAD_EMOTIONAL_MODEL": 0.156,
+        "RETINAL_ACTIVATION": 0.156,
+        "NM": 0.1528
+      }
     },
     {
       "id": 4,
@@ -218,12 +379,66 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Fig. 9, Section 6",
-      "quote": "Statistically significant differences have been found in participants'... cognitive performance responses between various MIVE scenarios."
+      "quote": "Statistically significant differences have been found in participants'... cognitive performance responses between various MIVE scenarios.",
+      "template_matches": [
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3832,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.3451,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3254,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3031,
+          "reasons": []
+        },
+        {
+          "template_id": "MOTOR_PREDICTION_ARCH_001",
+          "display_id": "TP1",
+          "score": 0.2971,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SRT": 0.3231,
+        "NEUROMODULATORY_REWARD": 0.3141,
+        "ART": 0.3,
+        "PREDICTIVE_PROCESSING": 0.2896,
+        "MULTISENSORY_INTEGRATION": 0.1726,
+        "MATERIAL_HAPTIC_THERMAL": 0.1627,
+        "AFFECTIVE_EMOTION": 0.1515,
+        "CIRCADIAN_REGULATION": 0.1515
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2896,
+        "NEUROMODULATORY": 0.1916,
+        "STRESS_RECOVERY_THEORY": 0.1916,
+        "MS": 0.1726,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1627,
+        "ALLOSTATIC_REGULATION": 0.1627,
+        "METABOLIC_HEALTH": 0.1627,
+        "AROUSAL_THEORY": 0.1515,
+        "PAD_EMOTIONAL_MODEL": 0.1515,
+        "RETINAL_ACTIVATION": 0.1515
+      }
     },
     {
       "id": 5,
       "antecedent": "Exposure to 'Sunlight Only' VR scenario",
-      "consequent": "Delta Skin Conductance Level (\u00b5S)",
+      "consequent": "Delta Skin Conductance Level (µS)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -249,12 +464,66 @@
       "outcome_id": "physio.skin_conductance",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.322,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_DOSE_RESPONSE_007",
+          "display_id": "AX7",
+          "score": 0.3177,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3148,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.3019,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2985,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2943,
+        "PREDICTIVE_PROCESSING": 0.2931,
+        "AFFECTIVE_EMOTION": 0.161,
+        "CIRCADIAN_REGULATION": 0.161,
+        "ART": 0.1588,
+        "COGNITIVE_CONTROL": 0.1574,
+        "CREATIVE_COGNITION": 0.1574,
+        "MULTISENSORY_INTEGRATION": 0.151
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2931,
+        "AROUSAL_THEORY": 0.161,
+        "PAD_EMOTIONAL_MODEL": 0.161,
+        "RETINAL_ACTIVATION": 0.161,
+        "NEUROMODULATORY": 0.1588,
+        "RESTORATIVE_ENVIRONMENTS": 0.1588,
+        "COGNITIVE_CONTROL": 0.1574,
+        "CONSTRUAL_LEVEL_THEORY": 0.1574,
+        "CREATIVE_COGNITION": 0.1574,
+        "MS": 0.151
+      }
     },
     {
       "id": 6,
       "antecedent": "Exposure to 'Sunlight + Shade' VR scenario",
-      "consequent": "Delta Skin Conductance Level (\u00b5S)",
+      "consequent": "Delta Skin Conductance Level (µS)",
       "direction": "decrease",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -280,7 +549,61 @@
       "outcome_id": "physio.skin_conductance",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3129,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3097,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.304,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.2922,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2905,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3954,
+        "AFFECTIVE_EMOTION": 0.1565,
+        "CIRCADIAN_REGULATION": 0.1565,
+        "NEUROMODULATORY_REWARD": 0.1565,
+        "COGNITIVE_CONTROL": 0.1548,
+        "CREATIVE_COGNITION": 0.1548,
+        "MATERIAL_HAPTIC_THERMAL": 0.152,
+        "SRT": 0.152
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3954,
+        "AROUSAL_THEORY": 0.1565,
+        "PAD_EMOTIONAL_MODEL": 0.1565,
+        "RETINAL_ACTIVATION": 0.1565,
+        "COGNITIVE_CONTROL": 0.1548,
+        "CONSTRUAL_LEVEL_THEORY": 0.1548,
+        "CREATIVE_COGNITION": 0.1548,
+        "ADAPTIVE_THERMAL_COMFORT": 0.152,
+        "ALLOSTATIC_REGULATION": 0.152,
+        "METABOLIC_HEALTH": 0.152
+      }
     },
     {
       "id": 7,
@@ -310,7 +633,56 @@
       "outcome_id": "behav.engagement",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3229,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3176,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3072,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3061,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3048,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4936,
+        "CIRCADIAN_REGULATION": 0.1536,
+        "NEUROMODULATORY_REWARD": 0.1536,
+        "COGNITIVE_CONTROL": 0.1524,
+        "CREATIVE_COGNITION": 0.1524
+      },
+      "tier2_relevance": {
+        "EC": 0.2898,
+        "PP": 0.2898,
+        "PREDICTIVE_PROCESSING": 0.287,
+        "CHRONOBIOLOGICAL": 0.1536,
+        "NEUROMODULATORY": 0.1536,
+        "COGNITIVE_CONTROL": 0.1524,
+        "CONSTRUAL_LEVEL_THEORY": 0.1524,
+        "CREATIVE_COGNITION": 0.1524
+      }
     },
     {
       "id": 8,
@@ -340,7 +712,62 @@
       "outcome_id": "behav.engagement",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.3176,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3122,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3075,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3068,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.301,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4914,
+        "COGNITIVE_CONTROL": 0.2881,
+        "CREATIVE_COGNITION": 0.2881,
+        "MATERIAL_HAPTIC_THERMAL": 0.1534,
+        "SRT": 0.1534,
+        "CIRCADIAN_REGULATION": 0.1505,
+        "NEUROMODULATORY_REWARD": 0.1505
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3973,
+        "COGNITIVE_CONTROL": 0.2881,
+        "CREATIVE_COGNITION": 0.2881,
+        "DMN_TPN_DYNAMICS": 0.1588,
+        "EC": 0.1561,
+        "PP": 0.1561,
+        "CONSTRUAL_LEVEL_THEORY": 0.1537,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1534,
+        "ALLOSTATIC_REGULATION": 0.1534,
+        "METABOLIC_HEALTH": 0.1534,
+        "CHRONOBIOLOGICAL": 0.1505,
+        "NEUROMODULATORY": 0.1505
+      }
     },
     {
       "id": 9,
@@ -369,7 +796,58 @@
       "outcome_id": "affect.joy",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3316,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.3307,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3279,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3234,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3202,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4139,
+        "PREDICTIVE_PROCESSING": 0.3007,
+        "ART": 0.1658,
+        "CREATIVE_COGNITION": 0.1658,
+        "EMBODIED_ECOLOGICAL": 0.1658
+      },
+      "tier2_relevance": {
+        "NM": 0.299,
+        "ATTENTION_RESTORATION": 0.1658,
+        "CREATIVE_COGNITION": 0.1658,
+        "EMBODIED_COGNITION": 0.1658,
+        "PREDICTIVE_PROCESSING": 0.1658,
+        "DP": 0.1653,
+        "SN": 0.1653,
+        "NEUROMODULATORY": 0.164,
+        "EC": 0.1617,
+        "PP": 0.1617
+      }
     },
     {
       "id": 10,
@@ -399,7 +877,53 @@
       "outcome_id": "behav",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.4,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3828,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.3581,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3385,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3362,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.6,
+        "BIOPHILIA": 0.6,
+        "SRT": 0.6,
+        "NEUROMODULATORY_REWARD": 0.5588,
+        "MATERIAL_HAPTIC_THERMAL": 0.2
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3531,
+        "NM": 0.318,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.2,
+        "HC": 0.1681,
+        "IC": 0.1681
+      }
     }
   ],
   "mechanisms": [
@@ -441,9 +965,9 @@
       "table_id": "Table 1",
       "description": "Thermal Conditions, listing environmental parameters, thermal apparatus, measurement sensors, and thermal conditions for ambient air temperature, wind, and sunlight.",
       "key_stats": [
-        "28 (\u00b10.1) \u00b0C",
-        "1.0 (\u00b10.01) m/s",
-        "39.6 \u00b0C"
+        "28 (±0.1) °C",
+        "1.0 (±0.01) m/s",
+        "39.6 °C"
       ],
       "n_findings_extracted_from": 0
     },
@@ -451,7 +975,7 @@
       "table_id": "Table 2",
       "description": "Mean radiant temperature calculated from radiation measured at different heights and distances (1.3m and 0.8m distance from heat lamp, at ankle, abdomen, and head levels).",
       "key_stats": [
-        "Tmrt range: 33.3-44.3 \u00b0C"
+        "Tmrt range: 33.3-44.3 °C"
       ],
       "n_findings_extracted_from": 0
     },
@@ -560,5 +1084,51 @@
     "VR"
   ],
   "linked_date": "2026-03-01T04:43:13.599545+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "local_pattern_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "simulated air temperature",
+      "simulated mean radiant temperature",
+      "simulated visual conditions (e.g., sunlight, shade)"
+    ],
+    "duration_exposure": "typically short experimental trials (e.g., minutes)",
+    "control_conditions": [
+      "different virtual reality scenarios (e.g., sunlight vs. shade, varying thermal conditions)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "instruments_used": [
+    {
+      "name": "Thermal Sensation Scale",
+      "construct": "thermal sensation",
+      "description": "Self-report scale for perceived thermal state (e.g., ASHRAE 7-point scale)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Scale",
+      "construct": "thermal comfort",
+      "description": "Self-report scale for perceived thermal comfort",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Pleasure Scale",
+      "construct": "thermal pleasure",
+      "description": "Self-report scale for perceived thermal pleasure",
+      "type": "self_report"
+    },
+    {
+      "name": "Igroup Presence Questionnaire (IPQ)",
+      "construct": "sense of presence in virtual environment",
+      "description": "Standard questionnaire to assess the feeling of 'being there' in a virtual environment",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:20:25.343880+00:00"
 }

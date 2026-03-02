@@ -105,8 +105,8 @@ def first_paper_id(raw: str) -> str:
         vals = json.loads(raw or "[]")
         if isinstance(vals, list) and vals:
             return str(vals[0])
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return ""
 
 
@@ -419,8 +419,8 @@ def main() -> int:
             created_at = now
             try:
                 created_at = bridge.provenance.created_at.isoformat()
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
             bridge_inserts.append(
                 (
                     bridge.bridge_id,

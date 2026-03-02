@@ -282,8 +282,8 @@ def mine_extraction_citations(theory_id):
                     citations.add(ef.stem)
                     if len(citations) >= 20:
                         return list(citations)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return list(citations)
 
 

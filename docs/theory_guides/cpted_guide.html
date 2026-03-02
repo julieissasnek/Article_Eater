@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defensible Space / Crime Prevention Through Environmental Design — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html" class="current">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html">PAD Model</a>
+<a href="place_attachment_guide.html">Place Attachment</a>
+<a href="privacy_regulation_guide.html">Privacy Regulation</a>
+<a href="proxemics_guide.html">Proxemics</a>
+</nav>
+
+<h1>Defensible Space / Crime Prevention Through Environmental Design</h1>
+<div class="subtitle">Newman / Jeffery (1972) — Newman, O. (1972). Defensible space. Macmillan. / Jeffery, C.R. (1971). Crime pr...</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> C. Ray Jeffery (criminologist, theoretical originator)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 1972</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> 5,000</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-possibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-rejected">REJECTED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Defensible Space / Crime Prevention Through Environmental Design?</h2>
+  <p>CPTED — Crime Prevention Through Environmental Design — is the idea that the physical design of buildings, streets, and neighborhoods can reduce crime by making criminal activity more difficult, more risky, or less rewarding. Simple examples include better street lighting, clear sightlines that allow residents to see what's happening, and design features that create a sense of territorial ownership.</p>
+  <p>This matters for architects because it connects physical design decisions directly to safety outcomes. The placement of windows, the design of entrances, the visibility of public spaces, and the maintenance of landscaping all influence whether a space feels — and actually is — safe. CPTED has influenced building codes and urban planning guidelines worldwide.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>The field emerged around 1960 when criminologist C. Ray Jeffery published 'Crime Prevention Through Environmental Design' (1971) and architect Oscar Newman published 'Defensible Space' (1972). Both argued that the physical environment could be designed to reduce criminal opportunity. Newman's work focused on public housing, showing that buildings designed with clear territorial markers, natural surveillance opportunities, and controlled access had lower crime rates. Jane Jacobs' 'The Death and Life of Great American Cities' (1961) anticipated many CPTED principles with her concept of 'eyes on the street.'</p>
+
+  <h2>How It Works</h2>
+  <p>CPTED operates through four principles: natural surveillance (designing spaces so that legitimate users can see and be seen), natural access control (using design to guide people through defined entry and exit points), territorial reinforcement (using design to create a sense of ownership and belonging), and maintenance (the 'broken windows' principle — well-maintained spaces signal active guardianship). Second-generation CPTED (from the 2000s) added social cohesion, connectivity, and community culture as additional factors.</p>
+
+  <h2>Applications in Design</h2>
+  <p>CPTED has been applied to residential design (defensible space in public housing), commercial districts (Crime Prevention Impact Assessments), transportation hubs, schools, and parks. Meta-analyses suggest that CPTED interventions can reduce crime by 10-30%, though results vary considerably by implementation quality and context. Critics note that design alone cannot address the social determinants of crime.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1960:</span> Recognition of urban renewal&#x27;s social costs</div>
+<div class="timeline-item"><span class="timeline-year">1971:</span> Jeffery&#x27;s foundational CPTED book and theoretical framework</div>
+<div class="timeline-item"><span class="timeline-year">1972:</span> Newman&#x27;s Defensible Space framework and architectural application</div>
+<div class="timeline-item"><span class="timeline-year">1975-1985:</span> Newman&#x27;s approach gains broader adoption in design practice</div>
+<div class="timeline-item"><span class="timeline-year">1981:</span> Merry&#x27;s critique revealing social confounding variables</div>
+<div class="timeline-item"><span class="timeline-year">1980s-Present:</span> International expansion and refinement of CPTED principles</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>C. Ray Jeffery (criminologist, theoretical originator)</li>
+<li>Oscar Newman (architect, practical application)</li>
+<li>Urban planners and social scientists observing renewal failures</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>The CPTED model can be expressed as: Crime(x) = f(Opportunity(x), Guardianship(x), Target(x)), where Guardianship is proportional to Surveillance × Territorial markers × Access control. The relationship is probabilistic — better design reduces opportunity but does not eliminate motivation.</p>
+
+  <div class="formula-box">
+    Crime(x) = f(Opportunity(x), Guardianship(x), Target(x)); Guardianship ∝ Surveillance + Territoriality
+<div class="var-def"><strong>Crime(x)</strong> = Crime likelihood in space x<br><strong>Opportunity(x)</strong> = Environmental opportunity (poor visibility, escape routes)<br><strong>Guardianship(x)</strong> = Natural surveillance + territorial markers<br><strong>Target(x)</strong> = Target attractiveness (value, accessibility)</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Natural surveillance (windows facing public space) reduces crime ~25-30%<br>• Territorial markers (fences, landscaping) reduce stranger intrusion ~40%</div>
+  </div>
+
+  
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, CPTED is classified as REJECTED for T1.5 reduction. The rejection rationale is that CPTED claims about environmental design reducing crime are confounded by social variables — Merry's 1981 critique demonstrated that defensible space features correlated with pre-existing community cohesion, not with design features per se. What CPTED actually captures reduces to IC (Interoceptive) perceived safety signals + SN (Spatial Navigation) sightline analysis without independent residual. Maturity level is 'how-possibly' — the mechanisms are plausible but underdetermined by existing evidence.</p>
+
+  
+
+  <details><summary>Rejection Rationale</summary>
+<div class="details-content"><p>Confounded by social variables (Merry, 1981 critique). Defensible Space/CPTED claims about environmental design reducing crime cannot be separated from the social dynamics of the communities inhabiting those spaces. The Pruitt-Igoe failure was social-economic, not architectural. Template coverage would require sociological variables outside the neural-mechanistic framework.</p></div></details>
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Jeffery, C.R. (1971). Crime Prevention Through Environmental Design. Beverly Hills: Sage Publications.</li>
+<li>Newman, O. (1972). Defensible space. Macmillan.</li>
+<li>Merry, S.E. (1981). Defensible space undefended. Urban Affairs Quarterly, 16(4), 397-422.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Seminal papers verified via academic databases. Jeffery (1971) and Newman (1972) publication dates confirmed. Historical context of urban renewal (1960) verified. Merry&#x27;s 1981 critique located in Urban Affairs Quarterly. Current international CPTED Association status confirmed.</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

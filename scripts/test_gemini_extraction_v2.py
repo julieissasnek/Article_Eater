@@ -148,8 +148,8 @@ def extract_paper(client: genai.Client, pdf_path: Path, model: str = "gemini-2.5
         # Cleanup
         try:
             client.files.delete(name=uploaded.name)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         return {
             "success": True,

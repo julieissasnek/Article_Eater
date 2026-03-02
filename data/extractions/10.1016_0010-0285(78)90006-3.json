@@ -2,7 +2,7 @@
   "doi": "10.1016/0010-0285(78)90006-3",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.689,
   "n_findings": 28,
   "extracted_at": "2026-02-25T04:40:50.406892+00:00",
@@ -26,7 +26,7 @@
     },
     {
       "type": "plan_drawing",
-      "description": "Simple maps (21.6 \u00d7 21.6 cm) showing 3 cities (x, y, z) within 1 or 2 'counties'. Conditions: Homogenous (no county lines between key cities), Congruent (city direction matches county direction), Incongruent (city direction opposite county direction). Tested for horizontal and vertical dimensions.",
+      "description": "Simple maps (21.6 × 21.6 cm) showing 3 cities (x, y, z) within 1 or 2 'counties'. Conditions: Homogenous (no county lines between key cities), Congruent (city direction matches county direction), Incongruent (city direction opposite county direction). Tested for horizontal and vertical dimensions.",
       "n_stimuli": 18,
       "source": "Method, p. 4, Figure 2"
     },
@@ -2072,11 +2072,11 @@
     },
     {
       "table_id": "Table 3",
-      "description": "Mean Confidence Ratings for Experiment 3, broken down by Superordinate direction (North-south, East-west) and Stimulus deviation from superordinate direction (15\u00b0, 45\u00b0, 75\u00b0).",
+      "description": "Mean Confidence Ratings for Experiment 3, broken down by Superordinate direction (North-south, East-west) and Stimulus deviation from superordinate direction (15°, 45°, 75°).",
       "key_stats": [
-        "North-south: 15\u00b0=3.06, 45\u00b0=2.96, 75\u00b0=3.30, Mean=3.11",
-        "East-west: 15\u00b0=3.03, 45\u00b0=3.22, 75\u00b0=3.18, Mean=3.14",
-        "Overall Mean: 15\u00b0=3.05, 45\u00b0=3.09, 75\u00b0=3.24"
+        "North-south: 15°=3.06, 45°=2.96, 75°=3.30, Mean=3.11",
+        "East-west: 15°=3.03, 45°=3.22, 75°=3.18, Mean=3.14",
+        "Overall Mean: 15°=3.05, 45°=3.09, 75°=3.24"
       ],
       "n_findings_extracted_from": 4
     }
@@ -2774,5 +2774,71 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Pairs of US city names"
+    ],
+    "duration_exposure": "Brief, for each judgment",
+    "control_conditions": [
+      "Geographical location pairs where actual direction aligns with superordinate unit direction",
+      "Geographical location pairs where actual direction differs from superordinate unit direction"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Hierarchical Models of Spatial Cognition",
+      "commitment_type": "tests",
+      "specific_claim": "People organize spatial information hierarchically, and judgments about subordinate units (e.g., cities) are influenced by the perceived relations of their superordinate units (e.g., states)."
+    },
+    {
+      "theory_name": "Cognitive Heuristics in Spatial Judgment",
+      "commitment_type": "proposes",
+      "specific_claim": "Spatial judgments are systematically distorted by cognitive heuristics, such as the alignment heuristic, which simplify complex spatial relationships based on superordinate categories."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "When judging the relative direction between two locations, individuals tend to align the subordinate units (cities) with the perceived alignment of their superordinate units (states), leading to systematic distortions if the actual relationship contradicts the superordinate alignment.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Presentation of two city names",
+        "to_construct": "Activation of cognitive representations of cities and their superordinate units (states)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of cognitive representations of cities and their superordinate units",
+        "to_construct": "Retrieval of perceived relative alignment of superordinate units (e.g., California is west of Nevada)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived relative alignment of superordinate units",
+        "to_construct": "Application of alignment heuristic to infer relative direction of cities",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Application of alignment heuristic",
+        "to_construct": "Judged direction of geographical relations",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": null,
+      "construct": "Relative direction judgment",
+      "description": "Participants were presented with pairs of US city names and asked to indicate the direction of one city from another (e.g., by selecting from cardinal and intercardinal directions, or by pointing on a compass rose).",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:35:01.713967+00:00"
 }

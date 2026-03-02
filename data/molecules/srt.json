@@ -1,58 +1,58 @@
 {
-    "molecule_id": "SRT",
-    "name": "Stress Recovery Theory",
-    "short_description": "Theory positing that rapid, automatic affective responses to natural scenes drive physiological stress reduction.",
-    "components": [
-        {
-            "name": "Immediate Affect",
-            "template_ids": [
-                "T9"
-            ],
-            "interaction_type": "PREREQUISITE",
-            "description": "Initial, automatic positive emotional reaction to a scene."
-        },
-        {
-            "name": "Parasympathetic Dominance",
-            "template_ids": [
-                "T22",
-                "T12"
-            ],
-            "interaction_type": "ADDITIVE",
-            "description": "Shift towards rest-and-digest nervous system activity."
-        },
-        {
-            "name": "Cortisol Reduction",
-            "template_ids": [
-                "T8"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "Decreased levels of stress hormones in the bloodstream."
-        }
-    ],
-    "constituent_templates": [
-        "T9",
-        "T22",
-        "T8",
-        "T12",
-        "T5"
-    ],
-    "interaction_graph": {
-        "T9": {
-            "T22": "SYNERGISTIC"
-        }
+  "molecule_id": "SRT",
+  "name": "Stress Recovery Theory",
+  "short_description": "Theory positing that rapid, automatic affective responses to natural scenes drive physiological stress reduction.",
+  "components": [
+    {
+      "name": "Immediate Affect",
+      "template_ids": [
+        "T9"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Initial, automatic positive emotional reaction to a scene."
     },
-    "framework_ids": [
-        "SRT"
-    ],
-    "domain": "restoration",
-    "scope_conditions": [
-        "SC1",
-        "SC3"
-    ],
-    "overall_maturity": "SUPPORTED",
-    "key_references": [
-        "ulrich_1983",
-        "ulrich_1991"
-    ],
-    "empirical_support": "ESTABLISHED"
+    {
+      "name": "Parasympathetic Dominance",
+      "template_ids": [
+        "T22",
+        "T12"
+      ],
+      "interaction_type": "ADDITIVE",
+      "description": "Shift towards rest-and-digest nervous system activity."
+    },
+    {
+      "name": "Cortisol Reduction",
+      "template_ids": [
+        "T8"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Decreased levels of stress hormones in the bloodstream."
+    }
+  ],
+  "constituent_templates": [
+    "T9",
+    "T22",
+    "T8",
+    "T12",
+    "T5"
+  ],
+  "interaction_graph": {
+    "T9": {
+      "T22": "SYNERGISTIC"
+    }
+  },
+  "framework_ids": [
+    "stress-recovery-theory"
+  ],
+  "domain": "restoration",
+  "scope_conditions": [
+    "SC1",
+    "SC3"
+  ],
+  "overall_maturity": "SUPPORTED",
+  "key_references": [
+    "ulrich_1983",
+    "ulrich_1991"
+  ],
+  "empirical_support": "ESTABLISHED"
 }

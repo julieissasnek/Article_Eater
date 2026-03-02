@@ -522,8 +522,8 @@ def _diagnose_backup_failure(stdout: str, stderr: str) -> Dict[str, Any]:
         diag_log.write_text(
             json.dumps(existing, indent=2, default=str), encoding="utf-8"
         )
-    except Exception:
-        pass  # Don't let logging failure block the diagnosis return
+    except Exception as e:
+        logger.debug(f"Non-critical: {e}")  # Don't let logging failure block the diagnosis return
 
     logger.error(f"Diagnosis root cause: {diag['root_cause']}")
     logger.error(f"Recommendation: {diag['recommendation']}")

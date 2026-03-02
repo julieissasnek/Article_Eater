@@ -965,20 +965,20 @@ class Belief:
             try:
                 from src.models.propositional_content import PropositionalContent
                 content_v2 = PropositionalContent.from_dict(d['content_v2'])
-            except Exception:
-                pass  # Graceful degradation
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")  # Graceful degradation
         if 'status_v2' in d and d['status_v2']:
             try:
                 from src.models.epistemic_status import EpistemicStatus
                 status_v2 = EpistemicStatus.from_dict(d['status_v2'])
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
         if 'provenance_v2' in d and d['provenance_v2']:
             try:
                 from src.models.provenance import Provenance
                 provenance_v2 = Provenance.from_dict(d['provenance_v2'])
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
 
         credence_data = d.get('credence', {})
         if isinstance(credence_data, dict):

@@ -75,7 +75,7 @@ def extract_paper(client: genai.Client, pdf_path: Path, article_type: str) -> di
 
         try:
             client.files.delete(name=uploaded.name)
-        except:
+        except Exception:  
             pass
 
         return {"success": True, "data": result, "cost": round(cost, 6), "elapsed": round(elapsed, 1)}

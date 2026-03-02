@@ -30,6 +30,7 @@ from typing import Any, Dict, List, Optional, Tuple
 # Ensure project root is on path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
+from src.services.db_locator import get_web_db
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,7 +47,7 @@ MANIFEST_PATH = PROJECT_ROOT / "data" / "extractions" / "batch_manifest.json"
 EXTRACTIONS_DIR = PROJECT_ROOT / "data" / "extractions"
 TEMPLATES_DIR = PROJECT_ROOT / "data" / "templates"
 RESULTS_DIR = PROJECT_ROOT / "data" / "integration_results"
-DEFAULT_DB = PROJECT_ROOT / "data" / "web_persistence_v2.db"
+DEFAULT_DB = get_web_db()  # Centralized: was hardcoded
 
 # Quality gates
 MIN_QUALITY_SCORE = 0.4

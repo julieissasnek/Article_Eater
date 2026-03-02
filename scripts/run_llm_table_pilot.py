@@ -110,8 +110,8 @@ class _ChatAdapter:
             try:
                 json.loads(text)
                 return text
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
             # Fall back to any parseable JSON object fragment.
             candidates = re.findall(r"\{[\s\S]*\}", text)
             for frag in reversed(candidates):
@@ -119,7 +119,8 @@ class _ChatAdapter:
                 try:
                     json.loads(frag)
                     return frag
-                except Exception:
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
                     continue
             return ""
 
@@ -153,8 +154,8 @@ class _ChatAdapter:
         finally:
             try:
                 Path(tmp_path).unlink(missing_ok=True)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     def create(
         self,

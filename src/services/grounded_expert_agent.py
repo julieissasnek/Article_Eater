@@ -156,7 +156,7 @@ class GroundedExpertAgent:
             try:
                 self.web_db_path = resolve_web_db(prefer="integrated")
             except Exception:
-                self.web_db_path = Path("data/web_persistence.db")
+                self.web_db_path = get_web_db()
         self.web_id = web_id
 
         # Knowledge base

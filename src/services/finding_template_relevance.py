@@ -109,31 +109,58 @@ OUTCOME_BRIDGES = {
         "processing_style",
         "tpn_deactivation",
         "dmn_re_engagement",
+        "directed_attention_fatigue",
+        "focused_attention",
+        "sustained_attention",
+        "internally_directed_search_resources",
     },
     "stress": {
         "hpa_axis_dysregulation",
         "cortisol",
         "allostatic_load",
         "autonomic_arousal",
+        "stress_regulation",
+        "spatial_anxiety",
+        "fear_response",
     },
     "mood": {
         "affective_response",
         "felt_emotion",
         "positive_affect_shift",
+        "affective_comfort",
+        "affective_experience",
+        "mood_regulation",
+        "mood_valence_shift",
+        "perceived_emotion",
+        "perceived_freedom",
+        "perceived_sadness",
+        "pleasurable_sadness",
+        "implicit_affective_tag",
     },
     "well_being": {
         "allostatic_load",
         "restorative_outcome",
         "mood",
+        "psychological_wellbeing",
+        "greater_environmental_benefit",
+        "subjective_restoration",
     },
     "productivity": {
         "cognitive_performance",
         "executive_function",
         "working_memory_load",
+        "task_performance",
+        "decision_efficiency",
+        "general_cognitive_capacity",
+        "cognitive_processing_style",
+        "cognitive_emotional_capacity",
+        "error_proneness",
     },
     "recovery_time": {
         "stress_recovery",
         "autonomic_recovery",
+        "fatigue_recovery",
+        "restorative_experience",
     },
     "sleep_quality": {
         "circadian_alignment",
@@ -144,180 +171,138 @@ OUTCOME_BRIDGES = {
         "divergent_thinking",
         "processing_style",
         "exploration_exploitation_balance",
+        "creative_output_quality",
+        "creative_product_quality",
+        "divergent_thinking_capacity",
     },
     "memory": {
         "episodic_boundary_strength",
         "memory_retrieval",
         "working_memory_load",
+        "affective_state_memory_retrieval",
+        "memory_consolidation",
+        "goal_forgetting",
+        "spatial_memory",
     },
     "cognitive_load": {
         "working_memory_load",
         "directed_attention_fatigue",
+        "working_memory_capacity",
     },
     "visual_comfort": {
         "luminance_pe_magnitude",
         "visual_strain",
+        "processing_fluency",
+        "perceptual_awareness",
+        "speech_in_noise_perception",
     },
     "preference": {
         "aesthetic_emotion",
         "approach_avoidance",
+        "complexity_preference",
+        "environmental_preference",
+        "explicit_evaluation",
+        "aesthetic_judgment",
     },
     "social_interaction": {
         "perceived_social_isolation",
         "proxemic_regulation",
+        "prosocial_behavior",
+        "social_engagement",
+        "social_behavior_quality",
+        "oxytocin_release",
     },
     "physiological_arousal": {
         "autonomic_arousal",
         "hpa_axis_dysregulation",
+        "arousal_pe",
+        "physiological_arousal",
+        "chill_probability",
     },
     "cortisol": {
         "hpa_axis_dysregulation",
         "melatonin_cortisol_rhythm",
     },
+    "thermal_comfort": {
+        "thermal_pe",
+        "thermal_delight_and_engagement",
+        "adaptive_thermal_prediction",
+        "metabolic_cost_fatigue",
+        "reduced_metabolic_flexibility",
+    },
+    "wayfinding": {
+        "wayfinding_efficiency",
+        "navigation_efficiency",
+        "metric_hierarchy_representation",
+    },
+    "place_attachment": {
+        "place_identity_formation",
+        "place_identity_reinforcement",
+    },
+    "reward": {
+        "vmpfc_value",
+        "groove_pleasure",
+        "pleasure_response",
+    },
+    "approach_behavior": {
+        "approach_behavior",
+        "exploration_motivation",
+        "postural_motor_preparation",
+        "action_tendency_reduction",
+    },
+    "restorativeness": {
+        "perceived_restorativeness",
+        "subjective_restoration",
+        "affordance_relaxation_pathway",
+    },
+    "material_perception": {
+        "material_authenticity_perception",
+    },
 }
 
-TIER1_TAXONOMY: dict[str, set[str]] = {
-    "ART": {
-        "ART",
-        "ATTENTION_RESTORATION",
-        "ATTENTION_RESTORATION_THEORY",
-        "DIRECTED_ATTENTION",
-        "RESTORATIVE_ENVIRONMENTS",
-    },
-    "SRT": {
-        "SRT",
-        "STRESS_RECOVERY",
-        "STRESS_RECOVERY_THEORY",
-        "STRESS_PHYSIOLOGY",
-        "ALLOSTATIC_LOAD",
-        "ALLOSTATIC_REGULATION",
-        "ENVIRONMENTAL_STRESS",
-        "NM_STRESS",
-        "HPA",
-    },
-    "BIOPHILIA": {
-        "BIOPHILIA",
-        "BIOPHILIC_DESIGN",
-        "PROSPECT_REFUGE",
-        "PROSPECT_REFUGE_THEORY",
-        "NATURE",
-    },
-    "PREDICTIVE_PROCESSING": {
-        "PREDICTIVE_PROCESSING",
-        "HIERARCHICAL_PREDICTIVE_CODING",
-        "PP",
-    },
-    "CIRCADIAN_REGULATION": {
-        "CIRCADIAN",
-        "CHRONOBIOLOGICAL",
-        "CHRONOBIOLOGICAL_REGULATION",
-        "CIRCADIAN_NEUROSCIENCE",
-        "RETINAL_ACTIVATION",
-        "TEMPORAL_COGNITION",
-        "TIME_PERCEPTION_THEORY",
-    },
-    "COGNITIVE_CONTROL": {
-        "COGNITIVE_CONTROL",
-        "COGNITIVE_LOAD_THEORY",
-        "EXECUTIVE",
-        "WORKING_MEMORY",
-        "DUAL_PROCESS",
-        "ECOLOGICAL_RATIONALITY",
-    },
-    "MULTISENSORY_INTEGRATION": {
-        "MULTISENSORY_INTEGRATION",
-        "MSI",
-        "MS",
-        "SENSORY",
-    },
-    "SPATIAL_COGNITION": {
-        "SPATIAL_NAVIGATION",
-        "SPACE_SYNTAX",
-        "WAYFINDING",
-        "HIPPOCAMPAL_SPATIAL_COGNITION",
-        "VISUAL_GRAPH_ANALYSIS",
-    },
-    "AFFECTIVE_EMOTION": {
-        "AFFECTIVE_NEUROSCIENCE",
-        "AFFECTIVE_SCIENCE",
-        "AESTHETIC_EMOTIONS",
-        "EMOTION_PERCEPTION",
-        "PAD_EMOTIONAL_MODEL",
-        "COGNITIVE_APPRAISAL",
-        "APPROACH_AVOIDANCE",
-    },
-    "SOCIAL_COGNITION": {
-        "SOCIAL",
-        "SOCIAL_PSYCHOLOGY",
-        "SOCIAL_NEUROSCIENCE",
-        "SOCIAL_BRAIN_HYPOTHESIS",
-        "PROXEMICS",
-        "PRIVACY_REGULATION",
-        "TERRITORIAL",
-    },
-    "NEUROMODULATORY_REWARD": {
-        "NEUROMODULATORY",
-        "NM",
-        "NM_REWARD",
-        "NM_AROUSAL",
-        "REWARD_PROCESSING",
-        "DOPAMINERGIC",
-        "AROUSAL_THEORY",
-    },
-    "MEMORY_LEARNING": {
-        "MEMORY",
-        "MEMORY_SYSTEMS",
-        "EPISODIC_MEMORY",
-        "CONTEXT_DEPENDENT_MEMORY",
-        "EVENT_SEGMENTATION_THEORY",
-        "SITUATION_MODELS",
-        "STATISTICAL_LEARNING",
-    },
-    "CREATIVE_COGNITION": {
-        "CREATIVE_COGNITION",
-        "CREATIVE_COGNITION_THEORY",
-        "INCUBATION_THEORY",
-        "GROUP_CREATIVITY",
-    },
-    "MATERIAL_HAPTIC_THERMAL": {
-        "MATERIAL",
-        "MATERIALS",
-        "SOMATOSENSORY_PROCESSING",
-        "HAPTIC",
-        "THERMAL",
-        "ADAPTIVE_THERMAL_COMFORT",
-        "INTEROCEPTION",
-        "INTEROCEPTION_ALLOSTASIS",
-        "INTEROCEPTION_CONSTRUCTIONIST",
-    },
-    "AUDIO_COGNITION": {
-        "ACOUSTIC_COMMUNICATION",
-        "MUSIC_COGNITION",
-        "AUDITORY",
-    },
-    "EMBODIED_ECOLOGICAL": {
-        "EMBODIED_COGNITION",
-        "ECOLOGICAL_PSYCHOLOGY",
-        "AFFORDANCE_THEORY",
-        "FORWARD_MODELS",
-        "MOTOR_CONTROL_THEORY",
-    },
-    "ARCHITECTURAL_PHENOMENOLOGY": {
-        "ARCHITECTURAL_PHENOMENOLOGY",
-        "ARCHITECTURAL_COMPOSITION",
-        "BEHAVIORAL_ARCHITECTURE",
-        "ARCHITECTURAL_HEALTH",
-        "ARCHITECTURAL_MATHEMATICS",
-    },
-    "VISUAL_PERCEPTION_AESTHETICS": {
-        "VISUAL_PERCEPTION",
-        "PROCESSING_FLUENCY",
-        "ECOLOGICAL_VALENCE_THEORY",
-        "CATEGORICAL_COLOR_PERCEPTION",
-        "FRACTAL_FLUENCY",
-        "FRACTAL_AESTHETICS",
-    },
-}
+def _load_theory_taxonomy() -> tuple[dict[str, set[str]], set[str]]:
+    """Load theory taxonomy from schemas/theory/ files.
+
+    Returns:
+        (THEORY_FAMILY_TAXONOMY, T1_FRAMEWORK_IDS)
+        - THEORY_FAMILY_TAXONOMY: maps family name → set of alias strings (for matching)
+        - T1_FRAMEWORK_IDS: the canonical 10 T1 framework abbreviations
+    """
+    import json as _json
+    schemas_dir = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory"
+
+    taxonomy: dict[str, set[str]] = {}
+    t1_ids: set[str] = set()
+
+    # Load T1 frameworks
+    t1_path = schemas_dir / "tier1_frameworks.json"
+    if t1_path.exists():
+        t1_data = _json.loads(t1_path.read_text(errors="replace"))
+        for abbrev, info in t1_data.get("frameworks", {}).items():
+            aliases = set(info.get("aliases", []))
+            aliases.add(abbrev)
+            aliases.add(info.get("name", "").upper().replace(" ", "_"))
+            taxonomy[abbrev] = aliases
+            t1_ids.add(abbrev)
+
+    # Load T1.5 domain theories
+    t15_path = schemas_dir / "tier1_5_domain_theories.json"
+    if t15_path.exists():
+        t15_data = _json.loads(t15_path.read_text(errors="replace"))
+        for abbrev, info in t15_data.get("domain_theories", {}).items():
+            aliases = set(info.get("aliases", []))
+            aliases.add(abbrev)
+            aliases.add(info.get("name", "").upper().replace(" ", "_"))
+            taxonomy[abbrev] = aliases
+
+    return taxonomy, t1_ids
+
+
+# Load from schemas/theory/ files — properly separates T1 from T1.5
+THEORY_FAMILY_TAXONOMY, T1_FRAMEWORK_IDS = _load_theory_taxonomy()
+
+# Backward compatibility alias
+TIER1_TAXONOMY = THEORY_FAMILY_TAXONOMY
 
 DOMAIN_KEYWORDS: dict[str, set[str]] = {
     "nature": {"nature", "green", "vegetation", "biophilic", "tree", "view"},
@@ -606,7 +591,8 @@ def load_template_profiles(templates_dir: Path) -> list[TemplateProfile]:
     for path in sorted(templates_dir.glob("*.json")):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         template_id = str(payload.get("template_id") or path.stem)
         display_id = str(payload.get("display_id") or template_id)

@@ -356,8 +356,9 @@ class TestEvidenceCluster:
         assert ConstraintType.SHARED_EVIDENCE.value == "shared_evidence"
 
     def test_empirical_covariance_bridge_type_exists(self):
-        """Verify EMPIRICAL_COVARIANCE bridge type exists."""
-        assert BridgeType.EMPIRICAL_COVARIANCE.value == "empirical_covariance"
+        """Verify EMPIRICAL_ASSOCIATION (formerly EMPIRICAL_COVARIANCE) bridge type exists."""
+        # Renamed: EMPIRICAL_COVARIANCE → EMPIRICAL_ASSOCIATION (RV5 BridgeType fix)
+        assert BridgeType.EMPIRICAL_ASSOCIATION.value == "empirical_association"
 
     def test_cluster_aware_merge_same_cluster(self):
         """Verify same-cluster beliefs don't double-count."""

@@ -916,8 +916,8 @@ class PDFBibTeXMatcher:
             if get_pdf_text:
                 try:
                     pdf_text = get_pdf_text(pdf_path)
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
             result = self.match_pdf(pdf_path, pdf_text, min_title_similarity)
             if result:

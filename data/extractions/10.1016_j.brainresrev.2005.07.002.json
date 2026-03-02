@@ -2,7 +2,7 @@
   "doi": "10.1016/j.brainresrev.2005.07.002",
   "article_type": "theoretical",
   "article_family": "theoretical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.71,
   "n_findings": 10,
   "extracted_at": "2026-02-25T03:31:01.839072+00:00",
@@ -670,7 +670,7 @@
     },
     {
       "id": 9,
-      "antecedent": "Blue light (e.g., LED, \u03bbmax = 470 nm)",
+      "antecedent": "Blue light (e.g., LED, λmax = 470 nm)",
       "consequent": "Nocturnal melatonin suppression",
       "direction": "increase",
       "claim_type": "theoretical_proposition",
@@ -695,7 +695,7 @@
       "source": "Section 6.1, page 223",
       "quote": "The model predicts greater nocturnal melatonin suppression for the blue light than for the white light exposure.",
       "testable": true,
-      "empirical_support_cited": "Figueiro et al. [31] showed a surprising disparity between the flux densities needed to suppress human nocturnal melatonin after 1 h of exposures to narrow-band blue light (LED, \u03bbmax = 470 nm) and to polychromatic white light (mercury vapor).",
+      "empirical_support_cited": "Figueiro et al. [31] showed a surprising disparity between the flux densities needed to suppress human nocturnal melatonin after 1 h of exposures to narrow-band blue light (LED, λmax = 470 nm) and to polychromatic white light (mercury vapor).",
       "template_matches": [
         {
           "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
@@ -1372,5 +1372,54 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Model of Phototransduction by the Human Circadian System",
+      "commitment_type": "proposes",
+      "specific_claim": "The paper proposes a comprehensive model detailing how light signals are detected by multiple photoreceptors (rods, cones, and intrinsically photosensitive retinal ganglion cells) in the human retina and subsequently integrated to drive the circadian system's responses, such as phase shifting and melatonin suppression."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Causal mechanism connecting light exposure to circadian responses via retinal phototransduction.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Environmental light (specific spectral composition, intensity, duration)",
+        "to_construct": "Retinal photoreceptor activation (rods, cones, ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Retinal photoreceptor activation",
+        "to_construct": "Generation of neural signals within the retina",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Neural signals from multiple photoreceptors (integrated within the retina)",
+        "to_construct": "Transmission via the retinohypothalamic tract (RHT)",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "RHT input to the suprachiasmatic nucleus (SCN)",
+        "to_construct": "Modulation of SCN neuronal activity and clock gene expression",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "SCN activity modulation",
+        "to_construct": "Regulation of circadian rhythms (e.g., melatonin secretion, sleep-wake cycle, alertness)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:48:40.096159+00:00"
 }

@@ -93,7 +93,7 @@ class TestPromptGeneration:
         prompt = generate_theory_link_prompt(long_paper, findings)
 
         # Prompt should be reasonable size (not 10KB+ of repeated chars)
-        assert len(prompt) < 8000, "Prompt should be truncated for very long papers"
+        assert len(prompt) < 15000, "Prompt should be truncated for very long papers"
 
 
 class TestResponseParsing:

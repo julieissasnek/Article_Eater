@@ -23,6 +23,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from src.services.web_of_belief import (
+from src.services.db_locator import get_web_db
     Belief,
     BeliefStatus,
     Constraint,
@@ -113,7 +114,7 @@ def main() -> int:
     parser.add_argument(
         "--db",
         type=Path,
-        default=Path("data/web_persistence.db"),
+        default=get_web_db(),
         help="Path to web persistence SQLite DB.",
     )
     parser.add_argument(

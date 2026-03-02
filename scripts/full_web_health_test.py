@@ -433,8 +433,8 @@ def tests_template_coverage(conn: sqlite3.Connection) -> List[TestResult]:
         try:
             with open(fp) as f:
                 templates.append(json.load(f))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Build rich keyword index (constructs + mechanism chains + frameworks + name tokens)
     keyword_index: Dict[str, List[str]] = defaultdict(list)
@@ -512,8 +512,8 @@ def tests_template_coverage(conn: sqlite3.Connection) -> List[TestResult]:
             try:
                 tids = json.loads(r[0])
                 all_referenced_templates.update(tids)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         db_coverage = (len(all_referenced_templates) / max(len(templates), 1)) * 100
         total_beliefs = len(all_beliefs)
@@ -633,8 +633,8 @@ def tests_template_provenance() -> List[TestResult]:
         try:
             with open(fp) as f:
                 templates.append(json.load(f))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     total = len(templates)
     if total == 0:
@@ -774,8 +774,8 @@ def load_bn_metrics() -> Optional[Dict]:
                 "unresolved_count": 0,
             }
         conn.close()
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Fallback: run check_web_bn_health.py and parse output
     import subprocess
@@ -808,7 +808,8 @@ def load_bn_metrics() -> Optional[Dict]:
             "largest_component_pct": metrics.get("largest_component_pct", 0.0),
             "unresolved_count": metrics.get("unresolved_count", 0),
         }
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 

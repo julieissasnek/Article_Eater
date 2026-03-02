@@ -2,7 +2,7 @@
   "doi": "Acoustics/of/Sequential/Spaces",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.669,
   "n_findings": 48,
   "extracted_at": "2026-02-25T07:28:20.814568+00:00",
@@ -20,7 +20,7 @@
   "stimuli_or_exposures": [
     {
       "type": "model",
-      "description": "2D Finite Element Model (FEM) of five rectangular rooms (5.0m width, 8.0m length) connected by openings, with rigid boundary conditions. Parameters varied include: opening/partition area ratio (dop: 0-100%), opening/partition position ratio (Pop: 0-(1-dop)/2%), number of rooms (N: 1-10), absorption coefficient (ab: 0-1.0, low=0.01, high=0.5), absorption distribution (uniform/non-uniform), sound incidence angle (\u03b8: 0\u00b0/60\u00b0), and presence/type of additional sound source (omnidirectional/directional point source in room 1).",
+      "description": "2D Finite Element Model (FEM) of five rectangular rooms (5.0m width, 8.0m length) connected by openings, with rigid boundary conditions. Parameters varied include: opening/partition area ratio (dop: 0-100%), opening/partition position ratio (Pop: 0-(1-dop)/2%), number of rooms (N: 1-10), absorption coefficient (ab: 0-1.0, low=0.01, high=0.5), absorption distribution (uniform/non-uniform), sound incidence angle (θ: 0°/60°), and presence/type of additional sound source (omnidirectional/directional point source in room 1).",
       "n_stimuli": null,
       "source": "Section 2.1, 2.2, Fig. 1, Fig. 5"
     }
@@ -195,7 +195,7 @@
     },
     {
       "id": 7,
-      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0) at the opening",
+      "antecedent": "Oblique sound incidence angle (θ=60°) at the opening",
       "consequent": "Average SPL in rooms 2-5",
       "direction": "decrease",
       "claim_type": "associational",
@@ -214,11 +214,11 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.6, Fig. 8",
-      "quote": "the average SPL in room 1 is the same, while those of rooms 2-5 are considerably reduced compared to those at \u03b8 = 0\u00b0."
+      "quote": "the average SPL in room 1 is the same, while those of rooms 2-5 are considerably reduced compared to those at θ = 0°."
     },
     {
       "id": 8,
-      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0) at the opening",
+      "antecedent": "Oblique sound incidence angle (θ=60°) at the opening",
       "consequent": "Level differences between rooms",
       "direction": "increase",
       "claim_type": "associational",
@@ -237,7 +237,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.6, Fig. 8",
-      "quote": "The level differences between rooms are larger than those at \u03b8 = 0\u00b0 at all frequencies."
+      "quote": "The level differences between rooms are larger than those at θ = 0° at all frequencies."
     },
     {
       "id": 9,
@@ -259,7 +259,7 @@
       "mechanism": null,
       "moderators_reported": [
         "room absorption (high, ab=0.5)",
-        "oblique incidence (\u03b8=60\u00b0)"
+        "oblique incidence (θ=60°)"
       ],
       "provenance_depth": "section",
       "source": "p.6, Fig. 8b",
@@ -285,7 +285,7 @@
       "mechanism": null,
       "moderators_reported": [
         "room absorption (high, ab=0.5)",
-        "oblique incidence (\u03b8=60\u00b0)"
+        "oblique incidence (θ=60°)"
       ],
       "provenance_depth": "section",
       "source": "p.6, Fig. 8b",
@@ -293,7 +293,7 @@
     },
     {
       "id": 11,
-      "antecedent": "Oblique sound incidence angle (\u03b8=60\u00b0)",
+      "antecedent": "Oblique sound incidence angle (θ=60°)",
       "consequent": "Stable value of level difference between rooms",
       "direction": "increase",
       "claim_type": "associational",
@@ -314,7 +314,7 @@
       ],
       "provenance_depth": "section",
       "source": "p.6",
-      "quote": "the stable value of the level difference increases, being, e.g., close to 10.0 dB at \u03b8 = 60\u00b0 rather than close to 0 dB as at \u03b8 = 0\u00b0."
+      "quote": "the stable value of the level difference increases, being, e.g., close to 10.0 dB at θ = 60° rather than close to 0 dB as at θ = 0°."
     },
     {
       "id": 12,
@@ -1246,7 +1246,7 @@
   "moderators": [
     "room absorption (low, ab=0.01)",
     "room absorption (high, ab=0.5)",
-    "oblique incidence (\u03b8=60\u00b0)",
+    "oblique incidence (θ=60°)",
     "additional omnidirectional source in room 1",
     "source-receiver distance",
     "opening dimension (small, dop=20%)",
@@ -1293,5 +1293,29 @@
     "The amount of calculation confines the prediction to 2D modeling in the validity tests.",
     "Future work could involve more effective methods that could enable 3D simulations to be conducted under high-frequency conditions so that issues such as the height of the spaces could be investigated.",
     "Other related aspects to consider in the future include rooms with circular and irregular shapes and rooms that are connected at the corner."
-  ]
+  ],
+  "stimulus_description": {
+    "environmental_features": [
+      "sequential spaces",
+      "opening/partition area ratio (dop)",
+      "room dimensions",
+      "acoustic properties of materials"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "baseline spatial configuration",
+      "specific opening/partition area ratio (e.g., 0% or a standard reference value)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "instruments_used": [
+    {
+      "name": "Sound Level Meter",
+      "construct": "Sound Pressure Level",
+      "description": "Device used to measure sound pressure levels in decibels, often used to determine level differences between locations.",
+      "type": "other"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:08:09.520060+00:00"
 }

@@ -690,7 +690,8 @@ def _apply_proposal_to_template(
                data.get("display_id") == proposal.template_id:
                 template_file = json_file
                 break
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
 
     if not template_file:

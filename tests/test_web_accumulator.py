@@ -195,7 +195,7 @@ class TestFactoryFunction:
         """Test default accumulator creation."""
         acc = get_accumulator()
         assert acc is not None
-        assert acc.db_path.name == "web_persistence.db"
+        assert acc.db_path.name == "web_persistence_v2.db"
 
     def test_get_accumulator_custom_paths(self):
         """Test custom paths."""

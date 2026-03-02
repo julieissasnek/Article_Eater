@@ -92,8 +92,8 @@ def load_templates() -> List[Dict[str, Any]]:
         try:
             with open(fp) as f:
                 templates.append(json.load(f))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return templates
 
 

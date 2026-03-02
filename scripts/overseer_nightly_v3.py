@@ -202,7 +202,134 @@ def run_nightly_v3(dry_run: bool = False, output_dir: str = None) -> dict:
     logger.info("Section 8: System statistics...")
     stats = _collect_system_stats()
     report["sections"]["statistics"] = stats
-    
+
+    # =========================================================================
+    # Section 9: Management Layer (Pipeline Monitoring & Queue Health)
+    # =========================================================================
+    logger.info("Section 9: Management layer (pipeline monitoring, queue health)...")
+    management_report = {}
+    try:
+        from src.services.overseer_management import ManagementDashboard
+        dashboard = ManagementDashboard(
+            overseer_db_path=str(PROJECT_ROOT / "data" / "overseer.db"),
+            web_db_path=str(PROJECT_ROOT / "data" / "article_eater.db"),
+        )
+        mgmt_result = dashboard.management_check()
+        management_report = mgmt_result if isinstance(mgmt_result, dict) else {
+            "pipeline_statuses": getattr(mgmt_result, "pipeline_statuses", {}),
+            "queue_health": getattr(mgmt_result, "queue_health", {}),
+            "article_flow": getattr(mgmt_result, "article_flow", {}),
+            "suggestion_backlog": getattr(mgmt_result, "suggestion_backlog", {}),
+            "extraction_queue": getattr(mgmt_result, "extraction_queue", {}),
+            "panel_needs": getattr(mgmt_result, "panel_needs", []),
+            "recommendations": getattr(mgmt_result, "recommendations", []),
+        }
+        report["sections"]["management"] = management_report
+        logger.info(f"  Pipeline count: {len(management_report.get('pipeline_statuses', {}))}")
+        logger.info(f"  Recommendations: {len(management_report.get('recommendations', []))}")
+    except ImportError:
+        logger.warning("Management layer not available (overseer_management.py missing)")
+        report["sections"]["management"] = {"status": "unavailable", "reason": "module_not_found"}
+    except Exception as e:
+        logger.warning(f"Management layer check failed: {e}")
+        report["sections"]["management"] = {"status": "error", "error": str(e)}
+
+    # =========================================================================
+    # Section 10: Reflex System Execution
+    # =========================================================================
+    logger.info("Section 10: Reflex system execution...")
+    reflex_results = {}
+    try:
+        from src.qa.reflex_system import ReflexRegistry
+        registry = ReflexRegistry(
+            repo_root=PROJECT_ROOT,
+            overseer_db_path=PROJECT_ROOT / "data" / "overseer.db"
+        )
+        results = registry.run_all()
+
+        total = len(results)
+        fired = sum(1 for r in results if r.detected_issue)
+        fixed = sum(1 for r in results if r.auto_fixed)
+        unfixed = sum(1 for r in results if r.detected_issue and not r.auto_fixed)
+
+        reflex_results = {
+            "total_reflexes": total,
+            "fired": fired,
+            "fixed": fixed,
+            "unfixed": unfixed,
+            "success_rate": round((fixed / fired * 100) if fired > 0 else 0.0, 1),
+            "details": [
+                {
+                    "reflex_id": r.reflex_id,
+                    "detected": r.detected_issue,
+                    "fixed": r.auto_fixed,
+                    "needs_attention": r.needs_attention,
+                }
+                for r in results[:50]  # Limit detail to first 50 for brevity
+            ]
+        }
+        report["sections"]["reflexes"] = reflex_results
+        logger.info(f"  Total reflexes: {total}")
+        logger.info(f"  Fired: {fired}, Fixed: {fixed}, Unfixed: {unfixed}")
+    except ImportError:
+        logger.warning("Reflex system not available (reflex_system.py missing)")
+        report["sections"]["reflexes"] = {"status": "unavailable", "reason": "module_not_found"}
+    except Exception as e:
+        logger.warning(f"Reflex system execution failed: {e}")
+        report["sections"]["reflexes"] = {"status": "error", "error": str(e)}
+
+    # =========================================================================
+    # Section 11: Recommendation Loop Health
+    # =========================================================================
+    logger.info("Section 11: Recommendation loop health...")
+    recommendation_loop_report = {}
+    try:
+        from src.services.recommendation_loop import RecommendationLoopService
+
+        service = RecommendationLoopService(
+            db_path=str(PROJECT_ROOT / "web_persistence_v2.db"),
+            web_db_path=str(PROJECT_ROOT / "data" / "article_eater.db"),
+        )
+
+        # Run single pass and capture health metrics
+        loop_result = service.run_single_pass(top_n=3)
+
+        # Extract key metrics
+        harvest_gaps = loop_result.get("steps", {}).get("harvest_gaps", {})
+        harvest_qa = loop_result.get("steps", {}).get("harvest_qa", {})
+        prioritize = loop_result.get("steps", {}).get("prioritize", {})
+        insert = loop_result.get("steps", {}).get("insert", {})
+        dispatch = loop_result.get("steps", {}).get("dispatch", {})
+        health = loop_result.get("steps", {}).get("health", {})
+
+        recommendation_loop_report = {
+            "status": "operational",
+            "cycle_duration_seconds": loop_result.get("duration_seconds", 0),
+            "interpretation_space_gaps": harvest_gaps.get("count", 0),
+            "qa_suggestions": harvest_qa.get("count", 0),
+            "total_suggestions": prioritize.get("total_suggestions", 0),
+            "high_voi_suggestions": prioritize.get("high_voi", 0),
+            "medium_voi_suggestions": prioritize.get("medium_voi", 0),
+            "low_voi_suggestions": prioritize.get("low_voi", 0),
+            "inserted_into_queue": insert.get("inserted_count", 0),
+            "searches_dispatched": dispatch.get("dispatched_count", 0),
+            "total_targets_in_queue": dispatch.get("total_targets", 0),
+            "high_priority_targets": dispatch.get("high_priority_targets", 0),
+            "queue_health": health,
+        }
+
+        report["sections"]["recommendation_loop"] = recommendation_loop_report
+        logger.info(f"  Harvested {harvest_gaps.get('count', 0)} gaps, {harvest_qa.get('count', 0)} QA items")
+        logger.info(f"  Dispatched {dispatch.get('dispatched_count', 0)} searches from {dispatch.get('total_targets', 0)} targets")
+        logger.info(f"  Queue health: {health.get('status', 'unknown')}")
+
+    except ImportError:
+        logger.warning("Recommendation loop service not available (recommendation_loop.py missing)")
+        report["sections"]["recommendation_loop"] = {"status": "unavailable", "reason": "module_not_found"}
+    except Exception as e:
+        logger.warning(f"Recommendation loop health check failed: {e}")
+        report["sections"]["recommendation_loop"] = {"status": "error", "error": str(e)}
+
     # =========================================================================
     # Summary
     # =========================================================================

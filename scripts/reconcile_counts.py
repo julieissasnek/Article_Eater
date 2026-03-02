@@ -52,7 +52,7 @@ def count_json_files():
                 uncalibrated += 1
             else:
                 other += 1
-        except:
+        except Exception:  
             other += 1
 
     return {
@@ -93,7 +93,7 @@ def count_db_templates(db_path):
         try:
             cursor.execute("SELECT calibration_status, COUNT(*) FROM templates GROUP BY calibration_status;")
             by_status = {row[0]: row[1] for row in cursor.fetchall()}
-        except:
+        except Exception:  
             by_status = {}
 
         conn.close()

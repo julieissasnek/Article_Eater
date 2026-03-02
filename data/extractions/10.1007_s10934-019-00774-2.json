@@ -2,7 +2,7 @@
   "doi": "10.1007/s10934-019-00774-2",
   "article_type": "conceptual_framework",
   "article_family": "theoretical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.66,
   "n_findings": 13,
   "extracted_at": "2026-02-25T03:57:30.133399+00:00",
@@ -29,23 +29,23 @@
       "definition": "the ratio between the in-vacuum mass of the porous aggregate and its bulk volume."
     },
     {
-      "name": "Porosity (\u03a6)",
+      "name": "Porosity (Φ)",
       "definition": "the ratio of the open pores volume to the total volume."
     },
     {
-      "name": "Tortuosity (\u03b1\u221e)",
+      "name": "Tortuosity (α∞)",
       "definition": "the measure of the elongation of the passageway through the pores, compared to the thickness of the sample."
     },
     {
-      "name": "Air flow resistivity (\u03c3)",
+      "name": "Air flow resistivity (σ)",
       "definition": "the resistance experienced by air when it passes through a material."
     },
     {
-      "name": "Thermal characteristic length (\u039b')",
+      "name": "Thermal characteristic length (Λ')",
       "definition": "describes the thermal dissipation effects at medium and high frequencies."
     },
     {
-      "name": "Viscous characteristic length (\u039b)",
+      "name": "Viscous characteristic length (Λ)",
       "definition": "describes the effects of viscous dissipation at mid and high frequencies."
     }
   ],
@@ -528,7 +528,7 @@
       "source": "Section 4.4",
       "quote": "The porosity is necessary for sound dissipation by friction and this is possible because of enough pores on the material surface for sound to pass through and get diminished.",
       "testable": true,
-      "empirical_support_cited": "Studies [8, 9, 16, 30, 36, 37, 54, 77, 85, 104, 132, 133, 135\u2013137] and Figure 14",
+      "empirical_support_cited": "Studies [8, 9, 16, 30, 36, 37, 54, 77, 85, 104, 132, 133, 135–137] and Figure 14",
       "template_matches": [
         {
           "template_id": "DT_DMN_MAINTENANCE_002",
@@ -601,7 +601,7 @@
       "source": "Section 4.5",
       "quote": "If the tortuosity has increased, the SAC increases monotonously towards higher frequency side (peak of SAC).",
       "testable": true,
-      "empirical_support_cited": "Studies [8, 9, 36, 38, 54, 77, 85, 132, 133, 135\u2013138] and Figure 16",
+      "empirical_support_cited": "Studies [8, 9, 36, 38, 54, 77, 85, 132, 133, 135–138] and Figure 16",
       "template_matches": [
         {
           "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
@@ -649,7 +649,7 @@
     },
     {
       "id": 9,
-      "antecedent": "Air flow resistivity (\u03c3) of material",
+      "antecedent": "Air flow resistivity (σ) of material",
       "consequent": "Sound Absorption Coefficient (SAC)",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -670,7 +670,7 @@
       "source": "Section 4.6",
       "quote": "The air flow resistivity is the resistance experienced by air when it passes through a material. It determines both the SA and sound transmitting properties of the material... A smaller value shows little resistance to air flowing through the material, whereas a higher value is a sign that the material pores are so close that air flow is blocked, and therefore, a low value of sound absorption may be anticipated.",
       "testable": true,
-      "empirical_support_cited": "Studies [8, 9, 16, 36, 54, 64, 68, 71, 74, 79, 102, 104, 131, 133, 135\u2013137, 139, 140] and Figure 17",
+      "empirical_support_cited": "Studies [8, 9, 16, 36, 54, 64, 68, 71, 74, 79, 102, 104, 131, 133, 135–137, 139, 140] and Figure 17",
       "template_matches": [
         {
           "template_id": "PP_PROCESSING_FLUENCY_001",
@@ -874,7 +874,7 @@
     },
     {
       "id": 12,
-      "antecedent": "Thermal characteristic length (\u039b') of porous material",
+      "antecedent": "Thermal characteristic length (Λ') of porous material",
       "consequent": "Thermal dissipation effects",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -948,7 +948,7 @@
     },
     {
       "id": 13,
-      "antecedent": "Viscous characteristic length (\u039b) of porous material",
+      "antecedent": "Viscous characteristic length (Λ) of porous material",
       "consequent": "Viscous dissipation effects",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -1357,5 +1357,64 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Delany-Bazley model",
+      "commitment_type": "assumes",
+      "specific_claim": "Empirically relates acoustic impedance and propagation constant to flow resistivity and frequency for fibrous materials."
+    },
+    {
+      "theory_name": "Johnson-Champoux-Allard (JCA) model",
+      "commitment_type": "assumes",
+      "specific_claim": "Predicts acoustic properties of porous materials based on microstructural parameters like porosity, flow resistivity, tortuosity, and characteristic lengths."
+    },
+    {
+      "theory_name": "Biot theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Describes wave propagation in fluid-saturated porous media, accounting for both solid frame and fluid motion."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Sound energy dissipation in porous materials occurs through viscous friction and thermal exchange between the oscillating fluid and the pore walls, converting sound energy into heat.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Sound waves propagating in porous material",
+        "to_construct": "Oscillation of fluid within pores",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Oscillation of fluid within pores",
+        "to_construct": "Viscous friction between fluid and pore walls",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Oscillation of fluid within pores",
+        "to_construct": "Thermal exchange between fluid and pore walls",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Viscous friction and thermal exchange",
+        "to_construct": "Conversion of sound energy to heat",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Conversion of sound energy to heat",
+        "to_construct": "Sound energy dissipation",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:12:24.153353+00:00"
 }

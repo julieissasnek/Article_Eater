@@ -92,7 +92,8 @@ def collect_seed_annotations(templates_dir: Path) -> List[Dict]:
     for json_file in sorted(templates_dir.glob("*.json")):
         try:
             template = json.load(open(json_file))
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
 
         tid = template.get("display_id", json_file.stem)

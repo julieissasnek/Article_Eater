@@ -3,6 +3,12 @@ digraph ATLAS_Modules {
   node [shape=box, style="rounded,filled", fontsize=10];
   edge [color="#666666", arrowsize=0.6];
 
+  subgraph cluster_acquire_pdfs_unpaywall {
+    label="acquire_pdfs_unpaywall";
+    style=filled; color="#f0f0f0";
+    "scripts.acquire_pdfs_unpaywall" [label="acquire_pdfs_unpaywall\n(15KB)"];
+  }
+
   subgraph cluster_acquisition_digest {
     label="acquisition_digest";
     style=filled; color="#f0f0f0";
@@ -33,7 +39,7 @@ digraph ATLAS_Modules {
     "src.agents.agent_stubs" [label="agent_stubs\n(10KB)"];
     "src.agents.agent_finder" [label="agent_finder\n(1KB)"];
     "src.agents.agent_aggregator" [label="agent_aggregator\n(1KB)"];
-    "src.agents.agent_core" [label="agent_core\n(1KB)"];
+    "src.agents.agent_core" [label="agent_core\n(3KB)"];
     "src.agents.bbn_calibrator" [label="bbn_calibrator\n(2KB)"];
     "src.agents.agent_panels_v2" [label="agent_panels_v2\n(5KB)"];
     "src.agents.json_utils" [label="json_utils\n(1KB)"];
@@ -73,6 +79,12 @@ digraph ATLAS_Modules {
     label="analyze_web_health";
     style=filled; color="#f0f0f0";
     "scripts.analyze_web_health" [label="analyze_web_health\n(6KB)"];
+  }
+
+  subgraph cluster_apply_reflex_fixes {
+    label="apply_reflex_fixes";
+    style=filled; color="#f0f0f0";
+    "scripts.apply_reflex_fixes" [label="apply_reflex_fixes\n(7KB)"];
   }
 
   subgraph cluster_apply_remaining_ceiling_decisions {
@@ -171,10 +183,46 @@ digraph ATLAS_Modules {
     "scripts.backfill_argument_constraints" [label="backfill_argument_constraints\n(9KB)"];
   }
 
+  subgraph cluster_backfill_belief_ids {
+    label="backfill_belief_ids";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_belief_ids" [label="backfill_belief_ids\n(14KB)"];
+  }
+
+  subgraph cluster_backfill_canonical_outcomes {
+    label="backfill_canonical_outcomes";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_canonical_outcomes" [label="backfill_canonical_outcomes\n(14KB)"];
+  }
+
   subgraph cluster_backfill_confirmed_row_article_types {
     label="backfill_confirmed_row_article_types";
     style=filled; color="#f0f0f0";
     "scripts.backfill_confirmed_row_article_types" [label="backfill_confirmed_row_article_types\n(3KB)"];
+  }
+
+  subgraph cluster_backfill_env_outcome {
+    label="backfill_env_outcome";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_env_outcome" [label="backfill_env_outcome\n(8KB)"];
+  }
+
+  subgraph cluster_backfill_env_outcome_v2 {
+    label="backfill_env_outcome_v2";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_env_outcome_v2" [label="backfill_env_outcome_v2\n(7KB)"];
+  }
+
+  subgraph cluster_backfill_operationalizations {
+    label="backfill_operationalizations";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_operationalizations" [label="backfill_operationalizations\n(15KB)"];
+  }
+
+  subgraph cluster_backfill_outcome_ids {
+    label="backfill_outcome_ids";
+    style=filled; color="#f0f0f0";
+    "scripts.backfill_outcome_ids" [label="backfill_outcome_ids\n(16KB)"];
   }
 
   subgraph cluster_backfill_outcome_polarity_conflicts {
@@ -198,7 +246,37 @@ digraph ATLAS_Modules {
   subgraph cluster_backup_databases {
     label="backup_databases";
     style=filled; color="#f0f0f0";
-    "scripts.backup_databases" [label="backup_databases\n(17KB)"];
+    "scripts.backup_databases" [label="backup_databases\n(35KB)"];
+  }
+
+  subgraph cluster_batch_annotate_measurements {
+    label="batch_annotate_measurements";
+    style=filled; color="#f0f0f0";
+    "scripts.batch_annotate_measurements" [label="batch_annotate_measurements\n(9KB)"];
+  }
+
+  subgraph cluster_batch_annotate_stimuli {
+    label="batch_annotate_stimuli";
+    style=filled; color="#f0f0f0";
+    "scripts.batch_annotate_stimuli" [label="batch_annotate_stimuli\n(10KB)"];
+  }
+
+  subgraph cluster_batch_extract_pdf_images {
+    label="batch_extract_pdf_images";
+    style=filled; color="#f0f0f0";
+    "scripts.batch_extract_pdf_images" [label="batch_extract_pdf_images\n(16KB)"];
+  }
+
+  subgraph cluster_batch_fix_db_paths {
+    label="batch_fix_db_paths";
+    style=filled; color="#f0f0f0";
+    "scripts.batch_fix_db_paths" [label="batch_fix_db_paths\n(7KB)"];
+  }
+
+  subgraph cluster_batch_integrate_papers {
+    label="batch_integrate_papers";
+    style=filled; color="#f0f0f0";
+    "scripts.batch_integrate_papers" [label="batch_integrate_papers\n(23KB)"];
   }
 
   subgraph cluster_bn_unresolved_repair {
@@ -217,6 +295,12 @@ digraph ATLAS_Modules {
     label="break_bn_cycles";
     style=filled; color="#f0f0f0";
     "scripts.break_bn_cycles" [label="break_bn_cycles\n(2KB)"];
+  }
+
+  subgraph cluster_bridge_template_worlds {
+    label="bridge_template_worlds";
+    style=filled; color="#f0f0f0";
+    "scripts.bridge_template_worlds" [label="bridge_template_worlds\n(14KB)"];
   }
 
   subgraph cluster_build_abstract_reduced_tables {
@@ -267,10 +351,28 @@ digraph ATLAS_Modules {
     "scripts.build_table_remake_paper_queue" [label="build_table_remake_paper_queue\n(3KB)"];
   }
 
+  subgraph cluster_build_vocab_bridge {
+    label="build_vocab_bridge";
+    style=filled; color="#f0f0f0";
+    "scripts.build_vocab_bridge" [label="build_vocab_bridge\n(10KB)"];
+  }
+
+  subgraph cluster_bulk_integrate_extractions {
+    label="bulk_integrate_extractions";
+    style=filled; color="#f0f0f0";
+    "scripts.bulk_integrate_extractions" [label="bulk_integrate_extractions\n(17KB)"];
+  }
+
   subgraph cluster_calibrate_credibility {
     label="calibrate_credibility";
     style=filled; color="#f0f0f0";
     "scripts.calibrate_credibility" [label="calibrate_credibility\n(22KB)"];
+  }
+
+  subgraph cluster_calibrate_templates {
+    label="calibrate_templates";
+    style=filled; color="#f0f0f0";
+    "scripts.calibrate_templates" [label="calibrate_templates\n(9KB)"];
   }
 
   subgraph cluster_ceiling_adjudicator {
@@ -309,6 +411,12 @@ digraph ATLAS_Modules {
     "scripts.check_notifications" [label="check_notifications\n(4KB)"];
   }
 
+  subgraph cluster_check_repo_health {
+    label="check_repo_health";
+    style=filled; color="#f0f0f0";
+    "scripts.check_repo_health" [label="check_repo_health\n(16KB)"];
+  }
+
   subgraph cluster_check_rule_contract_quality {
     label="check_rule_contract_quality";
     style=filled; color="#f0f0f0";
@@ -331,6 +439,12 @@ digraph ATLAS_Modules {
     label="classify_and_extract";
     style=filled; color="#f0f0f0";
     "scripts.classify_and_extract" [label="classify_and_extract\n(15KB)"];
+  }
+
+  subgraph cluster_classify_grounding {
+    label="classify_grounding";
+    style=filled; color="#f0f0f0";
+    "scripts.classify_grounding" [label="classify_grounding\n(7KB)"];
   }
 
   subgraph cluster_cli {
@@ -425,7 +539,7 @@ digraph ATLAS_Modules {
   subgraph cluster_compute_system_health {
     label="compute_system_health";
     style=filled; color="#f0f0f0";
-    "scripts.compute_system_health" [label="compute_system_health\n(29KB)"];
+    "scripts.compute_system_health" [label="compute_system_health\n(39KB)"];
   }
 
   subgraph cluster_config {
@@ -499,6 +613,12 @@ digraph ATLAS_Modules {
     "scripts.deconcat" [label="deconcat\n(3KB)"];
   }
 
+  subgraph cluster_dedup_templates {
+    label="dedup_templates";
+    style=filled; color="#f0f0f0";
+    "scripts.dedup_templates" [label="dedup_templates\n(5KB)"];
+  }
+
   subgraph cluster_demo_layered_network {
     label="demo_layered_network";
     style=filled; color="#f0f0f0";
@@ -553,6 +673,18 @@ digraph ATLAS_Modules {
     "scripts.enrich_crossref" [label="enrich_crossref\n(14KB)"];
   }
 
+  subgraph cluster_enrich_findings_with_tier2 {
+    label="enrich_findings_with_tier2";
+    style=filled; color="#f0f0f0";
+    "scripts.enrich_findings_with_tier2" [label="enrich_findings_with_tier2\n(7KB)"];
+  }
+
+  subgraph cluster_enrich_provenance {
+    label="enrich_provenance";
+    style=filled; color="#f0f0f0";
+    "scripts.enrich_provenance" [label="enrich_provenance\n(29KB)"];
+  }
+
   subgraph cluster_enrich_template_json_fields {
     label="enrich_template_json_fields";
     style=filled; color="#f0f0f0";
@@ -574,7 +706,7 @@ digraph ATLAS_Modules {
   subgraph cluster_epistemic {
     label="epistemic";
     style=filled; color="#fff3cd";
-    "src.epistemic.edge_types" [label="edge_types\n(22KB)"];
+    "src.epistemic.edge_types" [label="edge_types\n(27KB)"];
     "src.epistemic.gap_types" [label="gap_types\n(3KB)"];
     "src.epistemic.warrant_scaling" [label="warrant_scaling\n(7KB)"];
     "src.epistemic" [label="epistemic\n(5KB)"];
@@ -619,10 +751,22 @@ digraph ATLAS_Modules {
     "scripts.evaluate_docx_table_quality" [label="evaluate_docx_table_quality\n(3KB)"];
   }
 
+  subgraph cluster_expand_outcome_vocab {
+    label="expand_outcome_vocab";
+    style=filled; color="#f0f0f0";
+    "scripts.expand_outcome_vocab" [label="expand_outcome_vocab\n(23KB)"];
+  }
+
   subgraph cluster_expand_t1_5_coverage {
     label="expand_t1_5_coverage";
     style=filled; color="#f0f0f0";
     "scripts.expand_t1_5_coverage" [label="expand_t1_5_coverage\n(11KB)"];
+  }
+
+  subgraph cluster_expert_calibration_prep {
+    label="expert_calibration_prep";
+    style=filled; color="#f0f0f0";
+    "scripts.expert_calibration_prep" [label="expert_calibration_prep\n(12KB)"];
   }
 
   subgraph cluster_explain_mechanism_derivation {
@@ -707,6 +851,7 @@ digraph ATLAS_Modules {
     "src.extraction.revised_prompts_v2" [label="revised_prompts_v2\n(43KB)"];
     "src.extraction" [label="extraction\n(4KB)"];
     "src.extraction.paper_triage" [label="paper_triage\n(13KB)"];
+    "src.extraction.revised_prompts_v3" [label="revised_prompts_v3\n(64KB)"];
     "src.extraction.paper_triage_ag" [label="paper_triage_ag\n(6KB)"];
     "src.extraction.feed_cmr" [label="feed_cmr\n(18KB)"];
     "src.extraction.abstract_extractor" [label="abstract_extractor\n(54KB)"];
@@ -739,6 +884,18 @@ digraph ATLAS_Modules {
     "scripts.fix_empty_vars" [label="fix_empty_vars\n(2KB)"];
   }
 
+  subgraph cluster_fix_molecule_ids {
+    label="fix_molecule_ids";
+    style=filled; color="#f0f0f0";
+    "scripts.fix_molecule_ids" [label="fix_molecule_ids\n(6KB)"];
+  }
+
+  subgraph cluster_fix_molecule_ids_v2 {
+    label="fix_molecule_ids_v2";
+    style=filled; color="#f0f0f0";
+    "scripts.fix_molecule_ids_v2" [label="fix_molecule_ids_v2\n(15KB)"];
+  }
+
   subgraph cluster_fix_remaining_gaps {
     label="fix_remaining_gaps";
     style=filled; color="#f0f0f0";
@@ -769,6 +926,12 @@ digraph ATLAS_Modules {
     "scripts.force_bn_rebuild" [label="force_bn_rebuild\n(1KB)"];
   }
 
+  subgraph cluster_formalize_theories {
+    label="formalize_theories";
+    style=filled; color="#f0f0f0";
+    "scripts.formalize_theories" [label="formalize_theories\n(30KB)"];
+  }
+
   subgraph cluster_full_web_health_test {
     label="full_web_health_test";
     style=filled; color="#f0f0f0";
@@ -784,7 +947,7 @@ digraph ATLAS_Modules {
   subgraph cluster_gemini_extraction_queue {
     label="gemini_extraction_queue";
     style=filled; color="#f0f0f0";
-    "scripts.gemini_extraction_queue" [label="gemini_extraction_queue\n(29KB)"];
+    "scripts.gemini_extraction_queue" [label="gemini_extraction_queue\n(31KB)"];
   }
 
   subgraph cluster_gemini_triage_papers {
@@ -799,6 +962,18 @@ digraph ATLAS_Modules {
     "scripts.generate_ai_search_prompts" [label="generate_ai_search_prompts\n(8KB)"];
   }
 
+  subgraph cluster_generate_annotations_a9_a13_a14 {
+    label="generate_annotations_a9_a13_a14";
+    style=filled; color="#f0f0f0";
+    "scripts.generate_annotations_a9_a13_a14" [label="generate_annotations_a9_a13_a14\n(13KB)"];
+  }
+
+  subgraph cluster_generate_annotations_llm {
+    label="generate_annotations_llm";
+    style=filled; color="#f0f0f0";
+    "scripts.generate_annotations_llm" [label="generate_annotations_llm\n(20KB)"];
+  }
+
   subgraph cluster_generate_batch_15_queue {
     label="generate_batch_15_queue";
     style=filled; color="#f0f0f0";
@@ -809,6 +984,12 @@ digraph ATLAS_Modules {
     label="generate_calibration_report";
     style=filled; color="#f0f0f0";
     "scripts.generate_calibration_report" [label="generate_calibration_report\n(24KB)"];
+  }
+
+  subgraph cluster_generate_causal_attributes {
+    label="generate_causal_attributes";
+    style=filled; color="#f0f0f0";
+    "scripts.generate_causal_attributes" [label="generate_causal_attributes\n(56KB)"];
   }
 
   subgraph cluster_generate_completeness_report {
@@ -835,6 +1016,12 @@ digraph ATLAS_Modules {
     "scripts.generate_python_catalog" [label="generate_python_catalog\n(10KB)"];
   }
 
+  subgraph cluster_generate_system_report {
+    label="generate_system_report";
+    style=filled; color="#f0f0f0";
+    "scripts.generate_system_report" [label="generate_system_report\n(10KB)"];
+  }
+
   subgraph cluster_generate_website_pptx {
     label="generate_website_pptx";
     style=filled; color="#f0f0f0";
@@ -853,6 +1040,12 @@ digraph ATLAS_Modules {
     "scripts.gui_style_guard" [label="gui_style_guard\n(1KB)"];
   }
 
+  subgraph cluster_identify_reextraction_tiers {
+    label="identify_reextraction_tiers";
+    style=filled; color="#f0f0f0";
+    "scripts.identify_reextraction_tiers" [label="identify_reextraction_tiers\n(11KB)"];
+  }
+
   subgraph cluster_import_outcomes_to_oc {
     label="import_outcomes_to_oc";
     style=filled; color="#f0f0f0";
@@ -863,6 +1056,12 @@ digraph ATLAS_Modules {
     label="improve_web_health";
     style=filled; color="#f0f0f0";
     "scripts.improve_web_health" [label="improve_web_health\n(13KB)"];
+  }
+
+  subgraph cluster_infer_template_images {
+    label="infer_template_images";
+    style=filled; color="#f0f0f0";
+    "scripts.infer_template_images" [label="infer_template_images\n(14KB)"];
   }
 
   subgraph cluster_inspect_rulegraph_v2 {
@@ -889,6 +1088,36 @@ digraph ATLAS_Modules {
     "scripts.integrated_prediction_pipeline" [label="integrated_prediction_pipeline\n(39KB)"];
   }
 
+  subgraph cluster_interrogation_phase1 {
+    label="interrogation_phase1";
+    style=filled; color="#f0f0f0";
+    "scripts.interrogation_phase1" [label="interrogation_phase1\n(22KB)"];
+  }
+
+  subgraph cluster_interrogation_phase2 {
+    label="interrogation_phase2";
+    style=filled; color="#f0f0f0";
+    "scripts.interrogation_phase2" [label="interrogation_phase2\n(44KB)"];
+  }
+
+  subgraph cluster_interrogation_phase3 {
+    label="interrogation_phase3";
+    style=filled; color="#f0f0f0";
+    "scripts.interrogation_phase3" [label="interrogation_phase3\n(28KB)"];
+  }
+
+  subgraph cluster_interrogation_phase3_v2 {
+    label="interrogation_phase3_v2";
+    style=filled; color="#f0f0f0";
+    "scripts.interrogation_phase3_v2" [label="interrogation_phase3_v2\n(24KB)"];
+  }
+
+  subgraph cluster_interrogation_phase4 {
+    label="interrogation_phase4";
+    style=filled; color="#f0f0f0";
+    "scripts.interrogation_phase4" [label="interrogation_phase4\n(22KB)"];
+  }
+
   subgraph cluster_investigate_dbs {
     label="investigate_dbs";
     style=filled; color="#f0f0f0";
@@ -899,6 +1128,30 @@ digraph ATLAS_Modules {
     label="job_status_inspector";
     style=filled; color="#f0f0f0";
     "scripts.job_status_inspector" [label="job_status_inspector\n(4KB)"];
+  }
+
+  subgraph cluster_kirsh_decision_tree_analysis {
+    label="kirsh_decision_tree_analysis";
+    style=filled; color="#f0f0f0";
+    "scripts.kirsh_decision_tree_analysis" [label="kirsh_decision_tree_analysis\n(74KB)"];
+  }
+
+  subgraph cluster_link_local {
+    label="link_local";
+    style=filled; color="#f0f0f0";
+    "scripts.link_local" [label="link_local\n(14KB)"];
+  }
+
+  subgraph cluster_link_outcomes_to_instruments {
+    label="link_outcomes_to_instruments";
+    style=filled; color="#f0f0f0";
+    "scripts.link_outcomes_to_instruments" [label="link_outcomes_to_instruments\n(7KB)"];
+  }
+
+  subgraph cluster_link_theories_molecules {
+    label="link_theories_molecules";
+    style=filled; color="#f0f0f0";
+    "scripts.link_theories_molecules" [label="link_theories_molecules\n(9KB)"];
   }
 
   subgraph cluster_lint_bridge_ceilings {
@@ -925,6 +1178,12 @@ digraph ATLAS_Modules {
     "scripts.list_all_keys" [label="list_all_keys\n(0KB)"];
   }
 
+  subgraph cluster_llm_field_discovery {
+    label="llm_field_discovery";
+    style=filled; color="#f0f0f0";
+    "scripts.llm_field_discovery" [label="llm_field_discovery\n(28KB)"];
+  }
+
   subgraph cluster_load_extraction_csv_to_db {
     label="load_extraction_csv_to_db";
     style=filled; color="#f0f0f0";
@@ -947,6 +1206,12 @@ digraph ATLAS_Modules {
     label="load_tranche80_theory_links";
     style=filled; color="#f0f0f0";
     "scripts.load_tranche80_theory_links" [label="load_tranche80_theory_links\n(9KB)"];
+  }
+
+  subgraph cluster_local_runner {
+    label="local_runner";
+    style=filled; color="#f0f0f0";
+    "scripts.local_runner" [label="local_runner\n(30KB)"];
   }
 
   subgraph cluster_maintain_bn {
@@ -994,6 +1259,12 @@ digraph ATLAS_Modules {
     "src.methods.method_identifier" [label="method_identifier\n(12KB)"];
     "src.methods.task_ecology" [label="task_ecology\n(14KB)"];
     "src.methods.seed_data" [label="seed_data\n(17KB)"];
+  }
+
+  subgraph cluster_migrate_annotations_to_unified {
+    label="migrate_annotations_to_unified";
+    style=filled; color="#f0f0f0";
+    "scripts.migrate_annotations_to_unified" [label="migrate_annotations_to_unified\n(9KB)"];
   }
 
   subgraph cluster_migrate_article_type {
@@ -1059,11 +1330,24 @@ digraph ATLAS_Modules {
   subgraph cluster_models {
     label="models";
     style=filled; color="#f8d7da";
+    "src.models.cva_constraint" [label="cva_constraint\n(11KB)"];
+    "src.models.subject_characteristics" [label="subject_characteristics\n(15KB)"];
+    "src.models.activity_frame" [label="activity_frame\n(10KB)"];
     "src.models.theory_models" [label="theory_models\n(21KB)"];
+    "src.models.mechanism_templates" [label="mechanism_templates\n(14KB)"];
+    "src.models.cva_annotations" [label="cva_annotations\n(9KB)"];
     "src.models" [label="models\n(4KB)"];
+    "src.models.cva_valuation" [label="cva_valuation\n(13KB)"];
     "src.models.epistemic_status" [label="epistemic_status\n(16KB)"];
+    "src.models.extended_annotations" [label="extended_annotations\n(16KB)"];
     "src.models.provenance" [label="provenance\n(22KB)"];
     "src.models.propositional_content" [label="propositional_content\n(9KB)"];
+  }
+
+  subgraph cluster_monitor_batch_progress {
+    label="monitor_batch_progress";
+    style=filled; color="#f0f0f0";
+    "scripts.monitor_batch_progress" [label="monitor_batch_progress\n(12KB)"];
   }
 
   subgraph cluster_monitor_queue {
@@ -1075,7 +1359,7 @@ digraph ATLAS_Modules {
   subgraph cluster_nightly_integration_pipeline {
     label="nightly_integration_pipeline";
     style=filled; color="#f0f0f0";
-    "scripts.nightly_integration_pipeline" [label="nightly_integration_pipeline\n(18KB)"];
+    "scripts.nightly_integration_pipeline" [label="nightly_integration_pipeline\n(36KB)"];
   }
 
   subgraph cluster_offline_pipeline_smoke {
@@ -1114,6 +1398,12 @@ digraph ATLAS_Modules {
     "scripts.overseer_nightly_v2" [label="overseer_nightly_v2\n(17KB)"];
   }
 
+  subgraph cluster_overseer_nightly_v3 {
+    label="overseer_nightly_v3";
+    style=filled; color="#f0f0f0";
+    "scripts.overseer_nightly_v3" [label="overseer_nightly_v3\n(15KB)"];
+  }
+
   subgraph cluster_parallel_extract_v2 {
     label="parallel_extract_v2";
     style=filled; color="#f0f0f0";
@@ -1148,6 +1438,12 @@ digraph ATLAS_Modules {
     label="patch_wire_admin_v206";
     style=filled; color="#f0f0f0";
     "scripts.patch_wire_admin_v206" [label="patch_wire_admin_v206\n(2KB)"];
+  }
+
+  subgraph cluster_persist_finding_annotations {
+    label="persist_finding_annotations";
+    style=filled; color="#f0f0f0";
+    "scripts.persist_finding_annotations" [label="persist_finding_annotations\n(3KB)"];
   }
 
   subgraph cluster_populate_remaining_interactions {
@@ -1222,6 +1518,12 @@ digraph ATLAS_Modules {
     "scripts.process_realtime_pdf_completion_queue" [label="process_realtime_pdf_completion_queue\n(101KB)"];
   }
 
+  subgraph cluster_propagate_constraints {
+    label="propagate_constraints";
+    style=filled; color="#f0f0f0";
+    "scripts.propagate_constraints" [label="propagate_constraints\n(11KB)"];
+  }
+
   subgraph cluster_prune_unresolved_beliefs {
     label="prune_unresolved_beliefs";
     style=filled; color="#f0f0f0";
@@ -1239,8 +1541,12 @@ digraph ATLAS_Modules {
     style=filled; color="#f0f0f0";
     "src.qa.qa_cache_manager" [label="qa_cache_manager\n(5KB)"];
     "src.qa.precompute_pipeline" [label="precompute_pipeline\n(7KB)"];
+    "src.qa" [label="qa\n(0KB)"];
+    "src.qa.reflex_system" [label="reflex_system\n(77KB)"];
     "src.qa.app" [label="app\n(5KB)"];
-    "src.qa.router" [label="router\n(5KB)"];
+    "src.qa.router" [label="router\n(7KB)"];
+    "src.qa.extraction_field_validator" [label="extraction_field_validator\n(65KB)"];
+    "src.qa.belief_id_reflex" [label="belief_id_reflex\n(8KB)"];
     "src.qa.molecules.t1_5_registry" [label="t1_5_registry\n(6KB)"];
     "src.qa.molecules.registry" [label="registry\n(8KB)"];
     "src.qa.molecules.t1_5_theory_schema" [label="t1_5_theory_schema\n(8KB)"];
@@ -1318,6 +1624,12 @@ digraph ATLAS_Modules {
     label="recover_timeout_pdfs_with_tracking";
     style=filled; color="#f0f0f0";
     "scripts.recover_timeout_pdfs_with_tracking" [label="recover_timeout_pdfs_with_tracking\n(15KB)"];
+  }
+
+  subgraph cluster_reextract_zero_findings {
+    label="reextract_zero_findings";
+    style=filled; color="#f0f0f0";
+    "scripts.reextract_zero_findings" [label="reextract_zero_findings\n(8KB)"];
   }
 
   subgraph cluster_register_unmapped {
@@ -1434,6 +1746,12 @@ digraph ATLAS_Modules {
     "scripts.run_all_tests" [label="run_all_tests\n(13KB)"];
   }
 
+  subgraph cluster_run_batch_integration {
+    label="run_batch_integration";
+    style=filled; color="#f0f0f0";
+    "scripts.run_batch_integration" [label="run_batch_integration\n(27KB)"];
+  }
+
   subgraph cluster_run_bbn_calibration_demo {
     label="run_bbn_calibration_demo";
     style=filled; color="#f0f0f0";
@@ -1464,10 +1782,28 @@ digraph ATLAS_Modules {
     "scripts.run_finding_template_relevance" [label="run_finding_template_relevance\n(4KB)"];
   }
 
+  subgraph cluster_run_finding_template_relevance_streaming {
+    label="run_finding_template_relevance_streaming";
+    style=filled; color="#f0f0f0";
+    "scripts.run_finding_template_relevance_streaming" [label="run_finding_template_relevance_streaming\n(6KB)"];
+  }
+
   subgraph cluster_run_full_extraction {
     label="run_full_extraction";
     style=filled; color="#f0f0f0";
     "scripts.run_full_extraction" [label="run_full_extraction\n(11KB)"];
+  }
+
+  subgraph cluster_run_image_extraction_batch {
+    label="run_image_extraction_batch";
+    style=filled; color="#f0f0f0";
+    "scripts.run_image_extraction_batch" [label="run_image_extraction_batch\n(26KB)"];
+  }
+
+  subgraph cluster_run_image_pipeline {
+    label="run_image_pipeline";
+    style=filled; color="#f0f0f0";
+    "scripts.run_image_pipeline" [label="run_image_pipeline\n(16KB)"];
   }
 
   subgraph cluster_run_llm_abstract_pilot {
@@ -1500,6 +1836,12 @@ digraph ATLAS_Modules {
     "scripts.run_open_plan_office_example" [label="run_open_plan_office_example\n(3KB)"];
   }
 
+  subgraph cluster_run_panel_1_outcomes {
+    label="run_panel_1_outcomes";
+    style=filled; color="#f0f0f0";
+    "scripts.run_panel_1_outcomes" [label="run_panel_1_outcomes\n(27KB)"];
+  }
+
   subgraph cluster_run_pdf_queue_until_empty {
     label="run_pdf_queue_until_empty";
     style=filled; color="#f0f0f0";
@@ -1530,6 +1872,12 @@ digraph ATLAS_Modules {
     "scripts.run_realtime_table_rule_intake" [label="run_realtime_table_rule_intake\n(51KB)"];
   }
 
+  subgraph cluster_run_reflexes {
+    label="run_reflexes";
+    style=filled; color="#f0f0f0";
+    "scripts.run_reflexes" [label="run_reflexes\n(7KB)"];
+  }
+
   subgraph cluster_run_visual_tracker {
     label="run_visual_tracker";
     style=filled; color="#f0f0f0";
@@ -1554,10 +1902,16 @@ digraph ATLAS_Modules {
     "scripts.sanity_check" [label="sanity_check\n(5KB)"];
   }
 
+  subgraph cluster_scan_figures_in_articles {
+    label="scan_figures_in_articles";
+    style=filled; color="#f0f0f0";
+    "scripts.scan_figures_in_articles" [label="scan_figures_in_articles\n(12KB)"];
+  }
+
   subgraph cluster_scheduled_pipeline {
     label="scheduled_pipeline";
     style=filled; color="#f0f0f0";
-    "scripts.scheduled_pipeline" [label="scheduled_pipeline\n(22KB)"];
+    "scripts.scheduled_pipeline" [label="scheduled_pipeline\n(28KB)"];
   }
 
   subgraph cluster_scholar_query_expander {
@@ -1584,10 +1938,22 @@ digraph ATLAS_Modules {
     "scripts.security_sql_lint" [label="security_sql_lint\n(0KB)"];
   }
 
+  subgraph cluster_seed_annotations {
+    label="seed_annotations";
+    style=filled; color="#f0f0f0";
+    "scripts.seed_annotations" [label="seed_annotations\n(7KB)"];
+  }
+
   subgraph cluster_seed_beliefs_from_templates {
     label="seed_beliefs_from_templates";
     style=filled; color="#f0f0f0";
-    "scripts.seed_beliefs_from_templates" [label="seed_beliefs_from_templates\n(18KB)"];
+    "scripts.seed_beliefs_from_templates" [label="seed_beliefs_from_templates\n(22KB)"];
+  }
+
+  subgraph cluster_seed_extended_annotations {
+    label="seed_extended_annotations";
+    style=filled; color="#f0f0f0";
+    "scripts.seed_extended_annotations" [label="seed_extended_annotations\n(20KB)"];
   }
 
   subgraph cluster_seed_mechanism_beliefs {
@@ -1625,70 +1991,94 @@ digraph ATLAS_Modules {
     style=filled; color="#d4edda";
     "src.services.bibtex_ingestion" [label="bibtex_ingestion\n(14KB)"];
     "src.services.paper_lifecycle" [label="paper_lifecycle\n(28KB)"];
+    "src.services.annotation_service" [label="annotation_service\n(33KB)"];
     "src.services.query_parser" [label="query_parser\n(26KB)"];
-    "src.services.query_engine" [label="query_engine\n(32KB)"];
+    "src.services.cva_qa_enricher" [label="cva_qa_enricher\n(10KB)"];
+    "src.services.query_engine" [label="query_engine\n(47KB)"];
     "src.services.environment_taxonomy" [label="environment_taxonomy\n(15KB)"];
+    "src.services.epistemic_projection" [label="epistemic_projection\n(20KB)"];
     "src.services.grounded_expert_agent" [label="grounded_expert_agent\n(49KB)"];
     "src.services.entrenchment_replay" [label="entrenchment_replay\n(7KB)"];
     "src.services.web_accumulator" [label="web_accumulator\n(22KB)"];
     "src.services.dual_epistemology" [label="dual_epistemology\n(20KB)"];
+    "src.services.ai_panel_resolver" [label="ai_panel_resolver\n(25KB)"];
     "src.services.pipeline_logging" [label="pipeline_logging\n(17KB)"];
-    "src.services.bridge_warrants" [label="bridge_warrants\n(42KB)"];
-    "src.services.gap_predictor" [label="gap_predictor\n(55KB)"];
+    "src.services.bridge_warrants" [label="bridge_warrants\n(43KB)"];
+    "src.services.gap_predictor" [label="gap_predictor\n(71KB)"];
     "src.services.outcome_taxonomy" [label="outcome_taxonomy\n(60KB)"];
+    "src.services.theory_agent_service" [label="theory_agent_service\n(17KB)"];
+    "src.services.overseer_predictive" [label="overseer_predictive\n(18KB)"];
     "src.services.graph_service_fallback" [label="graph_service_fallback\n(4KB)"];
+    "src.services.image_pipeline_service" [label="image_pipeline_service\n(30KB)"];
     "src.services.export_formats" [label="export_formats\n(23KB)"];
     "src.services.refined_epistemic" [label="refined_epistemic\n(33KB)"];
     "src.services.pdf_extraction" [label="pdf_extraction\n(22KB)"];
     "src.services.voi_search" [label="voi_search\n(64KB)"];
+    "src.services.arbitrary_qa_handler" [label="arbitrary_qa_handler\n(44KB)"];
     "src.services.notification_service" [label="notification_service\n(18KB)"];
+    "src.services.cva_dynamics" [label="cva_dynamics\n(24KB)"];
     "src.services.stability_engine" [label="stability_engine\n(20KB)"];
+    "src.services.theory_guide_service" [label="theory_guide_service\n(21KB)"];
     "src.services.evidence_summarizer" [label="evidence_summarizer\n(31KB)"];
+    "src.services.warrant_strength" [label="warrant_strength\n(36KB)"];
     "src.services.query_response" [label="query_response\n(47KB)"];
-    "src.services.prediction_generator" [label="prediction_generator\n(31KB)"];
-    "src.services.template_query_service" [label="template_query_service\n(47KB)"];
+    "src.services.prediction_generator" [label="prediction_generator\n(40KB)"];
+    "src.services.template_query_service" [label="template_query_service\n(118KB)"];
     "src.services.bn_coherence_client" [label="bn_coherence_client\n(16KB)"];
     "src.services.warrant_service" [label="warrant_service\n(16KB)"];
     "src.services.credibility_feedback" [label="credibility_feedback\n(21KB)"];
+    "src.services.knowledge_catalog" [label="knowledge_catalog\n(20KB)"];
     "src.services.output_serializer" [label="output_serializer\n(25KB)"];
+    "src.services.trs_client" [label="trs_client\n(19KB)"];
     "src.services.belief_validator" [label="belief_validator\n(10KB)"];
     "src.services.web_of_belief" [label="web_of_belief\n(88KB)"];
+    "src.services.template_quality_assurance" [label="template_quality_assurance\n(10KB)"];
     "src.services.vocabulary_bridge" [label="vocabulary_bridge\n(11KB)"];
+    "src.services.cva_template_linker" [label="cva_template_linker\n(8KB)"];
     "src.services.cross_layer_query" [label="cross_layer_query\n(27KB)"];
     "src.services.abstraction_levels" [label="abstraction_levels\n(25KB)"];
+    "src.services.read_next_engine" [label="read_next_engine\n(22KB)"];
     "src.services.bibtex_generator" [label="bibtex_generator\n(30KB)"];
     "src.services.query_alerts" [label="query_alerts\n(51KB)"];
-    "src.services.db_migrations" [label="db_migrations\n(11KB)"];
+    "src.services.db_migrations" [label="db_migrations\n(18KB)"];
     "src.services.extraction_approval" [label="extraction_approval\n(12KB)"];
     "src.services.system_setup" [label="system_setup\n(56KB)"];
     "src.services.table_to_claims" [label="table_to_claims\n(18KB)"];
+    "src.services.cva_dashboard" [label="cva_dashboard\n(8KB)"];
     "src.services.theory_matcher" [label="theory_matcher\n(21KB)"];
     "src.services.admin_service" [label="admin_service\n(29KB)"];
-    "src.services.db_locator" [label="db_locator\n(6KB)"];
+    "src.services.db_locator" [label="db_locator\n(7KB)"];
     "src.services.paper_fetcher" [label="paper_fetcher\n(45KB)"];
+    "src.services.overseer_self_healing" [label="overseer_self_healing\n(25KB)"];
     "src.services.bbn_calibrator" [label="bbn_calibrator\n(2KB)"];
+    "src.services.image_tag_service" [label="image_tag_service\n(24KB)"];
     "src.services.scalable_coherence" [label="scalable_coherence\n(39KB)"];
     "src.services.report_generator" [label="report_generator\n(33KB)"];
     "src.services.discovery_funnel" [label="discovery_funnel\n(41KB)"];
-    "src.services.integrated_query_service" [label="integrated_query_service\n(34KB)"];
+    "src.services.integrated_query_service" [label="integrated_query_service\n(37KB)"];
     "src.services.grounding_service" [label="grounding_service\n(19KB)"];
-    "src.services.extraction_to_web" [label="extraction_to_web\n(71KB)"];
+    "src.services.cva_attractor" [label="cva_attractor\n(12KB)"];
+    "src.services.extraction_to_web" [label="extraction_to_web\n(82KB)"];
     "src.services.export_audit" [label="export_audit\n(26KB)"];
     "src.services.feedback_store" [label="feedback_store\n(15KB)"];
     "src.services.web_persistence" [label="web_persistence\n(119KB)"];
+    "src.services.image_pipeline_models" [label="image_pipeline_models\n(8KB)"];
     "src.services.graph_export" [label="graph_export\n(37KB)"];
     "src.services.incremental_bn" [label="incremental_bn\n(33KB)"];
     "src.services.graph_api" [label="graph_api\n(24KB)"];
     "src.services.social_epistemology" [label="social_epistemology\n(50KB)"];
     "src.services.stopping_rules" [label="stopping_rules\n(16KB)"];
     "src.services.export_bundles" [label="export_bundles\n(51KB)"];
-    "src.services.argumentation_graph" [label="argumentation_graph\n(30KB)"];
+    "src.services.argumentation_graph" [label="argumentation_graph\n(35KB)"];
     "src.services.export_checklists" [label="export_checklists\n(25KB)"];
     "src.services.causal_classifier" [label="causal_classifier\n(31KB)"];
     "src.services.evidence_integration" [label="evidence_integration\n(11KB)"];
+    "src.services.overseer_playbooks" [label="overseer_playbooks\n(12KB)"];
     "src.services.interpretive_intelligence" [label="interpretive_intelligence\n(103KB)"];
+    "src.services.cva_valuation_engine" [label="cva_valuation_engine\n(15KB)"];
     "src.services.service_locator" [label="service_locator\n(0KB)"];
-    "src.services.overseer" [label="overseer\n(55KB)"];
+    "src.services.overseer" [label="overseer\n(78KB)"];
+    "src.services.cva_beauty" [label="cva_beauty\n(8KB)"];
     "src.services.rulegraph_v2_builder" [label="rulegraph_v2_builder\n(6KB)"];
     "src.services.bibtex_utils" [label="bibtex_utils\n(32KB)"];
     "src.services.gold_standard" [label="gold_standard\n(23KB)"];
@@ -1699,13 +2089,16 @@ digraph ATLAS_Modules {
     "src.services.temporal_parser" [label="temporal_parser\n(34KB)"];
     "src.services.scope_extractor" [label="scope_extractor\n(27KB)"];
     "src.services.edge_justification" [label="edge_justification\n(25KB)"];
-    "src.services.epistemic_causal_bridge" [label="epistemic_causal_bridge\n(140KB)"];
+    "src.services.epistemic_causal_bridge" [label="epistemic_causal_bridge\n(138KB)"];
     "src.services.ranking_service" [label="ranking_service\n(15KB)"];
+    "src.services.cva_annotation_service" [label="cva_annotation_service\n(11KB)"];
     "src.services.credibility_testing" [label="credibility_testing\n(45KB)"];
     "src.services.claim_gallery_builder" [label="claim_gallery_builder\n(41KB)"];
     "src.services.argument_attack" [label="argument_attack\n(36KB)"];
-    "src.services.finding_template_relevance" [label="finding_template_relevance\n(27KB)"];
+    "src.services.finding_template_relevance" [label="finding_template_relevance\n(28KB)"];
     "src.services.theory_registry" [label="theory_registry\n(35KB)"];
+    "src.services.cva_constraint_engine" [label="cva_constraint_engine\n(12KB)"];
+    "src.services.environment_image_db" [label="environment_image_db\n(12KB)"];
     "src.services.export_engine" [label="export_engine\n(50KB)"];
     "src.services.image_pool_manager" [label="image_pool_manager\n(30KB)"];
     "src.services.reporting" [label="reporting\n(36KB)"];
@@ -1723,7 +2116,7 @@ digraph ATLAS_Modules {
     "src.services.web_of_belief_modules.equilibrium" [label="equilibrium\n(3KB)"];
     "src.services.web_of_belief_modules.severity" [label="severity\n(1KB)"];
     "src.services.web_of_belief_modules.engines" [label="engines\n(6KB)"];
-    "src.services.web_of_belief_modules.mutations" [label="mutations\n(20KB)"];
+    "src.services.web_of_belief_modules.mutations" [label="mutations\n(23KB)"];
     "src.services.web_of_belief_modules.entrenchment" [label="entrenchment\n(3KB)"];
     "src.services.web_of_belief_modules.coherence" [label="coherence\n(3KB)"];
     "src.services.web_of_belief_modules.value_metrics" [label="value_metrics\n(2KB)"];
@@ -1735,8 +2128,8 @@ digraph ATLAS_Modules {
     "src.services.paper_integration.supersession" [label="supersession\n(10KB)"];
     "src.services.paper_integration.models" [label="models\n(11KB)"];
     "src.services.paper_integration" [label="paper_integration\n(1KB)"];
-    "src.services.paper_integration.rollback" [label="rollback\n(15KB)"];
-    "src.services.paper_integration.orchestrator" [label="orchestrator\n(56KB)"];
+    "src.services.paper_integration.rollback" [label="rollback\n(21KB)"];
+    "src.services.paper_integration.orchestrator" [label="orchestrator\n(64KB)"];
     "src.services.paper_integration.molecule_linker" [label="molecule_linker\n(13KB)"];
     "src.services.paper_integration.tag_engine" [label="tag_engine\n(12KB)"];
     "src.services.ecb_modules.contrast_classes" [label="contrast_classes\n(8KB)"];
@@ -1772,7 +2165,13 @@ digraph ATLAS_Modules {
   subgraph cluster_sprint10_validation_sweep {
     label="sprint10_validation_sweep";
     style=filled; color="#f0f0f0";
-    "scripts.sprint10_validation_sweep" [label="sprint10_validation_sweep\n(7KB)"];
+    "scripts.sprint10_validation_sweep" [label="sprint10_validation_sweep\n(8KB)"];
+  }
+
+  subgraph cluster_sprint_c_verification {
+    label="sprint_c_verification";
+    style=filled; color="#f0f0f0";
+    "scripts.sprint_c_verification" [label="sprint_c_verification\n(14KB)"];
   }
 
   subgraph cluster_subject_coverage_report {
@@ -1809,6 +2208,12 @@ digraph ATLAS_Modules {
     label="task_signal_watchdog";
     style=filled; color="#f0f0f0";
     "scripts.task_signal_watchdog" [label="task_signal_watchdog\n(3KB)"];
+  }
+
+  subgraph cluster_taxonomy_cross_reference {
+    label="taxonomy_cross_reference";
+    style=filled; color="#f0f0f0";
+    "scripts.taxonomy_cross_reference" [label="taxonomy_cross_reference\n(14KB)"];
   }
 
   subgraph cluster_test_db {
@@ -1922,6 +2327,31 @@ digraph ATLAS_Modules {
     "scripts.upgrade_to_v19_1_5" [label="upgrade_to_v19_1_5\n(2KB)"];
   }
 
+  subgraph cluster_utils {
+    label="utils";
+    style=filled; color="#f0f0f0";
+    "src.utils.logging_config" [label="logging_config\n(6KB)"];
+    "src.utils.validation_reflexes" [label="validation_reflexes\n(12KB)"];
+  }
+
+  subgraph cluster_v3_reextraction {
+    label="v3_reextraction";
+    style=filled; color="#f0f0f0";
+    "scripts.v3_reextraction" [label="v3_reextraction\n(9KB)"];
+  }
+
+  subgraph cluster_v3_reextraction_gemini {
+    label="v3_reextraction_gemini";
+    style=filled; color="#f0f0f0";
+    "scripts.v3_reextraction_gemini" [label="v3_reextraction_gemini\n(12KB)"];
+  }
+
+  subgraph cluster_v3_surgical_update {
+    label="v3_surgical_update";
+    style=filled; color="#f0f0f0";
+    "scripts.v3_surgical_update" [label="v3_surgical_update\n(12KB)"];
+  }
+
   subgraph cluster_validate_all_templates {
     label="validate_all_templates";
     style=filled; color="#f0f0f0";
@@ -1976,6 +2406,15 @@ digraph ATLAS_Modules {
     "scripts.verify_pipeline_expectations" [label="verify_pipeline_expectations\n(4KB)"];
   }
 
+  subgraph cluster_vision {
+    label="vision";
+    style=filled; color="#f0f0f0";
+    "src.vision.new_attributes_batch2" [label="new_attributes_batch2\n(29KB)"];
+    "src.vision.new_attributes_batch3" [label="new_attributes_batch3\n(28KB)"];
+    "src.vision.new_attributes" [label="new_attributes\n(24KB)"];
+    "src.vision" [label="vision\n(2KB)"];
+  }
+
   subgraph cluster_web_health_diagnostic {
     label="web_health_diagnostic";
     style=filled; color="#f0f0f0";
@@ -2018,36 +2457,6 @@ digraph ATLAS_Modules {
   "src.epistemic.api_extensions" -> "src.epistemic.node_types";
   "src.epistemic.api_extensions" -> "src.epistemic.node_types";
   "src.epistemic.api_extensions" -> "src.epistemic.node_types";
-  "src.epistemic.monitors.cross_type_coherence" -> "src.epistemic.node_types";
-  "src.epistemic.monitors" -> "src.epistemic.monitors.coherence_audit";
-  "src.epistemic.monitors" -> "src.epistemic.monitors.asymmetry_monitor";
-  "src.epistemic.monitors" -> "src.epistemic.monitors.bias_detection";
-  "src.epistemic.monitors" -> "src.epistemic.monitors.adversarial_review";
-  "src.epistemic.monitors.theory_monitor" -> "src.epistemic.entrenchment.prediction_ledger";
-  "src.epistemic.monitors.theory_monitor" -> "src.epistemic.entrenchment.theory_updating";
-  "src.epistemic.entrenchment.node_type_entrenchment" -> "src.epistemic.node_types";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.argumentative";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.source_quality_metadata";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.pathway_classifier";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.pe_classifier";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.paper_classifier";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.theoretical_extractor";
-  "src.epistemic.extraction" -> "src.epistemic.extraction.synthesis_ingester";
-  "src.epistemic.extraction.paper_classifier" -> "src.epistemic.node_types";
-  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.node_types";
-  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.edge_types";
-  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.contracts.claim_v2";
-  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.contracts.edge_v2";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.node_types";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.edge_types";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.contracts.claim_v2";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.contracts.edge_v2";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.entrenchment.synthesis_rules";
-  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.entrenchment.expert_discount";
-  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.node_types";
-  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.edge_types";
-  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.contracts.claim_v2";
-  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.contracts.edge_v2";
   "src.argument.critique_aggregator" -> "src.argument.paper_relations";
   "src.argument" -> "src.argument.critique_aggregator";
   "src.argument" -> "src.argument.hierarchy_evidence";
@@ -2069,15 +2478,30 @@ digraph ATLAS_Modules {
   "src.agents.agent_finder" -> "src.contracts.schemas";
   "src.agents.agent_panels_v2" -> "src.agents.agent_core";
   "src.agents.agent_panels_v2" -> "src.contracts.schemas";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.finding_template_relevance";
+  "src.qa.reflex_system" -> "src.services.finding_template_relevance";
+  "src.qa.reflex_system" -> "src.services.web_of_belief";
+  "src.qa.reflex_system" -> "src.services.warrant_service";
+  "src.qa.reflex_system" -> "src.services.ranking_service";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.models.provenance";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.db_locator";
+  "src.qa.reflex_system" -> "src.services.db_locator";
   "src.qa.app" -> "src.qa.router";
-  "src.qa.molecules.t1_5_registry" -> "src.qa.molecules.t1_5_theory_schema";
-  "src.qa.molecules.registry" -> "src.qa.molecules.schema";
-  "src.qa.molecules.registry" -> "src.qa.molecules.t1_5_registry";
-  "src.qa.molecules.registry" -> "src.qa.molecules.t1_5_registry";
+  "src.qa.router" -> "src.services.arbitrary_qa_handler";
+  "src.qa.router" -> "src.services.read_next_engine";
+  "src.qa.router" -> "src.argument.qa_handlers";
+  "src.qa.belief_id_reflex" -> "src.qa.reflex_system";
   "src.models" -> "src.models.propositional_content";
   "src.models" -> "src.models.epistemic_status";
   "src.models" -> "src.models.provenance";
   "src.models" -> "src.models.theory_models";
+  "src.vision.new_attributes_batch2" -> "src.vision.new_attributes";
   "src.cli.query" -> "src.services.query_engine";
   "src.cmr.worked_examples" -> "src.cmr.building_eval";
   "src.cmr.worked_examples" -> "src.cmr.models";
@@ -2147,20 +2571,10 @@ digraph ATLAS_Modules {
   "src.cmr.web_template_bridge" -> "src.cmr.reduction_api";
   "src.cmr.web_template_bridge" -> "src.services.db_locator";
   "src.cmr.web_template_bridge" -> "src.services.web_persistence";
+  "src.cmr.web_template_bridge" -> "src.services.db_locator";
   "src.cmr.compare" -> "src.cmr.building_eval";
   "src.cmr.validation" -> "src.cmr.feature_mapping";
   "src.cmr.tier2_scores" -> "src.cmr.reduction_api";
-  "src.cmr.learning.bayesian_update" -> "src.cmr.learning.update_proposals";
-  "src.cmr.learning" -> "src.cmr.learning.update_proposals";
-  "src.cmr.learning" -> "src.cmr.learning.evidence_accumulation";
-  "src.cmr.learning.update_proposals" -> "src.cmr.models";
-  "src.cmr.learning.evidence_accumulation" -> "src.cmr.learning.update_proposals";
-  "src.cmr.reductions.biophilia_reduction" -> "src.cmr.models";
-  "src.cmr.reductions.art_reduction" -> "src.cmr.models";
-  "src.cmr.reductions" -> "src.cmr.reductions.art_reduction";
-  "src.cmr.reductions" -> "src.cmr.reductions.srt_reduction";
-  "src.cmr.reductions" -> "src.cmr.reductions.biophilia_reduction";
-  "src.cmr.reductions.srt_reduction" -> "src.cmr.models";
   "src.queue.service" -> "src.data.theory_bootstrap";
   "src.queue.service" -> "src.epistemic.gap_types";
   "src.queue.service" -> "src.queue.models";
@@ -2222,12 +2636,15 @@ digraph ATLAS_Modules {
   "src.extraction.claim_extractor" -> "src.extraction.table_semantics_codex";
   "src.extraction.claim_extractor" -> "src.extraction.article_type_contract";
   "src.extraction.claim_extractor" -> "src.extraction.vocabulary";
+  "src.services.annotation_service" -> "src.services.db_locator";
   "src.services.query_engine" -> "src.services.web_accumulator";
   "src.services.query_engine" -> "src.services.query_parser";
   "src.services.query_engine" -> "src.services.query_response";
   "src.services.query_engine" -> "src.services.web_of_belief";
   "src.services.query_engine" -> "src.argument.qa_handlers";
   "src.services.query_engine" -> "src.services.voi_search";
+  "src.services.query_engine" -> "src.services.gap_predictor";
+  "src.services.query_engine" -> "src.epistemic.gap_types";
   "src.services.query_engine" -> "src.services.interpretive_intelligence";
   "src.services.query_engine" -> "src.services.query_parser";
   "src.services.query_engine" -> "src.services.web_of_belief";
@@ -2241,14 +2658,28 @@ digraph ATLAS_Modules {
   "src.services.dual_epistemology" -> "src.services.evidence_integration";
   "src.services.dual_epistemology" -> "src.services.pdf_extraction";
   "src.services.dual_epistemology" -> "src.services.pdf_extraction";
+  "src.services.ai_panel_resolver" -> "src.agents.agent_core";
   "src.services.gap_predictor" -> "src.epistemic.gap_types";
+  "src.services.gap_predictor" -> "src.services.annotation_service";
+  "src.services.gap_predictor" -> "src.services.argument_attack";
   "src.services.gap_predictor" -> "src.services.web_accumulator";
   "src.services.gap_predictor" -> "src.services.edge_justification";
   "src.services.outcome_taxonomy" -> "src.services.web_of_belief";
   "src.services.outcome_taxonomy" -> "src.services.bridge_warrants";
+  "src.services.overseer_predictive" -> "src.services.cva_dynamics";
+  "src.services.overseer_predictive" -> "src.services.cva_attractor";
+  "src.services.overseer_predictive" -> "src.models.cva_valuation";
+  "src.services.overseer_predictive" -> "src.services.cva_constraint_engine";
   "src.services.voi_search" -> "src.services.web_of_belief";
   "src.services.voi_search" -> "src.epistemic.gap_types";
   "src.services.voi_search" -> "src.services.discovery_funnel";
+  "src.services.arbitrary_qa_handler" -> "src.services.theory_guide_service";
+  "src.services.arbitrary_qa_handler" -> "src.services.knowledge_catalog";
+  "src.services.arbitrary_qa_handler" -> "src.agents.agent_core";
+  "src.services.cva_dynamics" -> "src.models.cva_constraint";
+  "src.services.cva_dynamics" -> "src.models.cva_valuation";
+  "src.services.cva_dynamics" -> "src.services.cva_constraint_engine";
+  "src.services.cva_dynamics" -> "src.services.cva_constraint_engine";
   "src.services.stability_engine" -> "src.services.web_of_belief";
   "src.services.query_response" -> "src.services.query_parser";
   "src.services.query_response" -> "src.services.web_of_belief";
@@ -2257,9 +2688,11 @@ digraph ATLAS_Modules {
   "src.services.query_response" -> "src.services.query_parser";
   "src.services.prediction_generator" -> "src.models.theory_models";
   "src.services.prediction_generator" -> "src.services.theory_registry";
+  "src.services.template_query_service" -> "src.services.annotation_service";
   "src.services.warrant_service" -> "src.services.ranking_service";
   "src.services.warrant_service" -> "src.services.web_of_belief";
   "src.services.credibility_feedback" -> "src.services.credibility_testing";
+  "src.services.knowledge_catalog" -> "src.models.cva_annotations";
   "src.services.belief_validator" -> "src.services.edge_justification";
   "src.services.web_of_belief" -> "src.epistemic.edge_types";
   "src.services.web_of_belief" -> "src.services.web_of_belief_modules";
@@ -2279,8 +2712,11 @@ digraph ATLAS_Modules {
   "src.services.web_of_belief" -> "src.models.propositional_content";
   "src.services.web_of_belief" -> "src.models.epistemic_status";
   "src.services.web_of_belief" -> "src.models.provenance";
+  "src.services.template_quality_assurance" -> "src.models.mechanism_templates";
   "src.services.vocabulary_bridge" -> "src.services.web_of_belief";
   "src.services.cross_layer_query" -> "src.services.web_accumulator";
+  "src.services.read_next_engine" -> "src.services.knowledge_catalog";
+  "src.services.read_next_engine" -> "src.services.environment_image_db";
   "src.services.extraction_approval" -> "src.services.notification_service";
   "src.services.extraction_approval" -> "src.services.paper_integration.orchestrator";
   "src.services.system_setup" -> "src.services.web_of_belief";
@@ -2296,15 +2732,27 @@ digraph ATLAS_Modules {
   "src.services.system_setup" -> "scripts.semantic_scholar_enrichment";
   "src.services.system_setup" -> "src.services.discovery_funnel";
   "src.services.table_to_claims" -> "src.services.table_extractor";
+  "src.services.cva_dashboard" -> "src.services.cva_attractor";
+  "src.services.cva_dashboard" -> "src.services.cva_constraint_engine";
+  "src.services.cva_dashboard" -> "src.services.cva_valuation_engine";
+  "src.services.cva_dashboard" -> "src.models.subject_characteristics";
+  "src.services.cva_dashboard" -> "src.services.cva_constraint_engine";
+  "src.services.cva_dashboard" -> "src.services.cva_constraint_engine";
+  "src.services.cva_dashboard" -> "src.services.cva_template_linker";
   "src.services.theory_matcher" -> "src.services.extraction_to_web";
   "src.services.admin_service" -> "src.services.service_locator";
   "src.services.admin_service" -> "src.tools";
   "src.services.admin_service" -> "src.security.admin_guard";
+  "src.services.overseer_self_healing" -> "src.services.overseer_playbooks";
+  "src.services.overseer_self_healing" -> "src.services.overseer";
+  "src.services.overseer_self_healing" -> "src.services.overseer_predictive";
   "src.services.discovery_funnel" -> "src.epistemic.gap_types";
   "src.services.integrated_query_service" -> "src.services.template_query_service";
   "src.services.integrated_query_service" -> "src.services.web_of_belief";
   "src.services.integrated_query_service" -> "src.services.web_accumulator";
   "src.services.grounding_service" -> "src.services.web_of_belief";
+  "src.services.cva_attractor" -> "src.models.cva_valuation";
+  "src.services.cva_attractor" -> "src.services.cva_dynamics";
   "src.services.extraction_to_web" -> "src.services.web_of_belief";
   "src.services.extraction_to_web" -> "src.services.refined_epistemic";
   "src.services.extraction_to_web" -> "src.services.theory_matcher";
@@ -2312,6 +2760,7 @@ digraph ATLAS_Modules {
   "src.services.extraction_to_web" -> "src.services.bn_coherence_client";
   "src.services.extraction_to_web" -> "src.services.argument_attack";
   "src.services.extraction_to_web" -> "src.services.web_of_belief";
+  "src.services.extraction_to_web" -> "src.services.warrant_strength";
   "src.services.web_persistence" -> "src.services.web_of_belief";
   "src.services.web_persistence" -> "src.epistemic.edge_types";
   "src.services.web_persistence" -> "src.services.bridge_warrants";
@@ -2329,7 +2778,14 @@ digraph ATLAS_Modules {
   "src.services.evidence_integration" -> "src.services.refined_epistemic";
   "src.services.interpretive_intelligence" -> "src.services.web_of_belief";
   "src.services.interpretive_intelligence" -> "src.services.interpretive_intelligence";
+  "src.services.cva_valuation_engine" -> "src.models.cva_constraint";
+  "src.services.cva_valuation_engine" -> "src.models.cva_valuation";
+  "src.services.cva_valuation_engine" -> "src.models.subject_characteristics";
+  "src.services.cva_valuation_engine" -> "src.models.activity_frame";
+  "src.services.overseer" -> "src.qa.extraction_field_validator";
+  "src.services.overseer" -> "src.services.overseer_self_healing";
   "src.services.overseer" -> "src.services.notification_service";
+  "src.services.cva_beauty" -> "src.models.cva_valuation";
   "src.services.rulegraph_v2_builder" -> "src.contracts.schemas";
   "src.services.gold_standard" -> "src.services.web_of_belief";
   "src.services.gold_standard" -> "src.services.validation";
@@ -2342,13 +2798,18 @@ digraph ATLAS_Modules {
   "src.services.edge_justification" -> "src.services.web_of_belief";
   "src.services.edge_justification" -> "src.services.web_accumulator";
   "src.services.epistemic_causal_bridge" -> "src.services.web_of_belief_modules";
+  "src.services.epistemic_causal_bridge" -> "src.services.web_of_belief_components";
   "src.services.epistemic_causal_bridge" -> "src.epistemic.edge_types";
+  "src.services.epistemic_causal_bridge" -> "src.services.web_of_belief";
   "src.services.ranking_service" -> "src.services.web_of_belief";
+  "src.services.cva_annotation_service" -> "src.models.cva_annotations";
   "src.services.credibility_testing" -> "src.services.web_of_belief";
   "src.services.argument_attack" -> "src.services.epistemic_causal_bridge";
   "src.services.finding_template_relevance" -> "src.services.extraction_to_web";
   "src.services.theory_registry" -> "src.models.theory_models";
   "src.services.theory_registry" -> "src.models.theory_models";
+  "src.services.cva_constraint_engine" -> "src.models.cva_constraint";
+  "src.services.cva_constraint_engine" -> "src.models.subject_characteristics";
   "src.services.reporting" -> "src.services.web_of_belief";
   "src.services.reporting" -> "src.services.outcome_taxonomy";
   "src.services.graph_confidence_service" -> "src.services.ranking_service";
@@ -2359,6 +2820,7 @@ digraph ATLAS_Modules {
   "src.services.web_of_belief_components.graph_models" -> "src.epistemic.edge_types";
   "src.services.web_of_belief_components.graph_models" -> "src.services.web_of_belief_components.enums";
   "src.services.web_of_belief_modules.theory_worlds" -> "src.services.web_of_belief_components";
+  "src.services.web_of_belief_modules.mutations" -> "src.epistemic.source_quality";
   "src.services.web_of_belief_modules.entrenchment" -> "src.services.web_of_belief_components";
   "src.services.web_of_belief_modules.coherence" -> "src.epistemic.edge_types";
   "src.services.web_of_belief_modules.experiments" -> "src.services.web_of_belief_components";
@@ -2366,6 +2828,7 @@ digraph ATLAS_Modules {
   "src.services.paper_integration.supersession" -> "src.services.paper_integration.models";
   "src.services.paper_integration" -> "src.services.paper_integration.models";
   "src.services.paper_integration.rollback" -> "src.services.paper_integration.models";
+  "src.services.paper_integration.rollback" -> "src.services.annotation_service";
   "src.services.paper_integration.orchestrator" -> "src.services.paper_integration.models";
   "src.services.paper_integration.orchestrator" -> "src.services.paper_integration.supersession";
   "src.services.paper_integration.orchestrator" -> "src.services.paper_integration.rollback";
@@ -2376,6 +2839,7 @@ digraph ATLAS_Modules {
   "src.services.paper_integration.orchestrator" -> "src.services.incremental_bn";
   "src.services.paper_integration.orchestrator" -> "src.services.epistemic_orchestrator";
   "src.services.paper_integration.orchestrator" -> "src.services.epistemic_causal_bridge";
+  "src.services.paper_integration.orchestrator" -> "src.services.epistemic_projection";
   "src.services.paper_integration.orchestrator" -> "src.services.social_epistemology";
   "src.services.paper_integration.orchestrator" -> "src.services.discovery_funnel";
   "src.services.paper_integration.orchestrator" -> "src.models.provenance";
@@ -2384,6 +2848,51 @@ digraph ATLAS_Modules {
   "src.services.paper_integration.orchestrator" -> "src.qa.qa_cache_manager";
   "src.services.paper_integration.orchestrator" -> "src.services.notification_service";
   "src.services.paper_integration.tag_engine" -> "src.services.paper_integration.models";
+  "src.cmr.learning.bayesian_update" -> "src.cmr.learning.update_proposals";
+  "src.cmr.learning" -> "src.cmr.learning.update_proposals";
+  "src.cmr.learning" -> "src.cmr.learning.evidence_accumulation";
+  "src.cmr.learning.update_proposals" -> "src.cmr.models";
+  "src.cmr.learning.evidence_accumulation" -> "src.cmr.learning.update_proposals";
+  "src.cmr.reductions.biophilia_reduction" -> "src.cmr.models";
+  "src.cmr.reductions.art_reduction" -> "src.cmr.models";
+  "src.cmr.reductions" -> "src.cmr.reductions.art_reduction";
+  "src.cmr.reductions" -> "src.cmr.reductions.srt_reduction";
+  "src.cmr.reductions" -> "src.cmr.reductions.biophilia_reduction";
+  "src.cmr.reductions.srt_reduction" -> "src.cmr.models";
+  "src.qa.molecules.t1_5_registry" -> "src.qa.molecules.t1_5_theory_schema";
+  "src.qa.molecules.registry" -> "src.qa.molecules.schema";
+  "src.qa.molecules.registry" -> "src.qa.molecules.t1_5_registry";
+  "src.qa.molecules.registry" -> "src.qa.molecules.t1_5_registry";
+  "src.epistemic.monitors.cross_type_coherence" -> "src.epistemic.node_types";
+  "src.epistemic.monitors" -> "src.epistemic.monitors.coherence_audit";
+  "src.epistemic.monitors" -> "src.epistemic.monitors.asymmetry_monitor";
+  "src.epistemic.monitors" -> "src.epistemic.monitors.bias_detection";
+  "src.epistemic.monitors" -> "src.epistemic.monitors.adversarial_review";
+  "src.epistemic.monitors.theory_monitor" -> "src.epistemic.entrenchment.prediction_ledger";
+  "src.epistemic.monitors.theory_monitor" -> "src.epistemic.entrenchment.theory_updating";
+  "src.epistemic.entrenchment.node_type_entrenchment" -> "src.epistemic.node_types";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.argumentative";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.source_quality_metadata";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.pathway_classifier";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.pe_classifier";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.paper_classifier";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.theoretical_extractor";
+  "src.epistemic.extraction" -> "src.epistemic.extraction.synthesis_ingester";
+  "src.epistemic.extraction.paper_classifier" -> "src.epistemic.node_types";
+  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.node_types";
+  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.edge_types";
+  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.contracts.claim_v2";
+  "src.epistemic.extraction.theoretical_extractor" -> "src.epistemic.contracts.edge_v2";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.node_types";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.edge_types";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.contracts.claim_v2";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.contracts.edge_v2";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.entrenchment.synthesis_rules";
+  "src.epistemic.extraction.synthesis_ingester" -> "src.epistemic.entrenchment.expert_discount";
+  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.node_types";
+  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.edge_types";
+  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.contracts.claim_v2";
+  "src.epistemic.extraction.rule_to_claim_mapper" -> "src.epistemic.contracts.edge_v2";
   "scripts.run_primary_school_classroom_example" -> "src.cmr.building_eval";
   "scripts.run_primary_school_classroom_example" -> "src.cmr.template_computations";
   "scripts.backfill_outcome_polarity_conflicts" -> "src.services.db_locator";
@@ -2392,10 +2901,14 @@ digraph ATLAS_Modules {
   "scripts.overseer_nightly" -> "src.services.overseer";
   "scripts.overseer_nightly" -> "src.qa.qa_cache_manager";
   "scripts.semantic_scholar_enrichment" -> "src.services.pdf_extraction";
+  "scripts.classify_grounding" -> "src.services.db_locator";
   "scripts.ensure_gap_template_stubs" -> "scripts.enrich_template_json_fields";
   "scripts.ensure_gap_template_stubs" -> "src.cmr.models";
   "scripts.remove_bn_cycles" -> "src.services.incremental_bn";
   "scripts.review_extractions" -> "src.services.extraction_approval";
+  "scripts.v3_reextraction_gemini" -> "src.extraction.revised_prompts_v3";
+  "scripts.run_batch_integration" -> "src.services.paper_integration.orchestrator";
+  "scripts.v3_surgical_update" -> "src.extraction.revised_prompts_v3";
   "scripts.run_full_extraction" -> "scripts.gemini_extraction_queue";
   "scripts.build_article_type_tables" -> "src.services.db_locator";
   "scripts.probe_finding_template_relevance_health" -> "src.services.finding_template_relevance";
@@ -2415,32 +2928,50 @@ digraph ATLAS_Modules {
   "scripts.process_papers" -> "src.services.web_accumulator";
   "scripts.test_db" -> "src.services.web_persistence";
   "scripts.test_db" -> "src.services.db_locator";
+  "scripts.formalize_theories" -> "src.utils.validation_reflexes";
   "scripts.maintenance" -> "src.services.db_migrations";
   "scripts.force_bn_components" -> "src.services.incremental_bn";
   "scripts.scheduled_pipeline" -> "src.services.paper_fetcher";
   "scripts.scheduled_pipeline" -> "src.services.notification_service";
   "scripts.scheduled_pipeline" -> "src.services.gap_predictor";
   "scripts.scheduled_pipeline" -> "src.queue.zotero_watcher";
+  "scripts.scheduled_pipeline" -> "src.qa.extraction_field_validator";
   "scripts.scheduled_pipeline" -> "src.services.extraction_approval";
   "scripts.scheduled_pipeline" -> "src.services.notification_service";
   "scripts.scheduled_pipeline" -> "src.services.overseer";
+  "scripts.scheduled_pipeline" -> "src.services.cva_constraint_engine";
+  "scripts.scheduled_pipeline" -> "src.services.cva_valuation_engine";
+  "scripts.scheduled_pipeline" -> "src.services.cva_dynamics";
+  "scripts.scheduled_pipeline" -> "src.services.db_migrations";
+  "scripts.scheduled_pipeline" -> "src.services.overseer";
   "scripts.scheduled_pipeline" -> "src.queue.automated_searcher";
-  "scripts.nightly_integration_pipeline" -> "src.services.system_setup";
-  "scripts.nightly_integration_pipeline" -> "src.services.notification_service";
   "scripts.build_abstract_reduced_tables" -> "src.services.db_locator";
   "scripts.backfill_argument_constraints" -> "src.services.db_locator";
+  "scripts.run_reflexes" -> "src.qa.reflex_system";
+  "scripts.persist_finding_annotations" -> "src.services.finding_template_relevance";
+  "scripts.dedup_templates" -> "src.utils.validation_reflexes";
+  "scripts.run_finding_template_relevance_streaming" -> "src.services.finding_template_relevance";
+  "scripts.overseer_nightly_v3" -> "src.services.overseer";
+  "scripts.overseer_nightly_v3" -> "src.services.overseer_predictive";
+  "scripts.overseer_nightly_v3" -> "src.services.overseer_predictive";
+  "scripts.overseer_nightly_v3" -> "src.services.overseer_self_healing";
+  "scripts.overseer_nightly_v3" -> "src.services.overseer_playbooks";
   "scripts.generate_calibration_report" -> "src.services.discovery_funnel";
   "scripts.generate_completeness_report" -> "src.cmr.template_computations";
   "scripts.generate_completeness_report" -> "src.cmr.feature_mapping";
   "scripts.generate_completeness_report" -> "src.cmr.lifespan_moderation";
   "scripts.generate_completeness_report" -> "src.cmr.models";
   "scripts.generate_completeness_report" -> "src.cmr.interactions";
+  "scripts.enrich_provenance" -> "src.utils.validation_reflexes";
   "scripts.enrich_template_json_fields" -> "src.cmr.template_scanner";
   "scripts.parallel_extract_v2" -> "src.extraction.revised_prompts_v2";
   "scripts.parallel_extract_v2" -> "src.extraction.revised_prompts_v2";
   "scripts.parallel_extract_v2" -> "src.extraction.pipeline_repairs";
   "scripts.parallel_extract_v2" -> "src.extraction.pipeline_repairs";
   "scripts.parallel_extract_v2" -> "src.extraction.pipeline_repairs";
+  "scripts.sprint_c_verification" -> "src.services.db_locator";
+  "scripts.sprint_c_verification" -> "src.services.warrant_strength";
+  "scripts.sprint_c_verification" -> "src.services.annotation_service";
   "scripts.overseer_nightly_v2" -> "src.services.notification_service";
   "scripts.overseer_nightly_v2" -> "src.services.overseer";
   "scripts.run_finding_template_relevance" -> "src.services.finding_template_relevance";
@@ -2476,6 +3007,7 @@ digraph ATLAS_Modules {
   "scripts.seed_mechanism_beliefs" -> "src.services.db_locator";
   "scripts.seed_mechanism_beliefs" -> "src.services.web_persistence";
   "scripts.classify_and_extract" -> "scripts.gemini_extraction_queue";
+  "scripts.generate_annotations_llm" -> "src.utils.validation_reflexes";
   "scripts.get_isolated_beliefs" -> "src.services.db_locator";
   "scripts.ulrich_1984_full_pipeline" -> "src.cmr.paper_eval";
   "scripts.ulrich_1984_full_pipeline" -> "src.cmr.process_paper";
@@ -2492,7 +3024,12 @@ digraph ATLAS_Modules {
   "scripts.sanity_check" -> "src.services.service_locator";
   "scripts.sanity_check" -> "src.services.bbn_calibrator";
   "scripts.run_realtime_production_worker" -> "src.services.db_locator";
+  "scripts.batch_integrate_papers" -> "src.services.db_locator";
+  "scripts.batch_integrate_papers" -> "src.services.paper_integration.orchestrator";
   "scripts.full_web_health_test" -> "src.services.db_locator";
+  "scripts.migrate_annotations_to_unified" -> "src.services.annotation_service";
+  "scripts.migrate_annotations_to_unified" -> "src.services.db_locator";
+  "scripts.sprint10_quick_sweep" -> "src.services.db_locator";
   "scripts.sprint10_quick_sweep" -> "src.cmr";
   "scripts.sprint10_quick_sweep" -> "src.cmr";
   "scripts.sprint10_quick_sweep" -> "src.cmr";
@@ -2503,6 +3040,7 @@ digraph ATLAS_Modules {
   "scripts.seed_missing_theories" -> "src.services.web_persistence";
   "scripts.seed_missing_theories" -> "src.services.web_of_belief";
   "scripts.seed_missing_theories" -> "src.models.theory_models";
+  "scripts.seed_missing_theories" -> "src.services.db_locator";
   "scripts.discover_modality_gaps" -> "src.services.web_accumulator";
   "scripts.run_llm_abstract_pilot" -> "src.extraction.abstract_extractor";
   "scripts.run_llm_abstract_pilot" -> "src.extraction.vocabulary";
@@ -2512,6 +3050,7 @@ digraph ATLAS_Modules {
   "scripts.compute_system_health" -> "scripts.probe_web_of_belief_health";
   "scripts.compute_system_health" -> "src.services.finding_template_relevance";
   "scripts.compute_system_health" -> "src.services.db_locator";
+  "scripts.compute_system_health" -> "src.services.annotation_service";
   "scripts.process_af_abstracts" -> "src.services.db_locator";
   "scripts.process_realtime_pdf_completion_queue" -> "src.services.db_locator";
   "scripts.process_realtime_pdf_completion_queue" -> "src.services.table_extractor";
@@ -2523,6 +3062,7 @@ digraph ATLAS_Modules {
   "scripts.process_realtime_pdf_completion_queue" -> "src.services.incremental_bn";
   "scripts.validate_tier2_reductions" -> "src.cmr.building_eval";
   "scripts.score_claim_risk" -> "src.extraction.evidence_risk";
+  "scripts.backfill_canonical_outcomes" -> "src.services.db_locator";
   "scripts.run_llm_table_pilot" -> "src.extraction.claim_extractor";
   "scripts.run_llm_table_pilot" -> "src.extraction.vocabulary";
   "scripts.run_llm_table_pilot" -> "src.services.table_extractor";
@@ -2536,23 +3076,31 @@ digraph ATLAS_Modules {
   "scripts.test_do_calculus_bridge" -> "src.services.web_of_belief";
   "scripts.test_do_calculus_bridge" -> "src.services.epistemic_causal_bridge";
   "scripts.compare_models" -> "scripts.gemini_extraction_queue";
+  "scripts.analyze_web_health" -> "src.services.db_locator";
+  "scripts.v3_reextraction" -> "src.extraction.revised_prompts_v3";
+  "scripts.run_panel_1_outcomes" -> "src.services.ai_panel_resolver";
   "scripts.generate_evidence_gap_map" -> "src.cmr.feature_mapping";
   "scripts.generate_evidence_gap_map" -> "src.cmr.models";
   "scripts.generate_evidence_gap_map" -> "src.cmr.template_computations";
   "scripts.generate_evidence_gap_map" -> "src.cmr.template_scanner";
   "scripts.force_bn_rebuild" -> "src.services.incremental_bn";
+  "scripts.force_bn_rebuild" -> "src.services.db_locator";
+  "scripts.seed_annotations" -> "src.services.annotation_service";
   "scripts.compare_docx_vs_pdf_claims" -> "src.extraction.claim_extractor";
   "scripts.compare_docx_vs_pdf_claims" -> "src.extraction.vocabulary";
   "scripts.compare_docx_vs_pdf_claims" -> "src.services.table_extractor";
+  "scripts.prune_unresolved_beliefs" -> "src.services.db_locator";
   "scripts.build_table_extraction_queue" -> "src.services.db_locator";
   "scripts.run_entrenchment_replay_safe" -> "src.services.web_of_belief";
   "scripts.run_entrenchment_replay_safe" -> "src.services.entrenchment_replay";
   "scripts.check_web_bn_health" -> "src.services.db_locator";
+  "scripts.load_staging_links" -> "src.services.db_locator";
   "scripts.seed_outcome_attributes" -> "src.services.web_accumulator";
   "scripts.seed_outcome_attributes" -> "src.services.web_of_belief";
   "scripts.seed_outcome_attributes" -> "src.services.db_locator";
   "scripts.seed_outcome_attributes" -> "src.services.web_persistence";
   "scripts.resume_extraction" -> "scripts.gemini_extraction_queue";
+  "scripts.propagate_constraints" -> "src.services.db_locator";
   "scripts.load_template_theory_links" -> "src.cmr.staging_theory_loader";
   "scripts.check_notifications" -> "src.services.notification_service";
   "scripts.build_table_gold_pack" -> "src.services.table_extractor";
@@ -2567,6 +3115,7 @@ digraph ATLAS_Modules {
   "scripts.run_all_tests" -> "src.models.theory_models";
   "scripts.maintain_web" -> "src.services.db_locator";
   "scripts.parallel_extraction" -> "scripts.gemini_extraction_queue";
+  "scripts.sprint10_validation_sweep" -> "src.services.db_locator";
   "scripts.sprint10_validation_sweep" -> "src.cmr";
   "scripts.sprint10_validation_sweep" -> "src.cmr";
   "scripts.sprint10_validation_sweep" -> "src.cmr";

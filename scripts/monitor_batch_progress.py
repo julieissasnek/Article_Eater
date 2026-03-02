@@ -106,8 +106,8 @@ def check_in_progress():
                 claims = json.load(f)
             if claims:
                 indicators["work_claims"] = len(claims)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Check for partial/temp result files
     partial_pattern = str(RESULTS_DIR / "batch_*_partial*.json")

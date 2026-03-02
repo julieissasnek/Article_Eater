@@ -226,8 +226,8 @@ class JSONLExporter:
                 try:
                     ent = web.get_entrenchment(belief.belief_id)
                     d['entrenchment'] = ent
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Non-critical: {e}")
 
             return {k: v for k, v in d.items() if v is not None}
 

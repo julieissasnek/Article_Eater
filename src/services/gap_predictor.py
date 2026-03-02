@@ -141,16 +141,18 @@ class GapPredictor:
     - Direction gaps (causal ambiguity)
     """
 
-    def __init__(self, web=None, edge_justification_service=None):
+    def __init__(self, web=None, edge_justification_service=None, voi_scorer=None):
         """
         Initialize the gap predictor.
 
         Args:
             web: WebOfBelief instance
             edge_justification_service: EdgeJustificationService for BN integration
+            voi_scorer: Optional VOICalculator for computing real VOI scores
         """
         self._web = web
         self._edge_service = edge_justification_service
+        self._voi_scorer = voi_scorer
         self._gap_counter = 0
 
     @property
@@ -177,10 +179,63 @@ class GapPredictor:
                 logger.warning(f"Could not load edge service: {e}")
         return self._edge_service
 
+    @property
+    def voi_scorer(self):
+        """Lazy-load VOI calculator for real VOI computation."""
+        if self._voi_scorer is None:
+            try:
+                from src.services.voi_search import VOICalculator
+                self._voi_scorer = VOICalculator()
+            except ImportError:
+                logger.debug("VOICalculator not available; gaps will use default VOI scores")
+                self._voi_scorer = None
+            except Exception as e:
+                logger.warning(f"Could not load VOI scorer: {e}")
+                self._voi_scorer = None
+        return self._voi_scorer
+
     def _next_gap_id(self) -> str:
         """Generate next gap ID."""
         self._gap_counter += 1
         return f"gap_{self._gap_counter:04d}"
+
+    def _compute_gap_voi(self, gap_type: GapType, affected_belief_id: Optional[str] = None) -> float:
+        """
+        Compute VOI score for a gap using real VOI scorer if available.
+
+        Falls back to 0.5 if VOI scorer is unavailable or fails.
+
+        Args:
+            gap_type: Type of gap (MEDIATION, MECHANISM, etc.)
+            affected_belief_id: Optional belief ID for context
+
+        Returns:
+            VOI score between 0.0 and 1.0
+        """
+        scorer = self.voi_scorer
+        if scorer is None:
+            return 0.5
+
+        try:
+            # Try to find the affected belief in the web
+            belief = None
+            if affected_belief_id and self.web and self.web.beliefs:
+                belief = self.web.beliefs.get(affected_belief_id)
+
+            if belief is None and self.web and self.web.beliefs:
+                # Fallback: use first available belief
+                beliefs_list = list(self.web.beliefs.values())
+                if beliefs_list:
+                    belief = beliefs_list[0]
+
+            if belief is not None:
+                combined_voi, _, _ = scorer.calculate_voi(gap_type, belief, self.web)
+                return float(combined_voi)
+            else:
+                return 0.5
+        except Exception as e:
+            logger.warning(f"VOI computation failed for gap type {gap_type}: {e}; using fallback 0.5")
+            return 0.5
 
     def _normalized_level(self, belief: Any) -> str:
         """Return a normalized epistemic level label for robust comparisons."""
@@ -729,6 +784,90 @@ class GapPredictor:
         return (env_cent + out_cent) / 2
 
     # =========================================================================
+    # Annotation Harvest (AG 2026-03-01, QA Spec Fix 3)
+    # Wires OPEN_QUESTION + SEARCH_PROMPT annotations → PredictedGap
+    # =========================================================================
+
+    def harvest_annotation_gaps(self) -> List[PredictedGap]:
+        """Harvest OPEN_QUESTION and SEARCH_PROMPT annotations as gaps.
+
+        User-created annotations often encode the most valuable gap signals —
+        questions a human researcher noticed but the system hasn't addressed.
+        This method converts those annotations into PredictedGap objects that
+        integrate with the rest of the gap prediction pipeline.
+
+        Returns:
+            List of PredictedGaps generated from active annotations
+        """
+        gaps: List[PredictedGap] = []
+
+        try:
+            from src.services.annotation_service import AnnotationService, AnnotationType
+        except ImportError:
+            logger.debug("AnnotationService not available for annotation harvest")
+            return gaps
+
+        try:
+            ann_svc = AnnotationService()
+
+            # Harvest OPEN_QUESTION annotations
+            open_questions = ann_svc.get_annotations_by_type(
+                AnnotationType.OPEN_QUESTION, status="active"
+            )
+            for ann in open_questions:
+                gap = PredictedGap(
+                    gap_id=self._next_gap_id(),
+                    gap_type=GapType.VALIDATION,  # Most open questions need validation
+                    description=f"User-identified question: {ann.content[:200]}",
+                    priority=GapPriority.HIGH,  # User questions are high priority
+                    voi_score=0.85,  # High VOI — human-identified gaps are valuable
+                    affected_beliefs=[ann.target_id] if ann.target_type == "belief" else [],
+                    affected_edge=ann.target_id if ann.target_type == "causal_link" else None,
+                    suggested_search=ann.content[:100],
+                    resolution_approach="Address user-identified knowledge gap",
+                    explanation=(
+                        f"Annotation {ann.id[:8]} by {ann.author}: "
+                        f"Open question on {ann.target_type} '{ann.target_id}'"
+                    ),
+                    confidence=ann.confidence,
+                )
+                gaps.append(gap)
+
+            # Harvest SEARCH_PROMPT annotations
+            search_prompts = ann_svc.get_annotations_by_type(
+                AnnotationType.SEARCH_PROMPT, status="active"
+            )
+            for ann in search_prompts:
+                gap = PredictedGap(
+                    gap_id=self._next_gap_id(),
+                    gap_type=GapType.MECHANISM,  # Search prompts often target mechanism
+                    description=f"User search suggestion: {ann.content[:200]}",
+                    priority=GapPriority.MEDIUM,
+                    voi_score=0.75,
+                    affected_beliefs=[ann.target_id] if ann.target_type == "belief" else [],
+                    affected_edge=ann.target_id if ann.target_type == "causal_link" else None,
+                    suggested_search=ann.content,
+                    resolution_approach="Execute user-suggested search",
+                    explanation=(
+                        f"Annotation {ann.id[:8]} by {ann.author}: "
+                        f"Search prompt on {ann.target_type} '{ann.target_id}'"
+                    ),
+                    confidence=ann.confidence,
+                )
+                gaps.append(gap)
+
+            if gaps:
+                logger.info(
+                    "Harvested %d gaps from annotations (%d open questions, %d search prompts)",
+                    len(gaps), len(open_questions), len(search_prompts),
+                )
+
+        except Exception as e:
+            logger.warning(f"Annotation harvest failed (non-fatal): {e}")
+
+        return gaps
+
+    # =========================================================================
     # Main Entry Points
     # =========================================================================
 
@@ -751,6 +890,8 @@ class GapPredictor:
         # Sprint 10: Argument-level gap detection
         all_gaps.extend(self.find_critical_question_gaps())
         all_gaps.extend(self.find_argument_attack_gaps())
+        # QA Spec Fix 3: Harvest user annotations as gaps (AG 2026-03-01)
+        all_gaps.extend(self.harvest_annotation_gaps())
 
         # Sort by VOI score and limit
         all_gaps.sort(key=lambda g: -g.voi_score)
@@ -845,7 +986,29 @@ class GapPredictor:
         """
         Compute VOI for a mediation gap.
         Panel D0d (Pearl): Incorporate graph centrality into VOI.
+
+        If VOI scorer is available, uses real VOI computation.
+        Falls back to heuristic computation if unavailable.
         """
+        scorer = self.voi_scorer
+        if scorer is not None:
+            try:
+                # Use real VOI scorer with the outcome belief
+                if self.web and self.web.beliefs:
+                    # Try to find outcome belief
+                    for belief in self.web.beliefs.values():
+                        if hasattr(belief, 'outcome_id') and belief.outcome_id == y:
+                            combined_voi, _, _ = scorer.calculate_voi(GapType.MEDIATION, belief, self.web)
+                            return float(combined_voi)
+                    # If not found, use first belief
+                    beliefs_list = list(self.web.beliefs.values())
+                    if beliefs_list:
+                        combined_voi, _, _ = scorer.calculate_voi(GapType.MEDIATION, beliefs_list[0], self.web)
+                        return float(combined_voi)
+            except Exception as e:
+                logger.debug(f"Real VOI computation failed for mediation gap: {e}; falling back to heuristic")
+
+        # Heuristic fallback (original logic)
         # Base VOI
         base_voi = 0.5
 
@@ -926,7 +1089,29 @@ class GapPredictor:
         """
         Compute VOI for mechanism gap.
         Panel D0d (Pearl): Incorporate graph centrality into VOI.
+
+        If VOI scorer is available, uses real VOI computation.
+        Falls back to heuristic computation if unavailable.
         """
+        scorer = self.voi_scorer
+        if scorer is not None and empirical_beliefs:
+            try:
+                # Use real VOI scorer with average of affected beliefs
+                voi_scores = []
+                for belief_obj in empirical_beliefs:
+                    # Get actual belief from web
+                    belief = belief_obj if hasattr(belief_obj, 'belief_id') else belief_obj
+                    belief_id = getattr(belief, 'belief_id', None) or str(belief)
+                    if self.web and self.web.beliefs and belief_id in self.web.beliefs:
+                        web_belief = self.web.beliefs[belief_id]
+                        combined_voi, _, _ = scorer.calculate_voi(GapType.MECHANISM, web_belief, self.web)
+                        voi_scores.append(float(combined_voi))
+                if voi_scores:
+                    return float(sum(voi_scores) / len(voi_scores))
+            except Exception as e:
+                logger.debug(f"Real VOI computation failed for mechanism gap: {e}; falling back to heuristic")
+
+        # Heuristic fallback (original logic)
         # Base VOI: Higher if more empirical beliefs (well-established relationship)
         n_beliefs = len(empirical_beliefs)
         base_voi = min(0.4 + 0.1 * n_beliefs, 0.7)
@@ -935,10 +1120,10 @@ class GapPredictor:
         # Average centrality of affected beliefs
         if empirical_beliefs and self.web:
             centralities = [
-                self._get_centrality(b.belief_id)
+                self._get_centrality(b.belief_id if hasattr(b, 'belief_id') else str(b))
                 for b in empirical_beliefs
             ]
-            avg_centrality = sum(centralities) / len(centralities)
+            avg_centrality = sum(centralities) / len(centralities) if centralities else 0
             voi = base_voi + 0.3 * avg_centrality
         else:
             voi = base_voi
@@ -1030,7 +1215,25 @@ class GapPredictor:
         return gaps
 
     def _compute_boundary_voi(self, n_covered: int, n_missing: int) -> float:
-        """Compute VOI for boundary gap."""
+        """
+        Compute VOI for boundary gap.
+
+        If VOI scorer is available, uses real VOI computation.
+        Falls back to heuristic computation if unavailable.
+        """
+        scorer = self.voi_scorer
+        if scorer is not None:
+            try:
+                # Use real VOI scorer with a sample belief
+                if self.web and self.web.beliefs:
+                    beliefs_list = list(self.web.beliefs.values())
+                    if beliefs_list:
+                        combined_voi, _, _ = scorer.calculate_voi(GapType.BOUNDARY, beliefs_list[0], self.web)
+                        return float(combined_voi)
+            except Exception as e:
+                logger.debug(f"Real VOI computation failed for boundary gap: {e}; falling back to heuristic")
+
+        # Heuristic fallback (original logic)
         if n_covered == 0:
             return 0.3
         # Higher VOI if many covered but key ones missing

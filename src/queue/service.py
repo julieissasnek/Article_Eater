@@ -34,7 +34,9 @@ from src.queue.models import (
     TargetStatus,
     iso_z,
 )
+from src.queue.researcher_voi import adjust_voi_for_collector
 from src.services.gap_predictor import GapPredictor
+from src.services.interpretation_space_suggestions import InterpretationSpaceSuggestionsManager
 
 logger = logging.getLogger(__name__)
 
@@ -109,6 +111,7 @@ class ResearchQueueService:
         discovery_funnel: Optional[Any] = None,
         queue_path: str | Path = "data/production/research_queue_state.json",
         frameworks: Optional[list[Any]] = None,
+        db_path: Optional[str | Path] = None,
     ):
         self._web = web
         self._gap_predictor = gap_predictor
@@ -120,6 +123,12 @@ class ResearchQueueService:
         self._collectors: dict[str, CollectorProfile] = {}
         self._opportunities: dict[str, ResearchOpportunity] = {}
         self._queue_id = f"queue_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+        self.suggestions_mgr: Optional[InterpretationSpaceSuggestionsManager] = None
+        if db_path:
+            try:
+                self.suggestions_mgr = InterpretationSpaceSuggestionsManager(str(db_path))
+            except Exception as e:
+                logger.warning(f"Failed to initialize suggestions manager: {e}")
         self._load_state()
 
     # ------------------------------------------------------------------
@@ -171,8 +180,18 @@ class ResearchQueueService:
 
         try:
             gap_report = self.gap_predictor.find_all_gaps(max_gaps=max_gaps)
+            gap_dicts = [gap.to_dict() for gap in gap_report.gaps]
+
             for gap in gap_report.gaps:
                 generated_targets.append(self._target_from_predicted_gap(gap))
+
+            # Track gap predictor suggestions
+            if self.suggestions_mgr and gap_dicts:
+                try:
+                    self.suggestions_mgr.insert_gap_predictor_suggestions(gap_dicts)
+                except Exception as e:
+                    logger.warning(f"Failed to track gap predictor suggestions: {e}")
+
         except Exception as exc:
             logger.warning("ResearchQueueService: gap refresh failed (%s)", exc)
 
@@ -199,13 +218,63 @@ class ResearchQueueService:
 
     def get_next_target(self, collector_id: str) -> Optional[ResearchTarget]:
         """Assign next unclaimed high-value target to a collector."""
+        return self.get_next_highest_voi_target(collector_id)
+
+    def get_next_highest_voi_target(self, collector_id: str) -> Optional[ResearchTarget]:
+        """
+        Return the unassigned target with highest VOI score, adjusted for collector fit.
+
+        If a CollectorProfile is registered for the collector_id, uses researcher-specific
+        VOI adjustment to personalize ranking based on domain expertise, access capabilities,
+        and historical performance. Otherwise falls back to base VOI scoring.
+
+        Sorts by: priority rank (descending) -> adjusted VOI score (descending) -> creation time (descending)
+        Assigns target to collector and updates status to SEARCHING.
+        """
         open_targets = [
             t for t in self._targets.values() if t.status == TargetStatus.OPEN and not t.assigned_to
         ]
         if not open_targets:
             return None
 
-        open_targets.sort(
+        # Get collector profile if available for personalization
+        collector = self._collectors.get(collector_id)
+
+        # Compute adjusted VOI scores based on collector fit
+        scored_targets = []
+        for target in open_targets:
+            if collector:
+                adjusted_voi = adjust_voi_for_collector(target.voi_score, collector, target)
+            else:
+                adjusted_voi = target.voi_score
+
+            scored_targets.append((target, adjusted_voi))
+
+        # Sort by: priority rank (descending) -> adjusted VOI (descending) -> creation time (descending)
+        scored_targets.sort(
+            key=lambda x: (
+                self._priority_rank(x[0].priority),
+                x[1],
+                x[0].created_at,
+            ),
+            reverse=True,
+        )
+
+        target = scored_targets[0][0]
+        target.assigned_to = collector_id
+        target.status = TargetStatus.SEARCHING
+        target.updated_at = datetime.now(timezone.utc)
+        self._persist_state()
+        return target
+
+    def get_prioritized_targets(self) -> list[ResearchTarget]:
+        """
+        Return all targets sorted by VOI priority.
+
+        Sorts by: priority rank (descending) -> VOI score (descending) -> creation time (descending)
+        """
+        targets = list(self._targets.values())
+        targets.sort(
             key=lambda t: (
                 self._priority_rank(t.priority),
                 t.voi_score,
@@ -213,12 +282,7 @@ class ResearchQueueService:
             ),
             reverse=True,
         )
-        target = open_targets[0]
-        target.assigned_to = collector_id
-        target.status = TargetStatus.SEARCHING
-        target.updated_at = datetime.now(timezone.utc)
-        self._persist_state()
-        return target
+        return targets
 
     def register_collector(self, profile: CollectorProfile) -> CollectorProfile:
         """Register or update a VOI collector profile."""
@@ -621,8 +685,8 @@ class ResearchQueueService:
                     )[:2]:
                         if variant not in expanded_queries and variant not in primary_queries:
                             expanded_queries.append(variant)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         if not expanded_queries:
             expanded_queries = [q + " review" for q in primary_queries[:2]]
 

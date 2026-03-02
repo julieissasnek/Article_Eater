@@ -11,13 +11,14 @@ sys.path.append(os.getcwd())
 from src.services.web_persistence import WebPersistenceService
 from src.services.web_of_belief import Belief, EpistemicLevel, BeliefStatus, Credence
 from src.models.theory_models import Theory, TheoryLevel, generate_theory_id
+from src.services.db_locator import get_web_db
 
 def seed_missing_theories():
     """
     Scan all active templates for framework_ids and create missing Theory beliefs.
     """
     print("Initializing Web Persistence...")
-    db_path = "data/web_persistence.db"
+    db_path = str(get_web_db())  # Centralized: was hardcoded
     service = WebPersistenceService(db_path=db_path)
     web_id = service.get_master_web_id()
     if not web_id:
@@ -46,7 +47,7 @@ def seed_missing_theories():
     for json_file in json_files:
         try:
             data = json.loads(json_file.read_text(encoding='utf-8'))
-        except:
+        except Exception:  
             continue
             
         if data.get("dedup_status") != "active":

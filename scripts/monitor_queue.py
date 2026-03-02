@@ -44,8 +44,8 @@ def get_stats():
                     result = item.get("extraction_result")
                     if isinstance(result, dict) and "extraction_time" in result:
                         extraction_times.append(result.get("extraction_time", 0.0))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
             
     active_claims = 0
     if CLAIMS_FILE.exists():
@@ -53,8 +53,8 @@ def get_stats():
             with open(CLAIMS_FILE) as f:
                 data = json.load(f)
                 active_claims = len(data.get("claims", {}))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
             
     mean_time = sum(extraction_times) / len(extraction_times) if extraction_times else 0.0
     return stats, active_claims, total_cost, mean_time

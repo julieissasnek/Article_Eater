@@ -240,7 +240,8 @@ def _load_template_json(json_path: str) -> dict[str, Any] | None:
         return None
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 

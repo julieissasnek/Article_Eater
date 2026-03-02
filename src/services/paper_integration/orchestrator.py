@@ -372,8 +372,8 @@ class PaperIntegrationOrchestrator:
                                     context={"paper_id": paper_id, "code": v.code},
                                     send_email=False,
                                 )
-                    except Exception:
-                        pass  # Notification failure is non-fatal
+                    except Exception as e:
+                        logger.debug(f"Notification service unavailable: {e}")
                 else:
                     logger.info(
                         "POST-INTEGRATION: Overseer check passed for %s",
@@ -664,14 +664,15 @@ class PaperIntegrationOrchestrator:
 
                 # Production schema: content, credence_value, credence_uncertainty,
                 # level, paper_ids (JSON array), created_at, updated_at
+                # Also populate paper_id (scalar) for backward compat with rollback engine
                 paper_id = belief.get("paper_id", "")
                 paper_ids_json = json.dumps([paper_id]) if paper_id else "[]"
 
                 cursor.execute("""
                     INSERT OR REPLACE INTO beliefs
                     (belief_id, web_id, content, credence_value, credence_uncertainty,
-                     level, status, paper_ids, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     level, status, paper_id, paper_ids, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     belief["belief_id"],
                     "master",
@@ -680,6 +681,7 @@ class PaperIntegrationOrchestrator:
                     uncertainty_val,
                     belief.get("epistemic_level", belief.get("level", "EMPIRICAL")),
                     "ACCEPTED",
+                    paper_id,
                     paper_ids_json,
                     now_ts,
                     now_ts,

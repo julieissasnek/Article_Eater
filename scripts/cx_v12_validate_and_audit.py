@@ -40,7 +40,8 @@ def load_templates() -> List[TemplateRecord]:
     for path in sorted(TEMPLATE_DIR.glob("*.json")):
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         template_id = str(data.get("template_id") or path.stem)
         display_id = str(data.get("display_id") or "")

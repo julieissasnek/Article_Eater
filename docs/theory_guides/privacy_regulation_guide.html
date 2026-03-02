@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Regulation Theory — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html">PAD Model</a>
+<a href="place_attachment_guide.html">Place Attachment</a>
+<a href="privacy_regulation_guide.html" class="current">Privacy Regulation</a>
+<a href="proxemics_guide.html">Proxemics</a>
+</nav>
+
+<h1>Privacy Regulation Theory</h1>
+<div class="subtitle">Altman (1975) — Altman, I. (1975). The environment and social behavior. Brooks/Cole.</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> Irwin Altman (co-founder of environmental psychology field)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 1975</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> 4,500</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-plausibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-reduced">REDUCED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Privacy Regulation Theory?</h2>
+  <p>Privacy regulation theory says that privacy isn't about being alone — it's about having control over your interactions with other people. Sometimes you want social contact; sometimes you want solitude. The key insight is that privacy is a dialectic process: people continuously adjust their boundaries, opening up or closing down depending on their current needs. Stress occurs not when you're alone or when you're with others, but when there's a mismatch between your desired and achieved level of social interaction.</p>
+  <p>For architecture, this is enormously practical. It explains why open-plan offices fail (they remove control over social interaction), why hospital patients recover faster in private rooms (control over visitors and stimulation), and why homes need both communal and private spaces. The design goal isn't maximum privacy or maximum sociability — it's maximum control over the boundary between them.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>Irwin Altman developed the theory in his 1975 book 'The Environment and Social Behavior: Privacy, Personal Space, Crowding, and Territory,' published by Brooks/Cole. Altman synthesized previously separate research areas — personal space (Hall's proxemics), crowding (Stokols' density-crowding distinction), and territoriality (animal behavior research) — into a unified framework centered on boundary regulation. His key insight was that these phenomena are not independent but are all mechanisms for the same underlying process: controlling the degree of social accessibility.</p>
+
+  <h2>How It Works</h2>
+  <p>The mechanism is a cybernetic feedback loop: people have a desired level of privacy (which fluctuates with mood, task, time of day, and social context), they perceive their current achieved level, and they use behavioral mechanisms to reduce the discrepancy. These mechanisms include personal space regulation (moving closer or farther), territorial behavior (claiming and defending spaces), nonverbal cues (body orientation, eye contact), and verbal strategies (conversation management). The stress function is: S(p) = |D(p) − A(p)|, where D is desired privacy and A is achieved privacy. Stress increases with the absolute mismatch in either direction — too much social contact (crowding) and too little (isolation) are both aversive.</p>
+
+  <h2>Applications in Design</h2>
+  <p>In design, privacy regulation theory argues for providing occupants with environmental controls — doors that close, blinds that adjust, movable partitions, variable lighting, and acoustic management. It also argues for gradient spaces that offer a range from fully public to fully private, allowing people to self-select their position on the spectrum. Bernstein and Turban (2018) demonstrated the theory's continued relevance by showing that the shift to open-plan offices reduced face-to-face interaction by ~70% — the opposite of what managers intended — because workers compensated for lost physical privacy by retreating to electronic communication.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1970s:</span> Initial theoretical formulation in environmental psychology</div>
+<div class="timeline-item"><span class="timeline-year">1975:</span> Comprehensive framework in The Environment and Social Behavior</div>
+<div class="timeline-item"><span class="timeline-year">1976:</span> Conceptual analysis paper clarifying privacy as dynamic optimization</div>
+<div class="timeline-item"><span class="timeline-year">1972:</span> Stokols&#x27; density-vs-crowding distinction (parallel development)</div>
+<div class="timeline-item"><span class="timeline-year">1980s-Present:</span> Applications to residential design, workplace, healthcare, schools</div>
+<div class="timeline-item"><span class="timeline-year">2010s-Present:</span> Modern workplace research (open-plan offices) validating theory</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Irwin Altman (co-founder of environmental psychology field)</li>
+<li>Erving Goffman (dramaturgical impression management)</li>
+<li>Animal territoriality research tradition</li>
+<li>Robert Sommer (personal space research)</li>
+<li>Daniel Stokols (crowding vs. density distinction)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>Formally: S(p) = |D(p) − A(p)|, where S is stress/discomfort, D(p) is desired privacy level for person p (a function of personality, culture, task, and time), and A(p) is achieved privacy level (a function of the environment's privacy affordances and current social context). Privacy regulation uses five behavioral mechanisms: personal space, territory, verbal behavior, nonverbal behavior, and cultural norms.</p>
+
+  <div class="formula-box">
+    S(p) = |D(p) − A(p)|; D(p) = desired privacy level; A(p) = achieved level
+<div class="var-def"><strong>S(p)</strong> = Privacy stress for person p<br><strong>D(p)</strong> = Desired privacy level (varies with activity, personality, culture)<br><strong>A(p)</strong> = Achieved privacy level in current environment</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Privacy deficit (D &gt; A) produces crowding stress; excess (A &gt; D) produces isolation<br>• Open-plan offices: 50% of workers report privacy deficit as top complaint</div>
+  </div>
+
+  <h2>Theoretical Constructs</h2>
+<div class="construct-card">
+  <div class="construct-name">Desired Privacy</div>
+  <div class="construct-desc">IC2 body-budget prediction + environmental predictability + IE-DPT activity frame configures interoceptive expectations.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: ALLOSTATIC_MASTER_001, AX_CONTROL_STRESS_004</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Privacy Regulation Mechanisms</div>
+  <div class="construct-desc">Affordances + spatial enclosure + isovist control + environmental legibility enable boundary management.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: AX_CONTROL_STRESS_004, HAP_SURFACE_MATERIAL_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Crowding</div>
+  <div class="construct-desc">Boundary violation + perceived control loss + interoceptive PE + allostatic demand. Density-is-not-crowding (Stokols) requires IE-DPT for explanation.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: NM_THREAT_HPA_001, AX_CONTROL_STRESS_004, ALLOSTATIC_MASTER_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Isolation</div>
+  <div class="construct-desc">Social load deficit + DMN hyperengagement + dopaminergic deficit from lack of social stimulation.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-plausibly | Templates: CREATIVE_NETWORK_DYNAMICS_001, NM_DOPAMINE_NOVELTY_002</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Territory</div>
+  <div class="construct-desc">Place recognition + hippocampal binding + learned safety signals establish spatial ownership.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: SN_CONTEXT_MEMORY_002, ED_HIPPOCAMPAL_ENCODING_001, NM_SAFETY_SIGNALING_001</div>
+</div>
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, Privacy Regulation has status REDUCED with five constructs: Boundary Permeability (maps to IC interoceptive boundary detection — internal/external distinction), Desired Privacy Level (maps to DP decision-theoretic goal states — optimization under social constraints), Privacy Mismatch Stress (maps to IC allostatic load — deviation from preferred interoceptive state), Territorial Marking (maps to SN spatial navigation — space claiming through environmental modification), and Cultural Privacy Norms (maps to ψ cultural calibration parameters — culturally conditioned privacy expectations). The irreducible residual is the dialectic process itself — the continuous, dynamic nature of privacy regulation as an ongoing boundary management process rather than a static state.</p>
+
+  <details><summary>Irreducible Residual</summary><div class="details-content">
+<p>The textbook IE-DPT bridge. Stokols&#x27; density-is-not-crowding finding is inexplicable without the explicit channel: the activity frame (IE-DPT) configures interoceptive expectations (IC), determining whether proximity generates positive or negative affective response. The open-plan office violates Privacy Regulation at multiple levels simultaneously.</p>
+</div></details>
+
+  
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Altman, I. (1975). The environment and social behavior: Privacy, personal space, territory, crowding. Monterey: Brooks/Cole Publishing Company.</li>
+<li>Altman, I. (1975). The environment and social behavior. Brooks/Cole.</li>
+<li>Stokols, D. (1972). On the distinction between density and crowding. Psychol. Rev., 79(3), 275-277.</li>
+<li>Bernstein, E.S. &amp; Turban, S. (2018). The impact of the open workspace. Phil. Trans. R. Soc. B, 373(1753).</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Seminal work (1975) verified via Brooks/Cole Publishing and library records. Altman (1976) conceptual paper verified via Journal of Social Issues. Timeline confirmed (1975 foundational, 1976 conceptual analysis). Stokols (1972) parallel development verified via Psychological Review. Google Scholar citation count confirmed at 4,500+. Modern applications to open-plan offices verified through contemporary workplace research (Bernstein &amp; Turban 2018 and citing papers).</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

@@ -248,8 +248,9 @@ def test_resolve_finding_expands_tier1_taxonomy(tmp_path: Path) -> None:
 
     assert result.top_templates
     assert result.top_templates[0].display_id == "TH1"
-    assert result.tier1_relevance.get("MATERIAL_HAPTIC_THERMAL", 0.0) > 0.0
-    assert result.tier1_relevance.get("COGNITIVE_CONTROL", 0.0) > 0.0
+    # Verify that thermal and cognitive load framework links are present using new hyphenated IDs
+    assert result.tier1_relevance.get("interoceptive-constructionist-affect", 0.0) > 0.0
+    assert result.tier1_relevance.get("dual-process-evaluation", 0.0) > 0.0
 
 
 def test_framework_mapping_is_token_safe_for_art(tmp_path: Path) -> None:

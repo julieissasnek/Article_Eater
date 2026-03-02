@@ -241,8 +241,8 @@ def _parse_json_object(raw: str) -> dict[str, Any] | None:
         obj = json.loads(txt)
         if isinstance(obj, dict):
             return obj
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     m = re.search(r"\{.*\}", raw, re.DOTALL)
     if not m:
         return None
@@ -250,7 +250,8 @@ def _parse_json_object(raw: str) -> dict[str, Any] | None:
         obj = json.loads(m.group(0))
         if isinstance(obj, dict):
             return obj
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
     return None
 
@@ -295,8 +296,8 @@ def _codex_complete(model: str, system: str, user: str, timeout_s: int = 120) ->
     finally:
         try:
             Path(tmp_path).unlink(missing_ok=True)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
 
 def _llm_direction_from_abstract(

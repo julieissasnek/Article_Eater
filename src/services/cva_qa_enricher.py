@@ -244,8 +244,8 @@ class CVAQAEnricher:
                     mol = json.load(f)
                 mol_id = mp.stem
                 molecules[mol_id] = mol
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         return molecules
     
     def _load_feature_mapping(self) -> Dict:

@@ -2,7 +2,7 @@
   "doi": "10.21608/jur.2018.88412",
   "article_type": "systematic_review",
   "article_family": "synthesis",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.71,
   "n_findings": 1,
   "extracted_at": "2026-02-25T02:38:55.477342+00:00",
@@ -68,7 +68,59 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3477,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3286,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3097,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2722,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.2546,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "BIOPHILIA": 0.3,
+        "NEUROMODULATORY_REWARD": 0.1739,
+        "SRT": 0.1739,
+        "ART": 0.1548,
+        "CREATIVE_COGNITION": 0.1548,
+        "EMBODIED_ECOLOGICAL": 0.1548,
+        "PREDICTIVE_PROCESSING": 0.1548
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.1739,
+        "STRESS_RECOVERY_THEORY": 0.1739,
+        "IC": 0.1643,
+        "ATTENTION_RESTORATION": 0.1548,
+        "CREATIVE_COGNITION": 0.1548,
+        "EMBODIED_COGNITION": 0.1548,
+        "PREDICTIVE_PROCESSING": 0.1548
+      }
     }
   ],
   "synthesis_conclusions": [
@@ -174,5 +226,56 @@
     "raudra"
   ],
   "linked_date": "2026-03-01T04:43:12.769759+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "api_verified_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems."
+    },
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can restore directed attention capacity, which is depleted by demanding cognitive tasks."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can elicit positive emotional states and physiological relaxation, thereby reducing stress."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Biophilic practices in the built environment lead to improved well-being outcomes through various perceptual, cognitive, and physiological pathways, often mediated by reduced stress and restored attention.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Presence of biophilic elements (e.g., natural light, views of nature, plants, natural materials, natural patterns)",
+        "to_construct": "Perceived connection to nature / Sense of awe / Reduced cognitive load / Physiological relaxation response",
+        "mechanism_type": "perceptual|cognitive|affective|physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived connection to nature / Sense of awe / Reduced cognitive load / Physiological relaxation response",
+        "to_construct": "Restoration of directed attention / Reduction in stress hormones (e.g., cortisol) / Activation of parasympathetic nervous system / Improved mood states",
+        "mechanism_type": "cognitive|physiological|affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "Restoration of directed attention / Reduction in stress hormones / Activation of parasympathetic nervous system / Improved mood states",
+        "to_construct": "Enhanced cognitive performance (e.g., productivity, creativity) / Reduced health complaints / Increased satisfaction / Improved physiological and psychological well-being",
+        "mechanism_type": "cognitive|physiological|affective|behavioral",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:02:26.274016+00:00"
 }

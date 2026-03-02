@@ -149,8 +149,8 @@ def main() -> int:
     finally:
         try:
             fcntl.flock(lock_fh.fileno(), fcntl.LOCK_UN)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         lock_fh.close()
 
     return 0

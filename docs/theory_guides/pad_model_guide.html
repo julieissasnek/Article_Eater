@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mehrabian-Russell PAD Model — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html" class="current">PAD Model</a>
+<a href="place_attachment_guide.html">Place Attachment</a>
+<a href="privacy_regulation_guide.html">Privacy Regulation</a>
+<a href="proxemics_guide.html">Proxemics</a>
+</nav>
+
+<h1>Mehrabian-Russell PAD Model</h1>
+<div class="subtitle">Mehrabian & Russell (1974) — Mehrabian, A. & Russell, J.A. (1974). An approach to environmental psychology. M...</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> Albert Mehrabian (environmental psychology, arousal research)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 1974</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> 6,000</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-plausibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-rejected">REJECTED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Mehrabian-Russell PAD Model?</h2>
+  <p>The PAD model proposes that all emotional responses to environments can be described using three independent dimensions: Pleasure (how pleasant or unpleasant the experience is), Arousal (how stimulated or calm you feel), and Dominance (how much control you feel you have). Any environmental experience — walking into a cathedral, sitting in a cramped airplane, or relaxing in a garden — can be located as a point in this three-dimensional emotional space.</p>
+  <p>For architects, the PAD model provides a systematic vocabulary for specifying the emotional goals of a design. Instead of vague terms like 'cozy' or 'impressive,' a designer can specify target regions in PAD space and then identify the environmental features (lighting, scale, color, acoustics) that produce those emotional coordinates.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>Albert Mehrabian and James Russell developed the model in their 1974 book 'An Approach to Environmental Psychology,' published by MIT Press. The work grew from Mehrabian's research on nonverbal communication and Russell's work on the structure of emotion (Russell later developed the influential Circumplex Model of Affect in 1980, which uses just Pleasure and Arousal). The PAD model was explicitly designed for environmental psychology — to describe how physical environments affect emotional states. It was one of the first attempts to apply dimensional emotion theory specifically to person-environment transactions.</p>
+
+  <h2>How It Works</h2>
+  <p>Pleasure captures the hedonic valence of the environment — driven by aesthetic quality, comfort, and match with preferences. Arousal captures the level of neural activation — driven by stimulus intensity, novelty, complexity, and unpredictability. Dominance captures the sense of control and agency — driven by spatial openness, freedom of movement, and ability to modify the environment. The three dimensions are theoretically orthogonal: a space can be pleasant but low-arousal (a quiet garden) or pleasant but high-arousal (a lively market), and either can feel controlling or liberating.</p>
+
+  <h2>Applications in Design</h2>
+  <p>The PAD model has been widely used in retail design (stores aim for moderate pleasure + moderate arousal + low dominance to encourage browsing), healthcare design (patient rooms aim for high pleasure + low arousal + high dominance), workplace design (offices balance arousal for productivity with dominance for autonomy), and hospitality design. The Semantic Differential Scale based on PAD is one of the most commonly used instruments in environmental assessment research.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1974:</span> Mehrabian &amp; Russell foundational work establishing PAD framework</div>
+<div class="timeline-item"><span class="timeline-year">1977:</span> Russell &amp; Mehrabian validation paper confirming three-factor structure</div>
+<div class="timeline-item"><span class="timeline-year">1980s-1990s:</span> Development of semantic differential scales for measurement</div>
+<div class="timeline-item"><span class="timeline-year">1980s-Present:</span> Extensive application to consumer psychology, HCI, environmental design, emotion research</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Albert Mehrabian (environmental psychology, arousal research)</li>
+<li>James A. Russell (emotion theory, dimensional approaches)</li>
+<li>Harry Schlosberg (early dimensional emotion theories)</li>
+<li>James J. Gibson (ecological perception, environmental affordances)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>Formally: E(s) = [P(s), A(s), D(s)]ᵀ, where E is the emotional response vector to stimulus/environment s, and P, A, D are continuous dimensions typically measured on bipolar scales (e.g., -4 to +4). Mehrabian proposed that approach-avoidance behavior is a function of all three dimensions: Approach = 0.69P + 0.32A - 0.17D (for novel environments), though the specific weights vary by context.</p>
+
+  <div class="formula-box">
+    E(s) = [P(s), A(s), D(s)]ᵀ; P = pleasure, A = arousal, D = dominance
+<div class="var-def"><strong>E(s)</strong> = Emotional state in response to stimulus s (3D vector)<br><strong>P</strong> = Pleasure-displeasure dimension (-1 to +1)<br><strong>A</strong> = Arousal-non-arousal dimension<br><strong>D</strong> = Dominance-submissiveness dimension</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Environmental pleasure accounts for ~50% of emotional variance<br>• Arousal × dominance interaction predicts approach-avoidance behavior</div>
+  </div>
+
+  
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, the PAD model has status REJECTED — it fully reduces to three T1 frameworks without residual: Pleasure maps to IC (Interoceptive) valence computation, Arousal maps to NM (Neuromodulatory) activation level, and Dominance maps to DP (Decision-theoretic) perceived control/agency. Since each PAD dimension is completely captured by an existing T1 framework, the model adds no independent explanatory power at the T1.5 level. This doesn't mean the model is wrong — it's a useful descriptive tool — but it is not a distinct theory with its own irreducible mechanism.</p>
+
+  
+
+  <details><summary>Rejection Rationale</summary>
+<div class="details-content"><p>Fully reduces to IC + NM + DP without residual. Pleasure maps to IC valence (interoceptive prediction error direction), Arousal maps to NM sympathetic activation, Dominance maps to DP perceived control. No organizing principle unique to PAD remains after this decomposition — it is a dimensionality claim, not a domain theory.</p></div></details>
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Mehrabian, A. &amp; Russell, J.A. (1974). An approach to environmental psychology. Cambridge: MIT Press.</li>
+<li>Mehrabian, A. &amp; Russell, J.A. (1974). An approach to environmental psychology. MIT Press.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Seminal paper (1974) verified via MIT Press publications. Russell &amp; Mehrabian (1977) validation paper verified via Journal of Research in Personality. Original application to environmental psychology (not just emotion generally) confirmed via multiple design and environmental psychology sources. Google Scholar citation count confirmed at 6,000+. Three-dimension structure (Pleasure, Arousal, Dominance) verified across semantic differential measurement literature.</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

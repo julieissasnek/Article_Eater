@@ -14,6 +14,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from src.services.finding_template_relevance import (  # noqa: E402
+from src.services.db_locator import get_web_db
     FindingRecord,
     _infer_finding_domains,
     load_template_profiles,
@@ -37,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--web-db",
         type=Path,
-        default=Path("data/web_persistence_v2.db"),
+        default=get_web_db(),
         help="Web DB path for persistence checks",
     )
     parser.add_argument(
@@ -88,7 +89,8 @@ def _persistence_ratio(db_path: Path, annotation_key: str) -> tuple[int, int, fl
             continue
         try:
             payload = json.loads(raw)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         if annotation_key in payload:
             with_key += 1

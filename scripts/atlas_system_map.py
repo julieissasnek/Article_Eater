@@ -281,8 +281,8 @@ def analyze_web_structure(db_path: Path = None) -> Dict[str, Any]:
             result["theory_worlds_sample"] = [
                 dict(row) for row in cursor.fetchall()
             ]
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Orphan beliefs (no constraints)
     if "beliefs" in tables and "constraints" in tables:

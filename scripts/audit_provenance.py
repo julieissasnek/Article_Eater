@@ -385,8 +385,8 @@ def main() -> int:
         try:
             with open(fp) as f:
                 templates.append(json.load(f))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if args.template:
         templates = [t for t in templates if t.get("template_id", "").startswith(args.template)]

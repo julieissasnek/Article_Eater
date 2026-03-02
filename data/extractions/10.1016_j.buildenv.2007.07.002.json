@@ -2,7 +2,7 @@
   "doi": "10.1016/j.buildenv.2007.07.002",
   "article_type": "unknown",
   "article_family": "unknown",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.73,
   "n_findings": 45,
   "extracted_at": "2026-02-25T05:09:03.202661+00:00",
@@ -1051,7 +1051,7 @@
     },
     {
       "id": 16,
-      "antecedent": "Low obstruction angle (0=22\u00b0) (Building 30)",
+      "antecedent": "Low obstruction angle (0=22°) (Building 30)",
       "consequent": "Daylight factor (DF) across floor levels for northeast zone",
       "direction": "no_effect",
       "claim_type": "associational",
@@ -1072,7 +1072,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 4",
-      "quote": "With 0=22\u00b0, there is almost no change in DF at different floor levels for northeast zone.",
+      "quote": "With 0=22°, there is almost no change in DF at different floor levels for northeast zone.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -1305,7 +1305,7 @@
     },
     {
       "id": 21,
-      "antecedent": "North zone, large obstruction angle (64\u00b0) (Building 20)",
+      "antecedent": "North zone, large obstruction angle (64°) (Building 20)",
       "consequent": "Daylight factor (DF)",
       "direction": "decrease",
       "claim_type": "associational",
@@ -1326,7 +1326,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 4",
-      "quote": "Similar characteristics can be found for the north zone but with lower DF levels due to the large 0 of 64\u00b0 appearing at the north orientation.",
+      "quote": "Similar characteristics can be found for the north zone but with lower DF levels due to the large 0 of 64° appearing at the north orientation.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -2618,7 +2618,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 5",
-      "quote": "Most of the 35 surveyed buildings have a mean vertical obstructing angle between 30\u00b0 and 60\u00b0.",
+      "quote": "Most of the 35 surveyed buildings have a mean vertical obstructing angle between 30° and 60°.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -3012,7 +3012,7 @@
     },
     {
       "id": 45,
-      "antecedent": "Building fa\u00e7ade designs (conducive to daylighting), proper daylight linked lighting controls",
+      "antecedent": "Building façade designs (conducive to daylighting), proper daylight linked lighting controls",
       "consequent": "Energy savings",
       "direction": "increase",
       "claim_type": "causal",
@@ -3033,7 +3033,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 5",
-      "quote": "building fa\u00e7ade designs are conducive to daylighting and proper daylight linked lighting controls have potential for significant energy savings.",
+      "quote": "building façade designs are conducive to daylighting and proper daylight linked lighting controls have potential for significant energy savings.",
       "evidence_type": "claimed",
       "template_matches": [
         {
@@ -3095,7 +3095,7 @@
   "limitations": [
     "None explicitly stated"
   ],
-  "minimum_safe_summary": "This empirical study investigated daylighting performance and energy implications in 35 Hong Kong office buildings, with detailed simulations of two typical blocks using RADIANCE. Key findings indicate that about one-third of perimeter office areas achieve an average daylight factor of 5%, and proper daylight-linked lighting controls could save over 25% of electric lighting energy. Daylighting performance is significantly influenced by window area, glass type, external obstructions, and room depth, with DFs rapidly decreasing away from windows and at lower floors. Glare indices were generally below discomfort thresholds. The study concludes that current building fa\u00e7ade designs are conducive to effective daylighting, offering substantial energy savings. No explicit limitations were stated.",
+  "minimum_safe_summary": "This empirical study investigated daylighting performance and energy implications in 35 Hong Kong office buildings, with detailed simulations of two typical blocks using RADIANCE. Key findings indicate that about one-third of perimeter office areas achieve an average daylight factor of 5%, and proper daylight-linked lighting controls could save over 25% of electric lighting energy. Daylighting performance is significantly influenced by window area, glass type, external obstructions, and room depth, with DFs rapidly decreasing away from windows and at lower floors. Glare indices were generally below discomfort thresholds. The study concludes that current building façade designs are conducive to effective daylighting, offering substantial energy savings. No explicit limitations were stated.",
   "paper_metadata": {
     "doi": "10.1016/J.BUILDENV.2007.07.002",
     "title": "An analysis of daylighting performance for office buildings in Hong Kong",
@@ -3314,5 +3314,57 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "window-to-wall ratio",
+      "glazing properties",
+      "room dimensions (depth, height)",
+      "building orientation",
+      "external obstructions",
+      "sky conditions (e.g., Hong Kong specific sky models or standard CIE skies)"
+    ],
+    "duration_exposure": "annual simulation",
+    "control_conditions": [
+      "comparison of different office building designs",
+      "varying window configurations",
+      "different building orientations"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "mechanism_chain": {
+    "description": "Architectural design parameters influence the amount of daylight entering a space, which in turn determines the daylight factor.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "window-to-wall ratio / glazing transmittance / room depth",
+        "to_construct": "quantity of external daylight entering the interior space",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "quantity of external daylight entering the interior space",
+        "to_construct": "illuminance levels / daylight factor within the space",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Daylight simulation software",
+      "construct": "daylight factor, illuminance levels, daylight autonomy",
+      "description": "Software used to model building geometry and simulate daylight performance under various sky conditions.",
+      "type": "other"
+    },
+    {
+      "name": "Sky models",
+      "construct": "external luminance distribution, solar radiation",
+      "description": "Mathematical models representing sky conditions (e.g., CIE standard skies, local climate-based sky models) used as input for simulations.",
+      "type": "other"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:41:21.013695+00:00"
 }

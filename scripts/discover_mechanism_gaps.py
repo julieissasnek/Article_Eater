@@ -244,7 +244,8 @@ def load_templates(template_dir: Path) -> List[Dict]:
             if d.get("causal_links") or d.get("mechanism_chain"):
                 d["_filename"] = f.name
                 templates.append(d)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
     return templates
 

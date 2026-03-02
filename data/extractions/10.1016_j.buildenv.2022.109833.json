@@ -2,7 +2,7 @@
   "doi": "10.1016/j.buildenv.2022.109833",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.86,
   "n_findings": 12,
   "extracted_at": "2026-02-25T05:10:52.292136+00:00",
@@ -14,13 +14,13 @@
   "design_type": "within_subjects",
   "participants": {
     "n": 142,
-    "description": "58% male, 42% female; average age 23.17 years (\u03c3 = 4.04). Participants were Spanish university students (18-23 years old) with normal or corrected-to-normal vision (contact lenses) and no colour deficiencies, and had not consumed performance-altering substances in the previous 24 hours.",
+    "description": "58% male, 42% female; average age 23.17 years (σ = 4.04). Participants were Spanish university students (18-23 years old) with normal or corrected-to-normal vision (contact lenses) and no colour deficiencies, and had not consumed performance-altering substances in the previous 24 hours.",
     "recruitment": null
   },
   "stimuli_or_exposures": [
     {
       "type": "VR",
-      "description": "Three immersive virtual environments (IVEs) simulating a university classroom, each with a different illuminance level: 100 lx, 300 lx, and 500 lx. The IVEs were rendered as 360\u00b0 panoramas and displayed via an HTC Vive HMD.",
+      "description": "Three immersive virtual environments (IVEs) simulating a university classroom, each with a different illuminance level: 100 lx, 300 lx, and 500 lx. The IVEs were rendered as 360° panoramas and displayed via an HTC Vive HMD.",
       "n_stimuli": 3,
       "source": "Abstract, 2.2. IVE, 2.3. Illuminance configurations"
     }
@@ -1010,7 +1010,7 @@
   ],
   "paper_metadata": {
     "doi": "10.1016/j.buildenv.2022.109833",
-    "title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+    "title": "The effects of illuminance on students′ memory. A neuroarchitecture study",
     "authors": [
       "Nuria Castilla",
       "J. L. Higuera-Trujillo",
@@ -1168,7 +1168,7 @@
     "enriched": true,
     "enriched_at": "2026-02-25T11:38:14.612174+00:00",
     "enrichment_source": "semantic_scholar+crossref",
-    "crossref_title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+    "crossref_title": "The effects of illuminance on students′ memory. A neuroarchitecture study",
     "crossref_year": 2023,
     "crossref_citation_count": 47,
     "crossref_journal": "Building and Environment",
@@ -1190,7 +1190,7 @@
     "J. L. Higuera-Trujillo",
     "C. Llinares"
   ],
-  "crossref_title": "The effects of illuminance on students\u2032 memory. A neuroarchitecture study",
+  "crossref_title": "The effects of illuminance on students′ memory. A neuroarchitecture study",
   "crossref_authors": [
     {
       "name": "Nuria Castilla",
@@ -1228,5 +1228,79 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Classroom illuminance (100 lx)",
+      "Classroom illuminance (300 lx)",
+      "Classroom illuminance (500 lx)"
+    ],
+    "duration_exposure": "30 minutes per condition",
+    "control_conditions": [
+      "300 lx illuminance condition"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light on human physiology and cognition",
+      "commitment_type": "tests",
+      "specific_claim": "Specific light characteristics (e.g., illuminance) impact alertness, mood, and cognitive performance through non-visual pathways mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs)."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The study investigates how different illuminance levels affect memory performance by influencing alertness and attention through non-visual photoreception pathways.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Classroom illuminance",
+        "to_construct": "ipRGC activation",
+        "mechanism_type": "neural",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "ipRGC activation",
+        "to_construct": "Alertness/Arousal",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "Alertness/Arousal",
+        "to_construct": "Attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Attention",
+        "to_construct": "Memory-correct answers",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Word Recall Task",
+      "construct": "Verbal memory",
+      "description": "Participants were presented with a list of words and asked to recall them after a delay.",
+      "type": "behavioral"
+    },
+    {
+      "name": "EEG",
+      "construct": "Brain activity related to attention and memory",
+      "description": "Electroencephalography was used to measure brain electrical activity (e.g., alpha, theta power, event-related potentials).",
+      "type": "eeg"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective alertness/sleepiness",
+      "description": "A 9-point self-report scale ranging from 'extremely alert' to 'very sleepy, fighting sleep'.",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:15:55.059102+00:00"
 }

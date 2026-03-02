@@ -153,8 +153,8 @@ class EnvironmentImageDB:
                     link.get("finding_text", "")[:300],
                 ))
                 stats["links_ingested"] += 1
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         
         conn.commit()
         conn.close()

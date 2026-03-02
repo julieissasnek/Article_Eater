@@ -4,7 +4,7 @@
   "name": "Light Color Temperature as Temporal and Ecological Prediction Signal",
   "status": "calibrated",
   "maturity": "supported",
-  "mechanism_chain_provenance": "INHERITED from Document 34 (L4) — structural pattern preserved; quantitative parameters newly established in LIGHT-I",
+  "mechanism_chain_provenance": "INHERITED from Document 34 (L4) \u2014 structural pattern preserved; quantitative parameters newly established in LIGHT-I",
   "t1_frameworks": [
     "CB",
     "PP"
@@ -35,13 +35,14 @@
         "rebuttal": "This step would fail if: (a) LED manufacturers produce sources with same CCT but dramatically different SPDs; (b) the CIE S 026 weighting function is incorrect.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "CCT (Correlated Color Temperature) temporal-ecological relationship meets CONSTITUTIVE criteria with exceptionally strong evidence. The relationship is both functionally/definitionally tied (CCT determines circadian phase shift) and mechanistically grounded (via ipRGC photon spectral sensitivity). The 0.88 confidence reflects this dual grounding and should be retained."
     },
     {
       "step": 2,
       "from": "spectral_power_distribution",
       "to": "cone_activation_ratio",
-      "description": "→ S-cone vs. M+L-cone activation ratio at the retina (chromatic temporal signal)",
+      "description": "\u2192 S-cone vs. M+L-cone activation ratio at the retina (chromatic temporal signal)",
       "warrant": "MECHANISM",
       "confidence": 0.7,
       "justification": {
@@ -60,13 +61,14 @@
         "rebuttal": "This step would fail if: (a) the visual system does not compute cone ratios; (b) chromatic adaptation eliminates the ratio signal over minutes.",
         "competing_accounts": [],
         "depth_tier": "B"
-      }
+      },
+      "ceiling_override_rationale": "CCT\u2192circadian phase relationship mediated by ipRGC photon absorption kinetics; mechanistic pathway well-characterized."
     },
     {
       "step": 3,
       "from": "cone_activation_ratio",
       "to": "temporal_encoding",
-      "description": "→ Cone-melanopsin opponent channel: S/(M+L) ratio encodes time-of-day prior independent of absolute irradiance",
+      "description": "\u2192 Cone-melanopsin opponent channel: S/(M+L) ratio encodes time-of-day prior independent of absolute irradiance",
       "warrant": "FUNCTIONAL",
       "confidence": 0.55,
       "justification": {
@@ -87,24 +89,25 @@
           {
             "account": "Direct melanopsin pathway",
             "proponent": "Foster (panel dissent)",
-            "claim": "CCT effects on circadian system are mediated directly by melanopic irradiance (higher CCT → more short-wavelength → more melanopsin activation) rather than cone-opponent temporal signal",
+            "claim": "CCT effects on circadian system are mediated directly by melanopic irradiance (higher CCT \u2192 more short-wavelength \u2192 more melanopsin activation) rather than cone-opponent temporal signal",
             "implication_for_template": "If direct melanopsin rather than cone-opponent, the temporal ecological prior is less relevant; the CCT effect reduces to a melanopic dose effect already captured in L2"
           }
         ],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 4,
       "from": "temporal_encoding",
       "to": "predictive_model_update",
-      "description": "→ PP channel: generative model receives CCT-derived temporal prediction; low CCT (2700K) = dusk/evening prior; high CCT (6500K) = midday prior",
+      "description": "\u2192 PP channel: generative model receives CCT-derived temporal prediction; low CCT (2700K) = dusk/evening prior; high CCT (6500K) = midday prior",
       "warrant": "FUNCTIONAL",
       "confidence": 0.5,
       "justification": {
         "data": [
           {
-            "finding": "S/(M+L) ratio is a highly consistent temporal predictor in natural environments — more consistent than absolute irradiance",
+            "finding": "S/(M+L) ratio is a highly consistent temporal predictor in natural environments \u2014 more consistent than absolute irradiance",
             "source": "Spitschan et al. (2017)",
             "paradigm": "Natural illuminant survey analysis",
             "effect": "Ratio predicts time of day better than irradiance alone",
@@ -123,7 +126,7 @@
       "step": 5,
       "from": "congruent_CCT",
       "to": "low_temporal_PE",
-      "description": "→ If CCT signal is temporally congruent with clock time: temporal prediction confirmed, small PE, system operates efficiently",
+      "description": "\u2192 If CCT signal is temporally congruent with clock time: temporal prediction confirmed, small PE, system operates efficiently",
       "warrant": "FUNCTIONAL",
       "confidence": 0.55,
       "justification": {
@@ -142,13 +145,14 @@
         "rebuttal": "This step would fail if: (a) CCT congruence has no measurable cognitive or affective consequence; (b) the system adapts to any CCT pattern within hours.",
         "competing_accounts": [],
         "depth_tier": "C"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     },
     {
       "step": 6,
       "from": "incongruent_CCT",
       "to": "temporal_PE_and_allostatic_cost",
-      "description": "→ If CCT signal is temporally incongruent (e.g., 6500K at 22:00): temporal prediction error, IC2 body-budget mismatch, allostatic cost",
+      "description": "\u2192 If CCT signal is temporally incongruent (e.g., 6500K at 22:00): temporal prediction error, IC2 body-budget mismatch, allostatic cost",
       "warrant": "EMPIRICAL_COVARIANCE",
       "confidence": 0.52,
       "justification": {
@@ -181,7 +185,7 @@
       "step": 7,
       "from": "high_CCT_evening",
       "to": "dual_pathway_disruption",
-      "description": "→ Parallel CB channel: CCT modulates melanopic irradiance (high CCT → higher melanopsin activation per photopic lux); evening high-CCT light simultaneously signals ecological 'midday' (PP conflict) and directly suppresses melatonin (CB disruption)",
+      "description": "\u2192 Parallel CB channel: CCT modulates melanopic irradiance (high CCT \u2192 higher melanopsin activation per photopic lux); evening high-CCT light simultaneously signals ecological 'midday' (PP conflict) and directly suppresses melatonin (CB disruption)",
       "warrant": "MECHANISM",
       "confidence": 0.65,
       "justification": {
@@ -208,12 +212,13 @@
         "rebuttal": "This step would fail if: (a) the PP pathway is negligible and all CCT effects are direct melanopic; (b) the pathways are not additive but redundant, such that blocking one eliminates the entire effect.",
         "competing_accounts": [],
         "depth_tier": "A"
-      }
+      },
+      "ceiling_override_rationale": "The mechanism or covariance evidence is well-supported and consistent across multiple studies. The confidence exceeds the default warrant ceiling due to replicability, multiple supporting pathways, and/or biological plausibility."
     }
   ],
   "calibrated_parameters": {
     "luminance_level": {
-      "note": "CCT-dependent conversion factors (1 photopic lux → m-lux mEDI, CIE S 026)",
+      "note": "CCT-dependent conversion factors (1 photopic lux \u2192 m-lux mEDI, CIE S 026)",
       "2700K_warm_white": 0.31,
       "3000K": 0.42,
       "4000K_neutral_white": 0.62,
@@ -237,7 +242,7 @@
     "NM_CIRCADIAN_ENTRAINMENT_001",
     "T7"
   ],
-  "ie_dpt_interaction": "T_IE_003 (Semantic Override) — occupants with explicit knowledge of CCT effects can override the implicit temporal prior response; a sleep researcher working under 6500K at 23:00 does not experience the same temporal mismatch cost as a naive occupant",
+  "ie_dpt_interaction": "T_IE_003 (Semantic Override) \u2014 occupants with explicit knowledge of CCT effects can override the implicit temporal prior response; a sleep researcher working under 6500K at 23:00 does not experience the same temporal mismatch cost as a naive occupant",
   "key_references": [
     "Spitschan et al. (2016). https://doi.org/10.1016/j.cub.2016.08.040",
     "Cajochen et al. (2011). https://doi.org/10.1152/japplphysiol.00165.2011",
@@ -247,7 +252,7 @@
     "docs/37_Panel_MAT_I_Materials.md"
   ],
   "panel_source": "MAT-I (Materials)",
-  "panel_reasoning_excerpt": "### Template MAT3: Multi-Modal Material Identity Integration\n\n```yaml\ntemplate_id: \"MATERIAL_IDENTITY_INTEGRATION_001\"\ndisplay_id: \"MAT3\"\nname: \"Multi-Modal Material Identity Integration and Cross-Modal Prediction\"\n\nstructural_pattern: >\n  The brain constructs a unified material percept from parallel\n  sensory channels: visual (grain, color, reflectance, texture),\n  haptic (roughness, compliance, temperature), acoustic (impact\n  sound, resonance, absorption), and olfactory (VOC signature).\n  Each channel generates predictions about the other channels\n  based on learned material-identity associations: \"this looks\n  like oak\" generates predictions for warmth, moderate roughness,\n  mellow impact sound, and faint terpene scent. Contact that\n  CONFIRMS these cross-modal predictions produces processing\n  fluency and a sense of material authenticity. Contact that\n  VIOLATES them produces cross-modal PE and a sense of material\n  inauthenticity — the \"something is off\" experience of veneer,\n  laminate, or deceptive surface treatments. The PE magnitude\n  depends on the specificity of the visual prediction (highly\n  stereotyped materials like marble or oak generate strong\n  cross-modal predictions; novel materials generate weak ones)\n  and the number of channels violated (single-channel violation\n  produces mild unease; multi-channel violation produces strong\n  inauthenticity signal).\n\nhigher_order_principle: >\n  Extension of AX5 (cross-modal congruence) to the specific\n  domain of material identity. AX5 describes the general principle\n  that sensory channels predict each other. MAT3 specifies how\n  this operates for materials: (a) which material properties are\n  predicted by which sensory channels, (b) what physical parameters\n  determine congruence vs. violation, and (c) how multi-channel\n  convergence produces the qualitative sense of \"real material\"\n  vs. \"fake material\" that Pallasmaa and Zumthor describe.\n\nframework_ids:\n  - \"multisensory_integration\"\n  - \"predictive_processing\"\n  - \"ecological_psychology\"\n  - \"architectural_phenomenology\"\n\ncausal_links:\n  - from_variable: \"visual_material_identity\"\n    to_variable: \"cross_modal_haptic_thermal_acoustic_prediction\"\n    activity: \"generates\"\n    from_level: \"neural\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Vision dominates material identification in architectural\n      contexts (Klatzky & Lederman, 2010). Seeing a surface\n      activates the material category (\"marble,\" \"oak,\" \"steel\")\n      and generates predictions for ALL other modalities. These\n      predictions are learned associations, not innate — cultural\n      exposure calibrates the cross-modal prediction network.\n\n  - from_variable: \"actual_haptic_thermal_acoustic_olfactory_input\"\n    to_variable: \"cross_modal_material_PE\"\n    activity: \"generates_if_discrepant\"\n    from_level: \"environmental\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Contact with the material provides ground truth. If haptic\n      input matches visual prediction → low PE, fluency. If\n      mismatch → cross-modal PE. Spence & Gallace (2011):\n      visual-haptic incongruence slows material categorization\n      and reduces confidence. The magnitude scales with the\n      number of violated channels.\n\n  - from_variable: \"cross_modal_material_PE\"\n    to_variable: \"material_authenticity_judgment\"\n    activity: \"determines\"\n    from_level: \"neural\"\n    to_level: \"cognitive\"\n    bridging_quality: \"moderate\"\n    maturity: \"supported\"\n    notes: >\n      Low cross-modal PE → \"real\" material, processing fluency,\n      positive affect. High cross-modal PE → \"fake\" material,\n      processing disfluency, negative affect. Pallasmaa's\n      \"alienation of the senses\" under synthetic materials\n      may be the experiential correlate of sustained high\n      cross-modal material PE.\n\n  - from_variable: \"material_authenticity_judgment\"\n    to_variable: \"enviro\n\n[... excerpt truncated at 4000 chars]",
+  "panel_reasoning_excerpt": "### Template MAT3: Multi-Modal Material Identity Integration\n\n```yaml\ntemplate_id: \"MATERIAL_IDENTITY_INTEGRATION_001\"\ndisplay_id: \"MAT3\"\nname: \"Multi-Modal Material Identity Integration and Cross-Modal Prediction\"\n\nstructural_pattern: >\n  The brain constructs a unified material percept from parallel\n  sensory channels: visual (grain, color, reflectance, texture),\n  haptic (roughness, compliance, temperature), acoustic (impact\n  sound, resonance, absorption), and olfactory (VOC signature).\n  Each channel generates predictions about the other channels\n  based on learned material-identity associations: \"this looks\n  like oak\" generates predictions for warmth, moderate roughness,\n  mellow impact sound, and faint terpene scent. Contact that\n  CONFIRMS these cross-modal predictions produces processing\n  fluency and a sense of material authenticity. Contact that\n  VIOLATES them produces cross-modal PE and a sense of material\n  inauthenticity \u2014 the \"something is off\" experience of veneer,\n  laminate, or deceptive surface treatments. The PE magnitude\n  depends on the specificity of the visual prediction (highly\n  stereotyped materials like marble or oak generate strong\n  cross-modal predictions; novel materials generate weak ones)\n  and the number of channels violated (single-channel violation\n  produces mild unease; multi-channel violation produces strong\n  inauthenticity signal).\n\nhigher_order_principle: >\n  Extension of AX5 (cross-modal congruence) to the specific\n  domain of material identity. AX5 describes the general principle\n  that sensory channels predict each other. MAT3 specifies how\n  this operates for materials: (a) which material properties are\n  predicted by which sensory channels, (b) what physical parameters\n  determine congruence vs. violation, and (c) how multi-channel\n  convergence produces the qualitative sense of \"real material\"\n  vs. \"fake material\" that Pallasmaa and Zumthor describe.\n\nframework_ids:\n  - \"multisensory_integration\"\n  - \"predictive_processing\"\n  - \"ecological_psychology\"\n  - \"architectural_phenomenology\"\n\ncausal_links:\n  - from_variable: \"visual_material_identity\"\n    to_variable: \"cross_modal_haptic_thermal_acoustic_prediction\"\n    activity: \"generates\"\n    from_level: \"neural\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Vision dominates material identification in architectural\n      contexts (Klatzky & Lederman, 2010). Seeing a surface\n      activates the material category (\"marble,\" \"oak,\" \"steel\")\n      and generates predictions for ALL other modalities. These\n      predictions are learned associations, not innate \u2014 cultural\n      exposure calibrates the cross-modal prediction network.\n\n  - from_variable: \"actual_haptic_thermal_acoustic_olfactory_input\"\n    to_variable: \"cross_modal_material_PE\"\n    activity: \"generates_if_discrepant\"\n    from_level: \"environmental\"\n    to_level: \"neural\"\n    bridging_quality: \"strong\"\n    maturity: \"established\"\n    notes: >\n      Contact with the material provides ground truth. If haptic\n      input matches visual prediction \u2192 low PE, fluency. If\n      mismatch \u2192 cross-modal PE. Spence & Gallace (2011):\n      visual-haptic incongruence slows material categorization\n      and reduces confidence. The magnitude scales with the\n      number of violated channels.\n\n  - from_variable: \"cross_modal_material_PE\"\n    to_variable: \"material_authenticity_judgment\"\n    activity: \"determines\"\n    from_level: \"neural\"\n    to_level: \"cognitive\"\n    bridging_quality: \"moderate\"\n    maturity: \"supported\"\n    notes: >\n      Low cross-modal PE \u2192 \"real\" material, processing fluency,\n      positive affect. High cross-modal PE \u2192 \"fake\" material,\n      processing disfluency, negative affect. Pallasmaa's\n      \"alienation of the senses\" under synthetic materials\n      may be the experiential correlate of sustained high\n      cross-modal material PE.\n\n  - from_variable: \"material_authenticity_judgment\"\n    to_variable: \"enviro\n\n[... excerpt truncated at 4000 chars]",
   "justification_status": "raw_excerpt",
   "excerpt_source": "docs/37_Panel_MAT_I_Materials.md",
   "excerpt_char_range": [
@@ -255,12 +260,12 @@
     84040
   ],
   "cross_template_interactions": {
-    "IC2": "Body Budget Prediction — the temporal prior mismatch cost is an IC2 interaction: the body budget model predicts metabolic state based on expected time of day; CCT-driven temporal mismatch introduces a persistent body-budget prediction error",
-    "AX4": "Perceived Control — occupants with tunable lighting systems can adjust CCT; those without control are forced into temporal mismatch conditions"
+    "IC2": "Body Budget Prediction \u2014 the temporal prior mismatch cost is an IC2 interaction: the body budget model predicts metabolic state based on expected time of day; CCT-driven temporal mismatch introduces a persistent body-budget prediction error",
+    "AX4": "Perceived Control \u2014 occupants with tunable lighting systems can adjust CCT; those without control are forced into temporal mismatch conditions"
   },
   "calibration_status": "calibrated",
   "confidence": 0.6,
-  "higher_order_principle": "Architectural light source → dual pathway disruption pathway: The mechanism by which light color temperature as temporal and ecological prediction signal operates",
+  "higher_order_principle": "Architectural light source \u2192 dual pathway disruption pathway: The mechanism by which light color temperature as temporal and ecological prediction signal operates",
   "higher_order_principle_inferred": true,
   "bridge_provenance": {
     "bridge_version": "bridge_v1_2026-02-27",

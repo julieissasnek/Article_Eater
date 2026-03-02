@@ -106,8 +106,8 @@ def main():
             if tid in remaining_ids:
                 dup_check.append(tid)
             remaining_ids.add(tid)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     
     # ── Success Conditions ──
     print(f"\n{'='*60}")

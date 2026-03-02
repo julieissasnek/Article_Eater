@@ -1,8 +1,10 @@
 import sqlite3
 import json
 
+from src.services.db_locator import get_web_db
+
 def check_mechanisms():
-    conn = sqlite3.connect("data/web_persistence_v2.db")
+    conn = sqlite3.connect(str(get_web_db()))
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     

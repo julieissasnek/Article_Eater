@@ -260,7 +260,8 @@ def check_unpaywall(doi: str) -> Optional[str]:
                 return loc["url_for_pdf"]
 
         return None
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 

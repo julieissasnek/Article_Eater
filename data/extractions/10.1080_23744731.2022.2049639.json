@@ -2,7 +2,7 @@
   "doi": "10.1080/23744731.2022.2049639",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.839,
   "n_findings": 38,
   "extracted_at": "2026-02-25T02:03:53.138427+00:00",
@@ -14,13 +14,13 @@
   "design_type": "within_subjects",
   "participants": {
     "n": 26,
-    "description": "26 healthy office workers (23 males, 3 females) in Singapore, aged 25 to 59 years (mean 42.5 \u00b1 9.0 years). Mean clothing value 0.55 \u00b1 0.11 clo.",
+    "description": "26 healthy office workers (23 males, 3 females) in Singapore, aged 25 to 59 years (mean 42.5 ± 9.0 years). Mean clothing value 0.55 ± 0.11 clo.",
     "recruitment": "Voluntarily participated"
   },
   "stimuli_or_exposures": [
     {
       "type": "physical_space",
-      "description": "A meeting room (34 m\u00b2) in an office on the eighth floor of the Kajima Technical Research Institute Singapore. Conditions: (1) closed blinds, (3) window view (buildings, greenery, sky, oceans). Room temperature 23\u00b0C, illuminance 513\u00b11 lx (closed blinds) and 1969\u00b1340 lx (window view).",
+      "description": "A meeting room (34 m²) in an office on the eighth floor of the Kajima Technical Research Institute Singapore. Conditions: (1) closed blinds, (3) window view (buildings, greenery, sky, oceans). Room temperature 23°C, illuminance 513±1 lx (closed blinds) and 1969±340 lx (window view).",
       "n_stimuli": 2,
       "source": "Figure 1, Methods section"
     },
@@ -34,12 +34,12 @@
   "measures": [
     {
       "construct": "Skin temperature",
-      "instrument": "iButton (\u00b1 0.5\u00b0C uncertainty) at 4 points (left upper chest, left upper outside arm, right thigh, right lower leg)",
+      "instrument": "iButton (± 0.5°C uncertainty) at 4 points (left upper chest, left upper outside arm, right thigh, right lower leg)",
       "type": "physiological"
     },
     {
       "construct": "Skin conductance",
-      "instrument": "Shimmer 3 (\u00b1 3% uncertainty) at second joint of middle and index fingers",
+      "instrument": "Shimmer 3 (± 3% uncertainty) at second joint of middle and index fingers",
       "type": "physiological"
     },
     {
@@ -124,7 +124,56 @@
       "outcome_id": "physio.pain",
       "outcome_domain": "physio",
       "outcome_match_type": "fuzzy",
-      "outcome_confidence": 0.75
+      "outcome_confidence": 0.75,
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.4475,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3942,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.355,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_INDIVIDUAL_DIFFERENCES_008",
+          "display_id": "AX8",
+          "score": 0.3251,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3095,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3439,
+        "MULTISENSORY_INTEGRATION": 0.1775,
+        "SPATIAL_COGNITION": 0.1775
+      },
+      "tier2_relevance": {
+        "EC": 0.2238,
+        "PP": 0.2238,
+        "IC": 0.1971,
+        "MULTISENSORY_INTEGRATION": 0.1775,
+        "SPATIAL_NAVIGATION": 0.1775,
+        "DIFFERENTIAL_SUSCEPTIBILITY": 0.1626,
+        "PREDICTIVE_PROCESSING": 0.1547
+      }
     },
     {
       "id": 2,
@@ -153,7 +202,51 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3787,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3521,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.3498,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3477,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3354,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4489,
+        "SRT": 0.1761
+      },
+      "tier2_relevance": {
+        "NM": 0.1893,
+        "CROSS_FRAMEWORK": 0.1761,
+        "NM_STRESS": 0.1761,
+        "NEUROMODULATORY": 0.1749,
+        "METHODOLOGICAL": 0.1739,
+        "DMN_TPN_DYNAMICS": 0.1677
+      }
     },
     {
       "id": 3,
@@ -182,7 +275,48 @@
       "outcome_id": "behav.productivity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3276,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3245,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2941,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_SALIENCE_NETWORK_001",
+          "display_id": "DT1",
+          "score": 0.2878,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2858,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2995,
+        "SRT": 0.1623
+      },
+      "tier2_relevance": {
+        "NM": 0.1638,
+        "CROSS_FRAMEWORK": 0.1623,
+        "NM_STRESS": 0.1623
+      }
     },
     {
       "id": 4,
@@ -212,7 +346,59 @@
       "outcome_id": "affect.stress",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3385,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3258,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3191,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3032,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3022,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2948,
+        "MATERIAL_HAPTIC_THERMAL": 0.1595,
+        "PREDICTIVE_PROCESSING": 0.1595,
+        "ART": 0.1516,
+        "CREATIVE_COGNITION": 0.1516,
+        "EMBODIED_ECOLOGICAL": 0.1516,
+        "SRT": 0.1511
+      },
+      "tier2_relevance": {
+        "NM": 0.1693,
+        "METHODOLOGICAL": 0.1629,
+        "INTEROCEPTION": 0.1595,
+        "PREDICTIVE_PROCESSING": 0.1595,
+        "ATTENTION_RESTORATION_THEORY": 0.1516,
+        "EMBODIED_COGNITION": 0.1516,
+        "INCUBATION_THEORY": 0.1516,
+        "CROSS_FRAMEWORK": 0.1511,
+        "NM_STRESS": 0.1511
+      }
     },
     {
       "id": 5,
@@ -238,7 +424,48 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Relaxed: **: p < 0.01"
+      "quote": "Relaxed: **: p < 0.01",
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3178,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3018,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_ACTIVE_INFERENCE_004",
+          "display_id": "PP4",
+          "score": 0.2789,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.2758,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2729,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2858,
+        "SRT": 0.1509
+      },
+      "tier2_relevance": {
+        "NM": 0.1589,
+        "CROSS_FRAMEWORK": 0.1509,
+        "NM_STRESS": 0.1509
+      }
     },
     {
       "id": 6,
@@ -264,7 +491,47 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Pleased: **: p < 0.01"
+      "quote": "Pleased: **: p < 0.01",
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3178,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3009,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2941,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.2898,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.2727,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.1589,
+        "PREDICTIVE_PROCESSING": 0.1505
+      },
+      "tier2_relevance": {
+        "NM": 0.1589,
+        "PREDICTIVE_PROCESSING": 0.1505
+      }
     },
     {
       "id": 7,
@@ -290,7 +557,56 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Enthusiastic: *: p < 0.05"
+      "quote": "Enthusiastic: *: p < 0.05",
+      "template_matches": [
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3175,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3162,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3119,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3052,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3049,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2918,
+        "MATERIAL_HAPTIC_THERMAL": 0.1581,
+        "NEUROMODULATORY_REWARD": 0.156,
+        "ART": 0.1525,
+        "CREATIVE_COGNITION": 0.1525,
+        "EMBODIED_ECOLOGICAL": 0.1525
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2918,
+        "INTEROCEPTION": 0.1581,
+        "NM": 0.156,
+        "METHODOLOGICAL": 0.1526,
+        "ATTENTION_RESTORATION_THEORY": 0.1525,
+        "EMBODIED_COGNITION": 0.1525,
+        "INCUBATION_THEORY": 0.1525
+      }
     },
     {
       "id": 8,
@@ -320,7 +636,47 @@
       "outcome_id": "affect.anxiety",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3197,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3042,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2941,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_ACTIVE_INFERENCE_004",
+          "display_id": "PP4",
+          "score": 0.2789,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2646,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.1598,
+        "NEUROMODULATORY_REWARD": 0.1521
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.1598,
+        "NM": 0.1521
+      }
     },
     {
       "id": 9,
@@ -346,7 +702,47 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Sad: *: p < 0.05"
+      "quote": "Sad: *: p < 0.05",
+      "template_matches": [
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.31,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2996,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.2874,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.277,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.27,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.155,
+        "PREDICTIVE_PROCESSING": 0.155
+      },
+      "tier2_relevance": {
+        "INTEROCEPTION": 0.155,
+        "PREDICTIVE_PROCESSING": 0.155
+      }
     },
     {
       "id": 10,
@@ -372,7 +768,45 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Dull: *: p < 0.05"
+      "quote": "Dull: *: p < 0.05",
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3035,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.2907,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.283,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.2725,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.2597,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.1517
+      },
+      "tier2_relevance": {
+        "NM": 0.1517
+      }
     },
     {
       "id": 11,
@@ -398,7 +832,48 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 3(c)",
-      "quote": "Quiet: *: p < 0.05"
+      "quote": "Quiet: *: p < 0.05",
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3242,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3105,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2929,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2894,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2795,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2922,
+        "SRT": 0.1552
+      },
+      "tier2_relevance": {
+        "NM": 0.1621,
+        "CROSS_FRAMEWORK": 0.1552,
+        "NM_STRESS": 0.1552
+      }
     },
     {
       "id": 12,
@@ -428,7 +903,63 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.4004,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.3899,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3511,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "NM_SOCIAL_ENRICHMENT_MODULATION_001",
+          "display_id": "T52",
+          "score": 0.3478,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3391,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3153,
+        "ART": 0.2002,
+        "MEMORY_LEARNING": 0.2002,
+        "COGNITIVE_CONTROL": 0.195,
+        "CREATIVE_COGNITION": 0.1756,
+        "MULTISENSORY_INTEGRATION": 0.1739,
+        "NEUROMODULATORY_REWARD": 0.1739,
+        "MATERIAL_HAPTIC_THERMAL": 0.1696
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3153,
+        "ATTENTION_RESTORATION": 0.2002,
+        "MEMORY_SYSTEMS": 0.2002,
+        "COGNITIVE_CONTROL": 0.195,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1756,
+        "GROUP_CREATIVITY": 0.1756,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1756,
+        "MS": 0.1739,
+        "NM": 0.1739,
+        "INTEROCEPTION": 0.1696
+      }
     },
     {
       "id": 13,
@@ -455,7 +986,58 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.392,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.3822,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3365,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3278,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3254,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.3313,
+        "PREDICTIVE_PROCESSING": 0.3036,
+        "MEMORY_LEARNING": 0.196,
+        "COGNITIVE_CONTROL": 0.1911,
+        "CREATIVE_COGNITION": 0.1683,
+        "EMBODIED_ECOLOGICAL": 0.1683,
+        "MATERIAL_HAPTIC_THERMAL": 0.1627
+      },
+      "tier2_relevance": {
+        "ATTENTION_RESTORATION": 0.3313,
+        "PREDICTIVE_PROCESSING": 0.3036,
+        "MEMORY_SYSTEMS": 0.196,
+        "COGNITIVE_CONTROL": 0.1911,
+        "CREATIVE_COGNITION": 0.1683,
+        "EMBODIED_COGNITION": 0.1683,
+        "IC": 0.1639,
+        "INTEROCEPTION": 0.1627
+      }
     },
     {
       "id": 14,
@@ -481,7 +1063,64 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.551, Figure 5(a)",
-      "quote": "The mean skin temperatures with a window view were 0.1\u00b0C higher than those with closed blinds significantly"
+      "quote": "The mean skin temperatures with a window view were 0.1°C higher than those with closed blinds significantly",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4666,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4097,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3963,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3725,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3645,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3904,
+        "MATERIAL_HAPTIC_THERMAL": 0.2333,
+        "SRT": 0.2333,
+        "AFFECTIVE_EMOTION": 0.2049,
+        "CIRCADIAN_REGULATION": 0.2049,
+        "NEUROMODULATORY_REWARD": 0.2049,
+        "COGNITIVE_CONTROL": 0.1822
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3904,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2333,
+        "ALLOSTATIC_REGULATION": 0.2333,
+        "METABOLIC_HEALTH": 0.2333,
+        "AROUSAL_THEORY": 0.2049,
+        "PAD_EMOTIONAL_MODEL": 0.2049,
+        "RETINAL_ACTIVATION": 0.2049,
+        "CROSS_FRAMEWORK": 0.1981,
+        "CULTURAL_PSYCHOLOGY": 0.1862,
+        "DUAL_PROCESS": 0.1822
+      }
     },
     {
       "id": 15,
@@ -507,11 +1146,54 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.551, Figure 5(b)",
-      "quote": "The mean skin conductance with a window view was 0.12 \u00b5S lower than that with closed blinds, significantly so in the real environment",
+      "quote": "The mean skin conductance with a window view was 0.12 µS lower than that with closed blinds, significantly so in the real environment",
       "outcome_id": "physio.skin_conductance",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3963,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3657,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.3577,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_INDIVIDUAL_DIFFERENCES_008",
+          "display_id": "AX8",
+          "score": 0.3423,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3242,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.329,
+        "COGNITIVE_CONTROL": 0.1621
+      },
+      "tier2_relevance": {
+        "CROSS_FRAMEWORK": 0.1981,
+        "NEUROMODULATORY": 0.1829,
+        "NM": 0.1789,
+        "DIFFERENTIAL_SUSCEPTIBILITY": 0.1711,
+        "DUAL_PROCESS": 0.1621
+      }
     },
     {
       "id": 16,
@@ -541,7 +1223,51 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3867,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3562,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3397,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_INDIVIDUAL_DIFFERENCES_008",
+          "display_id": "AX8",
+          "score": 0.334,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3208,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.3,
+        "SRT": 0.3,
+        "NEUROMODULATORY_REWARD": 0.1933
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.1933,
+        "CULTURAL_PSYCHOLOGY": 0.1781,
+        "CROSS_FRAMEWORK": 0.1699,
+        "DIFFERENTIAL_SUSCEPTIBILITY": 0.167,
+        "DMN_TPN_DYNAMICS": 0.1604
+      }
     },
     {
       "id": 17,
@@ -571,7 +1297,54 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3385,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3375,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3165,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_THREAT_HPA_001",
+          "display_id": "T5",
+          "score": 0.3146,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.309,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.5031,
+        "SRT": 0.4101,
+        "ART": 0.3,
+        "MATERIAL_HAPTIC_THERMAL": 0.1688,
+        "COGNITIVE_CONTROL": 0.1545
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3003,
+        "CROSS_FRAMEWORK": 0.1693,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.1688,
+        "NM_AROUSAL": 0.1573,
+        "NM_STRESS": 0.1573,
+        "DUAL_PROCESS": 0.1545
+      }
     },
     {
       "id": 18,
@@ -601,7 +1374,54 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3385,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3225,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3165,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_THREAT_HPA_001",
+          "display_id": "T5",
+          "score": 0.3146,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3019,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4925,
+        "SRT": 0.4101,
+        "ART": 0.3,
+        "COGNITIVE_CONTROL": 0.1613,
+        "MATERIAL_HAPTIC_THERMAL": 0.151
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.2853,
+        "CROSS_FRAMEWORK": 0.1693,
+        "DUAL_PROCESS": 0.1613,
+        "NM_AROUSAL": 0.1573,
+        "NM_STRESS": 0.1573,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.151
+      }
     },
     {
       "id": 19,
@@ -628,7 +1448,61 @@
       "outcome_id": "physio",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.332,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3097,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3086,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2977,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.2944,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2947,
+        "MATERIAL_HAPTIC_THERMAL": 0.166,
+        "SRT": 0.166,
+        "AFFECTIVE_EMOTION": 0.1543,
+        "CIRCADIAN_REGULATION": 0.1543,
+        "NEUROMODULATORY_REWARD": 0.1543
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2947,
+        "ADAPTIVE_THERMAL_COMFORT": 0.166,
+        "ALLOSTATIC_REGULATION": 0.166,
+        "METABOLIC_HEALTH": 0.166,
+        "CROSS_FRAMEWORK": 0.1548,
+        "AROUSAL_THEORY": 0.1543,
+        "PAD_EMOTIONAL_MODEL": 0.1543,
+        "RETINAL_ACTIVATION": 0.1543
+      }
     },
     {
       "id": 20,
@@ -654,7 +1528,67 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.551, Figure 6(a)",
-      "quote": "The participants performed cognitive tests at a lower level of stress because the physiological responses showed a trend similar to those observed during environmental exposure"
+      "quote": "The participants performed cognitive tests at a lower level of stress because the physiological responses showed a trend similar to those observed during environmental exposure",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4252,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4042,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3861,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3402,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3293,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4752,
+        "ART": 0.3067,
+        "CREATIVE_COGNITION": 0.3067,
+        "EMBODIED_ECOLOGICAL": 0.3067,
+        "AFFECTIVE_EMOTION": 0.2126,
+        "CIRCADIAN_REGULATION": 0.2126,
+        "NEUROMODULATORY_REWARD": 0.2126,
+        "MATERIAL_HAPTIC_THERMAL": 0.2021,
+        "SRT": 0.2021
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4752,
+        "EMBODIED_COGNITION": 0.3067,
+        "AROUSAL_THEORY": 0.2126,
+        "PAD_EMOTIONAL_MODEL": 0.2126,
+        "RETINAL_ACTIVATION": 0.2126,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2021,
+        "ALLOSTATIC_REGULATION": 0.2021,
+        "METABOLIC_HEALTH": 0.2021,
+        "CROSS_FRAMEWORK": 0.193,
+        "ATTENTION_RESTORATION_THEORY": 0.1701,
+        "INCUBATION_THEORY": 0.1701,
+        "ATTENTION_RESTORATION": 0.1646,
+        "CREATIVE_COGNITION": 0.1646
+      }
     },
     {
       "id": 21,
@@ -684,7 +1618,57 @@
       "outcome_id": "physio.skin_conductance",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3861,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.3151,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3151,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3132,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3008,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2903,
+        "ART": 0.2834,
+        "CREATIVE_COGNITION": 0.2834,
+        "EMBODIED_ECOLOGICAL": 0.2834,
+        "PREDICTIVE_PROCESSING": 0.1504
+      },
+      "tier2_relevance": {
+        "EMBODIED_COGNITION": 0.2834,
+        "CROSS_FRAMEWORK": 0.193,
+        "NEUROMODULATORY": 0.1575,
+        "NM": 0.1575,
+        "ATTENTION_RESTORATION_THEORY": 0.1566,
+        "INCUBATION_THEORY": 0.1566,
+        "ATTENTION_RESTORATION": 0.1504,
+        "CREATIVE_COGNITION": 0.1504,
+        "PREDICTIVE_PROCESSING": 0.1504
+      }
     },
     {
       "id": 22,
@@ -714,7 +1698,56 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3361,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3255,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.3065,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3019,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3014,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.4055,
+        "SRT": 0.3,
+        "NEUROMODULATORY_REWARD": 0.2955,
+        "CREATIVE_COGNITION": 0.1507,
+        "EMBODIED_ECOLOGICAL": 0.1507,
+        "PREDICTIVE_PROCESSING": 0.1507
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.2955,
+        "CROSS_FRAMEWORK": 0.1628,
+        "DMN_TPN_DYNAMICS": 0.151,
+        "ATTENTION_RESTORATION": 0.1507,
+        "CREATIVE_COGNITION": 0.1507,
+        "EMBODIED_COGNITION": 0.1507,
+        "PREDICTIVE_PROCESSING": 0.1507
+      }
     },
     {
       "id": 23,
@@ -744,7 +1777,46 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3242,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2895,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2769,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.2641,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.261,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.3,
+        "SRT": 0.3
+      },
+      "tier2_relevance": {
+        "CROSS_FRAMEWORK": 0.1621
+      }
     },
     {
       "id": 24,
@@ -774,7 +1846,46 @@
       "outcome_id": "physio.heart_rate",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3242,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2895,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2769,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.2764,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2649,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.3,
+        "SRT": 0.3
+      },
+      "tier2_relevance": {
+        "CROSS_FRAMEWORK": 0.1621
+      }
     },
     {
       "id": 25,
@@ -801,7 +1912,61 @@
       "outcome_id": "physio",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3544,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3334,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3257,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3194,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.3169,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.517,
+        "MATERIAL_HAPTIC_THERMAL": 0.3086,
+        "PREDICTIVE_PROCESSING": 0.2965,
+        "AFFECTIVE_EMOTION": 0.1628,
+        "CIRCADIAN_REGULATION": 0.1628,
+        "SRT": 0.1597
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3144,
+        "PREDICTIVE_PROCESSING": 0.2965,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.1772,
+        "AROUSAL_THEORY": 0.1628,
+        "PAD_EMOTIONAL_MODEL": 0.1628,
+        "RETINAL_ACTIVATION": 0.1628,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1597,
+        "ALLOSTATIC_REGULATION": 0.1597,
+        "METABOLIC_HEALTH": 0.1597,
+        "NM": 0.1585
+      }
     },
     {
       "id": 26,
@@ -824,7 +1989,39 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.552, Figure 7(a)",
-      "quote": "alpha band in the virtual environment (Figure 7(a)). This indicates that the participants with a window view were more relaxed"
+      "quote": "alpha band in the virtual environment (Figure 7(a)). This indicates that the participants with a window view were more relaxed",
+      "template_matches": [
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.296,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2837,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2749,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2749,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.2728,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 27,
@@ -847,7 +2044,39 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.552, Figure 7(a)",
-      "quote": "theta (4-8 Hz) and alpha bands (8-12 Hz) in the case with the window view was higher than that in the case with closed blinds during environmental exposure"
+      "quote": "theta (4-8 Hz) and alpha bands (8-12 Hz) in the case with the window view was higher than that in the case with closed blinds during environmental exposure",
+      "template_matches": [
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.297,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2925,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2758,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2758,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2751,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 28,
@@ -901,7 +2130,55 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3304,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.3136,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.292,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.2916,
+          "reasons": []
+        },
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.2886,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "CREATIVE_COGNITION": 0.1652,
+        "PREDICTIVE_PROCESSING": 0.1652,
+        "ART": 0.1568,
+        "MEMORY_LEARNING": 0.1568
+      },
+      "tier2_relevance": {
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1652,
+        "GROUP_CREATIVITY": 0.1652,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1652,
+        "PREDICTIVE_PROCESSING": 0.1652,
+        "ATTENTION_RESTORATION": 0.1568,
+        "MEMORY_SYSTEMS": 0.1568
+      }
     },
     {
       "id": 30,
@@ -932,7 +2209,52 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3051,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.2999,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.2993,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "AUD_SCENE_ANALYSIS_001",
+          "display_id": "T31",
+          "score": 0.299,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.2958,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "COGNITIVE_CONTROL": 0.1525,
+        "CREATIVE_COGNITION": 0.1525,
+        "PREDICTIVE_PROCESSING": 0.1525
+      },
+      "tier2_relevance": {
+        "COGNITIVE_CONTROL": 0.1525,
+        "CONSTRUAL_LEVEL_THEORY": 0.1525,
+        "CREATIVE_COGNITION": 0.1525,
+        "PREDICTIVE_PROCESSING": 0.1525
+      }
     },
     {
       "id": 31,
@@ -959,7 +2281,65 @@
       "outcome_id": "physio.pain",
       "outcome_domain": "physio",
       "outcome_match_type": "fuzzy",
-      "outcome_confidence": 0.75
+      "outcome_confidence": 0.75,
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.4818,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4118,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.3631,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_INDIVIDUAL_DIFFERENCES_008",
+          "display_id": "AX8",
+          "score": 0.3556,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_INCUBATION_ARCHITECTURE_001",
+          "display_id": "T61",
+          "score": 0.3485,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2409,
+        "MULTISENSORY_INTEGRATION": 0.1815,
+        "SPATIAL_COGNITION": 0.1815,
+        "ART": 0.1742,
+        "CREATIVE_COGNITION": 0.1742,
+        "EMBODIED_ECOLOGICAL": 0.1742
+      },
+      "tier2_relevance": {
+        "EC": 0.2409,
+        "PP": 0.2409,
+        "IC": 0.2059,
+        "MULTISENSORY_INTEGRATION": 0.1815,
+        "SPATIAL_NAVIGATION": 0.1815,
+        "DIFFERENTIAL_SUSCEPTIBILITY": 0.1778,
+        "ATTENTION_RESTORATION_THEORY": 0.1742,
+        "EMBODIED_COGNITION": 0.1742,
+        "INCUBATION_THEORY": 0.1742
+      }
     },
     {
       "id": 32,
@@ -988,7 +2368,55 @@
       "outcome_id": "behav.productivity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4902,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.4838,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.3966,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3782,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3448,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4912,
+        "MULTISENSORY_INTEGRATION": 0.1983,
+        "SPATIAL_COGNITION": 0.1983
+      },
+      "tier2_relevance": {
+        "EC": 0.3726,
+        "PP": 0.3726,
+        "IC": 0.2451,
+        "MULTISENSORY_INTEGRATION": 0.1983,
+        "SPATIAL_NAVIGATION": 0.1983,
+        "PREDICTIVE_PROCESSING": 0.1891
+      }
     },
     {
       "id": 33,
@@ -1013,7 +2441,55 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 9",
-      "quote": "Visual_comfort -> Relaxed (b-val: 0.206, p-val: 0.00)"
+      "quote": "Visual_comfort -> Relaxed (b-val: 0.206, p-val: 0.00)",
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.4899,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4617,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.3888,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3558,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3452,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4864,
+        "MULTISENSORY_INTEGRATION": 0.1944,
+        "SPATIAL_COGNITION": 0.1944
+      },
+      "tier2_relevance": {
+        "EC": 0.3753,
+        "PP": 0.3753,
+        "IC": 0.2308,
+        "MULTISENSORY_INTEGRATION": 0.1944,
+        "SPATIAL_NAVIGATION": 0.1944,
+        "PREDICTIVE_PROCESSING": 0.1779
+      }
     },
     {
       "id": 34,
@@ -1042,7 +2518,55 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.5343,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.5039,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.406,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.4038,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.3925,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4151,
+        "SPATIAL_COGNITION": 0.3594,
+        "MULTISENSORY_INTEGRATION": 0.1963
+      },
+      "tier2_relevance": {
+        "SPATIAL_NAVIGATION": 0.3594,
+        "EC": 0.2671,
+        "PP": 0.2671,
+        "IC": 0.252,
+        "PREDICTIVE_PROCESSING": 0.2019,
+        "MULTISENSORY_INTEGRATION": 0.1963
+      }
     },
     {
       "id": 35,
@@ -1072,7 +2596,62 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.4665,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.4569,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.4229,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.4177,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3977,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "COGNITIVE_CONTROL": 0.3896,
+        "CREATIVE_COGNITION": 0.3761,
+        "PREDICTIVE_PROCESSING": 0.3761,
+        "ART": 0.2333,
+        "MEMORY_LEARNING": 0.2333
+      },
+      "tier2_relevance": {
+        "COGNITIVE_CONTROL": 0.3896,
+        "PREDICTIVE_PROCESSING": 0.3761,
+        "ATTENTION_RESTORATION": 0.2333,
+        "MEMORY_SYSTEMS": 0.2333,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.2114,
+        "GROUP_CREATIVITY": 0.2114,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.2114,
+        "CONSTRUAL_LEVEL_THEORY": 0.2089,
+        "CREATIVE_COGNITION": 0.2089,
+        "IC": 0.1988
+      }
     },
     {
       "id": 36,
@@ -1097,7 +2676,64 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.4365,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.4359,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.4356,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.4323,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.387,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "CREATIVE_COGNITION": 0.3885,
+        "PREDICTIVE_PROCESSING": 0.3885,
+        "COGNITIVE_CONTROL": 0.3872,
+        "ART": 0.3693,
+        "MEMORY_LEARNING": 0.218,
+        "NEUROMODULATORY_REWARD": 0.1935
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3885,
+        "COGNITIVE_CONTROL": 0.3872,
+        "CREATIVE_COGNITION": 0.2182,
+        "DMN_TPN_DYNAMICS": 0.2182,
+        "ATTENTION_RESTORATION": 0.218,
+        "MEMORY_SYSTEMS": 0.218,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.2178,
+        "GROUP_CREATIVITY": 0.2178,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.2178,
+        "DIRECTED_ATTENTION": 0.1935,
+        "NM_AROUSAL": 0.1935
+      }
     },
     {
       "id": 37,
@@ -1122,7 +2758,63 @@
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.4461,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "HC_WORKING_MEMORY_LOAD_001",
+          "display_id": "T36",
+          "score": 0.4118,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3953,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3581,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3454,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4551,
+        "COGNITIVE_CONTROL": 0.3481,
+        "CREATIVE_COGNITION": 0.3413,
+        "ART": 0.223,
+        "MEMORY_LEARNING": 0.223
+      },
+      "tier2_relevance": {
+        "COGNITIVE_CONTROL": 0.3481,
+        "PREDICTIVE_PROCESSING": 0.3413,
+        "ATTENTION_RESTORATION": 0.223,
+        "MEMORY_SYSTEMS": 0.223,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1976,
+        "GROUP_CREATIVITY": 0.1976,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1976,
+        "CONSTRUAL_LEVEL_THEORY": 0.179,
+        "CREATIVE_COGNITION": 0.179,
+        "EC": 0.1727,
+        "PP": 0.1727
+      }
     },
     {
       "id": 38,
@@ -1147,7 +2839,48 @@
       "outcome_id": "behav.productivity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.3276,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3245,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2941,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_SALIENCE_NETWORK_001",
+          "display_id": "DT1",
+          "score": 0.2878,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2858,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2995,
+        "SRT": 0.1623
+      },
+      "tier2_relevance": {
+        "NM": 0.1638,
+        "CROSS_FRAMEWORK": 0.1623,
+        "NM_STRESS": 0.1623
+      }
     }
   ],
   "mechanisms": [
@@ -1185,8 +2918,8 @@
       "description": "Anthropometric data and clothing insulation of participants.",
       "key_stats": [
         "N=26",
-        "Age: 42.5\u00b19.0 years",
-        "Clothing value: 0.55\u00b10.11 clo"
+        "Age: 42.5±9.0 years",
+        "Clothing value: 0.55±0.11 clo"
       ],
       "n_findings_extracted_from": 0
     }
@@ -1327,5 +3060,23 @@
     "questionnaire"
   ],
   "linked_date": "2026-03-01T04:43:11.748550+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "local_pattern_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Window view"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "Closed blinds"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T01:05:25.363465+00:00"
 }

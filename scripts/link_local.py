@@ -86,8 +86,8 @@ def build_theory_index():
                 keywords.add(a.lower())
             
             index[tid] = list(keywords)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return index
 
 
@@ -146,8 +146,8 @@ def build_molecule_index():
                 keywords.add(st.lower())
             
             index[mid] = list(keywords)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return index
 
 

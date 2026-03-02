@@ -68,7 +68,7 @@ def extract_json_from_text(text: str) -> dict | None:
     # Try direct parse first
     try:
         return json.loads(text)
-    except:
+    except Exception:  
         pass
 
     # Strip any markdown code blocks (json, js, or unmarked)
@@ -77,7 +77,7 @@ def extract_json_from_text(text: str) -> dict | None:
         if match:
             try:
                 return json.loads(match.group(1))
-            except:
+            except Exception:  
                 pass
 
     # Find any JSON object with article_type
@@ -85,7 +85,7 @@ def extract_json_from_text(text: str) -> dict | None:
     if match:
         try:
             return json.loads(match.group())
-        except:
+        except Exception:  
             pass
 
     # Last resort: extract just the article_type value
@@ -150,7 +150,7 @@ def classify_paper(client: genai.Client, pdf_path: Path) -> dict:
             if uploaded:
                 try:
                     client.files.delete(name=uploaded.name)
-                except:
+                except Exception:  
                     pass
 
     return {"success": False, "error": "Max retries exceeded"}
@@ -191,7 +191,7 @@ def extract_paper(client: genai.Client, pdf_path: Path, article_type: str) -> di
         # Cleanup
         try:
             client.files.delete(name=uploaded.name)
-        except:
+        except Exception:  
             pass
 
         return {"success": True, "data": result, "cost": round(cost, 6)}

@@ -52,7 +52,8 @@ def load_template(filename: str) -> Optional[Dict]:
         return None
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 
@@ -98,7 +99,8 @@ def find_relevant_templates(query: str, explicit: Optional[List[str]] = None) ->
     for f in sorted(TEMPLATE_DIR.glob("*.json")):
         try:
             t = json.loads(f.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         if t.get("dedup_status") not in ("active", None):
             continue

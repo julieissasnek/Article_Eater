@@ -20,7 +20,7 @@
   "stimuli_or_exposures": [
     {
       "type": "physical_space",
-      "description": "Four simulated real workspaces (4.2 m L \u00d7 3.3 m W \u00d7 3.0 m H, ~14 m\u00b2 area) were created: 1. Control group (no biophilic design). 2. Green wall group (1 m\u00b2 green wall with potted plants, representing 'visual connection with nature'). 3. Wood group (3.6 m L \u00d7 3.0 m H wooden wall, representing 'material connection with nature'). 4. Combination group (green wall overlapping wooden wall). All spaces had artificial lighting (950 lx), ventilation, quiet, temperature 24.8 \u00b1 0.9 \u00b0C, humidity 43.9 \u00b1 6.4%. Plants emitted no distinct odors.",
+      "description": "Four simulated real workspaces (4.2 m L × 3.3 m W × 3.0 m H, ~14 m² area) were created: 1. Control group (no biophilic design). 2. Green wall group (1 m² green wall with potted plants, representing 'visual connection with nature'). 3. Wood group (3.6 m L × 3.0 m H wooden wall, representing 'material connection with nature'). 4. Combination group (green wall overlapping wooden wall). All spaces had artificial lighting (950 lx), ventilation, quiet, temperature 24.8 ± 0.9 °C, humidity 43.9 ± 6.4%. Plants emitted no distinct odors.",
       "n_stimuli": 4,
       "source": "2.1. Environmental Setting, Figure 1"
     }
@@ -95,7 +95,62 @@
       "outcome_id": "physio.fatigue",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.4634,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4569,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.4226,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.4226,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.4181,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.5746,
+        "NEUROMODULATORY_REWARD": 0.4072,
+        "PREDICTIVE_PROCESSING": 0.3897,
+        "AFFECTIVE_EMOTION": 0.2284,
+        "CIRCADIAN_REGULATION": 0.2284,
+        "COGNITIVE_CONTROL": 0.2113
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3897,
+        "DIRECTED_ATTENTION": 0.2317,
+        "NM_AROUSAL": 0.2317,
+        "AROUSAL_THEORY": 0.2284,
+        "PAD_EMOTIONAL_MODEL": 0.2284,
+        "RETINAL_ACTIVATION": 0.2284,
+        "CROSS_FRAMEWORK": 0.2113,
+        "DUAL_PROCESS": 0.2113,
+        "ATTENTION_RESTORATION": 0.2091
+      }
     },
     {
       "id": 2,
@@ -123,12 +178,65 @@
       "outcome_id": "health.recovery",
       "outcome_domain": "health",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.3798,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3719,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.368,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3648,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3495,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.8128,
+        "BIOPHILIA": 0.72,
+        "SRT": 0.6,
+        "PREDICTIVE_PROCESSING": 0.4534,
+        "EMBODIED_ECOLOGICAL": 0.184,
+        "SPATIAL_COGNITION": 0.184,
+        "COGNITIVE_CONTROL": 0.1824,
+        "CREATIVE_COGNITION": 0.1824
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4534,
+        "ATTENTION_RESTORATION": 0.1899,
+        "CULTURAL_PSYCHOLOGY": 0.186,
+        "EMBODIED_COGNITION": 0.184,
+        "SPATIAL_NAVIGATION": 0.184,
+        "COGNITIVE_CONTROL": 0.1824,
+        "CONSTRUAL_LEVEL_THEORY": 0.1824,
+        "CREATIVE_COGNITION": 0.1824,
+        "ATTENTION_RESTORATION_THEORY": 0.1747
+      }
     },
     {
       "id": 3,
       "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
-      "consequent": "Delta Errors of commission (\u2206Errors of commission) in SART performance",
+      "consequent": "Delta Errors of commission (∆Errors of commission) in SART performance",
       "direction": "mixed",
       "claim_type": "causal",
       "measure_type": "cognitive|performance",
@@ -149,12 +257,49 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.2. SART Performance, p.8",
-      "quote": "the results of ANOVA indicated that there was a significant difference only in the \u2206Errors of commission among the four groups (F (3, 75) = 3.04; p = 0.034)."
+      "quote": "the results of ANOVA indicated that there was a significant difference only in the ∆Errors of commission among the four groups (F (3, 75) = 3.04; p = 0.034).",
+      "template_matches": [
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.2882,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.2856,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2818,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.2781,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2713,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.72,
+        "BIOPHILIA": 0.72,
+        "SRT": 0.6
+      }
     },
     {
       "id": 4,
       "antecedent": "Combination group biophilic design (green wall + wood)",
-      "consequent": "Delta Errors of commission (\u2206Errors of commission) in SART performance (compared to control group)",
+      "consequent": "Delta Errors of commission (∆Errors of commission) in SART performance (compared to control group)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "cognitive|performance",
@@ -182,12 +327,43 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.2. SART Performance, p.8",
-      "quote": "the \u2206Errors of commission in the combination group were significantly higher compared to the control group (2.75, 95% CI [0.299, 5.202], p = 0.022)."
+      "quote": "the ∆Errors of commission in the combination group were significantly higher compared to the control group (2.75, 95% CI [0.299, 5.202], p = 0.022).",
+      "template_matches": [
+        {
+          "template_id": "SALIENCE_NETWORK_SWITCH_001",
+          "display_id": "T68",
+          "score": 0.2937,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2731,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2672,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+          "display_id": "T60",
+          "score": 0.2554,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.72,
+        "BIOPHILIA": 0.72,
+        "SRT": 0.6
+      }
     },
     {
       "id": 5,
       "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
-      "consequent": "Delta D-prime (\u2206D-P) in SART performance",
+      "consequent": "Delta D-prime (∆D-P) in SART performance",
       "direction": "no_effect",
       "claim_type": "null",
       "measure_type": "cognitive|performance",
@@ -206,12 +382,58 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.2. SART Performance, p.8",
-      "quote": "The \u2206D-P demonstrated a noticeable trend, although it did not reach statistical significance (p = 0.088)."
+      "quote": "The ∆D-P demonstrated a noticeable trend, although it did not reach statistical significance (p = 0.088).",
+      "template_matches": [
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3249,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.31,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2993,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.2924,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2924,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.7634,
+        "BIOPHILIA": 0.72,
+        "SRT": 0.6,
+        "EMBODIED_ECOLOGICAL": 0.1625,
+        "SPATIAL_COGNITION": 0.1625,
+        "MEMORY_LEARNING": 0.155
+      },
+      "tier2_relevance": {
+        "EMBODIED_COGNITION": 0.1625,
+        "SPATIAL_NAVIGATION": 0.1625,
+        "ATTENTION_RESTORATION": 0.155,
+        "MEMORY_SYSTEMS": 0.155
+      }
     },
     {
       "id": 6,
       "antecedent": "Biophilic design pattern (Control, Green Wall, Wood, Combination)",
-      "consequent": "Delta ARL HbO concentration (\u2206RL HbO concentration)",
+      "consequent": "Delta ARL HbO concentration (∆RL HbO concentration)",
       "direction": "mixed",
       "claim_type": "causal",
       "measure_type": "neural",
@@ -234,12 +456,55 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3079,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.2973,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.2949,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.2899,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.2887,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "BIOPHILIA": 0.72,
+        "ART": 0.6,
+        "SRT": 0.6,
+        "EMBODIED_ECOLOGICAL": 0.154,
+        "SPATIAL_COGNITION": 0.154
+      },
+      "tier2_relevance": {
+        "EMBODIED_COGNITION": 0.154,
+        "SPATIAL_NAVIGATION": 0.154
+      }
     },
     {
       "id": 7,
       "antecedent": "Combination group biophilic design (green wall + wood)",
-      "consequent": "Delta ARL HbO concentration (\u2206RL HbO concentration) (compared to control group)",
+      "consequent": "Delta ARL HbO concentration (∆RL HbO concentration) (compared to control group)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "neural",
@@ -270,12 +535,49 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.298,
+          "reasons": []
+        },
+        {
+          "template_id": "SALIENCE_NETWORK_SWITCH_001",
+          "display_id": "T68",
+          "score": 0.2881,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2714,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+          "display_id": "T60",
+          "score": 0.268,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_CHOLINERGIC_GATING_007",
+          "display_id": "T26",
+          "score": 0.2671,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "BIOPHILIA": 0.72,
+        "ART": 0.6,
+        "SRT": 0.6
+      }
     },
     {
       "id": 8,
       "antecedent": "Perceived mental fatigue recovery ratio",
-      "consequent": "Delta D-prime (\u2206D-P)",
+      "consequent": "Delta D-prime (∆D-P)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "self_report|cognitive",
@@ -294,12 +596,61 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
-      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: AD-P (r = 0.238, p = 0.035)"
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: AD-P (r = 0.238, p = 0.035)",
+      "template_matches": [
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3808,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3757,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.367,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.367,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3554,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.5333,
+        "NEUROMODULATORY_REWARD": 0.1835,
+        "PREDICTIVE_PROCESSING": 0.1835,
+        "COGNITIVE_CONTROL": 0.1777
+      },
+      "tier2_relevance": {
+        "CROSS_FRAMEWORK": 0.1904,
+        "CULTURAL_PSYCHOLOGY": 0.1878,
+        "ATTENTION_RESTORATION": 0.1835,
+        "DIRECTED_ATTENTION": 0.1835,
+        "NM_AROUSAL": 0.1835,
+        "PREDICTIVE_PROCESSING": 0.1835,
+        "DUAL_PROCESS": 0.1777
+      }
     },
     {
       "id": 9,
       "antecedent": "Perceived mental fatigue recovery ratio",
-      "consequent": "Delta Errors of commission (\u2206Errors of commission)",
+      "consequent": "Delta Errors of commission (∆Errors of commission)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "self_report|cognitive",
@@ -318,12 +669,66 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
-      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... \u2206Errors of commission (r = 0.262, p = 0.019)"
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... ∆Errors of commission (r = 0.262, p = 0.019)",
+      "template_matches": [
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.3776,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3595,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3583,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3567,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3553,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.5501,
+        "ART": 0.5334,
+        "CREATIVE_COGNITION": 0.3255,
+        "COGNITIVE_CONTROL": 0.1792,
+        "EMBODIED_ECOLOGICAL": 0.1784,
+        "AFFECTIVE_EMOTION": 0.1777,
+        "CIRCADIAN_REGULATION": 0.1777,
+        "NEUROMODULATORY_REWARD": 0.1777
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.5501,
+        "ATTENTION_RESTORATION": 0.3335,
+        "CREATIVE_COGNITION": 0.3255,
+        "CULTURAL_PSYCHOLOGY": 0.1797,
+        "COGNITIVE_CONTROL": 0.1792,
+        "CONSTRUAL_LEVEL_THEORY": 0.1792,
+        "EMBODIED_COGNITION": 0.1784,
+        "AROUSAL_THEORY": 0.1777,
+        "PAD_EMOTIONAL_MODEL": 0.1777,
+        "RETINAL_ACTIVATION": 0.1777
+      }
     },
     {
       "id": 10,
       "antecedent": "Perceived mental fatigue recovery ratio",
-      "consequent": "Delta Channels 14\u201318 HbO concentration (right PFC)",
+      "consequent": "Delta Channels 14–18 HbO concentration (right PFC)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "self_report|neural",
@@ -342,16 +747,66 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
-      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... and \u2206Channels 14\u201318 HbO concentration (r = 0.308, p = 0.006).",
+      "quote": "significant positive correlations between the perceived mental fatigue recovery ratio and the following variables: ... and ∆Channels 14–18 HbO concentration (r = 0.308, p = 0.006).",
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3991,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.377,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3725,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.3683,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3668,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.6205,
+        "PREDICTIVE_PROCESSING": 0.4612,
+        "NEUROMODULATORY_REWARD": 0.3373,
+        "AFFECTIVE_EMOTION": 0.1885,
+        "CIRCADIAN_REGULATION": 0.1885
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4612,
+        "CULTURAL_PSYCHOLOGY": 0.1996,
+        "AROUSAL_THEORY": 0.1885,
+        "PAD_EMOTIONAL_MODEL": 0.1885,
+        "RETINAL_ACTIVATION": 0.1885,
+        "ATTENTION_RESTORATION_THEORY": 0.1862,
+        "ATTENTION_RESTORATION": 0.1842,
+        "DIRECTED_ATTENTION": 0.1834,
+        "NM_AROUSAL": 0.1834
+      }
     },
     {
       "id": 11,
-      "antecedent": "Delta Channels 5\u20139 HbO concentration (left PFC)",
-      "consequent": "Delta D-prime (\u2206D-P)",
+      "antecedent": "Delta Channels 5–9 HbO concentration (left PFC)",
+      "consequent": "Delta D-prime (∆D-P)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "neural|cognitive",
@@ -370,7 +825,46 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "3.4. Correlation Between the Indicators, p.10, Figure 8",
-      "quote": "Additionally, a significant positive correlation was observed between the AChannels 5\u20139 HbO concentration and AD-P (r = 0.223, p = 0.048)."
+      "quote": "Additionally, a significant positive correlation was observed between the AChannels 5–9 HbO concentration and AD-P (r = 0.223, p = 0.048).",
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3041,
+          "reasons": []
+        },
+        {
+          "template_id": "OLF_CONTEXT_AFFECT_001",
+          "display_id": "T35",
+          "score": 0.2948,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.2945,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+          "display_id": "T60",
+          "score": 0.2933,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.2914,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.152
+      },
+      "tier2_relevance": {
+        "EC": 0.152,
+        "PP": 0.152
+      }
     },
     {
       "id": 12,
@@ -401,7 +895,44 @@
       "outcome_id": "cog",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.2933,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.2741,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2721,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2707,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2662,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "BIOPHILIA": 0.72,
+        "ART": 0.6,
+        "SRT": 0.6
+      }
     },
     {
       "id": 13,
@@ -435,7 +966,49 @@
       "outcome_id": "cog",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3004,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.291,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.282,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2693,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2671,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "BIOPHILIA": 0.72,
+        "ART": 0.6,
+        "SRT": 0.6
+      },
+      "tier2_relevance": {
+        "DMN_TPN_DYNAMICS": 0.1502
+      }
     }
   ],
   "mechanisms": [
@@ -624,7 +1197,7 @@
     "crossref_publisher": "MDPI AG",
     "crossref_type": "journal-article",
     "crossref_subjects": [],
-    "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals\u2019 exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users\u2019 experience and well-being.",
+    "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals’ exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users’ experience and well-being.",
     "crossref_reference_count": 78,
     "crossref_issn": [
       "2075-5309"
@@ -687,7 +1260,7 @@
   "crossref_type": "journal-article",
   "crossref_publisher": "MDPI AG",
   "crossref_subjects": [],
-  "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals\u2019 exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users\u2019 experience and well-being.",
+  "crossref_abstract": "Contact with nature is believed to enhance mental health through the process of human psychological restoration. However, prolonged indoor living limits individuals’ exposure to nature, potentially hindering the timely alleviation of stress and fatigue induced by work. While biophilic design is recognized as a potential solution, its impact on the restoration process has not been extensively studied, particularly in relation to its various design patterns. Therefore, it is important to determine the restorative effects of different patterns of biophilic design and their combination in order to guide the practical application of biophilic design. In this study, the effects of two typical biophilic design patterns and their combination on attention restoration were measured using subjective scales, cognitive tasks, and functional near-infrared spectroscopy (fNIRS) in a simulated real workspace. The results suggest a significant enhancement in the restorative impact on cognitive performance and physiological benefits when combining two biophilic design patterns, while a single design pattern does not yield the same effect. These findings contribute to a better understanding and improvement of workspaces, enhancing users’ experience and well-being.",
   "crossref_fetched_at": "2026-02-25T12:03:40.582483+00:00",
   "theory_links": [
     "cpted",
@@ -695,5 +1268,11 @@
     "biophilia"
   ],
   "linked_date": "2026-03-01T04:43:13.309008+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "local_pattern_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  }
 }

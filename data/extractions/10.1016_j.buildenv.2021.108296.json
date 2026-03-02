@@ -2,7 +2,7 @@
   "doi": "10.1016/j.buildenv.2021.108296",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.813,
   "n_findings": 54,
   "extracted_at": "2026-02-25T05:23:26.512954+00:00",
@@ -4706,5 +4706,67 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "music",
+      "traffic noise",
+      "air-conditioning noise",
+      "speech",
+      "natural sound",
+      "ambient environment"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "ambient environment"
+    ],
+    "ecological_validity": "lab"
+  },
+  "mechanism_chain": {
+    "description": "Different acoustic environments, particularly noise, can increase cognitive load and distraction, thereby impairing multitask visual cognitive performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "acoustic environment (e.g., noise)",
+        "to_construct": "cognitive load/distraction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "cognitive load/distraction",
+        "to_construct": "multitask visual cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Reaction time",
+      "construct": "multitask visual cognitive performance",
+      "description": "Time taken to respond to visual stimuli in a multitask setting",
+      "type": "behavioral"
+    },
+    {
+      "name": "Accuracy/Error rate",
+      "construct": "multitask visual cognitive performance",
+      "description": "Correctness of responses or number of errors in visual cognitive tasks",
+      "type": "behavioral"
+    },
+    {
+      "name": "NASA-TLX",
+      "construct": "cognitive workload",
+      "description": "National Aeronautics and Space Administration Task Load Index, a multidimensional scale to assess perceived workload",
+      "type": "self_report"
+    },
+    {
+      "name": "Annoyance ratings",
+      "construct": "perceived annoyance",
+      "description": "Subjective rating of how annoying the acoustic environment was",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:55:45.647756+00:00"
 }

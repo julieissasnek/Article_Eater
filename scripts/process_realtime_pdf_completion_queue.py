@@ -878,8 +878,8 @@ def resolve_env_outcome_from_claim(content: str, metadata: Dict[str, Any], paper
         elif callable(queue_unknown_outcome):
             try:
                 queue_unknown_outcome(out_raw, paper_id=paper_id, context=text[:500])
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return {
         "paper_id": paper_id,
@@ -903,7 +903,8 @@ def _to_float(value: Any) -> Optional[float]:
         if value is None:
             return None
         return float(value)
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 
@@ -2093,8 +2094,8 @@ def primary_paper_id_from_json(raw: str) -> str:
         vals = json.loads(raw or "[]")
         if isinstance(vals, list) and vals:
             return str(vals[0])
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return ""
 
 

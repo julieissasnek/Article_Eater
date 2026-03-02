@@ -75,7 +75,7 @@ def find_template_file(template_id: str, mapping: Dict, templates_dir: Path) -> 
                 return template_file
             if template_data.get("template_id") == template_id:
                 return template_file
-        except:
+        except Exception:  
             pass
     
     # Strategy 4: Fuzzy match on filename

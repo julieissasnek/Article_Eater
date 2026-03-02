@@ -2,7 +2,7 @@
   "doi": "10.1016/j.buildenv.2020.106928",
   "article_type": "systematic_review",
   "article_family": "synthesis",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.806,
   "n_findings": 96,
   "extracted_at": "2026-02-25T03:17:32.375274+00:00",
@@ -7562,7 +7562,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "Mar\u00e9chal [117]"
+        "Maréchal [117]"
       ],
       "template_matches": [
         {
@@ -8608,5 +8608,55 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Theory of Planned Behavior (TPB)",
+      "commitment_type": "assumes",
+      "specific_claim": "Behavioral intentions are predicted by attitudes, subjective norms, and perceived behavioral control, which in turn predict actual behavior."
+    },
+    {
+      "theory_name": "Social Cognitive Theory (SCT)",
+      "commitment_type": "assumes",
+      "specific_claim": "Human behavior is influenced by a reciprocal interaction between personal factors, environmental factors, and behavior itself, emphasizing self-efficacy and observational learning."
+    },
+    {
+      "theory_name": "Habit Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Habits are automatic behaviors triggered by contextual cues, formed through repeated associations between a context and a response."
+    },
+    {
+      "theory_name": "Norm Activation Model (NAM)",
+      "commitment_type": "assumes",
+      "specific_claim": "Pro-environmental behavior is activated by awareness of consequences and ascription of responsibility, mediated by personal norms."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Causal mechanism connecting psychological factors to occupant behavior in buildings, including habit formation.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Psychological factors (e.g., attitudes, subjective norms, perceived behavioral control)",
+        "to_construct": "Behavioral intention (e.g., to save energy)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Behavioral intention",
+        "to_construct": "Initial pro-environmental behavior (e.g., energy-saving actions, purchase of energy-saving products)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Repeated pro-environmental behavior",
+        "to_construct": "Habit formation (e.g., heat-use habits)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T21:56:34.267319+00:00"
 }

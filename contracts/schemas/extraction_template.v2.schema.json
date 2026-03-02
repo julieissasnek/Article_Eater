@@ -434,6 +434,76 @@
           "type": "array",
           "items": { "$ref": "#/$defs/InstrumentUsed" },
           "description": "Measurement instruments or scales used in this finding"
+        },
+        "causal_tier": {
+          "type": ["string", "null"],
+          "enum": [
+            "EXPERIMENTAL",
+            "QUASI_EXPERIMENTAL",
+            "CORRELATIONAL",
+            "REVIEW",
+            null
+          ],
+          "description": "Pearl causal design hierarchy (P5). Determines permitted causal language: EXPERIMENTAL allows 'X causes Y', QUASI allows 'X likely contributes to Y', CORRELATIONAL allows only 'X is associated with Y'."
+        },
+        "scope_conditions": {
+          "type": ["object", "null"],
+          "$ref": "#/$defs/ScopeConditions",
+          "description": "Cartwright scope conditions (P4). Every effect has boundaries — specify setting, population, climate, duration, measurement. Unknown scope ≠ universal scope."
+        },
+        "justification_status": {
+          "type": ["string", "null"],
+          "enum": [
+            "GROUNDED",
+            "COHERENT_ONLY",
+            "UNJUSTIFIED",
+            "EXPERIENTIAL_CLAIM",
+            null
+          ],
+          "description": "Haack foundherentist classification (P2). GROUNDED = independent empirical anchor + coherence. COHERENT_ONLY = fits web but no independent evidence (Haack warning). UNJUSTIFIED = no support. EXPERIENTIAL_CLAIM = direct observation without theoretical framing."
+        },
+        "defeat_relationships": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DefeatRelationship" },
+          "description": "Pollock defeat relationships (P1). Any known rebutting or undercutting defeaters for this finding, either reported in the paper or discovered across the corpus."
+        },
+        "defeater_search_status": {
+          "type": ["string", "null"],
+          "enum": [
+            "defeaters_found",
+            "none_reported",
+            "not_searched",
+            null
+          ],
+          "description": "Mayo severe testing status (P3). Whether defeaters (null results, boundary conditions, replication failures) were actively sought and what was found."
+        },
+        "source_quality_indicators": {
+          "type": ["object", "null"],
+          "$ref": "#/$defs/SourceQualityIndicators",
+          "description": "Longino+Cartwright source quality (P6). Quality-weighted evidence assessment: rigor, independence, replication, commitment penalty."
+        },
+        "conflict_type": {
+          "type": ["string", "null"],
+          "enum": [
+            "CONTRADICTS",
+            "WEAKENS",
+            "BOUNDARY_VIOLATION",
+            "DIRECTION_CONFLICT",
+            "PRECISION_DIFFERENCE",
+            null
+          ],
+          "description": "Cartwright conflict typology (P10). When this finding conflicts with other findings on the same IV→DV, classify the disagreement type. CONTRADICTS = opposite conclusions, same scope. PRECISION_DIFFERENCE = same direction, different magnitude (not a true conflict)."
+        },
+        "epistemic_level": {
+          "type": ["string", "null"],
+          "enum": [
+            "OBSERVATIONAL",
+            "EMPIRICAL",
+            "INTERMEDIATE",
+            "THEORETICAL",
+            null
+          ],
+          "description": "Cartwright+Haack level classification (P9). Different epistemic levels have different evidential standards and credence thresholds."
         }
       },
       "additionalProperties": false
@@ -713,9 +783,99 @@
       },
       "additionalProperties": false
     },
+    "ScopeConditions": {
+      "type": "object",
+      "description": "Cartwright scope conditions (P4). Specifies the populations, settings, and contexts where this finding holds.",
+      "properties": {
+        "setting": {
+          "type": ["string", "null"],
+          "description": "Physical environment type (e.g., 'office', 'healthcare', 'educational', 'residential', 'laboratory')"
+        },
+        "population": {
+          "type": ["string", "null"],
+          "description": "Who was studied (e.g., 'office workers', 'university students', 'elderly adults', 'children')"
+        },
+        "climate": {
+          "type": ["string", "null"],
+          "description": "Geographic/climate zone (e.g., 'temperate', 'tropical', 'Nordic', 'arid')"
+        },
+        "duration": {
+          "type": ["string", "null"],
+          "enum": ["acute", "subchronic", "chronic", null],
+          "description": "Exposure length: acute (<1hr), subchronic (days), chronic (months)"
+        },
+        "measurement_type": {
+          "type": ["string", "null"],
+          "description": "How outcome was assessed (e.g., 'self-report', 'physiological', 'behavioral', 'cognitive_task')"
+        },
+        "scope_unknown_dimensions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Dimensions where scope is unknown. Per Cartwright: unknown scope ≠ universal scope."
+        }
+      },
+      "additionalProperties": false
+    },
+    "DefeatRelationship": {
+      "type": "object",
+      "description": "Pollock defeat relationship (P1). A known defeater for this finding.",
+      "required": ["defeat_type", "description"],
+      "properties": {
+        "defeat_type": {
+          "type": "string",
+          "enum": ["REBUTTING", "UNDERCUTTING"],
+          "description": "REBUTTING attacks the conclusion directly. UNDERCUTTING attacks the inference method."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Description of the defeat (e.g., 'Study B found no effect with larger N', 'Self-report bias weakens inference')"
+        },
+        "source_doi": {
+          "type": ["string", "null"],
+          "description": "DOI of the defeating evidence (if from another paper)"
+        },
+        "severity": {
+          "type": ["string", "null"],
+          "enum": ["strong", "moderate", "weak", null],
+          "description": "How seriously this defeat threatens the finding"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SourceQualityIndicators": {
+      "type": "object",
+      "description": "Longino+Cartwright source quality assessment (P6).",
+      "properties": {
+        "pre_registered": {
+          "type": ["boolean", "null"],
+          "description": "Whether the study was pre-registered"
+        },
+        "blinding": {
+          "type": ["string", "null"],
+          "enum": ["double_blind", "single_blind", "unblinded", "not_applicable", null],
+          "description": "Blinding status of the study"
+        },
+        "independence_flag": {
+          "type": ["boolean", "null"],
+          "description": "Whether this study is independent from other studies on the same IV→DV (different lab, paradigm, population)"
+        },
+        "replication_status": {
+          "type": ["string", "null"],
+          "enum": ["original", "direct_replication", "conceptual_replication", "failed_replication", null],
+          "description": "Whether this is an original study or a replication attempt"
+        },
+        "study_type_for_commitment_penalty": {
+          "type": ["string", "null"],
+          "enum": ["confirmatory", "exploratory", "replication", "meta_analysis", null],
+          "description": "Study type for Longino commitment penalty: confirmatory gets full penalty, exploratory half, replication/meta none"
+        }
+      },
+      "additionalProperties": false
+    },
     "InstrumentUsed": {
       "type": "object",
-      "required": ["name"],
+      "required": ["name", "construct_measured"],
       "properties": {
         "name": {
           "type": "string",

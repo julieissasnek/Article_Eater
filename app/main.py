@@ -965,6 +965,12 @@ app.include_router(entrenchment_router, prefix='/api/v1', tags=['entrenchment'])
 # Web-BN Integration (INT-1, 2026-02-11)
 from app.routes.integration import router as integration_router
 app.include_router(integration_router, tags=['integration'])
+# Extended API Layer: Combines Sprint 3.0.1-D, 3.0.1-E, and 3.0.1-F
+# - 3.0.1-D: 20 extended endpoints (theories, entrenchment, graph, bundles, history)
+# - 3.0.1-E: batch operations endpoints
+# - 3.0.1-F: causal inference endpoints (Pearl framework)
+from app.routes.api_extended import extended_router
+app.include_router(extended_router, tags=['extended-api', 'batch-operations', 'causal-inference'])
 
 app.include_router(interactions_router)
 app.include_router(profile_router)

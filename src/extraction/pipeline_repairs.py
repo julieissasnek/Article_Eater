@@ -251,8 +251,8 @@ def classify_paper_v2(self, item) -> tuple:
             finally:
                 try:
                     self.client.files.delete(name=uploaded.name)
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         text = _call_gemini_classify_v2()
 
@@ -696,8 +696,8 @@ def _call_repair_prompt(self, item, prompt: str) -> Optional[dict]:
         finally:
             try:
                 self.client.files.delete(name=uploaded.name)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     except Exception as e:
         return None
@@ -905,11 +905,11 @@ def extract_images_fixed(self, item, min_size: int = 8000) -> list:
                             "width": base_image.get("width"),
                             "height": base_image.get("height"),
                         })
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return extracted
 

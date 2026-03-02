@@ -1,0 +1,169 @@
+{
+  "framework_id": "neuromodulatory-systems",
+  "full_name": "Neuromodulatory Systems (Dopamine, Serotonin, Norepinephrine, Cortisol)",
+  "core_claim": "Dopamine, serotonin, norepinephrine, and cortisol systems modulate arousal, reward, motivation, and stress responses. Architectural features trigger these pathways, with cascading effects on affect, attention, and behavior.",
+  "key_theorists": [
+    "Kent Berridge",
+    "Wolfram Schultz",
+    "Peter Dayan",
+    "Hans Selye",
+    "James Olds"
+  ],
+  "seminal_works": [
+    {
+      "author": "Schultz, W.",
+      "year": 2015,
+      "title": "Neuronal reward and decision signals: From theories to data",
+      "doi": "10.1152/physrev.00023.2014",
+      "full_citation": "Schultz, W. (2015). Neuronal reward and decision signals: From theories to data. Physiological Reviews, 95(3), 853-951."
+    },
+    {
+      "author": "Berridge, K. C., & Robinson, T. E.",
+      "year": 2016,
+      "title": "Liking, wanting, and the incentive-sensitization theory of addiction",
+      "doi": "10.1038/nrn.2016.23",
+      "full_citation": "Berridge, K. C., & Robinson, T. E. (2016). Liking, wanting, and the incentive-sensitization theory of addiction. Nature Reviews Neuroscience, 17(1), 20-31."
+    },
+    {
+      "author": "Dayan, P., & Huys, Q. J.",
+      "year": 2015,
+      "title": "Serotonin in affective control",
+      "doi": "10.1146/annurev-psych-010814-015017",
+      "full_citation": "Dayan, P., & Huys, Q. J. (2015). Serotonin in affective control. Annual Review of Neuroscience, 38, 467-484."
+    },
+    {
+      "author": "Selye, H.",
+      "year": 1956,
+      "title": "The Stress of Life",
+      "doi": null,
+      "full_citation": "Selye, H. (1956). The Stress of Life. McGraw-Hill."
+    }
+  ],
+  "core_constructs": [
+    "dopamine_reward",
+    "reward_prediction_error",
+    "wanting_vs_liking",
+    "serotonin_affect_regulation",
+    "norepinephrine_arousal",
+    "cortisol_stress_response",
+    "HPA_axis",
+    "dopaminergic_approach",
+    "threat_response",
+    "allostatic_load"
+  ],
+  "epistemic_commitments": {
+    "preferred_warrant_types": [
+      "NEUROCHEMICAL",
+      "PHARMACOLOGICAL",
+      "COMPUTATIONAL"
+    ],
+    "evidence_weighting": {
+      "neurochemistry_direct_measurement": 1.0,
+      "pharmacological_blockade": 0.95,
+      "single_unit_electrophysiology": 0.95,
+      "fmri_reward_circuits": 0.85,
+      "behavioral_approach_avoid": 0.8,
+      "cortisol_saliva_assay": 0.9,
+      "self_report_arousal": 0.6,
+      "correlational": 0.4
+    },
+    "falsification_criteria": [
+      "Blocking dopamine receptors does not impair reward-driven approach or motivation",
+      "Environments with novel features (high dopaminergic salience) do not increase exploration or approach behavior",
+      "Stress cues (threat novelty) do not elevate cortisol or norepinephrine; no HPA activation"
+    ],
+    "scope_boundaries": [
+      "Applies to motivation, arousal, and affect regulation across most contexts",
+      "Does NOT fully explain cognitive processing (those are more cortical)",
+      "Scope LIMITED to animals with monoamine neurotransmitter systems (all vertebrates, many invertebrates)"
+    ]
+  },
+  "environmental_predictions": [
+    {
+      "prediction_id": "nm-pred-001",
+      "statement": "Novel, moderately unpredictable environments trigger dopaminergic phasic responses; sustained dopamine elevation drives exploration and approach; excessive unpredictability triggers noradrenergic threat response instead",
+      "mechanism": "Novelty increases VTA dopamine firing (reward prediction error). With appropriate learning rate, dopamine encodes 'this is explorable.' With threat cues, instead norepinephrine (locus coeruleus) activates fight-flight-freeze.",
+      "testable": true,
+      "relevant_templates": [
+        "NM_NOVELTY_DOPAMINE_001",
+        "NM_EXPLORATION_DRIVE_002",
+        "NM_THREAT_NOREPINEPHRINE_003"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "interoceptive-construction",
+          "prediction": "Arousal from novelty is constructed from body signals, not determined by dopamine"
+        }
+      ]
+    },
+    {
+      "prediction_id": "nm-pred-002",
+      "statement": "Environments with clear contingencies and learnable reward structures sustain dopaminergic tone and approach motivation; random or non-contingent reward schedules lead to dopaminergic habituation and behavioral despair",
+      "mechanism": "Dopamine encodes reward prediction error (actual - expected). When contingencies are learnable, prediction error remains high, maintaining dopamine. With random rewards, prediction error → 0 (no learnable structure), dopamine declines.",
+      "testable": true,
+      "relevant_templates": [
+        "NM_CONTINGENCY_LEARNING_004",
+        "NM_LEARNED_HELPLESSNESS_005"
+      ],
+      "competing_predictions": null
+    },
+    {
+      "prediction_id": "nm-pred-003",
+      "statement": "Chronic stress (uncontrollable threat, sustained cortisol elevation) impairs serotonergic function and glucocorticoid receptor signaling, increasing depressive affect and reducing reward sensitivity",
+      "mechanism": "Prolonged HPA activation (cortisol) suppresses serotonin synthesis and 5-HT1A receptor expression in prefrontal cortex and raphe. Reduced serotonin → mood dysregulation. Dopamine reward sensitivity declines (anhedonia).",
+      "testable": true,
+      "relevant_templates": [
+        "NM_CHRONIC_STRESS_006",
+        "NM_ANHEDONIA_007"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "interoceptive-construction",
+          "prediction": "Depression is appraisal of body budget depletion, not serotonin dysfunction"
+        }
+      ]
+    }
+  ],
+  "characteristic_questions": [
+    "What reward-predicting cues does this environment contain? Are they learnable?",
+    "What is the novelty level, and does it trigger exploration or threat responses?",
+    "What is the uncertainty/unpredictability level? Does it exceed the system's learning capacity?",
+    "What are the stress levels (threat, crowding, uncontrollability)?",
+    "Are there periodic low-demand periods allowing serotonergic baseline restoration?"
+  ],
+  "panel_persona": {
+    "voice": "I evaluate behavior through neurochemical lenses: dopamine for motivation and learning, serotonin for mood stability, norepinephrine for arousal, cortisol for stress. What matters is whether the environment triggers approach or avoidance, learning or despair.",
+    "typical_critiques": [
+      "Neurochemical hypotheses require direct measurement (PET, microdialysis, CSF sampling), not inferred from behavior alone.",
+      "One neurotransmitter ≠ one behavior; dopamine has multiple actions (reward, motor, cognitive).",
+      "Pharmacology can be misleading; antagonists affect development, tolerance, and other off-target effects.",
+      "Replicate findings across species if claiming evolutionary generality."
+    ],
+    "blind_spots": [
+      "Tendency to reductionism: attributing all affect to neurotransmitter levels ignores cognitive appraisal",
+      "Underestimates cultural and individual differences in reward/threat sensitivity",
+      "Limited account of how social context modulates neuromodulatory response",
+      "May miss emergent network-level effects (neurotransmitters interact in complex ways)"
+    ],
+    "complementary_frameworks": [
+      "interoceptive-construction (body states co-occur with neuromodulatory changes; affect emerges from integration)",
+      "dual-process-evaluation (arousal changes via norepinephrine shift System 1/2 balance)",
+      "default-mode-dynamics (serotonin may support DMN-mediated restoration)",
+      "spatial-navigation (dopamine encodes spatial prediction errors, supporting place cell learning)"
+    ]
+  },
+  "molecule_affinities": [
+    "reward-motivation",
+    "novelty-exploration",
+    "threat-avoidance",
+    "stress-resilience",
+    "mood-stability"
+  ],
+  "meta": {
+    "profile_version": "1.0.0",
+    "created": "2026-03-02",
+    "last_reviewed": null,
+    "confidence": 0.93,
+    "notes": "Neurochemical evidence highly robust. Behavioral predictions sometimes underconstrain (many behaviors could be dopamine-related). Schultz's reward prediction error theory influential but not universally accepted."
+  }
+}

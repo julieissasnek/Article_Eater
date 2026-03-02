@@ -152,6 +152,18 @@ Look SPECIFICALLY for:
 4. Confidence intervals
 5. Test statistics: F, t, chi-square values
 
+CRITICAL — COMPUTE EFFECT SIZE WHEN NOT REPORTED:
+If the paper does not explicitly report an effect size, COMPUTE it from available statistics:
+  - From t-test: d = 2t / sqrt(df)
+  - From F(1,df): d = 2 * sqrt(F / df_error)
+  - From means & SDs: d = (M1 - M2) / SD_pooled, where SD_pooled = sqrt((SD1² + SD2²) / 2)
+  - From r: d = 2r / sqrt(1 - r²)
+  - From chi-square (1 df): phi = sqrt(chi² / N), then d = 2*phi / sqrt(1 - phi²)
+  - From odds ratio: d = ln(OR) * sqrt(3) / pi
+
+When you compute the effect size, set effect_size_type to "Cohen_d_computed" and include
+the source statistic in the test_statistic field (e.g., "t(48)=2.31, d computed").
+
 Return updated findings with these fields filled:
 {
   "findings": [
@@ -159,7 +171,7 @@ Return updated findings with these fields filled:
       "id": [same as before],
       "p_value": "exact value or threshold",
       "effect_size": number,
-      "effect_size_type": "type",
+      "effect_size_type": "type (append _computed if you calculated it)",
       "sample_size": number,
       "test_statistic": "F(df1,df2)=X.XX or t(df)=X.XX"
     }
@@ -426,7 +438,7 @@ def process_paper(doi: str, client: genai.Client = None) -> dict:
     if uploaded:
         try:
             client.files.delete(name=uploaded.name)
-        except:
+        except Exception:  
             pass
 
     # Final quality assessment

@@ -133,7 +133,7 @@ def classify_paper(client: genai.Client, pdf_path: Path, max_retries: int = 3) -
             if uploaded:
                 try:
                     client.files.delete(name=uploaded.name)
-                except:
+                except Exception:  
                     pass
 
     return {"success": False, "error": "Max retries exceeded"}
@@ -197,7 +197,7 @@ def extract_paper(client: genai.Client, pdf_path: Path, article_type: str, max_r
             if uploaded:
                 try:
                     client.files.delete(name=uploaded.name)
-                except:
+                except Exception:  
                     pass
 
     return {"success": False, "error": "Max retries exceeded"}
@@ -380,8 +380,8 @@ def get_already_processed() -> set[str]:
             for r in data.get("results", []):
                 if r.get("status") == "completed":
                     processed.add(r["doi"])
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return processed
 
 
@@ -403,7 +403,8 @@ def get_latest_checkpoint() -> tuple[Path | None, list, dict]:
             "findings": data.get("total_findings", 0)
         }
         return latest, results, stats
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None, [], {"completed": 0, "failed": 0, "cost": 0.0, "findings": 0}
 
 

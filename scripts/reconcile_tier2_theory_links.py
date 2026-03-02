@@ -7,6 +7,8 @@ import argparse
 import sqlite3
 from pathlib import Path
 
+from src.services.db_locator import get_web_db
+
 
 def reconcile(db_path: Path) -> dict[str, int]:
     conn = sqlite3.connect(db_path)
@@ -64,7 +66,7 @@ def reconcile(db_path: Path) -> dict[str, int]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--db", type=Path, default=Path("data/web_persistence.db"))
+    parser.add_argument("--db", type=Path, default=get_web_db())
     args = parser.parse_args()
 
     if not args.db.exists():

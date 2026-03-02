@@ -31,7 +31,8 @@ def _safe_json(path: Path) -> dict[str, Any] | None:
         return None
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 
@@ -168,7 +169,8 @@ def _select_web_db(repo_root: Path, preferred_db: Path | None) -> Path | None:
             conn.close()
             if best is None or count > best[0]:
                 best = (count, path)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
     return best[1] if best else None
 

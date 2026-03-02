@@ -84,8 +84,8 @@ def section_templates():
                 calibrated += 1
             if t.get("evidence_paper_ids"):
                 evidence_linked += 1
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     total = len(templates)
     cal_pct = calibrated / max(1, total) * 100
@@ -123,8 +123,8 @@ def section_annotations():
                     data = json.load(open(f))
                     count = len(data) if isinstance(data, list) else 1
                     annotations[f.stem] = count
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     total = sum(annotations.values())
     n_types = len(annotations)

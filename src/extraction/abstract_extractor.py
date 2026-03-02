@@ -304,7 +304,8 @@ def _extract_abstract_from_preprocess(paper_id: str, preprocess_dir: str) -> str
         return None
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
     pages = payload.get("pages") or []
@@ -1101,7 +1102,8 @@ def _collect_captions_from_preprocess_cache(
             continue
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         pages = payload.get("pages") or []
         for page in pages[:35]:

@@ -123,8 +123,8 @@ class ReportGenerator:
         if TAXONOMY_AVAILABLE:
             try:
                 self._taxonomy = ExtendedOutcomeTaxonomy()
-            except Exception:
-                pass  # Fall back to hardcoded
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")  # Fall back to hardcoded
 
     def _get_expected_outcomes(self) -> Set[str]:
         """

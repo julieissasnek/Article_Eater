@@ -117,16 +117,16 @@ def collect_metrics(bn_state_path: Path) -> dict:
             cur.execute("SELECT COUNT(*) FROM constraints")
             metrics["web_constraints"] = cur.fetchone()[0]
             conn.close()
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if bn_state_path.exists():
         try:
             data = json.loads(bn_state_path.read_text(encoding="utf-8"))
             metrics["bn_nodes"] = len(data.get("nodes", []))
             metrics["bn_edges"] = len(data.get("edges", {}))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return metrics
 

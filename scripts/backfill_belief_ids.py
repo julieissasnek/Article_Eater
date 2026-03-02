@@ -33,6 +33,8 @@ import sqlite3
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+from src.services.db_locator import get_web_db
 from typing import Optional, Dict, Tuple
 
 logging.basicConfig(
@@ -175,8 +177,8 @@ def extract_consequent_from_belief_content(
                         # Return the first finding's consequent
                         # (in practice, we'd need to match the table/cell reference)
                         return findings[0].get("consequent")
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     return content if content else None
 
@@ -318,7 +320,7 @@ def main() -> int:
     parser.add_argument(
         "--web-db",
         type=Path,
-        default=Path("data/web_persistence_v2.db"),
+        default=get_web_db(),
         help="Path to WebOfBelief SQLite DB"
     )
     parser.add_argument(

@@ -154,8 +154,8 @@ def _codex_complete(model: str, system: str, user: str) -> str:
     finally:
         try:
             Path(tmp_path).unlink(missing_ok=True)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
 
 def _parse_json_array(raw: str) -> list[dict[str, Any]]:
@@ -166,8 +166,8 @@ def _parse_json_array(raw: str) -> list[dict[str, Any]]:
         payload = json.loads(text)
         if isinstance(payload, list):
             return [x for x in payload if isinstance(x, dict)]
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     m = re.search(r"\[\s*\{.*\}\s*\]|\[\s*\]", raw, re.DOTALL)
     if not m:
         return []

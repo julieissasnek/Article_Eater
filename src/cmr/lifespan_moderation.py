@@ -143,7 +143,8 @@ def call_compute_with_age(
 
     try:
         return compute_fn(**kwargs)
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 

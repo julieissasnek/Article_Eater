@@ -7,6 +7,7 @@ Demonstrates the full pipeline: PDF -> Extraction -> Epistemic Update
 """
 
 import json
+from pathlib import Path
 from typing import List, Dict, Any
 from dataclasses import dataclass
 
@@ -268,8 +269,10 @@ def run_integration_demo():
     print("ARTICLE EATER - EVIDENCE INTEGRATION DEMO")
     print("="*70)
     
-    # Load extraction results
-    with open('/home/claude/article_eater/data/extraction_results.json') as f:
+    # Load extraction results - use project-relative path
+    project_root = Path(__file__).parent.parent.parent
+    extraction_results_path = project_root / "data" / "extraction_results.json"
+    with open(extraction_results_path) as f:
         data = json.load(f)
     
     # Reconstruct papers (simplified)

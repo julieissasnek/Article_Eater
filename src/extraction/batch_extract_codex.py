@@ -228,8 +228,8 @@ def _postprocess_effect_size(claim: dict[str, Any]) -> dict[str, Any]:
         claim["effect_size"] = round(float(converted["d"]), 3)
         claim["effect_size_type"] = "cohens_d"
         claim["effect_conversion_method"] = converted["method"]
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return claim
 
 
@@ -370,7 +370,8 @@ def _extract_fallback_claims(
                     effect_size = round(float(converted["d"]), 3)
                     effect_type = "cohens_d"
                     break
-                except Exception:
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
                     continue
 
             direction = "unknown"

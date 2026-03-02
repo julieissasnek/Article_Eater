@@ -539,8 +539,8 @@ def resolve_environment_factor(raw_term: str, context_text: str = "") -> Dict[st
                         "match_type": f"resolver_{resolved.get('match_type', 'fuzzy')}",
                         "resolved": True,
                     }
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if callable(resolve_or_queue_environment):
         try:
@@ -554,8 +554,8 @@ def resolve_environment_factor(raw_term: str, context_text: str = "") -> Dict[st
                     "match_type": f"resolver_{resolved.get('match_type', 'queued')}",
                     "resolved": True,
                 }
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     llm_guess = llm_lookup_fallback(raw, context_text, ENV_LOOKUP_MAP)
     if llm_guess["canonical_id"]:
@@ -592,8 +592,8 @@ def resolve_environment_factor(raw_term: str, context_text: str = "") -> Dict[st
 
     try:
         queue_unresolved_environment(raw)
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return {
         "raw_term": raw,
@@ -631,8 +631,8 @@ def resolve_outcome_factor(raw_term: str, paper_id: str, context_text: str = "")
                         "match_type": f"resolver_{resolved.get('match_type', 'fuzzy')}",
                         "resolved": True,
                     }
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     queued_unresolved = False
     if callable(resolve_or_queue):
@@ -651,8 +651,8 @@ def resolve_outcome_factor(raw_term: str, paper_id: str, context_text: str = "")
                         "resolved": True,
                     }
                 queued_unresolved = True
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     llm_guess = llm_lookup_fallback(raw, context_text, OUTCOME_LOOKUP_MAP)
     if llm_guess["canonical_id"]:
@@ -690,8 +690,8 @@ def resolve_outcome_factor(raw_term: str, paper_id: str, context_text: str = "")
     if not queued_unresolved and callable(queue_unknown_outcome):
         try:
             queue_unknown_outcome(raw, paper_id=paper_id, context=context_text[:500] if context_text else None)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return {
         "raw_term": raw,
@@ -829,8 +829,8 @@ def primary_paper_id_from_json(raw: str) -> str:
         vals = json.loads(raw or "[]")
         if isinstance(vals, list) and vals:
             return str(vals[0])
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return ""
 
 

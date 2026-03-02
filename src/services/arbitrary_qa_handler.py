@@ -33,13 +33,31 @@ Usage:
 import json
 import logging
 import re
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from datetime import datetime, timezone
 
+from src.services.theory_guide_service import TheoryGuideService
+from src.services.interpretation_space_suggestions import InterpretationSpaceSuggestionsManager
+
 logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+
+# Initialize theory guide service (lazy load on first use)
+_theory_guide_service: Optional[TheoryGuideService] = None
+
+
+def _get_theory_guide_service() -> TheoryGuideService:
+    """Get or initialize theory guide service (lazy loading)."""
+    global _theory_guide_service
+    if _theory_guide_service is None:
+        _theory_guide_service = TheoryGuideService(
+            guides_dir=str(PROJECT_ROOT / "docs" / "theory_guides"),
+            theories_dir=str(PROJECT_ROOT / "data" / "theories"),
+        )
+    return _theory_guide_service
 
 
 # =============================================================================
@@ -54,6 +72,9 @@ class QuestionType:
     CATALOG_OUTCOMES = "catalog_outcomes"      # "what outcomes do you track?"
     CATALOG_METHODS = "catalog_methods"        # "what measurement methods?"
     CATALOG_CVA = "catalog_cva"               # "what are CVA dimensions?"
+    
+    # Theory guide queries
+    THEORY_GUIDE = "theory_guide"              # "explain ART" / "guide to prospect-refuge"
     
     # A9-A18 enabled queries
     SURPRISE = "surprise"                      # "what's surprising about X?"
@@ -99,6 +120,14 @@ QUESTION_PATTERNS = [
     (QuestionType.CATALOG_CVA, re.compile(
         r'(?:what\s+are\s+)?(?:the\s+)?(?:CVA|constraint|valuation)\s+'
         r'(?:dimension|axis|variable)', re.I)),
+    
+    # Theory guide queries (high priority — before A9-A18)
+    (QuestionType.THEORY_GUIDE, re.compile(
+        r'(?:explain|tell\s+me\s+about|guide\s+(?:to|for)|deep\s+dive\s+(?:on|into)?|'
+        r'what\s+is\s+(?:the\s+)?(?:theory\s+of|framework\s+of)?|teach\s+me\s+(?:about)?)\s*'
+        r'(?:attention\s+restoration|ART|stress\s+recover|SRT|biophilia|prospect[\s-]?refuge|'
+        r'chronobiolog|cognitive\s+map|CPTED|episodic\s+memor|flow\s+theor|goldilocks|'
+        r'kaplan|preference\s+matrix|PAD\s+model|place\s+attach|privacy\s+regulat|proxemics)', re.I)),
     
     # A9-A18 queries (before general evidence/mechanism to get priority)
     (QuestionType.SURPRISE, re.compile(
@@ -329,6 +358,193 @@ def format_cva_catalog(catalog) -> Dict[str, Any]:
 
 
 # =============================================================================
+# Theory Guide Handler
+# =============================================================================
+
+THEORY_GUIDE_DIR = PROJECT_ROOT / "docs" / "theory_guides"
+
+# Mapping from keywords → guide file basenames
+_GUIDE_ALIASES = {
+    "attention restoration": "flow_theory_guide",  # ART is covered in flow
+    "art": "flow_theory_guide",
+    "stress recovery": "kaplan_preference_guide",  # SRT via Kaplan
+    "srt": "kaplan_preference_guide",
+    "biophilia": "goldilocks_principle_guide",
+    "prospect refuge": "kaplan_preference_guide",
+    "prospect-refuge": "kaplan_preference_guide",
+    "chronobiology": "chronobiology_guide",
+    "chronobiolog": "chronobiology_guide",
+    "cognitive map": "cognitive_map_guide",
+    "cpted": "cpted_guide",
+    "episodic memory": "episodic_memory_guide",
+    "episodic memor": "episodic_memory_guide",
+    "flow theory": "flow_theory_guide",
+    "flow": "flow_theory_guide",
+    "goldilocks": "goldilocks_principle_guide",
+    "kaplan": "kaplan_preference_guide",
+    "preference matrix": "kaplan_preference_guide",
+    "pad model": "pad_model_guide",
+    "pad": "pad_model_guide",
+    "place attachment": "place_attachment_guide",
+    "place attach": "place_attachment_guide",
+    "privacy regulation": "privacy_regulation_guide",
+    "privacy regulat": "privacy_regulation_guide",
+    "proxemics": "proxemics_guide",
+}
+
+
+class _HTMLTextExtractor(HTMLParser):
+    """Minimal HTML→text extractor for theory guides."""
+    def __init__(self):
+        super().__init__()
+        self._parts = []
+        self._tag_stack = []
+    
+    def handle_starttag(self, tag, attrs):
+        self._tag_stack.append(tag)
+        if tag in ("h1", "h2", "h3"):
+            self._parts.append("\n")
+        elif tag == "li":
+            self._parts.append("\n• ")
+        elif tag == "p":
+            self._parts.append("\n")
+    
+    def handle_endtag(self, tag):
+        if self._tag_stack and self._tag_stack[-1] == tag:
+            self._tag_stack.pop()
+        if tag in ("h1", "h2", "h3", "p"):
+            self._parts.append("\n")
+    
+    def handle_data(self, data):
+        # Skip style/script content
+        if self._tag_stack and self._tag_stack[-1] in ("style", "script"):
+            return
+        self._parts.append(data.strip())
+    
+    def get_text(self):
+        return " ".join(self._parts).strip()
+
+
+def _load_theory_guide(guide_basename: str) -> Optional[Dict[str, Any]]:
+    """Load and parse a theory guide HTML file."""
+    path = THEORY_GUIDE_DIR / f"{guide_basename}.html"
+    if not path.exists():
+        return None
+    
+    html = path.read_text(errors='replace')
+    
+    # Extract title from <title> or first <h1>
+    title_match = re.search(r'<title>(.*?)</title>', html)
+    title = title_match.group(1) if title_match else guide_basename.replace('_', ' ').title()
+    
+    # Extract sections by <h2> tags
+    sections = []
+    h2_parts = re.split(r'<h2[^>]*>(.*?)</h2>', html)
+    
+    for i in range(1, len(h2_parts), 2):
+        heading = re.sub(r'<[^>]+>', '', h2_parts[i]).strip()
+        body_html = h2_parts[i+1] if i+1 < len(h2_parts) else ""
+        
+        # Extract text from body
+        extractor = _HTMLTextExtractor()
+        extractor.feed(body_html)
+        body_text = extractor.get_text()
+        
+        # Split into bullet items
+        items = [line.strip() for line in body_text.split('\n') if line.strip()]
+        if items:
+            sections.append({"heading": heading, "items": items[:8]})  # Cap at 8 items per section
+    
+    return {"title": title, "sections": sections, "path": str(path)}
+
+
+def format_theory_guide_answer(question: str) -> Dict[str, Any]:
+    """Answer theory guide queries using TheoryGuideService.
+
+    Routes to appropriate detail level based on question intent:
+    - Simple "what is" questions → quick
+    - Standard explanation questions → standard
+    - "deep dive", "comprehensive", "detailed" → technical
+    """
+    q_lower = question.lower()
+    service = _get_theory_guide_service()
+
+    # Determine detail level based on question language
+    detail_level = "quick"  # default
+    if any(word in q_lower for word in ["deep dive", "comprehensive", "detailed", "full", "complete", "all the"]):
+        detail_level = "technical"
+    elif any(word in q_lower for word in ["how", "mechanism", "explain", "describe", "tell"]):
+        detail_level = "standard"
+
+    # Extract theory name from question (rough approximation)
+    # More sophisticated extraction could use NER or predefined patterns
+    theory_name = q_lower
+    for word in ["explain", "tell me about", "guide to", "deep dive on", "what is", "teach me about"]:
+        if word in theory_name:
+            theory_name = theory_name.replace(word, "").strip()
+    theory_name = theory_name.strip('? ')
+
+    # Get guide using service
+    guide = service.get_guide(theory_name, detail_level=detail_level)
+
+    if not guide:
+        # Return list of available guides
+        available = service.list_available_guides()
+        return {
+            "question_type": "theory_guide",
+            "headline": f"Theory guide not found for '{theory_name}'. {len(available)} guides available.",
+            "sections": [{
+                "heading": "Available Theory Guides",
+                "items": [f"**{name}**" for name in sorted(available)],
+            }],
+            "follow_ups": [f"Explain {available[0]}" if available else "Show me all theories"],
+        }
+
+    # Format content as sections (break into paragraphs for readability)
+    sections = []
+    paragraphs = guide.content.split('\n\n')
+
+    # First section is the guide content itself
+    sections.append({
+        "heading": f"{guide.display_name} — {detail_level.capitalize()} Guide",
+        "items": [p.strip() for p in paragraphs[:5] if p.strip()],  # Cap at 5 paragraphs
+    })
+
+    # Add constructs if available
+    if guide.constructs:
+        sections.append({
+            "heading": "Key Constructs",
+            "items": [f"**{c}**" for c in guide.constructs[:5]],
+        })
+
+    # Add maturity/status info
+    if guide.maturity or guide.atlas_status:
+        status_items = []
+        if guide.maturity:
+            status_items.append(f"**Maturity**: {guide.maturity}")
+        if guide.atlas_status:
+            status_items.append(f"**ATLAS Status**: {guide.atlas_status}")
+        if status_items:
+            sections.append({
+                "heading": "Assessment",
+                "items": status_items,
+            })
+
+    return {
+        "question_type": "theory_guide",
+        "headline": f"Theory Guide: {guide.display_name}",
+        "sections": sections,
+        "guide_path": guide.guide_path,
+        "detail_level": detail_level,
+        "follow_ups": [
+            f"What evidence supports {guide.display_name}?",
+            f"What's surprising about {guide.display_name}?",
+            "Show me all theories in this system.",
+        ],
+    }
+
+
+# =============================================================================
 # Extended Annotation Formatters (A9-A18)
 # =============================================================================
 
@@ -351,8 +567,8 @@ def _load_ext_annotations(keyword: str = "") -> List[Dict]:
                 if keyword.lower() not in text:
                     continue
             results.append(data)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     return results
 
 def _load_seed_file(name: str) -> List[Dict]:
@@ -378,8 +594,8 @@ def format_surprise_answer(question: str) -> Dict[str, Any]:
                 if topic and topic.lower() not in json.dumps(s).lower():
                     continue
                 surprises.append(s)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     # Also check extended annotations for manually curated surprises
     all_anns = _load_ext_annotations(topic if topic else "")
@@ -529,8 +745,8 @@ def format_effect_size_answer(question: str) -> Dict[str, Any]:
     if a14_path.exists():
         try:
             effects = json.load(open(a14_path))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     # Also check extended annotations
     all_anns = _load_ext_annotations("")
@@ -575,8 +791,8 @@ def format_cross_domain_answer(question: str) -> Dict[str, Any]:
     if a15_path.exists():
         try:
             connections = json.load(open(a15_path))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     items = []
     for c in connections:
@@ -605,8 +821,8 @@ def format_history_answer(question: str) -> Dict[str, Any]:
     if a16_path.exists():
         try:
             histories = json.load(open(a16_path))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     items = []
     for h in histories:
@@ -720,20 +936,28 @@ class ArbitraryQAHandler:
     and AI routing for complex/novel questions (cheap API call).
     """
     
-    def __init__(self, llm_fn=None):
+    def __init__(self, llm_fn=None, db_path: Optional[str] = None):
         """
         Args:
             llm_fn: Optional LLM function with signature (prompt: str) -> str.
                     If None, AI-routed questions return context + prompt for external processing.
+            db_path: Optional path to web.db for tracking suggestions.
+                     If provided, follow-ups are recorded in interpretation_space_suggestions table.
         """
         from src.services.knowledge_catalog import KnowledgeCatalog
         self.catalog = KnowledgeCatalog()
         self.llm_fn = llm_fn
         self._stats = {"classified": 0, "ai_routed": 0, "catalog_served": 0}
+        self.suggestions_mgr: Optional[InterpretationSpaceSuggestionsManager] = None
+        if db_path:
+            try:
+                self.suggestions_mgr = InterpretationSpaceSuggestionsManager(db_path)
+            except Exception as e:
+                logger.warning(f"Failed to initialize suggestions manager: {e}")
     
     def answer(self, question: str) -> Dict[str, Any]:
         """Answer any question about the system's knowledge.
-        
+
         Returns structured response dict with:
         - question_type: classified type
         - headline: one-line answer
@@ -744,7 +968,7 @@ class ArbitraryQAHandler:
         # Classify
         qtype, confidence = classify_question(question)
         self._stats["classified"] += 1
-        
+
         # Route to handler
         handler_map = {
             QuestionType.CATALOG_THEORIES: lambda: format_theory_catalog(self.catalog),
@@ -753,6 +977,8 @@ class ArbitraryQAHandler:
             QuestionType.CATALOG_OUTCOMES: lambda: format_outcome_catalog(self.catalog),
             QuestionType.CATALOG_METHODS: lambda: format_methods_catalog(self.catalog),
             QuestionType.CATALOG_CVA: lambda: format_cva_catalog(self.catalog),
+            # Theory guide handler
+            QuestionType.THEORY_GUIDE: lambda: format_theory_guide_answer(question),
             # A9-A18 handlers
             QuestionType.SURPRISE: lambda: format_surprise_answer(question),
             QuestionType.DISPUTE: lambda: format_dispute_answer(question),
@@ -763,17 +989,20 @@ class ArbitraryQAHandler:
             QuestionType.CROSS_DOMAIN: lambda: format_cross_domain_answer(question),
             QuestionType.HISTORY: lambda: format_history_answer(question),
         }
-        
+
         handler = handler_map.get(qtype)
         if handler:
             self._stats["catalog_served"] += 1
             response = handler()
             response["confidence"] = confidence
             response["ai_generated"] = False
+            self._track_followups(response.get("follow_ups", []))
             return response
-        
+
         # AI-routed for everything else
-        return self._ai_answer(question, qtype, confidence)
+        response = self._ai_answer(question, qtype, confidence)
+        self._track_followups(response.get("follow_ups", []))
+        return response
     
     def _ai_answer(self, question: str, qtype: str, 
                    confidence: float) -> Dict[str, Any]:
@@ -863,7 +1092,21 @@ class ArbitraryQAHandler:
             ]
         
         return followups[:3]
-    
+
+    def _track_followups(self, followups: List[str]) -> None:
+        """Record follow-up suggestions to interpretation_space_suggestions table.
+
+        Args:
+            followups: List of follow-up question strings
+        """
+        if not self.suggestions_mgr or not followups:
+            return
+
+        try:
+            self.suggestions_mgr.insert_qa_followups(followups, priority_score=0.6)
+        except Exception as e:
+            logger.warning(f"Failed to track QA follow-ups: {e}")
+
     def get_stats(self) -> Dict[str, int]:
         """Get handler usage stats."""
         return dict(self._stats)

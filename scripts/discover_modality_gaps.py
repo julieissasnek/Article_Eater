@@ -99,7 +99,8 @@ def load_templates() -> List[Dict]:
             t = json.loads(open(os.path.join(TEMPLATE_DIR, f)).read())
             t["_filename"] = f
             templates.append(t)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
     return templates
 

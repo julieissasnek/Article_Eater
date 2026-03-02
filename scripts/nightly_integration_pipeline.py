@@ -57,6 +57,7 @@ from typing import Any, Dict, List, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
+from src.services.db_locator import get_web_db
 
 DATA_DIR = PROJECT_ROOT / "data"
 LOGS_DIR = PROJECT_ROOT / "logs"
@@ -256,6 +257,15 @@ class NightlyPipeline:
                     f"{len(below_threshold)}/{len(batch_report.articles)} articles flagged for re-extraction."
                 )
 
+            # Phase 1B: Compute violation statistics
+            all_violations = {}
+            for article in batch_report.articles:
+                for field, count in article.violations_by_field().items():
+                    all_violations[field] = all_violations.get(field, 0) + count
+
+            # Get top violation types
+            top_violations = sorted(all_violations.items(), key=lambda x: -x[1])[:10]
+
             return {
                 "total_articles": len(batch_report.articles),
                 "total_findings": batch_report.total_findings,
@@ -264,6 +274,13 @@ class NightlyPipeline:
                 "threshold": threshold,
                 "total_violations": batch_report.total_violations,
                 "reextraction_queue_path": str(reextract_path),
+                # Phase 1B additions
+                "top_violation_fields": {k: v for k, v in top_violations},
+                "quality_score_distribution": {
+                    "min": round(min(a.quality_score for a in batch_report.articles), 4) if batch_report.articles else 0,
+                    "max": round(max(a.quality_score for a in batch_report.articles), 4) if batch_report.articles else 0,
+                    "mean": round(batch_report.mean_score, 4),
+                },
             }
 
         except ImportError:
@@ -351,7 +368,7 @@ class NightlyPipeline:
             from src.services.system_setup import SystemSetup
 
             setup = SystemSetup(
-                db_path="data/web_persistence.db",
+                db_path=str(get_web_db()),  # Centralized: was hardcoded
                 extractions_dir="data/extractions",
                 theories_dir="data/theories",
                 templates_dir="data/templates",
@@ -570,7 +587,7 @@ class NightlyPipeline:
             overseer = OverseerService(
                 overseer_db_path=str(DATA_DIR / "overseer.db"),
                 web=None,  # Will read from web.db directly
-                web_db_path=str(DATA_DIR / "web_persistence.db"),
+                web_db_path=str(get_web_db()),
                 templates_dir=str(DATA_DIR / "templates"),
                 extractions_dir=str(DATA_DIR / "extractions"),
                 theories_dir=str(DATA_DIR / "theories"),
@@ -603,6 +620,141 @@ class NightlyPipeline:
             }
         except Exception as e:
             return {'error': str(e)}
+
+    # =========================================================================
+    # STAGE 7.7: NIGHTLY DISCOVERY (AG 2026-03-01, QA Spec Fix 5)
+    # =========================================================================
+
+    def stage_nightly_discovery(self) -> Dict[str, Any]:
+        """Nightly discovery loop: gap prediction + defeater search + annotation harvest.
+
+        This stage turns the nightly pipeline from a maintenance job into a
+        learning loop. Every night:
+        1. Run gap predictor on updated web → new PredictedGap objects
+        2. Run defeater search for beliefs with credence ≥ 0.8
+        3. Harvest OPEN_QUESTION/SEARCH_PROMPT annotations as user-guided gaps
+        4. Re-score VOI with new data
+        5. Generate discovery digest
+
+        Non-critical: failures here don't block the rest of the pipeline.
+        """
+        result: Dict[str, Any] = {
+            "gaps_found": 0,
+            "high_voi_gaps": 0,
+            "defeaters_found": 0,
+            "annotations_harvested": 0,
+            "digest": "",
+        }
+
+        # Step 1: Run gap predictor
+        try:
+            from src.services.gap_predictor import GapPredictor
+
+            gp = GapPredictor()
+            gap_report = gp.find_all_gaps(max_gaps=30)
+
+            result["gaps_found"] = gap_report.n_gaps
+            result["high_voi_gaps"] = sum(
+                1 for g in gap_report.gaps if g.voi_score >= 0.8
+            )
+            result["gap_type_counts"] = gap_report.summary.get("gap_type_counts", {})
+
+            # Save gap report
+            gap_report_path = LOGS_DIR / f"gap_report_{datetime.now().strftime('%Y-%m-%d')}.json"
+            gap_report_path.write_text(
+                json.dumps(gap_report.to_dict(), indent=2, default=str),
+                encoding="utf-8",
+            )
+            result["gap_report_path"] = str(gap_report_path)
+
+            logger.info(
+                "Gap prediction: %d gaps found (%d high-VOI)",
+                result["gaps_found"], result["high_voi_gaps"],
+            )
+        except Exception as e:
+            logger.warning(f"Gap prediction failed (non-critical): {e}")
+            result["gap_error"] = str(e)
+
+        # Step 2: Defeater search for high-credence beliefs
+        try:
+            from src.services.gap_predictor import GapPredictor
+
+            gp = GapPredictor()
+            defeater_result = gp.find_all_defeaters(limit=10)
+
+            result["beliefs_checked_for_defeaters"] = defeater_result.get(
+                "beliefs_checked", 0
+            )
+            result["defeaters_found"] = defeater_result.get(
+                "beliefs_with_defeaters", 0
+            )
+
+            logger.info(
+                "Defeater search: checked %d beliefs, found defeaters for %d",
+                result["beliefs_checked_for_defeaters"],
+                result["defeaters_found"],
+            )
+        except Exception as e:
+            logger.warning(f"Defeater search failed (non-critical): {e}")
+            result["defeater_error"] = str(e)
+
+        # Step 3: Count annotation-harvested gaps (already included in gap_report)
+        try:
+            from src.services.gap_predictor import GapPredictor
+
+            gp = GapPredictor()
+            ann_gaps = gp.harvest_annotation_gaps()
+            result["annotations_harvested"] = len(ann_gaps)
+
+            logger.info(
+                "Annotation harvest: %d gaps from user annotations",
+                result["annotations_harvested"],
+            )
+        except Exception as e:
+            logger.warning(f"Annotation harvest failed (non-critical): {e}")
+
+        # Step 4: VOI re-scoring summary
+        try:
+            from src.cmr.voi_scoring import aggregate_paper_voi
+
+            # If gap_report exists, show VOI distribution
+            if "gap_report" in dir() and gap_report.gaps:
+                voi_scores = [g.voi_score for g in gap_report.gaps]
+                result["voi_summary"] = {
+                    "mean_voi": round(sum(voi_scores) / len(voi_scores), 3),
+                    "max_voi": round(max(voi_scores), 3),
+                    "above_0.8": sum(1 for v in voi_scores if v >= 0.8),
+                }
+        except Exception as e:
+            logger.debug(f"VOI summary failed: {e}")
+
+        # Step 5: Generate discovery digest
+        digest_lines = [
+            f"## Nightly Discovery Digest — {datetime.now().strftime('%Y-%m-%d')}",
+            "",
+            f"- **Gaps found**: {result['gaps_found']} ({result['high_voi_gaps']} high-VOI)",
+            f"- **Defeaters**: checked {result.get('beliefs_checked_for_defeaters', 0)} beliefs, "
+            f"found defeaters for {result['defeaters_found']}",
+            f"- **Annotation harvest**: {result['annotations_harvested']} user-identified gaps",
+        ]
+
+        if result.get("voi_summary"):
+            vs = result["voi_summary"]
+            digest_lines.append(
+                f"- **VOI**: mean={vs['mean_voi']}, max={vs['max_voi']}, "
+                f"{vs['above_0.8']} above 0.8 threshold"
+            )
+
+        digest = "\n".join(digest_lines)
+        result["digest"] = digest
+
+        # Save digest
+        digest_path = LOGS_DIR / f"discovery_digest_{datetime.now().strftime('%Y-%m-%d')}.md"
+        digest_path.write_text(digest, encoding="utf-8")
+        result["digest_path"] = str(digest_path)
+
+        logger.info("\n" + digest)
+        return result
 
     # =========================================================================
     # STAGE 8: REPORT
@@ -684,8 +836,8 @@ class NightlyPipeline:
                     f"Check {report_path}",
                     send_email=False,
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
 
         return {
             "report_path": str(report_path),
@@ -711,6 +863,7 @@ class NightlyPipeline:
             ("health_check", self.stage_health_check),
             ("warrant_monitoring", self._stage_warrant_monitoring),
             ("overseer_coverage", self.stage_overseer_coverage),
+            ("nightly_discovery", self.stage_nightly_discovery),
             ("report", self.stage_report),
         ]
 

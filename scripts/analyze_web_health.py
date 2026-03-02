@@ -4,8 +4,9 @@ import pandas as pd
 import networkx as nx
 import os
 import sys
+from src.services.db_locator import get_web_db
 
-DB_PATH = "data/web_persistence.db"
+DB_PATH = get_web_db()  # Centralized: was hardcoded
 REPORT_PATH = "docs/web_of_belief_health_report.md"
 
 def analyze_web_health():

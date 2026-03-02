@@ -439,7 +439,8 @@ class ReadNextEngine:
                             "image_path": img.get("output_path", ""),
                             "relevance": "direct_match",
                         })
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Skipped: {e}")
                 continue
         
         # Search environment image DB
@@ -463,8 +464,8 @@ class ReadNextEngine:
                             "relevance": "constraint_match",
                         })
                     break
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
         
         return images[:5]  # Cap at 5 most relevant
     
@@ -525,8 +526,8 @@ class ReadNextEngine:
             try:
                 with open(mp) as f:
                     molecules[mp.stem] = json.load(f)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
         return molecules
     
     def _load_seed_file(self, name: str) -> List[Dict]:

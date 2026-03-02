@@ -195,8 +195,8 @@ Be thorough - extract ALL tables, even if partially visible or complex."""
         # Clean up uploaded file
         try:
             genai.delete_file(uploaded_file.name)
-        except Exception:
-            pass  # Ignore cleanup errors
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")  # Ignore cleanup errors
 
         # Extract token usage if available
         usage = {}
@@ -276,8 +276,8 @@ def parse_gemini_response(response: dict) -> dict:
                 table_str = match.group(0)
                 # This is simplified - real tables have nested arrays
                 pass
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         # Try truncating to last complete object
         for end_char in ['}]', '}\n]', '},\n', '}']:

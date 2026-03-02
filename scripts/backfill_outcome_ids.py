@@ -1,281 +1,443 @@
 #!/usr/bin/env python3
 """
-Sprint S-3: Outcome Backfill & Lookup Regeneration
-====================================================
+Backfill outcome_ids for beliefs with empty or NULL outcome_id.
 
-1. Regenerates outcome_lookup.json from the expanded outcome_vocab.json
-2. Backfills existing extraction JSONs with canonical outcome_ids
-3. Reports coverage improvement
+This script builds a comprehensive mapping from raw consequent text to canonical
+outcome_ids using the outcome vocabulary (terms, cognates, operationalizations).
+
+It uses:
+  1. Exact string matching (normalized)
+  2. Token overlap matching
+  3. Fuzzy substring matching (difflib)
+  4. Confidence scoring based on match quality
 
 Usage:
-    python scripts/backfill_outcome_ids.py                 # Full analysis + backfill
-    python scripts/backfill_outcome_ids.py --regen-only    # Only regenerate lookup
-    python scripts/backfill_outcome_ids.py --dry-run       # Report only, no writes
+  python scripts/backfill_outcome_ids.py --dry-run
+  python scripts/backfill_outcome_ids.py --commit
 """
 
-import argparse
+import sqlite3
 import json
-import sys
+import re
 from pathlib import Path
-from collections import Counter
+
+from src.services.db_locator import get_web_db
+from typing import Dict, List, Tuple, Optional
+from dataclasses import dataclass
 from difflib import SequenceMatcher
-from datetime import datetime, timezone
-
-PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
-VOCAB_PATH = PROJECT_ROOT / "contracts" / "outcome_vocab" / "outcome_vocab.json"
-LOOKUP_PATH = PROJECT_ROOT / "contracts" / "outcome_vocab" / "outcome_lookup.json"
-EXTRACTIONS_DIR = PROJECT_ROOT / "data" / "extractions"
-TEMPLATES_DIR = PROJECT_ROOT / "data" / "templates"
+from collections import defaultdict
+import sys
 
 
-# =============================================================================
-# Step 1: Regenerate outcome_lookup.json
-# =============================================================================
-
-def regenerate_lookup():
-    """Rebuild lookup table from vocab, including all cognates."""
-    with open(VOCAB_PATH) as f:
-        vocab = json.load(f)
-    
-    lookup = {}
-    terms_dict = {}
-    
-    for term in vocab["terms"]:
-        tid = term["term_id"]
-        terms_dict[tid] = {
-            "name": term["name"],
-            "domain": term["domain"],
-            "level": term.get("level", 1),
-            "parent_id": term.get("parent_id"),
-            "operationalizations": term.get("operationalizations", []),
-        }
-        
-        # Add to lookup: name + all cognates
-        lookup[term["name"].lower()] = tid
-        for cognate in term.get("cognates", []):
-            lookup[cognate.lower()] = tid
-    
-    data = {
-        "schema": "outcome_lookup.v2",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source_version": vocab.get("version", "1.0.0"),
-        "lookup": lookup,
-        "terms": terms_dict,
-    }
-    
-    with open(LOOKUP_PATH, "w") as f:
-        json.dump(data, f, indent=2)
-    
-    print(f"✅ Regenerated lookup: {len(lookup)} entries from {len(terms_dict)} terms")
-    return data
+@dataclass
+class VocabEntry:
+    """Single vocabulary entry with all its aliases."""
+    outcome_id: str
+    name: str
+    domain: str
+    cognates: List[str]
+    operationalizations: List[str]
+    all_aliases: List[str]  # Complete list of name + cognates + operationalizations
 
 
-# =============================================================================
-# Step 2: Backfill extractions with canonical outcome_ids
-# =============================================================================
+class OutcomeVocabularyBuilder:
+    """Build comprehensive mapping from text to outcome_ids."""
 
-def backfill_extractions(lookup_data, dry_run=False):
-    """Scan extraction JSONs and add/update outcome_id fields."""
-    lookup = lookup_data["lookup"]
-    terms = lookup_data["terms"]
-    stats = Counter()
-    
-    extraction_files = sorted(EXTRACTIONS_DIR.glob("*.json"))
-    print(f"\nProcessing {len(extraction_files)} extractions...")
-    
-    for i, ef in enumerate(extraction_files):
-        try:
-            with open(ef) as f:
-                data = json.load(f)
-            
-            modified = False
-            findings = data.get("findings", data.get("claims", []))
-            if not isinstance(findings, list):
-                stats["skip_no_findings"] += 1
-                continue
-            
-            for finding in findings:
-                if not isinstance(finding, dict):
-                    continue
-                
-                # Check if already has canonical outcome_id
-                existing_oid = finding.get("outcome_id", "")
-                if existing_oid and not existing_oid.startswith("UNRESOLVED:"):
-                    stats["already_canonical"] += 1
-                    continue
-                
-                # Try to resolve from consequent text
-                raw = finding.get("consequent", finding.get("outcome", ""))
-                if not raw or not isinstance(raw, str):
-                    stats["no_consequent"] += 1
-                    continue
-                
-                resolved = _resolve(raw, lookup, terms)
-                if resolved:
-                    finding["outcome_id"] = resolved["canonical_id"]
-                    finding["outcome_domain"] = resolved["domain"]
-                    finding["outcome_match_type"] = resolved["match_type"]
-                    finding["outcome_confidence"] = resolved["confidence"]
-                    modified = True
-                    stats["resolved"] += 1
-                    stats[f"domain_{resolved['domain']}"] += 1
-                else:
-                    stats["unresolved"] += 1
-            
-            if modified and not dry_run:
-                with open(ef, "w") as f:
-                    json.dump(data, f, indent=2)
-                stats["files_modified"] += 1
-            
-        except Exception as e:
-            stats["errors"] += 1
-        
-        if (i + 1) % 200 == 0:
-            print(f"  {i+1}/{len(extraction_files)}...")
-    
-    return stats
+    def __init__(self, vocab_path: str):
+        self.vocab_path = vocab_path
+        self.vocab = self._load_vocab()
+        self.vocab_entries = self._build_entries()
+        self.lookup_map = self._build_lookup_map()
+
+    def _load_vocab(self) -> dict:
+        """Load the outcome vocabulary JSON."""
+        with open(self.vocab_path, 'r') as f:
+            return json.load(f)
+
+    def _build_entries(self) -> Dict[str, VocabEntry]:
+        """Build VocabEntry for each term in the vocabulary."""
+        entries = {}
+        for term in self.vocab['terms']:
+            term_id = term['term_id']
+            name = term['name']
+            domain = term['domain']
+            cognates = term.get('cognates', [])
+            ops = term.get('operationalizations', [])
+
+            # Combine all text aliases (case-insensitive)
+            all_aliases = [name.lower()] + [c.lower() for c in cognates] + [o.lower() for o in ops]
+            # Remove duplicates while preserving lowercase
+            all_aliases = list(set(all_aliases))
+
+            entries[term_id] = VocabEntry(
+                outcome_id=term_id,
+                name=name,
+                domain=domain,
+                cognates=cognates,
+                operationalizations=ops,
+                all_aliases=all_aliases
+            )
+
+        return entries
+
+    def _build_lookup_map(self) -> Dict[str, str]:
+        """Build fast lookup: normalized_text -> outcome_id."""
+        lookup = {}
+        for oid, entry in self.vocab_entries.items():
+            for alias in entry.all_aliases:
+                normalized = self._normalize(alias)
+                if normalized:  # Skip empty strings
+                    lookup[normalized] = oid
+        return lookup
+
+    def _normalize(self, text: str) -> str:
+        """Normalize text for matching: lowercase, strip, remove punctuation."""
+        if not text:
+            return ""
+        # Remove common punctuation, keep internal spaces
+        text = text.lower().strip()
+        text = re.sub(r'[^\w\s]', '', text)
+        text = re.sub(r'\s+', ' ', text)
+        return text
+
+    def _token_overlap(self, text1: str, text2: str) -> float:
+        """Calculate token-level Jaccard similarity."""
+        tokens1 = set(self._normalize(text1).split())
+        tokens2 = set(self._normalize(text2).split())
+        if not tokens1 or not tokens2:
+            return 0.0
+        intersection = len(tokens1 & tokens2)
+        union = len(tokens1 | tokens2)
+        return intersection / union if union > 0 else 0.0
+
+    def _fuzzy_ratio(self, text1: str, text2: str) -> float:
+        """Calculate fuzzy match ratio using SequenceMatcher."""
+        norm1 = self._normalize(text1)
+        norm2 = self._normalize(text2)
+        return SequenceMatcher(None, norm1, norm2).ratio()
+
+    def match(self, consequent_text: str) -> Tuple[Optional[str], float, str]:
+        """
+        Find best matching outcome_id for consequent text.
+
+        Returns:
+            (outcome_id, confidence, match_type) or (None, 0.0, "no_match")
+        """
+        if not consequent_text or not consequent_text.strip():
+            return None, 0.0, "empty"
+
+        norm_text = self._normalize(consequent_text)
+
+        # Strategy 1: Exact match on normalized text
+        if norm_text in self.lookup_map:
+            outcome_id = self.lookup_map[norm_text]
+            return outcome_id, 1.0, "exact"
+
+        # Strategy 2: Try each vocabulary entry with fuzzy matching
+        best_match = None
+        best_score = 0.0
+        best_type = "no_match"
+
+        for oid, entry in self.vocab_entries.items():
+            for alias in entry.all_aliases:
+                # Token overlap
+                token_score = self._token_overlap(consequent_text, alias)
+                # Fuzzy similarity
+                fuzzy_score = self._fuzzy_ratio(consequent_text, alias)
+                # Combined (weighted average)
+                combined = 0.4 * token_score + 0.6 * fuzzy_score
+
+                if combined > best_score:
+                    best_score = combined
+                    best_match = oid
+                    # Determine match type based on score
+                    if combined >= 0.85:
+                        best_type = "high_confidence"
+                    elif combined >= 0.70:
+                        best_type = "medium_confidence"
+                    elif combined >= 0.50:
+                        best_type = "low_confidence"
+
+        # Only accept matches above a threshold
+        threshold = 0.50
+        if best_score >= threshold:
+            return best_match, best_score, best_type
+
+        return None, 0.0, "no_match"
 
 
-def _resolve(raw_term, lookup, terms, fuzzy_threshold=0.7):
-    """Resolve a raw term against the lookup table."""
-    raw_lower = raw_term.lower().strip()
-    
-    # Exact match
-    if raw_lower in lookup:
-        tid = lookup[raw_lower]
+class BackfillProcessor:
+    """Process beliefs and backfill outcome_ids."""
+
+    def __init__(self, db_path: str, vocab_builder: OutcomeVocabularyBuilder):
+        self.db_path = db_path
+        self.vocab_builder = vocab_builder
+
+    def get_unmapped_beliefs(self) -> List[Tuple[str, str]]:
+        """Get all beliefs with empty outcome_id.
+        Returns: [(belief_id, content), ...]
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT belief_id, content
+            FROM beliefs
+            WHERE outcome_id IS NULL OR outcome_id = ''
+            ORDER BY belief_id
+        """)
+        results = cursor.fetchall()
+        conn.close()
+        return results
+
+    def process_belief(self, belief_id: str, content: str) -> Optional[Tuple[str, float, str]]:
+        """
+        Process single belief and return outcome mapping.
+        Returns: (outcome_id, confidence, match_type) or None if no match
+        """
+        outcome_id, confidence, match_type = self.vocab_builder.match(content)
+        return (outcome_id, confidence, match_type) if outcome_id else None
+
+    def get_statistics(self) -> dict:
+        """Get current database statistics."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT COUNT(*) FROM beliefs")
+        total = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM beliefs WHERE outcome_id IS NULL OR outcome_id = ''")
+        unmapped = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM beliefs WHERE outcome_id IS NOT NULL AND outcome_id != ''")
+        mapped = cursor.fetchone()[0]
+
+        conn.close()
+
         return {
-            "canonical_id": tid,
-            "domain": terms.get(tid, {}).get("domain", ""),
-            "match_type": "exact",
-            "confidence": 1.0,
+            'total': total,
+            'mapped': mapped,
+            'unmapped': unmapped,
+            'unmapped_pct': 100.0 * unmapped / total if total > 0 else 0.0
         }
-    
-    # Substring match (if raw term contains a lookup key)
-    for key, tid in lookup.items():
-        if len(key) > 4 and key in raw_lower:
-            return {
-                "canonical_id": tid,
-                "domain": terms.get(tid, {}).get("domain", ""),
-                "match_type": "substring",
-                "confidence": 0.8,
-            }
-    
-    # Fuzzy match
-    best_tid = None
-    best_score = 0
-    for key, tid in lookup.items():
-        score = SequenceMatcher(None, raw_lower, key).ratio()
-        if score > best_score:
-            best_score = score
-            best_tid = tid
-    
-    if best_score >= fuzzy_threshold:
-        return {
-            "canonical_id": best_tid,
-            "domain": terms.get(best_tid, {}).get("domain", ""),
-            "match_type": "fuzzy",
-            "confidence": round(best_score, 3),
-        }
-    
-    return None
 
+    def run_dry_run(self) -> dict:
+        """Dry run: show what would be updated without modifying DB."""
+        print("\n" + "=" * 100)
+        print("DRY RUN: Scanning unmapped beliefs")
+        print("=" * 100 + "\n")
 
-# =============================================================================
-# Step 3: Backfill Templates
-# =============================================================================
+        unmapped = self.get_unmapped_beliefs()
+        results_by_type = defaultdict(int)
+        high_confidence_matches = []
+        medium_confidence_matches = []
+        low_confidence_matches = []
+        no_matches = []
 
-def backfill_templates(lookup_data, dry_run=False):
-    """Add outcome dimensions to templates based on their content."""
-    lookup = lookup_data["lookup"]
-    terms = lookup_data["terms"]
-    stats = Counter()
-    
-    template_files = sorted(TEMPLATES_DIR.glob("*.json"))
-    print(f"\nProcessing {len(template_files)} templates...")
-    
-    for tf in template_files:
-        try:
-            with open(tf) as f:
-                data = json.load(f)
-            
-            # If template already has outcome_domains, skip
-            if data.get("outcome_domains"):
-                stats["already_tagged"] += 1
-                continue
-            
-            # Scan template text for outcome-relevant terms
-            text = " ".join([
-                data.get("name", ""),
-                data.get("bridge_warrant", ""),
-                data.get("description", ""),
-            ]).lower()
-            
-            found_domains = set()
-            found_outcomes = []
-            
-            for key, tid in lookup.items():
-                if len(key) > 4 and key in text:
-                    domain = terms.get(tid, {}).get("domain", "")
-                    if domain and domain not in found_domains:
-                        found_domains.add(domain)
-                        found_outcomes.append(tid)
-            
-            if found_outcomes:
-                if not dry_run:
-                    data["outcome_domains"] = sorted(found_domains)
-                    data["outcome_terms"] = sorted(found_outcomes)[:5]  # Top 5
-                    with open(tf, "w") as f:
-                        json.dump(data, f, indent=2)
-                
-                stats["templates_tagged"] += 1
-                for d in found_domains:
-                    stats[f"template_domain_{d}"] += 1
+        print(f"Processing {len(unmapped)} unmapped beliefs...\n")
+
+        for belief_id, content in unmapped:
+            match_result = self.process_belief(belief_id, content)
+
+            if match_result:
+                outcome_id, confidence, match_type = match_result
+                results_by_type[match_type] += 1
+
+                # Collect by confidence for reporting
+                entry = (belief_id, content[:70], outcome_id, confidence)
+                if match_type == "exact":
+                    high_confidence_matches.append(entry)
+                elif match_type == "high_confidence":
+                    high_confidence_matches.append(entry)
+                elif match_type == "medium_confidence":
+                    medium_confidence_matches.append(entry)
+                elif match_type == "low_confidence":
+                    low_confidence_matches.append(entry)
             else:
-                stats["templates_no_match"] += 1
-                
-        except Exception:
-            stats["template_errors"] += 1
-    
-    return stats
+                results_by_type["no_match"] += 1
+                no_matches.append((belief_id, content[:70]))
+
+        # Report
+        print("MATCH RESULTS")
+        print("-" * 100)
+        print(f"Exact matches:           {results_by_type['exact']:5d}")
+        print(f"High confidence (0.85+): {results_by_type['high_confidence']:5d}")
+        print(f"Medium confidence (0.70-0.85): {results_by_type['medium_confidence']:5d}")
+        print(f"Low confidence (0.50-0.70):    {results_by_type['low_confidence']:5d}")
+        print(f"No match:                {results_by_type['no_match']:5d}")
+        print("-" * 100)
+        total_matched = sum(results_by_type.values()) - results_by_type['no_match']
+        print(f"TOTAL TO BACKFILL:       {total_matched:5d}")
+        print()
+
+        # Show sample matches
+        if high_confidence_matches:
+            print("SAMPLE HIGH-CONFIDENCE MATCHES (first 5):")
+            print("-" * 100)
+            for bid, content, oid, conf in high_confidence_matches[:5]:
+                print(f"  {bid[:20]:20s} -> {oid:25s} (conf={conf:.3f})")
+                print(f"    Content: {content}")
+            print()
+
+        if medium_confidence_matches:
+            print("SAMPLE MEDIUM-CONFIDENCE MATCHES (first 5):")
+            print("-" * 100)
+            for bid, content, oid, conf in medium_confidence_matches[:5]:
+                print(f"  {bid[:20]:20s} -> {oid:25s} (conf={conf:.3f})")
+                print(f"    Content: {content}")
+            print()
+
+        if low_confidence_matches:
+            print("SAMPLE LOW-CONFIDENCE MATCHES (first 5):")
+            print("-" * 100)
+            for bid, content, oid, conf in low_confidence_matches[:5]:
+                print(f"  {bid[:20]:20s} -> {oid:25s} (conf={conf:.3f})")
+                print(f"    Content: {content}")
+            print()
+
+        if no_matches:
+            print("UNMATCHED BELIEFS (cannot map):")
+            print("-" * 100)
+            for bid, content in no_matches:
+                print(f"  {bid[:20]:20s}")
+                print(f"    Content: {content}")
+            print()
+
+        stats_before = self.get_statistics()
+        print("DATABASE STATISTICS")
+        print("-" * 100)
+        print(f"Current state:")
+        print(f"  Total beliefs:        {stats_before['total']:,}")
+        print(f"  Mapped:               {stats_before['mapped']:,} ({100-stats_before['unmapped_pct']:.1f}%)")
+        print(f"  Unmapped:             {stats_before['unmapped']:,} ({stats_before['unmapped_pct']:.1f}%)")
+        print()
+        print(f"After backfill (projected):")
+        projected_mapped = stats_before['mapped'] + total_matched
+        projected_unmapped = stats_before['unmapped'] - total_matched
+        projected_pct = 100.0 * projected_unmapped / stats_before['total'] if stats_before['total'] > 0 else 0.0
+        print(f"  Mapped:               {projected_mapped:,} ({100-projected_pct:.1f}%)")
+        print(f"  Unmapped:             {projected_unmapped:,} ({projected_pct:.1f}%)")
+        print(f"  Improvement:          {stats_before['unmapped_pct'] - projected_pct:.1f} percentage points")
+        print()
+
+        return {
+            'total_beliefs': len(unmapped),
+            'results_by_type': dict(results_by_type),
+            'total_matched': total_matched,
+            'stats_before': stats_before,
+            'projected_unmapped': projected_unmapped
+        }
+
+    def run_commit(self) -> dict:
+        """Actually update the database with mapped outcome_ids."""
+        print("\n" + "=" * 100)
+        print("COMMIT MODE: Updating database")
+        print("=" * 100 + "\n")
+
+        unmapped = self.get_unmapped_beliefs()
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        updated_count = 0
+        update_list = []
+
+        for belief_id, content in unmapped:
+            match_result = self.process_belief(belief_id, content)
+            if match_result:
+                outcome_id, confidence, match_type = match_result
+                update_list.append((outcome_id, belief_id))
+                updated_count += 1
+
+        # Perform batch update
+        if update_list:
+            cursor.executemany(
+                "UPDATE beliefs SET outcome_id = ? WHERE belief_id = ?",
+                update_list
+            )
+            conn.commit()
+            print(f"Updated {updated_count} beliefs with outcome_ids")
+        else:
+            print("No matches found, no updates made")
+
+        # Final statistics
+        stats_after = self.get_statistics()
+        print()
+        print("DATABASE STATISTICS (after commit)")
+        print("-" * 100)
+        print(f"Total beliefs:        {stats_after['total']:,}")
+        print(f"Mapped:               {stats_after['mapped']:,} ({100-stats_after['unmapped_pct']:.1f}%)")
+        print(f"Unmapped:             {stats_after['unmapped']:,} ({stats_after['unmapped_pct']:.1f}%)")
+        print()
+
+        conn.close()
+        return {
+            'updated': updated_count,
+            'stats_after': stats_after
+        }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Backfill outcome IDs")
-    parser.add_argument("--regen-only", action="store_true")
-    parser.add_argument("--dry-run", action="store_true")
+    """Main entry point."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description='Backfill outcome_ids for beliefs with empty outcome_id'
+    )
+    parser.add_argument(
+        '--db',
+        default=str(get_web_db()),
+        help='Path to SQLite database (default: data/web_persistence.db)'
+    )
+    parser.add_argument(
+        '--vocab',
+        default='contracts/outcome_vocab/outcome_vocab.json',
+        help='Path to outcome vocabulary (default: contracts/outcome_vocab/outcome_vocab.json)'
+    )
+    parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='Run in dry-run mode (no database changes)'
+    )
+    parser.add_argument(
+        '--commit',
+        action='store_true',
+        help='Actually update the database'
+    )
+
     args = parser.parse_args()
-    
-    # Step 1: Regenerate lookup
-    lookup_data = regenerate_lookup()
-    
-    if args.regen_only:
-        return
-    
-    # Step 2: Backfill extractions
-    ext_stats = backfill_extractions(lookup_data, dry_run=args.dry_run)
-    
-    # Step 3: Backfill templates
-    tmpl_stats = backfill_templates(lookup_data, dry_run=args.dry_run)
-    
-    # Report
-    print(f"\n{'='*60}")
-    print(f"OUTCOME BACKFILL COMPLETE {'(DRY RUN)' if args.dry_run else ''}")
-    print(f"{'='*60}")
-    print(f"\nExtractions:")
-    for k, v in sorted(ext_stats.items()):
-        print(f"  {k}: {v}")
-    
-    total = ext_stats.get("resolved", 0) + ext_stats.get("already_canonical", 0) + ext_stats.get("unresolved", 0)
-    if total > 0:
-        coverage = (ext_stats.get("resolved", 0) + ext_stats.get("already_canonical", 0)) / total
-        print(f"\n  Coverage: {coverage:.1%}")
-    
-    print(f"\nTemplates:")
-    for k, v in sorted(tmpl_stats.items()):
-        print(f"  {k}: {v}")
+
+    # Validate paths
+    if not Path(args.db).exists():
+        print(f"Error: Database not found: {args.db}", file=sys.stderr)
+        sys.exit(1)
+
+    if not Path(args.vocab).exists():
+        print(f"Error: Vocabulary not found: {args.vocab}", file=sys.stderr)
+        sys.exit(1)
+
+    # Build vocabulary and processor
+    print("Loading outcome vocabulary...")
+    builder = OutcomeVocabularyBuilder(args.vocab)
+    print(f"  Loaded {len(builder.vocab_entries)} vocabulary terms")
+    print(f"  Built {len(builder.lookup_map)} indexed aliases\n")
+
+    processor = BackfillProcessor(args.db, builder)
+
+    # Run mode
+    if args.dry_run:
+        processor.run_dry_run()
+    elif args.commit:
+        # Run dry-run first to show what will happen
+        processor.run_dry_run()
+        print("\n" + "=" * 100)
+        response = input("Proceed with commit? (yes/no): ")
+        if response.lower() == 'yes':
+            processor.run_commit()
+        else:
+            print("Commit cancelled.")
+    else:
+        print("Please specify --dry-run or --commit")
+        sys.exit(1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

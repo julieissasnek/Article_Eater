@@ -63,8 +63,8 @@ def load_panel_docs() -> Dict[str, str]:
         if full_path.exists():
             try:
                 docs[pd] = full_path.read_text(encoding="utf-8", errors="replace")
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
     return docs
 
 
@@ -220,8 +220,8 @@ def main() -> int:
                 continue
             templates.append(t)
             template_paths[t.get("template_id", "")] = fp
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     print(f"  Templates: {len(templates)}")
 

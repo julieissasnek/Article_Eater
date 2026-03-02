@@ -219,8 +219,8 @@ def _extract_entrenchment(web: Any) -> Dict[str, float]:
     if hasattr(web, 'get_entrenchment_scores'):
         try:
             return web.get_entrenchment_scores()
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if hasattr(web, 'beliefs'):
         try:
@@ -229,16 +229,16 @@ def _extract_entrenchment(web: Any) -> Dict[str, float]:
                     scores[belief.belief_id] = belief.entrenchment
                 elif hasattr(belief, 'id') and hasattr(belief, 'entrenchment'):
                     scores[belief.id] = belief.entrenchment
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if hasattr(web, 'nodes'):
         try:
             for node_id, node in web.nodes.items():
                 if hasattr(node, 'entrenchment'):
                     scores[node_id] = node.entrenchment
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return scores
 
@@ -261,8 +261,8 @@ def _extract_evidence_counts(web: Any) -> Dict[str, int]:
                     if not sources:
                         sources = getattr(belief, 'sources', [])
                     counts[belief_id] = len(sources) if sources else 0
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return counts
 
@@ -284,8 +284,8 @@ def _extract_coherence_counts(web: Any) -> Dict[str, int]:
                     counts[source] = counts.get(source, 0) + 1
                 if target:
                     counts[target] = counts.get(target, 0) + 1
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if hasattr(web, 'edges'):
         try:
@@ -299,7 +299,7 @@ def _extract_coherence_counts(web: Any) -> Dict[str, int]:
                     counts[source] = counts.get(source, 0) + 1
                 if target:
                     counts[target] = counts.get(target, 0) + 1
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return counts

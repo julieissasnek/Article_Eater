@@ -1,0 +1,167 @@
+{
+  "framework_id": "spatial-navigation",
+  "full_name": "Spatial Navigation & Cognitive Mapping",
+  "core_claim": "The hippocampal-entorhinal system constructs allocentric spatial representations of the environment; environmental legibility and configurational clarity determine wayfinding success and spatial stress.",
+  "key_theorists": [
+    "John O'Keefe",
+    "May-Britt Moser",
+    "Edvard Moser",
+    "Edward C. Tolman",
+    "Ulric Neisser"
+  ],
+  "seminal_works": [
+    {
+      "author": "O'Keefe, J., & Nadel, L.",
+      "year": 1978,
+      "title": "The Hippocampus as a Cognitive Map",
+      "doi": "10.1093/acprof:oso/9780198572717.001.0001",
+      "full_citation": "O'Keefe, J., & Nadel, L. (1978). The Hippocampus as a Cognitive Map. Oxford University Press."
+    },
+    {
+      "author": "Moser, M.-B., & Moser, E. I.",
+      "year": 2008,
+      "title": "A metric for space",
+      "doi": "10.1038/nn.2235",
+      "full_citation": "Moser, M.-B., & Moser, E. I. (2008). A metric for space. Nature Neuroscience, 11(12), 1419-1420."
+    },
+    {
+      "author": "Tolman, E. C.",
+      "year": 1948,
+      "title": "Cognitive maps in rats and men",
+      "doi": "10.1037/h0061626",
+      "full_citation": "Tolman, E. C. (1948). Cognitive maps in rats and men. Psychological Review, 55(4), 189-208."
+    },
+    {
+      "author": "Lynch, K.",
+      "year": 1960,
+      "title": "The Image of the City",
+      "doi": null,
+      "full_citation": "Lynch, K. (1960). The Image of the City. MIT Press."
+    }
+  ],
+  "core_constructs": [
+    "place_cells",
+    "grid_cells",
+    "allocentric_representation",
+    "cognitive_map",
+    "legibility",
+    "wayfinding",
+    "spatial_memory",
+    "configurational_clarity",
+    "viewpoint_translation",
+    "scene_construction"
+  ],
+  "epistemic_commitments": {
+    "preferred_warrant_types": [
+      "MECHANISM",
+      "NEUROIMAGING",
+      "LESION"
+    ],
+    "evidence_weighting": {
+      "fmri_hippocampus": 1.0,
+      "lesion_hippocampal": 0.9,
+      "electrophysiology_place_grid": 0.95,
+      "behavioral_wayfinding": 0.8,
+      "navigational_error": 0.85,
+      "spatial_memory_tasks": 0.8,
+      "architectural_measures": 0.7,
+      "correlational": 0.5
+    },
+    "falsification_criteria": [
+      "Environments with high topological legibility do not improve wayfinding and spatial memory compared to low-legibility controls",
+      "Hippocampal damage does not impair allocentric spatial representation or wayfinding",
+      "Architectural modifications that increase configurational clarity have no effect on spatial anxiety or wayfinding efficiency"
+    ],
+    "scope_boundaries": [
+      "Applies primarily to large-scale spatial environments (rooms, buildings, neighborhoods)",
+      "Does NOT explain egocentric motor control or reaching/grasping (those are parietal)",
+      "May not generalize to highly familiar, over-learned environments where spatial cognition becomes automatic"
+    ]
+  },
+  "environmental_predictions": [
+    {
+      "prediction_id": "sn-pred-001",
+      "statement": "Environments with high topological legibility (clear nodes, landmarks, paths per Lynch 1960) produce faster, more accurate wayfinding and lower spatial anxiety than identical-area low-legibility environments",
+      "mechanism": "Legible environments allow efficient cognitive map formation. Clear spatial structure → faster place cell/grid cell stabilization → reduced hippocampal prediction error → lower stress.",
+      "testable": true,
+      "relevant_templates": [
+        "SN_LEGIBILITY_001",
+        "SN_LANDMARK_SALIENCE_002"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "ecological-dynamics",
+          "prediction": "Wayfinding depends on affordances and visibility, not abstract cognitive maps"
+        }
+      ]
+    },
+    {
+      "prediction_id": "sn-pred-002",
+      "statement": "Architectural enclosure and viewpoint restriction (limited visual access to landmarks) increase hippocampal prediction error during navigation, manifesting as increased spatial disorientation",
+      "mechanism": "Poor viewpoint access prevents rapid landmark identification. Grid cell firing patterns require stable visual anchors; without them, allocentric map decoherence increases.",
+      "testable": true,
+      "relevant_templates": [
+        "SN_VISUAL_ACCESS_003",
+        "SN_ENCLOSURE_004"
+      ],
+      "competing_predictions": null
+    },
+    {
+      "prediction_id": "sn-pred-003",
+      "statement": "Axial symmetry in building plans (vs. asymmetric layouts) facilitates cognitive map learning because bilateral symmetry creates fewer distinct place-cell populations to encode",
+      "mechanism": "Symmetry reduces the cognitive load of maintaining an allocentric map; fewer distinct spatial locations to represent → faster hippocampal consolidation.",
+      "testable": true,
+      "relevant_templates": [
+        "SN_SYMMETRY_005",
+        "COMPLEXITY_REDUCTION_001"
+      ],
+      "competing_predictions": [
+        {
+          "framework": "neuromodulatory-systems",
+          "prediction": "Symmetry preference is driven by dopaminergic reward, not spatial efficiency"
+        }
+      ]
+    }
+  ],
+  "characteristic_questions": [
+    "What is the topological structure of this environment (nodes, paths, landmarks)?",
+    "How legible is the environment's layout to someone encountering it for the first time?",
+    "What viewpoint-dependent cues are available for place cell anchoring?",
+    "Does the environment support multiple scales of cognitive mapping (local rooms, building, district)?",
+    "What degree of spatial disorientation would a navigation system experience in this environment?"
+  ],
+  "panel_persona": {
+    "voice": "I think about how hippocampal place cells and entorhinal grid cells represent space. What matters is the structure of the cognitive map—its legibility, consistency, and accessibility to motor control systems.",
+    "typical_critiques": [
+      "Are you measuring legibility behaviorally (wayfinding time/errors), not just visually?",
+      "Correlation between architectural features and navigation success does NOT prove place cell involvement; test hippocampal function directly.",
+      "Is the effect due to legibility per se, or confounded with visual complexity, lighting, or crowding?",
+      "Replicate on landmark learning tasks (not just natural navigation)."
+    ],
+    "blind_spots": [
+      "Over-emphasizes allocentric (map-like) representation; humans also use egocentric and route-based strategies",
+      "Underestimates the role of visual affordances and direct perception (purely representational view)",
+      "May not account for emotional coloring of spatial memory (landmarks are not neutral)",
+      "Limited theoretical account of how place cells guide action (assumes downstream access, but mechanism unclear)"
+    ],
+    "complementary_frameworks": [
+      "ecological-dynamics (direct perception of navigable affordances)",
+      "interoceptive-construction (spatial anxiety as body-state prediction)",
+      "default-mode-dynamics (mental navigation relies on DMN)",
+      "neuromodulatory-systems (stress hormones degrade hippocampal spatial learning)"
+    ]
+  },
+  "molecule_affinities": [
+    "wayfinding-clarity",
+    "spatial-memory-efficiency",
+    "landmark-distinctiveness",
+    "cognitive-load-reduction"
+  ],
+  "meta": {
+    "profile_version": "1.0.0",
+    "created": "2026-03-02",
+    "last_reviewed": null,
+    "confidence": 0.92,
+    "notes": "Nobel Prize 2014 (O'Keefe, Moser). Electrophysiology highly confirmatory. Architectural applications somewhat underexplored."
+  }
+}

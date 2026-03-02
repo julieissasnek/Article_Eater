@@ -3,15 +3,18 @@ Article Eater V23 — Query Page
 Sprint 3.0.2 — 2026-02-08
 
 Natural language query interface with user type selection and common questions.
+Integrated with TheoryGuideService for contextual theory background.
 """
 
 import streamlit as st
 import sys
+import re
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from config import (
     PAGE_TITLE, COLORS, USER_TYPES, UserType,
@@ -19,6 +22,15 @@ from config import (
 )
 from api_client import get_client, QueryRequest, QueryResult
 from styles import apply_shared_styles
+
+# Import theory guide service
+try:
+    from src.services.theory_guide_service import TheoryGuideService
+    THEORY_SERVICE = TheoryGuideService()
+    HAS_THEORY_SERVICE = True
+except Exception as e:
+    print(f"Warning: Could not load TheoryGuideService: {e}")
+    HAS_THEORY_SERVICE = False
 
 st.set_page_config(
     page_title=f"{PAGE_TITLE} — Query",
@@ -242,6 +254,56 @@ def render_sources(result: QueryResult):
         st.markdown(f"📄 {source}")
 
 
+def find_mentioned_theories(text: str) -> List[str]:
+    """Extract theory names mentioned in text using heuristics."""
+    if not HAS_THEORY_SERVICE or not text:
+        return []
+
+    mentioned = []
+    available_theories = THEORY_SERVICE.list_available_guides()
+
+    for theory in available_theories:
+        # Simple substring matching (case-insensitive)
+        if theory.lower() in text.lower():
+            mentioned.append(theory)
+
+    return mentioned[:5]  # Limit to 5 theories
+
+
+def render_theory_background(result: QueryResult):
+    """Render expandable theory background section based on query content."""
+    if not HAS_THEORY_SERVICE:
+        return
+
+    # Find mentioned theories in the answer
+    text_to_search = (result.headline or "") + " " + (result.summary or "")
+    mentioned_theories = find_mentioned_theories(text_to_search)
+
+    if not mentioned_theories:
+        return
+
+    with st.expander("📚 Theory Background", expanded=False):
+        st.caption(
+            f"Theoretical frameworks referenced in this answer: {', '.join(mentioned_theories)}"
+        )
+
+        # Show quick-level guide for each mentioned theory
+        for theory_name in mentioned_theories:
+            try:
+                guide = THEORY_SERVICE.get_guide(theory_name, detail_level="quick")
+                if guide:
+                    st.markdown(f"**{guide.display_name}**")
+                    st.markdown(guide.content[:300] + "...")
+
+                    # Show constructs if available
+                    if guide.constructs:
+                        st.caption(f"Key constructs: {', '.join(guide.constructs[:3])}")
+
+                    st.markdown("---")
+            except Exception:
+                pass  # Skip on error
+
+
 def render_export_options(result: QueryResult):
     """Render export options."""
     st.markdown("---")
@@ -275,6 +337,7 @@ def render_query_result(result: QueryResult):
     render_practical_implications(result)
     render_caveats(result)
     render_sources(result)
+    render_theory_background(result)
     render_export_options(result)
 
 

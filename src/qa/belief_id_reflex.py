@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 
 from src.qa.reflex_system import Reflex, ReflexSeverity
+from src.services.db_locator import get_web_db
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class BeliefOutcomeIdReflex(Reflex):
             severity=ReflexSeverity.WARNING,
             repo_root=repo_root or Path.cwd()
         )
-        self.web_db = self.repo_root / "data" / "web_persistence_v2.db"
+        self.web_db = get_web_db()
         self.outcome_lookup = self.repo_root / "contracts" / "outcome_vocab" / "outcome_lookup.json"
         self.backfill_script = self.repo_root / "scripts" / "backfill_belief_ids.py"
 
@@ -132,7 +133,7 @@ class BeliefEnvironmentIdReflex(Reflex):
             severity=ReflexSeverity.ERROR,
             repo_root=repo_root or Path.cwd()
         )
-        self.web_db = self.repo_root / "data" / "web_persistence_v2.db"
+        self.web_db = get_web_db()
         self.backfill_script = self.repo_root / "scripts" / "backfill_belief_ids.py"
 
     def detect(self) -> Tuple[bool, Dict[str, Any]]:

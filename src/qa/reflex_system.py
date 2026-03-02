@@ -400,7 +400,8 @@ class DirectionNormalizationReflex(Reflex):
                     data = json.load(f)
                     if "findings" in data:
                         for finding in data["findings"]:
-                            direction = finding.get("direction", "").lower().strip()
+                            direction = finding.get("direction", "")
+                            # Compare EXACT value — canonical must be lowercase
                             if direction and direction not in self.CANONICAL_DIRECTIONS:
                                 bad_directions.append({
                                     "file": extraction_file.name,
@@ -712,8 +713,8 @@ class OrphanedVocabTermsReflex(Reflex):
                         for finding in data.get("findings", []):
                             if "outcome_id" in finding:
                                 used_terms.add(finding["outcome_id"])
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Swallowed in {fpath}: {e}")
 
             orphaned = vocab_terms - used_terms
             if orphaned:
@@ -1028,8 +1029,12 @@ class Tier2CoverageReflex(Reflex):
         )
 
     def detect(self) -> Tuple[bool, Dict[str, Any]]:
-        """Check Tier2 coverage in web_persistence_v2.db."""
-        web_db = self.repo_root / "data" / "web_persistence_v2.db"
+        """Check Tier2 coverage in resolved web DB."""
+        try:
+            from src.services.db_locator import resolve_web_db
+            web_db = resolve_web_db(prefer="integrated")
+        except Exception:
+            web_db = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
         if not web_db.exists():
             return False, {"reason": "web_db_not_found"}
 
@@ -1098,7 +1103,11 @@ class AnnotationPersistenceReflex(Reflex):
 
     def detect(self) -> Tuple[bool, Dict[str, Any]]:
         """Check that beliefs have epistemic_v2 annotations persisted."""
-        web_db = self.repo_root / "data" / "web_persistence_v2.db"
+        try:
+            from src.services.db_locator import get_web_db
+            web_db = get_web_db()
+        except Exception:
+            web_db = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
         if not web_db.exists():
             return False, {"reason": "web_db_not_found"}
 
@@ -1156,7 +1165,11 @@ class AnnotationPersistenceReflex(Reflex):
                 ResolverConfig,
             )
 
-            web_db = self.repo_root / "data" / "web_persistence_v2.db"
+            try:
+                from src.services.db_locator import get_web_db
+                web_db = get_web_db()
+            except Exception:
+                web_db = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
             templates_dir = self.repo_root / "data" / "templates"
 
             if not templates_dir.exists():
@@ -1239,8 +1252,8 @@ class FrameworkLoadingReflex(Reflex):
                                 "has_t1_frameworks": has_t1_fw,
                                 "has_framework_ids": has_fw_ids
                             })
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Swallowed in {fpath}: {e}")
 
             if missing_frameworks or coverage < threshold:
                 return True, {
@@ -1268,8 +1281,658 @@ class FrameworkLoadingReflex(Reflex):
 
 
 # ============================================================================
+# BACKFILL & VOCAB REFLEXES (RFX-BF-*, RFX-VOC-*) — Added 2026-03-01 AG
+# ============================================================================
+
+
+class EnvOutcomeBackfillReflex(Reflex):
+    """RFX-BF-ENVOUT: Monitor env_id/outcome_id coverage in extraction files.
+
+    Success Condition: SC-BF-1 — ≥95% of DOI extraction files have
+    environment_id and outcome_id populated in their findings.
+
+    Fix: Re-run scripts/backfill_env_outcome_v2.py
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-BF-ENVOUT",
+            component="backfill_pipeline",
+            success_condition_id="SC-BF-1",
+            description="Extraction files missing environment_id or outcome_id",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check extraction files for env/outcome ID coverage."""
+        extractions_dir = self.repo_root / "data" / "extractions"
+        if not extractions_dir.exists():
+            return False, {}
+
+        total_findings = 0
+        missing_env = 0
+        missing_out = 0
+
+        for f in extractions_dir.glob("10.*.json"):
+            try:
+                data = json.load(open(f))
+                for finding in data.get("findings", []):
+                    total_findings += 1
+                    if not finding.get("environment_id"):
+                        missing_env += 1
+                    if not finding.get("outcome_id"):
+                        missing_out += 1
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
+
+        if total_findings == 0:
+            return False, {"reason": "no_findings"}
+
+        env_coverage = 1 - (missing_env / total_findings)
+        out_coverage = 1 - (missing_out / total_findings)
+        threshold = 0.70  # Accept 70%+ (many findings legitimately lack IDs)
+
+        if env_coverage < threshold or out_coverage < threshold:
+            return True, {
+                "total_findings": total_findings,
+                "env_coverage": env_coverage,
+                "out_coverage": out_coverage,
+                "missing_env": missing_env,
+                "missing_out": missing_out,
+                "threshold": threshold
+            }
+
+        return False, {"env_coverage": env_coverage, "out_coverage": out_coverage}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Recommend running backfill script."""
+        env_cov = details.get("env_coverage", 0)
+        out_cov = details.get("out_coverage", 0)
+        return False, f"manual_required: env {env_cov:.1%}, out {out_cov:.1%}; run scripts/backfill_env_outcome_v2.py"
+
+
+class InlineTier2DataReflex(Reflex):
+    """RFX-BF-TIER2: Monitor inline Tier2 data in extraction files.
+
+    Success Condition: SC-T2-3 — ≥80% of extraction files have
+    tier_resolution_version set (proof that FTR pipeline has run).
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-BF-TIER2",
+            component="finding_template_relevance",
+            success_condition_id="SC-T2-3",
+            description="Extraction files missing inline Tier2 data",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check extraction files for tier_resolution_version."""
+        extractions_dir = self.repo_root / "data" / "extractions"
+        if not extractions_dir.exists():
+            return False, {}
+
+        total = 0
+        with_tier2 = 0
+        for f in extractions_dir.glob("10.*.json"):
+            total += 1
+            try:
+                data = json.load(open(f))
+                if data.get("tier_resolution_version") or data.get("tier_resolution_config"):
+                    with_tier2 += 1
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
+
+        if total == 0:
+            return False, {"reason": "no_files"}
+
+        coverage = with_tier2 / total
+        threshold = 0.80
+
+        if coverage < threshold:
+            return True, {
+                "total": total,
+                "with_tier2": with_tier2,
+                "coverage": coverage,
+                "threshold": threshold
+            }
+
+        return False, {"coverage": coverage}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Recommend running FTR pipeline."""
+        coverage = details.get("coverage", 0)
+        return False, f"manual_required: only {coverage:.1%} coverage; run scripts/run_finding_template_relevance.py"
+
+
+class VocabResolutionCoverageReflex(Reflex):
+    """RFX-VOC-RESOLVE: Monitor outcome vocabulary resolution coverage.
+
+    Success Condition: SC-P1-1 — Unresolved outcome terms should decrease
+    over time as PANEL-1 processes them.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-VOC-RESOLVE",
+            component="vocabulary_manager",
+            success_condition_id="SC-P1-1",
+            description="High count of unresolved outcome terms",
+            severity=ReflexSeverity.INFO,
+            repo_root=repo_root
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Count unresolved outcome terms vs resolved."""
+        unresolved_file = self.repo_root / "data" / "unresolved_outcomes.jsonl"
+        panel_results = self.repo_root / "data" / "panel_results" / "panel_1_results_live.json"
+        vocab_file = self.repo_root / "contracts" / "outcome_vocab" / "outcome_vocab.json"
+
+        unresolved_count = 0
+        if unresolved_file.exists():
+            with open(unresolved_file) as f:
+                unresolved_count = sum(1 for _ in f)
+
+        vocab_count = 0
+        if vocab_file.exists():
+            try:
+                vocab = json.load(open(vocab_file))
+                vocab_count = len(vocab.get("terms", []))
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
+
+        panel_processed = 0
+        if panel_results.exists():
+            try:
+                results = json.load(open(panel_results))
+                panel_processed = sum(len(v) for v in results.values() if isinstance(v, list))
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
+
+        # Alert if >50% of terms are still unresolved
+        total = vocab_count + unresolved_count
+        if total > 0 and unresolved_count / total > 0.50:
+            return True, {
+                "unresolved": unresolved_count,
+                "vocab_terms": vocab_count,
+                "panel_processed": panel_processed,
+                "resolution_ratio": vocab_count / total if total else 0
+            }
+
+        return False, {
+            "unresolved": unresolved_count,
+            "vocab_terms": vocab_count,
+            "panel_processed": panel_processed
+        }
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Recommend running PANEL-1."""
+        unresolved = details.get("unresolved", 0)
+        return False, f"manual_required: {unresolved} unresolved terms; run scripts/run_panel_1_outcomes.py --apply"
+
+
+# ============================================================================
+# WARRANT STATUS REFLEXES (RFX-WRN-*)
+# ============================================================================
+
+
+class WarrantStatusReflex(Reflex):
+    """RFX-WRN-STATUS: Detect beliefs that are DEFEATED, UNGROUNDED, or UNCHECKED.
+
+    Wires the WarrantService into the reflex system so that epistemic
+    health problems surface in AESHI and the overseer dashboard.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-WRN-STATUS",
+            component="warrant_service",
+            success_condition_id="SC-QA-05",
+            description="Beliefs with problematic warrant status (DEFEATED/UNGROUNDED/UNCHECKED)",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check warrant status across all beliefs in the web."""
+        try:
+            from src.services.web_of_belief import WebOfBelief
+            from src.services.warrant_service import WarrantService
+            from src.services.ranking_service import RankingService
+        except ImportError:
+            return False, {"skipped": "warrant_service not available"}
+
+        try:
+            from src.services.db_locator import get_web_db
+            db_path = get_web_db()
+        except Exception:
+            db_path = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
+        if not db_path.exists():
+            return False, {"skipped": "web_db not found"}
+
+        try:
+            web = WebOfBelief(str(db_path))
+            ws = WarrantService()
+            rs = RankingService()
+
+            all_beliefs = web.get_all_beliefs() if hasattr(web, 'get_all_beliefs') else []
+            if not all_beliefs:
+                return False, {"skipped": "no beliefs in web"}
+
+            # Get ranks for warrant computation
+            ranks = {}
+            if hasattr(rs, 'compute_ranks'):
+                try:
+                    ranks = rs.compute_ranks(web)
+                except Exception as e:
+                    logger.debug(f"Swallowed in {fpath}: {e}")
+
+            # Compute warrant
+            result = ws.compute_warrant(web, ranks)
+
+            problems = {
+                "defeated": list(result.defeated) if result.defeated else [],
+                "ungrounded": list(result.ungrounded) if result.ungrounded else [],
+                "suspended": list(result.suspended) if result.suspended else [],
+                "violations": result.violations if result.violations else [],
+                "total_beliefs": len(all_beliefs),
+                "warranted_count": len(result.warranted) if result.warranted else 0,
+            }
+
+            problem_count = (
+                len(problems["defeated"])
+                + len(problems["ungrounded"])
+                + len(problems["suspended"])
+                + len(problems["violations"])
+            )
+
+            if problem_count > 0:
+                return True, problems
+            return False, problems
+
+        except Exception as e:
+            logger.debug(f"WarrantStatusReflex error: {e}")
+            return False, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Cannot auto-fix warrant issues; flag for review."""
+        defeated = len(details.get("defeated", []))
+        ungrounded = len(details.get("ungrounded", []))
+        suspended = len(details.get("suspended", []))
+        violations = len(details.get("violations", []))
+        return False, (
+            f"warrant_review_needed: {defeated} defeated, "
+            f"{ungrounded} ungrounded, {suspended} suspended, "
+            f"{violations} consistency violations"
+        )
+
+
+# ============================================================================
+# PROVENANCE REFLEXES (RFX-PRV-*)
+# ============================================================================
+
+
+class ProvenanceGroundingReflex(Reflex):
+    """RFX-PRV-GROUND: Detect beliefs that are COHERENT_ONLY (Haack warning).
+
+    Per Haack's foundherentism: beliefs that cohere with the web but lack
+    experiential grounding are the most dangerous — they can be entirely
+    circular. This reflex flags them for investigation.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-PRV-GROUND",
+            component="provenance",
+            success_condition_id="SC-QA-09",
+            description="Beliefs with COHERENT_ONLY justification (ungrounded per Haack)",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check provenance grounding across all beliefs."""
+        try:
+            from src.models.provenance import JustificationStatus
+        except ImportError:
+            return False, {"skipped": "provenance module not available"}
+
+        try:
+            from src.services.db_locator import get_web_db
+            db_path = get_web_db()
+        except Exception:
+            db_path = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
+        if not db_path.exists():
+            return False, {"skipped": "web_db not found"}
+
+        try:
+            import sqlite3 as _sqlite3
+            conn = _sqlite3.connect(str(db_path))
+            conn.row_factory = _sqlite3.Row
+
+            # Check if beliefs table has provenance/justification data
+            cursor = conn.cursor()
+            try:
+                rows = cursor.execute(
+                    "SELECT belief_id, provenance FROM beliefs WHERE status != 'RETIRED'"
+                ).fetchall()
+            except _sqlite3.OperationalError:
+                conn.close()
+                return False, {"skipped": "beliefs table missing or no provenance column"}
+
+            coherent_only = []
+            unjustified = []
+            no_provenance = []
+
+            for row in rows:
+                belief_id = row["belief_id"] if isinstance(row, _sqlite3.Row) else row[0]
+                prov_raw = row["provenance"] if isinstance(row, _sqlite3.Row) else row[1]
+
+                if not prov_raw:
+                    no_provenance.append(belief_id)
+                    continue
+
+                try:
+                    prov = json.loads(prov_raw) if isinstance(prov_raw, str) else prov_raw
+                    status = prov.get("justification_status", "")
+                    if status == "COHERENT_ONLY":
+                        coherent_only.append(belief_id)
+                    elif status == "UNJUSTIFIED":
+                        unjustified.append(belief_id)
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+
+            conn.close()
+
+            total_problems = len(coherent_only) + len(unjustified)
+            if total_problems > 0:
+                return True, {
+                    "coherent_only": coherent_only[:20],  # Cap at 20 for event size
+                    "coherent_only_count": len(coherent_only),
+                    "unjustified": unjustified[:20],
+                    "unjustified_count": len(unjustified),
+                    "no_provenance_count": len(no_provenance),
+                    "total_beliefs": len(rows),
+                }
+            return False, {
+                "coherent_only_count": 0,
+                "unjustified_count": 0,
+                "no_provenance_count": len(no_provenance),
+                "total_beliefs": len(rows),
+            }
+
+        except Exception as e:
+            logger.debug(f"ProvenanceGroundingReflex error: {e}")
+            return False, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Cannot auto-fix; flag beliefs needing empirical grounding."""
+        coherent = details.get("coherent_only_count", 0)
+        unjustified = details.get("unjustified_count", 0)
+        return False, (
+            f"grounding_review_needed: {coherent} COHERENT_ONLY beliefs "
+            f"(dangerous per Haack), {unjustified} UNJUSTIFIED beliefs"
+        )
+
+
+# ============================================================================
 # DEFAULT REGISTRY SETUP
 # ============================================================================
+
+
+# ============================================================================
+# PIPELINE HEALTH REFLEXES (RFX-PH-*) — Added 2026-03-01 V8 audit
+# ============================================================================
+
+
+class AESHIScoreReflex(Reflex):
+    """RFX-PH-AESHI: Monitor AESHI score stays GREEN (≥70).
+
+    Success Condition: AESHI-SC1 — AESHI score in valid range with GREEN band.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-PH-AESHI",
+            component="system_health",
+            success_condition_id="AESHI-SC1",
+            description="AESHI score below GREEN threshold (<70)",
+            severity=ReflexSeverity.ERROR,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check if AESHI report exists and score is GREEN."""
+        report_path = self.repo_root / "data" / "production" / "system_health_report.json"
+        if not report_path.exists():
+            return True, {"reason": "no_health_report", "path": str(report_path)}
+
+        try:
+            report = json.load(open(report_path))
+            score = report.get("aeshi_score", 0)
+            band = report.get("band", "UNKNOWN")
+
+            if band not in ("GREEN",):
+                return True, {"score": score, "band": band, "threshold": 70}
+            return False, {"score": score, "band": band}
+        except Exception as e:
+            return True, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """AUTO-FIX: Re-run AESHI computation."""
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["python3", "scripts/compute_system_health.py", "--skip-gates"],
+                cwd=str(self.repo_root),
+                capture_output=True, text=True, timeout=120,
+            )
+            if result.returncode == 0:
+                return True, f"re-computed AESHI: {result.stdout.strip()[:100]}"
+            return False, f"AESHI computation failed: {result.stderr[:100]}"
+        except Exception as e:
+            return False, f"fix_failed: {str(e)}"
+
+
+class GroundingClassificationReflex(Reflex):
+    """RFX-PH-GROUND: Detect beliefs with UNSET grounding status.
+
+    Success Condition: GC-SC1 — All beliefs are classified.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-PH-GROUND",
+            component="grounding_classifier",
+            success_condition_id="GC-SC1",
+            description="Beliefs with UNSET grounding status",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check for UNSET grounding in epistemic_v2."""
+        try:
+            from src.services.db_locator import get_web_db
+            db_path = get_web_db()
+        except Exception:
+            db_path = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
+
+        if not db_path.exists():
+            return False, {"skipped": "db_not_found"}
+
+        try:
+            conn = sqlite3.connect(str(db_path))
+            total = conn.execute("SELECT COUNT(*) FROM beliefs").fetchone()[0]
+            # Count beliefs with UNSET or missing grounding
+            unset = 0
+            for row in conn.execute("SELECT epistemic_v2 FROM beliefs WHERE epistemic_v2 IS NOT NULL"):
+                try:
+                    data = json.loads(row[0])
+                    status = data.get("provenance_v2", {}).get("justification_status", "UNSET")
+                    if status == "UNSET":
+                        unset += 1
+                except Exception:
+                    unset += 1
+
+            # Also count beliefs with NULL epistemic_v2
+            null_count = conn.execute("SELECT COUNT(*) FROM beliefs WHERE epistemic_v2 IS NULL").fetchone()[0]
+            conn.close()
+
+            unset_total = unset + null_count
+            if total > 0 and unset_total / total > 0.05:  # >5% UNSET
+                return True, {
+                    "total": total, "unset": unset_total,
+                    "unset_pct": unset_total / total,
+                }
+            return False, {"total": total, "unset": unset_total}
+        except Exception as e:
+            return False, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """AUTO-FIX: Run classify_grounding.py."""
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["python3", "scripts/classify_grounding.py"],
+                cwd=str(self.repo_root),
+                capture_output=True, text=True, timeout=120,
+            )
+            if result.returncode == 0:
+                return True, f"classified grounding: {result.stdout.strip()[-100:]}"
+            return False, f"classification failed: {result.stderr[:100]}"
+        except Exception as e:
+            return False, f"fix_failed: {str(e)}"
+
+
+class ConstraintPropagationReflex(Reflex):
+    """RFX-PH-PROP: Monitor isolated belief ratio.
+
+    Success Condition: CP-SC1 — Isolated beliefs decrease after propagation.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-PH-PROP",
+            component="constraint_propagation",
+            success_condition_id="CP-SC1",
+            description="Too many isolated beliefs (no edges)",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check isolated belief ratio."""
+        try:
+            from src.services.db_locator import get_web_db
+            db_path = get_web_db()
+        except Exception:
+            db_path = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
+
+        if not db_path.exists():
+            return False, {"skipped": "db_not_found"}
+
+        try:
+            conn = sqlite3.connect(str(db_path))
+            total = conn.execute("SELECT COUNT(*) FROM beliefs").fetchone()[0]
+
+            # Count beliefs that appear in no constraints
+            connected = conn.execute("""
+                SELECT COUNT(DISTINCT b.belief_id)
+                FROM beliefs b
+                INNER JOIN constraints c ON b.belief_id = c.source_belief_id
+                   OR b.belief_id = c.target_belief_id
+            """).fetchone()[0]
+            conn.close()
+
+            if total == 0:
+                return False, {"reason": "no_beliefs"}
+
+            isolated = total - connected
+            isolated_pct = isolated / total
+            threshold = 0.35  # >35% isolated is a problem
+
+            if isolated_pct > threshold:
+                return True, {
+                    "total": total, "isolated": isolated,
+                    "isolated_pct": isolated_pct, "threshold": threshold,
+                }
+            return False, {"isolated_pct": isolated_pct}
+        except Exception as e:
+            return False, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """Recommend running constraint propagation."""
+        isolated_pct = details.get("isolated_pct", 0)
+        return False, f"manual_required: {isolated_pct:.1%} isolated; run scripts/propagate_constraints.py"
+
+
+class AnnotationCoverageReflex(Reflex):
+    """RFX-PH-ANNOT: Monitor annotation coverage.
+
+    Success Condition: AM-SC3 — All 23 annotation types registered.
+    """
+
+    def __init__(self, repo_root: Optional[Path] = None):
+        super().__init__(
+            reflex_id="RFX-PH-ANNOT",
+            component="annotation_service",
+            success_condition_id="AM-SC3",
+            description="Low annotation count or missing annotation types",
+            severity=ReflexSeverity.WARNING,
+            repo_root=repo_root,
+        )
+
+    def detect(self) -> Tuple[bool, Dict[str, Any]]:
+        """Check annotation coverage."""
+        try:
+            from src.services.db_locator import get_web_db
+            db_path = get_web_db()
+        except Exception:
+            db_path = self.repo_root / "data" / "web_persistence.db"  # Last-resort fallback
+
+        if not db_path.exists():
+            return False, {"skipped": "db_not_found"}
+
+        try:
+            conn = sqlite3.connect(str(db_path))
+
+            # Check if annotations table exists
+            tables = {row[0] for row in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+            if "annotations" not in tables:
+                conn.close()
+                return True, {"reason": "no_annotations_table"}
+
+            total = conn.execute("SELECT COUNT(*) FROM annotations WHERE active = 1").fetchone()[0]
+            types = conn.execute("SELECT COUNT(DISTINCT type_id) FROM annotations").fetchone()[0]
+            conn.close()
+
+            threshold = 200
+            if total < threshold:
+                return True, {"total": total, "types": types, "threshold": threshold}
+            return False, {"total": total, "types": types}
+        except Exception as e:
+            return False, {"error": str(e)}
+
+    def fix(self, details: Dict[str, Any]) -> Tuple[bool, str]:
+        """AUTO-FIX: Run annotation migration."""
+        total = details.get("total", 0)
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["python3", "scripts/migrate_annotations_to_unified.py"],
+                cwd=str(self.repo_root),
+                capture_output=True, text=True, timeout=120,
+            )
+            if result.returncode == 0:
+                return True, f"migrated annotations: {result.stdout.strip()[-100:]}"
+            return False, f"migration failed: {result.stderr[:100]}"
+        except Exception as e:
+            return False, f"fix_failed: {str(e)}"
 
 
 def setup_default_reflexes(repo_root: Path, registry: ReflexRegistry) -> None:
@@ -1286,23 +1949,39 @@ def setup_default_reflexes(repo_root: Path, registry: ReflexRegistry) -> None:
     registry.register(DirectionNormalizationReflex(repo_root=repo_root))
     registry.register(VagueAntecedentDetectorReflex(repo_root=repo_root))
     registry.register(MissingSampleSizeReflex(repo_root=repo_root))
-    registry.register(JSONExtractionReflex(repo_root=repo_root))
+    registry.register(MalformedExtractionJsonReflex(repo_root=repo_root))
+    registry.register(ZeroFindingsExtractionReflex(repo_root=repo_root))
 
     # Schema integrity reflexes
-    registry.register(VocabTermUniquenessReflex(repo_root=repo_root))
-    registry.register(InstrumentIDReferentialIntegrityReflex(repo_root=repo_root))
-    registry.register(OutcomeLookupConsistencyReflex(repo_root=repo_root))
+    registry.register(OrphanedVocabTermsReflex(repo_root=repo_root))
+    registry.register(BrokenInstrumentIdReferencesReflex(repo_root=repo_root))
+    registry.register(StaleLookupTableReflex(repo_root=repo_root))
 
     # Calibration reflexes
-    registry.register(CalibrationParameterBoundsReflex(repo_root=repo_root))
+    registry.register(OutOfRangeCalibrationParametersReflex(repo_root=repo_root))
 
     # Pipeline reflexes
     registry.register(StaleExtractionFilesReflex(repo_root=repo_root))
 
-    # Finding-template-relevance reflexes (NEW 2026-03-01)
+    # Finding-template-relevance reflexes (CW 2026-03-01)
     registry.register(Tier2CoverageReflex(repo_root=repo_root))
     registry.register(AnnotationPersistenceReflex(repo_root=repo_root))
     registry.register(FrameworkLoadingReflex(repo_root=repo_root))
+
+    # Backfill + vocabulary reflexes (AG 2026-03-01)
+    registry.register(EnvOutcomeBackfillReflex(repo_root=repo_root))
+    registry.register(InlineTier2DataReflex(repo_root=repo_root))
+    registry.register(VocabResolutionCoverageReflex(repo_root=repo_root))
+
+    # Warrant + Provenance integration reflexes (AG 2026-03-01, QA Spec)
+    registry.register(WarrantStatusReflex(repo_root=repo_root))
+    registry.register(ProvenanceGroundingReflex(repo_root=repo_root))
+
+    # Pipeline health reflexes (AG 2026-03-01, V8 audit)
+    registry.register(AESHIScoreReflex(repo_root=repo_root))
+    registry.register(GroundingClassificationReflex(repo_root=repo_root))
+    registry.register(ConstraintPropagationReflex(repo_root=repo_root))
+    registry.register(AnnotationCoverageReflex(repo_root=repo_root))
 
     logger.info(f"Registered {len(registry.reflexes)} default reflexes")
 

@@ -2,7 +2,7 @@
   "doi": "Lighting/Impacts/on/Circadian/Rhythms",
   "article_type": "unknown",
   "article_family": "unknown",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.817,
   "n_findings": 21,
   "extracted_at": "2026-02-25T08:45:49.215688+00:00",
@@ -610,7 +610,73 @@
     "Site visits were only at one point in time, lacking information on how teachers actually operated classrooms (e.g., turning lights on/off, using shades).",
     "The Fort Collins district had the least amount of information about student and school characteristics, potentially influenced by unknown variables.",
     "Poor lighting quality from south-facing monitors in Fort Collins, leading teachers to keep shades down, may have weakened the skylight variable's positive effect.",
-    "The small R\u00b2 for the daylight variable (e.g., 0.003 in Capistrano math model) suggests a small effect size, despite statistical significance."
+    "The small R² for the daylight variable (e.g., 0.003 in Capistrano math model) suggests a small effect size, despite statistical significance."
   ],
-  "minimum_safe_summary": "This observational field study investigated the impact of daylighting on human performance in elementary schools across three districts in California, Washington, and Colorado. Using multivariate regression analysis on standardized student test scores, the study found a consistent and statistically significant positive association between the presence of daylight (from windows and skylights) and improved student performance in both reading and math. For instance, Capistrano classrooms with the highest window code were associated with 15-23% faster improvement, and Seattle students in daylit classrooms scored 9-15% higher. However, the study acknowledges several limitations, including its associational nature (not proving causality), potential teacher assignment bias, the use of a daylight potential code rather than real-time illumination data, and the inability to fully control for all curriculum or teacher-specific variables."
+  "minimum_safe_summary": "This observational field study investigated the impact of daylighting on human performance in elementary schools across three districts in California, Washington, and Colorado. Using multivariate regression analysis on standardized student test scores, the study found a consistent and statistically significant positive association between the presence of daylight (from windows and skylights) and improved student performance in both reading and math. For instance, Capistrano classrooms with the highest window code were associated with 15-23% faster improvement, and Seattle students in daylit classrooms scored 9-15% higher. However, the study acknowledges several limitations, including its associational nature (not proving causality), potential teacher assignment bias, the use of a daylight potential code rather than real-time illumination data, and the inability to fully control for all curriculum or teacher-specific variables.",
+  "stimulus_description": {
+    "environmental_features": [
+      "daylighting conditions",
+      "window characteristics (size, tint, clarity)"
+    ],
+    "duration_exposure": "continuous during school hours over an academic period",
+    "control_conditions": [
+      "classrooms with varying Window Codes (e.g., lower codes representing less optimal daylighting)"
+    ],
+    "ecological_validity": "field"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to specific light conditions, such as daylighting, influences human physiological and cognitive functions, including academic performance, through the regulation of circadian rhythms."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Daylighting exposure in classrooms influences student academic performance by affecting circadian rhythm entrainment, which in turn impacts alertness and cognitive function.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Daylighting exposure (Window Code)",
+        "to_construct": "Circadian rhythm entrainment/regulation",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Circadian rhythm entrainment/regulation",
+        "to_construct": "Alertness and cognitive function",
+        "mechanism_type": "physiological|cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Alertness and cognitive function",
+        "to_construct": "Student test scores (reading and math)",
+        "mechanism_type": "cognitive|behavioral",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Window Code",
+      "construct": "Daylighting quality/quantity",
+      "description": "A classification system for classroom windows based on characteristics like size, tint, and clarity, with Code 5 representing optimal conditions.",
+      "type": "other"
+    },
+    {
+      "name": "Student Test Scores (Reading)",
+      "construct": "Reading academic performance",
+      "description": "Standardized tests used to assess student reading ability and improvement.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Student Test Scores (Math)",
+      "construct": "Mathematics academic performance",
+      "description": "Standardized tests used to assess student math ability and improvement.",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:04:07.311994+00:00"
 }

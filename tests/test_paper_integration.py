@@ -66,17 +66,20 @@ def db_conn():
     conn = sqlite3.connect(":memory:")
     cursor = conn.cursor()
 
-    # Create core tables that the pipeline expects
+    # Create core tables that the pipeline expects — production schema
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS beliefs (
             belief_id TEXT PRIMARY KEY,
             web_id TEXT,
-            statement TEXT,
-            credence_mean REAL,
-            credence_se REAL,
-            epistemic_level TEXT,
+            content TEXT,
+            credence_value REAL,
+            credence_uncertainty REAL,
+            level TEXT,
             status TEXT DEFAULT 'ACCEPTED',
+            paper_ids TEXT,
             paper_id TEXT,
+            created_at TEXT,
+            updated_at TEXT,
             timestamp TEXT
         )
     """)
@@ -89,6 +92,7 @@ def db_conn():
             constraint_type TEXT,
             strength REAL,
             paper_id TEXT,
+            created_at TEXT,
             timestamp TEXT
         )
     """)
@@ -516,11 +520,11 @@ class TestRollback:
 
         # Add the beliefs
         cursor.execute("""
-            INSERT INTO beliefs (belief_id, web_id, statement, status, paper_id, timestamp)
+            INSERT INTO beliefs (belief_id, web_id, content, status, paper_id, created_at)
             VALUES ('b_A_001', 'master', 'Test belief 1', 'ACCEPTED', 'paper_A', ?)
         """, (datetime.now(timezone.utc).isoformat(),))
         cursor.execute("""
-            INSERT INTO beliefs (belief_id, web_id, statement, status, paper_id, timestamp)
+            INSERT INTO beliefs (belief_id, web_id, content, status, paper_id, created_at)
             VALUES ('b_A_002', 'master', 'Test belief 2', 'ACCEPTED', 'paper_A', ?)
         """, (datetime.now(timezone.utc).isoformat(),))
 

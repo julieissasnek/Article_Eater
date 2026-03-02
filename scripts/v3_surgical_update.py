@@ -18,9 +18,13 @@ import time
 import logging
 from pathlib import Path
 from datetime import datetime, timezone
-from dotenv import load_dotenv
-
-load_dotenv()
+# Load .env if present
+env_file = Path(__file__).parent.parent / ".env"
+if env_file.exists():
+    for line in open(env_file):
+        if "=" in line and not line.startswith("#"):
+            k, v = line.strip().split("=", 1)
+            os.environ[k] = v
 
 REPO = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO))
@@ -30,10 +34,15 @@ from src.extraction.revised_prompts_v3 import get_prompt_for_family
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-def find_extractions_with_findings():
-    """Find all extraction files with n_findings > 0."""
+def find_extractions_with_findings(skip_v3=True):
+    """Find all extraction files with n_findings > 0.
+    
+    Args:
+        skip_v3: If True, skip articles already at extraction_version v3.0
+    """
     ext_dir = REPO / "data" / "extractions"
     extractions_with_findings = []
+    skipped_v3 = 0
 
     for ext_file in ext_dir.glob("*.json"):
         try:
@@ -42,6 +51,10 @@ def find_extractions_with_findings():
             if not isinstance(data, dict):
                 continue
             if data.get("n_findings", 0) > 0:
+                # Skip already-enriched articles unless --force
+                if skip_v3 and data.get("extraction_version") == "v3.0":
+                    skipped_v3 += 1
+                    continue
                 extractions_with_findings.append({
                     "file": ext_file.name,
                     "path": ext_file,
@@ -52,6 +65,8 @@ def find_extractions_with_findings():
         except json.JSONDecodeError:
             pass
 
+    if skipped_v3:
+        logger.info(f"Skipped {skipped_v3} articles already at v3.0 (use --force to re-enrich)")
     return extractions_with_findings
 
 def build_surgical_update_prompt(extraction_data):
@@ -152,39 +167,62 @@ Return ONLY valid JSON. No explanations, no markdown code blocks.
 """
     return prompt
 
-def call_openai_surgical(prompt, model="gpt-4o"):
-    """Call OpenAI API for surgical update."""
-    from openai import OpenAI
+def call_gemini_surgical(prompt, model="gemini-2.5-flash"):
+    """Call Gemini API for surgical update."""
+    from google import genai
 
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("OPENAI_API_KEY not set")
+        raise ValueError("GOOGLE_API_KEY or GEMINI_API_KEY not set")
 
-    client = OpenAI(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
-    response = client.chat.completions.create(
+    full_prompt = ("You are a scientific data enrichment expert. "
+                   "Return ONLY valid JSON with v3 fields.\n\n" + prompt)
+
+    response = client.models.generate_content(
         model=model,
-        messages=[
-            {"role": "system", "content": "You are a scientific data enrichment expert. Return ONLY valid JSON with v3 fields."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.1,
-        max_tokens=2000,
-        response_format={"type": "json_object"}
+        contents=full_prompt,
+        config={
+            "max_output_tokens": 4096,
+            "temperature": 0.1,
+        }
     )
 
-    return response.choices[0].message.content, response.usage
+    # Extract text, handling thinking model parts
+    text = ""
+    if response.text:
+        text = response.text
+    elif response.candidates:
+        for part in response.candidates[0].content.parts:
+            if part.text and not getattr(part, 'thought', False):
+                text = part.text
+                break
+
+    # Build usage-like object for cost tracking
+    usage = response.usage_metadata if response.usage_metadata else None
+    return text, usage
 
 def merge_v3_fields(original_extraction, v3_enrichment):
     """Merge v3 fields into original extraction."""
+    import re
+    # Strip markdown code fences first
+    clean = re.sub(r'```(?:json)?\s*\n?', '', v3_enrichment)
+    clean = clean.replace('```', '').strip()
     try:
-        enrichment = json.loads(v3_enrichment)
+        enrichment = json.loads(clean)
     except json.JSONDecodeError:
-        import re
-        match = re.search(r'\{.*\}', v3_enrichment, re.DOTALL)
-        if match:
-            enrichment = json.loads(match.group())
+        # Find JSON object in text
+        s = clean.find('{')
+        e = clean.rfind('}')
+        if s >= 0 and e > s:
+            try:
+                enrichment = json.loads(clean[s:e+1])
+            except json.JSONDecodeError:
+                logger.warning(f"  Could not parse v3 enrichment JSON")
+                return original_extraction
         else:
+            logger.warning(f"  No JSON object found in v3 enrichment")
             return original_extraction
 
     # Merge v3 fields
@@ -209,13 +247,12 @@ def merge_v3_fields(original_extraction, v3_enrichment):
 
     return result
 
-def run_surgical_update(limit=None, dry_run=False):
+def run_surgical_update(limit=None, dry_run=False, force=False):
     """Run surgical v3 update on articles with existing findings."""
-    articles = find_extractions_with_findings()
+    articles = find_extractions_with_findings(skip_v3=not force)
     if limit:
         articles = articles[:limit]
 
-    logger.info(f"Found {len(find_extractions_with_findings())} articles with findings")
     logger.info(f"Starting surgical v3 update for {len(articles)} articles")
 
     results = {"success": 0, "failed": 0, "total_enriched_fields": 0, "costs": []}
@@ -229,7 +266,7 @@ def run_surgical_update(limit=None, dry_run=False):
         # Load extraction
         try:
             extraction_data = json.loads(article["path"].read_text(errors='replace'))
-        except:
+        except Exception:  
             logger.warning(f"  Could not load extraction file")
             results["failed"] += 1
             continue
@@ -242,9 +279,13 @@ def run_surgical_update(limit=None, dry_run=False):
             continue
 
         try:
-            # Call OpenAI
-            response_text, usage = call_openai_surgical(prompt)
-            cost = (usage.prompt_tokens * 2.5 / 1_000_000) + (usage.completion_tokens * 10 / 1_000_000)
+            # Call Gemini
+            response_text, usage = call_gemini_surgical(prompt)
+            cost = 0.0
+            if usage:
+                # Gemini 2.5 Flash pricing
+                cost = (getattr(usage, 'prompt_token_count', 0) * 0.15 / 1_000_000) + \
+                       (getattr(usage, 'candidates_token_count', 0) * 0.60 / 1_000_000)
             results["costs"].append(cost)
 
             # Merge and save
@@ -295,6 +336,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="V3 Surgical Update for existing extractions")
     parser.add_argument("--limit", type=int, help="Limit number of articles")
     parser.add_argument("--dry-run", action="store_true", help="Don't call API, just show what would happen")
+    parser.add_argument("--force", action="store_true", help="Re-enrich articles already at v3.0")
     args = parser.parse_args()
 
-    run_surgical_update(limit=args.limit, dry_run=args.dry_run)
+    run_surgical_update(limit=args.limit, dry_run=args.dry_run, force=args.force)

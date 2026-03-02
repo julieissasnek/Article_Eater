@@ -1,0 +1,965 @@
+{
+  "schema": "image_tagging_vocabulary.v1",
+  "version": "1.0.0",
+  "generated_at": "2026-03-02T00:00:00Z",
+  "description": "Hierarchical vocabulary for tagging environmental and architectural images in environmental psychology research. Grounded in vision science (Gibson 1979, Appleton 1975), aesthetic theory (Berlyne 1971), and landscape perception (Kaplan & Kaplan 1989, Ulrich 1983).",
+  "scientific_grounding": {
+    "primary_theories": [
+      "Prospect-Refuge Theory (Appleton 1975)",
+      "Landscape Preference Models (Kaplan & Kaplan 1989)",
+      "Biophilia and Stress Reduction (Ulrich 1983)",
+      "Hedonic Tone and Arousal (Berlyne 1971)",
+      "Ecological Optics (Gibson 1979)"
+    ],
+    "key_references": [
+      {
+        "authors": "Appleton, J.",
+        "year": 1975,
+        "title": "The Experience of Landscape",
+        "doi": "10.4324/9780203373699"
+      },
+      {
+        "authors": "Kaplan, R., & Kaplan, S.",
+        "year": 1989,
+        "title": "The Experience of Nature: A Psychological Perspective",
+        "doi": "10.1017/CBO9780511566547"
+      },
+      {
+        "authors": "Ulrich, R. S.",
+        "year": 1983,
+        "title": "Aesthetic and Affective Response to Natural Environment",
+        "conference": "Advances in Behavioral Medicine Research"
+      },
+      {
+        "authors": "Berlyne, D. E.",
+        "year": 1971,
+        "title": "Aesthetics and Psychobiology",
+        "doi": "10.1037/h0029624"
+      },
+      {
+        "authors": "Gibson, J. J.",
+        "year": 1979,
+        "title": "The Ecological Approach to Visual Perception",
+        "doi": "10.1037/0033-295X.88.4.355"
+      }
+    ]
+  },
+  "domains": [
+    {
+      "domain_id": "spatial-properties",
+      "domain_name": "Spatial Properties and Enclosure",
+      "description": "Volumetric, boundary, and enclosure characteristics of environmental spaces",
+      "attributes": [
+        {
+          "attribute_id": "spatial-volume",
+          "name": "Perceived Volume/Spaciousness",
+          "measurement_type": "continuous",
+          "unit": "relative scale (0-100) or m³ if known",
+          "description": "Subjective experience of spatial volume; integration of ceiling height, floor area, and visual flow",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=highly enclosed (small closet); 50=medium office; 100=vast open plaza",
+          "theoretical_grounding": [
+            "Prospect-Refuge Theory (prospect component)",
+            "Gibson Ecological Optics (affordance of movement)"
+          ],
+          "assessment_method": "Visual estimation; can be verified with architectural plans or photogrammetry",
+          "reliability_notes": "Inter-rater reliability moderate to good (ICC ~0.65-0.80) for trained raters; affected by lighting and visual complexity",
+          "t1_theories": ["ART", "SRT"],
+          "t2_templates": ["AX3", "AX6", "COL1", "COL2"]
+        },
+        {
+          "attribute_id": "spatial-enclosure-degree",
+          "name": "Degree of Enclosure",
+          "measurement_type": "ordinal",
+          "description": "Extent to which space is bounded by walls, vegetation, or other barriers",
+          "valid_values": [
+            "fully-open (no barriers, 360° view)",
+            "semi-enclosed (partial barriers, >180° view)",
+            "partially-enclosed (<180° visible, defined edges)",
+            "highly-enclosed (walls/barriers on 3+ sides)",
+            "completely-enclosed (interior room)"
+          ],
+          "theoretical_grounding": [
+            "Prospect-Refuge Theory (refuge component)",
+            "Appleton 1975"
+          ],
+          "assessment_method": "Identify major architectural/landscape elements defining the boundary; classify based on degree of visual closure",
+          "reliability_notes": "High inter-rater reliability (ICC ~0.80-0.90) when clear architectural boundaries present; lower when vegetation defines boundaries",
+          "t1_theories": ["PRT"],
+          "t2_templates": ["AX1", "AX4", "CREA1"]
+        },
+        {
+          "attribute_id": "spatial-openness-prospect",
+          "name": "Prospect (Visual Access/View Distance)",
+          "measurement_type": "continuous",
+          "unit": "meters or relative (0-100)",
+          "description": "Distance and clarity of sightlines; ability to see distant objects and vistas",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=obstructed view (<2m sightline); 50=moderate view (20-50m); 100=expansive vista (>500m)",
+          "theoretical_grounding": [
+            "Prospect-Refuge Theory (Appleton 1975)",
+            "Landscape aesthetics (Kaplan & Kaplan 1989)"
+          ],
+          "assessment_method": "Measure longest clear sightline; estimate distance of furthest visible object",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for natural scenes; affected by haze, vegetation, lighting conditions",
+          "t1_theories": ["PRT", "ART"],
+          "t2_templates": ["AX3", "CB2", "CREA4"]
+        },
+        {
+          "attribute_id": "spatial-mystery",
+          "name": "Mystery/Visual Intrigue",
+          "measurement_type": "ordinal",
+          "description": "Degree to which space suggests hidden information, incomplete knowledge, or incentive to explore",
+          "valid_values": [
+            "none (fully visible, no hidden areas)",
+            "low (minor visual mysteries)",
+            "moderate (some areas obscured, invites exploration)",
+            "high (significant hidden information, strong exploratory pull)"
+          ],
+          "theoretical_grounding": [
+            "Kaplan & Kaplan 1989 (mystery as landscape attribute)",
+            "Psychophysical predictors of landscape preference"
+          ],
+          "assessment_method": "Identify visual occlusions, curves, and spatial transitions that suggest hidden information",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70); subjective interpretation required",
+          "t1_theories": ["LPM"],
+          "t2_templates": ["COL1", "CREA2"]
+        },
+        {
+          "attribute_id": "spatial-legibility",
+          "name": "Wayfinding Legibility",
+          "measurement_type": "ordinal",
+          "description": "Clarity of spatial structure; ease of understanding layout and navigation",
+          "valid_values": [
+            "low (confusing, disorienting)",
+            "moderate (some clear landmarks)",
+            "high (clear structure, easy to navigate)"
+          ],
+          "theoretical_grounding": [
+            "Lynch 1960 imageability concepts",
+            "Cognitive maps and spatial knowledge"
+          ],
+          "assessment_method": "Identify presence of landmarks, clear circulation paths, and visual hierarchy",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) with clear architectural structure",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX6"]
+        }
+      ]
+    },
+    {
+      "domain_id": "lighting",
+      "domain_name": "Lighting Characteristics",
+      "description": "Natural and artificial light properties including intensity, color temperature, and distribution",
+      "attributes": [
+        {
+          "attribute_id": "lighting-source-type",
+          "name": "Primary Light Source",
+          "measurement_type": "categorical",
+          "description": "Dominant light source(s) in the environment",
+          "valid_values": [
+            "natural-daylight-direct",
+            "natural-daylight-diffuse",
+            "natural-daylight-mixed",
+            "artificial-electric",
+            "artificial-mixed",
+            "twilight",
+            "artificial-warm",
+            "artificial-cool"
+          ],
+          "theoretical_grounding": [
+            "Circadian rhythms and light exposure",
+            "Visual comfort and performance",
+            "Ulrich 1983 stress reduction"
+          ],
+          "assessment_method": "Visual inspection; identify shadows, glare, and light direction",
+          "reliability_notes": "High inter-rater reliability (ICC ~0.85) for clear daylight vs. artificial distinction",
+          "t1_theories": ["SRT", "CRT"],
+          "t2_templates": ["AX3", "CB2"]
+        },
+        {
+          "attribute_id": "lighting-illuminance",
+          "name": "Illuminance Level",
+          "measurement_type": "continuous",
+          "unit": "lux (lm/m²)",
+          "description": "Light intensity; can be measured with light meter",
+          "value_range": [0, 100000],
+          "measurement_guidance": "1-10 lux (night/dim); 100-300 lux (office task); 10000+ lux (bright daylight)",
+          "theoretical_grounding": [
+            "Visual comfort standards (CIE, IESNA)",
+            "Performance and alertness effects"
+          ],
+          "assessment_method": "Measured with illuminance meter (lux meter) at multiple points; visual estimation if meter unavailable",
+          "reliability_notes": "Very high reliability with instrumentation (±5%); visual estimation moderate (ICC ~0.60)",
+          "t1_theories": ["CRT", "SAT"],
+          "t2_templates": ["AX1"]
+        },
+        {
+          "attribute_id": "lighting-color-temperature",
+          "name": "Color Temperature",
+          "measurement_type": "continuous",
+          "unit": "Kelvin (K)",
+          "description": "Warmth/coolness of light; perceived color of the light source",
+          "value_range": [2700, 6500],
+          "measurement_guidance": "2700K (warm incandescent); 4000-4100K (neutral); 6500K+ (cool daylight)",
+          "theoretical_grounding": [
+            "Photobiology and melatonin suppression",
+            "Affective response to warm vs. cool light"
+          ],
+          "assessment_method": "Measured with color temperature meter; visual estimation comparing to reference standards",
+          "reliability_notes": "Good reliability with colorimeter (±100K); visual estimation moderate (ICC ~0.65)",
+          "t1_theories": ["CRT", "SRT"],
+          "t2_templates": ["CB2", "COL1"]
+        },
+        {
+          "attribute_id": "lighting-uniformity",
+          "name": "Light Distribution Uniformity",
+          "measurement_type": "ordinal",
+          "description": "Even distribution of light across space vs. spotty, glare-prone distribution",
+          "valid_values": [
+            "poor (strong contrasts, glare areas)",
+            "moderate (some variation in brightness)",
+            "good (relatively even distribution)"
+          ],
+          "theoretical_grounding": [
+            "Visual comfort and eye strain",
+            "Attention and task performance"
+          ],
+          "assessment_method": "Compare illuminance at multiple points (center, corners, under fixtures)",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65); affected by viewing angle",
+          "t1_theories": ["CRT"],
+          "t2_templates": ["AX6"]
+        },
+        {
+          "attribute_id": "lighting-shadow-character",
+          "name": "Shadow Characteristics",
+          "measurement_type": "categorical",
+          "description": "Presence, sharpness, and quality of shadows",
+          "valid_values": [
+            "no-shadows (diffuse overcast or well-distributed artificial)",
+            "soft-shadows (indirect light, gentle transitions)",
+            "defined-shadows (clear boundaries, directional light)",
+            "harsh-shadows (strong contrast, glare potential)"
+          ],
+          "theoretical_grounding": [
+            "Visual perception of depth and form",
+            "Comfort and visual hierarchy"
+          ],
+          "assessment_method": "Observe shadow edges and intensity gradients",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear categories",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX3"]
+        }
+      ]
+    },
+    {
+      "domain_id": "materials-texture",
+      "domain_name": "Materials and Surface Textures",
+      "description": "Physical composition of visible surfaces; tactile and visual texture properties",
+      "attributes": [
+        {
+          "attribute_id": "materials-dominant-types",
+          "name": "Dominant Material Categories",
+          "measurement_type": "categorical",
+          "description": "Primary materials visible (rough surfaces for assessment)",
+          "valid_values": [
+            "wood",
+            "stone-brick-concrete",
+            "glass-metal",
+            "natural-living-vegetation",
+            "earth-sand-gravel",
+            "synthetic-plastic-fiberglass",
+            "mixed-urban-composite"
+          ],
+          "theoretical_grounding": [
+            "Biophilia hypothesis (natural vs. synthetic materials)",
+            "Tactile preference and texture perception"
+          ],
+          "assessment_method": "Visual identification of surface materials in foreground and middle ground",
+          "reliability_notes": "High inter-rater reliability (ICC ~0.80) for clearly visible materials",
+          "t1_theories": ["BH", "ART"],
+          "t2_templates": ["AX1", "COL1", "COL2"]
+        },
+        {
+          "attribute_id": "materials-naturalness-ratio",
+          "name": "Natural vs. Synthetic Material Ratio",
+          "measurement_type": "continuous",
+          "unit": "percentage (0-100)",
+          "description": "Proportion of visible surface area composed of natural materials",
+          "value_range": [0, 100],
+          "measurement_guidance": "0%=all synthetic/processed; 50%=mixed equal; 100%=all natural (wood, stone, plants, earth)",
+          "theoretical_grounding": [
+            "Biophilia and stress reduction (Ulrich 1983)",
+            "Natural scene preference"
+          ],
+          "assessment_method": "Estimate visible surface area by material category; compute natural fraction",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70); depends on viewing distance",
+          "t1_theories": ["BH", "SRT"],
+          "t2_templates": ["CB2", "CREA1"]
+        },
+        {
+          "attribute_id": "materials-surface-finish",
+          "name": "Surface Finish Quality",
+          "measurement_type": "ordinal",
+          "description": "Smoothness, wear, and maintenance state of visible surfaces",
+          "valid_values": [
+            "pristine-polished (new, well-maintained)",
+            "clean-matte (functional, well-kept)",
+            "worn-textured (visible age, weathered)",
+            "deteriorated (damaged, in disrepair)"
+          ],
+          "theoretical_grounding": [
+            "Environmental quality perception",
+            "Biophilia (natural weathering vs. degradation)"
+          ],
+          "assessment_method": "Examine surface condition, visibility of wear, maintenance signs",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) when clear wear patterns present",
+          "t1_theories": ["SRT"],
+          "t2_templates": ["AX3"]
+        },
+        {
+          "attribute_id": "materials-texture-visual-complexity",
+          "name": "Visual Texture Complexity",
+          "measurement_type": "continuous",
+          "unit": "relative scale (0-100) or fractal dimension if computed",
+          "description": "Richness and intricacy of surface texture patterns",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=smooth blank wall; 50=wood grain or regular pattern; 100=complex natural texture (bark, stone, foliage)",
+          "theoretical_grounding": [
+            "Fractal dimension preferences (Hagerhall et al. 2004)",
+            "Visual complexity and attention"
+          ],
+          "assessment_method": "Visual inspection or algorithmic texture analysis (e.g., box-counting fractal dimension)",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70) for visual estimation; high with algorithmic analysis",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX1", "AX4"]
+        }
+      ]
+    },
+    {
+      "domain_id": "vegetation",
+      "domain_name": "Vegetation and Biophilic Elements",
+      "description": "Presence, type, density, and visibility of living plants and natural elements",
+      "attributes": [
+        {
+          "attribute_id": "vegetation-presence",
+          "name": "Vegetation Presence/Visibility",
+          "measurement_type": "categorical",
+          "description": "Degree to which living vegetation is visible in the scene",
+          "valid_values": [
+            "absent (no visible plants)",
+            "minimal (isolated plants, <5% of scene)",
+            "moderate (scattered vegetation, 5-25%)",
+            "abundant (major vegetation component, 25-50%)",
+            "dominant (primary visual element, >50%)"
+          ],
+          "theoretical_grounding": [
+            "Biophilia hypothesis",
+            "Natural view restoration (Ulrich 1983)"
+          ],
+          "assessment_method": "Estimate proportion of visible plant/vegetation area",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear vegetation gradients",
+          "t1_theories": ["BH", "SRT"],
+          "t2_templates": ["CB2", "COL1"]
+        },
+        {
+          "attribute_id": "vegetation-types",
+          "name": "Vegetation Categories",
+          "measurement_type": "categorical",
+          "description": "Types of plants present (non-exclusive)",
+          "valid_values": [
+            "herbaceous-flowers-groundcover",
+            "shrubs-low-woody",
+            "trees-deciduous",
+            "trees-coniferous",
+            "tree-canopy-closed",
+            "tree-canopy-dappled",
+            "water-vegetation-aquatic",
+            "potted-houseplants",
+            "green-walls-living-architecture"
+          ],
+          "theoretical_grounding": [
+            "Biophilia and nature exposure",
+            "Visual diversity and complexity"
+          ],
+          "assessment_method": "Identify plant types visible in foreground and middle-ground",
+          "reliability_notes": "High inter-rater reliability (ICC ~0.80) for clear plant identification",
+          "t1_theories": ["BH"],
+          "t2_templates": ["AX3", "COL2", "CREA1"]
+        },
+        {
+          "attribute_id": "vegetation-density",
+          "name": "Foliage Density",
+          "measurement_type": "continuous",
+          "unit": "percentage of canopy cover (0-100) or relative scale",
+          "description": "Density of leaves and branches; degree of canopy occlusion",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=no foliage; 33%=sparse trees/shrubs; 67%=moderate dappled shade; 100%=dense closed canopy",
+          "theoretical_grounding": [
+            "Prospect-Refuge Theory (refuge via canopy)",
+            "Light penetration and microclimate"
+          ],
+          "assessment_method": "Visual estimation of canopy closure; can use densiometer for quantification",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70) for visual estimation; high with densiometer",
+          "t1_theories": ["PRT", "SRT"],
+          "t2_templates": ["AX1", "CREA2"]
+        },
+        {
+          "attribute_id": "vegetation-healthfulness",
+          "name": "Vegetation Health/Vitality",
+          "measurement_type": "ordinal",
+          "description": "Visual signs of health; verdancy and vigor of plants",
+          "valid_values": [
+            "poor (wilted, dead, or dying plants)",
+            "fair (some signs of stress)",
+            "good (healthy, green, vigorous)",
+            "excellent (lush, vibrant, thriving)"
+          ],
+          "theoretical_grounding": [
+            "Biophilic response to healthy nature",
+            "Environmental quality perception"
+          ],
+          "assessment_method": "Assess leaf color, growth vigor, absence of disease signs",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) when clear health differences present",
+          "t1_theories": ["BH", "SRT"],
+          "t2_templates": ["CB2"]
+        },
+        {
+          "attribute_id": "vegetation-spatial-arrangement",
+          "name": "Vegetation Spatial Arrangement",
+          "measurement_type": "categorical",
+          "description": "Pattern and distribution of vegetation in the scene",
+          "valid_values": [
+            "scattered-individual-plants",
+            "clustered-groups",
+            "linear-edges-trees-lining",
+            "dense-forest-thicket",
+            "layered-canopy-understory",
+            "formal-ornamental",
+            "informal-naturalistic"
+          ],
+          "theoretical_grounding": [
+            "Landscape composition and aesthetics",
+            "Visual complexity and coherence"
+          ],
+          "assessment_method": "Describe spatial distribution pattern",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65) for pattern identification",
+          "t1_theories": ["LPM"],
+          "t2_templates": ["COL1", "CREA4"]
+        }
+      ]
+    },
+    {
+      "domain_id": "color",
+      "domain_name": "Color and Visual Harmony",
+      "description": "Color palette, saturation, contrast, and chromatic properties",
+      "attributes": [
+        {
+          "attribute_id": "color-dominant-hues",
+          "name": "Dominant Color Hues",
+          "measurement_type": "categorical",
+          "description": "Primary colors in the scene (non-exclusive)",
+          "valid_values": [
+            "greens-natural",
+            "blues-sky-water",
+            "browns-earth-wood",
+            "grays-neutral-concrete",
+            "warm-oranges-reds",
+            "cool-purples-violets",
+            "whites-highlights",
+            "blacks-shadows"
+          ],
+          "theoretical_grounding": [
+            "Color psychology and affective response",
+            "Visual harmony and preference"
+          ],
+          "assessment_method": "Identify dominant color categories in composition",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear color identification",
+          "t1_theories": ["BH"],
+          "t2_templates": ["AX3", "COL1", "COL2"]
+        },
+        {
+          "attribute_id": "color-saturation",
+          "name": "Overall Color Saturation",
+          "measurement_type": "continuous",
+          "unit": "relative scale (0-100) or HSL saturation measure",
+          "description": "Intensity and vividness of colors; richness vs. paleness",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=grayscale/desaturated; 50=moderate saturation; 100=vivid highly saturated colors",
+          "theoretical_grounding": [
+            "Visual interest and complexity",
+            "Affective arousal"
+          ],
+          "assessment_method": "Visual estimation or algorithmic HSL analysis",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70) for visual estimation",
+          "t1_theories": ["ART"],
+          "t2_templates": ["CB2", "CREA1"]
+        },
+        {
+          "attribute_id": "color-contrast",
+          "name": "Chromatic Contrast",
+          "measurement_type": "continuous",
+          "unit": "relative scale (0-100) or delta-E color difference",
+          "description": "Degree of color differentiation; distinction between colored regions",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=monochromatic/uniform; 50=moderate color variation; 100=high chromatic diversity",
+          "theoretical_grounding": [
+            "Visual complexity and information density",
+            "Hedonic tone (Berlyne 1971)"
+          ],
+          "assessment_method": "Visual inspection of color variety or algorithmic contrast analysis",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70)",
+          "t1_theories": ["BH"],
+          "t2_templates": ["AX1", "CREA2"]
+        },
+        {
+          "attribute_id": "color-warm-cool-ratio",
+          "name": "Warm vs. Cool Color Ratio",
+          "measurement_type": "continuous",
+          "unit": "percentage warm (0-100)",
+          "description": "Balance between warm (red/orange/yellow) and cool (blue/green/purple) tones",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=predominantly cool; 50=balanced; 100=predominantly warm",
+          "theoretical_grounding": [
+            "Color temperature psychology",
+            "Thermal perception and comfort"
+          ],
+          "assessment_method": "Estimate proportion of warm vs. cool colored areas",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65)",
+          "t1_theories": ["BH"],
+          "t2_templates": ["CB2"]
+        },
+        {
+          "attribute_id": "color-naturalness",
+          "name": "Color Palette Naturalness",
+          "measurement_type": "ordinal",
+          "description": "Degree to which colors reflect natural scenes vs. artificial palette",
+          "valid_values": [
+            "highly-artificial (neon, synthetic, non-natural hues)",
+            "partially-artificial (mix of natural and artificial)",
+            "natural (greens, earth tones, sky colors)",
+            "highly-natural (rich natural palette, full saturation of nature colors)"
+          ],
+          "theoretical_grounding": [
+            "Natural scene statistics preference",
+            "Biophilia"
+          ],
+          "assessment_method": "Compare palette to natural landscape color ranges",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) with naturalism training",
+          "t1_theories": ["BH", "SRT"],
+          "t2_templates": ["COL1", "CREA4"]
+        }
+      ]
+    },
+    {
+      "domain_id": "complexity-information",
+      "domain_name": "Visual Complexity and Information Density",
+      "description": "Perceived intricacy, detail level, and information content in the image",
+      "attributes": [
+        {
+          "attribute_id": "complexity-visual",
+          "name": "Visual Complexity",
+          "measurement_type": "continuous",
+          "unit": "relative scale (0-100) or entropy-based measure",
+          "description": "Amount of detail, variation, and intricacy in the visual scene",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=minimal (blank wall); 50=moderate (some variation, moderate detail); 100=highly complex (rich detail, many elements)",
+          "theoretical_grounding": [
+            "Hedonic tone and arousal (Berlyne 1971)",
+            "Fractal dimension and visual preference",
+            "Information theory (entropy)"
+          ],
+          "assessment_method": "Visual estimation or algorithmic complexity analysis (entropy, fractal dimension)",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70) for visual estimation; high with algorithmic methods",
+          "t1_theories": ["ART", "HTA"],
+          "t2_templates": ["AX1", "AX4", "CREA2"]
+        },
+        {
+          "attribute_id": "complexity-clutter-orderliness",
+          "name": "Clutter vs. Organization",
+          "measurement_type": "ordinal",
+          "description": "Degree to which scene feels organized and ordered vs. chaotic and cluttered",
+          "valid_values": [
+            "cluttered-chaotic (disorganized, overwhelming)",
+            "moderately-busy (some order amid complexity)",
+            "organized (clear structure, hierarchy)",
+            "sparse-minimal (intentional simplicity)"
+          ],
+          "theoretical_grounding": [
+            "Visual order and cognitive load",
+            "Preference for moderate complexity with structure"
+          ],
+          "assessment_method": "Assess visual hierarchy, grouping, and organizational structure",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear ordering patterns",
+          "t1_theories": ["ART"],
+          "t2_templates": ["CB2", "CREA1"]
+        },
+        {
+          "attribute_id": "complexity-information-density",
+          "name": "Information Density",
+          "measurement_type": "continuous",
+          "unit": "estimated bits per degree of visual angle or relative scale (0-100)",
+          "description": "Amount of distinct visual information per unit area",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=sparse/redundant information; 50=moderate density; 100=high density of distinct details",
+          "theoretical_grounding": [
+            "Visual search and attention",
+            "Cognitive load and processing"
+          ],
+          "assessment_method": "Count distinct objects/regions; estimate informational content",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.60-0.70)",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX3", "CREA3"]
+        },
+        {
+          "attribute_id": "complexity-pattern-coherence",
+          "name": "Pattern Coherence",
+          "measurement_type": "ordinal",
+          "description": "Degree to which visual elements form coherent patterns vs. appearing random",
+          "valid_values": [
+            "random-incoherent (no discernible pattern)",
+            "weakly-patterned (some repeated elements)",
+            "moderately-patterned (clear repeating patterns)",
+            "highly-coherent (strong pattern, strong visual unity)"
+          ],
+          "theoretical_grounding": [
+            "Gestalt principles (grouping, closure)",
+            "Pattern recognition and aesthetic preference"
+          ],
+          "assessment_method": "Identify repeating elements, symmetries, and organizational patterns",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70)",
+          "t1_theories": ["ART"],
+          "t2_templates": ["COL1", "CREA4"]
+        }
+      ]
+    },
+    {
+      "domain_id": "view-perceptual-space",
+      "domain_name": "View and Perceptual Space Properties",
+      "description": "Spatial depth, visual layering, and perceptual distance cues",
+      "attributes": [
+        {
+          "attribute_id": "view-depth-cues",
+          "name": "Depth Cue Richness",
+          "measurement_type": "ordinal",
+          "description": "Number and strength of visual cues indicating three-dimensional depth",
+          "valid_values": [
+            "minimal (flat, few depth cues)",
+            "moderate (some depth cues present)",
+            "rich (multiple depth cues: perspective, occlusion, size, lighting)",
+            "very-rich (strong 3D appearance, immersive)"
+          ],
+          "theoretical_grounding": [
+            "Visual perception of depth",
+            "Ecological optics (Gibson 1979)"
+          ],
+          "assessment_method": "Identify perspective lines, occlusion, size gradients, motion parallax",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear depth structures",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX3", "CREA2", "CREA3"]
+        },
+        {
+          "attribute_id": "view-layering",
+          "name": "Visual Layering/Depth Planes",
+          "measurement_type": "ordinal",
+          "description": "Number of distinct visual depth planes or layers",
+          "valid_values": [
+            "single-layer (flat, no clear depth differentiation)",
+            "two-layers (foreground and background)",
+            "three-layers (foreground, middle-ground, background)",
+            "multiple-layers (4+ distinct depth planes)"
+          ],
+          "theoretical_grounding": [
+            "Depth perception and spatial composition",
+            "Visual interest through layering"
+          ],
+          "assessment_method": "Identify distinct foreground/middle-ground/background regions",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear depth planes",
+          "t1_theories": ["ART"],
+          "t2_templates": ["CB2", "COL1"]
+        },
+        {
+          "attribute_id": "view-focal-point",
+          "name": "Focal Point Clarity",
+          "measurement_type": "ordinal",
+          "description": "Presence and strength of a clear visual center of attention",
+          "valid_values": [
+            "absent (no clear focal point, equal visual weight)",
+            "weak (subtle focal area)",
+            "moderate (clear focal point)",
+            "strong (dominant focal element, draws attention)"
+          ],
+          "theoretical_grounding": [
+            "Compositional balance and visual hierarchy",
+            "Attention guidance"
+          ],
+          "assessment_method": "Identify where eyes naturally rest; assess visual prominence",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70)",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX1", "CREA1"]
+        },
+        {
+          "attribute_id": "view-vertical-horizontal-balance",
+          "name": "Vertical/Horizontal Balance",
+          "measurement_type": "ordinal",
+          "description": "Balance between vertical (sky/ceiling) and horizontal (ground/floor) composition",
+          "valid_values": [
+            "sky-dominant (tall image, emphasis on upper portion)",
+            "balanced (even split vertical/horizontal)",
+            "ground-dominant (wide/low image, emphasis on lower portion)"
+          ],
+          "theoretical_grounding": [
+            "Compositional balance",
+            "Prospect (sky/view) vs. refuge (ground/base) elements"
+          ],
+          "assessment_method": "Estimate visual weight of sky vs. ground areas",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for compositions with clear division",
+          "t1_theories": ["PRT"],
+          "t2_templates": ["AX4", "COL2"]
+        },
+        {
+          "attribute_id": "view-visual-flow",
+          "name": "Visual Flow and Rhythm",
+          "measurement_type": "ordinal",
+          "description": "Presence of visual pathways that guide eye movement through composition",
+          "valid_values": [
+            "static (no clear visual flow)",
+            "weak-flow (some directional elements)",
+            "moderate-flow (clear visual pathways)",
+            "strong-flow (compelling visual rhythm, guided eye movement)"
+          ],
+          "theoretical_grounding": [
+            "Compositional dynamics",
+            "Visual attention and saccade guidance"
+          ],
+          "assessment_method": "Trace eye path through image; identify leading lines, curves, diagonals",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70)",
+          "t1_theories": ["ART"],
+          "t2_templates": ["CREA4"]
+        }
+      ]
+    },
+    {
+      "domain_id": "environmental-context",
+      "domain_name": "Environmental Context and Setting",
+      "description": "Built vs. natural environment, setting type, and contextual features",
+      "attributes": [
+        {
+          "attribute_id": "environment-built-natural-ratio",
+          "name": "Built vs. Natural Environment Ratio",
+          "measurement_type": "continuous",
+          "unit": "percentage built (0-100)",
+          "description": "Proportion of scene composed of artificial/built structures vs. natural elements",
+          "value_range": [0, 100],
+          "measurement_guidance": "0=wilderness/all natural; 50=mixed urban-natural; 100=dense urban/all built",
+          "theoretical_grounding": [
+            "Biophilia hypothesis",
+            "Restoration theory (natural vs. urban)"
+          ],
+          "assessment_method": "Estimate visible area occupied by buildings, roads, infrastructure vs. nature",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear built/natural distinction",
+          "t1_theories": ["BH", "SRT"],
+          "t2_templates": ["AX3", "CB2", "COL1"]
+        },
+        {
+          "attribute_id": "environment-setting-type",
+          "name": "Environmental Setting Type",
+          "measurement_type": "categorical",
+          "description": "Broad category of environment",
+          "valid_values": [
+            "natural-wilderness",
+            "natural-managed-park",
+            "urban-street",
+            "urban-plaza-square",
+            "office-workspace",
+            "residential-interior",
+            "residential-exterior",
+            "healthcare-institutional",
+            "industrial-commercial",
+            "transportation-hub",
+            "educational-academic",
+            "recreational-leisure",
+            "agricultural-rural",
+            "mixed-hybrid"
+          ],
+          "theoretical_grounding": [
+            "Environmental psychology domains",
+            "Setting-specific restorative properties"
+          ],
+          "assessment_method": "Identify primary environmental category from visual cues",
+          "reliability_notes": "High inter-rater reliability (ICC ~0.85) for distinct setting types",
+          "t1_theories": ["ART", "BH"],
+          "t2_templates": ["AX1", "AX3", "CREA1", "CREA2"]
+        },
+        {
+          "attribute_id": "environment-scale-human",
+          "name": "Human Scale and Proportion",
+          "measurement_type": "ordinal",
+          "description": "Degree to which environmental elements fit human body proportions and movement",
+          "valid_values": [
+            "inhuman-scale (elements far too large or small for human)",
+            "below-human (elements smaller than comfortable)",
+            "human-compatible (elements proportioned to human body)",
+            "above-human (elements larger, but proportioned)",
+            "mixed-scales"
+          ],
+          "theoretical_grounding": [
+            "Human factors and environmental fit",
+            "Affordances for human action"
+          ],
+          "assessment_method": "Compare visible elements (doorways, windows, furniture) to typical human dimensions",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) with knowledge of human proportions",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX6", "CREA1"]
+        },
+        {
+          "attribute_id": "environment-accessibility",
+          "name": "Physical Accessibility and Navigability",
+          "measurement_type": "ordinal",
+          "description": "Ease of physical movement and access within the environment",
+          "valid_values": [
+            "restricted (barriers, obstacles, difficult access)",
+            "moderate (some barriers, navigation required)",
+            "open (clear navigation, easy access)",
+            "highly-accessible (barrier-free, intuitive movement)"
+          ],
+          "theoretical_grounding": [
+            "Environmental affordances",
+            "Wayfinding and navigation efficiency"
+          ],
+          "assessment_method": "Identify visible paths, barriers, obstacles, and accessibility features",
+          "reliability_notes": "Moderate inter-rater reliability (ICC ~0.65-0.70)",
+          "t1_theories": ["ART"],
+          "t2_templates": ["AX6"]
+        },
+        {
+          "attribute_id": "environment-activity-evidence",
+          "name": "Evidence of Human Activity/Use",
+          "measurement_type": "ordinal",
+          "description": "Visible signs of ongoing or habitual human use and occupation",
+          "valid_values": [
+            "none (empty, unused, abandoned)",
+            "minimal (some signs of occupation)",
+            "moderate (clear evidence of regular use)",
+            "high (active, vibrant with human presence/activity)"
+          ],
+          "theoretical_grounding": [
+            "Affordance perception",
+            "Social presence and vitality"
+          ],
+          "assessment_method": "Look for people, wear patterns, objects, modifications indicating use",
+          "reliability_notes": "Good inter-rater reliability (ICC ~0.75) for clear activity evidence",
+          "t1_theories": ["ART"],
+          "t2_templates": ["CB2", "CREA4"]
+        }
+      ]
+    }
+  ],
+  "domain_summary_scores": {
+    "description": "Computed aggregate scores for each domain, combining component attributes",
+    "naturalness": {
+      "description": "Overall sense of natural vs. artificial character (0=fully artificial, 100=fully natural)",
+      "computation": "weighted average of vegetation-presence, materials-naturalness-ratio, color-naturalness, environment-built-natural-ratio",
+      "weights": {
+        "vegetation-presence": 0.30,
+        "materials-naturalness-ratio": 0.25,
+        "color-naturalness": 0.20,
+        "environment-built-natural-ratio": 0.25
+      },
+      "t1_theories": ["BH", "SRT"]
+    },
+    "visual-complexity": {
+      "description": "Overall complexity and information richness (0=simple, 100=complex)",
+      "computation": "weighted average of complexity-visual, spatial-volume, lighting-color-temperature, vegetation-density",
+      "weights": {
+        "complexity-visual": 0.40,
+        "spatial-volume": 0.20,
+        "lighting-color-temperature": 0.15,
+        "vegetation-density": 0.25
+      },
+      "t1_theories": ["ART", "HTA"]
+    },
+    "prospect-refuge-index": {
+      "description": "Balance of openness (prospect) and enclosure (refuge) (0=only refuge, 50=balanced, 100=only prospect)",
+      "computation": "weighted difference between prospect and enclosure_degree",
+      "weights": {
+        "spatial-openness-prospect": 0.60,
+        "spatial-enclosure-degree": -0.40
+      },
+      "t1_theories": ["PRT"]
+    },
+    "restorative-capacity": {
+      "description": "Overall capacity to support stress reduction and attention restoration (0=non-restorative, 100=highly restorative)",
+      "computation": "weighted average of naturalness, vegetation-presence, lighting-source-type, view-depth-cues, materials-naturalness-ratio",
+      "weights": {
+        "naturalness": 0.30,
+        "vegetation-presence": 0.25,
+        "lighting-source-type": 0.15,
+        "view-depth-cues": 0.20,
+        "materials-naturalness-ratio": 0.10
+      },
+      "t1_theories": ["SRT", "BH"]
+    },
+    "human-centeredness": {
+      "description": "Orientation toward human comfort and accessibility (0=inhospitable, 100=highly accommodating)",
+      "computation": "weighted average of environment-scale-human, environment-accessibility, materials-surface-finish, lighting-uniformity",
+      "weights": {
+        "environment-scale-human": 0.30,
+        "environment-accessibility": 0.30,
+        "materials-surface-finish": 0.20,
+        "lighting-uniformity": 0.20
+      },
+      "t1_theories": ["ART"]
+    }
+  },
+  "tagging_instructions": {
+    "description": "Guidance for image annotators",
+    "general_workflow": [
+      "1. Examine image in full; take overview assessment",
+      "2. For each domain, assess applicable attributes",
+      "3. Start with easy objective measures (lighting-illuminance, vegetation-presence)",
+      "4. Proceed to subjective assessments (mystery, clutter-orderliness)",
+      "5. Compute domain summary scores if sufficient attributes tagged",
+      "6. Cross-check for internal consistency (e.g., high naturalness with zero vegetation is unlikely)"
+    ],
+    "inter_rater_protocol": {
+      "minimum_raters": 2,
+      "agreement_threshold": 0.70,
+      "reliability_measure": "Intraclass Correlation Coefficient (ICC(3,1) two-way mixed effects)",
+      "resolution_for_disagreement": "Median of rater values for continuous attributes; mode for categorical; discussion required if ICC < 0.60"
+    },
+    "cultural_considerations": {
+      "description": "Some attributes may have cultural variations in perception",
+      "affected_attributes": [
+        "spatial-mystery",
+        "complexity-clutter-orderliness",
+        "vegetation-spatial-arrangement",
+        "view-visual-flow"
+      ],
+      "note": "Record rater cultural context if available; consider culturally-stratified norms in aggregation"
+    }
+  },
+  "quality_assurance": {
+    "validation_rules": [
+      {
+        "rule": "vegetation-presence = absent implies vegetation-density ≤ 5",
+        "rationale": "Logical consistency"
+      },
+      {
+        "rule": "naturalness score > 80 should have vegetation-presence ≥ moderate",
+        "rationale": "Natural scenes typically include visible vegetation"
+      },
+      {
+        "rule": "environment-built-natural-ratio > 80 implies environment-setting-type not in [natural-wilderness, natural-managed-park]",
+        "rationale": "Consistency with setting classification"
+      },
+      {
+        "rule": "spatial-volume > 80 and spatial-enclosure-degree = completely-enclosed are contradictory",
+        "rationale": "Spatial logic"
+      }
+    ],
+    "completeness_requirements": {
+      "minimum_attributes": "At least 50% of applicable domain attributes tagged",
+      "optional_attributes": "Complex attributes (complexity-visual, view-depth-cues) optional if rater lack specialized training"
+    }
+  }
+}

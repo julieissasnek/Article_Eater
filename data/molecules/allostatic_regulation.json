@@ -1,78 +1,78 @@
 {
-    "molecule_id": "ALLOSTATIC_REGULATION",
-    "name": "Allostatic Regulation",
-    "short_description": "The body's predictive energy budgeting system (allostasis) as it interacts with architectural environments, determining cumulative physiological cost and long-term health outcomes.",
-    "molecule_type": "MECHANISM",
-    "components": [
-        {
-            "name": "Allostatic Anticipation",
-            "template_ids": [
-                "IC_ALLOSTATIC_ANTICIPATION_001"
-            ],
-            "interaction_type": "PREREQUISITE",
-            "description": "Environmental predictability allows efficient allostatic anticipation, reducing metabolic cost."
-        },
-        {
-            "name": "Interoceptive Affect Construction",
-            "template_ids": [
-                "IC_INTEROCEPTIVE_AFFECT_001"
-            ],
-            "interaction_type": "SYNERGISTIC",
-            "description": "Interoceptive prediction errors (mismatch between expected and actual bodily states) drive affect construction."
-        },
-        {
-            "name": "Master Allostatic Cost",
-            "template_ids": [
-                "ALLOSTATIC_MASTER_001"
-            ],
-            "interaction_type": "MULTIPLICATIVE",
-            "description": "Cumulative environmental demands produce total allostatic cost that determines resource availability for higher functions."
-        }
-    ],
-    "constituent_templates": [
-        "IC_ALLOSTATIC_ANTICIPATION_001",
-        "IC_INTEROCEPTIVE_AFFECT_001",
-        "ALLOSTATIC_MASTER_001",
-        "NM_THREAT_HPA_001"
-    ],
-    "interaction_graph": {
-        "IC_ALLOSTATIC_ANTICIPATION_001": {
-            "IC_INTEROCEPTIVE_AFFECT_001": "SYNERGISTIC"
-        },
-        "IC_INTEROCEPTIVE_AFFECT_001": {
-            "ALLOSTATIC_MASTER_001": "MULTIPLICATIVE"
-        }
+  "molecule_id": "ALLOSTATIC_REGULATION",
+  "name": "Allostatic Regulation",
+  "short_description": "The body's predictive energy budgeting system (allostasis) as it interacts with architectural environments, determining cumulative physiological cost and long-term health outcomes.",
+  "molecule_type": "MECHANISM",
+  "components": [
+    {
+      "name": "Allostatic Anticipation",
+      "template_ids": [
+        "IC_ALLOSTATIC_ANTICIPATION_001"
+      ],
+      "interaction_type": "PREREQUISITE",
+      "description": "Environmental predictability allows efficient allostatic anticipation, reducing metabolic cost."
     },
-    "framework_ids": [
-        "IC",
-        "NM"
-    ],
-    "domain": "physiological_regulation",
-    "scope_conditions": [
-        "SC1"
-    ],
-    "overall_maturity": "TENTATIVE",
-    "key_references": [
-        "sterling_2012",
-        "barrett_2017",
-        "kleckner_2017"
-    ],
-    "empirical_support": "SUPPORTED",
-    "competing_theories": [
-        "SRT"
-    ],
-    "design_implications": [
-        "Maximize environmental predictability in healthcare and residential settings to reduce allostatic cost.",
-        "Minimize unpredictable sensory events (sudden noise, temperature fluctuations) in recovery spaces.",
-        "Design thermal, acoustic, and lighting environments to be within comfortable prediction ranges.",
-        "Consider cumulative multi-system load: a space that is thermally comfortable but acoustically stressful still has high allostatic cost."
-    ],
-    "confidence_intervals": {
-        "cohens_d_range": [
-            0.3,
-            0.7
-        ],
-        "typical_d": 0.45,
-        "note": "Effect sizes for environmental predictability on physiological stress markers."
+    {
+      "name": "Interoceptive Affect Construction",
+      "template_ids": [
+        "IC_INTEROCEPTIVE_AFFECT_001"
+      ],
+      "interaction_type": "SYNERGISTIC",
+      "description": "Interoceptive prediction errors (mismatch between expected and actual bodily states) drive affect construction."
+    },
+    {
+      "name": "Master Allostatic Cost",
+      "template_ids": [
+        "ALLOSTATIC_MASTER_001"
+      ],
+      "interaction_type": "MULTIPLICATIVE",
+      "description": "Cumulative environmental demands produce total allostatic cost that determines resource availability for higher functions."
     }
+  ],
+  "constituent_templates": [
+    "IC_ALLOSTATIC_ANTICIPATION_001",
+    "IC_INTEROCEPTIVE_AFFECT_001",
+    "ALLOSTATIC_MASTER_001",
+    "NM_THREAT_HPA_001"
+  ],
+  "interaction_graph": {
+    "IC_ALLOSTATIC_ANTICIPATION_001": {
+      "IC_INTEROCEPTIVE_AFFECT_001": "SYNERGISTIC"
+    },
+    "IC_INTEROCEPTIVE_AFFECT_001": {
+      "ALLOSTATIC_MASTER_001": "MULTIPLICATIVE"
+    }
+  },
+  "framework_ids": [
+    "interoceptive-constructionist-affect",
+    "neuromodulatory-systems"
+  ],
+  "domain": "physiological_regulation",
+  "scope_conditions": [
+    "SC1"
+  ],
+  "overall_maturity": "TENTATIVE",
+  "key_references": [
+    "sterling_2012",
+    "barrett_2017",
+    "kleckner_2017"
+  ],
+  "empirical_support": "SUPPORTED",
+  "competing_theories": [
+    "SRT"
+  ],
+  "design_implications": [
+    "Maximize environmental predictability in healthcare and residential settings to reduce allostatic cost.",
+    "Minimize unpredictable sensory events (sudden noise, temperature fluctuations) in recovery spaces.",
+    "Design thermal, acoustic, and lighting environments to be within comfortable prediction ranges.",
+    "Consider cumulative multi-system load: a space that is thermally comfortable but acoustically stressful still has high allostatic cost."
+  ],
+  "confidence_intervals": {
+    "cohens_d_range": [
+      0.3,
+      0.7
+    ],
+    "typical_d": 0.45,
+    "note": "Effect sizes for environmental predictability on physiological stress markers."
+  }
 }

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldilocks Principle of Optimal Stimulation — ATLAS Theory Guide</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #2c2c2c;
+    --accent: #2e5d8a;
+    --accent-light: #e8f0f8;
+    --border: #d0d0d0;
+    --muted: #666;
+    --card-bg: #fff;
+    --success: #2d7d46;
+    --warning: #b8860b;
+    --danger: #a03030;
+    --code-bg: #f4f4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-label { font-weight: 600; color: var(--accent); }
+
+  /* Detail level selector */
+  .level-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .level-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+    border-right: 1px solid var(--accent);
+  }
+  .level-btn:last-child { border-right: none; }
+  .level-btn:hover { background: var(--accent-light); }
+  .level-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .level-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Content sections */
+  .content-section {
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  p { margin-bottom: 1rem; }
+
+  .standard-content, .technical-content {
+    display: none;
+  }
+
+  /* Show content based on level */
+  body.level-quick .quick-content { display: block; }
+  body.level-standard .quick-content,
+  body.level-standard .standard-content { display: block; }
+  body.level-technical .quick-content,
+  body.level-technical .standard-content,
+  body.level-technical .technical-content { display: block; }
+
+  /* Expandable sections */
+  details {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 0.7rem 1rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-content {
+    padding: 1rem;
+    background: var(--card-bg);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-reduced { background: #d4edda; color: var(--success); }
+  .status-rejected { background: #f8d7da; color: var(--danger); }
+  .status-deferred { background: #fff3cd; color: var(--warning); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--code-bg);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  .formula-box .var-def {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* References */
+  .ref-list {
+    font-size: 0.9rem;
+    padding-left: 2rem;
+    list-style-type: none;
+  }
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    text-indent: -2rem;
+    padding-left: 2rem;
+  }
+
+  /* Construct cards */
+  .construct-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .construct-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .construct-desc { font-size: 0.92rem; margin-top: 0.3rem; }
+  .construct-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Navigation between theories */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8rem;
+  }
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-light);
+    border-radius: 3px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a:hover { background: var(--accent); color: white; }
+  .nav-links a.current { background: var(--accent); color: white; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .meta-bar { flex-direction: column; gap: 0.4rem; }
+    .level-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body class="level-quick">
+
+<nav class="nav-links">
+<a href="chronobiology_guide.html">Chronobiology</a>
+<a href="cognitive_map_guide.html">Cognitive Maps</a>
+<a href="cpted_guide.html">CPTED</a>
+<a href="episodic_memory_guide.html">Episodic Memory</a>
+<a href="flow_theory_guide.html">Flow</a>
+<a href="goldilocks_principle_guide.html" class="current">Goldilocks</a>
+<a href="kaplan_preference_guide.html">Kaplan Preference</a>
+<a href="pad_model_guide.html">PAD Model</a>
+<a href="place_attachment_guide.html">Place Attachment</a>
+<a href="privacy_regulation_guide.html">Privacy Regulation</a>
+<a href="proxemics_guide.html">Proxemics</a>
+</nav>
+
+<h1>Goldilocks Principle of Optimal Stimulation</h1>
+<div class="subtitle">Kirsh et al. (CMR synthesis) (2026) — Kirsh, D. et al. (2026). The Goldilocks Principle: Cross-modal prediction error ...</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Originator:</span> Wilhelm Wundt (1874, inverted-U foundation)</div>
+  <div class="meta-item"><span class="meta-label">Year:</span> 2026</div>
+  <div class="meta-item"><span class="meta-label">Citations:</span> N/A</div>
+  <div class="meta-item"><span class="meta-label">Maturity:</span> how-plausibly</div>
+  <div class="meta-item"><span class="meta-label">ATLAS Status:</span> <span class="status-badge status-reduced">REDUCED</span></div>
+</div>
+
+<div class="level-selector">
+  <button class="level-btn active" onclick="setLevel('quick')">
+    Quick Overview
+    <span class="level-desc">2 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('standard')">
+    Standard
+    <span class="level-desc">5-8 min read</span>
+  </button>
+  <button class="level-btn" onclick="setLevel('technical')">
+    Technical
+    <span class="level-desc">Full academic detail</span>
+  </button>
+</div>
+
+<!-- QUICK CONTENT -->
+<div class="content-section quick-content">
+  <h2>What Is Goldilocks Principle of Optimal Stimulation?</h2>
+  <p>The Goldilocks Principle says that people prefer environments that are neither too simple nor too complex, neither too familiar nor too novel — but 'just right.' Like the fairy tale, the optimal zone sits in the middle. This applies to visual complexity, noise levels, spatial enclosure, lighting variation, and many other environmental dimensions. Too little stimulation and we're bored; too much and we're overwhelmed.</p>
+  <p>This is directly useful for designers because it identifies a universal pattern underlying many specific design recommendations. Whether you're choosing the visual complexity of a facade, the acoustic variety of a soundscape, or the spatial rhythm of a corridor, the same inverted-U principle applies: there's a sweet spot, and it varies by person, culture, and context.</p>
+</div>
+
+<!-- STANDARD CONTENT -->
+<div class="content-section standard-content">
+  <h2>Historical Origins</h2>
+  <p>The principle synthesizes over 150 years of research. Wilhelm Wundt first described the inverted-U relationship between stimulus intensity and pleasantness in 1874. Daniel Berlyne formalized it as 'optimal arousal' theory in 1971, proposing that moderate novelty and complexity maximize aesthetic pleasure. The Kaplans' environmental preference framework (1989) identified coherence, complexity, legibility, and mystery as the dimensions along which this optimization operates. The current formalization as a 'Goldilocks Principle' was developed in the ATLAS/CMR project (Kirsh et al., 2026) as a cross-modal synthesis — recognizing that the same inverted-U pattern appears across visual, auditory, thermal, social, and spatial domains.</p>
+
+  <h2>How It Works</h2>
+  <p>The mechanism is prediction error optimization. The brain continuously generates predictions about incoming sensory information. When the environment is too predictable (low complexity), prediction errors are minimal and processing is boring — there's nothing new to learn. When the environment is too unpredictable (high complexity), prediction errors are overwhelming and processing is stressful. At the optimum, prediction errors are manageable and informative — the brain is learning efficiently. This maps onto processing fluency: moderate complexity produces optimal processing fluency, which is experienced as aesthetic pleasure.</p>
+
+  <h2>Applications in Design</h2>
+  <p>The principle explains why people prefer natural scenes (which have intermediate fractal dimension, D ≈ 1.3-1.5), why moderate architectural complexity is preferred over both minimalism and baroque excess, why background noise at moderate levels (cafe ambiance) can improve creativity while silence or loud noise impair it, and why biophilic design works — natural elements provide the right level of visual and sensory variety.</p>
+
+  <details>
+    <summary>Key Milestones</summary>
+    <div class="details-content">
+      <div class="timeline">
+        <div class="timeline-item"><span class="timeline-year">1874:</span> Wundt formulates inverted-U relationship between stimulus intensity and affective response</div>
+<div class="timeline-item"><span class="timeline-year">1950s-1960s:</span> Berlyne develops experimental psychology of optimal arousal</div>
+<div class="timeline-item"><span class="timeline-year">1971:</span> Berlyne&#x27;s Aesthetics and Psychobiology synthesizes arousal optimization across domains</div>
+<div class="timeline-item"><span class="timeline-year">1978:</span> Vygotsky&#x27;s Zone of Proximal Development (posthumously translated) formalizes developmental application</div>
+<div class="timeline-item"><span class="timeline-year">1989:</span> Kaplan &amp; Kaplan operationalize with environmental complexity metrics</div>
+<div class="timeline-item"><span class="timeline-year">1990:</span> Csikszentmihalyi&#x27;s Flow synthesizes challenge-skill balance as instance of Goldilocks principle</div>
+<div class="timeline-item"><span class="timeline-year">1993:</span> Kasting et al. formalize &#x27;habitable zone&#x27; concept in astrobiology</div>
+<div class="timeline-item"><span class="timeline-year">1990s-Present:</span> Cross-domain application to thermal comfort (de Dear &amp; Brager), visual complexity (Taylor fractals), acoustic preference</div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Intellectual Influences</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Wilhelm Wundt (1874, inverted-U foundation)</li>
+<li>Daniel Berlyne (1971, optimal arousal theory)</li>
+<li>Rachel &amp; Stephen Kaplan (1989, environmental preference metrics)</li>
+<li>Mihaly Csikszentmihalyi (1990, flow theory as instance of principle)</li>
+<li>James Kasting et al. (1993, astronomical metaphor &#x27;habitable zone&#x27;)</li>
+<li>Lev Vygotsky (Zone of Proximal Development, developmental instantiation)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- TECHNICAL CONTENT -->
+<div class="content-section technical-content">
+  <h2>Formal Model</h2>
+  <p>Formally: P(x) = exp(−(C(x) − C*)²/(2σ(ψ)²)), where P is preference/pleasantness, C(x) is the complexity or stimulation level of environment x, C* is the optimal complexity (the peak of the inverted-U), and σ(ψ) is the tolerance bandwidth parameterized by individual/cultural factors ψ. The bandwidth σ varies: experts in a domain have wider σ (they tolerate more complexity), while children and novices have narrower σ. Cultural calibration shifts C*: Japanese aesthetics tolerate higher visual simplicity (lower C*) while Indian temple architecture tolerates higher complexity (higher C*).</p>
+
+  <div class="formula-box">
+    P(x) = exp(−(C(x) − C*)²/(2σ(ψ)²)); C* = optimal complexity
+<div class="var-def"><strong>P(x)</strong> = Preference for stimulus x<br><strong>C(x)</strong> = Objective complexity measure (entropy, fractal dimension, etc.)<br><strong>C*</strong> = Optimal complexity (varies with expertise, culture)<br><strong>σ(ψ)</strong> = Individual tolerance width</div>
+<div class="var-def"><strong>Predictions:</strong><br>• Peak preference at intermediate complexity across modalities<br>• Experts have higher C* and narrower σ than novices</div>
+  </div>
+
+  <h2>Theoretical Constructs</h2>
+<div class="construct-card">
+  <div class="construct-name">Prediction Error Optimization</div>
+  <div class="construct-desc">The core mechanism: across all sensory modalities, there exists an intermediate level of prediction error that maximizes positive affect and engagement. Too little PE (fully predicted environment) produces boredom and allostatic underload; too much PE (unresolvable mismatch) produces anxiety, stress, and allostatic overload. The optimum corresponds to resolvable PE — stimulation that challenges the generative model enough to produce learning and dopaminergic reward but not so much as to overwhelm metabolic resources. This is the neural mechanism underlying Berlyne&#x27;s (1971) Wundt curve and Kaplan &amp; Kaplan&#x27;s (1989) preference matrix.</div>
+  <div class="construct-meta">Confidence: HIGH | Maturity: how-plausibly | Templates: PP_COMPLEXITY_GOLDILOCKS_002, PP_SPECTRAL_MATCH_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Metabolic Efficiency Window</div>
+  <div class="construct-desc">The inverted-U is not merely a preference curve but reflects a metabolic constraint: the brain&#x27;s predictive hierarchy operates within an energy budget (allostatic regulation via IC). Moderate PE is metabolically efficient — the generative model updates incrementally. Extreme PE (either direction) is metabolically costly: zero PE means the model is over-fitted and not learning (wasted maintenance cost); high PE means the model is failing and generating costly error-correction cascades. The optimal zone is where learning rate per metabolic unit is maximized.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-plausibly | Templates: ALLOSTATIC_MASTER_001, AX_CONTROL_STRESS_004</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Domain-Specific Optima</div>
+  <div class="construct-desc">While the mechanism is universal, the location of the optimum is domain-specific and calibrated by environmental statistics. Visual complexity: fractal D approx 1.3, corresponding to 1/f^beta power spectra with beta approx 2.6 (Taylor et al., 2011). Luminance contrast: global ratio 1:7 to 1:15 (Strother), CV 0.5-1.5 for aesthetic range. Thermal: adaptive neutral +/-1C for comfort zone, +/-1-3C for positive alliesthesia (de Dear &amp; Brager, 1998). Acoustic: peak pleasantness 50-60 dB LAeq, natural sounds beta=+0.45 on pleasantness. Temporal variation: 0.01-2.0 cycles/min for light, optimal threshold density for architectural promenade sequences. Social: 3-5 simultaneous social modes (Dunbar saturation above 6).</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-plausibly | Templates: PP_COMPLEXITY_GOLDILOCKS_002, THERMAL_ADAPTIVE_PE_001, LUM_CONTRAST_PE_001, AUD_SCENE_ANALYSIS_001, DYNAMIC_LIGHT_TEMPORAL_001, XF_SOCIAL_AFFORDANCE_DENSITY_001</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Reward at Optimum</div>
+  <div class="construct-desc">At the moderate PE optimum, the neuromodulatory system generates positive reward signals: dopaminergic novelty reward (NM) from resolvable PE, serotonergic safety signaling from predictability within the comfort zone, and opioidergic pleasure from successful model updating. This triple reward convergence at moderate PE explains why the preference peak is robust across modalities — it is not merely the absence of negative affect but the active generation of positive affect through successful prediction.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-plausibly | Templates: NM_DOPAMINERGIC_NOVELTY_REWARD_001, NM_SAFETY_SIGNALING_001, NM_DOPAMINE_NOVELTY_002</div>
+</div>
+<div class="construct-card">
+  <div class="construct-name">Individual Differences via Prior Expectations</div>
+  <div class="construct-desc">The IE-DPT (Individual Experience / Dual Process Theory) framework explains why different individuals have different optima: prior expectations set the baseline against which PE is computed. An acoustician habituated to 85 dB finds 60 dB unremarkable; a librarian finds it distressing. A construction worker&#x27;s thermal neutral is shifted by chronic outdoor exposure. Expertise compresses the PE curve (experts tolerate higher complexity before reaching overload) while novelty-seeking personality traits shift the optimum rightward. This person-dependence is irreducible — the same physical environment generates different PE profiles in different individuals.</div>
+  <div class="construct-meta">Confidence: MEDIUM | Maturity: how-possibly | Templates: DP_IMPLICIT_EVALUATION_001, ER_ECOLOGICAL_RATIONALITY_001, CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001</div>
+</div>
+
+  <h2>Status in the ATLAS System</h2>
+  <p>In the ATLAS system, the Goldilocks Principle has status REDUCED with five constructs: PE Optimization (to PP prediction processing templates), Metabolic Efficiency (to IC interoceptive templates), Reward Convergence (to NM neuromodulatory templates), Individual σ Differences (partially reduced), and Cross-Modal Universality (irreducible residual). The irreducible residual is the claim that the same inverted-U functional form applies across all sensory modalities — this cross-modal universality claim goes beyond what any single T1 framework can derive. Template coverage is 75%. The theory is formalized as the 13th T1.5 theory in the ATLAS roster.</p>
+
+  <details><summary>Irreducible Residual</summary><div class="details-content">
+<p>The irreducible residual of the Goldilocks Principle is the cross-modal universality claim itself: that all sensory channels optimize within the same PE efficiency framework, and that this optimization is a fundamental property of predictive brains operating under metabolic constraints. No single T1 framework captures this — PP explains the inverted-U shape, IC explains the metabolic constraint, NM explains the reward at optimum, and IE-DPT explains individual differences, but the claim that these four mechanisms interact to produce a UNIVERSAL cross-modal optimality principle is the Goldilocks Principle&#x27;s distinctive contribution. This subsumes both Berlyne&#x27;s optimal arousal theory (which described the curve without specifying the mechanism) and the Kaplan Preference Matrix (which specified environmental parameters without neural implementation). The domain-specific optima — fractal D 1.3, thermal neutral +/-1C, acoustic 50-60 dB, luminance CV 0.5-1.5 — are calibrated instances of a single underlying principle, not independent phenomena. This unification is a genuine theoretical contribution of the CMR system.</p>
+<p><strong>Schema gaps:</strong></p><ul>
+<li>Olfactory Goldilocks zone not yet templated — scent intensity optima likely follow the same PE curve but no CMR template exists</li>
+<li>Cross-modal interaction effects on zone boundaries incompletely specified — does thermal comfort shift the visual complexity optimum?</li>
+<li>Developmental trajectory of optima unknown — do children have different Goldilocks zones than adults?</li>
+</ul>
+</div></details>
+
+  
+
+  <details>
+    <summary>Full References</summary>
+    <div class="details-content">
+      <ul class="ref-list">
+        <li>Kasting, J.F., Whitmire, D.P., &amp; Polivka, P.M. (1993). Habitable zones around main sequence stars. Icarus, 101(1), 108-128.</li>
+<li>Berlyne, D.E. (1971). Aesthetics and psychobiology. Appleton-Century-Crofts.</li>
+<li>Kaplan, R. &amp; Kaplan, S. (1989). The experience of nature. Cambridge University Press.</li>
+<li>Taylor, R.P. et al. (2011). Perceptual and physiological responses to Jackson Pollock&#x27;s fractals. Front. Hum. Neurosci., 5, 60.</li>
+<li>de Dear, R.J. &amp; Brager, G.S. (1998). Developing an adaptive model of thermal comfort and preference. ASHRAE Transactions, 104(1), 145-167.</li>
+<li>Vessel, E.A., Starr, G.G., &amp; Rubin, N. (2012). The brain on art: Intense aesthetic experience activates the default mode network. Front. Hum. Neurosci., 6, 66.</li>
+<li>Sterling, P. (2012). Allostasis: A model of predictive regulation. Physiology &amp; Behavior, 106(1), 5-15.</li>
+<li>Friston, K. (2010). The free-energy principle: A unified brain theory? Nature Reviews Neuroscience, 11(2), 127-138.</li>
+<li>Wundt, W. (1874). Grundzüge der physiologischen Psychologie. Engelmann.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Provenance Verification</summary>
+    <div class="details-content">
+      <p><strong>Verification status:</strong> verified_via_web_search_2026-03-01</p>
+      <p>Goldilocks term in astronomy (Kasting et al. 1993) verified via Icarus journal. Wundt (1874) foundation of inverted-U verified via history of psychology sources. Berlyne (1971) confirmed as key synthesis work. Kaplan &amp; Kaplan (1989) verified. Historical trajectory from Wundt through Berlyne to modern applications confirmed via multiple academic sources. Note: this theory represents a synthesis/unification rather than single-origin foundational work.</p>
+    </div>
+  </details>
+</div>
+
+<div class="footer">
+  <p>ATLAS Theory Guide — Generated 2026-03-01 — UCSD Cognitive Science<br>
+  Part of the Article_Eater_PostQuinean evidence synthesis system.</p>
+</div>
+
+<script>
+function setLevel(level) {
+  document.body.className = 'level-' + level;
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.level-btn').classList.add('active');
+  // Close all details when switching to quick
+  if (level === 'quick') {
+    document.querySelectorAll('details').forEach(d => d.open = false);
+  }
+}
+</script>
+</body>
+</html>

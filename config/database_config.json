@@ -1,0 +1,29 @@
+{
+  "_comment": "Canonical database configuration for ATLAS. Updated 2026-03-01.",
+
+  "web_persistence": {
+    "canonical_path": "data/web_persistence.db",
+    "description": "Primary web of belief database (4888 beliefs, 11857 constraints, 1898 bridges)",
+    "selection_strategy": "Use db_locator.get_web_db() which selects by integrated_score",
+    "env_override": "AE_DB_PATH or AE_WEB_DB"
+  },
+
+  "article_finder": {
+    "canonical_path": "../Article_Finder_v3_2_3/data/article_finder.db",
+    "description": "Source paper metadata database",
+    "selection_strategy": "Use db_locator.resolve_article_finder_db()",
+    "env_override": "AE_AF_DB"
+  },
+
+  "secondary_databases": {
+    "web_persistence_v2.db": "Legacy v2 schema (3420 beliefs) - kept for reference",
+    "web_persistence_LOCKED.db": "Snapshot with template annotations",
+    "overseer.db": "Overseer monitoring data",
+    "alerts.db": "Alert history"
+  },
+
+  "archived_databases": {
+    "location": "quarantine/archived_databases/",
+    "contents": "Historical snapshots and experimental DBs"
+  }
+}

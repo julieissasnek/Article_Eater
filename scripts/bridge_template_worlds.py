@@ -351,7 +351,8 @@ def main():
     for f in sorted(args.templates_dir.glob("*.json")):
         try:
             templates.append(json.load(open(f)))
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
 
     # Gap report

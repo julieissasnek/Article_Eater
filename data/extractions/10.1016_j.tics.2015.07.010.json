@@ -2,14 +2,14 @@
   "doi": "10.1016/j.tics.2015.07.010",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.676,
   "n_findings": 29,
   "extracted_at": "2026-02-25T06:48:30.322139+00:00",
   "model": "gemini-2.5-flash",
   "cost": 0.007926599999999999,
   "title": "Optic flow based perception of two-dimensional trajectories and the effects of a single landmark.",
-  "authors": "R.J.V. Bertin, I. Isra\u00ebl, 2000",
+  "authors": "R.J.V. Bertin, I. Israël, 2000",
   "research_question": "Can human subjects integrate instantaneous perceptions of heading over time to reconstruct a 2D trajectory simulated by optic flow, and how does a single landmark affect this perception and reconstruction?",
   "design_type": "within_subjects",
   "participants": {
@@ -20,7 +20,7 @@
   "stimuli_or_exposures": [
     {
       "type": "VR",
-      "description": "Optic flow stimuli simulating 2D manoeuvres (linear or curvilinear trajectories) over a horizontal ground plane. Environment consisted of 4800 white dots (4 pixel diameter) on a 50x50m ground surface 1m below eye-level, horizon at 15m. Manoeuvres had 3 degrees of freedom: linear/semicircular trajectories, with simulated whole-body orientation fixed in space, fixed relative to path, or changing relative to both. Stimuli included yaw (\u03a8o) and path rotation (\u03a8p). Triangular velocity profiles (0 to peak at 4s).",
+      "description": "Optic flow stimuli simulating 2D manoeuvres (linear or curvilinear trajectories) over a horizontal ground plane. Environment consisted of 4800 white dots (4 pixel diameter) on a 50x50m ground surface 1m below eye-level, horizon at 15m. Manoeuvres had 3 degrees of freedom: linear/semicircular trajectories, with simulated whole-body orientation fixed in space, fixed relative to path, or changing relative to both. Stimuli included yaw (Ψo) and path rotation (Ψp). Triangular velocity profiles (0 to peak at 4s).",
       "n_stimuli": null,
       "source": "Methods, Table 1"
     },
@@ -34,22 +34,22 @@
   "measures": [
     {
       "construct": "Perceived manoeuvre reproduction",
-      "instrument": "Model vehicle guided on a graphics tablet, recording position (X,Y) and orientation (\u03a6o). Overhead view feedback in HMD.",
+      "instrument": "Model vehicle guided on a graphics tablet, recording position (X,Y) and orientation (Φo). Overhead view feedback in HMD.",
       "type": "behavioral"
     },
     {
-      "construct": "Perceived yaw (\u03a8o)",
-      "instrument": "Calculated from reproduced orientation (\u03a6o) over time.",
+      "construct": "Perceived yaw (Ψo)",
+      "instrument": "Calculated from reproduced orientation (Φo) over time.",
       "type": "cognitive"
     },
     {
-      "construct": "Perceived path rotation (\u03a8p)",
+      "construct": "Perceived path rotation (Ψp)",
       "instrument": "Calculated from reproduced trajectory tangents.",
       "type": "cognitive"
     },
     {
-      "construct": "Perceived orientation relative to path (<\u03a6r>)",
-      "instrument": "Calculated as average difference between \u03a6o and \u03a6p.",
+      "construct": "Perceived orientation relative to path (<Φr>)",
+      "instrument": "Calculated as average difference between Φo and Φp.",
       "type": "cognitive"
     },
     {
@@ -69,7 +69,7 @@
     },
     {
       "construct": "Figural distance (difference between stimulus and response)",
-      "instrument": "Combined spatial (Dfs) and angular (Dfa) figural distance (Df = \u221a(Dfs\u00b2+Dfa\u00b2)).",
+      "instrument": "Combined spatial (Dfs) and angular (Dfa) figural distance (Df = √(Dfs²+Dfa²)).",
       "type": "cognitive"
     },
     {
@@ -106,7 +106,60 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8, General observations",
-      "quote": "Our results indicate that it is possible to reconstruct travelled paths from optic flow."
+      "quote": "Our results indicate that it is possible to reconstruct travelled paths from optic flow.",
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3963,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3809,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3579,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3344,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3305,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4426,
+        "SRT": 0.3242,
+        "NEUROMODULATORY_REWARD": 0.1905,
+        "SPATIAL_COGNITION": 0.1789,
+        "MULTISENSORY_INTEGRATION": 0.1672,
+        "MATERIAL_HAPTIC_THERMAL": 0.1653
+      },
+      "tier2_relevance": {
+        "PP": 0.3322,
+        "EC": 0.1981,
+        "CROSS_FRAMEWORK": 0.1905,
+        "NM_STRESS": 0.1905,
+        "SPATIAL_NAVIGATION": 0.1789,
+        "IC": 0.1672,
+        "MS": 0.1672,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1653,
+        "ALLOSTATIC_REGULATION": 0.1653,
+        "METABOLIC_HEALTH": 0.1653,
+        "PREDICTIVE_PROCESSING": 0.1653
+      }
     },
     {
       "id": 2,
@@ -134,11 +187,55 @@
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3313,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.2968,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.2947,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.2927,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.2923,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "AFFECTIVE_EMOTION": 0.1656,
+        "CIRCADIAN_REGULATION": 0.1656,
+        "NEUROMODULATORY_REWARD": 0.1656,
+        "PREDICTIVE_PROCESSING": 0.1656
+      },
+      "tier2_relevance": {
+        "AROUSAL_THEORY": 0.1656,
+        "PAD_EMOTIONAL_MODEL": 0.1656,
+        "PREDICTIVE_PROCESSING": 0.1656,
+        "RETINAL_ACTIVATION": 0.1656
+      }
     },
     {
       "id": 3,
-      "antecedent": "Simulated yaw (\u03a8o) relative to simulated translation (large amount)",
+      "antecedent": "Simulated yaw (Ψo) relative to simulated translation (large amount)",
       "consequent": "Reproduction of rotation in place",
       "direction": "increase",
       "claim_type": "associational",
@@ -158,7 +255,59 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8, General observations",
-      "quote": "When the stimulus simulated a relatively large amount of yaw relative to the simulated translation, subjects often reproduced a rotation in place."
+      "quote": "When the stimulus simulated a relatively large amount of yaw relative to the simulated translation, subjects often reproduced a rotation in place.",
+      "template_matches": [
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.401,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3758,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3725,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3439,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3375,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.5625,
+        "MATERIAL_HAPTIC_THERMAL": 0.3262,
+        "CREATIVE_COGNITION": 0.2005,
+        "SRT": 0.1862,
+        "ART": 0.1688,
+        "NEUROMODULATORY_REWARD": 0.1688
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.5625,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.2005,
+        "GROUP_CREATIVITY": 0.2005,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.2005,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1862,
+        "ALLOSTATIC_REGULATION": 0.1862,
+        "METABOLIC_HEALTH": 0.1862,
+        "INTEROCEPTION": 0.1719,
+        "DIRECTED_ATTENTION": 0.1688,
+        "NM_AROUSAL": 0.1688
+      }
     },
     {
       "id": 4,
@@ -181,7 +330,59 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8, Response classification",
-      "quote": "When the observer's orientation is fixed in space (conditions linear lateral or oblique and semicircle no-turn), performance is generally good."
+      "quote": "When the observer's orientation is fixed in space (conditions linear lateral or oblique and semicircle no-turn), performance is generally good.",
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3336,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3083,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3072,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3071,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3008,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4035,
+        "CREATIVE_COGNITION": 0.2948,
+        "COGNITIVE_CONTROL": 0.2921,
+        "MULTISENSORY_INTEGRATION": 0.1542
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2948,
+        "COGNITIVE_CONTROL": 0.1668,
+        "CONSTRUAL_LEVEL_THEORY": 0.1668,
+        "CREATIVE_COGNITION": 0.1668,
+        "IC": 0.1542,
+        "MS": 0.1542,
+        "PP": 0.1542,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1536,
+        "GROUP_CREATIVITY": 0.1536,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1536,
+        "METHODOLOGICAL": 0.1535,
+        "DUAL_PROCESS": 0.1504
+      }
     },
     {
       "id": 5,
@@ -204,7 +405,61 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8, Response classification",
-      "quote": "Performance decreases when the orientation is fixed only relative to the trajectory, or not at all."
+      "quote": "Performance decreases when the orientation is fixed only relative to the trajectory, or not at all.",
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3354,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.311,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3074,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3058,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3026,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4961,
+        "COGNITIVE_CONTROL": 0.1677,
+        "CREATIVE_COGNITION": 0.1677,
+        "MATERIAL_HAPTIC_THERMAL": 0.1555,
+        "SRT": 0.1555,
+        "MULTISENSORY_INTEGRATION": 0.1537,
+        "ART": 0.1529
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4046,
+        "IC": 0.2817,
+        "COGNITIVE_CONTROL": 0.1677,
+        "CONSTRUAL_LEVEL_THEORY": 0.1677,
+        "CREATIVE_COGNITION": 0.1677,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1555,
+        "ALLOSTATIC_REGULATION": 0.1555,
+        "METABOLIC_HEALTH": 0.1555,
+        "MS": 0.1537,
+        "PP": 0.1537,
+        "ATTENTION_RESTORATION_THEORY": 0.1529
+      }
     },
     {
       "id": 6,
@@ -227,7 +482,57 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 8, Response classification",
-      "quote": "Performance is generally better at the larger radius."
+      "quote": "Performance is generally better at the larger radius.",
+      "template_matches": [
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.4029,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3532,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3456,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3442,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3401,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3152,
+        "SPATIAL_COGNITION": 0.2014,
+        "COGNITIVE_CONTROL": 0.1728,
+        "CREATIVE_COGNITION": 0.1728,
+        "MULTISENSORY_INTEGRATION": 0.1721
+      },
+      "tier2_relevance": {
+        "IC": 0.3129,
+        "SPATIAL_NAVIGATION": 0.2014,
+        "METHODOLOGICAL": 0.1766,
+        "COGNITIVE_CONTROL": 0.1728,
+        "CONSTRUAL_LEVEL_THEORY": 0.1728,
+        "CREATIVE_COGNITION": 0.1728,
+        "PREDICTIVE_PROCESSING": 0.1728,
+        "MS": 0.1721,
+        "PP": 0.1721
+      }
     },
     {
       "id": 7,
@@ -251,12 +556,56 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Quantitative analyses",
-      "quote": "When the radius was small, there were instead many rotation-in-place responses."
+      "quote": "When the radius was small, there were instead many rotation-in-place responses.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.4379,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.4182,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.4115,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3783,
+          "reasons": []
+        },
+        {
+          "template_id": "MSI_SPATIAL_AUDIO_002",
+          "display_id": "MSI2",
+          "score": 0.3647,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.4864,
+        "MULTISENSORY_INTEGRATION": 0.4756,
+        "PREDICTIVE_PROCESSING": 0.1892
+      },
+      "tier2_relevance": {
+        "SPATIAL_NAVIGATION": 0.4864,
+        "IC": 0.3667,
+        "MULTISENSORY_INTEGRATION": 0.3533,
+        "MS": 0.1892,
+        "PP": 0.1892
+      }
     },
     {
       "id": 8,
       "antecedent": "Optic flow stimuli (complex manoeuvres)",
-      "consequent": "Perceived yaw (\u03a8o)",
+      "consequent": "Perceived yaw (Ψo)",
       "direction": "no_effect",
       "claim_type": "associational",
       "measure_type": "cognitive",
@@ -274,12 +623,65 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "Subjects appear to be capable to approximate the angle over which they are rotated, even during complex manoeuvres (figure 3)."
+      "quote": "Subjects appear to be capable to approximate the angle over which they are rotated, even during complex manoeuvres (figure 3).",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3682,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3602,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3436,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3368,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3279,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.331,
+        "AFFECTIVE_EMOTION": 0.3243,
+        "NEUROMODULATORY_REWARD": 0.3243,
+        "CIRCADIAN_REGULATION": 0.1841,
+        "COGNITIVE_CONTROL": 0.1801,
+        "CREATIVE_COGNITION": 0.1801
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.331,
+        "IC": 0.3047,
+        "AROUSAL_THEORY": 0.1841,
+        "PAD_EMOTIONAL_MODEL": 0.1841,
+        "RETINAL_ACTIVATION": 0.1841,
+        "COGNITIVE_CONTROL": 0.1801,
+        "CONSTRUAL_LEVEL_THEORY": 0.1801,
+        "CREATIVE_COGNITION": 0.1801,
+        "COGNITIVE_APPRAISAL": 0.1718,
+        "NEUROMODULATORY": 0.1718,
+        "HC": 0.1684
+      }
     },
     {
       "id": 9,
       "antecedent": "Linear+yaw stimuli (smaller rotations)",
-      "consequent": "Perceived yaw (\u03a8o)",
+      "consequent": "Perceived yaw (Ψo)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "cognitive",
@@ -297,12 +699,68 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "A small range effect occurs for the linear+yaw stimuli: overshoot for the smaller rotations"
+      "quote": "A small range effect occurs for the linear+yaw stimuli: overshoot for the smaller rotations",
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.4243,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.38,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3712,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3663,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.366,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4742,
+        "COGNITIVE_CONTROL": 0.2122,
+        "CREATIVE_COGNITION": 0.2122,
+        "EMBODIED_ECOLOGICAL": 0.19,
+        "SPATIAL_COGNITION": 0.19,
+        "AFFECTIVE_EMOTION": 0.183,
+        "CIRCADIAN_REGULATION": 0.183,
+        "NEUROMODULATORY_REWARD": 0.183
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3563,
+        "COGNITIVE_CONTROL": 0.2122,
+        "CONSTRUAL_LEVEL_THEORY": 0.2122,
+        "CREATIVE_COGNITION": 0.2122,
+        "EMBODIED_COGNITION": 0.19,
+        "SPATIAL_NAVIGATION": 0.19,
+        "IC": 0.1856,
+        "EC": 0.1832,
+        "PP": 0.1832,
+        "AROUSAL_THEORY": 0.183,
+        "PAD_EMOTIONAL_MODEL": 0.183,
+        "RETINAL_ACTIVATION": 0.183
+      }
     },
     {
       "id": 10,
-      "antecedent": "Linear+yaw stimuli (large rotation, \u03a8o=360\u00b0)",
-      "consequent": "Perceived yaw (\u03a8o)",
+      "antecedent": "Linear+yaw stimuli (large rotation, Ψo=360°)",
+      "consequent": "Perceived yaw (Ψo)",
       "direction": "decrease",
       "claim_type": "associational",
       "measure_type": "cognitive",
@@ -320,12 +778,63 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "and undershoot for the large rotation (\u03a8o=360\u00b0)."
+      "quote": "and undershoot for the large rotation (Ψo=360°).",
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3995,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3538,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3535,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3413,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3397,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3363,
+        "COGNITIVE_CONTROL": 0.1998,
+        "CREATIVE_COGNITION": 0.1998,
+        "AFFECTIVE_EMOTION": 0.1769,
+        "NEUROMODULATORY_REWARD": 0.1769,
+        "MATERIAL_HAPTIC_THERMAL": 0.1706
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3363,
+        "IC": 0.3166,
+        "COGNITIVE_CONTROL": 0.1998,
+        "CONSTRUAL_LEVEL_THEORY": 0.1998,
+        "CREATIVE_COGNITION": 0.1998,
+        "COGNITIVE_APPRAISAL": 0.1769,
+        "NEUROMODULATORY": 0.1769,
+        "HC": 0.1767,
+        "INTEROCEPTION": 0.1706
+      }
     },
     {
       "id": 11,
       "antecedent": "Stimulus does not simulate any observer rotation",
-      "consequent": "Perceived yaw (\u03a8o)",
+      "consequent": "Perceived yaw (Ψo)",
       "direction": "no_effect",
       "claim_type": "null",
       "measure_type": "cognitive",
@@ -343,12 +852,64 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "Yaw is never perceived when the stimulus does not simulate any observer rotation"
+      "quote": "Yaw is never perceived when the stimulus does not simulate any observer rotation",
+      "template_matches": [
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3895,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3811,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3614,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.356,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3466,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.3308,
+        "COGNITIVE_CONTROL": 0.1948,
+        "CREATIVE_COGNITION": 0.1948,
+        "PREDICTIVE_PROCESSING": 0.1948,
+        "SRT": 0.1905,
+        "AFFECTIVE_EMOTION": 0.1733
+      },
+      "tier2_relevance": {
+        "COGNITIVE_CONTROL": 0.1948,
+        "CONSTRUAL_LEVEL_THEORY": 0.1948,
+        "CREATIVE_COGNITION": 0.1948,
+        "PREDICTIVE_PROCESSING": 0.1948,
+        "CROSS_FRAMEWORK": 0.1905,
+        "NM_STRESS": 0.1905,
+        "DMN_TPN_DYNAMICS": 0.1807,
+        "IC": 0.178,
+        "COGNITIVE_APPRAISAL": 0.1733,
+        "NEUROMODULATORY": 0.1733
+      }
     },
     {
       "id": 12,
-      "antecedent": "Simulated orientation fixed in environment (\u03a8o \u2248 0\u00b0) OR tangential to trajectory",
-      "consequent": "Perception of path rotation (\u03a8p)",
+      "antecedent": "Simulated orientation fixed in environment (Ψo ≈ 0°) OR tangential to trajectory",
+      "consequent": "Perception of path rotation (Ψp)",
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "cognitive",
@@ -366,16 +927,64 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "Perception is close to veridical when orientation remains approximately fixed in the environment (\u03a8o \u2248 0\u00b0), and when it is tangential to the trajectory.",
+      "quote": "Perception is close to veridical when orientation remains approximately fixed in the environment (Ψo ≈ 0°), and when it is tangential to the trajectory.",
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.378,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.3471,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.344,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3417,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3401,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.3297,
+        "EMBODIED_ECOLOGICAL": 0.3269,
+        "ART": 0.3118,
+        "PREDICTIVE_PROCESSING": 0.3118,
+        "CREATIVE_COGNITION": 0.1701
+      },
+      "tier2_relevance": {
+        "SPATIAL_NAVIGATION": 0.3297,
+        "EMBODIED_COGNITION": 0.3269,
+        "PREDICTIVE_PROCESSING": 0.3118,
+        "IC": 0.172,
+        "ATTENTION_RESTORATION_THEORY": 0.1709,
+        "ATTENTION_RESTORATION": 0.1701,
+        "CREATIVE_COGNITION": 0.1701
+      }
     },
     {
       "id": 13,
-      "antecedent": "Simulated yaw (\u03a8o) in direction opposite to path rotation (\u03a8p)",
-      "consequent": "Perceived path rotation (\u03a8p)",
+      "antecedent": "Simulated yaw (Ψo) in direction opposite to path rotation (Ψp)",
+      "consequent": "Perceived path rotation (Ψp)",
       "direction": "mixed",
       "claim_type": "causal",
       "measure_type": "cognitive",
@@ -394,12 +1003,65 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "They respond in a similar manner when the simulated yaw is in the direction opposite to the direction in which the trajectory rotates."
+      "quote": "They respond in a similar manner when the simulated yaw is in the direction opposite to the direction in which the trajectory rotates.",
+      "template_matches": [
+        {
+          "template_id": "DT_RESTORATION_TIMECOURSE_001",
+          "display_id": "T16",
+          "score": 0.38,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3751,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3581,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3545,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3516,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.3234,
+        "ART": 0.19,
+        "COGNITIVE_CONTROL": 0.1875,
+        "CREATIVE_COGNITION": 0.1875,
+        "PREDICTIVE_PROCESSING": 0.1875,
+        "SRT": 0.179,
+        "AFFECTIVE_EMOTION": 0.1758
+      },
+      "tier2_relevance": {
+        "DIRECTED_ATTENTION": 0.19,
+        "COGNITIVE_CONTROL": 0.1875,
+        "CONSTRUAL_LEVEL_THEORY": 0.1875,
+        "CREATIVE_COGNITION": 0.1875,
+        "PREDICTIVE_PROCESSING": 0.1875,
+        "CROSS_FRAMEWORK": 0.179,
+        "NM_STRESS": 0.179,
+        "DMN_TPN_DYNAMICS": 0.1772,
+        "COGNITIVE_APPRAISAL": 0.1758,
+        "NEUROMODULATORY": 0.1758
+      }
     },
     {
       "id": 14,
-      "antecedent": "Simulated yaw (\u03a8o) > path rotation (\u03a8p) (e.g., linear+yaw conditions where \u03a8p=0\u00b0)",
-      "consequent": "Perceived path rotation (\u03a8p)",
+      "antecedent": "Simulated yaw (Ψo) > path rotation (Ψp) (e.g., linear+yaw conditions where Ψp=0°)",
+      "consequent": "Perceived path rotation (Ψp)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "cognitive",
@@ -418,7 +1080,58 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "When the orientation changes relative to the trajectory, such that \u03a8o>\u03a8p... subjects seem to assume that the detected rotation results (mostly) from a rotation of the trajectory."
+      "quote": "When the orientation changes relative to the trajectory, such that Ψo>Ψp... subjects seem to assume that the detected rotation results (mostly) from a rotation of the trajectory.",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3524,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3459,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3308,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3235,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.323,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.421,
+        "AFFECTIVE_EMOTION": 0.3092,
+        "CIRCADIAN_REGULATION": 0.1762,
+        "PREDICTIVE_PROCESSING": 0.1762,
+        "SRT": 0.1618
+      },
+      "tier2_relevance": {
+        "IC": 0.3097,
+        "AROUSAL_THEORY": 0.1762,
+        "PAD_EMOTIONAL_MODEL": 0.1762,
+        "PREDICTIVE_PROCESSING": 0.1762,
+        "RETINAL_ACTIVATION": 0.1762,
+        "HC": 0.1729,
+        "CROSS_FRAMEWORK": 0.1618,
+        "NM_STRESS": 0.1618,
+        "COGNITIVE_APPRAISAL": 0.1615,
+        "NEUROMODULATORY": 0.1615
+      }
     },
     {
       "id": 15,
@@ -442,7 +1155,62 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "in condition semicircle half-counter... the average perceived path is more or less a straight line."
+      "quote": "in condition semicircle half-counter... the average perceived path is more or less a straight line.",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3827,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3437,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.342,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3177,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3062,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4361,
+        "AFFECTIVE_EMOTION": 0.3152,
+        "NEUROMODULATORY_REWARD": 0.3152,
+        "CIRCADIAN_REGULATION": 0.1913,
+        "COGNITIVE_CONTROL": 0.171,
+        "CREATIVE_COGNITION": 0.171,
+        "MATERIAL_HAPTIC_THERMAL": 0.1588
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4361,
+        "AROUSAL_THEORY": 0.1913,
+        "PAD_EMOTIONAL_MODEL": 0.1913,
+        "RETINAL_ACTIVATION": 0.1913,
+        "HC": 0.1719,
+        "IC": 0.1719,
+        "COGNITIVE_CONTROL": 0.171,
+        "CONSTRUAL_LEVEL_THEORY": 0.171,
+        "CREATIVE_COGNITION": 0.171,
+        "INTEROCEPTION": 0.1588,
+        "COGNITIVE_APPRAISAL": 0.1531,
+        "NEUROMODULATORY": 0.1531
+      }
     },
     {
       "id": 16,
@@ -466,12 +1234,65 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 9, Influence of yaw (experiment 2)",
-      "quote": "In condition semicircle full-counter, the average response is a three-quarter counterclockwise arc!"
+      "quote": "In condition semicircle full-counter, the average response is a three-quarter counterclockwise arc!",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4023,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3739,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3641,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3594,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3511,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4645,
+        "AFFECTIVE_EMOTION": 0.3466,
+        "NEUROMODULATORY_REWARD": 0.3466,
+        "CIRCADIAN_REGULATION": 0.2011,
+        "COGNITIVE_CONTROL": 0.187,
+        "CREATIVE_COGNITION": 0.187
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4645,
+        "AROUSAL_THEORY": 0.2011,
+        "PAD_EMOTIONAL_MODEL": 0.2011,
+        "RETINAL_ACTIVATION": 0.2011,
+        "COGNITIVE_CONTROL": 0.187,
+        "CONSTRUAL_LEVEL_THEORY": 0.187,
+        "CREATIVE_COGNITION": 0.187,
+        "COGNITIVE_APPRAISAL": 0.182,
+        "NEUROMODULATORY": 0.182,
+        "HC": 0.1797,
+        "IC": 0.1797
+      }
     },
     {
       "id": 17,
       "antecedent": "Presence of a single landmark (linear+yaw conditions)",
-      "consequent": "Perception of yaw (\u03a8o)",
+      "consequent": "Perception of yaw (Ψo)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "cognitive",
@@ -494,7 +1315,59 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3647,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3486,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3389,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3386,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3314,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4392,
+        "CIRCADIAN_REGULATION": 0.1824,
+        "AFFECTIVE_EMOTION": 0.1743,
+        "EMBODIED_ECOLOGICAL": 0.1694,
+        "SPATIAL_COGNITION": 0.1694,
+        "SRT": 0.1693,
+        "PREDICTIVE_PROCESSING": 0.1657
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3249,
+        "CHRONOBIOLOGICAL": 0.1824,
+        "COGNITIVE_APPRAISAL": 0.1743,
+        "EMBODIED_COGNITION": 0.1694,
+        "SPATIAL_NAVIGATION": 0.1694,
+        "CROSS_FRAMEWORK": 0.1693,
+        "NM_STRESS": 0.1693,
+        "EC": 0.1657,
+        "PP": 0.1657
+      }
     },
     {
       "id": 18,
@@ -522,7 +1395,58 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3799,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3563,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3492,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.3375,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3373,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.3216,
+        "PREDICTIVE_PROCESSING": 0.3089,
+        "SPATIAL_COGNITION": 0.19,
+        "SRT": 0.1782,
+        "AFFECTIVE_EMOTION": 0.1746,
+        "ART": 0.1688
+      },
+      "tier2_relevance": {
+        "SPATIAL_NAVIGATION": 0.19,
+        "CROSS_FRAMEWORK": 0.1782,
+        "NM_STRESS": 0.1782,
+        "COGNITIVE_APPRAISAL": 0.1746,
+        "NEUROMODULATORY": 0.1746,
+        "ATTENTION_RESTORATION": 0.1688,
+        "PREDICTIVE_PROCESSING": 0.1688,
+        "EC": 0.1686,
+        "PP": 0.1686
+      }
     },
     {
       "id": 19,
@@ -552,12 +1476,67 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3755,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3453,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_ATTENTION_MEDIATION_010",
+          "display_id": "AX10",
+          "score": 0.3301,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3267,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3171,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4122,
+        "SRT": 0.3038,
+        "SPATIAL_COGNITION": 0.1878,
+        "NEUROMODULATORY_REWARD": 0.1726,
+        "ART": 0.1651,
+        "COGNITIVE_CONTROL": 0.1633,
+        "CREATIVE_COGNITION": 0.1633,
+        "MATERIAL_HAPTIC_THERMAL": 0.1585
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4122,
+        "SPATIAL_NAVIGATION": 0.1878,
+        "CROSS_FRAMEWORK": 0.1726,
+        "NM_STRESS": 0.1726,
+        "ATTENTION_RESTORATION": 0.1651,
+        "COGNITIVE_CONTROL": 0.1633,
+        "CONSTRUAL_LEVEL_THEORY": 0.1633,
+        "CREATIVE_COGNITION": 0.1633,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1585,
+        "ALLOSTATIC_REGULATION": 0.1585,
+        "METABOLIC_HEALTH": 0.1585
+      }
     },
     {
       "id": 20,
       "antecedent": "Presence of a single landmark (long linear+yaw translations)",
-      "consequent": "Perception of yaw (\u03a8o)",
+      "consequent": "Perception of yaw (Ψo)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "cognitive",
@@ -582,12 +1561,65 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3627,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3357,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3351,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3289,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3275,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4306,
+        "CIRCADIAN_REGULATION": 0.1814,
+        "ART": 0.1678,
+        "PREDICTIVE_PROCESSING": 0.1678,
+        "AFFECTIVE_EMOTION": 0.1676,
+        "SRT": 0.1645,
+        "EMBODIED_ECOLOGICAL": 0.1638,
+        "SPATIAL_COGNITION": 0.1638
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3185,
+        "CHRONOBIOLOGICAL": 0.1814,
+        "ATTENTION_RESTORATION_THEORY": 0.1678,
+        "PREDICTIVE_PROCESSING": 0.1678,
+        "COGNITIVE_APPRAISAL": 0.1676,
+        "CROSS_FRAMEWORK": 0.1645,
+        "NM_STRESS": 0.1645,
+        "EMBODIED_COGNITION": 0.1638,
+        "SPATIAL_NAVIGATION": 0.1638
+      }
     },
     {
       "id": 21,
       "antecedent": "Landmark type (shifting vs. fixated)",
-      "consequent": "Errors in yaw (\u03a8o) and path (\u03a8p) perception",
+      "consequent": "Errors in yaw (Ψo) and path (Ψp) perception",
       "direction": "decrease",
       "claim_type": "associational",
       "measure_type": "cognitive",
@@ -610,7 +1642,55 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3336,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_SALIENCE_NETWORK_001",
+          "display_id": "DT1",
+          "score": 0.3315,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3235,
+          "reasons": []
+        },
+        {
+          "template_id": "SALIENCE_NETWORK_SWITCH_001",
+          "display_id": "T68",
+          "score": 0.3163,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3137,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.2986,
+        "CIRCADIAN_REGULATION": 0.1668,
+        "MULTISENSORY_INTEGRATION": 0.1568,
+        "PREDICTIVE_PROCESSING": 0.1568
+      },
+      "tier2_relevance": {
+        "IC": 0.2932,
+        "CHRONOBIOLOGICAL": 0.1668,
+        "NEUROMODULATORY": 0.1668,
+        "DMN_TPN_DYNAMICS": 0.1658,
+        "CC": 0.1582,
+        "NM": 0.1582,
+        "MS": 0.1568,
+        "PP": 0.1568
+      }
     },
     {
       "id": 22,
@@ -634,7 +1714,57 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 10, Landmark effects (experiment 3)",
-      "quote": "The benefit of a landmark is also apparent from the normalised figural distance (ANOVA none vs. shifting vs. fixated; F(2,30)=4.58, p<0.0184; mostly due to the angular component), but for this measure, the effect of the fixated landmark is the largest."
+      "quote": "The benefit of a landmark is also apparent from the normalised figural distance (ANOVA none vs. shifting vs. fixated; F(2,30)=4.58, p<0.0184; mostly due to the angular component), but for this measure, the effect of the fixated landmark is the largest.",
+      "template_matches": [
+        {
+          "template_id": "ER_ECOLOGICAL_RATIONALITY_001",
+          "display_id": "T37",
+          "score": 0.3276,
+          "reasons": []
+        },
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.3151,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_AFFORDANCE_POSTURAL_001",
+          "display_id": "T8",
+          "score": 0.3079,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3003,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2993,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4013,
+        "COGNITIVE_CONTROL": 0.2955,
+        "CREATIVE_COGNITION": 0.1575,
+        "EMBODIED_ECOLOGICAL": 0.154,
+        "NEUROMODULATORY_REWARD": 0.154
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2955,
+        "ECOLOGICAL_RATIONALITY": 0.1638,
+        "COGNITIVE_CONTROL": 0.1575,
+        "CREATIVE_COGNITION": 0.1575,
+        "DMN_TPN_DYNAMICS": 0.1575,
+        "EMBODIED_COGNITION": 0.154,
+        "NM_AROUSAL": 0.154,
+        "EC": 0.1502,
+        "PP": 0.1502
+      }
     },
     {
       "id": 23,
@@ -658,7 +1788,56 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 10, Landmark effects (experiment 3)",
-      "quote": "The number of erroneous RIP responses decrease when a landmark is present (ANOVA none vs. shifting vs. fixated; F(2,30)=4.81, p<0.0154)."
+      "quote": "The number of erroneous RIP responses decrease when a landmark is present (ANOVA none vs. shifting vs. fixated; F(2,30)=4.81, p<0.0154).",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3317,
+          "reasons": []
+        },
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.3216,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3186,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.3031,
+          "reasons": []
+        },
+        {
+          "template_id": "ER_ECOLOGICAL_RATIONALITY_001",
+          "display_id": "T37",
+          "score": 0.2966,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "CREATIVE_COGNITION": 0.2945,
+        "PREDICTIVE_PROCESSING": 0.2945,
+        "COGNITIVE_CONTROL": 0.1608,
+        "ART": 0.1593,
+        "EMBODIED_ECOLOGICAL": 0.1593
+      },
+      "tier2_relevance": {
+        "CREATIVE_COGNITION": 0.2945,
+        "PREDICTIVE_PROCESSING": 0.2945,
+        "IC": 0.1658,
+        "COGNITIVE_CONTROL": 0.1608,
+        "DMN_TPN_DYNAMICS": 0.1608,
+        "ATTENTION_RESTORATION": 0.1593,
+        "EMBODIED_COGNITION": 0.1593,
+        "HC": 0.1515
+      }
     },
     {
       "id": 24,
@@ -686,7 +1865,57 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.3898,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DIRECTED_ATTENTION_001",
+          "display_id": "DT2",
+          "score": 0.3366,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3363,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3353,
+          "reasons": []
+        },
+        {
+          "template_id": "MS_ACOUSTIC_ECOLOGY_001",
+          "display_id": "T58",
+          "score": 0.3322,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3304,
+        "MULTISENSORY_INTEGRATION": 0.3286,
+        "NEUROMODULATORY_REWARD": 0.3076,
+        "ART": 0.1683,
+        "MATERIAL_HAPTIC_THERMAL": 0.1681,
+        "CIRCADIAN_REGULATION": 0.1676
+      },
+      "tier2_relevance": {
+        "MS": 0.3286,
+        "NEUROMODULATORY": 0.3076,
+        "IC": 0.1949,
+        "PP": 0.1949,
+        "ATTENTION_RESTORATION_THEORY": 0.1683,
+        "PREDICTIVE_PROCESSING": 0.1683,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.1681,
+        "CHRONOBIOLOGICAL": 0.1676
+      }
     },
     {
       "id": 25,
@@ -715,7 +1944,58 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3865,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3802,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3646,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3553,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.352,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3377,
+        "SPATIAL_COGNITION": 0.3352,
+        "EMBODIED_ECOLOGICAL": 0.1933,
+        "COGNITIVE_CONTROL": 0.1901,
+        "CREATIVE_COGNITION": 0.1901,
+        "NEUROMODULATORY_REWARD": 0.1777,
+        "SRT": 0.1777
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3377,
+        "SPATIAL_NAVIGATION": 0.3352,
+        "EMBODIED_COGNITION": 0.1933,
+        "COGNITIVE_CONTROL": 0.1901,
+        "CONSTRUAL_LEVEL_THEORY": 0.1901,
+        "CREATIVE_COGNITION": 0.1901,
+        "CROSS_FRAMEWORK": 0.1777,
+        "NM_STRESS": 0.1777
+      }
     },
     {
       "id": 26,
@@ -744,7 +2024,59 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3978,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3679,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.365,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_NATURE_VIEW_MULTIPATH_001",
+          "display_id": "T13",
+          "score": 0.3517,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_CHOLINERGIC_GATING_007",
+          "display_id": "T26",
+          "score": 0.3509,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4556,
+        "PREDICTIVE_PROCESSING": 0.3329,
+        "CIRCADIAN_REGULATION": 0.1989,
+        "MATERIAL_HAPTIC_THERMAL": 0.184,
+        "COGNITIVE_CONTROL": 0.1825,
+        "CREATIVE_COGNITION": 0.1825,
+        "SRT": 0.1759
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.3395,
+        "PREDICTIVE_PROCESSING": 0.3329,
+        "CHRONOBIOLOGICAL": 0.1989,
+        "INTEROCEPTION": 0.184,
+        "COGNITIVE_CONTROL": 0.1825,
+        "CONSTRUAL_LEVEL_THEORY": 0.1825,
+        "CREATIVE_COGNITION": 0.1825,
+        "CROSS_FRAMEWORK": 0.1759,
+        "NM_STRESS": 0.1759
+      }
     },
     {
       "id": 27,
@@ -772,7 +2104,43 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.3334,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3037,
+          "reasons": []
+        },
+        {
+          "template_id": "CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "CREA1",
+          "score": 0.2987,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.2943,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2937,
+          "reasons": []
+        }
+      ],
+      "tier2_relevance": {
+        "HC": 0.1667,
+        "IC": 0.1519
+      }
     },
     {
       "id": 28,
@@ -796,7 +2164,54 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 13, Discussion",
-      "quote": "There were also less erroneous rotation in place responses when a landmark was present."
+      "quote": "There were also less erroneous rotation in place responses when a landmark was present.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3632,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3551,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_CREATIVE_NETWORK_DYNAMICS_001",
+          "display_id": "T59",
+          "score": 0.347,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3455,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3391,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3202,
+        "CREATIVE_COGNITION": 0.1735,
+        "SPATIAL_COGNITION": 0.1696
+      },
+      "tier2_relevance": {
+        "IC": 0.1816,
+        "EC": 0.1776,
+        "PP": 0.1776,
+        "CREATIVE_COGNITION_THEORY": 0.1735,
+        "NETWORK_NEUROSCIENCE": 0.1735,
+        "PREDICTIVE_PROCESSING": 0.1735,
+        "METHODOLOGICAL": 0.1727,
+        "SPATIAL_NAVIGATION": 0.1696
+      }
     },
     {
       "id": 29,
@@ -824,7 +2239,56 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "exact",
-      "outcome_confidence": 1.0
+      "outcome_confidence": 1.0,
+      "template_matches": [
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.4552,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "EC_COGNITIVE_OFFLOADING_002",
+          "display_id": "T28",
+          "score": 0.3876,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3871,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.3762,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CONTROL_STRESS_004",
+          "display_id": "AX4",
+          "score": 0.3721,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4896,
+        "CIRCADIAN_REGULATION": 0.2276,
+        "EMBODIED_ECOLOGICAL": 0.1938,
+        "SPATIAL_COGNITION": 0.1938,
+        "AFFECTIVE_EMOTION": 0.186
+      },
+      "tier2_relevance": {
+        "NEUROMODULATORY": 0.4896,
+        "CHRONOBIOLOGICAL": 0.2276,
+        "EMBODIED_COGNITION": 0.1938,
+        "SPATIAL_NAVIGATION": 0.1938,
+        "IC": 0.1935,
+        "COGNITIVE_APPRAISAL": 0.186
+      }
     }
   ],
   "mechanisms": [
@@ -870,7 +2334,7 @@
   "limitations": [
     "The task was perceived as difficult by subjects.",
     "Subjects often reproduced a rotation in place when yaw was large relative to translation.",
-    "The good perception of yaw might partly be a result of an observational and/or response strategy, as stimuli simulated manoeuvres with multiples of 90\u00b0 and 180\u00b0 of rotation, and subjects seemed to categorize in steps of at least 90\u00b0.",
+    "The good perception of yaw might partly be a result of an observational and/or response strategy, as stimuli simulated manoeuvres with multiples of 90° and 180° of rotation, and subjects seemed to categorize in steps of at least 90°.",
     "The recorded reproductions did not always exactly match verbal descriptions, making it difficult to ascertain if the reproduction reflected actual perception or a categorisation/sloppy reproduction.",
     "The study did not measure scale (radius) directly, making results not directly comparable to some other studies on curvature perception.",
     "The HMDs used (VR4 and Datavisor LCD) had some cushion distortion in the corners of the view, which is a common problem with HMDs."
@@ -1313,5 +2777,51 @@
   "crossref_publisher": "Elsevier BV",
   "crossref_subjects": [],
   "crossref_abstract": null,
-  "crossref_fetched_at": "2026-02-25T11:55:32.368004+00:00"
+  "crossref_fetched_at": "2026-02-25T11:55:32.368004+00:00",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Optic flow stimuli",
+      "various 2D trajectories",
+      "a single landmark"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "conditions with and without a single landmark"
+    ],
+    "ecological_validity": "lab"
+  },
+  "mechanism_chain": {
+    "description": "Optic flow stimuli and landmark information are processed by the visual system, integrated to form a perceived trajectory, which is then used for the reconstruction of travelled paths.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Optic flow stimuli and landmark information",
+        "to_construct": "Visual processing of motion and spatial cues",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Visual processing of motion and spatial cues",
+        "to_construct": "Perceived trajectory representation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived trajectory representation",
+        "to_construct": "Reconstruction of travelled paths",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T23:21:43.507401+00:00"
 }

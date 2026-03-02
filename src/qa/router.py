@@ -46,8 +46,8 @@ class MoleculeAwareRouter:
             try:
                 from src.services.arbitrary_qa_handler import ArbitraryQAHandler
                 self._arbitrary_handler = ArbitraryQAHandler()
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         return self._arbitrary_handler
     
     @property
@@ -56,8 +56,8 @@ class MoleculeAwareRouter:
             try:
                 from src.services.read_next_engine import ReadNextEngine
                 self._read_next = ReadNextEngine()
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         return self._read_next
     
     @property
@@ -66,8 +66,8 @@ class MoleculeAwareRouter:
             try:
                 from src.argument.qa_handlers import ArgumentQueryHandler
                 self._argument_handler = ArgumentQueryHandler()
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         return self._argument_handler
 
     def _load_molecules(self) -> Dict[str, Molecule]:
@@ -79,8 +79,8 @@ class MoleculeAwareRouter:
                         data = json.load(f)
                         mol = Molecule.from_dict(data)
                         molecules[mol.molecule_id] = mol
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         return molecules
         
     def _load_cache_index(self) -> Dict[str, dict]:
@@ -154,15 +154,15 @@ class MoleculeAwareRouter:
                 )
                 if arg_result is not None:
                     response = arg_result
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         
         # 3. Arbitrary QA (catalog, extended annotations, AI-routed)
         if response is None and self.arbitrary_handler:
             try:
                 response = self.arbitrary_handler.answer(query)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         
         # 4. Final fallback
         if response is None:
@@ -177,8 +177,8 @@ class MoleculeAwareRouter:
         if self.read_next:
             try:
                 self.read_next.enrich_qa_response(response, query)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         
         return response
 

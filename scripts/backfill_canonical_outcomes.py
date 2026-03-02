@@ -206,8 +206,8 @@ def main() -> int:
     # Enable WAL mode for better concurrency on subsequent operations
     try:
         conn.execute("PRAGMA journal_mode=WAL")
-    except Exception:
-        pass  # If WAL fails, fall back to default
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")  # If WAL fails, fall back to default
 
     try:
         # Fetch all beliefs with outcome_id

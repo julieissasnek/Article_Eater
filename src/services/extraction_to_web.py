@@ -84,6 +84,11 @@ from src.services.bn_coherence_client import (
     BNCoherenceClient,
 )
 
+# Phase 1B: Extraction Quality Gate
+from src.qa.extraction_field_validator import (
+    ExtractionFieldValidator,
+)
+
 # OC-3: Outcome Resolver Integration
 try:
     from lib.outcome_resolver import resolve_outcome
@@ -96,6 +101,10 @@ logger = logging.getLogger(__name__)
 # Coherence check configuration
 BN_COHERENCE_ENABLED = os.environ.get("AE_BN_COHERENCE_ENABLED", "true").lower() == "true"
 BN_COHERENCE_BLOCK_CONFLICTS = os.environ.get("AE_BN_COHERENCE_BLOCK_CONFLICTS", "false").lower() == "true"
+
+# Phase 1B: Quality gate configuration
+VALIDATOR_BLOCKING_ENABLED = os.environ.get("ATLAS_VALIDATOR_BLOCKING", "true").lower() == "true"
+QUALITY_THRESHOLD = float(os.environ.get("ATLAS_QUALITY_THRESHOLD", "0.75"))
 
 
 # =============================================================================
@@ -330,6 +339,11 @@ class MappingResult:
     # D7: Pure psych/neuro paper without architectural application
     mechanism_only: bool = False
 
+    # Sprint CREDENCE-WARRANT: Warrant-derived credence (§48.3B)
+    warrant_credence: Optional[Any] = None  # Credence object from warrant computation
+    omega_audit: Optional[Dict[str, Any]] = None  # Full ω decomposition for auditability
+    credence_discrepancy: Optional[float] = None  # |old - new| credence if > 0.15 (R6)
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'success': self.success,
@@ -366,19 +380,22 @@ class IntegrationReport:
     n_rules_success: int = 0
     n_stubs: int = 0
     n_anomalies: int = 0
-    
+
     theory_distribution: Dict[str, int] = field(default_factory=dict)
     level_distribution: Dict[str, int] = field(default_factory=dict)
     stub_reasons: Dict[str, int] = field(default_factory=dict)
-    
+
     warnings: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
-    
+
     coherence_before: Optional[float] = None
     coherence_after: Optional[float] = None
 
     # BN coherence check stats (ARCH-4 Sprint 1.3)
     bn_coherence_stats: Dict[str, int] = field(default_factory=dict)
+
+    # Phase 1B: Quality validator gate stats
+    validator_stats: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -402,6 +419,7 @@ class IntegrationReport:
                          if self.coherence_before and self.coherence_after else None
             },
             'bn_coherence': self.bn_coherence_stats,
+            'validator_gate': self.validator_stats,
             'warnings': self.warnings,
             'errors': self.errors
         }
@@ -747,6 +765,260 @@ def compute_credence_from_statistics(
     return CredenceResult(credence=credence, evidential_direction=evidential_direction)
 
 
+def compute_credence_from_warrants(
+    claim: Dict[str, Any],
+    theory_id: Optional[str] = None,
+    tea_scores: Optional[Dict[str, float]] = None
+) -> Tuple[Optional["Credence"], Optional[Dict[str, Any]]]:
+    """
+    Compute warrant-derived credence per §48.3B (Sprint CREDENCE-WARRANT Phase 4).
+
+    This function implements the panel-approved credence formula that replaces
+    the naive statistics-based credence with a principled warrant-derived value.
+
+    The function:
+    1. Infers study design characteristics from the extraction claim
+    2. Computes ω (warrant strength) via the 5-component formula
+    3. Builds a projection edge from the extraction
+    4. Computes credence via σ(d · ω · δ · logit(p_lab))
+
+    For the R6 dual-credence transition period, callers should compute BOTH
+    the old (statistics-based) and new (warrant-based) credence and flag
+    discrepancies > 0.15 for manual review.
+
+    Args:
+        claim: Extraction claim dict with study metadata
+        theory_id: Optional theory identifier for mechanism edges
+        tea_scores: Pre-loaded TEA scores dict (loads from default if None)
+
+    Returns:
+        Tuple of:
+        - Credence object (or None if computation fails)
+        - omega_audit dict with full ω decomposition (or None)
+
+    Reference:
+        ATLAS §48.3B: Warrant Strength Assignment and Credence-Warrant Integration
+        Panel Revision R6 (Cartwright): Dual credence transition period
+    """
+    try:
+        from src.services.warrant_strength import (
+            compute_omega_from_extraction,
+            compute_credence_from_warrants as _warrant_credence,
+            DesignType,
+            PublicationType,
+            CANONICAL_DISCOUNT_FACTORS,
+        )
+    except ImportError:
+        logger.warning("warrant_strength module not available; skipping warrant credence")
+        return None, None
+
+    statistics = claim.get("statistics", {})
+    study = claim.get("study", {})
+    claim_type = claim.get("claim_type", "associational")
+    ae_confidence = claim.get("ae_confidence", 0.5)
+
+    # Infer design type from claim metadata
+    design_type = _infer_design_type(claim)
+    sample_size = _extract_sample_size(claim)
+    is_mechanism_edge = claim_type in ("mechanistic", "causal_mechanism")
+
+    # Build the finding dict for omega computation
+    finding = {
+        "design_type": design_type,
+        "sample_size": sample_size,
+        "pre_registered": study.get("pre_registered", False),
+        "blinded": study.get("blinded", False),
+        "self_report_only": study.get("self_report_only", False),
+        "n_uncontrolled_confounds": study.get("n_uncontrolled_confounds", 0),
+        "has_randomization": study.get("has_randomization", False),
+        "has_active_control": study.get("has_active_control", False),
+        "n_independent_replications": study.get("n_independent_replications", 0),
+        "n_conceptual_replications": study.get("n_conceptual_replications", 0),
+        "publication_type": study.get("publication_type", "peer_reviewed"),
+        "is_mechanism_edge": is_mechanism_edge,
+        "mechanism_specificity": study.get("mechanism_specificity", 0.5),
+    }
+
+    omega_result = compute_omega_from_extraction(finding, theory_id=theory_id, tea_scores=tea_scores)
+
+    # Infer p_lab (laboratory effect probability) from statistics
+    # This is the probability of the effect in the study context
+    p_lab = _estimate_p_lab(ae_confidence, statistics)
+
+    # Infer warrant type from claim characteristics
+    tau = _infer_warrant_type(claim_type, is_mechanism_edge)
+
+    # Build projection edge
+    edge = {
+        "p_lab": p_lab,
+        "tau": tau,
+        "omega": omega_result.omega,
+        "delta": 1.0,  # Default: assume populations identical for now
+    }
+
+    # Compute warrant-derived credence
+    warrant_credence_value = _warrant_credence([edge])
+
+    # Determine evidential direction
+    if claim_type == "null":
+        n_supporting = 0
+        n_contradicting = 1
+    else:
+        n_supporting = 1
+        n_contradicting = 0
+
+    # Compute uncertainty from omega: higher ω → lower uncertainty
+    uncertainty = max(0.25, 0.50 * (1.0 - omega_result.omega))
+
+    credence = Credence(
+        value=max(0.1, min(0.9, warrant_credence_value)),
+        uncertainty=uncertainty,
+        n_supporting=n_supporting,
+        n_contradicting=n_contradicting,
+        n_observations=1
+    )
+
+    omega_audit = omega_result.to_dict()
+    omega_audit["p_lab"] = p_lab
+    omega_audit["tau"] = tau
+    omega_audit["warrant_credence"] = warrant_credence_value
+
+    return credence, omega_audit
+
+
+def _infer_design_type(claim: Dict[str, Any]) -> str:
+    """
+    Infer DesignType string from extraction claim metadata.
+
+    Examines claim_type, study metadata, and method descriptions to
+    determine the most likely experimental design.
+
+    Returns:
+        Design type string matching DesignType enum values.
+    """
+    claim_type = claim.get("claim_type", "associational")
+    study = claim.get("study", {})
+    method = study.get("method", "").lower()
+    design = study.get("design", "").lower()
+
+    # Check for meta-analysis / systematic review first
+    if claim_type in ("synthesis", "meta_analysis") or "meta-analysis" in method or "meta-analysis" in design:
+        return "meta_analysis"
+    if claim_type == "review" or "systematic review" in method:
+        return "systematic_review"
+
+    # Check for RCT indicators
+    if any(kw in design for kw in ("randomized", "rct", "randomised")):
+        sample_size = _extract_sample_size(claim)
+        if sample_size and sample_size > 200 and study.get("pre_registered", False):
+            return "large_rct"
+        return "standard_rct"
+
+    # Within-subjects / crossover
+    if any(kw in design for kw in ("within-subjects", "crossover", "repeated measures", "within subjects")):
+        return "within_subjects"
+
+    # Quasi-experimental
+    if any(kw in design for kw in ("quasi", "natural experiment", "interrupted time series", "quasi-experiment")):
+        return "quasi_experimental"
+
+    # Case study / qualitative
+    if claim_type in ("qualitative", "case_study") or any(kw in method for kw in ("case study", "qualitative", "ethnograph")):
+        return "case_study"
+
+    # Default: observational for associational, standard_rct for causal/mechanistic
+    if claim_type in ("mechanistic", "causal", "causal_mechanism", "experimental"):
+        return "standard_rct"
+
+    return "observational"
+
+
+def _extract_sample_size(claim: Dict[str, Any]) -> Optional[int]:
+    """Extract sample size from claim, coercing to int if possible."""
+    study = claim.get("study", {})
+    n = study.get("sample_size") or study.get("n") or claim.get("statistics", {}).get("n")
+    if n is not None:
+        try:
+            return int(n)
+        except (ValueError, TypeError):
+            pass
+    return None
+
+
+def _estimate_p_lab(ae_confidence: float, statistics: Dict[str, Any]) -> float:
+    """
+    Estimate laboratory effect probability from extraction confidence and statistics.
+
+    This bridges the extraction layer (which provides ae_confidence and p-values)
+    to the projection layer (which expects p_lab as an effect probability).
+
+    Heuristic:
+    - ae_confidence is already a probability-like measure (0-1) of how likely
+      the extracted claim is correct
+    - Adjust upward for strong statistical evidence (low p, high effect)
+    - Adjust downward for weak evidence
+
+    Returns:
+        p_lab ∈ (0.1, 0.9)
+    """
+    p_lab = ae_confidence
+
+    p_value = statistics.get("p_value")
+    if p_value is not None:
+        if isinstance(p_value, str):
+            p_str = p_value.strip().lstrip("<>≤≥~ ")
+            try:
+                p_value = float(p_str)
+            except (ValueError, TypeError):
+                p_value = None
+
+    if p_value is not None:
+        if p_value < 0.001:
+            p_lab = min(0.9, p_lab * 1.1)
+        elif p_value < 0.01:
+            p_lab = min(0.85, p_lab * 1.05)
+        elif p_value > 0.10:
+            p_lab = max(0.3, p_lab * 0.85)
+
+    effect_size = statistics.get("effect_size", {})
+    es_value = effect_size.get("value")
+    if es_value is not None:
+        try:
+            es_value = abs(float(es_value))
+            if es_value > 0.8:  # Large effect
+                p_lab = min(0.9, p_lab + 0.05)
+            elif es_value < 0.2:  # Small effect
+                p_lab = max(0.3, p_lab - 0.05)
+        except (ValueError, TypeError):
+            pass
+
+    return max(0.1, min(0.9, p_lab))
+
+
+def _infer_warrant_type(claim_type: str, is_mechanism_edge: bool) -> str:
+    """
+    Infer warrant type (τ) from claim characteristics.
+
+    Maps extraction-level claim types to the ATLAS warrant type taxonomy
+    used in the projection calculus.
+
+    Returns:
+        String matching CANONICAL_DISCOUNT_FACTORS keys.
+    """
+    if is_mechanism_edge or claim_type in ("mechanistic", "causal_mechanism"):
+        return "mechanism"
+    if claim_type in ("constitutive", "definitional"):
+        return "constitutive"
+    if claim_type in ("functional", "capacity_functional"):
+        return "functional"
+    if claim_type in ("theoretical", "theory_derived"):
+        return "theory_derived"
+    if claim_type in ("analogical", "cross_domain"):
+        return "analogical"
+    # Default: empirical association
+    return "empirical_association"
+
+
 def claim_to_belief(
     claim: Dict[str, Any],
     web: Optional[WebOfBelief] = None,
@@ -831,6 +1103,25 @@ def claim_to_belief(
         # Compute credence (returns CredenceResult with evidential_direction)
         credence_result = compute_credence_from_statistics(ae_confidence, statistics, claim_type)
         credence = credence_result.credence
+
+        # R6 Dual-Credence Transition: compute warrant-derived credence alongside
+        warrant_credence, omega_audit = compute_credence_from_warrants(
+            claim, theory_id=theory_id
+        )
+        if warrant_credence is not None:
+            result.omega_audit = omega_audit
+            result.warrant_credence = warrant_credence
+            # Flag discrepancies > 0.15 for manual review (Panel Revision R6)
+            discrepancy = abs(credence.value - warrant_credence.value)
+            if discrepancy > 0.15:
+                result.credence_discrepancy = discrepancy
+                result.review_recommended = True
+                result.inference_trace.append(
+                    f"R6 DISCREPANCY: statistics_credence={credence.value:.3f} vs "
+                    f"warrant_credence={warrant_credence.value:.3f} (Δ={discrepancy:.3f} > 0.15)"
+                )
+            # During transition: use warrant credence as primary (it's the improved formula)
+            credence = warrant_credence
 
         # Determine status
         # Expert Panel Resolution (2026-01-18): Null findings are NOT automatically ANOMALOUS
@@ -1064,9 +1355,75 @@ def integrate_extraction(
         "blocked": 0
     }
 
+    # Phase 1B: Quality validation gate
+    # Track findings blocked by validator
+    validator_stats = {
+        "checked": 0,
+        "passed": 0,
+        "blocked": 0,
+        "blocked_by_field": {}
+    }
+
     # Process claims
     for claim in claims:
         report.n_claims_processed += 1
+
+        # Phase 1B: Check if this claim (finding) passes quality validation
+        # Only validate if the claim has sufficient structure to be validated
+        should_process_claim = True
+        if VALIDATOR_BLOCKING_ENABLED and claim.get("antecedent") and claim.get("consequent"):
+            validator_stats["checked"] += 1
+
+            # Create a minimal extraction for validation
+            # (validator expects article-level structure)
+            temp_extraction = {
+                "article_type": claim.get("claim_type", "empirical_finding"),
+                "article_family": claim.get("article_family", "empirical"),
+                "findings": [claim],
+                "_meta": {"source": "extraction_to_web", "claim_id": claim.get("id", "unknown")}
+            }
+
+            try:
+                validator = ExtractionFieldValidator()
+                passed, score, violations = validator.validate_and_gate(
+                    temp_extraction,  # Pass dict directly, not path
+                    threshold=QUALITY_THRESHOLD
+                )
+
+                if not passed:
+                    should_process_claim = False
+                    validator_stats["blocked"] += 1
+
+                    # Track which fields caused blocking
+                    for violation in violations:
+                        field = violation.get("field", "unknown")
+                        validator_stats["blocked_by_field"][field] = \
+                            validator_stats["blocked_by_field"].get(field, 0) + 1
+
+                    logger.warning(
+                        f"Finding blocked by quality gate: {claim.get('id', 'unknown')} "
+                        f"(score={score:.3f} < {QUALITY_THRESHOLD}). "
+                        f"Top violations: {violations[:3]}"
+                    )
+                    report.warnings.append(
+                        f"Finding '{claim.get('id', 'unknown')}' blocked by validator "
+                        f"(score {score:.3f} < {QUALITY_THRESHOLD})"
+                    )
+                else:
+                    validator_stats["passed"] += 1
+
+            except Exception as e:
+                # If validator fails, log but continue (fail-open)
+                logger.warning(f"Validator error for claim {claim.get('id', 'unknown')}: {e}")
+                report.warnings.append(f"Validator error: {e}")
+        else:
+            # Claim doesn't have required fields for validation
+            should_process_claim = True
+
+        if not should_process_claim:
+            # Skip this finding
+            continue
+
         result = claim_to_belief(claim, web, outcome_lookup)
 
         if result.success and result.entity:
@@ -1185,6 +1542,18 @@ def integrate_extraction(
             f"BN coherence: {coherence_stats['passed']}/{coherence_stats['checked']} passed, "
             f"{coherence_stats['conflicts']} conflicts, {coherence_stats['blocked']} blocked"
         )
+
+    # Record Phase 1B validator gate stats
+    report.validator_stats = validator_stats
+    if validator_stats.get("checked", 0) > 0:
+        logger.info(
+            f"Quality validator gate: {validator_stats['passed']}/{validator_stats['checked']} passed, "
+            f"{validator_stats['blocked']} blocked"
+        )
+        if validator_stats.get("blocked_by_field"):
+            top_fields = sorted(validator_stats["blocked_by_field"].items(),
+                              key=lambda x: -x[1])[:3]
+            logger.info(f"Top blocking fields: {', '.join(f'{k}={v}' for k, v in top_fields)}")
 
     return report
 

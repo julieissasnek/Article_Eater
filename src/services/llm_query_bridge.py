@@ -929,8 +929,8 @@ explicitly ask about interventions or counterfactuals."""
                 try:
                     entrenchment = web_of_belief.get_entrenchment(belief.belief_id)
                     score += entrenchment * 3.0
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Non-critical: {e}")
 
             # High credence contributes
             score += belief.credence.point * 2.0

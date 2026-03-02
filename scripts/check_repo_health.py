@@ -252,8 +252,8 @@ def check_en_bn_health() -> Dict:
                         total_with_effect += 1
                     if f.get("direction"):
                         total_with_direction += 1
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         stats["sampled_papers"] = min(200, len(extraction_files))
         stats["avg_findings_per_paper"] = total_findings / max(1, stats["sampled_papers"])
@@ -278,8 +278,8 @@ def check_en_bn_health() -> Dict:
                 t = json.load(open(tf))
                 if t.get("calibration_status") == "calibrated":
                     calibrated += 1
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         stats["templates_calibrated"] = calibrated
     else:
         stats["templates_total"] = 0
@@ -336,8 +336,8 @@ def check_en_bn_health() -> Dict:
                 db_found = True
                 stats["db_source"] = str(db_path)
                 break
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if not db_found:
         stats["beliefs_in_db"] = "N/A (DB not accessible)"

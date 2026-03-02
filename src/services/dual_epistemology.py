@@ -23,6 +23,7 @@ that epistemological choices aren't neutral.
 """
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Dict, Any, Tuple
 import json
 
@@ -479,8 +480,10 @@ def run_dual_analysis():
     print("Comparing Foundationalist vs Coherentist Frameworks")
     print("="*70)
     
-    # Load papers
-    with open('/home/claude/article_eater/data/extraction_results.json') as f:
+    # Load papers - use project-relative path
+    project_root = Path(__file__).parent.parent.parent
+    extraction_results_path = project_root / "data" / "extraction_results.json"
+    with open(extraction_results_path) as f:
         data = json.load(f)
     
     # Reconstruct papers
@@ -511,8 +514,10 @@ def run_dual_analysis():
     report = analyzer.generate_report(comparison)
     print(report)
     
-    # Save report
-    with open('/home/claude/article_eater/reports/dual_epistemology_report.md', 'w') as f:
+    # Save report - use project-relative path
+    reports_dir = project_root / "reports"
+    reports_dir.mkdir(exist_ok=True)
+    with open(reports_dir / "dual_epistemology_report.md", 'w') as f:
         f.write(report)
     
     return analyzer, comparison

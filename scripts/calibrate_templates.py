@@ -58,8 +58,8 @@ def build_evidence_index(extractions_dir: Path) -> dict:
                                 "mechanism": finding.get("mechanism", ""),
                                 "claim_type": finding.get("claim_type", ""),
                             })
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     return dict(evidence)
 
@@ -156,8 +156,8 @@ def main():
                 already_calibrated += 1
             else:
                 uncalibrated.append((tf, t))
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     logger.info(f"Templates: {len(templates)} total, {already_calibrated} already calibrated, {len(uncalibrated)} uncalibrated")
 

@@ -20,7 +20,9 @@ def main():
                 m = re.match(r'^\s*(?:from\s+([\w\.]+)|import\s+([\w\.]+))', line)
                 if m:
                     imports.add((m.group(1) or m.group(2)).split('.')[0])
-        except: pass
+        except Exception:
+
+            pass
     orphans = []
     for pf in py_files:
         base = pathlib.Path(pf).stem

@@ -690,11 +690,11 @@ class TestOverseer:
         assert "Reporter" in content or "Report" in content, "Reporter component not defined"
 
     def test_overseer_defines_system_class(self, project_root):
-        """OS-SC1f: Module defines OverseerSystem main class."""
+        """OS-SC1f: Module defines OverseerService main class."""
         overseer_file = project_root / "src" / "services" / "overseer.py"
         content = overseer_file.read_text()
 
-        assert "OverseerSystem" in content, "OverseerSystem class not defined"
+        assert "OverseerService" in content, "OverseerService class not defined"
 
     def test_overseer_checks_operational_state(self, project_root):
         """OS-SC2: Module checks INV-0 (OPERATIONAL state)."""

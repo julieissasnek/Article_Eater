@@ -90,6 +90,7 @@ class HealthReport:
     quarantine_actions: List[Dict]      # {action, belief_id, reason, deadline}
     maintenance_actions: List[Dict]     # {action, resource, status}
     duration_ms: float
+    management: Optional[Dict[str, Any]] = None  # v2 Management Layer report (pipelines, queues, flow)
 
 
 # ============================================================================
@@ -301,6 +302,9 @@ class OverseerService:
         maintenance = self.run_maintenance()
         maintenance_actions = maintenance.get("actions", [])
 
+        # Management layer: pipeline monitoring, queue health, article flow
+        management_report = self._run_management_check()
+
         # Record snapshot
         if self.baseline_metrics is None:
             self.set_baseline(health)
@@ -311,7 +315,7 @@ class OverseerService:
 
         duration_ms = (datetime.now(timezone.utc) - start).total_seconds() * 1000
 
-        return HealthReport(
+        report = HealthReport(
             timestamp=start.isoformat(),
             mode="PERIODIC",
             trigger_paper_id=None,
@@ -322,6 +326,55 @@ class OverseerService:
             maintenance_actions=maintenance_actions,
             duration_ms=duration_ms
         )
+        # Attach management report as supplementary data
+        report.management = management_report
+        return report
+
+    def _run_management_check(self) -> Optional[Dict[str, Any]]:
+        """
+        Run the OVERSEER Management Layer (v2).
+
+        Monitors: pipeline health, queue backlog, article flow,
+        search suggestion staleness, extraction queue, panel needs.
+
+        Returns dict with management report, or None if module unavailable.
+        Uses composition (O-8: graceful degradation if module missing).
+        """
+        try:
+            from src.services.overseer_management import ManagementDashboard
+            dashboard = ManagementDashboard(
+                overseer_db_path=self.overseer_db_path,
+                web_db_path=self.web_db_path,
+                web=self.web,
+            )
+            report = dashboard.generate_management_report()
+            # Convert ManagementReport dataclass to dict
+            return {
+                "pipeline_statuses": {
+                    k: {"status": v.status.value if hasattr(v.status, "value") else str(v.status),
+                         "queue_depth": getattr(v, "queue_depth", 0),
+                         "throughput_24h": getattr(v, "throughput_24h", 0),
+                         "error_rate_24h": getattr(v, "error_rate_24h", 0.0),
+                         "bottleneck": getattr(v, "bottleneck", None)}
+                    if hasattr(v, "status") else v
+                    for k, v in (report.pipeline_statuses.items()
+                                 if hasattr(report, "pipeline_statuses") and report.pipeline_statuses
+                                 else {}.items())
+                },
+                "queue_health": report.queue_health if hasattr(report, "queue_health") else {},
+                "article_flow": report.article_flow if hasattr(report, "article_flow") else {},
+                "suggestion_backlog": report.suggestion_backlog if hasattr(report, "suggestion_backlog") else {},
+                "extraction_queue": report.extraction_queue if hasattr(report, "extraction_queue") else {},
+                "panel_needs": report.panel_needs if hasattr(report, "panel_needs") else [],
+                "recommendations": report.recommendations if hasattr(report, "recommendations") else [],
+                "formatted_text": dashboard._format_report(report),
+            }
+        except ImportError:
+            logger.debug("Management layer not available (overseer_management.py not found)")
+            return None
+        except Exception as e:
+            logger.warning(f"Management layer check failed: {e}")
+            return {"status": "error", "error": str(e)}
 
     def on_demand_audit(self, scope: str = "full") -> HealthReport:
         """
@@ -811,8 +864,8 @@ class OverseerService:
                                 1 for v in data.values()
                                 if isinstance(v, dict) and v.get('status') == 'integrated'
                             )
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            logger.debug(f"Swallowed in {fpath}: {e}")
 
             return n_integrated / n_extractions if n_extractions > 0 else 0.0
 
@@ -877,7 +930,8 @@ class OverseerService:
                     templates = theory.get('constituent_templates', [])
                     if not templates or len(templates) == 0:
                         n_orphans += 1
-                except Exception:
+                except Exception as e:
+                    logger.debug(f"Skipped in {fpath}: {e}")
                     continue
 
             return n_orphans / n_theories if n_theories > 0 else 0.0
@@ -1203,8 +1257,8 @@ class OverseerService:
                         reason=reason,
                         days_left=7,
                     )
-                except Exception:
-                    pass  # Non-fatal: notification failure shouldn't block quarantine
+                except Exception as e:
+                    logger.debug(f"Swallowed in {fpath}: {e}")  # Non-fatal: notification failure shouldn't block quarantine
 
                 return q_id
         except Exception as e:

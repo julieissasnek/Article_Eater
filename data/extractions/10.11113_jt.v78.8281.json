@@ -2,7 +2,7 @@
   "doi": "10.11113/jt.v78.8281",
   "article_type": "grounded_theory",
   "article_family": "qualitative",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.593,
   "n_findings": 4,
   "extracted_at": "2026-02-25T04:28:49.987084+00:00",
@@ -67,7 +67,12 @@
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "tier1_relevance": {
+        "ART": 0.6,
+        "BIOPHILIA": 0.6,
+        "SRT": 0.6
+      }
     },
     {
       "id": 2,
@@ -131,7 +136,10 @@
       "outcome_id": "affect.stress",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.3
+      }
     },
     {
       "id": 3,
@@ -346,8 +354,10 @@
   "crossref_fetched_at": "2026-02-25T11:59:07.007016+00:00",
   "journal": "Jurnal Teknologi",
   "theory_links": [
-    "privacy_regulation",
-    "cpted",
+    "prospect_refuge",
+    "biophilia",
+    "kaplan_preference",
+    "soundscape",
     "chronobiology",
     "adaptive_thermal"
   ],
@@ -359,5 +369,37 @@
     "social_architecture"
   ],
   "linked_date": "2026-03-01T04:43:11.893827+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "api_verified_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "linking_audit": {
+    "original": [
+      "adaptive_thermal",
+      "soundscape",
+      "prospect_refuge",
+      "kaplan_preference",
+      "chronobiology",
+      "privacy_regulation",
+      "biophilia"
+    ],
+    "verified": [
+      "adaptive_thermal",
+      "soundscape",
+      "prospect_refuge",
+      "kaplan_preference",
+      "chronobiology",
+      "biophilia"
+    ],
+    "removed": [
+      "privacy_regulation"
+    ],
+    "added": [],
+    "date": "2026-03-01T06:57:54.048000+00:00"
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:36:08.555749+00:00"
 }

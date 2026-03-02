@@ -2,7 +2,7 @@
   "doi": "10.1177/2158244012445585",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.76,
   "n_findings": 3,
   "extracted_at": "2026-02-25T04:33:42.055908+00:00",
@@ -71,7 +71,15 @@
       ],
       "provenance_depth": "section",
       "source": "p. 6-7, Figure 4",
-      "quote": "focus light setting as an instructional technology improved the reading performance of the experimental group at a rate greater"
+      "quote": "focus light setting as an instructional technology improved the reading performance of the experimental group at a rate greater",
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.2581,
+          "reasons": []
+        }
+      ]
     },
     {
       "id": 2,
@@ -94,7 +102,47 @@
       ],
       "provenance_depth": "section",
       "source": "p. 7, Figure 5",
-      "quote": "For concentration and motivation, we found no lighting by testing occasion interaction effects."
+      "quote": "For concentration and motivation, we found no lighting by testing occasion interaction effects.",
+      "template_matches": [
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3011,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2997,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2965,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2955,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.2746,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.1505,
+        "PREDICTIVE_PROCESSING": 0.1505
+      },
+      "tier2_relevance": {
+        "INTEROCEPTION": 0.1505,
+        "PREDICTIVE_PROCESSING": 0.1505
+      }
     },
     {
       "id": 3,
@@ -121,7 +169,39 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2908,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2843,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.284,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2791,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.262,
+          "reasons": []
+        }
+      ]
     }
   ],
   "mechanisms": [
@@ -437,5 +517,85 @@
     "questionnaire"
   ],
   "linked_date": "2026-03-01T04:43:12.537783+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "local_pattern_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Focus lighting (1000 lux, 6500K CCT)",
+      "Energy lighting (800 lux, 6500K CCT)",
+      "Normal lighting (500 lux, 3500K CCT)",
+      "Calm lighting (300 lux, 2700K CCT)"
+    ],
+    "duration_exposure": "continuous during school hours for one academic year",
+    "control_conditions": [
+      "Standard static fluorescent classroom lighting (approx. 300-500 lux, 4000K CCT)"
+    ],
+    "ecological_validity": "field"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light on human physiology and cognition",
+      "commitment_type": "tests",
+      "specific_claim": "Specific light parameters (e.g., CCT, illuminance) influence human alertness, mood, and cognitive function through non-visual pathways, thereby affecting learning outcomes."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Dynamic lighting conditions influence physiological arousal and alertness, which in turn affects students' attention and on-task behavior, ultimately impacting academic performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Dynamic lighting conditions (e.g., higher CCT, illuminance)",
+        "to_construct": "Physiological arousal and alertness (e.g., melatonin suppression)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Increased physiological arousal and alertness",
+        "to_construct": "Improved attention and reduced off-task behavior",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "Improved attention and reduced off-task behavior",
+        "to_construct": "Enhanced academic performance",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Oral Reading Fluency (ORF)",
+      "construct": "reading fluency",
+      "description": "Words read correctly per minute",
+      "type": "behavioral"
+    },
+    {
+      "name": "Math Fluency (M-Fluency)",
+      "construct": "math fluency",
+      "description": "Correct digits per minute",
+      "type": "behavioral"
+    },
+    {
+      "name": "Reading Comprehension (RC)",
+      "construct": "reading comprehension",
+      "description": "Accuracy on reading comprehension tasks",
+      "type": "behavioral"
+    },
+    {
+      "name": "On-task behavior observations",
+      "construct": "attention and engagement",
+      "description": "Direct observation of student behavior in the classroom",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:02:48.534747+00:00"
 }

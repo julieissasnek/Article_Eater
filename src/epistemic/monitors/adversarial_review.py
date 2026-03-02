@@ -248,8 +248,8 @@ def _simulate_adversarial_entrenchment(
                 original_weight = ce.get('weight', 0.1)
                 boosted[source] = original_weight * precision_boost
             return recompute_fn(web, node_id, boosted)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Simple heuristic model:
     # Each counter-evidence item reduces entrenchment proportionally
@@ -303,8 +303,8 @@ def _extract_entrenchment(web: Any) -> Dict[str, float]:
     if hasattr(web, 'get_entrenchment_scores'):
         try:
             return web.get_entrenchment_scores()
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     if hasattr(web, 'beliefs'):
         try:
@@ -313,8 +313,8 @@ def _extract_entrenchment(web: Any) -> Dict[str, float]:
                 entrenchment = getattr(belief, 'entrenchment', None)
                 if belief_id and entrenchment is not None:
                     scores[belief_id] = entrenchment
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return scores
 
@@ -345,8 +345,8 @@ def _extract_counter_evidence(web: Any) -> Dict[str, List[Dict]]:
                                 'type': type_str,
                                 'weight': getattr(constraint, 'strength', 0.1),
                             })
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # Try to get from failed replications
     if hasattr(web, 'beliefs'):
@@ -368,7 +368,7 @@ def _extract_counter_evidence(web: Any) -> Dict[str, List[Dict]]:
                                 'type': 'failed_replication',
                                 'weight': 0.3,
                             })
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return counter

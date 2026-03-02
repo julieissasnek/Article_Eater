@@ -2,7 +2,7 @@
   "doi": "10.1007/s12273-021-0875-7",
   "article_type": "observational_field",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.834,
   "n_findings": 19,
   "extracted_at": "2026-02-25T01:00:04.427115+00:00",
@@ -54,7 +54,7 @@
     },
     {
       "construct": "Speech Intelligibility (SI)",
-      "instrument": "Derived from STI using the equation SI = 54.989STI\u00b3 \u2013 238.1STI\u00b2 + 287.35STI \u2013 8.056",
+      "instrument": "Derived from STI using the equation SI = 54.989STI³ – 238.1STI² + 287.35STI – 8.056",
       "type": "cognitive"
     },
     {
@@ -154,7 +154,7 @@
     {
       "id": 2,
       "antecedent": "Acoustic renovation",
-      "consequent": "Reverberation Time (RT0.5-1kHz) compliance with standard (\u22640.8 s for V > 300 m\u00b3)",
+      "consequent": "Reverberation Time (RT0.5-1kHz) compliance with standard (≤0.8 s for V > 300 m³)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -298,7 +298,7 @@
     {
       "id": 4,
       "antecedent": "Acoustic renovation",
-      "consequent": "Definition (C50,0.5-1kHz) compliance with standard (\u22650 dB)",
+      "consequent": "Definition (C50,0.5-1kHz) compliance with standard (≥0 dB)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -441,7 +441,7 @@
     {
       "id": 6,
       "antecedent": "Acoustic renovation",
-      "consequent": "Speech Transmission Index (STI) compliance with standard (\u22650.62)",
+      "consequent": "Speech Transmission Index (STI) compliance with standard (≥0.62)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -952,7 +952,7 @@
     },
     {
       "id": 14,
-      "antecedent": "Speech Transmission Index (STI) = 0.62 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.62 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -997,7 +997,7 @@
     },
     {
       "id": 15,
-      "antecedent": "Speech Transmission Index (STI) = 0.70 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.70 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -1042,7 +1042,7 @@
     },
     {
       "id": 16,
-      "antecedent": "Speech Transmission Index (STI) = 0.75 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.75 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -1545,5 +1545,66 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Acoustic properties of multimedia classrooms",
+      "Sound-absorbing materials",
+      "Reverberation Time (RT0.5-1kHz)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "Classrooms before acoustic renovation",
+      "Classrooms without added sound-absorbing materials"
+    ],
+    "ecological_validity": "field"
+  },
+  "mechanism_chain": {
+    "description": "The addition of sound-absorbing materials in classrooms leads to the absorption of sound energy, which reduces sound reflections and consequently decreases the reverberation time.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Addition of sound-absorbing materials",
+        "to_construct": "Absorption of sound energy",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Absorption of sound energy",
+        "to_construct": "Reduction in sound reflections",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduction in sound reflections",
+        "to_construct": "Decrease in reverberation time",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Sound Level Meter",
+      "construct": "Sound pressure level",
+      "description": "Device used for measuring sound pressure levels and other acoustic parameters in the environment.",
+      "type": "other"
+    },
+    {
+      "name": "Microphone",
+      "construct": "Sound capture",
+      "description": "Transducer used to capture sound waves for acoustic analysis.",
+      "type": "other"
+    },
+    {
+      "name": "Acoustic simulation software",
+      "construct": "Acoustic environment prediction",
+      "description": "Software used to model and predict acoustic parameters, such as reverberation time, within a space.",
+      "type": "other"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:35:10.160993+00:00"
 }

@@ -68,7 +68,8 @@ def harvest_from_queue() -> Tuple[Counter, Dict[str, List[str]]]:
                 continue
             try:
                 entry = json.loads(line)
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Skipped: {e}")
                 continue
             
             raw = entry.get("raw_term", "").strip().lower()
@@ -147,7 +148,8 @@ def harvest_outcome_terms(max_files: int = 0) -> Tuple[Counter, Dict[str, List[s
         try:
             with open(ef) as f:
                 data = json.load(f)
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Skipped: {e}")
             continue
         files_scanned += 1
         source = ef.stem
@@ -335,8 +337,8 @@ def build_panel_items(clusters: Dict[str, List[str]],
                 existing_vocab = [v.get("id", v) if isinstance(v, dict) else str(v) for v in vocab_data]
             elif isinstance(vocab_data, dict):
                 existing_vocab = list(vocab_data.keys())
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     # Build options list with explicit decision instructions
     decision_options = [
@@ -509,8 +511,8 @@ def run_panel_live(items: List[Dict], batch_size: int = 50) -> Dict:
                 existing_vocab_ids = {(v.get("id", v) if isinstance(v, dict) else str(v)).lower() for v in vocab_data}
             elif isinstance(vocab_data, dict):
                 existing_vocab_ids = {k.lower() for k in vocab_data.keys()}
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
     
     for d in all_decisions:
         decision_raw = d.get("decision", "").strip()

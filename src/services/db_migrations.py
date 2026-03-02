@@ -372,6 +372,71 @@ def _m010_cva_persistence_tables(cursor: sqlite3.Cursor) -> None:
 
 
 # =============================================================================
+# Migration 025: Overseer Search Suggestion Tracking
+# =============================================================================
+
+@migration(11)
+def _m011_create_interpretation_space_suggestions(cursor: sqlite3.Cursor) -> None:
+    """Create interpretation_space_suggestions table for tracking search suggestions from multiple sources.
+
+    This table tracks suggested searches that come from:
+    - interpretation_space analysis
+    - value-of-information (VOI) calculations
+    - QA follow-up suggestions
+    - gap predictor outputs
+    - argumentation layer
+
+    SearchSuggestionTracker uses this to monitor whether suggestions are being acted upon.
+    """
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS interpretation_space_suggestions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT NOT NULL,
+            status TEXT NOT NULL,
+            description TEXT NOT NULL,
+            suggested_search TEXT NOT NULL,
+            priority_score REAL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            resolved_at TEXT,
+            article_id TEXT
+        )
+    """)
+
+    # Index by status for quick filtering of unacted suggestions
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_interp_sugg_status
+        ON interpretation_space_suggestions(status)
+    """)
+
+    # Index by source for filtering by origin
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_interp_sugg_source
+        ON interpretation_space_suggestions(source)
+    """)
+
+    # Index by created_at for age-based queries
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_interp_sugg_created_at
+        ON interpretation_space_suggestions(created_at DESC)
+    """)
+
+    # Index by priority for sorting
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_interp_sugg_priority
+        ON interpretation_space_suggestions(priority_score DESC)
+    """)
+
+    # Composite index for common queries: status + source
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_interp_sugg_status_source
+        ON interpretation_space_suggestions(status, source)
+    """)
+
+    LOGGER.info("Created interpretation_space_suggestions table with indices")
+
+
+# =============================================================================
 # MIGRATION MANAGER
 # =============================================================================
 

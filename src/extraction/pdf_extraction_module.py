@@ -797,8 +797,8 @@ methods"""
             finally:
                 try:
                     self.client.files.delete(name=uploaded.name)
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         try:
             text = _call_gemini_classify()
@@ -859,8 +859,8 @@ methods"""
             finally:
                 try:
                     self.client.files.delete(name=uploaded.name)
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         try:
             response = _call_gemini_extract()
@@ -1036,8 +1036,8 @@ methods"""
                         "width": base_image.get("width"),
                         "height": base_image.get("height"),
                     })
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         except Exception as e:
             # Catch broad exceptions from fitz to prevent hard crashes
@@ -1470,8 +1470,9 @@ EXAMPLES:
     parser.add_argument("--model", type=str, default="gemini-2.5-flash", help="LLM to use (default: gemini-2.5-flash)")
     args = parser.parse_args()
 
-    # Default PDF directory
-    pdf_dir = args.pdf_dir or "/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs"
+    # Default PDF directory - use env var or data/pdfs relative to project
+    default_pdf_dir = os.environ.get("ARTICLE_EATER_PDF_DIR", "data/pdfs")
+    pdf_dir = args.pdf_dir or default_pdf_dir
 
     pipeline = ExtractionPipeline(
         pdf_dir=pdf_dir,

@@ -369,8 +369,8 @@ def check_attractor_reachability(overseer=None) -> Dict[str, Any]:
                         "rasa": rasa,
                         "reachable": False,
                     })
-            except Exception:
-                pass  # Rasa not configured is not a violation
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")  # Rasa not configured is not a violation
                 
     except ImportError:
         result["note"] = "CVA attractor engine not available"
@@ -452,8 +452,8 @@ def check_psi_determinism(overseer=None) -> Dict[str, Any]:
                             "max_difference": max_diff,
                             "tolerance": result["tolerance"],
                         })
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Swallowed in {fpath}: {e}")
                 
     except ImportError:
         result["note"] = "CVA constraint engine not available"

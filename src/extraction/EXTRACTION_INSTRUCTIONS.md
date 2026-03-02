@@ -9,7 +9,7 @@
 ## Quick Start
 
 ```bash
-cd /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1
+cd /path/to/Article_Eater_PostQuinean_v1  # or use PROJECT_ROOT
 source venv/bin/activate
 
 # Check current status
@@ -198,7 +198,7 @@ Papers that fail quality are requeued (up to 2 retries) then marked failed.
 from src.extraction import ExtractionPipeline
 
 pipeline = ExtractionPipeline(
-    pdf_dir="/Users/davidusa/REPOS/Article_Finder_v3_2_3/data/pdfs",
+    pdf_dir="data/pdfs",  # or set ARTICLE_EATER_PDF_DIR env var
     output_dir="data/extraction_pipeline"
 )
 

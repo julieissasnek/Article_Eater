@@ -181,7 +181,8 @@ def _load_template_vocabulary() -> dict[str, Any]:
     for json_path in templates_dir.glob("*.json"):
         try:
             payload = json.loads(json_path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
 
         template_id = str(payload.get("display_id") or payload.get("template_id") or json_path.stem)

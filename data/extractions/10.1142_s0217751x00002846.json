@@ -1,7 +1,7 @@
 {
   "doi": "10.1142/s0217751x00002846",
   "article_type": "theoretical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.64,
   "n_findings": 5,
   "extracted_at": "2026-02-25T10:10:50.871202+00:00",
@@ -15,7 +15,7 @@
   "concept_definitions": [
     {
       "name": "Heisenberg algebra",
-      "definition": "Defined by the commutation relation [q^a, p_beta] = i\u0127 delta^a_beta, where q^a and p_a are self-adjoint operators representing conjugate observables."
+      "definition": "Defined by the commutation relation [q^a, p_beta] = iħ delta^a_beta, where q^a and p_a are self-adjoint operators representing conjugate observables."
     },
     {
       "name": "Configuration space manifold (M)",
@@ -23,7 +23,7 @@
     },
     {
       "name": "Flat U(1) bundle",
-      "definition": "A U(1) bundle over the configuration manifold M whose connection A_a(q) has vanishing field strength (\u2202A_beta/\u2202q^a - \u2202A_a/\u2202q^beta = 0), characterizing the phase freedom of position eigenstates."
+      "definition": "A U(1) bundle over the configuration manifold M whose connection A_a(q) has vanishing field strength (∂A_beta/∂q^a - ∂A_a/∂q^beta = 0), characterizing the phase freedom of position eigenstates."
     },
     {
       "name": "Holonomy",
@@ -35,7 +35,7 @@
     }
   ],
   "argument_structure": "The paper first establishes the algebraic and topological conditions for representations of the Heisenberg algebra on an arbitrary manifold, demonstrating that inequivalent representations are classified by flat U(1) bundles and their holonomies. It then integrates geometrical considerations (Riemannian metric) to ensure diffeomorphic covariance. Finally, the framework is illustrated with examples from non-relativistic quantum mechanics (free particle in 2D Euclidean space, spherical harmonic oscillator in a punctured plane) and its broader implications for gauge theories and gravity are discussed.",
-  "mechanism_or_causal_logic": "Starting from the Heisenberg algebra and self-adjointness assumptions, the position eigenbasis |q> is introduced. The momentum operators p_a are derived to include an arbitrary vector field A_a(q) and a normalisation function g(q). The commutation relations [p_a, p_beta] = 0 constrain A_a(q) to define a flat U(1) connection. Local phase redefinitions of |q> correspond to gauge transformations of A_a(q), leading to unitarily inequivalent representations classified by topologically distinct flat U(1) bundles, characterized by their holonomies around non-trivial cycles in the manifold (related to \u03c0\u2081(M)). When the manifold is endowed with a Riemannian metric g_\u03b1\u03b2(q), the canonical choice for g(q) becomes det g_\u03b1\u03b2(q), ensuring that configuration space wave functions and their inner product are manifestly covariant under coordinate parametrisations (diffeomorphisms), thus making the representations diffeomorphic covariant. This framework is then extended to quantum Hamiltonians, showing how topological and geometrical choices influence the energy spectrum and propagators.",
+  "mechanism_or_causal_logic": "Starting from the Heisenberg algebra and self-adjointness assumptions, the position eigenbasis |q> is introduced. The momentum operators p_a are derived to include an arbitrary vector field A_a(q) and a normalisation function g(q). The commutation relations [p_a, p_beta] = 0 constrain A_a(q) to define a flat U(1) connection. Local phase redefinitions of |q> correspond to gauge transformations of A_a(q), leading to unitarily inequivalent representations classified by topologically distinct flat U(1) bundles, characterized by their holonomies around non-trivial cycles in the manifold (related to π₁(M)). When the manifold is endowed with a Riemannian metric g_αβ(q), the canonical choice for g(q) becomes det g_αβ(q), ensuring that configuration space wave functions and their inner product are manifestly covariant under coordinate parametrisations (diffeomorphisms), thus making the representations diffeomorphic covariant. This framework is then extended to quantum Hamiltonians, showing how topological and geometrical choices influence the energy spectrum and propagators.",
   "findings": [
     {
       "id": 1,
@@ -60,11 +60,61 @@
       "source": "Abstract, Section 2, Conclusions",
       "quote": "All such inequivalent representations are parametrised in terms of the topology classes of flat U(1) bundles over the configuration space manifold.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.3385,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_BOUNDARY_ENCODING_001",
+          "display_id": "SN1",
+          "score": 0.3087,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3023,
+          "reasons": []
+        },
+        {
+          "template_id": "OLFACTORY_PE_TRANSITION_001",
+          "display_id": "OLF1",
+          "score": 0.2883,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2882,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6617,
+        "NEUROMODULATORY_REWARD": 0.1693,
+        "ART": 0.1512,
+        "CREATIVE_COGNITION": 0.1512,
+        "EMBODIED_ECOLOGICAL": 0.1512,
+        "PREDICTIVE_PROCESSING": 0.1512
+      },
+      "tier2_relevance": {
+        "DP": 0.1693,
+        "NM": 0.1693,
+        "SN": 0.1693,
+        "SPATIAL_NAVIGATION": 0.1543,
+        "ATTENTION_RESTORATION": 0.1512,
+        "CREATIVE_COGNITION": 0.1512,
+        "EMBODIED_COGNITION": 0.1512,
+        "PREDICTIVE_PROCESSING": 0.1512
+      }
     },
     {
       "id": 2,
-      "antecedent": "Configuration space manifold (M) endowed with a Riemannian metric g_\u03b1\u03b2(q)",
+      "antecedent": "Configuration space manifold (M) endowed with a Riemannian metric g_αβ(q)",
       "consequent": "Representations of the Heisenberg algebra",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -77,13 +127,54 @@
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
-      "mechanism": "The canonical choice for the normalisation function g(q) (from the position eigenbasis definition) becomes the determinant of the Riemannian metric, det g_\u03b1\u03b2(q). This choice ensures that the configuration space wave functions and their inner product are manifestly covariant under coordinate parametrisations (diffeomorphisms), making the representations diffeomorphic covariant.",
+      "mechanism": "The canonical choice for the normalisation function g(q) (from the position eigenbasis definition) becomes the determinant of the Riemannian metric, det g_αβ(q). This choice ensures that the configuration space wave functions and their inner product are manifestly covariant under coordinate parametrisations (diffeomorphisms), making the representations diffeomorphic covariant.",
       "moderators_reported": [],
       "provenance_depth": "fulltext_multi",
       "source": "Abstract, Section 4, Conclusions",
       "quote": "In the case of Riemannian manifolds, these representations are also manifestly diffeomorphic covariant.",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.313,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.2836,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.2835,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.2797,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.2741,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6,
+        "NEUROMODULATORY_REWARD": 0.1565
+      },
+      "tier2_relevance": {
+        "DP": 0.1565,
+        "NM": 0.1565,
+        "SN": 0.1565
+      }
     },
     {
       "id": 3,
@@ -102,13 +193,59 @@
         "PP"
       ],
       "template_ids": [],
-      "mechanism": "For a simply connected manifold, the first homotopy group \u03c0\u2081(M) is trivial, meaning all closed cycles are contractible to a point. Consequently, only a trivial flat U(1) bundle is possible, as all holonomies are trivial (equal to unity). This leads to a single, unique representation (up to unitary transformations).",
+      "mechanism": "For a simply connected manifold, the first homotopy group π₁(M) is trivial, meaning all closed cycles are contractible to a point. Consequently, only a trivial flat U(1) bundle is possible, as all holonomies are trivial (equal to unity). This leads to a single, unique representation (up to unitary transformations).",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 2",
       "quote": "If the manifold is simply connected, only a trivial flat bundle is possible... Hence over a simply connected manifold, the Heisenberg algebra admits only a single representation...",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "SN_VISTA_SPACE_002",
+          "display_id": "SN2",
+          "score": 0.3467,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.3413,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.337,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINE_NOVELTY_002",
+          "display_id": "NM2",
+          "score": 0.3264,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_ACTIVE_INFERENCE_003",
+          "display_id": "T21",
+          "score": 0.3261,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6693,
+        "NEUROMODULATORY_REWARD": 0.306,
+        "PREDICTIVE_PROCESSING": 0.3041
+      },
+      "tier2_relevance": {
+        "NM": 0.306,
+        "SPATIAL_NAVIGATION": 0.1734,
+        "DP": 0.1706,
+        "SN": 0.1706,
+        "EC": 0.1685,
+        "PP": 0.1685,
+        "PREDICTIVE_PROCESSING": 0.1631
+      }
     },
     {
       "id": 4,
@@ -127,17 +264,69 @@
         "PP"
       ],
       "template_ids": [],
-      "mechanism": "For a non-simply connected manifold, the first homotopy group \u03c0\u2081(M) is non-trivial, allowing for non-contractible closed cycles. These cycles can have non-trivial holonomies for the flat U(1) bundle, leading to an infinity of inequivalent representations, each labelled by the specific holonomies.",
+      "mechanism": "For a non-simply connected manifold, the first homotopy group π₁(M) is non-trivial, allowing for non-contractible closed cycles. These cycles can have non-trivial holonomies for the flat U(1) bundle, leading to an infinity of inequivalent representations, each labelled by the specific holonomies.",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 2",
       "quote": "In the case of non simply connected manifolds however... the Heisenberg algebra possesses an infinity of inequivalent representations labelled by all topologically distinct non trivial flat U(1) bundles...",
       "testable": true,
-      "empirical_support_cited": null
+      "empirical_support_cited": null,
+      "template_matches": [
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3404,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.3335,
+          "reasons": []
+        },
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3325,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_BOUNDARY_ENCODING_001",
+          "display_id": "SN1",
+          "score": 0.3236,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.3222,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6647,
+        "PREDICTIVE_PROCESSING": 0.3082,
+        "NEUROMODULATORY_REWARD": 0.1668,
+        "CREATIVE_COGNITION": 0.1663
+      },
+      "tier2_relevance": {
+        "EC": 0.1702,
+        "PP": 0.1702,
+        "DP": 0.1668,
+        "NM": 0.1668,
+        "SN": 0.1668,
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1663,
+        "GROUP_CREATIVITY": 0.1663,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1663,
+        "PREDICTIVE_PROCESSING": 0.1663,
+        "SPATIAL_NAVIGATION": 0.1618,
+        "HC": 0.1611,
+        "IC": 0.1611
+      }
     },
     {
       "id": 5,
-      "antecedent": "Non-trivial flat U(1) bundle (parametrised by \u03bb) in a punctured plane configuration space",
+      "antecedent": "Non-trivial flat U(1) bundle (parametrised by λ) in a punctured plane configuration space",
       "consequent": "Energy spectrum of the spherical harmonic oscillator",
       "direction": "mixed",
       "claim_type": "theoretical_proposition",
@@ -152,22 +341,57 @@
         "PP"
       ],
       "template_ids": [],
-      "mechanism": "The U(1) connection A_a(q) (specifically \u0127\u03bbd\u03b8) modifies the momentum operator p_\u03b8 to p_\u03b8 = -i\u0127 (\u2202/\u2202\u03b8 + i\u03bb). This effectively shifts the angular momentum quantum number \u2113 to \u2113+\u03bb in the Hamiltonian, leading to a periodic spectral flow of the energy eigenvalues E_m,\u2113 = \u0127\u03c9 [2m + 1 + |\u03b1|] where |\u03b1| = \u221a((\u2113+\u03bb)\u00b2 + 4\u03bc\u00b2).",
+      "mechanism": "The U(1) connection A_a(q) (specifically ħλdθ) modifies the momentum operator p_θ to p_θ = -iħ (∂/∂θ + iλ). This effectively shifts the angular momentum quantum number ℓ to ℓ+λ in the Hamiltonian, leading to a periodic spectral flow of the energy eigenvalues E_m,ℓ = ħω [2m + 1 + |α|] where |α| = √((ℓ+λ)² + 4μ²).",
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 6",
-      "quote": "The presence of the non trivial U(1) connection parametrised by \u03bb simply shifts the value of the angular momentum \u2113 in the energy spectrum, thereby leading to a periodic spectral flow of the energy eigenvalues.",
+      "quote": "The presence of the non trivial U(1) connection parametrised by λ simply shifts the value of the angular momentum ℓ in the energy spectrum, thereby leading to a periodic spectral flow of the energy eigenvalues.",
       "testable": true,
-      "empirical_support_cited": "Example calculation in Section 6."
+      "empirical_support_cited": "Example calculation in Section 6.",
+      "template_matches": [
+        {
+          "template_id": "EC_VESTIBULAR_SPATIAL_001",
+          "display_id": "T18",
+          "score": 0.2927,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.2914,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_AWE_VASTNESS_001",
+          "display_id": "T56",
+          "score": 0.2846,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.2826,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_BOUNDARY_ENCODING_001",
+          "display_id": "SN1",
+          "score": 0.2737,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SPATIAL_COGNITION": 0.6
+      }
     }
   ],
   "testable_hypotheses_or_predictions": [
     "The quantum dynamics of a system whose configuration space is a non-simply connected manifold will exhibit properties (e.g., energy spectra, propagators) that depend on the specific topological class of the flat U(1) bundle chosen for its Heisenberg algebra representation.",
     "For systems in Riemannian manifolds, the quantum dynamics derived using this framework will be invariant under arbitrary coordinate transformations, provided the normalisation function g(q) is chosen as the determinant of the metric tensor.",
-    "The 'quantum correction potential' \u0394_\u03bc,\u03bd (Eq 39) will lead to physically distinct quantum dynamics for different choices of \u03bc and \u03bd parameters in the Hamiltonian H_\u03bc,\u03bd, even when the classical Hamiltonian is the same."
+    "The 'quantum correction potential' Δ_μ,ν (Eq 39) will lead to physically distinct quantum dynamics for different choices of μ and ν parameters in the Hamiltonian H_μ,ν, even when the classical Hamiltonian is the same."
   ],
   "bridge_warrants": [
-    "The flat U(1) bundle and its holonomies are directly related to the Aharonov-Bohm effect, where the parameter \u03bb can be interpreted as a magnetic flux line piercing the configuration space.",
+    "The flat U(1) bundle and its holonomies are directly related to the Aharonov-Bohm effect, where the parameter λ can be interpreted as a magnetic flux line piercing the configuration space.",
     "The framework provides a general context for understanding the relationship between the flat U(1) bundle, which characterizes Heisenberg algebra representations, and the well-known Berry phase in quantised systems with multiply connected configuration spaces.",
     "The approach relates to geometric quantisation, particularly in its potential for realisation within the context of induced representations on homogeneous coset spaces."
   ],
@@ -175,7 +399,7 @@
     "Existing general procedures for representing the Heisenberg algebra on arbitrary connected manifolds or with curvilinear coordinates have proven difficult and are not well-established.",
     "The issue of self-adjoint extensions of Hermitian differential operators, particularly in terms of von Neumann's deficiency indices, needs to be confronted in the context of the proposed construction."
   ],
-  "model_structure": "The paper proposes a mathematical framework for constructing configuration space representations of the Heisenberg algebra. This framework is built upon: 1. Algebraic Foundations: Defining the Heisenberg algebra and self-adjointness conditions. 2. Topological Classification: Identifying flat U(1) bundles over the configuration manifold M, whose holonomies (determined by \u03c0\u2081(M)) classify inequivalent representations. 3. Geometrical Integration: Incorporating a Riemannian metric g_\u03b1\u03b2(q) to ensure diffeomorphic covariance, with g(q) = det g_\u03b1\u03b2(q) as the canonical normalisation. 4. Dynamical Extension: Constructing quantum Hamiltonians H_\u03bc,\u03bd and deriving propagators and energy spectra consistent with the chosen representation.",
+  "model_structure": "The paper proposes a mathematical framework for constructing configuration space representations of the Heisenberg algebra. This framework is built upon: 1. Algebraic Foundations: Defining the Heisenberg algebra and self-adjointness conditions. 2. Topological Classification: Identifying flat U(1) bundles over the configuration manifold M, whose holonomies (determined by π₁(M)) classify inequivalent representations. 3. Geometrical Integration: Incorporating a Riemannian metric g_αβ(q) to ensure diffeomorphic covariance, with g(q) = det g_αβ(q) as the canonical normalisation. 4. Dynamical Extension: Constructing quantum Hamiltonians H_μ,ν and deriving propagators and energy spectra consistent with the chosen representation.",
   "domains": [
     "A3_Spatial_Config",
     "A9_Task_Cognition",
@@ -187,8 +411,8 @@
   "limitations": [
     "The discussion does not delve into the mathematical rigor of functional analysis, deferring subtle issues to later stages.",
     "The issue of whether the conditions for self-adjointness of momentum operators (Eq 17) are sufficient, not just necessary, is not addressed on a case-by-case basis.",
-    "The relationship between the parameters \u03bc and \u03bd in the Hamiltonian and von Neumann deficiency indices for self-adjoint extensions is not pursued.",
-    "The possibility of a Fock space construction for the quantum spectrum when \u03bb \u2260 0 or (\u03bc,\u03bd) \u2260 (0,0) and how it would explain spectral flow is left for future work.",
+    "The relationship between the parameters μ and ν in the Hamiltonian and von Neumann deficiency indices for self-adjoint extensions is not pursued.",
+    "The possibility of a Fock space construction for the quantum spectrum when λ ≠ 0 or (μ,ν) ≠ (0,0) and how it would explain spectral flow is left for future work.",
     "The specific issue of self-adjoint extensions of Hermitian differential operators in terms of von Neumann's deficiency indices needs further confrontation."
   ],
   "paper_metadata": {
@@ -266,12 +490,12 @@
     {
       "name": "Jan GOVAERTS",
       "orcid": null,
-      "affiliation": "Institut de Physique Nucl\u00e9aire, Universit\u00e9 catholique de Louvain, B-1348 Louvain-la-Neuve, Belgium"
+      "affiliation": "Institut de Physique Nucléaire, Université catholique de Louvain, B-1348 Louvain-la-Neuve, Belgium"
     },
     {
       "name": "VICTOR M. VILLANUEVA",
       "orcid": null,
-      "affiliation": "Instituto de F\u00edsica y Matem\u00e1ticas, Universidad Michoacana de San Nicol\u00e1s de Hidalgo, PO Box 2-82, Morelia Michoac\u00e1n, Mexico"
+      "affiliation": "Instituto de Física y Matemáticas, Universidad Michoacana de San Nicolás de Hidalgo, PO Box 2-82, Morelia Michoacán, Mexico"
     }
   ],
   "crossref_year": 2000,
@@ -282,5 +506,13 @@
   "crossref_subjects": [],
   "crossref_abstract": "The general construction of self-adjoint configuration space representations of the Heisenberg algebra over an arbitrary manifold is considered. All such inequivalent representations are parametrized in terms of the topology classes modulo integer holonomies of flat U(1) bundles over the configuration space manifold. In the case of Riemannian manifolds, these representations are also manifestly diffeomorphic covariant. The general discussion, illustrated by some simple examples in nonrelativistic quantum mechanics, is of particular relevance to systems whose configuration space is parametrized by curvilinear coordinates or is not simply connected, which thus include for instance the modular spaces of theories of non-Abelian gauge fields and gravity.",
   "crossref_fetched_at": "2026-02-25T11:59:18.311614+00:00",
-  "journal": "International Journal of Modern Physics A"
+  "journal": "International Journal of Modern Physics A",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T22:02:30.320301+00:00"
 }

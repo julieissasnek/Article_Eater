@@ -78,7 +78,8 @@ def collect_python_enum_observations(repo_name: str, repo_root: Path) -> List[Ob
             continue
         try:
             tree = ast.parse(py_file.read_text(encoding="utf-8"), filename=str(py_file))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         for node in tree.body:
             if not isinstance(node, ast.ClassDef):
@@ -220,8 +221,8 @@ def check_category(
         if source_of_truth_rel:
             try:
                 strict = strict or str(obs.path).endswith(source_of_truth_rel)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         header = f"[{obs.repo}] {obs.path}:{obs.source}"
         local_issues: List[str] = []

@@ -2,7 +2,7 @@
   "doi": "10.1007/s11818-019-00215-x",
   "article_type": "narrative_review",
   "article_family": "synthesis",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.694,
   "n_findings": 64,
   "extracted_at": "2026-02-25T02:58:24.799263+00:00",
@@ -2505,7 +2505,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "M\u00fcnch et al. (2006)"
+        "Münch et al. (2006)"
       ],
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
@@ -2576,7 +2576,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "M\u00fcnch et al. (2006)"
+        "Münch et al. (2006)"
       ],
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
@@ -2667,7 +2667,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "R\u00e5ngtell et al. (2016)"
+        "Rångtell et al. (2016)"
       ],
       "outcome_id": "behav.sleep",
       "outcome_domain": "behav",
@@ -5598,5 +5598,78 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Entrainment Theory",
+      "commitment_type": "assumes|explains",
+      "specific_claim": "Light is the primary environmental cue (zeitgeber) that synchronizes the human internal circadian clock (Suprachiasmatic Nuclei, SCN) to the external 24-hour day-night cycle."
+    },
+    {
+      "theory_name": "Phase Response Curve (PRC) to Light",
+      "commitment_type": "explains|applies",
+      "specific_claim": "The timing of light exposure relative to an individual's circadian phase determines the direction and magnitude of circadian phase shifts (e.g., light in the early subjective night causes phase delays, light in the late subjective night/early subjective morning causes phase advances)."
+    },
+    {
+      "theory_name": "Melatonin Suppression by Light",
+      "commitment_type": "explains|assumes",
+      "specific_claim": "Exposure to light, particularly in the blue spectrum, suppresses the nocturnal secretion of melatonin, a key hormone involved in circadian timing and sleep promotion."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Environmental light is detected by retinal photoreceptors, primarily intrinsically photosensitive retinal ganglion cells (ipRGCs), which transmit signals to the Suprachiasmatic Nuclei (SCN). The SCN, as the master circadian clock, processes this input to regulate circadian rhythms, including melatonin secretion. These physiological changes subsequently impact sleep timing, quality, and mood.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Environmental light exposure",
+        "to_construct": "Activation of retinal photoreceptors (ipRGCs, rods, cones)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Retinal photoreceptor activation",
+        "to_construct": "Signal transmission to Suprachiasmatic Nuclei (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "SCN activation/modulation",
+        "to_construct": "Regulation of circadian pacemaker activity",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "SCN regulation of circadian pacemaker activity",
+        "to_construct": "Modulation of pineal gland melatonin secretion",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Melatonin secretion modulation / SCN activity",
+        "to_construct": "Circadian phase shifting and entrainment",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "Circadian phase shifting / Melatonin levels",
+        "to_construct": "Regulation of sleep timing and quality",
+        "mechanism_type": "physiological|behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 7,
+        "from_construct": "Circadian phase shifting / Sleep regulation / Direct SCN projections",
+        "to_construct": "Modulation of mood and cognitive function",
+        "mechanism_type": "physiological|neural|affective",
+        "evidence_strength": "direct|indirect"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:34:02.561715+00:00"
 }

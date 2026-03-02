@@ -2,7 +2,7 @@
   "doi": "10.1080/09613218.2015.989662",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.675,
   "n_findings": 53,
   "extracted_at": "2026-02-25T06:20:35.756112+00:00",
@@ -20,19 +20,19 @@
   "stimuli_or_exposures": [
     {
       "type": "physical_space",
-      "description": "Paper 2: Series of temperature step-changes (e.g., 24.5\u00b0C to 28\u00b0C, 24.5\u00b0C to 20\u00b0C) and ramps, interspersed with periods of increased metabolic activity (cycling) and local thermal control options (fan, heat lamps).",
+      "description": "Paper 2: Series of temperature step-changes (e.g., 24.5°C to 28°C, 24.5°C to 20°C) and ramps, interspersed with periods of increased metabolic activity (cycling) and local thermal control options (fan, heat lamps).",
       "n_stimuli": null,
       "source": "Figure 1, Table 2 (Paper 2)"
     },
     {
       "type": "physical_space",
-      "description": "Paper 3: Localized warming to hands and feet (Peltier cells on aluminum panels) in a cool ambient environment (21.5\u00b0C).",
+      "description": "Paper 3: Localized warming to hands and feet (Peltier cells on aluminum panels) in a cool ambient environment (21.5°C).",
       "n_stimuli": null,
       "source": "Figure 2, Figure 3 (Paper 3)"
     },
     {
       "type": "physical_space",
-      "description": "Paper 4: Four air movement patterns (constant, sinusoidal, square-wave, saw-tooth) targeted at the back of the neck using personal fans in a warm ambient environment (27.5\u00b0C).",
+      "description": "Paper 4: Four air movement patterns (constant, sinusoidal, square-wave, saw-tooth) targeted at the back of the neck using personal fans in a warm ambient environment (27.5°C).",
       "n_stimuli": null,
       "source": "Figure 2, Figure 3 (Paper 4)"
     }
@@ -74,7 +74,7 @@
       "type": "physiological"
     },
     {
-      "construct": "Change in local skin temperature (\u0394Tsk,l)",
+      "construct": "Change in local skin temperature (ΔTsk,l)",
       "instrument": "Calculated from thermocouple data",
       "type": "physiological"
     },
@@ -148,7 +148,64 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4951,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4821,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.4381,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.4326,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.4048,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.3947,
+        "PREDICTIVE_PROCESSING": 0.3947,
+        "SRT": 0.241,
+        "MULTISENSORY_INTEGRATION": 0.2163,
+        "SPATIAL_COGNITION": 0.2163
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3947,
+        "IC": 0.2475,
+        "ADAPTIVE_THERMAL_COMFORT": 0.241,
+        "ALLOSTATIC_REGULATION": 0.241,
+        "METABOLIC_HEALTH": 0.241,
+        "CROSS_FRAMEWORK": 0.219,
+        "MULTISENSORY_INTEGRATION": 0.2163,
+        "SPATIAL_NAVIGATION": 0.2163,
+        "INTEROCEPTION": 0.2024
+      }
     },
     {
       "id": 2,
@@ -174,7 +231,65 @@
       "moderators_reported": [],
       "provenance_depth": "abstract",
       "source": "p.3",
-      "quote": "Alliesthesia remained viable even within the physiological thermoneutral zone, although it was less pronounced and more ambiguous"
+      "quote": "Alliesthesia remained viable even within the physiological thermoneutral zone, although it was less pronounced and more ambiguous",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.555,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4866,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.4387,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3778,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3696,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.5209,
+        "PREDICTIVE_PROCESSING": 0.4533,
+        "SRT": 0.436,
+        "MATERIAL_HAPTIC_THERMAL": 0.414,
+        "AFFECTIVE_EMOTION": 0.2433,
+        "CIRCADIAN_REGULATION": 0.2433
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4533,
+        "NEUROMODULATORY": 0.3668,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2775,
+        "ALLOSTATIC_REGULATION": 0.2775,
+        "METABOLIC_HEALTH": 0.2775,
+        "AROUSAL_THEORY": 0.2433,
+        "PAD_EMOTIONAL_MODEL": 0.2433,
+        "RETINAL_ACTIVATION": 0.2433,
+        "STRESS_RECOVERY_THEORY": 0.2193,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.1889,
+        "IC": 0.1848
+      }
     },
     {
       "id": 3,
@@ -201,7 +316,67 @@
       "moderators_reported": [],
       "provenance_depth": "abstract",
       "source": "p.3",
-      "quote": "Positive hedonic tones were elicited during innocuous exposures at the margins of the thermal comfort zone by applying moderate local skin temperature changes that were contrapuntal to the whole-body, mean skin temperature."
+      "quote": "Positive hedonic tones were elicited during innocuous exposures at the margins of the thermal comfort zone by applying moderate local skin temperature changes that were contrapuntal to the whole-body, mean skin temperature.",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3497,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3344,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.307,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.306,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3029,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.9076,
+        "PREDICTIVE_PROCESSING": 0.3015,
+        "SRT": 0.2998,
+        "NEUROMODULATORY_REWARD": 0.2817,
+        "AFFECTIVE_EMOTION": 0.1535,
+        "CIRCADIAN_REGULATION": 0.1535
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3015,
+        "IC": 0.2946,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1749,
+        "ALLOSTATIC_REGULATION": 0.1749,
+        "METABOLIC_HEALTH": 0.1749,
+        "AROUSAL_THEORY": 0.1535,
+        "PAD_EMOTIONAL_MODEL": 0.1535,
+        "RETINAL_ACTIVATION": 0.1535,
+        "NEUROMODULATORY": 0.1515,
+        "STRESS_RECOVERY_THEORY": 0.1515
+      }
     },
     {
       "id": 4,
@@ -232,7 +407,55 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4036,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.339,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3007,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2964,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.2794,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.8723,
+        "PREDICTIVE_PROCESSING": 0.3218,
+        "SRT": 0.2018
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.2018,
+        "ALLOSTATIC_REGULATION": 0.2018,
+        "METABOLIC_HEALTH": 0.2018,
+        "PREDICTIVE_PROCESSING": 0.2018,
+        "IC": 0.1695,
+        "EC": 0.1504,
+        "PP": 0.1504
+      }
     },
     {
       "id": 5,
@@ -255,11 +478,63 @@
       "moderators_reported": [],
       "provenance_depth": "abstract",
       "source": "p.4",
-      "quote": "the hedonic tone attached to thermal environmental stimuli, both localised and whole-body, exhibited pronounced between-subject variability."
+      "quote": "the hedonic tone attached to thermal environmental stimuli, both localised and whole-body, exhibited pronounced between-subject variability.",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.4204,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_BODY_BUDGET_002",
+          "display_id": "IC2",
+          "score": 0.3714,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3672,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3599,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3584,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6743,
+        "NEUROMODULATORY_REWARD": 0.3322,
+        "COGNITIVE_CONTROL": 0.1792,
+        "CREATIVE_COGNITION": 0.1792,
+        "PREDICTIVE_PROCESSING": 0.1792
+      },
+      "tier2_relevance": {
+        "IC": 0.3552,
+        "NEUROMODULATORY": 0.3322,
+        "INTEROCEPTION_CONSTRUCTIONIST": 0.1857,
+        "COGNITIVE_CONTROL": 0.1792,
+        "CONSTRUAL_LEVEL_THEORY": 0.1792,
+        "CREATIVE_COGNITION": 0.1792,
+        "PREDICTIVE_PROCESSING": 0.1792
+      }
     },
     {
       "id": 6,
-      "antecedent": "Intensity of subjects\u2019 displeasure in preconditioning environment",
+      "antecedent": "Intensity of subjects’ displeasure in preconditioning environment",
       "consequent": "Tone and magnitude of thermal pleasure response to localised thermal stimuli",
       "direction": "increase",
       "claim_type": "moderated",
@@ -281,11 +556,55 @@
       ],
       "provenance_depth": "abstract",
       "source": "p.4",
-      "quote": "The most useful variable for distinguishing the tone and magnitude of thermal pleasure response to localised thermal stimuli was the intensity of the subjects\u2019 displeasure in the preconditioning environment.",
+      "quote": "The most useful variable for distinguishing the tone and magnitude of thermal pleasure response to localised thermal stimuli was the intensity of the subjects’ displeasure in the preconditioning environment.",
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3113,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3094,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2963,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.2923,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2853,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.1547,
+        "PREDICTIVE_PROCESSING": 0.1547,
+        "SRT": 0.1547
+      },
+      "tier2_relevance": {
+        "IC": 0.1557,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1547,
+        "ALLOSTATIC_REGULATION": 0.1547,
+        "METABOLIC_HEALTH": 0.1547,
+        "PREDICTIVE_PROCESSING": 0.1547
+      }
     },
     {
       "id": 7,
@@ -309,7 +628,65 @@
       "moderators_reported": [],
       "provenance_depth": "abstract",
       "source": "p.4",
-      "quote": "The magnitude of change in local skin temperature also had a significant effect on perceived pleasantness of localised thermal stimuli."
+      "quote": "The magnitude of change in local skin temperature also had a significant effect on perceived pleasantness of localised thermal stimuli.",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4035,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3928,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3386,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3357,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3169,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6807,
+        "PREDICTIVE_PROCESSING": 0.4602,
+        "NEUROMODULATORY_REWARD": 0.3313,
+        "SRT": 0.2018,
+        "AFFECTIVE_EMOTION": 0.1964,
+        "CIRCADIAN_REGULATION": 0.1964,
+        "COGNITIVE_CONTROL": 0.1585,
+        "CREATIVE_COGNITION": 0.1585
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4602,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2018,
+        "ALLOSTATIC_REGULATION": 0.2018,
+        "METABOLIC_HEALTH": 0.2018,
+        "AROUSAL_THEORY": 0.1964,
+        "PAD_EMOTIONAL_MODEL": 0.1964,
+        "RETINAL_ACTIVATION": 0.1964,
+        "IC": 0.1693,
+        "NEUROMODULATORY": 0.1678,
+        "COGNITIVE_CONTROL": 0.1585,
+        "CONSTRUAL_LEVEL_THEORY": 0.1585,
+        "CREATIVE_COGNITION": 0.1585
+      }
     },
     {
       "id": 8,
@@ -333,7 +710,55 @@
       "moderators_reported": [],
       "provenance_depth": "abstract",
       "source": "p.4",
-      "quote": "Initial skin temperature and initial thermal pleasure status were shown to very good predictors of the hedonic response to localised warming, in some instances improving correct prediction close to 90%."
+      "quote": "Initial skin temperature and initial thermal pleasure status were shown to very good predictors of the hedonic response to localised warming, in some instances improving correct prediction close to 90%.",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3448,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3375,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.3269,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3212,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.2896,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.8676,
+        "PREDICTIVE_PROCESSING": 0.3053,
+        "SRT": 0.1724
+      },
+      "tier2_relevance": {
+        "IC": 0.3046,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1724,
+        "ALLOSTATIC_REGULATION": 0.1724,
+        "METABOLIC_HEALTH": 0.1724,
+        "PREDICTIVE_PROCESSING": 0.1724,
+        "EC": 0.1606,
+        "PP": 0.1606
+      }
     },
     {
       "id": 9,
@@ -363,7 +788,67 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.5289,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4402,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.4079,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3904,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3817,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.7058,
+        "PREDICTIVE_PROCESSING": 0.4263,
+        "SRT": 0.2645,
+        "AFFECTIVE_EMOTION": 0.2201,
+        "CIRCADIAN_REGULATION": 0.2201,
+        "NEUROMODULATORY_REWARD": 0.2201,
+        "COGNITIVE_CONTROL": 0.1952
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4263,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2645,
+        "ALLOSTATIC_REGULATION": 0.2645,
+        "METABOLIC_HEALTH": 0.2645,
+        "AROUSAL_THEORY": 0.2201,
+        "PAD_EMOTIONAL_MODEL": 0.2201,
+        "RETINAL_ACTIVATION": 0.2201,
+        "CROSS_FRAMEWORK": 0.2039,
+        "DUAL_PROCESS": 0.1952,
+        "IC": 0.1908
+      }
     },
     {
       "id": 10,
@@ -388,7 +873,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3716,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3603,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3503,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3363,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3237,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6743,
+        "PREDICTIVE_PROCESSING": 0.1858,
+        "SRT": 0.1858,
+        "COGNITIVE_CONTROL": 0.1752,
+        "NEUROMODULATORY_REWARD": 0.1618
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1858,
+        "ALLOSTATIC_REGULATION": 0.1858,
+        "METABOLIC_HEALTH": 0.1858,
+        "PREDICTIVE_PROCESSING": 0.1858,
+        "CROSS_FRAMEWORK": 0.1802,
+        "DUAL_PROCESS": 0.1752,
+        "IC": 0.1681,
+        "NM_REWARD": 0.1618
+      }
     },
     {
       "id": 11,
@@ -413,7 +951,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3716,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3603,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3503,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3363,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3237,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6743,
+        "PREDICTIVE_PROCESSING": 0.1858,
+        "SRT": 0.1858,
+        "COGNITIVE_CONTROL": 0.1752,
+        "NEUROMODULATORY_REWARD": 0.1618
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1858,
+        "ALLOSTATIC_REGULATION": 0.1858,
+        "METABOLIC_HEALTH": 0.1858,
+        "PREDICTIVE_PROCESSING": 0.1858,
+        "CROSS_FRAMEWORK": 0.1802,
+        "DUAL_PROCESS": 0.1752,
+        "IC": 0.1681,
+        "NM_REWARD": 0.1618
+      }
     },
     {
       "id": 12,
@@ -439,7 +1030,53 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.37, Figure 7",
-      "quote": "Mild displeasure (negative Tples) preceded the initiation of behavioural control actions for Sequence A2 and B2, but local stimulation generated a positive change in hedonic tone."
+      "quote": "Mild displeasure (negative Tples) preceded the initiation of behavioural control actions for Sequence A2 and B2, but local stimulation generated a positive change in hedonic tone.",
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3105,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3103,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.3097,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.2988,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.2917,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.1552,
+        "NEUROMODULATORY_REWARD": 0.1548
+      },
+      "tier2_relevance": {
+        "EC": 0.1552,
+        "PP": 0.1552,
+        "DMN_TPN_DYNAMICS": 0.1552,
+        "NEUROMODULATORY": 0.1548
+      }
     },
     {
       "id": 13,
@@ -465,11 +1102,62 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.37, Figure 7",
-      "quote": "the effectiveness of the heat lamps in minimizing body heat loss... can be seen in the resistance of thermal pleasure votes to register any deterioration \u2013 in fact there was a small but insignificant increase in thermal pleasure.",
+      "quote": "the effectiveness of the heat lamps in minimizing body heat loss... can be seen in the resistance of thermal pleasure votes to register any deterioration – in fact there was a small but insignificant increase in thermal pleasure.",
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4015,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3436,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3335,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3289,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3194,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6803,
+        "PREDICTIVE_PROCESSING": 0.2008,
+        "SRT": 0.2008,
+        "NEUROMODULATORY_REWARD": 0.1645,
+        "COGNITIVE_CONTROL": 0.1597
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.2008,
+        "ALLOSTATIC_REGULATION": 0.2008,
+        "METABOLIC_HEALTH": 0.2008,
+        "PREDICTIVE_PROCESSING": 0.2008,
+        "CROSS_FRAMEWORK": 0.1718,
+        "IC": 0.1668,
+        "NM_REWARD": 0.1645,
+        "DUAL_PROCESS": 0.1597
+      }
     },
     {
       "id": 14,
@@ -494,7 +1182,57 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.387,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3586,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3535,
+          "reasons": []
+        },
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3534,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3485,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.1935,
+        "PREDICTIVE_PROCESSING": 0.1935,
+        "SRT": 0.1935,
+        "SPATIAL_COGNITION": 0.1767
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1935,
+        "ALLOSTATIC_REGULATION": 0.1935,
+        "METABOLIC_HEALTH": 0.1935,
+        "PREDICTIVE_PROCESSING": 0.1935,
+        "METHODOLOGICAL": 0.1793,
+        "CROSS_FRAMEWORK": 0.1767,
+        "SPATIAL_NAVIGATION": 0.1767,
+        "IC": 0.1742
+      }
     },
     {
       "id": 15,
@@ -518,11 +1256,69 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.39, Figure 9",
-      "quote": "A Pearson correlation indicated a strong negative correlation between the change in skin temperature and the change in thermal pleasure (r = \u22120.66; p < 0.01) for the warm exposures (Sequences A1\u2013A4), and a strong positive correlation (r = 0.65; p < 0.01) for the cool exposures (Sequences B1\u2013B4).",
+      "quote": "A Pearson correlation indicated a strong negative correlation between the change in skin temperature and the change in thermal pleasure (r = −0.66; p < 0.01) for the warm exposures (Sequences A1–A4), and a strong positive correlation (r = 0.65; p < 0.01) for the cool exposures (Sequences B1–B4).",
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4783,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4058,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3823,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3717,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.362,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6957,
+        "PREDICTIVE_PROCESSING": 0.3935,
+        "NEUROMODULATORY_REWARD": 0.3472,
+        "SRT": 0.2392,
+        "AFFECTIVE_EMOTION": 0.2029,
+        "CIRCADIAN_REGULATION": 0.2029
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3935,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2392,
+        "ALLOSTATIC_REGULATION": 0.2392,
+        "METABOLIC_HEALTH": 0.2392,
+        "AROUSAL_THEORY": 0.2029,
+        "PAD_EMOTIONAL_MODEL": 0.2029,
+        "RETINAL_ACTIVATION": 0.2029,
+        "IC": 0.1911,
+        "CROSS_FRAMEWORK": 0.1858,
+        "NM_REWARD": 0.181
+      }
     },
     {
       "id": 16,
@@ -547,7 +1343,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4368,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3912,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3489,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3357,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3178,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3426,
+        "COGNITIVE_CONTROL": 0.3056,
+        "MATERIAL_HAPTIC_THERMAL": 0.2184,
+        "SRT": 0.2184,
+        "CREATIVE_COGNITION": 0.1589
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3426,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2184,
+        "ALLOSTATIC_REGULATION": 0.2184,
+        "METABOLIC_HEALTH": 0.2184,
+        "CROSS_FRAMEWORK": 0.1956,
+        "DUAL_PROCESS": 0.1744,
+        "IC": 0.1678,
+        "COGNITIVE_CONTROL": 0.1589,
+        "CONSTRUAL_LEVEL_THEORY": 0.1589,
+        "CREATIVE_COGNITION": 0.1589
+      }
     },
     {
       "id": 17,
@@ -578,7 +1427,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3863,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3753,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.3598,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3393,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3347,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6773,
+        "PREDICTIVE_PROCESSING": 0.4422,
+        "SRT": 0.1931,
+        "NEUROMODULATORY_REWARD": 0.1799,
+        "COGNITIVE_CONTROL": 0.1696,
+        "CREATIVE_COGNITION": 0.1696
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4422,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1931,
+        "ALLOSTATIC_REGULATION": 0.1931,
+        "METABOLIC_HEALTH": 0.1931,
+        "IC": 0.1877,
+        "NEUROMODULATORY": 0.1799,
+        "COGNITIVE_CONTROL": 0.1696,
+        "CONSTRUAL_LEVEL_THEORY": 0.1696,
+        "CREATIVE_COGNITION": 0.1696
+      }
     },
     {
       "id": 18,
@@ -608,7 +1510,59 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
+          "display_id": "CREA4",
+          "score": 0.3574,
+          "reasons": []
+        },
+        {
+          "template_id": "ALLOSTATIC_MASTER_001",
+          "display_id": "T29",
+          "score": 0.3074,
+          "reasons": []
+        },
+        {
+          "template_id": "ENCLOSURE_SAFETY_030",
+          "display_id": "T_ES30",
+          "score": 0.3027,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SOCIAL_ENRICHMENT_MODULATION_001",
+          "display_id": "T52",
+          "score": 0.3022,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.2994,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6615,
+        "NEUROMODULATORY_REWARD": 0.2796,
+        "CREATIVE_COGNITION": 0.1787,
+        "PREDICTIVE_PROCESSING": 0.1787,
+        "SPATIAL_COGNITION": 0.1514,
+        "MULTISENSORY_INTEGRATION": 0.1511
+      },
+      "tier2_relevance": {
+        "ENVIRONMENTAL_PSYCHOLOGY": 0.1787,
+        "GROUP_CREATIVITY": 0.1787,
+        "ORGANIZATIONAL_PSYCHOLOGY": 0.1787,
+        "PREDICTIVE_PROCESSING": 0.1787,
+        "CROSS_FRAMEWORK": 0.1537,
+        "INTEROCEPTION_ALLOSTASIS": 0.1537,
+        "NEUROMODULATORY": 0.1514,
+        "SPATIAL_NAVIGATION": 0.1514,
+        "MS": 0.1511,
+        "NM": 0.1511
+      }
     },
     {
       "id": 19,
@@ -629,7 +1583,51 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.40",
-      "quote": "the heat lamps in Sequence B2 maintained divergent skin temperatures and positive alliesthesia was sustained for ten minutes."
+      "quote": "the heat lamps in Sequence B2 maintained divergent skin temperatures and positive alliesthesia was sustained for ten minutes.",
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3095,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2947,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_REVERBERATION_SPACE_003",
+          "display_id": "T33",
+          "score": 0.2947,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.292,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.2859,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.1547,
+        "CREATIVE_COGNITION": 0.1547,
+        "EMBODIED_ECOLOGICAL": 0.1547,
+        "PREDICTIVE_PROCESSING": 0.1547
+      },
+      "tier2_relevance": {
+        "ATTENTION_RESTORATION": 0.1547,
+        "CREATIVE_COGNITION": 0.1547,
+        "EMBODIED_COGNITION": 0.1547,
+        "PREDICTIVE_PROCESSING": 0.1547
+      }
     },
     {
       "id": 20,
@@ -654,7 +1652,55 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4657,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4213,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3381,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3346,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3284,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6931,
+        "PREDICTIVE_PROCESSING": 0.3588,
+        "SRT": 0.2329
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3588,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2329,
+        "ALLOSTATIC_REGULATION": 0.2329,
+        "METABOLIC_HEALTH": 0.2329,
+        "IC": 0.2107,
+        "CULTURAL_PSYCHOLOGY": 0.1691,
+        "CROSS_FRAMEWORK": 0.1673
+      }
     },
     {
       "id": 21,
@@ -684,7 +1730,67 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4379,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.417,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3989,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "SN_BOUNDARY_ENCODING_001",
+          "display_id": "SN1",
+          "score": 0.395,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_MB_MF_ARBITRATION_001",
+          "display_id": "T43",
+          "score": 0.3762,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3818,
+        "MATERIAL_HAPTIC_THERMAL": 0.219,
+        "SRT": 0.219,
+        "ART": 0.2085,
+        "CREATIVE_COGNITION": 0.2085,
+        "EMBODIED_ECOLOGICAL": 0.2085,
+        "SPATIAL_COGNITION": 0.1975,
+        "NEUROMODULATORY_REWARD": 0.1881
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3818,
+        "ADAPTIVE_THERMAL_COMFORT": 0.219,
+        "ALLOSTATIC_REGULATION": 0.219,
+        "METABOLIC_HEALTH": 0.219,
+        "ATTENTION_RESTORATION": 0.2085,
+        "CREATIVE_COGNITION": 0.2085,
+        "EMBODIED_COGNITION": 0.2085,
+        "CROSS_FRAMEWORK": 0.1994,
+        "SPATIAL_NAVIGATION": 0.1975,
+        "DP": 0.1881,
+        "NM": 0.1881,
+        "SN": 0.1881
+      }
     },
     {
       "id": 22,
@@ -712,7 +1818,60 @@
       "outcome_id": "cog.perception",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.413,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3655,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_AFFORDANCE_POSTURAL_001",
+          "display_id": "T8",
+          "score": 0.3357,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.318,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3177,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3327,
+        "MATERIAL_HAPTIC_THERMAL": 0.2065,
+        "SRT": 0.2065,
+        "EMBODIED_ECOLOGICAL": 0.1678,
+        "NEUROMODULATORY_REWARD": 0.1678
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.2065,
+        "ALLOSTATIC_REGULATION": 0.2065,
+        "METABOLIC_HEALTH": 0.2065,
+        "PREDICTIVE_PROCESSING": 0.2065,
+        "IC": 0.1827,
+        "EMBODIED_COGNITION": 0.1678,
+        "NM_AROUSAL": 0.1678,
+        "EC": 0.159,
+        "PP": 0.159,
+        "DMN_TPN_DYNAMICS": 0.1588
+      }
     },
     {
       "id": 23,
@@ -737,7 +1896,61 @@
       "outcome_id": "physio.thermal_comfort",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3649,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3544,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3392,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3362,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2886,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.3273,
+        "SRT": 0.3211,
+        "PREDICTIVE_PROCESSING": 0.3167,
+        "AFFECTIVE_EMOTION": 0.1772,
+        "CIRCADIAN_REGULATION": 0.1772,
+        "MATERIAL_HAPTIC_THERMAL": 0.1696
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3167,
+        "NEUROMODULATORY": 0.1825,
+        "STRESS_RECOVERY_THEORY": 0.1825,
+        "AROUSAL_THEORY": 0.1772,
+        "PAD_EMOTIONAL_MODEL": 0.1772,
+        "RETINAL_ACTIVATION": 0.1772,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1696,
+        "ALLOSTATIC_REGULATION": 0.1696,
+        "METABOLIC_HEALTH": 0.1696,
+        "IC": 0.1681
+      }
     },
     {
       "id": 24,
@@ -758,7 +1971,61 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.51, Table 4",
-      "quote": "subjects could distinguish between their global sensation (Tsens,g) and their local sensation (Tsens,l) during periods of thermal stimulation of the feet and hands."
+      "quote": "subjects could distinguish between their global sensation (Tsens,g) and their local sensation (Tsens,l) during periods of thermal stimulation of the feet and hands.",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.3322,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3258,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.302,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.2969,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.2947,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6604,
+        "PREDICTIVE_PROCESSING": 0.292,
+        "AFFECTIVE_EMOTION": 0.1661,
+        "CIRCADIAN_REGULATION": 0.1661,
+        "NEUROMODULATORY_REWARD": 0.1661,
+        "SRT": 0.151
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.292,
+        "AROUSAL_THEORY": 0.1661,
+        "PAD_EMOTIONAL_MODEL": 0.1661,
+        "RETINAL_ACTIVATION": 0.1661,
+        "IC": 0.1629,
+        "ADAPTIVE_THERMAL_COMFORT": 0.151,
+        "ALLOSTATIC_REGULATION": 0.151,
+        "METABOLIC_HEALTH": 0.151
+      }
     },
     {
       "id": 25,
@@ -783,7 +2050,59 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4379,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "NM_NORADRENERGIC_EXPLORE_006",
+          "display_id": "T11",
+          "score": 0.4043,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.401,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3951,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_THREAT_HPA_001",
+          "display_id": "T5",
+          "score": 0.368,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "NEUROMODULATORY_REWARD": 0.4687,
+        "SRT": 0.3627,
+        "MATERIAL_HAPTIC_THERMAL": 0.219,
+        "PREDICTIVE_PROCESSING": 0.219,
+        "COGNITIVE_CONTROL": 0.1976
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.219,
+        "ALLOSTATIC_REGULATION": 0.219,
+        "METABOLIC_HEALTH": 0.219,
+        "PREDICTIVE_PROCESSING": 0.219,
+        "NEUROMODULATORY": 0.2021,
+        "IC": 0.2005,
+        "DUAL_PROCESS": 0.1976,
+        "NM_AROUSAL": 0.184,
+        "NM_STRESS": 0.184
+      }
     },
     {
       "id": 26,
@@ -808,7 +2127,58 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3998,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3333,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3257,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3081,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3075,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4272,
+        "MATERIAL_HAPTIC_THERMAL": 0.3229,
+        "SRT": 0.1999,
+        "NEUROMODULATORY_REWARD": 0.1628
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3229,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1999,
+        "ALLOSTATIC_REGULATION": 0.1999,
+        "METABOLIC_HEALTH": 0.1999,
+        "IC": 0.1666,
+        "NM_REWARD": 0.1628,
+        "EC": 0.154,
+        "PP": 0.154,
+        "INTEROCEPTION": 0.1537
+      }
     },
     {
       "id": 27,
@@ -833,11 +2203,62 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3998,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3593,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3423,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3304,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3246,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4502,
+        "MATERIAL_HAPTIC_THERMAL": 0.3298,
+        "SRT": 0.1999,
+        "NEUROMODULATORY_REWARD": 0.1652
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3298,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1999,
+        "ALLOSTATIC_REGULATION": 0.1999,
+        "METABOLIC_HEALTH": 0.1999,
+        "EC": 0.1797,
+        "PP": 0.1797,
+        "IC": 0.1711,
+        "NM_REWARD": 0.1652,
+        "INTEROCEPTION": 0.1623
+      }
     },
     {
       "id": 28,
-      "antecedent": "Pre-onset Tples, pre-onset Tsk,l, and \u0394Tsk,l after 3 min (Paper 3, onset period)",
+      "antecedent": "Pre-onset Tples, pre-onset Tsk,l, and ΔTsk,l after 3 min (Paper 3, onset period)",
       "consequent": "Hedonic response (positive vs. negative trend)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -857,11 +2278,50 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.54, Figure 9",
-      "quote": "pre-onset Tples, pre-onset Tsk,l and \u0394Tsk,l after 3 min were significantly different between clusters during the onset period of warming."
+      "quote": "pre-onset Tples, pre-onset Tsk,l and ΔTsk,l after 3 min were significantly different between clusters during the onset period of warming.",
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3219,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.2918,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2853,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.28,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2728,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.161
+      },
+      "tier2_relevance": {
+        "EC": 0.161,
+        "PP": 0.161
+      }
     },
     {
       "id": 29,
-      "antecedent": "Pre-onset Tsk,l and \u0394Tsk,l after 5 min (Paper 3, tail period)",
+      "antecedent": "Pre-onset Tsk,l and ΔTsk,l after 5 min (Paper 3, tail period)",
       "consequent": "Hedonic response (positive vs. negative trend)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -881,7 +2341,57 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.54, Figure 9",
-      "quote": "Both the pre-onset Tsk,l and the \u0394Tsk,l after 5 min were significantly different (p < 0.05) between collapsed clusters in the tail period."
+      "quote": "Both the pre-onset Tsk,l and the ΔTsk,l after 5 min were significantly different (p < 0.05) between collapsed clusters in the tail period.",
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3243,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3195,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CULTURAL_MODULATION_009",
+          "display_id": "AX9",
+          "score": 0.3102,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3051,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.288,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.296,
+        "ART": 0.2879,
+        "CREATIVE_COGNITION": 0.1598,
+        "EMBODIED_ECOLOGICAL": 0.1598,
+        "NEUROMODULATORY_REWARD": 0.1525
+      },
+      "tier2_relevance": {
+        "EC": 0.1621,
+        "PP": 0.1621,
+        "ATTENTION_RESTORATION": 0.1598,
+        "CREATIVE_COGNITION": 0.1598,
+        "EMBODIED_COGNITION": 0.1598,
+        "PREDICTIVE_PROCESSING": 0.1598,
+        "CULTURAL_PSYCHOLOGY": 0.1551,
+        "DIRECTED_ATTENTION": 0.1525,
+        "NM_AROUSAL": 0.1525
+      }
     },
     {
       "id": 30,
@@ -902,7 +2412,60 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.54, Figure 9",
-      "quote": "Participants with a positive hedonic trend during the onset period had lower local skin temperatures and received more local warming in the first 3 min than those with a negative voting trend."
+      "quote": "Participants with a positive hedonic trend during the onset period had lower local skin temperatures and received more local warming in the first 3 min than those with a negative voting trend.",
+      "template_matches": [
+        {
+          "template_id": "MS_WORKING_MEMORY_LOAD_002",
+          "display_id": "MS2",
+          "score": 0.3551,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.3374,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3329,
+          "reasons": []
+        },
+        {
+          "template_id": "AUD_SUBCORTICAL_ENCODING_002",
+          "display_id": "T32",
+          "score": 0.3328,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3315,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6666,
+        "ART": 0.1776,
+        "MEMORY_LEARNING": 0.1776,
+        "PREDICTIVE_PROCESSING": 0.1664,
+        "SRT": 0.1664,
+        "CIRCADIAN_REGULATION": 0.1664,
+        "NEUROMODULATORY_REWARD": 0.1664
+      },
+      "tier2_relevance": {
+        "ATTENTION_RESTORATION": 0.1776,
+        "MEMORY_SYSTEMS": 0.1776,
+        "IC": 0.1687,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1664,
+        "ALLOSTATIC_REGULATION": 0.1664,
+        "METABOLIC_HEALTH": 0.1664,
+        "PREDICTIVE_PROCESSING": 0.1664,
+        "CHRONOBIOLOGICAL": 0.1664,
+        "NEUROMODULATORY": 0.1664,
+        "DMN_TPN_DYNAMICS": 0.1658
+      }
     },
     {
       "id": 31,
@@ -923,11 +2486,58 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.54, Figure 9",
-      "quote": "Subjects with a negatively trending \u0394Tples during the tail period had a warmer pre-onset skin temperature and experienced a larger magnitude of local warming after 5 min than those with a positive trend."
+      "quote": "Subjects with a negatively trending ΔTples during the tail period had a warmer pre-onset skin temperature and experienced a larger magnitude of local warming after 5 min than those with a positive trend.",
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3407,
+          "reasons": []
+        },
+        {
+          "template_id": "SRT_STRESS_RECOVERY_001",
+          "display_id": "SRT1",
+          "score": 0.3329,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.3124,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3089,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.2986,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6681,
+        "SRT": 0.3084,
+        "PREDICTIVE_PROCESSING": 0.2985,
+        "NEUROMODULATORY_REWARD": 0.1664
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2985,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1704,
+        "ALLOSTATIC_REGULATION": 0.1704,
+        "METABOLIC_HEALTH": 0.1704,
+        "NEUROMODULATORY": 0.1664,
+        "STRESS_RECOVERY_THEORY": 0.1664,
+        "IC": 0.1562
+      }
     },
     {
       "id": 32,
-      "antecedent": "Onset period variables (pre-onset Tples, pre-onset Tsk,l, \u0394Tsk,l) (Paper 3)",
+      "antecedent": "Onset period variables (pre-onset Tples, pre-onset Tsk,l, ΔTsk,l) (Paper 3)",
       "consequent": "Hedonic response (positive/negative trend)",
       "direction": "increase",
       "claim_type": "associational",
@@ -937,18 +2547,61 @@
       "effect_size_type": "R_squared",
       "sample_size": null,
       "confidence_interval": null,
-      "test_statistic": "x\u00b2(3)=34.75",
+      "test_statistic": "x²(3)=34.75",
       "theory_links": [],
       "template_ids": [],
       "mechanism": null,
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.55, Table 6",
-      "quote": "The onset model explained 60% (Nagelkerke R2) of the variance in hedonic response"
+      "quote": "The onset model explained 60% (Nagelkerke R2) of the variance in hedonic response",
+      "template_matches": [
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3143,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.313,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3064,
+          "reasons": []
+        },
+        {
+          "template_id": "HC_CREATIVE_DIVERGENCE_001",
+          "display_id": "T54",
+          "score": 0.2979,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.2963,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2863,
+        "MATERIAL_HAPTIC_THERMAL": 0.1532
+      },
+      "tier2_relevance": {
+        "EC": 0.1572,
+        "PP": 0.1572,
+        "IC": 0.1565,
+        "INTEROCEPTION": 0.1532,
+        "PREDICTIVE_PROCESSING": 0.1532
+      }
     },
     {
       "id": 33,
-      "antecedent": "Tail period variables (pre-onset Tsk,l, \u0394Tsk,l) (Paper 3)",
+      "antecedent": "Tail period variables (pre-onset Tsk,l, ΔTsk,l) (Paper 3)",
       "consequent": "Hedonic response (positive/negative trend)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -958,14 +2611,61 @@
       "effect_size_type": "R_squared",
       "sample_size": null,
       "confidence_interval": null,
-      "test_statistic": "x\u00b2(2)=10.74",
+      "test_statistic": "x²(2)=10.74",
       "theory_links": [],
       "template_ids": [],
       "mechanism": null,
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.55, Table 6",
-      "quote": "whilst the tail model was less successful at 23% (Nagelkerke R2)."
+      "quote": "whilst the tail model was less successful at 23% (Nagelkerke R2).",
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3267,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3206,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.32,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_PROCESSING_FLUENCY_001",
+          "display_id": "T67",
+          "score": 0.3123,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.312,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2912,
+        "ART": 0.1603,
+        "NEUROMODULATORY_REWARD": 0.1603,
+        "MATERIAL_HAPTIC_THERMAL": 0.16
+      },
+      "tier2_relevance": {
+        "IC": 0.2939,
+        "DIRECTED_ATTENTION": 0.1603,
+        "NM_AROUSAL": 0.1603,
+        "INTEROCEPTION": 0.16,
+        "PREDICTIVE_PROCESSING": 0.16,
+        "EC": 0.1562,
+        "PP": 0.1562
+      }
     },
     {
       "id": 34,
@@ -986,7 +2686,58 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 6 (Paper 3)",
-      "quote": "the likelihood of a participant in this experiment having a negative hedonic response from local warming in the onset period was 3.18 times greater per unit increase in pre-onset Tples."
+      "quote": "the likelihood of a participant in this experiment having a negative hedonic response from local warming in the onset period was 3.18 times greater per unit increase in pre-onset Tples.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3782,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3365,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3242,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.321,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3151,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3017,
+        "ART": 0.2966,
+        "MATERIAL_HAPTIC_THERMAL": 0.1683,
+        "NEUROMODULATORY_REWARD": 0.1621,
+        "CREATIVE_COGNITION": 0.1605,
+        "EMBODIED_ECOLOGICAL": 0.1605
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3017,
+        "IC": 0.1891,
+        "INTEROCEPTION": 0.1683,
+        "DIRECTED_ATTENTION": 0.1621,
+        "NM_AROUSAL": 0.1621,
+        "ATTENTION_RESTORATION": 0.1605,
+        "CREATIVE_COGNITION": 0.1605,
+        "EMBODIED_COGNITION": 0.1605,
+        "METHODOLOGICAL": 0.1575
+      }
     },
     {
       "id": 35,
@@ -1007,11 +2758,62 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 6 (Paper 3)",
-      "quote": "the change in odds from the observed difference in pre-onset Tsk,l accounted for the largest increase in the odds of a negative hedonic response from local warming during the onset period."
+      "quote": "the change in odds from the observed difference in pre-onset Tsk,l accounted for the largest increase in the odds of a negative hedonic response from local warming during the onset period.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3782,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3365,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3242,
+          "reasons": []
+        },
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.321,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3151,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3017,
+        "ART": 0.2966,
+        "MATERIAL_HAPTIC_THERMAL": 0.1683,
+        "NEUROMODULATORY_REWARD": 0.1621,
+        "CREATIVE_COGNITION": 0.1605,
+        "EMBODIED_ECOLOGICAL": 0.1605
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3017,
+        "IC": 0.1891,
+        "INTEROCEPTION": 0.1683,
+        "DIRECTED_ATTENTION": 0.1621,
+        "NM_AROUSAL": 0.1621,
+        "ATTENTION_RESTORATION": 0.1605,
+        "CREATIVE_COGNITION": 0.1605,
+        "EMBODIED_COGNITION": 0.1605,
+        "METHODOLOGICAL": 0.1575
+      }
     },
     {
       "id": 36,
-      "antecedent": "1\u00b0C increase in \u0394Tsk,l after 3 min (Paper 3, onset period)",
+      "antecedent": "1°C increase in ΔTsk,l after 3 min (Paper 3, onset period)",
       "consequent": "Likelihood of negative hedonic response",
       "direction": "decrease",
       "claim_type": "associational",
@@ -1028,7 +2830,55 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 6 (Paper 3)",
-      "quote": "A 1\u00b0C increase in \u0394Tsk,l after 3 min reduced the likelihood of a negative response during the onset period."
+      "quote": "A 1°C increase in ΔTsk,l after 3 min reduced the likelihood of a negative response during the onset period.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3561,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3263,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3207,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3087,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3079,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3993,
+        "MATERIAL_HAPTIC_THERMAL": 0.2845,
+        "SRT": 0.1543
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2845,
+        "IC": 0.1781,
+        "METHODOLOGICAL": 0.1631,
+        "EC": 0.1603,
+        "PP": 0.1603,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1543,
+        "ALLOSTATIC_REGULATION": 0.1543,
+        "METABOLIC_HEALTH": 0.1543,
+        "INTEROCEPTION": 0.154
+      }
     },
     {
       "id": 37,
@@ -1049,11 +2899,57 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 6 (Paper 3)",
-      "quote": null
+      "quote": null,
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.38,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3381,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3164,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3094,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3088,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.406,
+        "MATERIAL_HAPTIC_THERMAL": 0.2976,
+        "SRT": 0.1547
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.406,
+        "IC": 0.19,
+        "INTEROCEPTION": 0.1691,
+        "METHODOLOGICAL": 0.1582,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1547,
+        "ALLOSTATIC_REGULATION": 0.1547,
+        "METABOLIC_HEALTH": 0.1547
+      }
     },
     {
       "id": 38,
-      "antecedent": "1 unit increase in \u0394Tsk,l (Paper 3, tail period)",
+      "antecedent": "1 unit increase in ΔTsk,l (Paper 3, tail period)",
       "consequent": "Likelihood of negative hedonic response",
       "direction": "increase",
       "claim_type": "associational",
@@ -1070,7 +2966,55 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 6 (Paper 3)",
-      "quote": "participants receiving higher levels of local heating after 5 min being twice as likely to respond negatively."
+      "quote": "participants receiving higher levels of local heating after 5 min being twice as likely to respond negatively.",
+      "template_matches": [
+        {
+          "template_id": "IC_OLFACTORY_LIMBIC_001",
+          "display_id": "T53",
+          "score": 0.3561,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3343,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3236,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3214,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3158,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4076,
+        "MATERIAL_HAPTIC_THERMAL": 0.2965,
+        "SRT": 0.1618
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.2965,
+        "IC": 0.1781,
+        "METHODOLOGICAL": 0.1671,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1618,
+        "ALLOSTATIC_REGULATION": 0.1618,
+        "METABOLIC_HEALTH": 0.1618,
+        "INTEROCEPTION": 0.1607,
+        "EC": 0.1579,
+        "PP": 0.1579
+      }
     },
     {
       "id": 39,
@@ -1095,7 +3039,59 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4515,
+          "reasons": [
+            "latent bridge compatibility"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.4221,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.4106,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3719,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_THREAT_HPA_001",
+          "display_id": "T5",
+          "score": 0.353,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "SRT": 0.3624,
+        "NEUROMODULATORY_REWARD": 0.3218,
+        "MATERIAL_HAPTIC_THERMAL": 0.2258,
+        "PREDICTIVE_PROCESSING": 0.2258,
+        "COGNITIVE_CONTROL": 0.2053
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.2258,
+        "ALLOSTATIC_REGULATION": 0.2258,
+        "METABOLIC_HEALTH": 0.2258,
+        "PREDICTIVE_PROCESSING": 0.2258,
+        "CROSS_FRAMEWORK": 0.211,
+        "DUAL_PROCESS": 0.2053,
+        "IC": 0.186,
+        "NM_AROUSAL": 0.1765,
+        "NM_STRESS": 0.1765
+      }
     },
     {
       "id": 40,
@@ -1116,7 +3112,63 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.69, Table 4",
-      "quote": "significantly decreased skin temperature (F(3.057,103.936) = 121.737, p < 0.0005)"
+      "quote": "significantly decreased skin temperature (F(3.057,103.936) = 121.737, p < 0.0005)",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.4479,
+          "reasons": [
+            "latent bridge compatibility",
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.427,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.427,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4238,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3953,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3884,
+        "AFFECTIVE_EMOTION": 0.224,
+        "CIRCADIAN_REGULATION": 0.224,
+        "NEUROMODULATORY_REWARD": 0.224,
+        "COGNITIVE_CONTROL": 0.2135,
+        "MATERIAL_HAPTIC_THERMAL": 0.2119,
+        "SRT": 0.2119
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.3884,
+        "AROUSAL_THEORY": 0.224,
+        "PAD_EMOTIONAL_MODEL": 0.224,
+        "RETINAL_ACTIVATION": 0.224,
+        "CROSS_FRAMEWORK": 0.2135,
+        "DUAL_PROCESS": 0.2135,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2119,
+        "ALLOSTATIC_REGULATION": 0.2119,
+        "METABOLIC_HEALTH": 0.2119,
+        "DMN_TPN_DYNAMICS": 0.1976
+      }
     },
     {
       "id": 41,
@@ -1141,7 +3193,57 @@
       "outcome_id": "physio.thermal_comfort",
       "outcome_domain": "physio",
       "outcome_match_type": "exact",
-      "outcome_confidence": 1.0
+      "outcome_confidence": 1.0,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4265,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4236,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.4159,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.4138,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.4037,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.2118,
+        "PREDICTIVE_PROCESSING": 0.2118,
+        "SRT": 0.2118,
+        "COGNITIVE_CONTROL": 0.2069
+      },
+      "tier2_relevance": {
+        "IC": 0.2132,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2118,
+        "ALLOSTATIC_REGULATION": 0.2118,
+        "METABOLIC_HEALTH": 0.2118,
+        "PREDICTIVE_PROCESSING": 0.2118,
+        "CROSS_FRAMEWORK": 0.2079,
+        "DUAL_PROCESS": 0.2069,
+        "METHODOLOGICAL": 0.2019
+      }
     },
     {
       "id": 42,
@@ -1166,7 +3268,54 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3518,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3131,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3077,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.301,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2894,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.1759,
+        "PREDICTIVE_PROCESSING": 0.1759,
+        "SRT": 0.1759,
+        "COGNITIVE_CONTROL": 0.1505
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1759,
+        "ALLOSTATIC_REGULATION": 0.1759,
+        "METABOLIC_HEALTH": 0.1759,
+        "PREDICTIVE_PROCESSING": 0.1759,
+        "IC": 0.1565,
+        "CROSS_FRAMEWORK": 0.1538,
+        "DUAL_PROCESS": 0.1505
+      }
     },
     {
       "id": 43,
@@ -1187,7 +3336,59 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.70, Figure 8",
-      "quote": "subjects reported feeling significantly cooler during the first air movement profile only when compared with the fourth air movement profile (p < 0.005) irrespective of the pattern type"
+      "quote": "subjects reported feeling significantly cooler during the first air movement profile only when compared with the fourth air movement profile (p < 0.005) irrespective of the pattern type",
+      "template_matches": [
+        {
+          "template_id": "ER_ECOLOGICAL_RATIONALITY_001",
+          "display_id": "T37",
+          "score": 0.3507,
+          "reasons": []
+        },
+        {
+          "template_id": "SALIENCE_NETWORK_SWITCH_001",
+          "display_id": "T68",
+          "score": 0.3452,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3406,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3318,
+          "reasons": []
+        },
+        {
+          "template_id": "CROSS_ENVIRONMENTAL_PROCESSING_STYLE_001",
+          "display_id": "T60",
+          "score": 0.3244,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4293,
+        "COGNITIVE_CONTROL": 0.4237,
+        "NEUROMODULATORY_REWARD": 0.1726,
+        "MATERIAL_HAPTIC_THERMAL": 0.1703,
+        "CREATIVE_COGNITION": 0.1659,
+        "VISUAL_PERCEPTION_AESTHETICS": 0.1622
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4293,
+        "CONSTRUAL_LEVEL_THEORY": 0.3012,
+        "ECOLOGICAL_RATIONALITY": 0.1754,
+        "CC": 0.1726,
+        "NM": 0.1726,
+        "INTEROCEPTION": 0.1703,
+        "COGNITIVE_CONTROL": 0.1659,
+        "CREATIVE_COGNITION": 0.1659,
+        "COGNITIVE_LOAD_THEORY": 0.1622,
+        "PROCESSING_FLUENCY": 0.1622
+      }
     },
     {
       "id": 44,
@@ -1208,7 +3409,59 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.70",
-      "quote": "the peak rate of change in skin temperature (dTsk) was also significantly greater in the first sequence (p < 0.005)."
+      "quote": "the peak rate of change in skin temperature (dTsk) was also significantly greater in the first sequence (p < 0.005).",
+      "template_matches": [
+        {
+          "template_id": "SN_THETA_SEQUENCE_003",
+          "display_id": "T24",
+          "score": 0.3479,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3452,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.3422,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3272,
+          "reasons": []
+        },
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.323,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4249,
+        "SPATIAL_COGNITION": 0.1739,
+        "MATERIAL_HAPTIC_THERMAL": 0.1726,
+        "SRT": 0.1726,
+        "AFFECTIVE_EMOTION": 0.1615,
+        "CIRCADIAN_REGULATION": 0.1615,
+        "NEUROMODULATORY_REWARD": 0.1615
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4249,
+        "SPATIAL_NAVIGATION": 0.1739,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1726,
+        "ALLOSTATIC_REGULATION": 0.1726,
+        "METABOLIC_HEALTH": 0.1726,
+        "DMN_TPN_DYNAMICS": 0.1636,
+        "AROUSAL_THEORY": 0.1615,
+        "PAD_EMOTIONAL_MODEL": 0.1615,
+        "RETINAL_ACTIVATION": 0.1615
+      }
     },
     {
       "id": 45,
@@ -1229,11 +3482,57 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.70, Figure 9",
-      "quote": "subjects\u2019 pre-fan psychometric votes of thermal sensation (r = \u22120.894, n = 28, p = 0.000) [...] were highly correlated with the change in respective votes resulting from elevated air movement",
+      "quote": "subjects’ pre-fan psychometric votes of thermal sensation (r = −0.894, n = 28, p = 0.000) [...] were highly correlated with the change in respective votes resulting from elevated air movement",
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3905,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3238,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.2856,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2837,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_THREAT_HPA_001",
+          "display_id": "T5",
+          "score": 0.2799,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6648,
+        "PREDICTIVE_PROCESSING": 0.1619,
+        "SRT": 0.1619
+      },
+      "tier2_relevance": {
+        "IC": 0.1953,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1619,
+        "ALLOSTATIC_REGULATION": 0.1619,
+        "METABOLIC_HEALTH": 0.1619,
+        "PREDICTIVE_PROCESSING": 0.1619
+      }
     },
     {
       "id": 46,
@@ -1254,11 +3553,55 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.70, Figure 9",
-      "quote": "thermal pleasure (r = \u22120.552, n = 28, p = 0.002) were highly correlated with the change in respective votes resulting from elevated air movement",
+      "quote": "thermal pleasure (r = −0.552, n = 28, p = 0.002) were highly correlated with the change in respective votes resulting from elevated air movement",
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3419,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3416,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_COMFORT_ADAPTIVE_PE_001",
+          "display_id": "T74",
+          "score": 0.2786,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2711,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.268,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6684,
+        "PREDICTIVE_PROCESSING": 0.1709,
+        "SRT": 0.1709
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1709,
+        "ALLOSTATIC_REGULATION": 0.1709,
+        "METABOLIC_HEALTH": 0.1709,
+        "PREDICTIVE_PROCESSING": 0.1709,
+        "IC": 0.1708
+      }
     },
     {
       "id": 47,
@@ -1283,7 +3626,56 @@
       "outcome_id": "physio.thermal_comfort",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3425,
+          "reasons": []
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3199,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3026,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.2993,
+          "reasons": []
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.2973,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.287,
+        "COGNITIVE_CONTROL": 0.16,
+        "CREATIVE_COGNITION": 0.16,
+        "MATERIAL_HAPTIC_THERMAL": 0.1513,
+        "SRT": 0.1513
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.287,
+        "IC": 0.1713,
+        "COGNITIVE_CONTROL": 0.16,
+        "CONSTRUAL_LEVEL_THEORY": 0.16,
+        "CREATIVE_COGNITION": 0.16,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1513,
+        "ALLOSTATIC_REGULATION": 0.1513,
+        "METABOLIC_HEALTH": 0.1513
+      }
     },
     {
       "id": 48,
@@ -1308,7 +3700,61 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3508,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3403,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "PROCESSING_STYLE_MODULATION_001",
+          "display_id": "CREA2",
+          "score": 0.3079,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_INTEROCEPTIVE_AFFECT_CONSTRUCTION_001",
+          "display_id": "T12",
+          "score": 0.3001,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_CHRONIC_ACUTE_011",
+          "display_id": "AX11",
+          "score": 0.2902,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4033,
+        "MATERIAL_HAPTIC_THERMAL": 0.2947,
+        "SRT": 0.1701,
+        "COGNITIVE_CONTROL": 0.154,
+        "CREATIVE_COGNITION": 0.154
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.4033,
+        "IC": 0.1754,
+        "ADAPTIVE_THERMAL_COMFORT": 0.1701,
+        "ALLOSTATIC_REGULATION": 0.1701,
+        "METABOLIC_HEALTH": 0.1701,
+        "COGNITIVE_CONTROL": 0.154,
+        "CONSTRUAL_LEVEL_THEORY": 0.154,
+        "CREATIVE_COGNITION": 0.154,
+        "INTEROCEPTION": 0.15
+      }
     },
     {
       "id": 49,
@@ -1333,7 +3779,57 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.3918,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3707,
+          "reasons": []
+        },
+        {
+          "template_id": "AX_VR_LIMITATION_012",
+          "display_id": "AX12",
+          "score": 0.3565,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3248,
+          "reasons": []
+        },
+        {
+          "template_id": "DP_IMPLICIT_EVALUATION_001",
+          "display_id": "T9",
+          "score": 0.3087,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6784,
+        "PREDICTIVE_PROCESSING": 0.1959,
+        "SRT": 0.1959,
+        "COGNITIVE_CONTROL": 0.1543
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.1959,
+        "ALLOSTATIC_REGULATION": 0.1959,
+        "METABOLIC_HEALTH": 0.1959,
+        "PREDICTIVE_PROCESSING": 0.1959,
+        "IC": 0.1853,
+        "METHODOLOGICAL": 0.1782,
+        "CROSS_FRAMEWORK": 0.1624,
+        "DUAL_PROCESS": 0.1543
+      }
     },
     {
       "id": 50,
@@ -1358,7 +3854,60 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.4643,
+          "reasons": []
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4245,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "LUMINANCE_CONTRAST_PE_001",
+          "display_id": "T69",
+          "score": 0.3446,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3333,
+          "reasons": []
+        },
+        {
+          "template_id": "EC_AFFORDANCE_POSTURAL_001",
+          "display_id": "T8",
+          "score": 0.3244,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "PREDICTIVE_PROCESSING": 0.348,
+        "MATERIAL_HAPTIC_THERMAL": 0.2122,
+        "SRT": 0.2122,
+        "EMBODIED_ECOLOGICAL": 0.1622,
+        "NEUROMODULATORY_REWARD": 0.1622
+      },
+      "tier2_relevance": {
+        "IC": 0.2321,
+        "ADAPTIVE_THERMAL_COMFORT": 0.2122,
+        "ALLOSTATIC_REGULATION": 0.2122,
+        "METABOLIC_HEALTH": 0.2122,
+        "PREDICTIVE_PROCESSING": 0.2122,
+        "EC": 0.1723,
+        "PP": 0.1723,
+        "CROSS_FRAMEWORK": 0.1666,
+        "EMBODIED_COGNITION": 0.1622,
+        "NM_AROUSAL": 0.1622
+      }
     },
     {
       "id": 51,
@@ -1383,7 +3932,55 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.4158,
+          "reasons": []
+        },
+        {
+          "template_id": "IC_THERMAL_COMFORT_001",
+          "display_id": "T57",
+          "score": 0.3546,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_DOPAMINERGIC_NOVELTY_REWARD_001",
+          "display_id": "T17",
+          "score": 0.3468,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.3271,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.3146,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.2079,
+        "PREDICTIVE_PROCESSING": 0.2079,
+        "SRT": 0.2079,
+        "NEUROMODULATORY_REWARD": 0.1734
+      },
+      "tier2_relevance": {
+        "ADAPTIVE_THERMAL_COMFORT": 0.2079,
+        "ALLOSTATIC_REGULATION": 0.2079,
+        "METABOLIC_HEALTH": 0.2079,
+        "PREDICTIVE_PROCESSING": 0.2079,
+        "IC": 0.1773,
+        "NM_REWARD": 0.1734,
+        "DMN_TPN_DYNAMICS": 0.1636,
+        "CROSS_FRAMEWORK": 0.1573
+      }
     },
     {
       "id": 52,
@@ -1408,7 +4005,58 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "template_matches": [
+        {
+          "template_id": "INCUBATION_ARCHITECTURE_001",
+          "display_id": "CREA3",
+          "score": 0.3435,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_ATTENTIONAL_DEMAND_001",
+          "display_id": "T4",
+          "score": 0.3411,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SOCIAL_ENRICHMENT_MODULATION_001",
+          "display_id": "T52",
+          "score": 0.3383,
+          "reasons": []
+        },
+        {
+          "template_id": "XF_ENVIRONMENT_COGNITIVE_PERFORMANCE_001",
+          "display_id": "T20",
+          "score": 0.334,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_ACTIVE_INFERENCE_003",
+          "display_id": "T21",
+          "score": 0.3339,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "ART": 0.313,
+        "NEUROMODULATORY_REWARD": 0.3109,
+        "PREDICTIVE_PROCESSING": 0.31,
+        "CREATIVE_COGNITION": 0.1718,
+        "EMBODIED_ECOLOGICAL": 0.1718,
+        "MULTISENSORY_INTEGRATION": 0.1691
+      },
+      "tier2_relevance": {
+        "PREDICTIVE_PROCESSING": 0.31,
+        "ATTENTION_RESTORATION": 0.1718,
+        "CREATIVE_COGNITION": 0.1718,
+        "EMBODIED_COGNITION": 0.1718,
+        "DIRECTED_ATTENTION": 0.1706,
+        "NM_AROUSAL": 0.1706,
+        "MS": 0.1691,
+        "NM": 0.1691,
+        "CROSS_FRAMEWORK": 0.167
+      }
     },
     {
       "id": 53,
@@ -1429,7 +4077,54 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.72, Figure 11",
-      "quote": "Skin temperature on the back of the neck exhibited the same trend for both clusters, but the magnitude of cooling was greater for those with a moderate increase in thermal pleasure."
+      "quote": "Skin temperature on the back of the neck exhibited the same trend for both clusters, but the magnitude of cooling was greater for those with a moderate increase in thermal pleasure.",
+      "template_matches": [
+        {
+          "template_id": "COLOR_AROUSAL_MODULATION_001",
+          "display_id": "COL2",
+          "score": 0.314,
+          "reasons": [
+            "mechanism text overlap"
+          ]
+        },
+        {
+          "template_id": "THERMAL_ADAPTIVE_PE_001",
+          "display_id": "MAT2",
+          "score": 0.2958,
+          "reasons": []
+        },
+        {
+          "template_id": "DT_DMN_MAINTENANCE_002",
+          "display_id": "T27",
+          "score": 0.295,
+          "reasons": []
+        },
+        {
+          "template_id": "NM_SAFETY_SIGNALING_001",
+          "display_id": "T66",
+          "score": 0.2872,
+          "reasons": []
+        },
+        {
+          "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
+          "display_id": "T15",
+          "score": 0.2869,
+          "reasons": []
+        }
+      ],
+      "tier1_relevance": {
+        "MATERIAL_HAPTIC_THERMAL": 0.6,
+        "AFFECTIVE_EMOTION": 0.157,
+        "CIRCADIAN_REGULATION": 0.157,
+        "NEUROMODULATORY_REWARD": 0.157,
+        "PREDICTIVE_PROCESSING": 0.157
+      },
+      "tier2_relevance": {
+        "AROUSAL_THEORY": 0.157,
+        "PAD_EMOTIONAL_MODEL": 0.157,
+        "PREDICTIVE_PROCESSING": 0.157,
+        "RETINAL_ACTIVATION": 0.157
+      }
     }
   ],
   "mechanisms": [
@@ -1503,10 +4198,10 @@
       "table_id": "Table 4 (Paper 3)",
       "description": "Summary statistics of thermal sensation votes cast pre- and post-onset",
       "key_stats": [
-        "t(28)=\u22123.84, p<0.05",
-        "t(14)=\u22123.08, p<0.05",
-        "t(34)=\u22123.40, p<0.05",
-        "t(32)=\u22124.50, p<0.05"
+        "t(28)=−3.84, p<0.05",
+        "t(14)=−3.08, p<0.05",
+        "t(34)=−3.40, p<0.05",
+        "t(32)=−4.50, p<0.05"
       ],
       "n_findings_extracted_from": 2
     },
@@ -1515,9 +4210,9 @@
       "description": "Summary statistics of thermal pleasure votes cast pre- and post-onset",
       "key_stats": [
         "t(27)=5.30, p<0.05",
-        "t(27)=\u22126.88, p<0.05",
+        "t(27)=−6.88, p<0.05",
         "t(45)=7.70, p<0.05",
-        "t(45)=\u22124.01, p<0.05"
+        "t(45)=−4.01, p<0.05"
       ],
       "n_findings_extracted_from": 1
     },
@@ -1930,7 +4625,10 @@
   "crossref_fetched_at": "2026-02-25T11:57:37.689973+00:00",
   "journal": "Building Research &amp; Information",
   "theory_links": [
-    "adaptive_thermal"
+    "goldilocks_principle",
+    "adaptive_thermal",
+    "pad_model",
+    "allesthesia"
   ],
   "molecule_ids": [
     "shringara",
@@ -1938,5 +4636,106 @@
     "karuna"
   ],
   "linked_date": "2026-03-01T04:43:11.647825+00:00",
-  "linking_method": "local_pattern_v1"
+  "linking_method": "api_verified_v1",
+  "tier_resolution_version": "ftr_v1_2026-03-01",
+  "tier_resolution_config": {
+    "min_template_score": 0.25,
+    "min_tier_support_score": 0.3,
+    "top_k_templates": 5
+  },
+  "linking_audit": {
+    "original": [
+      "adaptive_thermal",
+      "allesthesia",
+      "goldilocks_principle"
+    ],
+    "verified": [
+      "adaptive_thermal",
+      "allesthesia",
+      "goldilocks_principle"
+    ],
+    "removed": [],
+    "added": [
+      "pad_model"
+    ],
+    "date": "2026-03-01T06:48:50.603391+00:00"
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "air temperature",
+      "relative humidity",
+      "air velocity"
+    ],
+    "duration_exposure": "typically 30-60 minutes for thermal adaptation and exposure",
+    "control_conditions": [
+      "neutral thermal conditions (e.g., 22-24°C)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Alliesthesia (Cabanac)",
+      "commitment_type": "tests|extends",
+      "specific_claim": "The hedonic value of a stimulus depends on the internal state of the organism; thermal discomfort can enhance the pleasure derived from a subsequent thermal stimulus that alleviates the discomfort."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The mechanism of thermal alliesthesia, where an initial state of thermal discomfort (negative internal state) leads to an enhanced hedonic response (pleasure) to a subsequent thermal stimulus that helps alleviate that discomfort.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "thermal discomfort (e.g., feeling too hot or too cold)",
+        "to_construct": "negative internal physiological/affective state (homeostatic imbalance)",
+        "mechanism_type": "physiological|affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "negative internal state / homeostatic imbalance",
+        "to_construct": "enhanced hedonic response (pleasure) to a neutral or corrective thermal stimulus",
+        "mechanism_type": "affective|cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Thermal Sensation Vote (TSV)",
+      "construct": "perceived thermal sensation",
+      "description": "Typically a 7-point scale from -3 (cold) to +3 (hot)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Vote (TCV)",
+      "construct": "perceived thermal comfort/discomfort",
+      "description": "Often a scale rating comfort from uncomfortable to comfortable",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Pleasure/Displeasure Scale",
+      "construct": "hedonic response to thermal stimuli",
+      "description": "A scale specifically designed to capture the pleasantness or unpleasantness of thermal sensations",
+      "type": "self_report"
+    },
+    {
+      "name": "Air Temperature Sensor",
+      "construct": "ambient air temperature",
+      "description": "Device to measure dry-bulb temperature",
+      "type": "other"
+    },
+    {
+      "name": "Relative Humidity Sensor",
+      "construct": "relative humidity",
+      "description": "Device to measure moisture content in the air",
+      "type": "other"
+    },
+    {
+      "name": "Air Velocity Sensor",
+      "construct": "air speed",
+      "description": "Device to measure air movement",
+      "type": "other"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-01T21:53:22.399308+00:00"
 }

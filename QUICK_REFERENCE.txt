@@ -1,0 +1,169 @@
+================================================================================
+QUICK REFERENCE: Tier2 Coverage Investigation
+================================================================================
+
+PROBLEM:
+  AESHI reports 23.6% tier2 coverage (capped at 49/100 score)
+  AG claims 86.9% coverage was achieved
+  Why the difference?
+
+ANSWER:
+  High-quality file exists but not in production
+  
+CURRENT FILE:        23.6% (807/3,420)
+  Path: data/production/finding_template_theory_links.json
+  Size: 3.2 MB
+  Modified: 2026-03-01 02:33:57
+
+FIXED FILE:          85.6% (2,929/3,420) ← BETTER
+  Path: data/production/finding_template_theory_links_fixed.json
+  Size: 5.2 MB
+  Modified: 2026-03-01 02:05:00
+
+IMMEDIATE FIX:
+  cp data/production/finding_template_theory_links_fixed.json \
+     data/production/finding_template_theory_links.json
+
+  Coverage: 23.6% → 85.6% (one command)
+  Hard gate: Still FAIL (need 90%), but only 4.4% away
+  Score: Still capped at 49, but fixable
+
+FULL RECOVERY (reach 90%):
+  python3 scripts/run_finding_template_relevance_streaming.py \
+    --web-db data/web_persistence_v2.db \
+    --templates-dir data/templates \
+    --output data/production/finding_template_theory_links.json
+
+  Duration: 10-12 minutes
+  Result: 90%+ coverage → hard gate passes → score freed from cap
+
+VERIFICATION:
+  python3 << 'PYEOF'
+  import json
+  data = json.loads(open('data/production/finding_template_theory_links.json').read())
+  res = data.get('resolutions', [])
+  with_tier2 = sum(1 for r in res if r.get('tier2_relevance'))
+  print(f"Coverage: {with_tier2}/{len(res)} = {with_tier2/len(res):.1%}")
+  print(f"Gate passes: {with_tier2/len(res) >= 0.90}")
+  PYEOF
+
+================================================================================
+
+FILE LOCATIONS (Absolute Paths):
+  /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/
+    data/production/finding_template_theory_links.json (CURRENT, 23.6%)
+    data/production/finding_template_theory_links_fixed.json (FIXED, 85.6%)
+    data/web_persistence_v2.db (Database with 3,420 beliefs)
+    data/templates/ (template profiles)
+    scripts/compute_system_health.py (AESHI measurement script)
+    scripts/run_finding_template_relevance_streaming.py (tier2 resolver)
+
+================================================================================
+
+INVESTIGATION DOCUMENTS:
+  INVESTIGATION_TIER2_COVERAGE_DISCREPANCY_2026-03-01.md (Full details)
+  TECHNICAL_REFERENCE_TIER2_INVESTIGATION.md (SQL, code paths, DB schema)
+  ACTION_PLAN_TIER2_RECOVERY.md (Step-by-step execution guide)
+  FINDINGS_SUMMARY.txt (Executive summary)
+  QUICK_REFERENCE.txt (This file)
+
+================================================================================
+
+KEY METRICS:
+  Total beliefs: 3,420
+  Beliefs with tier2 (current): 807 (23.6%)
+  Beliefs with tier2 (fixed): 2,929 (85.6%)
+  Gap: 2,122 beliefs missing tier2 annotations
+  Target for passing: 3,078 beliefs (90%)
+  To reach target from fixed: Need 149 more beliefs
+
+AESHI STATUS:
+  Current score: 49/100 (capped by hard gate failure)
+  Current band: RED
+  With fixed file: Still 49 (hard gate still fails at 85.6% < 90%)
+  With full recovery: Score freely calculated, likely 65-75
+  Expected band after recovery: YELLOW or GREEN
+
+================================================================================
+
+HARD GATE THRESHOLDS:
+  Required tier2 coverage: >= 0.90 (90%)
+  Current: 0.236 (fails by 66.4 percentage points)
+  Fixed: 0.856 (fails by 4.4 percentage points)
+  Penalty: Hard gate failure → score capped at 49.0
+
+================================================================================
+
+ROOT CAUSE:
+  1. AG processed 25,355 extraction findings
+  2. Generated high-quality tier2 annotations
+  3. Created finding_template_theory_links_fixed.json (85.6%)
+  4. Subsequent operations regenerated current file (23.6%)
+  5. Fixed file exists but not integrated into production
+
+================================================================================
+
+CONCRETE EXAMPLE OF LOST TIER2 DATA:
+
+Belief: template:ARCH_PROMENADE_TEMPORAL_PE_001
+
+Current file (MISSING TIER2):
+  "tier2_relevance": {}
+
+Fixed file (HAS TIER2):
+  "tier2_relevance": {
+    "PREDICTIVE_PROCESSING": 0.7774,
+    "ADAPTIVE_THERMAL_COMFORT": 0.3955,
+    "ALLOSTATIC_REGULATION": 0.3955,
+    "IC": 0.3955,
+    "INTEROCEPTION": 0.3955,
+    "METABOLIC_HEALTH": 0.3955,
+    "CHRONOBIOLOGICAL": 0.2855,
+    "NEUROMODULATORY": 0.2855
+  }
+
+Count: 2,244 beliefs have this pattern (tier2 in fixed, not in current)
+
+================================================================================
+
+NEXT STEPS (Priority Order):
+  1. Read ACTION_PLAN_TIER2_RECOVERY.md (detailed steps)
+  2. Execute Step 1: Promote fixed file (1 minute)
+  3. Execute Step 3: Run tier2 resolution (10-12 minutes)
+  4. Verify with AESHI script (2 minutes)
+  5. Update COORDINATION.md and TASKS.md with completion
+
+================================================================================
+
+FILE METADATA:
+
+Current Production File:
+  Path: data/production/finding_template_theory_links.json
+  Size: 3,204,749 bytes
+  Modified: 2026-03-01 02:33:57.787715356 UTC
+  Format: JSON array of 3,420 resolutions
+  Tier2 coverage: 23.6% (807 beliefs)
+
+Fixed Quality File:
+  Path: data/production/finding_template_theory_links_fixed.json
+  Size: 5,246,164 bytes
+  Modified: 2026-03-01 02:05:00.000000000 UTC
+  Format: JSON array of 3,420 resolutions
+  Tier2 coverage: 85.6% (2,929 beliefs)
+  Size increase: +2,041,415 bytes due to tier2 content
+
+Database:
+  Path: data/web_persistence_v2.db
+  Beliefs: 3,420
+  With annotations: 3,420 (100%)
+  Schema: beliefs table with epistemic_v2 JSON column
+
+================================================================================
+
+STATUS: CRITICAL FINDING READY FOR RESOLUTION
+  Investigation: COMPLETE
+  Root cause: IDENTIFIED (data not integrated)
+  Solution: CLEAR (3-step recovery plan)
+  Documentation: COMPREHENSIVE (5 files)
+  Timeline: 15-20 minutes to full resolution
+

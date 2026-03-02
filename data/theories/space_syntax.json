@@ -6,15 +6,15 @@
   "citation": "Hillier, B. & Hanson, J. (1984). The social logic of space. Cambridge University Press.",
   "status": "REDUCED",
   "parent_t1_frameworks": {
-    "SN": 40,
-    "PP": 25,
-    "EC": 20,
+    "spatial-navigation": 40,
+    "predictive-processing": 25,
+    "embodied-cognition": 20,
     "IE-DPT": 15
   },
   "constructs": [
     {
       "construct_name": "Integration and Movement",
-      "description": "Syntactic integration predicts pedestrian movement flows (R\u00b2 = 0.50-0.80). Grid cell metric coding and hippocampal cognitive maps route through well-connected nodes.",
+      "description": "Syntactic integration predicts pedestrian movement flows (R² = 0.50-0.80). Grid cell metric coding and hippocampal cognitive maps route through well-connected nodes.",
       "template_ids": [
         "SN_CONTEXT_MEMORY_002",
         "ED_HIPPOCAMPAL_ENCODING_001"
@@ -24,7 +24,7 @@
     },
     {
       "construct_name": "Intelligibility and Wayfinding",
-      "description": "Spatial coherence predicts navigation success. Low spatial PE \u2192 confident mapping \u2192 reduced navigational stress.",
+      "description": "Spatial coherence predicts navigation success. Low spatial PE → confident mapping → reduced navigational stress.",
       "template_ids": [
         "PP_SPECTRAL_MATCH_001",
         "SN_CONTEXT_MEMORY_002"
@@ -77,24 +77,24 @@
   "key_references": [
     "Hillier, B. & Hanson, J. (1984). The social logic of space. Cambridge University Press."
   ],
-  "reduced_in": "Master paper \u00a776.1; Three New Reductions (2026-02-21)",
+  "reduced_in": "Master paper §76.1; Three New Reductions (2026-02-21)",
   "function_form": {
-    "function_form": "Movement(e) = \u03b1\u00b7Integration(e) + \u03b2\u00b7Connectivity(e); Integration = 1/mean_depth",
+    "function_form": "Movement(e) = α·Integration(e) + β·Connectivity(e); Integration = 1/mean_depth",
     "variables": {
       "Movement(e)": "Pedestrian movement rate on edge e",
       "Integration(e)": "Global accessibility (inverse mean topological depth)",
       "Connectivity(e)": "Local connections (number of directly connected spaces)",
-      "\u03b1, \u03b2": "Model weights (\u03b1 typically dominates)"
+      "α, β": "Model weights (α typically dominates)"
     },
     "predictions": [
-      "Integration predicts pedestrian flow (r \u2248 0.7-0.9 in many cities)",
-      "High-integration spaces attract 4-5\u00d7 more foot traffic than low-integration"
+      "Integration predicts pedestrian flow (r ≈ 0.7-0.9 in many cities)",
+      "High-integration spaces attract 4-5× more foot traffic than low-integration"
     ]
   },
   "provenance": {
     "seminal_paper": "Hillier, B. & Hanson, J. (1984). The Social Logic of Space. Cambridge University Press.",
     "predecessor": "Graph theory; March & Steadman's geometry of environments (1971)",
-    "historical_context": "Quantified the relationship between spatial layout and human movement, visibility, and social interaction. Integration (topological accessibility) predicts pedestrian flow with r \u2248 0.7-0.9.",
+    "historical_context": "Quantified the relationship between spatial layout and human movement, visibility, and social interaction. Integration (topological accessibility) predicts pedestrian flow with r ≈ 0.7-0.9.",
     "key_milestones": [
       "1984: The Social Logic of Space",
       "1993: Space Syntax Laboratory UCL",

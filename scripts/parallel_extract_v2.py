@@ -225,8 +225,8 @@ class WorkClaimer:
         if self.claims_file.exists():
             try:
                 return json.loads(self.claims_file.read_text())
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         return {"claims": {}, "completed": [], "failed": []}
 
     def _write(self, data: dict):
@@ -461,8 +461,8 @@ def extract_paper(client, pdf_path: Path, article_type: str, model: str = "gemin
     finally:
         try:
             client.files.delete(name=uploaded.name)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
 
 def evaluate_quality(extraction_data: dict, article_type: str) -> dict:

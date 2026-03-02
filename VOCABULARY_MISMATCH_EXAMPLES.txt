@@ -1,0 +1,315 @@
+================================================================================
+VOCABULARY MISMATCH - CONCRETE EXAMPLES
+================================================================================
+
+This document shows specific examples of the vocabulary gap with actual data
+from templates, extraction files, and database records.
+
+================================================================================
+EXAMPLE 1: CEILING HEIGHT
+================================================================================
+
+TEMPLATE VOCABULARY (Template ID: AX4)
+--------------------------------------
+Template name: "Spatial Enclosure and Attention Capacity"
+Causal link:
+  from_entity: "ceiling_height"
+  from_level: "environmental"
+  to_entity: "directed_attention"
+  to_level: "cognitive"
+
+EXTRACTION FILE (10.1016_j.healthplace.2012.01.012.json)
+-------------------------------------------------------
+Claim:
+  antecedent: "Rooms with high ceilings (3.8m) vs. low ceilings (2.4m)"
+  consequent: "Improved directed attention and task completion rates"
+
+Raw tokens: {rooms, high, ceilings, improved, directed, attention, task, completion}
+Mechanism overlap with template: {ceiling, attention}
+↓ MATCHES (86.9% raw text mode)
+
+DATABASE RECORD (beliefs table)
+-------------------------------
+belief_id: "pdf:doi:10.1016_j.healthplace..."
+environment_id: "env.ae.high_ceiling"
+outcome_id: "out.cog.attention"
+content: "Rooms with high ceilings (3.8m) vs. low ceilings (2.4m) - 
+          improved directed attention and task completion"
+
+Template matcher process:
+  1. Load environment_id: "env.ae.high_ceiling"
+  2. Normalize: "env.ae.high_ceiling" → "env_ae_high_ceiling"
+  3. Tokenize: {env, ae, high, ceiling}
+  4. Compare to template input_terms: {ceiling_height}
+  5. Check for overlap: "ceiling" (substring) appears in both
+  6. But ENV_BRIDGES doesn't have rule for "env_ae_high_ceiling"
+  7. No match found in bridge logic
+  8. Score: 0.0 unless fallback to content
+  ↓ NO MATCH (29.9% DB field mode)
+
+VOCABULARY GAP
+--------------
+Template expects:   ceiling_height
+Database has:       env.ae.high_ceiling
+
+Semantic alignment: HIGH (both refer to ceiling height)
+Lexical alignment:  LOW ("ceiling_height" vs "env_ae_high_ceiling")
+Bridge coverage:    NO (ENV_BRIDGES only has 21 total mappings)
+
+What's missing: A mapping from "env.ae.high_ceiling" → "ceiling_height"
+                OR from raw antecedent "high ceilings" → template input_term
+
+
+================================================================================
+EXAMPLE 2: ATTENTION OUTCOME
+================================================================================
+
+TEMPLATE VOCABULARY (Template ID: ART_01, Attention Restoration Theory)
+------------------------------------------------------------------------
+Template name: "Soft Fascination and Sustained Attention"
+Causal links (multiple):
+  from_entity: "natural_scene_exposure"  → to_entity: "directed_attention"
+  from_entity: "biophilic_stimuli"       → to_entity: "attention_restoration"
+  from_entity: "soft_fascination"        → to_entity: "attention_control"
+
+EXTRACTION FILE (scholar_expansion_candidates.json)
+---------------------------------------------------
+Claim:
+  antecedent: "Exposure to natural scenes and biophilic elements"
+  consequent: "Recovery of directed attention capacity, sustained focus,
+              and cognitive restoration"
+
+Raw tokens: {exposure, natural, scenes, biophilic, recovery, directed, attention,
+             focus, cognitive, restoration}
+Mechanism overlap: {attention, focus, natural, scenes, biophilic}
+↓ MATCHES (86.9% raw text mode)
+
+DATABASE RECORD (beliefs table)
+-------------------------------
+belief_id: "pdf:doi:10.1111_j.XXXX..."
+environment_id: "env.ae.vegetation_exposure"
+outcome_id: "out.cog.attention"
+content: "Exposure to natural scenes with biophilic elements recovered 
+          directed attention capacity and sustained focus..."
+
+Template matcher process:
+  1. Load outcome_id: "out.cog.attention"
+  2. Template seeks output_terms: {directed_attention, attention_restoration, attention_control}
+  3. Normalize outcome_id: "out_cog_attention"
+  4. Tokenize: {out, cog, attention}
+  5. Check overlap with output_terms:
+     - "directed_attention" vs "out_cog_attention": no match
+     - "attention_restoration" vs "out_cog_attention": no match
+     - "attention_control" vs "out_cog_attention": no match
+  6. OUTCOME_BRIDGES has entry: "attention" → {...}
+  7. But outcome_id "out_cog_attention" doesn't match bridge key "attention"
+  8. No match found
+  9. Score: 0.0 unless fallback to content
+  ↓ NO MATCH (29.9% DB field mode)
+
+VOCABULARY GAP
+--------------
+Template expects:   directed_attention, attention_restoration, attention_control
+Database has:       out.cog.attention
+
+Semantic alignment: HIGH (all refer to attention capacity recovery)
+Lexical alignment:  MEDIUM ("attention" substring appears)
+Bridge coverage:    PARTIAL (OUTCOME_BRIDGES has "attention" key, but DB has
+                    "out.cog.attention" which isn't covered)
+
+What's missing: A mapping from "out.cog.attention" → "directed_attention" etc
+                OR from raw consequent "recovery of directed attention" → 
+                    outcome_id
+
+
+================================================================================
+EXAMPLE 3: MOOD/AFFECT (MULTIPLE OUTCOME LEVELS)
+================================================================================
+
+TEMPLATE VOCABULARY (Template ID: CREA1_creative_network_dynamics)
+-------------------------------------------------------------------
+Causal links:
+  from_entity: "environmental_complexity"  → to_entity: "mood_valence_shift"
+  from_entity: "visual_complexity"         → to_entity: "positive_affect_shift"
+
+EXTRACTION FILES (multiple papers)
+----------------------------------
+Paper A:
+  antecedent: "High visual complexity with fractal patterns"
+  consequent: "Increased happiness and positive mood"
+  Tokens: {high, visual, complexity, fractal, increased, happiness, positive, mood}
+  Overlap: {complexity, positive, mood}
+  ↓ MATCHES
+
+Paper B:
+  antecedent: "Spatially complex urban environments"
+  consequent: "Improved emotional wellbeing and reduced negative affect"
+  Tokens: {spatial, complex, urban, improved, emotional, wellbeing, reduced, negative}
+  Overlap: {complex, mood-related terms}
+  ↓ MATCHES
+
+DATABASE RECORDS
+----------------
+Paper A:
+  environment_id: "env.complexity.visual_complexity"
+  outcome_id: "out.affect.mood.positive"
+  content: "High visual complexity with fractal patterns - increased happiness..."
+
+Paper B:
+  environment_id: "env.complexity.spatial_entropy"
+  outcome_id: "out.affect.mood"  ← Different level than Paper A
+  content: "Spatially complex urban environments - improved emotional wellbeing..."
+
+Template matcher process (Paper A):
+  1. Load outcome_id: "out.affect.mood.positive"
+  2. Template output_terms: {mood_valence_shift, positive_affect_shift}
+  3. Normalize: "out_affect_mood_positive"
+  4. Check overlap: NO exact match
+  5. OUTCOME_BRIDGES has:
+     "mood" → {affective_response, felt_emotion, positive_affect_shift, ...}
+  6. But outcome_id "out_affect_mood_positive" has prefix "out."
+  7. Bridge key "mood" doesn't match field "out.affect.mood.positive"
+  8. Score: 0.0 unless fallback
+  ↓ NO MATCH (29.9% DB field mode)
+
+Template matcher process (Paper B):
+  1. Load outcome_id: "out.affect.mood"  ← Different outcome level
+  2. Template output_terms: {mood_valence_shift, positive_affect_shift}
+  3. Same process as Paper A
+  ↓ NO MATCH
+
+VOCABULARY GAP
+--------------
+Template expects:   mood_valence_shift, positive_affect_shift
+Database has:       out.affect.mood
+                    out.affect.mood.positive (more specific)
+
+Semantic alignment: HIGH (all refer to mood/affect)
+Lexical alignment:  LOW ("mood" substring appears but in wrong format)
+Bridge coverage:    INSUFFICIENT (bridges designed for raw DB field patterns,
+                    not hierarchical "out.X.Y.Z" format)
+Hierarchy mismatch: Templates don't account for "out.affect.mood.positive"
+                    vs "out.affect.mood" distinctions
+
+What's missing: A mapping from "out.affect.mood*" → template output_terms
+                OR from raw text "positive mood" → canonical outcome_id
+
+
+================================================================================
+EXAMPLE 4: ACOUSTIC/NOISE (ENVIRONMENT MISMATCH)
+================================================================================
+
+TEMPLATE VOCABULARY (Template ID: AC1_Auditory_Processing)
+-----------------------------------------------------------
+Causal links:
+  from_entity: "ambient_noise_level"
+  from_level: "environmental"
+  to_entity: "cognitive_load"
+  to_level: "cognitive"
+
+Causal links:
+  from_entity: "acoustic_features"
+  from_level: "environmental"
+  to_entity: "speech_intelligibility"
+  to_level: "cognitive"
+
+EXTRACTION FILE (10.1177_0143624419896250.json)
+-----------------------------------------------
+Claim:
+  antecedent: "Ambient noise at 65 dBA vs. 55 dBA"
+  consequent: "Reduced speech intelligibility and increased cognitive load"
+
+Raw tokens: {ambient, noise, reduced, speech, intelligibility, increased, cognitive, load}
+Mechanism overlap: {noise, cognitive, load, intelligibility}
+↓ MATCHES (86.9% raw text mode)
+
+DATABASE RECORD
+---------------
+belief_id: "pdf:doi:10.1177_0143624419896250..."
+environment_id: "env.acoustic.ambient_noise_level"
+outcome_id: "out.cog.attention"  ← Different outcome than extraction
+content: "Ambient noise at 65 dBA vs 55 dBA reduced speech intelligibility..."
+
+Wait - the database field is env.acoustic.ambient_noise_level, but let's check
+if another belief in the same paper has the cognitive_load outcome:
+
+belief_id: "pdf:doi:10.1177_...2"
+environment_id: "env.acoustic.ambient_noise_level"
+outcome_id: "out.generic.cognition"  ← Still not out.cog.attention/cognitive_load
+content: "...increased cognitive load..."
+
+Template matcher process:
+  1. Load environment_id: "env.acoustic.ambient_noise_level"
+  2. Template input_terms: {ambient_noise_level, acoustic_features}
+  3. Compare:
+     - "ambient_noise_level" vs "env.acoustic.ambient_noise_level": 
+       Substring match? "ambient_noise_level" appears EXACTLY!
+       BUT in the wrong context (it's a field value, not a token)
+     - Normalize field: "env_acoustic_ambient_noise_level"
+     - Normalize term: "ambient_noise_level"
+     - Tokenize field: {env, acoustic, ambient, noise, level}
+     - Tokenize term: {ambient, noise, level}
+     - Overlap: {ambient, noise, level}
+     - Good signal!
+  4. ENV_BRIDGES check:
+     - Has "ambient_noise_dba" → {ambient_noise_level, acoustic_load, ...}
+     - But field is "env.acoustic.ambient_noise_level" (different namespace)
+     - Bridge key doesn't match
+  5. Without bridge, rely on token overlap
+  6. Outcome matching: similar issue with outcome_id
+
+VOCABULARY GAP
+--------------
+Template expects:   ambient_noise_level
+Database has:       env.acoustic.ambient_noise_level
+
+Semantic alignment: VERY HIGH (exact semantic match)
+Lexical alignment:  MEDIUM ("ambient_noise_level" appears as substring)
+Bridge coverage:    FAILED (ENV_BRIDGES has "ambient_noise_dba", not
+                    "env.acoustic.ambient_noise_level")
+Database mismatch:  Why is outcome_id "out.generic.cognition" instead of
+                    outcome matching "cognitive_load"?
+
+What's missing: A namespace-aware mapping from "env.acoustic.*" → 
+                environmental input_terms
+                OR outcome mapping from "cognitive_load" → "out.generic.cognition"
+
+
+================================================================================
+SUMMARY OF MISMATCHES
+================================================================================
+
+Pattern 1: Hierarchical vs. Flat
+  Template: "ceiling_height" (flat, domain-specific term)
+  Database: "env.ae.high_ceiling" (hierarchical with prefix)
+  → Namespace "env.ae" loses semantic meaning
+
+Pattern 2: Domain Specificity
+  Template: "aesthetic_emotion" (specific psychological construct)
+  Database: "out.affect.mood" (general domain category)
+  → Database loses specificity; multiple outcomes map to same outcome_id
+
+Pattern 3: Bridge Key Mismatch
+  Template: ENV_BRIDGES["ambient_noise_dba"] = {...}
+  Database: "env.acoustic.ambient_noise_level"
+  → Bridge keys assume different DB structure than actual
+
+Pattern 4: Multiple Outcome Levels
+  Database has: "out.affect.mood", "out.affect.mood.positive", "out.affect.mood.negative"
+  Template expects: Single outcome term for all variants
+  → Hierarchy not accounted for in template vocabulary
+
+Pattern 5: Natural Language vs. Canonical
+  Extraction: "high ceilings with daylighting"
+  Template: mechanism_terms extracted from description
+  Database: "env.ae.high_ceiling|env.ae.daylighting"
+  → Three different representations for same concept
+
+SOLUTION: Create mapping layer
+  Raw text → Normalize → Map to canonical ID → Store → Template match
+         ↑
+    [NEW STEP]
+    environment_id_normalizer
+    outcome_id_normalizer
+
+================================================================================

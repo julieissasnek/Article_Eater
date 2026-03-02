@@ -725,6 +725,273 @@
           "rationale": "Partial updates leave database in inconsistent state"
         }
       ]
+    },
+    "scripts/nightly_integration_pipeline.py": {
+      "description": "Nightly integration — runs overseer checks, constraint propagation, AESHI, and reflex repairs",
+      "script_entry_point": "python scripts/nightly_integration_pipeline.py",
+      "conditions": [
+        {
+          "id": "NIP-SC1",
+          "name": "Pipeline completes all stages without fatal error",
+          "description": "All registered stages execute; exit code 0; no unhandled exceptions",
+          "metric": "exit_code == 0 AND all stages attempted",
+          "threshold": "100%",
+          "test_name": "test_nightly_pipeline_completes",
+          "rationale": "Silent failures in nightly pipeline mean data goes stale"
+        },
+        {
+          "id": "NIP-SC2",
+          "name": "Database resolved via get_web_db()",
+          "description": "Pipeline uses centralized DB resolver, not hardcoded paths",
+          "metric": "db_path == get_web_db()",
+          "threshold": "100%",
+          "test_name": "test_nightly_uses_centralized_db",
+          "rationale": "Hardcoded paths cause DB mismatch between services"
+        },
+        {
+          "id": "NIP-SC3",
+          "name": "Pipeline produces a health report",
+          "description": "After execution, system_health_report.json exists and AESHI score is computed",
+          "metric": "file_exists AND aeshi_score is float",
+          "threshold": "100%",
+          "test_name": "test_nightly_produces_health_report",
+          "rationale": "Health report is the primary output; absence means blind monitoring"
+        }
+      ]
+    },
+    "scripts/compute_system_health.py": {
+      "description": "AESHI (Article Eater System Health Index) computation — composite health metric",
+      "script_entry_point": "python scripts/compute_system_health.py --skip-gates",
+      "conditions": [
+        {
+          "id": "AESHI-SC1",
+          "name": "AESHI score is computed and in valid range",
+          "description": "AESHI score is a float in [0, 100] with band classification (RED/AMBER/YELLOW/GREEN)",
+          "metric": "0 <= score <= 100 AND band in {RED, AMBER, YELLOW, GREEN}",
+          "threshold": "100%",
+          "test_name": "test_aeshi_score_valid_range",
+          "rationale": "Out-of-range or missing score means health monitoring is broken"
+        },
+        {
+          "id": "AESHI-SC2",
+          "name": "All component scores are computed from real data",
+          "description": "No component defaults to 100 or 0 due to missing data; all are computed",
+          "metric": "all(component.source == 'computed' for component in scores)",
+          "threshold": "100%",
+          "test_name": "test_aeshi_no_default_scores",
+          "rationale": "Defaulting to 100 masks real problems; defaulting to 0 creates false alarms"
+        },
+        {
+          "id": "AESHI-SC3",
+          "name": "Grounding score reflects epistemic_v2 data",
+          "description": "Grounding score reads from epistemic_v2 column (not missing provenance column)",
+          "metric": "grounding_source == 'epistemic_v2'",
+          "threshold": "100%",
+          "test_name": "test_aeshi_reads_correct_column",
+          "rationale": "Reading from wrong column caused grounding score to default silently"
+        },
+        {
+          "id": "AESHI-SC4",
+          "name": "Reports are written to both JSON and Markdown",
+          "description": "Both system_health_report.json and docs/system_health_report.md are produced",
+          "metric": "both files exist AND both contain current timestamp",
+          "threshold": "100%",
+          "test_name": "test_aeshi_reports_written",
+          "rationale": "Missing reports mean health data is lost"
+        }
+      ]
+    },
+    "scripts/classify_grounding.py": {
+      "description": "Grounding classification — classifies beliefs as GROUNDED, COHERENT_ONLY, or UNJUSTIFIED",
+      "script_entry_point": "python scripts/classify_grounding.py",
+      "conditions": [
+        {
+          "id": "GC-SC1",
+          "name": "All beliefs are classified",
+          "description": "Every belief in the web DB receives a justification status in epistemic_v2",
+          "metric": "classified_count == total_beliefs",
+          "threshold": "100%",
+          "test_name": "test_grounding_all_beliefs_classified",
+          "rationale": "Unclassified beliefs have UNSET status, hiding grounding problems"
+        },
+        {
+          "id": "GC-SC2",
+          "name": "Grounding ratio exceeds GREEN threshold",
+          "description": "GROUNDED beliefs are >60% of total (GREEN band requirement)",
+          "metric": "grounded_count / total_beliefs",
+          "threshold": ">= 0.60",
+          "test_name": "test_grounding_ratio_green",
+          "rationale": "Below 60% means the epistemic web lacks empirical justification"
+        },
+        {
+          "id": "GC-SC3",
+          "name": "Database resolved via get_web_db()",
+          "description": "Script uses centralized DB resolver for consistency with AESHI",
+          "metric": "db_path == get_web_db()",
+          "threshold": "100%",
+          "test_name": "test_grounding_uses_centralized_db",
+          "rationale": "DB mismatch between classify and AESHI caused invisible grounding gap"
+        }
+      ]
+    },
+    "scripts/propagate_constraints.py": {
+      "description": "Constraint propagation — connects isolated beliefs via edge creation",
+      "script_entry_point": "python scripts/propagate_constraints.py --dry-run",
+      "conditions": [
+        {
+          "id": "CP-SC1",
+          "name": "Isolated belief percentage decreases after propagation",
+          "description": "Percentage of beliefs with 0 edges decreases by >10%",
+          "metric": "isolated_pct_after < isolated_pct_before",
+          "threshold": ">10% improvement",
+          "test_name": "test_propagation_reduces_isolation",
+          "rationale": "Propagation that doesn't connect anything is a no-op"
+        },
+        {
+          "id": "CP-SC2",
+          "name": "New edges are valid and non-circular",
+          "description": "All created edges have valid source_id, target_id, and are not self-loops",
+          "metric": "all(edge.source != edge.target for edge in new_edges)",
+          "threshold": "100%",
+          "test_name": "test_propagation_no_self_loops",
+          "rationale": "Self-loops corrupt coherence calculations"
+        },
+        {
+          "id": "CP-SC3",
+          "name": "Dry-run mode produces identical analysis without writes",
+          "description": "With --dry-run, no database modifications occur but analysis output is complete",
+          "metric": "db_unchanged AND analysis_output_complete",
+          "threshold": "100%",
+          "test_name": "test_propagation_dry_run_safe",
+          "rationale": "Broken dry-run means no safe preview of changes"
+        }
+      ]
+    },
+    "scripts/migrate_annotations_to_unified.py": {
+      "description": "Annotation migration — moves L2 CVA JSON annotations into unified SQLite store",
+      "script_entry_point": "python scripts/migrate_annotations_to_unified.py --dry-run",
+      "conditions": [
+        {
+          "id": "AM-SC1",
+          "name": "All CVA annotation files are processed",
+          "description": "Every .json file in data/cva_annotations/ is read and parsed",
+          "metric": "processed_files == total_cva_files",
+          "threshold": "100%",
+          "test_name": "test_migration_processes_all_files",
+          "rationale": "Skipped files mean lost annotation data"
+        },
+        {
+          "id": "AM-SC2",
+          "name": "Migration is idempotent",
+          "description": "Re-running migration does not duplicate annotations",
+          "metric": "annotation_count_run1 == annotation_count_run2",
+          "threshold": "100%",
+          "test_name": "test_migration_idempotent",
+          "rationale": "Duplicate annotations corrupt coverage metrics"
+        },
+        {
+          "id": "AM-SC3",
+          "name": "All annotation types are registered",
+          "description": "All 23 AnnotationType values are present in the types table",
+          "metric": "registered_types == 23",
+          "threshold": "100%",
+          "test_name": "test_migration_registers_all_types",
+          "rationale": "Missing types cause INSERT failures for those annotation categories"
+        }
+      ]
+    },
+    "scripts/run_acquisition_pipeline.py": {
+      "description": "Acquisition pipeline — 8-step article discovery, search, enrichment, and intake",
+      "script_entry_point": "python scripts/run_acquisition_pipeline.py --dry-run",
+      "conditions": [
+        {
+          "id": "ACQ-SC1",
+          "name": "Dry-run mode produces no side effects",
+          "description": "With --dry-run, no external API calls are made and no files are modified",
+          "metric": "no_files_changed AND no_api_calls",
+          "threshold": "100%",
+          "test_name": "test_acquisition_dry_run_safe",
+          "rationale": "Broken dry-run means no safe preview of acquisition effects"
+        },
+        {
+          "id": "ACQ-SC2",
+          "name": "Each step is isolated and skippable",
+          "description": "Pipeline handles --skip and --only flags correctly; failed steps don't block others",
+          "metric": "step_isolation == true",
+          "threshold": "100%",
+          "test_name": "test_acquisition_step_isolation",
+          "rationale": "Non-isolated steps cause cascading failures in nightly pipeline"
+        },
+        {
+          "id": "ACQ-SC3",
+          "name": "Pipeline produces summary report",
+          "description": "After execution, prints pass/fail count for each step and total elapsed time",
+          "metric": "summary_printed AND elapsed_reported",
+          "threshold": "100%",
+          "test_name": "test_acquisition_produces_summary",
+          "rationale": "Missing summary means blind monitoring"
+        },
+        {
+          "id": "ACQ-SC4",
+          "name": "All step scripts exist on disk",
+          "description": "Every script referenced by the pipeline steps exists in scripts/",
+          "metric": "all(Path(script).exists() for script in referenced_scripts)",
+          "threshold": "100%",
+          "test_name": "test_acquisition_scripts_exist",
+          "rationale": "Missing scripts cause silent step skip without error"
+        }
+      ]
+    },
+    "src/services/paper_integration/orchestrator.py": {
+      "description": "Integration Cascade — 14-step paper-to-belief integration with rollback",
+      "script_entry_point": "python -c 'from src.services.paper_integration.orchestrator import PaperIntegrationOrchestrator; print(\"OK\")'",
+      "conditions": [
+        {
+          "id": "IC-SC1",
+          "name": "All 14 cascade steps are implemented",
+          "description": "CANONICAL_STEPS list has 14 entries, each with a corresponding _step_ method",
+          "metric": "len(CANONICAL_STEPS) == 14 AND all(_step_* methods exist)",
+          "threshold": "100%",
+          "test_name": "test_cascade_all_steps_implemented",
+          "rationale": "Missing steps are silently skipped, leaving data incomplete"
+        },
+        {
+          "id": "IC-SC2",
+          "name": "Rollback reverses all integration effects",
+          "description": "After rollback, beliefs are retired, constraints removed, tags removed, versions marked non-current",
+          "metric": "rollback_removes_all_effects",
+          "threshold": "100%",
+          "test_name": "test_cascade_rollback_complete",
+          "rationale": "Partial rollback leaves the web in an inconsistent state"
+        },
+        {
+          "id": "IC-SC3",
+          "name": "Pre-validation catches missing extraction data",
+          "description": "Step 1 rejects papers with no findings, no claims, or corrupt JSON",
+          "metric": "pre_validate rejects malformed input",
+          "threshold": "100%",
+          "test_name": "test_cascade_pre_validation",
+          "rationale": "Accepting bad data propagates errors through all 13 remaining steps"
+        },
+        {
+          "id": "IC-SC4",
+          "name": "Every new belief has provenance",
+          "description": "Beliefs created by cascade have source_paper_id and epistemic_v2 metadata",
+          "metric": "all(belief.source_paper IS NOT NULL for belief in new_beliefs)",
+          "threshold": "100%",
+          "test_name": "test_cascade_provenance_tracking",
+          "rationale": "Beliefs without provenance are unjustifiable in foundherentist framework"
+        },
+        {
+          "id": "IC-SC5",
+          "name": "Integration event is recorded for audit",
+          "description": "PaperIntegrationEvent is persisted with all cascade steps and their statuses",
+          "metric": "event.status IN (COMPLETED, PARTIAL) AND all steps recorded",
+          "threshold": "100%",
+          "test_name": "test_cascade_event_recording",
+          "rationale": "Missing audit trail prevents rollback and accountability"
+        }
+      ]
     }
   },
   "meta": {

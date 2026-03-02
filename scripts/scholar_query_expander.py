@@ -123,8 +123,8 @@ def generate_queries() -> list[dict]:
                         "source": f"molecule:{mid}",
                         "priority": "medium",
                     })
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     # From templates — use mechanism_chain terms
     if TEMPLATES_DIR.exists():
@@ -157,8 +157,8 @@ def generate_queries() -> list[dict]:
                         "source": f"template:{tid}",
                         "priority": "low",
                     })
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     print(f"Generated {len(queries)} queries from molecules and templates")
     return queries

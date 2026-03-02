@@ -33,10 +33,10 @@ def create_good_finding():
     """Create a finding that passes all validations."""
     return {
         "antecedent": "Ceiling height (3.0m vs 2.4m)",
-        "consequent": "creative performance",
+        "consequent": "cognitive performance",
         "direction": "increase",
         "claim_type": "empirical_finding",
-        "measure_type": "behavioral",
+        "measure_type": "cognitive",
         "outcome_domain": "cognition",
         "p_value": 0.03,
         "effect_size": 0.45,
@@ -44,6 +44,26 @@ def create_good_finding():
         "sample_size": 60,
         "confidence_interval": [0.1, 0.8],
         "test_statistic": 2.15,
+        # Phase 1A principle-compliance fields (required for Phase 1B validator)
+        "causal_tier": "EXPERIMENTAL",
+        "justification_status": "GROUNDED",
+        "defeater_search_status": "none_reported",
+        "scope_conditions": {
+            "setting": "lab",
+            "population": "university students",
+            "climate": "temperate",
+            "duration": "acute",
+            "measurement_type": "cognitive_task"
+        },
+        "source_quality_indicators": {
+            "pre_registered": False,
+            "blinding": "none",
+            "independence_flag": True,
+            "replication_status": "original"
+        },
+        "defeat_relationships": [],
+        "conflict_type": None,
+        "epistemic_level": "EMPIRICAL",
     }
 
 

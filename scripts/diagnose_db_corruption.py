@@ -147,8 +147,8 @@ def diagnose(db_path_override: str = None, verbose: bool = False) -> int:
             cursor.execute("SELECT level, COUNT(*) FROM beliefs GROUP BY level ORDER BY COUNT(*) DESC")
             for row in cursor.fetchall():
                 print(f"  {row[0]}: {row[1]}")
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         # Constraints
         count_constraints = cursor.execute("SELECT COUNT(*) FROM constraints").fetchone()[0]
@@ -208,8 +208,8 @@ def diagnose(db_path_override: str = None, verbose: bool = False) -> int:
             isolated = cursor.fetchone()[0]
             pct = isolated / count_beliefs * 100 if count_beliefs else 0
             print(f"Isolated beliefs: {isolated} ({pct:.1f}%)")
-        except Exception:
-            pass
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         # Write test
         print("\n--- Write Capability ---")

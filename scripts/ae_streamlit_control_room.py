@@ -55,14 +55,16 @@ def _safe_count(cur: sqlite3.Cursor, table: str) -> int | None:
     try:
         cur.execute(f"SELECT COUNT(*) FROM {table}")
         return int(cur.fetchone()[0])
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 def _safe_distinct_status(cur: sqlite3.Cursor, table: str):
     try:
         cur.execute(f"SELECT DISTINCT status FROM {table} ORDER BY status")
         return [r[0] for r in cur.fetchall()]
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 with st.expander("DB Diagnostics (always visible)", expanded=False):

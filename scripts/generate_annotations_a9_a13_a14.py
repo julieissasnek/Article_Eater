@@ -239,8 +239,8 @@ def main():
                         a14["antecedent"] = finding.get("antecedent", "")[:200]
                         a14["consequent"] = finding.get("consequent", "")[:200]
                         a14_annotations.append(a14)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Non-critical: {e}")
 
     logger.info(f"Total findings: {len(all_findings)}")
 

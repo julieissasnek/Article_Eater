@@ -33,6 +33,7 @@ from src.services.web_of_belief import (
     WebOfBelief,
 )
 from src.services.bridge_warrants import compute_bridged_credence
+from src.services.db_locator import get_web_db
 from src.services.web_persistence import WebPersistenceService
 
 logger = logging.getLogger(__name__)
@@ -383,7 +384,7 @@ def create_interaction_constraints(
 
 def seed_beliefs(
     templates_dir: Path = Path("data/templates"),
-    db_path: str = "data/web_persistence_v2.db",
+    db_path: str = str(get_web_db()),
     dry_run: bool = False,
     clear_existing: bool = False,
     include_uncalibrated: bool = False,
@@ -527,8 +528,8 @@ def seed_beliefs(
                     "DELETE FROM entrenchment_snapshots WHERE web_id = ? AND belief_id LIKE ?",
                     (master_web_id, like_pattern),
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Non-critical: {e}")
 
         print(
             "Cleared existing template-seeded rows: "
@@ -574,7 +575,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--db-path",
-        default="data/web_persistence_v2.db",
+        default=str(get_web_db()),
         help="Path to the web persistence SQLite DB (default: data/web_persistence_v2.db)",
     )
     parser.add_argument(

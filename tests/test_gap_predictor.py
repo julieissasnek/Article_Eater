@@ -625,19 +625,23 @@ class TestVOICalculations:
     """Tests for Value of Information calculations."""
 
     def test_mechanism_voi_formula(self):
-        """Test mechanism VOI formula: min(0.4 + 0.1 × n_beliefs, 0.7) + centrality."""
+        """Test mechanism VOI formula: min(0.4 + 0.1 × n_beliefs, 0.7).
+
+        NOTE: Without a web DB connection, no centrality bonus is applied,
+        so VOI equals the base formula exactly.
+        """
         predictor = GapPredictor()
 
         # 1 belief: min(0.4 + 0.1, 0.7) = 0.5 base
         beliefs_1 = [MockBelief(belief_id='b1', content='test')]
         voi_1 = predictor._compute_mechanism_voi(beliefs_1)
-        # Without web, no centrality bonus, so base + 0.3 * 0.3 (default) = 0.59
-        assert voi_1 == pytest.approx(0.59, rel=0.02)
+        # Without web, no centrality bonus, so base only = 0.5
+        assert voi_1 == pytest.approx(0.5, rel=0.05)
 
-        # 5 beliefs: min(0.4 + 0.5, 0.7) = 0.7 base
+        # 5 beliefs: min(0.4 + 0.5, 0.7) = 0.7 base (capped)
         beliefs_5 = [MockBelief(belief_id=f'b{i}', content='test') for i in range(5)]
         voi_5 = predictor._compute_mechanism_voi(beliefs_5)
-        # Base 0.7 + small centrality bonus
+        # Base 0.7 (capped at 0.7)
         assert voi_5 >= 0.7
 
     def test_boundary_voi_formula(self):

@@ -2,7 +2,7 @@
   "doi": "10.1016/b978-0-444-53817-8.00007-4",
   "article_type": "narrative_review",
   "article_family": "synthesis",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.71,
   "n_findings": 55,
   "extracted_at": "2026-02-25T05:00:00.628860+00:00",
@@ -1282,7 +1282,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "Borb\u00e9ly 1982",
+        "Borbély 1982",
         "Daan et al., 1984"
       ],
       "outcome_id": "physio.alertness",
@@ -2864,7 +2864,7 @@
         "Lewy et al., 1980",
         "Zeitzer et al., 2000",
         "Cajochen et al., 1992",
-        "M\u00fcnch et al., 2006",
+        "Münch et al., 2006",
         "Cajochen et al., 2006"
       ],
       "template_matches": [
@@ -3162,7 +3162,7 @@
     },
     {
       "id": 43,
-      "antecedent": "Blue-light exposure (2.1 \u00b5W/cm\u00b2)",
+      "antecedent": "Blue-light exposure (2.1 µW/cm²)",
       "consequent": "EEG alpha activity (no effect), subjective sleepiness (no effect), salivary melatonin (no effect), delta/theta activity (differential response)",
       "direction": "mixed",
       "claim_type": "narrative",
@@ -4459,5 +4459,54 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Light acts as a primary Zeitgeber, synchronizing endogenous circadian rhythms with the external light-dark cycle, thereby influencing sleep-wake cycles and cognitive function."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Light exposure is detected by specialized photoreceptors, signaling to the suprachiasmatic nucleus (SCN), the master circadian clock, which then synchronizes physiological rhythms, including the sleep-wake cycle.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Light exposure",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission via retinohypothalamic tract to Suprachiasmatic Nucleus (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Signal transmission to SCN",
+        "to_construct": "Synchronization and entrainment of SCN neuronal activity",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Synchronization of SCN activity",
+        "to_construct": "Regulation of downstream physiological processes (e.g., melatonin secretion, core body temperature)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Regulation of physiological processes",
+        "to_construct": "Synchronization of sleep and wakefulness with external light-dark cycle",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:56:24.253072+00:00"
 }

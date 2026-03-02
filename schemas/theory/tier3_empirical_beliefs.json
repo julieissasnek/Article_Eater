@@ -1,0 +1,149 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tier 3: Empirical Beliefs",
+    "description": "Lower-level, well-supported empirical beliefs in the Web of Belief. Each T3 belief is a specific, evidence-backed claim about an environment-outcome relationship. Multiple articles can support the same T3 belief, giving it higher entrenchment. T3 beliefs are the ground-level evidence that T2 templates predict and T1.5 domain theories organise.",
+    "version": "1.0.0",
+    "ontological_status": {
+        "what_they_are": "Specific empirical claims extracted from scientific literature. Each claims that a particular architectural/environmental feature produces a particular psychological/neurobiological outcome under specified conditions.",
+        "relationship_to_T2": "T2 templates predict CLASSES of effects. T3 beliefs are the individual INSTANCES observed in specific studies. Many T3 beliefs can support the same T2 template.",
+        "entrenchment": "T3 beliefs gain entrenchment (confidence) as more independent studies corroborate them. A T3 belief supported by 12 articles is more entrenched than one supported by 1.",
+        "storage": "Web of Belief (web_persistence.db) — each belief is a node with coherence scores and provenance links."
+    },
+    "schema": {
+        "belief_id": {
+            "type": "string",
+            "description": "Unique identifier, typically: pdf:<doi>:<extraction_ref>",
+            "example": "pdf:doi:10.1016/j.jenvp.2020.101483:TBL-C003"
+        },
+        "claim_text": {
+            "type": "string",
+            "description": "Natural language statement of the empirical claim",
+            "example": "Nature views from office windows reduced salivary cortisol by 15-20% within 10 minutes of exposure."
+        },
+        "environment_id": {
+            "type": "string",
+            "description": "Canonical environment variable from the environment taxonomy",
+            "example": "has_nature_view"
+        },
+        "outcome_id": {
+            "type": "string",
+            "description": "Canonical outcome variable from the outcome taxonomy",
+            "example": "cortisol_level"
+        },
+        "effect_direction": {
+            "type": "string",
+            "enum": [
+                "positive",
+                "negative",
+                "null",
+                "curvilinear",
+                "moderating"
+            ],
+            "description": "Direction of the observed effect"
+        },
+        "effect_size": {
+            "type": "object",
+            "description": "Quantitative effect magnitude when available",
+            "properties": {
+                "metric": {
+                    "type": "string",
+                    "example": "cohens_d"
+                },
+                "value": {
+                    "type": "number",
+                    "example": 0.45
+                },
+                "ci_lower": {
+                    "type": "number"
+                },
+                "ci_upper": {
+                    "type": "number"
+                }
+            }
+        },
+        "source_articles": {
+            "type": "array",
+            "description": "DOIs of articles that support this belief. Length indicates evidential breadth.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "linked_templates": {
+            "type": "array",
+            "description": "T2 template IDs that this belief provides evidence for",
+            "items": {
+                "type": "string"
+            }
+        },
+        "entrenchment_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Coherence-weighted confidence. Higher = more supporting evidence, fewer contradictions, better integration with surrounding beliefs."
+        },
+        "population": {
+            "type": "string",
+            "description": "Population in which the effect was observed",
+            "example": "office workers, aged 25-55, N=87"
+        },
+        "conditions": {
+            "type": "array",
+            "description": "Boundary conditions or moderators",
+            "items": {
+                "type": "string"
+            },
+            "example": [
+                "daylight only",
+                "temperate climate",
+                "western population"
+            ]
+        }
+    },
+    "examples": [
+        {
+            "belief_id": "t3:nature_view_cortisol_reduction",
+            "claim_text": "Nature views reduce salivary cortisol by 15-20% within 10 minutes",
+            "environment_id": "has_nature_view",
+            "outcome_id": "cortisol_level",
+            "effect_direction": "negative",
+            "source_articles": [
+                "10.1016/j.jenvp.2020.101483",
+                "10.1016/j.ufug.2018.09.002",
+                "10.1038/s41598-019-44097-3"
+            ],
+            "linked_templates": [
+                "VIEW1",
+                "T5",
+                "T6"
+            ],
+            "entrenchment_score": 0.72,
+            "population": "Office workers, multiple studies, N>300 total",
+            "conditions": [
+                "Real or high-fidelity views",
+                "Minimum 10 min exposure"
+            ]
+        },
+        {
+            "belief_id": "t3:curved_contour_preference",
+            "claim_text": "Curved contours are preferred over angular contours at 65-75% rate",
+            "environment_id": "has_curved_contours",
+            "outcome_id": "aesthetic_preference",
+            "effect_direction": "positive",
+            "source_articles": [
+                "10.1037/a0033150",
+                "10.1016/j.neuropsychologia.2006.01.007",
+                "10.1038/s41598-017-01356-3"
+            ],
+            "linked_templates": [
+                "VF1",
+                "T9"
+            ],
+            "entrenchment_score": 0.81,
+            "population": "Cross-cultural samples, N>500 total",
+            "conditions": [
+                "Simple contours",
+                "Implicit and explicit measures"
+            ]
+        }
+    ]
+}

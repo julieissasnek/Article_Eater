@@ -23,7 +23,7 @@ from typing import Any, Dict, List, Set, Tuple
 
 
 def load_registered_variables(schema_path: str) -> Set[str]:
-    """Load all known variable names (canonical + aliases) from the schema."""
+    """Load all known variable names (canonical + aliases + mechanism levels + calibration metadata) from the schema."""
     with open(schema_path) as f:
         schema = json.load(f)
 
@@ -37,6 +37,14 @@ def load_registered_variables(schema_path: str) -> Set[str]:
     # All aliases
     for alias in schema.get("alias_map", {}):
         registered.add(alias)
+
+    # Mechanism chain levels (valid in mechanism_chain from/to)
+    for level_name in schema.get("mechanism_levels", {}).get("levels", {}):
+        registered.add(level_name)
+
+    # Calibration metadata keys (valid in calibrated_parameters)
+    for meta_key in schema.get("calibration_metadata", {}).get("keys", {}):
+        registered.add(meta_key)
 
     return registered
 

@@ -13,6 +13,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from src.services.finding_template_relevance import (
+from src.services.db_locator import get_web_db
     ResolverConfig,
     load_findings_from_web_db,
     load_template_profiles,
@@ -25,7 +26,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--web-db",
         type=Path,
-        default=Path("data/web_persistence.db"),
+        default=get_web_db(),
         help="Path to WebOfBelief SQLite DB",
     )
     parser.add_argument(

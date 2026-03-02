@@ -87,7 +87,7 @@ async def extract_paper_async(client: genai.Client, pdf_path: Path, article_type
             # Cleanup
             try:
                 await loop.run_in_executor(None, lambda: client.files.delete(name=uploaded.name))
-            except:
+            except Exception:  
                 pass
 
             return {"success": True, "data": result, "cost": round(cost, 6), "elapsed": round(elapsed, 1)}

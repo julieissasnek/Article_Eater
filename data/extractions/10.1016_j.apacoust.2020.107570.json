@@ -2,7 +2,7 @@
   "doi": "10.1016/j.apacoust.2020.107570",
   "article_type": "observational_field",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.841,
   "n_findings": 24,
   "extracted_at": "2026-02-25T05:22:02.884785+00:00",
@@ -2108,7 +2108,7 @@
       "table_id": "Table 5",
       "description": "Stepwise linear regression of subjects' satisfaction from other soundscape perceptions (Pleasantness, Loudness).",
       "key_stats": [
-        "R\u00b2 = 0.67",
+        "R² = 0.67",
         "F(2,147) = 149.8, p < 0.001",
         "beta for Pleasantness = 0.54, p < 0.001",
         "beta for Loudness = -0.39, p < 0.001"
@@ -2128,7 +2128,7 @@
       "table_id": "Table 7",
       "description": "Stepwise linear regression of subjects' overall preference for a good soundscape from pleasantness perception, preference score of natural sounds, and visit frequency.",
       "key_stats": [
-        "R\u00b2 = 0.22",
+        "R² = 0.22",
         "F(3,146) = 13.9, p < 0.001",
         "beta for Pleasantness = 0.33, p < 0.001",
         "beta for Preference score of Natural sounds = 0.25, p = 0.001",
@@ -2425,5 +2425,53 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Different urban soundscapes (e.g., garden areas, playground areas, squares, streets)",
+      "Varying compositions of natural sounds (e.g., birds, water)",
+      "Varying compositions of anthropogenic sounds (e.g., traffic, human voices)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "Comparison between different types of urban public spaces with distinct acoustic characteristics"
+    ],
+    "ecological_validity": "field"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Soundscape Approach",
+      "commitment_type": "assumes",
+      "specific_claim": "The acoustic environment is perceived holistically as a soundscape, and its quality is determined by human perception and context, not solely by objective noise levels."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The objective acoustic characteristics of an urban space influence perceived soundscape attributes, which in turn affect soundscape preference.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Objective acoustic characteristics (e.g., sound pressure level, presence of specific sounds)",
+        "to_construct": "Perceived soundscape attributes (e.g., quietness, pleasantness, eventfulness)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived soundscape attributes",
+        "to_construct": "Soundscape preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Soundscape Perception Questionnaire",
+      "construct": "Perceived soundscape attributes (pleasantness, eventfulness, quietness, vibrancy) and overall soundscape preference",
+      "description": "Likert-scale ratings for various soundscape qualities and overall preference, often based on ISO 12913-2.",
+      "type": "self_report"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T00:03:48.180714+00:00"
 }

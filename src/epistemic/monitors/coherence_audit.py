@@ -188,8 +188,8 @@ def _extract_direct_evidence_nodes(web: Any, new_claim_ids: List[str]) -> Set[st
             try:
                 supported = web.get_supported_nodes(claim_id)
                 nodes.update(supported)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         # Pattern 2: web has get_outgoing_edges method
         if hasattr(web, 'get_outgoing_edges'):
@@ -200,8 +200,8 @@ def _extract_direct_evidence_nodes(web: Any, new_claim_ids: List[str]) -> Set[st
                         nodes.add(edge.target)
                     elif isinstance(edge, tuple) and len(edge) >= 2:
                         nodes.add(edge[1])
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         # Pattern 3: web has constraints attribute (our Constraint model)
         if hasattr(web, 'constraints'):
@@ -211,8 +211,8 @@ def _extract_direct_evidence_nodes(web: Any, new_claim_ids: List[str]) -> Set[st
                         if constraint.source_belief_id == claim_id:
                             if hasattr(constraint, 'target_belief_id'):
                                 nodes.add(constraint.target_belief_id)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
     return nodes
 
@@ -266,8 +266,8 @@ def _has_path(web: Any, source: str, target: str, max_depth: int = 5) -> bool:
         if hasattr(web, 'get_neighbors'):
             try:
                 neighbors = list(web.get_neighbors(current))
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
         elif hasattr(web, 'get_outgoing_edges'):
             try:
                 edges = web.get_outgoing_edges(current)
@@ -276,8 +276,8 @@ def _has_path(web: Any, source: str, target: str, max_depth: int = 5) -> bool:
                         neighbors.append(edge.target)
                     elif isinstance(edge, tuple):
                         neighbors.append(edge[1])
-            except Exception:
-                pass
+            except Exception as e:
+                import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
         for neighbor in neighbors:
             if neighbor == target:

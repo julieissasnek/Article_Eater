@@ -20,7 +20,8 @@ def _load_reduction_catalog() -> Dict[Tuple[str, str], dict[str, Any]]:
     for file in sorted(RECAP_DIR.glob("*.json")):
         try:
             payload = json.loads(file.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         theory = payload.get("tier2_theory") or payload.get("theory") or ""
         construct = payload.get("tier2_construct")

@@ -93,7 +93,8 @@ def _infer_direction_from_signed_stats(text: str) -> str:
     for m in matches:
         try:
             v = float(m)
-        except Exception:
+        except Exception as e:
+            import logging; logging.getLogger(__name__).debug(f"Skipped: {e}")
             continue
         if v > 0:
             pos += 1

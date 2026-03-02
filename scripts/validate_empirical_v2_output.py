@@ -39,7 +39,8 @@ def _lower(value: Any) -> str:
 def _to_float(value: Any) -> float | None:
     try:
         return float(value)
-    except Exception:
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Returning None: {e}")
         return None
 
 

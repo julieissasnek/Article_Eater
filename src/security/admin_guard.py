@@ -9,8 +9,8 @@ def _audit(action: str):
     try:
         rec = {"ts": datetime.now(timezone.utc).isoformat(), "action": action}
         AUDIT.write_text((AUDIT.read_text() if AUDIT.exists() else "") + json.dumps(rec)+"\n", encoding="utf-8")
-    except Exception:
-        pass
+    except Exception as e:
+        import logging; logging.getLogger(__name__).debug(f"Non-critical: {e}")
 
 def admin_required(x_admin_token: str | None = Header(default=None, alias="X-Admin-Token")):
     token = os.getenv("AE_ADMIN_TOKEN", "")

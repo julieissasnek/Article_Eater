@@ -10,6 +10,7 @@ Uses NetworkService for full vis.js integration with:
 - Force-directed / hierarchical layouts
 - Clustering by theory / level / status / community
 - Interactive filtering and node selection
+Integrated with TheoryGuideService for belief theory context.
 """
 
 import streamlit as st
@@ -21,6 +22,15 @@ from typing import Optional, List, Dict, Any
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+# Import theory guide service
+try:
+    from src.services.theory_guide_service import TheoryGuideService
+    THEORY_SERVICE = TheoryGuideService()
+    HAS_THEORY_SERVICE = True
+except Exception as e:
+    print(f"Warning: Could not load TheoryGuideService: {e}")
+    HAS_THEORY_SERVICE = False
 
 from config import (
     PAGE_TITLE, COLORS, BELIEF_STATUS, EPISTEMIC_LEVELS,
@@ -262,7 +272,7 @@ def render_belief_list(beliefs: List[BeliefSummary]):
 
 
 def render_node_details(belief_id: str):
-    """Render details panel for selected node."""
+    """Render details panel for selected node with theory context."""
     st.markdown("### Selected Belief")
 
     client = get_client()
@@ -283,6 +293,24 @@ def render_node_details(belief_id: str):
         st.metric("Status", belief.get("status", "Unknown"))
     with col3:
         st.metric("Level", belief.get("level", "Unknown"))
+
+    # Theory context from metadata
+    if HAS_THEORY_SERVICE and belief.get("theory"):
+        with st.expander("📚 Theory Context", expanded=False):
+            try:
+                theory_name = belief.get("theory")
+                guide = THEORY_SERVICE.get_guide(theory_name, detail_level="quick")
+                if guide:
+                    st.markdown(f"**Theory**: {guide.display_name}")
+                    st.markdown(guide.content[:250] + "...")
+
+                    if guide.constructs:
+                        st.markdown(f"**Key Constructs**: {', '.join(guide.constructs[:3])}")
+
+                    if guide.atlas_status:
+                        st.markdown(f"**ATLAS Status**: `{guide.atlas_status}`")
+            except Exception:
+                pass
 
     # Constraints
     st.markdown("#### Constraints")
