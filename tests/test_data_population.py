@@ -142,8 +142,10 @@ class TestTheoryFormalization:
         """All 24 theory files should have a corresponding formalization."""
         from scripts.formalize_theories import FORMALIZATIONS
         theories_dir = PROJECT_ROOT / "data" / "theories"
+        # tea_scores.json is a TEA metadata file, not a theory definition
+        EXCLUDED_FILES = {"tea_scores"}
         if theories_dir.exists():
-            theory_ids = {tf.stem for tf in theories_dir.glob("*.json")}
+            theory_ids = {tf.stem for tf in theories_dir.glob("*.json")} - EXCLUDED_FILES
             covered = set(FORMALIZATIONS.keys())
             missing = theory_ids - covered
             assert len(missing) == 0, f"Missing formalizations: {missing}"
@@ -414,7 +416,10 @@ class TestCrossCuttingInvariants:
         theories_dir = PROJECT_ROOT / "data" / "theories"
         if not theories_dir.exists():
             pytest.skip("No theories dir")
+        EXCLUDED = {"tea_scores"}  # TEA metadata, not a theory definition
         for tf in theories_dir.glob("*.json"):
+            if tf.stem in EXCLUDED:
+                continue
             t = json.load(open(tf))
             assert "function_form" in t and t["function_form"], \
                 f"{tf.stem}: missing function_form"
