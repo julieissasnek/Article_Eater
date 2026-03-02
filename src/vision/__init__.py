@@ -43,6 +43,12 @@ from .new_attributes_batch3 import (
     compute_visual_privacy,
 )
 
+from .new_attributes_batch4 import (
+    compute_temporal_lighting_variation,
+    compute_prospect_refuge_balance,
+    compute_focal_point_density,
+)
+
 __all__ = [
     # NEW-01
     "compute_vegetation_segmentation",
@@ -68,4 +74,10 @@ __all__ = [
     "compute_visual_privacy",
     # NEW-12
     "compute_biomorphic_curvature",
+    # NEW-13
+    "compute_temporal_lighting_variation",
+    # NEW-14
+    "compute_prospect_refuge_balance",
+    # NEW-15
+    "compute_focal_point_density",
 ]
