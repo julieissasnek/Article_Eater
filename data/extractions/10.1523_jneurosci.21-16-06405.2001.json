@@ -51,9 +51,9 @@
       "claim_type": "null",
       "measure_type": "physiological",
       "p_value": "ns",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 1.5,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 16,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -112,7 +112,8 @@
         "NM_AROUSAL": 0.155,
         "EC": 0.1532,
         "PP": 0.1532
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2138,35 +2139,50 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "monochromatic light at various wavelengths",
-      "varying irradiances"
+      "monochromatic light at 420 nm",
+      "monochromatic light at 440 nm",
+      "monochromatic light at 460 nm",
+      "monochromatic light at 480 nm",
+      "monochromatic light at 500 nm",
+      "monochromatic light at 520 nm",
+      "monochromatic light at 540 nm",
+      "monochromatic light at 560 nm",
+      "monochromatic light at 580 nm",
+      "monochromatic light at 600 nm",
+      "various irradiances (e.g., 0.0001 to 23 μW/cm²)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "90 minutes",
     "control_conditions": [
-      "darkness",
-      "dim red light exposure"
+      "dark control condition"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Monochromatic light activates a novel circadian photoreceptor, which then signals to inhibit melatonin production, leading to reduced plasma melatonin levels.",
+    "description": "Light exposure activates a specific retinal photoreceptor, which sends a neural signal to the suprachiasmatic nucleus (SCN), leading to the inhibition of melatonin synthesis and release from the pineal gland.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Monochromatic light exposure",
-        "to_construct": "Activation of novel circadian photoreceptor",
+        "from_construct": "Monochromatic light exposure (e.g., 460 nm)",
+        "to_construct": "Activation of a novel retinal photoreceptor (e.g., intrinsically photosensitive retinal ganglion cells)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       },
       {
         "step": 2,
-        "from_construct": "Activation of novel circadian photoreceptor",
-        "to_construct": "Inhibition of melatonin synthesis/release",
+        "from_construct": "Activation of novel retinal photoreceptor",
+        "to_construct": "Neural signal transmission to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
+        "from_construct": "SCN signal",
+        "to_construct": "Inhibition of pineal gland melatonin synthesis/release",
+        "mechanism_type": "neural",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 4,
         "from_construct": "Inhibition of melatonin synthesis/release",
         "to_construct": "Plasma melatonin suppression",
         "mechanism_type": "physiological",
@@ -2176,18 +2192,46 @@
   },
   "instruments_used": [
     {
-      "name": "Monochromatic light source",
-      "construct": "Light exposure characteristics (wavelength, irradiance)",
-      "description": "System for delivering controlled monochromatic light stimuli to human subjects",
+      "name": "Monochromator",
+      "construct": "Monochromatic light stimulus",
+      "description": "Device used to generate specific wavelengths of light.",
+      "type": "other"
+    },
+    {
+      "name": "Spectroradiometer",
+      "construct": "Light irradiance and spectral power distribution",
+      "description": "Instrument used to measure the spectral characteristics and intensity of light stimuli.",
       "type": "other"
     },
     {
       "name": "Radioimmunoassay (RIA)",
-      "construct": "Plasma melatonin levels",
-      "description": "Method used to quantify melatonin concentration in blood plasma samples",
+      "construct": "Plasma melatonin concentration",
+      "description": "Biochemical assay used to quantify melatonin levels in blood plasma samples.",
       "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:09:44.744451+00:00"
+  "surgical_update_at": "2026-03-02T18:45:04.708459+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Human Circadian Photoreception",
+      "commitment_type": "tests",
+      "specific_claim": "The action spectrum for human melatonin suppression can be determined to identify the underlying photoreceptor."
+    },
+    {
+      "theory_name": "Novel Circadian Photoreceptor Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "A novel photoreceptor, distinct from classical rods and cones, mediates the non-visual effects of light on the human circadian system, with peak sensitivity in the blue part of the spectrum."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Spectral power distribution of the monochromatic light stimuli used in the experiment.",
+      "figure_ref": "Figure 1",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 16,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

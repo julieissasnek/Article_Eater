@@ -35,6 +35,9 @@ Invariants (Dijkstra, Haack, Pearl):
   INV-8: Theory orphan rate ≤ 10% (EN-0E)
   INV-9: Paper-sourced evidence ≥ 20% (EN-0E)
   INV-10: Extraction quality mean score ≥ 0.75 (QA quality gate)
+  INV-11: T3 classification rate ≥ 70% (T3 belief engine)
+  INV-12: T3 established beliefs ≥ 200 (T3 belief engine)
+  INV-13: Field reviewer terminal rate ≤ 10% (data quality)
 
 6 Sub-Components:
   1. HealthMonitor: Time-series coherence, conflict, completeness metrics
@@ -770,6 +773,59 @@ class OverseerService:
         except Exception as e:
             logger.debug(f"INV-10 check failed: {e}")
 
+        # ----------------------------------------------------------------
+        # T3 Belief Engine invariants (INV-11..INV-12)
+        # ----------------------------------------------------------------
+
+        # INV-11: T3 classification rate ≥ 70%
+        try:
+            t3_stats = self._check_t3_classification()
+            if t3_stats is not None:
+                rate = t3_stats.get("classification_rate", 0)
+                if rate < 0.70:
+                    violations.append(InvariantViolation(
+                        code="INV-11",
+                        severity="MAJOR",
+                        description=(
+                            f"T3 IV classification rate {rate*100:.1f}% "
+                            f"(threshold: 70%). Many findings not mapping to taxonomy."
+                        )
+                    ))
+        except Exception as e:
+            logger.debug(f"INV-11 check failed: {e}")
+
+        # INV-12: T3 established beliefs ≥ 200
+        try:
+            t3_counts = self._check_t3_belief_counts()
+            if t3_counts is not None:
+                established = t3_counts.get("established", 0)
+                if established < 200:
+                    violations.append(InvariantViolation(
+                        code="INV-12",
+                        severity="MAJOR",
+                        description=(
+                            f"T3 established beliefs: {established} "
+                            f"(threshold: 200). Generalization insufficient."
+                        )
+                    ))
+        except Exception as e:
+            logger.debug(f"INV-12 check failed: {e}")
+
+        # INV-13: Field reviewer terminal rate ≤ 10%
+        try:
+            terminal_rate = self._check_field_reviewer_terminal_rate()
+            if terminal_rate is not None and terminal_rate > 0.10:
+                violations.append(InvariantViolation(
+                    code="INV-13",
+                    severity="WARNING",
+                    description=(
+                        f"Field reviewer terminal rate {terminal_rate*100:.1f}% "
+                        f"(threshold: 10%). Data quality issues persist."
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"INV-13 check failed: {e}")
+
         return violations
 
     def _check_operational(self) -> bool:
@@ -1021,6 +1077,125 @@ class OverseerService:
             return None
         except Exception as e:
             logger.debug(f"Extraction quality check failed: {e}")
+            return None
+
+    def _check_t3_classification(self) -> Optional[Dict[str, Any]]:
+        """
+        INV-11: T3 IV classification rate.
+
+        Returns classification stats from the IV/DV classifier singleton,
+        or None if T3 not available.
+        """
+        try:
+            from src.services.iv_dv_classifier import get_classifier
+            clf = get_classifier()
+            stats = clf.classification_stats()
+            if stats["total_classified"] == 0:
+                return None  # No data yet
+            return stats
+        except ImportError:
+            logger.debug("IV/DV classifier not available; skipping INV-11")
+            return None
+        except Exception as e:
+            logger.debug(f"T3 classification check failed: {e}")
+            return None
+
+    def _check_t3_belief_counts(self) -> Optional[Dict[str, int]]:
+        """
+        INV-12: T3 established belief count.
+
+        Returns belief status counts from T3 integration layer,
+        or None if T3 not available.
+        """
+        try:
+            from src.services.t3_integration import T3Adapter
+            from src.services.generalization_tree import BeliefStatus
+            adapter = T3Adapter()
+            if not adapter.engine or not adapter.engine.t3_beliefs:
+                return None
+            t3 = adapter.engine.t3_beliefs
+            counts = {
+                "nascent": sum(1 for b in t3.values() if b.status == BeliefStatus.NASCENT),
+                "tentative": sum(1 for b in t3.values() if b.status == BeliefStatus.TENTATIVE),
+                "established": sum(1 for b in t3.values() if b.status == BeliefStatus.ESTABLISHED),
+                "contested": sum(1 for b in t3.values() if b.status == BeliefStatus.CONTESTED),
+                "total": len(t3),
+            }
+            return counts
+        except ImportError:
+            logger.debug("T3 integration not available; skipping INV-12")
+            return None
+        except Exception as e:
+            logger.debug(f"T3 belief count check failed: {e}")
+            return None
+
+    def _check_field_reviewer_terminal_rate(self) -> Optional[float]:
+        """
+        INV-13: Field reviewer terminal rate.
+
+        Runs a lightweight check of the field reviewer on a sample
+        of extraction files. Returns terminal rate (0.0-1.0) or None.
+        """
+        try:
+            import glob
+            import json as _json
+            from pathlib import Path as _Path
+
+            spec_path = _Path(__file__).parent.parent.parent / "schemas" / "extraction_field_spec.json"
+            if not spec_path.exists():
+                return None
+
+            extractions_dir = self.extractions_dir
+            if not extractions_dir.exists():
+                return None
+
+            # Sample up to 50 files for speed
+            files = list(extractions_dir.glob("*.json"))[:50]
+            if not files:
+                return None
+
+            spec = _json.load(open(spec_path))
+            total_issues = 0
+            terminal_issues = 0
+
+            for f in files:
+                try:
+                    data = _json.load(open(f))
+                    if not isinstance(data, dict):
+                        continue
+                    # Check finding-level fields
+                    for finding in data.get("findings", []):
+                        if not isinstance(finding, dict):
+                            continue
+                        for field_name, field_spec in spec.get("finding_fields", {}).items():
+                            value = finding.get(field_name)
+                            if value is None:
+                                continue
+                            ftype = field_spec.get("type", "")
+                            if ftype in ("enum", "enum_or_null"):
+                                allowed = field_spec.get("values", [])
+                                norm_map = field_spec.get("normalize_map", {})
+                                if isinstance(value, str):
+                                    total_issues += 1
+                                    if value not in allowed and value not in norm_map:
+                                        terminal_issues += 1
+                            elif ftype in ("float", "number_or_null"):
+                                if isinstance(value, str):
+                                    total_issues += 1
+                                    try:
+                                        float(value.strip().lstrip("<>"))
+                                    except ValueError:
+                                        if value.lower() not in ("ns", "n.s.", "n.s"):
+                                            terminal_issues += 1
+                except Exception:
+                    continue
+
+            if total_issues == 0:
+                return 0.0
+            return terminal_issues / total_issues
+
+        except Exception as e:
+            logger.debug(f"Field reviewer terminal rate check failed: {e}")
             return None
 
     def compute_aeshi(self, health_metrics: Optional[Dict] = None) -> int:
@@ -2035,14 +2210,59 @@ class OverseerService:
             }
 
     def register_canonical_pipelines(self) -> None:
-        """Register the 6 canonical ATLAS pipelines."""
+        """Register the 17 canonical ATLAS subsystems (V10 audit panel)."""
         pipelines = [
-            ("discovery", "Article Discovery", "0 */6 * * *", []),
-            ("triage", "Paper Triage & Classification", "0 */6 * * *", ["discovery"]),
-            ("extraction", "Gemini Claim Extraction", "0 */6 * * *", ["triage"]),
-            ("tables", "Table Extraction & Rule Inference", "0 2 * * *", ["extraction"]),
-            ("integration", "Web + BN Integration (14-step)", "0 */6 * * *", ["extraction"]),
-            ("overseer", "Health Audit & Maintenance", "0 3 * * *", []),
+            # Core Infrastructure
+            ("db_infrastructure", "DB & Infrastructure", "0 3 * * *", []),
+            ("taxonomy_vocabulary", "Taxonomy & Vocabulary", "0 3 * * *", []),
+            ("overseer_self_monitor", "Overseer & Self-Monitoring", "0 3 * * *", []),
+            # Pipeline
+            ("paper_acquisition", "Paper Acquisition", "0 */6 * * *", []),
+            ("extraction_integration", "Extraction & Integration", "0 */6 * * *", ["paper_acquisition"]),
+            ("qa_query", "QA & Query", "0 */6 * * *", ["web_of_belief"]),
+            # Analysis
+            ("web_of_belief", "Web of Belief", "0 */6 * * *", ["db_infrastructure"]),
+            ("t3_belief_engine", "T3 Belief Engine", "0 */6 * * *", ["taxonomy_vocabulary", "extraction_integration"]),
+            ("bayesian_network", "Bayesian Network", "0 2 * * *", ["web_of_belief"]),
+            ("interpretation_space", "Interpretation Space", "0 2 * * *", ["t3_belief_engine"]),
+            ("warrant_credence", "Warrant & Credence", "0 2 * * *", []),
+            ("argumentation", "Argumentation", "0 2 * * *", []),
+            ("cva", "CVA", "0 2 * * *", []),
+            # Support
+            ("theory_templates", "Theory & Templates", "0 3 * * *", []),
+            ("export_reporting", "Export & Reporting", "0 3 * * *", []),
+            ("image_pipeline", "Image Pipeline", "0 3 * * *", []),
+            ("annotation", "Annotation", "0 3 * * *", []),
         ]
         for pid, name, schedule, deps in pipelines:
             self.register_pipeline(pid, name, schedule, deps)
+
+    def check_all_subsystems(self) -> Dict[str, Any]:
+        """
+        Run health probes for all 17 subsystems and return structured report.
+
+        Uses SubsystemHealthChecker from overseer_self_healing module.
+        Gracefully degrades if health checker unavailable.
+        """
+        try:
+            from src.services.overseer_self_healing import SubsystemHealthChecker
+            checker = SubsystemHealthChecker()
+            report = checker.check_all()
+
+            # Record each subsystem's status in pipeline registry
+            for sid, info in report.get("subsystems", {}).items():
+                self.report_pipeline_run(
+                    sid,
+                    status=info["status"],
+                    metadata={
+                        "metrics": info.get("metrics", {}),
+                        "conditions_passed": info.get("conditions_passed", 0),
+                        "conditions_total": info.get("conditions_total", 0),
+                    },
+                )
+
+            return report
+        except Exception as e:
+            logger.warning(f"Subsystem health check failed: {e}")
+            return {"error": str(e)}
+

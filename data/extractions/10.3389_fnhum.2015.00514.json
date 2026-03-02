@@ -490,7 +490,8 @@
       "tier2_relevance": {
         "EMBODIED_COGNITION": 0.1519,
         "SPATIAL_NAVIGATION": 0.1519
-      }
+      },
+      "sample_n": 22
     },
     {
       "id": 7,
@@ -777,7 +778,8 @@
           "score": 0.2828,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 46
     },
     {
       "id": 11,
@@ -1083,7 +1085,8 @@
         "MS": 0.1623,
         "EMBODIED_COGNITION": 0.1569,
         "EC": 0.1513
-      }
+      },
+      "sample_n": 29
     }
   ],
   "mechanisms": [
@@ -1361,12 +1364,65 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Visual stimuli with controlled amplitude spectrum slopes (alpha values 0.1-1.6)"
+      "Images with controlled amplitude spectrum slopes (1/f^alpha noise)",
+      "Natural images (potentially manipulated for alpha values)"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "Comparison of different amplitude spectrum slopes (alpha values)",
+      "Comparison of manipulated vs. original natural images"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:03:53.494883+00:00"
+  "surgical_update_at": "2026-03-02T18:30:50.137535+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Natural Image Statistics Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "The human visual system is adapted to the statistical properties of natural images (e.g., 1/f amplitude spectrum), and individual differences in sensitivity to these properties influence visual preference."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper investigates how the statistical properties of visual stimuli (amplitude spectrum slope) influence basic visual sensitivity, which in turn may mediate visual preference.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Amplitude spectrum slope of visual stimuli",
+        "to_construct": "Absolute detection sensitivity",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Absolute detection sensitivity",
+        "to_construct": "Visual preference",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Psychophysical detection task",
+      "construct": "Absolute detection sensitivity",
+      "description": "Task requiring participants to detect visual stimuli with specific amplitude spectrum slopes",
+      "type": "behavioral"
+    },
+    {
+      "name": "Preference rating scale",
+      "construct": "Visual preference",
+      "description": "Self-report scale for rating the aesthetic appeal or beauty of visual stimuli",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of generated 1/f^alpha noise images with varying amplitude spectrum slopes",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 25,
+  "paper_sample_size_source": "estimated"
 }

@@ -3287,47 +3287,102 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Average transmission loss (av TL) of isolating wall",
-      "speech levels",
-      "background noise levels"
+      "varying background noise levels (e.g., HVAC noise, masking sound)",
+      "varying speech levels of intruding speech",
+      "different sound transmission loss (TL) characteristics of partitions (e.g., walls, doors)",
+      "different room acoustic conditions (e.g., reverberation time)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "field"
+    "duration_exposure": "typically short-term listening tasks (minutes) for experimental conditions; longer-term for field surveys",
+    "control_conditions": [
+      "comparison of different background noise levels (e.g., quiet vs. noisy)",
+      "comparison of different partition types/STC ratings",
+      "comparison of different speech levels"
+    ],
+    "ecological_validity": "semi-naturalistic"
   },
   "mechanism_chain": {
-    "description": "Acoustic properties of isolating walls reduce the level and intelligibility of intruding speech, leading to increased perceived privacy and subsequently higher occupant satisfaction.",
+    "description": "Improved acoustic insulation reduces the level of intruding speech, which in turn decreases its intelligibility, leading to enhanced perceived privacy and ultimately greater occupant satisfaction and reduced distraction.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Average transmission loss (av TL) of isolating wall",
-        "to_construct": "Reduction of intruding speech sound level",
+        "from_construct": "Acoustic insulation (e.g., wall transmission loss)",
+        "to_construct": "Reduced sound level of intruding speech",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Reduction of intruding speech sound level",
-        "to_construct": "Decreased speech intelligibility from adjacent spaces",
+        "from_construct": "Reduced sound level of intruding speech",
+        "to_construct": "Reduced speech intelligibility",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Decreased speech intelligibility from adjacent spaces",
-        "to_construct": "Increased perceived speech privacy",
+        "from_construct": "Reduced speech intelligibility",
+        "to_construct": "Increased perceived privacy",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Increased perceived speech privacy",
-        "to_construct": "Higher occupant satisfaction with privacy",
+        "from_construct": "Increased perceived privacy",
+        "to_construct": "Increased occupant satisfaction with privacy / Reduced distraction",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:12:28.973449+00:00"
+  "surgical_update_at": "2026-03-02T18:31:33.217265+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Psychoacoustics",
+      "commitment_type": "assumes",
+      "specific_claim": "Human perception of sound, including speech intelligibility and annoyance, is governed by physical acoustic properties and auditory processing."
+    },
+    {
+      "theory_name": "Speech Intelligibility Theory",
+      "commitment_type": "applies",
+      "specific_claim": "The degree to which speech can be understood is a primary determinant of perceived privacy and distraction in buildings, influenced by signal-to-noise ratio and spectral content."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Sound Level Meter",
+      "construct": "Sound pressure level (dBA), background noise level, speech level",
+      "description": "Used for objective acoustic measurements in experimental setups and field studies.",
+      "type": "other"
+    },
+    {
+      "name": "Speech Intelligibility Rating Scale",
+      "construct": "Speech intelligibility",
+      "description": "Subjective rating scales (e.g., 5-point scale from 'unintelligible' to 'perfectly intelligible') to assess how well intruding speech can be understood.",
+      "type": "self_report"
+    },
+    {
+      "name": "Questionnaire for Perceived Privacy",
+      "construct": "Perceived privacy, satisfaction with privacy, distraction, annoyance",
+      "description": "Self-report questionnaires to assess occupants' subjective experience of privacy, satisfaction, and the impact of speech on their work.",
+      "type": "self_report"
+    },
+    {
+      "name": "Speech Transmission Index (STI) / Articulation Index (AI)",
+      "construct": "Speech intelligibility (objective measure)",
+      "description": "Calculated or measured objective metrics to quantify speech intelligibility based on acoustic parameters.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating typical office layouts and sound transmission paths between adjacent spaces.",
+      "figure_ref": "Likely figures showing room configurations or sound paths",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs showing acoustic measurements such as sound pressure levels, speech transmission index (STI), or articulation index (AI) under different conditions.",
+      "figure_ref": "Likely figures showing acoustic data",
+      "image_type": "graph"
+    }
+  ]
 }

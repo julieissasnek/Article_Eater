@@ -2235,36 +2235,38 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "track"
+      "Y-maze",
+      "straight track",
+      "visual cues (e.g., vertical stripes, patterns)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "short trials (minutes) over sessions",
     "control_conditions": [
-      "intact cockroaches",
-      "sham-lesioned cockroaches"
+      "sham-operated controls",
+      "intact controls"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Electrolytic lesions in the Central Complex disrupt the neural circuits responsible for spatial orientation and motor control, leading to an impaired ability to navigate and an increase in navigational errors.",
+    "description": "Electrolytic lesions in the Central Complex (CX) disrupt its role in integrating sensory information for spatial orientation and motor control, leading to impaired navigation and increased 'wrong' turns.",
     "steps": [
       {
         "step": 1,
         "from_construct": "electrolytic lesions in cockroach Central Complex (CX)",
-        "to_construct": "disruption of neural circuits for spatial orientation and motor control",
+        "to_construct": "disruption of neural circuits for spatial processing and motor control",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "disruption of neural circuits for spatial orientation and motor control",
-        "to_construct": "impaired ability to execute correct turns",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "disruption of neural circuits for spatial processing and motor control",
+        "to_construct": "impaired ability to integrate sensory cues (e.g., visual landmarks, self-motion) and generate appropriate motor commands for navigation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "impaired ability to execute correct turns",
-        "to_construct": "increased number of 'wrong' turns during track walking",
+        "from_construct": "impaired ability to integrate sensory cues and generate appropriate motor commands",
+        "to_construct": "increased errors in path following and orientation (e.g., 'wrong' turns)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -2272,18 +2274,42 @@
   },
   "instruments_used": [
     {
-      "name": "Electrolytic lesion apparatus",
-      "construct": "neural lesion",
-      "description": "Device used to create targeted lesions in neural tissue using electrical current",
+      "name": "Electrolytic lesioning apparatus",
+      "construct": "neural structure manipulation",
+      "description": "Equipment used to create targeted lesions in the Central Complex.",
       "type": "other"
     },
     {
-      "name": "Track/Maze",
-      "construct": "navigational environment",
-      "description": "Controlled environment for observing spatial navigation behavior",
+      "name": "Behavioral tracking system",
+      "construct": "locomotor behavior",
+      "description": "Video cameras and software for recording and analyzing cockroach movement on tracks or mazes.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Y-maze / Straight track apparatus",
+      "construct": "spatial navigation environment",
+      "description": "Physical setup for conducting navigation experiments.",
+      "type": "other"
+    },
+    {
+      "name": "Microscope",
+      "construct": "lesion verification",
+      "description": "Used for histological verification of lesion placement.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:23:32.179272+00:00"
+  "surgical_update_at": "2026-03-02T18:37:41.617784+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams of the cockroach brain, specifically the Central Complex (CX) and its subdivisions.",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Schematics or photos of experimental setups, such as Y-mazes or straight tracks used for behavioral assays.",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
+    }
+  ]
 }

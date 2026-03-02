@@ -1365,12 +1365,49 @@
   },
   "instruments_used": [
     {
-      "name": "Articulation Index",
+      "name": "Articulation Index (AI)",
       "construct": "speech intelligibility",
-      "description": null,
-      "type": null
+      "description": "An objective measure quantifying the intelligibility of speech in the presence of noise, derived from acoustic properties.",
+      "type": "other"
+    },
+    {
+      "name": "Speech Privacy Judgment Scale",
+      "construct": "judgments of speech privacy",
+      "description": "A self-report instrument used to assess subjective perceptions and evaluations of speech privacy.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:35:23.157785+00:00"
+  "surgical_update_at": "2026-03-02T18:38:44.212728+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "varying levels of intruding speech intelligibility",
+      "different acoustic conditions (implied by 'buildings' and 'privacy')"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "conditions with low or no intruding speech",
+      "conditions with unintelligible intruding speech"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "mechanism_chain": {
+    "description": "The intelligibility of intruding speech directly influences individuals' cognitive processing of speech content, which in turn shapes their subjective judgments of speech privacy.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "acoustic properties of intruding speech (e.g., signal-to-noise ratio, speech level)",
+        "to_construct": "intelligibility of intruding speech (measured by articulation index)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "intelligibility of intruding speech",
+        "to_construct": "peoples' judgments of speech privacy",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  }
 }

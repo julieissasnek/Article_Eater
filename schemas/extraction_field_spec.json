@@ -1,0 +1,281 @@
+{
+    "schema_version": "1.0",
+    "description": "Canonical field specification for article extraction JSONs. Used by the field reviewer to validate and normalize field values.",
+    "fields": {
+        "doi": {
+            "type": "string",
+            "required": true,
+            "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Za-z0-9]+$",
+            "description": "Digital Object Identifier",
+            "canonical_example": "10.1016/j.buildenv.2023.110123"
+        },
+        "title": {
+            "type": "string",
+            "required": true,
+            "min_length": 5,
+            "max_length": 500,
+            "description": "Article title"
+        },
+        "year": {
+            "type": "integer",
+            "required": false,
+            "min": 1900,
+            "max": 2030,
+            "description": "Publication year"
+        },
+        "article_type": {
+            "type": "enum",
+            "required": false,
+            "values": [
+                "empirical",
+                "empirical_v2",
+                "empirical_quantitative",
+                "empirical_qualitative",
+                "empirical_study",
+                "original_research",
+                "narrative_review",
+                "systematic_review",
+                "meta_analysis",
+                "conceptual_framework",
+                "theoretical",
+                "thought_piece",
+                "observational_field",
+                "mixed_methods",
+                "case_study",
+                "design_case_study",
+                "methods",
+                "interview_study",
+                "phenomenological",
+                "grounded_theory",
+                "review",
+                "other",
+                "unknown"
+            ],
+            "normalize_map": {
+                "empirical_study": "empirical_v2",
+                "original_research": "empirical_v2"
+            },
+            "description": "Type of article"
+        },
+        "quality_score": {
+            "type": "float",
+            "required": false,
+            "min": 0.0,
+            "max": 1.0,
+            "description": "Quality score assigned during extraction"
+        },
+        "n_findings": {
+            "type": "integer",
+            "required": false,
+            "min": 0,
+            "description": "Number of findings extracted"
+        },
+        "domains": {
+            "type": "list_of_strings",
+            "required": false,
+            "description": "Research domains covered"
+        },
+        "limitations": {
+            "type": "list_of_strings",
+            "required": false,
+            "description": "Study limitations"
+        },
+        "theory_links": {
+            "type": "list_of_strings",
+            "required": false,
+            "description": "Theory molecule IDs linked to this paper"
+        },
+        "minimum_safe_summary": {
+            "type": "string",
+            "required": false,
+            "max_length": 2000,
+            "description": "Conservative factual summary of the paper"
+        }
+    },
+    "finding_fields": {
+        "id": {
+            "type": "integer",
+            "required": true,
+            "description": "Finding sequential ID within article"
+        },
+        "antecedent": {
+            "type": "string",
+            "required": true,
+            "min_length": 2,
+            "max_length": 500,
+            "description": "Independent variable / cause / stimulus"
+        },
+        "consequent": {
+            "type": "string",
+            "required": true,
+            "min_length": 2,
+            "max_length": 500,
+            "description": "Dependent variable / outcome / response"
+        },
+        "direction": {
+            "type": "enum",
+            "required": true,
+            "values": [
+                "increase",
+                "decrease",
+                "null",
+                "no_effect",
+                "positive",
+                "negative",
+                "mixed",
+                "none",
+                "not_specified"
+            ],
+            "canonical_values": [
+                "increase",
+                "decrease",
+                "null",
+                "mixed"
+            ],
+            "normalize_map": {
+                "positive": "increase",
+                "negative": "decrease",
+                "no_effect": "null",
+                "none": "null",
+                "not_specified": "null"
+            },
+            "description": "Direction of effect"
+        },
+        "effect_size": {
+            "type": "number_or_null",
+            "required": false,
+            "description": "Effect size magnitude (e.g., Cohen's d, eta-squared, r)"
+        },
+        "effect_size_type": {
+            "type": "enum_or_null",
+            "required": false,
+            "values": [
+                "cohen_d",
+                "Cohen_d",
+                "eta_squared",
+                "partial_eta_squared",
+                "generalized_eta_squared",
+                "r",
+                "R_squared",
+                "r_squared",
+                "odds_ratio",
+                "OR",
+                "beta",
+                "hedges_g",
+                "cramers_v",
+                "Cramers_V",
+                "percentage",
+                "percentage_change",
+                "mean",
+                "mean_difference",
+                "t",
+                "F",
+                "dB",
+                "dBA",
+                "AHP_score",
+                "null",
+                null
+            ],
+            "normalize_map": {
+                "Cohen_d": "cohen_d",
+                "R_squared": "r_squared",
+                "OR": "odds_ratio",
+                "Cramers_V": "cramers_v",
+                "null": null,
+                "%": "percentage"
+            },
+            "description": "Type of effect size reported"
+        },
+        "p_value": {
+            "type": "number_or_null",
+            "required": false,
+            "min": 0.0,
+            "max": 1.0,
+            "description": "Statistical significance (p-value)"
+        },
+        "sample_size": {
+            "type": "integer_or_null",
+            "required": false,
+            "min": 1,
+            "description": "Sample size for this finding"
+        },
+        "claim_type": {
+            "type": "enum",
+            "required": false,
+            "values": [
+                "empirical_finding",
+                "empirical",
+                "empirical_result",
+                "empirical_generalization",
+                "theoretical_proposition",
+                "review_synthesis",
+                "design_recommendation",
+                "methodological",
+                "hypothesis",
+                "correlation",
+                "associational",
+                "causal",
+                "narrative",
+                "synthesized",
+                "moderated",
+                "mediated",
+                "qualitative_theme",
+                "null",
+                "cited",
+                "pooled_effect",
+                "statistical",
+                "claimed",
+                "proposed_indicator",
+                "validation"
+            ],
+            "normalize_map": {
+                "empirical_result": "empirical_finding",
+                "empirical": "empirical_finding",
+                "empirical_generalization": "synthesized",
+                "claimed": "empirical_finding",
+                "statistical": "empirical_finding"
+            },
+            "description": "Type of claim being made"
+        },
+        "measure_type": {
+            "type": "enum_or_null",
+            "required": false,
+            "values": [
+                "self_report",
+                "physiological",
+                "behavioral",
+                "observational",
+                "performance",
+                "neuroimaging",
+                "objective",
+                "cognitive",
+                "neural",
+                "psychoacoustic",
+                "computational",
+                "other",
+                null
+            ],
+            "normalize_map": {
+                "neural": "neuroimaging",
+                "cognitive": "performance",
+                "psychoacoustic": "performance"
+            },
+            "description": "Type of measurement instrument"
+        },
+        "theory_links": {
+            "type": "list_of_strings",
+            "required": false,
+            "description": "Theory molecule IDs this finding relates to"
+        },
+        "source": {
+            "type": "string",
+            "required": false,
+            "description": "Where in the paper this finding was extracted from"
+        },
+        "quote": {
+            "type": "string",
+            "required": false,
+            "description": "Direct quote supporting this finding"
+        }
+    }
+}

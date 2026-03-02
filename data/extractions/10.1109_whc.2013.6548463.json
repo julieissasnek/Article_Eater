@@ -2230,43 +2230,38 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Vibrotactile cues"
+      "Vibrotactile cues delivered to the fingertip via a tactor",
+      "Object to be gripped with embedded force sensors"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Brief, anticipatory cue (e.g., 50-200 ms before event)",
     "control_conditions": [
-      "No cue condition",
-      "Other cueing conditions (e.g., visual, combined cues)"
+      "No cue (baseline)",
+      "Simultaneous cue (cue presented at event onset)",
+      "Varying lead times for anticipatory cue"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Anticipatory vibrotactile cues provide predictive information to the sensorimotor system, allowing for pre-planning and refinement of motor commands for grip force, which results in faster and more accurate adjustments.",
+    "description": "Anticipatory vibrotactile cues provide predictive sensory information, which allows the motor system to pre-program or fine-tune grip force commands, leading to a more efficient and faster adjustment of grip force upon contact.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Vibrotactile cue",
-        "to_construct": "Sensory processing of cue",
+        "from_construct": "Anticipatory vibrotactile cue",
+        "to_construct": "Predictive sensory signal",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Sensory processing of cue",
-        "to_construct": "Anticipatory motor planning/prediction",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "from_construct": "Predictive sensory signal",
+        "to_construct": "Pre-activation of motor commands for grip force",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Anticipatory motor planning/prediction",
-        "to_construct": "Refined motor command for grip force",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Refined motor command for grip force",
-        "to_construct": "Facilitated grip force adjustment",
+        "from_construct": "Pre-activation of motor commands",
+        "to_construct": "Reduced latency of grip force adjustment",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -2274,18 +2269,27 @@
   },
   "instruments_used": [
     {
-      "name": "Grip force sensor",
-      "construct": "Grip force",
-      "description": "Device used to measure the force applied by the hand or fingers.",
+      "name": "Force sensors",
+      "construct": "Grip force and load force",
+      "description": "Sensors embedded in the object to measure normal and tangential forces applied by the fingers.",
       "type": "physiological"
     },
     {
-      "name": "Vibrotactile stimulator",
+      "name": "Vibrotactile tactor",
       "construct": "Vibrotactile stimulation",
-      "description": "Device used to deliver localized vibrations as cues.",
+      "description": "Device used to deliver controlled vibratory cues to the participant's fingertip.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:46:25.537653+00:00"
+  "surgical_update_at": "2026-03-02T18:43:02.904393+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the experimental setup, showing the object, force sensors, and vibrotactile tactor placement on the finger.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 12,
+  "paper_sample_size_source": "estimated"
 }

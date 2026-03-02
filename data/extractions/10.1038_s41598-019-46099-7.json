@@ -63,9 +63,9 @@
       "claim_type": "causal",
       "measure_type": "physiological",
       "p_value": "<0.001",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 68,
       "confidence_interval": null,
       "test_statistic": "all t>3.52",
       "theory_links": [
@@ -138,7 +138,8 @@
         "COGNITIVE_LOAD_THEORY": 0.1664,
         "PROCESSING_FLUENCY": 0.1664,
         "CROSS_FRAMEWORK": 0.16
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3148,42 +3149,77 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "virtual urban green space",
-      "virtual urban street scene"
+      "virtual urban green space (park)",
+      "virtual urban grey space (city street)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "8 minutes per environment",
     "control_conditions": [
-      "virtual urban street scene"
+      "virtual urban grey space"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Stress Reduction Theory (SRT)",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments facilitates physiological and psychological stress recovery."
+      "specific_claim": "Exposure to natural environments reduces physiological and psychological stress responses."
     }
   ],
   "mechanism_chain": {
-    "description": "Exposure to urban green space leads to a reduction in physiological arousal, thereby reducing stress.",
+    "description": "Exposure to urban green space leads to a reduction in physiological arousal, which in turn mitigates the body's stress response to an acute stressor.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Urban green space exposure",
-        "to_construct": "Physiological arousal",
+        "from_construct": "exposure to urban green space",
+        "to_construct": "reduced physiological arousal (e.g., SCL, HR)",
         "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "reduced physiological arousal",
+        "to_construct": "reduced perceived stress",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Skin Conductance Level (SCL)",
-      "construct": "Physiological arousal / Stress response",
-      "description": "A measure of electrodermal activity, reflecting sympathetic nervous system activity.",
+      "name": "Skin Conductance Level (SCL) sensor",
+      "construct": "physiological arousal/stress",
+      "description": "Measures electrodermal activity as an indicator of sympathetic nervous system activation.",
       "type": "physiological"
+    },
+    {
+      "name": "Electrocardiogram (ECG) sensor",
+      "construct": "heart rate, heart rate variability",
+      "description": "Measures cardiac activity to assess autonomic nervous system function.",
+      "type": "physiological"
+    },
+    {
+      "name": "Visual Analog Scale (VAS)",
+      "construct": "perceived stress",
+      "description": "Self-report measure for subjective stress levels.",
+      "type": "self_report"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:38:13.748738+00:00"
+  "surgical_update_at": "2026-03-02T18:42:13.784799+00:00",
+  "stimulus_images": [
+    {
+      "description": "Screenshots of the virtual urban green space and urban grey space environments used as stimuli",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 68,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

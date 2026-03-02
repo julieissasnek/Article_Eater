@@ -3145,52 +3145,53 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "visual flashes",
-      "auditory beeps",
-      "speech sounds",
-      "moving dots"
+      "Visual stimuli (e.g., flashing lights, moving dots, speech-related visual cues)",
+      "Auditory stimuli (e.g., pure tones, white noise bursts, speech sounds)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "unimodal visual presentation",
-      "unimodal auditory presentation",
-      "spatially congruent audiovisual stimuli"
+      "Unimodal visual presentation",
+      "Unimodal auditory presentation",
+      "Spatially congruent audiovisual stimuli",
+      "Varying spatial disparities between visual and auditory stimuli"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Bayesian Causal Inference Model",
-      "commitment_type": "tests",
-      "specific_claim": "The brain integrates multisensory information by inferring whether stimuli share a common cause, weighting sensory inputs based on their reliability, to produce a unified and optimal percept."
-    },
-    {
-      "theory_name": "Optimal Multisensory Integration",
+      "theory_name": "Bayesian Optimal Multisensory Integration",
       "commitment_type": "assumes",
-      "specific_claim": "Sensory information from different modalities is combined in a statistically optimal manner to reduce perceptual uncertainty."
+      "specific_claim": "Multisensory perception arises from the optimal integration of sensory inputs, weighted by their respective reliabilities, often described by Bayesian principles."
     }
   ],
   "mechanism_chain": {
-    "description": "The ventriloquist illusion arises from the brain's attempt to integrate spatially disparate visual and auditory stimuli, often by inferring a common cause and weighting sensory inputs based on their reliability, leading to a biased perception of the auditory source towards the visual one.",
+    "description": "The causal mechanism underlying the ventriloquist illusion, where a visual stimulus biases the perceived location of a simultaneously presented auditory stimulus.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Spatially disparate visual and auditory stimuli",
-        "to_construct": "Neural processing of multisensory input in sensory cortices",
-        "mechanism_type": "neural",
+        "from_construct": "Visual stimulus presentation",
+        "to_construct": "Spatial localization of visual stimulus",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Neural processing of multisensory input",
-        "to_construct": "Causal inference and Bayesian integration",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Auditory stimulus presentation",
+        "to_construct": "Spatial localization of auditory stimulus",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Causal inference and Bayesian integration",
-        "to_construct": "Shift in perceived auditory location (ventriloquism effect)",
+        "from_construct": "Spatially disparate visual and auditory localizations",
+        "to_construct": "Multisensory integration process (e.g., Bayesian weighting)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Integrated audiovisual spatial information",
+        "to_construct": "Shift in perceived auditory location towards the visual stimulus",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
@@ -3198,12 +3199,31 @@
   },
   "instruments_used": [
     {
-      "name": "Auditory localization task",
-      "construct": "Perceived auditory location",
-      "description": "Behavioral task where participants indicate the perceived spatial origin of an auditory stimulus, often using a response device (e.g., mouse, joystick, button press) or verbal report.",
+      "name": "Visual display",
+      "construct": "Presentation of visual stimuli",
+      "description": "Monitor or LED array for presenting visual stimuli (e.g., flashes, moving objects)",
+      "type": "other"
+    },
+    {
+      "name": "Auditory speaker system",
+      "construct": "Presentation of auditory stimuli",
+      "description": "Speakers or headphones for presenting auditory stimuli (e.g., tones, speech)",
+      "type": "other"
+    },
+    {
+      "name": "Response device",
+      "construct": "Measurement of perceived spatial location",
+      "description": "Input device (e.g., joystick, mouse, button box) for participants to indicate perceived auditory or visual locations",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:31:38.156572+00:00"
+  "surgical_update_at": "2026-03-02T18:33:10.305337+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating a typical experimental setup for inducing the ventriloquist illusion, showing spatially disparate visual and auditory stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

@@ -1923,17 +1923,75 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "acoustic environment characteristics",
-      "learning space design parameters",
-      "presence/absence of acoustic treatment"
+      "Learning space type (e.g., Traditional without acoustic treatment)",
+      "Acoustic characteristics of classrooms (e.g., noise levels, reverberation time)",
+      "Classroom design parameters"
     ],
-    "duration_exposure": "continuous during school hours",
+    "duration_exposure": "Continuous during typical school hours or classroom activities",
     "control_conditions": [
-      "different learning space types (e.g., with and without acoustic treatment)",
-      "varying acoustic design parameters"
+      "Different learning space types (e.g., classrooms with and without acoustic treatment)",
+      "Variations in classroom design parameters"
     ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:40:15.677409+00:00"
+  "surgical_update_at": "2026-03-02T18:39:03.933990+00:00",
+  "mechanism_chain": {
+    "description": "Design parameters of learning spaces influence the objective acoustic environment, which in turn affects students' perception of the acoustic environment, leading to outcomes like noise discomfort.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Learning space design parameters (e.g., acoustic treatment, room geometry)",
+        "to_construct": "Objective acoustic environment (e.g., reverberation time, background noise level)",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Objective acoustic environment",
+        "to_construct": "Perceived acoustic environment (e.g., perceived noise, speech intelligibility)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived acoustic environment",
+        "to_construct": "Noise discomfort",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Sound level meter",
+      "construct": "Noise levels, sound pressure levels",
+      "description": "Instrument used to measure objective sound characteristics in the classrooms.",
+      "type": "other"
+    },
+    {
+      "name": "Reverberation time measurement equipment",
+      "construct": "Reverberation time",
+      "description": "Equipment used to measure the decay of sound in the classrooms.",
+      "type": "other"
+    },
+    {
+      "name": "Student questionnaire/survey",
+      "construct": "Perceived acoustic environment, noise discomfort",
+      "description": "Self-report instrument administered to primary students to assess their perception and discomfort related to the acoustic environment.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photos of the different learning space types or classrooms investigated",
+      "figure_ref": null,
+      "image_type": "photo"
+    },
+    {
+      "description": "Floor plans or diagrams illustrating the design parameters and acoustic treatments of the classrooms",
+      "figure_ref": null,
+      "image_type": "floor_plan"
+    }
+  ]
 }

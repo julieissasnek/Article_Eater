@@ -2607,26 +2607,76 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "real hills (2° to 34° slant)"
+      "Real hills",
+      "Varying geographical slants (e.g., 2° to 34°)",
+      "Viewed from the base of the hill"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "Varying observer physiological states (e.g., fresh vs. fatigued, with vs. without a heavy backpack)",
+      "Different observer demographics (e.g., young vs. elderly)",
+      "Different viewing conditions (e.g., monocular vs. binocular, direct view vs. photographic representation)"
+    ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": "Verbal estimation of slant",
-      "construct": "judged pitch",
-      "description": "Participants provided verbal reports of the perceived steepness or pitch of the hills.",
-      "type": "self_report"
+      "name": "Verbal estimation",
+      "construct": "Perceived geographical slant",
+      "description": "Participants verbally report their estimate of the hill's slant in degrees.",
+      "type": "behavioral"
     },
     {
-      "name": "Visual estimation of slant",
-      "construct": "judged pitch",
-      "description": "Participants used visual methods (e.g., adjusting a line, matching to a visual scale) to indicate the perceived steepness or pitch of the hills.",
+      "name": "Visual matching",
+      "construct": "Perceived geographical slant",
+      "description": "Participants adjust a visual display (e.g., a line on a protractor, a tiltable board) to match the perceived slant of the hill.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Haptic matching",
+      "construct": "Perceived geographical slant",
+      "description": "Participants adjust a haptic device (e.g., a board manipulated by hand, out of sight) to match the perceived slant of the hill.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:44:57.252452+00:00"
+  "surgical_update_at": "2026-03-02T18:42:51.368442+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Action-Specific Perception (or Affordance-Based Perception)",
+      "commitment_type": "tests|proposes",
+      "specific_claim": "The perception of geographical slant is not purely optical but is scaled by the observer's physiological state, capabilities, and the effort required to act upon the environment (e.g., climb the hill)."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The mechanism by which an observer's physiological state and perceived effort influence the perception of geographical slant.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Observer's physiological state / perceived effort (e.g., fatigue, carrying weight, age)",
+        "to_construct": "Scaling of visual information related to action costs/capabilities",
+        "mechanism_type": "physiological|cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Scaled visual information (influenced by action costs)",
+        "to_construct": "Perceived geographical slant",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs of the real hills used as stimuli, showing their varying slants.",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "photo"
+    },
+    {
+      "description": "Diagrams illustrating the experimental setup for measuring perceived slant (e.g., visual matching apparatus).",
+      "figure_ref": "Figure 2 (typical)",
+      "image_type": "diagram"
+    }
+  ]
 }

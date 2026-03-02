@@ -1296,26 +1296,63 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "sequential spaces",
-      "opening/partition area ratio (dop)",
-      "room dimensions",
-      "acoustic properties of materials"
+      "Varying opening/partition area ratios (dop)",
+      "Sequential room configurations",
+      "Room dimensions",
+      "Material absorption properties of surfaces"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "baseline spatial configuration",
-      "specific opening/partition area ratio (e.g., 0% or a standard reference value)"
+      "Completely closed partition (0% opening/partition area ratio)"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Sound Level Meter",
-      "construct": "Sound Pressure Level",
-      "description": "Device used to measure sound pressure levels in decibels, often used to determine level differences between locations.",
+      "name": "Acoustic simulation software",
+      "construct": "Room acoustic parameters",
+      "description": "Software used to model sound propagation and calculate acoustic metrics in architectural spaces.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:08:09.520060+00:00"
+  "surgical_update_at": "2026-03-02T18:36:16.191797+00:00",
+  "mechanism_chain": {
+    "description": "The physical process of sound energy transmission and reflection through openings and partitions between sequential spaces, which dictates the sound pressure level differences observed.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Opening/partition area ratio",
+        "to_construct": "Sound energy transmission and reflection characteristics",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Sound energy transmission and reflection characteristics",
+        "to_construct": "Sound pressure level distribution within rooms",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Sound pressure level distribution within rooms",
+        "to_construct": "Level differences between rooms",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Floor plans and/or 3D renderings of the simulated sequential spaces with varying opening configurations.",
+      "figure_ref": null,
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Diagrams illustrating the parametric variations of opening/partition area ratios.",
+      "figure_ref": null,
+      "image_type": "diagram"
+    }
+  ]
 }

@@ -88,7 +88,7 @@
       "p_value": "<0.001",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": "F = 25.116",
       "theory_links": [
@@ -158,7 +158,8 @@
         "COGNITIVE_CONTROL": 0.1608,
         "CONSTRUAL_LEVEL_THEORY": 0.1608,
         "CREATIVE_COGNITION": 0.1608
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1586,46 +1587,45 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "room color (light green vs. dark green)",
-      "room size",
-      "social density (number of people)"
+      "light green room",
+      "dark green room"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "light green room condition",
-      "dark green room condition",
-      "varying room sizes",
-      "varying social densities"
+      "dark green room (as comparison to light green)"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Room characteristics influence perceived spaciousness and capacity, which are central to crowding perception.",
+    "description": "Room color influences the perceived spaciousness or openness of a room, which in turn affects an individual's judgment of how many people or figures can comfortably fit into that space.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "room color (e.g., dark green)",
-        "to_construct": "perceived enclosure/spaciousness",
+        "from_construct": "room color (e.g., light green)",
+        "to_construct": "perceived spaciousness/openness",
         "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "perceived enclosure/spaciousness",
-        "to_construct": "perceived room capacity",
+        "from_construct": "perceived spaciousness/openness",
+        "to_construct": "judgment of room capacity",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Number of figures placed task",
+      "name": "Capacity Estimation Task",
       "construct": "perceived room capacity",
-      "description": "Participants were asked to place figures into a model room to indicate how many people they felt could comfortably occupy the space.",
+      "description": "Participants were asked to indicate the maximum number of figures or people that could comfortably fit into a given room.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:19:24.295909+00:00"
+  "surgical_update_at": "2026-03-02T18:32:02.821145+00:00",
+  "paper_sample_size": 100,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

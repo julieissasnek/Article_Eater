@@ -918,12 +918,83 @@
   },
   "instruments_used": [
     {
-      "name": "acoustic sensors",
-      "construct": "indoor acoustic environment parameters",
-      "description": "Devices used to measure acoustic properties such as Reverberation Time, Clarity Index, and Definition",
+      "name": "Sound Level Meter",
+      "construct": "sound pressure level, background noise",
+      "description": "Used for measuring various acoustic parameters including LAeq, RT, C50, D50.",
+      "type": "other"
+    },
+    {
+      "name": "Omnidirectional Microphone",
+      "construct": "sound capture for acoustic analysis",
+      "description": "Used in conjunction with sound level meters or impulse response systems.",
+      "type": "other"
+    },
+    {
+      "name": "Impulse Response Measurement System",
+      "construct": "reverberation time, clarity, definition",
+      "description": "Typically involves a sound source (e.g., dodecahedron loudspeaker, balloon burst) and analysis software to derive acoustic parameters.",
+      "type": "other"
+    },
+    {
+      "name": "Acoustic Analysis Software",
+      "construct": "acoustic parameters calculation",
+      "description": "Software like ODEON or DIRAC for processing impulse responses and calculating acoustic metrics.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:46:06.156301+00:00"
+  "surgical_update_at": "2026-03-02T18:43:05.132793+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "Reverberation Time (RT)",
+      "Clarity Index (C50, C80)",
+      "Definition (D50)",
+      "Speech Transmission Index (STI)",
+      "Background Noise Level (LAeq)"
+    ],
+    "duration_exposure": "continuous during occupancy of the space",
+    "control_conditions": [
+      "comparison to existing acoustic standards (e.g., ISO, national building codes)",
+      "comparison to guidelines for neurotypical populations"
+    ],
+    "ecological_validity": "field"
+  },
+  "mechanism_chain": {
+    "description": "Acoustic parameters directly influence speech intelligibility and overall sound perception, which in turn affects cognitive load and emotional well-being for autistic individuals.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "High Reverberation Time / High Background Noise",
+        "to_construct": "Reduced Speech Intelligibility / Auditory Masking",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Reduced Speech Intelligibility / Auditory Masking",
+        "to_construct": "Increased Cognitive Load / Sensory Overload",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased Cognitive Load / Sensory Overload",
+        "to_construct": "Increased Stress / Anxiety / Difficulty Concentrating",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagrams of room layouts indicating measurement points for acoustic parameters",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs showing measured acoustic parameters (e.g., RT, LAeq) across different frequencies or spaces",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "graph"
+    }
+  ]
 }

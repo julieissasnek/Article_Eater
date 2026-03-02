@@ -4505,23 +4505,77 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "natural environments",
-      "urban environments"
+      "color slides of natural environments (e.g., forest, water scenes)",
+      "color slides of urban environments (e.g., city streets, buildings)",
+      "color slides of abstract patterns"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "6 minutes",
     "control_conditions": [
+      "abstract patterns",
       "urban environments"
     ],
-    "ecological_validity": null
+    "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Skin conductance",
-      "construct": "Physiological arousal",
-      "description": "Measure of sympathetic nervous system activity via sweat gland activity",
+      "name": "Skin Conductance Response (SCR)",
+      "construct": "Physiological arousal/stress",
+      "description": "Electrodermal activity measured via electrodes on fingers",
       "type": "physiological"
+    },
+    {
+      "name": "Heart Rate (HR)",
+      "construct": "Physiological arousal/stress",
+      "description": "Measured via electrocardiogram (ECG)",
+      "type": "physiological"
+    },
+    {
+      "name": "Self-report Mood Scales",
+      "construct": "Mood states (e.g., anxiety, anger, sadness, positive affect)",
+      "description": "Self-report questionnaire assessing current emotional state",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:49:52.513342+00:00"
+  "surgical_update_at": "2026-03-02T18:43:20.348790+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments facilitates physiological and psychological stress recovery more effectively than exposure to urban environments or control conditions."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Natural environments contain features (e.g., non-threatening content, moderate complexity, fascination) that elicit positive affective responses and reduce physiological arousal, leading to stress recovery.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Exposure to natural environment features (e.g., vegetation, water, non-threatening content)",
+        "to_construct": "Reduced physiological arousal (e.g., skin conductance, heart rate)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Exposure to natural environment features",
+        "to_construct": "Increased positive affect and reduced negative affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of natural environment stimulus slides used for recovery",
+      "figure_ref": "Figure 1a",
+      "image_type": "stimulus_set"
+    },
+    {
+      "description": "Examples of urban environment stimulus slides used for recovery",
+      "figure_ref": "Figure 1b",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported"
 }

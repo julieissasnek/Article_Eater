@@ -69,7 +69,7 @@
       "p_value": "<0.01",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 26,
       "confidence_interval": null,
       "test_statistic": "LV p < .01",
       "theory_links": [
@@ -142,7 +142,8 @@
         "EMBODIED_COGNITION": 0.1661,
         "EC": 0.1646,
         "PP": 0.1646
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -961,37 +962,84 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": null,
+    "environmental_features": [
+      "virtual reality environment",
+      "virtual town/maze with distinct landmarks",
+      "spatial navigation cues"
+    ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "visual fixation baseline",
+      "non-spatial decision task"
+    ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "An orientation decision task elicits increased brain activity in a core neural network associated with spatial orientation.",
+    "description": "Individual differences in the configuration and efficiency of specific neural networks involved in spatial processing lead to variations in the ability to form and utilize cognitive maps, which in turn manifests as differences in spatial orientation task performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "orientation decision task",
-        "to_construct": "neural activation in spatial orientation network",
+        "from_construct": "Individual differences in neural network configuration and efficiency (e.g., functional connectivity, activation patterns in spatial navigation network)",
+        "to_construct": "Efficiency of spatial information processing (e.g., encoding, retrieval of spatial relationships)",
         "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Efficiency of spatial information processing",
+        "to_construct": "Spatial orientation ability (e.g., accuracy and speed in navigation tasks)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Orientation decision task",
-      "construct": "spatial orientation ability",
-      "description": "A behavioral task designed to assess spatial orientation decision-making.",
+      "name": "fMRI",
+      "construct": "Brain activity, functional connectivity",
+      "description": "Functional magnetic resonance imaging used to measure neural responses during spatial tasks.",
+      "type": "fmri"
+    },
+    {
+      "name": "Virtual Navigation Task",
+      "construct": "Spatial orientation ability, navigation performance, route learning",
+      "description": "Participants navigated a virtual environment, learning routes and identifying locations.",
       "type": "behavioral"
     },
     {
-      "name": "fMRI",
-      "construct": "brain activity",
-      "description": "Functional Magnetic Resonance Imaging used to measure neural activation.",
-      "type": "fmri"
+      "name": "Psychometric Spatial Ability Tests",
+      "construct": "General spatial ability",
+      "description": "Standardized tests measuring visuospatial skills (e.g., Mental Rotations Test).",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:28:50.208738+00:00"
+  "surgical_update_at": "2026-03-02T18:38:12.771170+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Neural Efficiency Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "More efficient neural processing (e.g., lower activity for similar performance, or better performance for similar activity) underlies individual differences in cognitive abilities."
+    },
+    {
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "The brain forms a mental representation of the spatial environment to support navigation and orientation."
+    },
+    {
+      "theory_name": "Dual-System Theories of Navigation",
+      "commitment_type": "extends",
+      "specific_claim": "Navigation involves distinct neural systems for egocentric (response-based) and allocentric (place-based) strategies, and individual differences may relate to the differential engagement or efficiency of these systems."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Screenshots of the virtual environment used for the spatial orientation task, showing landmarks and navigation paths.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 26,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

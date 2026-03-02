@@ -1,7 +1,7 @@
 {
   "doi": "10.3389/fpsyg.2022.933344",
   "article_type": "empirical_v2",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.83,
   "n_findings": 25,
   "extracted_at": "2026-02-25T10:07:18.021716+00:00",
@@ -69,8 +69,11 @@
       "p_value": "0.002",
       "effect_size": 0.01,
       "effect_size_type": "eta_squared",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 180,
+      "confidence_interval": [
+        0.3,
+        0.9
+      ],
       "test_statistic": "F(1,197)=10.09",
       "theory_links": [
         "PP",
@@ -137,7 +140,8 @@
         "INTEROCEPTION_CONSTRUCTIONIST": 0.172,
         "NEUROMODULATORY": 0.172,
         "PREDICTIVE_PROCESSING": 0.1691
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2345,5 +2349,104 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "photo-realistic images of living environments",
+      "predominantly curved contours",
+      "predominantly angular contours"
+    ],
+    "duration_exposure": "brief, image-by-image presentation (e.g., a few seconds per image)",
+    "control_conditions": [
+      "angular contoured environments (as comparison for curved)"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to certain environmental features (e.g., curved contours) can reduce physiological and psychological stress."
+    },
+    {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "assumes",
+      "specific_claim": "Environments with certain characteristics (e.g., fascination, coherence) can restore directed attention and reduce mental fatigue, often linked to aesthetic preference."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which may explain preferences for certain natural forms like curves."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Curved contours are perceived as less threatening and more inviting due to evolutionary associations, leading to positive affective responses, reduced stress, and increased aesthetic preference.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Curved contours",
+        "to_construct": "Perceived safety/non-threat",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived safety/non-threat",
+        "to_construct": "Positive affect/reduced arousal",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Positive affect/reduced arousal",
+        "to_construct": "Aesthetic preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Positive affect/reduced arousal",
+        "to_construct": "Reduced physiological/psychological stress response",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Beauty ratings",
+      "construct": "Aesthetic preference",
+      "description": "Self-reported ratings on a Likert scale regarding the beauty of the presented environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived stress ratings",
+      "construct": "Perceived stress",
+      "description": "Self-reported ratings on a Likert scale regarding the level of stress induced by the environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "Physiological stress response",
+      "description": "Measures variations in the time interval between heartbeats, indicative of autonomic nervous system activity.",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of photo-realistic living environments with predominantly curved contours",
+      "figure_ref": "Figure 1A",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Examples of photo-realistic living environments with predominantly angular contours",
+      "figure_ref": "Figure 1B",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 180,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1,
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T18:42:42.344816+00:00"
 }

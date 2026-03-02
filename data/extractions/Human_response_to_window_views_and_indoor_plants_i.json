@@ -1600,24 +1600,73 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "window view",
-      "indoor plants",
-      "city view"
+      "window views (city view)",
+      "no window view",
+      "indoor plants (present)",
+      "no indoor plants"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "likely short-term, e.g., 15-30 minutes, for EEG measurement in a controlled setting",
     "control_conditions": [
-      "office without window view and no indoor plants"
+      "office without window view and no indoor plants",
+      "office with city view only",
+      "office with indoor plants only"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "EEG",
-      "construct": "brain activity",
-      "description": "Measures electrical activity in the brain, specifically left alpha wave activity.",
+      "name": "Electroencephalography (EEG)",
+      "construct": "Brain activity (e.g., alpha wave activity)",
+      "description": "Measures electrical activity of the brain via electrodes placed on the scalp.",
       "type": "eeg"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Mood, stress, perceived restorativeness, environmental perception",
+      "description": "Likely included scales for subjective experience of the environment and emotional states.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:20:46.345986+00:00"
+  "surgical_update_at": "2026-03-02T18:32:10.080039+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural elements (like window views of nature or indoor plants) can restore directed attention and reduce mental fatigue, leading to improved cognitive and physiological states."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments can elicit positive emotional states and reduce physiological stress, promoting recovery from stressors."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Visual access to natural elements (plants, window views) reduces cognitive load and stress, leading to changes in brain activity (e.g., alpha waves) indicative of relaxation or restoration.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Visual access to natural elements (plants, window views)",
+        "to_construct": "Reduced cognitive effort/stress",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Reduced cognitive effort/stress",
+        "to_construct": "Changes in brain activity (e.g., alpha waves)",
+        "mechanism_type": "neural|physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs or renderings of the experimental office setups showing different window views and plant conditions.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "estimated"
 }

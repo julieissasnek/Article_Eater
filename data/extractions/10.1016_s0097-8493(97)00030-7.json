@@ -1830,37 +1830,75 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Taxonomy of Haptic Feedback and Devices",
+      "theory_name": "Haptic Taxonomy/Framework",
       "commitment_type": "proposes",
-      "specific_claim": "A structured classification system for haptic feedback types, devices, and their applications in virtual environments, organizing the current state of research."
+      "specific_claim": "A comprehensive taxonomy for haptic devices and their applications in virtual environments is proposed, categorizing systems based on their degrees of freedom, workspace, and feedback mechanisms."
+    },
+    {
+      "theory_name": "Human Haptic Perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Human haptic perception relies on the integration of distinct tactile (cutaneous) and kinesthetic (proprioceptive) sensory systems to interpret physical interactions with the environment."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes the fundamental mechanisms of human haptic perception and how haptic feedback systems interact with these mechanisms to create virtual sensations.",
+    "description": "The paper describes the general mechanism by which haptic feedback from a virtual environment is generated and subsequently perceived by a human user.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Haptic stimulus (e.g., force, vibration, texture)",
-        "to_construct": "Activation of mechanoreceptors and thermoreceptors in the skin and muscles",
-        "mechanism_type": "physiological",
+        "from_construct": "Virtual environment state (e.g., object properties, collision events)",
+        "to_construct": "Haptic rendering algorithm output (e.g., desired force, vibration pattern)",
+        "mechanism_type": "computational",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Neural signals from peripheral receptors",
-        "to_construct": "Transmission of haptic information to the central nervous system",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "Haptic rendering algorithm output",
+        "to_construct": "Haptic device actuation (e.g., motor activation, tactile array stimulation)",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Cortical processing of haptic information",
-        "to_construct": "Perception and interpretation of haptic properties (e.g., shape, texture, stiffness, temperature)",
+        "from_construct": "Haptic device actuation",
+        "to_construct": "Physical interaction with human body (e.g., skin deformation, joint resistance)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Physical interaction with human body",
+        "to_construct": "Activation of mechanoreceptors and proprioceptors",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Activation of sensory receptors",
+        "to_construct": "Generation and transmission of neural signals to the brain",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "Neural signals in the brain",
+        "to_construct": "Conscious perception of haptic properties (e.g., spatial location, texture, stiffness, force)",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:06:05.261255+00:00"
+  "surgical_update_at": "2026-03-02T18:44:49.194670+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating various types of haptic devices, including force-feedback systems (e.g., joysticks, exoskeletons) and tactile displays (e.g., pin arrays, vibrators).",
+      "figure_ref": "Figures throughout the paper (e.g., Figure 1, Figure 2)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Conceptual diagrams depicting the haptic interaction loop between a human user, a haptic device, and a virtual environment.",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
+    }
+  ]
 }

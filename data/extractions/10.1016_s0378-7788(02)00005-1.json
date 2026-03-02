@@ -1973,42 +1973,49 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Adaptive Thermal Comfort Model",
-      "commitment_type": "proposes",
-      "specific_claim": "Thermal comfort in naturally ventilated buildings is dynamic, influenced by outdoor conditions and occupant adaptive behaviors, leading to a wider range of acceptable temperatures than predicted by static models. These principles should be incorporated into ASHRAE Standard 55."
+      "theory_name": "Adaptive Thermal Comfort Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Indoor comfort temperature in naturally ventilated buildings is influenced by and adapts to outdoor climate conditions, leading to a wider range of acceptable temperatures than predicted by static models."
     },
     {
-      "theory_name": "Fanger's Predicted Mean Vote (PMV) Model",
+      "theory_name": "Fanger's Predicted Mean Vote (PMV) / Predicted Percentage Dissatisfied (PPD) Model",
       "commitment_type": "contradicts",
-      "specific_claim": "The Fanger PMV model, while effective for mechanically conditioned spaces, does not accurately predict thermal comfort or acceptable temperature ranges in naturally ventilated buildings due to its static nature and lack of consideration for adaptation."
+      "specific_claim": "The PMV/PPD model, while applicable to mechanically conditioned buildings, does not accurately predict thermal comfort or acceptable temperature ranges in naturally ventilated buildings due to the opportunities for adaptive behaviors and physiological acclimatization."
     }
   ],
   "mechanism_chain": {
-    "description": "The adaptive thermal comfort model describes how occupants of naturally ventilated buildings adjust to their thermal environment, influencing their comfort temperature based on outdoor conditions and personal control.",
+    "description": "The paper describes the adaptive mechanisms by which outdoor air temperature influences indoor comfort temperature in naturally ventilated buildings.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Outdoor air temperature (Ta,out)",
-        "to_construct": "Occupant thermal expectations and physiological acclimatization",
-        "mechanism_type": "cognitive|physiological",
+        "from_construct": "Mean outdoor air temperature (Ta,out)",
+        "to_construct": "Occupant physiological state (e.g., acclimatization)",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Occupant thermal expectations and physiological acclimatization",
-        "to_construct": "Behavioral adaptations (e.g., adjusting clothing, opening windows, changing activity)",
+        "from_construct": "Mean outdoor air temperature (Ta,out)",
+        "to_construct": "Occupant behavioral adaptation (e.g., adjusting clothing, opening windows)",
         "mechanism_type": "behavioral",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Behavioral adaptations + indoor environmental conditions",
-        "to_construct": "Perceived thermal comfort / Indoor comfort temperature (Tcomf)",
-        "mechanism_type": "affective|perceptual",
-        "evidence_strength": "indirect"
+        "from_construct": "Mean outdoor air temperature (Ta,out)",
+        "to_construct": "Occupant psychological adaptation (e.g., altered thermal expectations)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Physiological, behavioral, and psychological adaptation",
+        "to_construct": "Indoor comfort temperature (Tcomf)",
+        "mechanism_type": "physiological|behavioral|cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:26:33.963659+00:00"
+  "surgical_update_at": "2026-03-02T18:38:01.782783+00:00"
 }

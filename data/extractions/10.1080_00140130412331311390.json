@@ -66,8 +66,8 @@
       "claim_type": "associational",
       "measure_type": "self_report",
       "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": -0.35,
+      "effect_size_type": "r",
       "sample_size": 88,
       "confidence_interval": null,
       "test_statistic": null,
@@ -137,7 +137,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1951,
         "CREATIVE_COGNITION": 0.1951,
         "DMN_TPN_DYNAMICS": 0.1934
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 2,
@@ -147,8 +148,8 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": -0.42,
+      "effect_size_type": "r",
       "sample_size": 88,
       "confidence_interval": null,
       "test_statistic": "F(7,609) = 53.98, p < 0.001 (overall ANOVA)",
@@ -225,7 +226,8 @@
         "ATTENTION_RESTORATION": 0.1739,
         "CREATIVE_COGNITION": 0.1739,
         "EMBODIED_COGNITION": 0.1739
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 3,
@@ -235,8 +237,8 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": -0.2,
+      "effect_size_type": "r",
       "sample_size": 88,
       "confidence_interval": null,
       "test_statistic": "F(7,609) = 53.98, p < 0.001 (overall ANOVA)",
@@ -306,7 +308,8 @@
         "GROUP_CREATIVITY": 0.1855,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1855,
         "IC": 0.1845
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 4,
@@ -391,7 +394,8 @@
         "EMBODIED_COGNITION": 0.1636,
         "NM_AROUSAL": 0.1636,
         "DMN_TPN_DYNAMICS": 0.1615
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 5,
@@ -478,7 +482,8 @@
         "INTEROCEPTION": 0.1671,
         "MULTISENSORY_INTEGRATION": 0.1637,
         "SPATIAL_NAVIGATION": 0.1637
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 6,
@@ -488,8 +493,8 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "ns",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": 0.25,
+      "effect_size_type": "r",
       "sample_size": 88,
       "confidence_interval": null,
       "test_statistic": null,
@@ -548,7 +553,8 @@
         "DUAL_PROCESS": 0.1601,
         "CROSS_FRAMEWORK": 0.1538,
         "PREDICTIVE_PROCESSING": 0.1525
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 7,
@@ -625,7 +631,8 @@
         "PREDICTIVE_PROCESSING": 0.1557,
         "CROSS_FRAMEWORK": 0.155,
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1545
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 8,
@@ -719,7 +726,8 @@
         "SN": 0.2226,
         "DUAL_PROCESS": 0.2195,
         "CROSS_FRAMEWORK": 0.2096
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 9,
@@ -794,7 +802,8 @@
         "MS": 0.1679,
         "STRESS_RECOVERY_THEORY": 0.1661,
         "DMN_TPN_DYNAMICS": 0.1572
-      }
+      },
+      "sample_n": 88
     },
     {
       "id": 10,
@@ -879,7 +888,8 @@
         "MS": 0.1703,
         "EMBODIED_COGNITION": 0.1656,
         "NM_AROUSAL": 0.1656
-      }
+      },
+      "sample_n": 88
     }
   ],
   "mechanisms": [
@@ -1352,36 +1362,31 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "speech noise (conversations, phone calls)",
-      "equipment noise (computers, printers)",
-      "general office chatter",
-      "ventilation noise"
+      "speech noise",
+      "telephone conversations",
+      "equipment noise",
+      "general office chatter"
     ],
     "duration_exposure": "continuous 8-hour workday",
-    "control_conditions": null,
+    "control_conditions": [
+      "comparison of different noise levels and types observed in situ"
+    ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Office noise, particularly irrelevant speech, acts as an auditory distractor, consuming cognitive resources and interfering with working memory, which ultimately impairs an employee's ability to focus and concentrate on their primary tasks.",
+    "description": "Office noise, particularly intelligible speech, acts as a cognitive distractor, consuming attentional resources and interfering with task-relevant processing, thereby reducing an employee's ability to concentrate.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Office noise (e.g., irrelevant speech)",
-        "to_construct": "Auditory distraction/Cognitive interference",
+        "from_construct": "office noise (intelligible speech)",
+        "to_construct": "cognitive distraction",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Auditory distraction/Cognitive interference",
-        "to_construct": "Increased cognitive load/Reduced working memory capacity",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 3,
-        "from_construct": "Increased cognitive load/Reduced working memory capacity",
-        "to_construct": "Impaired concentration",
+        "from_construct": "cognitive distraction",
+        "to_construct": "reduced concentration",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -1389,18 +1394,20 @@
   },
   "instruments_used": [
     {
-      "name": null,
-      "construct": "Perceived concentration/distraction",
-      "description": "Self-report questionnaires or scales assessing employees' subjective experience of their ability to concentrate and the level of distraction experienced in the office.",
-      "type": "self_report"
+      "name": "Sound level meter",
+      "construct": "Noise level (dB(A))",
+      "description": "Objective measurement of ambient sound pressure levels in the office environment.",
+      "type": "other"
     },
     {
-      "name": null,
-      "construct": "Office noise levels",
-      "description": "Objective measurements of sound pressure levels (e.g., dB(A)) in various office locations to quantify the acoustic environment.",
-      "type": "other"
+      "name": "Self-report questionnaire for concentration",
+      "construct": "Perceived concentration",
+      "description": "Likert-scale items assessing employees' subjective experience of concentration and disruption.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:32:42.763588+00:00"
+  "surgical_update_at": "2026-03-02T18:38:27.638052+00:00",
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported"
 }

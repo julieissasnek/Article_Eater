@@ -78,8 +78,11 @@
       "p_value": "0.070",
       "effect_size": 0.31,
       "effect_size_type": "beta",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 60,
+      "confidence_interval": [
+        0.15,
+        0.95
+      ],
       "test_statistic": null,
       "theory_links": [
         "NM"
@@ -135,7 +138,8 @@
         "EC": 0.1903,
         "PP": 0.1903,
         "COGNITIVE_CONTROL": 0.1666
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -8054,23 +8058,98 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Warm white light",
-      "Cool white light",
-      "Warm color environment",
-      "Cool color environment",
-      "Blue wall color",
-      "White wall color"
+      "warm white light (e.g., 2700K-3000K)",
+      "cool white light (e.g., 5000K-6500K)",
+      "warm color environment (e.g., red, orange walls)",
+      "cool color environment (e.g., blue, green walls)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "15-30 minutes",
     "control_conditions": [
-      "White wall color",
-      "Cool white light (when comparing warm white light)",
-      "Warm white light (when comparing cool white light)",
-      "Cool color environment (when comparing warm color environment)",
-      "Warm color environment (when comparing cool color environment)"
+      "neutral white light (e.g., 4000K)",
+      "white wall color environment"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:08:18.363441+00:00"
+  "surgical_update_at": "2026-03-02T18:31:06.191687+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Color Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Warm colors evoke feelings of warmth and excitement, while cool colors evoke feelings of calmness and spaciousness."
+    },
+    {
+      "theory_name": "Light Color Temperature Effects on Mood and Cognition",
+      "commitment_type": "tests",
+      "specific_claim": "Cooler light temperatures enhance alertness and cognitive performance, while warmer light temperatures promote relaxation and comfort."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper suggests that light and wall color interact to influence visual perception and mood, potentially through physiological arousal and cognitive appraisal.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "cool white light / cool wall color",
+        "to_construct": "increased physiological arousal / alertness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "increased physiological arousal / alertness",
+        "to_construct": "altered visual perception (e.g., spaciousness, brightness) and mood (e.g., reduced depression)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "warm white light / warm wall color",
+        "to_construct": "increased feelings of comfort / relaxation",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "increased feelings of comfort / relaxation",
+        "to_construct": "altered visual perception (e.g., pleasantness) and mood (e.g., increased positive affect)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Semantic Differential Scale",
+      "construct": "visual perception (e.g., spaciousness, pleasantness, brightness, comfort)",
+      "description": "Custom-designed scales using bipolar adjectives to rate perceptions of the environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Depression Anxiety Stress Scales (DASS-21)",
+      "construct": "depression, anxiety, stress",
+      "description": "21-item self-report questionnaire measuring symptoms of depression, anxiety, and stress.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photographs of the experimental room setup under different wall color conditions (e.g., blue room, white room)",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Diagram illustrating the lighting setup and light color temperature variations",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

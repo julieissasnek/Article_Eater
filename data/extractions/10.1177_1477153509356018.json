@@ -1094,40 +1094,64 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "illuminance levels (e.g., 48-1037 lux)"
+      "illuminance levels (lux)",
+      "manipulated stimulus range"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "task-based adjustment, typically minutes per trial",
     "control_conditions": [
-      "different ranges of illuminance stimuli"
+      "different stimulus ranges (e.g., low, mid, high range) served as comparison conditions"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
       "theory_name": "Stimulus Range Bias",
-      "commitment_type": "assumes",
-      "specific_claim": "The range of available stimuli in a judgment task influences the perceived preferred value within that range."
+      "commitment_type": "tests|proposes",
+      "specific_claim": "The range of available stimuli influences the perceived midpoint and consequently biases the selection of a preferred stimulus level."
     }
   ],
   "mechanism_chain": {
-    "description": "The cognitive bias introduced by the range of presented illuminance stimuli directly influences an individual's judgment and subsequent adjustment of their preferred illuminance.",
+    "description": "The mechanism describes how the presented range of illuminance biases the participant's internal representation of the stimulus space, leading to a shift in their preferred illuminance judgment.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "stimulus range of illuminance",
-        "to_construct": "cognitive bias in preference judgment",
-        "mechanism_type": "cognitive",
+        "from_construct": "presented stimulus range",
+        "to_construct": "internal representation of stimulus space/midpoint",
+        "mechanism_type": "perceptual|cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "cognitive bias in preference judgment",
-        "to_construct": "adjusted preferred illuminance",
-        "mechanism_type": "behavioral",
+        "from_construct": "internal representation of stimulus space/midpoint",
+        "to_construct": "preferred illuminance judgment",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:38:16.591615+00:00"
+  "surgical_update_at": "2026-03-02T18:33:41.950059+00:00",
+  "instruments_used": [
+    {
+      "name": "Luxmeter",
+      "construct": "illuminance",
+      "description": "Device used to measure the actual illuminance levels in the experimental setup.",
+      "type": "other"
+    },
+    {
+      "name": "Lighting Control System",
+      "construct": "participant-controlled illuminance",
+      "description": "Interface (e.g., dimmer switch, computer control) allowing participants to adjust the illuminance levels.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental room setup showing lighting fixtures and participant's control panel.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated"
 }

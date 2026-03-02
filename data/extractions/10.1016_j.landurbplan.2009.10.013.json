@@ -2964,34 +2964,58 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Dutch urban squares",
+      "10 urban squares in the Netherlands",
       "varying spatial configurations (e.g., H/W ratio)",
-      "wind patterns in urban squares",
-      "open square surfaces (H/W ratio < 0.25)"
+      "varying microclimatic conditions (wind speed, air temperature, solar radiation)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "during a visit to each square",
+    "control_conditions": [
+      "comparison between 10 different urban squares with varying spatial and microclimatic characteristics"
+    ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "The physical configuration of an urban square, specifically its openness (low H/W ratio), directly influences wind speeds and turbulence, which in turn leads to the perception of the space as 'too windy'.",
+    "description": "The physical spatial configuration of a square influences its microclimatic conditions, which in turn affects how people perceive the microclimate.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Central open square surface (H/W ratio < 0.25)",
-        "to_construct": "Higher wind speeds and turbulence",
-        "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "from_construct": "spatial configuration (e.g., H/W ratio)",
+        "to_construct": "wind speed",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Higher wind speeds and turbulence",
-        "to_construct": "Perceived as 'too windy'",
+        "from_construct": "wind speed",
+        "to_construct": "perceived windiness",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:29:59.953993+00:00"
+  "surgical_update_at": "2026-03-02T18:32:57.348362+00:00",
+  "instruments_used": [
+    {
+      "name": "Questionnaire",
+      "construct": "perception of microclimate (e.g., windiness, thermal comfort) and spatial qualities",
+      "description": "Self-report questionnaire administered to participants in each square.",
+      "type": "self_report"
+    },
+    {
+      "name": "Microclimatic sensors",
+      "construct": "wind speed, air temperature, solar radiation",
+      "description": "Instruments used to measure objective microclimatic conditions in each square.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photographs of the 10 urban squares studied, illustrating their spatial configurations and microclimatic conditions.",
+      "figure_ref": null,
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported"
 }

@@ -4405,59 +4405,66 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "textured surfaces (e.g., sandpaper, gratings, fabrics)",
-      "materials with varying compliance and friction",
-      "objects with different shapes and sizes"
+      "physical roughness (e.g., sandpaper grit sizes, textured surfaces)",
+      "vibratory stimuli (e.g., varying frequencies and amplitudes)",
+      "object shapes and contours",
+      "forces and pressures applied to the skin"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "varying surface microgeometry",
-      "varying contact force",
-      "varying exploration speed",
-      "passive vs. active touch"
+      "smooth surfaces (for roughness studies)",
+      "static contact (for vibratory studies)",
+      "untextured objects (for shape perception studies)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Duplex Theory of Texture Perception",
-      "commitment_type": "assumes",
-      "specific_claim": "Texture perception relies on both spatial cues (e.g., pattern of skin deformation) and temporal cues (e.g., vibrations during scanning)."
+      "theory_name": "Duplex Theory of Tactile Texture Perception",
+      "commitment_type": "discusses",
+      "specific_claim": "Tactile texture perception relies on both spatial cues (e.g., from Merkel cells) and temporal/vibratory cues (e.g., from Pacinian corpuscles)."
     },
     {
-      "theory_name": "Active vs. Passive Touch Distinction",
-      "commitment_type": "assumes",
-      "specific_claim": "Perception differs depending on whether the hand actively explores a surface or is passively stimulated."
+      "theory_name": "Neural Coding of Haptic Information",
+      "commitment_type": "reviews",
+      "specific_claim": "Different types of mechanoreceptors and their afferent pathways encode distinct features of haptic stimuli, which are then processed in the somatosensory cortex."
     }
   ],
   "mechanism_chain": {
-    "description": "The causal mechanism connecting physical properties of a surface to its perceived roughness involves mechanical interaction with the skin, activation of mechanoreceptors, neural signal transduction, and cortical processing.",
+    "description": "The causal pathway from physical properties of an object to its haptic perception.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "physical roughness (e.g., sandpaper grit size)",
-        "to_construct": "mechanical deformation and vibration of skin",
+        "from_construct": "physical properties of object (e.g., roughness, shape, vibration)",
+        "to_construct": "mechanical deformation of skin",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "mechanical deformation and vibration of skin",
-        "to_construct": "activation of mechanoreceptors (e.g., Merkel cells, Meissner corpuscles, Pacinian corpuscles, Ruffini endings)",
+        "from_construct": "mechanical deformation of skin",
+        "to_construct": "activation of mechanoreceptors (e.g., Meissner, Pacinian, Merkel, Ruffini corpuscles)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
         "from_construct": "activation of mechanoreceptors",
-        "to_construct": "neural signal transmission to somatosensory cortex",
+        "to_construct": "generation of neural signals in afferent nerve fibers",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "neural signal transmission to somatosensory cortex",
-        "to_construct": "perceived roughness",
+        "from_construct": "neural signals in afferent nerve fibers",
+        "to_construct": "processing in somatosensory cortex (S1, S2)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "cortical processing of haptic signals",
+        "to_construct": "perceived haptic quality (e.g., perceived roughness, shape, texture)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
@@ -4465,30 +4472,24 @@
   },
   "instruments_used": [
     {
+      "name": "Tactile stimulators",
+      "construct": "controlled haptic stimuli",
+      "description": "Devices used to deliver precise tactile stimuli, such as vibrations or pressure.",
+      "type": "other"
+    },
+    {
       "name": "Textured surfaces",
-      "construct": "tactile stimuli",
-      "description": "Physical surfaces with controlled microgeometry (e.g., sandpaper, gratings, fabrics) used to elicit haptic sensations.",
+      "construct": "tactile roughness/texture",
+      "description": "Physical materials with varying surface properties (e.g., sandpaper, fabrics) used for manual exploration.",
       "type": "other"
     },
     {
-      "name": "Haptic devices/robots",
-      "construct": "controlled tactile stimulation",
-      "description": "Robotic interfaces providing controlled force feedback, vibration, or texture simulation.",
-      "type": "other"
-    },
-    {
-      "name": "Psychophysical scales",
-      "construct": "perceived qualities (e.g., roughness, slipperiness)",
-      "description": "Rating scales (e.g., magnitude estimation, Likert scales) used for subjective assessment of haptic attributes.",
+      "name": "Psychophysical scaling methods",
+      "construct": "perceived haptic attributes",
+      "description": "Methods like magnitude estimation or forced-choice tasks to quantify subjective perception.",
       "type": "self_report"
-    },
-    {
-      "name": "Discrimination tasks",
-      "construct": "perceptual acuity",
-      "description": "Forced-choice tasks (e.g., two-alternative forced choice) to measure the ability to distinguish between different haptic stimuli.",
-      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:55:53.610776+00:00"
+  "surgical_update_at": "2026-03-02T18:30:03.859873+00:00"
 }

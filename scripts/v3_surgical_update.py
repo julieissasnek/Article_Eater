@@ -16,8 +16,10 @@ import os
 import sys
 import time
 import logging
+import asyncio
 from pathlib import Path
 from datetime import datetime, timezone
+from typing import Optional
 # Load .env if present
 env_file = Path(__file__).parent.parent / ".env"
 if env_file.exists():
@@ -82,6 +84,10 @@ def build_surgical_update_prompt(extraction_data):
     sample_antecedent = findings[0].get("antecedent", "") if findings else ""
     sample_consequent = findings[0].get("consequent", "") if findings else ""
 
+    # Check for data gaps — which fields are missing?
+    missing_sample_sizes = sum(1 for f in findings if not f.get("sample_size"))
+    missing_effect_sizes = sum(1 for f in findings if not f.get("effect_size"))
+
     meta = extraction_data.get("paper_metadata", {})
     abstract = meta.get("abstract", "")
 
@@ -92,6 +98,8 @@ Title: {title}
 DOI: {doi}
 Article Type: {article_type}
 N Findings Already Extracted: {n_findings}
+Findings missing sample_size: {missing_sample_sizes}/{n_findings}
+Findings missing effect_size: {missing_effect_sizes}/{n_findings}
 
 Sample Finding (to understand scope):
   Antecedent: {sample_antecedent}
@@ -110,6 +118,14 @@ Return ONLY valid JSON with these OPTIONAL fields (all can be null if not applic
     "control_conditions": ["what control/comparison conditions were used"],
     "ecological_validity": "lab|semi-naturalistic|field"
   }},
+
+  "stimulus_images": [
+    {{
+      "description": "brief description of what the image shows",
+      "figure_ref": "Figure 1a, Table 2, etc.",
+      "image_type": "photo|rendering|diagram|floor_plan|graph|stimulus_set"
+    }}
+  ],
 
   "theory_commitments": [
     {{
@@ -145,14 +161,24 @@ Return ONLY valid JSON with these OPTIONAL fields (all can be null if not applic
       "construct": "positive and negative affect",
       "description": "20-item mood scale",
       "type": "self_report|behavioral|physiological|fmri|eeg|eye_tracking|actigraphy|other"
-    }},
-    {{
-      "name": "NASA-TLX",
-      "construct": "cognitive workload",
-      "description": "Mental effort rating scale",
-      "type": "self_report"
     }}
-  ]
+  ],
+
+  "quantitative_backfill": {{
+    "paper_sample_size": null,
+    "paper_sample_size_source": "reported|estimated|inferred",
+    "per_finding_updates": [
+      {{
+        "finding_index": 0,
+        "sample_size": 120,
+        "sample_size_source": "reported|estimated|inferred",
+        "effect_size": 0.45,
+        "effect_size_type": "Cohen's d|eta_squared|partial_eta_squared|r|OR|beta|R_squared|null",
+        "p_value": 0.003,
+        "confidence_interval": [0.12, 0.78]
+      }}
+    ]
+  }}
 }}
 
 IMPORTANT RULES:
@@ -160,6 +186,12 @@ IMPORTANT RULES:
 - DO NOT invent instruments or theories not mentioned
 - For theory_commitments, be explicit about HOW the paper uses the theory
 - For mechanism_chain, only include if the paper describes causal mechanisms
+- For quantitative_backfill: PRIORITIZE extracting sample_size and effect_size
+  - If you know the paper's total N, set paper_sample_size
+  - For each finding missing sample_size or effect_size, provide values if you can
+  - Use finding_index (0-based) to map to existing findings
+  - Mark source as "reported" if you recall the exact value, "estimated" if approximated
+- For stimulus_images: describe any figures showing the experimental stimuli
 - All lists should be specific and complete
 - Return null for fields with insufficient information
 
@@ -168,7 +200,7 @@ Return ONLY valid JSON. No explanations, no markdown code blocks.
     return prompt
 
 def call_gemini_surgical(prompt, model="gemini-2.5-flash"):
-    """Call Gemini API for surgical update."""
+    """Call Gemini API for surgical update (sync version)."""
     from google import genai
 
     api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -200,6 +232,36 @@ def call_gemini_surgical(prompt, model="gemini-2.5-flash"):
                 break
 
     # Build usage-like object for cost tracking
+    usage = response.usage_metadata if response.usage_metadata else None
+    return text, usage
+
+
+async def call_gemini_surgical_async(prompt, client, model="gemini-2.5-flash"):
+    """Call Gemini API for surgical update (async version)."""
+    full_prompt = ("You are a scientific data enrichment expert. "
+                   "Return ONLY valid JSON with v3 fields.\n\n" + prompt)
+
+    response = await client.aio.models.generate_content(
+        model=model,
+        contents=full_prompt,
+        config={
+            "max_output_tokens": 4096,
+            "temperature": 0.1,
+        }
+    )
+
+    # Extract text, handling thinking model parts and None candidates
+    text = ""
+    if response.text:
+        text = response.text
+    elif response.candidates and len(response.candidates) > 0:
+        candidate = response.candidates[0]
+        if candidate.content and candidate.content.parts:
+            for part in candidate.content.parts:
+                if part.text and not getattr(part, 'thought', False):
+                    text = part.text
+                    break
+
     usage = response.usage_metadata if response.usage_metadata else None
     return text, usage
 
@@ -240,6 +302,41 @@ def merge_v3_fields(original_extraction, v3_enrichment):
     if enrichment.get("instruments_used"):
         result["instruments_used"] = enrichment["instruments_used"]
 
+    if enrichment.get("stimulus_images"):
+        result["stimulus_images"] = enrichment["stimulus_images"]
+
+    # ── Quantitative backfill (Wave 7) ──────────────────────────────
+    qb = enrichment.get("quantitative_backfill")
+    if qb:
+        # Paper-level sample size
+        if qb.get("paper_sample_size"):
+            result["paper_sample_size"] = qb["paper_sample_size"]
+            result["paper_sample_size_source"] = qb.get("paper_sample_size_source", "estimated")
+
+        # Per-finding updates
+        findings = result.get("findings", [])
+        n_backfilled = 0
+        for update in qb.get("per_finding_updates", []):
+            idx = update.get("finding_index")
+            if idx is not None and 0 <= idx < len(findings):
+                f = findings[idx]
+                # Only backfill missing fields — don't overwrite existing
+                if not f.get("sample_size") and update.get("sample_size"):
+                    f["sample_size"] = update["sample_size"]
+                    f["sample_size_source"] = update.get("sample_size_source", "estimated")
+                    n_backfilled += 1
+                if not f.get("effect_size") and update.get("effect_size"):
+                    f["effect_size"] = update["effect_size"]
+                    f["effect_size_type"] = update.get("effect_size_type")
+                if not f.get("p_value") and update.get("p_value"):
+                    f["p_value"] = update["p_value"]
+                if not f.get("confidence_interval") and update.get("confidence_interval"):
+                    f["confidence_interval"] = update["confidence_interval"]
+
+        if n_backfilled:
+            result["quantitative_backfill_count"] = n_backfilled
+            logger.info(f"  📊 Backfilled {n_backfilled} findings with sample_size/effect_size")
+
     # Mark as surgically updated
     result["extraction_version"] = "v3.0"
     result["quality_action"] = "v3_surgical_update"
@@ -247,8 +344,124 @@ def merge_v3_fields(original_extraction, v3_enrichment):
 
     return result
 
-def run_surgical_update(limit=None, dry_run=False, force=False):
+async def process_article_async(article, client, semaphore, results, idx, total, dry_run=False):
+    """Process a single article asynchronously."""
+    async with semaphore:
+        filename = article["file"]
+        doi = article["doi"]
+
+        logger.info(f"[{idx+1}/{total}] Enriching {filename} ({article['n_findings']} findings, DOI: {doi})")
+
+        # Load extraction
+        try:
+            extraction_data = json.loads(article["path"].read_text(errors='replace'))
+        except Exception:
+            logger.warning(f"  Could not load extraction file: {filename}")
+            results["failed"] += 1
+            return
+
+        # Build surgical prompt
+        prompt = build_surgical_update_prompt(extraction_data)
+
+        if dry_run:
+            logger.info(f"  [DRY RUN] Would enrich with {len(prompt)} char prompt")
+            return
+
+        try:
+            # Call Gemini async
+            response_text, usage = await call_gemini_surgical_async(prompt, client)
+            cost = 0.0
+            if usage:
+                # Gemini 2.5 Flash pricing
+                cost = (getattr(usage, 'prompt_token_count', 0) * 0.15 / 1_000_000) + \
+                       (getattr(usage, 'candidates_token_count', 0) * 0.60 / 1_000_000)
+            results["costs"].append(cost)
+
+            # Merge and save
+            enriched = merge_v3_fields(extraction_data, response_text)
+
+            # Count enriched fields
+            n_enriched = sum([
+                1 if enriched.get("stimulus_description") else 0,
+                1 if enriched.get("theory_commitments") else 0,
+                1 if enriched.get("mechanism_chain") else 0,
+                1 if enriched.get("instruments_used") else 0
+            ])
+
+            article["path"].write_text(json.dumps(enriched, indent=2, ensure_ascii=False))
+            results["success"] += 1
+            results["total_enriched_fields"] += n_enriched
+            logger.info(f"  ✓ [{idx+1}] Enriched with {n_enriched} v3 fields (${cost:.4f})")
+
+        except Exception as e:
+            results["failed"] += 1
+            logger.error(f"  ✗ [{idx+1}] Error: {e}")
+            await asyncio.sleep(0.5)  # Brief pause on error
+
+
+async def run_surgical_update_async(limit=None, dry_run=False, force=False, concurrency=15):
+    """Run surgical v3 update on articles with existing findings (parallel version)."""
+    from google import genai
+
+    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GOOGLE_API_KEY or GEMINI_API_KEY not set")
+
+    client = genai.Client(api_key=api_key)
+
+    articles = find_extractions_with_findings(skip_v3=not force)
+    if limit:
+        articles = articles[:limit]
+
+    logger.info(f"Starting PARALLEL surgical v3 update for {len(articles)} articles (concurrency={concurrency})")
+
+    # Thread-safe results using simple dict (asyncio is single-threaded)
+    results = {"success": 0, "failed": 0, "total_enriched_fields": 0, "costs": []}
+
+    # Semaphore to limit concurrency
+    semaphore = asyncio.Semaphore(concurrency)
+
+    # Create tasks for all articles
+    tasks = [
+        process_article_async(article, client, semaphore, results, idx, len(articles), dry_run)
+        for idx, article in enumerate(articles)
+    ]
+
+    # Run all tasks with progress tracking
+    start_time = time.time()
+    await asyncio.gather(*tasks, return_exceptions=True)
+    elapsed = time.time() - start_time
+
+    # Summary
+    total_cost = sum(results["costs"])
+    articles_per_sec = len(articles) / elapsed if elapsed > 0 else 0
+    logger.info(f"\n=== V3 SURGICAL UPDATE COMPLETE (PARALLEL) ===")
+    logger.info(f"Success: {results['success']}/{len(articles)}")
+    logger.info(f"Failed: {results['failed']}")
+    logger.info(f"Total v3 fields enriched: {results['total_enriched_fields']}")
+    logger.info(f"Total cost: ${total_cost:.4f}")
+    logger.info(f"Elapsed time: {elapsed:.1f}s ({articles_per_sec:.2f} articles/sec)")
+
+    # Save results summary
+    summary_path = REPO / "data" / "field_discovery" / "v3_surgical_update_results.json"
+    summary_path.write_text(json.dumps({
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "articles_processed": len(articles),
+        "concurrency": concurrency,
+        "elapsed_seconds": elapsed,
+        **results,
+        "total_cost": total_cost
+    }, indent=2))
+
+    return results
+
+
+def run_surgical_update(limit=None, dry_run=False, force=False, parallel=False, concurrency=15):
     """Run surgical v3 update on articles with existing findings."""
+    if parallel:
+        return asyncio.run(run_surgical_update_async(limit, dry_run, force, concurrency))
+
+    # Original sequential version
     articles = find_extractions_with_findings(skip_v3=not force)
     if limit:
         articles = articles[:limit]
@@ -266,7 +479,7 @@ def run_surgical_update(limit=None, dry_run=False, force=False):
         # Load extraction
         try:
             extraction_data = json.loads(article["path"].read_text(errors='replace'))
-        except Exception:  
+        except Exception:
             logger.warning(f"  Could not load extraction file")
             results["failed"] += 1
             continue
@@ -337,6 +550,14 @@ if __name__ == "__main__":
     parser.add_argument("--limit", type=int, help="Limit number of articles")
     parser.add_argument("--dry-run", action="store_true", help="Don't call API, just show what would happen")
     parser.add_argument("--force", action="store_true", help="Re-enrich articles already at v3.0")
+    parser.add_argument("--parallel", action="store_true", help="Run with async parallelization (faster)")
+    parser.add_argument("--concurrency", type=int, default=15, help="Max concurrent API calls (default: 15)")
     args = parser.parse_args()
 
-    run_surgical_update(limit=args.limit, dry_run=args.dry_run, force=args.force)
+    run_surgical_update(
+        limit=args.limit,
+        dry_run=args.dry_run,
+        force=args.force,
+        parallel=args.parallel,
+        concurrency=args.concurrency
+    )

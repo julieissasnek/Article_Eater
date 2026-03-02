@@ -3406,44 +3406,65 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": null,
-    "duration_exposure": null,
-    "control_conditions": null,
+    "environmental_features": [
+      "various common objects (e.g., keys, coins, geometric shapes, textures, fabrics)",
+      "objects varying in specific properties (e.g., texture, hardness, shape, weight, thermal properties)"
+    ],
+    "duration_exposure": "self-paced exploration, typically a few seconds per object",
+    "control_conditions": [
+      "different object properties to be identified (e.g., identify texture vs. identify shape)",
+      "different sets of objects"
+    ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Exploratory Procedures (EPs) framework",
+      "theory_name": "Exploratory Procedures (EPs) framework for haptic object recognition",
       "commitment_type": "proposes",
-      "specific_claim": "Specific hand movements, termed Exploratory Procedures (EPs), are reliably used to extract distinct object properties during haptic object recognition."
+      "specific_claim": "Specific hand movements, termed Exploratory Procedures (EPs), are reliably and selectively used to extract particular object properties during haptic object recognition."
     }
   ],
   "mechanism_chain": {
-    "description": "During haptic object exploration, individuals strategically employ specific hand movements (Exploratory Procedures) to extract distinct physical properties of objects, which are then integrated by the cognitive system to achieve object recognition.",
+    "description": "The paper proposes a causal link where specific object properties (e.g., texture, shape) selectively elicit particular exploratory procedures (EPs). These EPs, in turn, are specialized to extract the corresponding haptic information, which is then used by the cognitive system for object recognition.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Need to identify object properties (e.g., texture, shape, hardness)",
-        "to_construct": "Selection and execution of appropriate Exploratory Procedures (EPs)",
+        "from_construct": "Object properties (e.g., texture, shape, hardness)",
+        "to_construct": "Elicitation of specific Exploratory Procedures (EPs)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Execution of Exploratory Procedures (EPs)",
-        "to_construct": "Generation of sensory input regarding specific object properties",
-        "mechanism_type": "behavioral",
+        "from_construct": "Exploratory Procedures (EPs)",
+        "to_construct": "Extraction of specific haptic information (e.g., texture, contour, hardness)",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Sensory input regarding specific object properties",
-        "to_construct": "Integration of properties into a coherent object representation for haptic object recognition",
+        "from_construct": "Extracted haptic information",
+        "to_construct": "Haptic object recognition",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:55:51.488498+00:00"
+  "surgical_update_at": "2026-03-02T18:43:55.591358+00:00",
+  "instruments_used": [
+    {
+      "name": "Behavioral observation and coding system for hand movements",
+      "construct": "Exploratory Procedures (EPs), haptic exploration behaviors",
+      "description": "A system for video recording and subsequent classification/quantification of specific hand movements (e.g., lateral motion, pressure, enclosure, contour following, static contact) performed by participants during haptic object exploration tasks.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams or photographs illustrating the different exploratory procedures (EPs) such as lateral motion, pressure, enclosure, contour following, and static contact.",
+      "figure_ref": "Figures illustrating EPs",
+      "image_type": "diagram"
+    }
+  ]
 }

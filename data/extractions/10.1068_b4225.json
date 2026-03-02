@@ -36,7 +36,7 @@
       "p_value": "<0.001",
       "effect_size": 0.891,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 8,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -92,7 +92,8 @@
       "tier2_relevance": {
         "EC": 0.1529,
         "PP": 0.1529
-      }
+      },
+      "sample_size_source": "inferred"
     },
     {
       "id": 2,
@@ -2578,9 +2579,11 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Spatial configuration of buildings (e.g., global integration, connectivity, intelligibility)"
+      "office buildings",
+      "laboratory spaces",
+      "spatial configuration (e.g., layout, connectivity, integration)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous 8-hour workday (or typical work week)",
     "control_conditions": null,
     "ecological_validity": "field"
   },
@@ -2588,36 +2591,75 @@
     {
       "theory_name": "Space Syntax Theory",
       "commitment_type": "tests",
-      "specific_claim": "The spatial configuration of buildings, particularly measures like global integration, influences patterns of movement, encounter, and ultimately social interaction and communication within those environments."
+      "specific_claim": "The spatial configuration of built environments, particularly 'integration' and 'connectivity', significantly influences patterns of movement, encounter, and social interaction (e.g., communication) within those environments."
+    },
+    {
+      "theory_name": "Space Syntax Theory",
+      "commitment_type": "applies",
+      "specific_claim": "Space syntax metrics can be used to predict and explain observed patterns of human behavior and social organization in architectural settings."
     }
   ],
   "mechanism_chain": {
-    "description": "Higher global integration in a building's layout increases the likelihood of people encountering each other due to increased through-movement, which in turn facilitates more frequent and useful social contacts.",
+    "description": "Spatial configuration (e.g., high integration) leads to increased movement and co-presence in certain areas, which in turn increases the probability of spontaneous encounters and subsequent communication.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "global integration (spatial configuration)",
-        "to_construct": "encounter probability",
+        "from_construct": "Spatial configuration (e.g., high global integration)",
+        "to_construct": "Increased pedestrian movement and co-presence",
         "mechanism_type": "behavioral",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "encounter probability",
-        "to_construct": "useful contact rates",
+        "from_construct": "Increased pedestrian movement and co-presence",
+        "to_construct": "Higher probability of spontaneous encounters",
         "mechanism_type": "behavioral",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Higher probability of spontaneous encounters",
+        "to_construct": "Increased communication and interaction rates",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Space Syntax analysis",
-      "construct": "spatial configuration metrics (e.g., global integration)",
-      "description": "Methodological framework and computational tools used to analyze the spatial layout of buildings and urban areas, yielding metrics like global integration.",
+      "construct": "Spatial configuration metrics (e.g., global integration, local integration, connectivity, choice)",
+      "description": "Computational analysis of building floor plans to derive quantitative measures of spatial accessibility and permeability.",
       "type": "other"
+    },
+    {
+      "name": "Behavioral observation",
+      "construct": "Movement patterns, co-presence, encounters, communication events",
+      "description": "Systematic observation and recording of people's movement paths, locations, and interactions within the studied environments.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report surveys/interviews",
+      "construct": "Useful contact rates, communication frequency, perceived interaction",
+      "description": "Questionnaires or interviews administered to employees to gather data on their communication patterns and perceived interactions.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:57:31.649451+00:00"
+  "surgical_update_at": "2026-03-02T18:35:18.521706+00:00",
+  "stimulus_images": [
+    {
+      "description": "Floor plans of the studied office buildings and laboratories, often annotated with spatial analysis metrics.",
+      "figure_ref": "Various figures throughout the paper (e.g., Figure 1, Figure 2)",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Space syntax diagrams (e.g., justified graphs, integration maps) illustrating the spatial configuration and accessibility of different areas within the buildings.",
+      "figure_ref": "Various figures throughout the paper",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 250,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

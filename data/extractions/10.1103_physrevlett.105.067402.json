@@ -772,5 +772,81 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:21:40.370500+00:00"
+  "surgical_update_at": "2026-03-02T18:32:18.026827+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "incident electromagnetic waves (e.g., varying frequency, polarization)",
+      "anisotropic metamaterial structure (e.g., specific geometry, constituent materials)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "comparison to conventional isotropic materials",
+      "varying metamaterial design parameters (e.g., filling fraction, unit cell dimensions)",
+      "varying incident light frequency"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Effective Medium Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Metamaterials can be described by effective permittivity and permeability tensors at wavelengths much larger than their unit cell."
+    },
+    {
+      "theory_name": "Electromagnetic Theory (Maxwell's Equations)",
+      "commitment_type": "assumes",
+      "specific_claim": "Electromagnetic wave propagation in media is governed by Maxwell's equations."
+    },
+    {
+      "theory_name": "Relativistic Electrodynamics / General Relativity (analogy)",
+      "commitment_type": "proposes",
+      "specific_claim": "The propagation of electromagnetic waves in anisotropic metamaterials can be formally mapped to the propagation of particles in curved spacetime, characterized by an effective metric signature."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The engineered anisotropic permittivity and permeability tensors of indefinite metamaterials dictate the dispersion relation of electromagnetic waves. This dispersion relation can be formally mapped to an effective metric signature, which characterizes the nature of wave propagation (e.g., elliptic vs. hyperbolic). Tuning material parameters or frequency can induce transitions between these metric signatures.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Metamaterial structure with engineered anisotropic permittivity (ε) and permeability (μ) tensors",
+        "to_construct": "Specific form of the electromagnetic wave equation and dispersion relation",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Specific form of the dispersion relation (e.g., hyperbolic)",
+        "to_construct": "An effective metric tensor with a particular signature (e.g., (- - + +))",
+        "mechanism_type": "conceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Variation in metamaterial design parameters or incident light frequency",
+        "to_construct": "Change in the effective permittivity and permeability tensors, leading to a transition in the dispersion relation and thus the effective metric signature",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Computational Electromagnetics Software",
+      "construct": "Electromagnetic field distribution, dispersion relations, effective material parameters",
+      "description": "Software (e.g., COMSOL, CST, Lumerical FDTD) used for numerical simulations of Maxwell's equations and material response in complex metamaterial geometries.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams of the metamaterial unit cell structure, showing the arrangement of constituent materials (e.g., metallic rods/wires in a dielectric host).",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Dispersion diagrams (k-space plots) illustrating the propagation characteristics and the transition between different metric signatures (e.g., elliptic to hyperbolic dispersion).",
+      "figure_ref": "Figures 2-4 (typical)",
+      "image_type": "graph"
+    }
+  ]
 }

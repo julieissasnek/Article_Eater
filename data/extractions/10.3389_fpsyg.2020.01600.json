@@ -3421,15 +3421,80 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "ambient soundscape",
-      "mechanical soundscape",
-      "artificial soundscape",
-      "music soundscape"
+      "Quiet soundscape",
+      "Ambient hospital soundscape",
+      "Mechanical soundscape",
+      "Artificial soundscape",
+      "Music soundscape"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "field"
+    "duration_exposure": "10 minutes per soundscape condition",
+    "control_conditions": [
+      "Quiet soundscape condition"
+    ],
+    "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:25:51.426614+00:00"
+  "surgical_update_at": "2026-03-02T18:37:56.791114+00:00",
+  "mechanism_chain": {
+    "description": "Different acoustic environments in hospital wards influence patients' perceived soundscape quality (e.g., pleasantness, annoyance), which in turn affects their emotional states (e.g., stress, relaxation). These emotional and perceptual changes then manifest as alterations in physiological indices (e.g., heart rate recovery) and psychological well-being (e.g., mood, perceived stress).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Acoustic environment (soundscape type)",
+        "to_construct": "Perceived soundscape quality (pleasantness/annoyance)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived soundscape quality (pleasantness/annoyance)",
+        "to_construct": "Affective state (stress/relaxation)",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Affective state (stress/relaxation)",
+        "to_construct": "Physiological indices (e.g., Heart Rate Recovery)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Affective state (stress/relaxation)",
+        "to_construct": "Psychological indices (e.g., mood, perceived stress)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Heart Rate Monitor",
+      "construct": "Heart Rate Recovery Rate (RHR), Heart Rate Variability (HRV)",
+      "description": "Device to measure physiological cardiac activity",
+      "type": "physiological"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "Self-report questionnaire assessing current mood states",
+      "type": "self_report"
+    },
+    {
+      "name": "Soundscape Quality Questionnaire",
+      "construct": "Perceived pleasantness, eventfulness, appropriateness, and overall quality of the soundscape",
+      "description": "Self-report questionnaire tailored to assess perception of the acoustic environment",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Experimental setup of the simulated hospital ward environment",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported"
 }

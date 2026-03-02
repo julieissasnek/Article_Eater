@@ -2777,55 +2777,42 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Pairs of US city names"
+      "Pairs of geographical locations (e.g., cities, states) presented as text"
     ],
-    "duration_exposure": "Brief, for each judgment",
+    "duration_exposure": "self-paced per item",
     "control_conditions": [
-      "Geographical location pairs where actual direction aligns with superordinate unit direction",
-      "Geographical location pairs where actual direction differs from superordinate unit direction"
+      "Comparison of judgments for location pairs where actual direction is congruent with superordinate unit orientation versus incongruent with superordinate unit orientation"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
-      "theory_name": "Hierarchical Models of Spatial Cognition",
-      "commitment_type": "tests",
-      "specific_claim": "People organize spatial information hierarchically, and judgments about subordinate units (e.g., cities) are influenced by the perceived relations of their superordinate units (e.g., states)."
-    },
-    {
-      "theory_name": "Cognitive Heuristics in Spatial Judgment",
-      "commitment_type": "proposes",
-      "specific_claim": "Spatial judgments are systematically distorted by cognitive heuristics, such as the alignment heuristic, which simplify complex spatial relationships based on superordinate categories."
+      "theory_name": "Hierarchical Organization of Cognitive Maps / Superordinate Unit Effect",
+      "commitment_type": "proposes|tests",
+      "specific_claim": "People organize spatial information hierarchically, and judgments of spatial relations between two points are biased by the canonical orientation of their superordinate geographical unit, leading to systematic distortions when actual and superordinate orientations conflict."
     }
   ],
   "mechanism_chain": {
-    "description": "When judging the relative direction between two locations, individuals tend to align the subordinate units (cities) with the perceived alignment of their superordinate units (states), leading to systematic distortions if the actual relationship contradicts the superordinate alignment.",
+    "description": "The mechanism describes how the cognitive representation of geographical space is hierarchically structured, and how accessing a superordinate unit's orientation influences the judgment of direction between two subordinate locations.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Presentation of two city names",
-        "to_construct": "Activation of cognitive representations of cities and their superordinate units (states)",
+        "from_construct": "Presentation of two geographical locations",
+        "to_construct": "Activation of a common superordinate geographical unit (e.g., state, country) containing both locations",
         "mechanism_type": "cognitive",
         "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Activation of cognitive representations of cities and their superordinate units",
-        "to_construct": "Retrieval of perceived relative alignment of superordinate units (e.g., California is west of Nevada)",
+        "from_construct": "Activated superordinate unit",
+        "to_construct": "Retrieval of the superordinate unit's canonical or prototypic orientation (e.g., California is 'north-south')",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
-        "from_construct": "Perceived relative alignment of superordinate units",
-        "to_construct": "Application of alignment heuristic to infer relative direction of cities",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Application of alignment heuristic",
-        "to_construct": "Judged direction of geographical relations",
+        "from_construct": "Superordinate unit's canonical orientation",
+        "to_construct": "Bias in the judged direction between the two subordinate locations, aligning the judgment with the superordinate unit's orientation",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -2833,12 +2820,21 @@
   },
   "instruments_used": [
     {
-      "name": null,
-      "construct": "Relative direction judgment",
-      "description": "Participants were presented with pairs of US city names and asked to indicate the direction of one city from another (e.g., by selecting from cardinal and intercardinal directions, or by pointing on a compass rose).",
+      "name": "Direction Judgment Task",
+      "construct": "Judged spatial relations",
+      "description": "Participants were presented with pairs of geographical locations and asked to judge their relative direction (e.g., 'Is San Diego north or south of Reno?'). Responses were typically verbal or by selecting a compass direction.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:35:01.713967+00:00"
+  "surgical_update_at": "2026-03-02T18:38:41.824001+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating the concept of superordinate geographical units (e.g., states) and how the relative positions of cities within them can be distorted by the unit's canonical orientation.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 80,
+  "paper_sample_size_source": "estimated"
 }

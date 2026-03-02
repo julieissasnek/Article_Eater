@@ -942,16 +942,42 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "room absorption",
-      "opening dimension",
-      "room volume",
-      "room shape",
-      "sequence of spaces"
+      "Room dimensions (length, width, height)",
+      "Surface absorption coefficients (walls, ceiling, floor)",
+      "Opening dimensions (width, height) between sequential spaces"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "control_conditions": [
+      "A single-room configuration or a specific baseline set of room parameters (dimensions, absorption, opening size) used for comparison in the parametric study"
+    ],
+    "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:15:44.219424+00:00"
+  "surgical_update_at": "2026-03-02T18:31:47.457086+00:00",
+  "instruments_used": [
+    {
+      "name": "Acoustic simulation software",
+      "construct": "Acoustic field parameters",
+      "description": "Software used to model sound propagation, reflection, absorption, and diffraction, and calculate acoustic metrics in geometrically defined spaces (e.g., Finite Difference Time Domain (FDTD) or Finite Element Method (FEM) based solver).",
+      "type": "other"
+    },
+    {
+      "name": "Sound Pressure Level (SPL)",
+      "construct": "Sound energy density",
+      "description": "Acoustic metric quantifying the root mean square sound pressure on a logarithmic scale, calculated at various points within the simulated rooms.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating the geometric configurations of the sequential rooms and the varying dimensions of the connecting openings.",
+      "figure_ref": "Figures 1, 2, etc.",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs showing the spatial distribution of sound pressure levels or decay curves within the simulated spaces.",
+      "figure_ref": "Figures 3, 4, etc.",
+      "image_type": "graph"
+    }
+  ]
 }

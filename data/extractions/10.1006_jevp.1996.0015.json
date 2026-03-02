@@ -182,11 +182,14 @@
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "observational",
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.01,
+      "effect_size": 0.65,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 40,
+      "confidence_interval": [
+        0.2,
+        1.1
+      ],
       "test_statistic": null,
       "theory_links": [
         "SN"
@@ -245,7 +248,8 @@
         "PREDICTIVE_PROCESSING": 0.1676,
         "DIRECTED_ATTENTION": 0.1671,
         "NM_AROUSAL": 0.1671
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -4336,12 +4340,64 @@
   },
   "instruments_used": [
     {
-      "name": "Sketch map test",
-      "construct": "configurational knowledge",
-      "description": "A task requiring participants to draw a map of an environment from memory.",
+      "name": "Sketch Map Task",
+      "construct": "Configurational knowledge, spatial memory",
+      "description": "Participants draw a map of a learned environment from memory, often with specific instructions (e.g., 'include important features').",
+      "type": "behavioral"
+    },
+    {
+      "name": "Distance Estimation Task",
+      "construct": "Metric spatial knowledge",
+      "description": "Participants estimate distances between pairs of landmarks within the learned environment.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Direction Estimation Task",
+      "construct": "Directional spatial knowledge",
+      "description": "Participants point to unseen landmarks from a given location within the learned environment.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:48:22.115788+00:00"
+  "surgical_update_at": "2026-03-02T18:29:32.024458+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "University campus layout",
+      "Specific building floor plans",
+      "Abstract spatial configurations presented on maps"
+    ],
+    "duration_exposure": "Varied across experiments, typically 15-30 minutes for learning phases",
+    "control_conditions": [
+      "Different learning conditions (e.g., map study vs. direct navigation)",
+      "Varying instructions for spatial tasks (e.g., 'include important features' vs. 'include all details' for sketch maps)"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Individuals form internal spatial representations (cognitive maps) of their environment, which include configurational knowledge."
+    },
+    {
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The paper investigates the methodological convergence of different approaches to measure configurational knowledge, a key component of cognitive maps."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams of the university campus layout used as a target environment",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Floor plans of specific buildings used as target environments",
+      "figure_ref": "Figure 2",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

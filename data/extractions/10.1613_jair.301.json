@@ -2355,60 +2355,100 @@
       "Classroom reverberation time (Tmid)",
       "Signal-to-noise ratio (SNR)",
       "Background noise levels",
-      "Speech intelligibility",
-      "Room acoustics"
+      "Speech intelligibility metrics"
     ],
     "duration_exposure": null,
     "control_conditions": null,
-    "ecological_validity": null
+    "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Poor acoustical conditions (e.g., high reverberation, high background noise) reduce speech intelligibility, increasing listening effort and cognitive load, which in turn impairs attention, working memory, and ultimately learning performance and student well-being.",
+    "description": "Causal mechanism connecting classroom acoustical parameters to student learning performance and well-being, primarily through their impact on speech intelligibility, cognitive load, and attention.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Classroom reverberation time / Background noise",
-        "to_construct": "Speech intelligibility",
+        "from_construct": "Poor classroom acoustics (e.g., high reverberation time, low signal-to-noise ratio)",
+        "to_construct": "Reduced speech intelligibility",
         "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Speech intelligibility",
-        "to_construct": "Listening effort",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Listening effort",
-        "to_construct": "Cognitive load / Reduced available cognitive resources",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Cognitive load / Reduced available cognitive resources",
-        "to_construct": "Impaired attention / Working memory",
+        "from_construct": "Reduced speech intelligibility",
+        "to_construct": "Increased listening effort and cognitive load",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
-        "step": 5,
-        "from_construct": "Impaired attention / Working memory",
-        "to_construct": "Reduced learning performance / Academic achievement",
+        "step": 3,
+        "from_construct": "Increased listening effort and cognitive load",
+        "to_construct": "Reduced attention, mental fatigue, and stress",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
-        "step": 6,
-        "from_construct": "Listening effort / Cognitive load",
-        "to_construct": "Decreased well-being (e.g., fatigue, stress, frustration)",
-        "mechanism_type": "affective",
+        "step": 4,
+        "from_construct": "Reduced attention, mental fatigue, and stress",
+        "to_construct": "Decreased learning performance and well-being",
+        "mechanism_type": "behavioral",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:45:46.268881+00:00"
+  "surgical_update_at": "2026-03-02T18:29:14.147988+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Speech Intelligibility Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Acoustical parameters directly influence the clarity and comprehensibility of spoken language in a listening environment."
+    },
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Poor acoustical conditions increase listening effort, leading to higher cognitive load and reduced resources available for learning tasks."
+    },
+    {
+      "theory_name": "Attention Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Environmental noise and poor acoustics act as distractors, impairing students' ability to sustain attention and focus on instructional content."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Sound level meters",
+      "construct": "Background noise levels, sound pressure levels",
+      "description": "Devices used to measure various acoustical parameters in classrooms.",
+      "type": "other"
+    },
+    {
+      "name": "Reverberation time meters",
+      "construct": "Reverberation time (Tmid)",
+      "description": "Devices used to measure the decay of sound in a space.",
+      "type": "other"
+    },
+    {
+      "name": "Speech intelligibility tests",
+      "construct": "Speech intelligibility",
+      "description": "Standardized tests (e.g., HINT, BKB-SIN) to assess the ability to understand speech in noise.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Standardized academic performance tests",
+      "construct": "Learning performance",
+      "description": "Tests used to measure student achievement in various subjects.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Cognitive performance tasks",
+      "construct": "Attention, memory, cognitive load",
+      "description": "Tasks designed to assess specific cognitive functions affected by environmental conditions.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Perceived well-being, annoyance, fatigue, stress",
+      "description": "Surveys administered to students or teachers to gauge subjective experiences.",
+      "type": "self_report"
+    }
+  ]
 }

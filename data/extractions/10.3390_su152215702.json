@@ -1653,43 +1653,60 @@
   "theory_commitments": [
     {
       "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Artificial lighting characteristics (e.g., spectrum, intensity, timing) significantly impact human circadian rhythms, affecting sleep-wake cycles, alertness, and mood."
+    },
+    {
+      "theory_name": "Environmental Psychology Theories (e.g., Stress Reduction Theory, Attention Restoration Theory)",
+      "commitment_type": "assumes",
+      "specific_claim": "The physical environment, including lighting quality and design, influences human psychological states such as comfort, well-being, and cognitive load in office settings."
+    },
+    {
+      "theory_name": "Human-Centric Lighting (HCL) Principles",
       "commitment_type": "proposes",
-      "specific_claim": "Artificial lighting characteristics (e.g., intensity, spectral composition, timing) can entrain or disrupt the human circadian system, influencing sleep-wake cycles, alertness, and mood in office workers."
+      "specific_claim": "Lighting design in office buildings should consider both visual and non-visual effects to optimize human health, well-being, and performance, aligning with natural light cycles."
     }
   ],
   "mechanism_chain": {
-    "description": "Causal mechanism connecting artificial lighting characteristics to worker performance and productivity through physiological and cognitive pathways.",
+    "description": "The paper proposes a conceptual framework detailing how various characteristics of artificial lighting in office buildings influence human physiological, psychological, and behavioral outcomes, ultimately affecting worker performance and well-being.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Exposure to specific artificial light characteristics (e.g., high blue light content, intensity, timing)",
-        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "from_construct": "Artificial lighting characteristics (e.g., intensity, spectrum, timing, uniformity)",
+        "to_construct": "Non-visual physiological responses (e.g., melatonin suppression, circadian phase shift)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Suppression of melatonin production and modulation of the suprachiasmatic nucleus (SCN)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Non-visual physiological responses",
+        "to_construct": "Alertness, sleep quality, mood, and cognitive function",
+        "mechanism_type": "physiological|affective|cognitive",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Melatonin suppression and SCN modulation",
-        "to_construct": "Alterations in circadian rhythmicity, sleep quality, and physiological arousal",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Artificial lighting characteristics (e.g., illuminance, glare, color rendering)",
+        "to_construct": "Visual comfort and perception of environment",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Altered circadian rhythmicity, reduced sleep quality, and changes in arousal",
-        "to_construct": "Impacts on cognitive function, mood, and overall worker performance and productivity",
-        "mechanism_type": "cognitive|affective|behavioral",
-        "evidence_strength": "direct"
+        "from_construct": "Visual comfort and perception of environment",
+        "to_construct": "Task performance, productivity, and overall well-being",
+        "mechanism_type": "cognitive|behavioral",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:54:41.748767+00:00"
+  "surgical_update_at": "2026-03-02T18:43:52.593798+00:00",
+  "stimulus_images": [
+    {
+      "description": "Conceptual framework illustrating the proposed relationships between artificial lighting characteristics, human physiological and psychological responses, and behavioral outcomes in office buildings.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

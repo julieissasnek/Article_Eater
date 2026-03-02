@@ -2830,27 +2830,87 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "architectural spaces",
-      "virtual mazes"
+      "Virtual architectural spaces",
+      "Corridors",
+      "Decision points",
+      "Varying levels of environmental complexity",
+      "Virtual mazes"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Multiple trials, each involving navigation through a virtual maze, typically lasting a few minutes per trial.",
+    "control_conditions": [
+      "Comparison between different virtual maze layouts (e.g., varying complexity)",
+      "Comparison of navigation performance across different phases of the task"
+    ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Electroencephalography (EEG)",
-      "construct": "neural activity during wayfinding",
-      "description": "Brain imaging technique measuring electrical activity on the scalp",
+      "name": "Mobile EEG system",
+      "construct": "Brain electrical activity (e.g., theta, alpha power)",
+      "description": "High-density mobile electroencephalography system (e.g., actiCAP active electrodes, Brain Products amplifier)",
       "type": "eeg"
     },
     {
-      "name": "Wayfinding performance measures",
-      "construct": "wayfinding performance",
-      "description": "Behavioral metrics such as exit time from virtual mazes",
+      "name": "Virtual Environment Software",
+      "construct": "Virtual architectural spaces and maze navigation task",
+      "description": "Custom-built virtual environment software (e.g., based on Unity3D) for presenting the navigation task and recording behavioral data.",
       "type": "behavioral"
+    },
+    {
+      "name": "Wayfinding performance metrics",
+      "construct": "Wayfinding ability",
+      "description": "Behavioral measures collected from the virtual environment, including exit time, path length, and number of errors.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Spatial ability questionnaires",
+      "construct": "Individual spatial ability",
+      "description": "Self-report questionnaires to assess participants' spatial abilities (e.g., Santa Barbara Sense of Direction Scale, Mental Rotation Test).",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:46:01.097578+00:00"
+  "surgical_update_at": "2026-03-02T18:39:44.174905+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Neural Correlates of Spatial Cognition (specifically theta oscillations)",
+      "commitment_type": "tests",
+      "specific_claim": "Frontal midline theta power is associated with cognitive load and successful wayfinding performance in virtual environments, reflecting processes like spatial memory and navigation."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper investigates how environmental features and cognitive processes are linked to neural activity (EEG) and ultimately wayfinding performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Environmental complexity of virtual maze",
+        "to_construct": "Cognitive load during navigation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Cognitive load during navigation",
+        "to_construct": "Frontal midline theta power (EEG)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Frontal midline theta power (EEG)",
+        "to_construct": "Wayfinding performance (e.g., exit time)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Screenshots or renderings of the virtual architectural spaces and maze layouts used as stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported"
 }

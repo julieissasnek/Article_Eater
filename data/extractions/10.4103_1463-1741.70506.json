@@ -30,7 +30,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -93,7 +93,8 @@
         "MS": 0.1546,
         "CHRONOBIOLOGICAL": 0.1523,
         "NEUROMODULATORY": 0.1523
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -5534,18 +5535,72 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "noise",
-      "reverberation",
-      "classroom noise",
-      "background speech"
+      "classroom noise (multi-talker babble)",
+      "speech babble",
+      "varying reverberation times (e.g., 0.4s, 0.8s, 1.2s)"
     ],
     "duration_exposure": null,
     "control_conditions": [
       "quiet condition",
-      "low reverberation condition"
+      "low reverberation condition (e.g., 0.4s RT)"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:07:57.032137+00:00"
+  "surgical_update_at": "2026-03-02T18:44:58.033112+00:00",
+  "mechanism_chain": {
+    "description": "Background noise and reverberation increase listening effort, which consumes cognitive resources, leading to impaired speech perception and reduced listening comprehension.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "background noise and reverberation",
+        "to_construct": "increased listening effort",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "increased listening effort",
+        "to_construct": "reduced cognitive resources available for comprehension",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced cognitive resources",
+        "to_construct": "impaired speech perception and listening comprehension",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Speech Reception Threshold (SRT) test",
+      "construct": "speech perception in noise",
+      "description": "A behavioral test typically involving the presentation of sentences or words in noise to determine the signal-to-noise ratio at which a certain percentage of speech is correctly identified.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Listening Comprehension Test",
+      "construct": "listening comprehension",
+      "description": "A behavioral test requiring participants to listen to spoken passages or stories and then answer comprehension questions.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental setup showing the simulated classroom environment, loudspeaker, and microphone placement.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs illustrating the acoustic characteristics of the noise stimuli or room impulse responses for different reverberation conditions.",
+      "figure_ref": "Figure 2",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

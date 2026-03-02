@@ -214,7 +214,8 @@
       "moderators_reported": null,
       "provenance_depth": "section",
       "source": "p. 41, Figure 2.12 (e)",
-      "quote": "the maximum NRMSE is 0.6%, and the minimum NRMSE is 0.02%."
+      "quote": "the maximum NRMSE is 0.6%, and the minimum NRMSE is 0.02%.",
+      "sample_n": 30
     },
     {
       "id": 7,
@@ -287,7 +288,8 @@
       "moderators_reported": null,
       "provenance_depth": "section",
       "source": "p. 44, Table 2.3",
-      "quote": "In experiment 2, 85% of samples (all light sources) have NRMSE under 20%, and the Mean NRMSE is below 10%."
+      "quote": "In experiment 2, 85% of samples (all light sources) have NRMSE under 20%, and the Mean NRMSE is below 10%.",
+      "sample_n": 106
     },
     {
       "id": 10,
@@ -880,7 +882,8 @@
       "moderators_reported": null,
       "provenance_depth": "table",
       "source": "Table 4.3, p. 94",
-      "quote": "The median SUS score of 76 (SD = 5.48) indicated that the medium-fidelity prototype was relatively intuitive"
+      "quote": "The median SUS score of 76 (SD = 5.48) indicated that the medium-fidelity prototype was relatively intuitive",
+      "sample_n": 5
     },
     {
       "id": 34,
@@ -904,7 +907,8 @@
       "moderators_reported": null,
       "provenance_depth": "table",
       "source": "Table 4.3, p. 94",
-      "quote": "the median SUS score was slightly improved from 76 (SD=5.48) to 79.5 (SD=4.47) after modification of the interactive dashboard"
+      "quote": "the median SUS score was slightly improved from 76 (SD=5.48) to 79.5 (SD=4.47) after modification of the interactive dashboard",
+      "sample_n": 5
     },
     {
       "id": 35,
@@ -1037,11 +1041,98 @@
   "instruments_used": [
     {
       "name": "AS7265X spectral sensor",
-      "construct": "light spectrum",
-      "description": "Developed spectrometer",
+      "construct": "Light spectral power distribution; Wavelength accuracy",
+      "description": "A developed spectrometer for measuring light characteristics.",
       "type": "other"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Mood; Sleep quality; Visual comfort; Well-being",
+      "description": "Likely scales assessing subjective experiences related to lighting and human health.",
+      "type": "self_report"
+    },
+    {
+      "name": "Cognitive performance tests",
+      "construct": "Alertness; Concentration; Reaction time",
+      "description": "Tasks designed to measure cognitive function under different lighting conditions.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:34:57.209223+00:00"
+  "surgical_update_at": "2026-03-02T18:33:28.788892+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "Lighting conditions (e.g., spectral power distribution, intensity, color temperature)",
+      "Temporal light patterns"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "Standard office lighting",
+      "Different spectral profiles (e.g., warm vs. cool white light)",
+      "Varying light intensities"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Specific light wavelengths and intensities regulate human circadian rhythms, affecting sleep, mood, and cognitive performance."
+    },
+    {
+      "theory_name": "Light and Health Theories",
+      "commitment_type": "applies",
+      "specific_claim": "Optimized lighting environments can improve human well-being, visual comfort, and productivity."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The assist tool manipulates lighting parameters (e.g., spectral power distribution) which are hypothesized to influence human physiological responses (e.g., melatonin suppression, alertness) leading to changes in health outcomes (e.g., sleep quality, cognitive performance).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Light spectral power distribution",
+        "to_construct": "Melatonin secretion",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Melatonin secretion",
+        "to_construct": "Circadian rhythm entrainment",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Circadian rhythm entrainment",
+        "to_construct": "Sleep quality and alertness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Light spectral power distribution",
+        "to_construct": "Visual comfort",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram of the AS7265X spectral sensor setup",
+      "figure_ref": null,
+      "image_type": "diagram"
+    },
+    {
+      "description": "Rendering or diagram of the Human-Centric Lighting Assist Tool interface",
+      "figure_ref": null,
+      "image_type": "rendering"
+    },
+    {
+      "description": "Graphs showing different spectral power distributions used as stimuli",
+      "figure_ref": null,
+      "image_type": "graph"
+    }
+  ]
 }

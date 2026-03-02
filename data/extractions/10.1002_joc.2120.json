@@ -3193,36 +3193,31 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Air temperature",
-      "Relative humidity",
-      "Solar radiation",
-      "Wind speed"
+      "air temperature",
+      "relative humidity",
+      "wind speed",
+      "solar radiation"
     ],
-    "duration_exposure": "Continuous over multiple seasons",
-    "control_conditions": null,
+    "duration_exposure": "continuous outdoor exposure during observation periods",
+    "control_conditions": [
+      "comparison across different seasons (e.g., summer vs. winter)"
+    ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Adaptive Thermal Comfort Model",
+      "theory_name": "Adaptive Thermal Comfort Theory",
       "commitment_type": "tests",
-      "specific_claim": "Human thermal perception, preference, and behavior adjust over time to prevailing thermal conditions, leading to different comfort expectations in varying climates and seasons."
+      "specific_claim": "People adapt to their local outdoor thermal environment over time, leading to shifts in their thermal comfort expectations and preferences across different seasons."
     }
   ],
   "mechanism_chain": {
-    "description": "Changes in ambient air temperature lead to a thermal sensation, which prompts individuals to adjust their clothing insulation as a behavioral adaptation to maintain thermal comfort.",
+    "description": "Behavioral adaptation mechanism where individuals adjust their clothing insulation in response to changes in outdoor air temperature to maintain thermal comfort.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Air temperature (Ta)",
-        "to_construct": "Thermal sensation",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "Thermal sensation",
-        "to_construct": "Clothing insulation (clo)",
+        "from_construct": "Outdoor Air Temperature (Ta)",
+        "to_construct": "Clothing Insulation (clo)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -3230,24 +3225,32 @@
   },
   "instruments_used": [
     {
-      "name": "Thermometer",
-      "construct": "Air temperature",
-      "description": "Device for measuring ambient air temperature",
+      "name": "Meteorological sensors",
+      "construct": "Environmental parameters (air temperature, relative humidity, wind speed, solar radiation)",
+      "description": "Sensors for continuous measurement of outdoor climatic conditions",
       "type": "other"
     },
     {
-      "name": "Visual observation",
-      "construct": "Clothing insulation",
-      "description": "Estimation of clothing insulation based on observed garments worn by participants",
-      "type": "behavioral"
-    },
-    {
-      "name": "Thermal Sensation Vote (TSV) scale",
-      "construct": "Thermal comfort",
-      "description": "Self-report scale for subjective thermal sensation, typically a 7-point scale",
+      "name": "Thermal comfort questionnaire",
+      "construct": "Thermal sensation, thermal comfort, thermal preference, clothing insulation, metabolic rate",
+      "description": "Survey administered to participants to assess their subjective thermal perceptions and behaviors",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:46:31.022081+00:00"
+  "surgical_update_at": "2026-03-02T18:39:45.584837+00:00",
+  "stimulus_images": [
+    {
+      "description": "Photo of the outdoor study site where measurements and surveys were conducted",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Diagram or photo of the meteorological measurement setup",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 150,
+  "paper_sample_size_source": "estimated"
 }

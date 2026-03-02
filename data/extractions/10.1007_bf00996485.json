@@ -2485,35 +2485,83 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "illuminance levels",
-      "spectral distribution of light"
+      "illuminance (e.g., 150 lux, 1000 lux)",
+      "spectral distribution (e.g., 3000K warm white, 6500K cool white)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "typically 2-3 hours per session",
     "control_conditions": [
-      "different illuminance levels",
-      "different spectral distributions"
+      "different illuminance levels compared against each other",
+      "different spectral distributions compared against each other"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Indoor lighting conditions (illuminance and spectral distribution) influence positive affect, which in turn mediates the performance on cognitive tasks and interpersonal behaviors.",
+    "description": "Indoor lighting conditions influence positive affect, which in turn mediates the effects on cognitive task performance and interpersonal behaviors.",
     "steps": [
       {
         "step": 1,
         "from_construct": "indoor lighting (illuminance and spectral distribution)",
         "to_construct": "positive affect",
         "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "tested"
       },
       {
         "step": 2,
         "from_construct": "positive affect",
-        "to_construct": "performance of cognitive tasks and interpersonal behaviors",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "to_construct": "performance of cognitive tasks",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "tested"
+      },
+      {
+        "step": 3,
+        "from_construct": "positive affect",
+        "to_construct": "interpersonal behaviors (e.g., performance appraisals)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "tested"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:54:25.933288+00:00"
+  "surgical_update_at": "2026-03-02T18:43:52.085229+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Affect-Cognition Theory (general framework)",
+      "commitment_type": "assumes",
+      "specific_claim": "Affective states influence cognitive processes and social judgments."
+    },
+    {
+      "theory_name": "Environmental Psychology (general framework)",
+      "commitment_type": "tests",
+      "specific_claim": "Physical environmental factors (like lighting) impact human psychological states and behaviors."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Mood Adjective Checklist (or similar)",
+      "construct": "positive affect",
+      "description": "Self-report scale to assess current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Cognitive Performance Tasks",
+      "construct": "cognitive performance",
+      "description": "Tasks such as proofreading, memory recall, or concentration tests.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Fictitious Employee Appraisal Task",
+      "construct": "interpersonal behaviors / social judgment",
+      "description": "Participants rate a fictitious employee's skills, competence, motivation, and provide hiring recommendations.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the experimental room setup showing the manipulated lighting conditions.",
+      "figure_ref": "Figure 1 (typical for such studies)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "estimated"
 }

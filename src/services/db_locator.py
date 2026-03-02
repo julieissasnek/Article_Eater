@@ -67,10 +67,10 @@ def candidate_web_dbs(explicit: Path | str | None = None) -> list[Path]:
             explicit,
             os.getenv("AE_DB_PATH"),  # Check explicitly overridden path first
             os.getenv("AE_WEB_DB"),
-            PROJECT_ROOT / "data" / "web_persistence_v2.db",  # v2 schema is canonical
-            PROJECT_ROOT / "data" / "web_persistence.db",  # Legacy fallback
-            PROJECT_ROOT / "web_persistence.db",
-            Path("web_persistence.db").resolve(),  # CWD fallback - must NOT call get_web_db (recursion)
+            PROJECT_ROOT / "data" / "web_persistence_v2.db",  # v2 schema if it exists
+            PROJECT_ROOT / "data" / "web_persistence.db",      # canonical (current)
+            PROJECT_ROOT / "web_persistence.db",               # legacy CWD location
+            Path("web_persistence.db").resolve(),               # CWD fallback
         ]
     )
 
@@ -230,7 +230,12 @@ def get_web_db(explicit: Path | str | None = None) -> Path:
     try:
         return resolve_web_db(explicit, prefer="integrated")
     except FileNotFoundError:
-        return PROJECT_ROOT / "data" / "web_persistence_v2.db"
+        # Fallback: prefer the DB that actually exists on disk
+        for name in ("web_persistence.db", "web_persistence_v2.db"):
+            p = PROJECT_ROOT / "data" / name
+            if p.exists():
+                return p
+        return PROJECT_ROOT / "data" / "web_persistence.db"
 
 
 def get_web_db_str(explicit: str | None = None) -> str:

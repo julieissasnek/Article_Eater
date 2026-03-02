@@ -73,7 +73,7 @@
       "p_value": "0.006",
       "effect_size": 0.12,
       "effect_size_type": "partial_eta_squared",
-      "sample_size": null,
+      "sample_size": 64,
       "confidence_interval": null,
       "test_statistic": "F(2,82) = 5.38",
       "theory_links": [
@@ -128,7 +128,8 @@
       },
       "tier2_relevance": {
         "NEUROMODULATORY": 0.1506
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -585,7 +586,8 @@
         "NM": 0.1981,
         "COGNITIVE_LOAD_THEORY": 0.1931,
         "PROCESSING_FLUENCY": 0.1931
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 8,
@@ -672,7 +674,8 @@
         "SPATIAL_NAVIGATION": 0.1742,
         "COGNITIVE_LOAD_THEORY": 0.1741,
         "PROCESSING_FLUENCY": 0.1741
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 9,
@@ -757,7 +760,8 @@
         "DMN_TPN_DYNAMICS": 0.1762,
         "MEMORY_SYSTEMS": 0.1714,
         "EMBODIED_COGNITION": 0.1691
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 10,
@@ -831,7 +835,8 @@
         "NM_AROUSAL": 0.1946,
         "NM_STRESS": 0.1946,
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1897
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 11,
@@ -908,7 +913,8 @@
         "PREDICTIVE_PROCESSING": 0.1915,
         "DMN_TPN_DYNAMICS": 0.1746,
         "CULTURAL_PSYCHOLOGY": 0.1701
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 12,
@@ -983,7 +989,8 @@
         "INTEROCEPTION_ALLOSTASIS": 0.2016,
         "DMN_TPN_DYNAMICS": 0.1797,
         "STRESS_RECOVERY_THEORY": 0.1621
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 13,
@@ -1059,7 +1066,8 @@
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1933,
         "MULTISENSORY_INTEGRATION": 0.1914,
         "PREDICTIVE_PROCESSING": 0.1914
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 14,
@@ -1136,7 +1144,8 @@
         "STRESS_RECOVERY_THEORY": 0.1601,
         "CULTURAL_PSYCHOLOGY": 0.1578,
         "CROSS_FRAMEWORK": 0.1575
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 15,
@@ -1219,7 +1228,8 @@
         "STRESS_RECOVERY_THEORY": 0.1561,
         "COGNITIVE_CONTROL": 0.1533,
         "CREATIVE_COGNITION": 0.1533
-      }
+      },
+      "sample_n": 39
     },
     {
       "id": 16,
@@ -1523,16 +1533,16 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Virtual reality simulated office environment",
-      "Acoustic condition: No Ambient Noise (silent)",
-      "Acoustic condition: Untreated with Noise (simulated office noise in a reverberant room)",
-      "Acoustic condition: Treated with Noise (simulated office noise in an acoustically treated room)"
+      "Virtual office room",
+      "Simulated acoustic condition: No Ambient Noise",
+      "Simulated acoustic condition: Untreated with Noise",
+      "Simulated acoustic condition: Treated with Noise"
     ],
-    "duration_exposure": "Approximately 15-20 minutes per acoustic condition",
+    "duration_exposure": "20 minutes per acoustic condition",
     "control_conditions": [
-      "No Ambient Noise"
+      "No Ambient Noise acoustic condition"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
@@ -1542,76 +1552,73 @@
     }
   ],
   "mechanism_chain": {
-    "description": "The paper investigates how different room acoustic conditions in a virtual reality office environment affect cognitive performance and well-being, proposing that noise and reverberation lead to increased cognitive load and distraction.",
+    "description": "Different acoustic conditions in a virtual office environment lead to varying levels of perceived noise and annoyance, which in turn affect cognitive load and distraction, ultimately impacting cognitive performance and subjective well-being.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Acoustic condition (e.g., noise, reverberation)",
-        "to_construct": "Perceived noise, distraction, annoyance",
+        "from_construct": "Acoustic condition",
+        "to_construct": "Perceived sound quality/annoyance",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 2,
-        "from_construct": "Perceived noise, distraction, annoyance",
-        "to_construct": "Increased cognitive load, reduced attentional resources",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 3,
-        "from_construct": "Increased cognitive load, reduced attentional resources",
-        "to_construct": "Decreased cognitive performance (e.g., slower response times, lower accuracy)",
-        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
-        "step": 4,
-        "from_construct": "Perceived noise, distraction, annoyance",
-        "to_construct": "Reduced well-being (e.g., increased negative affect, fatigue, stress)",
-        "mechanism_type": "affective",
+        "step": 2,
+        "from_construct": "Perceived sound quality/annoyance",
+        "to_construct": "Cognitive load/distraction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 3,
+        "from_construct": "Cognitive load/distraction",
+        "to_construct": "Cognitive performance and well-being",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "N-back task",
-      "construct": "Working memory, sustained attention",
-      "description": "A continuous performance task measuring working memory load and response time.",
+      "name": "n-back task",
+      "construct": "working memory, cognitive performance",
+      "description": "A standard working memory task where participants respond to stimuli matching those presented 'n' steps back in the sequence.",
       "type": "behavioral"
     },
     {
-      "name": "Stroop task",
-      "construct": "Selective attention, cognitive control, inhibition",
-      "description": "A task measuring interference effects on response time.",
-      "type": "behavioral"
-    },
-    {
-      "name": "NASA-TLX",
-      "construct": "Cognitive workload",
-      "description": "National Aeronautics and Space Administration Task Load Index, a multidimensional self-report scale for perceived workload.",
+      "name": "Questionnaire on perceived sound environment",
+      "construct": "perceived sound quality, annoyance, disturbance",
+      "description": "Likert-scale questions assessing subjective perceptions of the acoustic environment, including annoyance and disturbance.",
       "type": "self_report"
     },
     {
-      "name": "PANAS",
-      "construct": "Positive and negative affect",
-      "description": "Positive and Negative Affect Schedule, a 20-item self-report questionnaire measuring current mood states.",
+      "name": "NASA Task Load Index (NASA-TLX)",
+      "construct": "subjective workload",
+      "description": "A multi-dimensional assessment tool used to measure perceived workload across various dimensions (e.g., mental demand, physical demand, temporal demand, performance, effort, frustration).",
       "type": "self_report"
     },
     {
-      "name": "Subjective ratings of acoustic quality",
-      "construct": "Perceived acoustic comfort, noise level, reverberation, speech intelligibility",
-      "description": "Likert-scale questions assessing participants' perception of the acoustic environment.",
+      "name": "Mood questionnaire",
+      "construct": "mood, affect",
+      "description": "A questionnaire assessing participants' current emotional state.",
       "type": "self_report"
     },
     {
-      "name": "Subjective ratings of well-being",
-      "construct": "Fatigue, stress, comfort, alertness",
-      "description": "Likert-scale questions assessing participants' subjective feelings of well-being.",
+      "name": "Subjective well-being/comfort scales",
+      "construct": "comfort, overall well-being",
+      "description": "Likert-scale questions evaluating participants' comfort and general sense of well-being within the virtual environment.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:40:23.291567+00:00"
+  "surgical_update_at": "2026-03-02T18:42:34.866849+00:00",
+  "stimulus_images": [
+    {
+      "description": "Rendering of the virtual office room environment used in the experiment",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 64,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

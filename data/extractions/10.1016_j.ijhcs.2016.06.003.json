@@ -88,9 +88,9 @@
       "claim_type": "causal",
       "measure_type": "performance",
       "p_value": "<0.01",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.7,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "F(1,76)=38.2",
       "theory_links": [
@@ -160,7 +160,8 @@
         "ADAPTIVE_THERMAL_COMFORT": 0.16,
         "ALLOSTATIC_REGULATION": 0.16,
         "METABOLIC_HEALTH": 0.16
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3249,7 +3250,8 @@
   "stimulus_description": {
     "environmental_features": [
       "Curvilinear Paris Metro map",
-      "Official octolinear Paris Metro map"
+      "Official octolinear Paris Metro map",
+      "Grid-based Paris Metro map"
     ],
     "duration_exposure": null,
     "control_conditions": [
@@ -3261,9 +3263,60 @@
     {
       "theory_name": "Intuitive theories of design",
       "commitment_type": "tests",
-      "specific_claim": "Intuitive theories of design may lead to subjective preferences that do not correlate with objective performance."
+      "specific_claim": "Users hold intuitive beliefs about what constitutes good design, which may not align with objective performance."
+    },
+    {
+      "theory_name": "Dissociation between subjective and objective measures",
+      "commitment_type": "investigates",
+      "specific_claim": "Subjective preferences and objective performance can diverge, especially in complex cognitive tasks like map reading."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:55:13.664894+00:00"
+  "surgical_update_at": "2026-03-02T18:30:03.848476+00:00",
+  "instruments_used": [
+    {
+      "name": "Journey planning time",
+      "construct": "Task performance efficiency",
+      "description": "Time taken to identify the shortest path between two points on a map.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Errors in journey planning",
+      "construct": "Task performance accuracy",
+      "description": "Number of incorrect paths or missed stops during journey planning.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Usability ratings",
+      "construct": "Perceived usability",
+      "description": "Likert-scale questionnaire assessing ease of use, efficiency, and satisfaction with the maps.",
+      "type": "self_report"
+    },
+    {
+      "name": "Preference ratings",
+      "construct": "Map preference",
+      "description": "Likert-scale questionnaire assessing aesthetic appeal and overall liking for the maps.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Example of the curvilinear Paris Metro map used as a stimulus.",
+      "figure_ref": "Figure 1a",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Example of the official octolinear Paris Metro map used as a stimulus.",
+      "figure_ref": "Figure 1b",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Example of the grid-based Paris Metro map used as a stimulus.",
+      "figure_ref": "Figure 1c",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

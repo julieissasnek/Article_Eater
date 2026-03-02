@@ -30,7 +30,7 @@
       "p_value": "<0.05",
       "effect_size": 1.79,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -97,7 +97,8 @@
         "CREATIVE_COGNITION": 0.2019,
         "CHRONOBIOLOGICAL": 0.1741,
         "INTEROCEPTION": 0.1719
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -109,7 +110,7 @@
       "p_value": "<0.001",
       "effect_size": 4.75,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -176,7 +177,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1502,
         "CREATIVE_COGNITION": 0.1502,
         "PREDICTIVE_PROCESSING": 0.1502
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 3,
@@ -188,7 +190,7 @@
       "p_value": "<0.001",
       "effect_size": 5.91,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -246,7 +248,8 @@
         "CULTURAL_PSYCHOLOGY": 0.1638,
         "EMBODIED_COGNITION": 0.1534,
         "NM_AROUSAL": 0.1534
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 4,
@@ -258,7 +261,7 @@
       "p_value": "<0.01",
       "effect_size": 2.9,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -324,7 +327,8 @@
         "ENVIRONMENTAL_PSYCHOLOGY": 0.1623,
         "GROUP_CREATIVITY": 0.1623,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1623
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 5,
@@ -1582,12 +1586,12 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "open-office noise",
-      "moderate intensity noise"
+      "low-intensity open-office noise (55 dB(A))",
+      "quiet office environment"
     ],
-    "duration_exposure": "3 hours",
+    "duration_exposure": "3-hour work period",
     "control_conditions": [
-      "quiet condition"
+      "quiet office condition"
     ],
     "ecological_validity": "lab"
   },
@@ -1595,55 +1599,71 @@
     {
       "theory_name": "Environmental Stress Theory",
       "commitment_type": "tests",
-      "specific_claim": "Chronic exposure to uncontrollable environmental stressors like noise leads to physiological and psychological stress responses."
+      "specific_claim": "Chronic, low-intensity environmental stressors like open-office noise lead to physiological stress responses, cognitive decrements, and reduced motivation."
     }
   ],
   "mechanism_chain": {
-    "description": "Open-office noise acts as an environmental stressor, leading to activation of the sympathetic nervous system and increased catecholamine excretion.",
+    "description": "Open-office noise acts as an environmental stressor, leading to reduced perceived control, which in turn triggers physiological stress responses and impairs cognitive function and motivation.",
     "steps": [
       {
         "step": 1,
         "from_construct": "open-office noise exposure",
-        "to_construct": "environmental stressor",
-        "mechanism_type": "environmental",
+        "to_construct": "perceived lack of control",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "environmental stressor",
-        "to_construct": "sympathetic nervous system activation",
+        "from_construct": "perceived lack of control",
+        "to_construct": "physiological stress (e.g., epinephrine release)",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "sympathetic nervous system activation",
-        "to_construct": "urinary epinephrine levels",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "physiological stress",
+        "to_construct": "cognitive performance decrements",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "physiological stress",
+        "to_construct": "reduced task persistence/motivation",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Urinary Epinephrine Measurement",
-      "construct": "physiological stress response",
-      "description": "Measurement of epinephrine concentration in urine samples",
-      "type": "physiological"
-    },
-    {
-      "name": "Urinary Norepinephrine Measurement",
-      "construct": "physiological stress response",
-      "description": "Measurement of norepinephrine concentration in urine samples",
+      "name": "Urinary Catecholamine Analysis",
+      "construct": "physiological stress (epinephrine, norepinephrine)",
+      "description": "Biochemical analysis of urine samples for stress hormones",
       "type": "physiological"
     },
     {
       "name": "Proofreading Task",
-      "construct": "cognitive performance",
-      "description": "Task requiring participants to identify errors in text, used to assess post-stressor cognitive effects.",
+      "construct": "cognitive performance (attention, error detection)",
+      "description": "A task requiring participants to identify errors in text passages",
       "type": "behavioral"
+    },
+    {
+      "name": "Unsolvable Puzzle Task",
+      "construct": "task persistence, motivation",
+      "description": "A post-experimental task where participants attempt to solve puzzles, measuring time spent before giving up",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report questionnaire",
+      "construct": "perceived control, annoyance",
+      "description": "Likert-scale items assessing subjective perceptions of control and annoyance",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:18:32.420317+00:00"
+  "surgical_update_at": "2026-03-02T18:37:10.305676+00:00",
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 4
 }

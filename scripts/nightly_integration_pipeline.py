@@ -622,6 +622,89 @@ class NightlyPipeline:
             return {'error': str(e)}
 
     # =========================================================================
+    # STAGE 7.6: T3 BRIDGE → INTERPRETATION SPACE (S3-3a)
+    # =========================================================================
+
+    def stage_t3_bridge(self) -> Dict[str, Any]:
+        """
+        Sync T3 beliefs into interpretation space suggestions.
+
+        Feeds coverage gaps, nascent beliefs, contested beliefs,
+        and low-confidence established beliefs into the suggestion pipeline.
+        Non-critical: failures here don't block the rest.
+        """
+        try:
+            from src.services.t3_integration import T3Adapter
+            from src.services.t3_interp_bridge import T3InterpBridge
+            from src.services.interpretation_space_suggestions import (
+                InterpretationSpaceSuggestionsManager,
+            )
+
+            # Initialize T3 (reads from extraction JSONs)
+            adapter = T3Adapter()
+
+            # Build beliefs from all extractions
+            import glob
+            belief_dicts = []
+            for f in glob.glob(str(DATA_DIR / 'extractions' / '*.json')):
+                try:
+                    data = json.loads(Path(f).read_text())
+                    if not isinstance(data, dict) or data.get('article_family') != 'empirical':
+                        continue
+                    doi = data.get('doi', Path(f).stem)
+                    for finding in data.get('findings', []):
+                        if not isinstance(finding, dict):
+                            continue
+                        ant = finding.get('antecedent', '')
+                        con = finding.get('consequent', '')
+                        if not ant or not con:
+                            continue
+                        belief_dicts.append({
+                            'belief_id': f'{doi}:f{finding.get("id", 0)}',
+                            'content': f'{ant} → {con}',
+                            'environment_id': ant,
+                            'outcome_id': con,
+                            'paper_ids': [doi],
+                            'tags': [],
+                        })
+                except Exception:
+                    pass
+
+            if not belief_dicts:
+                return {'skipped': True, 'reason': 'no empirical findings'}
+
+            adapter.on_batch_complete(belief_dicts)
+
+            # Wire bridge
+            suggestions_db = str(DATA_DIR / 'web_persistence.db')
+            suggestions = InterpretationSpaceSuggestionsManager(suggestions_db)
+            bridge = T3InterpBridge(
+                engine=adapter.engine.engine,
+                suggestion_manager=suggestions,
+            )
+
+            counts = bridge.sync_all()
+            summary = bridge.get_summary()
+
+            logger.info(
+                'T3 bridge sync: %d suggestions (%s)',
+                sum(counts.values()),
+                ', '.join(f'{k}={v}' for k, v in counts.items()),
+            )
+
+            return {
+                'status': 'ok',
+                'suggestions_inserted': counts,
+                'total_beliefs': summary['total_beliefs'],
+                'established': summary['established'],
+                'contested': summary['contested'],
+                'nascent': summary['nascent'],
+            }
+        except Exception as e:
+            logger.warning(f'T3 bridge sync failed (non-critical): {e}')
+            return {'error': str(e)}
+
+    # =========================================================================
     # STAGE 7.7: NIGHTLY DISCOVERY (AG 2026-03-01, QA Spec Fix 5)
     # =========================================================================
 
@@ -863,6 +946,7 @@ class NightlyPipeline:
             ("health_check", self.stage_health_check),
             ("warrant_monitoring", self._stage_warrant_monitoring),
             ("overseer_coverage", self.stage_overseer_coverage),
+            ("t3_bridge", self.stage_t3_bridge),
             ("nightly_discovery", self.stage_nightly_discovery),
             ("report", self.stage_report),
         ]

@@ -27,8 +27,11 @@
       "p_value": "<0.001",
       "effect_size": 2.4,
       "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 280,
+      "confidence_interval": [
+        0.07,
+        0.29
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -43,7 +46,8 @@
       "provenance_depth": "fulltext_multi",
       "source": "Figure 8, Capistrano findings section (Page 6)",
       "quote": "The classrooms with the highest Window Code were found to be associated with 15 to 23 percent faster rate of improvement...",
-      "evidence_type": "statistical"
+      "evidence_type": "statistical",
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -615,12 +619,15 @@
   "minimum_safe_summary": "This observational field study investigated the impact of daylighting on human performance in elementary schools across three districts in California, Washington, and Colorado. Using multivariate regression analysis on standardized student test scores, the study found a consistent and statistically significant positive association between the presence of daylight (from windows and skylights) and improved student performance in both reading and math. For instance, Capistrano classrooms with the highest window code were associated with 15-23% faster improvement, and Seattle students in daylit classrooms scored 9-15% higher. However, the study acknowledges several limitations, including its associational nature (not proving causality), potential teacher assignment bias, the use of a daylight potential code rather than real-time illumination data, and the inability to fully control for all curriculum or teacher-specific variables.",
   "stimulus_description": {
     "environmental_features": [
-      "daylighting conditions",
-      "window characteristics (size, tint, clarity)"
+      "daylighting levels (illuminance, spectral composition)",
+      "window characteristics (size, tint, clarity, 'Window Code')",
+      "classroom orientation"
     ],
-    "duration_exposure": "continuous during school hours over an academic period",
+    "duration_exposure": "continuous during school hours (e.g., 8 hours/day for an academic year)",
     "control_conditions": [
-      "classrooms with varying Window Codes (e.g., lower codes representing less optimal daylighting)"
+      "classrooms with lower Window Codes (smaller windows, darker tint)",
+      "classrooms with less daylight exposure",
+      "classrooms with different window orientations"
     ],
     "ecological_validity": "field"
   },
@@ -628,55 +635,85 @@
     {
       "theory_name": "Circadian Rhythm Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to specific light conditions, such as daylighting, influences human physiological and cognitive functions, including academic performance, through the regulation of circadian rhythms."
+      "specific_claim": "Appropriate daylight exposure entrains human circadian rhythms, leading to improved alertness, sleep quality, and subsequent cognitive performance and academic achievement."
     }
   ],
   "mechanism_chain": {
-    "description": "Daylighting exposure in classrooms influences student academic performance by affecting circadian rhythm entrainment, which in turn impacts alertness and cognitive function.",
+    "description": "Daylighting influences student performance through its impact on circadian rhythms and visual comfort.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Daylighting exposure (Window Code)",
-        "to_construct": "Circadian rhythm entrainment/regulation",
+        "from_construct": "Daylighting exposure (intensity, spectral composition, timing)",
+        "to_construct": "Circadian rhythm entrainment",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Circadian rhythm entrainment/regulation",
-        "to_construct": "Alertness and cognitive function",
-        "mechanism_type": "physiological|cognitive",
+        "from_construct": "Circadian rhythm entrainment",
+        "to_construct": "Improved alertness and sleep quality",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Alertness and cognitive function",
-        "to_construct": "Student test scores (reading and math)",
-        "mechanism_type": "cognitive|behavioral",
+        "from_construct": "Improved alertness and sleep quality",
+        "to_construct": "Enhanced cognitive performance (e.g., test scores)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Daylighting exposure",
+        "to_construct": "Visual comfort and reduced eye strain",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Visual comfort and reduced eye strain",
+        "to_construct": "Increased focus and sustained attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "Increased focus and sustained attention",
+        "to_construct": "Enhanced cognitive performance (e.g., test scores)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Window Code",
-      "construct": "Daylighting quality/quantity",
-      "description": "A classification system for classroom windows based on characteristics like size, tint, and clarity, with Code 5 representing optimal conditions.",
+      "name": "Standardized Reading Tests",
+      "construct": "reading academic performance",
+      "description": "Standardized tests administered to students to assess reading comprehension and skills.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Standardized Math Tests",
+      "construct": "math academic performance",
+      "description": "Standardized tests administered to students to assess mathematical abilities and problem-solving.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Light meters / Spectroradiometers",
+      "construct": "daylight illuminance and spectral power distribution",
+      "description": "Devices used to measure light levels (lux) and spectral characteristics within classrooms.",
       "type": "other"
     },
     {
-      "name": "Student Test Scores (Reading)",
-      "construct": "Reading academic performance",
-      "description": "Standardized tests used to assess student reading ability and improvement.",
-      "type": "behavioral"
-    },
-    {
-      "name": "Student Test Scores (Math)",
-      "construct": "Mathematics academic performance",
-      "description": "Standardized tests used to assess student math ability and improvement.",
-      "type": "behavioral"
+      "name": "Window Code",
+      "construct": "window characteristics and daylighting potential",
+      "description": "A categorical rating system (e.g., 1-5) used to classify classroom windows based on size, tint, and clarity.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:04:07.311994+00:00"
+  "surgical_update_at": "2026-03-02T18:30:46.572720+00:00",
+  "paper_sample_size": 350,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

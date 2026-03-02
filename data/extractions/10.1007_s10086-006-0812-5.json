@@ -29,9 +29,9 @@
       "claim_type": "causal",
       "measure_type": null,
       "p_value": "significant",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.15,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -99,7 +99,8 @@
         "PP": 0.1633,
         "INTEROCEPTION": 0.1544,
         "PREDICTIVE_PROCESSING": 0.1544
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3277,23 +3278,90 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "room interiors with varying wood quantities",
-      "visual stimulation"
+      "Room interior with 0% wood ratio (visual stimulation)",
+      "Room interior with 45% wood ratio (visual stimulation)",
+      "Room interior with 90% wood ratio (visual stimulation)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "3 minutes per stimulus",
     "control_conditions": [
-      "room interiors with different wood quantities (e.g., 0% wood ratio compared to higher wood ratios)"
+      "Room interior with 0% wood ratio"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Blood pressure monitor",
-      "construct": "Diastolic blood pressure",
-      "description": "Device used to measure blood pressure",
+      "name": "Automated blood pressure monitor",
+      "construct": "Diastolic blood pressure, Systolic blood pressure",
+      "description": "Measures blood pressure non-invasively",
       "type": "physiological"
+    },
+    {
+      "name": "Electrocardiogram (ECG)",
+      "construct": "Heart rate, Heart rate variability",
+      "description": "Measures electrical activity of the heart to derive heart rate and its variability",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Level (SCL)",
+      "construct": "Arousal, Stress",
+      "description": "Measures electrodermal activity as an indicator of sympathetic nervous system activity",
+      "type": "physiological"
+    },
+    {
+      "name": "Visual Analogue Scale (VAS)",
+      "construct": "Subjective comfort, relaxation, mood",
+      "description": "Self-report scale for subjective feelings",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:23:09.015267+00:00"
+  "surgical_update_at": "2026-03-02T18:32:23.866451+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments or elements (like wood) can reduce physiological stress responses."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature, leading to positive physiological and psychological responses when exposed to natural elements."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Visual stimulation of wood-rich interiors is perceived as natural and comforting, leading to a shift in autonomic nervous system activity towards relaxation, which manifests as reduced physiological stress indicators.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "visual stimulation of wood-rich interiors",
+        "to_construct": "perception of naturalness and comfort",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "perception of naturalness and comfort",
+        "to_construct": "activation of parasympathetic nervous system / inhibition of sympathetic nervous system",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "activation of parasympathetic nervous system / inhibition of sympathetic nervous system",
+        "to_construct": "reduction in physiological stress indicators (e.g., lower blood pressure)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of room interiors with varying wood quantities (0%, 45%, 90%) used as visual stimuli",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

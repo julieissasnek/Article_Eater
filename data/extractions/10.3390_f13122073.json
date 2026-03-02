@@ -1891,7 +1891,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 24
     },
     {
       "id": 24,
@@ -1962,7 +1963,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 24
     },
     {
       "id": 25,
@@ -2029,7 +2031,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 24
     },
     {
       "id": 26,
@@ -2094,7 +2097,8 @@
       },
       "tier2_relevance": {
         "PREDICTIVE_PROCESSING": 0.151
-      }
+      },
+      "sample_n": 24
     },
     {
       "id": 27,
@@ -2159,7 +2163,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 12
     },
     {
       "id": 28,
@@ -2228,7 +2233,8 @@
       },
       "tier2_relevance": {
         "PREDICTIVE_PROCESSING": 0.153
-      }
+      },
+      "sample_n": 12
     },
     {
       "id": 29,
@@ -2296,7 +2302,8 @@
       },
       "tier2_relevance": {
         "CULTURAL_PSYCHOLOGY": 0.1726
-      }
+      },
+      "sample_n": 12
     }
   ],
   "mechanisms": [
@@ -2516,61 +2523,89 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "room with light-colour spruce wood covering",
-      "room with dark-colour pine wood covering",
-      "white-painted control room"
+      "Rooms with light-colour spruce wood material",
+      "Rooms with birch wood material",
+      "Control rooms with painted white walls"
     ],
     "duration_exposure": "15 minutes",
     "control_conditions": [
-      "white-painted control room"
+      "Rooms with painted white walls"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention and reduce stress, and this study investigates if indoor wooden environments can elicit similar restorative effects."
+      "specific_claim": "Exposure to natural elements, such as wood in indoor environments, can facilitate recovery from mental fatigue and improve directed attention."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural elements can reduce physiological and psychological stress, contributing to restorative experiences."
     }
   ],
   "instruments_used": [
     {
       "name": "Perceived Restorativeness Scale (PRS)",
       "construct": "perceived restorativeness",
-      "description": "Self-report questionnaire measuring perceived restorative qualities of an environment.",
+      "description": "Self-report questionnaire measuring feelings of being away, fascination, extent, and compatibility.",
       "type": "self_report"
     },
     {
       "name": "Positive and Negative Affect Schedule (PANAS)",
       "construct": "positive and negative affect",
-      "description": "20-item self-report questionnaire measuring current mood states.",
+      "description": "20-item self-report mood scale.",
       "type": "self_report"
     },
     {
-      "name": "Visual Analogue Scales (VAS)",
-      "construct": "subjective perceptions (e.g., comfort, warmth, stress, naturalness)",
-      "description": "Scales used for participants to rate various subjective feelings and perceptions.",
-      "type": "self_report"
-    },
-    {
-      "name": "Backward Digit Span Task",
-      "construct": "directed attention, working memory",
-      "description": "A cognitive task requiring participants to recall a sequence of digits in reverse order.",
+      "name": "Proofreading task",
+      "construct": "cognitive performance (sustained attention)",
+      "description": "A task designed to measure sustained attention and concentration by identifying errors in a text.",
       "type": "behavioral"
     },
     {
       "name": "Heart Rate Variability (HRV)",
-      "construct": "physiological stress, autonomic nervous system activity",
-      "description": "Measurement of the variation in time between heartbeats.",
-      "type": "physiological"
-    },
-    {
-      "name": "Skin Conductance Level (SCL)",
-      "construct": "physiological arousal, sympathetic nervous system activity",
-      "description": "Measurement of the electrical conductivity of the skin.",
+      "construct": "physiological stress/relaxation",
+      "description": "A measure of the variation in the time interval between heartbeats, reflecting autonomic nervous system activity.",
       "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:18:57.261743+00:00"
+  "surgical_update_at": "2026-03-02T18:37:16.708752+00:00",
+  "mechanism_chain": {
+    "description": "Visual perception of wood's naturalness and biophilic qualities leads to positive affective responses and reduced stress, which in turn contribute to perceived restorativeness.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Wooden indoor environment",
+        "to_construct": "Perceived naturalness/biophilic qualities",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived naturalness/biophilic qualities",
+        "to_construct": "Positive affect/reduced stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Positive affect/reduced stress",
+        "to_construct": "Perceived restorativeness",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Experimental rooms featuring different wood materials (spruce, birch) and a control room with painted walls.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 100,
+  "paper_sample_size_source": "reported"
 }

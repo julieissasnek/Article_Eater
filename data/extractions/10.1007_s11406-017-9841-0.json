@@ -7821,47 +7821,154 @@
     {
       "theory_name": "Circadian Photoreception Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Specific photoreceptors (intrinsically photosensitive retinal ganglion cells - ipRGCs) in the retina mediate non-visual responses to light, influencing circadian rhythms, alertness, and mood."
+      "specific_claim": "Non-visual effects of light on human physiology and behavior are mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs) and their connection to the suprachiasmatic nucleus (SCN)."
     },
     {
-      "theory_name": "Visual Performance Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Lighting conditions significantly impact visual acuity, contrast sensitivity, and speed of perception, which are critical for task performance."
+      "theory_name": "Light-at-Night (LAN) Hypothesis",
+      "commitment_type": "discusses",
+      "specific_claim": "Exposure to artificial light at night can suppress melatonin production, disrupt circadian rhythms, and potentially impact health."
+    },
+    {
+      "theory_name": "Unified Glare Rating (UGR)",
+      "commitment_type": "applies",
+      "specific_claim": "UGR is a standardized metric used to quantify discomfort glare from lighting installations."
+    },
+    {
+      "theory_name": "Equivalent Melanopic Lux (EML)",
+      "commitment_type": "proposes",
+      "specific_claim": "EML is a metric designed to better predict the non-visual (melanopic) effects of light compared to traditional lux measurements."
     }
   ],
   "mechanism_chain": {
-    "description": "The non-visual pathway for light perception involves intrinsically photosensitive retinal ganglion cells (ipRGCs) detecting light, particularly in the blue spectrum, and transmitting signals to the suprachiasmatic nucleus (SCN), which regulates circadian rhythms and melatonin production, thereby influencing alertness and sleep.",
+    "description": "The paper describes various physiological and psychological mechanisms through which light impacts human factors.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (especially blue-rich spectrum)",
-        "to_construct": "Activation of intrinsically photosensitive Retinal Ganglion Cells (ipRGCs)",
+        "from_construct": "light exposure (especially blue-rich light)",
+        "to_construct": "activation of ipRGCs",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "ipRGC activation",
-        "to_construct": "Signal transmission to Suprachiasmatic Nucleus (SCN)",
+        "from_construct": "activation of ipRGCs",
+        "to_construct": "signaling to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "SCN activation",
-        "to_construct": "Regulation of melatonin secretion",
+        "from_construct": "SCN signaling",
+        "to_construct": "regulation of melatonin secretion",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Melatonin regulation",
-        "to_construct": "Modulation of circadian rhythms and alertness",
+        "from_construct": "melatonin suppression/phase shift",
+        "to_construct": "disruption of circadian rhythms and sleep quality",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "high luminance contrast or direct glare",
+        "to_construct": "retinal adaptation and discomfort",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "retinal discomfort",
+        "to_construct": "visual fatigue and reduced task performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:29:46.435596+00:00"
+  "surgical_update_at": "2026-03-02T18:36:55.634888+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "artificial lighting (e.g., fluorescent, LED, incandescent)",
+      "daylighting",
+      "light levels (illuminance in lux)",
+      "spectral power distribution (SPD)",
+      "correlated color temperature (CCT)",
+      "luminance distribution",
+      "glare (discomfort and disability)",
+      "light flicker",
+      "dynamic lighting conditions"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "different CCTs (e.g., warm vs. cool white light)",
+      "varying illuminance levels",
+      "presence vs. absence of daylight",
+      "different light source types",
+      "glare vs. no glare conditions",
+      "different lighting layouts"
+    ],
+    "ecological_validity": "lab|semi-naturalistic|field"
+  },
+  "instruments_used": [
+    {
+      "name": "Lux meter",
+      "construct": "illuminance",
+      "description": "Device for measuring light levels (lux) at a surface.",
+      "type": "other"
+    },
+    {
+      "name": "Spectroradiometer",
+      "construct": "spectral power distribution (SPD)",
+      "description": "Instrument for measuring the spectral composition of light.",
+      "type": "other"
+    },
+    {
+      "name": "Questionnaires (e.g., Visual Comfort Scale, Karolinska Sleepiness Scale)",
+      "construct": "visual comfort, subjective sleepiness, mood, satisfaction",
+      "description": "Self-report scales to assess subjective experiences related to lighting.",
+      "type": "self_report"
+    },
+    {
+      "name": "Performance tests (e.g., reaction time, vigilance tasks, cognitive tasks)",
+      "construct": "cognitive performance, alertness",
+      "description": "Standardized tasks used to measure cognitive functions under different lighting conditions.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake cycles, activity levels",
+      "description": "Wearable device to monitor rest-activity patterns, often used to infer sleep quality and circadian rhythmicity.",
+      "type": "physiological"
+    },
+    {
+      "name": "Melatonin assays",
+      "construct": "melatonin levels",
+      "description": "Biochemical tests (e.g., saliva, urine) to measure melatonin concentration, indicating circadian phase and light exposure effects.",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the human eye and its photoreceptors (rods, cones, ipRGCs)",
+      "figure_ref": "Figure 2.1 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Spectral sensitivity curves for photopic, scotopic, and melanopic vision",
+      "figure_ref": "Figure 2.3 (example)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Examples of different light sources and their spectral power distributions",
+      "figure_ref": "Figure 3.2 (example)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Illustrations of glare scenarios and lighting design principles",
+      "figure_ref": "Figure 5.1 (example)",
+      "image_type": "diagram"
+    }
+  ]
 }

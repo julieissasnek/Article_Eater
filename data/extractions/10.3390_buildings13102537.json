@@ -53,7 +53,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -116,7 +116,8 @@
         "CREATIVE_COGNITION": 0.183,
         "PREDICTIVE_PROCESSING": 0.183,
         "METHODOLOGICAL": 0.1583
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2087,7 +2088,8 @@
         "MEMORY_SYSTEMS": 0.1792,
         "COGNITIVE_LOAD_THEORY": 0.178,
         "PROCESSING_FLUENCY": 0.178
-      }
+      },
+      "sample_n": 45
     },
     {
       "id": 27,
@@ -8246,18 +8248,79 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "interior lighting color",
-      "cool white light",
-      "warm white light",
-      "colored light"
+      "simulated rural bed and breakfast bedroom (virtual reality environment)",
+      "warm white light (3000K)",
+      "cool white light (6000K)",
+      "red accent light",
+      "blue accent light",
+      "green accent light",
+      "yellow accent light",
+      "purple accent light",
+      "cyan accent light",
+      "magenta accent light"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief exposure for evaluation (e.g., a few minutes per lighting condition)",
     "control_conditions": [
-      "Cool white light + colored light",
-      "Warm white light + colored light"
+      "warm white light only (no colored accent light)",
+      "cool white light only (no colored accent light)"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:16:00.448480+00:00"
+  "surgical_update_at": "2026-03-02T18:42:15.776886+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Color Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Different colors and lighting temperatures evoke distinct emotional and psychological responses in individuals."
+    },
+    {
+      "theory_name": "Environmental Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "The physical attributes of an environment, such as lighting, significantly influence human perception, emotion, and behavior."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Lighting color (CCT and hue) influences perceived environmental qualities (e.g., warmth, coziness, spaciousness), which in turn mediate and affect emotional responses like pleasure and arousal.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "lighting color (CCT and hue)",
+        "to_construct": "perceived environmental qualities (e.g., warmth, coziness, spaciousness, comfort)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived environmental qualities",
+        "to_construct": "emotional response (e.g., pleasure, arousal, dominance)",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Self-Assessment Manikin (SAM)",
+      "construct": "pleasure, arousal, dominance",
+      "description": "A non-verbal pictorial assessment technique used to measure emotional states along three dimensions.",
+      "type": "self_report"
+    },
+    {
+      "name": "Custom Likert scales",
+      "construct": "perceived spaciousness, coziness, comfort, satisfaction",
+      "description": "Likert-type scales used to assess subjective perceptions of the simulated bedroom environment.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Renderings of the simulated bed and breakfast bedroom under various lighting conditions (e.g., warm white, cool white, with different colored accent lights)",
+      "figure_ref": "Figure 2, Figure 3",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

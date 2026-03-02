@@ -29,7 +29,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -100,7 +100,8 @@
         "COGNITIVE_CONTROL": 0.1749,
         "CONSTRUAL_LEVEL_THEORY": 0.1749,
         "CREATIVE_COGNITION": 0.1749
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1051,13 +1052,68 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "combined noise sources",
-      "water sounds"
+      "recordings of urban traffic noise",
+      "recordings of water sounds (e.g., fountain, stream, waterfall)",
+      "combinations of urban traffic noise and water sounds at various signal-to-noise ratios"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "duration_exposure": "short segments, typically 30-60 seconds per soundscape stimulus",
+    "control_conditions": [
+      "urban soundscapes with only traffic noise (no water sounds)",
+      "urban soundscapes with varying levels of traffic noise intensity"
+    ],
+    "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:00:13.173358+00:00"
+  "surgical_update_at": "2026-03-02T18:40:57.573976+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Soundscape Theory / Restorative Environments Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The presence of natural sounds (e.g., water sounds) can enhance the perceived quality of urban soundscapes by mitigating the negative impact of anthropogenic noise and fostering positive emotional responses."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Water sounds in urban soundscapes can improve perceived quality by masking unwanted noise and evoking positive associations, leading to increased pleasantness and reduced annoyance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Presence of water sounds in urban soundscape",
+        "to_construct": "Masking of unwanted urban noise",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Presence of water sounds in urban soundscape",
+        "to_construct": "Evocation of positive emotional associations",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Masking of unwanted urban noise AND Evocation of positive emotional associations",
+        "to_construct": "Increased perceived pleasantness and reduced annoyance",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Increased perceived pleasantness and reduced annoyance",
+        "to_construct": "Higher perceived quality of urban soundscape",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Soundscape Semantic Differential Questionnaire",
+      "construct": "Perceived quality of urban soundscape (e.g., pleasantness, eventfulness, appropriateness, overall quality)",
+      "description": "Rating scales for various perceptual attributes of the soundscape",
+      "type": "self_report"
+    }
+  ],
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

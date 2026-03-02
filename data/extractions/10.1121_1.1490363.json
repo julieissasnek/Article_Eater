@@ -2504,14 +2504,72 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "classroom acoustical conditions",
-      "70% classroom occupancy",
-      "presence of a typical average-male instructor"
+      "Reverberation time (RT)",
+      "background noise levels",
+      "signal-to-noise ratio (SNR)",
+      "room volume",
+      "surface materials",
+      "occupancy levels (e.g., 70% occupied)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Typical classroom lecture duration (e.g., 50-90 minutes) or specific measurement periods",
+    "control_conditions": [
+      "Comparison across different university classrooms with varying acoustical properties",
+      "comparison of occupied vs. unoccupied conditions (implied by '70% occupied')"
+    ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:53:00.233097+00:00"
+  "surgical_update_at": "2026-03-02T18:40:18.375465+00:00",
+  "mechanism_chain": {
+    "description": "Physical acoustical properties of the classroom environment directly influence the clarity and audibility of speech, which in turn determines speech intelligibility and perceived acoustical quality.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "High reverberation time / Low signal-to-noise ratio / High background noise",
+        "to_construct": "Masking and temporal smearing of speech sounds",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Masking and temporal smearing of speech sounds",
+        "to_construct": "Reduced clarity of speech signal at the listener's ear",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced clarity of speech signal",
+        "to_construct": "Decreased speech intelligibility and perceived acoustical quality",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Sound level meter",
+      "construct": "Background noise level, sound pressure level",
+      "description": "Equipment to measure sound pressure levels in classrooms.",
+      "type": "other"
+    },
+    {
+      "name": "Reverberation time measurement system",
+      "construct": "Reverberation time (RT)",
+      "description": "Equipment to measure the decay of sound in a room.",
+      "type": "other"
+    },
+    {
+      "name": "Speech Transmission Index (STI) measurement",
+      "construct": "Speech intelligibility",
+      "description": "Objective measure of speech intelligibility based on modulation transfer function.",
+      "type": "other"
+    },
+    {
+      "name": "Subjective rating scales",
+      "construct": "Perceived acoustical quality, speech intelligibility, listener comfort",
+      "description": "Questionnaires or scales administered to participants to rate acoustical conditions.",
+      "type": "self_report"
+    }
+  ]
 }

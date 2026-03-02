@@ -1206,38 +1206,80 @@
     "date": "2026-03-01T06:45:16.188735+00:00"
   },
   "mechanism_chain": {
-    "description": "The paper synthesizes how specific complex environmental features in settings like university campuses lead to cognitive challenges in spatial understanding, which in turn results in various wayfinding problems and negative affective states.",
+    "description": "Complex environmental features lead to difficulties in forming coherent mental representations, increasing cognitive load and resulting in wayfinding problems and negative affective states.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Complex environmental features (e.g., congested layout, inefficient environmental cues, lack of discrete boundaries, complex layout planning, visual richness)",
-        "to_construct": "Reduced environmental legibility and clarity of spatial structure",
-        "mechanism_type": "perceptual",
+        "from_construct": "Complex layout / Inefficient environmental cues",
+        "to_construct": "Difficulty in forming a coherent cognitive map / mental model of the environment",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Reduced environmental legibility and clarity of spatial structure",
-        "to_construct": "Difficulty in forming and updating accurate cognitive maps or mental models of the environment",
+        "from_construct": "Difficulty in forming a coherent cognitive map",
+        "to_construct": "Increased cognitive load / Uncertainty in navigation decisions",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Difficulty in forming and updating accurate cognitive maps",
-        "to_construct": "Increased cognitive load, uncertainty, and effort during navigation",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 4,
-        "from_construct": "Increased cognitive load, uncertainty, and effort during navigation",
-        "to_construct": "Manifestation of wayfinding problems (e.g., disorientation, stress, frustration, time wasted, reduced legibility)",
-        "mechanism_type": "behavioral",
+        "from_construct": "Increased cognitive load / Uncertainty",
+        "to_construct": "Behavioral errors (getting lost, taking longer paths) / Negative affective states (stress, frustration)",
+        "mechanism_type": "behavioral|affective",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:33:19.766686+00:00"
+  "surgical_update_at": "2026-03-02T18:38:36.213573+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Individuals form mental representations of spatial environments to aid navigation, and the quality of these maps influences wayfinding success."
+    },
+    {
+      "theory_name": "Space Syntax",
+      "commitment_type": "tests",
+      "specific_claim": "The topological and geometric properties of spatial layouts (e.g., integration, connectivity) predict human movement patterns and wayfinding behavior."
+    },
+    {
+      "theory_name": "Information Processing Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Wayfinding involves the perception, processing, and utilization of environmental cues and information for decision-making and navigation."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Perceived legibility, disorientation, stress, spatial anxiety, familiarity",
+      "description": "Surveys or scales administered to participants to assess subjective experiences and perceptions related to wayfinding.",
+      "type": "self_report"
+    },
+    {
+      "name": "Behavioral observation / Tracking",
+      "construct": "Wayfinding performance (time, errors, path efficiency, stopping behavior)",
+      "description": "Direct observation or use of tracking technologies (e.g., GPS, RFID, video analysis) to record actual navigation behavior.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Sketch maps",
+      "construct": "Cognitive representation of space, spatial knowledge",
+      "description": "Participants draw maps of an environment from memory to assess their mental representation of the space.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Eye-tracking",
+      "construct": "Visual attention, information acquisition from environment",
+      "description": "Devices used to measure gaze direction and duration to understand how individuals scan and process visual cues during navigation.",
+      "type": "eye_tracking"
+    },
+    {
+      "name": "Virtual Reality (VR) environments",
+      "construct": "Wayfinding behavior in controlled simulated environments",
+      "description": "Use of VR headsets and simulated environments to study navigation under controlled experimental conditions.",
+      "type": "other"
+    }
+  ]
 }

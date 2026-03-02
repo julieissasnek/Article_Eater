@@ -1557,7 +1557,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.2459,
         "CREATIVE_COGNITION": 0.2459,
         "INTEROCEPTION": 0.2246
-      }
+      },
+      "sample_n": 150
     },
     {
       "id": 19,
@@ -1651,7 +1652,8 @@
         "PAD_EMOTIONAL_MODEL": 0.2381,
         "RETINAL_ACTIVATION": 0.2381,
         "INTEROCEPTION": 0.2316
-      }
+      },
+      "sample_n": 150
     },
     {
       "id": 20,
@@ -1894,7 +1896,8 @@
         "NEUROMODULATORY": 0.2087,
         "EMBODIED_COGNITION": 0.1983,
         "SPATIAL_NAVIGATION": 0.1983
-      }
+      },
+      "sample_n": 150
     },
     {
       "id": 23,
@@ -1971,7 +1974,8 @@
         "MS": 0.1696,
         "EC": 0.1668,
         "PP": 0.1668
-      }
+      },
+      "sample_n": 150
     },
     {
       "id": 24,
@@ -2043,7 +2047,8 @@
         "EMBODIED_COGNITION": 0.1576,
         "EC": 0.1535,
         "PP": 0.1535
-      }
+      },
+      "sample_n": 150
     }
   ],
   "mechanisms": [
@@ -2428,36 +2433,43 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Different urban soundscapes (e.g., garden areas, playground areas, squares, streets)",
-      "Varying compositions of natural sounds (e.g., birds, water)",
-      "Varying compositions of anthropogenic sounds (e.g., traffic, human voices)"
+      "soundscapes of three garden areas (G1, G2, G3)",
+      "soundscapes of two playground areas (P1, P2)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Comparison between different types of urban public spaces with distinct acoustic characteristics"
+      "garden areas (G1, G2, G3)",
+      "playground areas (P1, P2)"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Soundscape Approach",
-      "commitment_type": "assumes",
-      "specific_claim": "The acoustic environment is perceived holistically as a soundscape, and its quality is determined by human perception and context, not solely by objective noise levels."
+      "theory_name": "Soundscape approach",
+      "commitment_type": "applies",
+      "specific_claim": "Human perception and interpretation of the acoustic environment, including perceived pleasantness, eventfulness, and appropriateness, are crucial for understanding and evaluating sound quality and preference in urban spaces."
     }
   ],
   "mechanism_chain": {
-    "description": "The objective acoustic characteristics of an urban space influence perceived soundscape attributes, which in turn affect soundscape preference.",
+    "description": "The study investigates how the composition of sound sources in urban spaces influences perceived soundscape attributes, which in turn affect overall soundscape preference.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Objective acoustic characteristics (e.g., sound pressure level, presence of specific sounds)",
-        "to_construct": "Perceived soundscape attributes (e.g., quietness, pleasantness, eventfulness)",
-        "mechanism_type": "perceptual",
+        "from_construct": "Presence of natural sounds (e.g., birdsong, water sounds)",
+        "to_construct": "Perceived pleasantness",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Perceived soundscape attributes",
+        "from_construct": "Absence of mechanical sounds (e.g., traffic noise)",
+        "to_construct": "Perceived quietness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived pleasantness and quietness",
         "to_construct": "Soundscape preference",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
@@ -2466,12 +2478,32 @@
   },
   "instruments_used": [
     {
-      "name": "Soundscape Perception Questionnaire",
-      "construct": "Perceived soundscape attributes (pleasantness, eventfulness, quietness, vibrancy) and overall soundscape preference",
-      "description": "Likert-scale ratings for various soundscape qualities and overall preference, often based on ISO 12913-2.",
+      "name": "Soundscape questionnaire",
+      "construct": "Soundscape preference, perceived quietness, perceived pleasantness, perceived eventfulness, perceived appropriateness",
+      "description": "Self-report questionnaire using Likert scales to assess various soundscape attributes.",
       "type": "self_report"
+    },
+    {
+      "name": "Sound level meter",
+      "construct": "A-weighted equivalent continuous sound pressure level (LAeq), sound pressure levels of specific sound sources",
+      "description": "Used to objectively measure the physical acoustic environment at each study site.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:03:48.180714+00:00"
+  "surgical_update_at": "2026-03-02T18:41:12.838724+00:00",
+  "stimulus_images": [
+    {
+      "description": "Map showing the locations of the five study sites (three garden areas and two playground areas) in Seoul, South Korea.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Photographs of the study sites (garden and playground areas).",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 155,
+  "paper_sample_size_source": "reported"
 }

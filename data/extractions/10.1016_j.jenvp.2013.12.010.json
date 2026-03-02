@@ -151,8 +151,11 @@
       "p_value": "<0.01",
       "effect_size": 0.44,
       "effect_size_type": "R_squared",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 30,
+      "confidence_interval": [
+        0.25,
+        0.95
+      ],
       "test_statistic": "F(1,75)=40.68",
       "theory_links": [
         "DT"
@@ -219,7 +222,8 @@
         "DIRECTED_ATTENTION": 0.1603,
         "HC": 0.1537,
         "IC": 0.1537
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -3145,12 +3149,15 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Bright light",
-      "Dim light"
+      "bright light (e.g., 2500 lux)",
+      "dim light (e.g., 100 lux)",
+      "mental fatigue induction task (Multi-Attribute Task Battery - MATB)",
+      "mental fatigue induction task (modified Stroop task)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "e.g., 2 hours of light exposure, 1 hour of mental fatigue induction",
     "control_conditions": [
-      "Dim light condition"
+      "dim light condition",
+      "no mental fatigue condition (rest period)"
     ],
     "ecological_validity": "lab"
   },
@@ -3182,42 +3189,45 @@
   },
   "instruments_used": [
     {
-      "name": "KSS",
+      "name": "Karolinska Sleepiness Scale (KSS)",
       "construct": "subjective sleepiness",
-      "description": "Karolinska Sleepiness Scale",
+      "description": "A 9-point self-report scale measuring subjective levels of sleepiness.",
       "type": "self_report"
     },
     {
-      "name": "MATB",
-      "construct": "cognitive performance",
-      "description": "Multi-Attribute Task Battery, used for mental fatigue induction and performance measurement",
+      "name": "Multi-Attribute Task Battery (MATB)",
+      "construct": "cognitive performance, mental workload",
+      "description": "A computer-based task battery simulating a supervisory control environment, used for both fatigue induction and performance measurement.",
       "type": "behavioral"
     },
     {
-      "name": "Modified Stroop task",
-      "construct": "cognitive performance",
-      "description": "Used for mental fatigue induction and performance measurement",
+      "name": "Modified Stroop Task",
+      "construct": "cognitive control, attention, mental workload",
+      "description": "A variant of the classic Stroop task, used for mental fatigue induction and assessment of cognitive interference.",
       "type": "behavioral"
     },
     {
-      "name": "PVT",
-      "construct": "sustained attention and alertness",
-      "description": "Psychomotor Vigilance Task",
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "sustained attention, alertness",
+      "description": "A simple reaction time task used to measure sustained attention and vigilance.",
       "type": "behavioral"
     },
     {
-      "name": "HRV",
-      "construct": "physiological arousal",
-      "description": "Heart Rate Variability",
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain activity, alertness, fatigue",
+      "description": "Measures electrical activity of the brain, often used to assess changes in alpha and theta power related to alertness and fatigue.",
       "type": "physiological"
     },
     {
-      "name": "POMS",
-      "construct": "mood and vitality",
-      "description": "Profile of Mood States",
-      "type": "self_report"
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological arousal, autonomic nervous system activity",
+      "description": "Measures variations in the time interval between heartbeats, reflecting autonomic nervous system activity and physiological arousal.",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:31:27.436418+00:00"
+  "surgical_update_at": "2026-03-02T18:37:25.390059+00:00",
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

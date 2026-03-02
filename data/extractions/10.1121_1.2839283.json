@@ -1063,7 +1063,8 @@
         "COGNITIVE_CONTROL": 0.1664,
         "CREATIVE_COGNITION": 0.1664,
         "DUAL_PROCESS": 0.163
-      }
+      },
+      "sample_n": 108
     },
     {
       "id": 15,
@@ -1146,7 +1147,8 @@
         "NM": 0.1852,
         "NEUROMODULATORY": 0.1804,
         "MULTISENSORY_INTEGRATION": 0.1731
-      }
+      },
+      "sample_n": 108
     },
     {
       "id": 16,
@@ -2841,36 +2843,91 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Classroom acoustics",
-      "Reverberation time",
-      "Background noise levels",
-      "Classroom occupancy"
+      "Reverberation time (T60)",
+      "Background noise levels (LAeq)",
+      "Signal-to-noise ratio (SNR)",
+      "Room volume",
+      "Surface materials"
     ],
-    "duration_exposure": "Continuous during school hours",
+    "duration_exposure": "Continuous during typical school day (e.g., 6-8 hours)",
     "control_conditions": [
-      "Comparison between occupied and unoccupied classroom states"
+      "Comparison between occupied and unoccupied classroom states",
+      "Comparison across classrooms with varying acoustical properties"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Classroom occupancy directly influences the sound absorption properties of the room, which in turn affects the reverberation time.",
+    "description": "The paper implicitly relies on the established causal chain linking classroom acoustics to speech communication outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Classroom occupancy (presence of students)",
-        "to_construct": "Sound absorption by occupants",
-        "mechanism_type": "physical",
+        "from_construct": "High reverberation time / High background noise",
+        "to_construct": "Degradation of speech signal clarity",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Sound absorption by occupants",
-        "to_construct": "Mid-frequency reverberation time (T60)",
-        "mechanism_type": "physical",
+        "from_construct": "Degradation of speech signal clarity",
+        "to_construct": "Reduced speech intelligibility and increased listening effort",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced speech intelligibility / Increased listening effort",
+        "to_construct": "Impaired communication and learning outcomes",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:59:07.492642+00:00"
+  "surgical_update_at": "2026-03-02T18:35:29.963042+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Room Acoustics Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "The physical dimensions and surface properties of a room determine its acoustical characteristics, such as reverberation time and sound propagation."
+    },
+    {
+      "theory_name": "Speech Intelligibility Theory",
+      "commitment_type": "applies",
+      "specific_claim": "Acoustical conditions (e.g., reverberation, background noise) directly impact the clarity and intelligibility of spoken language, affecting listener comprehension and effort."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Sound Level Meter",
+      "construct": "Sound pressure level, background noise",
+      "description": "Used for measuring A-weighted equivalent sound levels (LAeq) and other noise metrics.",
+      "type": "other"
+    },
+    {
+      "name": "Impulse Response Measurement System",
+      "construct": "Reverberation time (T60)",
+      "description": "Typically involves a sound source (e.g., balloon burst, swept sine signal from dodecahedron loudspeaker) and a microphone connected to a data acquisition system to measure room impulse responses, from which T60 is calculated.",
+      "type": "other"
+    },
+    {
+      "name": "Microphone",
+      "construct": "Sound pressure",
+      "description": "Used for capturing sound signals for analysis of noise and reverberation.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plans of representative classrooms showing measurement locations for acoustical parameters.",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Graphs illustrating measured acoustical parameters (e.g., T60, LAeq) across different classrooms or conditions.",
+      "figure_ref": "Figures 2-5 (typical)",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "estimated"
 }

@@ -61,9 +61,9 @@
       "claim_type": "associational",
       "measure_type": "behavioral",
       "p_value": "0.025",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 46,
       "confidence_interval": null,
       "test_statistic": "T(17) = 35, z = 1.965",
       "theory_links": [
@@ -135,7 +135,8 @@
         "NEUROMODULATORY": 0.1698,
         "STRESS_RECOVERY_THEORY": 0.1698,
         "NM_AROUSAL": 0.1685
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1912,61 +1913,71 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "window view of natural scene (trees and sky)",
-      "window view of brick wall"
+      "Window view of a natural scene (deciduous trees)",
+      "Window view of a brick wall"
     ],
-    "duration_exposure": "continuous throughout hospital stay (average 7.9 days)",
+    "duration_exposure": "continuous during hospital stay (average 7.7 to 8.7 days)",
     "control_conditions": [
-      "window view of a brick wall"
+      "Window view of a brick wall"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory (foundational principles)",
-      "commitment_type": "proposes",
-      "specific_claim": "Views of natural environments can reduce stress and facilitate recovery from illness or surgery."
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments can reduce stress and promote psychological restoration, leading to improved health outcomes."
     }
   ],
   "mechanism_chain": {
-    "description": "Views of nature provide positive distraction and reduce negative thoughts, leading to lower stress and improved physiological recovery.",
+    "description": "The paper implicitly suggests that views of nature reduce psychological stress and provide positive distraction, which in turn facilitates physiological recovery.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Window view of natural scene",
-        "to_construct": "Positive distraction / Reduced negative thoughts and stress",
-        "mechanism_type": "cognitive|affective",
-        "evidence_strength": "indirect"
+        "to_construct": "Reduced psychological stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Reduced negative thoughts and stress",
-        "to_construct": "Improved physiological recovery / Shorter hospital stay",
-        "mechanism_type": "physiological|behavioral",
-        "evidence_strength": "direct"
+        "from_construct": "Reduced psychological stress",
+        "to_construct": "Improved physiological recovery (e.g., less pain, shorter hospital stay)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Hospital discharge records",
-      "construct": "Length of postoperative hospital stay",
-      "description": "Official records indicating the duration of patient hospitalization after surgery.",
+      "name": "Hospital records",
+      "construct": "Postoperative hospital stay",
+      "description": "Official hospital records detailing patient admission and discharge dates.",
       "type": "other"
     },
     {
-      "name": "Pain medication records",
-      "construct": "Frequency and dosage of strong analgesics",
-      "description": "Records of pain medication administered to patients.",
+      "name": "Medication records",
+      "construct": "Analgesic consumption",
+      "description": "Records of potent analgesic doses administered to patients.",
       "type": "other"
     },
     {
       "name": "Nurse's notes",
-      "construct": "Patient condition, mood, and minor complications",
-      "description": "Subjective evaluations and observations recorded by nursing staff.",
+      "construct": "Patient well-being/behavior",
+      "description": "Qualitative comments made by nurses about patient condition and behavior.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:49:31.288697+00:00"
+  "surgical_update_at": "2026-03-02T18:34:40.271248+00:00",
+  "stimulus_images": [
+    {
+      "description": "Photographs illustrating the two types of window views: a natural scene with trees and a brick wall.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 46,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

@@ -157,7 +157,8 @@
         "NM_AROUSAL": 0.1615,
         "NM_STRESS": 0.1615,
         "DUAL_PROCESS": 0.153
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 2,
@@ -223,7 +224,8 @@
         "NM_AROUSAL": 0.1615,
         "NM_STRESS": 0.1615,
         "DUAL_PROCESS": 0.153
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 3,
@@ -286,7 +288,8 @@
         "NM": 0.1741,
         "INTEROCEPTION": 0.1582,
         "PREDICTIVE_PROCESSING": 0.1582
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 4,
@@ -349,7 +352,8 @@
         "NM": 0.1741,
         "INTEROCEPTION": 0.1582,
         "PREDICTIVE_PROCESSING": 0.1582
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 5,
@@ -410,7 +414,8 @@
       },
       "tier2_relevance": {
         "NM": 0.1804
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 6,
@@ -471,7 +476,8 @@
       },
       "tier2_relevance": {
         "NM": 0.1804
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 7,
@@ -534,7 +540,8 @@
         "NM": 0.1612,
         "INTEROCEPTION": 0.1528,
         "PREDICTIVE_PROCESSING": 0.1528
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 8,
@@ -597,7 +604,8 @@
         "NM": 0.1612,
         "INTEROCEPTION": 0.1528,
         "PREDICTIVE_PROCESSING": 0.1528
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 9,
@@ -662,7 +670,8 @@
         "DMN_TPN_DYNAMICS": 0.1583,
         "NM_AROUSAL": 0.1515,
         "NM_STRESS": 0.1515
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 10,
@@ -1355,7 +1364,8 @@
       },
       "tier2_relevance": {
         "NM": 0.1631
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 21,
@@ -1418,7 +1428,8 @@
         "NM": 0.1663,
         "INTEROCEPTION": 0.1626,
         "PREDICTIVE_PROCESSING": 0.1626
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 22,
@@ -1481,7 +1492,8 @@
         "CULTURAL_PSYCHOLOGY": 0.1542,
         "NM_AROUSAL": 0.1528,
         "NM_STRESS": 0.1528
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 23,
@@ -1540,7 +1552,8 @@
       },
       "tier2_relevance": {
         "NM": 0.1716
-      }
+      },
+      "sample_n": 2304
     },
     {
       "id": 24,
@@ -1858,11 +1871,42 @@
   "instruments_used": [
     {
       "name": "Radiance",
-      "construct": "Daylight factor; Illuminance; Luminance",
-      "description": "Physics-based lighting simulation software used for calculating daylight performance metrics.",
+      "construct": "daylight performance; mean daylight factor",
+      "description": "Advanced ray-tracing software for accurate daylight simulations",
+      "type": "other"
+    },
+    {
+      "name": "Lynes average daylight factor formula (Equation 2)",
+      "construct": "mean daylight factor",
+      "description": "A simplified mathematical formula for calculating average daylight factor",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:03:56.264909+00:00"
+  "surgical_update_at": "2026-03-02T18:44:27.078684+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "room geometries (dimensions, window sizes, window positions)",
+      "surface reflectances (walls, ceiling, floor)",
+      "sky conditions (e.g., CIE overcast sky)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "comparison against direct Radiance simulations",
+      "comparison against other design rules of thumb or standard practices"
+    ],
+    "ecological_validity": "lab"
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagrams of typical room layouts with varying window configurations and dimensions",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Renderings or false-color images showing daylight factor distribution within simulated rooms",
+      "figure_ref": "Figure 3",
+      "image_type": "rendering"
+    }
+  ]
 }

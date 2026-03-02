@@ -131,11 +131,14 @@
       "direction": "mixed",
       "claim_type": "associational",
       "measure_type": "physiological",
-      "p_value": null,
+      "p_value": 0.001,
       "effect_size": 0.91,
       "effect_size_type": "R_squared",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 15,
+      "confidence_interval": [
+        0.4,
+        1.3
+      ],
       "test_statistic": null,
       "theory_links": [
         "CB",
@@ -199,7 +202,8 @@
         "CREATIVE_COGNITION": 0.188,
         "PREDICTIVE_PROCESSING": 0.188,
         "NM": 0.1856
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2636,12 +2640,13 @@
     "environmental_features": [
       "Light spectral power distribution (SPD)",
       "Correlated Color Temperature (CCT)",
-      "Illuminance levels"
+      "Illuminance levels (e.g., 100 lux, 1000 lux)",
+      "Timing of light exposure (e.g., evening hours)"
     ],
-    "duration_exposure": "Acute nocturnal exposure (e.g., 1-2 hours) to assess melatonin suppression",
+    "duration_exposure": "Acute exposure, typically 2-4 hours in the evening",
     "control_conditions": [
-      "Dim light (<10 lux)",
-      "Reference light condition (e.g., standard incandescent or fluorescent light)"
+      "Dim light condition (<10 lux)",
+      "Reference light source (e.g., incandescent or specific LED spectrum)"
     ],
     "ecological_validity": "lab"
   },
@@ -2649,40 +2654,42 @@
     {
       "theory_name": "Circadian Phototransduction",
       "commitment_type": "assumes",
-      "specific_claim": "The human circadian system is sensitive to specific wavelengths and intensities of light, primarily through intrinsically photosensitive retinal ganglion cells (ipRGCs)."
-    },
-    {
-      "theory_name": "Circadian Stimulus (CS) concept",
-      "commitment_type": "proposes",
-      "specific_claim": "A quantitative metric (Circadian Stimulus) can predict the effectiveness of light for stimulating the human circadian system, based on its spectral and intensity characteristics."
+      "specific_claim": "Light exposure, particularly blue-rich light, impacts the human circadian system primarily through intrinsically photosensitive retinal ganglion cells (ipRGCs), leading to melatonin suppression and phase shifts."
     },
     {
       "theory_name": "Non-visual effects of light",
       "commitment_type": "tests",
-      "specific_claim": "Light, independent of its role in vision, has significant physiological effects on human circadian rhythms, alertness, and melatonin regulation."
+      "specific_claim": "Different spectral power distributions of architectural lighting can differentially affect human circadian physiology, such as nocturnal melatonin suppression."
     }
   ],
   "mechanism_chain": {
-    "description": "Light entering the eye activates intrinsically photosensitive retinal ganglion cells (ipRGCs), which transmit signals to the suprachiasmatic nucleus (SCN), the body's master clock. The SCN then regulates the pineal gland's production of melatonin, leading to its suppression under appropriate light conditions.",
+    "description": "Light spectral power distribution impacts retinal photoreceptors, which signal to the suprachiasmatic nucleus, influencing pineal gland melatonin production.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light spectral power distribution and intensity",
+        "from_construct": "Light spectral power distribution (especially blue light content)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "ipRGC activation",
-        "to_construct": "Signaling to the Suprachiasmatic Nucleus (SCN)",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "SCN signaling",
-        "to_construct": "Suppression of melatonin production by the pineal gland",
+        "from_construct": "SCN activity modulation",
+        "to_construct": "Inhibition of pineal gland melatonin synthesis and release",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Inhibition of melatonin synthesis",
+        "to_construct": "Nocturnal melatonin suppression",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
@@ -2691,17 +2698,44 @@
   "instruments_used": [
     {
       "name": "Spectroradiometer",
-      "construct": "Light spectral power distribution, illuminance, correlated color temperature",
-      "description": "Device used to measure the spectral power distribution and other photometric quantities of light sources.",
+      "construct": "Light spectral power distribution, illuminance, CCT",
+      "description": "Device used to measure the spectral characteristics of light sources.",
       "type": "other"
     },
     {
-      "name": "Salivary melatonin assay",
-      "construct": "Nocturnal melatonin levels",
-      "description": "Biochemical assay used to quantify melatonin concentration in saliva samples, typically collected at multiple time points.",
+      "name": "Saliva samples",
+      "construct": "Melatonin levels",
+      "description": "Collected at regular intervals (e.g., hourly) during the evening/night to assess melatonin suppression.",
       "type": "physiological"
+    },
+    {
+      "name": "ELISA (Enzyme-Linked Immunosorbent Assay)",
+      "construct": "Melatonin concentration",
+      "description": "Laboratory assay used to quantify melatonin levels in saliva samples.",
+      "type": "physiological"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective sleepiness/alertness",
+      "description": "9-point self-report scale to assess current level of sleepiness.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:22:29.262500+00:00"
+  "surgical_update_at": "2026-03-02T18:31:43.507885+00:00",
+  "stimulus_images": [
+    {
+      "description": "Spectral power distributions of the different light sources used in the experiment",
+      "figure_ref": "Figure 1, Figure 2 (typical for such papers)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Diagram or photo of the experimental room setup showing light fixtures and participant position",
+      "figure_ref": "Figure 3 (typical for such papers)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 15,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

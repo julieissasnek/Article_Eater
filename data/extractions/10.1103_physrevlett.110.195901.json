@@ -934,13 +934,14 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Applied temperature gradient",
-      "External heat source"
+      "controlled thermal gradient",
+      "heat source",
+      "heat sink"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Homogeneous material without metamaterial structure",
-      "Uncloaked region"
+      "homogeneous material (e.g., bulk copper-PDMS composite)",
+      "no thermal cloak"
     ],
     "ecological_validity": "lab"
   },
@@ -948,23 +949,77 @@
     {
       "theory_name": "Transformation thermodynamics",
       "commitment_type": "tests",
-      "specific_claim": "Transformation thermodynamics can be used to design metamaterials capable of guiding and controlling heat flow, thereby creating regions of thermal invisibility or cloaking."
+      "specific_claim": "Transformation thermodynamics can be used to design metamaterials that control heat flow, enabling thermal cloaking."
     }
   ],
   "instruments_used": [
     {
-      "name": "Thermal camera",
-      "construct": "Surface temperature distribution",
-      "description": "Used to visualize and quantify temperature profiles across the sample surface.",
+      "name": "Thermocouples",
+      "construct": "Temperature",
+      "description": "Point temperature measurements at various locations on the sample and environment",
       "type": "other"
     },
     {
-      "name": "Thermocouples",
-      "construct": "Local temperature",
-      "description": "Point sensors for precise temperature measurements at specific locations within the experimental setup.",
+      "name": "Infrared camera",
+      "construct": "Surface temperature distribution",
+      "description": "Non-contact measurement of temperature fields across the experimental setup",
+      "type": "other"
+    },
+    {
+      "name": "Heat source",
+      "construct": "Heat flux/gradient",
+      "description": "Device (e.g., resistive heater, Peltier element) to establish a controlled thermal gradient",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:43:49.695553+00:00"
+  "surgical_update_at": "2026-03-02T18:39:30.717441+00:00",
+  "mechanism_chain": {
+    "description": "The micro-structured copper-PDMS metamaterial, designed based on transformation thermodynamics principles, creates an anisotropic thermal conductivity profile that guides heat around the central cloaked region, thereby maintaining a uniform temperature within it.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Micro-structured copper-PDMS metamaterial geometry",
+        "to_construct": "Anisotropic thermal conductivity profile",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Anisotropic thermal conductivity profile",
+        "to_construct": "Redirection of heat flux around central region",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Redirection of heat flux around central region",
+        "to_construct": "Uniform temperature in central cloaked region",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Schematic diagram of the thermal cloak design and its micro-structure (copper-PDMS metamaterial)",
+      "figure_ref": "Figure X",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Photograph of the fabricated copper-PDMS metamaterial thermal cloak",
+      "figure_ref": "Figure Y",
+      "image_type": "photo"
+    },
+    {
+      "description": "Experimental setup for thermal measurements, showing placement of heat source, sink, and thermal cloak",
+      "figure_ref": "Figure Z",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Thermal imaging or temperature contour plots showing heat flow and temperature distribution with and without the thermal cloak",
+      "figure_ref": "Figure A",
+      "image_type": "graph"
+    }
+  ]
 }

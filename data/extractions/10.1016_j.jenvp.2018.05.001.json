@@ -4789,9 +4789,19 @@
   },
   "theory_commitments": [
     {
+      "theory_name": "Self-Determination Theory (SDT)",
+      "commitment_type": "assumes|extends",
+      "specific_claim": "Distinguishes between intrinsic (e.g., community, personal growth) and extrinsic (e.g., money, fame, image) aspirations/values, arguing that intrinsic values are associated with psychological well-being and pro-social/pro-environmental behavior, while extrinsic values are linked to poorer well-being and less pro-social/pro-environmental behavior. The paper applies this framework to understanding environmental challenges."
+    },
+    {
       "theory_name": "Schwartz's Theory of Basic Human Values",
-      "commitment_type": "tests",
-      "specific_claim": "Basic human values (e.g., self-enhancement, self-transcendence) predict environmental attitudes and behaviors."
+      "commitment_type": "assumes|applies",
+      "specific_claim": "Proposes a universal structure of human values, often categorized into higher-order dimensions like self-enhancement (power, achievement) vs. self-transcendence (universalism, benevolence). The paper uses this distinction to explain how certain value orientations (e.g., self-enhancement/materialism) undermine environmental concern, while others (e.g., self-transcendence) promote it."
+    },
+    {
+      "theory_name": "Identity Theories",
+      "commitment_type": "proposes|integrates",
+      "specific_claim": "Different forms of identity (e.g., personal, social, ecological) and their salience influence how individuals perceive environmental issues and their motivation to act. The paper argues for fostering identities that are more inclusive and connected to nature."
     }
   ],
   "instruments_used": [
@@ -4809,5 +4819,31 @@
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:42:24.122990+00:00"
+  "surgical_update_at": "2026-03-02T18:28:59.426851+00:00",
+  "mechanism_chain": {
+    "description": "The paper proposes that strong endorsement of self-enhancing, materialistic values leads individuals to prioritize personal gain and consumption, fostering an instrumental view of nature as a resource rather than something to be protected. This instrumental view, in turn, results in less positive attitudes towards non-human nature.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "strong endorsement of self-enhancing, materialistic values (achievement, money, power, status, image)",
+        "to_construct": "prioritization of personal gain, consumption, and status",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "prioritization of personal gain, consumption, and status",
+        "to_construct": "instrumental view of non-human nature (as a resource for human exploitation)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "instrumental view of non-human nature",
+        "to_construct": "less positive attitudes towards non-human nature",
+        "mechanism_type": "affective|cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  }
 }

@@ -5601,75 +5601,112 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Entrainment Theory",
-      "commitment_type": "assumes|explains",
-      "specific_claim": "Light is the primary environmental cue (zeitgeber) that synchronizes the human internal circadian clock (Suprachiasmatic Nuclei, SCN) to the external 24-hour day-night cycle."
-    },
-    {
-      "theory_name": "Phase Response Curve (PRC) to Light",
-      "commitment_type": "explains|applies",
-      "specific_claim": "The timing of light exposure relative to an individual's circadian phase determines the direction and magnitude of circadian phase shifts (e.g., light in the early subjective night causes phase delays, light in the late subjective night/early subjective morning causes phase advances)."
-    },
-    {
-      "theory_name": "Melatonin Suppression by Light",
-      "commitment_type": "explains|assumes",
-      "specific_claim": "Exposure to light, particularly in the blue spectrum, suppresses the nocturnal secretion of melatonin, a key hormone involved in circadian timing and sleep promotion."
+      "theory_name": "Non-visual phototransduction pathway",
+      "commitment_type": "assumes|describes",
+      "specific_claim": "Light, particularly short-wavelength (blue) light, is detected by intrinsically photosensitive retinal ganglion cells (ipRGCs) and transmitted via the retinohypothalamic tract to the suprachiasmatic nuclei (SCN), thereby regulating circadian rhythms, sleep, and mood."
     }
   ],
   "mechanism_chain": {
-    "description": "Environmental light is detected by retinal photoreceptors, primarily intrinsically photosensitive retinal ganglion cells (ipRGCs), which transmit signals to the Suprachiasmatic Nuclei (SCN). The SCN, as the master circadian clock, processes this input to regulate circadian rhythms, including melatonin secretion. These physiological changes subsequently impact sleep timing, quality, and mood.",
+    "description": "Light exposure activates specific retinal photoreceptors, leading to signals transmitted to the SCN, which then regulates circadian rhythms and downstream physiological and psychological effects.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Environmental light exposure",
-        "to_construct": "Activation of retinal photoreceptors (ipRGCs, rods, cones)",
+        "from_construct": "Ambient light exposure",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Retinal photoreceptor activation",
-        "to_construct": "Signal transmission to Suprachiasmatic Nuclei (SCN)",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission via retinohypothalamic tract (RHT)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "SCN activation/modulation",
-        "to_construct": "Regulation of circadian pacemaker activity",
+        "from_construct": "Signal transmission via RHT",
+        "to_construct": "Suprachiasmatic nuclei (SCN) entrainment/activation",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "SCN regulation of circadian pacemaker activity",
-        "to_construct": "Modulation of pineal gland melatonin secretion",
+        "from_construct": "SCN entrainment/activation",
+        "to_construct": "Regulation of circadian rhythms (e.g., melatonin suppression, phase shifting)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 5,
-        "from_construct": "Melatonin secretion modulation / SCN activity",
-        "to_construct": "Circadian phase shifting and entrainment",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 6,
-        "from_construct": "Circadian phase shifting / Melatonin levels",
-        "to_construct": "Regulation of sleep timing and quality",
-        "mechanism_type": "physiological|behavioral",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 7,
-        "from_construct": "Circadian phase shifting / Sleep regulation / Direct SCN projections",
-        "to_construct": "Modulation of mood and cognitive function",
-        "mechanism_type": "physiological|neural|affective",
-        "evidence_strength": "direct|indirect"
+        "from_construct": "Regulation of circadian rhythms",
+        "to_construct": "Effects on sleep, mood, and cognitive performance",
+        "mechanism_type": "physiological|affective|cognitive",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:34:02.561715+00:00"
+  "surgical_update_at": "2026-03-02T18:39:37.624693+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "light intensity (lux)",
+      "light spectrum (e.g., blue-enriched light, red light)",
+      "timing of light exposure (e.g., morning, evening)",
+      "duration of light exposure"
+    ],
+    "duration_exposure": "variable, ranging from minutes to continuous exposure over days",
+    "control_conditions": [
+      "darkness",
+      "dim light",
+      "different light spectra (e.g., red light as a control for blue light)",
+      "different timing of light exposure"
+    ],
+    "ecological_validity": "lab|semi-naturalistic|field"
+  },
+  "instruments_used": [
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake cycles, activity levels",
+      "description": "Wearable device to monitor movement and infer sleep patterns",
+      "type": "behavioral"
+    },
+    {
+      "name": "Polysomnography (PSG)",
+      "construct": "sleep architecture, sleep stages",
+      "description": "Comprehensive recording of biophysiological changes during sleep (EEG, EOG, EMG, etc.)",
+      "type": "physiological"
+    },
+    {
+      "name": "Melatonin assays",
+      "construct": "circadian phase, melatonin levels",
+      "description": "Measurement of melatonin concentration in saliva or blood samples",
+      "type": "physiological"
+    },
+    {
+      "name": "Questionnaires/Scales",
+      "construct": "mood, sleep quality, alertness, fatigue",
+      "description": "Self-report instruments to assess subjective states",
+      "type": "self_report"
+    },
+    {
+      "name": "Light meters/Spectroradiometers",
+      "construct": "light intensity, light spectrum",
+      "description": "Devices to measure properties of light stimuli (e.g., lux, spectral power distribution)",
+      "type": "other"
+    },
+    {
+      "name": "Pupillometry",
+      "construct": "non-visual light response, pupil constriction",
+      "description": "Measurement of pupil diameter changes in response to light",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the non-visual light pathway from the retina to the suprachiasmatic nuclei (SCN) and its influence on circadian rhythms.",
+      "figure_ref": "Figure 1 (example, actual figure number may vary)",
+      "image_type": "diagram"
+    }
+  ]
 }

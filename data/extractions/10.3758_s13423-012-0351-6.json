@@ -2135,59 +2135,64 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Place Cell Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Hippocampal place cells encode specific locations in an environment."
-    },
-    {
-      "theory_name": "Grid Cell Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Entorhinal grid cells provide a metric, allocentric representation of space."
-    },
-    {
-      "theory_name": "Head Direction Cell Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Head direction cells encode the animal's directional heading in an environment."
-    },
-    {
-      "theory_name": "Novel Framework for Spatial Navigation",
+      "theory_name": "Integrated Framework for Spatial Navigation",
       "commitment_type": "proposes",
-      "specific_claim": "A new framework integrating view-based, place-based, and grid-based representations for robust spatial navigation."
+      "specific_claim": "Spatial navigation relies on an integrated system of view-based, boundary-based, and allocentric representations, processed by distinct but interacting neural circuits."
+    },
+    {
+      "theory_name": "Hippocampal Place Cell Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Place cells in the hippocampus encode specific locations in an environment, forming a core component of allocentric spatial representation."
+    },
+    {
+      "theory_name": "Entorhinal Grid Cell Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Grid cells in the entorhinal cortex provide a metric for spatial navigation, contributing to path integration and allocentric mapping."
+    },
+    {
+      "theory_name": "View-based Navigation Theories",
+      "commitment_type": "extends",
+      "specific_claim": "View-based information, processed in specific cortical regions, is crucial for scene recognition and local navigation, and integrates with allocentric systems."
     }
   ],
   "mechanism_chain": {
-    "description": "The proposed framework describes how view-based scene information, place cell activity, and grid cell activity are integrated in the brain to support spatial navigation.",
+    "description": "The paper proposes a neural mechanism where view-based scene information is processed in specific cortical areas, integrated with allocentric spatial representations from the hippocampal formation, to enable flexible scene recognition and spatial navigation.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "View-based scene information",
-        "to_construct": "Initial visual processing and scene representation",
-        "mechanism_type": "neural",
+        "from_construct": "View-based scene information (visual input)",
+        "to_construct": "Neural encoding of scene views in parahippocampal cortex (e.g., PPA)",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Initial scene representation",
-        "to_construct": "Activation of hippocampal place cells (linking views to places)",
+        "from_construct": "Neural encoding of scene views",
+        "to_construct": "Integration with allocentric spatial maps (e.g., in hippocampus and retrosplenial cortex)",
         "mechanism_type": "neural",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Place cell activity",
-        "to_construct": "Integration with entorhinal grid cell activity (metric spatial representation)",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 4,
-        "from_construct": "Integrated spatial representation (place + grid)",
-        "to_construct": "Spatial navigation decisions and path planning",
-        "mechanism_type": "neural",
+        "from_construct": "Integrated spatial representations",
+        "to_construct": "Scene recognition and spatial orientation",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:58:04.617435+00:00"
+  "surgical_update_at": "2026-03-02T18:44:07.285499+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the proposed integrated framework for spatial navigation, showing interactions between different types of spatial representations (e.g., view-based, boundary-based, allocentric) and their associated neural regions.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Schematic representation of neural pathways and brain regions involved in processing different spatial cues (e.g., parahippocampal place area for scene views, hippocampus for allocentric maps).",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

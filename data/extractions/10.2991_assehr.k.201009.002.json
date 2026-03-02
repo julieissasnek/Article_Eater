@@ -4265,5 +4265,64 @@
     "date": "2026-03-01T07:11:50.908882+00:00"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:58:55.997365+00:00"
+  "surgical_update_at": "2026-03-02T18:40:49.243036+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Workplace lighting influences occupant mood and performance by affecting the entrainment of human circadian rhythms, impacting sleep-wake cycles and alertness."
+    },
+    {
+      "theory_name": "Environmental Stress Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Inadequate or inappropriate workplace lighting can act as an environmental stressor, leading to negative mood states and reduced performance."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Workplace lighting characteristics affect occupant mood and performance through physiological pathways related to circadian rhythm regulation and through perceptual/cognitive pathways related to visual comfort and cognitive load.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Workplace lighting characteristics (e.g., intensity, spectral composition, timing)",
+        "to_construct": "Melatonin suppression and circadian rhythm entrainment",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Melatonin suppression and circadian rhythm entrainment",
+        "to_construct": "Alertness, sleep quality, and hormonal balance",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Alertness, sleep quality, and hormonal balance",
+        "to_construct": "Occupant mood (e.g., fatigue, well-being) and cognitive performance",
+        "mechanism_type": "affective|cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Workplace lighting characteristics (e.g., glare, flicker, illuminance levels)",
+        "to_construct": "Visual comfort and eye strain",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Visual comfort and eye strain",
+        "to_construct": "Cognitive load and frustration",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "Cognitive load and frustration",
+        "to_construct": "Occupant mood and task performance",
+        "mechanism_type": "affective|behavioral",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  }
 }

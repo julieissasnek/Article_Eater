@@ -68,7 +68,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 60,
       "confidence_interval": null,
       "test_statistic": "F(64.94)",
       "theory_links": [],
@@ -128,7 +128,8 @@
         "INTEROCEPTION": 0.17,
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1588,
         "NEUROMODULATORY": 0.1588
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -4106,25 +4107,71 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "green environments",
-      "blue environments",
-      "built environments",
-      "greenery and water bodies"
+      "Greenery and Water (GW) window view",
+      "Greenery (G) window view",
+      "Blue (B) window view",
+      "Built (BU) window view"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "5 minutes per view",
     "control_conditions": [
-      "built environments"
+      "Built (BU) window view (as a comparison baseline for less natural views)"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Electroencephalography (EEG)",
-      "construct": "Alpha relative power",
-      "description": "Measurement of electrical activity in the brain, specifically alpha band power at the O1 electrode site, often associated with relaxed wakefulness or internal attention.",
+      "construct": "brain activity (alpha, theta, beta power)",
+      "description": "Measured at O1, O2, Fz, Cz, Pz electrodes to assess neural responses.",
       "type": "eeg"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "autonomic nervous system activity",
+      "description": "Measured via electrocardiography (ECG) to assess physiological stress and relaxation.",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Level (SCL)",
+      "construct": "arousal/stress",
+      "description": "Measured to assess sympathetic nervous system activity.",
+      "type": "physiological"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "mood/affect",
+      "description": "Self-report questionnaire to assess current positive and negative emotional states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "perceived restorative quality of environment",
+      "description": "Self-report questionnaire to assess the perceived restorative potential of the window views.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:49:14.412897+00:00"
+  "surgical_update_at": "2026-03-02T18:39:58.205189+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments (greenery, water) are more restorative and reduce mental fatigue compared to built environments."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments elicits positive emotional states and reduces physiological stress responses."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of the four window view types (Greenery and Water, Greenery, Blue, Built) used as stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

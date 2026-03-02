@@ -1548,47 +1548,91 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Trichromatic Theory",
+      "theory_name": "Color Constancy Theory",
       "commitment_type": "extends",
-      "specific_claim": "The paper extends the understanding of color perception beyond simple trichromatic cone responses, arguing for a more dynamic and context-dependent interpretation of color dimensionality."
+      "specific_claim": "The perceived color of a surface remains relatively constant despite changes in the spectral composition of the illuminant."
     },
     {
       "theory_name": "Opponent-Process Theory",
-      "commitment_type": "extends",
-      "specific_claim": "The paper extends the opponent-process theory by integrating it into a broader framework that accounts for the dynamic and context-dependent nature of perceived color dimensionality."
+      "commitment_type": "assumes",
+      "specific_claim": "Color vision is based on three opponent channels: red-green, blue-yellow, and black-white."
     },
     {
-      "theory_name": "Dynamic Dimensionality Framework of Color Perception",
-      "commitment_type": "proposes",
-      "specific_claim": "The paper proposes a framework where the dimensionality of color perception is not fixed but dynamically constructed by the brain based on sensory input and context, challenging traditional fixed-dimensional models."
+      "theory_name": "Trichromatic Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Color vision is mediated by three types of cone photoreceptors sensitive to different wavelengths."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper theoretically describes a mechanism where initial retinal signals are transformed through opponent-process pathways and higher-level neural processing to dynamically construct the perceived dimensionality of color, which is context-dependent.",
+    "description": "Neural and computational mechanisms underlying color perception from retinal input to cortical representation, accounting for color constancy and appearance in complex visual scenes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Retinal photoreceptor responses (cones)",
-        "to_construct": "Opponent-process signals in the visual system",
+        "from_construct": "Spectral power distribution of light reflected from surfaces in a visual scene",
+        "to_construct": "Cone photoreceptor activation (L, M, S cones)",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Opponent-process signals",
-        "to_construct": "Higher-level neural representations of color attributes",
+        "from_construct": "Cone photoreceptor activation",
+        "to_construct": "Opponent-channel signals (e.g., L-M, S-(L+M))",
         "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Higher-level neural representations",
-        "to_construct": "Dynamically perceived color dimensionality (context-dependent)",
+        "from_construct": "Opponent-channel signals and contextual information",
+        "to_construct": "Cortical processing (e.g., V4, V8, inferotemporal cortex)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Cortical processing",
+        "to_construct": "Perceived color (color appearance and constancy, dimensionality)",
         "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:00:43.260223+00:00"
+  "surgical_update_at": "2026-03-02T18:35:37.273084+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "colored surfaces under varying illuminants",
+      "complex natural scenes",
+      "simple colored lights"
+    ],
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
+  },
+  "instruments_used": [
+    {
+      "name": "Color matching tasks",
+      "construct": "Color appearance, color constancy",
+      "description": "Psychophysical task where observers adjust a test stimulus to match the color of a reference stimulus under various conditions.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Spectral radiometers",
+      "construct": "Light stimulus properties",
+      "description": "Device used to measure the spectral power distribution of light sources and reflected light from surfaces.",
+      "type": "other"
+    },
+    {
+      "name": "fMRI",
+      "construct": "Neural correlates of color perception",
+      "description": "Functional magnetic resonance imaging to measure brain activity in response to color stimuli.",
+      "type": "fmri"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating a color space, color processing pathways, or conceptual models of color vision.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

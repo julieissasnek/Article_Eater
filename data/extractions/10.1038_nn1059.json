@@ -639,44 +639,36 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Bayesian Inference in Visual Perception",
+      "theory_name": "Statistical theory of visual space",
       "commitment_type": "proposes",
-      "specific_claim": "Perceived visual space is a result of combining sensory evidence (likelihood function derived from visual cues) with a learned prior probability distribution of distances in natural scenes."
+      "specific_claim": "Perceived distance is an optimal statistical inference based on the probability distribution of radial distances from the observer to physical locations in natural scenes."
     }
   ],
   "mechanism_chain": {
-    "description": "The brain estimates object distance by combining sensory cues with an internalized prior distribution of distances, following Bayesian principles to form a posterior distribution from which perceived distance is derived.",
+    "description": "The visual system implicitly learns and utilizes the statistical regularities of depth in natural environments to infer perceived distance, especially in ambiguous or impoverished settings.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Environmental statistics of object distances (e.g., radial distance distribution)",
-        "to_construct": "Internalized prior probability distribution of distances",
+        "from_construct": "Probability distribution of radial distances in natural scenes",
+        "to_construct": "Internal statistical model of depth",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Visual cues (e.g., disparity, blur, perspective, texture gradients)",
-        "to_construct": "Sensory likelihood function for object distance",
+        "from_construct": "Internal statistical model of depth",
+        "to_construct": "Perceived distance of objects",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 3,
-        "from_construct": "Internalized prior probability distribution and Sensory likelihood function",
-        "to_construct": "Posterior probability distribution of object distance (via Bayes' rule)",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Posterior probability distribution of object distance",
-        "to_construct": "Perceived distance",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:55:27.226594+00:00"
+  "surgical_update_at": "2026-03-02T18:35:05.405275+00:00",
+  "stimulus_description": {
+    "environmental_features": null,
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
+  }
 }

@@ -1086,53 +1086,103 @@
   "minimum_safe_summary": "The paper argues for adopting the Circadian Stimulus (CS) metric to quantify light's effect on the human circadian system in architectural spaces. It details the CS metric's development from biophysical research, including the roles of various retinal photoreceptors and the b-y color channel, and its non-linear response to light levels. Key findings demonstrate that the CS metric better characterizes nocturnal melatonin suppression data (r²=0.91) than melanopsin-weighted irradiance (r²=0.87) and has been successfully validated in laboratory studies and real-world applications to predict melatonin suppression, circadian entrainment, and improvements in sleep, mood, and agitation. Limitations include the CS metric's current incompleteness, as it does not consider light timing, duration, distribution, photic history, or non-visual alerting effects, and the need to account for architectural material reflectances.",
   "stimulus_description": {
     "environmental_features": [
-      "light",
-      "architectural lighting"
+      "light intensity (lux)",
+      "spectral composition (e.g., correlated color temperature, melanopic equivalent daylight illuminance)",
+      "timing of light exposure (e.g., night, day)",
+      "duration of light exposure"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "duration_exposure": "varied, often acute (hours) or chronic (days/weeks) depending on specific experiment",
+    "control_conditions": [
+      "dim light conditions",
+      "darkness",
+      "different light spectra or intensities",
+      "placebo conditions (if applicable to interventions)"
+    ],
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
+      "theory_name": "Circadian Physiology / Non-visual Effects of Light",
       "commitment_type": "assumes",
-      "specific_claim": "Light, particularly its spectral composition, intensity, timing, and duration, acts as a primary zeitgeber (time-giver) for the human circadian system, influencing physiological processes such as melatonin secretion."
+      "specific_claim": "Light exposure, particularly to short-wavelength light, at inappropriate times (e.g., night) can suppress melatonin production and disrupt circadian rhythms."
+    },
+    {
+      "theory_name": "Melanopsin-mediated Photoreception",
+      "commitment_type": "assumes",
+      "specific_claim": "Intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin are the primary photoreceptors mediating non-visual responses to light, including circadian entrainment and melatonin suppression."
     }
   ],
   "mechanism_chain": {
-    "description": "Light absorbed by specific retinal photopigments sends signals to the central circadian clock, which then regulates the synthesis and release of melatonin.",
+    "description": "Light absorbed by retinal photopigments (specifically melanopsin in ipRGCs) at night sends signals to the suprachiasmatic nucleus (SCN), which then inhibits the pineal gland's production of melatonin.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light absorbed by retinal photopigments",
-        "to_construct": "Activation of retinal photoreceptors (e.g., intrinsically photosensitive retinal ganglion cells - ipRGCs)",
+        "from_construct": "Light absorbed by retinal photopigments (ipRGCs)",
+        "to_construct": "Activation of ipRGCs",
         "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of retinal photoreceptors",
-        "to_construct": "Transmission of signals to the suprachiasmatic nucleus (SCN)",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signals to the suprachiasmatic nucleus (SCN)",
-        "to_construct": "Regulation of pineal gland activity",
+        "from_construct": "Signal transmission to SCN",
+        "to_construct": "Inhibition of pineal gland activity",
         "mechanism_type": "neural",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Regulation of pineal gland activity",
-        "to_construct": "Modulation of nocturnal melatonin production",
+        "from_construct": "Inhibition of pineal gland activity",
+        "to_construct": "Suppression of nocturnal melatonin production",
         "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:44:28.571892+00:00"
+  "surgical_update_at": "2026-03-02T18:39:30.903966+00:00",
+  "instruments_used": [
+    {
+      "name": "Spectroradiometer",
+      "construct": "light characteristics",
+      "description": "Measures spectral power distribution, illuminance, correlated color temperature, and melanopic equivalent daylight illuminance of light stimuli.",
+      "type": "other"
+    },
+    {
+      "name": "Melatonin assay",
+      "construct": "nocturnal melatonin production",
+      "description": "Measures melatonin levels in saliva, blood, or urine samples.",
+      "type": "physiological"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake cycles",
+      "description": "Wearable device to monitor activity and infer sleep patterns.",
+      "type": "actigraphy"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "subjective sleepiness",
+      "description": "9-point self-report scale for current level of sleepiness.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Spectral power distribution curves of different light sources used as stimuli",
+      "figure_ref": "Figure 1, Figure 2 (example)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Diagrams or photos of experimental setups showing lighting conditions",
+      "figure_ref": "Figure 3 (example)",
+      "image_type": "photo"
+    }
+  ]
 }

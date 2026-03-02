@@ -93,7 +93,7 @@
       "p_value": "<0.02",
       "effect_size": 5.14,
       "effect_size_type": "OR",
-      "sample_size": null,
+      "sample_size": 60,
       "confidence_interval": [
         1.3,
         20.36
@@ -153,7 +153,8 @@
         "DMN_TPN_DYNAMICS": 0.1824,
         "EMBODIED_COGNITION": 0.1772,
         "NEUROMODULATORY": 0.1686
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3004,44 +3005,50 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Geometric cues (e.g., boundaries, overall shape of the environment)",
-      "Potentially landmark cues (distinct objects, if used for comparison)"
+      "geometric cues (e.g., room shape, wall configurations)",
+      "featural cues (e.g., distinct objects, landmarks)"
     ],
-    "duration_exposure": "Multiple navigation trials over a session (e.g., 30-60 minutes)",
+    "duration_exposure": "multiple trials over a session, typically 1-2 hours total",
     "control_conditions": [
-      "Comparison between younger adults and older adults",
-      "Manipulation of cue availability or reliability (e.g., environments with varying salience of geometric vs. landmark cues)"
+      "young adults vs. older adults",
+      "geometric cues vs. featural cues (often put in conflict)",
+      "different cue reliability conditions"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
-      "theory_name": "Dual-system theory of spatial navigation (e.g., Place vs. Response learning)",
+      "theory_name": "Cognitive Aging Theories",
       "commitment_type": "tests",
-      "specific_claim": "Spatial navigation relies on multiple systems (e.g., hippocampal-dependent allocentric/place learning and striatal-dependent egocentric/response learning), which may be differentially affected by aging, leading to shifts in preferred navigation strategies."
+      "specific_claim": "Age-related cognitive decline, particularly in executive functions and hippocampal-dependent memory, leads to shifts in spatial navigation strategies."
+    },
+    {
+      "theory_name": "Dual-System Theories of Spatial Navigation",
+      "commitment_type": "extends",
+      "specific_claim": "Different brain systems (e.g., hippocampal vs. striatal) support different types of spatial navigation, and aging differentially impacts these systems, leading to a preference for certain cue types."
     }
   ],
   "mechanism_chain": {
-    "description": "Age-related decline in specific brain regions and cognitive functions impairs complex spatial mapping, leading to a compensatory shift towards reliance on simpler, more robust geometric cues for navigation.",
+    "description": "Advanced age leads to a decline in cognitive functions, particularly those supported by the hippocampus, which impairs the flexible use of multiple featural cues. This prompts a compensatory reliance on more stable and robust geometric cues for navigation.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Advanced age",
-        "to_construct": "Decline in hippocampal-dependent allocentric spatial processing",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "to_construct": "Decline in hippocampal-dependent spatial memory and executive functions",
+        "mechanism_type": "neural|cognitive",
+        "evidence_strength": "theoretical|indirect"
       },
       {
         "step": 2,
-        "from_construct": "Decline in hippocampal-dependent allocentric spatial processing",
-        "to_construct": "Reduced ability to form and utilize complex cognitive maps based on arbitrary landmarks",
+        "from_construct": "Decline in hippocampal-dependent spatial memory",
+        "to_construct": "Reduced ability to integrate and flexibly use multiple featural cues",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "theoretical|indirect"
       },
       {
         "step": 3,
-        "from_construct": "Reduced ability to use complex cognitive maps",
-        "to_construct": "Increased reliance on simpler, more robust geometric cues for navigation",
+        "from_construct": "Reduced ability to integrate multiple featural cues",
+        "to_construct": "Increased reliance on robust geometric cues for navigation",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -3049,24 +3056,33 @@
   },
   "instruments_used": [
     {
-      "name": "Real-world navigation task (e.g., maze navigation)",
-      "construct": "Spatial navigation strategy, preference for geometric cues, navigation performance",
-      "description": "Participants navigate a physical environment designed to assess their use of different spatial cues.",
+      "name": "Virtual Navigation Task (custom-built)",
+      "construct": "Spatial navigation strategy, cue preference, navigation accuracy",
+      "description": "Participants navigate a virtual environment to find a hidden target location, with geometric and featural cues manipulated (e.g., put into conflict).",
       "type": "behavioral"
     },
     {
-      "name": "fMRI",
-      "construct": "Brain activity during navigation, structural integrity of brain regions (e.g., hippocampus, striatum)",
-      "description": "Measures brain activation patterns and/or structural properties associated with navigation.",
-      "type": "fmri"
-    },
-    {
-      "name": "Neuropsychological battery",
-      "construct": "General cognitive function, specific cognitive abilities (e.g., memory, executive function) relevant to navigation",
-      "description": "A set of standardized tests to assess various cognitive domains.",
-      "type": "behavioral"
+      "name": "Standardized Cognitive Battery (e.g., MoCA, MMSE, specific memory tests)",
+      "construct": "General cognitive function, specific memory domains (e.g., verbal memory, working memory, executive function)",
+      "description": "Used to characterize participants' cognitive status and rule out dementia.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:23:51.657578+00:00"
+  "surgical_update_at": "2026-03-02T18:32:31.073950+00:00",
+  "stimulus_images": [
+    {
+      "description": "Renderings of the virtual environment used for navigation tasks, showing the room shape and distinct landmarks.",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the experimental setup, including cue conflict trials where geometric and featural cues are manipulated.",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

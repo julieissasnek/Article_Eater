@@ -41,15 +41,15 @@ from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 
-from src.services.db_locator import resolve_web_db
+from src.services.db_locator import resolve_web_db, get_web_db
 
 logger = logging.getLogger(__name__)
 
-# Default paths
+# Default paths — use centralized resolver
 try:
     DEFAULT_DB_PATH = resolve_web_db(prefer="integrated")
 except Exception:
-    DEFAULT_DB_PATH = Path(os.environ.get("AE_DB_PATH", Path(__file__).parent.parent.parent / "data" / "web_persistence_v2.db"))
+    DEFAULT_DB_PATH = get_web_db()  # Falls back to whichever DB actually exists
 DEFAULT_JSON_PATH = Path(__file__).parent.parent.parent / "data" / "accumulated_web.json"
 DEFAULT_EVENTS_PATH = Path(__file__).parent.parent.parent / "data" / "events.jsonl"
 

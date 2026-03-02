@@ -1,0 +1,791 @@
+{
+  "metadata": {
+    "created": "2026-03-02",
+    "atlas_version": "V22.0.0",
+    "description": "ATLAS Figure-Document Consistency Tracking. Declares all data dependencies for every master document figure (M-1 through M-24). Each figure entry includes specific claims, numbers, and structural assumptions with grep patterns to verify them against source text.",
+    "master_doc_parts_path": "docs/master_doc_parts/",
+    "validation_script": "scripts/check_figure_consistency.py"
+  },
+  "figures": {
+    "m1_three_layer_architecture": {
+      "title": "Three Computational Layers Inside a Superordinate Interpretive Envelope",
+      "figure_number": "M-1",
+      "source_parts": [
+        "PART_I_EXPLANATION_GAP.md",
+        "PART_IV_CREDENCE.md",
+        "PART_VIII_IE_DPT.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Architectural diagram showing three computational layers (Evidence Store, Lab-to-Building Transfer, Causal Model) wrapped in superordinate Interpretive Envelope (IE-DPT). Right side shows 2×2 Kirsh × Kahneman matrix.",
+      "dependencies": [
+        {
+          "type": "STRUCTURE",
+          "claim": "Three computational layers: Evidence Store, Lab-to-Building Transfer, Causal Model",
+          "grep_pattern": "three.*layer|Evidence Store|Lab-to-Building Transfer|Causal Model",
+          "severity": "CRITICAL",
+          "notes": "Core architectural structure of entire system"
+        },
+        {
+          "type": "STRUCTURE",
+          "claim": "IE-DPT as superordinate interpretive envelope wrapping all three layers",
+          "grep_pattern": "Interpretive Envelope|IE-DPT|superordinate.*mechanism|dashed purple envelope",
+          "severity": "CRITICAL",
+          "notes": "Key innovation: IE-DPT determines which unconscious processes activate"
+        },
+        {
+          "type": "COUNT",
+          "claim": "Evidence Store contains 3,420+ scientific findings",
+          "grep_pattern": "3[,.]?4[0-9]{2}.*finding|3420.*belief|3420.*evidence",
+          "severity": "MINOR",
+          "notes": "Specific number validates corpus size claims"
+        },
+        {
+          "type": "TAXONOMY",
+          "claim": "Kirsh × Kahneman 2×2 matrix: easy/hard × automatic/deliberate",
+          "grep_pattern": "2×2.*matrix|Kirsh.*Kahneman|easy.*hard.*automatic.*deliberate|Cell A.*Cell D",
+          "severity": "MINOR",
+          "notes": "Conceptual framework for IE-DPT operation"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "Gaps and contradictions feed back upward, triggering new literature searches",
+          "grep_pattern": "feedback.*upward|gaps.*trigger.*literature|gap.*detection.*search",
+          "severity": "MINOR",
+          "notes": "Characterizes closed-loop architecture"
+        },
+        {
+          "type": "CONSTRAINT",
+          "claim": "Good architectural design moves occupants from Cell D toward Cell A",
+          "grep_pattern": "Cell D.*Cell A|moves.*occupants.*from|everything is hard.*it just works",
+          "severity": "MINOR",
+          "notes": "Design principle derived from IE-DPT framework"
+        }
+      ]
+    },
+    "m2_epistemic_network_architecture": {
+      "title": "Epistemic Network: Evidence Types and Warrant Taxonomy",
+      "figure_number": "M-2",
+      "source_parts": [
+        "PART_IV_CREDENCE.md",
+        "PART_VII_T15_REDUCTIONS.md",
+        "PART_IX_WEB_OF_BELIEF.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Network graph showing evidence types (CONSTITUTIVE, MECHANISM, EMPIRICAL_ASSOCIATION, FUNCTIONAL, CAPACITY, ANALOGICAL, THEORY_DERIVED) with their corresponding transfer reliabilities and warrant strengths.",
+      "dependencies": [
+        {
+          "type": "TAXONOMY",
+          "claim": "Seven evidence warrant types with fixed transfer reliabilities",
+          "grep_pattern": "CONSTITUTIVE|MECHANISM|EMPIRICAL_ASSOCIATION|FUNCTIONAL|CAPACITY|ANALOGICAL|THEORY_DERIVED|warrant type",
+          "severity": "CRITICAL",
+          "notes": "Foundational epistemic taxonomy"
+        },
+        {
+          "type": "MAPPING",
+          "claim": "CONSTITUTIVE = d:0.95; MECHANISM = d:0.80; EMPIRICAL_ASSOCIATION = d:0.80; FUNCTIONAL = d:0.65; CAPACITY = d:0.55; ANALOGICAL = d:0.40; THEORY_DERIVED = d:0.25",
+          "grep_pattern": "CONSTITUTIVE.*0\\.95|MECHANISM.*0\\.80|EMPIRICAL_ASSOCIATION.*0\\.80|FUNCTIONAL.*0\\.65|CAPACITY.*0\\.55|ANALOGICAL.*0\\.40|THEORY_DERIVED.*0\\.25|transfer reliability",
+          "severity": "CRITICAL",
+          "notes": "These values are epistemic-structural invariants"
+        },
+        {
+          "type": "RELATIONSHIP",
+          "claim": "Warrant type τ is independent from warrant strength ω",
+          "grep_pattern": "warrant type.*independent|ω.*independent|type.*strength.*independent",
+          "severity": "MINOR",
+          "notes": "Prevents confusion between evidence quality and structural type"
+        },
+        {
+          "type": "DEFINITION",
+          "claim": "Warrant strength ω reflects study quality, replication, sample size, effect size, methodological rigor",
+          "grep_pattern": "warrant strength.*study quality|ω.*replication|ω.*sample size|ω.*effect size|reducible.*new.*studies",
+          "severity": "MINOR",
+          "notes": "Characterizes ω operationally"
+        }
+      ]
+    },
+    "m3_bayesian_network_structure": {
+      "title": "Bayesian Network: Causal Topology and CPT Linkage",
+      "figure_number": "M-3",
+      "source_parts": [
+        "PART_VIII_IE_DPT.md",
+        "PART_IX_WEB_OF_BELIEF.md",
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Directed acyclic graph showing how Epistemic Network projects onto Bayesian Network via credence computation. Shows parent-child relationships, CPT generation from projection formula.",
+      "dependencies": [
+        {
+          "type": "STRUCTURE",
+          "claim": "BN is directed acyclic graph with CPTs on each node",
+          "grep_pattern": "Bayesian Network|DAG|directed acyclic|Conditional Probability Table|CPT",
+          "severity": "CRITICAL",
+          "notes": "Defines causal inference structure"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "EN edges project onto BN edges via projection formula",
+          "grep_pattern": "EN.*project.*BN|projection.*formula|credence.*computation",
+          "severity": "CRITICAL",
+          "notes": "Core mechanism linking evidence to prediction"
+        },
+        {
+          "type": "DEFINITION",
+          "claim": "CPT is object-level content encoding P(outcome | parents) = aleatory probabilities",
+          "grep_pattern": "CPT.*P\\(|Conditional Probability.*outcome|aleatory|irreducible uncertainty",
+          "severity": "MINOR",
+          "notes": "Distinguishes epistemic from aleatory uncertainty"
+        }
+      ]
+    },
+    "m4_projection_formula": {
+      "title": "Projection Formula: d·ω·δ·logit(p_lab) → p_target",
+      "figure_number": "M-4",
+      "source_parts": [
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Four-factor formula broken into colored bars: design factor d (blue), warrant strength ω (green), population transfer δ (gold), and log-odds transformation. Shows worked example: p_lab=0.80, d=0.80, ω=0.65, δ=0.85 → p_target=0.68.",
+      "dependencies": [
+        {
+          "type": "FORMULA",
+          "claim": "Projection formula: logit(p_target) = d·ω·δ·logit(p_lab)",
+          "grep_pattern": "logit\\(p_target\\)|d.*ω.*δ.*logit|projection.*formula|log-odds",
+          "severity": "CRITICAL",
+          "notes": "Fundamental credence computation"
+        },
+        {
+          "type": "DEFINITION",
+          "claim": "Design factor d: transfer reliability by warrant type (independent of study quality)",
+          "grep_pattern": "design factor.*d|transfer.*reliability|warrant type.*structure",
+          "severity": "CRITICAL",
+          "notes": "Fixed epistemic property of evidence type"
+        },
+        {
+          "type": "DEFINITION",
+          "claim": "Warrant strength ω: study quality (replication, sample, methods, rigor)",
+          "grep_pattern": "warrant strength.*ω|ω.*replication|ω.*quality|ω.*sample|ω.*rigor",
+          "severity": "CRITICAL",
+          "notes": "Reducible by better evidence"
+        },
+        {
+          "type": "DEFINITION",
+          "claim": "Population transfer δ: demographic distance between lab and target populations",
+          "grep_pattern": "population transfer.*δ|δ.*demographic|δ.*generalize|population.*distance",
+          "severity": "CRITICAL",
+          "notes": "Context-dependent, updated with new population studies"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "Log-odds transform ensures weak evidence attenuates toward ignorance prior (logit=0.50→0)",
+          "grep_pattern": "log-odds.*ignorance|logit.*0\\.50.*0|multiplication.*log-odds|attenuation.*zero",
+          "severity": "MINOR",
+          "notes": "Justifies why direct probability multiplication fails"
+        },
+        {
+          "type": "WORKED_EXAMPLE",
+          "claim": "Fractal preference: p_lab=0.80, d=0.80 (quasi-exp), ω=0.65 (replicated), δ=0.85 (VR), p_target=0.68",
+          "grep_pattern": "fractal.*preference|p_lab.*0\\.80|p_target.*0\\.68|d.*0\\.80.*quasi|ω.*0\\.65|δ.*0\\.85",
+          "severity": "MINOR",
+          "notes": "Concrete worked example validates formula"
+        }
+      ]
+    },
+    "m5_warrant_strength_assignment": {
+      "title": "Warrant Strength: Four Multipliers × Base Confidence",
+      "figure_number": "M-5",
+      "source_parts": [
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Decomposition of warrant strength ω into four independent multipliers: base confidence, replication status, meta-analytic coverage, methodological rigor. Shows factor range (0.40–0.90) and typical assignment patterns.",
+      "dependencies": [
+        {
+          "type": "TAXONOMY",
+          "claim": "ω decomposes into four multipliers: base confidence, replication, meta-analysis coverage, methodological rigor",
+          "grep_pattern": "warrant strength.*four|four.*multiplier|base confidence.*replication|meta-analytic coverage",
+          "severity": "CRITICAL",
+          "notes": "Operational definition of ω assignment"
+        },
+        {
+          "type": "RANGE",
+          "claim": "ω ∈ (0, 1); typical: pilot study ω=0.40, meta-analysis ω=0.90",
+          "grep_pattern": "ω.*0\\.40.*pilot|ω.*0\\.90.*meta|warrant strength.*range|0\\.4.*0\\.9",
+          "severity": "MINOR",
+          "notes": "Calibration guidance for assessors"
+        }
+      ]
+    },
+    "m6_population_transfer": {
+      "title": "Population Transfer: δ Heatmap by Immersion Level and Claim Type",
+      "figure_number": "M-6",
+      "source_parts": [
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Heatmap with rows (immersion levels: real building δ=0.95 to desktop images δ=0.40) × columns (preference vs functional claims). Shows δ gradient and calibration table for common population pairs.",
+      "dependencies": [
+        {
+          "type": "STRUCTURE",
+          "claim": "Seven immersion levels from full real-building (δ=0.95) to desktop image viewing (δ=0.40)",
+          "grep_pattern": "immersion.*δ|real building.*0\\.95|desktop.*0\\.40|gradient.*steep|0\\.55.*gap",
+          "severity": "CRITICAL",
+          "notes": "Core transfer discount structure"
+        },
+        {
+          "type": "PATTERN",
+          "claim": "Functional claims receive lower δ than preference claims (context-dependent mechanisms)",
+          "grep_pattern": "functional.*lower.*δ|preference.*higher.*δ|mechanisms.*context-dependent",
+          "severity": "MINOR",
+          "notes": "Reflects differential transferability of claim types"
+        },
+        {
+          "type": "CALIBRATION",
+          "claim": "Default δ=0.95 for same population lab-to-field; δ=0.90 WEIRD-to-WEIRD; δ=0.40-0.50 WEIRD-to-rural-non-WEIRD",
+          "grep_pattern": "δ.*0\\.95.*same|δ.*0\\.90.*WEIRD|δ.*0\\.40.*rural|δ.*0\\.50.*non-WEIRD|canonical.*δ",
+          "severity": "MINOR",
+          "notes": "Lookup table for standard population transfers"
+        },
+        {
+          "type": "ADJUSTMENT",
+          "claim": "Neurodiverse populations: reduce δ by 0.10-0.20 from base (sensory differences)",
+          "grep_pattern": "neurodiverse|reduce.*0\\.10.*0\\.20|sensory.*sensitivity|ADHD.*autism",
+          "severity": "MINOR",
+          "notes": "Accounts for perceptual and tolerance differences"
+        }
+      ]
+    },
+    "m7_visual_panel": {
+      "title": "VISUAL-I Panel Overview: Fractal Dimension, Contour Geometry, Spatial Proportions",
+      "figure_number": "M-7",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel summary showing three key parameters (fractal dimension D≈1.3, contour curvature CCI, ceiling height ratio R_h) and eight templates. Exemplar: fractal facade p_lab=0.80 → d=0.80 → ω=0.65 → δ=0.85 → p_target=0.68.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Fractal dimension peaks at D ≈ 1.3 (Goldilocks zone)",
+          "grep_pattern": "fractal.*dimension|D.*1\\.3|peak.*D|Goldilocks.*fractal",
+          "severity": "CRITICAL",
+          "notes": "Core visual perception finding"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Contour Curvature Index (CCI) ranges: healthcare 0.20–0.50, sacred spaces 0.60–1.80+",
+          "grep_pattern": "Contour Curvature Index|CCI.*0\\.20.*0\\.50|CCI.*0\\.60.*1\\.80|context-specific",
+          "severity": "MINOR",
+          "notes": "Context-dependent curvature preference"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Spatial Rhythm Variation (SRV) optimal at 0.12–0.25",
+          "grep_pattern": "Spatial Rhythm Variation|SRV.*0\\.12.*0\\.25|multi-scale.*periodic",
+          "severity": "MINOR",
+          "notes": "Visual rhythm parameter"
+        },
+        {
+          "type": "TAXONOMY",
+          "claim": "Eight templates covering complexity, contour, proportions, light, and views",
+          "grep_pattern": "eight.*template|T1.*T2.*T22|L1.*VIEW1|VF1.*VF2.*VF3",
+          "severity": "MINOR",
+          "notes": "Template inventory for visual domain"
+        },
+        {
+          "type": "FRAMEWORK",
+          "claim": "Three T1 frameworks: Predictive Processing, Neuroaesthetics, Environmental Psychology",
+          "grep_pattern": "Predictive Processing|Neuroaesthetics|Environmental Psychology|three.*T1",
+          "severity": "MINOR",
+          "notes": "Theoretical grounding"
+        },
+        {
+          "type": "WARRANT_DISTRIBUTION",
+          "claim": "Predominantly EMPIRICAL_ASSOCIATION and MECHANISM warrants (~15 templates)",
+          "grep_pattern": "EMPIRICAL_ASSOCIATION|MECHANISM.*warrant|warrant.*distribution",
+          "severity": "MINOR",
+          "notes": "Warrant profile for visual panel"
+        },
+        {
+          "type": "EMPIRICAL_CEILING",
+          "claim": "Coburn image-computable metrics: R²=0.35 (0.42 with color); remaining 58% from meaning/context/expertise",
+          "grep_pattern": "Coburn|R².*0\\.35|0\\.42.*color|58%.*meaning.*context",
+          "severity": "MINOR",
+          "notes": "Honest empirical bound on predictive power"
+        }
+      ]
+    },
+    "m8_light_panel": {
+      "title": "LIGHT-I Panel Overview: Dual-Pathway Architecture and Daylight Multi-Channel Convergence",
+      "figure_number": "M-8",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Dual-pathway diagram (image-forming vs non-visual/circadian). Key parameters: melanopic EDI 200-500 lux, CCT 2700-6500K, daylight factor 2-5%. Warrant distribution skews to MECHANISM. Exemplar: daylight multi-channel p_target=0.72.",
+      "dependencies": [
+        {
+          "type": "STRUCTURE",
+          "claim": "Dual-pathway architecture: image-forming visual (rods, cones → V1) + non-visual (ipRGCs → SCN)",
+          "grep_pattern": "dual-pathway|image-forming.*non-visual|ipRGCs.*SCN|melanopsin.*retinal",
+          "severity": "CRITICAL",
+          "notes": "Foundational light architecture distinction"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "Non-visual pathway responds to melanopic spectral irradiance for circadian entrainment and acute alerting",
+          "grep_pattern": "melanopsin|ipRGCs|spectral irradiance|circadian.*entrainment|acute.*alerting",
+          "severity": "CRITICAL",
+          "notes": "Biological basis for light design"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Circadian maintenance threshold: 87 m-lux mEDI for ≥2 hours",
+          "grep_pattern": "87.*m-lux.*mEDI|circadian.*maintenance|threshold.*2.*hour",
+          "severity": "CRITICAL",
+          "notes": "Quantitative design threshold"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Evening melatonin suppression threshold: 38 m-lux mEDI",
+          "grep_pattern": "38.*m-lux.*mEDI|melatonin.*suppression|evening.*threshold",
+          "severity": "MINOR",
+          "notes": "Sleep-relevant threshold"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Rockcastle CV-of-luminance Goldilocks: comfort <0.5, aesthetic 0.5–1.5, dramatic 1.5–3.0, discomfort >3.0",
+          "grep_pattern": "Rockcastle|CV-of-luminance|0\\.5.*1\\.5.*3\\.0|dramatic.*discomfort",
+          "severity": "MINOR",
+          "notes": "Luminance variation calibration"
+        },
+        {
+          "type": "MODEL",
+          "claim": "Daylight multi-channel convergence: six distinguishable benefit channels with convergence coefficient ≈1.27 (range 1.10–1.45)",
+          "grep_pattern": "daylight.*multi-channel|convergence.*coefficient.*1\\.27|1\\.10.*1\\.45|six.*channel",
+          "severity": "CRITICAL",
+          "notes": "Key theoretical contribution of LIGHT-I panel"
+        },
+        {
+          "type": "FRAMEWORK",
+          "claim": "Three T1 frameworks: Chronobiological Regulation, Predictive Processing, Neuromodulatory Systems",
+          "grep_pattern": "Chronobiological Regulation|CB.*PP.*NM|three.*T1.*light",
+          "severity": "MINOR",
+          "notes": "Theoretical grounding"
+        },
+        {
+          "type": "WARRANT_STATUS",
+          "claim": "L2 (circadian) ESTABLISHED; L1 & L4 SUPPORTED; L3 (convergence) SUPPORTED with key experiment pending; L5 (dynamic) PRELIMINARY",
+          "grep_pattern": "L2.*ESTABLISHED|L1.*L4.*SUPPORTED|L3.*experiment|L5.*PRELIMINARY",
+          "severity": "MINOR",
+          "notes": "Epistemic status by template"
+        }
+      ]
+    },
+    "m9_thermal_panel": {
+      "title": "THERMAL-I Panel Overview: Adaptive Comfort and Cultural Calibration",
+      "figure_number": "M-9",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Temperature parameters (adaptive band 20-26°C, humidity 40-60%, air velocity 0.1-0.3 m/s) overlaid with cultural variable: natural ventilation tolerate wider swings. Three T1 frameworks: Adaptive Comfort, Predictive Processing, Allostasis. Exemplar credence 0.65.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Adaptive comfort zone: 20-26°C for naturally ventilated buildings",
+          "grep_pattern": "adaptive.*zone|20.*26.*°C|naturally ventilated|comfort.*band",
+          "severity": "CRITICAL",
+          "notes": "Core thermal design range"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Adaptive comfort regression: ΔT_pref = 0.31 K/K outdoor running-mean in natural ventilation; 0.11 K/K in AC",
+          "grep_pattern": "0\\.31.*K|0\\.11.*K|adaptive.*regression|running-mean.*temperature",
+          "severity": "CRITICAL",
+          "notes": "Quantifies cultural/expectation dependence"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "Allesthesia: thermal hedonic valence depends on body state, ~5 pleasantness points per °C core deviation",
+          "grep_pattern": "allesthesia|thermal.*valence|body.*state|5.*pleasantness|Cabanac",
+          "severity": "MINOR",
+          "notes": "Explains thermal nourishment from fluctuation"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Thermal nourishment from diurnal fluctuation: 1-3°C optimal, threshold 1.0°C ± 0.5°C",
+          "grep_pattern": "thermal nourishment|1.*3.*°C|fluctuation|Heschong",
+          "severity": "MINOR",
+          "notes": "Natural ventilation advantage"
+        },
+        {
+          "type": "BIOLOGY",
+          "claim": "TRPM8 cool threshold ≈28°C; TRPV3/V4 warm threshold ≈33°C (Craig labelled-line neuroanatomy)",
+          "grep_pattern": "TRPM8|TRPV3|TRPV4|28.*°C|33.*°C|labelled-line|Craig",
+          "severity": "MINOR",
+          "notes": "Sensory pathway basis"
+        },
+        {
+          "type": "METABOLISM",
+          "claim": "Metabolic cost: 2-5% per °C below thermoneutral zone (BAT); 1-3% above (sweating)",
+          "grep_pattern": "BAT|metabolic.*cost|2.*5%|1.*3%|thermoneutral",
+          "severity": "MINOR",
+          "notes": "Allostatic load contribution"
+        },
+        {
+          "type": "FRAMEWORK",
+          "claim": "Three T1 frameworks: Adaptive Comfort Theory, Predictive Processing, Allostasis",
+          "grep_pattern": "Adaptive Comfort|Predictive Processing|Allostasis|three.*T1",
+          "severity": "MINOR",
+          "notes": "Theoretical grounding"
+        }
+      ]
+    },
+    "m10_acoustic_panel": {
+      "title": "ACOUSTIC-I Panel Overview: Spectral Masking and Speech Intelligibility",
+      "figure_number": "M-10",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing speech intelligibility thresholds, background noise levels (30-50 dB), and reverberation parameters (RT60). Framework: Auditory Scene Analysis, Predictive Processing.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Speech intelligibility threshold: background noise ≤40 dB for unimpaired communication",
+          "grep_pattern": "speech.*intelligibility|background.*noise|40.*dB|unimpaired",
+          "severity": "CRITICAL",
+          "notes": "Core acoustic design threshold"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Reverberation RT60 optimal range depends on room function: classrooms 0.5-0.8s, offices 0.6-0.9s",
+          "grep_pattern": "RT60|reverberation|0\\.5.*0\\.8|0\\.6.*0\\.9|classroom|office",
+          "severity": "MINOR",
+          "notes": "Context-dependent RT calibration"
+        }
+      ]
+    },
+    "m11_air_quality_panel": {
+      "title": "AIR_QUALITY-I Panel Overview: Ventilation Rate and Cognitive Function",
+      "figure_number": "M-11",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing CO2 concentration thresholds (400-1200 ppm), volatile organic compounds (VOCs), and ventilation rate (3-6 ACH). Links to cognitive decision-making performance.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "CO2 concentration: 400 ppm baseline, cognitive impairment begins ~1000 ppm",
+          "grep_pattern": "CO2|400.*ppm|1000.*ppm|cognitive.*impairment",
+          "severity": "CRITICAL",
+          "notes": "Design-relevant threshold"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Ventilation rate: 3-6 air changes per hour (ACH) standard",
+          "grep_pattern": "ventilation.*rate|ACH|3.*6|air.*change",
+          "severity": "MINOR",
+          "notes": "HVAC design specification"
+        }
+      ]
+    },
+    "m12_biophilia_panel": {
+      "title": "BIOPHILIA-I Panel Overview: Nature Views and Restoration",
+      "figure_number": "M-12",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing nature view quality (living plants, water, sky, biodiversity), restoration pathway templates. Exemplar: nature view effectiveness across five independent channels with demonstrated convergence.",
+      "dependencies": [
+        {
+          "type": "MODEL",
+          "claim": "Nature views activate five partially independent restoration pathways (Attention Restoration Theory, Stress Reduction, Connectedness, Awe, Sensory Engagement)",
+          "grep_pattern": "five.*restoration|Attention Restoration|Stress.*Reduction|Connectedness|Awe|Sensory",
+          "severity": "CRITICAL",
+          "notes": "Multi-channel restoration model"
+        },
+        {
+          "type": "PARAMETER",
+          "claim": "Window view quality ranked: living plants > dynamic natural features > static nature > built landscape > no view",
+          "grep_pattern": "view.*quality|living.*plants|dynamic.*natural|static|built.*landscape|no view",
+          "severity": "MINOR",
+          "notes": "Hierarchy of biophilic effectiveness"
+        }
+      ]
+    },
+    "m13_wayfinding_panel": {
+      "title": "WAYFINDING-I Panel Overview: Spatial Legibility and Cognitive Load",
+      "figure_number": "M-13",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing legibility factors (landmark salience, grid clarity, sightline transparency). Links spatial clarity to navigation error rate and cognitive load.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Landmark salience: distinctive features should occur every 30-50m in complex buildings",
+          "grep_pattern": "landmark.*salience|30.*50.*m|distinctive.*feature",
+          "severity": "MINOR",
+          "notes": "Wayfinding spacing guideline"
+        }
+      ]
+    },
+    "m14_circadian_architecture_panel": {
+      "title": "CIRCADIAN_ARCH-I Panel Overview: Entrainment Windows and Circadian Alignment",
+      "figure_number": "M-14",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Integration panel combining light, temperature, and activity rhythm cues. Shows entrainment window timing, zeitgeber strength hierarchy (light > temperature > activity).",
+      "dependencies": [
+        {
+          "type": "HIERARCHY",
+          "claim": "Zeitgeber strength: light > temperature >> activity cues in human circadian entrainment",
+          "grep_pattern": "zeitgeber.*strength|light.*temperature.*activity|entrainment.*hierarchy",
+          "severity": "MINOR",
+          "notes": "Prioritizes design interventions"
+        }
+      ]
+    },
+    "m15_ergonomic_workspace_panel": {
+      "title": "ERGONOMIC_WORKSPACE-I Panel: Height, Reach, and Dynamic Posture",
+      "figure_number": "M-15",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing anthropometric ranges, optimal work surface heights (28-30 inches for seated, variable for standing), and benefits of posture switching.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Optimal work surface height: 28-30 inches seated; variable 38-48 inches standing",
+          "grep_pattern": "work surface|28.*30.*inch|38.*48|seated|standing",
+          "severity": "MINOR",
+          "notes": "Anthropometric design specification"
+        }
+      ]
+    },
+    "m16_vegetation_management_panel": {
+      "title": "VEGETATION_MANAGEMENT-I Panel: Indoor Plants and Maintenance Burden",
+      "figure_number": "M-16",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel balancing vegetation benefits (air quality, aesthetics, restoration) against maintenance cost. Shows species selection, irrigation strategy, and failure rates.",
+      "dependencies": [
+        {
+          "type": "TRADEOFF",
+          "claim": "Indoor plant welfare outweighs marginal air quality benefit unless high-maintenance species (ferns, pothos) in ≥15% of interior volume",
+          "grep_pattern": "plant.*maintenance|air.*quality.*benefit|ferns|pothos|interior.*volume",
+          "severity": "MINOR",
+          "notes": "Cautionary analysis of low-maintenance greening"
+        }
+      ]
+    },
+    "m17_privacy_sound_panel": {
+      "title": "PRIVACY_SOUND-I Panel: Speech Privacy and Confidentiality",
+      "figure_number": "M-17",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing privacy metrics (speech intelligibility index SII, privacy class ratings), sound masking strategies, and absorption vs. isolation tradeoffs.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Speech Intelligibility Index (SII): SII ≤0.30 for privacy; <0.15 for confidential spaces",
+          "grep_pattern": "Speech Intelligibility Index|SII|0\\.30|0\\.15|privacy.*class",
+          "severity": "MINOR",
+          "notes": "Privacy design threshold"
+        }
+      ]
+    },
+    "m18_emergency_egress_panel": {
+      "title": "EMERGENCY_EGRESS-I Panel: Wayfinding Under Stress and Exit Clarity",
+      "figure_number": "M-18",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Panel showing emergency egress design principles: exit clarity, signage legibility under low visibility, queue management, and panic-avoidance design.",
+      "dependencies": [
+        {
+          "type": "PARAMETER",
+          "claim": "Exit signage must be visible >100 feet away at 5% illumination levels",
+          "grep_pattern": "exit.*signage|100.*feet|5%.*illumination|visibility",
+          "severity": "MINOR",
+          "notes": "Emergency design specification"
+        }
+      ]
+    },
+    "m19_aeshi_pipeline": {
+      "title": "AESHI Operations Pipeline: Five Stages and Feedback Loop",
+      "figure_number": "M-19",
+      "source_parts": [
+        "PART_VIII_IE_DPT.md",
+        "PART_XVIII_INFRASTRUCTURE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Five-stage pipeline: GATHER → VET → CALIBRATE → INTEGRATE → RESOLVE. Shows AESHI subscore computation and loop back for gap detection.",
+      "dependencies": [
+        {
+          "type": "STRUCTURE",
+          "claim": "AESHI pipeline has five stages: GATHER (literature), VET (evidence), CALIBRATE (panel), INTEGRATE (composition), RESOLVE (outcome)",
+          "grep_pattern": "GATHER.*VET.*CALIBRATE.*INTEGRATE.*RESOLVE|five.*stage|AESHI|pipeline",
+          "severity": "CRITICAL",
+          "notes": "Core operational structure"
+        },
+        {
+          "type": "LOOP",
+          "claim": "Gap detection in RESOLVE stage feeds back to GATHER for targeted searches",
+          "grep_pattern": "gap.*detection|feedback.*loop|RESOLVE.*GATHER|targeted.*search",
+          "severity": "MINOR",
+          "notes": "Iterative refinement mechanism"
+        }
+      ]
+    },
+    "m20_credence_aggregation": {
+      "title": "Credence Aggregation: Serial and Parallel Combination",
+      "figure_number": "M-20",
+      "source_parts": [
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Two aggregation patterns: serial (chain through intermediates, e.g., ceiling height → visual complexity → preference) and parallel (convergent evidence from independent sources).",
+      "dependencies": [
+        {
+          "type": "MECHANISM",
+          "claim": "Serial combination: multiply intermediate credences logit(p_final) = logit(p_1) + logit(p_2) + ...",
+          "grep_pattern": "serial.*combination|chain.*intermediate|logit.*addition|intermediate.*credence",
+          "severity": "CRITICAL",
+          "notes": "Causal chain aggregation"
+        },
+        {
+          "type": "MECHANISM",
+          "claim": "Parallel combination: convergent evidence from independent sources increases confidence",
+          "grep_pattern": "parallel.*combination|convergent.*evidence|independent.*source",
+          "severity": "MINOR",
+          "notes": "Multi-source confirmation"
+        }
+      ]
+    },
+    "m21_explanatory_boost": {
+      "title": "Explanatory Boost: Mechanism Never Decreases Confidence",
+      "figure_number": "M-21",
+      "source_parts": [
+        "PART_IV_CREDENCE.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Principle that mechanism warrant (explaining the pathway from input to outcome) increases confidence in empirical association edges. Shows boost calculation and limits.",
+      "dependencies": [
+        {
+          "type": "PRINCIPLE",
+          "claim": "MECHANISM warrant boosts confidence in EMPIRICAL_ASSOCIATION edges; effect size depends on mechanistic detail",
+          "grep_pattern": "explanatory.*boost|MECHANISM.*boost|mechanism.*increase.*confidence|warrant.*boost",
+          "severity": "MINOR",
+          "notes": "Coherentist confidence increase"
+        }
+      ]
+    },
+    "m22_evidence_dashboard": {
+      "title": "Evidence Dashboard: Belief Count, Framework Coverage, Warrant Distribution",
+      "figure_number": "M-22",
+      "source_parts": [
+        "PART_IX_WEB_OF_BELIEF.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Dashboard showing total belief count, T1 framework sizes and coverage percentages, warrant type distribution (pie chart), and coverage ratings by domain.",
+      "dependencies": [
+        {
+          "type": "COUNT",
+          "claim": "Total belief/edge count in Epistemic Network",
+          "grep_pattern": "total.*belief|total.*edge|network.*size|edge.*count",
+          "severity": "MINOR",
+          "notes": "System size metric"
+        },
+        {
+          "type": "TAXONOMY",
+          "claim": "Warrant distribution: approximate percentages of CONSTITUTIVE, MECHANISM, EMPIRICAL_ASSOCIATION, etc.",
+          "grep_pattern": "warrant.*distribution|CONSTITUTIVE.*%|MECHANISM.*%|EMPIRICAL.*%",
+          "severity": "MINOR",
+          "notes": "Evidence profile of system"
+        },
+        {
+          "type": "COVERAGE",
+          "claim": "Domain panel coverage ratings (★ Minimal, ★★ Partial, ★★★ Strong, ★★★★ Near-Complete)",
+          "grep_pattern": "coverage.*rating|★.*Minimal|★★.*Partial|★★★.*Strong|★★★★.*Complete",
+          "severity": "MINOR",
+          "notes": "Epistemic readiness assessment"
+        }
+      ]
+    },
+    "m23_framework_map": {
+      "title": "Theory Frameworks (T1): Taxonomy and Interconnections",
+      "figure_number": "M-23",
+      "source_parts": [
+        "PART_VII_T15_REDUCTIONS.md",
+        "PART_XVII_META_EPISTEMOLOGY.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Concept map showing T1 framework families (Neuroscience, Psychology, Ecology, Design), their core concepts, and cross-framework bridges. Lists ~12-15 T1 frameworks.",
+      "dependencies": [
+        {
+          "type": "TAXONOMY",
+          "claim": "T1 frameworks include Predictive Processing, Attention Restoration Theory, Adaptive Comfort Theory, Neuroaesthetics, Environmental Psychology, Chronobiology, etc.",
+          "grep_pattern": "T1.*framework|Predictive Processing|Attention Restoration|Adaptive Comfort|Neuroaesthetics|Environmental Psychology|Chronobiology",
+          "severity": "MINOR",
+          "notes": "Partial list of T1 family"
+        }
+      ]
+    },
+    "m24_gap_analysis": {
+      "title": "Residual Gaps by Domain: Experiments Needed, Conceptual Uncertainty",
+      "figure_number": "M-24",
+      "source_parts": [
+        "PART_VI_DOMAIN_PANELS.md",
+        "PART_XIII_LIMITATIONS.md"
+      ],
+      "generator_script": "scripts/generate_master_doc_figures.py",
+      "last_verified": "2026-03-02",
+      "description": "Table or matrix showing per-panel residual gaps (experiments proposed, theoretical gaps, population transfer unknowns). Severity levels: critical blocking, moderate research priority, low follow-up.",
+      "dependencies": [
+        {
+          "type": "INVENTORY",
+          "claim": "Per-panel gap count and gap types documented (missing experiments, uncalibrated parameters, population unknowns)",
+          "grep_pattern": "residual.*gap|gap.*experiment|uncalibrated|population.*unknown|missing.*study",
+          "severity": "MINOR",
+          "notes": "Research roadmap"
+        }
+      ]
+    }
+  }
+}

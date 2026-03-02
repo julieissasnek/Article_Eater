@@ -90,7 +90,8 @@
           "score": 0.2616,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 2,
@@ -160,7 +161,8 @@
         "IC": 0.1505,
         "MS": 0.1505,
         "PP": 0.1505
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 3,
@@ -219,7 +221,8 @@
           "score": 0.2591,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 4,
@@ -284,7 +287,8 @@
       },
       "tier2_relevance": {
         "DUAL_PROCESS": 0.1625
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 5,
@@ -343,7 +347,8 @@
           "score": 0.2541,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 6,
@@ -420,7 +425,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1713,
         "CREATIVE_COGNITION": 0.1713,
         "INTEROCEPTION": 0.1709
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 7,
@@ -499,7 +505,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1713,
         "CREATIVE_COGNITION": 0.1713,
         "INTEROCEPTION": 0.1709
-      }
+      },
+      "sample_n": 32
     },
     {
       "id": 8,
@@ -541,7 +548,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 32
     }
   ],
   "mechanisms": [
@@ -1537,51 +1545,71 @@
   "stimulus_description": {
     "environmental_features": [
       "computer-generated textured surfaces",
-      "shading patterns",
-      "binocular disparity cues"
+      "surfaces with shading cues",
+      "surfaces with binocular disparity cues",
+      "surfaces with motion parallax cues",
+      "regular texture patterns (e.g., checkerboards, random dots)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "variations in texture gradient properties (e.g., density, size)",
-      "variations in shading properties",
-      "monocular vs. binocular viewing conditions"
+      "flat surfaces",
+      "surfaces with uniform texture",
+      "surfaces with single visual cues (e.g., texture only, shading only)",
+      "surfaces with conflicting cues"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "The visual system processes two-dimensional retinal projections of textured surfaces, extracting gradients in texture element properties (like density or size). These gradients are then interpreted to infer the three-dimensional orientation (slant and tilt) of the surface in space.",
+    "description": "The visual system extracts independent estimates of surface properties (e.g., slant) from various visual cues (e.g., texture gradient, shading, binocular disparity). These individual estimates are then combined, typically weighted by their perceived reliability or uncertainty, to produce a single, more robust and coherent percept of the surface's 3D geometry.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "3D textured surface in environment",
-        "to_construct": "2D retinal projection with texture gradient",
+        "from_construct": "Retinal image (e.g., texture gradient, shading pattern, binocular disparity)",
+        "to_construct": "Initial estimate of local surface orientation/slant from a single visual cue",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 2,
-        "from_construct": "Retinal texture gradient",
-        "to_construct": "Visual system extracts gradient information (e.g., changes in element size, density)",
-        "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
-        "step": 3,
-        "from_construct": "Extracted texture gradient information",
-        "to_construct": "Inference of surface slant/orientation",
-        "mechanism_type": "perceptual",
+        "step": 2,
+        "from_construct": "Multiple initial estimates of surface orientation/slant (from different cues)",
+        "to_construct": "Integrated percept of surface orientation/slant",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Slant adjustment task",
+      "name": "Visual probe adjustment task",
       "construct": "Perceived optical slant",
-      "description": "Participants adjusted a visual probe (e.g., a line or plane) to match the perceived orientation of the presented surface.",
+      "description": "Participants adjusted a visual probe (e.g., a line or a paddle) presented on the screen to match the perceived slant of the computer-generated surface.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:23:47.594849+00:00"
+  "surgical_update_at": "2026-03-02T18:37:43.656387+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cue Integration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The visual system combines multiple, often noisy, visual cues (e.g., texture, shading, disparity) to form a robust percept of surface properties, weighting cues by their reliability."
+    },
+    {
+      "theory_name": "Bayesian Inference in Perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Perceptual judgments can be modeled as a process of combining prior knowledge with sensory evidence to infer the most probable state of the world, often applied to cue integration."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of computer-rendered surfaces demonstrating varying texture gradients and shading cues, often shown in isolation and combination.",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the geometric projection of texture onto slanted surfaces and the resulting retinal gradients.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

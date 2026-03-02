@@ -1434,23 +1434,49 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
+      "theory_name": "Circadian Photoreception Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Light exposure, particularly its timing and spectral composition, influences the synchronization of the human circadian system, which in turn affects emotional states."
+      "specific_claim": "Light exposure, particularly its timing and spectral composition, influences the human circadian system, affecting sleep, mood, and cognitive functions."
+    },
+    {
+      "theory_name": "Melanopsin-mediated light perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin are primarily responsible for mediating non-visual responses to light, including circadian entrainment and melatonin suppression."
     }
   ],
   "mechanism_chain": {
-    "description": "The process by which maintaining proper light-dark cycles leads to the synchronization of the body's internal clock.",
+    "description": "Light exposure influences the circadian system via ipRGCs, which in turn regulates neuroendocrine functions affecting emotional state.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Maintaining proper lighting cycles (appropriate levels of light during the day and darkness at night)",
-        "to_construct": "Synchronization of the circadian system",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "to_construct": "Synchronization of the circadian system (via the suprachiasmatic nucleus)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Synchronization of the circadian system",
+        "to_construct": "Regulation of neuroendocrine systems (e.g., melatonin, cortisol) and neurotransmitter activity (e.g., serotonin)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Regulation of neuroendocrine systems and neurotransmitter activity",
+        "to_construct": "Modulation of emotional state (e.g., mood, alertness, well-being)",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:24:53.550021+00:00"
+  "surgical_update_at": "2026-03-02T18:32:55.497759+00:00"
 }

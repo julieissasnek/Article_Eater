@@ -1338,33 +1338,132 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Exposure to natural environments can restore directed attention, reduce mental fatigue, and improve cognitive function and mood."
+      "specific_claim": "Natural environments can restore directed attention, which may improve cognitive and socioemotional outcomes in children."
     },
     {
       "theory_name": "Stress Reduction Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Natural environments can reduce physiological and psychological stress through involuntary attention and positive emotional responses."
+      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress, leading to improved emotional well-being."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which is beneficial for health and well-being."
+    },
+    {
+      "theory_name": "Social Ecological Model",
+      "commitment_type": "assumes",
+      "specific_claim": "Children's physical activity and socioemotional health are influenced by multiple levels of environment, including the schoolyard."
     }
   ],
   "mechanism_chain": {
-    "description": "Schoolyard greening enhances the physical environment, providing more diverse and appealing play opportunities, which in turn encourages children to engage in more physical activity.",
+    "description": "Schoolyard greening provides opportunities and conditions that lead to increased physical activity and improved socioemotional health.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "schoolyard greening (e.g., natural elements, varied topography)",
-        "to_construct": "increased perceived play affordances and attractiveness",
-        "mechanism_type": "perceptual",
+        "from_construct": "schoolyard greening (natural elements, open spaces)",
+        "to_construct": "increased opportunities for active play and exploration",
+        "mechanism_type": "behavioral",
         "evidence_strength": "indirect"
       },
       {
         "step": 2,
-        "from_construct": "increased perceived play affordances and attractiveness",
-        "to_construct": "increased engagement in diverse physical activities",
+        "from_construct": "increased opportunities for active play and exploration",
+        "to_construct": "increased physical activity",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "schoolyard greening (natural elements, aesthetic appeal)",
+        "to_construct": "reduced stress and improved mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "reduced stress and improved mood",
+        "to_construct": "improved socioemotional health",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "schoolyard greening (diverse play settings)",
+        "to_construct": "increased social interaction and cooperation",
         "mechanism_type": "behavioral",
         "evidence_strength": "indirect"
+      },
+      {
+        "step": 6,
+        "from_construct": "increased social interaction and cooperation",
+        "to_construct": "improved socioemotional health",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:53:45.184635+00:00"
+  "surgical_update_at": "2026-03-02T18:29:56.420975+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "trees",
+      "shrubs",
+      "gardens",
+      "natural play elements (e.g., logs, rocks)",
+      "naturalized areas",
+      "removal of asphalt"
+    ],
+    "duration_exposure": "varied across reviewed studies, ranging from short-term interventions to long-term exposure over months or years",
+    "control_conditions": [
+      "non-greened schoolyards",
+      "traditional asphalt schoolyards",
+      "pre-intervention conditions (for before-after designs)"
+    ],
+    "ecological_validity": "field"
+  },
+  "instruments_used": [
+    {
+      "name": "Accelerometers",
+      "construct": "physical activity (e.g., moderate-to-vigorous physical activity)",
+      "description": "Wearable devices to objectively measure movement",
+      "type": "actigraphy"
+    },
+    {
+      "name": "Pedometers",
+      "construct": "steps taken, physical activity",
+      "description": "Devices to count steps",
+      "type": "actigraphy"
+    },
+    {
+      "name": "System for Observing Play and Recreation in Communities (SOPARC)",
+      "construct": "physical activity, activity type, social interaction",
+      "description": "Direct observation tool for assessing physical activity levels and contextual factors in outdoor settings",
+      "type": "behavioral"
+    },
+    {
+      "name": "Strengths and Difficulties Questionnaire (SDQ)",
+      "construct": "emotional symptoms, conduct problems, hyperactivity, peer problems, prosocial behavior",
+      "description": "Brief behavioral screening questionnaire for children and adolescents",
+      "type": "self_report"
+    },
+    {
+      "name": "Pediatric Quality of Life Inventory (PedsQL)",
+      "construct": "health-related quality of life (physical, emotional, social, school functioning)",
+      "description": "Modular instrument for measuring health-related quality of life in children and adolescents",
+      "type": "self_report"
+    },
+    {
+      "name": "Children's Depression Inventory (CDI)",
+      "construct": "depressive symptoms",
+      "description": "Self-report questionnaire to assess symptoms of depression in children and adolescents",
+      "type": "self_report"
+    },
+    {
+      "name": "State-Trait Anxiety Inventory for Children (STAIC)",
+      "construct": "anxiety",
+      "description": "Self-report measure of state and trait anxiety in children",
+      "type": "self_report"
+    }
+  ]
 }

@@ -943,47 +943,104 @@
   },
   "theory_commitments": [
     {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments, including indoor plants, can restore directed attention and reduce mental fatigue."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments elicits positive affective responses and reduces physiological indicators of stress."
+    },
+    {
       "theory_name": "Biophilia Hypothesis",
       "commitment_type": "assumes",
-      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems, which can explain positive responses to plants."
-    },
-    {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to natural environments, including indoor plants, can restore directed attention capacity by providing 'soft fascination'."
-    },
-    {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to natural environments can elicit positive affective responses and reduce physiological stress, leading to psychological benefits."
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which can lead to psychological benefits."
     }
   ],
   "mechanism_chain": {
-    "description": "Indoor plants provide a perceptual experience of natural elements, which activates restorative processes (e.g., attention restoration, stress reduction) leading to various psychological benefits.",
+    "description": "The paper discusses several potential mechanisms through which indoor plants might confer psychological benefits, often involving visual perception, cognitive processes, and physiological responses.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Indoor plants",
-        "to_construct": "Perceptual experience of natural elements (visual, olfactory)",
+        "from_construct": "presence of indoor plants",
+        "to_construct": "perceived naturalness/aesthetics",
         "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "Perceptual experience of natural elements",
-        "to_construct": "Activation of restorative processes (e.g., attention restoration, stress reduction)",
-        "mechanism_type": "cognitive|affective|physiological",
         "evidence_strength": "theoretical"
       },
       {
+        "step": 2,
+        "from_construct": "perceived naturalness/aesthetics",
+        "to_construct": "positive affect/mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
         "step": 3,
-        "from_construct": "Activation of restorative processes",
-        "to_construct": "Psychological benefits (e.g., reduced stress, improved mood, enhanced cognitive function)",
-        "mechanism_type": "affective|cognitive",
+        "from_construct": "positive affect/mood",
+        "to_construct": "stress reduction",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "positive affect/mood",
+        "to_construct": "attention restoration/improved cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "presence of indoor plants",
+        "to_construct": "improved air quality (e.g., reduced CO2, VOCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "improved air quality",
+        "to_construct": "physiological comfort/well-being",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:50:07.121561+00:00"
+  "surgical_update_at": "2026-03-02T18:40:02.908913+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "various types of indoor plants (foliage plants, flowering plants)",
+      "varying numbers of plants (e.g., single plant, multiple plants)",
+      "different plant sizes and arrangements",
+      "plants in various settings (e.g., office, hospital room, laboratory cubicle)"
+    ],
+    "duration_exposure": "highly variable across reviewed studies, ranging from short-term (minutes to hours) in laboratory settings to longer-term (days, weeks, months) in field interventions",
+    "control_conditions": [
+      "rooms without plants",
+      "rooms with artificial plants",
+      "rooms with other non-plant decor (e.g., abstract art, posters)",
+      "empty rooms"
+    ],
+    "ecological_validity": "lab"
+  },
+  "instruments_used": [
+    {
+      "name": "Self-report questionnaires",
+      "construct": "mood, affect, stress, well-being, perceived comfort, perceived air quality",
+      "description": "Various scales and questionnaires used to assess subjective psychological states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Physiological measures",
+      "construct": "stress response, arousal",
+      "description": "Measures such as heart rate, blood pressure, skin conductance, and cortisol levels.",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive performance tasks",
+      "construct": "attention, concentration, productivity",
+      "description": "Tasks like proofreading, reaction time tests, and other measures of cognitive function.",
+      "type": "behavioral"
+    }
+  ]
 }

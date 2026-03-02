@@ -1381,51 +1381,54 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "different wavelengths of light (e.g., blue, green, dim light)",
-      "controlled light intensity"
+      "Monochromatic light exposure (blue light, ~470 nm)",
+      "Monochromatic light exposure (green light, ~550 nm)",
+      "Monochromatic light exposure (amber light, ~590 nm)",
+      "Dim light control (<10 lux)"
     ],
-    "duration_exposure": "controlled duration per session",
+    "duration_exposure": "30 minutes pre-task, then during task (approx. 30-45 minutes)",
     "control_conditions": [
-      "different light wavelengths (e.g., green or dim light as comparison to blue light)"
+      "Dim light condition",
+      "Green light condition (as a comparison for blue light effects)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Non-Image-Forming (NIF) Effects of Light",
+      "theory_name": "Non-visual effects of light / Circadian phototransduction",
       "commitment_type": "tests",
-      "specific_claim": "Specific wavelengths of light, particularly blue light, modulate non-visual physiological and cognitive functions (e.g., alertness, brain activity, working memory) via intrinsically photosensitive retinal ganglion cells (ipRGCs)."
+      "specific_claim": "Light's effects on alertness, mood, and cognitive brain activity are mediated by specific wavelengths (e.g., blue light) acting through intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin, independent of or in addition to rod and cone photoreception."
     }
   ],
   "mechanism_chain": {
-    "description": "Light exposure of specific wavelengths activates ipRGCs, which project to subcortical and cortical brain regions, modulating neural activity and consequently affecting working memory performance and subjective alertness.",
+    "description": "Light of specific wavelengths (e.g., blue light) activates melanopsin-containing retinal ganglion cells, which project to subcortical brain regions (e.g., SCN, thalamus, brainstem nuclei) and subsequently modulate cortical activity in areas involved in working memory, leading to changes in cognitive performance and subjective alertness.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "light exposure (specific wavelengths)",
-        "to_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "from_construct": "Specific light wavelength (e.g., blue light)",
+        "to_construct": "Activation of melanopsin-containing retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "activation of ipRGCs",
-        "to_construct": "modulation of subcortical and cortical brain regions (e.g., SCN, thalamus, prefrontal cortex)",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Modulation of subcortical brain regions (e.g., SCN, thalamus, brainstem)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "modulation of brain regions",
-        "to_construct": "changes in brain activity during working memory task",
+        "from_construct": "Modulation of subcortical brain regions",
+        "to_construct": "Modulation of cortical activity (e.g., prefrontal cortex, parietal cortex)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "changes in brain activity",
-        "to_construct": "modulation of working memory performance and subjective alertness",
-        "mechanism_type": "cognitive",
+        "from_construct": "Modulation of cortical activity",
+        "to_construct": "Changes in working memory performance and subjective alertness",
+        "mechanism_type": "cognitive|affective|behavioral",
         "evidence_strength": "direct"
       }
     ]
@@ -1433,23 +1436,37 @@
   "instruments_used": [
     {
       "name": "fMRI",
-      "construct": "brain activity; neural responses",
-      "description": "Functional magnetic resonance imaging used to measure changes in blood oxygenation levels in the brain.",
+      "construct": "Brain activity (BOLD response)",
+      "description": "Functional magnetic resonance imaging to measure brain responses during the working memory task.",
       "type": "fmri"
     },
     {
-      "name": "Working Memory Task",
-      "construct": "working memory performance",
-      "description": "A cognitive task (e.g., N-back task) designed to assess the capacity to hold and manipulate information over short periods.",
+      "name": "N-back task",
+      "construct": "Working memory performance",
+      "description": "A cognitive task requiring participants to monitor a sequence of stimuli and respond whenever the current stimulus matches the one presented 'n' steps previously.",
       "type": "behavioral"
     },
     {
-      "name": "KSS",
-      "construct": "subjective alertness/sleepiness",
-      "description": "Karolinska Sleepiness Scale, a single-item self-report scale for current sleepiness.",
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective alertness/sleepiness",
+      "description": "A 9-point Likert scale ranging from 1 (extremely alert) to 9 (very sleepy, great effort to keep awake).",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:09:18.637577+00:00"
+  "surgical_update_at": "2026-03-02T18:41:41.335315+00:00",
+  "stimulus_images": [
+    {
+      "description": "Spectral power distribution of the different light stimuli used (blue, green, amber, dim)",
+      "figure_ref": "Figure 1",
+      "image_type": "graph"
+    },
+    {
+      "description": "Diagram of the experimental setup for light delivery and fMRI scanning",
+      "figure_ref": "Figure 1 or 2",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 16,
+  "paper_sample_size_source": "estimated"
 }

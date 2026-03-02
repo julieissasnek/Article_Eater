@@ -4157,12 +4157,112 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "color temperature of lighting"
+      "different color temperatures of artificial lighting (e.g., warm white, cool white)",
+      "controlled light intensity"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "simulated mission durations, typically multiple days or weeks",
+    "control_conditions": [
+      "standard or baseline lighting condition (e.g., a specific CCT or intensity)",
+      "dim light conditions"
+    ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:41:12.097227+00:00"
+  "surgical_update_at": "2026-03-02T18:39:13.711369+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Non-visual photoreceptors (ipRGCs) in the retina are sensitive to specific wavelengths of light, influencing the human circadian system, melatonin production, and subsequent physiological and psychological states."
+    },
+    {
+      "theory_name": "Melatonin Suppression Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to short-wavelength (blue-rich) light at night suppresses melatonin secretion, leading to circadian phase shifts and disruptions in sleep and alertness."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Light exposure, particularly specific color temperatures, impacts the circadian system, leading to changes in sleep, mood, and cognitive function.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Exposure to specific color temperature lighting",
+        "to_construct": "Activation of intrinsically photosensitive Retinal Ganglion Cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Modulation of suprachiasmatic nucleus (SCN) activity and pineal gland function",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Modulation of SCN/pineal gland function",
+        "to_construct": "Suppression or alteration of melatonin secretion",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Alteration of melatonin secretion",
+        "to_construct": "Circadian rhythm phase shifts and disruption of sleep-wake cycles",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Circadian rhythm disruption and altered sleep-wake cycles",
+        "to_construct": "Impact on mood, cognitive performance, and overall physical and mental health",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Pittsburgh Sleep Quality Index (PSQI)",
+      "construct": "sleep quality",
+      "description": "Self-report questionnaire assessing sleep quality and disturbances over a 1-month period",
+      "type": "self_report"
+    },
+    {
+      "name": "Profile of Mood States (POMS)",
+      "construct": "mood states",
+      "description": "Self-report questionnaire measuring transient mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "type": "self_report"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake patterns, activity levels",
+      "description": "Wearable device measuring gross motor activity to infer sleep onset, offset, and wakefulness",
+      "type": "physiological"
+    },
+    {
+      "name": "Salivary Melatonin Assay",
+      "construct": "melatonin levels",
+      "description": "Collection of saliva samples at specific times to measure melatonin concentration, indicating circadian phase and suppression",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive Performance Tests",
+      "construct": "cognitive function (e.g., attention, reaction time, memory)",
+      "description": "Computer-based tasks designed to measure various aspects of cognitive performance",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the simulated space habitat module or experimental chamber showing the lighting setup",
+      "figure_ref": "Figure 1 (likely)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Spectral power distribution (SPD) graphs for the different color temperature lights used",
+      "figure_ref": "Figure 2 (likely)",
+      "image_type": "graph"
+    }
+  ]
 }

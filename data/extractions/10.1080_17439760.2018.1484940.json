@@ -3776,13 +3776,12 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "room size",
-      "number of people (density)"
+      "small room",
+      "large room"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "approximately 30 minutes",
     "control_conditions": [
-      "large room",
-      "low density"
+      "large room condition"
     ],
     "ecological_validity": "lab"
   },
@@ -3790,49 +3789,64 @@
     {
       "theory_name": "Two-Factor Theory of Crowding",
       "commitment_type": "proposes",
-      "specific_claim": "The experience of crowding is a psychological state distinct from physical density, mediated by perceived restriction of freedom and social interference, which in turn lead to negative affect."
+      "specific_claim": "The experience of crowding is influenced by both physical density (objective factor) and psychological crowding (subjective interpretation, mediated by factors like perceived control or interference)."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper proposes a causal mechanism where physical density (e.g., small room) leads to both perceived restriction of freedom and social interference. These mediating factors then contribute to negative affect, which ultimately results in the subjective experience of crowding.",
+    "description": "The paper proposes a mechanism where objective physical density leads to subjective psychological crowding, which in turn influences negative emotional and behavioral outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "physical density (e.g., small room)",
-        "to_construct": "perceived restriction of freedom",
-        "mechanism_type": "cognitive",
+        "from_construct": "Physical Density (e.g., small room)",
+        "to_construct": "Perceived Physical Crowding",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "physical density (e.g., small room)",
-        "to_construct": "social interference",
-        "mechanism_type": "behavioral",
+        "from_construct": "Perceived Physical Crowding",
+        "to_construct": "Psychological Crowding (e.g., perceived restriction, loss of control)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "perceived restriction of freedom",
-        "to_construct": "negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "social interference",
-        "to_construct": "negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "negative affect",
-        "to_construct": "experience of crowding",
+        "from_construct": "Psychological Crowding",
+        "to_construct": "Experience of Crowding (negative affect, discomfort)",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:33:40.080003+00:00"
+  "surgical_update_at": "2026-03-02T18:38:53.321238+00:00",
+  "instruments_used": [
+    {
+      "name": "Crowding Scale",
+      "construct": "experience of crowding",
+      "description": "Self-report questionnaire measuring subjective feelings of crowding",
+      "type": "self_report"
+    },
+    {
+      "name": "Negative Affect Scale",
+      "construct": "negative emotions",
+      "description": "Self-report scale measuring various negative emotional states",
+      "type": "self_report"
+    },
+    {
+      "name": "Behavioral Intention Scale",
+      "construct": "intention to avoid or leave",
+      "description": "Self-report scale measuring participants' intentions regarding the crowded environment",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plan of the experimental rooms showing different sizes/configurations",
+      "figure_ref": "Figure 1",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 150,
+  "paper_sample_size_source": "estimated"
 }

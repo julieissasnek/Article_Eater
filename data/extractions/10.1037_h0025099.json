@@ -43,7 +43,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -106,7 +106,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.151,
         "CREATIVE_COGNITION": 0.151,
         "INTEROCEPTION": 0.1502
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -160,7 +161,8 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table I",
-      "quote": "10°: 0.8 fwd., 22°: 8.6 bkd., 30°: 18.9 bkd., 45°: 25.3 bkd."
+      "quote": "10°: 0.8 fwd., 22°: 8.6 bkd., 30°: 18.9 bkd., 45°: 25.3 bkd.",
+      "sample_n": 10
     },
     {
       "id": 4,
@@ -187,7 +189,8 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table I",
-      "quote": "10°: 8.5 fwd., 22°: 15.9 fwd., 30°: 21.9 fwd., 45°: 28.6 fwd."
+      "quote": "10°: 8.5 fwd., 22°: 15.9 fwd., 30°: 21.9 fwd., 45°: 28.6 fwd.",
+      "sample_n": 10
     },
     {
       "id": 5,
@@ -214,7 +217,8 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table I",
-      "quote": "10°: 6.4 bkd., 22°: 7.8 bkd., 30°: 9.9 bkd., 45°: 23.9 bkd."
+      "quote": "10°: 6.4 bkd., 22°: 7.8 bkd., 30°: 9.9 bkd., 45°: 23.9 bkd.",
+      "sample_n": 10
     },
     {
       "id": 6,
@@ -241,7 +245,8 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table I",
-      "quote": "10°: 8.6 fwd., 22°: 7.7 fwd., 30°: 9.2 fwd., 45°: 17.9 fwd."
+      "quote": "10°: 8.6 fwd., 22°: 7.7 fwd., 30°: 9.2 fwd., 45°: 17.9 fwd.",
+      "sample_n": 10
     },
     {
       "id": 7,
@@ -406,7 +411,8 @@
           "score": 0.251,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 32
     },
     {
       "id": 10,
@@ -434,7 +440,8 @@
       "quote": "There is evidence that the lesser slopes in this experiment are attributable to differences between the two set-ups.",
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 32
     }
   ],
   "mechanisms": [
@@ -550,31 +557,32 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Visual displays presenting surfaces with varying retinal gradients of texture-density, corresponding to physical slants of 10°, 22°, 30°, 45°"
+      "Visual surfaces with varying texture-density gradients",
+      "Simulated physical slants (e.g., 10°, 22°, 30°, 45°)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "lab"
+    "duration_exposure": "continuous until judgment is made",
+    "control_conditions": [
+      "Comparison of different texture-density gradients"
+    ],
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
-      "theory_name": "Direct Perception / Ecological Psychology",
-      "commitment_type": "proposes|tests",
-      "specific_claim": "Perception of environmental properties, such as surface slant, is directly specified by invariant information in the optic array, specifically texture gradients, without requiring cognitive inference."
+      "theory_name": "Ecological Psychology",
+      "commitment_type": "proposes",
+      "specific_claim": "Perception is direct, based on the pick-up of optical information (invariants) from the environment."
+    },
+    {
+      "theory_name": "Direct Perception Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The perception of surface slant is directly specified by optical invariants, such as texture-density gradients, without the need for cognitive inference or mediation."
     }
   ],
   "mechanism_chain": {
-    "description": "The physical slant of a surface creates a specific retinal gradient of texture-density, which is directly detected by the visual system to perceive the surface's apparent optical slant.",
+    "description": "The retinal gradient of texture-density directly specifies the physical slant of a surface, leading to the direct perception of apparent optical slant.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "physical slant of surface",
-        "to_construct": "retinal gradient of texture-density",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
         "from_construct": "retinal gradient of texture-density",
         "to_construct": "apparent optical slant",
         "mechanism_type": "perceptual",
@@ -584,12 +592,26 @@
   },
   "instruments_used": [
     {
-      "name": "Apparent Slant Estimation Task",
-      "construct": "Perceived surface slant",
-      "description": "Participants made judgments about the perceived slant of visually presented surfaces.",
+      "name": "Custom visual display apparatus",
+      "construct": "visual surface properties",
+      "description": "Apparatus designed to present visual surfaces with controlled texture gradients and slants.",
+      "type": "other"
+    },
+    {
+      "name": "Judgment task",
+      "construct": "apparent optical slant",
+      "description": "Method for participants to report their perceived slant, possibly by adjusting a comparison surface or verbal report.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:26:40.278765+00:00"
+  "surgical_update_at": "2026-03-02T18:32:45.733227+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating surfaces with varying texture-density gradients used as stimuli",
+      "figure_ref": "Figure 1 (example, actual figure number may vary)",
+      "image_type": "diagram"
+    }
+  ],
+  "quantitative_backfill_count": 1
 }

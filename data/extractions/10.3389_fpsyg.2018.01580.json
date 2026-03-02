@@ -3210,50 +3210,66 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "wall color (white)",
-      "wall color (blue)",
-      "wall color (yellow)",
-      "wall color (red)"
+      "rooms painted white",
+      "rooms painted green",
+      "rooms painted blue",
+      "rooms painted red/orange"
     ],
-    "duration_exposure": "continuous (academic year/semester)",
+    "duration_exposure": "continuous over an academic year",
     "control_conditions": [
-      "white wall color (as a baseline/comparison)",
-      "comparison between different specific colors (blue vs. yellow vs. red)"
+      "rooms painted white"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": "Profile of Mood States (POMS)",
-      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "name": "Mood Assessment Questionnaire",
+      "construct": "various mood dimensions (e.g., positive/negative affect, arousal)",
       "description": "Self-report questionnaire assessing current mood states.",
       "type": "self_report"
     },
     {
-      "name": "WHO-5 Well-Being Index",
-      "construct": "psychological well-being",
-      "description": "5-item self-report questionnaire assessing subjective well-being.",
-      "type": "self_report"
-    },
-    {
-      "name": "Perceived Stress Scale (PSS)",
-      "construct": "perceived stress",
-      "description": "10-item self-report questionnaire measuring the degree to which situations in one's life are appraised as stressful.",
-      "type": "self_report"
-    },
-    {
-      "name": "Self-reported GPA",
-      "construct": "academic performance",
-      "description": "Participants reported their grade point average.",
-      "type": "self_report"
-    },
-    {
-      "name": "Preference questions",
-      "construct": "color preference, satisfaction with room color",
-      "description": "Direct questions asking participants about their preferred interior color and satisfaction with their current room color.",
+      "name": "Residence Hall Evaluation Survey",
+      "construct": "satisfaction with living environment, perceived qualities of the room, color preference",
+      "description": "Custom-designed survey to evaluate the residence hall rooms and color preferences.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:36:53.437657+00:00"
+  "surgical_update_at": "2026-03-02T18:38:52.928180+00:00",
+  "mechanism_chain": {
+    "description": "Interior color influences psychological functioning and preference through affective and cognitive pathways.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "interior color",
+        "to_construct": "affective state (e.g., arousal, mood)",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "affective state",
+        "to_construct": "psychological well-being/satisfaction",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "psychological well-being/satisfaction",
+        "to_construct": "preferred interior color",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs of university residence hall rooms painted in the experimental colors (white, green, blue, red/orange).",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 180,
+  "paper_sample_size_source": "estimated"
 }

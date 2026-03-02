@@ -124,7 +124,8 @@
         "PAD_EMOTIONAL_MODEL": 0.1658,
         "RETINAL_ACTIVATION": 0.1658,
         "DUAL_PROCESS": 0.1587
-      }
+      },
+      "sample_n": 12
     },
     {
       "id": 2,
@@ -162,7 +163,8 @@
           "score": 0.2749,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 3,
@@ -213,7 +215,8 @@
           "score": 0.2581,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 4,
@@ -273,7 +276,8 @@
           "score": 0.2612,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 5,
@@ -316,7 +320,8 @@
           "score": 0.2551,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 6,
@@ -376,7 +381,8 @@
           "score": 0.2547,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 7,
@@ -412,7 +418,8 @@
           "score": 0.2688,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 8,
@@ -454,7 +461,8 @@
           "score": 0.2515,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 9,
@@ -502,7 +510,8 @@
           "score": 0.2533,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 10,
@@ -540,7 +549,8 @@
           "score": 0.2517,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 11,
@@ -584,7 +594,8 @@
           "score": 0.25,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 12,
@@ -626,7 +637,8 @@
           "score": 0.251,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 13,
@@ -668,7 +680,8 @@
           "score": 0.2515,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 12
     },
     {
       "id": 14,
@@ -704,7 +717,8 @@
           "score": 0.2703,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 16
     }
   ],
   "mechanisms": [
@@ -1105,47 +1119,36 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "monochromatic blue light (470 nm)",
-      "monochromatic green light (525 nm)",
-      "white light",
-      "specific irradiances (e.g., 10^13 photons/cm^2/s)"
+      "bright white light (6500K, 6000 lux at eye level)",
+      "dim light (<10 lux)"
     ],
-    "duration_exposure": "30 minutes",
+    "duration_exposure": "6.5 hours",
     "control_conditions": [
-      "dim light (placebo)",
-      "no light",
-      "green light (as a comparison to blue light)"
+      "dim light exposure"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Light exposure, particularly blue light, activates melanopsin-containing retinal ganglion cells (ipRGCs), which project to subcortical and cortical brain regions, modulating arousal systems and enhancing brain activity and subjective alertness.",
+    "description": "Daytime light exposure activates specific retinal photoreceptors, leading to modulation of subcortical and cortical brain regions, which in turn enhances subjective alertness and cognitive function.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (especially blue light)",
-        "to_construct": "Activation of melanopsin-containing retinal ganglion cells (ipRGCs)",
+        "from_construct": "daytime light exposure",
+        "to_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Neural projections to subcortical and cortical brain regions (e.g., brainstem, thalamus, prefrontal cortex)",
+        "from_construct": "activation of ipRGCs",
+        "to_construct": "modulation of subcortical (e.g., thalamus) and cortical brain activity (e.g., prefrontal cortex)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Neural projections to brain regions",
-        "to_construct": "Modulation of arousal systems and brain activity (e.g., BOLD signal)",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Modulation of arousal systems and brain activity",
-        "to_construct": "Enhanced subjective alertness",
+        "from_construct": "modulated brain activity",
+        "to_construct": "enhanced subjective alertness",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -1153,24 +1156,20 @@
   },
   "instruments_used": [
     {
-      "name": "Karolinska Sleepiness Scale",
-      "construct": "subjective alertness/sleepiness",
-      "description": "9-point self-report scale measuring current level of sleepiness",
+      "name": "KSS",
+      "construct": "subjective alertness",
+      "description": "Karolinska Sleepiness Scale",
       "type": "self_report"
     },
     {
-      "name": "functional Magnetic Resonance Imaging",
-      "construct": "brain activity (BOLD signal)",
-      "description": "Neuroimaging technique measuring brain activity by detecting changes associated with blood flow",
+      "name": "fMRI",
+      "construct": "brain responses (BOLD signal)",
+      "description": "functional Magnetic Resonance Imaging",
       "type": "fmri"
-    },
-    {
-      "name": "Pupillometry",
-      "construct": "pupil diameter, non-image-forming light response",
-      "description": "Measurement of pupil size and reactivity to light, reflecting autonomic nervous system activity and retinal photoreception",
-      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:13:23.269409+00:00"
+  "surgical_update_at": "2026-03-02T18:36:49.507139+00:00",
+  "paper_sample_size": 15,
+  "paper_sample_size_source": "estimated"
 }

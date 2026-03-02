@@ -419,6 +419,64 @@ def _collect_system_stats() -> dict:
     if unresolved.exists():
         with open(unresolved) as f:
             stats["unresolved_outcomes"] = sum(1 for _ in f)
+
+    # ── ETL Data Quality Metrics (Wave 8, V10 #4 Data Engineer) ──────
+    if extractions_dir and extractions_dir.exists():
+        try:
+            import json as _json
+            total_findings = 0
+            with_sample_size = 0
+            with_effect_size = 0
+            with_theory_commitments = 0
+            with_mechanism_chain = 0
+            with_instruments = 0
+            v3_count = 0
+            files_with_findings = 0
+
+            for ext_file in extractions_dir.glob("*.json"):
+                try:
+                    data = _json.loads(ext_file.read_text(errors='replace'))
+                    if not isinstance(data, dict):
+                        continue
+                    if data.get("extraction_version") == "v3.0":
+                        v3_count += 1
+                    findings = data.get("findings", [])
+                    if findings:
+                        files_with_findings += 1
+                    for f in findings:
+                        total_findings += 1
+                        if f.get("sample_size"):
+                            with_sample_size += 1
+                        if f.get("effect_size"):
+                            with_effect_size += 1
+                    if data.get("theory_commitments"):
+                        with_theory_commitments += 1
+                    if data.get("mechanism_chain"):
+                        with_mechanism_chain += 1
+                    if data.get("instruments_used"):
+                        with_instruments += 1
+                except Exception:
+                    pass
+
+            n = max(total_findings, 1)
+            stats["data_quality"] = {
+                "total_findings": total_findings,
+                "files_with_findings": files_with_findings,
+                "v3_count": v3_count,
+                "sample_size_pct": round(100 * with_sample_size / n, 1),
+                "effect_size_pct": round(100 * with_effect_size / n, 1),
+                "theory_commitments_pct": round(100 * with_theory_commitments / max(files_with_findings, 1), 1),
+                "mechanism_chain_pct": round(100 * with_mechanism_chain / max(files_with_findings, 1), 1),
+                "instruments_pct": round(100 * with_instruments / max(files_with_findings, 1), 1),
+            }
+            logger.info(
+                f"  Data quality: {with_sample_size}/{total_findings} "
+                f"({stats['data_quality']['sample_size_pct']}%) sample_size, "
+                f"{with_effect_size}/{total_findings} "
+                f"({stats['data_quality']['effect_size_pct']}%) effect_size"
+            )
+        except Exception as e:
+            logger.warning(f"ETL metrics scan failed: {e}")
     
     return stats
 
@@ -451,8 +509,29 @@ def _generate_markdown(report: dict) -> str:
             f"|-----------|-------|",
         ])
         for key, val in stats.items():
+            if isinstance(val, dict):
+                continue  # Handle nested dicts separately
             lines.append(f"| {key.replace('_', ' ').title()} | {val} |")
         lines.append("")
+
+        # Data Quality sub-table (Wave 8, V10 #4 Data Engineer)
+        dq = stats.get("data_quality", {})
+        if dq:
+            lines.extend([
+                "## ETL Data Quality",
+                "",
+                "| Metric | Value |",
+                "|--------|-------|",
+                f"| Total Findings | {dq.get('total_findings', '?')} |",
+                f"| Files with Findings | {dq.get('files_with_findings', '?')} |",
+                f"| At v3.0 | {dq.get('v3_count', '?')} |",
+                f"| **sample_size** | **{dq.get('sample_size_pct', '?')}%** |",
+                f"| **effect_size** | **{dq.get('effect_size_pct', '?')}%** |",
+                f"| theory_commitments | {dq.get('theory_commitments_pct', '?')}% |",
+                f"| mechanism_chain | {dq.get('mechanism_chain_pct', '?')}% |",
+                f"| instruments | {dq.get('instruments_pct', '?')}% |",
+                "",
+            ])
     
     # CVA Invariants
     cva = report["sections"].get("cva_invariants", {})

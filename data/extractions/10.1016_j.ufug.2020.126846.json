@@ -30,7 +30,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 40,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -85,7 +85,8 @@
         "ART": 0.6,
         "BIOPHILIA": 0.6,
         "SRT": 0.6
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1353,47 +1354,83 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Green space view from a high-rise window (21st floor)",
-      "Urban view from a high-rise window (21st floor)"
+      "green space view from high-rise window (21st floor)",
+      "urban space view from high-rise window (21st floor)"
     ],
-    "duration_exposure": "5 minutes",
+    "duration_exposure": "5 minutes per view",
     "control_conditions": [
-      "Urban view from a high-rise window (21st floor)"
+      "viewing urban space from high-rise window"
     ],
-    "ecological_validity": "field"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments (green views) restores directed attention and promotes psychological well-being more effectively than exposure to urban environments."
+      "specific_claim": "Viewing natural environments (green space) from a high-rise window can restore directed attention and improve wellbeing in urban dwellers by facilitating soft fascination and reducing mental fatigue."
     },
     {
       "theory_name": "Stress Reduction Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments reduces physiological and psychological stress more effectively than exposure to urban environments."
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can lead to physiological and psychological stress reduction, as evidenced by measures like alpha wave power."
     }
   ],
   "instruments_used": [
     {
       "name": "EEG",
-      "construct": "Alpha wave power",
-      "description": "Electroencephalography to measure alpha wave power, specifically at frontal lobe electrode AF3, as an indicator of relaxation.",
+      "construct": "Brain electrical activity (alpha wave power)",
+      "description": "Electroencephalography system used to measure alpha wave power at specific frontal lobe electrodes (e.g., AF3)",
       "type": "eeg"
-    },
-    {
-      "name": "PANAS",
-      "construct": "Positive and negative affect",
-      "description": "20-item self-report questionnaire measuring current mood states.",
-      "type": "self_report"
-    },
-    {
-      "name": "Perceived Restorativeness Scale (PRS)",
-      "construct": "Perceived restorativeness",
-      "description": "Self-report questionnaire assessing the restorative qualities of an environment (e.g., fascination, being away, extent, compatibility).",
-      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:59:30.423634+00:00"
+  "surgical_update_at": "2026-03-02T18:35:29.197313+00:00",
+  "mechanism_chain": {
+    "description": "Viewing green space elicits soft fascination, allowing directed attention to recover, which reduces mental fatigue and stress, leading to physiological relaxation (e.g., increased alpha wave power).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Viewing green space",
+        "to_construct": "Soft fascination / Involuntary attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Soft fascination / Involuntary attention",
+        "to_construct": "Restoration of directed attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Restoration of directed attention",
+        "to_construct": "Reduced mental fatigue / stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Reduced mental fatigue / stress",
+        "to_construct": "Increased alpha wave power",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photograph of the green space view from the high-rise window used as stimulus",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photograph of the urban space view from the high-rise window used as control stimulus",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

@@ -4548,50 +4548,74 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Optic flow fields (simulating observer self-motion in a 2D plane)",
-      "A single stationary landmark"
+      "Optic flow patterns simulating 2D trajectories",
+      "A single visual landmark"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Optic flow alone (no landmark)",
-      "Optic flow with a landmark",
-      "Varying landmark properties (e.g., distance, eccentricity)"
+      "Conditions with and without a single visual landmark"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Optic Flow Theory / Ecological Optics",
-      "commitment_type": "extends",
-      "specific_claim": "Optic flow provides information about self-motion and environmental structure, and landmarks provide additional, complementary information for spatial localization and trajectory perception."
+      "theory_name": "Optic Flow Theory of Perception",
+      "commitment_type": "proposes",
+      "specific_claim": "Optic flow information, potentially modulated by the presence of a landmark, is fundamental for the perception and reconstruction of two-dimensional trajectories."
     }
   ],
   "mechanism_chain": {
-    "description": "The visual system processes optic flow and the retinal motion of a landmark to estimate self-motion parameters, which are then used to reconstruct the perceived 2D trajectory.",
+    "description": "The paper theoretically describes how the visual system processes optic flow information, integrating it with cues from a single landmark, to enable the perception and reconstruction of 2D trajectories.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Retinal image of optic flow and landmark",
-        "to_construct": "Visual system extracts motion signals (e.g., expansion, rotation, landmark relative motion)",
+        "from_construct": "Optic flow stimulus (simulating 2D trajectories)",
+        "to_construct": "Visual motion signals",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Extracted motion signals",
-        "to_construct": "Integration of optic flow and landmark cues to estimate self-motion parameters (e.g., heading, speed, depth)",
+        "from_construct": "Visual motion signals",
+        "to_construct": "Integration of flow field information",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Estimated self-motion parameters",
-        "to_construct": "Reconstruction of the perceived 2D trajectory",
+        "from_construct": "Presence of a single landmark",
+        "to_construct": "Modulation of optic flow processing and trajectory perception",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Integrated flow field information (modulated by landmark)",
+        "to_construct": "Perception of 2D trajectories",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Perception of 2D trajectories",
+        "to_construct": "Reconstruction of passively travelled 2D trajectories",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:52:13.070672+00:00"
+  "surgical_update_at": "2026-03-02T18:43:31.032881+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating optic flow patterns for 2D trajectories",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Visual representation of a single landmark within the optic flow field",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

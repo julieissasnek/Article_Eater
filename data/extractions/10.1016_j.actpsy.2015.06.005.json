@@ -107,7 +107,8 @@
         "PREDICTIVE_PROCESSING": 0.1721,
         "NEUROMODULATORY": 0.1668,
         "DUAL_PROCESS": 0.1608
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 2,
@@ -168,7 +169,8 @@
           "score": 0.2587,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 3,
@@ -229,7 +231,8 @@
           "score": 0.2582,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 4,
@@ -255,7 +258,8 @@
       "moderators_reported": null,
       "provenance_depth": "section",
       "source": "p. 380, Table I",
-      "quote": "Apparently the regular texture yields a more definite impression of slant."
+      "quote": "Apparently the regular texture yields a more definite impression of slant.",
+      "sample_n": 10
     },
     {
       "id": 5,
@@ -291,7 +295,8 @@
             "mechanism text overlap"
           ]
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 6,
@@ -361,7 +366,8 @@
         "ALLOSTATIC_REGULATION": 0.1606,
         "METABOLIC_HEALTH": 0.1606,
         "PREDICTIVE_PROCESSING": 0.1606
-      }
+      },
+      "sample_n": 32
     },
     {
       "id": 7,
@@ -389,7 +395,8 @@
       "quote": "There is evidence that the lesser slopes in this experiment are attributable to differences between the two set-ups.",
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 32
     }
   ],
   "mechanisms": [
@@ -704,23 +711,27 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Computer-generated visual displays of textured surfaces",
-      "Surfaces with varying texture density gradients",
-      "Surfaces potentially incorporating other depth cues like binocular disparity or shading"
+      "Computer-generated images of textured surfaces (e.g., random dot patterns, regular patterns like checkerboards or lines)",
+      "Surfaces manipulated to have varying gradients of texture density, simulating different physical slants"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Conditions varying the physical slant of the displayed surfaces",
-      "Conditions isolating specific depth cues (e.g., texture-only surfaces)",
-      "Conditions combining different depth cues in controlled ways"
+      "Varying the type of texture",
+      "Presence or absence of other depth cues (e.g., binocular disparity, motion parallax)",
+      "Surfaces with zero slant (flat)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Cue Integration Theory",
+      "theory_name": "Theories of shape-from-texture perception",
       "commitment_type": "tests",
-      "specific_claim": "The visual system integrates information from various monocular and binocular cues (e.g., texture gradients, binocular disparity, shading) to construct a stable and accurate perception of 3D surface shape and orientation."
+      "specific_claim": "How the visual system uses texture gradients to infer surface slant."
+    },
+    {
+      "theory_name": "Theories of depth cue integration",
+      "commitment_type": "extends",
+      "specific_claim": "How texture gradient information integrates with other depth cues to form a coherent perception of surface slant."
     }
   ],
   "mechanism_chain": {
@@ -758,12 +769,25 @@
   },
   "instruments_used": [
     {
-      "name": "Custom psychophysical software and hardware",
-      "construct": "Perceived surface slant/orientation",
-      "description": "Computer-based system for presenting controlled visual stimuli (e.g., textured surfaces on a monitor) and recording participant judgments (e.g., via keypress, mouse adjustment, or verbal report).",
+      "name": "Computer monitor",
+      "construct": "Visual stimulus presentation",
+      "description": "Used to display the computer-generated textured surfaces to participants.",
+      "type": "other"
+    },
+    {
+      "name": "Response device (e.g., keyboard, mouse, custom dial)",
+      "construct": "Judgment of perceived optical slant",
+      "description": "Used by participants to indicate their perceived slant of the presented surfaces.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:05:56.356884+00:00"
+  "surgical_update_at": "2026-03-02T18:30:55.362271+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of computer-generated textured surfaces with varying gradients of texture density, illustrating different physical slants presented to participants.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ]
 }

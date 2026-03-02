@@ -65,9 +65,9 @@
       "direction": "mixed",
       "claim_type": "associational",
       "measure_type": "self_report",
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
+      "p_value": 0.001,
+      "effect_size": 0.25,
+      "effect_size_type": "partial_eta_squared",
       "sample_size": 798,
       "confidence_interval": null,
       "test_statistic": null,
@@ -135,7 +135,8 @@
         "SPATIAL_NAVIGATION": 0.5508,
         "NM_AROUSAL": 0.2457,
         "NM_REWARD": 0.2327
-      }
+      },
+      "sample_n": 798
     },
     {
       "id": 2,
@@ -147,7 +148,7 @@
       "p_value": "<0.001",
       "effect_size": 0.08,
       "effect_size_type": "partial_eta_squared",
-      "sample_size": null,
+      "sample_size": 28,
       "confidence_interval": null,
       "test_statistic": "F(1,192)=13.56",
       "theory_links": [
@@ -227,7 +228,8 @@
         "ENVIRONMENTAL_PSYCHOLOGY": 0.1858,
         "GROUP_CREATIVITY": 0.1858,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1858
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 3,
@@ -1701,7 +1703,8 @@
         "IC": 0.1857,
         "MS": 0.1857,
         "PP": 0.1857
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 21,
@@ -1792,7 +1795,8 @@
         "IC": 0.1848,
         "MS": 0.1848,
         "PP": 0.1848
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 22,
@@ -1883,7 +1887,8 @@
         "IC": 0.1848,
         "MS": 0.1848,
         "PP": 0.1848
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 23,
@@ -1959,7 +1964,8 @@
         "NM": 0.1729,
         "NM_REWARD": 0.1663,
         "PP": 0.1651
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 24,
@@ -2035,7 +2041,8 @@
         "PREDICTIVE_PROCESSING": 0.189,
         "DIRECTED_ATTENTION": 0.1889,
         "NM_AROUSAL": 0.1889
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 25,
@@ -2112,7 +2119,8 @@
         "MS": 0.1575,
         "PP": 0.1575,
         "HC": 0.1546
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 26,
@@ -2189,7 +2197,8 @@
         "DIRECTED_ATTENTION": 0.1875,
         "NM_AROUSAL": 0.1875,
         "SPATIAL_NAVIGATION": 0.1871
-      }
+      },
+      "sample_n": 18
     },
     {
       "id": 27,
@@ -2265,7 +2274,8 @@
         "IC": 0.1527,
         "MS": 0.1527,
         "PP": 0.1527
-      }
+      },
+      "sample_n": 18
     }
   ],
   "mechanisms": [
@@ -2580,11 +2590,70 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": null,
-    "duration_exposure": null,
-    "control_conditions": null,
+    "environmental_features": [
+      "3D renderings of architectural interiors",
+      "manipulated ceiling height (high vs. low)",
+      "manipulated complexity (simple vs. complex)",
+      "manipulated openness (open vs. enclosed)"
+    ],
+    "duration_exposure": "several seconds per stimulus",
+    "control_conditions": [
+      "comparison between high vs. low ceiling rooms",
+      "comparison between simple vs. complex rooms",
+      "comparison between open vs. enclosed rooms"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:23:30.948626+00:00"
+  "surgical_update_at": "2026-03-02T18:32:27.605679+00:00",
+  "mechanism_chain": {
+    "description": "Architectural features influence perceived spatial qualities and aesthetic judgments, which are mediated by specific neural activations.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "ceiling height",
+        "to_construct": "perceived spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived spaciousness",
+        "to_construct": "aesthetic appeal",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "architectural features (e.g., complexity, ceiling height)",
+        "to_construct": "neural activation (e.g., visual cortex, reward-related areas)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Self-report scales",
+      "construct": "aesthetic appeal, spaciousness, pleasantness, arousal, dominance",
+      "description": "Likert-type scales for subjective ratings",
+      "type": "self_report"
+    },
+    {
+      "name": "fMRI",
+      "construct": "brain activity",
+      "description": "Functional magnetic resonance imaging to measure neural responses",
+      "type": "fmri"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of 3D rendered architectural interiors with varying ceiling height, complexity, and openness used as stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 28,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

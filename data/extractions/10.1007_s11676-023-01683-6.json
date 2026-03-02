@@ -114,7 +114,8 @@
         "METABOLIC_HEALTH": 0.1696,
         "PREDICTIVE_PROCESSING": 0.1696,
         "DUAL_PROCESS": 0.1691
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 2,
@@ -192,7 +193,8 @@
         "FORWARD_MODELS": 0.1795,
         "MOTOR_CONTROL_THEORY": 0.1795,
         "IC": 0.1794
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 3,
@@ -274,7 +276,8 @@
         "ECOLOGICAL_PSYCHOLOGY": 0.1694,
         "FORWARD_MODELS": 0.1694,
         "MOTOR_CONTROL_THEORY": 0.1694
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 4,
@@ -353,7 +356,8 @@
         "PAD_EMOTIONAL_MODEL": 0.1555,
         "PREDICTIVE_PROCESSING": 0.1555,
         "RETINAL_ACTIVATION": 0.1555
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 5,
@@ -434,7 +438,8 @@
         "PAD_EMOTIONAL_MODEL": 0.1583,
         "PREDICTIVE_PROCESSING": 0.1583,
         "RETINAL_ACTIVATION": 0.1583
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 6,
@@ -513,7 +518,8 @@
         "PAD_EMOTIONAL_MODEL": 0.1555,
         "PREDICTIVE_PROCESSING": 0.1555,
         "RETINAL_ACTIVATION": 0.1555
-      }
+      },
+      "sample_n": 20
     },
     {
       "id": 7,
@@ -594,7 +600,8 @@
         "PREDICTIVE_PROCESSING": 0.1583,
         "RETINAL_ACTIVATION": 0.1583,
         "NM": 0.1564
-      }
+      },
+      "sample_n": 20
     },
     {
       "id": 8,
@@ -674,7 +681,8 @@
         "NEUROMODULATORY": 0.1745,
         "RESTORATIVE_ENVIRONMENTS": 0.1745,
         "ATTENTION_RESTORATION": 0.1732
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 9,
@@ -749,7 +757,8 @@
         "PP": 0.1512,
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1508,
         "NEUROMODULATORY": 0.1508
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 10,
@@ -833,7 +842,8 @@
         "HC": 0.1839,
         "NEUROMODULATORY": 0.1818,
         "RESTORATIVE_ENVIRONMENTS": 0.1818
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 11,
@@ -903,7 +913,8 @@
         "PREDICTIVE_PROCESSING": 0.1691,
         "METHODOLOGICAL": 0.1558,
         "NM": 0.1504
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 12,
@@ -964,7 +975,8 @@
           "score": 0.2666,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 40
     },
     {
       "id": 13,
@@ -1032,7 +1044,8 @@
       "tier2_relevance": {
         "PREDICTIVE_PROCESSING": 0.1688,
         "METHODOLOGICAL": 0.1568
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 14,
@@ -1105,7 +1118,8 @@
       },
       "tier2_relevance": {
         "PREDICTIVE_PROCESSING": 0.1601
-      }
+      },
+      "sample_n": 40
     },
     {
       "id": 15,
@@ -3553,12 +3567,13 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "tended plant communities with varying color characteristics (e.g., different dominant plant colors or color compositions)"
+      "Tended plant communities with predominantly green foliage",
+      "Tended plant communities with red-flowering plants",
+      "Tended plant communities with yellow-flowering plants"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "10 minutes",
     "control_conditions": [
-      "other plant communities with different color characteristics",
-      "a non-plant control environment"
+      "Different plant communities with distinct color characteristics served as comparison conditions"
     ],
     "ecological_validity": "semi-naturalistic"
   },
@@ -3566,47 +3581,63 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments can restore directed attention and reduce mental fatigue."
+      "specific_claim": "Exposure to natural environments can restore directed attention and reduce mental fatigue, and these effects may be influenced by specific characteristics like color."
     },
     {
       "theory_name": "Stress Reduction Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress."
+      "specific_claim": "Exposure to natural environments can reduce physiological arousal and negative affect associated with stress, and these effects may be influenced by specific characteristics like color."
     }
   ],
   "mechanism_chain": {
-    "description": "Visual perception of plant communities, particularly their color characteristics, influences psychological states such as perceived restorativeness and stress, which in turn modulate physiological responses like brain activity (alpha wave power).",
+    "description": "Specific color characteristics of plant communities influence affective responses and cognitive processing, leading to changes in physiological states like alpha wave power.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "visual characteristics of plant communities (e.g., color)",
-        "to_construct": "perceived restorativeness and pleasantness",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "indirect"
+        "from_construct": "Plant community color characteristics",
+        "to_construct": "Perceived pleasantness/preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "perceived restorativeness and pleasantness",
-        "to_construct": "alpha wave power",
+        "from_construct": "Perceived pleasantness/preference",
+        "to_construct": "Reduced stress/increased relaxation",
         "mechanism_type": "affective",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced stress/increased relaxation",
+        "to_construct": "Increased alpha wave power",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Electroencephalography (EEG)",
-      "construct": "alpha wave power",
-      "description": "Measures electrical activity in the brain to assess states of relaxation or alertness.",
+      "construct": "Alpha wave power",
+      "description": "Measures brain electrical activity, specifically alpha band power (8-12 Hz) as an indicator of relaxed wakefulness.",
       "type": "physiological"
     },
     {
-      "name": "Self-report questionnaires",
-      "construct": "subjective evaluation of plant communities (e.g., preference, perceived restorativeness, mood)",
-      "description": "Scales used to assess participants' perceptions and feelings about the plant communities.",
+      "name": "Self-report questionnaire for subjective evaluation",
+      "construct": "Subjective evaluation of plant communities (e.g., preference, comfort, restorativeness)",
+      "description": "Likely used scales or ratings to assess participants' perceptions and feelings about the plant communities.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:54:34.323884+00:00"
+  "surgical_update_at": "2026-03-02T18:30:02.152486+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of the different tended plant communities with varying color characteristics used as visual stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 64,
+  "paper_sample_size_source": "estimated"
 }

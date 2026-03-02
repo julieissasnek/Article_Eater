@@ -1337,34 +1337,89 @@
   "stimulus_description": {
     "environmental_features": [
       "Ultrasound mid-air haptic feedback",
-      "Virtual material representations",
-      "Virtual temperature representations"
+      "Virtual objects representing various materials (e.g., wood, metal, rubber)",
+      "Virtual objects representing various temperatures (e.g., hot, cold, neutral)",
+      "Visual rendering of virtual objects"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, per trial (e.g., a few seconds per object interaction)",
     "control_conditions": [
-      "Visual Only presentation modality"
+      "Visual Only (no haptic feedback)",
+      "Visuo-Haptic (visual + ultrasound haptic feedback)"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "The addition of ultrasound mid-air haptic feedback to visual stimuli directly provides tactile information that enhances the perception of material and temperature properties, leading to improved perceived congruency in virtual environments.",
+    "description": "Ultrasound haptic feedback provides tactile sensations that are integrated with visual information, leading to an enhanced multisensory percept of material properties and temperature, and increased perceived congruency.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Ultrasound mid-air haptic feedback",
-        "to_construct": "Enhanced material and temperature perception",
-        "mechanism_type": "perceptual",
+        "to_construct": "Tactile sensations (e.g., pressure, vibration) on the skin",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Enhanced material and temperature perception",
-        "to_construct": "Perceived Congruency",
+        "from_construct": "Tactile sensations",
+        "to_construct": "Integration with visual information of virtual objects",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Multisensory percept",
+        "to_construct": "Enhanced perception of material properties (e.g., roughness, stiffness) and temperature",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Multisensory percept",
+        "to_construct": "Increased perceived congruency between visual and haptic cues",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:04:13.320093+00:00"
+  "surgical_update_at": "2026-03-02T18:41:14.245582+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Multisensory Integration",
+      "commitment_type": "assumes",
+      "specific_claim": "Combining haptic and visual cues enhances perception and realism compared to unimodal stimulation."
+    },
+    {
+      "theory_name": "Haptic Perception",
+      "commitment_type": "applies",
+      "specific_claim": "Tactile feedback, even non-contact, can convey information about material properties and temperature."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Custom rating scales",
+      "construct": "Perceived material properties (e.g., roughness, stiffness, texture), perceived temperature, perceived congruency, realism, presence",
+      "description": "Likert-type scales or semantic differential scales administered via questionnaire.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photo of the experimental setup, including the ultrasound haptic device and VR headset.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Screenshots or renderings of the virtual environment and the objects participants interacted with.",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagram illustrating the principles of ultrasound mid-air haptic feedback or the patterns used.",
+      "figure_ref": "Figure 3",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated"
 }

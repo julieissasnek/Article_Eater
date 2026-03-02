@@ -62,9 +62,9 @@
       "claim_type": "causal",
       "measure_type": "behavioral",
       "p_value": "<0.0003",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 20,
       "confidence_interval": null,
       "test_statistic": "F(2,38)=9.92",
       "theory_links": [
@@ -134,7 +134,8 @@
         "SPATIAL_NAVIGATION": 0.1601,
         "CROSS_FRAMEWORK": 0.1598,
         "HC": 0.153
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -914,44 +915,49 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Irrelevant speech (Japanese narration)",
-      "Visual digit presentation"
+      "irrelevant speech (Japanese narration)",
+      "visual digits (0-9)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Silence (implied baseline for irrelevant speech)"
+      "silent condition (no irrelevant speech)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Irrelevant Sound Effect (ISE)",
+      "theory_name": "Theories of the Irrelevant Speech Effect (ISE)",
+      "commitment_type": "tests",
+      "specific_claim": "Auditory irrelevant speech impairs performance on visual working memory tasks."
+    },
+    {
+      "theory_name": "Theories of the Irrelevant Speech Effect (ISE)",
       "commitment_type": "extends",
-      "specific_claim": "Irrelevant auditory stimuli impair serial recall of visual items, and this impairment is reflected in reduced visual N1 and reduced theta activity."
+      "specific_claim": "The impairment caused by irrelevant speech is reflected in specific neural markers, such as reduced visual N1 amplitude and altered theta activity."
     }
   ],
   "mechanism_chain": {
-    "description": "Irrelevant speech interferes with early sensory processing and working memory, leading to observable changes in neural activity (reduced visual N1 and theta activity), which subsequently impairs serial recall performance.",
+    "description": "Irrelevant speech acts as an auditory distractor, which leads to modulations in early visual processing (reflected in reduced visual N1 amplitude) and working memory maintenance/cognitive control (reflected in reduced theta power). These neural changes, in turn, result in impaired serial recall performance for visual items.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Irrelevant speech",
-        "to_construct": "Reduced Visual N1",
+        "from_construct": "Irrelevant speech (auditory distraction)",
+        "to_construct": "Reduced visual N1 amplitude",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Irrelevant speech",
-        "to_construct": "Reduced Theta Activity",
+        "from_construct": "Irrelevant speech (auditory distraction)",
+        "to_construct": "Reduced theta power",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Reduced Visual N1 and Reduced Theta Activity",
-        "to_construct": "Impaired Serial Recall Performance",
-        "mechanism_type": "neural|cognitive",
+        "from_construct": "Reduced visual N1 amplitude and Reduced theta power",
+        "to_construct": "Impaired serial recall performance",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
@@ -959,17 +965,20 @@
   "instruments_used": [
     {
       "name": "Electroencephalography (EEG)",
-      "construct": "Visual N1, Theta Activity",
-      "description": "Measurement of brain electrical activity to assess neural responses and oscillations.",
+      "construct": "Neural activity (N1 ERP component, theta power)",
+      "description": "Used to measure brain electrical activity in response to stimuli and during cognitive tasks.",
       "type": "eeg"
     },
     {
       "name": "Serial Recall Task",
       "construct": "Serial recall performance (error rate)",
-      "description": "Behavioral task requiring participants to recall a sequence of visually presented digits in order.",
+      "description": "Participants were presented with a sequence of visual digits and asked to recall them in the correct order.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:52:42.819043+00:00"
+  "surgical_update_at": "2026-03-02T18:34:57.946102+00:00",
+  "paper_sample_size": 20,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

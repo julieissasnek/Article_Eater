@@ -88,7 +88,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "F(1,48)=4.75",
       "theory_links": [
@@ -165,7 +165,8 @@
         "ENVIRONMENTAL_PSYCHOLOGY": 0.1863,
         "GROUP_CREATIVITY": 0.1863,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1863
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1885,12 +1886,77 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "anticipated group size"
+      "Anticipated group size (e.g., 10 persons vs. 2-3 persons)",
+      "Spatial density (implied by group size in a fixed space, or explicit room size manipulation in related studies by these authors)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "typically short, during a waiting period or experimental task (e.g., 15-30 minutes)",
+    "control_conditions": [
+      "Low anticipated group size (e.g., 2-3 persons)",
+      "Low spatial density"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:55:09.646721+00:00"
+  "surgical_update_at": "2026-03-02T18:40:22.983259+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Arousal Theory of Crowding",
+      "commitment_type": "tests",
+      "specific_claim": "High density leads to increased arousal, which can be perceived as negative (crowding) and impair performance or mood."
+    },
+    {
+      "theory_name": "Cognitive Appraisal Theory",
+      "commitment_type": "extends",
+      "specific_claim": "The psychological impact of environmental stressors like density is mediated by an individual's cognitive appraisal of the situation, including their expectations and perceived control. Anticipation of crowding can trigger these appraisals."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Anticipated high group size leads to cognitive appraisal of potential social interference or resource scarcity, which increases perceived crowding and associated negative psychological states.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Anticipated group size",
+        "to_construct": "Cognitive appraisal of potential social interference/resource scarcity",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Cognitive appraisal of potential social interference/resource scarcity",
+        "to_construct": "Perceived crowding",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived crowding",
+        "to_construct": "Negative affect/stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Perceived Crowding Scale",
+      "construct": "Perceived crowding",
+      "description": "Self-report questionnaire measuring subjective feelings of crowding.",
+      "type": "self_report"
+    },
+    {
+      "name": "Mood scales (e.g., MAACL or similar)",
+      "construct": "Affective states (e.g., anxiety, hostility, depression)",
+      "description": "Self-report adjective checklists or scales to assess current mood.",
+      "type": "self_report"
+    },
+    {
+      "name": "Behavioral measures (e.g., task performance, social interaction)",
+      "construct": "Cognitive performance, social withdrawal",
+      "description": "Tasks designed to measure cognitive function or observations of social behavior (e.g., seating distance, eye contact).",
+      "type": "behavioral"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

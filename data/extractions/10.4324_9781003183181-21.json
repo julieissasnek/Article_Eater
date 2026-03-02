@@ -977,27 +977,110 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Narrowband light stimuli"
+      "light spectrum (e.g., narrowband, blue-enriched)",
+      "light intensity (e.g., lux, melanopic equivalent daylight illuminance)",
+      "timing of light exposure (e.g., day, night, morning)",
+      "duration of light exposure"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "varied, from acute pulses to continuous exposure over hours/days, depending on the reviewed study",
+    "control_conditions": [
+      "darkness",
+      "dim light",
+      "different spectral compositions (e.g., red light, white light with different CCTs)",
+      "different timing of exposure"
+    ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
+      "theory_name": "Non-visual effects of light / Circadian Phototransduction",
+      "commitment_type": "assumes",
+      "specific_claim": "Light, particularly short-wavelength (blue) light, has non-visual effects on human physiology and behavior, primarily mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs) and the suprachiasmatic nucleus (SCN)."
+    },
+    {
+      "theory_name": "Melatonin Suppression by Light",
       "commitment_type": "tests",
-      "specific_claim": "Light exposure, particularly specific wavelengths, influences the human circadian system by modulating melatonin secretion."
+      "specific_claim": "Exposure to light, especially at night, suppresses the nocturnal secretion of melatonin, a key hormone in circadian rhythm regulation."
     }
   ],
   "instruments_used": [
     {
-      "name": "Melatonin assay",
-      "construct": "Melatonin levels",
-      "description": "Biochemical assay to quantify melatonin concentration in biological samples (e.g., saliva, blood).",
+      "name": "Spectroradiometer",
+      "construct": "light spectral power distribution, intensity, and color temperature",
+      "description": "Device used to measure the spectral composition and intensity of light sources.",
+      "type": "other"
+    },
+    {
+      "name": "Melatonin assay (e.g., saliva, blood, urine)",
+      "construct": "melatonin levels",
+      "description": "Biochemical method to quantify melatonin concentration in biological samples.",
       "type": "physiological"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake cycles, activity levels",
+      "description": "Wearable device measuring movement to infer sleep patterns and activity.",
+      "type": "physiological"
+    },
+    {
+      "name": "Questionnaires/Scales (e.g., Karolinska Sleepiness Scale, Pittsburgh Sleep Quality Index)",
+      "construct": "subjective sleepiness, sleep quality, mood",
+      "description": "Self-report instruments to assess subjective experiences related to sleep and alertness.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:14:52.970874+00:00"
+  "surgical_update_at": "2026-03-02T18:31:43.409528+00:00",
+  "mechanism_chain": {
+    "description": "The physiological pathway by which light stimuli influence circadian rhythms and melatonin secretion.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Light exposure (especially short-wavelength)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Signal transmission to the SCN",
+        "to_construct": "Modulation of pineal gland activity",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Modulation of pineal gland activity",
+        "to_construct": "Alteration of melatonin secretion",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Alteration of melatonin secretion",
+        "to_construct": "Modulation of circadian rhythms, sleep, and alertness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the non-visual phototransduction pathway from the eye to the suprachiasmatic nucleus and pineal gland.",
+      "figure_ref": "Figure 1 (example, actual figure number may vary)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs showing spectral sensitivity curves for different photoreceptors, including melanopsin, and spectral power distributions of various light sources.",
+      "figure_ref": "Figure 2 (example, actual figure number may vary)",
+      "image_type": "graph"
+    }
+  ]
 }

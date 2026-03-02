@@ -1121,31 +1121,61 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "projected images with varying texture gradients",
-      "physical surfaces with varying slants"
+      "Projected images of surfaces with varying texture gradients (e.g., dots, lines)",
+      "Simulated physical slants of 10°, 22°, 30°, 45°"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, until participant response",
     "control_conditions": [
-      "different physical slants (e.g., 10°, 22°, 30°, 45°)",
-      "variations in texture properties (e.g., density, element shape)"
+      "Flat surface (0° slant)",
+      "Surface with uniform texture (no gradient)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Direct Perception",
+      "theory_name": "Ecological Approach to Perception",
       "commitment_type": "proposes",
-      "specific_claim": "The perception of environmental properties, such as surface slant, is direct and based on the detection of invariant information in the optical array, without requiring cognitive inferences or sensations."
+      "specific_claim": "Perception of surface properties (like slant) is direct, based on the detection of invariant information in the optical array, such as texture gradients, rather than inferential processes."
+    },
+    {
+      "theory_name": "Ecological Approach to Perception",
+      "commitment_type": "tests",
+      "specific_claim": "The gradient of density of texture provides sufficient information for the direct perception of surface slant."
     }
   ],
   "instruments_used": [
     {
-      "name": "Judgment Task",
-      "construct": "Perceived surface slant",
-      "description": "Participants provided verbal or manual estimations of the perceived slant of visual surfaces.",
-      "type": "self_report"
+      "name": "Verbal report",
+      "construct": "Judged surface slant",
+      "description": "Participants verbally reported the perceived slant.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Manual adjustment device",
+      "construct": "Judged surface slant",
+      "description": "Participants adjusted a physical indicator to match the perceived slant.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:44:03.557514+00:00"
+  "surgical_update_at": "2026-03-02T18:29:03.436764+00:00",
+  "mechanism_chain": {
+    "description": "Direct pick-up of optical information from the texture gradient specifies surface slant.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Texture gradient in the optical array",
+        "to_construct": "Perceived surface slant",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of projected texture gradients (e.g., dots, lines) simulating different surface slants",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

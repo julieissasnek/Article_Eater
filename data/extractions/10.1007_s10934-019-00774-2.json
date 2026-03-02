@@ -1361,54 +1361,59 @@
   "theory_commitments": [
     {
       "theory_name": "Delany-Bazley model",
-      "commitment_type": "assumes",
-      "specific_claim": "Empirically relates acoustic impedance and propagation constant to flow resistivity and frequency for fibrous materials."
+      "commitment_type": "reviews",
+      "specific_claim": "Models the acoustic properties of fibrous materials based on empirical parameters like flow resistivity and material thickness."
     },
     {
       "theory_name": "Johnson-Champoux-Allard (JCA) model",
-      "commitment_type": "assumes",
-      "specific_claim": "Predicts acoustic properties of porous materials based on microstructural parameters like porosity, flow resistivity, tortuosity, and characteristic lengths."
+      "commitment_type": "reviews",
+      "specific_claim": "Provides a semi-phenomenological model for porous materials considering both viscous and thermal effects through microstructural parameters."
     },
     {
       "theory_name": "Biot theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Describes wave propagation in fluid-saturated porous media, accounting for both solid frame and fluid motion."
+      "commitment_type": "reviews",
+      "specific_claim": "Describes sound propagation in porous media by treating the solid frame and fluid as coupled phases, accounting for both fluid and solid motion."
+    },
+    {
+      "theory_name": "Equivalent fluid models",
+      "commitment_type": "reviews",
+      "specific_claim": "Simplifies the porous medium into an equivalent fluid with complex density and bulk modulus to predict acoustic behavior."
     }
   ],
   "mechanism_chain": {
-    "description": "Sound energy dissipation in porous materials occurs through viscous friction and thermal exchange between the oscillating fluid and the pore walls, converting sound energy into heat.",
+    "description": "Sound energy dissipation in porous materials occurs primarily through viscous friction and thermal losses as sound waves interact with the material's microstructure, converting acoustic energy into heat.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Sound waves propagating in porous material",
-        "to_construct": "Oscillation of fluid within pores",
+        "from_construct": "Sound waves entering porous material",
+        "to_construct": "Oscillation of air molecules within pores",
         "mechanism_type": "physical",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Oscillation of fluid within pores",
-        "to_construct": "Viscous friction between fluid and pore walls",
+        "from_construct": "Oscillation of air molecules within pores",
+        "to_construct": "Viscous friction between air and pore walls",
         "mechanism_type": "physical",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Oscillation of fluid within pores",
-        "to_construct": "Thermal exchange between fluid and pore walls",
+        "from_construct": "Oscillation of air molecules within pores",
+        "to_construct": "Thermal exchange between air and pore walls (heat conduction)",
         "mechanism_type": "physical",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
         "from_construct": "Viscous friction and thermal exchange",
-        "to_construct": "Conversion of sound energy to heat",
+        "to_construct": "Conversion of acoustic energy to heat",
         "mechanism_type": "physical",
         "evidence_strength": "theoretical"
       },
       {
         "step": 5,
-        "from_construct": "Conversion of sound energy to heat",
+        "from_construct": "Conversion of acoustic energy to heat",
         "to_construct": "Sound energy dissipation",
         "mechanism_type": "physical",
         "evidence_strength": "theoretical"
@@ -1416,5 +1421,17 @@
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:12:24.153353+00:00"
+  "surgical_update_at": "2026-03-02T18:36:40.067069+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating the microstructure and pore geometry of various porous sound absorbing materials.",
+      "figure_ref": "Figure 1, Figure 2, etc.",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Schematic representations of theoretical models or experimental setups for measuring sound absorption.",
+      "figure_ref": "Figure 3, Figure 4, etc.",
+      "image_type": "diagram"
+    }
+  ]
 }

@@ -71,9 +71,9 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "0.049",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.75,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": "F(1,32.52)=2.88",
       "theory_links": [
@@ -148,7 +148,8 @@
         "METABOLIC_HEALTH": 0.1853,
         "IC": 0.1795,
         "NM_REWARD": 0.1552
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2934,24 +2935,91 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "illumination colour temperature (2700K)",
-      "illumination colour temperature (6500K)"
+      "Illumination colour temperature (2700K warm white)",
+      "Illumination colour temperature (6500K cool white)",
+      "Controlled air temperature (e.g., 26°C)",
+      "Controlled relative humidity (e.g., 50%)",
+      "Controlled air velocity (e.g., <0.1 m/s)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "60-90 minutes per condition",
     "control_conditions": [
-      "illumination colour temperature (2700K)",
-      "illumination colour temperature (6500K)"
+      "Comparison between 2700K and 6500K illumination"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Thermal perception scale",
-      "construct": "thermal perception",
-      "description": "7-point self-report scale",
+      "name": "ASHRAE Thermal Sensation Scale",
+      "construct": "Thermal perception/sensation",
+      "description": "7-point self-report scale from -3 (cold) to +3 (hot)",
       "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Scale",
+      "construct": "Thermal comfort",
+      "description": "5-point self-report scale from -2 (very uncomfortable) to +2 (very comfortable)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Acceptability",
+      "construct": "Thermal acceptability",
+      "description": "Binary (acceptable/unacceptable) or multi-point self-report scale",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective Lighting Evaluation",
+      "construct": "Perceived brightness, glare, colour preference",
+      "description": "Self-report scales for various lighting quality aspects",
+      "type": "self_report"
+    },
+    {
+      "name": "Skin Temperature Sensors",
+      "construct": "Physiological thermal response",
+      "description": "Sensors placed on forehead, hand, foot to measure skin temperature",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:45:25.306248+00:00"
+  "surgical_update_at": "2026-03-02T18:39:39.750282+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Psychological/Non-visual effects of light on thermal perception",
+      "commitment_type": "tests",
+      "specific_claim": "Illumination colour temperature can influence perceived thermal comfort and sensation beyond its direct radiant heat contribution, through psychological associations or non-visual physiological pathways."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper investigates how the psychological association of colour temperature (warm vs. cool light) influences subjective thermal perception.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Illumination colour temperature (e.g., 6500K)",
+        "to_construct": "Perceived 'coolness' or 'daylight association'",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived 'coolness' or 'daylight association'",
+        "to_construct": "Lower thermal sensation (feeling cooler)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photo or diagram of the experimental chamber setup showing lighting fixtures and participant seating.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Visual representation of the room under different colour temperature conditions (e.g., 2700K vs 6500K).",
+      "figure_ref": "Figure 2",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

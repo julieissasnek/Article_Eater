@@ -1351,38 +1351,62 @@
     "ecological_validity": null
   },
   "mechanism_chain": {
-    "description": "The causal pathway describing how physical characteristics of sound are processed by the auditory system to result in subjective auditory perceptions, including the mechanisms underlying perceived distortions.",
+    "description": "The causal mechanism describes the transformation of physical sound energy into neural signals and subsequent cognitive processing that results in subjective auditory perceptions, including instances where these perceptions deviate from a direct physical representation (distortions).",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Physical characteristics of sound (e.g., frequency, amplitude, waveform)",
-        "to_construct": "Mechanical transduction in the peripheral auditory system (e.g., ear drum, ossicles, cochlea)",
+        "from_construct": "Physical sound waves (e.g., pressure variations)",
+        "to_construct": "Mechanical vibrations in the inner ear (cochlea)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Mechanical transduction in the peripheral auditory system",
-        "to_construct": "Neural encoding of sound features (e.g., tonotopic mapping, firing rates)",
-        "mechanism_type": "neural",
+        "from_construct": "Mechanical vibrations in the cochlea",
+        "to_construct": "Transduction into neural impulses by hair cells",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Neural encoding of sound features",
-        "to_construct": "Central auditory processing and interpretation (e.g., brainstem, thalamus, auditory cortex)",
+        "from_construct": "Neural impulses from the auditory nerve",
+        "to_construct": "Encoding of basic sound features (e.g., frequency, intensity, timing) in subcortical auditory pathways",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Central auditory processing and interpretation",
-        "to_construct": "Subjective auditory perceptions (e.g., pitch, loudness, timbre, spatial location, and their distortions)",
+        "from_construct": "Encoded sound features in subcortical pathways",
+        "to_construct": "Higher-level processing and integration in auditory cortex, leading to perceptual organization and interpretation",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Cortical processing and interpretation of sound",
+        "to_construct": "Subjective auditory perception (e.g., pitch, loudness, timbre, spatial location, auditory objects), including 'distortions' due to non-linearities or cognitive biases",
         "mechanism_type": "perceptual",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:35:38.385268+00:00"
+  "surgical_update_at": "2026-03-02T18:40:50.787668+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Theories of Auditory Transduction and Neural Coding",
+      "commitment_type": "assumes",
+      "specific_claim": "Physical sound waves are converted into neural signals in the cochlea and processed hierarchically in the auditory pathway, forming the basis for perception."
+    },
+    {
+      "theory_name": "Principles of Auditory Scene Analysis",
+      "commitment_type": "applies",
+      "specific_claim": "The auditory system actively organizes incoming sound information into distinct perceptual objects and streams, which can lead to specific 'distortions' or illusions."
+    },
+    {
+      "theory_name": "Psychoacoustic Models of Perception (e.g., for loudness, pitch, timbre)",
+      "commitment_type": "reviews",
+      "specific_claim": "Mathematical and empirical models describe the non-linear relationship between physical sound parameters (e.g., intensity, frequency spectrum) and their subjective perceptual attributes (e.g., loudness, pitch, timbre), often revealing 'distortions' from linear mapping."
+    }
+  ]
 }

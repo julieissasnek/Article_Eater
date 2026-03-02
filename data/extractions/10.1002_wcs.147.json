@@ -8095,74 +8095,59 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "pure tones",
-      "speech-in-noise",
-      "music",
-      "environmental sounds (e.g., office noise, traffic noise)",
-      "white noise",
-      "pink noise"
+      "auditory stimuli (varying frequency, duration, spectral complexity)"
     ],
-    "duration_exposure": "variable, from milliseconds (for basic perception) to hours (for sustained cognitive tasks)",
-    "control_conditions": [
-      "silence",
-      "different types of background noise",
-      "varying sound levels (dB)",
-      "different task demands (e.g., primary task only vs. primary task with auditory distractor)"
-    ],
-    "ecological_validity": "lab"
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
   },
   "theory_commitments": [
     {
-      "theory_name": "Cognitive Load Theory",
+      "theory_name": "Signal Detection Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Auditory distractions increase cognitive load, thereby impairing cognitive performance by consuming limited processing resources."
+      "specific_claim": "Perception of stimuli involves distinguishing signals from noise, influencing detection thresholds."
+    },
+    {
+      "theory_name": "Attention Theories",
+      "commitment_type": "reviews",
+      "specific_claim": "Auditory stimuli compete for attentional resources, impacting cognitive performance."
     },
     {
       "theory_name": "Working Memory Models",
-      "commitment_type": "assumes",
-      "specific_claim": "Auditory information, especially irrelevant sound, competes for and occupies resources within working memory, leading to reduced capacity for primary task processing."
-    },
-    {
-      "theory_name": "Selective Attention Theory",
-      "commitment_type": "discusses",
-      "specific_claim": "Mechanisms of selective attention are crucial for filtering relevant auditory information from irrelevant distractors to maintain cognitive performance."
-    },
-    {
-      "theory_name": "Distraction Theories (e.g., Irrelevant Sound Effect)",
-      "commitment_type": "discusses",
-      "specific_claim": "Irrelevant auditory stimuli can capture attention and interfere with ongoing cognitive tasks, particularly those relying on serial recall or working memory."
+      "commitment_type": "reviews",
+      "specific_claim": "Auditory information is processed and maintained in working memory, influencing cognitive tasks."
     }
   ],
   "mechanism_chain": {
-    "description": "Auditory stimuli, particularly irrelevant or complex sounds, can interfere with cognitive performance through several pathways, including increased cognitive load, attentional capture, and disruption of working memory processes.",
+    "description": "Causal mechanism connecting auditory stimulus features to cognitive performance through perception and attention.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "auditory distractor (e.g., irrelevant speech, noise)",
-        "to_construct": "attentional capture/diversion",
-        "mechanism_type": "cognitive",
+        "from_construct": "auditory stimulus features (frequency, duration, complexity)",
+        "to_construct": "auditory system activation/processing",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "attentional capture/diversion",
-        "to_construct": "increased cognitive load/resource depletion",
-        "mechanism_type": "cognitive",
+        "from_construct": "auditory system activation/processing",
+        "to_construct": "perceptual detection/threshold of hearing",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "increased cognitive load/resource depletion",
-        "to_construct": "impaired working memory capacity",
+        "from_construct": "auditory perception",
+        "to_construct": "attentional allocation/cognitive load",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "impaired working memory capacity",
-        "to_construct": "reduced cognitive performance (e.g., slower reaction times, increased errors)",
-        "mechanism_type": "behavioral",
-        "evidence_strength": "direct"
+        "from_construct": "attentional allocation/cognitive load",
+        "to_construct": "cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
@@ -8217,5 +8202,5 @@
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:51:27.673868+00:00"
+  "surgical_update_at": "2026-03-02T18:29:46.793469+00:00"
 }

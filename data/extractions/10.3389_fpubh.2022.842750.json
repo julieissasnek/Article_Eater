@@ -4598,14 +4598,101 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "variations in light characteristics (e.g., illuminance, color temperature, distribution) within a tunnel environment"
+      "9 different lighting conditions in a simulated tunnel environment",
+      "3 illuminance levels (50 lux, 100 lux, 150 lux)",
+      "3 correlated color temperatures (3000K, 4000K, 5000K)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Each experimental drive lasted approximately 10 minutes",
     "control_conditions": [
-      "different light environments"
+      "The different combinations of illuminance and color temperature served as comparison conditions against each other"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:21:40.244717+00:00"
+  "surgical_update_at": "2026-03-02T18:31:00.430330+00:00",
+  "mechanism_chain": {
+    "description": "Different lighting parameters in a tunnel environment affect visual perception, which in turn influences physiological responses and psychological states, ultimately impacting driver performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Lighting parameters (illuminance, color temperature)",
+        "to_construct": "Visual perception (e.g., brightness, contrast, glare)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Visual perception (e.g., glare, discomfort)",
+        "to_construct": "Physiological responses (e.g., blink rate, heart rate variability)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Visual perception (e.g., comfort) / Physiological responses (e.g., fatigue)",
+        "to_construct": "Psychological states (e.g., mental workload, fatigue, alertness)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Psychological states (e.g., mental workload, fatigue)",
+        "to_construct": "Driving performance (e.g., lane keeping, speed control)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Electrocardiogram (ECG)",
+      "construct": "Heart Rate Variability (HRV)",
+      "description": "Used to measure physiological stress and arousal.",
+      "type": "physiological"
+    },
+    {
+      "name": "Electrooculogram (EOG)",
+      "construct": "Blink rate",
+      "description": "Used to assess visual fatigue and mental workload.",
+      "type": "physiological"
+    },
+    {
+      "name": "Eye-tracking system",
+      "construct": "Pupil diameter",
+      "description": "Used to measure physiological arousal and cognitive effort.",
+      "type": "physiological"
+    },
+    {
+      "name": "NASA Task Load Index (NASA-TLX)",
+      "construct": "Mental workload",
+      "description": "A multidimensional self-report scale to assess perceived workload.",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective rating scales",
+      "construct": "Visual comfort, fatigue, alertness, subjective evaluation of lighting",
+      "description": "Likert-type scales used to gather participants' subjective experiences.",
+      "type": "self_report"
+    },
+    {
+      "name": "Driving simulator data",
+      "construct": "Driving performance (e.g., Standard Deviation of Lateral Position, Standard Deviation of Speed)",
+      "description": "Recorded metrics of driving behavior within the simulated environment.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Experimental setup showing the driving simulator and participant",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Visual representation of the simulated tunnel environment under different lighting conditions",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported"
 }

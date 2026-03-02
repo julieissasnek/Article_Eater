@@ -88,7 +88,7 @@
       "p_value": "<0.05",
       "effect_size": 0.11,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 18,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -150,7 +150,8 @@
         "PAD_EMOTIONAL_MODEL": 0.1575,
         "PREDICTIVE_PROCESSING": 0.1575,
         "RETINAL_ACTIVATION": 0.1575
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1077,7 +1078,8 @@
         "ADAPTIVE_THERMAL_COMFORT": 0.1668,
         "ALLOSTATIC_REGULATION": 0.1668,
         "METABOLIC_HEALTH": 0.1668
-      }
+      },
+      "sample_n": 16
     },
     {
       "id": 15,
@@ -1300,7 +1302,8 @@
           "score": 0.257,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 8
     },
     {
       "id": 18,
@@ -1358,7 +1361,8 @@
           "score": 0.2513,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 8
     }
   ],
   "mechanisms": [
@@ -1555,12 +1559,70 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "bright light (2500 lux)"
+      "bright light (2500 lux)",
+      "evening exposure (21:00-23:00h)"
     ],
     "duration_exposure": "2 hours daily for 12 days",
-    "control_conditions": [],
+    "control_conditions": [
+      "dim light control"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:51:07.081617+00:00"
+  "surgical_update_at": "2026-03-02T18:29:40.714269+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Evening bright light exposure can induce a phase delay in circadian rhythms, improving sleep maintenance and subsequent cognitive performance in elderly subjects with insomnia."
+    },
+    {
+      "theory_name": "Phase Response Curve (PRC) to Light",
+      "commitment_type": "assumes",
+      "specific_claim": "The timing of light exposure relative to an individual's circadian phase determines the direction and magnitude of circadian phase shifts."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Bright light exposure influences circadian rhythms, leading to improved sleep and enhanced cognitive function.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Evening bright light exposure (2500 lux)",
+        "to_construct": "Circadian phase delay (e.g., melatonin onset shift)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Circadian phase delay",
+        "to_construct": "Improved sleep maintenance (reduced wake after sleep onset)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "tests"
+      },
+      {
+        "step": 3,
+        "from_construct": "Improved sleep maintenance",
+        "to_construct": "Enhanced Logical Reasoning throughput",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "tests"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Polysomnography (PSG)",
+      "construct": "sleep architecture and quality",
+      "description": "Standard objective measure of sleep stages, arousals, and respiratory events",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive Performance Battery",
+      "construct": "logical reasoning throughput",
+      "description": "A set of tasks designed to measure specific cognitive functions, including reasoning ability and processing speed.",
+      "type": "behavioral"
+    }
+  ],
+  "paper_sample_size": 36,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

@@ -84,7 +84,7 @@
       "p_value": "<0.001",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 30,
       "confidence_interval": null,
       "test_statistic": "t(29)=6.26",
       "theory_links": [
@@ -145,7 +145,8 @@
         "MULTISENSORY_INTEGRATION": 0.1996,
         "EMBODIED_COGNITION": 0.197,
         "NM_AROUSAL": 0.197
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1602,7 +1603,8 @@
         "SPATIAL_NAVIGATION": 0.1557,
         "CC": 0.1548,
         "NM": 0.1548
-      }
+      },
+      "sample_n": 19
     }
   ],
   "mechanisms": [
@@ -1781,41 +1783,56 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "natural soundscapes",
-      "urban soundscapes"
+      "natural soundscapes (e.g., birdsong, water sounds)",
+      "urban soundscapes (e.g., traffic noise, construction sounds)",
+      "silence"
     ],
-    "duration_exposure": "15 minutes",
+    "duration_exposure": "60 seconds per sound clip, repeated across trials",
     "control_conditions": [
-      "urban soundscapes"
+      "silence"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention better than urban environments"
+      "specific_claim": "Natural environments facilitate restoration of directed attention and cognitive performance more effectively than urban environments."
     },
     {
-      "theory_name": "Stress Reduction Theory",
+      "theory_name": "Stress Reduction Theory (SRT)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments reduce stress and promote positive affect more effectively than urban environments"
+      "specific_claim": "Natural environments reduce physiological and psychological stress, leading to improved well-being and cognitive function."
     }
   ],
   "mechanism_chain": {
-    "description": "Natural soundscapes lead to increased frontal alpha power, which in turn predicts better cognitive performance.",
+    "description": "Natural soundscapes induce positive affective states and reduce stress, leading to enhanced attentional control and cognitive performance, as reflected in specific neural markers.",
     "steps": [
       {
         "step": 1,
         "from_construct": "natural soundscapes",
-        "to_construct": "increased frontal alpha power",
-        "mechanism_type": "neural",
+        "to_construct": "increased pleasantness/reduced stress",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "increased frontal alpha power",
-        "to_construct": "better cognitive performance",
+        "from_construct": "increased pleasantness/reduced stress",
+        "to_construct": "enhanced attentional control/restoration",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "enhanced attentional control/restoration",
+        "to_construct": "improved cognitive performance (e.g., working memory)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "enhanced attentional control/restoration",
+        "to_construct": "altered brain activity (e.g., alpha power, ERPs)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       }
@@ -1823,24 +1840,45 @@
   },
   "instruments_used": [
     {
-      "name": "EEG",
-      "construct": "brain activity",
-      "description": "Electroencephalography for measuring brain electrical activity, specifically frontal alpha power",
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain activity (e.g., alpha power, event-related potentials like P300)",
+      "description": "Used to measure neural responses during soundscape exposure and cognitive tasks.",
       "type": "eeg"
     },
     {
-      "name": "2-back task",
-      "construct": "working memory",
-      "description": "A continuous performance task measuring working memory load and cognitive performance",
+      "name": "N-back task",
+      "construct": "working memory, cognitive performance",
+      "description": "A cognitive task with 0-back and 2-back conditions to assess cognitive load and performance.",
       "type": "behavioral"
     },
     {
-      "name": "Subjective ratings",
-      "construct": "pleasantness, perceived restorativeness, stress",
-      "description": "Likert-scale ratings for subjective experience of soundscapes",
+      "name": "Self-report scales for pleasantness and arousal",
+      "construct": "aesthetic preference, emotional state",
+      "description": "Likert-type scales used to rate subjective experience of soundscapes.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "perceived restorativeness",
+      "description": "A questionnaire to assess the restorative quality of the soundscapes.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:13:02.750384+00:00"
+  "surgical_update_at": "2026-03-02T18:31:35.946313+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the experimental procedure and task flow",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Examples of spectrograms or waveforms for the different soundscape categories",
+      "figure_ref": "Figure 2",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

@@ -1375,25 +1375,39 @@
   "minimum_safe_summary": "Radiant floor heating offers significant advantages in thermal comfort, indoor air quality, and energy efficiency compared to convective systems, especially in modern, well-insulated buildings. Key findings indicate that floor heating achieves the same operative temperature at lower air temperatures, leading to reduced ventilation heat loss and more uniform vertical temperature profiles. It improves indoor air quality by reducing dust mites, preventing mold, and eliminating pollutant sources from heat emitters. While maximum heating capacity is independent of floor covering, the required water temperature and system efficiency are affected by thermal resistance. Individual room control significantly enhances energy savings. A limitation is that the self-control effect, a key benefit, is specific to hydronic floor heating systems and does not apply to electrically heated systems.",
   "stimulus_description": {
     "environmental_features": [
-      "5 K (9°F) change of the floor surface temperature"
+      "floor surface temperature",
+      "air temperature",
+      "relative humidity",
+      "air velocity"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "duration_exposure": "steady-state conditions or continuous operation",
+    "control_conditions": [
+      "conventional convective heating systems",
+      "different floor heating designs or settings",
+      "no heating"
+    ],
+    "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "A change in the floor surface temperature directly influences the radiant heat exchange within the space, which is a primary determinant of the operative temperature experienced by occupants.",
+    "description": "A change in floor surface temperature directly alters the radiant heat exchange with an occupant, thereby influencing the mean radiant temperature and consequently the operative temperature.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "floor surface temperature",
-        "to_construct": "radiant heat transfer",
+        "from_construct": "floor surface temperature change",
+        "to_construct": "radiant heat transfer from floor to occupant",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "radiant heat transfer",
+        "from_construct": "radiant heat transfer from floor to occupant",
+        "to_construct": "mean radiant temperature",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "mean radiant temperature (in conjunction with air temperature)",
         "to_construct": "operative temperature",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
@@ -1402,18 +1416,65 @@
   },
   "instruments_used": [
     {
-      "name": "Temperature sensor",
-      "construct": "Floor surface temperature",
-      "description": "Device used to measure the temperature of the floor surface.",
+      "name": "Thermocouples",
+      "construct": "temperature",
+      "description": "Sensors used to measure air, surface, and floor temperatures",
       "type": "other"
     },
     {
-      "name": "Temperature sensor",
-      "construct": "Operative temperature",
-      "description": "Device(s) used to measure environmental temperatures (e.g., air temperature, mean radiant temperature) from which operative temperature is derived.",
+      "name": "Heat flux sensors",
+      "construct": "heat flux",
+      "description": "Sensors to measure heat flow through surfaces",
+      "type": "other"
+    },
+    {
+      "name": "Globe thermometer",
+      "construct": "mean radiant temperature",
+      "description": "Instrument used to measure mean radiant temperature",
+      "type": "other"
+    },
+    {
+      "name": "Anemometer",
+      "construct": "air velocity",
+      "description": "Instrument to measure air movement",
+      "type": "other"
+    },
+    {
+      "name": "Humidity sensor",
+      "construct": "relative humidity",
+      "description": "Sensor to measure moisture content in the air",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:34:49.053771+00:00"
+  "surgical_update_at": "2026-03-02T18:33:22.293527+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Thermal Comfort Theory (e.g., Fanger's PMV/PPD model)",
+      "commitment_type": "assumes",
+      "specific_claim": "Human thermal sensation and comfort can be predicted based on environmental and personal factors."
+    },
+    {
+      "theory_name": "Heat Transfer Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "Heat transfer occurs via conduction, convection, and radiation, governing energy exchange in the built environment and with occupants."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of a radiant floor heating system showing components and layers",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Floor plan illustrating heating zones or sensor placement",
+      "figure_ref": "Figure 2",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Temperature distribution contour plots on floor surface or within a room",
+      "figure_ref": "Figure 3",
+      "image_type": "graph"
+    }
+  ]
 }

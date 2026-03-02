@@ -541,7 +541,8 @@
         "PP": 0.1553,
         "NM_AROUSAL": 0.1547,
         "NM_STRESS": 0.1547
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 7,
@@ -765,7 +766,8 @@
         "EC": 0.1537,
         "PP": 0.1537,
         "SPATIAL_NAVIGATION": 0.1505
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 10,
@@ -1502,23 +1504,56 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "architectural plan configurations",
-      "built environment features"
+      "abstract diagrams of architectural plan configurations",
+      "built environments (e.g., specific buildings or urban spaces where way-finding was observed)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "varying levels of architectural plan simplicity"
+      "comparison of different plan configurations (e.g., high vs. low simplicity)"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": null,
-      "construct": "way-finding ability",
-      "description": "mean frequency of disorientation",
+      "name": "Way-finding scores / Disorientation frequency",
+      "construct": "Way-finding performance / Spatial orientation",
+      "description": "Scores reflecting the reported or observed frequency of disorientation experienced by participants during way-finding tasks in built environments.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:00:33.043911+00:00"
+  "surgical_update_at": "2026-03-02T18:40:56.966785+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Environmental Legibility Theory (e.g., Kevin Lynch's concepts)",
+      "commitment_type": "tests",
+      "specific_claim": "The legibility and clarity of architectural environments (e.g., plan configuration) directly influence an individual's ability to navigate and find their way, thereby affecting way-finding performance and reducing disorientation."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Simpler architectural plan configurations are hypothesized to be more legible, leading to easier cognitive processing and the formation of clearer mental maps, which in turn reduces the frequency of disorientation and improves way-finding performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "plan configuration simplicity",
+        "to_construct": "ease of cognitive processing / mental map formation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "ease of cognitive processing / mental map formation",
+        "to_construct": "way-finding performance / frequency of disorientation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Abstract diagrams representing different architectural plan configurations (e.g., high simplicity vs. low simplicity) used as stimuli.",
+      "figure_ref": null,
+      "image_type": "diagram"
+    }
+  ]
 }

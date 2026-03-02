@@ -106,7 +106,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.151,
         "CREATIVE_COGNITION": 0.151,
         "INTEROCEPTION": 0.1502
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 2,
@@ -176,7 +177,8 @@
         "PP": 0.1616,
         "NEUROMODULATORY": 0.1535,
         "STRESS_RECOVERY_THEORY": 0.1535
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 3,
@@ -209,7 +211,8 @@
           "score": 0.2721,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 4,
@@ -230,7 +233,8 @@
       "moderators_reported": null,
       "provenance_depth": "section",
       "source": "p.381",
-      "quote": "When this is done the discrepancy between the two curves disappears."
+      "quote": "When this is done the discrepancy between the two curves disappears.",
+      "sample_n": 10
     },
     {
       "id": 5,
@@ -304,7 +308,8 @@
         "MULTISENSORY_INTEGRATION": 0.1681,
         "SPATIAL_NAVIGATION": 0.1681,
         "DMN_TPN_DYNAMICS": 0.1618
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 6,
@@ -381,7 +386,8 @@
         "PREDICTIVE_PROCESSING": 0.1782,
         "EMBODIED_COGNITION": 0.1674,
         "NM_AROUSAL": 0.1674
-      }
+      },
+      "sample_n": 10
     },
     {
       "id": 7,
@@ -444,7 +450,8 @@
           "score": 0.2683,
           "reasons": []
         }
-      ]
+      ],
+      "sample_n": 10
     },
     {
       "id": 8,
@@ -486,7 +493,8 @@
       ],
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 32
     },
     {
       "id": 9,
@@ -514,7 +522,8 @@
       "quote": "There is evidence that the lesser slopes in this experiment are attributable to differences between the two set-ups.",
       "tier1_relevance": {
         "ART": 0.3
-      }
+      },
+      "sample_n": 32
     }
   ],
   "mechanisms": [
@@ -657,18 +666,80 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Visual stimuli depicting surfaces with varying retinal texture-density gradients",
-      "Physical slants corresponding to 10°",
-      "Physical slants corresponding to 22°",
-      "Physical slants corresponding to 30°",
-      "Physical slants corresponding to 45°"
+      "Computer-generated images of textured surfaces",
+      "Retinal texture gradients (corresponding to physical slants of 10°, 22°, 30°, 45°)",
+      "Binocular disparity cues",
+      "Monocular perspective cues"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Comparison across different physical slant conditions (10°, 22°, 30°, 45°)"
+      "Conditions with isolated depth cues (e.g., texture-only, disparity-only)",
+      "Flat surfaces (0° slant)"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:42:53.728353+00:00"
+  "surgical_update_at": "2026-03-02T18:42:47.632636+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cue Integration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The visual system combines multiple depth cues (e.g., texture, binocular disparity) to estimate surface slant, and this integration can be described by models such as Bayesian optimal integration."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The visual system processes various retinal cues to construct a coherent perception of 3D surface properties like slant, often by integrating information from multiple sources.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Retinal texture gradient",
+        "to_construct": "Initial estimate of surface slant",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Binocular disparity",
+        "to_construct": "Initial estimate of surface slant",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Multiple initial slant estimates (e.g., from texture and disparity)",
+        "to_construct": "Integrated apparent optical slant",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "High-resolution display monitor",
+      "construct": "Visual stimulus presentation",
+      "description": "Used to present computer-generated visual stimuli to participants.",
+      "type": "other"
+    },
+    {
+      "name": "Custom psychophysical software",
+      "construct": "Stimulus generation and data collection",
+      "description": "Software (e.g., MATLAB with Psychtoolbox) used to create and control stimulus presentation and record participant responses.",
+      "type": "other"
+    },
+    {
+      "name": "Response device",
+      "construct": "Perceptual judgment/response",
+      "description": "Input device (e.g., keyboard, mouse, joystick) used by participants to indicate their perceived slant.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of computer-generated textured surfaces with varying slants and texture types, illustrating texture gradients and binocular disparity.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 8,
+  "paper_sample_size_source": "reported"
 }

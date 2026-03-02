@@ -30,7 +30,7 @@
       "p_value": "<0.001",
       "effect_size": 0.18,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 200,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -85,7 +85,8 @@
         "ATTENTION_RESTORATION": 0.1678,
         "MEMORY_SYSTEMS": 0.1678,
         "CROSS_FRAMEWORK": 0.1588
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1270,52 +1271,42 @@
       "LEED-certified commercial buildings",
       "conventional commercial buildings"
     ],
-    "duration_exposure": "Operational period of buildings (multiple years)",
+    "duration_exposure": null,
     "control_conditions": [
-      "Conventional commercial buildings"
+      "conventional commercial buildings"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "The study investigates the causal link between LEED certification and building energy performance, exploring the intended mechanisms for energy savings and factors that contribute to or detract from them.",
+    "description": "LEED certification mandates or encourages the adoption of specific energy-efficient design features and technologies, which directly lead to reduced energy consumption in buildings.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "LEED certification requirements",
-        "to_construct": "Implementation of energy-efficient design and operational strategies (e.g., high-performance envelopes, efficient HVAC, lighting controls)",
-        "mechanism_type": "behavioral",
+        "from_construct": "LEED certification",
+        "to_construct": "Adoption of energy-efficient design features (e.g., efficient HVAC, improved envelope, daylighting, lighting controls)",
+        "mechanism_type": "engineering",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Energy-efficient design and operational strategies",
-        "to_construct": "Reduced energy demand for building systems",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Reduced energy demand",
-        "to_construct": "Lower measured energy use intensity (EUI)",
-        "mechanism_type": "physiological",
+        "from_construct": "Energy-efficient design features",
+        "to_construct": "Reduced energy consumption per floor area (EUI)",
+        "mechanism_type": "physical",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Utility bills / Energy consumption data",
-      "construct": "Building energy use intensity (EUI)",
-      "description": "Quantitative data on electricity, natural gas, and other fuel consumption, typically normalized by floor area.",
-      "type": "other"
-    },
-    {
-      "name": "Building characteristics data",
-      "construct": "Building type, size, age, occupancy, operational hours, climate zone",
-      "description": "Descriptive data about the buildings studied, used for normalization and comparison.",
+      "name": "Utility bills / Energy meters",
+      "construct": "Actual energy consumption",
+      "description": "Data collected from utility bills and/or building energy meters for electricity and natural gas consumption.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:46:14.296466+00:00"
+  "surgical_update_at": "2026-03-02T18:39:41.619503+00:00",
+  "paper_sample_size": 200,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

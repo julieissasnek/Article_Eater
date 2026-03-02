@@ -977,45 +977,53 @@
   "stimulus_description": {
     "environmental_features": [
       "room size",
-      "number of occupants/density",
-      "spatial arrangement"
+      "number of occupants",
+      "spatial density"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "short experimental session (e.g., 15-30 minutes)",
     "control_conditions": [
       "larger room size",
-      "fewer occupants/lower density"
+      "fewer occupants",
+      "lower spatial density"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Arousal Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Increased environmental load (e.g., high density, small space) leads to physiological arousal, which is then interpreted as perceived crowding."
+      "theory_name": "Crowding Theory (general)",
+      "commitment_type": "proposes",
+      "specific_claim": "Perceived crowding is a multi-faceted phenomenon determined by physical, social, and personal factors, not merely objective density."
     }
   ],
   "mechanism_chain": {
-    "description": "Physical constraints like small room size increase social density, which can induce physiological arousal and a sense of restrictedness, leading to the perception of crowding.",
+    "description": "Small room size leads to increased spatial density, which can reduce perceived control and personal space, leading to negative affect and the subjective experience of crowding.",
     "steps": [
       {
         "step": 1,
         "from_construct": "small room size",
-        "to_construct": "increased social density",
+        "to_construct": "increased spatial density",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "increased social density",
-        "to_construct": "physiological arousal",
-        "mechanism_type": "physiological",
+        "from_construct": "increased spatial density",
+        "to_construct": "reduced perceived control / personal space",
+        "mechanism_type": "cognitive|perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "physiological arousal",
+        "from_construct": "reduced perceived control / personal space",
+        "to_construct": "negative affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "negative affect",
         "to_construct": "perceived crowding",
-        "mechanism_type": "cognitive",
+        "mechanism_type": "cognitive|affective",
         "evidence_strength": "theoretical"
       }
     ]
@@ -1024,10 +1032,10 @@
     {
       "name": "Perceived Crowding Scale",
       "construct": "perceived crowding",
-      "description": "Self-report scale using semantic differential items (e.g., restricted-unrestricted, crowded-uncrowded, confined-unconfined).",
+      "description": "Self-report questionnaire measuring subjective feelings of restriction, confinement, and discomfort.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:05:28.887126+00:00"
+  "surgical_update_at": "2026-03-02T18:30:58.457661+00:00"
 }

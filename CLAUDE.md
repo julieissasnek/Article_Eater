@@ -182,6 +182,125 @@ CAVE VR, N=93, TSST stressor (ecological task!), 7 cortisol time points (proper 
 
 ---
 
+## Figure-Document Consistency (MANDATORY)
+
+*Added 2026-03-02. Canonical reference: `contracts/FIGURE_CONSISTENCY_CONTRACT.md`.*
+
+Figures encode specific claims, numbers, and structural relationships from the text at a particular moment. When the master doc evolves, figures can silently become stale.
+
+### Session-Start Protocol
+
+After reading TASKS.md, run:
+```bash
+python scripts/check_figure_consistency.py --quick
+```
+If any STALE-CRITICAL figures are found, prioritize regeneration before other work.
+
+### After Master Doc Edits
+
+After editing any Part file, run the full check:
+```bash
+python scripts/check_figure_consistency.py --full --add-tasks
+```
+This will flag any figures whose data dependencies have changed and add regeneration tasks to TASKS.md.
+
+### Key Files
+
+- `contracts/FIGURE_DEPENDENCIES.json` — all figure data dependencies (the single source of truth)
+- `scripts/check_figure_consistency.py` — the checker script
+- `docs/FIGURE_INDEX.md` — master index of all figures
+- `contracts/FIGURE_CONSISTENCY_CONTRACT.md` — full specification
+
+### Common-Sense Labeling Rule
+
+All figure labels, titles, and annotations MUST use plain English that a smart non-specialist would understand. Technical terms may appear in parentheses after the plain-English version. Example: "Evidence Store (Epistemic Network)" not "Epistemic Network (EN)". This applies to all layers, transfer functions, and matrix labels.
+
+---
+
+## Paper Writing Norms (MANDATORY for all papers, articles, and formal documents)
+
+*Added 2026-03-02. Canonical references: `contracts/WRITING_STYLE_GUIDE.md`, `contracts/VISUALIZATION_NORMS.md`.*
+
+When writing any paper, article, or formal document for this project, Claude MUST follow these principles. They are not optional guidelines — they are the house style. Read the two canonical reference files before starting any paper-writing task.
+
+### Prose Design
+
+**Voice calibration**: Smart 3rd-year undergraduate — biased 60/40 toward popular science over expert journal. Every sentence should be clear to a well-read non-specialist while remaining precise enough for a specialist.
+
+**Sentence norms**:
+- Lead with the point. The first sentence of every paragraph states the conclusion; subsequent sentences support it.
+- One idea per sentence. If a sentence has two independent claims, split it.
+- Active voice by default. Use passive only when the agent is genuinely unknown or irrelevant.
+- Concrete before abstract. State the example, then the principle — not the reverse.
+
+**Paragraph norms**:
+- SCQA structure (Situation–Complication–Question–Answer) for expository paragraphs.
+- 4–7 sentences. Under 4 is underdeveloped; over 7 is losing the reader.
+- End every paragraph with a "so what" sentence connecting to the paper's argument.
+
+**Section norms**:
+- Every section opens with a 3–5 sentence orientation paragraph: what the section covers, why it matters, and the punchline (what the reader will learn). This is non-negotiable.
+- Informative headings that state findings, not topics: "Fractal Dimension Peaks at D ≈ 1.3 Because Natural Scenes Do" not "Fractal Dimension Results."
+
+**Confidence spectrum**: Match phrasing to evidence strength:
+- Strong (d > 0.5, replicated): "X produces Y" / "X reliably leads to Y"
+- Moderate (d 0.3–0.5, some replication): "X is associated with Y" / "Evidence suggests X leads to Y"
+- Preliminary (d < 0.3, few studies): "Preliminary evidence indicates..." / "Initial findings suggest..."
+- Speculative (no direct evidence): "One possibility is..." / "If the analogy holds..."
+
+**Equations**: Always explain in plain language first, then present the equation, then walk through each term. Never drop an equation without verbal scaffolding.
+
+**Citations**: Weave into prose naturally (avoid citation clusters). Use "Smith (2020) showed that..." for important findings, "(Smith, 2020)" for supporting evidence. APA 7th edition throughout.
+
+### Evidence Grounding (MANDATORY)
+
+Before writing any empirical claim, check the ATLAS Epistemic Network (EN) and Bayesian Network (BN) for supporting evidence:
+- Query the web of belief for relevant beliefs and their confidence levels
+- Check warrant types (EMPIRICAL_ASSOCIATION, MECHANISM, ANALOGICAL) for each claim
+- Report the actual confidence from ATLAS when available (e.g., "ATLAS confidence: 0.62")
+- Use `paper_evidence_auditor.py` to audit completed drafts for unsupported claims and generate search targets for gaps
+
+This grounds papers in the system's own evidence base rather than relying solely on author memory.
+
+### Figure Design
+
+Every figure MUST follow `contracts/VISUALIZATION_NORMS.md`. Key principles:
+
+**Tufte data-ink ratio**: Maximize the proportion of ink devoted to data. Remove gridlines, chartjunk, redundant labels, and decorative elements. Every mark should encode information.
+
+**Cleveland & McGill perceptual hierarchy**: Encode the most important comparison using the most accurately perceived visual channel: position on common scale > position on non-aligned scale > length > angle > area > color saturation > color hue.
+
+**Colorblind-safe palette**: Use the ATLAS palette (see VISUALIZATION_NORMS.md §2). Never encode critical information using red/green distinction alone.
+
+**Direct labeling**: Label data directly on the figure. Legends are a last resort (>4 series). Minimize eye travel between data and its label.
+
+### Caption and Title Design (Scientific American Standard)
+
+**In-figure titles**: Must state the finding or the point, not just the topic.
+- Good: "Four Traditions, 150 Years Apart, Found the Same Curve"
+- Bad: "Historical Overview of Optimal Stimulation Research"
+
+**Captions**: 4–8 sentences, fully self-contained. A reader must be able to understand the paper's argument by reading only the captions and studying the figures. Structure:
+
+1. **Sentence 1 — Direct the eye**: Tell the reader what to look at. "Look at the five parallel curves..." / "Compare the left and right panels..." / "Follow the timeline from left to right..."
+2. **Sentences 2–3 — State the pattern**: What should the reader notice? "Notice how all five peaks cluster in the same inverted-U shape despite measuring completely different physical quantities..."
+3. **Sentences 4–5 — Explain the implication**: Why does this matter? "This convergence is the paper's central empirical claim: the same optimization principle governs all five sensory channels..."
+4. **Sentence 6 — Scope or caveat** (optional): "Cross-cultural data remain sparse; the shaded zones reflect primarily Western samples."
+5. **Sentences 7–8 — Design/practical consequence** (where relevant): "For architects, this means fractal dimension is a measurable, designable property..."
+
+Captions must reference specific values, ranges, and patterns visible in the figure. Never say "This figure shows..." — start with the content itself.
+
+### Applying These Norms
+
+These norms apply to:
+- All papers (Goldilocks, ATLAS Architecture, any future publications)
+- All formal documents intended for external audiences
+- Extended sections of the master document (especially Parts with theoretical content)
+
+For internal technical documentation (sprint reports, audit logs, completion reports), use a lighter version: section orientations are still required, but caption standards apply only to figures that will eventually appear in papers or presentations.
+
+---
+
 ## User Shortcuts
 
 ### "show progress"

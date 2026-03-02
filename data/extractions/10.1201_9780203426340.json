@@ -9939,95 +9939,124 @@
   "stimulus_description": {
     "environmental_features": [
       "light intensity (illuminance, luminance)",
-      "spectral power distribution (color temperature, wavelength)",
+      "spectral power distribution (color temperature, specific wavelengths)",
       "temporal patterns (duration, timing, flicker)",
-      "spatial distribution (glare, uniformity)"
+      "spatial distribution (uniformity, glare sources)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Varies widely depending on the effect discussed, from minutes for acute visual tasks to continuous exposure over days or weeks for circadian effects.",
     "control_conditions": [
-      "darkness",
-      "dim light",
-      "alternative lighting conditions (e.g., different CCTs, intensities, or spectral compositions)"
+      "dark conditions",
+      "dim light conditions",
+      "specific reference light levels or spectra",
+      "placebo lighting conditions"
     ],
     "ecological_validity": "lab|semi-naturalistic|field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Unified System of Photometry (USP)",
-      "commitment_type": "proposes|extends",
-      "specific_claim": "A new system of photometry is needed to accurately predict both visual and non-visual responses to light, accounting for the distinct spectral sensitivities of different photoreceptors, particularly the melanopsin-containing retinal ganglion cells (ipRGCs) for non-visual effects."
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Light exposure, particularly to short-wavelength light, affects the human circadian system primarily through intrinsically photosensitive retinal ganglion cells (ipRGCs)."
     },
     {
-      "theory_name": "Circadian Phototransduction Model",
-      "commitment_type": "assumes|tests|extends",
-      "specific_claim": "Light exposure, particularly short-wavelength light, entrains the human circadian system primarily through the activation of intrinsically photosensitive retinal ganglion cells (ipRGCs), leading to effects like melatonin suppression and phase shifting."
+      "theory_name": "Visual Comfort Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Factors such as luminance ratios, glare, and uniformity of light distribution significantly influence subjective visual comfort and discomfort."
+    },
+    {
+      "theory_name": "Light-Dark Cycle Entrainment Theory",
+      "commitment_type": "extends",
+      "specific_claim": "The timing, intensity, and spectral composition of light exposure are critical for entraining the human circadian clock to the 24-hour day-night cycle."
     }
   ],
   "mechanism_chain": {
-    "description": "Causal mechanism connecting light exposure to human circadian system entrainment and other non-visual effects.",
+    "description": "The paper describes various mechanisms by which light influences human factors, including visual perception, circadian regulation, and non-visual effects on mood and performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (especially short-wavelength light)",
-        "to_construct": "Activation of intrinsically photosensitive Retinal Ganglion Cells (ipRGCs)",
+        "from_construct": "Light exposure (intensity, spectrum, timing)",
+        "to_construct": "Activation of retinal photoreceptors (rods, cones, ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
+        "from_construct": "Activation of retinal photoreceptors",
+        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN) and other brain regions",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "SCN activation",
-        "to_construct": "Modulation of pineal gland melatonin secretion",
+        "from_construct": "Signal transmission to SCN",
+        "to_construct": "Modulation of melatonin secretion and circadian phase shifting",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Melatonin suppression/phase shift",
-        "to_construct": "Entrainment of human circadian system",
+        "from_construct": "Modulation of melatonin and circadian phase",
+        "to_construct": "Changes in alertness, sleep-wake cycles, mood, and cognitive performance",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Spectroradiometer",
-      "construct": "Light spectral power distribution, illuminance, luminance",
-      "description": "Device for measuring the spectral composition and intensity of light sources.",
+      "name": "Photometers / Luminance meters",
+      "construct": "Light intensity and brightness",
+      "description": "Devices used to measure illuminance (light falling on a surface) and luminance (light emitted or reflected from a surface).",
       "type": "other"
     },
     {
-      "name": "Melatonin assay",
-      "construct": "Melatonin levels",
-      "description": "Biochemical test to measure melatonin concentration in saliva or blood.",
-      "type": "physiological"
+      "name": "Spectroradiometers",
+      "construct": "Spectral power distribution of light",
+      "description": "Instruments used to measure the amount of radiant energy at each wavelength across the electromagnetic spectrum.",
+      "type": "other"
     },
     {
       "name": "Actigraphy",
-      "construct": "Sleep-wake cycles, activity patterns",
-      "description": "Wearable device to monitor movement and infer sleep/wake states.",
+      "construct": "Activity levels and sleep-wake patterns",
+      "description": "Wearable devices that record movement, often used to infer sleep and wakefulness patterns.",
       "type": "physiological"
     },
     {
-      "name": "Pupillometer",
-      "construct": "Pupil size and response",
-      "description": "Device to measure pupil diameter and its changes in response to light.",
+      "name": "Melatonin assays",
+      "construct": "Melatonin levels",
+      "description": "Biochemical tests (e.g., saliva, urine, blood) to quantify melatonin concentration, indicating circadian phase.",
       "type": "physiological"
     },
     {
-      "name": "Self-report questionnaires",
-      "construct": "Alertness, mood, sleep quality, fatigue",
-      "description": "Various scales and questionnaires used to assess subjective human states.",
+      "name": "Questionnaires (e.g., KSS, mood scales)",
+      "construct": "Subjective alertness, mood, visual comfort, sleep quality",
+      "description": "Self-report instruments used to assess various psychological and perceptual states related to lighting.",
       "type": "self_report"
+    },
+    {
+      "name": "Performance tests (e.g., reaction time, vigilance tasks)",
+      "construct": "Cognitive performance, visual task performance",
+      "description": "Standardized tasks used to objectively measure aspects of cognitive function and visual processing under different lighting conditions.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:18:49.497405+00:00"
+  "surgical_update_at": "2026-03-02T18:28:58.651180+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating the human visual system and non-visual photoreception pathways.",
+      "figure_ref": null,
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs showing spectral sensitivity curves for different photoreceptors (rods, cones, ipRGCs).",
+      "figure_ref": null,
+      "image_type": "graph"
+    },
+    {
+      "description": "Illustrations or photos of various lighting installations and their impact on visual fields or glare.",
+      "figure_ref": null,
+      "image_type": "photo"
+    }
+  ]
 }

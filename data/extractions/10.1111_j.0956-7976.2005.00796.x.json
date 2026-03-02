@@ -1572,43 +1572,35 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Photographs of various materials (e.g., wood, plastic, metal, fabric, stone)",
-      "Rendered images with controlled variations in surface reflectance properties (e.g., glossiness, translucency)",
-      "Variations in texture patterns",
-      "Variations in object shape/geometry"
+      "Photographs and rendered images of various materials (e.g., plastic, metal, fabric, stone, wood)",
+      "Materials often presented as objects (e.g., spheres, crumpled paper, natural objects)",
+      "Lighting conditions were controlled or varied to manipulate visual cues"
     ],
-    "duration_exposure": "Brief presentations (e.g., 100-200 ms) or varied durations to assess temporal integration",
+    "duration_exposure": "brief presentations",
     "control_conditions": [
-      "Manipulation of specific material properties (e.g., varying glossiness from matte to highly specular)",
-      "Different lighting conditions (e.g., varying light source position or type)",
-      "Different object geometries displaying the materials",
-      "Comparison of different material types"
+      "Variations in material properties (e.g., glossiness, roughness, translucency)",
+      "Variations in lighting direction and intensity",
+      "Variations in object shape",
+      "Comparison between real photographs and synthetic renderings"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:34:31.170834+00:00",
+  "surgical_update_at": "2026-03-02T18:28:33.006832+00:00",
   "mechanism_chain": {
-    "description": "The paper investigates how specific visual cues derived from material surfaces contribute to the perception and identification of material properties.",
+    "description": "The paper investigates the causal mechanisms by which specific visual cues in images are processed by the human visual system to infer material properties and subsequently identify materials.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Surface reflectance properties and geometry of objects",
-        "to_construct": "Visual cues (e.g., specular highlights, texture, shading, translucency effects)",
+        "from_construct": "Image features (e.g., specular reflections, texture patterns, diffuse shading gradients)",
+        "to_construct": "Perception of fundamental material properties (e.g., glossiness, roughness, translucency)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Visual cues",
-        "to_construct": "Perceived material properties (e.g., glossiness, roughness, transparency)",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Perceived material properties",
-        "to_construct": "Material identification",
+        "from_construct": "Perception of fundamental material properties",
+        "to_construct": "Material identification (e.g., 'plastic', 'metal', 'wood')",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -1616,28 +1608,23 @@
   },
   "instruments_used": [
     {
-      "name": "Computer monitor",
+      "name": "Computer display",
       "construct": "Visual stimulus presentation",
-      "description": "High-resolution display for presenting material images or rendered scenes",
+      "description": "High-resolution monitor used to present material images to participants.",
       "type": "other"
     },
     {
-      "name": "Keyboard/Mouse",
-      "construct": "Behavioral response collection",
-      "description": "Used by participants to make forced-choice responses or ratings",
+      "name": "Response device (e.g., keyboard or mouse)",
+      "construct": "Behavioral response recording",
+      "description": "Used by participants to input their material identification judgments or property ratings.",
       "type": "behavioral"
-    },
+    }
+  ],
+  "stimulus_images": [
     {
-      "name": "Psychophysical rating scales",
-      "construct": "Perceived material properties (e.g., glossiness, roughness, hardness)",
-      "description": "Likert-type or continuous scales for subjective judgments of material attributes",
-      "type": "self_report"
-    },
-    {
-      "name": "Forced-choice identification task",
-      "construct": "Material identification accuracy",
-      "description": "Participants select the most appropriate material label from a set of options",
-      "type": "behavioral"
+      "description": "Examples of the material stimuli used, including photographs and rendered images, often illustrating variations in material properties (e.g., gloss, texture) or lighting conditions.",
+      "figure_ref": null,
+      "image_type": "stimulus_set"
     }
   ]
 }

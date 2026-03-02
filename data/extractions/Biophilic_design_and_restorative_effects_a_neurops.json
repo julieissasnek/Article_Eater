@@ -158,43 +158,88 @@
   "converted_at": "2026-03-01T13:23:39.260010+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "indoor plants",
-      "natural light exposure",
-      "natural material textures",
-      "views of nature (real or simulated)"
+      "indoor workspace with biophilic design elements (e.g., plants, natural light simulation, natural materials, nature-themed artwork/views)",
+      "indoor workspace with conventional design (control condition, e.g., standard office decor, urban views or no specific view)"
     ],
-    "duration_exposure": "continuous during typical work hours (e.g., 8 hours per day)",
+    "duration_exposure": "single session, typically 30-60 minutes",
     "control_conditions": [
-      "conventional, non-biophilic hospital workspaces"
+      "conventional indoor workspace"
     ],
-    "ecological_validity": "field"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Biophilic design elements in indoor hospital environments can provide restorative benefits by facilitating recovery from directed attention fatigue, consistent with ART's principles."
+      "specific_claim": "Biophilic design elements in indoor workspaces can facilitate psychological restoration by engaging involuntary attention and reducing mental fatigue, thereby improving cognitive function."
     }
   ],
   "instruments_used": [
     {
+      "name": "N-back task",
+      "construct": "working memory",
+      "description": "A continuous performance task used to measure working memory capacity.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Stroop task",
+      "construct": "selective attention, cognitive control, inhibition",
+      "description": "A task measuring reaction time and accuracy in naming the color of words, often conflicting with the word itself.",
+      "type": "behavioral"
+    },
+    {
       "name": "Perceived Restorativeness Scale (PRS)",
       "construct": "perceived restorativeness",
-      "description": "Self-report questionnaire assessing perceived restorative qualities of an environment.",
+      "description": "A self-report questionnaire assessing the restorative quality of an environment based on ART components (being away, fascination, extent, compatibility).",
       "type": "self_report"
     },
     {
       "name": "Positive and Negative Affect Schedule (PANAS)",
       "construct": "positive and negative affect",
-      "description": "20-item self-report scale measuring positive and negative affect.",
+      "description": "A 20-item self-report questionnaire measuring current positive and negative mood states.",
       "type": "self_report"
     },
     {
-      "name": "N-back task",
-      "construct": "working memory, sustained attention",
-      "description": "A cognitive task measuring working memory and sustained attention.",
-      "type": "behavioral"
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress, autonomic nervous system activity",
+      "description": "Measurement of the variation in the time interval between heartbeats, used as an indicator of stress and relaxation.",
+      "type": "physiological"
     }
   ],
-  "surgical_update_at": "2026-03-02T00:48:51.988028+00:00"
+  "surgical_update_at": "2026-03-02T18:43:21.291676+00:00",
+  "mechanism_chain": {
+    "description": "Exposure to biophilic design elements leads to increased feelings of fascination and being away, which in turn reduces mental fatigue and stress, ultimately improving cognitive performance and well-being.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "exposure to biophilic design elements",
+        "to_construct": "increased feelings of fascination and being away",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "increased feelings of fascination and being away",
+        "to_construct": "reduced mental fatigue and stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced mental fatigue and stress",
+        "to_construct": "improved cognitive performance and well-being",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs or renderings of the biophilic and conventional experimental rooms/workspaces",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported"
 }

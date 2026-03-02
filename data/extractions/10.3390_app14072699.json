@@ -63,7 +63,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 30,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -118,7 +118,8 @@
       "tier2_relevance": {
         "NEUROMODULATORY": 0.3186,
         "CHRONOBIOLOGICAL": 0.1976
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1579,26 +1580,79 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Continuous noise exposure (55-85 dB)"
+      "continuous white noise at 55 dB",
+      "continuous white noise at 65 dB",
+      "continuous white noise at 75 dB",
+      "continuous white noise at 85 dB"
     ],
-    "duration_exposure": "continuous",
-    "control_conditions": null,
+    "duration_exposure": "15 minutes per condition",
+    "control_conditions": [
+      "quiet condition (35 dB)"
+    ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "EEG",
-      "construct": "brain activity, cognitive performance, stress",
-      "description": "Measures electrical activity of the brain using power spectrum density analysis",
+      "construct": "brain activity (power spectrum density)",
+      "description": "Electroencephalography to measure brain electrical activity in different frequency bands (delta, theta, alpha, beta, gamma)",
       "type": "eeg"
     },
     {
       "name": "SCWT",
-      "construct": "cognitive performance, attention, response time",
-      "description": "Stroop Color-Word Test, used to measure cognitive interference and attention",
+      "construct": "attention, cognitive performance",
+      "description": "Stroop Color-Word Test to assess selective attention and cognitive control",
       "type": "behavioral"
+    },
+    {
+      "name": "NASA-TLX",
+      "construct": "mental workload",
+      "description": "NASA Task Load Index, a multidimensional self-report scale for subjective workload assessment",
+      "type": "self_report"
+    },
+    {
+      "name": "PSS",
+      "construct": "perceived stress",
+      "description": "Perceived Stress Scale, a self-report measure of the degree to which situations in one's life are appraised as stressful",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:44:24.893350+00:00"
+  "surgical_update_at": "2026-03-02T18:34:09.694026+00:00",
+  "mechanism_chain": {
+    "description": "Continuous noise exposure leads to physiological changes (EEG), which contribute to increased mental workload and stress, ultimately impairing cognitive performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "continuous noise exposure",
+        "to_construct": "changes in brain activity (EEG power spectrum density)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "changes in brain activity (EEG power spectrum density)",
+        "to_construct": "increased mental workload and stress",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "increased mental workload and stress",
+        "to_construct": "impaired cognitive performance (e.g., attention)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Experimental setup showing participant with EEG cap in a sound-attenuated room",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }
