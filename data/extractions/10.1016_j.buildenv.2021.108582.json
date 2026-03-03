@@ -2593,87 +2593,85 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "reverberation time (Tmid, T30, T20)",
-      "background noise levels",
+      "reverberation time (Tmid)",
+      "background noise levels (LAeq)",
       "signal-to-noise ratio (SNR)",
-      "speech intelligibility index (STI)",
-      "sound absorption"
+      "speech transmission index (STI)",
+      "classroom acoustics"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "semi-naturalistic|field"
+    "control_conditions": [
+      "classrooms with varying acoustical treatments",
+      "different noise levels (e.g., quiet vs. noisy conditions)",
+      "different room geometries"
+    ],
+    "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Poor classroom acoustics (e.g., high reverberation, high noise) reduce speech intelligibility, leading to increased listening effort, which depletes cognitive resources needed for learning, ultimately impairing academic performance.",
+    "description": "Acoustical parameters in classrooms affect learning performance primarily by influencing speech intelligibility and cognitive load, which in turn impact the allocation of cognitive resources.",
     "steps": [
       {
         "step": 1,
         "from_construct": "High reverberation time / High background noise",
-        "to_construct": "Reduced speech intelligibility",
+        "to_construct": "Reduced speech intelligibility / Increased masking",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Reduced speech intelligibility",
-        "to_construct": "Increased listening effort",
+        "from_construct": "Reduced speech intelligibility / Increased masking",
+        "to_construct": "Increased listening effort / Cognitive load",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Increased listening effort",
-        "to_construct": "Reduced cognitive resources for learning",
+        "from_construct": "Increased listening effort / Cognitive load",
+        "to_construct": "Reduced cognitive resources available for learning tasks",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Reduced cognitive resources for learning",
-        "to_construct": "Poorer learning performance",
-        "mechanism_type": "behavioral",
+        "from_construct": "Reduced cognitive resources available for learning tasks",
+        "to_construct": "Poorer learning performance (e.g., reading comprehension, memory, attention)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Reverberation time meter / Impulse response measurement system",
-      "construct": "Reverberation time (Tmid, T30, T20)",
-      "description": "Equipment used to measure the decay time of sound in a space, indicating its reverberant properties.",
-      "type": "other"
-    },
-    {
       "name": "Sound level meter",
-      "construct": "Background noise level, Signal-to-noise ratio (SNR)",
-      "description": "Device used to measure sound pressure levels in a classroom environment.",
+      "construct": "background noise level, sound pressure level",
+      "description": "Device used to measure sound levels in decibels.",
       "type": "other"
     },
     {
-      "name": "Speech intelligibility tests",
-      "construct": "Speech intelligibility, Speech recognition",
-      "description": "Tests (e.g., word lists, sentence recognition) to assess how well listeners can understand spoken language in various acoustic conditions.",
-      "type": "behavioral"
+      "name": "Reverberation time meter",
+      "construct": "reverberation time (Tmid)",
+      "description": "Device used to measure the time it takes for sound to decay in a space.",
+      "type": "other"
     },
     {
       "name": "Standardized academic tests",
-      "construct": "Academic achievement, Learning outcomes",
-      "description": "Formal assessments used to measure students' knowledge and skills in subjects like reading, math, and language.",
+      "construct": "learning performance (e.g., reading comprehension, math skills, memory)",
+      "description": "Tests designed to assess specific academic abilities and knowledge.",
       "type": "behavioral"
     },
     {
-      "name": "Cognitive performance tasks",
-      "construct": "Memory, Attention, Executive function",
-      "description": "Tasks (e.g., working memory tasks, attention span tests) designed to evaluate specific cognitive abilities relevant to learning.",
+      "name": "Speech intelligibility tests",
+      "construct": "speech intelligibility",
+      "description": "Tests (e.g., word recognition, sentence comprehension) to measure how well speech can be understood.",
       "type": "behavioral"
     },
     {
-      "name": "Self-report questionnaires",
-      "construct": "Perceived listening effort, Annoyance, Comfort",
-      "description": "Surveys or scales used to gather subjective feedback from students or teachers regarding their acoustic environment and learning experience.",
-      "type": "self_report"
+      "name": "Cognitive tasks",
+      "construct": "attention, working memory, executive function",
+      "description": "Experimental tasks designed to measure specific cognitive processes.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:50:42.966327+00:00"
+  "surgical_update_at": "2026-03-02T22:52:44.684940+00:00"
 }

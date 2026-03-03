@@ -148,7 +148,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.170",
-      "quote": "as density increases, the number of attempts on the unsolvable puzzle decreases, b = −1.13, t(36) = 2.16, p < .05.",
+      "quote": "as density increases, the number of attempts on the unsolvable puzzle decreases, b = \u22121.13, t(36) = 2.16, p < .05.",
       "template_matches": [
         {
           "template_id": "NM_CHOLINERGIC_GATING_007",
@@ -410,7 +410,7 @@
       "claim_type": "associational",
       "measure_type": "self_report",
       "p_value": "<0.01",
-      "effect_size": 13.88,
+      "effect_size": null,
       "effect_size_type": "beta",
       "sample_size": null,
       "confidence_interval": null,
@@ -473,7 +473,9 @@
         "GROUP_CREATIVITY": 0.1744,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1744,
         "PREDICTIVE_PROCESSING": 0.1744
-      }
+      },
+      "_original_effect_size": 13.88,
+      "_quarantine_reason": "Beta must be in [-10, 10], got 13.88"
     },
     {
       "id": 7,
@@ -498,7 +500,7 @@
       ],
       "provenance_depth": "section",
       "source": "p.171",
-      "quote": "whereas for girls, the simple slope does not differ from zero, b = −1.76, t(108) < 1.0.",
+      "quote": "whereas for girls, the simple slope does not differ from zero, b = \u22121.76, t(108) < 1.0.",
       "template_matches": [
         {
           "template_id": "COLLABORATIVE_CREATIVITY_ARCHITECTURE_001",
@@ -1427,7 +1429,7 @@
     "crossref_publisher": "SAGE Publications",
     "crossref_type": "journal-article",
     "crossref_subjects": [],
-    "crossref_abstract": "The authors provide data on mental health sequelae of residential crowding among children, demonstrating significant associations between the number of persons per room and an index of psychological health. These relations are shown in two independent samples of urban and rural children living in poverty. The density–mental health link among the rural, low-income sample is qualified by a gender interaction indicating that boys are more vulnerable to negative outcomes. This interaction was not found among the smaller, inner-city sample. In both samples, children from higher density homes are less likely to persist in an achievement, problem-solving context. The authors did not find support for their hypothesis that learned helplessness would at least partially account for the relation between residential crowding and mental health among children.",
+    "crossref_abstract": "The authors provide data on mental health sequelae of residential crowding among children, demonstrating significant associations between the number of persons per room and an index of psychological health. These relations are shown in two independent samples of urban and rural children living in poverty. The density\u2013mental health link among the rural, low-income sample is qualified by a gender interaction indicating that boys are more vulnerable to negative outcomes. This interaction was not found among the smaller, inner-city sample. In both samples, children from higher density homes are less likely to persist in an achievement, problem-solving context. The authors did not find support for their hypothesis that learned helplessness would at least partially account for the relation between residential crowding and mental health among children.",
     "crossref_reference_count": 48,
     "crossref_issn": [
       "0013-9165",
@@ -1466,7 +1468,7 @@
   "crossref_type": "journal-article",
   "crossref_publisher": "SAGE Publications",
   "crossref_subjects": [],
-  "crossref_abstract": "The authors provide data on mental health sequelae of residential crowding among children, demonstrating significant associations between the number of persons per room and an index of psychological health. These relations are shown in two independent samples of urban and rural children living in poverty. The density–mental health link among the rural, low-income sample is qualified by a gender interaction indicating that boys are more vulnerable to negative outcomes. This interaction was not found among the smaller, inner-city sample. In both samples, children from higher density homes are less likely to persist in an achievement, problem-solving context. The authors did not find support for their hypothesis that learned helplessness would at least partially account for the relation between residential crowding and mental health among children.",
+  "crossref_abstract": "The authors provide data on mental health sequelae of residential crowding among children, demonstrating significant associations between the number of persons per room and an index of psychological health. These relations are shown in two independent samples of urban and rural children living in poverty. The density\u2013mental health link among the rural, low-income sample is qualified by a gender interaction indicating that boys are more vulnerable to negative outcomes. This interaction was not found among the smaller, inner-city sample. In both samples, children from higher density homes are less likely to persist in an achievement, problem-solving context. The authors did not find support for their hypothesis that learned helplessness would at least partially account for the relation between residential crowding and mental health among children.",
   "crossref_fetched_at": "2026-02-25T11:59:50.053520+00:00",
   "journal": "Environment and Behavior",
   "tier_resolution_version": "ftr_v1_2026-03-01",
@@ -1477,13 +1479,11 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "residential density (people per room)",
-      "household size",
-      "number of rooms"
+      "residential density (people per room)"
     ],
-    "duration_exposure": "long-term (continuous residence)",
+    "duration_exposure": "long-term/chronic",
     "control_conditions": [
-      "comparison of groups with varying levels of residential density"
+      "comparison across varying levels of residential density"
     ],
     "ecological_validity": "field"
   },
@@ -1491,48 +1491,56 @@
     {
       "theory_name": "Crowding Theory",
       "commitment_type": "tests",
-      "specific_claim": "High residential density negatively impacts psychological well-being due to factors like reduced privacy, increased social demands, and lack of personal control."
+      "specific_claim": "High residential density leads to psychological distress and poorer health outcomes due to increased social demands and reduced personal space."
     },
     {
       "theory_name": "Environmental Stress Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Environmental stressors, such as high residential density, can lead to adverse psychological outcomes."
+      "specific_claim": "Environmental stressors, such as high density, can lead to physiological and psychological strain."
     }
   ],
   "mechanism_chain": {
-    "description": "High residential density leads to increased environmental stressors (e.g., lack of privacy, overstimulation), which in turn contribute to psychological distress in children.",
+    "description": "High residential density leads to increased parental stress and family conflict, which in turn negatively impacts child psychological health.",
     "steps": [
       {
         "step": 1,
         "from_construct": "high residential density",
-        "to_construct": "reduced privacy and personal space",
+        "to_construct": "increased parental stress",
         "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "indirect"
       },
       {
         "step": 2,
-        "from_construct": "reduced privacy and personal space",
-        "to_construct": "increased stress and social demands",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "from_construct": "increased parental stress",
+        "to_construct": "increased family conflict",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "increased stress and social demands",
-        "to_construct": "psychological symptoms in children",
-        "mechanism_type": "affective",
-        "evidence_strength": "indirect"
+        "from_construct": "increased family conflict",
+        "to_construct": "child psychological symptoms",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Rutter Child Behavior Scale",
-      "construct": "psychological symptoms / behavioral problems",
-      "description": "Parent-report questionnaire assessing a range of behavioral and emotional difficulties in children.",
+      "name": "Rutter Scale",
+      "construct": "child psychological symptoms",
+      "description": "Parent-reported scale for behavioral and emotional problems in children",
       "type": "self_report"
+    },
+    {
+      "name": "People per room",
+      "construct": "residential density",
+      "description": "Ratio of residents to the number of rooms in the home",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:58:48.647161+00:00"
+  "surgical_update_at": "2026-03-02T22:46:59.362706+00:00",
+  "paper_sample_size": 200,
+  "paper_sample_size_source": "reported"
 }

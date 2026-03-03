@@ -1931,40 +1931,104 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Static lighting (300 lx, 6000 K)",
-      "Confined space"
+      "static lighting condition (300 lx, 6000 K)",
+      "static lighting condition (300 lx, 3000 K)",
+      "confined space"
     ],
-    "duration_exposure": "1 week",
-    "control_conditions": null,
+    "duration_exposure": "1 week per condition",
+    "control_conditions": [
+      "static lighting condition (300 lx, 3000 K)"
+    ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Static lighting in confined spaces impacts circadian rhythms, leading to changes in subjective sleepiness.",
+    "description": "Exposure to specific light characteristics activates ipRGCs, which signal to the SCN, leading to melatonin suppression and subsequent changes in circadian parameters, alertness, and performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Static lighting condition",
-        "to_construct": "Circadian rhythm disruption",
+        "from_construct": "High CCT/illuminance light exposure",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Circadian rhythm disruption",
-        "to_construct": "Subjective sleepiness",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signaling to the suprachiasmatic nucleus (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Signaling to the SCN",
+        "to_construct": "Melatonin suppression",
         "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Melatonin suppression / altered circadian rhythm",
+        "to_construct": "Increased alertness / reduced sleepiness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Increased alertness / reduced sleepiness",
+        "to_construct": "Improved cognitive performance",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Karolinska Sleepiness Scale",
+      "name": "Karolinska Sleepiness Scale (KSS)",
       "construct": "subjective sleepiness",
-      "description": "9-point self-report scale measuring current level of sleepiness",
+      "description": "9-point self-report scale for current sleepiness level",
+      "type": "self_report"
+    },
+    {
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "sustained attention and alertness",
+      "description": "Reaction time task measuring vigilance decrement",
+      "type": "behavioral"
+    },
+    {
+      "name": "Salivary Melatonin",
+      "construct": "circadian phase marker, melatonin suppression",
+      "description": "Measurement of melatonin concentration in saliva samples",
+      "type": "physiological"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake patterns, activity levels",
+      "description": "Wrist-worn device to monitor movement and infer sleep/wake cycles",
+      "type": "physiological"
+    },
+    {
+      "name": "Visual Analogue Scales (VAS)",
+      "construct": "subjective well-being, mood, comfort",
+      "description": "Self-report scales for various subjective states",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:37:31.276764+00:00"
+  "surgical_update_at": "2026-03-02T23:35:56.264489+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light on circadian rhythms",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to specific light characteristics (e.g., high CCT, sufficient illuminance) can suppress melatonin, shift circadian phase, and influence alertness and performance independently of visual perception, mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs)."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the experimental room setup showing lighting fixtures and participant workstation",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 18,
+  "paper_sample_size_source": "reported"
 }

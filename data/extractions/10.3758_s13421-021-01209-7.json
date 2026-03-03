@@ -5116,26 +5116,66 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Fluorescent lighting with varying Correlated Color Temperature (CCT)",
-      "Fluorescent lighting with varying lumen output",
-      "Office environment"
+      "Fluorescent lighting with varying Correlated Color Temperature (CCT): 3000K, 4000K, and 5000K",
+      "Varying illuminance levels (e.g., 300 lux, 500 lux, 700 lux) in an office setting"
     ],
-    "duration_exposure": "multiple workdays over several weeks",
+    "duration_exposure": "Continuous exposure during typical 8-hour workdays over multiple weeks for each lighting condition",
     "control_conditions": [
-      "Different combinations of CCT and lumen output served as comparison conditions"
+      "Different CCT conditions (3000K, 4000K, 5000K) were compared against each other",
+      "Different illuminance levels were compared against each other"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": "Ecological Momentary Assessment (EMA) questionnaire",
-      "construct": "Visual comfort",
-      "description": "Self-report items administered at multiple points during the workday",
+      "name": "Visual Comfort Scale (adapted)",
+      "construct": "Visual comfort, glare, visual clarity, satisfaction with lighting",
+      "description": "Self-report questionnaire, likely including items similar to EMA1, assessing various aspects of visual comfort and satisfaction with the lighting environment.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:41:25.492735+00:00",
+  "surgical_update_at": "2026-03-02T23:35:33.666701+00:00",
   "paper_sample_size": 120,
-  "paper_sample_size_source": "reported"
+  "paper_sample_size_source": "estimated",
+  "stimulus_images": [
+    {
+      "description": "Photo or diagram of the experimental office environment showing the installed fluorescent lighting fixtures and general setup.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Changes in Correlated Color Temperature (CCT) and illuminance levels of fluorescent lighting directly influence the perceived visual environment (e.g., warmth, brightness), which in turn affects office workers' visual comfort, mood, and potentially performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Correlated Color Temperature (CCT)",
+        "to_construct": "Perceived color temperature (warmth/coolness)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Illuminance level",
+        "to_construct": "Perceived brightness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived color temperature and brightness",
+        "to_construct": "Visual comfort",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Visual comfort",
+        "to_construct": "Overall well-being/satisfaction",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      }
+    ]
+  }
 }

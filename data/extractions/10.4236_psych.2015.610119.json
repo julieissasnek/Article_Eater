@@ -1932,56 +1932,75 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "The human body's internal clock is primarily entrained by light exposure, influencing sleep-wake cycles, hormone regulation, and overall physiological and psychological well-being."
+      "theory_name": "Dual Pathway Model of Light Effects",
+      "commitment_type": "proposes",
+      "specific_claim": "Light influences human health and psyche through distinct visual and non-visual pathways."
     },
     {
-      "theory_name": "Environmental Psychology",
-      "commitment_type": "proposes",
-      "specific_claim": "The characteristics of light in an environment (e.g., intensity, color temperature, variability) significantly impact human perception, mood, and behavior within that space."
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Non-visual photoreceptors (ipRGCs) in the retina detect light and transmit signals to the suprachiasmatic nucleus (SCN) to regulate circadian rhythms."
+    },
+    {
+      "theory_name": "Environmental Psychology Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "The physical environment, including light characteristics, significantly impacts human perception, cognition, emotion, and behavior."
     }
   ],
   "mechanism_chain": {
-    "description": "Causal mechanism connecting light characteristics to perceptual, emotional, and behavioral outcomes.",
+    "description": "Light influences human health and psyche through both visual and non-visual pathways, leading to perceptual, physiological, cognitive, and affective changes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light (spectral composition, intensity, timing)",
-        "to_construct": "Activation of retinal photoreceptors (rods, cones, intrinsically photosensitive Retinal Ganglion Cells - ipRGCs)",
+        "from_construct": "Light exposure (type, range, colors)",
+        "to_construct": "Retinal photoreceptor activation (rods, cones, ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Retinal photoreceptor activation",
-        "to_construct": "Signal transmission to visual cortex (for conscious perception) and non-image-forming pathways (e.g., Suprachiasmatic Nucleus - SCN)",
+        "from_construct": "Retinal photoreceptor activation (rods, cones)",
+        "to_construct": "Visual pathway activation",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "SCN stimulation / Visual cortex processing",
-        "to_construct": "Regulation of circadian rhythms, melatonin suppression, and conscious perception of light qualities (e.g., brightness, color)",
-        "mechanism_type": "physiological|cognitive",
-        "evidence_strength": "direct|theoretical"
+        "from_construct": "Visual pathway activation",
+        "to_construct": "Perceptual apparatus stimulation (brightness, color, form perception)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Circadian rhythm regulation / Melatonin suppression / Perceptual interpretation",
-        "to_construct": "Modulation of mood, alertness, cognitive performance, and specific emotional states",
-        "mechanism_type": "affective|cognitive|physiological",
-        "evidence_strength": "theoretical|indirect"
+        "from_construct": "Retinal photoreceptor activation (ipRGCs)",
+        "to_construct": "Non-visual pathway activation (retinohypothalamic tract to SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 5,
-        "from_construct": "Altered mood, alertness, cognitive performance, emotional states",
-        "to_construct": "Influenced behavior (e.g., productivity, social interaction, sleep patterns)",
-        "mechanism_type": "behavioral",
+        "from_construct": "Non-visual pathway activation (SCN)",
+        "to_construct": "Circadian rhythm entrainment and melatonin suppression",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "Perceptual apparatus stimulation",
+        "to_construct": "Specific emotional states and behavior",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 7,
+        "from_construct": "Circadian rhythm entrainment and melatonin suppression",
+        "to_construct": "Sleep-wake cycle regulation, alertness, mood, and cognitive performance",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:41:59.867256+00:00"
+  "surgical_update_at": "2026-03-02T22:55:22.665753+00:00"
 }

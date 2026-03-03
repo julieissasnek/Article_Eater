@@ -1345,68 +1345,113 @@
     "date": "2026-03-01T07:05:08.730487+00:00"
   },
   "stimulus_description": {
-    "environmental_features": null,
+    "environmental_features": [
+      "pure tones",
+      "complex tones",
+      "speech sounds",
+      "music excerpts",
+      "various types of noise (e.g., white noise, pink noise, specific band-limited noise)",
+      "sounds with controlled harmonic distortions",
+      "sounds with controlled intermodulation distortions",
+      "sounds with varying reverberation times",
+      "sounds with manipulated temporal envelopes"
+    ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "control_conditions": [
+      "undistorted sounds",
+      "silence",
+      "pure tones at threshold",
+      "sounds presented in quiet environments"
+    ],
+    "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "The causal mechanism describes the transformation of physical sound energy into neural signals and subsequent cognitive processing that results in subjective auditory perceptions, including instances where these perceptions deviate from a direct physical representation (distortions).",
+    "description": "The paper reviews how physical distortions in sound propagate through the auditory system, leading to altered subjective perceptions.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Physical sound waves (e.g., pressure variations)",
-        "to_construct": "Mechanical vibrations in the inner ear (cochlea)",
+        "from_construct": "Acoustic distortion (e.g., non-linear amplification, added noise)",
+        "to_construct": "Altered mechanical vibration of the basilar membrane",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Mechanical vibrations in the cochlea",
-        "to_construct": "Transduction into neural impulses by hair cells",
-        "mechanism_type": "physiological",
+        "from_construct": "Altered mechanical vibration of the basilar membrane",
+        "to_construct": "Modified neural firing patterns in auditory nerve fibers",
+        "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Neural impulses from the auditory nerve",
-        "to_construct": "Encoding of basic sound features (e.g., frequency, intensity, timing) in subcortical auditory pathways",
+        "from_construct": "Modified neural firing patterns in auditory nerve fibers",
+        "to_construct": "Changes in central auditory processing (e.g., brainstem, auditory cortex)",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       },
       {
         "step": 4,
-        "from_construct": "Encoded sound features in subcortical pathways",
-        "to_construct": "Higher-level processing and integration in auditory cortex, leading to perceptual organization and interpretation",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Cortical processing and interpretation of sound",
-        "to_construct": "Subjective auditory perception (e.g., pitch, loudness, timbre, spatial location, auditory objects), including 'distortions' due to non-linearities or cognitive biases",
+        "from_construct": "Changes in central auditory processing",
+        "to_construct": "Subjective perception of sound quality (e.g., roughness, harshness, clarity, pleasantness)",
         "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:40:50.787668+00:00",
+  "surgical_update_at": "2026-03-02T22:53:46.842112+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Theories of Auditory Transduction and Neural Coding",
+      "theory_name": "Auditory Masking Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Physical sound waves are converted into neural signals in the cochlea and processed hierarchically in the auditory pathway, forming the basis for perception."
+      "specific_claim": "The perception of one sound can be obscured by the presence of another sound, depending on their frequency and temporal proximity."
     },
     {
-      "theory_name": "Principles of Auditory Scene Analysis",
-      "commitment_type": "applies",
-      "specific_claim": "The auditory system actively organizes incoming sound information into distinct perceptual objects and streams, which can lead to specific 'distortions' or illusions."
+      "theory_name": "Critical Band Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "The auditory system processes sounds within specific frequency bands, influencing loudness, pitch, and timbre perception."
     },
     {
-      "theory_name": "Psychoacoustic Models of Perception (e.g., for loudness, pitch, timbre)",
-      "commitment_type": "reviews",
-      "specific_claim": "Mathematical and empirical models describe the non-linear relationship between physical sound parameters (e.g., intensity, frequency spectrum) and their subjective perceptual attributes (e.g., loudness, pitch, timbre), often revealing 'distortions' from linear mapping."
+      "theory_name": "Place Theory of Hearing",
+      "commitment_type": "assumes",
+      "specific_claim": "Different frequencies of sound activate different locations along the basilar membrane in the cochlea, leading to pitch perception."
+    },
+    {
+      "theory_name": "Temporal Theory of Hearing",
+      "commitment_type": "assumes",
+      "specific_claim": "The frequency of sound is encoded by the firing rate or phase-locking of auditory nerve fibers, particularly for lower frequencies."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Audiometer",
+      "construct": "hearing thresholds",
+      "description": "Device used to measure a subject's hearing sensitivity across different frequencies.",
+      "type": "other"
+    },
+    {
+      "name": "Headphones/Loudspeakers",
+      "construct": "sound presentation",
+      "description": "Controlled acoustic transducers for presenting auditory stimuli.",
+      "type": "other"
+    },
+    {
+      "name": "Sound Level Meter",
+      "construct": "sound pressure level",
+      "description": "Instrument for measuring sound pressure levels of stimuli.",
+      "type": "other"
+    },
+    {
+      "name": "Psychoacoustic tasks (e.g., magnitude estimation, discrimination tasks, paired comparisons)",
+      "construct": "subjective auditory perception (e.g., loudness, pitch, timbre, sound quality)",
+      "description": "Experimental paradigms designed to quantify subjective auditory experiences.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Questionnaires/Rating Scales",
+      "construct": "subjective sound quality, annoyance, pleasantness",
+      "description": "Self-report instruments to assess qualitative aspects of auditory perception.",
+      "type": "self_report"
     }
   ]
 }

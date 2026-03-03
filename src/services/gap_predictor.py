@@ -130,6 +130,10 @@ KNOWN_POPULATIONS = {
 # Gap Predictor Service
 # =============================================================================
 
+# Sentinel value to distinguish "not set" from "explicitly None"
+_UNSET = object()
+
+
 class GapPredictor:
     """
     Predicts knowledge gaps from the epistemic web structure.
@@ -141,18 +145,20 @@ class GapPredictor:
     - Direction gaps (causal ambiguity)
     """
 
-    def __init__(self, web=None, edge_justification_service=None, voi_scorer=None):
+    def __init__(self, web=None, edge_justification_service=None, voi_scorer=_UNSET):
         """
         Initialize the gap predictor.
 
         Args:
             web: WebOfBelief instance
             edge_justification_service: EdgeJustificationService for BN integration
-            voi_scorer: Optional VOICalculator for computing real VOI scores
+            voi_scorer: Optional VOICalculator for computing real VOI scores.
+                        If not provided, will lazy-load.
+                        If None, explicitly disables VOI scoring.
         """
         self._web = web
         self._edge_service = edge_justification_service
-        self._voi_scorer = voi_scorer
+        self._voi_scorer = voi_scorer if voi_scorer is not _UNSET else _UNSET
         self._gap_counter = 0
 
     @property
@@ -181,8 +187,12 @@ class GapPredictor:
 
     @property
     def voi_scorer(self):
-        """Lazy-load VOI calculator for real VOI computation."""
-        if self._voi_scorer is None:
+        """Lazy-load VOI calculator for real VOI computation.
+
+        If voi_scorer was explicitly passed to __init__ (including None),
+        use that value. Otherwise, try to lazy-load VOICalculator.
+        """
+        if self._voi_scorer is _UNSET:
             try:
                 from src.services.voi_search import VOICalculator
                 self._voi_scorer = VOICalculator()
@@ -192,7 +202,7 @@ class GapPredictor:
             except Exception as e:
                 logger.warning(f"Could not load VOI scorer: {e}")
                 self._voi_scorer = None
-        return self._voi_scorer
+        return self._voi_scorer if self._voi_scorer is not _UNSET else None
 
     def _next_gap_id(self) -> str:
         """Generate next gap ID."""
@@ -282,14 +292,14 @@ class GapPredictor:
         logger.info(f"Searching local corpus for gap {gap.gap_id} with keywords: {keywords}")
 
         # 1. Check extracted findings
-        findings_dir = Path("data/extracted_findings")
+        findings_dir = Path("data/extractions")
         if findings_dir.exists():
             for jsonl_file in findings_dir.glob("*.jsonl"):
                 try:
                     with open(jsonl_file, 'r') as f:
                         for line in f:
                             finding = json.loads(line.strip())
-                            content = finding.get('content', '') + ' ' + finding.get('finding', '')
+                            content = finding.get('finding_text', '') + ' ' + finding.get('content', '')
                             if self._content_matches_keywords(content, keywords):
                                 result['extracted_findings'].append({
                                     'source_file': str(jsonl_file.name),
@@ -470,7 +480,7 @@ class GapPredictor:
             result['potential_defeaters'].append(cb)
 
         # 2. Check extracted findings for contradictions
-        findings_dir = Path("data/extracted_findings")
+        findings_dir = Path("data/extractions")
         if findings_dir.exists():
             for jsonl_file in findings_dir.glob("*.jsonl"):
                 try:
@@ -914,6 +924,38 @@ class GapPredictor:
                 'avg_voi': sum(g.voi_score for g in all_gaps) / len(all_gaps) if all_gaps else 0
             }
         )
+
+    def predict_gaps(self, topic: str = "", max_gaps: int = 5) -> List[Dict]:
+        """
+        Bridge method for AnswerEnrichmentOrchestrator Step 5.
+
+        Wraps find_all_gaps() and returns a simplified list of dicts
+        with 'type', 'description', and 'severity' keys.
+
+        Args:
+            topic: The topic context (used for logging; gap detection
+                   operates on the full belief web structure)
+            max_gaps: Maximum number of gaps to return
+
+        Returns:
+            List of dicts with keys: type, description, severity
+        """
+        logger.info(f"predict_gaps called for topic='{topic[:50]}', max_gaps={max_gaps}")
+        try:
+            report = self.find_all_gaps(max_gaps=max_gaps)
+            return [
+                {
+                    "type": g.gap_type.value if hasattr(g.gap_type, 'value') else str(g.gap_type),
+                    "description": g.description,
+                    "severity": g.priority.value if hasattr(g.priority, 'value') else str(g.priority),
+                    "voi": g.voi_score,
+                    "explanation": g.explanation,
+                }
+                for g in report.gaps
+            ]
+        except Exception as e:
+            logger.warning(f"predict_gaps failed: {e}")
+            return []
 
     # =========================================================================
     # Mediation Gap Detection

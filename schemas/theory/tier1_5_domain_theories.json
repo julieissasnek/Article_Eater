@@ -1,8 +1,8 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Tier 1.5: Domain Theories",
-    "description": "Phenomenological organizing schemas that describe effects within a domain. They are EXPLAINED BY Tier 1 frameworks, not explanatory themselves. Each has a published originator, established constructs, and formal reduction mappings.",
-    "version": "1.0.0",
+    "description": "Author-attributed domain theories that organize families of phenomena within a domain. Each is EXPLAINED BY T1 frameworks, not explanatory itself. Each qualifies by: ≥60% construct decomposition into T1 terms, ≥3 parent T1 frameworks, and a meaningful irreducible residual. Each T1.5 theory is also a molecule. Updated to match Master Doc §78 roster (13 theories as of March 2026).",
+    "version": "2.0.0",
     "key_property": "Each T1.5 theory IS ALSO a molecule (has a corresponding file in data/molecules/). The difference is that T1.5 theories have established authorship, published construct definitions, and canonical citations. Other molecules are system-defined composites.",
     "domain_theories": {
         "ART": {
@@ -12,9 +12,12 @@
             "phenomena_organized": "Why natural environments restore directed attention capacity",
             "primary_t1_frameworks": [
                 "predictive-processing",
+                "spatial-navigation",
                 "default-mode-dynamics",
-                "spatial-navigation"
+                "neuromodulatory-systems"
             ],
+            "coverage": 0.70,
+            "maturity": "how-plausibly",
             "constructs": [
                 {
                     "name": "Being Away",
@@ -79,10 +82,12 @@
             "originator": "Ulrich, 1983, 1991",
             "phenomena_organized": "Why natural environments promote physiological stress recovery",
             "primary_t1_frameworks": [
-                "neuromodulatory-systems",
                 "interoceptive-constructionist-affect",
+                "neuromodulatory-systems",
                 "predictive-processing"
             ],
+            "coverage": 0.85,
+            "maturity": "how-actually",
             "constructs": [
                 {
                     "name": "Autonomic Stress Reduction",
@@ -131,11 +136,13 @@
             "originator": "Wilson, 1984; Kellert, 2005",
             "phenomena_organized": "Innate human affiliation with nature and living systems",
             "primary_t1_frameworks": [
-                "predictive-processing",
                 "embodied-cognition",
-                "neuromodulatory-systems",
-                "multisensory-integration"
+                "predictive-processing",
+                "spatial-navigation",
+                "neuromodulatory-systems"
             ],
+            "coverage": 0.65,
+            "maturity": "how-plausibly",
             "constructs": [
                 {
                     "name": "Nature in Space",
@@ -191,8 +198,12 @@
             "phenomena_organized": "Preference for spaces offering both overview and protection",
             "primary_t1_frameworks": [
                 "spatial-navigation",
-                "neuromodulatory-systems"
+                "predictive-processing",
+                "neuromodulatory-systems",
+                "embodied-cognition"
             ],
+            "coverage": 0.70,
+            "maturity": "how-plausibly",
             "constructs": [
                 {
                     "name": "Prospect",
@@ -217,6 +228,464 @@
             "molecule_file": "data/molecules/prospect_refuge.json",
             "key_references": [
                 "appleton_1975"
+            ]
+        },
+        "PRIVACY_REGULATION": {
+            "name": "Privacy Regulation Theory",
+            "abbreviation": "PRIVACY_REG",
+            "originator": "Altman, 1975",
+            "phenomena_organized": "How individuals regulate social interaction through environmental control mechanisms",
+            "primary_t1_frameworks": [
+                "interoceptive-constructionist-affect",
+                "neuromodulatory-systems",
+                "spatial-navigation",
+                "embodied-cognition"
+            ],
+            "coverage": 0.86,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Desired Privacy Level",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "T66",
+                        "SC2"
+                    ]
+                },
+                {
+                    "name": "Achieved Privacy Level",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "ENCLOSURE",
+                        "SC3"
+                    ]
+                },
+                {
+                    "name": "Privacy Regulation Mechanisms",
+                    "reduction_coverage": 0.90,
+                    "primary_templates": [
+                        "T8",
+                        "T28"
+                    ]
+                }
+            ],
+            "aliases": [
+                "PRIVACY_REGULATION",
+                "PRIVACY",
+                "PERSONAL_SPACE"
+            ],
+            "molecule_file": "data/molecules/privacy_regulation.json",
+            "key_references": [
+                "altman_1975"
+            ]
+        },
+        "KAPLAN_PREFERENCE": {
+            "name": "Kaplan Preference Matrix",
+            "abbreviation": "KPM",
+            "originator": "Kaplan & Kaplan, 1989",
+            "phenomena_organized": "Environmental preference as function of coherence, complexity, legibility, and mystery",
+            "primary_t1_frameworks": [
+                "predictive-processing",
+                "spatial-navigation",
+                "neuromodulatory-systems",
+                "embodied-cognition"
+            ],
+            "coverage": 0.85,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Coherence",
+                    "reduction_coverage": 0.90,
+                    "primary_templates": [
+                        "T1",
+                        "VF1"
+                    ]
+                },
+                {
+                    "name": "Complexity",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "VF2",
+                        "T22"
+                    ]
+                },
+                {
+                    "name": "Legibility",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "SC1",
+                        "T28"
+                    ]
+                },
+                {
+                    "name": "Mystery",
+                    "reduction_coverage": 0.75,
+                    "primary_templates": [
+                        "T3",
+                        "SC3"
+                    ]
+                }
+            ],
+            "aliases": [
+                "KAPLAN_PREFERENCE_MATRIX",
+                "ENVIRONMENTAL_PREFERENCE",
+                "KAPLAN_MATRIX"
+            ],
+            "molecule_file": "data/molecules/kaplan_preference.json",
+            "key_references": [
+                "kaplan_kaplan_1989"
+            ]
+        },
+        "ADAPTIVE_THERMAL": {
+            "name": "Adaptive Thermal Comfort",
+            "abbreviation": "ATC",
+            "originator": "de Dear & Brager, 1998",
+            "phenomena_organized": "How occupants adapt to and prefer thermal environments beyond PMV/PPD predictions",
+            "primary_t1_frameworks": [
+                "interoceptive-constructionist-affect",
+                "predictive-processing",
+                "embodied-cognition",
+                "neuromodulatory-systems"
+            ],
+            "coverage": 0.85,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Behavioural Adjustment",
+                    "reduction_coverage": 0.90,
+                    "primary_templates": [
+                        "T8"
+                    ]
+                },
+                {
+                    "name": "Physiological Acclimatization",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "T7",
+                        "IC2"
+                    ]
+                },
+                {
+                    "name": "Psychological Adaptation",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "T21",
+                        "T9"
+                    ]
+                }
+            ],
+            "aliases": [
+                "ADAPTIVE_THERMAL_COMFORT",
+                "THERMAL_ADAPTATION"
+            ],
+            "molecule_file": "data/molecules/adaptive_thermal.json",
+            "key_references": [
+                "de_dear_brager_1998"
+            ]
+        },
+        "SPACE_SYNTAX": {
+            "name": "Space Syntax",
+            "abbreviation": "SS",
+            "originator": "Hillier & Hanson, 1984",
+            "phenomena_organized": "How spatial configuration patterns predict movement, encounter, and social behavior",
+            "primary_t1_frameworks": [
+                "spatial-navigation",
+                "predictive-processing",
+                "embodied-cognition"
+            ],
+            "coverage": 0.70,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Integration (global accessibility)",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "SC1",
+                        "SC2"
+                    ]
+                },
+                {
+                    "name": "Connectivity (local permeability)",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "SC3",
+                        "T3"
+                    ]
+                },
+                {
+                    "name": "Natural Movement",
+                    "reduction_coverage": 0.70,
+                    "primary_templates": [
+                        "T28",
+                        "SN1"
+                    ]
+                }
+            ],
+            "aliases": [
+                "SPACE_SYNTAX_THEORY",
+                "SPATIAL_CONFIGURATION"
+            ],
+            "molecule_file": "data/molecules/space_syntax.json",
+            "key_references": [
+                "hillier_hanson_1984"
+            ]
+        },
+        "SOUNDSCAPE": {
+            "name": "Soundscape Theory",
+            "abbreviation": "SOUNDSCAPE",
+            "originator": "Schafer, 1977; Axelsson et al., 2010",
+            "phenomena_organized": "How acoustic environments are perceived, evaluated, and affect well-being",
+            "primary_t1_frameworks": [
+                "predictive-processing",
+                "interoceptive-constructionist-affect",
+                "neuromodulatory-systems",
+                "multisensory-integration"
+            ],
+            "coverage": 0.75,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Pleasantness",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "T31",
+                        "T39"
+                    ]
+                },
+                {
+                    "name": "Eventfulness",
+                    "reduction_coverage": 0.75,
+                    "primary_templates": [
+                        "T40",
+                        "MSI2"
+                    ]
+                },
+                {
+                    "name": "Soundscape Appropriateness",
+                    "reduction_coverage": 0.70,
+                    "primary_templates": [
+                        "T33"
+                    ]
+                }
+            ],
+            "aliases": [
+                "SOUNDSCAPE_THEORY",
+                "ACOUSTIC_ECOLOGY"
+            ],
+            "molecule_file": "data/molecules/soundscape.json",
+            "key_references": [
+                "schafer_1977",
+                "axelsson_2010"
+            ]
+        },
+        "PLACE_ATTACHMENT": {
+            "name": "Place Attachment",
+            "abbreviation": "PA",
+            "originator": "Scannell & Gifford, 2010",
+            "phenomena_organized": "How people form emotional bonds with places through memory, identity, and social processes",
+            "primary_t1_frameworks": [
+                "memory-systems",
+                "spatial-navigation",
+                "interoceptive-constructionist-affect"
+            ],
+            "coverage": 0.60,
+            "maturity": "how-possibly",
+            "constructs": [
+                {
+                    "name": "Place Identity",
+                    "reduction_coverage": 0.65,
+                    "primary_templates": [
+                        "E1",
+                        "E2"
+                    ]
+                },
+                {
+                    "name": "Place Dependence",
+                    "reduction_coverage": 0.60,
+                    "primary_templates": [
+                        "T8",
+                        "SC2"
+                    ]
+                },
+                {
+                    "name": "Social Bonding",
+                    "reduction_coverage": 0.55,
+                    "primary_templates": [
+                        "T66"
+                    ]
+                }
+            ],
+            "aliases": [
+                "PLACE_ATTACHMENT_THEORY",
+                "PLACE_IDENTITY"
+            ],
+            "molecule_file": "data/molecules/place_attachment.json",
+            "key_references": [
+                "scannell_gifford_2010"
+            ]
+        },
+        "BRECVEMA": {
+            "name": "BRECVEMA",
+            "abbreviation": "BRECVEMA",
+            "originator": "Juslin, 2013",
+            "phenomena_organized": "Eight mechanisms by which music evokes emotions (Brain stem reflex, Rhythmic entrainment, etc.)",
+            "primary_t1_frameworks": [
+                "neuromodulatory-systems",
+                "interoceptive-constructionist-affect",
+                "predictive-processing",
+                "multisensory-integration",
+                "dual-process-evaluation",
+                "memory-systems"
+            ],
+            "coverage": 0.85,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Brain Stem Reflex",
+                    "reduction_coverage": 0.90,
+                    "primary_templates": [
+                        "T31"
+                    ]
+                },
+                {
+                    "name": "Rhythmic Entrainment",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "T40"
+                    ]
+                },
+                {
+                    "name": "Musical Expectancy",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "T1"
+                    ]
+                },
+                {
+                    "name": "Evaluative Conditioning",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "T9"
+                    ]
+                }
+            ],
+            "aliases": [
+                "BRECVEMA_MODEL",
+                "MUSIC_EMOTION_MECHANISMS"
+            ],
+            "molecule_file": "data/molecules/brecvema.json",
+            "key_references": [
+                "juslin_2013"
+            ]
+        },
+        "FLOW": {
+            "name": "Flow Theory",
+            "abbreviation": "FLOW",
+            "originator": "Csikszentmihalyi, 1990",
+            "phenomena_organized": "Optimal experience when challenge matches skill, producing deep engagement and intrinsic reward",
+            "primary_t1_frameworks": [
+                "dual-process-evaluation",
+                "default-mode-dynamics",
+                "neuromodulatory-systems",
+                "predictive-processing",
+                "embodied-cognition"
+            ],
+            "coverage": 0.75,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Challenge-Skill Balance",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "T21",
+                        "T4"
+                    ]
+                },
+                {
+                    "name": "Loss of Self-Consciousness",
+                    "reduction_coverage": 0.70,
+                    "primary_templates": [
+                        "DT1"
+                    ]
+                },
+                {
+                    "name": "Autotelic Experience",
+                    "reduction_coverage": 0.75,
+                    "primary_templates": [
+                        "NM2",
+                        "NM3"
+                    ]
+                }
+            ],
+            "aliases": [
+                "FLOW_THEORY",
+                "OPTIMAL_EXPERIENCE"
+            ],
+            "molecule_file": "data/molecules/flow.json",
+            "key_references": [
+                "csikszentmihalyi_1990"
+            ]
+        },
+        "GOLDILOCKS": {
+            "name": "Goldilocks Principle",
+            "abbreviation": "GOLDILOCKS",
+            "originator": "Berlyne, 1971 (originator); Kirsh, 2026 (extended to architectural cognition and cross-sensory universality)",
+            "phenomena_organized": "Cross-modal inverted-U optimum for prediction error across all sensory and architectural dimensions. Extended from Berlyne's visual-complexity aesthetics to a universal PE optimization mechanism operating across noise tolerance, visual complexity, thermal comfort, spiciness, and more. Critically, the Goldilocks curve is culturally sensitive — different cultures exhibit different optima for tolerable ambient noise, visual complexity, spiciness of food, and many other dimensions.",
+            "primary_t1_frameworks": [
+                "predictive-processing",
+                "interoceptive-constructionist-affect",
+                "neuromodulatory-systems",
+                "embodied-cognition"
+            ],
+            "coverage": 0.80,
+            "maturity": "how-plausibly",
+            "constructs": [
+                {
+                    "name": "Cross-Modal PE Optimum",
+                    "reduction_coverage": 0.85,
+                    "primary_templates": [
+                        "T1",
+                        "T2"
+                    ]
+                },
+                {
+                    "name": "Inverted-U Response",
+                    "reduction_coverage": 0.80,
+                    "primary_templates": [
+                        "VF1",
+                        "VF2"
+                    ]
+                },
+                {
+                    "name": "Domain-Specific Sweet Spots",
+                    "reduction_coverage": 0.75,
+                    "primary_templates": [
+                        "T31",
+                        "T33",
+                        "COL1"
+                    ]
+                },
+                {
+                    "name": "Cultural Calibration",
+                    "reduction_coverage": 0.70,
+                    "primary_templates": [
+                        "AX10",
+                        "AX11"
+                    ]
+                }
+            ],
+            "aliases": [
+                "GOLDILOCKS_PRINCIPLE",
+                "PE_OPTIMIZATION",
+                "BERLYNE_SUBSUMED"
+            ],
+            "subsumes": [
+                "BERLYNE"
+            ],
+            "molecule_file": "data/molecules/goldilocks_principle.json",
+            "key_references": [
+                "berlyne_1971",
+                "kirsh_2026"
             ]
         }
     }

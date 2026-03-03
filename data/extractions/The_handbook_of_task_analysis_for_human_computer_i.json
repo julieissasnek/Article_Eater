@@ -1086,46 +1086,46 @@
   "minimum_safe_summary": "The paper argues for adopting the Circadian Stimulus (CS) metric to quantify light's effect on the human circadian system in architectural spaces. It details the CS metric's development from biophysical research, including the roles of various retinal photoreceptors and the b-y color channel, and its non-linear response to light levels. Key findings demonstrate that the CS metric better characterizes nocturnal melatonin suppression data (r²=0.91) than melanopsin-weighted irradiance (r²=0.87) and has been successfully validated in laboratory studies and real-world applications to predict melatonin suppression, circadian entrainment, and improvements in sleep, mood, and agitation. Limitations include the CS metric's current incompleteness, as it does not consider light timing, duration, distribution, photic history, or non-visual alerting effects, and the need to account for architectural material reflectances.",
   "stimulus_description": {
     "environmental_features": [
-      "light intensity (lux)",
-      "spectral composition (e.g., correlated color temperature, melanopic equivalent daylight illuminance)",
-      "timing of light exposure (e.g., night, day)",
+      "light intensity",
+      "light spectrum",
+      "timing of light exposure",
       "duration of light exposure"
     ],
-    "duration_exposure": "varied, often acute (hours) or chronic (days/weeks) depending on specific experiment",
+    "duration_exposure": null,
     "control_conditions": [
       "dim light conditions",
       "darkness",
-      "different light spectra or intensities",
-      "placebo conditions (if applicable to interventions)"
+      "different light spectra (e.g., blue-enriched vs. red-enriched)",
+      "different light intensities"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Physiology / Non-visual Effects of Light",
-      "commitment_type": "assumes",
-      "specific_claim": "Light exposure, particularly to short-wavelength light, at inappropriate times (e.g., night) can suppress melatonin production and disrupt circadian rhythms."
+      "theory_name": "Circadian Photobiology / Non-visual effects of light",
+      "commitment_type": "applies|tests",
+      "specific_claim": "Light, particularly its spectral composition and timing, acts as a primary circadian stimulus, influencing human physiology and behavior through non-visual pathways, specifically via intrinsically photosensitive retinal ganglion cells (ipRGCs) and their connection to the suprachiasmatic nucleus (SCN)."
     },
     {
-      "theory_name": "Melanopsin-mediated Photoreception",
-      "commitment_type": "assumes",
-      "specific_claim": "Intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin are the primary photoreceptors mediating non-visual responses to light, including circadian entrainment and melatonin suppression."
+      "theory_name": "Melatonin Suppression by Light",
+      "commitment_type": "tests|assumes",
+      "specific_claim": "Exposure to light, especially short-wavelength (blue) light, during the biological night suppresses the production and secretion of melatonin from the pineal gland, thereby impacting circadian phase and sleep regulation."
     }
   ],
   "mechanism_chain": {
-    "description": "Light absorbed by retinal photopigments (specifically melanopsin in ipRGCs) at night sends signals to the suprachiasmatic nucleus (SCN), which then inhibits the pineal gland's production of melatonin.",
+    "description": "Light absorbed by retinal photopigments, particularly melanopsin in ipRGCs, sends signals to the suprachiasmatic nucleus (SCN), which then inhibits melatonin production by the pineal gland, thereby affecting circadian rhythms.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light absorbed by retinal photopigments (ipRGCs)",
-        "to_construct": "Activation of ipRGCs",
+        "from_construct": "Light exposure (at night)",
+        "to_construct": "Activation of retinal photopigments (e.g., melanopsin in ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to Suprachiasmatic Nucleus (SCN)",
+        "from_construct": "Activation of retinal photopigments",
+        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
@@ -1139,37 +1139,37 @@
       {
         "step": 4,
         "from_construct": "Inhibition of pineal gland activity",
-        "to_construct": "Suppression of nocturnal melatonin production",
+        "to_construct": "Reduced nocturnal melatonin production",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:30.903966+00:00",
+  "surgical_update_at": "2026-03-02T23:33:50.068851+00:00",
   "instruments_used": [
     {
       "name": "Spectroradiometer",
-      "construct": "light characteristics",
-      "description": "Measures spectral power distribution, illuminance, correlated color temperature, and melanopic equivalent daylight illuminance of light stimuli.",
+      "construct": "Light characteristics (spectral power distribution, intensity)",
+      "description": "Device used to measure the spectral composition and intensity of light stimuli.",
       "type": "other"
     },
     {
-      "name": "Melatonin assay",
-      "construct": "nocturnal melatonin production",
-      "description": "Measures melatonin levels in saliva, blood, or urine samples.",
+      "name": "Salivary/Plasma Melatonin Assay",
+      "construct": "Melatonin levels",
+      "description": "Biochemical assay to quantify melatonin concentration in saliva or blood samples.",
       "type": "physiological"
     },
     {
       "name": "Actigraphy",
-      "construct": "sleep-wake cycles",
-      "description": "Wearable device to monitor activity and infer sleep patterns.",
-      "type": "actigraphy"
+      "construct": "Sleep-wake cycles, activity levels",
+      "description": "Wearable device to monitor rest-activity patterns and estimate sleep parameters.",
+      "type": "physiological"
     },
     {
-      "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "subjective sleepiness",
-      "description": "9-point self-report scale for current level of sleepiness.",
+      "name": "Subjective Alertness/Sleepiness Scales",
+      "construct": "Alertness, sleepiness",
+      "description": "Questionnaires or visual analog scales (e.g., Karolinska Sleepiness Scale) to assess subjective states.",
       "type": "self_report"
     }
   ],

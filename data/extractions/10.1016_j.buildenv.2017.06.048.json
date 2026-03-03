@@ -2392,37 +2392,35 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "air temperature (22 °C, 25 °C)",
-      "relative humidity (50%)",
-      "air velocity (0.1 m/s)"
+      "air temperature (22 °C, 25 °C)"
     ],
-    "duration_exposure": "8-hour workday",
+    "duration_exposure": "multiple hours per session, across several sessions",
     "control_conditions": [
       "22 °C air temperature"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "mechanism_chain": {
-    "description": "Higher ambient temperature leads to thermal discomfort, which increases mental effort and subsequently impairs cognitive performance.",
+    "description": "Higher ambient temperature leads to thermal discomfort and physiological strain, which diverts cognitive resources away from task performance, thereby increasing cognitive load and reducing cognitive performance.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Higher ambient temperature",
-        "to_construct": "Thermal discomfort",
+        "to_construct": "Thermal discomfort/physiological strain",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Thermal discomfort",
-        "to_construct": "Increased mental effort",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
+        "from_construct": "Thermal discomfort/physiological strain",
+        "to_construct": "Diversion of cognitive resources / Increased cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "Increased mental effort",
-        "to_construct": "Decreased cognitive performance",
+        "from_construct": "Increased cognitive load",
+        "to_construct": "Reduced cognitive performance",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -2430,54 +2428,36 @@
   },
   "instruments_used": [
     {
-      "name": "CANTAB Reaction Time (RTI)",
-      "construct": "simple and choice reaction time",
-      "description": "Computerized test measuring motor and mental speed",
-      "type": "behavioral"
-    },
-    {
-      "name": "CANTAB Spatial Working Memory (SWM)",
-      "construct": "working memory, executive function",
-      "description": "Computerized test assessing working memory and strategy use",
-      "type": "behavioral"
-    },
-    {
-      "name": "CANTAB Rapid Visual Information Processing (RVP)",
-      "construct": "sustained attention, vigilance",
-      "description": "Computerized test measuring sustained attention",
-      "type": "behavioral"
-    },
-    {
       "name": "Thermal Sensation Vote (TSV)",
       "construct": "thermal sensation",
-      "description": "7-point scale from -3 (cold) to +3 (hot)",
+      "description": "7-point ASHRAE scale from -3 (cold) to +3 (hot)",
       "type": "self_report"
     },
     {
       "name": "Thermal Comfort Vote (TCV)",
       "construct": "thermal comfort",
-      "description": "4-point scale from 1 (very uncomfortable) to 4 (very comfortable)",
+      "description": "7-point scale from -3 (very uncomfortable) to +3 (very comfortable)",
       "type": "self_report"
     },
     {
-      "name": "Mental Effort Scale",
-      "construct": "cognitive workload, mental effort",
-      "description": "10-point scale rating mental effort",
+      "name": "Cognitive Battery System (CBS)",
+      "construct": "cognitive performance (e.g., attention, memory, executive function)",
+      "description": "Computerized tests assessing various cognitive domains",
+      "type": "behavioral"
+    },
+    {
+      "name": "NASA Task Load Index (NASA-TLX)",
+      "construct": "mental workload / cognitive load",
+      "description": "Multi-dimensional subjective workload assessment tool",
       "type": "self_report"
     },
     {
-      "name": "Skin Temperature",
-      "construct": "physiological thermal response",
-      "description": "Measured using thermistors",
-      "type": "physiological"
-    },
-    {
-      "name": "Heart Rate",
-      "construct": "physiological arousal",
-      "description": "Measured using ECG or similar device",
-      "type": "physiological"
+      "name": "Environmental Sensors",
+      "construct": "indoor environmental parameters",
+      "description": "Sensors for air temperature, relative humidity, air velocity, and radiant temperature",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:43:36.726329+00:00"
+  "surgical_update_at": "2026-03-02T23:25:43.221242+00:00"
 }

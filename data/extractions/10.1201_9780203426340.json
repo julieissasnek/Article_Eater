@@ -9938,125 +9938,133 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "light intensity (illuminance, luminance)",
-      "spectral power distribution (color temperature, specific wavelengths)",
-      "temporal patterns (duration, timing, flicker)",
-      "spatial distribution (uniformity, glare sources)"
+      "light intensity (lux)",
+      "spectral composition (correlated color temperature, specific wavelengths)",
+      "light distribution (uniformity, glare sources)",
+      "duration of light exposure",
+      "timing of light exposure (daytime, nighttime, shift work schedules)"
     ],
-    "duration_exposure": "Varies widely depending on the effect discussed, from minutes for acute visual tasks to continuous exposure over days or weeks for circadian effects.",
+    "duration_exposure": "Varies widely across reviewed studies, from acute (minutes/hours) to chronic (days/weeks/months)",
     "control_conditions": [
-      "dark conditions",
       "dim light conditions",
-      "specific reference light levels or spectra",
-      "placebo lighting conditions"
+      "darkness",
+      "standard office lighting",
+      "different light intensities",
+      "different spectral compositions"
     ],
     "ecological_validity": "lab|semi-naturalistic|field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Photoreception Theory",
+      "theory_name": "Two-Process Model of Sleep Regulation",
       "commitment_type": "assumes",
-      "specific_claim": "Light exposure, particularly to short-wavelength light, affects the human circadian system primarily through intrinsically photosensitive retinal ganglion cells (ipRGCs)."
+      "specific_claim": "Light exposure influences both homeostatic sleep drive (Process S) and circadian rhythm (Process C), affecting alertness and sleep timing."
     },
     {
-      "theory_name": "Visual Comfort Theory",
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Non-visual effects of light on human physiology and behavior are primarily mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin, which are maximally sensitive to blue light."
+    },
+    {
+      "theory_name": "Discomfort Glare Theory",
       "commitment_type": "tests",
-      "specific_claim": "Factors such as luminance ratios, glare, and uniformity of light distribution significantly influence subjective visual comfort and discomfort."
-    },
-    {
-      "theory_name": "Light-Dark Cycle Entrainment Theory",
-      "commitment_type": "extends",
-      "specific_claim": "The timing, intensity, and spectral composition of light exposure are critical for entraining the human circadian clock to the 24-hour day-night cycle."
+      "specific_claim": "The perception of discomfort glare is influenced by factors such as luminance of the glare source, background luminance, and angular size and position of the glare source."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes various mechanisms by which light influences human factors, including visual perception, circadian regulation, and non-visual effects on mood and performance.",
+    "description": "Light exposure affects the human circadian system through retinal photoreceptors, leading to physiological and behavioral changes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (intensity, spectrum, timing)",
-        "to_construct": "Activation of retinal photoreceptors (rods, cones, ipRGCs)",
+        "from_construct": "Light exposure (especially blue-rich light)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of retinal photoreceptors",
-        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN) and other brain regions",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signal transmission to SCN",
-        "to_construct": "Modulation of melatonin secretion and circadian phase shifting",
+        "from_construct": "Signal to SCN",
+        "to_construct": "Suppression of melatonin production from the pineal gland",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Modulation of melatonin and circadian phase",
-        "to_construct": "Changes in alertness, sleep-wake cycles, mood, and cognitive performance",
+        "from_construct": "Melatonin suppression",
+        "to_construct": "Phase shifting of circadian rhythms and increased alertness",
         "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Photometers / Luminance meters",
-      "construct": "Light intensity and brightness",
-      "description": "Devices used to measure illuminance (light falling on a surface) and luminance (light emitted or reflected from a surface).",
+      "name": "Spectroradiometer",
+      "construct": "Light spectral power distribution, intensity, correlated color temperature",
+      "description": "Measures the spectral composition and intensity of light sources",
       "type": "other"
     },
     {
-      "name": "Spectroradiometers",
-      "construct": "Spectral power distribution of light",
-      "description": "Instruments used to measure the amount of radiant energy at each wavelength across the electromagnetic spectrum.",
+      "name": "Lux meter",
+      "construct": "Illuminance (light intensity)",
+      "description": "Measures the amount of light falling on a surface",
       "type": "other"
     },
     {
       "name": "Actigraphy",
-      "construct": "Activity levels and sleep-wake patterns",
-      "description": "Wearable devices that record movement, often used to infer sleep and wakefulness patterns.",
+      "construct": "Sleep-wake cycles, activity levels",
+      "description": "Wearable device measuring movement to infer sleep patterns and activity",
       "type": "physiological"
     },
     {
-      "name": "Melatonin assays",
+      "name": "Melatonin assay",
       "construct": "Melatonin levels",
-      "description": "Biochemical tests (e.g., saliva, urine, blood) to quantify melatonin concentration, indicating circadian phase.",
+      "description": "Biochemical test to measure melatonin concentration in saliva or blood",
       "type": "physiological"
     },
     {
-      "name": "Questionnaires (e.g., KSS, mood scales)",
-      "construct": "Subjective alertness, mood, visual comfort, sleep quality",
-      "description": "Self-report instruments used to assess various psychological and perceptual states related to lighting.",
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective sleepiness",
+      "description": "9-point self-report scale for current level of sleepiness",
       "type": "self_report"
     },
     {
-      "name": "Performance tests (e.g., reaction time, vigilance tasks)",
-      "construct": "Cognitive performance, visual task performance",
-      "description": "Standardized tasks used to objectively measure aspects of cognitive function and visual processing under different lighting conditions.",
+      "name": "Visual Analogue Scale (VAS)",
+      "construct": "Subjective mood, alertness, visual comfort, glare",
+      "description": "A continuous scale used for subjective ratings of various states",
+      "type": "self_report"
+    },
+    {
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "Sustained attention, alertness, reaction time",
+      "description": "A simple reaction time task used to measure vigilance and fatigue",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:28:58.651180+00:00",
+  "surgical_update_at": "2026-03-02T22:39:04.355619+00:00",
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating the human visual system and non-visual photoreception pathways.",
-      "figure_ref": null,
+      "description": "Diagrams illustrating the human visual and non-visual (circadian) pathways for light perception.",
+      "figure_ref": "Various figures throughout the book",
       "image_type": "diagram"
     },
     {
-      "description": "Graphs showing spectral sensitivity curves for different photoreceptors (rods, cones, ipRGCs).",
-      "figure_ref": null,
+      "description": "Graphs showing spectral power distributions of different light sources.",
+      "figure_ref": "Various figures throughout the book",
       "image_type": "graph"
     },
     {
-      "description": "Illustrations or photos of various lighting installations and their impact on visual fields or glare.",
-      "figure_ref": null,
-      "image_type": "photo"
+      "description": "Illustrations of experimental setups or lighting conditions in various environments (e.g., office, residential).",
+      "figure_ref": "Various figures throughout the book",
+      "image_type": "diagram"
     }
   ]
 }

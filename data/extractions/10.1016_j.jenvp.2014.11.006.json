@@ -53,8 +53,11 @@
       "p_value": "0.039",
       "effect_size": 0.41,
       "effect_size_type": "r",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 28,
+      "confidence_interval": [
+        0.28,
+        1.02
+      ],
       "test_statistic": "Z = -1.76",
       "theory_links": [
         "PP",
@@ -126,7 +129,8 @@
         "ECOLOGICAL_PSYCHOLOGY": 0.1522,
         "FORWARD_MODELS": 0.1522,
         "MOTOR_CONTROL_THEORY": 0.1522
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1307,17 +1311,82 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "ceiling height",
-      "perceived enclosure"
+      "virtual rooms with manipulated ceiling height (high vs. low)",
+      "virtual rooms with manipulated perceived enclosure (open vs. enclosed)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, image-based (self-paced viewing, typically a few seconds per image)",
     "control_conditions": [
-      "low ceiling height",
-      "high ceiling height",
-      "varying levels of perceived enclosure"
+      "low ceiling height (comparison for high ceiling)",
+      "enclosed space (comparison for open space)"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:38:42.865443+00:00"
+  "surgical_update_at": "2026-03-02T22:55:50.137193+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Processing Fluency Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Environments perceived as more spacious (e.g., high ceilings) are processed more fluently, leading to more positive aesthetic judgments and approach behaviors."
+    },
+    {
+      "theory_name": "Environmental Aesthetics",
+      "commitment_type": "tests",
+      "specific_claim": "Physical attributes of architectural spaces, such as ceiling height and enclosure, significantly influence human aesthetic preferences and emotional responses."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "High ceilings increase perceived spaciousness, which facilitates cognitive processing (e.g., a sense of freedom or expansive thinking), leading to more positive affective responses, enhanced beauty judgments, and increased approach behaviors.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "ceiling height",
+        "to_construct": "perceived spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived spaciousness",
+        "to_construct": "cognitive processing (e.g., expansive thinking, sense of freedom)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "cognitive processing",
+        "to_construct": "positive affect/aesthetic judgment",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Beauty Judgment Scale",
+      "construct": "aesthetic preference",
+      "description": "Likert-type scale used by participants to rate the beauty of the presented rooms.",
+      "type": "self_report"
+    },
+    {
+      "name": "Approach-Avoidance Scale",
+      "construct": "behavioral intention",
+      "description": "Likert-type scale used by participants to indicate their desire to approach or avoid the presented rooms.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Spaciousness Scale",
+      "construct": "perceived spaciousness",
+      "description": "Likert-type scale used by participants to rate how spacious they perceived each room to be.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of the computer-generated virtual rooms used as stimuli, showing variations in ceiling height and perceived enclosure.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "quantitative_backfill_count": 1
 }

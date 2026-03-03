@@ -5632,30 +5632,92 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "variations in window-to-wall ratio",
-      "window orientation",
-      "shading elements"
+      "window-to-wall ratio (WWR)",
+      "window orientation (North, South, East, West)",
+      "view content (urban, natural)",
+      "room type (living room)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief exposure to simulated virtual reality environments (typically a few minutes per scene)",
     "control_conditions": [
-      "a baseline natural lighting condition with standard window design"
+      "varying window-to-wall ratios",
+      "different window orientations",
+      "different view contents"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": null,
-      "construct": "perceived happiness",
-      "description": "Self-report Likert scale for rating happiness",
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "A self-report questionnaire measuring current mood states, including happiness and sadness.",
       "type": "self_report"
     },
     {
-      "name": null,
-      "construct": "perceived sadness",
-      "description": "Self-report Likert scale for rating sadness",
+      "name": "Custom questionnaire for environmental perception",
+      "construct": "perceived light quality, visual comfort, environmental satisfaction",
+      "description": "Likert-scale items assessing participants' subjective evaluation of the simulated environments.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:27:57.333892+00:00"
+  "surgical_update_at": "2026-03-02T23:32:49.059034+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Human beings have an innate tendency to connect with nature and other living systems, leading to positive psychological and physiological outcomes from exposure to natural elements and views."
+    },
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can restore directed attention and reduce mental fatigue, contributing to improved well-being."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Natural light design features (window-to-wall ratio, orientation, view content) influence perceived light quality, visual comfort, and connection to nature, which in turn affect emotional states like happiness and sadness.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "window-to-wall ratio (WWR)",
+        "to_construct": "perceived brightness and spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "window orientation",
+        "to_construct": "daylight availability and quality (e.g., glare, direct sunlight)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "view content (natural vs. urban)",
+        "to_construct": "sense of connection to nature and restorative potential",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "perceived brightness, spaciousness, daylight quality, and restorative potential",
+        "to_construct": "perceived happiness and sadness",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Renderings or screenshots of the simulated residential living room environments with varying window designs and views",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the different window-to-wall ratios and orientations tested",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 160,
+  "paper_sample_size_source": "estimated"
 }

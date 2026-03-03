@@ -32,7 +32,7 @@
       "p_value": 0.01,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 46,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -47,7 +47,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, Section 4",
-      "quote": "for D-P, t(15) = −2.87, p = .01",
+      "quote": "for D-P, t(15) = \u22122.87, p = .01",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -101,7 +101,8 @@
         "CREATIVE_COGNITION_THEORY": 0.1646,
         "NETWORK_NEUROSCIENCE": 0.1646,
         "PREDICTIVE_PROCESSING": 0.1646
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -209,7 +210,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, Section 4",
-      "quote": "for CR, t(15) = −2.10, p = .04",
+      "quote": "for CR, t(15) = \u22122.10, p = .04",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -284,7 +285,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, Section 4",
-      "quote": "for D-P, t(15) = −.09, p = .92",
+      "quote": "for D-P, t(15) = \u2212.09, p = .92",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -598,7 +599,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 4",
-      "quote": "Only the mean RT differed significantly, t(30) = −2.19, p = .03, and the restorative group was faster",
+      "quote": "Only the mean RT differed significantly, t(30) = \u22122.19, p = .03, and the restorative group was faster",
       "evidence_type": "statistical",
       "outcome_id": "cog.processing_speed",
       "outcome_domain": "cog",
@@ -1050,7 +1051,7 @@
       "claim_type": "causal",
       "measure_type": null,
       "p_value": 0.0,
-      "effect_size": 0.01,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1125,7 +1126,9 @@
         "COGNITIVE_LOAD_THEORY": 0.16,
         "CONSTRUAL_LEVEL_THEORY": 0.16,
         "PROCESSING_FLUENCY": 0.16
-      }
+      },
+      "_original_effect_size": 0.01,
+      "_quarantine_reason": "Value 0.01 appears to be a p-value, not an effect size"
     },
     {
       "id": 15,
@@ -1236,7 +1239,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 3, Section 12",
-      "quote": "for D-P, t(15) = −2.4, p = .02",
+      "quote": "for D-P, t(15) = \u22122.4, p = .02",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -1473,7 +1476,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 3, Section 12",
-      "quote": "for D-P, t(15) = −.52, p = .60",
+      "quote": "for D-P, t(15) = \u2212.52, p = .60",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -3586,12 +3589,12 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "pictures of natural environments",
-      "pictures of urban environments"
+      "pictures of natural environments (e.g., forests, parks, water scenes, trees, flowers)",
+      "pictures of urban environments (e.g., city streets, buildings, traffic, concrete)"
     ],
     "duration_exposure": "15 seconds per picture",
     "control_conditions": [
-      "exposure to urban environment pictures"
+      "exposure to urban environments"
     ],
     "ecological_validity": "lab"
   },
@@ -3599,17 +3602,64 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments restores directed attention capacity more effectively than exposure to urban environments."
+      "specific_claim": "Exposure to natural environments restores directed attention capacity, which is fatigued by demanding tasks, better than exposure to urban environments."
     }
   ],
   "instruments_used": [
     {
-      "name": "Sustained Attention to Response Task",
+      "name": "Sustained Attention to Response Task (SART)",
+      "construct": "directed attention capacity",
+      "description": "A continuous performance task requiring participants to respond to all stimuli except a designated target, measuring sustained attention and inhibitory control.",
+      "type": "behavioral"
+    },
+    {
+      "name": "D-prime",
       "construct": "attentional capacity",
-      "description": "A Go/No-Go task used to measure sustained attention and inhibition, with performance often quantified by D-prime.",
+      "description": "A signal detection theory measure derived from SART performance, indicating the sensitivity to discriminate targets from non-targets.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:45:52.738862+00:00"
+  "surgical_update_at": "2026-03-02T18:59:08.429484+00:00",
+  "mechanism_chain": {
+    "description": "Exposure to natural environments elicits 'soft fascination,' allowing directed attention to rest and recover, thereby restoring attentional capacity and improving performance on tasks requiring directed attention.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "exposure to natural environments",
+        "to_construct": "elicitation of soft fascination",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "elicitation of soft fascination",
+        "to_construct": "restoration of directed attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "restoration of directed attention",
+        "to_construct": "improved SART performance (D-prime)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of natural environment stimuli used in the experiment",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    },
+    {
+      "description": "Examples of urban environment stimuli used in the experiment",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 46,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

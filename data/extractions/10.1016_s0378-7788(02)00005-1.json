@@ -1974,48 +1974,67 @@
   "theory_commitments": [
     {
       "theory_name": "Adaptive Thermal Comfort Theory",
-      "commitment_type": "extends",
-      "specific_claim": "Indoor comfort temperature in naturally ventilated buildings is influenced by and adapts to outdoor climate conditions, leading to a wider range of acceptable temperatures than predicted by static models."
+      "commitment_type": "tests",
+      "specific_claim": "Occupants in naturally ventilated buildings adapt to a wider range of indoor temperatures, and their comfort temperature is influenced by outdoor conditions."
     },
     {
-      "theory_name": "Fanger's Predicted Mean Vote (PMV) / Predicted Percentage Dissatisfied (PPD) Model",
+      "theory_name": "Fanger's Predicted Mean Vote (PMV) model",
       "commitment_type": "contradicts",
-      "specific_claim": "The PMV/PPD model, while applicable to mechanically conditioned buildings, does not accurately predict thermal comfort or acceptable temperature ranges in naturally ventilated buildings due to the opportunities for adaptive behaviors and physiological acclimatization."
+      "specific_claim": "The PMV model, based on static thermal comfort principles, is less applicable to naturally ventilated buildings due to adaptive opportunities."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes the adaptive mechanisms by which outdoor air temperature influences indoor comfort temperature in naturally ventilated buildings.",
+    "description": "Occupants in naturally ventilated buildings adapt to varying outdoor temperatures through physiological and behavioral adjustments, leading to a shift in their preferred indoor comfort temperature and a wider range of acceptable thermal conditions.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Mean outdoor air temperature (Ta,out)",
-        "to_construct": "Occupant physiological state (e.g., acclimatization)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 2,
-        "from_construct": "Mean outdoor air temperature (Ta,out)",
-        "to_construct": "Occupant behavioral adaptation (e.g., adjusting clothing, opening windows)",
+        "from_construct": "Outdoor air temperature (Ta,out)",
+        "to_construct": "Occupant behavioral adaptation (e.g., adjusting clothing, opening/closing windows, changing activity levels)",
         "mechanism_type": "behavioral",
         "evidence_strength": "theoretical"
       },
       {
-        "step": 3,
-        "from_construct": "Mean outdoor air temperature (Ta,out)",
-        "to_construct": "Occupant psychological adaptation (e.g., altered thermal expectations)",
-        "mechanism_type": "cognitive",
+        "step": 2,
+        "from_construct": "Outdoor air temperature (Ta,out)",
+        "to_construct": "Occupant physiological adaptation (e.g., acclimatization, changes in skin temperature regulation)",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
-        "step": 4,
-        "from_construct": "Physiological, behavioral, and psychological adaptation",
-        "to_construct": "Indoor comfort temperature (Tcomf)",
-        "mechanism_type": "physiological|behavioral|cognitive",
+        "step": 3,
+        "from_construct": "Occupant behavioral and physiological adaptation",
+        "to_construct": "Shift in perceived thermal comfort and acceptable temperature range",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:01.782783+00:00"
+  "surgical_update_at": "2026-03-02T23:32:41.723324+00:00",
+  "instruments_used": [
+    {
+      "name": "ASHRAE thermal sensation scale",
+      "construct": "thermal sensation",
+      "description": "7-point scale from -3 (cold) to +3 (hot) used in field studies to assess subjective thermal perception.",
+      "type": "self_report"
+    },
+    {
+      "name": "Air temperature sensors",
+      "construct": "indoor air temperature",
+      "description": "Instruments (e.g., thermometers) used in field studies to measure dry-bulb air temperature.",
+      "type": "other"
+    },
+    {
+      "name": "Globe thermometer",
+      "construct": "mean radiant temperature",
+      "description": "Instrument used in field studies to measure mean radiant temperature.",
+      "type": "other"
+    },
+    {
+      "name": "Anemometer",
+      "construct": "air speed",
+      "description": "Instrument used in field studies to measure air velocity.",
+      "type": "other"
+    }
+  ]
 }

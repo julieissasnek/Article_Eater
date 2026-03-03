@@ -5681,9 +5681,7 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": [
-      "soundscapes in VR"
-    ],
+    "environmental_features": null,
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": "lab"
@@ -5692,23 +5690,70 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention better than urban environments"
+      "specific_claim": "Exposure to certain environments (e.g., natural soundscapes) can restore directed attention and reduce mental fatigue."
     }
   ],
   "instruments_used": [
     {
-      "name": "EEG",
-      "construct": "brain activity; neural efficiency; global efficiency",
-      "description": "Electroencephalography to measure brain electrical activity, including global efficiency",
+      "name": "Electroencephalography",
+      "construct": "Brain activity",
+      "description": "Measures electrical activity of the brain via electrodes on the scalp, used to assess neural efficiency (e.g., global efficiency).",
       "type": "eeg"
     },
     {
-      "name": "HRV",
-      "construct": "heart rate variability; autonomic nervous system activity; cardiac regulation",
-      "description": "Heart Rate Variability to assess cardiac autonomic regulation and stress response",
+      "name": "Heart Rate Variability",
+      "construct": "Autonomic nervous system activity",
+      "description": "Measures variations in the time interval between heartbeats, reflecting physiological stress recovery and autonomic balance.",
       "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:36.401104+00:00"
+  "surgical_update_at": "2026-03-02T22:41:10.350852+00:00",
+  "mechanism_chain": {
+    "description": "VR natural soundscape experience leads to restoration of attention and reduced stress, which is reflected in changes in brain network efficiency (EEG) and physiological markers (HRV).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "VR natural soundscape exposure",
+        "to_construct": "increased perceived restorativeness (e.g., fascination, being away)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "increased perceived restorativeness",
+        "to_construct": "reduced mental fatigue and cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced mental fatigue and cognitive load",
+        "to_construct": "improved global efficiency (EEG)",
+        "mechanism_type": "neural",
+        "evidence_strength": "tests"
+      },
+      {
+        "step": 4,
+        "from_construct": "reduced mental fatigue and cognitive load",
+        "to_construct": "improved heart rate variability (HRV)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "tests"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Screenshots or renderings of the virtual reality environments used for natural soundscapes",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Screenshots or renderings of the virtual reality environments used for urban soundscapes",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "estimated"
 }

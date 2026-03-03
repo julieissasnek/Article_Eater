@@ -90,7 +90,7 @@ class TestPipelineRegistration:
         assert row[1] == "Test Pipeline"
 
     def test_register_canonical_pipelines(self, overseer, temp_dbs):
-        """register_canonical_pipelines registers all 6 pipelines."""
+        """register_canonical_pipelines registers all 17 canonical subsystems."""
         overseer.register_canonical_pipelines()
 
         conn = sqlite3.connect(temp_dbs[0])
@@ -100,7 +100,14 @@ class TestPipelineRegistration:
         conn.close()
 
         pipeline_ids = {r[0] for r in rows}
-        expected = {"discovery", "triage", "extraction", "tables", "integration", "overseer"}
+        # Updated to match current 17-subsystem architecture
+        expected = {
+            "db_infrastructure", "taxonomy_vocabulary", "overseer_self_monitor",
+            "paper_acquisition", "extraction_integration", "qa_query",
+            "web_of_belief", "t3_belief_engine", "bayesian_network",
+            "interpretation_space", "warrant_credence", "argumentation", "cva",
+            "theory_templates", "export_reporting", "image_pipeline", "annotation"
+        }
         assert expected.issubset(pipeline_ids)
 
     def test_report_pipeline_run(self, overseer, temp_dbs):
@@ -148,18 +155,19 @@ class TestPipelineRegistration:
     def test_pipeline_health(self, overseer):
         """get_pipeline_health returns health for registered pipelines."""
         overseer.register_canonical_pipelines()
-        overseer.report_pipeline_run("discovery", "pass", 500)
+        # Use a canonical pipeline that exists
+        overseer.report_pipeline_run("web_of_belief", "pass", 500)
 
         health = overseer.get_pipeline_health()
         assert isinstance(health, (list, dict))
 
         # Handle both dict and list return types
         if isinstance(health, dict):
-            disco = health.get("discovery")
+            pipeline_health = health.get("web_of_belief")
         else:
-            disco = next((p for p in health if p.get("pipeline_id") == "discovery"), None)
-        assert disco is not None
-        assert disco.get("last_status") == "pass"
+            pipeline_health = next((p for p in health if p.get("pipeline_id") == "web_of_belief"), None)
+        assert pipeline_health is not None
+        assert pipeline_health.get("last_status") == "pass"
 
     def test_pipeline_health_stale_detection(self, overseer):
         """Pipelines without recent runs are marked stale."""

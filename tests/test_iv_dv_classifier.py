@@ -210,7 +210,8 @@ class TestAccessLevelInference:
 
     def test_physiological_inference(self):
         result = self.clf.classify_dv("salivary cortisol level")
-        assert result.access_level == DVAccessLevel.AUTONOMIC
+        # V10 #6 Neuroscientist: Cortisol is NEUROENDOCRINE (HPA axis), not AUTONOMIC
+        assert result.access_level == DVAccessLevel.NEUROENDOCRINE
 
     def test_performance_inference(self):
         result = self.clf.classify_dv("serial recall task accuracy")

@@ -9424,49 +9424,54 @@
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:49.598095+00:00",
+  "surgical_update_at": "2026-03-02T19:01:33.243685+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Circadian Photoreception Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Non-visual effects of light, mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs), influence human circadian rhythms, alertness, and physiological functions."
+      "theory_name": "Non-Image-Forming (NIF) Effects of Light",
+      "commitment_type": "assumes",
+      "specific_claim": "Light, independent of its visual properties, can elicit physiological and psychological responses through intrinsically photosensitive retinal ganglion cells (ipRGCs)."
     },
     {
-      "theory_name": "Human Centric Lighting (HCL) principles",
+      "theory_name": "Circadian Photoreception",
+      "commitment_type": "assumes",
+      "specific_claim": "Specific spectral and temporal patterns of light exposure entrain the human circadian clock, influencing sleep-wake cycles, alertness, and hormone secretion."
+    },
+    {
+      "theory_name": "Human Centric Lighting (HCL)",
       "commitment_type": "proposes",
-      "specific_claim": "Lighting design should consider both visual and non-visual effects of light to support human health, well-being, and performance in built environments."
+      "specific_claim": "Lighting design should consider the non-visual biological effects of light to optimize human health, well-being, and performance in built environments."
     }
   ],
   "mechanism_chain": {
-    "description": "Daylight exposure, particularly its spectral and intensity characteristics, stimulates intrinsically photosensitive retinal ganglion cells (ipRGCs) in the retina. This signal is transmitted via the retinohypothalamic tract to the suprachiasmatic nucleus (SCN), the body's master clock. The SCN then modulates various physiological processes, including autonomic nervous system activity (affecting Heart Rate Variability), melatonin secretion, and alertness, thereby impacting overall occupant well-being and performance.",
+    "description": "The paper discusses the established neurobiological pathway for non-visual light effects, linking light exposure to various physiological and psychological outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "daylight exposure (intensity, spectrum)",
-        "to_construct": "ipRGC activation",
+        "from_construct": "Light exposure (especially blue-rich spectrum)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "ipRGC activation",
-        "to_construct": "SCN signaling",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "SCN signaling",
-        "to_construct": "autonomic nervous system modulation",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "SCN activation",
+        "to_construct": "Modulation of melatonin secretion and circadian rhythm entrainment",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "autonomic nervous system modulation",
-        "to_construct": "Heart Rate Variability (HRV)",
+        "from_construct": "Modulation of circadian rhythm",
+        "to_construct": "Impact on sleep quality, alertness, mood, and autonomic nervous system activity (e.g., Heart Rate Variability)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       }
     ]
   }

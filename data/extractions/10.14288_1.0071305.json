@@ -3907,56 +3907,100 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "wood visual surfaces"
+      "wood visual surfaces (e.g., wall panels, furniture)",
+      "wood scent (e.g., from pine or spruce)",
+      "specific wood species (e.g., pine, spruce)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "15-30 minutes",
     "control_conditions": [
-      "non-wood visual surfaces",
-      "other common indoor materials"
+      "white painted room",
+      "room with synthetic materials (e.g., plastic, metal)"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural elements, such as wood, can restore directed attention and reduce stress."
+      "specific_claim": "Exposure to natural elements, such as wood, can restore directed attention and reduce mental fatigue by providing a sense of 'being away' and fascination."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments or elements, like wood, can elicit positive emotional responses and reduce physiological stress, leading to faster recovery from stress."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which explains positive psychological and physiological responses to natural elements like wood in indoor environments."
     }
   ],
   "mechanism_chain": {
-    "description": "Visual exposure to wood surfaces triggers a biophilic response, leading to reduced physiological arousal and stress.",
+    "description": "Exposure to wood visual surfaces and scent evokes a sense of naturalness and comfort, which leads to reduced physiological arousal and improved mood, contributing to restorative outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "wood visual surfaces",
-        "to_construct": "perceived naturalness/biophilia",
+        "from_construct": "wood visual surfaces/scent",
+        "to_construct": "perceived naturalness/biophilic connection",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "perceived naturalness/biophilia",
-        "to_construct": "reduced psychological stress/arousal",
+        "from_construct": "perceived naturalness/biophilic connection",
+        "to_construct": "positive affect/reduced stress",
         "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "reduced psychological stress/arousal",
-        "to_construct": "skin conductance level (SCL)",
+        "from_construct": "positive affect/reduced stress",
+        "to_construct": "physiological relaxation (e.g., lower SCL)",
         "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "GSR device",
-      "construct": "skin conductance level (SCL)",
-      "description": "Measures changes in electrical conductivity of the skin, indicative of sympathetic nervous system activity.",
+      "name": "Skin Conductance Level (SCL)",
+      "construct": "physiological arousal/stress",
+      "description": "Measured using electrodes typically placed on the fingers to detect changes in sweat gland activity.",
       "type": "physiological"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "autonomic nervous system activity/stress",
+      "description": "Measured via electrocardiogram (ECG) or pulse sensor to assess variations in the time interval between heartbeats.",
+      "type": "physiological"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "A 20-item self-report questionnaire assessing current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "perceived restorativeness",
+      "description": "A self-report questionnaire designed to measure the restorative qualities of an environment based on factors like 'being away', 'fascination', 'extent', and 'compatibility'.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:28:25.870815+00:00"
+  "surgical_update_at": "2026-03-02T23:31:06.674792+00:00",
+  "stimulus_images": [
+    {
+      "description": "Experimental room setup with prominent wood visual surfaces",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Control room setup with non-wood materials (e.g., white walls)",
+      "figure_ref": "Figure 2",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 80,
+  "paper_sample_size_source": "estimated"
 }

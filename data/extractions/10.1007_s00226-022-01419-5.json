@@ -1970,20 +1970,90 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "wooden-wall images with different amounts of knots"
+      "wooden-wall images with low amounts of knots",
+      "wooden-wall images with medium amounts of knots",
+      "wooden-wall images with high amounts of knots",
+      "white-wall image (control)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "3 minutes per image",
+    "control_conditions": [
+      "white-wall image"
+    ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Oxyhemoglobin measurement",
-      "construct": "Brain activity",
-      "description": "Measurement of oxyhemoglobin concentrations in the left prefrontal cortex.",
+      "name": "fNIRS (functional Near-Infrared Spectroscopy)",
+      "construct": "oxyhemoglobin (HbO2) and deoxyhemoglobin (HbR) concentrations",
+      "description": "Measures changes in cerebral blood flow and oxygenation in the prefrontal cortex.",
+      "type": "physiological"
+    },
+    {
+      "name": "Profile of Mood States (POMS)",
+      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "A 65-item self-report questionnaire assessing current mood.",
+      "type": "self_report"
+    },
+    {
+      "name": "Visual Analog Scale (VAS)",
+      "construct": "subjective comfort, relaxation, naturalness, preference",
+      "description": "Self-report scales for subjective evaluation of stimuli.",
+      "type": "self_report"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "autonomic nervous system activity",
+      "description": "Measures fluctuations in the time intervals between adjacent heartbeats.",
       "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:37:55.633958+00:00"
+  "surgical_update_at": "2026-03-02T22:55:21.946160+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and natural patterns, which can positively impact well-being."
+    },
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments or elements can restore directed attention and reduce mental fatigue."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Visual perception of natural patterns (knots) in wooden walls influences psychological states, leading to measurable physiological responses.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "visual stimulation with wooden-wall images",
+        "to_construct": "perception of naturalness and visual complexity",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "perception of naturalness and visual complexity",
+        "to_construct": "affective and cognitive responses (e.g., relaxation, comfort, reduced stress)",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "affective and cognitive responses",
+        "to_construct": "physiological changes (e.g., prefrontal cortex activity, heart rate variability)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of the wooden-wall images with different knot amounts (low, medium, high) and the white-wall control image used as stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 32,
+  "paper_sample_size_source": "reported"
 }

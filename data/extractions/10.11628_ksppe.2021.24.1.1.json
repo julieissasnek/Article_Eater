@@ -1172,62 +1172,166 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Visual connection to nature (e.g., window views, landscapes)",
+      "Visual connection to nature (e.g., window views, landscapes, indoor plants, green walls)",
+      "Non-rhythmic sensory stimuli (e.g., sounds of water, birdsong)",
+      "Thermal and airflow variability",
+      "Presence of water",
       "Natural light",
-      "Natural materials",
-      "Water features",
-      "Plants/vegetation",
-      "Biomorphic forms and patterns"
+      "Biomorphic forms and patterns",
+      "Material connection to nature (e.g., wood, stone)",
+      "Complexity and order",
+      "Prospect and refuge",
+      "Mystery",
+      "Risk/peril"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "Urban views",
+      "Barren rooms",
+      "Standard office environments",
+      "No intervention"
+    ],
     "ecological_validity": null
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Natural environments restore directed attention better than urban environments, leading to improved cognitive function and reduced mental fatigue."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments facilitate recovery from directed attention fatigue, leading to improved cognitive function and productivity."
     },
     {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to natural environments elicits physiological and psychological relaxation responses, reducing stress and promoting recovery."
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments elicits a rapid physiological and psychological stress reduction response."
+    },
+    {
+      "theory_name": "Evolutionary Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems (biophilia hypothesis), which has evolutionary benefits for well-being."
     }
   ],
   "mechanism_chain": {
-    "description": "Visual connection to nature leads to psychological health and well-being through perceptual engagement, attention restoration, and stress reduction.",
+    "description": "Biophilic elements activate sensory systems, leading to physiological and psychological responses that improve health and well-being.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual connection to nature",
-        "to_construct": "Perceptual engagement (e.g., fascination, soft-fascination)",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
+        "from_construct": "Visual connection to nature (e.g., window views)",
+        "to_construct": "Reduced mental fatigue",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Perceptual engagement",
-        "to_construct": "Directed attention restoration",
+        "from_construct": "Reduced mental fatigue",
+        "to_construct": "Attention restoration",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 1,
+        "from_construct": "Exposure to natural scenes/sounds",
+        "to_construct": "Activation of parasympathetic nervous system",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of parasympathetic nervous system",
+        "to_construct": "Reduced cortisol levels and blood pressure",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Directed attention restoration",
-        "to_construct": "Reduced physiological stress response (e.g., lower cortisol, heart rate variability)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "from_construct": "Reduced cortisol levels and blood pressure",
+        "to_construct": "Stress reduction",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
       },
       {
-        "step": 4,
-        "from_construct": "Reduced physiological stress response",
-        "to_construct": "Improved psychological well-being (e.g., positive emotions, relaxation, reduced anxiety)",
+        "step": 1,
+        "from_construct": "Access to natural light",
+        "to_construct": "Regulation of circadian rhythms",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Regulation of circadian rhythms",
+        "to_construct": "Improved sleep quality and mood",
         "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:45:55.016849+00:00"
+  "surgical_update_at": "2026-03-02T23:33:58.284922+00:00",
+  "instruments_used": [
+    {
+      "name": "PANAS (Positive and Negative Affect Schedule)",
+      "construct": "Positive and negative affect",
+      "description": "Self-report questionnaire measuring current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "PSS (Perceived Stress Scale)",
+      "construct": "Perceived stress",
+      "description": "Self-report questionnaire measuring the degree to which situations in one's life are appraised as stressful.",
+      "type": "self_report"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "Autonomic nervous system activity, stress response",
+      "description": "Physiological measure of the variation in the time interval between heartbeats.",
+      "type": "physiological"
+    },
+    {
+      "name": "Cortisol levels",
+      "construct": "Physiological stress response",
+      "description": "Biomarker measured from saliva or blood.",
+      "type": "physiological"
+    },
+    {
+      "name": "Blood pressure",
+      "construct": "Cardiovascular health, physiological stress response",
+      "description": "Measurement of arterial pressure.",
+      "type": "physiological"
+    },
+    {
+      "name": "Stroop Test",
+      "construct": "Cognitive function, attention, executive control",
+      "description": "Neuropsychological test assessing selective attention and cognitive flexibility.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Digit Span Test",
+      "construct": "Working memory, attention",
+      "description": "Cognitive test measuring short-term auditory memory capacity.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Productivity metrics",
+      "construct": "Work performance",
+      "description": "Objective measures such as task completion rates, error rates, or self-reported productivity.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Sick leave data",
+      "construct": "Health outcomes, absenteeism",
+      "description": "Records of employee absences due to illness.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the 14 patterns of biophilic design",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Examples of visual connection to nature in built environments",
+      "figure_ref": "Figure 2",
+      "image_type": "photo"
+    }
+  ]
 }

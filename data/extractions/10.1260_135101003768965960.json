@@ -3668,63 +3668,96 @@
   },
   "stimulus_description": {
     "environmental_features": [
+      "aircraft noise",
+      "road traffic noise",
+      "railway noise",
       "classroom noise",
-      "speech noise",
-      "traffic noise",
-      "aircraft noise"
+      "general environmental noise"
     ],
-    "duration_exposure": "short-term; chronic",
+    "duration_exposure": "chronic exposure (daily, over years)",
     "control_conditions": [
-      "quiet conditions",
-      "lower noise levels"
+      "schools in low-noise areas compared to high-noise areas",
+      "pre- and post-noise mitigation interventions"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Distraction Theory",
+      "theory_name": "Cognitive Load Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Noise acts as a distractor, diverting cognitive resources from primary tasks, thereby impairing learning and performance."
+      "specific_claim": "Noise acts as an environmental stressor that increases cognitive load, thereby reducing available cognitive resources for learning tasks in children."
     },
     {
-      "theory_name": "Stress Theory",
+      "theory_name": "Distraction Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Noise acts as an environmental stressor, leading to physiological and psychological arousal that negatively impacts cognitive function and well-being."
+      "specific_claim": "Environmental noise diverts attentional resources away from primary learning tasks, leading to impaired performance."
     }
   ],
   "mechanism_chain": {
-    "description": "Causal mechanism connecting chronic noise exposure to impaired learning and academic attainment in primary school children.",
+    "description": "Chronic noise exposure in schools leads to increased cognitive load and distraction, which depletes attentional resources and working memory, ultimately impairing the processing of academic information and reducing learning attainments.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Chronic noise exposure",
-        "to_construct": "Auditory distraction and interference with speech perception",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
+        "from_construct": "Noise exposure (chronic)",
+        "to_construct": "Increased cognitive load / Distraction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Auditory distraction and interference with speech perception",
-        "to_construct": "Increased cognitive load and effort",
+        "from_construct": "Increased cognitive load / Distraction",
+        "to_construct": "Reduced attentional resources / Working memory capacity",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Increased cognitive load and effort",
-        "to_construct": "Reduced attention and impaired working memory",
+        "from_construct": "Reduced attentional resources / Working memory capacity",
+        "to_construct": "Impaired processing of academic information",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Reduced attention and impaired working memory",
-        "to_construct": "Poorer learning outcomes and academic attainment",
+        "from_construct": "Impaired processing of academic information",
+        "to_construct": "Lower learning and attainments",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:44.483772+00:00"
+  "surgical_update_at": "2026-03-02T23:34:03.423735+00:00",
+  "instruments_used": [
+    {
+      "name": "Cognitive performance tests",
+      "construct": "reading comprehension, memory, attention, problem-solving",
+      "description": "Standardized or experimental tests measuring various cognitive functions",
+      "type": "behavioral"
+    },
+    {
+      "name": "Academic achievement tests",
+      "construct": "school performance, grades, standardized test scores",
+      "description": "Measures of educational attainment",
+      "type": "behavioral"
+    },
+    {
+      "name": "Physiological measures",
+      "construct": "stress, arousal",
+      "description": "e.g., blood pressure, heart rate, cortisol levels",
+      "type": "physiological"
+    },
+    {
+      "name": "Noise measurements",
+      "construct": "noise exposure levels",
+      "description": "e.g., A-weighted decibel levels (dB(A))",
+      "type": "other"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "annoyance, perceived stress",
+      "description": "Surveys assessing subjective experiences",
+      "type": "self_report"
+    }
+  ]
 }

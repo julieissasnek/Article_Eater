@@ -761,44 +761,30 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:28:29.302351+00:00",
+  "surgical_update_at": "2026-03-02T23:25:05.205046+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Soundscape Approach",
-      "commitment_type": "proposes",
-      "specific_claim": "Architectural and landscape interventions can be designed to positively influence the perception of sound environments, moving beyond mere noise reduction to enhance overall soundscape quality and tranquillity."
+      "theory_name": "Soundscape Approach (ISO 12913)",
+      "commitment_type": "assumes",
+      "specific_claim": "Soundscape quality is a perceptual construct influenced by acoustic and non-acoustic factors, and can be enhanced through architectural and landscape design interventions."
     }
   ],
   "mechanism_chain": {
-    "description": "Buildings act as physical barriers, obstructing the direct line of sight and sound propagation path from aircraft, leading to a reduction in noise levels at facades located in the acoustic shadow.",
+    "description": "Architectural and landscape elements can physically obstruct or reflect sound waves, thereby reducing the propagation of aircraft noise to specific areas.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Buildings (physical structures)",
-        "to_construct": "Obstruction of direct sound path from aircraft",
+        "from_construct": "Architectural/landscape interventions (e.g., buildings, walls, berms)",
+        "to_construct": "Sound wave propagation path",
         "mechanism_type": "physical",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Obstruction of direct sound path from aircraft",
-        "to_construct": "Attenuation and reflection of sound waves",
+        "from_construct": "Altered sound wave propagation path (e.g., shielding, absorption)",
+        "to_construct": "Sound pressure levels (LAmax, LAeq) at receptor locations",
         "mechanism_type": "physical",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 3,
-        "from_construct": "Attenuation and reflection of sound waves",
-        "to_construct": "Reduced sound energy reaching shielded facades",
-        "mechanism_type": "physical",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 4,
-        "from_construct": "Reduced sound energy reaching shielded facades",
-        "to_construct": "Lower aircraft noise levels (LAmax and LAeq)",
-        "mechanism_type": "physical",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       }
     ]
   }

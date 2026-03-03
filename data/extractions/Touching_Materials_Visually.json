@@ -27,10 +27,13 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.65,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 80,
+      "confidence_interval": [
+        0.25,
+        1.05
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP"
@@ -43,7 +46,8 @@
       "provenance_depth": "section",
       "source": "Years of Education versus Material Assessment, p. 4",
       "quote": "first year students evaluated the materials to be flatter and harder than the more experienced students.",
-      "evidence_type": "statistical"
+      "evidence_type": "statistical",
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -632,49 +636,73 @@
   "minimum_safe_summary": "This empirical study investigated how architecture students assess building materials using vision and touch. It found that while tactile assessment differed significantly from visual assessment for several material attributes (e.g., pattern, gloss, massiveness, warmth), vision generally dominated the overall assessment. Students struggled to correctly identify materials by touch alone and often associated cognitive meanings (e.g., 'cold' concrete) over actual tactile sensations when vision was available. The study highlights that architectural education, beyond the first year, did not significantly alter students' multisensory assessment biases, suggesting a need for more explicit consideration of non-visual material aspects in design education. Limitations include the use of small-scale samples and the focus on only two senses.",
   "stimulus_description": {
     "environmental_features": [
-      "real material samples (e.g., wood, metal, plastic, stone, fabric)",
-      "controlled lighting conditions"
+      "Various material samples (e.g., wood, metal, stone, fabric) presented visually",
+      "Material samples presented tactually (for haptic assessment or combined visual-haptic assessment)"
     ],
-    "duration_exposure": "typically short, a few seconds per sample",
+    "duration_exposure": "Brief, typically a few seconds per material for assessment",
     "control_conditions": [
-      "visual-only presentation",
-      "haptic-only presentation",
-      "visuo-haptic (combined) presentation"
+      "Visual-only assessment condition",
+      "Haptic-only assessment condition",
+      "Combined Visual+Haptic assessment condition"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:42:29.962461+00:00",
+  "surgical_update_at": "2026-03-02T19:11:04.886165+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Visual Dominance Hypothesis",
+      "theory_name": "Multisensory Integration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Visual information exerts a stronger influence on multisensory perception of material properties compared to haptic information."
+      "specific_claim": "Sensory inputs from different modalities are combined to form a unified perception, with varying weights given to each modality."
     },
     {
-      "theory_name": "Multisensory Integration",
-      "commitment_type": "assumes",
-      "specific_claim": "Information from different sensory modalities is combined to form a unified perception."
+      "theory_name": "Sensory Dominance Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "One sensory modality (e.g., vision) can exert a stronger influence on perception than others, especially when sensory information is conflicting or ambiguous."
     }
   ],
   "instruments_used": [
     {
       "name": "Likert-type rating scales",
-      "construct": "perceived material attributes (e.g., flatness, hardness, roughness, warmth)",
-      "description": "Participants rated material attributes on a numerical scale (e.g., 1-7 or 1-9)",
+      "construct": "Perceived material attributes (e.g., flatness, hardness, roughness, warmth, pleasantness)",
+      "description": "Participants rated various material attributes on a numerical scale (e.g., 7-point scale) for each stimulus.",
       "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "photographs of the material samples used as stimuli",
-      "figure_ref": "Figure 1 (typical)",
+      "description": "Photographs of the material samples used as visual stimuli",
+      "figure_ref": "Figure 1",
       "image_type": "stimulus_set"
-    },
-    {
-      "description": "diagram of the experimental setup for presenting stimuli",
-      "figure_ref": "Figure 2 (typical)",
-      "image_type": "diagram"
     }
-  ]
+  ],
+  "mechanism_chain": {
+    "description": "Visual and haptic sensory inputs provide information about material attributes. These inputs are processed and integrated, but due to the richness and often higher resolution of visual information for certain properties, vision exerts a dominant influence on the final perceived material assessment, particularly in cases of sensory conflict or ambiguity.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Visual and haptic sensory input from material",
+        "to_construct": "Parallel processing of sensory information about material attributes",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Processed visual and haptic information",
+        "to_construct": "Multisensory integration with differential weighting of sensory inputs",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Weighted multisensory integration",
+        "to_construct": "Dominant influence of visual information on final material attribute assessment",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "paper_sample_size": 80,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

@@ -3148,13 +3148,16 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Illuminance levels",
-      "Correlated Color Temperatures (CCTs)"
+      "Illuminance levels (300 lux, 1000 lux)",
+      "Correlated Color Temperatures (3000K, 6500K)",
+      "Virtual office room environment"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "5 minutes per lighting condition",
     "control_conditions": [
-      "Varying levels of illuminance",
-      "Varying levels of correlated color temperature"
+      "300 lux / 3000K",
+      "300 lux / 6500K",
+      "1000 lux / 3000K",
+      "1000 lux / 6500K"
     ],
     "ecological_validity": "lab"
   },
@@ -3186,24 +3189,33 @@
   },
   "instruments_used": [
     {
-      "name": "Electroencephalography (EEG)",
-      "construct": "Brain activity",
-      "description": "Measures electrical activity of the brain via electrodes on the scalp.",
+      "name": "EEG system",
+      "construct": "brain activity (alpha, theta, beta band-power ratios)",
+      "description": "64-channel electroencephalography system",
       "type": "eeg"
     },
     {
-      "name": "Virtual Reality (VR) system",
-      "construct": "Environmental simulation",
-      "description": "Used to present simulated lighting environments to participants.",
+      "name": "Oculus Rift DK2",
+      "construct": "virtual environment presentation",
+      "description": "Head-mounted display for presenting the virtual office room",
       "type": "other"
     },
     {
-      "name": "Light meter",
-      "construct": "Illuminance, Correlated Color Temperature (CCT)",
-      "description": "Device used to measure the intensity (illuminance) and color temperature (CCT) of light.",
-      "type": "other"
+      "name": "Subjective questionnaires",
+      "construct": "alertness, visual comfort, preference",
+      "description": "Self-report scales administered after each lighting condition",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:06:47.656361+00:00"
+  "surgical_update_at": "2026-03-02T19:13:03.378368+00:00",
+  "stimulus_images": [
+    {
+      "description": "Screenshot of the virtual office room environment presented to participants.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 20,
+  "paper_sample_size_source": "reported"
 }

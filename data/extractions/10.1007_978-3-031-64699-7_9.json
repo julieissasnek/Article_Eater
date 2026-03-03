@@ -5197,80 +5197,154 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural or restorative environments can restore directed attention capacity, and architectural design can influence this process."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "discusses",
+      "specific_claim": "Natural environments restore directed attention better than urban environments, and architectural design elements might mimic or impede these restorative qualities."
     },
     {
-      "theory_name": "Stress Recovery Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural or restorative environments can facilitate recovery from physiological and psychological stress, and architectural design can influence this process."
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "discusses",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, influencing preferences and physiological responses to built environments incorporating natural elements."
+    },
+    {
+      "theory_name": "Embodied Cognition",
+      "commitment_type": "discusses",
+      "specific_claim": "Cognitive processes are deeply rooted in the body's interactions with the physical environment, suggesting that architectural spaces can directly shape thought and perception."
+    },
+    {
+      "theory_name": "Predictive Coding",
+      "commitment_type": "proposes",
+      "specific_claim": "The brain constantly generates predictions about sensory input, and architectural complexity or novelty can influence the precision and updating of these predictions, impacting neural processing."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper reviews proposed neural and cognitive mechanisms by which specific architectural design features influence brain activity and subsequent cognitive and affective states.",
+    "description": "The paper reviews various proposed mechanisms linking architectural design features to neural and cognitive outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Architectural design features (e.g., complexity, spaciousness, naturalness)",
-        "to_construct": "Visual processing and emotional appraisal in specific brain regions (e.g., visual cortex, parahippocampal place area, amygdala)",
-        "mechanism_type": "neural",
+        "from_construct": "architectural complexity/novelty",
+        "to_construct": "visual processing load",
+        "mechanism_type": "perceptual",
         "evidence_strength": "indirect"
       },
       {
         "step": 2,
-        "from_construct": "Neural activation patterns and emotional appraisal",
-        "to_construct": "Cognitive processes (e.g., attention allocation, memory encoding, cognitive load) and affective states (e.g., mood, stress)",
-        "mechanism_type": "cognitive",
+        "from_construct": "visual processing load",
+        "to_construct": "arousal/affective response",
+        "mechanism_type": "affective",
         "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "Cognitive processes and affective states",
-        "to_construct": "Behavioral and well-being outcomes (e.g., task performance, perceived restorativeness, stress recovery)",
-        "mechanism_type": "behavioral",
+        "from_construct": "arousal/affective response",
+        "to_construct": "attention allocation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "attention allocation",
+        "to_construct": "neural activity (e.g., prefrontal cortex, hippocampus)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "spatial configuration (e.g., ceiling height, openness)",
+        "to_construct": "perceived spaciousness/enclosure",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "perceived spaciousness/enclosure",
+        "to_construct": "sense of freedom/constraint",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 7,
+        "from_construct": "sense of freedom/constraint",
+        "to_construct": "creativity/cognitive performance",
+        "mechanism_type": "cognitive",
         "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "fMRI",
-      "construct": "brain activity/neural correlates",
-      "description": "Functional magnetic resonance imaging to measure blood-oxygen-level-dependent (BOLD) signals, indicating neural activation.",
+      "name": "functional Magnetic Resonance Imaging (fMRI)",
+      "construct": "brain activity (BOLD signal)",
+      "description": "Neuroimaging technique to measure brain activity by detecting changes in blood flow.",
       "type": "fmri"
     },
     {
-      "name": "EEG",
-      "construct": "event-related potentials (ERPs)/brain electrical activity",
-      "description": "Electroencephalography to measure electrical activity in the brain, often used for temporal resolution of cognitive processes.",
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain electrical activity",
+      "description": "Measures electrical activity in the brain using electrodes placed on the scalp.",
       "type": "eeg"
     },
     {
       "name": "Eye-tracking",
-      "construct": "visual attention/gaze patterns",
-      "description": "Measures eye movements, fixations, and pupil dilation to infer visual attention and cognitive load.",
+      "construct": "gaze patterns, visual attention",
+      "description": "Monitors eye movements to assess where and how long participants look at stimuli.",
       "type": "eye_tracking"
     },
     {
       "name": "Skin Conductance Response (SCR)",
-      "construct": "arousal/emotional response",
-      "description": "Measures changes in electrical conductivity of the skin, reflecting sympathetic nervous system activity.",
+      "construct": "physiological arousal",
+      "description": "Measures changes in the electrical conductivity of the skin, indicative of sympathetic nervous system activity.",
       "type": "physiological"
     },
     {
       "name": "Heart Rate Variability (HRV)",
-      "construct": "autonomic nervous system activity/stress",
-      "description": "Measures variation in the time interval between heartbeats, used as an indicator of physiological stress and relaxation.",
+      "construct": "autonomic nervous system activity, stress",
+      "description": "Measures the variation in the time interval between heartbeats.",
       "type": "physiological"
     },
     {
       "name": "Self-report questionnaires",
-      "construct": "mood, perceived restorativeness, spatial presence, cognitive workload",
-      "description": "Various scales to assess subjective experiences, including affect, environmental perceptions, and mental effort.",
+      "construct": "mood, preference, perceived restorativeness, spatial presence",
+      "description": "Surveys or scales used to gather subjective experiences and evaluations.",
       "type": "self_report"
+    },
+    {
+      "name": "Behavioral tasks",
+      "construct": "memory, attention, navigation, creativity, cognitive performance",
+      "description": "Tasks designed to measure specific cognitive functions or behaviors.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:09:56.141200+00:00"
+  "surgical_update_at": "2026-03-02T22:54:56.840809+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "photographs of architectural spaces",
+      "3D virtual architectural environments",
+      "real-world architectural settings",
+      "architectural drawings and sketches",
+      "abstract geometric patterns"
+    ],
+    "duration_exposure": "variable, ranging from seconds (for image viewing) to minutes or hours (for immersive or real-world experiences) across reviewed studies",
+    "control_conditions": [
+      "natural scenes",
+      "scrambled images",
+      "non-architectural urban scenes",
+      "neutral baseline (e.g., fixation cross)",
+      "architecturally neutral spaces"
+    ],
+    "ecological_validity": "lab|semi-naturalistic|field"
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of diverse architectural stimuli (e.g., facades, interiors, urban landscapes) used in neuroimaging and behavioral studies.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    },
+    {
+      "description": "Illustrations of virtual reality environments designed to manipulate specific architectural features.",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ]
 }

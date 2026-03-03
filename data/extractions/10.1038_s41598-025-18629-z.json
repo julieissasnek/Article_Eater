@@ -277,34 +277,86 @@
   "converted_at": "2026-03-01T13:12:23.443093+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "VR simulated natural indoor environments"
+      "VR simulated indoor environments with natural elements (e.g., virtual windows with natural views, indoor plants, natural materials)",
+      "VR simulated indoor environments with urban or minimalist elements (control condition)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Typically 20-30 minutes per VR environment exposure before cognitive tasks",
     "control_conditions": [
-      "non-natural VR environment"
+      "Virtual indoor environment with urban views or no natural elements",
+      "Plain or minimalist virtual indoor environment"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "EEG",
-      "construct": "cognitive efficiency",
-      "description": "Electroencephalography to measure brain activity",
+      "name": "Electroencephalography (EEG)",
+      "construct": "Brain activity related to attention, cognitive load, and emotional processing (e.g., alpha, theta power, frontal asymmetry)",
+      "description": "Multi-channel EEG system for recording brain electrical activity during VR exposure and cognitive tasks",
       "type": "eeg"
     },
     {
-      "name": "Affective response scales",
-      "construct": "affective responses",
-      "description": "Measures of mood or emotional state",
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "Self-report questionnaire assessing current mood states after VR exposure",
       "type": "self_report"
+    },
+    {
+      "name": "N-back task",
+      "construct": "Working memory / Cognitive load",
+      "description": "A continuous performance task measuring working memory capacity and cognitive efficiency",
+      "type": "behavioral"
+    },
+    {
+      "name": "Stroop task",
+      "construct": "Selective attention / Inhibitory control",
+      "description": "A task measuring reaction time and accuracy to assess attentional control and cognitive efficiency",
+      "type": "behavioral"
     }
   ],
-  "surgical_update_at": "2026-03-02T18:40:02.889073+00:00",
+  "surgical_update_at": "2026-03-02T23:34:20.421942+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention and improve cognitive efficiency."
+      "specific_claim": "Exposure to natural environments, even simulated ones, can restore directed attention and improve cognitive performance by reducing mental fatigue."
     }
-  ]
+  ],
+  "mechanism_chain": {
+    "description": "Exposure to VR natural indoor environments leads to positive affective states and reduced mental fatigue, which in turn enhances cognitive efficiency, as evidenced by EEG markers and task performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "VR natural indoor environment",
+        "to_construct": "Positive affect / Reduced mental fatigue",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Positive affect / Reduced mental fatigue",
+        "to_construct": "Improved cognitive efficiency",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Screenshots or renderings of the VR simulated natural indoor environments",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Screenshots or renderings of the VR simulated control (urban/minimalist) indoor environments",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagram of the experimental setup, including VR headset and EEG cap placement",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 50,
+  "paper_sample_size_source": "estimated"
 }

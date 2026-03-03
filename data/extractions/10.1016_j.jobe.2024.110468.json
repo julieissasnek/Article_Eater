@@ -5830,38 +5830,116 @@
     "top_k_templates": 5
   },
   "mechanism_chain": {
-    "description": "Causal mechanism explaining how the physical properties and microstructure of cementitious materials contribute to sound absorption.",
+    "description": "Causal mechanism connecting material properties to sound absorption capabilities in cementitious materials.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Material composition and processing (e.g., inclusion of crumb rubber)",
-        "to_construct": "Formation of a porous microstructure (e.g., interconnected voids, specific pore size distribution)",
+        "from_construct": "Porous structure (e.g., interconnected pores, tortuosity, pore size distribution)",
+        "to_construct": "Viscous friction between oscillating air particles and pore walls",
         "mechanism_type": "physical",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Porous microstructure",
-        "to_construct": "Sound wave penetration into the material and interaction with pore walls",
+        "from_construct": "Viscous friction and thermal losses (due to air compression/expansion in pores)",
+        "to_construct": "Conversion of sound energy into heat",
         "mechanism_type": "physical",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Sound wave interaction with pore walls",
-        "to_construct": "Dissipation of sound energy through viscous friction and thermal losses within the pores",
+        "from_construct": "Specific pore geometries (e.g., narrow necks, large cavities, perforations)",
+        "to_construct": "Resonant absorption (e.g., Helmholtz resonance)",
         "mechanism_type": "physical",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Dissipation of sound energy",
-        "to_construct": "Reduction of reflected sound energy and increase in sound absorption coefficient",
+        "from_construct": "Converted sound energy (heat) and resonant absorption",
+        "to_construct": "Increased sound absorption coefficient of the material",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:30:16.131821+00:00"
+  "surgical_update_at": "2026-03-02T23:32:01.643441+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "Sound waves (various frequencies, intensities)",
+      "Material samples (various compositions, geometries, e.g., cementitious materials with crumb rubber, fibers, porous aggregates)"
+    ],
+    "duration_exposure": null,
+    "control_conditions": [
+      "Standard reference materials (e.g., plain concrete, rock wool)",
+      "Empty acoustic chambers (for baseline measurements)"
+    ],
+    "ecological_validity": "lab"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Delany-Bazley model",
+      "commitment_type": "applies",
+      "specific_claim": "Acoustic properties of porous materials can be predicted based on flow resistivity and porosity."
+    },
+    {
+      "theory_name": "Biot theory",
+      "commitment_type": "applies",
+      "specific_claim": "Describes wave propagation in porous elastic media, considering both fluid and solid phases."
+    },
+    {
+      "theory_name": "Helmholtz resonator principle",
+      "commitment_type": "applies",
+      "specific_claim": "Sound absorption can be achieved through resonant cavities tuned to specific frequencies."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Impedance tube (Kundt's tube)",
+      "construct": "Normal incidence sound absorption coefficient, surface impedance",
+      "description": "Standardized apparatus for measuring sound absorption at normal incidence using standing wave ratio or transfer function method.",
+      "type": "other"
+    },
+    {
+      "name": "Reverberation chamber",
+      "construct": "Random incidence sound absorption coefficient",
+      "description": "Large, diffuse acoustic room used to measure the sound absorption of materials under random incidence conditions.",
+      "type": "other"
+    },
+    {
+      "name": "Sound level meter",
+      "construct": "Sound pressure level",
+      "description": "Electronic instrument used to measure sound pressure levels in decibels.",
+      "type": "other"
+    },
+    {
+      "name": "Scanning Electron Microscope (SEM)",
+      "construct": "Material microstructure, pore morphology, connectivity",
+      "description": "Microscope that produces images of a sample by scanning it with a focused beam of electrons, used for material characterization.",
+      "type": "other"
+    },
+    {
+      "name": "Airflow resistivity meter",
+      "construct": "Airflow resistivity",
+      "description": "Instrument used to measure the resistance of a porous material to the flow of air.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of an impedance tube setup for measuring normal incidence sound absorption coefficient",
+      "figure_ref": "Figure X",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagram of a reverberation chamber for measuring random incidence sound absorption coefficient",
+      "figure_ref": "Figure Y",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Microstructure images (e.g., SEM) of cementitious materials showing pore structure or aggregate distribution",
+      "figure_ref": "Figure Z",
+      "image_type": "photo"
+    }
+  ]
 }

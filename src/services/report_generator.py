@@ -686,22 +686,29 @@ class ReportGenerator:
 
         styles = getSampleStyleSheet()
 
+        # Helper to add or update style
+        def add_or_update_style(style):
+            if style.name in styles.byName:
+                styles.byName[style.name] = style
+            else:
+                styles.add(style)
+
         # Custom styles
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='ReportTitle',
             parent=styles['Title'],
             textColor=colors.HexColor('#2E7D32'),
             fontSize=24,
             spaceAfter=20
         ))
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='ReportSubtitle',
             parent=styles['Normal'],
             textColor=colors.HexColor('#666666'),
             fontSize=12,
             spaceAfter=30
         ))
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='SectionHeading',
             parent=styles['Heading1'],
             textColor=colors.HexColor('#1976D2'),
@@ -709,7 +716,7 @@ class ReportGenerator:
             spaceBefore=20,
             spaceAfter=10
         ))
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='SubsectionHeading',
             parent=styles['Heading2'],
             textColor=colors.HexColor('#455A64'),
@@ -717,14 +724,14 @@ class ReportGenerator:
             spaceBefore=15,
             spaceAfter=8
         ))
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='BodyText',
             parent=styles['Normal'],
             fontSize=10,
             leading=14,
             spaceAfter=8
         ))
-        styles.add(ParagraphStyle(
+        add_or_update_style(ParagraphStyle(
             name='FindingText',
             parent=styles['Normal'],
             fontSize=10,

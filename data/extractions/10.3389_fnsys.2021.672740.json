@@ -4778,52 +4778,67 @@
     "date": "2026-03-01T07:13:42.791075+00:00"
   },
   "mechanism_chain": {
-    "description": "Causal pathways linking chronic noise exposure to various detrimental health effects, including stress, cardiovascular diseases, cognitive impairment, and hearing loss.",
+    "description": "Causal mechanism describing how chronic noise exposure leads to various detrimental health effects, which sound insulation technologies aim to mitigate.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Noise pollution (chronic exposure)",
-        "to_construct": "Activation of physiological stress responses (e.g., HPA axis, sympathetic nervous system)",
+        "from_construct": "Chronic noise exposure",
+        "to_construct": "Activation of auditory system and non-auditory stress pathways (e.g., amygdala, HPA axis)",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Activation of physiological stress responses",
-        "to_construct": "Chronic physiological arousal, inflammation, and sleep disruption",
-        "mechanism_type": "physiological",
+        "from_construct": "Activation of auditory system and non-auditory stress pathways",
+        "to_construct": "Increased physiological arousal (e.g., elevated heart rate, blood pressure, cortisol) and psychological annoyance/distress",
+        "mechanism_type": "physiological|affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Chronic physiological arousal and inflammation",
-        "to_construct": "Increased risk of cardiovascular diseases",
-        "mechanism_type": "physiological",
+        "from_construct": "Increased physiological arousal and psychological annoyance/distress",
+        "to_construct": "Disruption of restorative processes (e.g., sleep quality, recovery) and cognitive functions (e.g., attention, memory, problem-solving)",
+        "mechanism_type": "physiological|cognitive|behavioral",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Sleep disruption",
-        "to_construct": "Cognitive impairment",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 5,
-        "from_construct": "Noise pollution (chronic exposure)",
-        "to_construct": "Direct damage to auditory hair cells and structures",
-        "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 6,
-        "from_construct": "Direct damage to auditory hair cells and structures",
-        "to_construct": "Hearing loss",
-        "mechanism_type": "physiological",
+        "from_construct": "Long-term disruption of restorative processes and cognitive functions",
+        "to_construct": "Detrimental health effects (e.g., hearing loss, cardiovascular diseases, chronic stress, cognitive impairment)",
+        "mechanism_type": "physiological|cognitive|behavioral",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:32:56.168321+00:00"
+  "surgical_update_at": "2026-03-02T23:28:41.107928+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Acoustic Wave Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Sound propagates as waves and interacts with materials through reflection, absorption, and transmission."
+    },
+    {
+      "theory_name": "Mass-Spring-Mass System",
+      "commitment_type": "discusses",
+      "specific_claim": "Double-leaf constructions reduce sound transmission by acting as a mass-spring-mass system, where air acts as a spring between two masses (walls)."
+    },
+    {
+      "theory_name": "Noise Annoyance Models",
+      "commitment_type": "discusses",
+      "specific_claim": "Chronic exposure to noise can lead to annoyance, stress, and other detrimental health effects, influencing the need for sound insulation."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating sound wave propagation through different building materials or structures.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagram showing various sound insulation technologies, such as double-leaf walls or resilient layers.",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

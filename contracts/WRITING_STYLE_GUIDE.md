@@ -1,7 +1,9 @@
 # ATLAS Writing Style Guide
 
 *Canonical reference for all prose produced by ATLAS — papers, reports, QA responses, documentation.*
-*Last updated: 2026-03-02*
+*Last updated: 2026-03-03*
+
+**Companion documents**: For article-level architecture, revision methodology, and science-writer theoretical grounding, see `SCIENCE_COMMUNICATION_NORMS.md`. For math exposition, see `MATH_EXPLANATION_NORMS.md`. For figures, see `VISUALIZATION_NORMS.md`. For QA answer epistemic content, see `docs/EPISTEMIC_PRINCIPLES.md` (Principles 11-17).
 
 ---
 

@@ -1965,31 +1965,55 @@
     "top_k_templates": 5
   },
   "mechanism_chain": {
-    "description": "The visual processing steps from low-level image cues to the perception of translucency.",
+    "description": "The paper reviews how various low-level image cues are processed by the visual system and integrated to form the perception of translucency.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "low-level image cues (e.g., subsurface scattering, blurred internal features, specific highlight patterns)",
-        "to_construct": "extraction of diagnostic visual features",
+        "from_construct": "low-level image cues (e.g., light scattering, subsurface reflections, highlights)",
+        "to_construct": "visual processing of light transport properties",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "extracted diagnostic visual features",
-        "to_construct": "integration of multiple visual cues",
+        "from_construct": "visual processing of light transport properties",
+        "to_construct": "interpretation of material properties",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "integrated visual cues",
-        "to_construct": "perceptual inference of material translucency",
+        "from_construct": "interpretation of material properties",
+        "to_construct": "translucency perception",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:54:59.072942+00:00"
+  "surgical_update_at": "2026-03-02T23:26:17.460083+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cue Integration Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "The visual system integrates multiple image cues (e.g., blur, specular highlights, subsurface scattering) to infer material properties like translucency."
+    },
+    {
+      "theory_name": "Bayesian Inference in Perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Perception of translucency involves combining sensory evidence with prior knowledge in a probabilistic manner."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Rendered images of objects (e.g., spheres, cubes) with varying translucency properties, illustrating different visual cues like blur, specular highlights, and subsurface scattering.",
+      "figure_ref": "e.g., Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating physical light transport phenomena relevant to translucency, such as scattering and absorption within a material.",
+      "figure_ref": "e.g., Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

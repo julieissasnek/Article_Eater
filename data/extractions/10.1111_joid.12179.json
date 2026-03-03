@@ -2095,15 +2095,82 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "interior color schemes (red, green, blue, white)",
-      "Immersive Virtual Environments"
+      "Immersive virtual interior rooms",
+      "Walls, floor, and ceiling rendered in specific color schemes (red, green, blue, white)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "15 minutes per color condition",
     "control_conditions": [
-      "white color scheme"
+      "White color scheme (as a neutral baseline)"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:44:09.264879+00:00"
+  "surgical_update_at": "2026-03-02T23:33:59.230421+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Color Psychology Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "Specific interior colors (e.g., red, blue, green) are associated with distinct psychological and physiological effects, influencing human emotion, arousal, and cognitive processing."
+    },
+    {
+      "theory_name": "Arousal Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Environmental stimuli, such as interior color schemes, can induce varying levels of physiological and psychological arousal, which in turn affects emotional states and task performance."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Interior color schemes in virtual environments influence physiological arousal, which then mediates emotional responses and subsequent task performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Interior color scheme (e.g., red, blue)",
+        "to_construct": "Physiological arousal (e.g., heart rate changes)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Physiological arousal",
+        "to_construct": "Subjective emotional experience (e.g., Heavy/Light, pleasantness)",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Subjective emotional experience / Arousal",
+        "to_construct": "Cognitive task performance (e.g., accuracy, speed)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Semantic Differential Scale for Emotion",
+      "construct": "Emotional valence and arousal (e.g., Heavy/Light, Active/Passive, Pleasant/Unpleasant)",
+      "description": "Self-report scale using bipolar adjective pairs to assess participants' emotional states in response to the virtual environments.",
+      "type": "self_report"
+    },
+    {
+      "name": "Cognitive Performance Task",
+      "construct": "Task performance, attention, cognitive processing speed",
+      "description": "A computer-based task designed to measure participants' cognitive abilities (e.g., mental arithmetic, reaction time, memory recall) while exposed to the virtual environments.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Heart Rate Monitor",
+      "construct": "Heart rate, physiological arousal",
+      "description": "A physiological sensor (e.g., ECG or PPG) used to continuously measure participants' heart rate as an indicator of physiological arousal.",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Renderings or screenshots of the immersive virtual environment, illustrating the different interior color schemes (red, green, blue, white) presented to participants.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported"
 }

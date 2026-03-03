@@ -115,10 +115,13 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
       "sample_size": 30,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.15,
+        0.95
+      ],
       "test_statistic": "F(1, 28) = 4.48",
       "theory_links": [
         "PP",
@@ -751,41 +754,93 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "High ceiling height (10 feet)",
-      "Low ceiling height (8 feet)"
+      "rooms with 10-foot (3.05m) ceilings",
+      "rooms with 8-foot (2.44m) ceilings"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief exposure during experimental tasks (e.g., 10-15 minutes)",
     "control_conditions": [
-      "Low ceiling height (8 feet)"
+      "8-foot ceiling height condition (as comparison to 10-foot)"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "High ceilings prime concepts of freedom and expansiveness, leading to more abstract processing and a freedom-related body state, while low ceilings prime concepts of confinement, leading to more concrete processing and a confinement-related body state.",
+    "description": "Ceiling height influences cognitive processing style by activating concepts of freedom or confinement through perceived spaciousness.",
     "steps": [
       {
         "step": 1,
         "from_construct": "ceiling height",
-        "to_construct": "priming of freedom/confinement concepts",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "to_construct": "perceived spaciousness/confinement",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "priming of freedom/confinement concepts",
-        "to_construct": "type of cognitive processing (abstract vs. concrete)",
+        "from_construct": "perceived spaciousness/confinement",
+        "to_construct": "activation of freedom/confinement concepts",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "priming of freedom/confinement concepts",
-        "to_construct": "freedom-related body state",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
+        "from_construct": "activation of freedom/confinement concepts",
+        "to_construct": "abstract/relational vs. concrete/specific processing",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:58:12.291417+00:00"
+  "surgical_update_at": "2026-03-02T19:04:38.581145+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Ceiling Height and Cognitive Processing",
+      "commitment_type": "proposes",
+      "specific_claim": "High ceiling height primes concepts of freedom and expansiveness, leading to abstract and relational processing, whereas low ceiling height primes concepts of confinement, leading to concrete and specific processing."
+    },
+    {
+      "theory_name": "Ceiling Height and Cognitive Processing",
+      "commitment_type": "tests",
+      "specific_claim": "The proposed mechanism that ceiling height influences cognitive processing via perceived spaciousness and associated concepts of freedom/confinement is empirically tested."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Category Breadth Task",
+      "construct": "abstract/relational processing",
+      "description": "Participants list items belonging to a category, with broader lists indicating more abstract processing.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Alternative Uses Task",
+      "construct": "creativity/abstract processing",
+      "description": "Participants generate diverse uses for common objects, with more creative/diverse uses indicating abstract processing.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Product Evaluation Task",
+      "construct": "focus on abstract vs. concrete product features",
+      "description": "Participants evaluate products, with their focus on abstract (e.g., quality) vs. concrete (e.g., features) attributes indicating processing style.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report measures of freedom/confinement",
+      "construct": "perceived freedom/confinement",
+      "description": "Questionnaire items assessing participants' feelings of freedom, expansiveness, or confinement.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "photographs or renderings of the experimental room with a high ceiling",
+      "figure_ref": null,
+      "image_type": "photo"
+    },
+    {
+      "description": "photographs or renderings of the experimental room with a low ceiling",
+      "figure_ref": null,
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 350,
+  "paper_sample_size_source": "estimated"
 }

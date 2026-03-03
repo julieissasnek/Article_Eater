@@ -48,7 +48,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -112,7 +112,8 @@
         "COGNITIVE_CONTROL": 0.1726,
         "CONSTRUAL_LEVEL_THEORY": 0.1726,
         "CREATIVE_COGNITION": 0.1726
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -124,7 +125,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -165,7 +166,8 @@
           "score": 0.2557,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "reported"
     },
     {
       "id": 3,
@@ -177,7 +179,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -216,7 +218,8 @@
           "score": 0.2612,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "reported"
     },
     {
       "id": 4,
@@ -228,7 +231,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -298,7 +301,8 @@
         "ADAPTIVE_THERMAL_COMFORT": 0.154,
         "ALLOSTATIC_REGULATION": 0.154,
         "METABOLIC_HEALTH": 0.154
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 5,
@@ -310,7 +314,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -381,7 +385,8 @@
         "NEUROMODULATORY": 0.1925,
         "EC": 0.1751,
         "PP": 0.1751
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 6,
@@ -1097,7 +1102,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 6,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -1167,7 +1172,8 @@
         "RETINAL_ACTIVATION": 0.1837,
         "EMBODIED_COGNITION": 0.1814,
         "SPATIAL_NAVIGATION": 0.1814
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 15,
@@ -1979,60 +1985,51 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Computer-generated images of 3D objects (e.g., spheres, complex shapes)",
-      "Manipulated surface properties (e.g., albedo, specularity, subsurface scattering)",
-      "Manipulated lighting conditions (e.g., varying light source positions, number of lights)",
-      "Manipulated visual cues including shading, cast shadows, texture, and object geometry"
+      "computer-rendered images of 3D objects (e.g., spheres, cylinders, complex shapes)",
+      "varying surface properties (e.g., opaque, translucent, glossy, matte)",
+      "manipulated lighting conditions and shading cues",
+      "manipulated relationship between shading and actual surface transparency"
     ],
-    "duration_exposure": "Brief, controlled presentations (e.g., hundreds of milliseconds to a few seconds) per trial",
+    "duration_exposure": "brief, controlled presentations (typical for psychophysical experiments)",
     "control_conditions": [
-      "Comparison between different levels of manipulated cues (e.g., varying degrees of translucency)",
-      "Different lighting setups",
-      "Different 3D shapes",
-      "Opaque vs. translucent conditions"
+      "stimuli with shading cues consistent with opaque surfaces",
+      "stimuli with shading cues inconsistent with opaque surfaces (e.g., 'shading-only' stimuli)",
+      "stimuli with varying degrees of actual transparency",
+      "stimuli with ambiguous shading cues"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Bayesian inference in visual perception",
+      "theory_name": "Computational theories of visual perception (e.g., shape-from-shading)",
       "commitment_type": "assumes",
-      "specific_claim": "The visual system infers surface properties by combining ambiguous sensory input with prior knowledge or assumptions about the world."
+      "specific_claim": "The visual system infers 3D shape and surface properties from image cues like luminance gradients."
     },
     {
-      "theory_name": "Inverse optics problem framework",
+      "theory_name": "Perceptual inference of opacity",
+      "commitment_type": "proposes",
+      "specific_claim": "The visual system often infers opacity based on an initial interpretation of 3D shape from shading, which can lead to systematic misperceptions when shading cues are ambiguous or misleading regarding actual transparency."
+    },
+    {
+      "theory_name": "Perceptual inference of opacity",
       "commitment_type": "tests",
-      "specific_claim": "The visual system attempts to disentangle intrinsic material properties from extrinsic factors like 3D shape and illumination, and misperceptions arise when this disentanglement fails."
+      "specific_claim": "Hypotheses regarding how luminance gradients and perceived 3D shape influence the perception of surface opacity and translucency."
     }
   ],
   "mechanism_chain": {
-    "description": "The visual system infers surface opacity by interpreting various visual cues (e.g., luminance gradients, shading, texture, shadows). This inference process involves disentangling intrinsic material properties from extrinsic factors like 3D shape and illumination. Misperception arises when the visual system misattributes changes in extrinsic factors to changes in intrinsic opacity.",
+    "description": "The visual system infers 3D surface orientation from luminance gradients (shading), and this inferred 3D shape then dictates the perception of surface opacity/translucency. Misinterpretations of 3D shape can lead to misperceptions of opacity.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual cues (luminance gradients, shading, texture, shadows)",
-        "to_construct": "Sensory input processing",
+        "from_construct": "Luminance gradients (shading) in the image",
+        "to_construct": "Perceived 3D surface orientation/shape",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Sensory input processing",
-        "to_construct": "Inference of 3D shape and illumination",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Inference of 3D shape and illumination",
-        "to_construct": "Disentanglement/attribution of material properties (e.g., opacity)",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Attributed material properties",
-        "to_construct": "Perceived opacity/translucency",
+        "from_construct": "Perceived 3D surface orientation/shape",
+        "to_construct": "Perceived opacity/translucency of the surface",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
@@ -2041,11 +2038,24 @@
   "instruments_used": [
     {
       "name": "Psychophysical tasks",
-      "construct": "Perceived opacity, perceived translucency, perceived 3D shape, perceived illumination",
-      "description": "Participants made judgments (e.g., forced-choice, rating scales) or adjustments (e.g., matching tasks) of perceived surface properties based on visual stimuli.",
+      "construct": "Perceived opacity, translucency, 3D shape, glossiness",
+      "description": "Participants made forced-choice judgments or provided ratings on scales (e.g., 'more opaque' vs. 'more translucent', depth ratings, gloss ratings) in response to visual stimuli.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:12:16.309378+00:00"
+  "surgical_update_at": "2026-03-02T23:35:50.832747+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of rendered opaque and translucent spheres under different lighting conditions, illustrating the core visual stimuli and the ambiguity of shading cues.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Examples of experimental stimuli used in specific experiments, showing various 3D shapes (e.g., cylinders, complex objects) with manipulated shading and transparency properties.",
+      "figure_ref": "Figures 2-7 (and others)",
+      "image_type": "rendering"
+    }
+  ],
+  "quantitative_backfill_count": 6
 }

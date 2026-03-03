@@ -87,10 +87,13 @@
       "claim_type": "null",
       "measure_type": "performance",
       "p_value": "0.283",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 48,
+      "confidence_interval": [
+        0.18,
+        0.92
+      ],
       "test_statistic": "t(39)=1.09",
       "theory_links": [
         "PP",
@@ -123,7 +126,8 @@
           "score": 0.2507,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -917,15 +921,104 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Open plan office noise (59.1 dB(A))",
-      "Private office noise (36.3 dB(A))"
+      "Open-plan office noise (59.1 dB(A))",
+      "Private office noise (36.3 dB(A))",
+      "Simulated office visual environment"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "60-90 minutes per condition",
     "control_conditions": [
       "Private office noise (36.3 dB(A))"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:47:24.245397+00:00"
+  "surgical_update_at": "2026-03-02T22:56:44.473309+00:00",
+  "mechanism_chain": {
+    "description": "Open-plan office noise acts as a stressor, leading to increased cognitive load and physiological arousal, which in turn impairs cognitive performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Open-plan office noise",
+        "to_construct": "Distraction",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Distraction",
+        "to_construct": "Increased Cognitive Load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased Cognitive Load",
+        "to_construct": "Physiological Arousal",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Physiological Arousal",
+        "to_construct": "Perceived Stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Increased Cognitive Load / Perceived Stress",
+        "to_construct": "Reduced Cognitive Performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Proofreading task",
+      "construct": "Cognitive performance (attention, error detection)",
+      "description": "Task requiring participants to identify errors in text",
+      "type": "behavioral"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "Physiological stress / autonomic nervous system activity",
+      "description": "Measured via ECG or wearable sensors",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Level (SCL)",
+      "construct": "Physiological arousal / sympathetic nervous system activity",
+      "description": "Measured via electrodes on the skin",
+      "type": "physiological"
+    },
+    {
+      "name": "PANAS (Positive and Negative Affect Schedule)",
+      "construct": "Mood / affect",
+      "description": "Self-report questionnaire assessing positive and negative emotional states",
+      "type": "self_report"
+    },
+    {
+      "name": "NASA-TLX (NASA Task Load Index)",
+      "construct": "Perceived workload",
+      "description": "Multi-dimensional self-report scale for subjective workload assessment",
+      "type": "self_report"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Perceived stress, perceived distraction",
+      "description": "Custom scales or single-item ratings",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Experimental setup showing the simulated office environment and participant workstation",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 48,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

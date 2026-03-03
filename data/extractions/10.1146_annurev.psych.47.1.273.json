@@ -2805,101 +2805,139 @@
   "stimulus_description": {
     "environmental_features": [
       "air temperature",
-      "relative humidity",
-      "wind speed",
-      "solar radiation",
-      "mean radiant temperature"
+      "mean radiant temperature",
+      "air velocity",
+      "humidity",
+      "solar radiation"
     ],
-    "duration_exposure": "long-term observation across seasons",
+    "duration_exposure": "Discusses both short-term (minutes to hours) and long-term (seasonal) exposure durations as factors in thermal adaptation.",
     "control_conditions": [
-      "different seasons",
-      "varying outdoor microclimates"
+      "controlled climate chamber conditions",
+      "field study conditions (uncontrolled outdoor environments)"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
       "theory_name": "Adaptive Thermal Comfort Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Human thermal comfort is influenced by behavioral, physiological, and psychological adaptation to the prevailing thermal environment, leading to a wider range of acceptable temperatures than predicted by static models, especially in outdoor settings."
+      "commitment_type": "extends",
+      "specific_claim": "Human thermal comfort is not solely determined by physical environmental parameters but also by psychological, physiological, and behavioral adaptation to the environment, especially in naturally ventilated or outdoor settings."
+    },
+    {
+      "theory_name": "Predicted Mean Vote (PMV) model",
+      "commitment_type": "contradicts",
+      "specific_claim": "The PMV model, based on steady-state heat balance, often overpredicts discomfort in naturally ventilated and outdoor environments due to its limited consideration of adaptive mechanisms."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper investigates how individuals adapt to varying outdoor thermal conditions across seasons through physiological, behavioral, and psychological adjustments, which in turn influence their thermal comfort perception and clothing choices.",
+    "description": "The paper discusses how environmental thermal conditions lead to changes in human thermal comfort and adaptive behaviors through a combination of physiological, behavioral, and psychological mechanisms.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Outdoor thermal environment (e.g., air temperature, solar radiation, wind speed)",
-        "to_construct": "Physiological responses (e.g., skin temperature, sweating) and Behavioral adjustments (e.g., clothing changes, seeking shade)",
-        "mechanism_type": "physiological|behavioral",
+        "from_construct": "ambient thermal conditions (e.g., air temperature, radiation)",
+        "to_construct": "physiological responses (e.g., skin temperature, sweating, shivering)",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Physiological and Behavioral adjustments",
-        "to_construct": "Altered thermal sensation and comfort perception",
-        "mechanism_type": "perceptual|cognitive",
+        "from_construct": "physiological responses",
+        "to_construct": "thermal sensation and comfort perception",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Long-term exposure to seasonal thermal conditions",
-        "to_construct": "Acclimatization and changes in thermal expectations",
-        "mechanism_type": "physiological|cognitive",
+        "from_construct": "thermal sensation and comfort perception",
+        "to_construct": "behavioral adaptation (e.g., adjusting clothing, seeking shade, changing activity level)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "behavioral adaptation",
+        "to_construct": "modified thermal comfort and preference",
+        "mechanism_type": "cognitive",
         "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "long-term exposure to seasonal conditions",
+        "to_construct": "acclimatization and psychological adaptation (e.g., altered expectations, habituation)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 6,
+        "from_construct": "acclimatization and psychological adaptation",
+        "to_construct": "shifted thermal comfort zone and preferences",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Anemometer",
-      "construct": "wind speed",
-      "description": "Measures air velocity",
-      "type": "other"
-    },
-    {
-      "name": "Pyranometer",
-      "construct": "solar radiation",
-      "description": "Measures global solar radiation",
-      "type": "other"
-    },
-    {
-      "name": "Globe thermometer",
-      "construct": "mean radiant temperature",
-      "description": "Measures radiant heat exchange",
-      "type": "other"
-    },
-    {
-      "name": "Thermistor/Thermocouple",
+      "name": "Thermometers",
       "construct": "air temperature",
-      "description": "Measures ambient air temperature",
+      "description": "Used to measure ambient air temperature.",
       "type": "other"
     },
     {
-      "name": "Hygrometer",
-      "construct": "relative humidity",
-      "description": "Measures atmospheric moisture content",
+      "name": "Globe Thermometers",
+      "construct": "mean radiant temperature",
+      "description": "Used to measure mean radiant temperature.",
       "type": "other"
     },
     {
-      "name": "Thermal Sensation Vote (TSV) scale",
+      "name": "Anemometers",
+      "construct": "air velocity",
+      "description": "Used to measure air movement.",
+      "type": "other"
+    },
+    {
+      "name": "Hygrometers",
+      "construct": "humidity",
+      "description": "Used to measure relative humidity.",
+      "type": "other"
+    },
+    {
+      "name": "Pyranometers",
+      "construct": "solar radiation",
+      "description": "Used to measure solar radiation.",
+      "type": "other"
+    },
+    {
+      "name": "Thermal Sensation Scale (e.g., ASHRAE 7-point scale)",
       "construct": "thermal sensation",
-      "description": "Typically a 7-point scale (e.g., -3 cold to +3 hot)",
+      "description": "Self-report scale ranging from cold to hot.",
       "type": "self_report"
     },
     {
-      "name": "Thermal Comfort Vote (TCV) scale",
+      "name": "Thermal Comfort Scale",
       "construct": "thermal comfort",
-      "description": "Typically a 3- to 5-point scale (e.g., -2 uncomfortable to +2 comfortable)",
+      "description": "Self-report scale indicating level of comfort.",
       "type": "self_report"
     },
     {
-      "name": "Clothing survey/observation",
-      "construct": "clothing insulation level (clo)",
-      "description": "Assessment or estimation of clothing worn by participants to determine insulation value",
-      "type": "behavioral"
+      "name": "Clothing Insulation Measurement (e.g., clo units)",
+      "construct": "clothing insulation level",
+      "description": "Assessment of clothing insulation, often estimated or measured.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:59:14.102385+00:00"
+  "surgical_update_at": "2026-03-02T23:26:46.412249+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating thermal comfort models, adaptive comfort zones, or conceptual frameworks of thermal adaptation.",
+      "figure_ref": "Various figures (e.g., Figure 1, Figure 2)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs synthesizing data from multiple studies on thermal sensation, preference, or neutrality across different environmental conditions.",
+      "figure_ref": "Various figures (e.g., Figure 3, Figure 4)",
+      "image_type": "graph"
+    }
+  ]
 }

@@ -490,7 +490,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.35",
-      "quote": "significant interaction between sound condition and task (F(1,179) = 12.19, p < .001, partial n² = .06)",
+      "quote": "significant interaction between sound condition and task (F(1,179) = 12.19, p < .001, partial n\u00b2 = .06)",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -745,7 +745,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.35",
-      "quote": "main effect of sound condition (classroom noise vs. silence) was also significant (F(1,179) = 28.65, p < .001; partial n² = .14) with an overall higher performance in silence",
+      "quote": "main effect of sound condition (classroom noise vs. silence) was also significant (F(1,179) = 28.65, p < .001; partial n\u00b2 = .14) with an overall higher performance in silence",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -827,7 +827,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.35",
-      "quote": "interaction between age group and task was also significant (F(2,179) = 17.46, p < .001, partial n² = .16)",
+      "quote": "interaction between age group and task was also significant (F(2,179) = 17.46, p < .001, partial n\u00b2 = .16)",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -993,7 +993,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.36",
-      "quote": "In serial recall, young adults performed significantly better than older children (t(123) = 2.67, p < .01, Cohen's d = 0.5) and younger children (t(107) = 3.03, p < .01, Cohen´s d = 0.6)",
+      "quote": "In serial recall, young adults performed significantly better than older children (t(123) = 2.67, p < .01, Cohen's d = 0.5) and younger children (t(107) = 3.03, p < .01, Cohen\u00b4s d = 0.6)",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -1057,7 +1057,7 @@
       "claim_type": "null",
       "measure_type": "performance",
       "p_value": "0.61",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": "Cohen_d",
       "sample_size": null,
       "confidence_interval": null,
@@ -1127,7 +1127,9 @@
         "MS": 0.1764,
         "PP": 0.1764,
         "NM_AROUSAL": 0.1666
-      }
+      },
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 14,
@@ -1151,7 +1153,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.36",
-      "quote": "Overall, the main effect of age was significant (F(2,179) = 43.15, p < .001, partial n² = .32).",
+      "quote": "Overall, the main effect of age was significant (F(2,179) = 43.15, p < .001, partial n\u00b2 = .32).",
       "outcome_id": "cog.memory",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
@@ -2156,42 +2158,64 @@
     "environmental_features": [
       "changing-state speech",
       "deviant sounds",
-      "classroom noise"
+      "irrelevant sound"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous during serial recall task",
     "control_conditions": [
-      "silent condition",
+      "quiet condition",
       "steady-state sound condition"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Changing-state hypothesis (of the Irrelevant Sound Effect)",
+      "theory_name": "Changing-State Hypothesis",
       "commitment_type": "tests",
-      "specific_claim": "Variations in irrelevant auditory stimuli (changing-state sounds) disrupt the processing of serial order in working memory, leading to impaired serial recall performance."
+      "specific_claim": "Changes in auditory stimuli disrupt the processing of serially ordered information in working memory, leading to impaired serial recall, and the paper investigates if this effect is independent of age and inhibitory control."
     }
   ],
   "mechanism_chain": {
-    "description": "Changing-state irrelevant sounds interfere with the encoding or retrieval of serial order information in working memory.",
+    "description": "Changing-state irrelevant sounds capture attention and interfere with the phonological loop's ability to process order information, thereby impairing serial recall performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Changing-state irrelevant sound",
-        "to_construct": "Disruption of serial order processing in working memory",
+        "from_construct": "changing-state irrelevant sound",
+        "to_construct": "attentional capture / disruption of order processing",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "attentional capture / disruption of order processing",
+        "to_construct": "impaired phonological working memory",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "impaired phonological working memory",
+        "to_construct": "reduced serial recall performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Serial Recall Task",
-      "construct": "Serial recall performance",
-      "description": "A task requiring participants to recall a sequence of items (e.g., digits, letters, words) in the exact order of presentation.",
+      "construct": "verbal working memory / serial order processing",
+      "description": "Participants are presented with a list of items (e.g., digits, words) and asked to recall them in the exact order of presentation.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Inhibitory Control Task",
+      "construct": "inhibitory control",
+      "description": "A task designed to measure the ability to suppress prepotent responses or irrelevant information (e.g., Stroop task, Flanker task).",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:05:27.295074+00:00"
+  "surgical_update_at": "2026-03-02T23:35:23.321627+00:00",
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated"
 }

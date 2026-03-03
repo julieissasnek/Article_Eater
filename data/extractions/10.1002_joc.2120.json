@@ -3193,14 +3193,14 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "air temperature",
-      "relative humidity",
-      "wind speed",
-      "solar radiation"
+      "Air temperature",
+      "Relative humidity",
+      "Wind speed",
+      "Solar radiation"
     ],
-    "duration_exposure": "continuous outdoor exposure during observation periods",
+    "duration_exposure": "Continuous over multiple seasons",
     "control_conditions": [
-      "comparison across different seasons (e.g., summer vs. winter)"
+      "Comparison between different seasons (e.g., summer vs. winter)"
     ],
     "ecological_validity": "field"
   },
@@ -3208,15 +3208,36 @@
     {
       "theory_name": "Adaptive Thermal Comfort Theory",
       "commitment_type": "tests",
-      "specific_claim": "People adapt to their local outdoor thermal environment over time, leading to shifts in their thermal comfort expectations and preferences across different seasons."
+      "specific_claim": "Human thermal comfort is not static but adapts to prevailing environmental conditions and past thermal experiences, leading to different comfort expectations across seasons and climates."
     }
   ],
   "mechanism_chain": {
-    "description": "Behavioral adaptation mechanism where individuals adjust their clothing insulation in response to changes in outdoor air temperature to maintain thermal comfort.",
+    "description": "Individuals adjust their clothing insulation in response to perceived changes in outdoor air temperature to maintain thermal comfort, a key aspect of behavioral thermal adaptation.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Outdoor Air Temperature (Ta)",
+        "to_construct": "Perceived Thermal Sensation",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived Thermal Sensation",
+        "to_construct": "Desire for Thermal Comfort Adjustment",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Desire for Thermal Comfort Adjustment",
+        "to_construct": "Behavioral Action (e.g., adding/removing clothing)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Behavioral Action (e.g., adding/removing clothing)",
         "to_construct": "Clothing Insulation (clo)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
@@ -3225,20 +3246,32 @@
   },
   "instruments_used": [
     {
-      "name": "Meteorological sensors",
-      "construct": "Environmental parameters (air temperature, relative humidity, wind speed, solar radiation)",
-      "description": "Sensors for continuous measurement of outdoor climatic conditions",
+      "name": "Environmental sensors",
+      "construct": "Outdoor environmental parameters",
+      "description": "Sensors for measuring air temperature, relative humidity, wind speed, and solar radiation.",
       "type": "other"
     },
     {
-      "name": "Thermal comfort questionnaire",
-      "construct": "Thermal sensation, thermal comfort, thermal preference, clothing insulation, metabolic rate",
-      "description": "Survey administered to participants to assess their subjective thermal perceptions and behaviors",
+      "name": "Thermal Sensation Vote (TSV) scale",
+      "construct": "Perceived thermal sensation",
+      "description": "A standard 7-point scale (e.g., -3 cold to +3 hot).",
       "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Vote (TCV) scale",
+      "construct": "Perceived thermal comfort",
+      "description": "A standard scale (e.g., -3 very uncomfortable to +3 very comfortable).",
+      "type": "self_report"
+    },
+    {
+      "name": "Clothing Checklist/Log",
+      "construct": "Clothing insulation (clo)",
+      "description": "Method to record or estimate participants' clothing items to calculate total clothing insulation.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:45.584837+00:00",
+  "surgical_update_at": "2026-03-02T19:08:24.900341+00:00",
   "stimulus_images": [
     {
       "description": "Photo of the outdoor study site where measurements and surveys were conducted",

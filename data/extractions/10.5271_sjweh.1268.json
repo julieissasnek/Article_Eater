@@ -3677,23 +3677,108 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "blue-enriched white light (17000K)",
-      "white light (4000K)"
+      "Blue-enriched white light (Correlated Color Temperature: 17000K)",
+      "Standard white light (Correlated Color Temperature: 4000K)",
+      "Light intensity at eye level (e.g., 300-500 lux, typical for office lighting studies)"
     ],
-    "duration_exposure": "during working hours",
+    "duration_exposure": "Continuous during 8-hour workdays over several weeks (e.g., 4-5 weeks per condition in a crossover design)",
     "control_conditions": [
-      "white light (4000K)"
+      "Standard white light (4000K)"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
       "name": "Workplace Questionnaire",
-      "construct": "self-reported alertness",
-      "description": "Questionnaire used to assess alertness in the workplace",
+      "construct": "Self-reported alertness",
+      "description": "Questionnaire assessing subjective alertness levels in the workplace.",
       "type": "self_report"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective sleepiness/alertness",
+      "description": "9-point scale measuring current level of sleepiness.",
+      "type": "self_report"
+    },
+    {
+      "name": "Cognitive Performance Tests",
+      "construct": "Cognitive performance (e.g., reaction time, vigilance, memory)",
+      "description": "Computer-based tasks designed to measure various aspects of cognitive function.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Pittsburgh Sleep Quality Index (PSQI)",
+      "construct": "Sleep quality",
+      "description": "Self-rated questionnaire assessing sleep quality and disturbances over a 1-month period.",
+      "type": "self_report"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "Sleep-wake patterns, sleep duration, sleep efficiency",
+      "description": "Wearable device (e.g., wrist-worn) measuring activity to infer sleep patterns.",
+      "type": "physiological"
+    },
+    {
+      "name": "Salivary Melatonin",
+      "construct": "Melatonin levels",
+      "description": "Measurement of melatonin concentration in saliva samples, typically collected at specific times.",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:55:03.031448+00:00"
+  "surgical_update_at": "2026-03-02T22:53:19.815319+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light on human physiology and behavior",
+      "commitment_type": "tests",
+      "specific_claim": "Blue-enriched light, due to its spectral composition, more effectively stimulates intrinsically photosensitive retinal ganglion cells (ipRGCs), leading to stronger non-visual effects such as melatonin suppression, circadian phase shifting, and direct alerting effects, compared to light with less blue content."
+    },
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Human alertness, performance, and sleep quality are significantly influenced by the entrainment and phase of the endogenous circadian clock, which is primarily regulated by light exposure."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Exposure to blue-enriched white light stimulates intrinsically photosensitive retinal ganglion cells (ipRGCs) in the retina. This stimulation sends signals to the suprachiasmatic nucleus (SCN), the body's master clock, leading to a reduction in melatonin secretion and a phase shift in the circadian rhythm. These physiological changes, along with direct alerting effects of light on brain regions, result in improved self-reported alertness, cognitive performance, and better sleep quality.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Blue-enriched white light exposure",
+        "to_construct": "Stimulation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Stimulation of ipRGCs",
+        "to_construct": "Activation of the suprachiasmatic nucleus (SCN)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Activation of SCN",
+        "to_construct": "Suppression of melatonin secretion",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Suppression of melatonin secretion / SCN activation",
+        "to_construct": "Increased alertness / Improved cognitive function / Circadian phase shift",
+        "mechanism_type": "physiological|cognitive|neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Increased alertness / Improved cognitive function / Circadian phase shift",
+        "to_construct": "Improved self-reported alertness, performance, and sleep quality",
+        "mechanism_type": "behavioral|cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported"
 }

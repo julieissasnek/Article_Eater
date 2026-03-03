@@ -98,7 +98,7 @@
       "p_value": "0.000",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 20,
       "confidence_interval": null,
       "test_statistic": "x²(5)=77.08",
       "theory_links": [
@@ -171,7 +171,8 @@
         "MS": 0.1632,
         "NM": 0.1632,
         "INTEROCEPTION": 0.1562
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3714,50 +3715,54 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Lavender odor",
-      "Cedar odor",
+      "Cedarwood odor",
       "Pine odor",
+      "Lavender odor",
       "Thymoquinone odor",
-      "α-Pinene odor"
+      "α-Pinene odor",
+      "Odorless air (Control)"
     ],
-    "duration_exposure": "15 minutes",
+    "duration_exposure": "5 minutes per odorant",
     "control_conditions": [
-      "Control (no odor)"
+      "Odorless air"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "State-Trait Anxiety Inventory (STAI)",
-      "construct": "anxiety",
-      "description": "Measures state and trait anxiety levels.",
-      "type": "self_report"
-    },
-    {
       "name": "Profile of Mood States (POMS)",
-      "construct": "mood states",
-      "description": "Assesses various mood dimensions including tension, depression, anger, vigor, fatigue, and confusion.",
-      "type": "self_report"
-    },
-    {
-      "name": "Visual Analog Scales (VAS)",
-      "construct": "perceived intensity, pleasantness, familiarity, stimulating/relaxing",
-      "description": "Used to rate subjective perceptions of odors.",
+      "construct": "mood states (tension-anxiety, depression-dejection, anger-hostility, vigor-activity, fatigue-inertia, confusion-bewilderment)",
+      "description": "65-item self-report questionnaire",
       "type": "self_report"
     },
     {
       "name": "Heart Rate Variability (HRV)",
-      "construct": "autonomic nervous system activity, stress response",
-      "description": "Measures variations in the time interval between heartbeats.",
+      "construct": "autonomic nervous system activity, stress",
+      "description": "Measured using electrocardiogram (ECG)",
+      "type": "physiological"
+    },
+    {
+      "name": "Blood Pressure",
+      "construct": "cardiovascular response, stress",
+      "description": "Measured using a sphygmomanometer",
       "type": "physiological"
     },
     {
       "name": "Salivary Cortisol",
-      "construct": "physiological stress marker",
-      "description": "Measures cortisol levels in saliva as an indicator of stress.",
+      "construct": "stress hormone levels",
+      "description": "Measured from saliva samples",
       "type": "physiological"
+    },
+    {
+      "name": "Visual Analog Scale (VAS)",
+      "construct": "perceived intensity, pleasantness, comfort, naturalness, familiarity",
+      "description": "100 mm line scale",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:19:59.260765+00:00"
+  "surgical_update_at": "2026-03-02T23:28:06.949558+00:00",
+  "paper_sample_size": 20,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

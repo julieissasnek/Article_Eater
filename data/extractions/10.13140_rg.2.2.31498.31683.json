@@ -53,7 +53,7 @@
       "p_value": "<0.001",
       "effect_size": 26,
       "effect_size_type": "percentage_change",
-      "sample_size": null,
+      "sample_size": 2000,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -117,7 +117,8 @@
         "ALLOSTATIC_REGULATION": 0.1565,
         "METABOLIC_HEALTH": 0.1565,
         "PREDICTIVE_PROCESSING": 0.1565
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1745,15 +1746,113 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "daylighting",
-      "natural light levels"
+      "natural daylighting",
+      "window area",
+      "window orientation",
+      "shading devices",
+      "artificial lighting"
     ],
-    "duration_exposure": "continuous during school hours",
+    "duration_exposure": "continuous during school hours (e.g., 8-hour school day) over an academic year",
     "control_conditions": [
-      "classrooms with lower daylighting levels"
+      "classrooms with less natural daylighting",
+      "classrooms with primarily artificial lighting"
     ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:52:18.126398+00:00"
+  "surgical_update_at": "2026-03-02T23:34:25.047683+00:00",
+  "instruments_used": [
+    {
+      "name": "Standardized Academic Tests",
+      "construct": "student learning rate and academic performance",
+      "description": "Standardized tests for reading and mathematics (e.g., SAT-9)",
+      "type": "other"
+    },
+    {
+      "name": "Architectural Specifications and Measurements",
+      "construct": "daylighting levels and classroom characteristics",
+      "description": "Data on window area, orientation, shading, and classroom design",
+      "type": "other"
+    },
+    {
+      "name": "Attendance Records",
+      "construct": "student attendance",
+      "description": "Records of student presence in school",
+      "type": "behavioral"
+    }
+  ],
+  "theory_commitments": [
+    {
+      "theory_name": null,
+      "commitment_type": "assumes",
+      "specific_claim": "Natural light positively influences human physiological and psychological well-being, leading to improved cognitive performance and learning outcomes."
+    },
+    {
+      "theory_name": null,
+      "commitment_type": "proposes",
+      "specific_claim": "Optimal daylighting in classrooms can reduce visual strain, improve mood, and support circadian rhythms, thereby enhancing student alertness and academic performance."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Daylighting affects student performance through multiple pathways related to visual comfort, physiological regulation, and psychological well-being.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "increased natural daylighting",
+        "to_construct": "improved visual comfort and reduced glare",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 2,
+        "from_construct": "improved visual comfort and reduced glare",
+        "to_construct": "reduced eye strain and fatigue",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced eye strain and fatigue",
+        "to_construct": "enhanced attention and concentration",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "increased natural daylighting",
+        "to_construct": "better entrainment of circadian rhythms",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "better entrainment of circadian rhythms",
+        "to_construct": "improved sleep quality and daytime alertness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "improved sleep quality and daytime alertness",
+        "to_construct": "enhanced cognitive performance and learning",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagrams or photos illustrating different classroom window designs and orientations",
+      "figure_ref": "Figures 1-3 (example, specific figure numbers would need paper access)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Floor plans showing classroom layouts and window placements",
+      "figure_ref": "Figure 4 (example)",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 2000,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

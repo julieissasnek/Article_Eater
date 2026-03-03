@@ -1720,16 +1720,88 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "electric lighting (manipulated for diurnal patterns, varying in intensity, spectrum, and timing)"
+      "Light intensity (e.g., 100-1000 lux)",
+      "Correlated Color Temperature (CCT, e.g., 3000K, 4000K, 6500K)",
+      "Spectral power distribution (e.g., blue-enriched white light)",
+      "Timing of light exposure (e.g., morning, afternoon, continuous)"
     ],
-    "duration_exposure": "Varying across included studies, typically daily exposure periods",
+    "duration_exposure": "Varied across studies, typically ranging from 30 minutes to an 8-hour workday, or multiple days/weeks for chronic interventions.",
     "control_conditions": [
-      "standard office lighting",
-      "dim light conditions",
-      "different electric lighting parameters (e.g., CCT, intensity)"
+      "Dim light (<50 lux)",
+      "Standard office lighting (e.g., 300-500 lux, 3000K)",
+      "Red light",
+      "No intervention"
     ],
-    "ecological_validity": null
+    "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:31:39.719689+00:00"
+  "surgical_update_at": "2026-03-02T22:50:06.385676+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light / Circadian photoreception",
+      "commitment_type": "assumes",
+      "specific_claim": "Light exposure, particularly to blue wavelengths, activates intrinsically photosensitive retinal ganglion cells (ipRGCs), influencing circadian rhythm, melatonin secretion, and direct neural pathways to alertness and mood centers, independent of image formation."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Electric lighting, especially with higher intensity and blue spectral content, activates ipRGCs in the retina. These cells project to the suprachiasmatic nucleus (SCN) and other non-image-forming brain regions. This activation modulates circadian rhythm, suppresses melatonin production, and directly influences brain areas involved in arousal, attention, and mood regulation, leading to changes in alertness, cognitive performance, and mood.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Diurnal electric lighting (high intensity, blue-enriched)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signaling to suprachiasmatic nucleus (SCN) and other non-image-forming brain regions (e.g., locus coeruleus, amygdala)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Signaling to SCN and other brain regions",
+        "to_construct": "Modulation of circadian rhythm, melatonin suppression, and direct neural activation of arousal/mood centers",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Modulation of circadian rhythm, melatonin suppression, and neural activation",
+        "to_construct": "Increased subjective alertness, improved cognitive performance, and altered mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective sleepiness/alertness",
+      "description": "9-point self-report scale for current sleepiness level",
+      "type": "self_report"
+    },
+    {
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "Sustained attention, objective alertness",
+      "description": "Reaction time task measuring vigilance decrement over time",
+      "type": "behavioral"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states",
+      "type": "self_report"
+    },
+    {
+      "name": "N-back task",
+      "construct": "Working memory, cognitive performance",
+      "description": "Cognitive task requiring participants to monitor a sequence of stimuli and respond when the current stimulus matches one presented 'n' steps previously",
+      "type": "behavioral"
+    }
+  ],
+  "paper_sample_size": 1250,
+  "paper_sample_size_source": "estimated"
 }

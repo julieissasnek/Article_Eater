@@ -73,7 +73,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -86,7 +86,8 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 2, p.14",
-      "quote": "The average frequency of face-to-face contact for the whole department increased from 2.06 (2005) to 2.66 (2008) and 2.77 (2012)"
+      "quote": "The average frequency of face-to-face contact for the whole department increased from 2.06 (2005) to 2.66 (2008) and 2.77 (2012)",
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -157,7 +158,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 2, p.14",
-      "quote": "density of the network of highly useful colleagues (0.037 → 0.040 → 0.047)"
+      "quote": "density of the network of highly useful colleagues (0.037 \u2192 0.040 \u2192 0.047)"
     },
     {
       "id": 5,
@@ -447,7 +448,7 @@
       "claim_type": "associational",
       "measure_type": "observational",
       "p_value": null,
-      "effect_size": 0.03,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -458,7 +459,9 @@
       "moderators_reported": [],
       "provenance_depth": "caption",
       "source": "Figure 9f, p.21",
-      "quote": "structure of the group in 2012, which changed to more isolates and a core structure of collaborative ties in dyads or triplets."
+      "quote": "structure of the group in 2012, which changed to more isolates and a core structure of collaborative ties in dyads or triplets.",
+      "_original_effect_size": 0.03,
+      "_quarantine_reason": "Value 0.03 appears to be a p-value, not an effect size"
     },
     {
       "id": 18,
@@ -698,34 +701,77 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Changes in office layout (e.g., increased shared offices, open-plan areas)",
-      "Changes in accessibility between different parts of the department"
+      "Changes in office layouts (e.g., shift from individual offices to shared offices)",
+      "Modifications to common areas and circulation paths",
+      "Alterations in physical accessibility between different sub-groups within the department"
     ],
-    "duration_exposure": "Continuous over several years (2005-2012)",
+    "duration_exposure": "Continuous exposure over three distinct periods (2005, 2008, 2012), each spanning several years",
     "control_conditions": [
-      "Comparison across different time periods (2005, 2008, 2012) representing distinct spatial configurations"
+      "No explicit control conditions; comparisons are made across different time periods within the same department"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Changes in the physical layout and organizational structure of the academic department directly influence the opportunities for spontaneous and planned face-to-face interactions among staff, thereby altering the overall frequency of contact.",
+    "description": "Changes in the physical spatial configuration of the academic department directly influence the opportunities for spontaneous encounters, which in turn affects the frequency of face-to-face contact and the structure of academic networks.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "spatial configuration",
-        "to_construct": "opportunities for interaction",
+        "from_construct": "Changes in spatial configuration (e.g., shared offices, increased accessibility)",
+        "to_construct": "Increased opportunities for spontaneous encounters and informal interactions",
         "mechanism_type": "behavioral",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "opportunities for interaction",
-        "to_construct": "frequency of face-to-face contact",
+        "from_construct": "Increased opportunities for spontaneous encounters and informal interactions",
+        "to_construct": "Higher frequency of face-to-face contact and altered network structure",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:40:17.251234+00:00"
+  "surgical_update_at": "2026-03-02T22:53:10.267909+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Propinquity Effect",
+      "commitment_type": "assumes",
+      "specific_claim": "Physical proximity increases the likelihood of social interaction and relationship formation."
+    },
+    {
+      "theory_name": "Social Network Theory",
+      "commitment_type": "applies",
+      "specific_claim": "Social structures can be analyzed as networks of relationships between actors, where spatial configuration can influence network formation and evolution."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Survey/Questionnaire",
+      "construct": "Frequency of face-to-face contact",
+      "description": "Self-reported frequency of interaction with colleagues within the department.",
+      "type": "self_report"
+    },
+    {
+      "name": "Architectural Analysis / Floor Plans",
+      "construct": "Spatial configuration and accessibility",
+      "description": "Analysis of building layouts and office assignments to derive spatial metrics and understand physical proximity.",
+      "type": "other"
+    },
+    {
+      "name": "Social Network Analysis (SNA) metrics",
+      "construct": "Network structure (e.g., density, centrality, clustering)",
+      "description": "Computational analysis of interaction data to quantify properties of the academic network.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plans illustrating the spatial layout of the department at each time point (2005, 2008, 2012), showing office assignments and common areas.",
+      "figure_ref": "Figures 1, 2, 3 (example references, actual numbers may vary)",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

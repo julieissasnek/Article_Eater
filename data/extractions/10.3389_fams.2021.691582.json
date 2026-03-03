@@ -530,17 +530,70 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Lattice Boltzmann Models (LBM)",
+      "theory_name": "Lattice Boltzmann Method (LBM)",
+      "commitment_type": "assumes",
+      "specific_claim": "The Lattice Boltzmann Method provides a mesoscopic approach for simulating fluid dynamics, based on the evolution of particle distribution functions."
+    },
+    {
+      "theory_name": "Continuum Mechanics / Fluid Dynamics",
+      "commitment_type": "assumes",
+      "specific_claim": "Fluid flow is fundamentally governed by macroscopic conservation laws of mass and momentum, derivable from underlying kinetic theory."
+    },
+    {
+      "theory_name": "Differential Geometry / Coordinate Transformations",
+      "commitment_type": "assumes",
+      "specific_claim": "Physical laws and equations can be expressed and solved in arbitrary curvilinear coordinate systems through appropriate tensor transformations and metric considerations."
+    },
+    {
+      "theory_name": "Volumetric Lattice Boltzmann Models in General Curvilinear Coordinates",
       "commitment_type": "proposes",
-      "specific_claim": "A theoretical formulation for volumetric Lattice Boltzmann Models in general curvilinear coordinates that ensures mass and momentum conservation."
+      "specific_claim": "A novel theoretical formulation for the Lattice Boltzmann Method in general curvilinear coordinates, utilizing a volumetric representation, inherently ensures mass and momentum conservation."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:34:50.749819+00:00",
+  "surgical_update_at": "2026-03-02T23:30:18.830759+00:00",
   "stimulus_description": {
     "environmental_features": null,
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": null
-  }
+  },
+  "mechanism_chain": {
+    "description": "The theoretical formulation details how the transformation of the Boltzmann equation and its subsequent discretization on a volumetric lattice in a general curvilinear coordinate system inherently leads to the macroscopic conservation of mass and momentum.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Boltzmann equation in Cartesian coordinates",
+        "to_construct": "Transformation of the Boltzmann equation to general curvilinear coordinates",
+        "mechanism_type": "theoretical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Transformed Boltzmann equation in curvilinear coordinates",
+        "to_construct": "Discretization of the transformed Boltzmann equation on a volumetric lattice",
+        "mechanism_type": "theoretical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Discretized Boltzmann equation on a volumetric curvilinear lattice",
+        "to_construct": "Derivation of macroscopic conservation laws for mass and momentum",
+        "mechanism_type": "theoretical",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating a general curvilinear coordinate system and a representative volumetric element within it.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagram showing the lattice structure or discretization of the computational domain within the curvilinear coordinate system.",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

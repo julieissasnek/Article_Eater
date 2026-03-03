@@ -341,7 +341,7 @@
     },
     {
       "id": 6,
-      "antecedent": "Target type × Testing location × Side subjects faced",
+      "antecedent": "Target type \u00d7 Testing location \u00d7 Side subjects faced",
       "consequent": "Absolute pointing error",
       "direction": "mixed",
       "claim_type": "moderated",
@@ -604,7 +604,7 @@
     },
     {
       "id": 10,
-      "antecedent": "Testing location (Terrace, oblique 1) × Side subjects faced (toward street vs. away from street)",
+      "antecedent": "Testing location (Terrace, oblique 1) \u00d7 Side subjects faced (toward street vs. away from street)",
       "consequent": "Absolute pointing error to Apache Boulevard (route)",
       "direction": "decrease",
       "claim_type": "moderated",
@@ -629,7 +629,7 @@
       ],
       "provenance_depth": "section",
       "source": "p.58",
-      "quote": "Those facing toward the street (10.8°) were more accurate than those facing away from the street (57.5°), F(1, 54) = 18.59, p < .0001.",
+      "quote": "Those facing toward the street (10.8\u00b0) were more accurate than those facing away from the street (57.5\u00b0), F(1, 54) = 18.59, p < .0001.",
       "template_matches": [
         {
           "template_id": "PP_CULTURAL_PRIOR_CALIBRATION_001",
@@ -1400,7 +1400,7 @@
     },
     {
       "id": 22,
-      "antecedent": "Target type × Testing location (interaction)",
+      "antecedent": "Target type \u00d7 Testing location (interaction)",
       "consequent": "Response time for pointing",
       "direction": "no_effect",
       "claim_type": "null",
@@ -1981,7 +1981,7 @@
       "claim_type": "null",
       "measure_type": "performance",
       "p_value": "ns",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": "r",
       "sample_size": 60,
       "confidence_interval": null,
@@ -2041,7 +2041,9 @@
         "GROUP_CREATIVITY": 0.1801,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1801
       },
-      "sample_n": 60
+      "sample_n": 60,
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 31,
@@ -2552,24 +2554,85 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "orthogonal urban routes",
-      "oblique urban routes"
+      "orthogonal street grid (Lemon route in Santa Barbara, CA)",
+      "oblique street grid (Terrace route in Santa Barbara, CA)",
+      "oblique street grid (Orange route in Santa Barbara, CA)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "orthogonal urban routes",
-      "oblique urban routes"
+      "orthogonal street grid environment",
+      "oblique street grid environment"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": "Familiarity questionnaire",
+      "name": "Self-reported familiarity questionnaire",
       "construct": "familiarity with street layout",
-      "description": "Self-reported ratings of familiarity with specific urban street layouts within a defined radius (e.g., 0.5 mile)",
+      "description": "Participants rated their familiarity with the street layout within a specified radius (e.g., 0.5 mile) of the testing locations.",
       "type": "self_report"
+    },
+    {
+      "name": "Sketch map task",
+      "construct": "cognitive map accuracy and structure",
+      "description": "Participants were asked to draw maps of the studied areas, including streets and landmarks, to assess their spatial knowledge.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Pointing task",
+      "construct": "spatial orientation / allocentric knowledge",
+      "description": "Participants pointed to unseen landmarks or origins from various locations within the study area.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Distance estimation task",
+      "construct": "metric spatial knowledge",
+      "description": "Participants estimated distances between specified locations within the study area.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:19:06.827970+00:00"
+  "surgical_update_at": "2026-03-02T19:06:22.161890+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The angularity and structural properties of urban environments influence the formation, accuracy, and organization of individuals' cognitive maps and spatial knowledge."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The angularity of the urban street grid (antecedent) affects the ease and accuracy with which individuals encode spatial relationships, which in turn influences the quality and structure of their cognitive maps. This ultimately impacts their ability to orient themselves and navigate effectively (consequent).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "environmental angularity (street grid structure)",
+        "to_construct": "ease of encoding spatial relationships",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "ease of encoding spatial relationships",
+        "to_construct": "accuracy and organization of cognitive map",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "accuracy and organization of cognitive map",
+        "to_construct": "spatial orientation performance",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Maps or diagrams illustrating the street layouts and angularity of the urban routes used in the study (Lemon, Terrace, Orange areas of Santa Barbara).",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported"
 }

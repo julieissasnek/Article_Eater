@@ -3760,30 +3760,101 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "outdoor spaces",
-      "natural elements",
-      "greenery",
-      "variations in lighting"
+      "outdoor park-like spaces",
+      "manipulated lighting conditions",
+      "different light distributions",
+      "varying light intensities",
+      "focus of light on natural elements (greenery)",
+      "focus of light on paths/ground"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "self-paced viewing of images",
+    "control_conditions": [
+      "different lighting scenarios compared against each other",
+      "unlit or baseline lighting conditions"
+    ],
     "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Variations in lighting within outdoor spaces, particularly focusing on natural elements, influence perceived restorativeness."
+      "specific_claim": "Natural environments, particularly with specific lighting characteristics, can restore directed attention and promote feelings of restorativeness."
+    },
+    {
+      "theory_name": "Prospect-Refuge Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Human preference for environments that offer both opportunities for observation (prospect) and concealment (refuge) influences perceived safety and preference."
     }
   ],
   "instruments_used": [
     {
-      "name": "Perceived Restorativeness Scale",
+      "name": "Perceived Restorativeness Scale (PRS)",
       "construct": "perceived restorativeness",
-      "description": "A self-report questionnaire designed to measure the restorative qualities of an environment, often including subscales like Fascination, Being Away, Extent, and Compatibility.",
+      "description": "Self-report questionnaire measuring feelings of being away, fascination, coherence, and compatibility.",
+      "type": "self_report"
+    },
+    {
+      "name": "Preference ratings",
+      "construct": "environmental preference",
+      "description": "Likert-type scale for rating how much participants liked or preferred a scene.",
+      "type": "self_report"
+    },
+    {
+      "name": "Fear ratings",
+      "construct": "fear/safety",
+      "description": "Likert-type scale for rating how much fear or unsafety participants felt in a scene.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:28:45.839111+00:00"
+  "surgical_update_at": "2026-03-02T23:25:28.176564+00:00",
+  "mechanism_chain": {
+    "description": "Lighting characteristics influence perceived safety and aesthetic qualities, which in turn affect perceived restorativeness, preference, and fear.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Focus of light on natural elements",
+        "to_construct": "Perceived fascination/coherence",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived fascination/coherence",
+        "to_construct": "Perceived restorativeness",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Uniformity of light/Light intensity",
+        "to_construct": "Perceived safety",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Perceived safety",
+        "to_construct": "Reduced fear",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Perceived safety",
+        "to_construct": "Increased preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of outdoor scenes with varying lighting conditions, showing different light distributions and focus.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 150,
+  "paper_sample_size_source": "reported"
 }

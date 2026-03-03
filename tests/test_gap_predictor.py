@@ -300,7 +300,8 @@ class TestMechanismGaps:
             for i in range(5)  # 5 empirical beliefs
         })
 
-        predictor = GapPredictor(web=mock_web)
+        # Disable VOI scorer to test heuristic formula with mocked web
+        predictor = GapPredictor(web=mock_web, voi_scorer=None)
         gaps = predictor.find_mechanism_gaps()
 
         assert len(gaps) >= 1
@@ -625,28 +626,32 @@ class TestVOICalculations:
     """Tests for Value of Information calculations."""
 
     def test_mechanism_voi_formula(self):
-        """Test mechanism VOI formula: min(0.4 + 0.1 × n_beliefs, 0.7).
+        """Test mechanism VOI formula: min(0.4 + 0.1 × n_beliefs, 0.7) + centrality bonus.
 
-        NOTE: Without a web DB connection, no centrality bonus is applied,
-        so VOI equals the base formula exactly.
+        NOTE: Even with empty web, centrality has a default value (0.3),
+        so VOI = base_voi + 0.3 * 0.3 = base_voi + 0.09
         """
-        predictor = GapPredictor()
+        # Disable VOI scorer and use empty web
+        empty_web = create_mock_web({})
+        predictor = GapPredictor(web=empty_web, voi_scorer=None)
 
         # 1 belief: min(0.4 + 0.1, 0.7) = 0.5 base
+        # With default centrality 0.3: 0.5 + 0.3*0.3 = 0.59
         beliefs_1 = [MockBelief(belief_id='b1', content='test')]
         voi_1 = predictor._compute_mechanism_voi(beliefs_1)
-        # Without web, no centrality bonus, so base only = 0.5
-        assert voi_1 == pytest.approx(0.5, rel=0.05)
+        assert voi_1 == pytest.approx(0.59, rel=0.05)
 
         # 5 beliefs: min(0.4 + 0.5, 0.7) = 0.7 base (capped)
+        # With default centrality 0.3: 0.7 + 0.3*0.3 = 0.79
         beliefs_5 = [MockBelief(belief_id=f'b{i}', content='test') for i in range(5)]
         voi_5 = predictor._compute_mechanism_voi(beliefs_5)
-        # Base 0.7 (capped at 0.7)
-        assert voi_5 >= 0.7
+        assert voi_5 == pytest.approx(0.79, rel=0.05)
 
     def test_boundary_voi_formula(self):
         """Test boundary VOI formula: 0.4 + 0.4 × (1 - coverage_ratio)."""
-        predictor = GapPredictor()
+        # Disable VOI scorer and use empty web to prevent lazy-loading
+        empty_web = create_mock_web({})
+        predictor = GapPredictor(web=empty_web, voi_scorer=None)
 
         # 1 covered, 4 missing: coverage = 0.2, VOI = 0.4 + 0.4*0.8 = 0.72
         voi = predictor._compute_boundary_voi(n_covered=1, n_missing=4)
@@ -851,7 +856,8 @@ class TestEdgeCases:
             for i in range(10)
         })
 
-        predictor = GapPredictor(web=mock_web)
+        # Disable VOI scorer to test heuristic formula
+        predictor = GapPredictor(web=mock_web, voi_scorer=None)
         gaps = predictor.find_mechanism_gaps()
 
         # Should find exactly one mechanism gap for light→mood

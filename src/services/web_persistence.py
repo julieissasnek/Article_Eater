@@ -668,7 +668,11 @@ class WebPersistenceService:
         if self._is_memory and self._persistent_conn:
             yield self._persistent_conn
         else:
-            conn = sqlite3.connect(self.db_path)
+            # Use a short timeout to fail fast if the DB is locked by another
+            # connection (e.g., SQLAlchemy session in evaluate_building).
+            # The default 5s timeout caused test-suite hangs when multiple
+            # tests each waited 5s for the lock to release.
+            conn = sqlite3.connect(self.db_path, timeout=0.5)
             conn.row_factory = sqlite3.Row
             conn.execute("PRAGMA foreign_keys = ON")
             try:

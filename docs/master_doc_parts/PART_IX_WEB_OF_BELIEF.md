@@ -150,6 +150,156 @@ The system maximizes coherence, which corresponds to finding belief revisions th
 
 ---
 
+### §84.2A: Formalizing the Coherence Score (C*) {#84-2a}
+
+#### Plain-English Statement
+
+The coherence score (C*) measures how well the beliefs in the web agree with one another. A high coherence score (near 1.0) means that most connected beliefs support each other, that credences are consistent across related claims, and that contradictions are rare or absent. A low coherence score (near 0.0 or negative) means the web contains significant contradictions, unexplained gaps where mechanisms should connect, or beliefs with wildly inconsistent credences about the same phenomenon. C* ranges from −1.0 (pure contradiction) to +1.0 (perfect harmony) and serves as the primary metric for epistemic health of the entire web.
+
+#### Intuition
+
+Imagine the web of belief as a social network in which each node is a scientist and each edge is a relationship that says "we work on related claims." Agreement happens when scientists tell consistent stories about how the world works: if Alice believes "daylight improves mood" and Bob believes "mood affects productivity," and their claims connect in a way that reinforces each other, the network is more coherent. Contradiction happens when scientists tell conflicting stories: if Alice says "blue light suppresses melatonin" and Charlie says "blue light has no effect on melatonin," that conflict reduces coherence.
+
+The coherence score is the *net agreement minus penalized conflict*, normalized so that 1.0 = all connected beliefs support each other (perfect harmony), 0.0 = a balance point where neither agreement nor conflict dominates, and −1.0 = all connected beliefs contradict each other (pure chaos).
+
+Contradictions are weighted more heavily than mere absence of agreement (using a penalty factor λ) because in Quinean epistemology, a contradiction is more damaging to a web than a missing connection — a missing link is a gap, but a contradiction is an active threat to the system's integrity.
+
+#### Formal Specification
+
+**Core Formula:**
+
+**C* = (A − λ · V) / A_max**
+
+where:
+
+- **A** = total weighted agreement across all edges = Σ_{(i,j) ∈ E} w_ij · agree(b_i, b_j)
+- **V** = total weighted conflict across all edges = Σ_{(i,j) ∈ E} w_ij · conflict(b_i, b_j)
+- **λ** = conflict penalty weight (unitless multiplier). **Provenance: CALIBRATED, λ = 2.0.** Contradictions count twice as heavily as agreement, following Thagard's (1989, 2000) explanatory coherence theory where contradiction is more damaging than lack of support is beneficial. Sensitivity: if λ ∈ [1.5, 3.0], the ranking of web health states is preserved (monotonic); only the absolute values shift.
+- **A_max** = maximum possible agreement = Σ_{(i,j) ∈ E} w_ij (the sum of all edge weights, assuming perfect agreement on every edge)
+- **E** = set of all edges in the web (directed belief-to-belief connections)
+- **w_ij** = edge weight, determined by the relationship type connecting beliefs i and j (0 to 1)
+
+**Agreement and Conflict Functions:**
+
+For each edge (i, j), the relationship is classified and scored:
+
+*Case 1 — Mutual Support* (beliefs explain or reinforce each other on the same causal chain): agree(b_i, b_j) = 1.0; conflict(b_i, b_j) = 0.0.
+
+*Case 2 — Credence Agreement* (beliefs about the same claim with similar credences): agree(b_i, b_j) = 1.0 if |c_i − c_j| < 0.15 (functionally equivalent); otherwise agree(b_i, b_j) = 1 − |c_i − c_j| (scaled linearly). conflict(b_i, b_j) = 0.0.
+
+*Case 3 — Direct Contradiction* (beliefs assert opposite conclusions on same IV→DV): agree(b_i, b_j) = 0.0; conflict(b_i, b_j) = min(c_i, c_j) (penalty scaled by confidence — high-confidence contradictions hurt more).
+
+*Case 4 — Neutral/Unrelated* (no edge or edge weight is zero): contribute nothing to A, V, or A_max.
+
+**Edge Weights:**
+
+| Relationship Type | w_ij | Justification |
+|---|---|---|
+| Direct empirical consequence | 1.0 | Highest constraint; one belief directly entails or refutes the other |
+| Mechanism explanation | 0.85 | Strong constraint; one belief explains the mechanism underlying the other |
+| Evidence convergence | 0.70 | Moderate constraint; multiple independent sources point to same conclusion |
+| Coherence-only (no mechanism) | 0.50 | Weak constraint; beliefs are thematically related but lack mechanistic link |
+| Distant analogy | 0.30 | Very weak constraint; loosely related by analogy or metaphor |
+
+**Provenance: CALIBRATED.** Edge weights reflect panel consensus on constraint strength (Decision D84.2a, February 2026).
+
+**Interpretation Scale:**
+
+| C* Range | Interpretation | Action |
+|---|---|---|
+| 0.85 – 1.0 | Excellent coherence; web highly integrated | Minor refinements only |
+| 0.65 – 0.84 | Good coherence; some gaps, no major contradictions | Identify and fill gaps |
+| 0.40 – 0.64 | Fair coherence; notable gaps or minor contradictions | Remediation required before deployment |
+| 0.0 – 0.39 | Poor coherence; widespread gaps or contradictions | Major reconstruction needed |
+| < 0.0 | Incoherent; contradictions dominate | Reject web or undergo fundamental revision |
+
+#### Worked Examples
+
+**Example 1: Small Coherent Web (Daylight → Mood → Productivity)**
+
+Five beliefs forming a consistent causal chain:
+- b₁: "Daylight increases alertness" (credence 0.90)
+- b₂: "Alertness improves mood" (credence 0.85)
+- b₃: "Mood improves productivity" (credence 0.80)
+- Edges: b₁→b₂ (mechanism, w = 0.85), b₂→b₃ (convergence, w = 0.70)
+
+Computation: A = (0.85 × 1.0) + (0.70 × 1.0) = 1.55. V = 0.0 (no contradictions). A_max = 0.85 + 0.70 = 1.55.
+
+**C* = (1.55 − 2.0 × 0.0) / 1.55 = 1.00** — Perfect coherence. All beliefs mutually support each other.
+
+**Example 2: Same Web with One Contradiction**
+
+Add b₄: "Daylight has no effect on alertness" (credence 0.70, empirical consequence edge to b₁, w = 0.85).
+
+Computation: A = 1.55 (unchanged from supporting edges). V = 0.85 × min(0.90, 0.70) = 0.85 × 0.70 = 0.595. A_max = 0.85 + 0.70 + 0.85 = 2.40.
+
+**C* = (1.55 − 2.0 × 0.595) / 2.40 = (1.55 − 1.19) / 2.40 = 0.36 / 2.40 = 0.15** — Poor coherence. A single high-confidence contradiction drops C* from 1.00 to 0.15. The λ = 2.0 penalty makes contradictions devastating, as intended. Action: resolve the contradiction by revising b₁ or b₄.
+
+**Example 3: Web with Gap (Weak Mechanism Link)**
+
+Three beliefs about light and sleep:
+- b₁: "Daylight increases alertness" (credence 0.90)
+- b₂: "Blue light suppresses melatonin" (credence 0.88)
+- b₃: "Melatonin regulates sleep timing" (credence 0.92)
+- Edges: b₁→b₂ (weak/distant, w = 0.30 because mechanism linking alertness to melatonin is unexplained), b₂→b₃ (mechanism, w = 0.85)
+
+Computation: A = (0.30 × 1.0) + (0.85 × 1.0) = 1.15. V = 0.0. A_max = 1.15.
+
+**C* = 1.15 / 1.15 = 1.00** — technically perfect, but the low edge weight (w = 0.30) reveals the gap. If the mechanism link were established (w → 0.85), total integration (A_max) would increase from 1.15 to 1.70, making the web more robust even though C* stays at 1.00. C* measures coherence of the *declared* web; gaps reduce integration density but not the coherence-to-conflict ratio. The AESHI system health metric (§53.8) separately tracks integration density.
+
+#### Algorithm
+
+```
+FUNCTION ComputeCoherence(web, λ = 2.0):
+    A ← 0.0; V ← 0.0; A_max ← 0.0
+
+    FOR each edge (i, j) in web.edges:
+        w = edge.weight
+        A_max += w
+
+        IF edge.type == SUPPORT or edge.type == MECHANISM:
+            A += w × 1.0
+        ELIF edge.type == CREDENCE_AGREEMENT:
+            diff = |belief_i.credence − belief_j.credence|
+            A += w × (1.0 if diff < 0.15 else 1.0 − diff)
+        ELIF edge.type == CONTRADICTION:
+            V += w × min(belief_i.credence, belief_j.credence)
+
+    IF A_max == 0: RETURN 0.0
+    RETURN clamp((A − λ × V) / A_max, −1.0, 1.0)
+```
+
+Complexity: O(|E|), linear in edge count. For ATLAS (~3,420 beliefs, ~8,500–12,000 edges), this runs in negligible time.
+
+#### Provenance
+
+**Category: NOVEL, adapted from established theories.**
+
+The C* formula synthesizes three coherence traditions: Thagard's explanatory coherence (1989, 2000), which treats coherence as constraint satisfaction with asymmetric weighting of positive and negative constraints; BonJour's coherentist epistemology (1985), which emphasizes mutual support and the special damage that contradiction inflicts; and the Quinean web-of-belief framework (Quine & Ullian, 1970), which treats all beliefs as revisable and connected by mutual support relations without foundations.
+
+The specific innovation is the normalized form C* = (A − λV) / A_max, which maps coherence to a [−1, 1] interval with a meaningful zero point (neither net agreement nor net conflict), and the use of min(c_i, c_j) for contradiction severity (penalizing high-confidence contradictions more than low-confidence ones).
+
+#### Assumptions and Limitations
+
+1. **Edges must be correctly typed.** Misclassifying a contradiction as agreement (or vice versa) will distort C*. This requires careful expert review of warrant relationships.
+
+2. **Transitivity is not assumed.** C* is computed locally on each edge; global transitivity is emergent, not an input. If A supports B and B supports C, A does not automatically support C unless an edge links them.
+
+3. **Missing edges are treated as neutral.** If two beliefs should be connected but no edge exists, they contribute nothing to C*. This means the formula does not penalize incomplete explanations — only the integration density metric (AESHI) tracks this.
+
+4. **λ = 2.0 may need domain-specific calibration.** Thagard's calibration was done on general explanatory reasoning, not specifically on environmental psychology or architecture. Sensitivity analysis should test λ ∈ [1.5, 3.0].
+
+5. **The 0.15 credence-similarity threshold is provisional.** It determines when credence differences are treated as meaningful disagreements versus measurement noise. Based on psychometric precedent but may need adjustment for ATLAS's specific credence calibration.
+
+#### References
+
+- BonJour, L. (1985). *The Structure of Empirical Knowledge*. Harvard University Press.
+- Quine, W. V. O., & Ullian, J. S. (1970). *The Web of Belief*. Harvard University Press.
+- Thagard, P. (1989). Explanatory coherence. *Behavioral and Brain Sciences*, 12(3), 435–467.
+- Thagard, P. (2000). *Coherence in Thought and Action*. MIT Press.
+
+---
+
 ### §84.3: Status Levels and Epistemic Hierarchy {#84-3}
 
 The Web of Belief architecture recognizes five status levels, creating an epistemic hierarchy.

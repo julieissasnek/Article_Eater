@@ -61,9 +61,9 @@
       "claim_type": "associational",
       "measure_type": "self_report",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "Z = -2.13",
       "theory_links": [
@@ -132,7 +132,8 @@
         "CREATIVE_COGNITION": 0.1892,
         "PREDICTIVE_PROCESSING": 0.1892,
         "NM_REWARD": 0.187
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2235,41 +2236,77 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Architectural images with curvilinear contours",
-      "Architectural images with rectilinear/angular contours"
+      "Images of architectural interiors and exteriors with curvilinear contours",
+      "Images of architectural interiors and exteriors with rectilinear (sharp-angled) contours"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Several seconds per image",
     "control_conditions": [
-      "Architectural images with rectilinear/angular contours"
+      "Rectilinear (sharp-angled) contours in architectural spaces"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Curvilinear architectural contours reduce perceived threat, leading to more positive affect and higher aesthetic judgments.",
+    "description": "Curvilinear contours are perceived as less threatening and more natural, leading to positive affect and approach behaviors, while rectilinear contours may evoke a sense of threat or difficulty in processing.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Architectural contours (curvilinear vs. angular)",
-        "to_construct": "Perceived threat/safety",
+        "from_construct": "Curvilinear contours",
+        "to_construct": "Perceived safety/lack of threat",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Perceived threat/safety",
-        "to_construct": "Affective response (positive/negative)",
+        "from_construct": "Perceived safety/lack of threat",
+        "to_construct": "Positive affect/aesthetic judgment",
         "mechanism_type": "affective",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "Affective response (positive/negative)",
-        "to_construct": "Aesthetic judgment",
-        "mechanism_type": "cognitive/affective",
+        "from_construct": "Positive affect/aesthetic judgment",
+        "to_construct": "Approach behavior",
+        "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:51:31.712977+00:00"
+  "surgical_update_at": "2026-03-02T23:34:21.662117+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Evolutionary Aesthetics",
+      "commitment_type": "tests",
+      "specific_claim": "Curvilinear forms are preferred due to their association with safety and lack of threat, an evolutionary advantage."
+    },
+    {
+      "theory_name": "Processing Fluency Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Curvilinear forms are processed more easily, leading to positive affect."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Aesthetic Rating Scales",
+      "construct": "Aesthetic judgment (beauty, pleasantness, comfort)",
+      "description": "Self-report scales (e.g., 7-point Likert scales) for rating various aesthetic qualities of architectural images.",
+      "type": "self_report"
+    },
+    {
+      "name": "Approach-Avoidance Joystick Task",
+      "construct": "Approach-avoidance behavior",
+      "description": "Participants used a joystick to push forward (approach) or pull back (avoid) in response to architectural images.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of curvilinear and rectilinear architectural spaces used as visual stimuli in the experiments.",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

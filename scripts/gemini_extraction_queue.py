@@ -41,6 +41,25 @@ try:
 except ImportError:
     HAS_OUTCOME_RESOLVER = False
 
+# V3 Prompt Integration (2026-03-03)
+# Import structured prompts from revised_prompts_v3 which include:
+#   - Strict direction validation (4 canonical values)
+#   - Antecedent specificity enforcement
+#   - Sample size coverage requirements
+#   - Theory commitment linking
+#   - Mechanism chains for causal papers
+#   - Instrument naming requirements
+#   - 10-point validation suffix
+try:
+    from src.extraction.revised_prompts_v3 import (
+        PROMPT_MAP as V3_PROMPT_MAP,
+        get_prompt_for_family as v3_get_prompt,
+        FAMILY_MAP as V3_FAMILY_MAP,
+    )
+    HAS_V3_PROMPTS = True
+except ImportError:
+    HAS_V3_PROMPTS = False
+
 # Paths
 AF_ROOT = Path("/Users/davidusa/REPOS/Article_Finder_v3_2_3")
 PDF_DIR = AF_ROOT / "data" / "pdfs"
@@ -454,7 +473,18 @@ def extract_paper(client: genai.Client, pdf_path: Path, article_type: str, model
     if not pdf_path.exists():
         return {"success": False, "error": f"PDF not found: {pdf_path}"}
 
-    prompt = PROMPT_MAP.get(article_type, UNKNOWN_PROMPT)
+    # Use V3 prompts when available (much more comprehensive), fall back to V1
+    if HAS_V3_PROMPTS and article_type in V3_PROMPT_MAP:
+        prompt = V3_PROMPT_MAP[article_type]
+    elif HAS_V3_PROMPTS:
+        # Try mapping V1 types to V3 types
+        v3_type_map = {
+            "unknown": "empirical",  # Default unknown to empirical for V3
+        }
+        mapped = v3_type_map.get(article_type, article_type)
+        prompt = V3_PROMPT_MAP.get(mapped, PROMPT_MAP.get(article_type, UNKNOWN_PROMPT))
+    else:
+        prompt = PROMPT_MAP.get(article_type, UNKNOWN_PROMPT)
 
     try:
         # Upload PDF
@@ -675,8 +705,11 @@ def process_queue_item(client: genai.Client, item: QueueItem, verify: bool = Tru
 
 
 def main():
+    global HAS_V3_PROMPTS
     parser = argparse.ArgumentParser()
-    parser.add_argument("--type", choices=list(PROMPT_MAP.keys()), help="Process specific article type")
+    # Type choices: V3 types if available (27 types), else V1 (8 types)
+    type_choices = list(V3_PROMPT_MAP.keys()) if HAS_V3_PROMPTS else list(PROMPT_MAP.keys())
+    parser.add_argument("--type", choices=type_choices, help="Process specific article type")
     parser.add_argument("--all", action="store_true", help="Process all types")
     parser.add_argument("--limit", type=int, default=10, help="Max papers to process")
     parser.add_argument("--no-verify", action="store_true", help="Skip 2-run verification")
@@ -685,7 +718,18 @@ def main():
     parser.add_argument("--doi", help="Process single DOI")
     parser.add_argument("--model", default="gemini-2.5-flash",
                         help="Gemini model (gemini-2.5-flash, gemini-2.5-pro, gemini-3.1-pro)")
+    parser.add_argument("--prompt-version", choices=["v1", "v3"], default="v3",
+                        help="Prompt version: v1 (legacy inline) or v3 (revised, default)")
     args = parser.parse_args()
+
+    # Handle prompt version: force V1 if requested or V3 unavailable
+    if args.prompt_version == "v1":
+        HAS_V3_PROMPTS = False
+        print("Using V1 prompts (legacy inline)")
+    elif HAS_V3_PROMPTS:
+        print("Using V3 prompts (revised_prompts_v3.py — enhanced extraction)")
+    else:
+        print("Warning: V3 prompts not available, falling back to V1")
 
     if args.status:
         state = load_queue()

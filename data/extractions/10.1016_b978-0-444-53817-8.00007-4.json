@@ -4464,15 +4464,20 @@
     {
       "theory_name": "Circadian Rhythm Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Light acts as a primary Zeitgeber, synchronizing endogenous circadian rhythms with the external light-dark cycle, thereby influencing sleep-wake cycles and cognitive function."
+      "specific_claim": "Light is the primary environmental cue (Zeitgeber) for entraining the human circadian clock, synchronizing internal physiological rhythms with the external light-dark cycle."
+    },
+    {
+      "theory_name": "Non-image-forming (NIF) Photoreception",
+      "commitment_type": "discusses",
+      "specific_claim": "Intrinsically photosensitive retinal ganglion cells (ipRGCs), containing melanopsin, mediate the non-visual effects of light on circadian rhythms, sleep, and alertness, independent of rod and cone photoreception."
     }
   ],
   "mechanism_chain": {
-    "description": "Light exposure is detected by specialized photoreceptors, signaling to the suprachiasmatic nucleus (SCN), the master circadian clock, which then synchronizes physiological rhythms, including the sleep-wake cycle.",
+    "description": "Light acts as a Zeitgeber (time giver) to entrain the central circadian clock, thereby synchronizing internal physiological rhythms, including sleep and wakefulness, with the external light-dark cycle.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure",
+        "from_construct": "Light exposure (especially blue wavelengths)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
@@ -4480,27 +4485,27 @@
       {
         "step": 2,
         "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission via retinohypothalamic tract to Suprachiasmatic Nucleus (SCN)",
+        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signal transmission to SCN",
-        "to_construct": "Synchronization and entrainment of SCN neuronal activity",
-        "mechanism_type": "neural",
+        "from_construct": "Signal to SCN",
+        "to_construct": "Entrainment/resetting of the circadian pacemaker",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Synchronization of SCN activity",
-        "to_construct": "Regulation of downstream physiological processes (e.g., melatonin secretion, core body temperature)",
+        "from_construct": "Entrainment of SCN",
+        "to_construct": "Regulation of downstream circadian rhythms (e.g., melatonin secretion, core body temperature)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 5,
-        "from_construct": "Regulation of physiological processes",
+        "from_construct": "Regulation of downstream circadian rhythms",
         "to_construct": "Synchronization of sleep and wakefulness with external light-dark cycle",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
@@ -4508,5 +4513,21 @@
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:56:24.253072+00:00"
+  "surgical_update_at": "2026-03-02T22:57:40.114788+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "Light intensity (e.g., lux levels)",
+      "Spectral composition (e.g., blue-enriched light, white light)",
+      "Timing of light exposure (e.g., morning, evening, nocturnal)",
+      "Duration of light exposure"
+    ],
+    "duration_exposure": "Varies across reviewed studies, including acute (minutes to hours) and chronic (days to weeks) exposures, often timed relative to the circadian cycle.",
+    "control_conditions": [
+      "Dim light",
+      "Darkness",
+      "Placebo light (e.g., red light for blue light studies)",
+      "Different light spectra or intensities"
+    ],
+    "ecological_validity": null
+  }
 }

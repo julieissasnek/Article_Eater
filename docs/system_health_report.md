@@ -1,7 +1,7 @@
 # AESHI System Health Report
 
-- Generated (UTC): 2026-03-02T07:23:53.213417+00:00
-- Overall score: **91.09**
+- Generated (UTC): 2026-03-02T21:57:29.594153+00:00
+- Overall score: **91.18**
 - Band: **GREEN**
 - Overall status: **PASS**
 
@@ -9,10 +9,10 @@
 
 | Gate | Status | Time (s) | Detail |
 |---|---|---:|---|
-| sanity_check | PASS | 2.034 | [sanity_check] repo root: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1 [sanity_check] OK [sanity_check] WARNING... |
-| offline_pipeline_smoke | PASS | 0.159 | /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/scripts/offline_pipeline_smoke.py:123: PydanticDeprecatedSince20: ... |
-| offline_pipeline_v2_smoke | PASS | 0.177 | [offline_pipeline_v2_smoke] OK  - events in graph.jsonl: 3  - v2 rules emitted: 1 |
-| web_of_belief_invariants | PASS | 65.553 | run_probe passed with counters={"add_belief": 125, "add_constraint": 144, "add_evidence": 124, "beliefs": 252, "const... |
+| sanity_check | PASS | 3.370 | [sanity_check] repo root: /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1 [sanity_check] OK [sanity... |
+| offline_pipeline_smoke | PASS | 0.166 | [offline_pipeline_smoke] OK  - events in graph.jsonl: 4  - calibration files: 1 |
+| offline_pipeline_v2_smoke | PASS | 0.157 | [offline_pipeline_v2_smoke] OK  - events in graph.jsonl: 3  - v2 rules emitted: 1 |
+| web_of_belief_invariants | PASS | 101.186 | run_probe passed with counters={"add_belief": 125, "add_constraint": 144, "add_evidence": 124, "beliefs": 252, "const... |
 | web_bn_minimum_viable | PASS | 0.000 | minimum_viable passed=12 failed=0 |
 | finding_template_contracts | PASS | 0.000 | all finding-template contracts passed |
 
@@ -25,7 +25,7 @@
 | web_bn | 90.78 |
 | theory | 82.21 |
 | stability | 80.00 |
-| qa_epistemic | 87.08 |
+| qa_epistemic | 88.84 |
 
 ## Key Metrics
 

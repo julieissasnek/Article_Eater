@@ -28,9 +28,8 @@ This file tracks which tasks are actively being worked on by which terminal. **C
 
 | Task ID | Description | Terminal | Claimed At | Status | Notes |
 |---------|-------------|----------|------------|--------|-------|
-| SPRINT-PLAN-DELIVERY | Create comprehensive 6-sprint plan (Setup + OVERSEER) | CLAUDE-0225-SESSION8 | 2026-02-25 | COMPLETE | Delivered: docs/SPRINT_PLAN_SETUP_AND_OVERSEER_2026-02-25.md |
-| SPRINT-0-READY | Metadata enrichment (0.5 hr) | AWAITING DAVID APPROVAL | — | READY | Semantic Scholar API enrichment; citation_graph.json generation |
-| GEMINI-PIPELINE | Full PDF extraction (1,041 papers) | CLAUDE-0224-0052 | 2026-02-24 00:52 | IN_PROGRESS | PID 67177, ETA ~5 hours (parallel track; independent of sprints) |
+| RUTHLESS-V8 | Comprehensive end-to-end system audit + fix | CW-COWORK-0302 | 2026-03-02 20:00 | IN_PROGRESS | Full pipeline audit, all subsystems, improvement recommendations |
+| V3-BACKFILL | Quantitative backfill of extraction fields | DK-TERMINAL | 2026-03-02 | COMPLETE | 887/920 success (96.4%), 117 findings backfilled, sample_size 4%→5%, effect_size 21% |
 
 ---
 

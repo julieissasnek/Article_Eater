@@ -442,7 +442,8 @@ class TestFullPipelineIntegration:
         # Initialize all services
         edge_service = EdgeJustificationService(web=mock_web)
         cross_layer_service = CrossLayerQueryService(web=mock_web)
-        gap_predictor = GapPredictor(web=mock_web, edge_justification_service=edge_service)
+        # Disable VOI scorer to test with heuristic formula
+        gap_predictor = GapPredictor(web=mock_web, edge_justification_service=edge_service, voi_scorer=None)
 
         # Generate gap report
         report = gap_predictor.find_all_gaps(max_gaps=20)

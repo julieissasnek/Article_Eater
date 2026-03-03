@@ -704,44 +704,45 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Increased noise level (7 dB increase from dishwasher to vacuum cleaner equivalent)"
+      "Increased noise level (7 dB increase from dishwasher to vacuum cleaner equivalent)",
+      "Broadband noise simulating real-world office/industrial sounds"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous 8-hour workday",
     "control_conditions": [
-      "Baseline noise level (e.g., quiet office environment)"
+      "Quiet condition (baseline noise level)"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:34:25.682104+00:00",
+  "surgical_update_at": "2026-03-02T23:29:59.987722+00:00",
   "theory_commitments": [
     {
       "theory_name": "Cognitive Load Theory",
       "commitment_type": "tests",
-      "specific_claim": "Increased environmental noise increases cognitive load, thereby reducing available cognitive resources for task performance and decreasing productivity."
+      "specific_claim": "Environmental stressors like noise increase cognitive load, diverting attentional resources and impairing performance on primary tasks."
     }
   ],
   "mechanism_chain": {
-    "description": "Increased noise leads to cognitive distraction and increased mental effort, which depletes cognitive resources necessary for focused task performance, ultimately reducing productivity.",
+    "description": "Increased noise acts as an environmental stressor, leading to cognitive distraction and increased cognitive load, which in turn reduces available attentional resources for the primary task, ultimately impairing worker productivity.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Increased noise level",
-        "to_construct": "Cognitive distraction/Increased mental effort",
+        "to_construct": "Cognitive distraction/load",
         "mechanism_type": "cognitive",
         "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Cognitive distraction/Increased mental effort",
-        "to_construct": "Reduced cognitive resources/attention",
+        "from_construct": "Cognitive distraction/load",
+        "to_construct": "Reduced attentional resources",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Reduced cognitive resources/attention",
-        "to_construct": "Decreased task performance/Productivity",
+        "from_construct": "Reduced attentional resources",
+        "to_construct": "Impaired task performance/productivity",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -749,21 +750,15 @@
   },
   "instruments_used": [
     {
-      "name": null,
+      "name": "Sound level meter",
       "construct": "Noise level",
-      "description": "Sound level meter measuring decibels (dB)",
+      "description": "Device used to measure and monitor ambient sound pressure levels in decibels (dB).",
       "type": "other"
     },
     {
-      "name": null,
+      "name": "Production logs",
       "construct": "Productivity",
-      "description": "Total pockets produced in textile training course",
-      "type": "behavioral"
-    },
-    {
-      "name": null,
-      "construct": "Cognitive function",
-      "description": "Standardized cognitive tasks (e.g., reaction time, working memory tasks)",
+      "description": "Records of total pockets produced in a textile training course.",
       "type": "behavioral"
     }
   ]

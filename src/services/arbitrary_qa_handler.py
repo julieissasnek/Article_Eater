@@ -41,6 +41,34 @@ from datetime import datetime, timezone
 from src.services.theory_guide_service import TheoryGuideService
 from src.services.interpretation_space_suggestions import InterpretationSpaceSuggestionsManager
 
+# Enrichment orchestrator (graceful degradation if unavailable)
+try:
+    from src.services.answer_enrichment_orchestrator import AnswerEnrichmentOrchestrator
+    _orchestrator = AnswerEnrichmentOrchestrator()
+    _HAS_ORCHESTRATOR = True
+except ImportError as e:
+    logger.warning(f"Enrichment orchestrator not available: {e}")
+    _orchestrator = None
+    _HAS_ORCHESTRATOR = False
+except Exception as e:
+    logger.warning(f"Failed to initialize enrichment orchestrator: {e}")
+    _orchestrator = None
+    _HAS_ORCHESTRATOR = False
+
+# Prose revision service (graceful degradation if unavailable)
+try:
+    from src.services.prose_revision_service import ProseRevisionService
+    _prose_reviewer = ProseRevisionService(context="qa_response")
+    _HAS_PROSE_REVIEWER = True
+except ImportError as e:
+    logger.warning(f"Prose revision service not available: {e}")
+    _prose_reviewer = None
+    _HAS_PROSE_REVIEWER = False
+except Exception as e:
+    logger.warning(f"Failed to initialize prose revision service: {e}")
+    _prose_reviewer = None
+    _HAS_PROSE_REVIEWER = False
+
 logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -203,52 +231,118 @@ def classify_question(text: str) -> Tuple[str, float]:
 # =============================================================================
 
 def format_theory_catalog(catalog) -> Dict[str, Any]:
-    """Format comprehensive theory catalog answer."""
-    theories = catalog.get_theories()
-    frameworks = catalog.get_frameworks()
-    molecules = catalog.get_molecules()
+    """Format comprehensive theory catalog answer per TIER_ARCHITECTURE_SPEC_2026-03-01."""
+    theories = catalog.get_theories()   # These are actually T1.5 domain theories
+    frameworks = catalog.get_frameworks()  # Bridging frameworks
+    molecules = catalog.get_molecules()    # 18 molecules (latent variables)
     
-    # Build structured response
     sections = []
     
-    # T1 Theories
-    theory_lines = []
-    for t in theories:
-        evidence_note = f" ({t['evidence_count']} linked beliefs)" if t.get('evidence_count') else ""
-        theory_lines.append(
-            f"**{t['name']}** ({t['authors']}, {t['year']}){evidence_note}\n"
-            f"  {t['summary']}"
-        )
+    # T1 Frameworks — loaded from canonical schemas/theory/tier1_frameworks.json
+    t1_items = []
+    t1_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_frameworks.json"
+    if t1_json_path.exists():
+        try:
+            t1_data = json.load(open(t1_json_path))
+            for fid, info in t1_data.get("frameworks", {}).items():
+                name = info.get("name", fid)
+                mechanism = info.get("core_mechanism", "")
+                # Truncate mechanism to first sentence for readability
+                first_sentence = mechanism.split(";")[0].split(".")[0] + "." if mechanism else ""
+                t1_items.append(f"**{name}**: {first_sentence}")
+        except Exception as e:
+            logger.debug(f"Non-critical T1 load: {e}")
+    # Fallback if JSON not found
+    if not t1_items:
+        t1_items = [
+            "**Predictive Processing**: The brain continuously generates predictions about sensory input; mismatches drive learning and attention.",
+            "**Spatial Navigation / Cognitive Mapping**: Hippocampal place cells and grid cells encode spatial experience.",
+            "**Dual-Process Evaluation**: System 1 (fast, automatic) vs System 2 (slow, deliberate) compete for behavioral control.",
+            "**DMN/TPN Dynamics**: Default Mode Network and Task-Positive Network reciprocally inhibit.",
+            "**Neuromodulatory Systems**: Dopamine, serotonin, norepinephrine, and cortisol modulate arousal, reward, and stress.",
+            "**Interoceptive / Constructionist Affect**: The brain constructs emotions from interoceptive signals + environmental context.",
+            "**Memory Systems**: Episodic, semantic, and procedural memory systems encode environmental experiences.",
+            "**Embodied Cognition**: Cognition is grounded in sensorimotor experience.",
+            "**Chronobiological Regulation**: Circadian rhythms entrained by light affect melatonin, cortisol, alertness, and sleep.",
+            "**Multisensory Integration**: The brain combines information across sensory modalities.",
+        ]
     sections.append({
-        "heading": f"T1 Theories — Foundational ({len(theories)})",
-        "description": "Major theoretical frameworks with broad empirical support",
-        "items": theory_lines,
+        "heading": "T1 — Framework Theories (10)",
+        "description": "Neurally grounded, cross-domain frameworks. The fundamental explanatory level.",
+        "items": t1_items,
     })
     
-    # T1.5 Frameworks
-    fw_lines = [f"**{fw['name']}**: {fw['summary']}" for fw in frameworks]
+    # T1.5 Domain Theories — loaded from canonical schemas/theory/tier1_5_domain_theories.json
+    t1_5_items = []
+    t15_json_path = Path(__file__).resolve().parent.parent.parent / "schemas" / "theory" / "tier1_5_domain_theories.json"
+    if t15_json_path.exists():
+        try:
+            t15_data = json.load(open(t15_json_path))
+            for tid, info in t15_data.get("domain_theories", {}).items():
+                name = info.get("name", tid)
+                originator = info.get("originator", "")
+                phenomena = info.get("phenomena_organized", "")
+                coverage = info.get("coverage", 0)
+                maturity = info.get("maturity", "")
+                # Truncate phenomena to first sentence
+                short_desc = phenomena.split(".")[0] + "." if phenomena else ""
+                t1_5_items.append(
+                    f"**{name}** ({originator})\n"
+                    f"  {short_desc} Coverage: {coverage:.0%}, maturity: {maturity}."
+                )
+        except Exception as e:
+            logger.debug(f"Non-critical T1.5 load: {e}")
+    # Fallback if JSON not found or empty
+    if not t1_5_items:
+        for t in theories:
+            name = t['name']
+            evidence_note = f" ({t['evidence_count']} linked beliefs)" if t.get('evidence_count') else ""
+            t1_5_items.append(
+                f"**{t['name']}** ({t['authors']}, {t['year']}){evidence_note}\n"
+                f"  {t['summary']}"
+            )
+    n_t15 = len(t1_5_items)
     sections.append({
-        "heading": f"T1.5 Frameworks — Bridging ({len(frameworks)})",
-        "description": "Domain-specific frameworks connecting theories to design",
-        "items": fw_lines,
+        "heading": f"T1.5 — Domain Theories ({n_t15})",
+        "description": "Author-attributed phenomenological theories. Explained BY T1 frameworks, each with formal reduction mappings.",
+        "items": t1_5_items,
     })
     
-    # T2 Molecules
+    # Molecules — 18 latent variables (includes T1.5 as subset)
     mol_lines = [f"**{m['name']}** (`{m['id']}`): {m['summary']}" for m in molecules]
     sections.append({
-        "heading": f"T2 Molecules — Computational ({len(molecules)})",
-        "description": "Formal models with testable quantitative predictions",
+        "heading": f"Molecules — Latent Variables ({len(molecules)})",
+        "description": "Compositional effect bundles. T1.5 are a subset. Discoverable via factor analysis of T2 template co-activation.",
         "items": mol_lines,
     })
     
+    # T2 Templates and T3 Beliefs (counts only — too many to list)
+    sections.append({
+        "heading": "T2 — CMR Templates (~166) & T3 — Empirical Beliefs",
+        "description": "T2: Specific mechanism chains (Arch Feature → Neural Process → Psych Outcome). T3: Ground-level evidence in Web of Belief.",
+        "items": [
+            "**T2 Templates**: ~166 defined mechanism chains, each declaring which T1 frameworks it invokes",
+            "**T3 Beliefs**: Specific environment→outcome claims supported by multiple articles in the extraction corpus",
+        ],
+    })
+    
+    # Bridging frameworks from catalog
+    if frameworks:
+        fw_lines = [f"**{fw['name']}**: {fw['summary']}" for fw in frameworks]
+        sections.append({
+            "heading": f"Bridging Frameworks ({len(frameworks)})",
+            "description": "Additional domain-specific frameworks connecting T1 theories to design applications",
+            "items": fw_lines,
+        })
+    
     return {
         "question_type": QuestionType.CATALOG_THEORIES,
-        "headline": f"This system contains {len(theories)} T1 theories, "
-                    f"{len(frameworks)} T1.5 frameworks, and {len(molecules)} T2 molecules.",
+        "headline": f"ATLAS theory architecture: 10 T1 framework theories, {n_t15} T1.5 domain theories, "
+                    f"~166 T2 CMR templates, {len(molecules)} molecules, T3 empirical beliefs.",
         "sections": sections,
-        "total_items": len(theories) + len(frameworks) + len(molecules),
+        "total_items": 10 + n_t15 + len(molecules),
         "follow_ups": [
-            "How does Attention Restoration Theory compare to Stress Recovery Theory?",
+            "How does Attention Restoration Theory reduce to T1 frameworks?",
             "What evidence supports the Biophilia Hypothesis?",
             "Show me all cultural differences this system recognizes.",
         ],
@@ -488,17 +582,8 @@ def format_theory_guide_answer(question: str) -> Dict[str, Any]:
     guide = service.get_guide(theory_name, detail_level=detail_level)
 
     if not guide:
-        # Return list of available guides
-        available = service.list_available_guides()
-        return {
-            "question_type": "theory_guide",
-            "headline": f"Theory guide not found for '{theory_name}'. {len(available)} guides available.",
-            "sections": [{
-                "heading": "Available Theory Guides",
-                "items": [f"**{name}**" for name in sorted(available)],
-            }],
-            "follow_ups": [f"Explain {available[0]}" if available else "Show me all theories"],
-        }
+        # Fallback: build a guide from extraction data + catalog
+        return _build_extraction_theory_guide(theory_name, question)
 
     # Format content as sections (break into paragraphs for readability)
     sections = []
@@ -540,6 +625,267 @@ def format_theory_guide_answer(question: str) -> Dict[str, Any]:
             f"What evidence supports {guide.display_name}?",
             f"What's surprising about {guide.display_name}?",
             "Show me all theories in this system.",
+        ],
+    }
+
+
+def _build_extraction_theory_guide(theory_name: str, question: str) -> Dict[str, Any]:
+    """Build a theory guide from extraction findings when no HTML guide exists."""
+    results = _search_findings(theory_name, max_results=20)
+
+    # Collect evidence summary
+    antecedents = set()
+    consequents = set()
+    theories_seen = set()
+    mechanisms = []
+    paper_count = set()
+
+    for f in results:
+        ant = f.get("antecedent", "")
+        cons = f.get("consequent", "")
+        if ant:
+            antecedents.add(ant)
+        if cons:
+            consequents.add(cons)
+        paper_count.add(f.get("_source_doi", ""))
+        for t in (f.get("theory_links") or f.get("theory_commitments") or []):
+            theories_seen.add(str(t))
+        mech = f.get("mechanism") or f.get("mechanism_chain")
+        if mech and str(mech) != "not specified":
+            mechanisms.append(str(mech)[:200])
+
+    sections = []
+    if results:
+        # Summary section
+        summary_items = [
+            f"**Appears in**: {len(paper_count)} papers with {len(results)} findings",
+        ]
+        if theories_seen:
+            summary_items.append(f"**Related theories**: {', '.join(sorted(theories_seen)[:8])}")
+        if mechanisms:
+            summary_items.append(f"**Key mechanism**: {mechanisms[0]}")
+        sections.append({
+            "heading": f"What We Know About '{theory_name}'",
+            "items": summary_items,
+        })
+
+        # Key findings
+        finding_items = []
+        for f in results[:8]:
+            ant = f.get("antecedent", "?")
+            cons = f.get("consequent", "?")
+            direction = f.get("direction", "?")
+            doi = f.get("_source_doi", "")
+            title = f.get("_source_title", "")
+            line = f"**{ant}** → {cons} ({direction})"
+            line += f"\n  Source: {doi}"
+            if title:
+                line += f" — *{title[:60]}*"
+            finding_items.append(line)
+        sections.append({
+            "heading": f"Key Findings ({min(8, len(results))} shown)",
+            "items": finding_items,
+        })
+
+        # Scope
+        if antecedents:
+            sections.append({
+                "heading": "As Antecedent (causes)",
+                "items": [f"• {a}" for a in sorted(antecedents)[:6]],
+            })
+        if consequents:
+            sections.append({
+                "heading": "As Consequent (effects)",
+                "items": [f"• {c}" for c in sorted(consequents)[:6]],
+            })
+    else:
+        available = _get_theory_guide_service().list_available_guides()
+        sections = [{
+            "heading": f"No findings for '{theory_name}'",
+            "items": [f"Try: {', '.join(available[:5])}"],
+        }]
+
+    return {
+        "question_type": "theory_guide",
+        "headline": f"'{theory_name}': {len(results)} findings from {len(paper_count)} papers (no dedicated guide yet).",
+        "sections": sections,
+        "follow_ups": [
+            f"What evidence supports {theory_name}?",
+            f"What mechanisms underlie {theory_name}?",
+            f"Is {theory_name} controversial?",
+        ],
+    }
+
+
+def format_meta_coverage_answer(question: str) -> Dict[str, Any]:
+    """Answer 'what do you know about X?' with corpus coverage stats."""
+    topic = re.sub(
+        r'(?:what\s+do\s+you\s+know\s+about|what\s+does\s+the\s+system\s+know|coverage\s+of)\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+
+    results = _search_findings(topic, max_results=50)
+    all_findings = _load_extraction_findings()
+
+    papers = set(f.get("_source_doi", "") for f in results)
+    theories = set()
+    with_quant = 0
+    for f in results:
+        for t in (f.get("theory_links") or f.get("theory_commitments") or []):
+            theories.add(str(t))
+        if f.get("sample_size") or f.get("effect_size"):
+            with_quant += 1
+
+    items = [
+        f"**Matching findings**: {len(results)} (from {len(all_findings):,} total)",
+        f"**Unique papers**: {len(papers)}",
+        f"**Theories referenced**: {', '.join(sorted(theories)[:6]) or 'none'}",
+        f"**With quantitative data**: {with_quant}/{len(results)}",
+        f"**Coverage strength**: {'Strong' if len(results) > 20 else 'Moderate' if len(results) > 5 else 'Sparse'}",
+    ]
+
+    return {
+        "question_type": "meta_coverage",
+        "headline": f"System knows {len(results)} findings about '{topic}' from {len(papers)} papers.",
+        "sections": [{"heading": f"Coverage for '{topic}'", "items": items}],
+        "follow_ups": [
+            f"What evidence supports {topic}?",
+            f"What don't you know about {topic}?",
+            f"Tell me about {topic}",
+        ],
+    }
+
+
+def format_meta_system_answer(question: str) -> Dict[str, Any]:
+    """Answer 'how does this system work?' with architecture summary."""
+    all_findings = _load_extraction_findings()
+    papers = set(f.get("_source_doi", "") for f in all_findings)
+    theories = set()
+    for f in all_findings:
+        for t in (f.get("theory_links") or f.get("theory_commitments") or []):
+            theories.add(str(t))
+
+    items = [
+        f"**Extraction corpus**: {len(all_findings):,} findings from {len(papers):,} papers",
+        f"**Theories tracked**: {len(theories)} (10 T1 frameworks, 13 T1.5 domain theories, 18 molecules, ~166 T2 templates)",
+        "**Query types handled**: Evidence, Mechanism, Comparison, Definition, Theory Guides, Design Guidance, Effect Sizes, Surprises, Disputes, Cross-Domain, History, Catalogs",
+        "**Argumentation engine**: Critique aggregation, hierarchy evidence, meta-analytic pooling, tension detection",
+        "**Provenance**: DOI → paper title → finding → theory → sample size → effect size",
+        "**No AI needed**: 9/10 query types answered directly from data",
+    ]
+
+    return {
+        "question_type": "meta_system",
+        "headline": f"ATLAS Article Eater: {len(all_findings):,} findings, {len(papers):,} papers, {len(theories)} theories.",
+        "sections": [{"heading": "System Architecture", "items": items}],
+        "follow_ups": [
+            "Show me all theories",
+            "What do you know about biophilia?",
+            "What evidence supports stress recovery?",
+        ],
+    }
+
+
+def format_meta_gaps_answer(question: str) -> Dict[str, Any]:
+    """Answer 'what don't you know?' with gap analysis."""
+    topic = re.sub(
+        r'(?:what\s+(?:don\'?t|do\s+not)\s+you\s+know|gaps?\s+(?:in|about)|missing|unknown)\s*(?:about)?\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+
+    if topic:
+        results = _search_findings(topic, max_results=50)
+        all_findings = _load_extraction_findings()
+        without_sample = sum(1 for f in results if not f.get("sample_size"))
+        without_effect = sum(1 for f in results if not f.get("effect_size"))
+        without_mechanism = sum(1 for f in results if not (f.get("mechanism") or f.get("mechanism_chain")))
+
+        items = [
+            f"**Findings without sample size**: {without_sample}/{len(results)}",
+            f"**Findings without effect size**: {without_effect}/{len(results)}",
+            f"**Findings without mechanism**: {without_mechanism}/{len(results)}",
+        ]
+        if len(results) < 5:
+            items.append(f"**⚠️ Sparse coverage**: Only {len(results)} findings for '{topic}' (from {len(all_findings):,} total)")
+    else:
+        all_findings = _load_extraction_findings()
+        without_sample = sum(1 for f in all_findings if not f.get("sample_size"))
+        without_effect = sum(1 for f in all_findings if not f.get("effect_size"))
+        without_theory = sum(1 for f in all_findings if not (f.get("theory_links") or f.get("theory_commitments")))
+
+        items = [
+            f"**Findings without sample size**: {without_sample}/{len(all_findings):,} ({100*without_sample//max(1,len(all_findings))}%)",
+            f"**Findings without effect size**: {without_effect}/{len(all_findings):,} ({100*without_effect//max(1,len(all_findings))}%)",
+            f"**Findings without theory link**: {without_theory}/{len(all_findings):,} ({100*without_theory//max(1,len(all_findings))}%)",
+            "**BN integration**: 0% of findings mapped to environment_id/outcome_id",
+            "**Interpretive layer**: R₁-R₄ closures not yet implemented",
+        ]
+
+    return {
+        "question_type": "meta_gaps",
+        "headline": f"Knowledge gaps{' for ' + repr(topic) if topic else ''}",
+        "sections": [{"heading": "Known Gaps & Missing Data", "items": items}],
+        "follow_ups": [
+            "How does this system work?",
+            "What evidence supports biophilia?",
+        ],
+    }
+
+
+def format_design_guidance_answer(question: str) -> Dict[str, Any]:
+    """Answer 'how should I design X?' using extraction findings + argumentation."""
+    topic = re.sub(
+        r'(?:how\s+should\s+I\s+design|design\s+guidance\s+for|design\s+recommendations\s+for)\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+
+    results = _search_findings(topic, max_results=30)
+
+    # Find actionable findings (those with clear direction)
+    actionable = []
+    for f in results:
+        direction = f.get("direction", "")
+        if direction:
+            ant = f.get("antecedent", "?")
+            cons = f.get("consequent", "?")
+            actionable.append({
+                "guidance": f"**{ant}** → {cons} ({direction})",
+                "sample": f.get("sample_size"),
+                "effect": f.get("effect_size"),
+                "source": f.get("_source_doi", ""),
+            })
+
+    sections = []
+    if actionable:
+        guidance_items = []
+        for a in actionable[:10]:
+            line = a["guidance"]
+            quals = []
+            if a["sample"]:
+                quals.append(f"n={a['sample']}")
+            if a["effect"]:
+                quals.append(f"d={a['effect']}")
+            if quals:
+                line += f"  [{', '.join(quals)}]"
+            guidance_items.append(line)
+
+        sections.append({
+            "heading": f"Evidence-Based Design Guidance ({len(actionable)} findings)",
+            "items": guidance_items,
+        })
+    else:
+        sections.append({
+            "heading": "Design Guidance",
+            "items": [f"No specific design guidance found for '{topic}'. Try broader terms."],
+        })
+
+    return {
+        "question_type": "design_guidance",
+        "headline": f"Found {len(actionable)} evidence-based design recommendations for '{topic}'.",
+        "sections": sections,
+        "follow_ups": [
+            f"What effect sizes matter for {topic}?",
+            f"What evidence supports {topic}?",
         ],
     }
 
@@ -846,6 +1192,336 @@ def format_history_answer(question: str) -> Dict[str, Any]:
 
 
 # =============================================================================
+# Extraction-Backed Evidence Search (33K findings from JSON files)
+# =============================================================================
+
+_EXTRACTION_DIR = PROJECT_ROOT / "data" / "extractions"
+_extraction_cache: Optional[List[Dict]] = None
+
+
+def _load_extraction_findings(limit: int = 50000) -> List[Dict]:
+    """Load findings from extraction JSON files. Cached after first call."""
+    global _extraction_cache
+    if _extraction_cache is not None:
+        return _extraction_cache
+
+    findings = []
+    if not _EXTRACTION_DIR.exists():
+        return findings
+
+    for fp in sorted(_EXTRACTION_DIR.glob("*.json"))[:limit]:
+        try:
+            with open(fp) as f:
+                data = json.load(f)
+            doi = data.get("doi", data.get("DOI", fp.stem))
+            title = data.get("title", "")
+            for finding in data.get("findings", []):
+                finding["_source_doi"] = doi
+                finding["_source_title"] = title
+                finding["_source_file"] = fp.name
+                findings.append(finding)
+        except Exception:
+            continue
+
+    _extraction_cache = findings
+    return findings
+
+
+def _search_findings(query: str, max_results: int = 15) -> List[Dict]:
+    """Search extraction findings by keyword match across key fields."""
+    findings = _load_extraction_findings()
+    query_lower = query.lower()
+    keywords = [w for w in query_lower.split() if len(w) > 2]
+
+    scored = []
+    for f in findings:
+        # Build searchable text from key fields
+        searchable = " ".join([
+            str(f.get("antecedent", "")),
+            str(f.get("consequent", "")),
+            str(f.get("direction", "")),
+            str(f.get("mechanism", "")),
+            " ".join(str(t) for t in (f.get("theory_links") or [])),
+            " ".join(str(t) for t in (f.get("theory_commitments") or [])),
+            str(f.get("mechanism_chain", "")),
+            str(f.get("_source_title", "")),
+        ]).lower()
+
+        # Score: count keyword matches
+        score = sum(1 for kw in keywords if kw in searchable)
+        if score > 0:
+            scored.append((score, f))
+
+    scored.sort(key=lambda x: -x[0])
+    return [f for _, f in scored[:max_results]]
+
+
+def format_evidence_answer(question: str, direction: str = "supports") -> Dict[str, Any]:
+    """Answer evidence queries by searching extraction findings with provenance trace."""
+    # Extract topic from question
+    topic = re.sub(
+        r'(?:what\s+)?evidence\s+(?:support|for|confirm|verif|against|contradict|refut|weaken)\w*\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+
+    results = _search_findings(topic)
+
+    items = []
+    unique_sources = set()
+    with_sample = 0
+    with_effect = 0
+    theories_seen = set()
+
+    for f in results:
+        antecedent = f.get("antecedent", "?")
+        consequent = f.get("consequent", "?")
+        direction_val = f.get("direction", "?")
+        sample = f.get("sample_size", "")
+        effect = f.get("effect_size", "")
+        doi = f.get("_source_doi", "")
+        title = f.get("_source_title", "")
+        theories = f.get("theory_links") or f.get("theory_commitments") or []
+
+        unique_sources.add(doi)
+        if sample:
+            with_sample += 1
+        if effect:
+            with_effect += 1
+        for t in theories:
+            theories_seen.add(str(t))
+
+        evidence_line = f"**{antecedent}** → {consequent} ({direction_val})"
+        if theories:
+            evidence_line += f"\n  Theory: {', '.join(str(t) for t in theories[:3])}"
+        if sample:
+            evidence_line += f"\n  Sample: n={sample}"
+        if effect:
+            evidence_line += f", Effect: {effect}"
+        evidence_line += f"\n  Source: {doi}"
+        if title:
+            evidence_line += f" — *{title[:80]}*"
+
+        items.append(evidence_line)
+
+    # Provenance summary section
+    provenance_items = [
+        f"**Unique papers**: {len(unique_sources)}",
+        f"**Findings with sample size**: {with_sample}/{len(results)}",
+        f"**Findings with effect size**: {with_effect}/{len(results)}",
+        f"**Theories referenced**: {', '.join(sorted(theories_seen)[:5]) or 'none'}",
+    ]
+
+    sections = [
+        {
+            "heading": f"Evidence {'Supporting' if direction == 'supports' else 'Against'} (top {len(items)})",
+            "items": items or ["No matching findings found. Try different keywords."],
+        },
+    ]
+    if items:
+        sections.append({
+            "heading": "Provenance Summary",
+            "items": provenance_items,
+        })
+
+        # Epistemic Notes per EPISTEMIC_PRINCIPLES.md (Principles 1, 4, 5, 15)
+        epistemic_items = []
+
+        # Pollock (P1): Defeasibility caveat
+        if len(unique_sources) < 5:
+            epistemic_items.append(
+                f"**Defeasibility (Pollock)**: Evidence is currently *warranted* but thin "
+                f"({len(unique_sources)} papers). New contradictory evidence could defeat this finding."
+            )
+        else:
+            epistemic_items.append(
+                f"**Defeasibility (Pollock)**: Evidence is *warranted* across {len(unique_sources)} independent papers. "
+                f"Warrant remains defeasible — new evidence could still undercut or rebut."
+            )
+
+        # Pearl (P5): Causal tier note
+        epistemic_items.append(
+            "**Causal status (Pearl)**: These are *associations*, not confirmed causal claims, "
+            "unless the source study used experimental or quasi-experimental designs."
+        )
+
+        # Cartwright (P4): Scope note
+        if with_sample > 0:
+            epistemic_items.append(
+                f"**Scope (Cartwright)**: {with_sample}/{len(results)} findings report sample sizes. "
+                f"Unknown scope ≠ universal scope — check settings, populations, and durations."
+            )
+
+        # Gawande (P15): Name the gap
+        gap_parts = []
+        if with_effect == 0:
+            gap_parts.append("no effect sizes reported")
+        if with_sample < len(results) // 2:
+            gap_parts.append(f"only {with_sample}/{len(results)} have sample sizes")
+        if gap_parts:
+            epistemic_items.append(
+                f"**Gap (Gawande)**: {'; '.join(gap_parts)}. "
+                f"Quantitative strength of this evidence is difficult to assess."
+            )
+
+        if epistemic_items:
+            sections.append({
+                "heading": "Epistemic Notes (per ATLAS norms)",
+                "items": epistemic_items,
+            })
+
+    return {
+        "question_type": "evidence",
+        "headline": f"Found {len(results)} findings related to '{topic}' "
+                    f"from {len(unique_sources)} papers ({len(_load_extraction_findings())} total findings).",
+        "sections": sections,
+        "total_count": len(results),
+        "follow_ups": [
+            f"What's surprising about {topic}?",
+            f"How big is the effect of {topic}?",
+            f"What don't we know about {topic}?",
+        ],
+    }
+
+
+def format_mechanism_answer(question: str) -> Dict[str, Any]:
+    """Answer mechanism/causal queries by searching extraction findings."""
+    # Extract topic
+    topic = re.sub(
+        r'(?:how\s+does?|why\s+does?|what\s+(?:mechanism|cause|explain)\w*)\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+
+    results = _search_findings(topic)
+
+    # Filter for findings with mechanism info
+    with_mechanism = [f for f in results if f.get("mechanism") or f.get("mechanism_chain")]
+    display = with_mechanism[:10] if with_mechanism else results[:10]
+
+    items = []
+    for f in display:
+        antecedent = f.get("antecedent", "?")
+        consequent = f.get("consequent", "?")
+        mechanism = f.get("mechanism", f.get("mechanism_chain", "not specified"))
+        theories = f.get("theory_links") or f.get("theory_commitments") or []
+
+        item = f"**{antecedent}** → {consequent}"
+        if mechanism and mechanism != "not specified":
+            item += f"\n  Mechanism: {str(mechanism)[:200]}"
+        if theories:
+            item += f"\n  Theory: {', '.join(str(t) for t in theories[:3])}"
+        items.append(item)
+
+    return {
+        "question_type": "mechanism",
+        "headline": f"Found {len(with_mechanism)} findings with mechanism data "
+                    f"out of {len(results)} matches for '{topic}'.",
+        "sections": [{
+            "heading": f"Causal Mechanisms ({len(items)} shown)",
+            "items": items or ["No mechanism data found. Try asking about specific antecedent→consequent pairs."],
+        }],
+        "follow_ups": [
+            f"What evidence supports {topic}?",
+            f"Is {topic} controversial?",
+        ],
+    }
+
+
+def format_comparison_answer(question: str) -> Dict[str, Any]:
+    """Answer comparison queries using argumentation engine's find_arguments."""
+    from src.argument.engine import ArgumentationEngine
+    
+    # Extract topic
+    topic = re.sub(
+        r'(?:compare|contrast|difference|versus|vs\.?|between)\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+    
+    engine = ArgumentationEngine()
+    args = engine.find_arguments(topic, max_results=8)
+    
+    sections = []
+    if args["supporting"]:
+        sections.append({
+            "heading": f"Supporting Evidence ({len(args['supporting'])})",
+            "items": [
+                f"**{a['claim'][:120]}**\n  Source: {a['source']}"
+                + (f"\n  Theory: {', '.join(str(t) for t in a['theories'][:3])}" if a['theories'] else "")
+                for a in args["supporting"][:8]
+            ],
+        })
+    if args["opposing"]:
+        sections.append({
+            "heading": f"Opposing Evidence ({len(args['opposing'])})",
+            "items": [
+                f"**{a['claim'][:120]}**\n  Source: {a['source']}"
+                for a in args["opposing"][:8]
+            ],
+        })
+    if args["tensions"]:
+        sections.append({
+            "heading": f"Detected Tensions ({len(args['tensions'])})",
+            "items": [
+                f"**{t['consequent']}**: {t['direction_a']} vs {t['direction_b']}"
+                for t in args["tensions"][:5]
+            ],
+        })
+    if not sections:
+        sections = [{"heading": "Results", "items": ["No comparison data found. Try different terms."]}]
+    
+    return {
+        "question_type": "comparison",
+        "headline": args["headline"],
+        "sections": sections,
+        "follow_ups": [
+            f"What evidence supports {topic}?",
+            f"How does {topic} work mechanistically?",
+        ],
+    }
+
+
+def format_definition_answer(question: str) -> Dict[str, Any]:
+    """Answer definition queries by searching findings and theory catalog."""
+    topic = re.sub(
+        r'(?:what\s+is|define|meaning\s+of|explain)\s*',
+        '', question, flags=re.I
+    ).strip('? ')
+    
+    results = _search_findings(topic, max_results=20)
+    
+    # Extract unique theories, antecedents, consequents
+    theories = set()
+    antecedents = set()
+    consequents = set()
+    for f in results:
+        for t in (f.get("theory_links") or f.get("theory_commitments") or []):
+            theories.add(str(t))
+        antecedents.add(f.get("antecedent", ""))
+        consequents.add(f.get("consequent", ""))
+    
+    items = []
+    if theories:
+        items.append(f"**Related theories**: {', '.join(sorted(theories)[:5])}")
+    if antecedents:
+        items.append(f"**As antecedent in**: {', '.join(sorted(a for a in antecedents if a)[:5])}")
+    if consequents:
+        items.append(f"**As consequent in**: {', '.join(sorted(c for c in consequents if c)[:5])}")
+    items.append(f"**Appears in**: {len(results)} findings from {len(set(f.get('_source_doi','') for f in results))} papers")
+    
+    return {
+        "question_type": "definition",
+        "headline": f"'{topic}' appears in {len(results)} findings across the extraction corpus.",
+        "sections": [{
+            "heading": f"Definition Context for '{topic}'",
+            "items": items or [f"No findings for '{topic}'. Try broader terms."],
+        }],
+        "follow_ups": [
+            f"What evidence supports {topic}?",
+            f"How does {topic} reduce stress?",
+        ],
+    }
+
+
+# =============================================================================
 # AI Context Builder (for arbitrary questions)
 # =============================================================================
 
@@ -889,7 +1565,7 @@ def build_ai_context(question: str, catalog, max_tokens: int = 2000) -> str:
     # If nothing matched, provide system overview
     if not any(results.values()):
         context_parts.append("SYSTEM OVERVIEW:")
-        context_parts.append(f"- 6 T1 theories, 8 T1.5 frameworks, 18 T2 molecules")
+        context_parts.append(f"- 10 T1 framework theories, 13 T1.5 domain theories, ~166 T2 templates, 18 molecules")
         context_parts.append(f"- 103 outcome terms across 8 domains")
         context_parts.append(f"- 8 CVA constraint dimensions, 8 valuation axes")
         context_parts.append(f"- 6 cultural difference dimensions")
@@ -936,17 +1612,24 @@ class ArbitraryQAHandler:
     and AI routing for complex/novel questions (cheap API call).
     """
     
-    def __init__(self, llm_fn=None, db_path: Optional[str] = None):
+    def __init__(self, llm_fn=None, db_path: Optional[str] = None, user_type: str = "researcher", enable_enrichment: bool = True, enable_prose_review: bool = False):
         """
         Args:
             llm_fn: Optional LLM function with signature (prompt: str) -> str.
                     If None, AI-routed questions return context + prompt for external processing.
             db_path: Optional path to web.db for tracking suggestions.
                      If provided, follow-ups are recorded in interpretation_space_suggestions table.
+            user_type: User persona type for language adaptation ("researcher", "student", "clinician", etc).
+            enable_enrichment: Whether to apply enrichment orchestrator to answers.
+            enable_prose_review: Whether to run prose quality diagnostics on AI-generated answers.
+                    When enabled, adds a 'prose_review' field to the response with quality metrics.
         """
         from src.services.knowledge_catalog import KnowledgeCatalog
         self.catalog = KnowledgeCatalog()
         self.llm_fn = llm_fn
+        self._user_type = user_type
+        self._enable_enrichment = enable_enrichment
+        self._enable_prose_review = enable_prose_review
         self._stats = {"classified": 0, "ai_routed": 0, "catalog_served": 0}
         self.suggestions_mgr: Optional[InterpretationSpaceSuggestionsManager] = None
         if db_path:
@@ -955,6 +1638,97 @@ class ArbitraryQAHandler:
             except Exception as e:
                 logger.warning(f"Failed to initialize suggestions manager: {e}")
     
+    def _apply_enrichment(self, base_answer: Dict[str, Any], question: str) -> Dict[str, Any]:
+        """Apply enrichment orchestrator to a base answer if enabled.
+
+        Args:
+            base_answer: Answer dict from handler or AI router
+            question: Original user question
+
+        Returns:
+            Same base_answer with enrichment applied, or unchanged if enrichment fails
+        """
+        if not _HAS_ORCHESTRATOR or not self._enable_enrichment:
+            base_answer["enriched"] = False
+            return base_answer
+
+        try:
+            enriched = _orchestrator.enrich(
+                base_answer=base_answer,
+                question=question,
+                user_type=self._user_type
+            )
+            base_answer["enrichment"] = enriched.to_dict()
+            base_answer["enriched"] = True
+            return base_answer
+        except Exception as e:
+            logger.warning(f"Enrichment failed (returning base answer): {e}")
+            base_answer["enriched"] = False
+            return base_answer
+
+    def _apply_prose_review(self, base_answer: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply prose revision diagnostics to answer text if enabled.
+
+        Runs the 3-pass revision protocol (Doumont structural, Lanham+Williams
+        sentence-level, Pinker knowledge-curse) on the answer's text content.
+        Adds a 'prose_review' field with score, verdict, and top suggestions.
+
+        Args:
+            base_answer: Answer dict from handler or AI router
+
+        Returns:
+            Same base_answer with prose_review field added
+        """
+        if not _HAS_PROSE_REVIEWER or not self._enable_prose_review:
+            base_answer["prose_reviewed"] = False
+            return base_answer
+
+        try:
+            # Extract text from sections
+            text_parts = []
+            for section in base_answer.get("sections", []):
+                heading = section.get("heading", "")
+                if heading:
+                    text_parts.append(f"## {heading}")
+                for item in section.get("items", []):
+                    if isinstance(item, str):
+                        text_parts.append(item)
+            full_text = "\n\n".join(text_parts)
+
+            if len(full_text) < 50:
+                base_answer["prose_reviewed"] = False
+                return base_answer
+
+            report = _prose_reviewer.full_critique(full_text)
+            top_suggestions = _prose_reviewer.suggest_revisions(full_text, max_suggestions=5)
+
+            base_answer["prose_review"] = {
+                "score": round(report.overall_score, 1),
+                "verdict": report.verdict,
+                "summary": report.summary,
+                "writers_diet": report.writers_diet.as_dict() if report.writers_diet else None,
+                "lard_factor": round(report.lard_factor_estimate, 1),
+                "passive_voice_pct": round(report.passive_voice_pct, 1),
+                "nominalization_density": round(report.nominalization_density, 1),
+                "critical_issues": report.critical_count,
+                "warnings": report.warning_count,
+                "top_suggestions": [
+                    {
+                        "severity": d.severity.value,
+                        "message": d.message,
+                        "suggestion": d.suggestion,
+                        "norm": d.norm_reference,
+                    }
+                    for d in top_suggestions
+                ],
+            }
+            base_answer["prose_reviewed"] = True
+            return base_answer
+        except Exception as e:
+            logger.warning(f"Prose review failed (returning base answer): {e}")
+            base_answer["prose_reviewed"] = False
+            return base_answer
+
     def answer(self, question: str) -> Dict[str, Any]:
         """Answer any question about the system's knowledge.
 
@@ -964,6 +1738,7 @@ class ArbitraryQAHandler:
         - sections: detailed structured content
         - follow_ups: suggested follow-up questions
         - ai_generated: True if AI was used
+        - enriched: True if enrichment was applied
         """
         # Classify
         qtype, confidence = classify_question(question)
@@ -988,6 +1763,18 @@ class ArbitraryQAHandler:
             QuestionType.EFFECT_SIZE: lambda: format_effect_size_answer(question),
             QuestionType.CROSS_DOMAIN: lambda: format_cross_domain_answer(question),
             QuestionType.HISTORY: lambda: format_history_answer(question),
+            # Extraction-backed handlers
+            QuestionType.EVIDENCE_FOR: lambda: format_evidence_answer(question, "supports"),
+            QuestionType.EVIDENCE_AGAINST: lambda: format_evidence_answer(question, "against"),
+            QuestionType.MECHANISM: lambda: format_mechanism_answer(question),
+            QuestionType.COMPARISON: lambda: format_comparison_answer(question),
+            QuestionType.DEFINITION: lambda: format_definition_answer(question),
+            # Meta handlers
+            QuestionType.META_SYSTEM: lambda: format_meta_system_answer(question),
+            QuestionType.META_COVERAGE: lambda: format_meta_coverage_answer(question),
+            QuestionType.META_GAPS: lambda: format_meta_gaps_answer(question),
+            # Design guidance
+            QuestionType.DESIGN_GUIDANCE: lambda: format_design_guidance_answer(question),
         }
 
         handler = handler_map.get(qtype)
@@ -996,11 +1783,15 @@ class ArbitraryQAHandler:
             response = handler()
             response["confidence"] = confidence
             response["ai_generated"] = False
+            response = self._apply_enrichment(response, question)
+            response = self._apply_prose_review(response)
             self._track_followups(response.get("follow_ups", []))
             return response
 
         # AI-routed for everything else
         response = self._ai_answer(question, qtype, confidence)
+        response = self._apply_enrichment(response, question)
+        response = self._apply_prose_review(response)
         self._track_followups(response.get("follow_ups", []))
         return response
     
@@ -1030,14 +1821,31 @@ class ArbitraryQAHandler:
             except Exception as e:
                 logger.warning(f"AI call failed: {e}")
         
-        # Fallback: return context + searchable results
-        search_results = self.catalog.search(question.lower())
+        # Smart fallback: try extraction search before catalog
+        extraction_results = _search_findings(question, max_results=10)
         sections = []
         
-        for category, items in search_results.items():
-            if items:
+        if extraction_results:
+            items = []
+            for f in extraction_results[:8]:
+                ant = f.get("antecedent", "?")
+                cons = f.get("consequent", "?")
+                direction = f.get("direction", "?")
+                doi = f.get("_source_doi", "")
+                title = f.get("_source_title", "")
+                line = f"**{ant}** → {cons} ({direction})"
+                line += f"\n  Source: {doi}"
+                if title:
+                    line += f" — *{title[:60]}*"
+                items.append(line)
+            sections.append({"heading": f"Related Findings ({len(extraction_results)} matches)", "items": items})
+        
+        # Also check catalog
+        search_results = self.catalog.search(question.lower())
+        for category, cat_items in search_results.items():
+            if cat_items:
                 section_items = []
-                for item in items[:5]:
+                for item in cat_items[:5]:
                     if isinstance(item, dict):
                         name = item.get("name", item.get("dimension", str(item)))
                         summary = item.get("summary", item.get("pattern", ""))
@@ -1050,9 +1858,8 @@ class ArbitraryQAHandler:
             sections = [{
                 "heading": "Answer",
                 "items": [
-                    "This question requires AI analysis. Relevant context has been assembled.",
-                    f"Context contains {len(context)} chars from the knowledge catalog.",
-                    "To get a full answer, connect an LLM (gemini-2.5-flash recommended).",
+                    "No matching data found in the extraction corpus or catalog.",
+                    "Try rephrasing with different keywords.",
                 ],
             }]
         

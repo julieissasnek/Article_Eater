@@ -32,7 +32,7 @@
       "p_value": "<0.001",
       "effect_size": 115.63,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -49,7 +49,8 @@
       "outcome_id": "env.spaciousness",
       "outcome_domain": "env",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -976,66 +977,66 @@
   "minimum_safe_summary": "This empirical study investigated physical, social, and personal determinants of crowding perception in a laboratory setting. It found that smaller room size significantly increased perceived crowding, restriction, and confinement, and decreased patience. A cooperative task set generally reduced perceived crowding, anxiety, and increased game enjoyment, though it paradoxically increased perceived room confinement and attributed aggressiveness to others. Sex of subject moderated several effects: males perceived themselves more aggressive in small rooms, while females felt more aggressive in large rooms. Females generally perceived rooms as quieter and recalled more names than males. The study highlights that crowding is an experiential state influenced by interactions between spatial, social, and personal factors, rather than just density. Limitations include the artificiality of the lab setting and challenges in interpreting behavioral responses like laughter as coping mechanisms versus other social cues.",
   "stimulus_description": {
     "environmental_features": [
-      "room size",
-      "number of occupants",
-      "spatial density"
+      "room size (small vs. large)",
+      "group size (e.g., 4 vs. 8 people)"
     ],
-    "duration_exposure": "short experimental session (e.g., 15-30 minutes)",
+    "duration_exposure": "typically 15-30 minutes per experimental session",
     "control_conditions": [
       "larger room size",
-      "fewer occupants",
-      "lower spatial density"
+      "fewer people in the room"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Crowding Theory (general)",
+      "theory_name": "Conceptual Model of Crowding",
       "commitment_type": "proposes",
-      "specific_claim": "Perceived crowding is a multi-faceted phenomenon determined by physical, social, and personal factors, not merely objective density."
+      "specific_claim": "Perceived crowding is a subjective experience determined by the interplay of physical (e.g., density), social (e.g., group composition), and personal (e.g., personality) factors."
     }
   ],
   "mechanism_chain": {
-    "description": "Small room size leads to increased spatial density, which can reduce perceived control and personal space, leading to negative affect and the subjective experience of crowding.",
+    "description": "Small room size increases physical density, which can lead to perceived crowding by restricting movement and invading personal space, thereby eliciting feelings of confinement and discomfort.",
     "steps": [
       {
         "step": 1,
         "from_construct": "small room size",
-        "to_construct": "increased spatial density",
+        "to_construct": "increased physical density",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "increased spatial density",
-        "to_construct": "reduced perceived control / personal space",
-        "mechanism_type": "cognitive|perceptual",
-        "evidence_strength": "theoretical"
+        "from_construct": "increased physical density",
+        "to_construct": "restricted movement and personal space invasion",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "reduced perceived control / personal space",
-        "to_construct": "negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 4,
-        "from_construct": "negative affect",
+        "from_construct": "restricted movement and personal space invasion",
         "to_construct": "perceived crowding",
-        "mechanism_type": "cognitive|affective",
-        "evidence_strength": "theoretical"
+        "mechanism_type": "affective|cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Perceived Crowding Scale",
+      "name": "Crowding Scale",
       "construct": "perceived crowding",
-      "description": "Self-report questionnaire measuring subjective feelings of restriction, confinement, and discomfort.",
+      "description": "Self-report questionnaire measuring feelings of being restricted, crowded, and confined.",
+      "type": "self_report"
+    },
+    {
+      "name": "Mood Adjective Checklist",
+      "construct": "affective state (e.g., discomfort, anxiety)",
+      "description": "Self-report scale assessing various mood dimensions.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:58.457661+00:00"
+  "surgical_update_at": "2026-03-02T22:41:34.531517+00:00",
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

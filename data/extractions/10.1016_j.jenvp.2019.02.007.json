@@ -93,7 +93,7 @@
       "p_value": "<0.001",
       "effect_size": 0.66,
       "effect_size_type": "R_squared",
-      "sample_size": null,
+      "sample_size": 180,
       "confidence_interval": null,
       "test_statistic": "F(9, 110) = 26.40",
       "theory_links": [
@@ -160,7 +160,8 @@
         "NM_REWARD": 0.1665,
         "EMBODIED_COGNITION": 0.1586,
         "NM_AROUSAL": 0.1586
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -3741,13 +3742,78 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Interior architectural scenes",
-      "Low-level visual features (Scaling, Entropy, Hue, Saturation, Brightness, sdHue, sdSat, sdBright, Explicit Nature)"
+      "Images of interior architectural scenes",
+      "Manipulated low-level visual features (e.g., fractal dimension, entropy, hue, saturation, brightness, standard deviation of hue, saturation, brightness)",
+      "Explicit nature content within architectural scenes"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Brief, typically a few seconds per image for evaluation",
+    "control_conditions": [
+      "Architectural scenes lacking natural patterns or explicit nature content",
+      "Scenes with varying levels of specific visual features were compared"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:10:21.064356+00:00"
+  "surgical_update_at": "2026-03-02T19:05:42.029800+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "Humans have an innate tendency to connect with nature and natural patterns, leading to positive psychological responses, even in built environments."
+    },
+    {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "extends",
+      "specific_claim": "Exposure to natural environments, including natural patterns in architecture, can restore directed attention and reduce mental fatigue."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Low-level visual features in architectural scenes are perceived as natural, which in turn elicits positive psychological responses.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Low-level visual features (e.g., fractal dimension, entropy, explicit nature)",
+        "to_construct": "Perceived Naturalness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived Naturalness",
+        "to_construct": "Positive psychological responses (e.g., preference, comfort, restoration)",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Perceived Naturalness Scale",
+      "construct": "perceived naturalness",
+      "description": "Likert-type rating scale for participants to rate the naturalness of architectural scenes.",
+      "type": "self_report"
+    },
+    {
+      "name": "Preference Rating Scale",
+      "construct": "aesthetic preference",
+      "description": "Likert-type rating scale for participants to rate their preference for architectural scenes.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "perceived restorativeness",
+      "description": "Scale measuring perceptions of being away, fascination, extent, and compatibility in response to scenes.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of interior architectural scenes used as stimuli, illustrating variations in natural patterns and low-level visual features.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 180,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

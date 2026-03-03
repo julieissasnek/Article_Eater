@@ -4922,7 +4922,7 @@
       "claim_type": "synthesized",
       "measure_type": null,
       "p_value": "significant",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": "R_squared",
       "sample_size": null,
       "confidence_interval": null,
@@ -4994,7 +4994,9 @@
         "NM": 0.1888,
         "NEUROMODULATORY": 0.1877,
         "CROSS_FRAMEWORK": 0.1861
-      }
+      },
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 61,
@@ -6701,7 +6703,7 @@
       "claim_type": "synthesized",
       "measure_type": null,
       "p_value": "significant",
-      "effect_size": 0.04,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -6782,7 +6784,9 @@
         "NM_STRESS": 0.2024,
         "CHRONOBIOLOGICAL": 0.1893,
         "NEUROMODULATORY": 0.1893
-      }
+      },
+      "_original_effect_size": 0.04,
+      "_quarantine_reason": "Value 0.04 appears to be a p-value, not an effect size"
     },
     {
       "id": 82,
@@ -7562,7 +7566,7 @@
       "I_squared": null,
       "tau_squared": null,
       "key_citations": [
-        "Maréchal [117]"
+        "Mar\u00e9chal [117]"
       ],
       "template_matches": [
         {
@@ -8613,38 +8617,57 @@
     {
       "theory_name": "Theory of Planned Behavior (TPB)",
       "commitment_type": "assumes",
-      "specific_claim": "Attitudes, subjective norms, and perceived behavioral control predict behavioral intentions, which in turn predict actual occupant behaviors related to energy use and interaction with building systems."
+      "specific_claim": "Occupant behavior in buildings is influenced by attitudes, subjective norms, and perceived behavioral control, which collectively predict behavioral intentions and subsequent actions."
     },
     {
       "theory_name": "Social Cognitive Theory (SCT)",
       "commitment_type": "assumes",
-      "specific_claim": "Self-efficacy, outcome expectations, and observational learning are key determinants of occupant behavior in buildings, including interactions with building systems."
+      "specific_claim": "Occupant behavior is shaped by a reciprocal interaction between personal factors (e.g., self-efficacy), environmental factors (e.g., building systems), and behavioral factors (e.g., past actions)."
     },
     {
       "theory_name": "Norm Activation Model (NAM)",
       "commitment_type": "assumes",
-      "specific_claim": "Pro-environmental behavior in buildings is influenced by awareness of consequences and ascription of responsibility, leading to personal norms."
+      "specific_claim": "Pro-environmental occupant behaviors are activated when individuals are aware of the consequences of their actions for others and ascribe responsibility for those consequences to themselves, leading to personal norms."
+    },
+    {
+      "theory_name": "Value-Belief-Norm (VBN) Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Environmental behaviors, including those in buildings, stem from an individual's fundamental values, which influence their ecological worldview, awareness of consequences, and ascription of responsibility, ultimately leading to personal norms and pro-environmental actions."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper synthesizes mechanisms from various behavioral theories, primarily focusing on how psychological antecedents (e.g., attitudes, norms, self-efficacy) lead to intentions and subsequently to occupant behaviors in buildings.",
+    "description": "A common mechanism chain discussed in the context of energy-saving behavior in buildings, often drawing from theories like the Theory of Planned Behavior.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Psychological antecedents (e.g., attitudes, subjective norms, perceived behavioral control, self-efficacy)",
-        "to_construct": "Behavioral intentions (e.g., intentions to save energy, interact with building systems)",
+        "from_construct": "Information feedback on energy consumption",
+        "to_construct": "Awareness of energy use and its impact",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Behavioral intentions",
-        "to_construct": "Actual occupant behaviors (e.g., energy-saving actions, interaction with thermostats, window opening)",
+        "from_construct": "Awareness of energy use and its impact",
+        "to_construct": "Formation of energy-saving attitudes and subjective norms",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Energy-saving attitudes and subjective norms",
+        "to_construct": "Intention to save energy",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Intention to save energy",
+        "to_construct": "Actual energy-saving behavior (e.g., adjusting thermostat, turning off lights)",
         "mechanism_type": "behavioral",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:11.359979+00:00"
+  "surgical_update_at": "2026-03-02T23:26:31.785876+00:00"
 }

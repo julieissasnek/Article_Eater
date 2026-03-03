@@ -1572,35 +1572,42 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Photographs and rendered images of various materials (e.g., plastic, metal, fabric, stone, wood)",
-      "Materials often presented as objects (e.g., spheres, crumpled paper, natural objects)",
-      "Lighting conditions were controlled or varied to manipulate visual cues"
+      "Photographs of various real-world materials (e.g., velvet, plastic, wood, stone, fabric, fruit, metal, water, liquids, powders, cloth, skin, hair, leaves, food) presented on a computer screen",
+      "Manipulated lighting conditions (e.g., varying light source direction, diffuse vs. specular illumination)",
+      "Variations in material properties (e.g., glossiness, translucency, texture, color)"
     ],
-    "duration_exposure": "brief presentations",
+    "duration_exposure": "typically brief, ranging from 100 ms to 500 ms",
     "control_conditions": [
-      "Variations in material properties (e.g., glossiness, roughness, translucency)",
-      "Variations in lighting direction and intensity",
-      "Variations in object shape",
-      "Comparison between real photographs and synthetic renderings"
+      "Comparison of different material types",
+      "Comparison of different lighting conditions",
+      "Comparison of different presentation durations",
+      "Comparison of real photographs vs. synthetic renderings"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:28:33.006832+00:00",
+  "surgical_update_at": "2026-03-02T22:38:25.945763+00:00",
   "mechanism_chain": {
-    "description": "The paper investigates the causal mechanisms by which specific visual cues in images are processed by the human visual system to infer material properties and subsequently identify materials.",
+    "description": "The visual system extracts specific image cues from photographs of materials, processes these cues to infer underlying material properties, and then uses these inferred properties for material identification.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Image features (e.g., specular reflections, texture patterns, diffuse shading gradients)",
-        "to_construct": "Perception of fundamental material properties (e.g., glossiness, roughness, translucency)",
+        "from_construct": "Visual cues in image (e.g., specular highlights, texture gradients, translucency patterns, color)",
+        "to_construct": "Extraction and processing of image features by early visual areas",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Perception of fundamental material properties",
-        "to_construct": "Material identification (e.g., 'plastic', 'metal', 'wood')",
+        "from_construct": "Processed image features",
+        "to_construct": "Integration of cues and inference of material properties (e.g., glossiness, roughness, transparency, rigidity)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Inferred material properties",
+        "to_construct": "Material identification or categorization",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -1608,23 +1615,42 @@
   },
   "instruments_used": [
     {
-      "name": "Computer display",
-      "construct": "Visual stimulus presentation",
-      "description": "High-resolution monitor used to present material images to participants.",
+      "name": "Computer monitor",
+      "construct": "Stimulus presentation",
+      "description": "Used to display photographs of materials to participants.",
       "type": "other"
     },
     {
-      "name": "Response device (e.g., keyboard or mouse)",
-      "construct": "Behavioral response recording",
-      "description": "Used by participants to input their material identification judgments or property ratings.",
+      "name": "Keyboard/Mouse",
+      "construct": "Participant response",
+      "description": "Used by participants to make forced-choice selections or provide ratings for material identification and property judgments.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Accuracy/Error rate measurement",
+      "construct": "Material identification performance",
+      "description": "Software-based recording of correct/incorrect material identifications.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Reaction time measurement",
+      "construct": "Speed of material identification",
+      "description": "Software-based recording of response latencies.",
       "type": "behavioral"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Examples of the material stimuli used, including photographs and rendered images, often illustrating variations in material properties (e.g., gloss, texture) or lighting conditions.",
-      "figure_ref": null,
+      "description": "Examples of material photographs used as stimuli, often showing variations in material type and lighting conditions.",
+      "figure_ref": "Figure 1, Figure 2, Figure 3",
       "image_type": "stimulus_set"
+    },
+    {
+      "description": "Examples of rendered materials or photographs manipulated to isolate specific visual cues (e.g., specular highlights for gloss, texture patterns).",
+      "figure_ref": "Figure 4, Figure 5",
+      "image_type": "rendering"
     }
-  ]
+  ],
+  "paper_sample_size": 15,
+  "paper_sample_size_source": "estimated"
 }

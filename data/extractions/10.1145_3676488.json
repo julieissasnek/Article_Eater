@@ -66,10 +66,13 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.001",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.75,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 24,
+      "confidence_interval": [
+        0.3,
+        1.2
+      ],
       "test_statistic": "x²(1) = 184.61",
       "theory_links": [
         "MSI",
@@ -141,7 +144,8 @@
         "IC": 0.1682,
         "MS": 0.1682,
         "METHODOLOGICAL": 0.1636
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1336,15 +1340,12 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Ultrasound mid-air haptic feedback",
-      "Virtual objects representing various materials (e.g., wood, metal, rubber)",
-      "Virtual objects representing various temperatures (e.g., hot, cold, neutral)",
-      "Visual rendering of virtual objects"
+      "Virtual objects with varying visual textures and colors (e.g., wood, metal, fabric, rubber)",
+      "Mid-air ultrasound haptic feedback simulating material properties (roughness, stiffness) and temperature (hot, cold, neutral)"
     ],
-    "duration_exposure": "brief, per trial (e.g., a few seconds per object interaction)",
+    "duration_exposure": "Short, per-trial interaction with virtual objects (typically a few seconds per interaction)",
     "control_conditions": [
-      "Visual Only (no haptic feedback)",
-      "Visuo-Haptic (visual + ultrasound haptic feedback)"
+      "Visual Only (VR without haptic feedback)"
     ],
     "ecological_validity": "lab"
   },
@@ -1382,7 +1383,7 @@
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:41:14.245582+00:00",
+  "surgical_update_at": "2026-03-02T19:09:52.608438+00:00",
   "theory_commitments": [
     {
       "theory_name": "Multisensory Integration",
@@ -1397,29 +1398,37 @@
   ],
   "instruments_used": [
     {
-      "name": "Custom rating scales",
-      "construct": "Perceived material properties (e.g., roughness, stiffness, texture), perceived temperature, perceived congruency, realism, presence",
-      "description": "Likert-type scales or semantic differential scales administered via questionnaire.",
+      "name": "Ultraleap STRATOS Inspire",
+      "construct": "Mid-air haptic feedback",
+      "description": "An array of ultrasonic transducers generating focused acoustic radiation pressure to create tactile sensations in mid-air.",
+      "type": "other"
+    },
+    {
+      "name": "Meta Quest 2",
+      "construct": "Virtual environment display and interaction",
+      "description": "A standalone virtual reality headset providing visual and auditory immersion for the virtual environment.",
+      "type": "other"
+    },
+    {
+      "name": "Custom self-report questionnaires",
+      "construct": "Perceived material properties (roughness, stiffness), temperature, congruency, realism",
+      "description": "Likert-scale ratings collected from participants after interacting with virtual objects under different conditions.",
       "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Photo of the experimental setup, including the ultrasound haptic device and VR headset.",
+      "description": "Experimental setup showing the VR headset and the ultrasound haptic device used to deliver mid-air feedback.",
       "figure_ref": "Figure 1",
       "image_type": "photo"
     },
     {
-      "description": "Screenshots or renderings of the virtual environment and the objects participants interacted with.",
+      "description": "Screenshots or renderings of the virtual environments and objects presented to participants as stimuli.",
       "figure_ref": "Figure 2",
       "image_type": "rendering"
-    },
-    {
-      "description": "Diagram illustrating the principles of ultrasound mid-air haptic feedback or the patterns used.",
-      "figure_ref": "Figure 3",
-      "image_type": "diagram"
     }
   ],
   "paper_sample_size": 24,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

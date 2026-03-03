@@ -216,6 +216,7 @@ def test_malformed_add_evidence_never_crashes_and_preserves_invariants(
     _assert_web_invariants(web)
 
 
+@pytest.mark.slow
 def test_randomized_health_probe_invariants_stay_stable() -> None:
     rng = random.Random(1337)
     web = WebOfBelief(domain="stochastic")

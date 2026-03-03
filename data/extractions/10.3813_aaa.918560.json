@@ -1273,9 +1273,10 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Interior noise of Chinese high-speed trains",
+      "interior noise of Chinese high-speed trains",
+      "Dutch speech",
       "Chinese speech",
-      "Dutch speech"
+      "baseline quiet condition"
     ],
     "duration_exposure": null,
     "control_conditions": [
@@ -1286,11 +1287,30 @@
   "instruments_used": [
     {
       "name": "Calculation task",
-      "construct": "Arithmetic performance",
-      "description": "Task requiring arithmetic operations to measure cognitive performance",
+      "construct": "Cognitive performance",
+      "description": "A task requiring arithmetic calculations, measured by correct answer rate.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:48:03.414074+00:00"
+  "surgical_update_at": "2026-03-02T23:36:37.301448+00:00",
+  "mechanism_chain": {
+    "description": "Irrelevant speech and train noise interfere with cognitive processing by diverting attentional resources, leading to reduced task performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Environmental noise (train noise, irrelevant speech)",
+        "to_construct": "Cognitive distraction / Attentional resource depletion",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Cognitive distraction / Attentional resource depletion",
+        "to_construct": "Reduced task performance (e.g., calculation accuracy)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  }
 }

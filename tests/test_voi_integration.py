@@ -140,6 +140,7 @@ class TestQueueVOIPrioritization:
     def test_get_next_target_returns_highest_voi(self):
         """get_next_target should return target with highest VOI."""
         queue = ResearchQueueService()
+        queue._targets = {}  # Ensure clean state
 
         targets = [
             ResearchTarget(
@@ -185,6 +186,7 @@ class TestQueueVOIPrioritization:
     def test_get_next_highest_voi_target_prioritizes_by_priority_then_voi(self):
         """get_next_highest_voi_target should prioritize: priority rank > VOI > creation time."""
         queue = ResearchQueueService()
+        queue._targets = {}  # Ensure clean state
 
         high_priority_target = ResearchTarget(
             target_id="target_high_pri",

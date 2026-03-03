@@ -1515,80 +1515,111 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Artificial lighting",
       "Fluorescent lighting",
-      "LED lighting"
+      "LED lighting",
+      "Daylight-mimicking lighting systems",
+      "Tunable lighting systems",
+      "Lighting intensity (lux)",
+      "Correlated Color Temperature (CCT)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "duration_exposure": "Continuous 8-hour workday (typical for office settings, varies across reviewed studies)",
+    "control_conditions": [
+      "Standard fluorescent lighting",
+      "Fixed lighting conditions (e.g., specific CCT or intensity)",
+      "Different lighting conditions (e.g., varying CCT, intensity, or spectrum)"
+    ],
+    "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:13.980775+00:00",
+  "surgical_update_at": "2026-03-02T23:33:00.885466+00:00",
   "theory_commitments": [
     {
       "theory_name": "Circadian Rhythm Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Artificial light characteristics (spectrum, intensity, timing) influence human physiological rhythms, affecting alertness, sleep, and mood in office environments."
+      "specific_claim": "Artificial lighting, particularly its spectrum and intensity, significantly impacts human physiological rhythms, affecting sleep quality, alertness, and mood."
     },
     {
-      "theory_name": "Environmental Psychology / Perception of Light",
-      "commitment_type": "assumes",
-      "specific_claim": "Lighting characteristics (e.g., color temperature, brightness, glare) impact human perception of space, comfort, and aesthetic appeal, influencing psychological well-being and performance."
+      "theory_name": "Environmental Psychology / Light-Human Interaction Theories",
+      "commitment_type": "discusses",
+      "specific_claim": "Characteristics of artificial lighting (e.g., flicker, glare, color rendering, perceived brightness) influence visual comfort, perceived quality of the environment, and psychological well-being."
     }
   ],
   "mechanism_chain": {
-    "description": "The review synthesizes various causal mechanisms by which artificial lighting impacts human well-being and performance in office settings, including physiological and perceptual pathways.",
+    "description": "The paper synthesizes various causal mechanisms through which artificial lighting impacts human behavior and well-being in office buildings.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Artificial light characteristics (spectrum, intensity, timing)",
-        "to_construct": "Activation of retinal photoreceptors (ipRGCs)",
+        "from_construct": "Exposure to specific light spectrum and intensity (e.g., blue-rich light)",
+        "to_construct": "Modulation of melatonin secretion",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of retinal photoreceptors (ipRGCs)",
-        "to_construct": "Modulation of circadian rhythm entrainment and melatonin secretion",
+        "from_construct": "Modulation of melatonin secretion",
+        "to_construct": "Regulation of circadian rhythm and sleep-wake cycle",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Modulation of circadian rhythm entrainment and melatonin secretion",
-        "to_construct": "Changes in alertness, sleep quality, and mood",
+        "from_construct": "Regulation of circadian rhythm and sleep-wake cycle",
+        "to_construct": "Impact on alertness, mood, and cognitive performance",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Changes in alertness, sleep quality, and mood",
-        "to_construct": "Enhanced well-being and cognitive performance",
-        "mechanism_type": "affective|cognitive",
         "evidence_strength": "indirect"
       },
       {
-        "step": 5,
-        "from_construct": "Artificial light quality (e.g., glare, flicker, distribution)",
-        "to_construct": "Visual comfort/discomfort",
+        "step": 4,
+        "from_construct": "Lighting quality (e.g., flicker, glare, color rendering index)",
+        "to_construct": "Visual comfort and reduced eye strain",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
-        "step": 6,
-        "from_construct": "Visual comfort/discomfort",
-        "to_construct": "Eye strain, headaches, reduced concentration",
-        "mechanism_type": "physiological|cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 7,
-        "from_construct": "Eye strain, headaches, reduced concentration",
-        "to_construct": "Reduced well-being and productivity",
-        "mechanism_type": "affective|behavioral",
+        "step": 5,
+        "from_construct": "Visual comfort and reduced eye strain",
+        "to_construct": "Enhanced well-being and reduced fatigue",
+        "mechanism_type": "affective",
         "evidence_strength": "indirect"
       }
     ]
-  }
+  },
+  "instruments_used": [
+    {
+      "name": "Pittsburgh Sleep Quality Index (PSQI)",
+      "construct": "sleep quality",
+      "description": "Self-report questionnaire assessing sleep disturbances over a month",
+      "type": "self_report"
+    },
+    {
+      "name": "Visual Analogue Scales (VAS)",
+      "construct": "visual comfort, glare, perceived brightness, satisfaction",
+      "description": "Scales used for subjective assessment of lighting conditions and comfort",
+      "type": "self_report"
+    },
+    {
+      "name": "Cognitive performance tests",
+      "construct": "cognitive performance (e.g., reaction time, memory, attention)",
+      "description": "Various standardized tasks measuring cognitive functions",
+      "type": "behavioral"
+    },
+    {
+      "name": "Melatonin assays",
+      "construct": "melatonin levels",
+      "description": "Measurement of melatonin concentration in saliva or urine samples",
+      "type": "physiological"
+    },
+    {
+      "name": "Questionnaires on mood and well-being",
+      "construct": "mood, positive and negative affect, general well-being",
+      "description": "Standardized scales like PANAS or WHO-5",
+      "type": "self_report"
+    },
+    {
+      "name": "Light meters / Spectroradiometers",
+      "construct": "illuminance (lux), correlated color temperature (CCT), spectral power distribution",
+      "description": "Devices for objective measurement of lighting characteristics",
+      "type": "other"
+    }
+  ]
 }

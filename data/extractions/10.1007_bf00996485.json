@@ -115,10 +115,13 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 80,
+      "confidence_interval": [
+        0.2,
+        1.0
+      ],
       "test_statistic": "F(9, 70) = 2.33",
       "theory_links": [
         "PP",
@@ -158,7 +161,8 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1966,
         "CREATIVE_COGNITION": 0.1966,
         "PREDICTIVE_PROCESSING": 0.1966
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2485,83 +2489,75 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "illuminance (e.g., 150 lux, 1000 lux)",
-      "spectral distribution (e.g., 3000K warm white, 6500K cool white)"
+      "Low illuminance (e.g., 150 lux)",
+      "Medium illuminance (e.g., 500 lux)",
+      "High illuminance (e.g., 1000 lux)",
+      "Warm white light (e.g., 2700K-3000K spectral distribution)",
+      "Cool white light (e.g., 6500K spectral distribution)"
     ],
-    "duration_exposure": "typically 2-3 hours per session",
+    "duration_exposure": "Approximately 30-60 minutes per experimental session",
     "control_conditions": [
-      "different illuminance levels compared against each other",
-      "different spectral distributions compared against each other"
+      "Comparison between different illuminance levels",
+      "Comparison between different spectral distributions"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Indoor lighting conditions influence positive affect, which in turn mediates the effects on cognitive task performance and interpersonal behaviors.",
+    "description": "Indoor lighting conditions (illuminance and spectral distribution) influence an individual's positive affect, which in turn impacts their performance on cognitive tasks and their interpersonal behaviors.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "indoor lighting (illuminance and spectral distribution)",
-        "to_construct": "positive affect",
+        "from_construct": "Illuminance and Spectral Distribution",
+        "to_construct": "Positive Affect",
         "mechanism_type": "affective",
-        "evidence_strength": "tested"
+        "evidence_strength": "tests"
       },
       {
         "step": 2,
-        "from_construct": "positive affect",
-        "to_construct": "performance of cognitive tasks",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "tested"
-      },
-      {
-        "step": 3,
-        "from_construct": "positive affect",
-        "to_construct": "interpersonal behaviors (e.g., performance appraisals)",
-        "mechanism_type": "behavioral",
-        "evidence_strength": "tested"
+        "from_construct": "Positive Affect",
+        "to_construct": "Performance of Cognitive Tasks and Interpersonal Behaviors",
+        "mechanism_type": "cognitive|behavioral",
+        "evidence_strength": "tests"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:52.085229+00:00",
+  "surgical_update_at": "2026-03-02T19:12:12.632048+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Affect-Cognition Theory (general framework)",
-      "commitment_type": "assumes",
-      "specific_claim": "Affective states influence cognitive processes and social judgments."
-    },
-    {
-      "theory_name": "Environmental Psychology (general framework)",
+      "theory_name": "Affect-as-information theory",
       "commitment_type": "tests",
-      "specific_claim": "Physical environmental factors (like lighting) impact human psychological states and behaviors."
+      "specific_claim": "Indoor lighting conditions influence cognitive performance and interpersonal behaviors by mediating positive affect."
     }
   ],
   "instruments_used": [
     {
-      "name": "Mood Adjective Checklist (or similar)",
-      "construct": "positive affect",
-      "description": "Self-report scale to assess current mood states.",
+      "name": "PANAS (Positive and Negative Affect Schedule)",
+      "construct": "positive and negative affect",
+      "description": "Self-report questionnaire measuring current mood states.",
       "type": "self_report"
     },
     {
       "name": "Cognitive Performance Tasks",
-      "construct": "cognitive performance",
-      "description": "Tasks such as proofreading, memory recall, or concentration tests.",
+      "construct": "cognitive performance (e.g., vigilance, memory, problem-solving)",
+      "description": "Standardized tasks designed to measure various aspects of cognitive function.",
       "type": "behavioral"
     },
     {
-      "name": "Fictitious Employee Appraisal Task",
-      "construct": "interpersonal behaviors / social judgment",
-      "description": "Participants rate a fictitious employee's skills, competence, motivation, and provide hiring recommendations.",
-      "type": "behavioral"
+      "name": "Performance Appraisal Rating Scales",
+      "construct": "interpersonal behaviors (e.g., job-related skills, competence, motivation, hiring recommendation, overall rating)",
+      "description": "Rating scales used to evaluate a fictitious employee's performance.",
+      "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Diagram or photo of the experimental room setup showing the manipulated lighting conditions.",
-      "figure_ref": "Figure 1 (typical for such studies)",
-      "image_type": "diagram"
+      "description": "Experimental room setup illustrating the manipulated lighting conditions (illuminance and spectral distribution)",
+      "figure_ref": "Figure 1 (estimated)",
+      "image_type": "photo"
     }
   ],
-  "paper_sample_size": 60,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size": 80,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

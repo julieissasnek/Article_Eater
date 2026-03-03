@@ -17,7 +17,7 @@
       "experiment_1": 26,
       "experiment_2": 20
     },
-    "participant_demographics": "Experiment 1: 26 participants (19-35 years old, mean ± SD age 28 ± 5 years; 18 males). Experiment 2: 20 participants (22-42 years old, mean ± SD age = 29 ± 6; 12 males; 5 also participated in experiment 1).",
+    "participant_demographics": "Experiment 1: 26 participants (19-35 years old, mean \u00b1 SD age 28 \u00b1 5 years; 18 males). Experiment 2: 20 participants (22-42 years old, mean \u00b1 SD age = 29 \u00b1 6; 12 males; 5 also participated in experiment 1).",
     "study_design": "Two fMRI experiments using a BOLD adaptation paradigm. Experiment 1: 2x2 factorial design comparing adaptation to a moving object near another person's real hand vs. a prosthetic hand, following identical visual stimulation near the participant's own hand. Experiment 2: Bidirectional adaptation design (stimulation near own hand then other's hand, and vice versa), with control conditions for stimulation only near own/other's hand and a far position.",
     "measures": "Blood oxygen level-dependent (BOLD) signal, Adaptation Index (difference in contrast estimate).",
     "analysis_approach": "fMRI data analyzed with SPM8. First-level analyses defined regressors for 3s stimulation periods. Second-level random-effects group analysis. Significance threshold p < 0.05 FWE-corrected, small-volume corrections for PMv.",
@@ -33,12 +33,9 @@
       "claim_type": null,
       "measure_type": null,
       "p_value": 0.015,
-      "effect_size": {
-        "value": 3.95,
-        "type": "T"
-      },
+      "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 18,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -105,7 +102,13 @@
         "IC": 0.1589,
         "MS": 0.1589,
         "PP": 0.1589
-      }
+      },
+      "sample_size_source": "reported",
+      "_original_effect_size": {
+        "value": 3.95,
+        "type": "T"
+      },
+      "_quarantine_reason": "Effect size is not numeric: {'value': 3.95, 'type': 'T'}"
     },
     {
       "id": 2,
@@ -115,12 +118,9 @@
       "claim_type": null,
       "measure_type": null,
       "p_value": "<0.001",
-      "effect_size": {
-        "value": 3.25,
-        "type": "T"
-      },
+      "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 18,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -185,7 +185,13 @@
         "IC": 0.1573,
         "MS": 0.1573,
         "PP": 0.1573
-      }
+      },
+      "sample_size_source": "reported",
+      "_original_effect_size": {
+        "value": 3.25,
+        "type": "T"
+      },
+      "_quarantine_reason": "Effect size is not numeric: {'value': 3.25, 'type': 'T'}"
     },
     {
       "id": 3,
@@ -195,12 +201,9 @@
       "claim_type": null,
       "measure_type": null,
       "p_value": 0.047,
-      "effect_size": {
-        "value": 3.73,
-        "type": "T"
-      },
+      "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 18,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -271,7 +274,13 @@
         "PREDICTIVE_PROCESSING": 0.1621,
         "DMN_TPN_DYNAMICS": 0.1528,
         "SPATIAL_NAVIGATION": 0.1525
-      }
+      },
+      "sample_size_source": "reported",
+      "_original_effect_size": {
+        "value": 3.73,
+        "type": "T"
+      },
+      "_quarantine_reason": "Effect size is not numeric: {'value': 3.73, 'type': 'T'}"
     },
     {
       "id": 4,
@@ -281,12 +290,9 @@
       "claim_type": null,
       "measure_type": null,
       "p_value": 0.016,
-      "effect_size": {
-        "value": 3.77,
-        "type": "T"
-      },
+      "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 18,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -353,7 +359,13 @@
         "IC": 0.1617,
         "MS": 0.1617,
         "PP": 0.1617
-      }
+      },
+      "sample_size_source": "reported",
+      "_original_effect_size": {
+        "value": 3.77,
+        "type": "T"
+      },
+      "_quarantine_reason": "Effect size is not numeric: {'value': 3.77, 'type': 'T'}"
     }
   ],
   "domains": [
@@ -388,7 +400,7 @@
       "affiliation": null
     },
     {
-      "name": "H. Henrik Ehrsson",
+      "name": "H.\u00a0Henrik Ehrsson",
       "orcid": null,
       "affiliation": null
     }
@@ -411,7 +423,7 @@
       "Claudio Brozzoli",
       "Giovanni Gentile",
       "Loretxu Bergouignan",
-      "H. Henrik Ehrsson"
+      "H.\u00a0Henrik Ehrsson"
     ],
     "year": 2013,
     "journal": "Current Biology",
@@ -469,16 +481,18 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Moving visual object",
-      "Presence of a real human hand (participant's or another person's)",
-      "Stimulation (visual or tactile) in the peripersonal space around hands"
+      "moving visual object (e.g., sphere or cylinder)",
+      "real human hand",
+      "dummy hand"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, trial-based (typical fMRI stimulus presentation)",
     "control_conditions": [
-      "Stimuli presented near participant's own hand",
-      "Stimuli presented near another person's hand",
-      "Stimuli presented in peripersonal space",
-      "Stimuli presented in extrapersonal space"
+      "moving object far from hand",
+      "moving object near participant's own hand",
+      "moving object near another person's hand",
+      "moving object near a dummy hand",
+      "tactile stimulation to participant's hand",
+      "no tactile stimulation"
     ],
     "ecological_validity": "lab"
   },
@@ -486,17 +500,70 @@
     {
       "theory_name": "Peripersonal Space (PPS) representation",
       "commitment_type": "tests",
-      "specific_claim": "The human brain, specifically the premotor cortex, represents the space near others in a similar way to the space near oneself."
+      "specific_claim": "The neural representation of peripersonal space extends to include the space near other individuals."
+    },
+    {
+      "theory_name": "Body Representation",
+      "commitment_type": "extends",
+      "specific_claim": "Body representation in the brain is not limited to one's own body but can incorporate others' bodies, particularly in the context of peripersonal space."
     }
   ],
   "instruments_used": [
     {
-      "name": "fMRI",
-      "construct": "Brain activity (BOLD signal)",
-      "description": "Functional Magnetic Resonance Imaging to measure blood-oxygen-level-dependent signal changes in the brain.",
+      "name": "fMRI scanner",
+      "construct": "brain activity (BOLD signal)",
+      "description": "Used to measure blood-oxygen-level-dependent (BOLD) signals in the brain.",
       "type": "fmri"
+    },
+    {
+      "name": "Visual stimulus presentation system",
+      "construct": "visual stimuli",
+      "description": "Projector and screen system for presenting moving objects.",
+      "type": "other"
+    },
+    {
+      "name": "Tactile stimulator",
+      "construct": "tactile sensation",
+      "description": "Device for delivering brief tactile stimulation to the hand.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:06:39.575198+00:00"
+  "surgical_update_at": "2026-03-02T22:48:02.087874+00:00",
+  "mechanism_chain": {
+    "description": "Visual stimuli near a hand activate neurons in the ventral premotor cortex (PMv). When similar stimuli are presented repeatedly or in related contexts (e.g., near self then near other), these neurons show adaptation, indicating a shared neural representation of peripersonal space.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "visual stimulus near hand",
+        "to_construct": "activation of PMv neurons",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "repeated/related visual stimuli near self/other",
+        "to_construct": "BOLD adaptation in PMv",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "BOLD adaptation in PMv for self and other",
+        "to_construct": "shared neural representation of peripersonal space",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Experimental setup showing a participant's hand, another person's hand, and a moving visual stimulus (sphere/cylinder) in various proximity conditions.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 18,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 4
 }

@@ -55,11 +55,14 @@
       "direction": "decrease",
       "claim_type": "associational",
       "measure_type": "behavioral",
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
+      "p_value": 0.012,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
       "sample_size": 712,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.15,
+        0.95
+      ],
       "test_statistic": null,
       "theory_links": [
         "SN"
@@ -3149,5 +3152,97 @@
     "date": "2026-03-01T06:45:35.747297+00:00"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:43:15.035273+00:00"
+  "surgical_update_at": "2026-03-02T23:36:27.826606+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "virtual urban environments",
+      "varying street network complexity (e.g., grid vs. organic)",
+      "presence and salience of landmarks",
+      "visual clutter levels"
+    ],
+    "duration_exposure": "variable, depending on navigation task (e.g., 5-15 minutes per task)",
+    "control_conditions": [
+      "different urban layout configurations",
+      "environments with vs. without prominent landmarks",
+      "environments with varying levels of visual information"
+    ],
+    "ecological_validity": "semi-naturalistic"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Complex urban environments increase cognitive load, negatively impacting wayfinding performance."
+    },
+    {
+      "theory_name": "Theory of Environmental Legibility (Lynch)",
+      "commitment_type": "assumes",
+      "specific_claim": "The legibility of an urban environment (e.g., through paths, edges, districts, nodes, landmarks) influences an individual's ability to navigate and form cognitive maps."
+    },
+    {
+      "theory_name": "Spatial Cognition Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Investigates how specific urban design elements influence the formation and utilization of spatial knowledge for navigation."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Urban environmental features influence wayfinding behavior through cognitive processes such as cognitive load and spatial updating.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "urban environment complexity (e.g., street network density, visual clutter)",
+        "to_construct": "cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "cognitive load",
+        "to_construct": "spatial updating efficiency",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "spatial updating efficiency",
+        "to_construct": "wayfinding navigation time and errors",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Navigation Task Performance",
+      "construct": "wayfinding efficiency and accuracy",
+      "description": "Measures included navigation time, path length, number of wrong turns, and successful task completion rate in a virtual environment.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-Reported Spatial Anxiety Scale",
+      "construct": "spatial anxiety",
+      "description": "A questionnaire assessing participants' feelings of anxiety or stress related to spatial tasks and navigation.",
+      "type": "self_report"
+    },
+    {
+      "name": "Mental Workload Questionnaire (e.g., NASA-TLX subscales)",
+      "construct": "perceived cognitive load",
+      "description": "Self-report measures of mental demand, effort, and frustration experienced during wayfinding tasks.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Screenshots of the virtual urban environments used as stimuli, showing different street layouts and landmark placements.",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the different street network patterns (e.g., grid, radial, organic) designed for the study.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 85,
+  "paper_sample_size_source": "reported"
 }

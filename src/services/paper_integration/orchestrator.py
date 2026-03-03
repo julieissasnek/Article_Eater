@@ -320,6 +320,8 @@ class PaperIntegrationOrchestrator:
         # POST-INTEGRATION: Trigger overseer health check (added 2026-02-27)
         if not abort:
             self._run_overseer_post_check(paper_id, self._event)
+            # POST-INTEGRATION: Run QA assessment on newly-created beliefs (added 2026-03-02)
+            self._run_qa_assessment(paper_id, self._mapped_beliefs)
 
         return self._event
 
@@ -390,6 +392,83 @@ class PaperIntegrationOrchestrator:
                 )
         except Exception as e:
             logger.debug("Overseer post-integration check unavailable: %s", e)
+
+    def _run_qa_assessment(
+        self, paper_id: str, beliefs: List[Dict[str, Any]]
+    ) -> None:
+        """
+        Trigger QA assessment (confounder risk + credence intervals) on newly-created
+        beliefs for the integrated paper. Runs defensively — failures are logged but
+        do not affect the integration result.
+
+        Added: 2026-03-02 for QA module integration.
+        """
+        if not beliefs:
+            logger.debug("No beliefs to assess for paper %s", paper_id)
+            return
+
+        try:
+            from src.services.pipeline_qa_integration import assess_paper_beliefs
+            from pathlib import Path
+
+            # Locate QA output directory
+            data_dir = Path(__file__).resolve().parent.parent.parent.parent / "data"
+            qa_output_dir = data_dir / "qa_reports"
+
+            qa_result = assess_paper_beliefs(
+                paper_id=paper_id,
+                beliefs=beliefs,
+                output_dir=str(qa_output_dir),
+            )
+
+            if qa_result.get("status") == "success":
+                logger.info(
+                    "QA assessment for paper %s: %d beliefs, %d high-risk",
+                    paper_id,
+                    len(beliefs),
+                    qa_result.get("high_risk_count", 0),
+                )
+
+                # Log any recommendations
+                recommendations = qa_result.get("recommendations", [])
+                if recommendations:
+                    for rec in recommendations:
+                        logger.warning("QA recommendation: %s", rec)
+
+                    # Queue notifications for high-risk findings
+                    if qa_result.get("high_risk_count", 0) > 0:
+                        try:
+                            from src.services.notification_service import (
+                                notify, NotificationType, Severity,
+                            )
+                            notify(
+                                NotificationType.HEALTH_ALERT,
+                                Severity.WARNING,
+                                f"Paper {paper_id}: {qa_result.get('high_risk_count', 0)} high-risk confounding beliefs",
+                                "\n".join(recommendations),
+                                context={"paper_id": paper_id, "qa_type": "confounder_risk"},
+                                send_email=False,
+                            )
+                        except Exception as e:
+                            logger.debug(f"Notification service unavailable for QA: {e}")
+
+            elif qa_result.get("status") == "error":
+                logger.warning(
+                    "QA assessment for paper %s failed: %s",
+                    paper_id,
+                    qa_result.get("error"),
+                )
+            else:
+                logger.debug(
+                    "QA assessment for paper %s skipped (status=%s)",
+                    paper_id,
+                    qa_result.get("status"),
+                )
+
+        except ImportError:
+            logger.debug("QA integration module not available; skipping assessment")
+        except Exception as e:
+            logger.warning("QA assessment failed for paper %s: %s", paper_id, e)
 
     def rollback_paper(self, paper_id: str, reason: str = "") -> PaperIntegrationEvent:
         """Convenience method: roll back a paper's integration."""
@@ -668,24 +747,57 @@ class PaperIntegrationOrchestrator:
                 paper_id = belief.get("paper_id", "")
                 paper_ids_json = json.dumps([paper_id]) if paper_id else "[]"
 
-                cursor.execute("""
-                    INSERT OR REPLACE INTO beliefs
-                    (belief_id, web_id, content, credence_value, credence_uncertainty,
-                     level, status, paper_id, paper_ids, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    belief["belief_id"],
-                    "master",
-                    belief.get("statement", belief.get("content", "")),
-                    credence_val,
-                    uncertainty_val,
-                    belief.get("epistemic_level", belief.get("level", "EMPIRICAL")),
-                    "ACCEPTED",
-                    paper_id,
-                    paper_ids_json,
-                    now_ts,
-                    now_ts,
-                ))
+                # Serialize scope conditions if available (Sprint 6: Scope Persistence)
+                scope_json = None
+                source_claim = belief.get("source")
+                if source_claim and isinstance(source_claim, dict):
+                    try:
+                        from src.services.extraction_to_web import _extract_scope
+                        scope_obj = _extract_scope(source_claim)
+                        scope_json = json.dumps(scope_obj.to_dict())
+                    except Exception:
+                        pass  # Graceful degradation if scope extraction fails
+
+                try:
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO beliefs
+                        (belief_id, web_id, content, credence_value, credence_uncertainty,
+                         level, status, paper_id, paper_ids, scope, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        belief["belief_id"],
+                        "master",
+                        belief.get("statement", belief.get("content", "")),
+                        credence_val,
+                        uncertainty_val,
+                        belief.get("epistemic_level", belief.get("level", "EMPIRICAL")),
+                        "ACCEPTED",
+                        paper_id,
+                        paper_ids_json,
+                        scope_json,
+                        now_ts,
+                        now_ts,
+                    ))
+                except sqlite3.OperationalError:
+                    # Fallback for databases without scope column
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO beliefs
+                        (belief_id, web_id, content, credence_value, credence_uncertainty,
+                         level, status, paper_id, paper_ids, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        belief["belief_id"],
+                        "master",
+                        belief.get("statement", belief.get("content", "")),
+                        credence_val,
+                        uncertainty_val,
+                        belief.get("epistemic_level", belief.get("level", "EMPIRICAL")),
+                        "ACCEPTED",
+                        paper_id,
+                        paper_ids_json,
+                        now_ts,
+                        now_ts,
+                    ))
 
                 # Record belief version for rollback support
                 self._record_belief_version(cursor, belief)

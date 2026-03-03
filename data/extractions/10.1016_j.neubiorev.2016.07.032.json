@@ -1842,14 +1842,75 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Optic flow fields",
-      "Independently moving objects (IMOs)",
-      "IMOs that are large and obscure the focus of expansion (FOE)"
+      "computer-generated visual displays simulating self-motion (optic flow)",
+      "independently moving objects (IMOs) presented within the visual field"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "conditions without independently moving objects",
+      "conditions with varying characteristics of IMOs (e.g., size, speed, retinal location)"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:10:31.737016+00:00"
+  "surgical_update_at": "2026-03-02T19:10:20.464283+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Optic Flow Theory of Self-Motion Perception",
+      "commitment_type": "extends",
+      "specific_claim": "The paper extends existing optic flow theories by modeling how the visual system perceives heading and path in the presence of independently moving objects, which can complicate or interfere with standard optic flow processing."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The causal mechanism by which the visual system processes optic flow and independently moving object information to determine perceived heading and path, including potential strategies for segregating or integrating these cues.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Global optic flow pattern on the retina",
+        "to_construct": "Initial estimation of self-motion (heading and path)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Presence and motion of independently moving objects (IMOs)",
+        "to_construct": "Modulation or segregation of IMO motion from the global optic flow to refine self-motion estimation",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Integrated or segregated motion cues",
+        "to_construct": "Final perceived heading and path",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Computer display",
+      "construct": "Visual stimuli presentation",
+      "description": "High-resolution monitor used to present dynamic visual stimuli (optic flow and IMOs) to participants.",
+      "type": "other"
+    },
+    {
+      "name": "Response device (e.g., keyboard, joystick)",
+      "construct": "Perceived heading judgment",
+      "description": "Input device used by participants to indicate their perceived heading direction or path.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of visual stimuli depicting optic flow fields, with and without independently moving objects, as presented to participants or used in simulations.",
+      "figure_ref": null,
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the geometric setup of the simulated environment or the parameters of optic flow and object motion.",
+      "figure_ref": null,
+      "image_type": "diagram"
+    }
+  ]
 }

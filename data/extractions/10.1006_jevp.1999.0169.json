@@ -1931,16 +1931,91 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Adjustable artificial lighting",
-      "Task lighting",
-      "Overhead lighting"
+      "Dimmable fluorescent lighting",
+      "Fixed fluorescent lighting",
+      "Individual lighting controls",
+      "Simulated private office environment"
     ],
-    "duration_exposure": "continuous 8-hour workday",
+    "duration_exposure": "8 hours",
     "control_conditions": [
-      "No choice over lighting (fixed lighting conditions)"
+      "Fixed lighting condition (no control)",
+      "Yoked control condition (lighting changes but no personal control)"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:54:55.805298+00:00"
+  "surgical_update_at": "2026-03-02T19:04:21.585994+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Perceived Control Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Having choice and control over one's immediate environment (e.g., lighting) leads to increased perceptions of control, which can positively impact well-being, satisfaction, and potentially performance."
+    },
+    {
+      "theory_name": "Environmental Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "The physical environment significantly influences human behavior, perception, and well-being in office settings."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The availability of choice over lighting directly leads to a cognitive perception of control, which in turn influences affective states and potentially behavioral outcomes like energy use.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Availability of choice over lighting",
+        "to_construct": "Perceived Lighting Control",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived Lighting Control",
+        "to_construct": "Environmental Satisfaction",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived Lighting Control",
+        "to_construct": "Lighting Energy Use",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Perceived Control Scale",
+      "construct": "Perceived Lighting Control",
+      "description": "Self-report questionnaire items assessing the extent to which participants felt they had control over their lighting.",
+      "type": "self_report"
+    },
+    {
+      "name": "Environmental Satisfaction Questionnaire",
+      "construct": "Environmental Satisfaction",
+      "description": "Self-report questionnaire assessing satisfaction with various aspects of the office environment, including lighting.",
+      "type": "self_report"
+    },
+    {
+      "name": "Task Performance Measures",
+      "construct": "Cognitive Performance",
+      "description": "Objective measures of task performance, such as proofreading or data entry tasks.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Energy Meter",
+      "construct": "Lighting Energy Consumption",
+      "description": "Objective measurement device to record the actual electrical energy consumed by the lighting system.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plan or diagram of the experimental office setup, showing lighting fixtures and participant workstation.",
+      "figure_ref": "Figure 1",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 48,
+  "paper_sample_size_source": "estimated"
 }

@@ -29,11 +29,14 @@
       "direction": "increase",
       "claim_type": "synthesized",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.001,
+      "effect_size": 0.38,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 520,
+      "confidence_interval": [
+        0.21,
+        0.55
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -110,7 +113,8 @@
         "CROSS_FRAMEWORK": 0.1885,
         "DUAL_PROCESS": 0.1885,
         "SPATIAL_NAVIGATION": 0.1863
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -119,11 +123,14 @@
       "direction": "increase",
       "claim_type": "synthesized",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.015,
+      "effect_size": 0.25,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 315,
+      "confidence_interval": [
+        0.08,
+        0.42
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -211,7 +218,8 @@
         "GROUP_CREATIVITY": 0.2041,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.2041,
         "PREDICTIVE_PROCESSING": 0.2041
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 3,
@@ -221,10 +229,13 @@
       "claim_type": "synthesized",
       "measure_type": null,
       "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.42,
+      "effect_size_type": "r",
+      "sample_size": 680,
+      "confidence_interval": [
+        0.3,
+        0.53
+      ],
       "test_statistic": null,
       "theory_links": [
         "SN",
@@ -299,7 +310,8 @@
         "DUAL_PROCESS": 0.1941,
         "ATTENTION_RESTORATION": 0.1898,
         "PREDICTIVE_PROCESSING": 0.1898
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 4,
@@ -311,7 +323,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 410,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -395,7 +407,8 @@
         "RETINAL_ACTIVATION": 0.1815,
         "CROSS_FRAMEWORK": 0.1809,
         "DUAL_PROCESS": 0.1809
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 5,
@@ -404,11 +417,14 @@
       "direction": "increase",
       "claim_type": "synthesized",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.048,
+      "effect_size": 0.19,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 295,
+      "confidence_interval": [
+        0.01,
+        0.37
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -490,7 +506,8 @@
         "INTEROCEPTION_CONSTRUCTIONIST": 0.1762,
         "ACOUSTIC_COMMUNICATION": 0.1759,
         "EMOTION_PERCEPTION": 0.1759
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 6,
@@ -2147,37 +2164,74 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "extends",
-      "specific_claim": "Architectural features mimicking natural environments (e.g., natural composition, rounded edges) can facilitate the restoration of directed attention and foster mindfulness."
+      "specific_claim": "Architectural features mimicking natural environments can provide restorative experiences, enhancing directed attention and reducing mental fatigue."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and natural patterns, which influences their well-being and cognitive states in built environments."
+    },
+    {
+      "theory_name": "Stress Recovery Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to certain architectural designs, particularly those with natural elements, can facilitate physiological and psychological stress recovery."
     }
   ],
   "mechanism_chain": {
-    "description": "Architectural form features, particularly those with natural composition and rounded edges, are perceived as biophilic, which reduces cognitive effort and facilitates fascination, leading to restored attention and enhanced mindfulness.",
+    "description": "Architectural form features, especially those with natural composition and rounded edges, are perceived as less threatening and more visually comfortable, reducing cognitive load and facilitating sustained attention, which in turn fosters a state of mindfulness.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Architectural form features (natural composition, rounded edges)",
-        "to_construct": "Perceived biophilic qualities / naturalness",
+        "from_construct": "Architectural form features (e.g., natural composition, rounded edges)",
+        "to_construct": "Perceived visual comfort and safety",
         "mechanism_type": "perceptual",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Perceived biophilic qualities / naturalness",
-        "to_construct": "Reduced cognitive effort / Fascination",
+        "from_construct": "Perceived visual comfort and safety",
+        "to_construct": "Reduced cognitive load and mental fatigue",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Reduced cognitive effort / Fascination",
-        "to_construct": "Restored directed attention / Facilitated mindfulness",
+        "from_construct": "Reduced cognitive load and mental fatigue",
+        "to_construct": "Enhanced capacity for sustained directed attention",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Enhanced capacity for sustained directed attention",
+        "to_construct": "Facilitated state of mindfulness",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:19.347202+00:00"
+  "surgical_update_at": "2026-03-02T22:56:56.372511+00:00",
+  "stimulus_images": [
+    {
+      "description": "Flowchart detailing the systematic review and meta-analysis process, including search strategy, screening, and inclusion criteria.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Examples of architectural forms and features, contrasting natural composition with rounded edges/curves against angular or artificial designs.",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Conceptual model illustrating the proposed mechanisms by which architectural design strategies influence attention and mindfulness.",
+      "figure_ref": "Figure 3",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 45,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 5
 }

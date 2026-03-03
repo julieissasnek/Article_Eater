@@ -918,56 +918,99 @@
     "date": "2026-03-01T06:55:22.384305+00:00"
   },
   "stimulus_description": {
-    "environmental_features": null,
+    "environmental_features": [
+      "wind speed",
+      "air temperature",
+      "relative humidity",
+      "solar radiation",
+      "spatial configurations (e.g., central open square, foot of a tall building, entrance of a street canyon, passage)"
+    ],
     "duration_exposure": null,
     "control_conditions": null,
-    "ecological_validity": null
+    "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:17.256267+00:00",
+  "surgical_update_at": "2026-03-02T23:26:39.768183+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Microclimate Experience Framework",
+      "theory_name": "Framework for Microclimate Experience and Perception",
       "commitment_type": "proposes",
-      "specific_claim": "A framework is proposed to understand how spatial configurations influence microclimate experience and perception in urban squares."
+      "specific_claim": "Proposes a comprehensive conceptual framework detailing how urban spatial configurations influence local microclimatic conditions, which in turn shape human perception and experience of these spaces."
     },
     {
-      "theory_name": "Environmental Perception Theory",
+      "theory_name": "Environmental Psychology Theories",
       "commitment_type": "assumes",
-      "specific_claim": "Human perception of environmental conditions (e.g., wind, temperature) is a critical component of spatial experience and comfort."
+      "specific_claim": "Assumes foundational principles from environmental psychology regarding human interaction with, and perception of, the built environment."
+    },
+    {
+      "theory_name": "Thermal and Wind Comfort Theories",
+      "commitment_type": "assumes",
+      "specific_claim": "Assumes established criteria and models for human thermal and wind comfort in outdoor spaces as a basis for understanding microclimate experience."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper outlines a conceptual mechanism where urban spatial configurations shape local microclimates, which in turn influence human perception and experience of these spaces.",
+    "description": "Proposed causal mechanism connecting urban spatial configurations to human microclimate perception and experience.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Spatial configurations (e.g., central open square, street canyon)",
-        "to_construct": "Microclimatic conditions (e.g., wind speed, solar radiation, air temperature)",
+        "to_construct": "Local microclimatic conditions (e.g., wind speed, solar radiation, air temperature)",
         "mechanism_type": "environmental",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Microclimatic conditions",
-        "to_construct": "Perception of microclimate (e.g., 'too windy', 'too hot', 'comfortable')",
+        "from_construct": "Local microclimatic conditions",
+        "to_construct": "Sensory perception of microclimate (e.g., feeling of wind, warmth, cold)",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Perception of microclimate",
-        "to_construct": "Microclimate experience and spatial preference/use",
-        "mechanism_type": "affective",
+        "from_construct": "Sensory perception of microclimate",
+        "to_construct": "Cognitive appraisal and experience (e.g., 'too windy', 'comfortable', 'unpleasant')",
+        "mechanism_type": "cognitive|affective",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "stimulus_images": [
     {
-      "description": "Conceptual diagrams illustrating various urban spatial configurations (e.g., central open square, foot of a tall building, street canyon, passage) and their associated microclimatic characteristics.",
-      "figure_ref": "Figures 1, 2 (illustrative examples)",
+      "description": "Illustrative diagrams or photos depicting various urban spatial configurations (e.g., central open square, foot of a tall building, street canyon, passage) to define the conceptual categories.",
+      "figure_ref": "Figures 1-4 (example, actual figures would need to be checked)",
       "image_type": "diagram"
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Anemometer",
+      "construct": "wind speed",
+      "description": "Instrument for measuring wind velocity, often discussed for microclimate assessment.",
+      "type": "other"
+    },
+    {
+      "name": "Thermometer",
+      "construct": "air temperature",
+      "description": "Instrument for measuring air temperature, relevant for thermal comfort.",
+      "type": "other"
+    },
+    {
+      "name": "Hygrometer",
+      "construct": "relative humidity",
+      "description": "Instrument for measuring relative humidity, contributing to thermal comfort.",
+      "type": "other"
+    },
+    {
+      "name": "Pyranometer",
+      "construct": "solar radiation",
+      "description": "Instrument for measuring solar radiation, a key factor in outdoor thermal comfort.",
+      "type": "other"
+    },
+    {
+      "name": "Self-report questionnaires/scales",
+      "construct": "perceived wind comfort, thermal sensation, microclimate experience",
+      "description": "Surveys or scales used to assess subjective human perception and experience of microclimatic conditions.",
+      "type": "self_report"
     }
   ]
 }

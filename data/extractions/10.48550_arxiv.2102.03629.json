@@ -1537,52 +1537,124 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "virtual classroom design conditions",
-      "window placement",
-      "room dimension"
+      "virtual classroom with window (nature view)",
+      "virtual classroom without window",
+      "virtual classroom with standard dimensions (ceiling height, room depth)",
+      "virtual classroom with large dimensions (higher ceiling, deeper room)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "lab"
+    "duration_exposure": "approximately 10-15 minutes per virtual classroom condition, including task performance",
+    "control_conditions": [
+      "virtual classroom without window",
+      "virtual classroom with standard dimensions"
+    ],
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "EEG",
-      "construct": "brain electrical activity",
-      "description": "Electroencephalography",
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain activity (alpha, theta power, frontal alpha asymmetry)",
+      "description": "Used to measure neural correlates of cognitive states and attention.",
       "type": "eeg"
     },
     {
-      "name": "DST",
-      "construct": "cognitive performance",
-      "description": null,
+      "name": "Digit Span Task (DST)",
+      "construct": "working memory, attention",
+      "description": "Measures ability to recall sequences of numbers.",
       "type": "behavioral"
     },
     {
-      "name": "BT",
-      "construct": "cognitive performance",
-      "description": null,
+      "name": "Backward Task (BT)",
+      "construct": "working memory, executive function",
+      "description": "Measures ability to recall sequences of numbers in reverse order.",
       "type": "behavioral"
     },
     {
-      "name": "VMT",
-      "construct": "cognitive performance",
-      "description": null,
+      "name": "Visual Memory Task (VMT)",
+      "construct": "visual working memory",
+      "description": "Measures ability to remember visual patterns or locations.",
       "type": "behavioral"
     },
     {
-      "name": "ST",
-      "construct": "cognitive performance",
-      "description": null,
+      "name": "Stroop Task (ST)",
+      "construct": "selective attention, cognitive control, interference suppression",
+      "description": "Measures reaction time and accuracy in naming ink colors of words.",
       "type": "behavioral"
     },
     {
-      "name": "AT",
-      "construct": "cognitive performance",
-      "description": null,
+      "name": "Attention Task (AT)",
+      "construct": "sustained attention, vigilance",
+      "description": "Measures ability to maintain focus over time (e.g., target detection).",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:02:14.309753+00:00"
+  "surgical_update_at": "2026-03-02T19:09:37.138852+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments (e.g., through windows) can restore directed attention and reduce mental fatigue, thereby improving cognitive performance."
+    },
+    {
+      "theory_name": "Prospect-Refuge Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans prefer environments that offer both opportunities for prospect (views) and refuge (shelter), which can influence comfort and cognitive states."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Window views (especially nature views) reduce cognitive load and improve attention, leading to better cognitive performance. Larger room dimensions may enhance perceived spaciousness, reducing feelings of confinement and potentially improving cognitive comfort.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "presence of window with nature view",
+        "to_construct": "reduced cognitive load/mental fatigue",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "reduced cognitive load/mental fatigue",
+        "to_construct": "improved directed attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "improved directed attention",
+        "to_construct": "enhanced cognitive performance (accuracy, efficiency)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "larger room dimensions (higher ceiling, deeper room)",
+        "to_construct": "increased perceived spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "increased perceived spaciousness",
+        "to_construct": "reduced feelings of confinement/stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "reduced feelings of confinement/stress",
+        "to_construct": "improved cognitive comfort and performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Renderings of the four virtual classroom conditions (window/no window, standard/large dimensions)",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported"
 }

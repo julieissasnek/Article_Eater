@@ -4505,73 +4505,77 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "color slides of natural environments (e.g., forest, water scenes)",
-      "color slides of urban environments (e.g., city streets, buildings)",
-      "color slides of abstract patterns"
+      "color slides of natural environments (e.g., vegetation, water)",
+      "color slides of urban environments (e.g., buildings, traffic)"
     ],
     "duration_exposure": "6 minutes",
     "control_conditions": [
-      "abstract patterns",
-      "urban environments"
+      "comparison between natural and urban environment exposure"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Skin Conductance Response (SCR)",
-      "construct": "Physiological arousal/stress",
+      "name": "Skin Conductance Level (SCL)",
+      "construct": "Physiological arousal / Sympathetic nervous system activity",
       "description": "Electrodermal activity measured via electrodes on fingers",
       "type": "physiological"
     },
     {
       "name": "Heart Rate (HR)",
-      "construct": "Physiological arousal/stress",
+      "construct": "Cardiovascular arousal",
       "description": "Measured via electrocardiogram (ECG)",
       "type": "physiological"
     },
     {
-      "name": "Self-report Mood Scales",
-      "construct": "Mood states (e.g., anxiety, anger, sadness, positive affect)",
-      "description": "Self-report questionnaire assessing current emotional state",
+      "name": "Muscle Tension (EMG)",
+      "construct": "Somatic arousal",
+      "description": "Electromyography, often measured from forehead muscles",
+      "type": "physiological"
+    },
+    {
+      "name": "Profile of Mood States (POMS)",
+      "construct": "Mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "Self-report questionnaire assessing current mood",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:20.348790+00:00",
+  "surgical_update_at": "2026-03-02T22:56:56.329542+00:00",
   "theory_commitments": [
     {
       "theory_name": "Stress Reduction Theory (SRT)",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments facilitates physiological and psychological stress recovery more effectively than exposure to urban environments or control conditions."
+      "specific_claim": "Exposure to natural environments facilitates faster and more complete physiological and psychological recovery from stress compared to urban environments."
     }
   ],
   "mechanism_chain": {
-    "description": "Natural environments contain features (e.g., non-threatening content, moderate complexity, fascination) that elicit positive affective responses and reduce physiological arousal, leading to stress recovery.",
+    "description": "Natural environments elicit positive affective responses and reduce cognitive demands, leading to physiological relaxation and stress recovery.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Exposure to natural environment features (e.g., vegetation, water, non-threatening content)",
-        "to_construct": "Reduced physiological arousal (e.g., skin conductance, heart rate)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Exposure to natural environment",
+        "to_construct": "Positive affective response (e.g., fascination, pleasure)",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Exposure to natural environment features",
-        "to_construct": "Increased positive affect and reduced negative affect",
-        "mechanism_type": "affective",
+        "from_construct": "Positive affective response",
+        "to_construct": "Reduced physiological arousal (e.g., lower skin conductance, heart rate)",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
     ]
   },
   "stimulus_images": [
     {
-      "description": "Examples of natural environment stimulus slides used for recovery",
+      "description": "Example natural scene stimulus slide",
       "figure_ref": "Figure 1a",
       "image_type": "stimulus_set"
     },
     {
-      "description": "Examples of urban environment stimulus slides used for recovery",
+      "description": "Example urban scene stimulus slide",
       "figure_ref": "Figure 1b",
       "image_type": "stimulus_set"
     }

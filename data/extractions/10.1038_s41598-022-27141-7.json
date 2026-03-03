@@ -66,10 +66,13 @@
       "claim_type": "associational",
       "measure_type": "physiological",
       "p_value": "6.1e-3",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.62,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 60,
+      "confidence_interval": [
+        0.21,
+        1.03
+      ],
       "test_statistic": "x²(2) = 10.2",
       "theory_links": [
         "PP",
@@ -128,7 +131,8 @@
         "CC": 0.1638,
         "NM": 0.1638,
         "MS": 0.153
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1785,9 +1789,11 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Images/videos of urban, peri-urban, and rural landscapes varying in naturalness and diversity"
+      "Images of urban landscapes (high built-up density, low natural elements)",
+      "Images of peri-urban landscapes (mix of built-up and natural elements)",
+      "Images of rural landscapes (high natural elements, low built-up density)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Each image presented for 10 seconds",
     "control_conditions": [
       "Urban landscapes",
       "Rural landscapes"
@@ -1798,48 +1804,77 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Natural and diverse environments facilitate restoration of directed attention and reduce mental fatigue, leading to improved emotional states."
+      "specific_claim": "Natural and semi-natural environments (like peri-urban) provide restorative experiences that reduce mental fatigue and improve directed attention, compared to urban environments."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments leads to a reduction in physiological stress responses and negative affect."
     }
   ],
   "mechanism_chain": {
-    "description": "Urban homogenization reduces environmental diversity and naturalness, diminishing opportunities for attention restoration and positive emotional engagement, which leads to a flattening of emotional responses.",
+    "description": "Exposure to varying levels of naturalness and built-up density in landscapes influences cognitive processing (e.g., attention, stress appraisal), which in turn affects emotional states and physiological arousal.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Environmental diversity/naturalness",
-        "to_construct": "Opportunities for attention restoration/fascination",
+        "from_construct": "Landscape type (urban vs. peri-urban vs. rural)",
+        "to_construct": "Perceived naturalness/restorativeness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived naturalness/restorativeness",
+        "to_construct": "Cognitive load/stress appraisal",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
-        "step": 2,
-        "from_construct": "Opportunities for attention restoration/fascination",
-        "to_construct": "Emotional richness/intensity/well-being",
+        "step": 3,
+        "from_construct": "Cognitive load/stress appraisal",
+        "to_construct": "Emotional response (e.g., positive affect, arousal)",
         "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Emotional response",
+        "to_construct": "Physiological arousal (skin conductance)",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Skin Conductance Response (SCR)",
-      "construct": "Physiological arousal/emotional response",
-      "description": "Measurement of changes in skin electrical conductivity, reflecting sympathetic nervous system activity.",
+      "name": "Phasic Skin Conductance Response (SCR)",
+      "construct": "Physiological arousal, emotional intensity",
+      "description": "Measured changes in skin conductance as an indicator of sympathetic nervous system activity.",
       "type": "physiological"
     },
     {
       "name": "Self-Assessment Manikin (SAM)",
-      "construct": "Emotional valence and arousal",
-      "description": "Non-verbal pictorial scales used to assess pleasure, arousal, and dominance in response to stimuli.",
+      "construct": "Pleasure, arousal, dominance",
+      "description": "Non-verbal pictorial assessment technique for emotional states.",
       "type": "self_report"
     },
     {
-      "name": "Eye-tracking",
-      "construct": "Visual attention, exploration, gaze patterns",
-      "description": "Measures eye movements to infer visual processing and engagement with stimuli.",
-      "type": "eye_tracking"
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:34:22.698924+00:00"
+  "surgical_update_at": "2026-03-02T19:07:31.262892+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of the urban, peri-urban, and rural landscape images used as stimuli",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

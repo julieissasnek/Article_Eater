@@ -615,100 +615,112 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Irrelevant Sound Effect (ISE) theories",
-      "commitment_type": "tests",
-      "specific_claim": "Changes in ignored background sound disrupt serial recall and other working memory tasks by capturing attention."
+      "theory_name": "Irrelevant Sound Effect (ISE)",
+      "commitment_type": "explains",
+      "specific_claim": "Changes in ignored auditory streams disrupt serial recall and other working memory tasks, particularly when the irrelevant sound contains varying acoustic features."
     },
     {
-      "theory_name": "Attentional Capture / Orienting Response",
-      "commitment_type": "assumes",
-      "specific_claim": "Novel or changing auditory stimuli automatically trigger an orienting response, diverting attentional resources."
+      "theory_name": "Working Memory Models (e.g., Baddeley & Hitch)",
+      "commitment_type": "provides_framework",
+      "specific_claim": "Auditory distraction interferes with the phonological loop or a more general working memory capacity, especially its serial order processing component."
     },
     {
-      "theory_name": "Working Memory Models (e.g., Baddeley's model)",
-      "commitment_type": "assumes",
-      "specific_claim": "Working memory has limited capacity and specific components (e.g., phonological loop, central executive) susceptible to auditory interference."
+      "theory_name": "Object-Oriented Auditory Attention / Auditory Streaming",
+      "commitment_type": "explains",
+      "specific_claim": "The auditory system automatically segments sound into objects or streams, and changes within these objects, even if ignored, can capture attention and disrupt cognitive processing."
     },
     {
-      "theory_name": "Cognitive Load Theory / Resource Allocation Models",
-      "commitment_type": "assumes",
-      "specific_claim": "Cognitive resources are limited, and processing irrelevant sound consumes these resources, impairing primary task performance."
+      "theory_name": "Attentional Capture",
+      "commitment_type": "explains",
+      "specific_claim": "Salient or changing irrelevant stimuli automatically divert attentional resources, leading to performance decrements in concurrent tasks."
     }
   ],
   "mechanism_chain": {
-    "description": "Changes in ignored distracting sound are automatically detected, capturing attention and diverting cognitive resources, thereby disrupting working memory.",
+    "description": "The paper reviews the causal mechanisms by which changes in ignored auditory stimuli disrupt working memory, often involving automatic change detection and attentional capture.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "change within ignored distracting sound",
-        "to_construct": "automatic detection of auditory change (pre-attentive processing)",
+        "from_construct": "Change in ignored auditory stream (e.g., varying tones)",
+        "to_construct": "Automatic detection of auditory change (e.g., Mismatch Negativity - MMN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "automatic detection of auditory change",
-        "to_construct": "attentional capture / orienting response",
+        "from_construct": "Automatic detection of auditory change",
+        "to_construct": "Capture of attentional resources",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "attentional capture / orienting response",
-        "to_construct": "diversion of cognitive resources from primary task",
+        "from_construct": "Capture of attentional resources",
+        "to_construct": "Interference with serial order processing in working memory",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "diversion of cognitive resources",
-        "to_construct": "disruption of working memory",
+        "from_construct": "Interference with serial order processing",
+        "to_construct": "Disruption of working memory performance (e.g., serial recall)",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:33:22.042092+00:00",
+  "surgical_update_at": "2026-03-02T22:44:28.128901+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "changing-state irrelevant sounds (e.g., sequences of different tones like ABAB)",
-      "steady-state irrelevant sounds (e.g., continuous single tone, white noise)",
-      "irrelevant speech",
-      "irrelevant music"
+      "irrelevant speech (e.g., single talker, multi-talker babble)",
+      "non-speech sounds (e.g., pure tones, white noise, environmental sounds)",
+      "changing-state sequences of sounds (e.g., ABAB tone sequences, varying pitch/timbre)",
+      "steady-state sounds (e.g., continuous single tone, white noise, repeating single item)"
     ],
     "duration_exposure": null,
     "control_conditions": [
       "silence",
-      "steady-state irrelevant sound (as a control for changing-state sound)",
-      "relevant sound (as a comparison for irrelevant sound)"
+      "steady-state irrelevant sound (e.g., continuous white noise or repeating single tone)",
+      "irrelevant sound with no internal changes or semantic content"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": null
   },
   "instruments_used": [
     {
       "name": "Serial Recall Task",
-      "construct": "Working Memory",
-      "description": "Behavioral task where participants recall a list of items (e.g., digits, letters) in order, often presented visually while irrelevant sound plays.",
+      "construct": "Verbal working memory capacity, serial order processing",
+      "description": "Participants are presented with a list of items (e.g., digits, letters) and asked to recall them in the correct order.",
       "type": "behavioral"
     },
     {
       "name": "Mental Arithmetic Task",
-      "construct": "Working Memory / Cognitive Performance",
-      "description": "Behavioral task where participants perform arithmetic calculations while irrelevant sound plays.",
+      "construct": "Working memory, executive function",
+      "description": "Participants perform arithmetic calculations while being exposed to distracting sounds.",
       "type": "behavioral"
     },
     {
-      "name": "Electroencephalography (EEG)",
-      "construct": "Neural activity related to auditory processing and attention",
-      "description": "Measures event-related potentials (ERPs) like Mismatch Negativity (MMN) and P3a, indicative of automatic change detection and attentional orienting.",
+      "name": "EEG/ERP (Mismatch Negativity - MMN)",
+      "construct": "Neural activity, automatic change detection",
+      "description": "Measures electrical activity in the brain, particularly event-related potentials like MMN, which reflects automatic detection of auditory deviance.",
       "type": "eeg"
     },
     {
-      "name": "Functional Magnetic Resonance Imaging (fMRI)",
-      "construct": "Brain activity during auditory distraction",
-      "description": "Measures BOLD response in brain regions associated with auditory processing, attention, and working memory (e.g., prefrontal cortex, temporal lobe).",
+      "name": "fMRI",
+      "construct": "Brain activity, neural correlates of attention and working memory",
+      "description": "Measures changes in blood flow to detect brain activity associated with auditory distraction and cognitive tasks.",
       "type": "fmri"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "ERP waveforms illustrating the Mismatch Negativity (MMN) component",
+      "figure_ref": "Figure 1, Figure 2 (example, actual figure numbers may vary)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Conceptual models of auditory processing and attentional capture",
+      "figure_ref": "Figure 3 (example, actual figure numbers may vary)",
+      "image_type": "diagram"
     }
   ]
 }

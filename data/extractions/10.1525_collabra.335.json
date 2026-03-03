@@ -7228,14 +7228,68 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:34:33.923324+00:00",
+  "surgical_update_at": "2026-03-02T23:30:02.077345+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "Building materials (e.g., brick, stone) with varying degrees of age or 'patina'",
-      "New building materials (e.g., Brick3, Stone3)"
+      "images of building materials (e.g., brick, stone) with varying degrees of patina and signs of aging",
+      "images of new or unaged building materials for comparison"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "brief, self-paced viewing (e.g., a few seconds per image)",
+    "control_conditions": [
+      "new/unaged versions of materials or environments"
+    ],
     "ecological_validity": "lab"
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Environmental Psychology (Aesthetic Preference)",
+      "commitment_type": "tests",
+      "specific_claim": "Aesthetic preferences for environments are significantly influenced by the perceived age and signs of wear (patina) on building materials."
+    },
+    {
+      "theory_name": "Place Attachment Theory",
+      "commitment_type": "extends",
+      "specific_claim": "The physical characteristics of an environment, including its signs of age and patina, contribute to the development of emotional bonds and a sense of place."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper likely proposes that the presence of patina on materials influences aesthetic preference through cognitive appraisals of authenticity, history, and character.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "patina/aging of materials",
+        "to_construct": "perceived authenticity/history/character",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived authenticity/history/character",
+        "to_construct": "aesthetic preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Aesthetic Preference Scale (custom)",
+      "construct": "aesthetic preference",
+      "description": "Likert-type scale measuring participants' subjective liking or preference for the presented environmental stimuli.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Age/Patina Scale (custom)",
+      "construct": "perceived age and signs of wear",
+      "description": "Likert-type scale measuring participants' perception of the age, weathering, or patina level of the stimuli.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of building materials (brick, stone) displaying different levels of patina and aging, used as experimental stimuli.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ]
 }

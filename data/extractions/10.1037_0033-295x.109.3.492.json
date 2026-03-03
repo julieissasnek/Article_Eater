@@ -903,56 +903,60 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": [
-      "Visual displays manipulating luminance and color ratios",
-      "Spatial configurations of regions, particularly X-junctions",
-      "Varying background patterns and luminances"
-    ],
+    "environmental_features": null,
     "duration_exposure": null,
-    "control_conditions": [
-      "Luminance relationships inconsistent with transparency",
-      "Opaque surface comparisons",
-      "Variations in background luminance to test consistency rules"
-    ],
-    "ecological_validity": "lab"
+    "control_conditions": null,
+    "ecological_validity": null
   },
   "theory_commitments": [
     {
-      "theory_name": "Perceptual Theory of Transparency (Anderson's Theory)",
+      "theory_name": "Perceptual Theory of Transparency",
       "commitment_type": "proposes",
-      "specific_claim": "The visual system infers transparency based on specific luminance and contrast relationships at boundaries and within regions, seeking an interpretation consistent with a transparent overlay rather than simply interpreting image data as opaque surfaces."
+      "specific_claim": "The perception of transparency arises from specific luminance and color relationships between overlapping regions, allowing the visual system to infer a consistent filter."
     },
     {
-      "theory_name": "Metelli's Episocotister Model of Transparency",
-      "commitment_type": "critiques",
-      "specific_claim": "Metelli's model, while foundational, is limited in its ability to account for the full range of transparency phenomena and the underlying perceptual mechanisms."
+      "theory_name": "Metelli's Episcotister Model",
+      "commitment_type": "extends",
+      "specific_claim": "The paper builds upon and extends Metelli's foundational work on transparency perception, incorporating more complex conditions and color aspects."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes how the visual system processes specific luminance and contrast cues in the retinal image to infer the presence and properties (e.g., transmittance) of transparent surfaces.",
+    "description": "The theory proposes that the visual system infers transparency by analyzing the luminance and color relationships between a potentially transparent region and the background it occludes, seeking consistency with a physical filtering process.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Luminance and contrast relationships at image boundaries (e.g., relative Michelson contrast)",
-        "to_construct": "Detection of image regularities consistent with transparency",
+        "from_construct": "Luminance and color values of overlapping regions and background",
+        "to_construct": "Visual system computes luminance/color ratios and differences across boundaries",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Detection of image regularities",
-        "to_construct": "Inference of transparent overlay and its properties (e.g., perceived transmittance)",
+        "from_construct": "Computed luminance/color ratios and differences (e.g., Michelson contrast)",
+        "to_construct": "Inference of a consistent 'filter' (transparent layer) that could produce these relationships",
         "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Inferred filter properties",
+        "to_construct": "Perceived transmittance and overall perception of transparency",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:29:55.691961+00:00",
+  "surgical_update_at": "2026-03-02T23:26:19.279581+00:00",
   "stimulus_images": [
     {
-      "description": "Schematic diagrams illustrating various configurations of transparent surfaces and their underlying backgrounds, demonstrating the luminance and contrast relationships that the theory addresses.",
-      "figure_ref": "Figures 1, 2, etc.",
+      "description": "Diagrams illustrating visual configurations that lead to the perception of transparency, often showing a transparent layer superimposed on a patterned or achromatic background.",
+      "figure_ref": null,
+      "image_type": "diagram"
+    },
+    {
+      "description": "Illustrations of luminance and color relationships across boundaries, demonstrating the conditions under which transparency is perceived.",
+      "figure_ref": null,
       "image_type": "diagram"
     }
   ]

@@ -448,16 +448,58 @@
   "minimum_safe_summary": "This empirical study investigated how room color, visual complexity, and social orientation influence perceptions of crowding and room capacity using scaled-down model rooms. Key findings revealed that light-colored rooms were perceived as larger and less crowded, accommodating more figures than dark-colored rooms. While visual complexity and social orientation did not show main effects, significant interactions indicated that high visual complexity increased perceived capacity in social settings (by providing alternative attention loci), but decreased it in dark, nonsocial settings (due to potential sensory overload). The study's generalizability is limited by the use of model rooms, which may overemphasize visual cues and lack real-world multisensory and social interaction, and by a homogeneous subject sample.",
   "stimulus_description": {
     "environmental_features": [
-      "room color (light green)",
-      "room color (dark green)"
+      "Room color (light green)",
+      "Room color (dark green)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "light green room",
-      "dark green room"
+      "dark green room (as comparison to light green)",
+      "light green room (as comparison to dark green)"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:03:25.903551+00:00"
+  "surgical_update_at": "2026-03-02T23:27:02.586121+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Density-Intensity Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The perception and experience of crowding are influenced by environmental cues and social factors, which can intensify or mitigate the effects of physical density."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Room color influences perceived spaciousness, which in turn affects the perceived capacity of a room and thus the threshold at which crowding is experienced.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Room color",
+        "to_construct": "Perceived spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived spaciousness",
+        "to_construct": "Perceived room capacity/crowding threshold",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": null,
+      "construct": "Perceived room capacity/crowding threshold",
+      "description": "Behavioral measure of the number of figures placed before a room is considered crowded.",
+      "type": "behavioral"
+    },
+    {
+      "name": null,
+      "construct": "Crowding perception",
+      "description": "Self-report scale measuring subjective feelings of crowding.",
+      "type": "self_report"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated"
 }

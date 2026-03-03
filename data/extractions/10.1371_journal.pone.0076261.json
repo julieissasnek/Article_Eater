@@ -68,7 +68,7 @@
       "p_value": ".000",
       "effect_size": 0.577,
       "effect_size_type": "partial_eta_squared",
-      "sample_size": null,
+      "sample_size": 25,
       "confidence_interval": null,
       "test_statistic": "F(1, 21) = 28.6",
       "theory_links": [
@@ -135,7 +135,8 @@
         "EMBODIED_COGNITION": 0.1661,
         "PREDICTIVE_PROCESSING": 0.1661,
         "DIRECTED_ATTENTION": 0.1649
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1444,29 +1445,97 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Low-Arousal Speech Noise"
+      "low-arousal speech noise",
+      "white noise",
+      "silence"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous during N-back task blocks",
     "control_conditions": [
-      "Silence",
-      "Other speech noise conditions (e.g., high-arousal, neutral)"
+      "white noise",
+      "silence"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "EEG/ERP",
-      "construct": "Neural activity related to cognitive processing (e.g., P300, N200 components)",
-      "description": "Measures electrical brain activity via electrodes on the scalp, focusing on event-related potentials.",
+      "name": "EEG system",
+      "construct": "event-related potentials (ERPs)",
+      "description": "Used to record brain electrical activity (e.g., P300, N2 components) during the N-back task.",
       "type": "eeg"
     },
     {
-      "name": "N-Back Task",
-      "construct": "Working memory, cognitive control, attention",
-      "description": "A continuous performance task where participants respond if the current stimulus matches the stimulus presented 'n' steps back.",
+      "name": "N-back task",
+      "construct": "working memory performance",
+      "description": "A continuous performance task requiring participants to monitor a series of stimuli and respond when the current stimulus matches the one presented 'n' steps earlier.",
       "type": "behavioral"
+    },
+    {
+      "name": "Headphones",
+      "construct": "auditory stimulus delivery",
+      "description": "Used to present the speech noise, white noise, and silence conditions.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:59:44.550652+00:00"
+  "surgical_update_at": "2026-03-02T22:47:09.353030+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Arousal-Performance Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Optimal levels of arousal, potentially modulated by low-arousal speech noise, enhance cognitive performance, specifically working memory."
+    },
+    {
+      "theory_name": "Working Memory Models",
+      "commitment_type": "assumes",
+      "specific_claim": "The N-back task is a valid measure of working memory capacity and updating."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Low-arousal speech noise modulates physiological arousal to an optimal level, which in turn enhances attentional focus and working memory processing, leading to improved N-back task performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "low-arousal speech noise",
+        "to_construct": "optimal physiological arousal",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "optimal physiological arousal",
+        "to_construct": "enhanced attentional focus",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "enhanced attentional focus",
+        "to_construct": "improved working memory processing",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "improved working memory processing",
+        "to_construct": "faster reaction time and higher accuracy in N-back task",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram of the N-back task paradigm and stimulus presentation sequence",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Spectrogram or waveform of the low-arousal speech noise stimulus",
+      "figure_ref": "Figure 2",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 25,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

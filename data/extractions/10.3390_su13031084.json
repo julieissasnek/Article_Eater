@@ -801,49 +801,56 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Theory of Mind",
-      "commitment_type": "proposes",
-      "specific_claim": "Deficits in perspective-taking abilities, a core component of Theory of Mind, contribute to wayfinding difficulties in people with Alzheimer's Disease."
-    },
-    {
       "theory_name": "Cognitive Map Theory",
       "commitment_type": "assumes",
-      "specific_claim": "Successful wayfinding relies on the formation and utilization of accurate cognitive maps, which are impaired in Alzheimer's Disease."
+      "specific_claim": "The paper assumes the existence and importance of cognitive maps for successful wayfinding and discusses how their formation and use are impaired in Alzheimer's Disease."
+    },
+    {
+      "theory_name": null,
+      "commitment_type": "proposes",
+      "specific_claim": "The paper proposes a new integrated framework for understanding wayfinding in people with Alzheimer's Disease, incorporating perspective-taking and architectural cognition."
     }
   ],
   "mechanism_chain": {
-    "description": "Alzheimer's disease pathology leads to impairments in cognitive functions, specifically visuospatial processing and executive functions, which in turn compromise spatial perspective-taking ability. This deficit hinders the construction and updating of mental representations of the environment (cognitive maps), ultimately resulting in reduced wayfinding performance.",
+    "description": "Causal mechanism connecting Dementia of the Alzheimer's type (DAT) to impaired wayfinding performance, mediated by cognitive deficits and environmental interactions.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Dementia of the Alzheimer's type (DAT)",
-        "to_construct": "Impaired visuospatial processing and executive functions",
+        "to_construct": "Impaired perspective-taking ability",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Impaired visuospatial processing and executive functions",
-        "to_construct": "Deficits in spatial perspective-taking ability",
+        "from_construct": "Impaired perspective-taking ability",
+        "to_construct": "Difficulty interpreting spatial information from different viewpoints",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Deficits in spatial perspective-taking ability",
-        "to_construct": "Difficulty in constructing and updating mental representations of routes and locations (cognitive maps)",
+        "from_construct": "Difficulty interpreting spatial information",
+        "to_construct": "Reduced ability to form and update cognitive maps",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Difficulty in constructing and updating mental representations",
-        "to_construct": "Reduced wayfinding performance",
+        "from_construct": "Reduced ability to form and update cognitive maps",
+        "to_construct": "Poor wayfinding performance",
         "mechanism_type": "behavioral",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:29:28.531242+00:00"
+  "surgical_update_at": "2026-03-02T23:31:36.516144+00:00",
+  "stimulus_images": [
+    {
+      "description": "Illustrative examples of architectural features (e.g., corridors, landmarks, signage, intersections) that can influence wayfinding performance, particularly in the context of Alzheimer's Disease.",
+      "figure_ref": "Figure 2",
+      "image_type": "photo"
+    }
+  ]
 }

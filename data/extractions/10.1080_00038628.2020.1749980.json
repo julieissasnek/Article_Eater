@@ -1834,73 +1834,62 @@
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
-      "commitment_type": "evaluates",
-      "specific_claim": "Exposure to natural environments can restore directed attention and reduce mental fatigue, leading to specific brain activity patterns."
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments restore directed attention and reduce mental fatigue more effectively than urban environments."
     },
     {
       "theory_name": "Stress Reduction Theory",
-      "commitment_type": "evaluates",
-      "specific_claim": "Natural environments elicit positive emotional states and reduce physiological stress, which is reflected in brain activity."
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments facilitate physiological and psychological stress recovery."
     }
   ],
   "instruments_used": [
     {
-      "name": "Electroencephalography",
+      "name": "Electroencephalography (EEG)",
       "construct": "brain electrical activity",
-      "description": "Measures electrical activity in the brain using electrodes placed on the scalp.",
+      "description": "Measures electrical activity in the brain via electrodes placed on the scalp.",
       "type": "eeg"
     },
     {
-      "name": "Functional Magnetic Resonance Imaging",
-      "construct": "brain activity (blood oxygenation level-dependent signal)",
+      "name": "Functional Magnetic Resonance Imaging (fMRI)",
+      "construct": "brain activity (BOLD response)",
       "description": "Measures brain activity by detecting changes associated with blood flow.",
       "type": "fmri"
     },
     {
-      "name": "Functional Near-Infrared Spectroscopy",
-      "construct": "brain activity (hemodynamic responses)",
+      "name": "Functional Near-Infrared Spectroscopy (fNIRS)",
+      "construct": "brain activity (hemodynamic response)",
       "description": "Measures changes in blood oxygenation and volume in the brain.",
-      "type": "other"
+      "type": "physiological"
     },
     {
       "name": "Self-report questionnaires",
-      "construct": "mood, stress, cognitive performance, perceived restorativeness",
-      "description": "Various scales assessing subjective psychological states and cognitive function.",
+      "construct": "mood, stress, cognitive load, perceived restorativeness",
+      "description": "Various scales used to assess subjective experiences.",
       "type": "self_report"
-    },
-    {
-      "name": "Heart Rate Variability",
-      "construct": "autonomic nervous system activity",
-      "description": "Measures variations in the time interval between heartbeats.",
-      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:21.337441+00:00",
+  "surgical_update_at": "2026-03-02T23:33:46.505968+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "natural views",
-      "urban views",
-      "indoor plants",
-      "window presence",
-      "room color",
-      "lighting conditions",
-      "ceiling height"
+      "natural environments",
+      "urban environments",
+      "green spaces",
+      "blue spaces",
+      "indoor environments",
+      "virtual environments"
     ],
-    "duration_exposure": "varied across studies, ranging from minutes to hours",
-    "control_conditions": [
-      "comparison between different built environments",
-      "comparison between built and natural environments",
-      "no specific environmental stimulus"
-    ],
-    "ecological_validity": "lab|semi-naturalistic|field"
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
   },
   "mechanism_chain": {
-    "description": "The review synthesizes mechanisms by which built environment features influence brain activity, often involving perceptual, cognitive, and affective pathways.",
+    "description": "The review synthesizes various proposed mechanisms linking built environment features to changes in brain activity, often involving perceptual, cognitive, and affective pathways.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "visual exposure to natural elements",
+        "from_construct": "visual access to natural elements",
         "to_construct": "reduced cognitive load",
         "mechanism_type": "cognitive",
         "evidence_strength": "indirect"
@@ -1908,14 +1897,21 @@
       {
         "step": 2,
         "from_construct": "reduced cognitive load",
-        "to_construct": "decreased stress response",
-        "mechanism_type": "affective",
+        "to_construct": "increased alpha brain activity (e.g., in prefrontal cortex)",
+        "mechanism_type": "neural",
         "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "decreased stress response",
-        "to_construct": "changes in brain activity (e.g., alpha power, prefrontal cortex activation)",
+        "from_construct": "exposure to urban stressors (e.g., noise, crowding)",
+        "to_construct": "increased physiological arousal/stress",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "increased physiological arousal/stress",
+        "to_construct": "increased amygdala activity",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       }

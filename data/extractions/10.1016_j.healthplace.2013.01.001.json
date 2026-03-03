@@ -94,7 +94,7 @@
       "p_value": "<0.01",
       "effect_size": 0.33,
       "effect_size_type": "Cohen_d",
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "t(266)=2.69",
       "theory_links": [
@@ -172,7 +172,8 @@
         "COGNITIVE_APPRAISAL": 0.2119,
         "NEUROMODULATORY": 0.2119,
         "DIRECTED_ATTENTION": 0.2119
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -3582,31 +3583,61 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "prospect",
-      "refuge",
-      "simulated natural environment"
+      "simulated natural environments varying in prospect and refuge",
+      "high prospect-low refuge environment",
+      "low prospect-high refuge environment",
+      "high prospect-high refuge environment",
+      "low prospect-low refuge environment"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "approximately 10-15 minutes",
     "control_conditions": [
-      "varying levels of prospect and refuge"
+      "high prospect-low refuge environment",
+      "high prospect-high refuge environment",
+      "low prospect-low refuge environment"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Natural environments restore directed attention better than urban environments, but this is moderated by environmental features."
+    },
+    {
+      "theory_name": "Prospect-Refuge Theory",
       "commitment_type": "tests",
-      "specific_claim": "The restorative effects of natural environments are influenced by specific environmental features such as prospect and refuge, which can modulate perceived safety and danger."
+      "specific_claim": "Humans prefer environments with balanced prospect and refuge for safety and exploration, influencing perceived restorativeness and danger."
     }
   ],
   "mechanism_chain": {
-    "description": "Specific configurations of prospect and refuge in a simulated natural environment directly influence an individual's perception of danger, which in turn affects their restorative experience.",
+    "description": "The mechanism by which specific environmental configurations of prospect and refuge influence perceived danger and subsequently restorativeness.",
     "steps": [
       {
         "step": 1,
         "from_construct": "low prospect-high refuge environment",
-        "to_construct": "perceived danger",
+        "to_construct": "limited visibility of surroundings",
         "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "limited visibility of surroundings",
+        "to_construct": "increased cognitive appraisal of potential hidden threats",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "increased cognitive appraisal of potential hidden threats",
+        "to_construct": "perceived danger",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "perceived danger",
+        "to_construct": "reduced perceived restorativeness",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
@@ -3615,16 +3646,32 @@
     {
       "name": "Perceived Restorativeness Scale (PRS)",
       "construct": "perceived restorativeness",
-      "description": "A self-report questionnaire measuring the perceived restorative qualities of an environment.",
+      "description": "A self-report questionnaire measuring feelings of being away, fascination, extent, and compatibility.",
       "type": "self_report"
     },
     {
       "name": "Perceived Danger Scale",
       "construct": "perceived danger",
-      "description": "A self-report scale to assess the level of perceived threat or danger in an environment.",
+      "description": "A self-report scale measuring feelings of threat or unsafety within the environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item mood scale measuring current positive and negative emotional states.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:55:36.030976+00:00"
+  "surgical_update_at": "2026-03-02T18:59:57.743712+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of simulated natural environments depicting varying levels of prospect and refuge.",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

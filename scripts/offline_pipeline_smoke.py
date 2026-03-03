@@ -120,7 +120,7 @@ def main() -> None:
         paper_id="SMOKE_TEST_PAPER",
     )
 
-    seven_items = [item.dict() for item in artifact.items]
+    seven_items = [item.model_dump() for item in artifact.items]
     agg = Agent_Aggregator(seven_items)
     links = Agent_Linker(agg, seven_items)
 

@@ -1914,43 +1914,44 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Light-emitting eReader (LE-eBook)",
-      "Printed book"
+      "light-emitting eReader (LE-eBook)",
+      "printed book",
+      "dim ambient light"
     ],
-    "duration_exposure": "~4 hours before bedtime",
+    "duration_exposure": "approximately 4 hours before bedtime",
     "control_conditions": [
-      "Reading a printed book"
+      "reading a printed book under dim light"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Light emitted from eReaders, particularly in the blue spectrum, activates retinal photoreceptors, signaling to the brain's circadian clock (SCN), which suppresses melatonin production and shifts circadian timing, leading to disrupted sleep and reduced next-morning alertness.",
+    "description": "Light from the LE-eReader, particularly its short-wavelength component, activates intrinsically photosensitive retinal ganglion cells (ipRGCs) in the retina. This signal is transmitted to the suprachiasmatic nucleus (SCN), which in turn inhibits melatonin production by the pineal gland. The resulting reduction in melatonin and circadian phase shift disrupts sleep onset, sleep architecture, and impairs next-morning alertness.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure from LE-eReader",
+        "from_construct": "Light from LE-eReader (short-wavelength component)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
         "from_construct": "Activation of ipRGCs",
         "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
         "from_construct": "Signal to SCN",
-        "to_construct": "Suppression of melatonin production from the pineal gland",
+        "to_construct": "Inhibition of melatonin production by the pineal gland",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Melatonin suppression and circadian phase shift",
-        "to_construct": "Disrupted sleep and reduced next-morning alertness",
+        "from_construct": "Reduced melatonin production / Circadian phase shift",
+        "to_construct": "Disruption of sleep onset, sleep architecture, and next-morning alertness",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
@@ -1958,36 +1959,52 @@
   },
   "instruments_used": [
     {
-      "name": "Salivary Melatonin Assay",
-      "construct": "Melatonin levels",
-      "description": "Measurement of melatonin concentration in saliva samples to assess circadian timing and light-induced suppression.",
+      "name": "Radioimmunoassay (RIA)",
+      "construct": "melatonin levels",
+      "description": "Method for quantifying melatonin in saliva samples.",
       "type": "physiological"
     },
     {
       "name": "Polysomnography (PSG)",
-      "construct": "Sleep architecture (e.g., sleep latency, REM latency, sleep efficiency, sleep stages)",
-      "description": "Simultaneous recording of electroencephalogram (EEG), electrooculogram (EOG), and electromyogram (EMG) to objectively assess sleep parameters.",
+      "construct": "sleep architecture, sleep latency, sleep duration",
+      "description": "Electroencephalography (EEG), electrooculography (EOG), and electromyography (EMG) for objective sleep assessment.",
       "type": "physiological"
     },
     {
-      "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "Subjective sleepiness",
-      "description": "A 9-point self-report scale used to assess current levels of sleepiness.",
-      "type": "self_report"
-    },
-    {
       "name": "Psychomotor Vigilance Task (PVT)",
-      "construct": "Sustained attention and alertness",
-      "description": "A simple reaction time task used to measure sustained attention and vigilance, often used to assess the impact of sleep deprivation.",
+      "construct": "sustained attention, alertness",
+      "description": "A reaction time task used to measure vigilance and alertness.",
       "type": "behavioral"
     },
     {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "subjective sleepiness",
+      "description": "A 9-point self-report scale for assessing current level of sleepiness.",
+      "type": "self_report"
+    },
+    {
       "name": "Spectroradiometer",
-      "construct": "Light spectrum and intensity",
-      "description": "Device used to characterize the spectral power distribution and intensity of light emitted by eReaders and ambient light conditions.",
+      "construct": "light intensity and spectral power distribution",
+      "description": "Device used to measure the spectral characteristics of light emitted by the eReader and ambient conditions.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:45:56.181945+00:00"
+  "surgical_update_at": "2026-03-02T22:56:33.040230+00:00",
+  "stimulus_images": [
+    {
+      "description": "Spectral power distribution of the light-emitting eReader and ambient room light conditions.",
+      "figure_ref": "Figure 1",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 12,
+  "paper_sample_size_source": "reported",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Phototransduction / Light-induced Melatonin Suppression",
+      "commitment_type": "tests",
+      "specific_claim": "Evening exposure to short-wavelength light, such as that emitted by eReaders, suppresses melatonin, shifts circadian timing, and negatively affects sleep and next-morning alertness."
+    }
+  ]
 }

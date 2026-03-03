@@ -71,10 +71,13 @@
       "claim_type": "causal",
       "measure_type": "self_report",
       "p_value": "<0.01",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 80,
+      "confidence_interval": [
+        0.15,
+        0.95
+      ],
       "test_statistic": null,
       "theory_links": [
         "IC",
@@ -93,7 +96,8 @@
       "outcome_id": "physio.thermal_comfort",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -948,16 +952,81 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "wood wall treatment",
-      "visual presence of wood"
+      "rooms with wood-paneled walls",
+      "rooms with white-painted walls"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "20 minutes",
     "control_conditions": [
-      "non-wood wall treatment",
-      "plain wall"
+      "room with white-painted walls"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:50:54.314945+00:00"
+  "surgical_update_at": "2026-03-02T23:30:18.075518+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and natural elements, leading to positive psychological and physiological responses."
+    },
+    {
+      "theory_name": "Perceptual-Cognitive Theory of Thermal Comfort",
+      "commitment_type": "tests",
+      "specific_claim": "Thermal perception is influenced not only by objective physical parameters but also by visual and psychological factors related to the environment."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Visual characteristics of wood evoke psychological associations that influence subjective thermal perception.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "visual presence of wood",
+        "to_construct": "perception of naturalness and warmth",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "perception of naturalness and warmth",
+        "to_construct": "thermal preference (closer to neutral)",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Thermal Sensation Vote (TSV)",
+      "construct": "subjective thermal sensation",
+      "description": "7-point ASHRAE thermal sensation scale (-3 cold to +3 hot)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Preference Vote (TPV)",
+      "construct": "subjective thermal preference",
+      "description": "3-point scale (-1 cooler, 0 no change, +1 warmer)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Vote (TCV)",
+      "construct": "subjective thermal comfort",
+      "description": "7-point scale (1 very uncomfortable to 7 very comfortable)",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Experimental room with wood-paneled walls",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Experimental room with white-painted walls (control condition)",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 80,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

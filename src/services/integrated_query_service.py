@@ -359,7 +359,7 @@ class IntegratedQueryService:
             try:
                 if self._accumulator is None:
                     self._accumulator = WebAccumulator()
-                self._web = self._accumulator.persistence.load_master_web()
+                self._web = self._accumulator.get_master_web()
             except Exception as e:
                 logger.warning(f"Could not load web of belief: {e}")
                 return None
@@ -692,6 +692,26 @@ class IntegratedQueryService:
             except Exception as e:
                 logger.warning(f"Persona enrichment failed: {e}")
 
+        # Fix 5 (Codex V13): Abstention for zero-evidence queries
+        # When no article evidence supports the template answer, collapse confidence
+        # and flag the response as evidence-unsupported to prevent hallucinated certainty.
+        abstention_applied = False
+        if len(paper_ids) == 0 and template_response.relevant_templates:
+            original_conf = template_response.overall_confidence
+            template_response.overall_confidence = min(original_conf, 0.20)
+            evidence_summary = (
+                f"⚠️ ABSTENTION: No article evidence found. "
+                f"Template-based reasoning only (confidence collapsed from "
+                f"{original_conf:.0%} to {template_response.overall_confidence:.0%}). "
+                f"Treat as speculative."
+            )
+            abstention_applied = True
+            logger.warning(
+                f"Abstention triggered for query '{query_text[:50]}': "
+                f"0 supporting papers, confidence collapsed {original_conf:.2f} → "
+                f"{template_response.overall_confidence:.2f}"
+            )
+
         return IntegratedResponse(
             template_response=template_response,
             article_evidence=article_evidence[:10],
@@ -907,6 +927,42 @@ class IntegratedQueryService:
                 lines.append(f"  Provenance: {n_tmpl} templates contributing")
 
         return "\n".join(lines)
+
+    def get_theoretical_voices(self, topic: str, limit: int = 4) -> Dict:
+        """
+        Bridge method for AnswerEnrichmentOrchestrator Step 4.
+
+        Returns a dictionary of framework perspectives keyed by framework name,
+        each with 'perspective', 'complications', 'key_question', and 'speculation'.
+
+        Args:
+            topic: The topic to generate framework voices for
+            limit: Maximum number of frameworks to include
+
+        Returns:
+            Dict[str, Dict] mapping framework name to its perspective data
+        """
+        voices = {}
+        frameworks = list(FRAMEWORK_VOICES.keys())[:limit]
+
+        for fw in frameworks:
+            voice = FRAMEWORK_VOICES[fw]
+            # Generate a perspective tailored to the topic
+            perspective = (
+                f"From {voice['name']}: {voice['core_claim']}. "
+                f"Applied to '{topic}': {voice.get('complications', [''])[0]}"
+            )
+            voices[voice['name']] = {
+                'perspective': perspective,
+                'key_figures': voice.get('key_figures', []),
+                'core_claim': voice.get('core_claim', ''),
+                'complications': voice.get('complications', []),
+                'key_question': voice.get('typical_questions', [''])[0],
+                'implications': []
+            }
+
+        logger.info(f"Generated {len(voices)} theoretical voices for topic: {topic[:50]}")
+        return voices
 
 
 # =============================================================================

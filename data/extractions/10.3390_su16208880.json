@@ -924,39 +924,51 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Chronobiology",
-      "commitment_type": "proposes",
-      "specific_claim": "The paper proposes that established principles of chronobiology, particularly the influence of light-dark cycles on circadian rhythms, have significant implications for architectural design and human health and wellbeing."
+      "theory_name": "Chronobiology and Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Human physiology and behavior are governed by endogenous biological clocks (circadian rhythms) that are primarily entrained by environmental light-dark cycles."
+    },
+    {
+      "theory_name": "Chronobiology and Circadian Rhythm Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Principles of chronobiology can be applied to architectural design to optimize light environments for human health and wellbeing."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper outlines the causal pathway through which natural light cycles impact human biology and behavior, forming the basis for architectural design considerations.",
+    "description": "Architectural light environments influence human health and wellbeing by modulating circadian rhythms.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "24-hour light-dark cycle and seasonal changes in day length",
-        "to_construct": "Entrainment and modulation of the human central circadian clock (e.g., suprachiasmatic nucleus)",
+        "from_construct": "Architectural light environment (intensity, spectrum, timing)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Entrainment and modulation of the human central circadian clock",
-        "to_construct": "Regulation of internal biochemistry and physiological processes (e.g., hormone secretion, sleep-wake cycles, metabolism)",
-        "mechanism_type": "physiological",
+        "from_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "to_construct": "Signaling to the Suprachiasmatic Nucleus (SCN)",
+        "mechanism_type": "neural",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Regulation of internal biochemistry and physiological processes",
-        "to_construct": "Impact on overall health, wellbeing, and behaviour in living organisms",
+        "from_construct": "Signaling to the Suprachiasmatic Nucleus (SCN)",
+        "to_construct": "Regulation of melatonin secretion and circadian phase",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Regulation of melatonin secretion and circadian phase",
+        "to_construct": "Impact on sleep quality, mood, cognitive performance, and metabolic health",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:34:59.166273+00:00",
+  "surgical_update_at": "2026-03-02T19:04:12.275101+00:00",
   "stimulus_description": {
     "environmental_features": [
       "24-hour light-dark cycle",

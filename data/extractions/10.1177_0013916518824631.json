@@ -163,7 +163,7 @@
       "p_value": "<0.001",
       "effect_size": -0.34,
       "effect_size_type": "r",
-      "sample_size": null,
+      "sample_size": 250,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -229,7 +229,8 @@
         "NEUROMODULATORY": 0.2117,
         "INTEROCEPTION": 0.1822,
         "DMN_TPN_DYNAMICS": 0.1759
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2814,13 +2815,104 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "residential design features",
-      "interior density of family childcare businesses (FCBs)"
+      "Objective residential density (persons per room, persons per dwelling unit, persons per FCB)",
+      "Ceiling height",
+      "Window-to-floor ratio",
+      "Access to shared open spaces",
+      "Presence of privacy-enhancing features (e.g., separate rooms, lockable doors)"
     ],
-    "duration_exposure": "continuous, long-term exposure in children's residential/childcare environments",
-    "control_conditions": null,
+    "duration_exposure": "Continuous, long-term residential exposure (children living in these homes for extended periods)",
+    "control_conditions": [
+      "Comparison across different levels of objective density and varying design features within the residential units"
+    ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:05:34.053896+00:00"
+  "surgical_update_at": "2026-03-02T22:58:49.385360+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Environmental Load Theory",
+      "commitment_type": "tests",
+      "specific_claim": "High objective residential density and poor design features increase environmental load, leading to perceived crowding and subsequent stress."
+    },
+    {
+      "theory_name": "Privacy Regulation Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Design features that facilitate privacy regulation (e.g., separate rooms, lockable doors) can mitigate perceived crowding and its negative effects."
+    },
+    {
+      "theory_name": "Allostatic Load Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Chronic exposure to environmental stressors like residential crowding leads to allostatic load, manifested as elevated physiological stress markers (e.g., cortisol)."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Residential design features influence perceived spaciousness and privacy, which in turn moderate perceived crowding. Perceived crowding then acts as a stressor, leading to psychological distress and chronic physiological stress.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Objective residential design features (e.g., ceiling height, window area, privacy features)",
+        "to_construct": "Perceived spaciousness and privacy",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived spaciousness and privacy",
+        "to_construct": "Perceived residential crowding",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived residential crowding",
+        "to_construct": "Psychological distress and stress appraisal",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Psychological distress and stress appraisal",
+        "to_construct": "Chronic physiological stress (salivary cortisol)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Salivary Cortisol Assay",
+      "construct": "Chronic physiological stress",
+      "description": "Measurement of cortisol levels in saliva samples collected over multiple days to assess allostatic load.",
+      "type": "physiological"
+    },
+    {
+      "name": "Perceived Crowding Scale",
+      "construct": "Perceived residential crowding",
+      "description": "Self-report questionnaire adapted for children to assess feelings of being crowded in their home environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Architectural Measurements",
+      "construct": "Objective residential density and design features",
+      "description": "Direct measurement of dwelling unit dimensions, number of occupants, room count, window area, and other physical characteristics.",
+      "type": "other"
+    },
+    {
+      "name": "Psychological Distress Scale",
+      "construct": "Psychological distress (e.g., anxiety, depression)",
+      "description": "Self-report questionnaire assessing internalizing and externalizing problems in children.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plans of typical residential units illustrating varying layouts and densities",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 250,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

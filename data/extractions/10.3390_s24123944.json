@@ -78,7 +78,7 @@
       "p_value": "0.005",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 30,
       "confidence_interval": null,
       "test_statistic": "t=3.074",
       "theory_links": [
@@ -146,7 +146,8 @@
         "CREATIVE_COGNITION": 0.2141,
         "EMBODIED_COGNITION": 0.2141,
         "PREDICTIVE_PROCESSING": 0.2141
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1007,24 +1008,76 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "direct lighting",
-      "indirect lighting"
+      "simulated residential room with direct lighting",
+      "simulated residential room with indirect lighting"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "10 minutes per lighting condition",
     "control_conditions": [
-      "direct lighting",
-      "indirect lighting"
+      "direct lighting condition",
+      "indirect lighting condition"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
       "name": "Self-Assessment Manikin (SAM)",
-      "construct": "emotional valence",
-      "description": "Pictorial scale for emotional valence",
+      "construct": "valence, arousal, dominance",
+      "description": "Pictorial assessment scale for emotional states",
       "type": "self_report"
+    },
+    {
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain activity (alpha power, theta power, frontal alpha asymmetry)",
+      "description": "Measures electrical activity of the brain via electrodes on the scalp",
+      "type": "eeg"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:39:17.249824+00:00"
+  "surgical_update_at": "2026-03-02T18:58:40.777088+00:00",
+  "mechanism_chain": {
+    "description": "Different lighting types (direct vs. indirect) influence visual perception and comfort, which in turn affects emotional states (valence, arousal) and corresponding brain activity (EEG alpha/theta power, frontal alpha asymmetry).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "direct/indirect lighting",
+        "to_construct": "visual perception/comfort",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "visual perception/comfort",
+        "to_construct": "emotional states (valence, arousal)",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "emotional states",
+        "to_construct": "brain activity (EEG)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs of the experimental setup showing the simulated residential room under direct lighting",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photographs of the experimental setup showing the simulated residential room under indirect lighting",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    },
+    {
+      "description": "Diagram illustrating the lighting configurations and measurement points",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

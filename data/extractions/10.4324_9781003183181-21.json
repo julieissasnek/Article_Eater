@@ -977,66 +977,47 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "light spectrum (e.g., narrowband, blue-enriched)",
-      "light intensity (e.g., lux, melanopic equivalent daylight illuminance)",
-      "timing of light exposure (e.g., day, night, morning)",
-      "duration of light exposure"
+      "specific light spectra (e.g., blue-rich light)",
+      "light intensity",
+      "timing of exposure"
     ],
-    "duration_exposure": "varied, from acute pulses to continuous exposure over hours/days, depending on the reviewed study",
+    "duration_exposure": null,
     "control_conditions": [
-      "darkness",
       "dim light",
-      "different spectral compositions (e.g., red light, white light with different CCTs)",
-      "different timing of exposure"
+      "darkness",
+      "broad-spectrum white light"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Non-visual effects of light / Circadian Phototransduction",
-      "commitment_type": "assumes",
-      "specific_claim": "Light, particularly short-wavelength (blue) light, has non-visual effects on human physiology and behavior, primarily mediated by intrinsically photosensitive retinal ganglion cells (ipRGCs) and the suprachiasmatic nucleus (SCN)."
-    },
-    {
-      "theory_name": "Melatonin Suppression by Light",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to light, especially at night, suppresses the nocturnal secretion of melatonin, a key hormone in circadian rhythm regulation."
+      "theory_name": "Non-visual effects of light on circadian system",
+      "commitment_type": "applies",
+      "specific_claim": "Specific light characteristics (e.g., spectrum, intensity, timing) influence human circadian rhythms, particularly melatonin suppression, via intrinsically photosensitive retinal ganglion cells (ipRGCs)."
     }
   ],
   "instruments_used": [
     {
+      "name": "Salivary melatonin assay",
+      "construct": "Melatonin levels",
+      "description": "Measurement of melatonin concentration in saliva samples",
+      "type": "physiological"
+    },
+    {
       "name": "Spectroradiometer",
-      "construct": "light spectral power distribution, intensity, and color temperature",
-      "description": "Device used to measure the spectral composition and intensity of light sources.",
+      "construct": "Light spectrum and intensity",
+      "description": "Device to measure the spectral power distribution and illuminance of light sources",
       "type": "other"
-    },
-    {
-      "name": "Melatonin assay (e.g., saliva, blood, urine)",
-      "construct": "melatonin levels",
-      "description": "Biochemical method to quantify melatonin concentration in biological samples.",
-      "type": "physiological"
-    },
-    {
-      "name": "Actigraphy",
-      "construct": "sleep-wake cycles, activity levels",
-      "description": "Wearable device measuring movement to infer sleep patterns and activity.",
-      "type": "physiological"
-    },
-    {
-      "name": "Questionnaires/Scales (e.g., Karolinska Sleepiness Scale, Pittsburgh Sleep Quality Index)",
-      "construct": "subjective sleepiness, sleep quality, mood",
-      "description": "Self-report instruments to assess subjective experiences related to sleep and alertness.",
-      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:43.409528+00:00",
+  "surgical_update_at": "2026-03-02T22:42:30.767528+00:00",
   "mechanism_chain": {
-    "description": "The physiological pathway by which light stimuli influence circadian rhythms and melatonin secretion.",
+    "description": "Light detected by intrinsically photosensitive retinal ganglion cells (ipRGCs) in the retina transmits signals to the suprachiasmatic nucleus (SCN), which then inhibits melatonin production by the pineal gland.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (especially short-wavelength)",
+        "from_construct": "Narrowband light stimuli (e.g., blue-rich light)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
@@ -1044,28 +1025,14 @@
       {
         "step": 2,
         "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to the suprachiasmatic nucleus (SCN)",
+        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signal transmission to the SCN",
-        "to_construct": "Modulation of pineal gland activity",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Modulation of pineal gland activity",
-        "to_construct": "Alteration of melatonin secretion",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Alteration of melatonin secretion",
-        "to_construct": "Modulation of circadian rhythms, sleep, and alertness",
+        "from_construct": "SCN activity",
+        "to_construct": "Inhibition of pineal melatonin production",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }

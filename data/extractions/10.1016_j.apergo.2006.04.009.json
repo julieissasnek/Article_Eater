@@ -1801,44 +1801,58 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Non-image-forming (NIF) effects of light / Circadian phototransduction",
-      "commitment_type": "assumes|proposes",
-      "specific_claim": "Light, independent of visual perception, influences human physiology and behavior, primarily through the regulation of circadian rhythms, alertness, and mood, mediated by a distinct retinal pathway."
+      "theory_name": "Circadian Photoreception Model",
+      "commitment_type": "proposes",
+      "specific_claim": "Light exposure, particularly to short-wavelength light, entrains circadian rhythms and affects alertness and melatonin secretion via non-visual photoreceptors, distinct from visual perception."
     }
   ],
   "mechanism_chain": {
-    "description": "The causal pathway by which light entering the eyes leads to non-visual biological effects on the human body.",
+    "description": "The causal pathway describing how light entering the eyes leads to non-visual biological effects, primarily through the circadian system.",
     "steps": [
       {
         "step": 1,
         "from_construct": "light entering human eyes",
         "to_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
-        "mechanism_type": "neural",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
-        "to_construct": "signaling to the suprachiasmatic nucleus (SCN)",
+        "from_construct": "activation of ipRGCs",
+        "to_construct": "signal transmission via retinohypothalamic tract (RHT)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "signaling to the suprachiasmatic nucleus (SCN)",
-        "to_construct": "modulation of circadian rhythms and neuroendocrine responses (e.g., melatonin suppression)",
-        "mechanism_type": "neural|physiological",
+        "from_construct": "signal transmission via RHT",
+        "to_construct": "stimulation of the suprachiasmatic nucleus (SCN)",
+        "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "modulation of circadian rhythms and neuroendocrine responses",
-        "to_construct": "non-visual biological effects on human body (e.g., alertness, sleep, mood, performance)",
-        "mechanism_type": "physiological|affective|behavioral",
+        "from_construct": "stimulation of the SCN",
+        "to_construct": "regulation of pineal gland activity",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "regulation of pineal gland activity",
+        "to_construct": "suppression of melatonin production",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "melatonin suppression and SCN activity",
+        "to_construct": "circadian rhythm entrainment and modulation of alertness, mood, and sleep",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:16:24.394051+00:00"
+  "surgical_update_at": "2026-03-02T23:31:47.522679+00:00"
 }

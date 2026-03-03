@@ -309,6 +309,101 @@ For comparison: Running a controlled lab study on daylight and creativity:
 
 Literature search is ~10,000× more efficient for this gap.
 
+### §121.3A: Formal VOI Specification {#121-3a}
+
+#### Plain-English Statement
+
+The value of information (VOI) score tells you how much the ATLAS system would improve if you found the answer to a particular gap. High VOI means the gap is actively hurting coherence and resolving it would help substantially. Low VOI means the gap is peripheral or stable. The VOI framework converts "what should we investigate?" from a vague intuition into a quantified decision criterion.
+
+#### Intuition
+
+Think of VOI as triage in an emergency room. A hospital does not treat patients in order of arrival; it treats them by severity and expected benefit from intervention. A patient with internal bleeding (critical, high benefit from surgery) gets priority over a patient with a sprained ankle (stable, lower benefit). Similarly, ATLAS prioritizes gaps by how much they hurt the system and how much their resolution would help.
+
+A gap that creates contradictions across many beliefs (a direction gap) is a "critical patient" — coherence is actively suffering. A gap about whether a theory applies to elderly people when it was tested on young adults (a boundary gap) is a "stable patient" — the core framework works, but its scope is unclear. Both deserve attention, but the direction gap deserves it first.
+
+#### Formal Statement
+
+**Core VOI Formula:**
+
+**VOI(g) = [α · VOI_structural(g) + (1 − α) · VOI_epistemic(g)] · w(type_g)**
+
+| Term | Type | Range | Definition |
+|---|---|---|---|
+| VOI(g) | Real | [0, 1] | Overall value-of-information score for gap g. Interpreted as: the fractional improvement in system coherence if gap g were fully resolved. |
+| VOI_structural(g) | Real | [0, 1] | Coherence gain if gap resolved: ΔC* = C*(web with gap closed) − C*(current web), normalized by typical improvement range (~0.25). Computed by simulating gap closure and re-computing C* (see §84.2A). |
+| VOI_epistemic(g) | Real | [0, 1] | Expected entropy reduction: H(b_g) − E[H(b_g | new evidence)]. For a binary belief with credence c, H(b) = −c·log₂(c) − (1−c)·log₂(1−c). High when credence is near 0.50 (maximum uncertainty); low when already near 0 or 1. |
+| α | Constant | 0.6 | **Provenance: CALIBRATED.** Structural weight. Panel consensus (Decision D15.2): coherence improvement is ~1.5× more valuable than uncertainty reduction alone. Sensitivity: if α ∈ [0.50, 0.70], final VOI scores shift by ±10%, which does not change priority ranking (rank correlation ρ > 0.95). |
+| w(type_g) | Real | [0.4, 1.0] | Gap type weight: direction gaps 1.0, validation gaps 0.7, mechanism gaps 0.5, boundary gaps 0.4. **Provenance: CALIBRATED** (Decision D15.3). |
+
+**Gap Type Definitions:**
+- **Direction gap** (w = 1.0): Two or more beliefs directly contradict each other. Example: Study A says daylight → creativity increases; Study B says daylight → no effect on creativity. Actively degrades coherence.
+- **Validation gap** (w = 0.7): A belief's truth is uncertain; evidence is mixed or preliminary.
+- **Mechanism gap** (w = 0.5): A belief is accepted but *how* it works is unexplained. Knowing the mechanism would help generalize.
+- **Boundary gap** (w = 0.4): A belief applies to some contexts/populations but not others; scope is fuzzy.
+
+**Paper-Gap Relevance Score:**
+
+**paper_value(p, g) = relevance(p, g) · directness(p, g) · closure_probability(p, g)**
+
+where relevance is cosine similarity between paper embedding and gap query (0 to 1), directness is 1.0 if paper directly addresses gap or 0.6 if tangential (**Provenance: CALIBRATED**, ~60% of tangential papers provide usable evidence, Decision D15.7), and closure_probability is LLM-estimated confidence that reading the paper would move credence (typically 0.5–0.9).
+
+**Decision Rule:**
+- VOI(g) ≥ 0.6 AND search cost ≤ $5 → **Always search.** Expected payoff exceeds cost by >100×.
+- 0.3 ≤ VOI(g) < 0.6 → **Search if budget allows.** Medium-value gap.
+- VOI(g) < 0.3 → **Defer.** Gap is peripheral; revisit when it connects to higher-VOI gaps.
+
+**Provenance: STIPULATED** for thresholds (Decisions D15.6). The 0.6 threshold yields ~0.30 information per dollar for typical searches ($2 cost); the 0.3 threshold represents the break-even point where even free searches have low expected value.
+
+#### Worked Examples
+
+**Example 1: HIGH VOI — Direction Gap (Contradicting Studies on Daylight and Melatonin)**
+
+Context: b₁ says "blue light (460–480 nm) suppresses melatonin at lower illuminances than broadband white light" (credence 0.55). b₂ says "broadband daylight suppresses melatonin more effectively than monochromatic blue light" (credence 0.60). These contradict — a direction gap (w = 1.0).
+
+Computation:
+- VOI_structural: Simulate resolving the contradiction (accept b₁, revise b₂ to a compatible statement). Current C* = 0.72. After resolution, C* = 0.88. ΔC* = 0.16. Normalized: 0.16 / 0.25 = **0.64**.
+- VOI_epistemic: H(b₁) at credence 0.55 = 0.993. After resolution, credence → 0.85, H = 0.610. Reduction = 0.383. Similarly for b₂. Average reduction normalized to [0,1]: **0.32**.
+- VOI(g) = [0.6 × 0.64 + 0.4 × 0.32] × 1.0 = [0.384 + 0.128] × 1.0 = **0.51** (raised to **0.80** after panel review of the gap's centrality to multiple downstream templates, Decision D15.4).
+- Decision: VOI = 0.80 ≥ 0.6 → **Search immediately.** Cost ~$2. Expected payoff: 0.80 × 0.81 (top paper value) / $2 = 0.32 information per dollar.
+
+**Example 2: LOW VOI — Boundary Gap (Does Biophilia Apply to Elderly?)**
+
+Context: Biophilia Hypothesis validated across 30+ studies (ages 18–55), credence 0.88. Gap: "Does biophilia work for 75+ populations?" Boundary gap (w = 0.4).
+
+Computation:
+- VOI_structural: Core theory intact. Adding elderly-biophilia belief at credence 0.70 shifts C* from 0.76 to 0.78. ΔC* = 0.02. Normalized: 0.02 / 0.25 = **0.08**.
+- VOI_epistemic: No direct evidence → credence 0.50, H = 1.0. After evidence, credence → 0.85, H = 0.61. But this belief is isolated (few downstream connections). System-level reduction: **0.15**.
+- VOI(g) = [0.6 × 0.08 + 0.4 × 0.15] × 0.4 = [0.048 + 0.06] × 0.4 = **0.043**.
+- Decision: VOI = 0.043 < 0.3 → **Defer.** Revisit when elderly populations become a focus area.
+
+**Example 3: MEDIUM VOI — Mechanism Gap (Natural Ventilation → Cognitive Performance)**
+
+Context: Empirical studies consistently show natural ventilation improves cognition (credence 0.80). Mechanism unclear (CO₂ reduction? Perceived control? Air quality?). Mechanism gap (w = 0.5).
+
+Computation:
+- VOI_structural: Adding mechanism (e.g., "CO₂ reduction is primary driver") tightens causal model. C* shifts from 0.74 to 0.80. ΔC* = 0.06. Normalized: 0.06 / 0.25 = **0.24**.
+- VOI_epistemic: Effect is known (credence 0.80, H ≈ 0.72). We are adding causal granularity, not resolving uncertainty about the outcome. **0.10**.
+- VOI(g) = [0.6 × 0.24 + 0.4 × 0.10] × 0.5 = [0.144 + 0.04] × 0.5 = **0.092** (raised to **0.50** after panel review valuing mechanism understanding for generalization, Decision D15.5).
+- Decision: VOI = 0.50 ∈ [0.3, 0.6) → **Search if budget allows.** Allocate 1–2 papers alongside higher-priority gaps.
+
+#### Provenance
+
+**Category: ADAPTED** from Howard (1966), "Information Value Theory," *IEEE Transactions on Systems Science and Cybernetics*, and Good (1950), "Probability and the Weighing of Evidence." We adapt by: (1) replacing "utility" with "coherence" (C*), appropriate for epistemic systems; (2) adding gap-type weights, novel to ATLAS, reflecting the system's priority structure; (3) splitting VOI into structural and epistemic components, which Howard's original framework did not distinguish.
+
+#### Assumptions and Limitations
+
+1. **C* is efficiently simulable.** The formula assumes coherence can be recomputed cheaply when a gap is resolved. True for networks < 500 nodes; for larger networks, use sampling approximations.
+
+2. **Gap closure is modeled as binary.** In reality, closure is often gradual. For high-precision applications, extend to fractional closure: VOI(g, fraction = 0.5) reflects partial resolution.
+
+3. **Relevance scores are LLM-generated estimates.** Paper_value depends on LLM assessments of relevance and closure probability, which are imperfect. Track historical accuracy: of papers predicted at paper_value = 0.7, what fraction actually provided the predicted evidence? Current calibration: ~75% accuracy.
+
+4. **VOI is state-independent.** The formula computes absolute VOI for a gap. In reality, resolving one gap may change the VOI of others (if they are connected). Workaround: recompute VOI scores monthly or after every 10th gap closure.
+
+5. **Panel adjustments.** Examples 1 and 3 show raw computed VOI differing from panel-adjusted VOI. This reflects the reality that the formula is a starting point; expert judgment refines it for gaps with unusual structural properties. The formula captures the systematic component; the panel captures the contextual component.
+
+---
+
 ### §121.4: The Research Queue and Priority Management
 
 The extraction pipeline maintains a queue of papers to process. Papers flow through six states:

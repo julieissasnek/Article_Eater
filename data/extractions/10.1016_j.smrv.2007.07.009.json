@@ -3285,22 +3285,22 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Non-visual Photoreception and Circadian Regulation",
-      "commitment_type": "assumes",
-      "specific_claim": "Light exposure, particularly to specific wavelengths and intensities, entrains the circadian clock and directly modulates alertness and physiological functions independent of visual perception, primarily through intrinsically photosensitive retinal ganglion cells (ipRGCs) and their projections to the SCN and other brain regions."
+      "theory_name": "Non-visual photoreception theory / Melanopsin-mediated light effects",
+      "commitment_type": "proposes",
+      "specific_claim": "Light affects alertness and circadian rhythms through a distinct non-visual photoreceptive system, primarily involving melanopsin-expressing intrinsically photosensitive retinal ganglion cells (ipRGCs), which are particularly sensitive to blue light."
     },
     {
-      "theory_name": "Melatonin Suppression Hypothesis",
+      "theory_name": "Two-process model of sleep regulation",
       "commitment_type": "assumes",
-      "specific_claim": "Light exposure, especially short-wavelength (blue) light, suppresses the nocturnal secretion of melatonin, a hormone associated with sleepiness, thereby contributing to increased alertness."
+      "specific_claim": "Light exposure, particularly at specific times, modulates the circadian process (Process C) and can influence homeostatic sleep drive (Process S), thereby impacting alertness and sleep propensity."
     }
   ],
   "mechanism_chain": {
-    "description": "The causal pathway from light exposure to increased alertness involves retinal photoreception, signaling to non-visual brain centers, modulation of neurochemical systems, and changes in physiological and cognitive states.",
+    "description": "Light exposure, especially blue wavelengths, activates ipRGCs, which transmit signals via the retinohypothalamic tract to various brain regions involved in arousal and sleep regulation, leading to changes in neurotransmitter systems and ultimately affecting cortical arousal and subjective alertness.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (especially short-wavelength light)",
+        "from_construct": "Light exposure (especially blue wavelengths)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
@@ -3308,65 +3308,84 @@
       {
         "step": 2,
         "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to suprachiasmatic nucleus (SCN) and other non-visual brain regions (e.g., locus coeruleus, raphe nuclei)",
+        "to_construct": "Signal transmission via retinohypothalamic tract (RHT) to brain regions (e.g., SCN, VLPO, arousal centers)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signal transmission to SCN",
-        "to_construct": "Entrainment of circadian clock and modulation of melatonin secretion",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Signal transmission to other non-visual brain regions / Melatonin suppression",
-        "to_construct": "Modulation of arousal-promoting neurotransmitter systems (e.g., acetylcholine, norepinephrine, serotonin, dopamine)",
+        "from_construct": "Neural signals to arousal centers",
+        "to_construct": "Modulation of neurotransmitter systems (e.g., increased noradrenaline, orexin; decreased GABA)",
         "mechanism_type": "neural",
         "evidence_strength": "indirect"
       },
       {
-        "step": 5,
+        "step": 4,
         "from_construct": "Modulation of neurotransmitter systems",
-        "to_construct": "Increased physiological arousal (e.g., changes in heart rate, body temperature, EEG activity) and subjective alertness",
+        "to_construct": "Increased cortical arousal and decreased sleep propensity",
         "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "Increased cortical arousal",
+        "to_construct": "Enhanced subjective alertness and improved cognitive performance",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "subjective sleepiness/alertness",
+      "description": "9-point self-report scale for current sleepiness",
+      "type": "self_report"
+    },
+    {
+      "name": "Visual Analogue Scale (VAS)",
+      "construct": "subjective alertness/mood",
+      "description": "Typically 100mm line for rating subjective states",
+      "type": "self_report"
+    },
+    {
       "name": "Electroencephalography (EEG)",
-      "construct": "Brain electrical activity, sleep stages, alertness",
-      "description": "Measures electrical activity of the brain, often used to assess alpha, theta, and delta power as indicators of alertness or sleepiness.",
+      "construct": "cortical arousal, sleep stages",
+      "description": "Measurement of brain electrical activity (e.g., alpha, theta power, P300 evoked potentials)",
       "type": "eeg"
     },
     {
-      "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "Subjective sleepiness/alertness",
-      "description": "A 9-point self-report scale ranging from 'extremely alert' to 'very sleepy, fighting sleep'.",
-      "type": "self_report"
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "sustained attention, vigilance",
+      "description": "Reaction time task to detect infrequent stimuli",
+      "type": "behavioral"
     },
     {
-      "name": "Visual Analogue Scale (VAS) for Alertness",
-      "construct": "Subjective alertness",
-      "description": "A 100mm line where participants mark their current level of alertness.",
-      "type": "self_report"
-    },
-    {
-      "name": "Melatonin Assay",
-      "construct": "Melatonin levels",
-      "description": "Measurement of melatonin concentration in biological fluids (e.g., saliva, blood plasma) to assess circadian phase and light-induced suppression.",
-      "type": "physiological"
-    },
-    {
-      "name": "Core Body Temperature Measurement",
-      "construct": "Core body temperature",
-      "description": "Continuous measurement of core body temperature, a key circadian marker.",
+      "name": "Melatonin assay",
+      "construct": "circadian phase, sleep propensity",
+      "description": "Measurement of melatonin levels in saliva or plasma",
       "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:57:47.411474+00:00"
+  "surgical_update_at": "2026-03-02T23:37:27.786030+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "bright light (e.g., >200 lux)",
+      "blue-enriched white light",
+      "monochromatic blue light",
+      "dim light (<10 lux)",
+      "darkness",
+      "specific light wavelengths (e.g., 460-480 nm)",
+      "light intensity (lux)"
+    ],
+    "duration_exposure": "ranging from minutes (e.g., 15-30 min) to several hours (e.g., 2-8 hours)",
+    "control_conditions": [
+      "dim light",
+      "darkness",
+      "red light (as a non-melanopic control)",
+      "placebo/sham light exposure"
+    ],
+    "ecological_validity": "lab"
+  }
 }

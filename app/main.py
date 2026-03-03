@@ -972,6 +972,15 @@ app.include_router(integration_router, tags=['integration'])
 from app.routes.api_extended import extended_router
 app.include_router(extended_router, tags=['extended-api', 'batch-operations', 'causal-inference'])
 
+# Epistemic services API (enrichment, adaptation, figures, formulas)
+# - Answers enrichment (orchestrator integration)
+# - Language adaptation (user-type rewriting)
+# - Figure suggestions (relevant figures for topics)
+# - Math explanation (LLM-generated explanations)
+# - Credence intervals, warrant traces, confounder risk, framework voices, gap analysis
+from app.routes.services import router as services_router
+app.include_router(services_router, tags=['services'])
+
 app.include_router(interactions_router)
 app.include_router(profile_router)
 

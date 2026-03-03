@@ -5142,110 +5142,79 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Natural light exposure",
-      "Daylight availability",
-      "Artificial light conditions"
+      "daylighting",
+      "natural light exposure",
+      "window access"
     ],
-    "duration_exposure": "Continuous during typical work/study hours (e.g., 8-hour workday, daily school hours) over several weeks/months",
+    "duration_exposure": "continuous during typical daytime occupancy (e.g., school day, workday)",
     "control_conditions": [
-      "Environments with high natural light exposure",
-      "Environments with low natural light exposure",
-      "Environments primarily lit by artificial light"
+      "spaces with varying levels of natural light exposure",
+      "artificial lighting conditions"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Theory",
+      "theory_name": "Non-visual effects of light on human physiology",
       "commitment_type": "assumes",
-      "specific_claim": "The human body possesses an internal biological clock (circadian rhythm) that regulates sleep-wake cycles, alertness, and various physiological processes."
-    },
-    {
-      "theory_name": "Circadian Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural light, particularly during specific times of day, is a primary zeitgeber (time-giver) for entraining the human circadian clock, thereby influencing health and cognitive functions."
+      "specific_claim": "Light exposure, particularly natural daylight, influences human non-visual photoreceptors, thereby regulating circadian rhythms, sleep-wake cycles, and subsequent alertness and cognitive function."
     }
   ],
   "mechanism_chain": {
-    "description": "Natural light exposure activates retinal photoreceptors, signaling the suprachiasmatic nucleus (SCN) to regulate melatonin production and entrain circadian rhythms, which in turn modulates alertness, mental focus, and overall cognitive performance.",
+    "description": "Natural light exposure activates non-visual photoreceptors, signaling to the SCN to regulate circadian rhythms, which in turn impacts alertness and cognitive performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Natural Light Exposure",
-        "to_construct": "Retinal Photoreceptor Activation (e.g., ipRGCs)",
+        "from_construct": "Natural light exposure",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Retinal Photoreceptor Activation",
-        "to_construct": "Suprachiasmatic Nucleus (SCN) Stimulation",
+        "from_construct": "ipRGC activation",
+        "to_construct": "Signaling to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
-        "from_construct": "SCN Stimulation",
-        "to_construct": "Melatonin Suppression/Regulation",
+        "from_construct": "SCN signaling",
+        "to_construct": "Regulation of melatonin secretion and entrainment of circadian rhythms",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 4,
-        "from_construct": "Melatonin Suppression/Regulation",
-        "to_construct": "Circadian Rhythm Entrainment",
-        "mechanism_type": "physiological",
+        "from_construct": "Entrained circadian rhythms",
+        "to_construct": "Improved alertness, mental focus, and cognitive performance",
+        "mechanism_type": "physiological|cognitive|affective",
         "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Circadian Rhythm Entrainment",
-        "to_construct": "Increased Alertness",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 6,
-        "from_construct": "Increased Alertness",
-        "to_construct": "Improved Mental Focus",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 7,
-        "from_construct": "Improved Mental Focus",
-        "to_construct": "Enhanced Cognitive Performance",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Actigraphy",
-      "construct": "Sleep-wake cycles, activity levels",
-      "description": "Wrist-worn device measuring movement patterns to infer sleep quality and circadian rhythmicity",
-      "type": "physiological"
-    },
-    {
-      "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "Subjective sleepiness/alertness",
-      "description": "9-point self-report scale measuring current level of sleepiness",
+      "name": "Self-reported alertness scale",
+      "construct": "alertness",
+      "description": "Questionnaire assessing subjective levels of alertness",
       "type": "self_report"
     },
     {
-      "name": "Lux meter",
-      "construct": "Illuminance",
-      "description": "Device used to measure light intensity (lux) in the environment",
-      "type": "other"
+      "name": "Cognitive performance tasks",
+      "construct": "cognitive performance",
+      "description": "Tasks designed to measure aspects of cognitive function (e.g., attention, memory)",
+      "type": "behavioral"
     },
     {
-      "name": "Cognitive Performance Tests",
-      "construct": "Cognitive performance (e.g., reaction time, attention, memory)",
-      "description": "Standardized tasks designed to assess various aspects of cognitive function",
-      "type": "behavioral"
+      "name": "Sleep quality questionnaire",
+      "construct": "sleep quality",
+      "description": "Questionnaire assessing various aspects of sleep quality and patterns",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:03:03.152781+00:00"
+  "surgical_update_at": "2026-03-02T22:54:12.410808+00:00",
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated"
 }

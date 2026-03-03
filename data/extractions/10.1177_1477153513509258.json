@@ -4028,68 +4028,56 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Photoreception Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to specific light spectra and intensity, particularly blue light, entrains the human circadian rhythm through non-visual photoreceptors (ipRGCs), affecting sleep, alertness, and mood."
+      "theory_name": "Circadian Theory",
+      "commitment_type": "synthesizes_evidence",
+      "specific_claim": "Light exposure, particularly to blue wavelengths, entrains the human circadian rhythm, influencing sleep, alertness, and mood."
     },
     {
-      "theory_name": "Attention Restoration Theory (ART)",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to natural environments (e.g., through window views) can restore directed attention and reduce mental fatigue."
-    },
-    {
-      "theory_name": "Stress Reduction Theory (SRT)",
-      "commitment_type": "proposes",
-      "specific_claim": "Exposure to natural environments can reduce physiological stress and promote recovery."
+      "theory_name": "Visual Comfort Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Appropriate levels and distribution of daylight contribute to visual comfort, reducing eye strain and improving task performance."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper synthesizes various causal mechanisms linking daylight exposure to health outcomes, including circadian regulation and visual comfort.",
+    "description": "The paper discusses multiple mechanisms by which daylight impacts health. Two primary pathways are through circadian regulation and visual comfort.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Daylight exposure (intensity, spectral composition)",
-        "to_construct": "Activation of non-visual photoreceptors (ipRGCs)",
+        "from_construct": "Daylight exposure (intensity, spectral composition, timing)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "ipRGC activation",
-        "to_construct": "Modulation of melatonin secretion / Circadian rhythm entrainment",
-        "mechanism_type": "physiological",
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Entrainment of the suprachiasmatic nucleus (SCN) / Circadian rhythm regulation",
+        "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Circadian rhythm entrainment",
-        "to_construct": "Improved sleep quality / Enhanced daytime alertness",
-        "mechanism_type": "physiological",
+        "from_construct": "Circadian rhythm regulation",
+        "to_construct": "Improved sleep quality, alertness, mood, and cognitive performance",
+        "mechanism_type": "physiological|cognitive|affective",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Improved sleep quality / Enhanced daytime alertness",
-        "to_construct": "Better mood / Cognitive performance",
-        "mechanism_type": "affective|cognitive",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 5,
-        "from_construct": "Insufficient daylight / Excessive glare",
-        "to_construct": "Visual strain / Discomfort",
+        "from_construct": "Inadequate or excessive daylight (e.g., glare, insufficient illuminance)",
+        "to_construct": "Visual discomfort / Eye strain",
         "mechanism_type": "perceptual|physiological",
         "evidence_strength": "direct"
       },
       {
-        "step": 6,
-        "from_construct": "Visual strain / Discomfort",
-        "to_construct": "Eye fatigue / Headache / Reduced visual performance",
-        "mechanism_type": "physiological|behavioral",
+        "step": 5,
+        "from_construct": "Visual discomfort / Eye strain",
+        "to_construct": "Work-related headache / Reduced productivity",
+        "mechanism_type": "physiological|affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:36:38.367031+00:00"
+  "surgical_update_at": "2026-03-02T19:10:00.791220+00:00"
 }

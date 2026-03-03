@@ -78,10 +78,10 @@
       "direction": "increase",
       "claim_type": "associational",
       "measure_type": "self_report",
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "p_value": 0.001,
+      "effect_size": 0.1,
+      "effect_size_type": "partial_eta_squared",
+      "sample_size": 60,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -158,7 +158,8 @@
         "CREATIVE_COGNITION": 0.2045,
         "PREDICTIVE_PROCESSING": 0.2045,
         "METHODOLOGICAL": 0.1932
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2120,42 +2121,88 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "nature sound (stream sound with birdsong)",
-      "environmental noise (traffic noise)"
+      "Nature sound (e.g., water sounds, birdsong)",
+      "Environmental noise (e.g., traffic noise, office noise)"
     ],
-    "duration_exposure": "6 minutes",
+    "duration_exposure": "5 minutes",
     "control_conditions": [
-      "silence"
+      "Silent condition"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments (including sounds) can restore directed attention capacity after mental fatigue."
+    },
+    {
       "theory_name": "Stress Reduction Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments (including sounds) facilitates physiological and psychological stress recovery."
+      "specific_claim": "Exposure to natural environments (including sounds) can reduce physiological and psychological stress."
     }
   ],
   "instruments_used": [
     {
+      "name": "PANAS",
+      "construct": "positive and negative affect",
+      "description": "20-item mood scale",
+      "type": "self_report"
+    },
+    {
       "name": "Heart Rate (HR)",
       "construct": "physiological arousal",
-      "description": "Measurement of heart beats per minute",
+      "description": "Measured via electrocardiogram (ECG) or photoplethysmography (PPG)",
       "type": "physiological"
     },
     {
-      "name": "Skin Conductance Level (SCL)",
-      "construct": "physiological arousal",
-      "description": "Measurement of electrodermal activity",
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress/arousal, parasympathetic activity",
+      "description": "Derived from inter-beat intervals of heart rate data",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Response (SCR)",
+      "construct": "physiological arousal, sympathetic activity",
+      "description": "Measured via electrodes on the skin",
       "type": "physiological"
     },
     {
       "name": "Visual Analogue Scales (VAS)",
-      "construct": "perceived stress, relaxation, pleasantness, annoyance",
-      "description": "Self-report scales for subjective ratings",
+      "construct": "perceived pleasantness, arousal, stress",
+      "description": "Single-item scales for subjective ratings",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:00:01.465794+00:00"
+  "surgical_update_at": "2026-03-02T23:26:52.036025+00:00",
+  "mechanism_chain": {
+    "description": "Nature sounds are perceived as pleasant and non-threatening, leading to reduced physiological arousal and improved stress recovery.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Nature sound",
+        "to_construct": "Perceived pleasantness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived pleasantness",
+        "to_construct": "Reduced physiological arousal",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced physiological arousal",
+        "to_construct": "Stress recovery",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

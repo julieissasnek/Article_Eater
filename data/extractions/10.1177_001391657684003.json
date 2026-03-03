@@ -1510,52 +1510,68 @@
   "stimulus_description": {
     "environmental_features": [
       "room color (light green vs. dark green)",
-      "room size (e.g., small vs. large)",
-      "number of occupants (density)",
-      "social interaction context (e.g., cooperative vs. competitive task)"
+      "number of figures/objects in the room (density manipulation)",
+      "room size"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "single experimental session, typically 15-30 minutes",
     "control_conditions": [
-      "light green room color",
-      "larger room size",
-      "lower occupant density",
-      "cooperative task context"
+      "neutral room color condition",
+      "low density condition"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Socio-Spatial Model of Crowding",
-      "commitment_type": "proposes",
-      "specific_claim": "Crowding is a subjective, negative psychological state distinct from objective physical density, influenced by social and environmental factors, and mediated by perceived control and interference."
+      "theory_name": "Crowding Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Examines how objective spatial features (e.g., room color, density) influence the subjective experience and perception of crowding."
+    },
+    {
+      "theory_name": "Environmental Psychology Theories",
+      "commitment_type": "extends",
+      "specific_claim": "Investigates specific spatial cues as moderators of crowding perception, building on existing frameworks of person-environment interaction."
     }
   ],
   "mechanism_chain": {
-    "description": "Environmental features and social context influence perceived density, which then affects perceived control and interference, ultimately leading to the experience of psychological crowding.",
+    "description": "The paper explores how specific spatial characteristics of an environment influence an individual's perception of crowding, leading to behavioral outcomes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Environmental features (e.g., room color, size, number of occupants)",
-        "to_construct": "Perceived density/spaciousness",
+        "from_construct": "room characteristics (e.g., color, density)",
+        "to_construct": "perceived spaciousness or confinement",
         "mechanism_type": "perceptual",
         "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Perceived density/spaciousness",
-        "to_construct": "Perceived control/interference",
+        "from_construct": "perceived spaciousness or confinement",
+        "to_construct": "subjective experience of crowding",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Perceived control/interference",
-        "to_construct": "Perceived crowding (negative affect/stress)",
-        "mechanism_type": "affective",
+        "from_construct": "subjective experience of crowding",
+        "to_construct": "behavioral responses (e.g., number of figures placed as a crowding criterion)",
+        "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:49:24.378645+00:00"
+  "surgical_update_at": "2026-03-02T23:26:06.362520+00:00",
+  "instruments_used": [
+    {
+      "name": "Crowding Criterion Task",
+      "construct": "perceived crowding threshold",
+      "description": "Participants are asked to place figures or objects in a room until they feel it is crowded, providing a behavioral measure of crowding tolerance.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "perceived crowding, discomfort, mood, stress",
+      "description": "Likert-scale items or semantic differentials to assess subjective states related to the environmental conditions.",
+      "type": "self_report"
+    }
+  ]
 }

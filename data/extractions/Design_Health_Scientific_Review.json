@@ -823,48 +823,87 @@
   "theory_commitments": [
     {
       "theory_name": "Chronobiology",
-      "commitment_type": "assumes",
-      "specific_claim": "The human body possesses an endogenous circadian clock, primarily located in the suprachiasmatic nucleus (SCN), which regulates physiological and behavioral rhythms over approximately 24 hours."
-    },
-    {
-      "theory_name": "Chronobiology",
-      "commitment_type": "proposes",
-      "specific_claim": "Environmental light, particularly its intensity, spectrum, timing, and duration, acts as the primary zeitgeber (time-giver) for entraining the human circadian system to the external 24-hour day, with significant implications for architectural design."
+      "commitment_type": "assumes|applies|proposes",
+      "specific_claim": "Human physiology and behavior are governed by circadian rhythms, primarily entrained by light, which has significant implications for health and wellbeing. The paper applies these principles to propose architectural design strategies."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes how specific architectural lighting characteristics influence non-image-forming photoreception, which in turn entrains the central circadian clock, subsequently regulating various physiological and behavioral rhythms that impact overall health and wellbeing.",
+    "description": "The causal mechanism connecting architectural design elements to health outcomes via circadian rhythm entrainment.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Architectural light characteristics (e.g., intensity, spectrum, timing, duration)",
-        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs) / Non-image-forming (NIF) photoreception",
+        "from_construct": "Architectural design elements (e.g., fenestration, artificial lighting design)",
+        "to_construct": "Light exposure characteristics (intensity, spectrum, timing)",
+        "mechanism_type": "environmental",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Light exposure characteristics (intensity, spectrum, timing)",
+        "to_construct": "Non-visual photoreception (ipRGCs) and suprachiasmatic nucleus (SCN) activation",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
-        "step": 2,
-        "from_construct": "NIF photoreception",
-        "to_construct": "Signaling to the suprachiasmatic nucleus (SCN) / Central circadian clock entrainment",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
         "step": 3,
-        "from_construct": "Circadian clock entrainment / SCN activity",
-        "to_construct": "Regulation of melatonin secretion / Cortisol rhythm / Sleep-wake cycle / Alertness / Mood / Cognitive performance",
+        "from_construct": "SCN activation and downstream signaling",
+        "to_construct": "Stable synchronization (entrainment) of circadian rhythms",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Regulated physiological and behavioral rhythms",
-        "to_construct": "Improved health and wellbeing outcomes (e.g., better sleep quality, reduced risk of metabolic and mood disorders, enhanced cognitive function)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Stable synchronization (entrainment) of circadian rhythms",
+        "to_construct": "Health and Wellbeing (e.g., improved sleep, mood, metabolic function)",
+        "mechanism_type": "physiological|affective|cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:36:54.872623+00:00"
+  "surgical_update_at": "2026-03-02T23:29:15.942645+00:00",
+  "instruments_used": [
+    {
+      "name": "Actigraphy",
+      "construct": "Sleep-wake cycles, activity patterns",
+      "description": "Wearable device to monitor movement and infer sleep/wake states.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Spectroradiometer / Light Meter",
+      "construct": "Light exposure (intensity, spectrum, timing)",
+      "description": "Device to measure light characteristics in the environment.",
+      "type": "other"
+    },
+    {
+      "name": "Melatonin Assay (e.g., salivary, urinary)",
+      "construct": "Circadian phase, melatonin suppression",
+      "description": "Biochemical test to measure melatonin levels in biological samples.",
+      "type": "physiological"
+    },
+    {
+      "name": "Pittsburgh Sleep Quality Index (PSQI)",
+      "construct": "Subjective sleep quality",
+      "description": "Self-report questionnaire assessing sleep quality over the past month.",
+      "type": "self_report"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "Subjective sleepiness",
+      "description": "Self-report scale for current level of sleepiness.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Conceptual diagram illustrating the pathway from architectural light design to human circadian rhythm entrainment and health outcomes.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagram of the human circadian system, including the suprachiasmatic nucleus (SCN) and non-visual photoreceptors (ipRGCs), and their response to light.",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

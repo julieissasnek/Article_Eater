@@ -813,7 +813,7 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "noise intensity levels"
+      "auditory stimulation (noise)"
     ],
     "duration_exposure": null,
     "control_conditions": null,
@@ -823,43 +823,68 @@
     {
       "theory_name": "Eysenck's Arousal Theory of Personality",
       "commitment_type": "tests",
-      "specific_claim": "Introverts have higher baseline cortical arousal and prefer lower levels of external stimulation, while extraverts have lower baseline cortical arousal and prefer higher levels of external stimulation."
+      "specific_claim": "Introverts have higher baseline cortical arousal and thus prefer lower levels of external stimulation, while extraverts have lower baseline arousal and seek higher levels of stimulation to reach an optimal level of arousal for performance."
     }
   ],
   "mechanism_chain": {
-    "description": "Personality differences in baseline arousal lead to different preferred stimulation levels, which in turn affect actual arousal and subsequent performance.",
+    "description": "Eysenck's theory posits that personality (introversion/extraversion) is linked to baseline cortical arousal, which in turn influences the preferred level of external stimulation. This chosen stimulation level then affects actual arousal, ultimately impacting performance.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Personality type (Introvert/Extravert)",
-        "to_construct": "Preferred/Chosen Stimulation Level",
+        "to_construct": "Baseline cortical arousal",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Preferred/Chosen Stimulation Level",
-        "to_construct": "Arousal",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Baseline cortical arousal",
+        "to_construct": "Preferred external stimulation level",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Arousal",
+        "from_construct": "Preferred external stimulation level",
+        "to_construct": "Actual arousal level",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Actual arousal level",
         "to_construct": "Performance",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Noise intensity level selection",
-      "construct": "Preferred environmental stimulation",
-      "description": "Participants' chosen level of noise intensity during an experimental task",
+      "name": "Personality questionnaire",
+      "construct": "Personality type (Introversion-Extraversion)",
+      "description": "Self-report instrument used to classify participants as introverts or extraverts.",
+      "type": "self_report"
+    },
+    {
+      "name": "Noise intensity selection device",
+      "construct": "Chosen noise intensity level",
+      "description": "A mechanism allowing participants to adjust the intensity of auditory stimulation.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Arousal measures",
+      "construct": "Arousal",
+      "description": "Measures used to assess physiological (e.g., skin conductance, heart rate) or subjective arousal levels.",
+      "type": "physiological"
+    },
+    {
+      "name": "Performance tasks",
+      "construct": "Performance",
+      "description": "Tasks designed to assess cognitive or motor performance under different stimulation levels.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:51:58.460661+00:00"
+  "surgical_update_at": "2026-03-02T23:36:53.940788+00:00"
 }

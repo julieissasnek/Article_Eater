@@ -1673,34 +1673,54 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "building envelope design elements (geometric properties)",
-      "building envelope design elements (material properties)",
-      "urban environments",
-      "road traffic noise source"
+      "building envelope geometric elements (e.g., balconies, facade recesses, roof overhangs)",
+      "building envelope material properties (e.g., sound absorption, reflection)",
+      "urban road traffic noise sources"
     ],
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": null
   },
   "mechanism_chain": {
-    "description": "Geometric and material properties of building envelope elements physically interact with and modify the propagation of sound waves from urban noise sources, leading to changes in outdoor noise levels.",
+    "description": "Building envelope design elements modify sound propagation paths and energy, leading to changes in outdoor noise levels.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Building envelope design elements (geometric and material properties)",
-        "to_construct": "Modification of sound wave propagation (e.g., absorption, reflection, diffraction)",
+        "from_construct": "Building envelope geometric elements (e.g., balconies, facade recesses)",
+        "to_construct": "Sound wave diffraction and reflection",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Modification of sound wave propagation",
-        "to_construct": "Outdoor noise levels (insertion loss)",
+        "from_construct": "Sound wave diffraction and reflection",
+        "to_construct": "Altered sound propagation paths and energy distribution",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Altered sound propagation paths and energy distribution",
+        "to_construct": "Changes in outdoor noise levels (e.g., insertion loss)",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:44:11.792374+00:00"
+  "surgical_update_at": "2026-03-02T22:58:07.831739+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating various building facade geometries (e.g., flat, with balconies, with recesses) and their interaction with sound waves.",
+      "figure_ref": "Figures throughout the paper, e.g., conceptual diagrams of noise mitigation strategies",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagrams showing different types of building envelope materials or green facades and their acoustic properties.",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 55,
+  "paper_sample_size_source": "estimated"
 }

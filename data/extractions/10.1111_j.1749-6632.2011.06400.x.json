@@ -4859,54 +4859,67 @@
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
-      "commitment_type": [
-        "tests",
-        "extends"
-      ],
-      "specific_claim": "Exposure to natural environments can restore directed attention capacity, which is depleted by effortful cognitive tasks."
+      "commitment_type": "reviews evidence for",
+      "specific_claim": "Natural environments restore directed attention and cognitive resources, leading to improved cognitive function."
     },
     {
       "theory_name": "Stress Reduction Theory",
-      "commitment_type": [
-        "tests",
-        "extends"
-      ],
-      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress."
+      "commitment_type": "reviews evidence for",
+      "specific_claim": "Exposure to natural environments reduces physiological and psychological stress, promoting relaxation and well-being."
     }
   ],
   "mechanism_chain": {
-    "description": "Nature experience facilitates recovery from mental fatigue and stress through distinct cognitive and physiological pathways, as synthesized from reviewed literature.",
+    "description": "The paper reviews mechanisms by which nature experience impacts human cognitive function and mental health, often involving stress reduction and attention restoration.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Exposure to natural environments",
-        "to_construct": "Engagement of involuntary attention (soft fascination)",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "to_construct": "Reduced physiological arousal and stress (e.g., lower cortisol, heart rate)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Engagement of involuntary attention (soft fascination)",
-        "to_construct": "Restoration of directed attention capacity",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "from_construct": "Reduced physiological arousal and stress",
+        "to_construct": "Restoration of directed attention and improved mood",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Exposure to natural environments",
-        "to_construct": "Reduction in physiological arousal (e.g., heart rate, blood pressure, cortisol)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 4,
-        "from_construct": "Reduction in physiological arousal",
-        "to_construct": "Reduction in subjective stress and negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "indirect"
+        "from_construct": "Restoration of directed attention and improved mood",
+        "to_construct": "Improved cognitive function and mental health",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:18.283576+00:00"
+  "surgical_update_at": "2026-03-02T22:48:04.047061+00:00",
+  "instruments_used": [
+    {
+      "name": "PANAS",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states",
+      "type": "self_report"
+    },
+    {
+      "name": "Stroop Task",
+      "construct": "selective attention, cognitive control",
+      "description": "Cognitive task measuring interference effects on reaction time",
+      "type": "behavioral"
+    },
+    {
+      "name": "Salivary Cortisol",
+      "construct": "physiological stress response",
+      "description": "Biomarker measured from saliva to assess HPA axis activity",
+      "type": "physiological"
+    },
+    {
+      "name": "fMRI",
+      "construct": "brain activity, neural processing",
+      "description": "Neuroimaging technique to measure brain activity by detecting changes associated with blood flow",
+      "type": "fmri"
+    }
+  ]
 }

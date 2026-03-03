@@ -1147,45 +1147,76 @@
   "minimum_safe_summary": "This paper proposes a general theory of visual material perception, suggesting that the visual system does not estimate physical parameters directly but rather builds 'statistical generative models' of material appearance. These models capture natural variations in appearance based on easily measured image properties, such as the size, contrast, and distinctness of specular reflections for glossiness. Key findings indicate that human observers are adept at recognizing and categorizing materials from brief presentations, and that perceived material properties like glossiness and translucency are systematically affected by illumination statistics, surface relief, and object geometry. The theory explains perceptual errors and non-intuitive interactions between scene variables as a consequence of the visual system relying on statistical regularities rather than inverse physics. Limitations include the speculative nature of the proposal, the need for further research into perceptual organization mechanisms, and the challenge of experimentally addressing the visual system's ultimate 'goal' in material perception.",
   "theory_commitments": [
     {
-      "theory_name": "Computational Theories of Material Perception",
+      "theory_name": "Computational Theories of Visual Perception",
       "commitment_type": "proposes",
-      "specific_claim": "The visual system infers material properties by inverting statistical generative models of natural appearance variation, leading to the perception of materials."
+      "specific_claim": "The visual system infers material properties by integrating multiple visual cues and implicitly performing a form of statistical inference, often modeled by generative models that capture natural appearance variation."
+    },
+    {
+      "theory_name": "Bayesian Perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Perception is an inferential process that combines sensory evidence with prior knowledge to estimate properties of the world, such as material characteristics."
     }
   ],
   "mechanism_chain": {
-    "description": "The visual system processes material information by forming statistical generative models of natural appearance variation, which then leads to the perception of materials.",
+    "description": "The visual system processes light reflected from surfaces, extracts various cues, and integrates them through a statistical inference process to perceive material properties.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual system's processing of materials",
-        "to_construct": "Formation/activation of statistical generative models of natural appearance variation",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "Visual input (light reflected from a material surface)",
+        "to_construct": "Extraction of visual cues (e.g., specular highlights, diffuse shading, texture gradients, subsurface scattering)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Statistical generative models of natural appearance variation",
-        "to_construct": "Perception of materials",
+        "from_construct": "Integration of visual cues and statistical regularities of natural appearance",
+        "to_construct": "Inference of material properties (e.g., glossiness, translucency, roughness)",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Inferred material properties",
+        "to_construct": "Conscious perception of materials",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "assumed"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:33:44.255049+00:00",
+  "surgical_update_at": "2026-03-02T22:44:59.140430+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "Images or renderings of various materials (e.g., different textures, reflectances, transparencies, gloss levels, colors)"
+      "rendered images of objects (e.g., spheres, complex shapes) with varying material properties",
+      "controlled illumination conditions (e.g., point light sources, environment maps)",
+      "variations in material parameters such as glossiness, translucency, roughness, and texture"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "comparison of different material parameters (e.g., varying gloss levels)",
+      "comparison of different lighting environments",
+      "comparison of human perception against computational model predictions"
+    ],
     "ecological_validity": "lab"
   },
   "stimulus_images": [
     {
-      "description": "Examples of visual stimuli used in experiments, depicting various material properties such as gloss, texture, or transparency.",
-      "figure_ref": "Figure 1, Figure 2",
-      "image_type": "stimulus_set"
+      "description": "Examples of rendered stimuli showing objects with different material properties (e.g., a series of spheres ranging from matte to highly glossy)",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the rendering process or the computational models used to generate stimuli",
+      "figure_ref": "Figure 2 (typical)",
+      "image_type": "diagram"
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Psychophysical experiments (e.g., forced-choice tasks, rating scales, matching tasks)",
+      "construct": "Perception of material properties (e.g., glossiness, roughness, translucency)",
+      "description": "Tasks requiring human observers to judge, discriminate, or match material properties of visual stimuli.",
+      "type": "behavioral"
     }
   ]
 }

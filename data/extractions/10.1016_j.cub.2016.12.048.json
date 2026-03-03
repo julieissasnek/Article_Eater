@@ -81,9 +81,9 @@
       "claim_type": "associational",
       "measure_type": "self_report",
       "p_value": "<0.001",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 1.95,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 42,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [],
@@ -143,7 +143,8 @@
         "SPATIAL_NAVIGATION": 0.1781,
         "EC": 0.1699,
         "HC": 0.1691
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1784,13 +1785,11 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "chewing sounds",
-      "breathing sounds",
-      "sniffing sounds",
-      "unpleasant sounds (e.g., screaming, crying)",
-      "neutral sounds (e.g., rain, water)"
+      "trigger sounds (e.g., chewing, breathing, clicking)",
+      "unpleasant sounds (e.g., baby crying, screaming)",
+      "neutral sounds (e.g., rain, water boiling)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, discrete sound clips (typically 2-3 seconds each)",
     "control_conditions": [
       "unpleasant sounds",
       "neutral sounds"
@@ -1798,26 +1797,40 @@
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Trigger sounds activate the anterior insular cortex (AIC) in misophonic individuals, leading to heightened physiological arousal and subsequent misophonic distress.",
+    "description": "Trigger sounds activate the auditory cortex, which then sends signals to the anterior insular cortex (AIC). In misophonia patients, this leads to an exaggerated response in the AIC and increased functional connectivity between the AIC and other brain regions (e.g., medial prefrontal cortex, hippocampus, amygdala), resulting in heightened physiological arousal and misophonic distress.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Trigger sounds",
-        "to_construct": "Activation of anterior insular cortex (AIC)",
+        "to_construct": "Auditory cortex activation",
+        "mechanism_type": "neural",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "Auditory cortex activation",
+        "to_construct": "Exaggerated Anterior Insular Cortex (AIC) activity",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
-        "step": 2,
-        "from_construct": "Activation of anterior insular cortex (AIC)",
-        "to_construct": "Heightened physiological arousal (e.g., skin conductance response, heart rate)",
+        "step": 3,
+        "from_construct": "Exaggerated AIC activity",
+        "to_construct": "Increased functional connectivity between AIC and medial prefrontal cortex, hippocampus, and amygdala",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Increased functional connectivity",
+        "to_construct": "Heightened physiological arousal (e.g., skin conductance response)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
-        "step": 3,
+        "step": 5,
         "from_construct": "Heightened physiological arousal",
-        "to_construct": "Misophonic distress",
+        "to_construct": "Misophonic distress rating",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
@@ -1826,41 +1839,58 @@
   "instruments_used": [
     {
       "name": "fMRI",
-      "construct": "brain activity",
-      "description": "Functional magnetic resonance imaging to measure neural responses",
+      "construct": "brain activity and functional connectivity",
+      "description": "Functional magnetic resonance imaging to measure blood-oxygen-level-dependent (BOLD) signals.",
       "type": "fmri"
     },
     {
       "name": "Skin Conductance Response (SCR)",
       "construct": "physiological arousal",
-      "description": "Measurement of electrodermal activity",
+      "description": "Electrodermal activity measurement to assess sympathetic nervous system activation.",
       "type": "physiological"
     },
     {
-      "name": "Heart Rate (HR)",
-      "construct": "physiological arousal",
-      "description": "Measurement of cardiac activity",
-      "type": "physiological"
-    },
-    {
-      "name": "Misophonic distress rating scale",
-      "construct": "misophonic distress",
-      "description": "Participant-reported subjective distress levels to sounds",
+      "name": "Misophonia Questionnaire (MQ)",
+      "construct": "misophonia severity",
+      "description": "Self-report questionnaire to assess the severity and impact of misophonia symptoms.",
       "type": "self_report"
     },
     {
-      "name": "Sound unpleasantness rating scale",
-      "construct": "sound unpleasantness",
-      "description": "Participant-reported subjective unpleasantness levels to sounds",
+      "name": "Distress/Arousal Ratings",
+      "construct": "subjective emotional response to sounds",
+      "description": "Self-report ratings on a visual analog scale for unpleasantness and arousal after each sound presentation.",
       "type": "self_report"
     },
     {
-      "name": "Sound arousal rating scale",
-      "construct": "sound arousal",
-      "description": "Participant-reported subjective arousal levels to sounds",
+      "name": "Hospital Anxiety and Depression Scale (HADS)",
+      "construct": "anxiety and depression symptoms",
+      "description": "Self-report questionnaire to screen for anxiety and depressive disorders.",
+      "type": "self_report"
+    },
+    {
+      "name": "Obsessive Compulsive Inventory-Revised (OCI-R)",
+      "construct": "obsessive-compulsive symptoms",
+      "description": "Self-report questionnaire to assess the severity of obsessive-compulsive symptoms.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T01:03:16.730088+00:00"
+  "surgical_update_at": "2026-03-02T19:12:49.002200+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Neural basis of misophonia",
+      "commitment_type": "proposes",
+      "specific_claim": "Misophonia is characterized by aberrant salience network activity, particularly in the anterior insular cortex (AIC), and heightened functional connectivity between the AIC and regions involved in emotion processing and memory, leading to exaggerated physiological and emotional responses to specific trigger sounds."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of auditory stimuli from the three categories (trigger, unpleasant, neutral) used in the experiment.",
+      "figure_ref": "Figure 1A",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 42,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

@@ -60,7 +60,7 @@
       "p_value": "0.015",
       "effect_size": 1.33,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": [
         0.25,
         null
@@ -131,7 +131,8 @@
         "CULTURAL_PSYCHOLOGY": 0.1611,
         "INTEROCEPTION": 0.1598,
         "PREDICTIVE_PROCESSING": 0.1598
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1257,15 +1258,14 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Office-like environment with oak wood furniture",
-      "Office-like environment with birch wood furniture",
-      "Office-like environment with no wood furniture (control)"
+      "Office-like room with oak wood furniture",
+      "Office-like room with steel furniture"
     ],
-    "duration_exposure": "16 minutes",
+    "duration_exposure": "90 minutes",
     "control_conditions": [
-      "Office-like environment with no wood furniture"
+      "Office-like room with steel furniture (comparison condition)"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "mechanism_chain": {
     "description": "The visual and tactile presence of wood furniture is proposed to evoke biophilic responses, leading to a perception of naturalness and comfort, which in turn reduces physiological stress responses.",
@@ -1296,29 +1296,57 @@
   "instruments_used": [
     {
       "name": "Salivary cortisol",
-      "construct": "physiological stress",
-      "description": "Biomarker for hypothalamic-pituitary-adrenal (HPA) axis activity",
+      "construct": "physiological stress marker",
+      "description": "Measured from saliva samples collected at multiple time points.",
       "type": "physiological"
     },
     {
-      "name": "Heart rate",
-      "construct": "physiological arousal",
-      "description": "Measure of autonomic nervous system activity",
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "autonomic nervous system activity",
+      "description": "Measured using an ECG device.",
+      "type": "physiological"
+    },
+    {
+      "name": "Blood Pressure",
+      "construct": "physiological stress marker",
+      "description": "Measured using an automatic blood pressure monitor.",
       "type": "physiological"
     },
     {
       "name": "Profile of Mood States (POMS)",
-      "construct": "mood states (tension, depression, anger, vigor, fatigue, confusion)",
-      "description": "65-item self-report questionnaire",
+      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "Self-report questionnaire assessing current mood.",
       "type": "self_report"
     },
     {
-      "name": "Visual Analogue Scales (VAS)",
-      "construct": "subjective comfort, relaxation, stimulation",
-      "description": "100mm scales for subjective ratings",
+      "name": "Visual Analog Scales (VAS)",
+      "construct": "perceived comfort, pleasantness, naturalness",
+      "description": "Self-report scales for subjective perceptions.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:53:01.370900+00:00"
+  "surgical_update_at": "2026-03-02T19:12:05.664983+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural elements or their representations (like wood) can reduce physiological and psychological stress responses."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photo of the experimental room with oak wood furniture (Office A)",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photo of the experimental room with steel furniture (Office B)",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

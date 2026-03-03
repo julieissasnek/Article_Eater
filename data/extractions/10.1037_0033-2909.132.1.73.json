@@ -1548,56 +1548,51 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Color Constancy Theory",
-      "commitment_type": "extends",
-      "specific_claim": "The perceived color of a surface remains relatively constant despite changes in the spectral composition of the illuminant."
+      "theory_name": "Traditional Trichromatic/Opponent-Process Theories of Color Vision",
+      "commitment_type": "contradicts",
+      "specific_claim": "The paper argues against the universal applicability of a fixed three-dimensional color space for describing color perception in all contexts, especially complex natural scenes, suggesting that perceived dimensionality can vary."
     },
     {
-      "theory_name": "Opponent-Process Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Color vision is based on three opponent channels: red-green, blue-yellow, and black-white."
-    },
-    {
-      "theory_name": "Trichromatic Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Color vision is mediated by three types of cone photoreceptors sensitive to different wavelengths."
+      "theory_name": "Ecological Theories of Vision / Bayesian Inference in Perception",
+      "commitment_type": "proposes",
+      "specific_claim": "The paper proposes a framework where color perception is a dynamic process influenced by the statistical regularities of natural scenes, leading to context-dependent dimensionality, aligning with an ecological or inferential approach to visual processing."
     }
   ],
   "mechanism_chain": {
-    "description": "Neural and computational mechanisms underlying color perception from retinal input to cortical representation, accounting for color constancy and appearance in complex visual scenes.",
+    "description": "The paper describes how the visual system processes complex visual scenes, adapting to their statistical properties, to dynamically determine the perceived dimensionality of color.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Spectral power distribution of light reflected from surfaces in a visual scene",
-        "to_construct": "Cone photoreceptor activation (L, M, S cones)",
+        "from_construct": "Complex visual scene (multiple stimuli, varying illumination, reflectances)",
+        "to_construct": "Retinal input (photoreceptor responses)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Cone photoreceptor activation",
-        "to_construct": "Opponent-channel signals (e.g., L-M, S-(L+M))",
+        "from_construct": "Retinal input",
+        "to_construct": "Cortical processing of color signals (e.g., V1, V4)",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Opponent-channel signals and contextual information",
-        "to_construct": "Cortical processing (e.g., V4, V8, inferotemporal cortex)",
+        "from_construct": "Cortical processing of color signals",
+        "to_construct": "Adaptation to statistical regularities of the scene (e.g., covariance of cone signals, chromatic correlations)",
         "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Cortical processing",
-        "to_construct": "Perceived color (color appearance and constancy, dimensionality)",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "from_construct": "Adaptation to statistical regularities",
+        "to_construct": "Dynamic adjustment of the perceived dimensionality of color space",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:37.273084+00:00",
+  "surgical_update_at": "2026-03-02T23:30:51.490784+00:00",
   "stimulus_description": {
     "environmental_features": [
       "colored surfaces under varying illuminants",
@@ -1630,8 +1625,13 @@
   ],
   "stimulus_images": [
     {
-      "description": "Diagram illustrating a color space, color processing pathways, or conceptual models of color vision.",
+      "description": "A schematic illustration of the problem of color perception, showing light sources, objects, and an observer.",
       "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "A schematic illustration of the relationship between the physical properties of light (spectral power distributions) and the perceived color.",
+      "figure_ref": "Figure 2",
       "image_type": "diagram"
     }
   ]

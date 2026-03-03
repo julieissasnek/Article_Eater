@@ -69,7 +69,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": "F(2, 52) < 1",
       "theory_links": [
@@ -122,7 +122,8 @@
         "PREDICTIVE_PROCESSING": 0.3074,
         "ATTENTION_RESTORATION_THEORY": 0.1836,
         "MULTISENSORY_INTEGRATION": 0.1517
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1094,9 +1095,9 @@
     "environmental_features": [
       "Silence",
       "White Noise",
-      "Auditory Distraction"
+      "Irrelevant Speech"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous during retrieval phase",
     "control_conditions": [
       "Silence",
       "White Noise"
@@ -1104,5 +1105,32 @@
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:54.875724+00:00"
+  "surgical_update_at": "2026-03-02T22:42:59.136224+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Irrelevant Sound Effect (ISE) / Changing-State Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "Changing-state auditory stimuli disrupt memory performance more than steady-state stimuli or silence, due to interference with attentional or working memory processes. This paper investigates its impact on visual memory retrieval."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Irrelevant changing-state auditory stimuli capture attention or interfere with working memory, thereby impairing the retrieval of visual memories.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Irrelevant changing-state auditory stimuli",
+        "to_construct": "Disruption of attentional focus / working memory",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Disruption of attentional focus / working memory",
+        "to_construct": "Impaired retrieval of visual memories",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "quantitative_backfill_count": 1
 }

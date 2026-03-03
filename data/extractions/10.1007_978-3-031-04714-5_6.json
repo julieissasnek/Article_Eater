@@ -394,7 +394,7 @@
     {
       "id": 7,
       "antecedent": "new lighting proposal (for University Library, various scenarios)",
-      "consequent": "LENI (kWh/year/m²)",
+      "consequent": "LENI (kWh/year/m\u00b2)",
       "direction": "decrease",
       "claim_type": "causal",
       "measure_type": null,
@@ -410,7 +410,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 3, p. 149",
-      "quote": "LENI (kWh/year/m²) Existing State: 22-23, Museum-Philological-History: 11-17, Functional Library: 10-15, Exhibition: 10-15",
+      "quote": "LENI (kWh/year/m\u00b2) Existing State: 22-23, Museum-Philological-History: 11-17, Functional Library: 10-15, Exhibition: 10-15",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -510,7 +510,7 @@
     {
       "id": 9,
       "antecedent": "new lighting proposal (for University Library, various scenarios)",
-      "consequent": "annual costs (€/year)",
+      "consequent": "annual costs (\u20ac/year)",
       "direction": "decrease",
       "claim_type": "causal",
       "measure_type": null,
@@ -526,7 +526,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 3, p. 149",
-      "quote": "Costs (€/year) Existing State: 3093-4528, Functional Library: 1260-1890",
+      "quote": "Costs (\u20ac/year) Existing State: 3093-4528, Functional Library: 1260-1890",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -608,7 +608,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 3.4, p. 150",
-      "quote": "M index value for the whole library/reading/apse zone, is within the limits which is in the range of 0,8–1,3 (Table 5).",
+      "quote": "M index value for the whole library/reading/apse zone, is within the limits which is in the range of 0,8\u20131,3 (Table 5).",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -752,7 +752,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 3.6, p. 153",
-      "quote": "The LENI value for the new design is 7,53 kWh/m² year, for the existing state 32,30 kWh/m² year.",
+      "quote": "The LENI value for the new design is 7,53 kWh/m\u00b2 year, for the existing state 32,30 kWh/m\u00b2 year.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -1140,7 +1140,7 @@
       "claim_type": "methodological",
       "measure_type": null,
       "p_value": null,
-      "effect_size": "<0.14",
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1208,7 +1208,9 @@
         "AROUSAL_THEORY": 0.1784,
         "PAD_EMOTIONAL_MODEL": 0.1784,
         "RETINAL_ACTIVATION": 0.1784
-      }
+      },
+      "_original_effect_size": "<0.14",
+      "_quarantine_reason": "Effect size is not numeric: '<0.14'"
     },
     {
       "id": 20,
@@ -1887,7 +1889,7 @@
       "claim_type": "causal",
       "measure_type": null,
       "p_value": null,
-      "effect_size": ">0.50",
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1954,7 +1956,9 @@
         "INTEROCEPTION": 0.1648,
         "EC": 0.1569,
         "PP": 0.1569
-      }
+      },
+      "_original_effect_size": ">0.50",
+      "_quarantine_reason": "Effect size is not numeric: '>0.50'"
     },
     {
       "id": 30,
@@ -2131,7 +2135,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 3.9, p. 161",
-      "quote": "the LENI value obtained for the lighting solution was 42,92 kW/m² year, compared to 89,11 kW/m² year of the existing state; this fact shows an important energy consumption reduction of 51,84%.",
+      "quote": "the LENI value obtained for the lighting solution was 42,92 kW/m\u00b2 year, compared to 89,11 kW/m\u00b2 year of the existing state; this fact shows an important energy consumption reduction of 51,84%.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -2344,7 +2348,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "Section 3.10, p. 164",
-      "quote": "The LENI value calculated at precautionary conditions... for the VLC-LED solution is 20,04 kWh/m² year. This value is higher but absolutely comparable with that one calculated for VLC-fluorescent which is 19,04 kWh/m² year.",
+      "quote": "The LENI value calculated at precautionary conditions... for the VLC-LED solution is 20,04 kWh/m\u00b2 year. This value is higher but absolutely comparable with that one calculated for VLC-fluorescent which is 19,04 kWh/m\u00b2 year.",
       "evidence_type": "statistical",
       "template_matches": [
         {
@@ -2564,22 +2568,55 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "building architectural areas",
-      "objects and/or artworks",
-      "people movements and paths"
+      "visual stimuli depicting architectural areas",
+      "visual stimuli depicting objects and/or artworks",
+      "visual stimuli depicting people movements and paths"
     ],
     "duration_exposure": null,
     "control_conditions": null,
-    "ecological_validity": null
+    "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Eye-tracking",
-      "construct": "number of fixations, visual attention",
-      "description": "Measures eye movements to quantify fixations and other gaze metrics.",
+      "name": "Eye-tracking system",
+      "construct": "visual fixations, gaze patterns",
+      "description": "Measures eye movements to quantify the number and duration of fixations on visual stimuli.",
       "type": "eye_tracking"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:50:11.618708+00:00"
+  "surgical_update_at": "2026-03-02T23:26:08.478202+00:00",
+  "mechanism_chain": {
+    "description": "Visual stimuli with high informative content lead to increased visual attention (fixations), which enhances the quality of perception and vision, subsequently driving deeper cognitive processing (mental elaboration, interpretation, representation), ultimately influencing the perception of architectural elements and human activity within a space.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "informative content of visual stimuli",
+        "to_construct": "number of fixations",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "number of fixations",
+        "to_construct": "vision and perception quality",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "vision and perception quality",
+        "to_construct": "mental elaboration, interpretation, and representation of cognitive processes",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "mental elaboration, interpretation, and representation of cognitive processes",
+        "to_construct": "perception of building architectural areas, objects, artworks, and people movements",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  }
 }

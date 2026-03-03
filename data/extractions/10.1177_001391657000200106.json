@@ -1109,7 +1109,7 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.04,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1181,7 +1181,9 @@
         "AROUSAL_THEORY": 0.1578,
         "PAD_EMOTIONAL_MODEL": 0.1578,
         "RETINAL_ACTIVATION": 0.1578
-      }
+      },
+      "_original_effect_size": 0.04,
+      "_quarantine_reason": "Value 0.04 appears to be a p-value, not an effect size"
     },
     {
       "id": 16,
@@ -1191,7 +1193,7 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.01,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1251,7 +1253,9 @@
         "METHODOLOGICAL": 0.1558,
         "DMN_TPN_DYNAMICS": 0.1541,
         "NM": 0.153
-      }
+      },
+      "_original_effect_size": 0.01,
+      "_quarantine_reason": "Value 0.01 appears to be a p-value, not an effect size"
     },
     {
       "id": 17,
@@ -1261,7 +1265,7 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1320,7 +1324,9 @@
         "PREDICTIVE_PROCESSING": 0.1601,
         "METHODOLOGICAL": 0.1563,
         "HC": 0.1554
-      }
+      },
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 18,
@@ -1330,7 +1336,7 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.01,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1393,7 +1399,9 @@
         "PREDICTIVE_PROCESSING": 0.1583,
         "MULTISENSORY_INTEGRATION": 0.1535,
         "SPATIAL_NAVIGATION": 0.1535
-      }
+      },
+      "_original_effect_size": 0.01,
+      "_quarantine_reason": "Value 0.01 appears to be a p-value, not an effect size"
     },
     {
       "id": 19,
@@ -6281,46 +6289,67 @@
     "date": "2026-03-01T07:06:32.905993+00:00"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:08.796959+00:00",
+  "surgical_update_at": "2026-03-02T23:33:40.749530+00:00",
   "stimulus_description": {
     "environmental_features": [
       "Ciudad Guayana urban environment"
     ],
-    "duration_exposure": "continuous, long-term",
+    "duration_exposure": "continuous",
     "control_conditions": null,
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Kevin Lynch's theory of urban imageability",
+      "theory_name": "Lynch's Theory of Urban Imageability (The Image of the City)",
       "commitment_type": "applies",
-      "specific_claim": "People perceive and organize cities into distinct elements (paths, edges, districts, nodes, landmarks) which form their mental maps, influencing their navigation and understanding of the urban environment."
+      "specific_claim": "Urban environments are perceived and mentally structured by inhabitants into five key elements (paths, edges, districts, nodes, and landmarks), which contribute to the city's legibility and navigability."
     }
   ],
   "instruments_used": [
     {
-      "name": null,
-      "construct": "mental representation of city",
-      "description": "Sketch mapping exercises where participants were asked to draw their mental maps of Ciudad Guayana",
-      "type": "self_report"
+      "name": "Sketch mapping",
+      "construct": "Mental representation of urban space",
+      "description": "Participants were asked to draw maps of Ciudad Guayana from memory, indicating important features and their spatial relationships.",
+      "type": "behavioral"
     },
     {
-      "name": null,
-      "construct": "urban perception and experience",
-      "description": "Semi-structured interviews with inhabitants to elicit their perceptions of the city's structure and significant elements",
+      "name": "Semi-structured interviews",
+      "construct": "Perception and experience of urban space",
+      "description": "Interviews conducted with inhabitants to elicit their verbal descriptions of the city, its parts, and how they navigate it.",
       "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Maps of Ciudad Guayana highlighting key urban elements and overall structure",
-      "figure_ref": null,
-      "image_type": "map"
-    },
-    {
-      "description": "Diagrams or sketches representing inhabitants' mental maps of Ciudad Guayana",
+      "description": "Diagrams representing inhabitants' mental maps of Ciudad Guayana, highlighting paths, edges, districts, nodes, and landmarks.",
       "figure_ref": null,
       "image_type": "diagram"
+    },
+    {
+      "description": "Maps of Ciudad Guayana, potentially annotated to show key urban elements or areas of focus.",
+      "figure_ref": null,
+      "image_type": "map"
     }
-  ]
+  ],
+  "mechanism_chain": {
+    "description": "The physical characteristics and organization of an urban environment are perceived and interpreted by its inhabitants, leading to the formation of a simplified, structured mental map that guides their navigation and understanding of the city.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Physical urban elements (e.g., roads, buildings, open spaces)",
+        "to_construct": "Perceived urban elements (paths, edges, districts, nodes, landmarks)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived urban elements",
+        "to_construct": "Coherent mental map of the city",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated"
 }

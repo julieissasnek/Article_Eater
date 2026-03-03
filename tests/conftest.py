@@ -140,3 +140,43 @@ def setup_test_db(tmp_path_factory):
         pass  # app.db may not be available in all test configurations
 
     yield
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Shared Test Utilities
+# ═══════════════════════════════════════════════════════════════════
+
+from dataclasses import dataclass
+from types import SimpleNamespace
+from src.epistemic.gap_types import GapType
+
+
+@dataclass
+class FakeGap:
+    """Shared fake gap for testing research queue services."""
+    gap_id: str
+    gap_type: GapType
+    description: str
+    voi_score: float
+    affected_beliefs: list
+    implied_by: list
+
+    def to_dict(self):
+        """Serialize to dict for compatibility with ResearchQueueService."""
+        return {
+            'gap_id': self.gap_id,
+            'gap_type': self.gap_type.value,
+            'description': self.description,
+            'voi_score': self.voi_score,
+            'affected_beliefs': self.affected_beliefs,
+            'implied_by': self.implied_by,
+        }
+
+
+class FakeGapPredictor:
+    """Shared fake gap predictor for testing research queue services."""
+    def __init__(self, gaps: list):
+        self._gaps = gaps
+
+    def find_all_gaps(self, max_gaps: int = 50):
+        return SimpleNamespace(gaps=self._gaps[:max_gaps])

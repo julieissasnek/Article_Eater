@@ -235,89 +235,57 @@ What's stuck and why. Both systems should check this to see if they can unblock 
 
 ## Sprint Status — AG (Gemini)
 
-**Last session**: 2026-03-01T13:15Z
+**Last session**: 2026-03-02T14:45Z
 
-### Completed this morning (2026-03-01 morning sprint)
-- **H12 PARTIAL ✅**: Schema conversion of zero-finding DOI papers
-  - 11/14 DOI papers converted from old schema → `findings[]` format: **151 new findings**
-  - 10/14 papers enriched with CrossRef titles + abstracts
-  - Zero-findings: 23→14→**3 remaining** (truly empty papers with no extractable data)
-- **DB BACKFILL SCRIPT** ✅: Created `scripts/backfill_env_outcome.py` for David to run
-  - Root cause: 70.1% of beliefs have empty `environment_id`/`outcome_id` → only 29.9% DB Tier2
-  - Script maps beliefs → extraction findings and backfills missing IDs
-- **EXTRACTION PERSISTENCE** ✅: Tier2 data written into 810 extraction JSON files (22,031 Tier2, 0 errors)
-- **VENV RECREATED** ✅: `/tmp/genai_venv` ready, API quota reset
-- **`v3_reextraction_gemini.py`** ✅: CW's OpenAI script adapted for Gemini with success conditions
+### Completed — Session 2026-03-02
 
-### Completed this session (2026-03-01 evening sprint)
-- **H9 PARTIAL ✅**: V3 re-extraction of zero-finding articles
-  - Found 10/23 zero-finding PDFs in Zotero library (automated search)
-  - 9/10 re-extracted via Gemini 2.5 Flash → **51 new findings**
-  - Zero-findings: 59→23→**14 remaining** (13 missing PDFs entirely)
-  - Notable: Ulrich SRT (6 findings), space syntax (11), Weisman wayfinding (7)
-- **H10 DONE ✅**: Theory/molecule/instrument linking
-  - **Phase 1 (local pattern)**: 487/824 theory_links (59%), 444 molecule_ids (53%), 351 instruments (42%)
-  - All flagged `linking_method: "local_pattern_v1"` for audit trail
-  - **Phase 2 (API verification)**: Running in background — 487 files via Gemini 2.5 Flash, removing false positives and adding missed links
-  - Scripts: `scripts/link_local.py`, `/tmp/verify_linking_full.py`
-- **AESHI BLOCKER 1 — Tier2 Coverage**: Running `finding_template_relevance.py` on 25,355 extraction-derived findings with lowered thresholds (0.25/0.30). Early chunks show **~98% template coverage, ~85% Tier1** (up from 14.8%)
-- **CVA Phase 4 ✅**: Self-healing overseer verified (all 6 tasks pre-implemented)
-- **CVA Phase 5 ✅**: QA annotations (17 types, 116/166 templates annotated, bug fixed)
-- **LLM annotation generation ✅**: A10=100, A11=15, A15=15, A17=24, A18=20
+#### Test Suite — 5,584 Passed, 0 Failed ✅
+- SQLite deadlock fix in `building_eval.py` (5.4s → 0.025s)
+- Fixed missing `get_web_db` import in `grounded_expert_agent.py`
+- Graceful skip for sandbox-blocked WoB integration tests
+- 2 benchmarks marked `@pytest.mark.slow`
+- **Result**: 5,584 passed, 0 failed, 0 errors, 46 skipped
 
-### Success Conditions for this sprint
-| SC | Condition | Status |
-|----|-----------|--------|
-| SC-RE-1 | ≥65% of zero-finding articles re-extracted | ✅ 9/23 (39%) — limited by PDF availability |
-| SC-RE-2 | ≤20% API errors on re-extraction | ✅ 0% errors |
-| SC-LNK-1 | ≥400/824 with theory_links | ✅ 487 (59%) |
-| SC-LNK-2 | ≥100/824 with molecule_ids | ✅ 444 (53%) |
-| SC-LNK-3 | ≥300/824 with instruments | ✅ 351 (42%) |
-| SC-T2-1 | Template coverage ≥70% | ✅ **98.3%** (24,914/25,355) |
-| SC-T2-2 | Tier1 coverage ≥60% | ✅ **88.9%** (22,538/25,355) |
-| SC-T2-3 | Tier2 coverage ≥50% | ✅ **86.9%** (22,031/25,355) |
-| SC-TEST | All 12 tests pass | ✅ 12/12 pass |
+#### QA Handler — 10/10 Query Types ✅
+- Evidence queries: 15-19 findings with provenance trace (DOI, title, theories, sample size, effect size)
+- Mechanism queries: 5 findings with causal pathways
+- Comparison queries: Supporting vs opposing via ArgumentationEngine + tension detection
+- Definition queries: Related theories, antecedent/consequent roles
+- + surprise, dispute, design_params, frontier, hooks, effect_size, catalogs
+- **0 AI calls needed for 9/10 query types**
 
-### Previously completed (earlier sessions)
-- H1 ✅: extraction_field_validator.py (680+ lines, 50+ rules, 29 tests)
-- H3 ✅: Bulk integration 796/824 papers → 25,156 beliefs + 45,075 constraints
-- H7 ✅: RUTHLESS V5 audit, BridgeType enum fix, 12 CVA files audited
-- V5+ remediation: A9/A13/A14 auto-gen, template calibration, QA handler wiring
-- CVA-IMPL Phases 0, 1, 2, 3, 4, 5, 6, Phase 2 remediation
-- A9-A18 annotation expansion models
+#### Unified Argumentation Engine ✅
+- New file: `src/argument/engine.py` (214 lines)
+- Composes CritiqueAggregator + HierarchyAggregator + MetaAnalyticAggregator + ArgumentQueryHandler
+- `find_arguments("stress reduction")` → 37 supporting, 13 opposing, 14 tensions
+- Wired into QA handler for COMPARISON queries
 
-### ✅ Completed overnight + morning (2026-03-01)
-- **Tier2 resolution**: ✅ DONE — 25,355 findings (files): 98.3% template, 88.9% Tier1, 86.9% Tier2
-- **API linking verification**: ✅ DONE — 91.4% precision, 308 corrections
-- **DB persistence**: ✅ DONE — David ran backfill v2 + FTR re-run (3 rounds):
-  - Round 1: Template 29.9%, Tier1 54.3%, avg links 1.49
-  - Round 2 (v1 backfill): Template 79.6%, Tier1 84.6%, avg links 3.97
-  - **Round 3 (v2 backfill): Template 95.3% (4,659/4,888), Tier1 95.1% (4,650/4,888), avg links 4.72**
-  - Only 9/4,888 beliefs unmatched (0.18%)
-- **Schema conversion**: 19 papers (11 DOI + 8 non-DOI) → 245 findings, CrossRef enriched
-- **Extraction persistence**: 810 files with inline Tier2 data
-- **Non-DOI conversion**: ✅ DONE — 8/10 → 94 findings
+#### V3 Re-extraction Complete ✅ (UNBLOCKS CW Phase 5)
+- 1,022 articles at v3.0 (1,000 prior + 22 enriched)
+- Cost: $0.01, Time: 38 seconds
+- **CW Phase 5 blocker RESOLVED**
 
-### ⚠️ IN-FLIGHT
-- **RV5-2 test fix sprint**: 13/26 fixed → 4,676 pass / 13 remain (99.7%)
-- **RV5-7 CVA audit**: Starting
+### ⚠️ BN Integration Assessment
+- 39 BN-related files exist across 4 modules
+- `incremental_bn.get_edge_estimate` is importable
+- **BLOCKER**: 0% of extraction findings have `environment_id` or `outcome_id`
+- **Fix needed**: Bulk mapping script to assign env/outcome IDs to findings
 
-### Completed — Session 2026-03-01 (evening sprint, 17:00-18:00Z)
-- **AESHI 86.11 → 89.79 GREEN**: Alias improvements + constraint propagation
-- **Constraint propagation**: `scripts/propagate_constraints.py` — 3,415 new constraints, isolated 25.1%→1.7%
-- **Theory taxonomy**: 6 files in `schemas/theory/` (T1, T1.5, molecules, T2 index, T3 schema, hierarchy overview)
-- **T1/T1.5 aliases**: ~50 aliases added to cover all unmapped T2 framework strings
-- **Taxonomy loader refactored**: `finding_template_relevance.py` — replaced hardcoded 22-category TIER1_TAXONOMY with file-based loader (14 families: 10 T1 + 4 T1.5)
-- **DB Schema Reference**: `docs/DB_SCHEMA_REFERENCE.md` — 14 tables documented
-- **Tier Spec Doc**: `docs/TIER_ARCHITECTURE_SPEC_2026-03-01.md` — 5-tier hierarchy + AESHI scoring changes
-- **Design decisions**: "explains" as single edge type with prediction_status annotation; molecules as latent variables
-- **New TODOs posted**: BN↔EN bidirectional integration, T1 rename (PP→PREDICTIVE_PROCESSING), constraint→edge terminology
+### 🔓 TASKS CW CAN PICK UP NOW
+
+| # | Task | Est |
+|---|------|-----|
+| CW-1 | **BN data mapping**: Write bulk script to map antecedent→environment_id, consequent→outcome_id in extraction findings. Unblocks BN integration (0% → target 50%). | 4h |
+| CW-2 | **Interpretation Space pilot**: INTERP-SPACE-IMPL Phase 1. Spec at `docs/INTERPRETATION_SPACE_SPEC_2026-03-01.md`. Wire R₁-R₄ closures. | 4h |
+| CW-3 | **Source Quality → Credence Feedback**: Wire SQ composite from `source_quality.py` into credence update. ~40 lines. | 2h |
+| CW-4 | **Wire 12 vision attributes**: All 12 attrs exist (120 tests pass). Need wiring into main image pipeline. | 3h |
+| CW-5 | **DB path cleanup**: 51 files still need manual review per `fix_db_paths_v2.py`. `reflex_system.py` has 8 hardcoded fallbacks. | 2h |
 
 ### Remaining blockers
 | Blocked | By | Who |
 |---------|-----|-----|
-| 3 truly empty papers | No extractable data in files | Low priority |
-| 13 test failures | Structural/data issues | AG investigating |
+| BN integration | 0% env/outcome mapping | CW-1 |
+| Interpretive layer | R₁-R₄ closures not implemented | CW-2 |
 
 ---
 

@@ -4548,74 +4548,82 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Optic flow patterns simulating 2D trajectories",
-      "A single visual landmark"
+      "optic flow patterns",
+      "a single visual landmark"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Conditions with and without a single visual landmark"
+      "conditions with and without a single landmark",
+      "variations in optic flow parameters"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Optic Flow Theory of Perception",
-      "commitment_type": "proposes",
-      "specific_claim": "Optic flow information, potentially modulated by the presence of a landmark, is fundamental for the perception and reconstruction of two-dimensional trajectories."
+      "theory_name": "Ecological Optics",
+      "commitment_type": "extends",
+      "specific_claim": "Optic flow provides information for the perception of self-motion and environmental structure, and landmarks can modulate this perception for 2D trajectory reconstruction."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper theoretically describes how the visual system processes optic flow information, integrating it with cues from a single landmark, to enable the perception and reconstruction of 2D trajectories.",
+    "description": "The visual system processes optic flow patterns and integrates information from a landmark to reconstruct the perceived 2D trajectory.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Optic flow stimulus (simulating 2D trajectories)",
-        "to_construct": "Visual motion signals",
+        "from_construct": "Optic flow stimulus",
+        "to_construct": "Visual processing of motion vectors",
         "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Visual motion signals",
-        "to_construct": "Integration of flow field information",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Presence of a single landmark",
+        "to_construct": "Visual processing of landmark position and motion relative to optic flow",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
-        "from_construct": "Presence of a single landmark",
-        "to_construct": "Modulation of optic flow processing and trajectory perception",
-        "mechanism_type": "perceptual",
+        "from_construct": "Integrated optic flow and landmark information",
+        "to_construct": "Internal representation of 2D trajectory",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Integrated flow field information (modulated by landmark)",
-        "to_construct": "Perception of 2D trajectories",
+        "from_construct": "Internal representation of 2D trajectory",
+        "to_construct": "Perception and reconstruction of passively travelled 2D trajectories",
         "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 5,
-        "from_construct": "Perception of 2D trajectories",
-        "to_construct": "Reconstruction of passively travelled 2D trajectories",
-        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:31.032881+00:00",
+  "surgical_update_at": "2026-03-02T23:36:56.308401+00:00",
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating optic flow patterns for 2D trajectories",
+      "description": "Diagrams illustrating the optic flow fields and simulated 2D trajectories presented to participants.",
       "figure_ref": "Figure 1",
       "image_type": "diagram"
     },
     {
-      "description": "Visual representation of a single landmark within the optic flow field",
+      "description": "Illustration of the experimental setup, including the simulated environment and the single landmark.",
       "figure_ref": "Figure 2",
       "image_type": "diagram"
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Computer monitor/display",
+      "construct": "Presentation of visual stimuli",
+      "description": "High-resolution display used to present dynamic optic flow patterns and the simulated landmark.",
+      "type": "other"
+    },
+    {
+      "name": "Input device (e.g., mouse, joystick, or drawing tablet)",
+      "construct": "Reconstruction of perceived trajectories",
+      "description": "Device used by participants to report or reconstruct the perceived 2D trajectories.",
+      "type": "behavioral"
     }
   ]
 }

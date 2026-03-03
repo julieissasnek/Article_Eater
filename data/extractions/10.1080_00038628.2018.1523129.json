@@ -75,7 +75,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 30,
       "confidence_interval": null,
       "test_statistic": "t(341)=-2.605 (Design-1), t(341)=-2.877 (Design-2), t(341)=-2.418 (Design-3)",
       "theory_links": [
@@ -141,7 +141,8 @@
         "NM_REWARD": 0.1551,
         "EMBODIED_COGNITION": 0.152,
         "SPATIAL_NAVIGATION": 0.152
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2830,47 +2831,38 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Virtual architectural spaces",
-      "Corridors",
-      "Decision points",
-      "Varying levels of environmental complexity",
-      "Virtual mazes"
+      "Virtual 3D architectural mazes",
+      "Computer-generated environments displayed on a monitor"
     ],
-    "duration_exposure": "Multiple trials, each involving navigation through a virtual maze, typically lasting a few minutes per trial.",
+    "duration_exposure": "Multiple trials, each lasting typically 1-5 minutes per maze traversal",
     "control_conditions": [
-      "Comparison between different virtual maze layouts (e.g., varying complexity)",
-      "Comparison of navigation performance across different phases of the task"
+      "Different maze layouts or complexity levels",
+      "Baseline resting state (for EEG analysis)"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Mobile EEG system",
-      "construct": "Brain electrical activity (e.g., theta, alpha power)",
-      "description": "High-density mobile electroencephalography system (e.g., actiCAP active electrodes, Brain Products amplifier)",
+      "name": "Electroencephalography (EEG)",
+      "construct": "Brain electrical activity (e.g., alpha, theta power, event-related potentials)",
+      "description": "High-density EEG system (e.g., 64-channel) to record brain activity during wayfinding tasks",
       "type": "eeg"
     },
     {
-      "name": "Virtual Environment Software",
-      "construct": "Virtual architectural spaces and maze navigation task",
-      "description": "Custom-built virtual environment software (e.g., based on Unity3D) for presenting the navigation task and recording behavioral data.",
-      "type": "behavioral"
-    },
-    {
       "name": "Wayfinding performance metrics",
-      "construct": "Wayfinding ability",
-      "description": "Behavioral measures collected from the virtual environment, including exit time, path length, and number of errors.",
+      "construct": "Spatial navigation ability",
+      "description": "Behavioral measures such as exit time from mazes, path length, and number of errors",
       "type": "behavioral"
     },
     {
-      "name": "Spatial ability questionnaires",
-      "construct": "Individual spatial ability",
-      "description": "Self-report questionnaires to assess participants' spatial abilities (e.g., Santa Barbara Sense of Direction Scale, Mental Rotation Test).",
-      "type": "self_report"
+      "name": "Input device (e.g., joystick, keyboard)",
+      "construct": "User interaction with virtual environment",
+      "description": "Used by participants to navigate through the virtual mazes",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:44.174905+00:00",
+  "surgical_update_at": "2026-03-02T22:52:16.080967+00:00",
   "theory_commitments": [
     {
       "theory_name": "Neural Correlates of Spatial Cognition (specifically theta oscillations)",
@@ -2906,11 +2898,12 @@
   },
   "stimulus_images": [
     {
-      "description": "Screenshots or renderings of the virtual architectural spaces and maze layouts used as stimuli.",
+      "description": "Screenshots or renderings of the virtual 3D architectural mazes used as stimuli",
       "figure_ref": "Figure 1",
       "image_type": "rendering"
     }
   ],
   "paper_sample_size": 30,
-  "paper_sample_size_source": "reported"
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

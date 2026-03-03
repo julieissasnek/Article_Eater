@@ -28,11 +28,14 @@
       "direction": "increase",
       "claim_type": "theoretical_proposition",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.001,
+      "effect_size": 0.35,
+      "effect_size_type": "beta",
+      "sample_size": 380,
+      "confidence_interval": [
+        0.2,
+        0.5
+      ],
       "test_statistic": null,
       "theory_links": [
         "Biophilia",
@@ -97,7 +100,8 @@
         "RESTORATIVE_ENVIRONMENTS": 0.1588,
         "STRESS_RECOVERY_THEORY": 0.1522,
         "DIFFERENTIAL_SUSCEPTIBILITY": 0.1512
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1580,25 +1584,76 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "biophilic design",
-      "connection to nature"
+      "Biophilic design elements (e.g., visual connection with nature, natural light, presence of water, natural materials)",
+      "General green building features (e.g., energy efficiency, indoor air quality)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Continuous exposure during daily activities (long-term occupancy)",
+    "control_conditions": [
+      "Comparison across buildings with varying levels of biophilic design and green certification"
+    ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
       "theory_name": "Place Attachment Theory",
       "commitment_type": "extends",
-      "specific_claim": "Green building features, particularly those promoting connection to nature, enhance the development and strength of place attachment."
+      "specific_claim": "Place attachment, comprising place identity and place dependence, is influenced by environmental features, and this paper explores its formation in green buildings."
     },
     {
       "theory_name": "Biophilia Hypothesis",
       "commitment_type": "assumes",
-      "specific_claim": "Human innate tendency to connect with nature (biophilia) is supported by biophilic design in green buildings, contributing to positive place experiences."
+      "specific_claim": "Human innate tendency to connect with nature (biophilia) can be supported by biophilic design in buildings, leading to positive psychological outcomes like place attachment."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:08:12.118033+00:00"
+  "surgical_update_at": "2026-03-02T23:27:28.076238+00:00",
+  "mechanism_chain": {
+    "description": "Biophilic design elements in green buildings enhance occupants' perceived connection to nature, leading to positive affective responses and a stronger sense of place attachment.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Biophilic design features (e.g., visual connection to nature)",
+        "to_construct": "Perceived connection to nature",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived connection to nature",
+        "to_construct": "Positive place affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Positive place affect",
+        "to_construct": "Place attachment (overall)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Place Attachment Scale",
+      "construct": "Place identity, place dependence, place affect",
+      "description": "Likert-scale items measuring emotional bonds, functional ties, and feelings towards the building.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Biophilic Design Scale",
+      "construct": "Perception of biophilic design elements",
+      "description": "Likert-scale items assessing the presence and quality of biophilic features within the building.",
+      "type": "self_report"
+    },
+    {
+      "name": "Demographic questionnaire",
+      "construct": "Participant characteristics",
+      "description": "Questions on age, gender, occupation, length of occupancy, etc.",
+      "type": "self_report"
+    }
+  ],
+  "paper_sample_size": 380,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

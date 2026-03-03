@@ -578,9 +578,89 @@ def run_post_integration():
     return True
 
 
+def run_qa_confounder_check():
+    """Stage 6: Batch confounder risk assessment on all findings."""
+    log.info("=== STAGE 6: QA CONFOUNDER CHECK ===")
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.services.pipeline_qa_integration import batch_assess_findings
+
+        output_dir = LOGS_DIR / "qa_reports"
+        result = batch_assess_findings(output_dir=str(output_dir))
+
+        if result.get("status") == "disabled":
+            log.info("Confounder check disabled (AE_QA_INTEGRATION=false)")
+            return True
+
+        if result.get("status") == "error":
+            log.warning(f"QA batch assessment failed: {result.get('error')}")
+            return True  # Non-fatal, continue pipeline
+
+        # Log confounder assessment results
+        if result.get("confounder_assessment"):
+            conf = result["confounder_assessment"]
+            if conf.get("status") == "success" and conf.get("batch_report"):
+                batch = conf["batch_report"]
+                log.info(
+                    f"Confounder risk assessment: {batch.get('beliefs_assessed', 0)} beliefs, "
+                    f"{batch.get('high_risk_count', 0)} high-risk, "
+                    f"{batch.get('medium_risk_count', 0)} medium-risk"
+                )
+
+        duration_ms = result.get("duration_ms", 0)
+        log.info(f"QA confounder check completed in {duration_ms}ms")
+
+        return True
+
+    except Exception as e:
+        log.warning(f"QA confounder check error (non-fatal): {e}")
+        return True  # Non-fatal — don't block pipeline
+
+
+def run_qa_credence_intervals():
+    """Stage 6b: Compute credence confidence intervals for all beliefs."""
+    log.info("=== STAGE 6B: QA CREDENCE INTERVALS ===")
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.services.pipeline_qa_integration import batch_assess_findings
+
+        output_dir = LOGS_DIR / "qa_reports"
+        # This will run credence assessment if enabled
+        result = batch_assess_findings(output_dir=str(output_dir))
+
+        if result.get("status") == "disabled":
+            log.info("Credence intervals disabled (AE_QA_INTEGRATION=false)")
+            return True
+
+        if result.get("status") == "error":
+            log.warning(f"QA credence assessment failed: {result.get('error')}")
+            return True  # Non-fatal, continue pipeline
+
+        # Log credence assessment results
+        if result.get("credence_assessment"):
+            cred = result["credence_assessment"]
+            if cred.get("status") == "success" and cred.get("summary_stats"):
+                stats = cred["summary_stats"]
+                log.info(
+                    f"Credence intervals: {stats.get('n_beliefs', 0)} beliefs, "
+                    f"mean CI width {stats.get('mean_ci_width', 0.0):.3f}"
+                )
+
+        duration_ms = result.get("duration_ms", 0)
+        log.info(f"QA credence intervals completed in {duration_ms}ms")
+
+        return True
+
+    except Exception as e:
+        log.warning(f"QA credence check error (non-fatal): {e}")
+        return True  # Non-fatal — don't block pipeline
+
+
 def run_cva_enrichment():
-    """Stage 6: CVA constraint-valuation enrichment on integrated papers."""
-    log.info("=== STAGE 6: CVA ENRICHMENT ===")
+    """Stage 7: CVA constraint-valuation enrichment on integrated papers."""
+    log.info("=== STAGE 7: CVA ENRICHMENT ===")
     try:
         sys.path.insert(0, str(REPO_ROOT))
         from src.services.cva_constraint_engine import CVAConstraintEngine
@@ -661,6 +741,8 @@ STAGES = {
     "tables": run_tables,
     "integrate": run_integration,
     "overseer": run_post_integration,
+    "qa_confounder": run_qa_confounder_check,
+    "qa_credence": run_qa_credence_intervals,
     "cva": run_cva_enrichment,
 }
 

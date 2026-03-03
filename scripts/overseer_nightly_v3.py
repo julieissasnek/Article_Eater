@@ -331,6 +331,79 @@ def run_nightly_v3(dry_run: bool = False, output_dir: str = None) -> dict:
         report["sections"]["recommendation_loop"] = {"status": "error", "error": str(e)}
 
     # =========================================================================
+    # Section 12: QA Assessment (Confounder Risk & Credence Intervals)
+    # =========================================================================
+    logger.info("Section 12: QA assessment (confounder risk & credence intervals)...")
+    qa_assessment_report = {}
+    try:
+        from src.services.pipeline_qa_integration import batch_assess_findings
+
+        output_dir = PROJECT_ROOT / "data" / "qa_reports"
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        qa_result = batch_assess_findings(output_dir=str(output_dir))
+
+        qa_assessment_report = {
+            "status": qa_result.get("status"),
+            "timestamp": qa_result.get("timestamp"),
+            "duration_ms": qa_result.get("duration_ms"),
+        }
+
+        # Add confounder assessment if available
+        if qa_result.get("confounder_assessment"):
+            conf = qa_result["confounder_assessment"]
+            if conf.get("status") == "success" and conf.get("batch_report"):
+                batch = conf["batch_report"]
+                qa_assessment_report["confounder_risk"] = {
+                    "beliefs_assessed": batch.get("beliefs_assessed", 0),
+                    "high_risk_count": batch.get("high_risk_count", 0),
+                    "medium_risk_count": batch.get("medium_risk_count", 0),
+                    "low_risk_count": batch.get("low_risk_count", 0),
+                    "mean_design_risk": batch.get("mean_design_risk", 0.0),
+                    "mean_control_adequacy": batch.get("mean_control_adequacy", 0.0),
+                }
+                logger.info(
+                    f"  Confounder risk: {batch.get('beliefs_assessed', 0)} beliefs, "
+                    f"{batch.get('high_risk_count', 0)} high-risk, "
+                    f"{batch.get('medium_risk_count', 0)} medium-risk"
+                )
+            elif conf.get("status") == "error":
+                qa_assessment_report["confounder_risk"] = {
+                    "status": "error",
+                    "error": conf.get("error")
+                }
+
+        # Add credence assessment if available
+        if qa_result.get("credence_assessment"):
+            cred = qa_result["credence_assessment"]
+            if cred.get("status") == "success" and cred.get("summary_stats"):
+                stats = cred["summary_stats"]
+                qa_assessment_report["credence_intervals"] = {
+                    "n_estimates": stats.get("n_beliefs", 0),
+                    "mean_ci_width": round(stats.get("mean_ci_width", 0.0), 3),
+                    "median_ci_width": round(stats.get("median_ci_width", 0.0), 3),
+                    "max_ci_width": round(stats.get("max_ci_width", 0.0), 3),
+                }
+                logger.info(
+                    f"  Credence intervals: {stats.get('n_beliefs', 0)} estimates, "
+                    f"mean width {stats.get('mean_ci_width', 0.0):.3f}"
+                )
+            elif cred.get("status") == "error":
+                qa_assessment_report["credence_intervals"] = {
+                    "status": "error",
+                    "error": cred.get("error")
+                }
+
+        report["sections"]["qa_assessment"] = qa_assessment_report
+
+    except ImportError:
+        logger.warning("QA integration module not available (pipeline_qa_integration.py missing)")
+        report["sections"]["qa_assessment"] = {"status": "unavailable", "reason": "module_not_found"}
+    except Exception as e:
+        logger.warning(f"QA assessment failed (non-fatal): {e}")
+        report["sections"]["qa_assessment"] = {"status": "error", "error": str(e)}
+
+    # =========================================================================
     # Summary
     # =========================================================================
     duration_ms = (time.time() - start) * 1000

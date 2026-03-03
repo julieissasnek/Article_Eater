@@ -53,7 +53,7 @@
       "p_value": "0.005",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": "t=3.074",
       "theory_links": [
@@ -103,7 +103,8 @@
       "tier2_relevance": {
         "DMN_TPN_DYNAMICS": 0.1666,
         "HC": 0.1557
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -841,38 +842,64 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Direct/indirect lighting environment (400 lx downlight, 300 lx uplight)",
-      "Direct lighting environment (700 lx downlight)"
+      "Simulated residential room",
+      "Direct/indirect lighting (400 lx downlight, 300 lx uplight)",
+      "Direct lighting (700 lx downlight)"
     ],
-    "duration_exposure": "15 minutes per condition",
+    "duration_exposure": "5 minutes per lighting condition",
     "control_conditions": [
       "Direct lighting environment (700 lx downlight)"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
       "name": "Self-Assessment Manikin (SAM)",
-      "construct": "valence, arousal, dominance",
-      "description": "Pictorial self-report scale for emotional dimensions",
+      "construct": "emotional valence, arousal, dominance",
+      "description": "Pictorial self-report scale for emotional states",
       "type": "self_report"
     },
     {
-      "name": "Electroencephalography (EEG)",
-      "construct": "brain activity (e.g., alpha and beta power, frontal asymmetry)",
-      "description": "Measures electrical activity in the brain",
-      "type": "eeg"
+      "name": "fMRI",
+      "construct": "brain activity",
+      "description": "Functional magnetic resonance imaging to measure blood-oxygen-level-dependent (BOLD) signals",
+      "type": "fmri"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:37.001878+00:00",
+  "surgical_update_at": "2026-03-02T22:48:36.299549+00:00",
   "stimulus_images": [
     {
-      "description": "Experimental room setup showing different lighting conditions",
+      "description": "Photographs or renderings of the experimental room under direct/indirect lighting conditions",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photographs or renderings of the experimental room under direct lighting conditions",
       "figure_ref": "Figure 1",
       "image_type": "photo"
     }
   ],
-  "paper_sample_size": 20,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated",
+  "mechanism_chain": {
+    "description": "The paper suggests that different lighting conditions modulate brain activity in regions associated with emotion processing, which in turn influences subjective emotional experiences.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "lighting condition (direct/indirect vs. direct)",
+        "to_construct": "brain activity (e.g., prefrontal cortex, amygdala)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "brain activity (e.g., prefrontal cortex, amygdala)",
+        "to_construct": "emotional valence ratings",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "quantitative_backfill_count": 1
 }

@@ -1446,20 +1446,114 @@
   "minimum_safe_summary": "This narrative review by Bjarne W. Olesen provides a comprehensive overview of radiant floor heating systems, covering their historical context, thermal comfort implications, indoor air quality benefits, heating and cooling capacities, and control strategies. Key findings indicate that floor heating systems achieve the same operative temperature at lower air temperatures compared to convective systems, offer uniform vertical temperature profiles, and reduce issues like condensation, mold growth, and dust mites. The paper highlights that individual room controls significantly improve energy efficiency (15-30% savings) and that the self-control effect of hydronic floor heating contributes to stable room temperatures. While effective, the self-control mechanism is specific to hydronic systems and not applicable to electrically heated floors.",
   "stimulus_description": {
     "environmental_features": [
-      "radiant floor heating",
-      "floor surface temperature"
+      "floor surface temperature",
+      "air temperature",
+      "radiant asymmetry",
+      "air velocity"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "control_conditions": [
+      "conventional heating systems (e.g., forced air)",
+      "different floor surface temperature settings",
+      "unheated conditions"
+    ],
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Prospect and Refuge Theory",
-      "commitment_type": "proposes",
-      "specific_claim": null
+      "theory_name": "Thermal Comfort Theory (e.g., Fanger's PMV/PPD model)",
+      "commitment_type": "assumes",
+      "specific_claim": "Human thermal sensation and comfort can be predicted based on environmental and personal parameters, including operative temperature."
+    },
+    {
+      "theory_name": "Heat Transfer Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "Heat transfer occurs via conduction, convection, and radiation, influencing indoor environmental conditions and human thermal exchange."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T21:59:32.227623+00:00"
+  "surgical_update_at": "2026-03-02T23:26:48.670726+00:00",
+  "mechanism_chain": {
+    "description": "Causal chain from floor surface temperature change to operative temperature and subsequent human thermal sensation.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "floor surface temperature change",
+        "to_construct": "radiant heat exchange with occupant",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "floor surface temperature change",
+        "to_construct": "convective heat transfer to room air",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "radiant heat exchange with occupant",
+        "to_construct": "operative temperature change",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "convective heat transfer to room air",
+        "to_construct": "operative temperature change",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "operative temperature change",
+        "to_construct": "human thermal sensation",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Thermocouples/RTDs",
+      "construct": "temperature (floor surface, air, wall)",
+      "description": "Sensors for measuring various surface and air temperatures within the environment.",
+      "type": "physiological"
+    },
+    {
+      "name": "Globe thermometer",
+      "construct": "radiant temperature",
+      "description": "Measures radiant temperature, used in the calculation of operative temperature.",
+      "type": "physiological"
+    },
+    {
+      "name": "Anemometer",
+      "construct": "air velocity",
+      "description": "Measures air movement within the conditioned space.",
+      "type": "physiological"
+    },
+    {
+      "name": "ASHRAE Thermal Sensation Scale",
+      "construct": "thermal sensation",
+      "description": "A 7-point subjective scale ranging from -3 (cold) to +3 (hot) to assess perceived thermal comfort.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of radiant floor heating system components and layers",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Floor plan showing heating pipe layout within a room",
+      "figure_ref": "Figure 2",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Graphs illustrating temperature distribution or heat flux",
+      "figure_ref": "Figure 3",
+      "image_type": "graph"
+    }
+  ]
 }

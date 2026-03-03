@@ -2184,117 +2184,59 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "low-frequency noise",
-      "infrasound",
-      "audible low-frequency noise",
-      "broadband noise with low-frequency components"
+      "Low-frequency noise (LFN) and infrasound, typically defined as noise below 200-250 Hz, often extending to below 20 Hz (infrasound).",
+      "Various sound pressure levels (SPLs), often measured in unweighted dB or dB(G) due to the nature of LFN perception and its non-auditory effects."
     ],
-    "duration_exposure": "variable, ranging from minutes to continuous long-term exposure",
-    "control_conditions": [
-      "quiet conditions",
-      "broadband noise without dominant low-frequency components"
-    ],
+    "duration_exposure": null,
+    "control_conditions": null,
     "ecological_validity": null
   },
   "mechanism_chain": {
-    "description": "Low-frequency noise can induce various physiological and psychological effects through direct mechanical stimulation, resonance, and activation of non-auditory pathways, leading to symptoms like annoyance, fatigue, and performance decrements.",
+    "description": "Causal mechanism connecting exposure to low-frequency noise to temporary threshold shifts (TTS).",
     "steps": [
       {
         "step": 1,
-        "from_construct": "low-frequency noise exposure",
-        "to_construct": "mechanical resonance in body cavities/organs",
+        "from_construct": "Exposure to high-level low-frequency noise",
+        "to_construct": "Mechanical vibration of the basilar membrane",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "mechanical resonance in body cavities/organs",
-        "to_construct": "physiological discomfort/symptoms (e.g., chest vibrations, nausea)",
+        "from_construct": "Mechanical vibration of the basilar membrane",
+        "to_construct": "Metabolic fatigue or damage of outer hair cells",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "low-frequency noise exposure",
-        "to_construct": "vestibular system stimulation",
+        "from_construct": "Metabolic fatigue or damage of outer hair cells",
+        "to_construct": "Temporary elevation of hearing thresholds (TTS)",
         "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 4,
-        "from_construct": "vestibular system stimulation",
-        "to_construct": "motion sickness-like symptoms (e.g., dizziness, nausea)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 5,
-        "from_construct": "low-frequency noise exposure",
-        "to_construct": "auditory masking of other sounds",
-        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
-      },
-      {
-        "step": 6,
-        "from_construct": "auditory masking of other sounds",
-        "to_construct": "increased listening effort/cognitive load",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 7,
-        "from_construct": "low-frequency noise exposure",
-        "to_construct": "annoyance/irritation",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 8,
-        "from_construct": "annoyance/irritation",
-        "to_construct": "stress response/fatigue",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Audiometry",
-      "construct": "hearing threshold",
-      "description": "Measurement of hearing sensitivity across different frequencies",
+      "name": "Sound level meters",
+      "construct": "Low-frequency noise levels",
+      "description": "Used for measuring the sound pressure levels and spectral characteristics of LFN.",
+      "type": "other"
+    },
+    {
+      "name": "Audiometers",
+      "construct": "Hearing thresholds",
+      "description": "Used to measure auditory sensitivity and detect temporary threshold shifts (TTS).",
       "type": "physiological"
     },
     {
       "name": "Questionnaires",
-      "construct": "annoyance",
-      "description": "Self-report scales to assess subjective feelings of disturbance or irritation",
+      "construct": "Annoyance, sleep disturbance, symptoms",
+      "description": "Self-report instruments used to assess subjective responses to LFN exposure.",
       "type": "self_report"
-    },
-    {
-      "name": "Symptom checklists",
-      "construct": "physical and psychological symptoms",
-      "description": "Self-report lists to identify occurrence and severity of symptoms (e.g., headache, fatigue, nausea)",
-      "type": "self_report"
-    },
-    {
-      "name": "Performance tests",
-      "construct": "cognitive performance",
-      "description": "Tasks designed to measure aspects like reaction time, vigilance, or memory",
-      "type": "behavioral"
-    },
-    {
-      "name": "Heart rate monitoring",
-      "construct": "physiological stress/arousal",
-      "description": "Measurement of heart rate as an indicator of autonomic nervous system activity",
-      "type": "physiological"
-    },
-    {
-      "name": "Blood pressure measurement",
-      "construct": "physiological stress",
-      "description": "Measurement of systolic and diastolic blood pressure",
-      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:12:27.683426+00:00"
+  "surgical_update_at": "2026-03-02T23:35:51.724300+00:00"
 }

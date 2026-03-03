@@ -5858,93 +5858,103 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "discusses",
-      "specific_claim": "Natural and restorative environments can restore directed attention and reduce mental fatigue."
-    },
-    {
       "theory_name": "Biophilia Hypothesis",
-      "commitment_type": "discusses",
+      "commitment_type": "assumes",
       "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, influencing well-being in built environments."
     },
     {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "discusses",
-      "specific_claim": "Exposure to natural environments can lead to physiological and psychological stress reduction."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "proposes",
+      "specific_claim": "Exposure to natural environments can restore directed attention and reduce mental fatigue, which can be applied to building design."
+    },
+    {
+      "theory_name": "Stress Recovery Theory (SRT)",
+      "commitment_type": "proposes",
+      "specific_claim": "Certain environments, particularly natural ones, facilitate physiological and psychological stress recovery, relevant for building occupants."
     }
   ],
   "mechanism_chain": {
-    "description": "Mechanism describing how light in the built environment influences human circadian rhythms and subsequent cognitive and affective states.",
+    "description": "Mechanism describing how light exposure in the built environment impacts human physiological and cognitive states.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (e.g., specific spectrum, intensity, timing)",
-        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "from_construct": "Inappropriate light exposure (e.g., spectrum, intensity, timing)",
+        "to_construct": "Disruption of circadian rhythm",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
+        "from_construct": "Disruption of circadian rhythm",
+        "to_construct": "Impaired melatonin production and sleep quality",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "SCN modulation",
-        "to_construct": "Regulation of melatonin secretion from the pineal gland",
+        "from_construct": "Impaired melatonin production and sleep quality",
+        "to_construct": "Increased physiological stress response (e.g., cortisol levels) and reduced cognitive function (e.g., alertness, attention)",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Melatonin secretion regulation",
-        "to_construct": "Entrainment of circadian rhythms and sleep-wake cycles",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Circadian rhythm entrainment / Sleep-wake cycle",
-        "to_construct": "Impact on cognitive performance, mood, and overall well-being",
-        "mechanism_type": "cognitive|affective|behavioral",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "EEG (Electroencephalography)",
-      "construct": "Brain electrical activity, cognitive load, attention, emotional response",
-      "description": "Measures electrical activity in the brain via electrodes placed on the scalp to assess neural responses.",
-      "type": "eeg"
-    },
-    {
-      "name": "fMRI (functional Magnetic Resonance Imaging)",
-      "construct": "Brain activity, neural correlates of perception, emotion, cognition",
-      "description": "Detects changes in blood flow to measure brain activity and localize neural responses to environmental stimuli.",
+      "name": "fMRI",
+      "construct": "Brain activity, neural correlates of environmental perception",
+      "description": "Functional Magnetic Resonance Imaging to measure brain responses to built environment stimuli.",
       "type": "fmri"
     },
     {
+      "name": "EEG",
+      "construct": "Brain electrical activity, cognitive states (e.g., attention, relaxation)",
+      "description": "Electroencephalography to monitor brainwave patterns in response to indoor environments.",
+      "type": "eeg"
+    },
+    {
+      "name": "Eye-tracking",
+      "construct": "Visual attention, gaze patterns, environmental exploration",
+      "description": "Measures where and how long individuals look at different features in a built environment.",
+      "type": "eye_tracking"
+    },
+    {
       "name": "Heart Rate Variability (HRV)",
-      "construct": "Autonomic nervous system activity, stress, emotional regulation",
-      "description": "Measures variations in the time interval between heartbeats to assess physiological stress and relaxation.",
+      "construct": "Autonomic nervous system activity, stress, relaxation",
+      "description": "Physiological measure indicating stress or relaxation responses to environmental conditions.",
       "type": "physiological"
     },
     {
-      "name": "Electrodermal Activity (EDA) / Skin Conductance Response (SCR)",
-      "construct": "Arousal, stress, emotional response",
-      "description": "Measures changes in the electrical conductivity of the skin, reflecting sympathetic nervous system activity and arousal.",
+      "name": "Electrodermal Activity (EDA/GSR)",
+      "construct": "Arousal, emotional response, stress",
+      "description": "Measures changes in skin conductance due to sweat gland activity, indicating physiological arousal.",
       "type": "physiological"
     },
     {
-      "name": "Self-report questionnaires (e.g., PANAS, PSS, comfort scales)",
-      "construct": "Subjective mood, perceived stress, comfort, satisfaction",
-      "description": "Standardized questionnaires used to capture individuals' subjective experiences and perceptions.",
+      "name": "Cortisol levels",
+      "construct": "Physiological stress response",
+      "description": "Measures of cortisol in saliva or blood as a biomarker for stress.",
+      "type": "physiological"
+    },
+    {
+      "name": "Self-report questionnaires (e.g., PANAS, comfort scales)",
+      "construct": "Affect, mood, perceived comfort, satisfaction, stress",
+      "description": "Standardized scales to assess subjective experiences and perceptions of the built environment.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:30:15.538153+00:00"
+  "surgical_update_at": "2026-03-02T22:50:45.773829+00:00",
+  "stimulus_images": [
+    {
+      "description": "Conceptual diagram illustrating the interdisciplinary connections between neuroscience, built environment features, and human responses.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagram showing brain regions and neural pathways involved in processing environmental stimuli or stress responses.",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ]
 }

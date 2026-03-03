@@ -63,7 +63,7 @@
       "p_value": "<0.05",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -133,7 +133,8 @@
         "COGNITIVE_CONTROL": 0.151,
         "CONSTRUAL_LEVEL_THEORY": 0.151,
         "CREATIVE_COGNITION": 0.151
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2738,43 +2739,73 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "mirror-finished wood",
-      "matte-finished wood",
-      "control panel (non-wood material)"
+      "uncoated Hinoki cypress wood sample",
+      "mirror-finished Hinoki cypress wood sample",
+      "rough-finished Hinoki cypress wood sample"
     ],
-    "duration_exposure": "90 seconds per stimulus",
+    "duration_exposure": "90 seconds per sample",
     "control_conditions": [
-      "control panel (non-wood material)",
-      "resting period"
+      "resting condition (no touch)"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "fNIRS",
-      "construct": "left prefrontal cortex oxyhemoglobin concentration",
-      "description": "Functional Near-Infrared Spectroscopy to measure changes in cerebral blood oxygenation.",
+      "name": "fNIRS (functional Near-Infrared Spectroscopy)",
+      "construct": "cerebral oxyhemoglobin and deoxyhemoglobin concentration",
+      "description": "Measures changes in blood oxygenation in the prefrontal cortex.",
       "type": "physiological"
     },
     {
-      "name": "ECG",
-      "construct": "heart rate variability",
-      "description": "Electrocardiogram to measure cardiac activity and derive heart rate variability.",
+      "name": "Electrocardiogram (ECG)",
+      "construct": "heart rate variability (HRV)",
+      "description": "Measures heart rate and its variability to assess autonomic nervous system activity.",
       "type": "physiological"
-    },
-    {
-      "name": "EDA",
-      "construct": "skin conductance level",
-      "description": "Electrodermal Activity sensor to measure changes in skin conductance, reflecting sympathetic nervous system activity.",
-      "type": "physiological"
-    },
-    {
-      "name": "Visual Analog Scale (VAS)",
-      "construct": "subjective pleasantness and comfort of touch",
-      "description": "Self-report scale for participants to rate their subjective experience of touching the materials.",
-      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:03:16.930115+00:00"
+  "surgical_update_at": "2026-03-02T23:26:59.029831+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Contact with natural materials like wood can induce positive physiological and psychological responses, contributing to human well-being."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photographs of the different wood samples (uncoated, mirror-finished, rough-finished Hinoki cypress)",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported",
+  "mechanism_chain": {
+    "description": "Tactile interaction with wood surfaces leads to sensory processing, which modulates the autonomic nervous system, resulting in changes in cerebral blood flow and heart rate variability.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "tactile contact with wood surface",
+        "to_construct": "somatosensory input",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "somatosensory input",
+        "to_construct": "autonomic nervous system modulation",
+        "mechanism_type": "neural",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 3,
+        "from_construct": "autonomic nervous system modulation",
+        "to_construct": "physiological changes (e.g., cerebral oxyhemoglobin concentration, heart rate variability)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "quantitative_backfill_count": 1
 }

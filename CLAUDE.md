@@ -215,6 +215,24 @@ This will flag any figures whose data dependencies have changed and add regenera
 
 All figure labels, titles, and annotations MUST use plain English that a smart non-specialist would understand. Technical terms may appear in parentheses after the plain-English version. Example: "Evidence Store (Epistemic Network)" not "Epistemic Network (EN)". This applies to all layers, transfer functions, and matrix labels.
 
+## Mathematical Explanation Norms (MANDATORY)
+
+*Added 2026-03-02. Canonical reference: `contracts/MATH_EXPLANATION_NORMS.md`.*
+
+Every formula, parameter, and constant in the master document must follow the Seven Norms derived from the practices of Strogatz, Devlin, Ellenberg, Stewart, Mazur, du Sautoy, Tsitsiklis, and Bertsekas. Read the canonical reference before writing or editing any mathematical content.
+
+**The non-negotiable requirements:**
+
+1. **Four-Layer Explanation** for every formula: (1) plain-English statement with zero notation, (2) intuition and motivation explaining *why this form*, (3) formal statement with all terms defined, (4) worked examples spanning the diversity of cases.
+2. **Provenance**: Every formula must declare its origin — ESTABLISHED (from literature), ADAPTED (modified from literature), or NOVEL (new to ATLAS).
+3. **Justified Constants**: No magic numbers. Every constant must be tagged as EMPIRICAL, THEORETICAL, CALIBRATED, or STIPULATED, with appropriate justification for each category.
+4. **Explicit Assumptions and Scope**: State what must be true for the formula to work, where it breaks down, and what happens at boundaries.
+5. **Common-Sense Labels First**: Plain English name, then technical symbol in parentheses.
+6. **Figures for Non-Trivial Formulas**: If > 2 variables, show a figure with typical operating range, sensitivity, and plain-English labels.
+7. **Diverse Examples**: Best case, worst case, typical case, edge case, and cross-domain when applicable.
+
+**Quick compliance check**: A reader who skips the formal statement and reads only the plain-English layers should still understand what the formula does, why it exists, and approximately what values it produces.
+
 ---
 
 ## Paper Writing Norms (MANDATORY for all papers, articles, and formal documents)

@@ -3287,102 +3287,96 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "varying background noise levels (e.g., HVAC noise, masking sound)",
-      "varying speech levels of intruding speech",
-      "different sound transmission loss (TL) characteristics of partitions (e.g., walls, doors)",
-      "different room acoustic conditions (e.g., reverberation time)"
+      "varying sound insulation (e.g., different STC/TL values of walls)",
+      "different levels of background noise (e.g., HVAC noise, sound masking systems)",
+      "different types of speech (e.g., normal conversation, loud speech)",
+      "different office layouts (e.g., private offices, open-plan offices)"
     ],
-    "duration_exposure": "typically short-term listening tasks (minutes) for experimental conditions; longer-term for field surveys",
+    "duration_exposure": "continuous 8-hour workday or long-term exposure",
     "control_conditions": [
-      "comparison of different background noise levels (e.g., quiet vs. noisy)",
-      "comparison of different partition types/STC ratings",
-      "comparison of different speech levels"
+      "comparison between different building types or office layouts",
+      "comparison between rooms with different acoustic treatments"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Improved acoustic insulation reduces the level of intruding speech, which in turn decreases its intelligibility, leading to enhanced perceived privacy and ultimately greater occupant satisfaction and reduced distraction.",
+    "description": "The paper describes how physical acoustic properties of a building influence the audibility and intelligibility of speech, which in turn affects occupants' perception of privacy and overall satisfaction with the acoustic environment.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Acoustic insulation (e.g., wall transmission loss)",
-        "to_construct": "Reduced sound level of intruding speech",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "Reduced sound level of intruding speech",
-        "to_construct": "Reduced speech intelligibility",
+        "from_construct": "Sound insulation (e.g., Transmission Loss of wall) / Background noise level",
+        "to_construct": "Speech audibility / Speech intelligibility",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
-        "step": 3,
-        "from_construct": "Reduced speech intelligibility",
-        "to_construct": "Increased perceived privacy",
+        "step": 2,
+        "from_construct": "Speech audibility / Speech intelligibility",
+        "to_construct": "Perceived speech privacy",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
-        "step": 4,
-        "from_construct": "Increased perceived privacy",
-        "to_construct": "Increased occupant satisfaction with privacy / Reduced distraction",
+        "step": 3,
+        "from_construct": "Perceived speech privacy",
+        "to_construct": "Occupant satisfaction with acoustic environment",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:33.217265+00:00",
+  "surgical_update_at": "2026-03-02T22:42:22.384651+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Psychoacoustics",
+      "theory_name": "Speech Intelligibility Theory (e.g., STI, SII models)",
       "commitment_type": "assumes",
-      "specific_claim": "Human perception of sound, including speech intelligibility and annoyance, is governed by physical acoustic properties and auditory processing."
+      "specific_claim": "The intelligibility of speech is a primary determinant of perceived speech privacy and annoyance in buildings."
     },
     {
-      "theory_name": "Speech Intelligibility Theory",
-      "commitment_type": "applies",
-      "specific_claim": "The degree to which speech can be understood is a primary determinant of perceived privacy and distraction in buildings, influenced by signal-to-noise ratio and spectral content."
+      "theory_name": "Environmental Psychology (Privacy and Annoyance Models)",
+      "commitment_type": "proposes",
+      "specific_claim": "Perceived control over the acoustic environment and the predictability of sounds significantly influence occupants' perception of privacy and overall satisfaction."
     }
   ],
   "instruments_used": [
     {
       "name": "Sound Level Meter",
-      "construct": "Sound pressure level (dBA), background noise level, speech level",
-      "description": "Used for objective acoustic measurements in experimental setups and field studies.",
+      "construct": "Sound pressure level (dB), background noise level",
+      "description": "Device used for measuring various acoustic parameters in buildings.",
       "type": "other"
     },
     {
-      "name": "Speech Intelligibility Rating Scale",
-      "construct": "Speech intelligibility",
-      "description": "Subjective rating scales (e.g., 5-point scale from 'unintelligible' to 'perfectly intelligible') to assess how well intruding speech can be understood.",
-      "type": "self_report"
-    },
-    {
-      "name": "Questionnaire for Perceived Privacy",
-      "construct": "Perceived privacy, satisfaction with privacy, distraction, annoyance",
-      "description": "Self-report questionnaires to assess occupants' subjective experience of privacy, satisfaction, and the impact of speech on their work.",
-      "type": "self_report"
-    },
-    {
-      "name": "Speech Transmission Index (STI) / Articulation Index (AI)",
-      "construct": "Speech intelligibility (objective measure)",
-      "description": "Calculated or measured objective metrics to quantify speech intelligibility based on acoustic parameters.",
+      "name": "Transmission Loss (TL) measurement",
+      "construct": "Sound insulation performance of building elements",
+      "description": "Standardized measurement of sound reduction provided by a barrier (e.g., wall, floor).",
       "type": "other"
+    },
+    {
+      "name": "Speech Intelligibility Index (SII) or Speech Transmission Index (STI)",
+      "construct": "Objective speech intelligibility",
+      "description": "Calculated metric used to predict the intelligibility of speech based on acoustic measurements.",
+      "type": "other"
+    },
+    {
+      "name": "Occupant Survey Questionnaire",
+      "construct": "Perceived speech privacy, satisfaction with acoustic environment, annoyance, perceived speech intelligibility",
+      "description": "Self-report questions administered to building occupants to assess their subjective experience of the acoustic environment.",
+      "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating typical office layouts and sound transmission paths between adjacent spaces.",
-      "figure_ref": "Likely figures showing room configurations or sound paths",
-      "image_type": "diagram"
+      "description": "Graphs showing the relationship between acoustic metrics (e.g., Speech Transmission Index, Sound Level) and subjective responses (e.g., perceived privacy, satisfaction)",
+      "figure_ref": "Various figures throughout the paper",
+      "image_type": "graph"
     },
     {
-      "description": "Graphs showing acoustic measurements such as sound pressure levels, speech transmission index (STI), or articulation index (AI) under different conditions.",
-      "figure_ref": "Likely figures showing acoustic data",
-      "image_type": "graph"
+      "description": "Diagrams illustrating sound transmission paths or typical room/office layouts",
+      "figure_ref": "Various figures throughout the paper",
+      "image_type": "diagram"
     }
-  ]
+  ],
+  "paper_sample_size": 400,
+  "paper_sample_size_source": "estimated"
 }

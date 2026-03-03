@@ -1871,42 +1871,49 @@
   "instruments_used": [
     {
       "name": "Radiance",
-      "construct": "daylight performance; mean daylight factor",
-      "description": "Advanced ray-tracing software for accurate daylight simulations",
+      "construct": "Daylight Factor, Illuminance, Luminance",
+      "description": "Ray-tracing simulation software used for detailed daylighting analysis and calculation of metrics like mean daylight factor.",
       "type": "other"
     },
     {
       "name": "Lynes average daylight factor formula (Equation 2)",
-      "construct": "mean daylight factor",
-      "description": "A simplified mathematical formula for calculating average daylight factor",
+      "construct": "Average Daylight Factor",
+      "description": "An analytical formula used for estimating the average daylight factor, which was compared against Radiance calculations.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:44:27.078684+00:00",
+  "surgical_update_at": "2026-03-02T23:37:53.509410+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "room geometries (dimensions, window sizes, window positions)",
+      "room geometry (e.g., depth, width, height)",
+      "window dimensions and placement",
       "surface reflectances (walls, ceiling, floor)",
-      "sky conditions (e.g., CIE overcast sky)"
+      "external obstructions (e.g., adjacent buildings)",
+      "glazing properties"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "comparison against direct Radiance simulations",
-      "comparison against other design rules of thumb or standard practices"
+      "conventional design approaches for diffuse daylight",
+      "different iterations of design parameters based on rules of thumb"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "stimulus_images": [
     {
-      "description": "Diagrams of typical room layouts with varying window configurations and dimensions",
-      "figure_ref": "Figure 1",
-      "image_type": "diagram"
+      "description": "Floor plans or section drawings illustrating room geometries and window configurations used in simulations.",
+      "figure_ref": null,
+      "image_type": "floor_plan"
     },
     {
-      "description": "Renderings or false-color images showing daylight factor distribution within simulated rooms",
-      "figure_ref": "Figure 3",
+      "description": "Renderings or false-color images showing daylight distribution within simulated spaces.",
+      "figure_ref": null,
       "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the rules of thumb or the design sequence steps.",
+      "figure_ref": null,
+      "image_type": "diagram"
     }
   ]
 }

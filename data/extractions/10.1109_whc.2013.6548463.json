@@ -68,7 +68,7 @@
       "p_value": "<0.01",
       "effect_size": 7.22,
       "effect_size_type": "Cramers_V",
-      "sample_size": null,
+      "sample_size": 12,
       "confidence_interval": null,
       "test_statistic": "q(3,145)=7.22",
       "theory_links": [
@@ -134,7 +134,8 @@
         "MOTOR_CONTROL_THEORY": 0.1744,
         "INTEROCEPTION_ALLOSTASIS": 0.1731,
         "MEMORY_SYSTEMS": 0.1731
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2230,37 +2231,37 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Vibrotactile cues delivered to the fingertip via a tactor",
-      "Object to be gripped with embedded force sensors"
+      "Vibrotactile stimulation delivered to the fingertip (e.g., index finger)",
+      "Stimuli indicate an impending change in load force on an object"
     ],
-    "duration_exposure": "Brief, anticipatory cue (e.g., 50-200 ms before event)",
+    "duration_exposure": "Brief, discrete vibrotactile pulses (e.g., 100-200 ms) preceding load change",
     "control_conditions": [
-      "No cue (baseline)",
-      "Simultaneous cue (cue presented at event onset)",
-      "Varying lead times for anticipatory cue"
+      "No cue condition",
+      "Visual cue condition (e.g., visual display indicating load change)",
+      "Vibrotactile cue with different timing or intensity"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Anticipatory vibrotactile cues provide predictive sensory information, which allows the motor system to pre-program or fine-tune grip force commands, leading to a more efficient and faster adjustment of grip force upon contact.",
+    "description": "Vibrotactile cues provide anticipatory information about upcoming load changes, allowing the motor system to pre-program or adjust grip force proactively, leading to faster and more stable grip force responses.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Anticipatory vibrotactile cue",
-        "to_construct": "Predictive sensory signal",
+        "from_construct": "Vibrotactile cue",
+        "to_construct": "Anticipatory sensory information",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Predictive sensory signal",
-        "to_construct": "Pre-activation of motor commands for grip force",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "Anticipatory sensory information",
+        "to_construct": "Pre-programmed motor command for grip force adjustment",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "Pre-activation of motor commands",
+        "from_construct": "Pre-programmed motor command",
         "to_construct": "Reduced latency of grip force adjustment",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
@@ -2269,27 +2270,34 @@
   },
   "instruments_used": [
     {
-      "name": "Force sensors",
+      "name": "Custom haptic device",
+      "construct": "Grip force and load force application/measurement, vibrotactile stimulation delivery",
+      "description": "Device designed to apply controlled load forces to an object held by the participant and deliver vibrotactile cues to the fingertip.",
+      "type": "other"
+    },
+    {
+      "name": "Load cells / Force sensors",
       "construct": "Grip force and load force",
-      "description": "Sensors embedded in the object to measure normal and tangential forces applied by the fingers.",
+      "description": "Sensors integrated into the haptic device to measure forces exerted by the participant and applied to the object.",
       "type": "physiological"
     },
     {
-      "name": "Vibrotactile tactor",
+      "name": "Vibrotactile actuator",
       "construct": "Vibrotactile stimulation",
-      "description": "Device used to deliver controlled vibratory cues to the participant's fingertip.",
+      "description": "Component (e.g., voice coil actuator) used to generate and deliver controlled vibrations to the participant's fingertip.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:02.904393+00:00",
+  "surgical_update_at": "2026-03-02T23:36:37.303579+00:00",
   "stimulus_images": [
     {
-      "description": "Diagram or photo of the experimental setup, showing the object, force sensors, and vibrotactile tactor placement on the finger.",
+      "description": "Experimental setup showing the haptic device, object to be gripped, and vibrotactile actuator placement on the finger.",
       "figure_ref": "Figure 1",
       "image_type": "diagram"
     }
   ],
   "paper_sample_size": 12,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

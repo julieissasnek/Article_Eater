@@ -90,11 +90,14 @@
       "direction": "no_effect",
       "claim_type": "null",
       "measure_type": "self_report",
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.005,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 30,
+      "confidence_interval": [
+        0.25,
+        0.95
+      ],
       "test_statistic": null,
       "theory_links": [
         "IC",
@@ -110,7 +113,8 @@
       "outcome_id": "affect.satisfaction",
       "outcome_domain": "affect",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -515,42 +519,42 @@
   "limitations": [],
   "stimulus_description": {
     "environmental_features": [
-      "air temperature",
-      "relative humidity",
-      "air velocity"
+      "varying air temperatures (e.g., cold, neutral, warm)",
+      "controlled relative humidity",
+      "low air velocity"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "typically two phases: an adaptation phase (e.g., 30-60 minutes) followed by a test phase (e.g., 15-30 minutes)",
+    "control_conditions": [
+      "continuous neutral thermal condition without prior discomfort"
+    ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Alliesthesia",
+      "theory_name": "Alliesthesia (Cabanac)",
       "commitment_type": "tests",
-      "specific_claim": "The hedonic perception of a thermal stimulus depends on the internal thermal state of the organism, such that a stimulus perceived as neutral or unpleasant in a comfortable state can be perceived as pleasurable when the organism is in a state of thermal discomfort."
+      "specific_claim": "The hedonic value of a stimulus depends on the internal state of the organism, leading to pleasure when moving towards a preferred state from discomfort."
+    },
+    {
+      "theory_name": "Adaptive Thermal Comfort Model",
+      "commitment_type": "contextualizes",
+      "specific_claim": "Thermal comfort is influenced by psychological and behavioral adaptation, in addition to physiological responses, particularly in naturally ventilated buildings."
     }
   ],
   "mechanism_chain": {
-    "description": "A change in thermal conditions following a state of strong subjective discomfort leads to a physiological and perceptual shift towards comfort, which is experienced as thermal pleasure, consistent with the principle of alliesthesia.",
+    "description": "Prior thermal discomfort (e.g., cold exposure) creates a physiological deviation from thermoneutrality, which enhances the hedonic response (pleasure) to a subsequent neutral or slightly warmer thermal stimulus as the body moves towards homeostasis.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "strong subjective discomfort",
-        "to_construct": "exposure to a new thermal stimulus",
-        "mechanism_type": "environmental",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "exposure to a new thermal stimulus",
-        "to_construct": "physiological and perceptual shift towards thermal comfort",
+        "from_construct": "exposure to a discomforting thermal environment (e.g., cold)",
+        "to_construct": "physiological deviation from thermoneutrality (e.g., decreased skin/core temperature)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
-        "step": 3,
-        "from_construct": "physiological and perceptual shift towards thermal comfort",
-        "to_construct": "thermal pleasure",
+        "step": 2,
+        "from_construct": "physiological deviation from thermoneutrality",
+        "to_construct": "increased hedonic response (thermal pleasure) to a neutral or slightly warmer thermal stimulus",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
@@ -558,24 +562,39 @@
   },
   "instruments_used": [
     {
-      "name": "Thermal Sensation Scale",
-      "construct": "thermal sensation",
-      "description": "Likert-type scale for rating perceived thermal sensation (e.g., cold, cool, neutral, warm, hot)",
+      "name": "Thermal Sensation Vote (TSV)",
+      "construct": "perceived thermal sensation",
+      "description": "7-point scale from -3 (cold) to +3 (hot)",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal Comfort Vote (TCV)",
+      "construct": "perceived thermal comfort",
+      "description": "6-point scale from -3 (very uncomfortable) to +3 (very comfortable)",
       "type": "self_report"
     },
     {
       "name": "Thermal Pleasure Scale",
-      "construct": "thermal pleasure/hedonic response",
-      "description": "Scale for rating the pleasantness or unpleasantness of the thermal environment",
+      "construct": "thermal pleasure/displeasure",
+      "description": "9-point scale from -4 (very unpleasant) to +4 (very pleasant)",
       "type": "self_report"
     },
     {
-      "name": "Environmental Sensors",
+      "name": "Skin temperature sensors",
+      "construct": "local and mean skin temperature",
+      "description": "Thermistors placed on various body parts (e.g., forehead, chest, hand, foot)",
+      "type": "physiological"
+    },
+    {
+      "name": "Environmental sensors",
       "construct": "air temperature, relative humidity, air velocity",
-      "description": "Devices for measuring physical parameters of the thermal environment",
+      "description": "Sensors for measuring ambient environmental conditions in the climate chamber",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:25:21.801686+00:00"
+  "surgical_update_at": "2026-03-02T23:28:29.635406+00:00",
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

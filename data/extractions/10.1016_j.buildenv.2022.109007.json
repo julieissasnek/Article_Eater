@@ -2703,29 +2703,80 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Living Wall System (LWS) support system configurations",
-      "WPC Type A panel absorber (A1, 12.93 mm chamber height, 25.65 mm thickness)"
+      "Different Living Wall System (LWS) support system configurations",
+      "WPC panel absorbers with varying geometries (e.g., chamber height, thickness)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Different LWS support system configurations or materials for comparison"
+      "Standard rigid wall",
+      "Non-LWS acoustic panel"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Reverberation Chamber",
-      "construct": "Sound absorption coefficient, Noise Reduction Coefficient",
-      "description": "Specialized acoustic room used for measuring the sound absorption properties of materials according to international standards.",
+      "name": "Reverberation chamber",
+      "construct": "Sound absorption",
+      "description": "Acoustic test facility used to measure sound absorption coefficients of materials, including NRC",
       "type": "other"
     },
     {
-      "name": "Microphone / Sound Level Meter",
+      "name": "Sound level meter",
       "construct": "Sound pressure level",
-      "description": "Device used to measure sound pressure levels within the reverberation chamber.",
+      "description": "Instrument used to measure sound pressure levels during acoustic tests",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:52:05.064271+00:00"
+  "surgical_update_at": "2026-03-02T22:46:17.850210+00:00",
+  "mechanism_chain": {
+    "description": "The mechanism by which Living Wall Systems (LWSs) reduce noise involves the absorption and scattering of sound waves by the porous materials and internal structures of the LWS panels.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Sound waves",
+        "to_construct": "Porous LWS panel material and internal chambers",
+        "mechanism_type": "physical",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Porous LWS panel material and internal chambers",
+        "to_construct": "Sound energy dissipation (friction, vibration, resonance)",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Sound energy dissipation",
+        "to_construct": "Reduced sound reflection and transmission",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Reduced sound reflection and transmission",
+        "to_construct": "Improved Noise Reduction Coefficient (NRC)",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs or renderings of the different Living Wall System (LWS) panel types and their support structures.",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "photo"
+    },
+    {
+      "description": "Diagrams illustrating the cross-sectional view of LWS panels, showing internal chamber heights and material layers.",
+      "figure_ref": "Figure 3",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Schematic of the experimental setup for acoustic measurements (e.g., impedance tube or reverberation chamber).",
+      "figure_ref": "Figure 4",
+      "image_type": "diagram"
+    }
+  ]
 }

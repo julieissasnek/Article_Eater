@@ -14,7 +14,7 @@ Per panel recommendations (P-VIS, P-LAYER):
 """
 
 from fastapi import APIRouter, HTTPException, Query, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
@@ -75,8 +75,7 @@ class EdgeJustificationResponse(BaseModel):
     provenance: Optional[ProvenanceSummaryResponse] = None
     generated_at: str
 
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class AllEdgesJustificationResponse(BaseModel):
@@ -271,8 +270,7 @@ class GapReportResponse(BaseModel):
     summary: Dict[str, Any]
     gaps: List[GapResponse]
 
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 @router.get(

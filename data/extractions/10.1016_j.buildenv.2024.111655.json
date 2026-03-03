@@ -2133,57 +2133,67 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:44:46.673603+00:00",
+  "surgical_update_at": "2026-03-02T23:37:56.974854+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "artificial windows displaying nature scenes",
-      "artificial windows with dynamic content",
+      "LED-based artificial windows",
+      "virtual windows displaying dynamic nature scenes",
+      "virtual windows displaying dynamic urban scenes",
+      "static images of nature",
+      "static images of urban environments",
       "artificial windows with motion parallax",
-      "static artificial windows",
-      "various display technologies (e.g., LCD, LED, projection)"
+      "artificial windows with soundscapes (e.g., nature sounds)",
+      "simulated views of sky",
+      "simulated views of trees/foliage"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "varied, typically ranging from 15 minutes to 8 hours (simulated workday)",
     "control_conditions": [
-      "blank walls",
-      "real windows",
-      "static images (non-window)",
-      "no visual stimulus"
+      "blank wall",
+      "no window",
+      "real window view (e.g., nature view, urban view)",
+      "different types of artificial windows (e.g., static vs. dynamic, nature vs. urban content)",
+      "white wall with a frame"
     ],
-    "ecological_validity": null
+    "ecological_validity": "lab|semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory (ART)",
-      "commitment_type": "tests|extends|proposes",
-      "specific_claim": "Artificial windows displaying natural content can provide restorative experiences similar to real nature, thereby improving directed attention and reducing mental fatigue."
+      "commitment_type": "tests|extends",
+      "specific_claim": "Exposure to natural environments (or simulations thereof) can restore directed attention and reduce mental fatigue."
     },
     {
       "theory_name": "Biophilia Hypothesis",
       "commitment_type": "assumes|proposes",
-      "specific_claim": "Humans have an innate tendency to connect with nature, and artificial windows simulating natural views can partially satisfy this biophilic need, leading to positive psychological and physiological outcomes."
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which can be partially satisfied by simulated natural elements."
+    },
+    {
+      "theory_name": "Prospect-Refuge Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans prefer environments that offer both opportunities for prospect (seeing without being seen) and refuge (feeling protected), which artificial windows might simulate."
     }
   ],
   "mechanism_chain": {
-    "description": "Artificial windows, particularly those with dynamic and natural content, enhance perceived naturalness and realism, which in turn triggers restorative processes and positive affective responses, leading to improved mood and cognitive performance.",
+    "description": "Artificial windows, particularly those displaying natural or dynamic content, can reduce feelings of enclosure and improve mood and performance through perceptual and cognitive pathways.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "artificial window with motion parallax/dynamic content",
-        "to_construct": "perceived naturalness/realism",
-        "mechanism_type": "perceptual",
+        "from_construct": "artificial window (dynamic nature scene)",
+        "to_construct": "perceived naturalness/restorativeness",
+        "mechanism_type": "perceptual|cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "perceived naturalness/realism",
-        "to_construct": "restorative experience (e.g., fascination, being away)",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "from_construct": "perceived naturalness/restorativeness",
+        "to_construct": "reduced cognitive load/stress",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "restorative experience",
-        "to_construct": "improved mood (e.g., reduced negative affect, increased positive affect)",
+        "from_construct": "reduced cognitive load/stress",
+        "to_construct": "improved mood",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
       },
@@ -2191,53 +2201,85 @@
         "step": 4,
         "from_construct": "improved mood",
         "to_construct": "enhanced task performance",
-        "mechanism_type": "cognitive",
+        "mechanism_type": "cognitive|behavioral",
         "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "artificial window (motion parallax/depth cues)",
+        "to_construct": "increased perceived spaciousness/openness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "increased perceived spaciousness/openness",
+        "to_construct": "reduced feelings of enclosure/claustrophobia",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 7,
+        "from_construct": "reduced feelings of enclosure/claustrophobia",
+        "to_construct": "improved mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "name": "PANAS (Positive and Negative Affect Schedule)",
       "construct": "positive and negative affect",
-      "description": "Self-report questionnaire measuring current mood states.",
+      "description": "A self-report questionnaire measuring current mood states.",
       "type": "self_report"
     },
     {
-      "name": "Profile of Mood States (POMS)",
-      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
-      "description": "Self-report questionnaire assessing various dimensions of mood.",
+      "name": "POMS (Profile of Mood States)",
+      "construct": "mood dimensions (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "A self-report questionnaire assessing various mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "NASA-TLX (Task Load Index)",
+      "construct": "perceived workload",
+      "description": "A multidimensional rating scale used to assess subjective workload.",
       "type": "self_report"
     },
     {
       "name": "Cognitive performance tasks",
-      "construct": "attention, memory, reaction time, vigilance",
-      "description": "Various standardized tasks to measure cognitive functions.",
+      "construct": "attention, memory, problem-solving, vigilance",
+      "description": "Various tasks such as proofreading, reaction time tests, N-back tasks, or sustained attention tasks.",
       "type": "behavioral"
     },
     {
       "name": "Heart Rate Variability (HRV)",
       "construct": "physiological stress/relaxation",
-      "description": "Measurement of variations in the time interval between heartbeats.",
+      "description": "Measurement of the variation in the time interval between heartbeats.",
       "type": "physiological"
     },
     {
-      "name": "Self-report questionnaires on perceived restorativeness",
-      "construct": "restorative experience",
-      "description": "Questionnaires assessing feelings of being away, fascination, extent, and compatibility.",
+      "name": "Self-report questionnaires (ad-hoc)",
+      "construct": "perceived restorativeness, preference, perceived spaciousness, comfort, presence",
+      "description": "Custom-designed questionnaires to assess specific subjective experiences related to the artificial window.",
       "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Examples of different types of artificial windows used in studies",
-      "figure_ref": null,
-      "image_type": "stimulus_set"
+      "description": "Diagram illustrating different types of artificial window technologies (e.g., LED panels, LCD screens, projection systems)",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
     },
     {
-      "description": "Diagrams illustrating the setup of artificial windows in windowless spaces",
-      "figure_ref": null,
-      "image_type": "diagram"
+      "description": "Renderings or photos of experimental setups featuring artificial windows in simulated office or indoor environments",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Examples of visual content displayed on artificial windows (e.g., nature scenes, cityscapes, abstract patterns)",
+      "figure_ref": "Figure 3",
+      "image_type": "stimulus_set"
     }
   ]
 }

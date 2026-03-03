@@ -55,14 +55,25 @@ def load_staging_links():
                 existing = cursor.execute("SELECT belief_id FROM beliefs WHERE belief_id = ?", (belief_id,)).fetchone()
                 if not existing:
                     try:
+                        # Serialize scope conditions if available (Sprint 6: Scope Persistence)
+                        scope_json = None
+                        if isinstance(row, dict):
+                            try:
+                                from src.services.extraction_to_web import _extract_scope
+                                scope_obj = _extract_scope({"study": row.get("study", {})})
+                                scope_json = json.dumps(scope_obj.to_dict())
+                            except Exception:
+                                pass  # Graceful degradation if scope extraction fails
+
                         cursor.execute("""
                             INSERT INTO beliefs (
-                                belief_id, web_id, content, level, status, 
-                                credence_value, created_at, updated_at
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                                belief_id, web_id, content, level, status,
+                                credence_value, scope, created_at, updated_at
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """, (
                             belief_id, web_id, content, level, 'active',
                             float(row.get('ae_confidence', 0.5)),
+                            scope_json,
                             datetime.now(timezone.utc).isoformat(),
                             datetime.now(timezone.utc).isoformat()
                         ))
@@ -94,14 +105,25 @@ def load_staging_links():
                 if not existing_source:
                     # Create placeholder source belief
                     try:
+                        # Serialize scope conditions if available (Sprint 6: Scope Persistence)
+                        scope_json = None
+                        if isinstance(row, dict):
+                            try:
+                                from src.services.extraction_to_web import _extract_scope
+                                scope_obj = _extract_scope({"study": row.get("study", {})})
+                                scope_json = json.dumps(scope_obj.to_dict())
+                            except Exception:
+                                pass  # Graceful degradation if scope extraction fails
+
                         cursor.execute("""
                             INSERT INTO beliefs (
-                                belief_id, web_id, content, level, status, 
-                                credence_value, created_at, updated_at
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                                belief_id, web_id, content, level, status,
+                                credence_value, scope, created_at, updated_at
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """, (
                             source_id, web_id, row.get('statement', 'Unknown content'), 'evidence', 'active',
                             float(row.get('ae_confidence', 0.5)),
+                            scope_json,
                             datetime.now(timezone.utc).isoformat(),
                             datetime.now(timezone.utc).isoformat()
                         ))

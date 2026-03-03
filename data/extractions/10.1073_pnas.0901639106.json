@@ -1320,38 +1320,88 @@
     "top_k_templates": 5
   },
   "mechanism_chain": {
-    "description": "The paper outlines a conceptual pathway from objective acoustical properties to subjective perceptions, cognitive demands, affective states, and ultimately, physiological and psychological outcomes in students within educational buildings.",
+    "description": "Acoustical indicators in educational buildings are perceived by students, leading to physiological and psychological responses that impact their well-being, preferences, and cognitive performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Dose-related acoustical indicators (e.g., SPL, sound source characteristics)",
-        "to_construct": "Perception of the acoustical environment (e.g., loudness, clarity, intrusiveness)",
+        "from_construct": "Dose-related acoustical indicators (e.g., SPL, sound source)",
+        "to_construct": "Perception and processing of acoustical environment",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Perception of the acoustical environment",
-        "to_construct": "Cognitive processing demands (e.g., effort to filter noise, distraction)",
-        "mechanism_type": "cognitive",
+        "from_construct": "Perception and processing of acoustical environment",
+        "to_construct": "Physiological and psychological responses (e.g., stress, annoyance, distraction)",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Cognitive processing demands",
-        "to_construct": "Affective responses (e.g., annoyance, frustration)",
-        "mechanism_type": "affective",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 4,
-        "from_construct": "Affective responses and Cognitive processing demands",
-        "to_construct": "Physiological arousal (e.g., stress response) and Impaired cognitive performance (e.g., reduced attention, memory)",
-        "mechanism_type": "physiological|cognitive",
+        "from_construct": "Physiological and psychological responses",
+        "to_construct": "Student preferences, needs, and cognitive performance",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:19:04.556013+00:00"
+  "surgical_update_at": "2026-03-02T22:39:16.427024+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Environmental Stress Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to adverse acoustical conditions in educational settings acts as an environmental stressor, leading to negative physiological and psychological responses in students."
+    },
+    {
+      "theory_name": "Cognitive Interference Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Irrelevant sound, particularly speech, interferes with cognitive processes, increasing cognitive load and impairing attention and academic performance."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Sound Level Meter",
+      "construct": "Objective acoustical parameters (e.g., SPL, Leq, Lmax)",
+      "description": "Device used for measuring various sound pressure levels and other acoustical metrics in an environment.",
+      "type": "other"
+    },
+    {
+      "name": "Reverberation Time Measurement Equipment",
+      "construct": "Reverberation Time (RT60)",
+      "description": "Equipment used to measure the time it takes for sound to decay by 60 dB in a space.",
+      "type": "other"
+    },
+    {
+      "name": "Subjective Acoustical Questionnaires",
+      "construct": "Perceived noise, annoyance, acoustical comfort, preferences",
+      "description": "Self-report scales and surveys designed to assess individuals' subjective experience and evaluation of the acoustical environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Speech Intelligibility Tests",
+      "construct": "Speech intelligibility (e.g., STI, RASTI)",
+      "description": "Standardized tests or metrics to quantify the clarity and comprehensibility of speech in a given acoustical environment.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Cognitive Performance Tests",
+      "construct": "Attention, memory, concentration, problem-solving",
+      "description": "Standardized tasks (e.g., digit span, arithmetic tests, sustained attention tasks) used to measure various aspects of cognitive function.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Physiological Monitoring Devices",
+      "construct": "Physiological stress indicators (e.g., heart rate, skin conductance, cortisol)",
+      "description": "Devices used to measure physiological responses indicative of stress or arousal.",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Conceptual model illustrating the relationships between acoustical indicators, mediating factors, and student outcomes in educational buildings.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

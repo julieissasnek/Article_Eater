@@ -3071,17 +3071,21 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "window view of nature",
-      "window view of urban environment",
-      "no window view (blank wall)",
-      "wall color (e.g., blue, red, white)"
+      "red room color",
+      "blue room color",
+      "white room color",
+      "window view of natural landscape",
+      "window view of urban landscape",
+      "window view of blank wall",
+      "no window view"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "approximately 2.5 hours",
     "control_conditions": [
-      "no window view (blank wall)",
-      "neutral wall color (e.g., white or grey)"
+      "white room color",
+      "no window view",
+      "blank wall view"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
@@ -3097,30 +3101,51 @@
   ],
   "instruments_used": [
     {
-      "name": "PANAS",
-      "construct": "positive and negative affect",
-      "description": "20-item self-report questionnaire measuring current mood states.",
-      "type": "self_report"
-    },
-    {
-      "name": "NASA-TLX",
-      "construct": "cognitive workload",
-      "description": "Six-item rating scale to assess perceived workload of a task, including mental, physical, and temporal demands, effort, performance, and frustration.",
+      "name": "Mood Adjective Checklist",
+      "construct": "mood states (e.g., positive affect, negative affect, arousal, calmness, stress)",
+      "description": "A self-report questionnaire used to assess various dimensions of participants' mood.",
       "type": "self_report"
     },
     {
       "name": "Telemarketing Task Performance Metrics",
-      "construct": "task performance",
-      "description": "Measures related to the simulated telemarketing task, such as number of calls made, sales achieved, or errors.",
+      "construct": "cognitive performance, task efficiency, error rate",
+      "description": "Behavioral measures derived from the simulated telemarketing task, such as number of errors in proofreading, number of calls handled, and time spent on data entry.",
       "type": "behavioral"
-    },
-    {
-      "name": "Heart Rate Variability (HRV)",
-      "construct": "physiological arousal",
-      "description": "Measures variations in the time interval between heartbeats, indicative of autonomic nervous system activity and stress levels.",
-      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:05:35.426937+00:00"
+  "surgical_update_at": "2026-03-02T22:47:51.717618+00:00",
+  "mechanism_chain": {
+    "description": "The paper investigates how environmental features (room color and window view) influence participants' mood and arousal, which in turn affects their performance on a simulated telemarketing task.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "room color / window view",
+        "to_construct": "mood / arousal / perceived stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "mood / arousal / perceived stress",
+        "to_construct": "cognitive performance / task engagement",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagrams or photos illustrating the different room color conditions (red, blue, white) and the experimental setup.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Images or renderings of the different window views (natural, urban, blank wall) presented to participants.",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 72,
+  "paper_sample_size_source": "reported"
 }

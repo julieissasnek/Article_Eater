@@ -94,7 +94,7 @@
       "p_value": null,
       "effect_size": 3.89,
       "effect_size_type": "JND_multiples",
-      "sample_size": null,
+      "sample_size": 20,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -120,7 +120,8 @@
           "score": 0.2608,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1822,28 +1823,65 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Sound modified by an Acoustic Metawindow (AMW) unit"
+      "broadband noise",
+      "sound transmitted through Acoustic Metawindow (AMW) unit",
+      "sound transmitted through a reference window/opening"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "short, repeated trials (typical for psychoacoustic experiments)",
     "control_conditions": [
-      "Sound without the Acoustic Metawindow (AMW) unit"
+      "sound transmitted through a standard window",
+      "sound transmitted through an open aperture",
+      "sound without the AMW unit"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Acoustic measurement equipment",
-      "construct": "Acoustic properties of sound",
-      "description": "Equipment used to measure physical characteristics of sound, such as sound pressure levels and frequency spectra, before and after the application of the AMW unit.",
+      "name": "Sound Level Meter",
+      "construct": "sound pressure level",
+      "description": "Used for objective acoustic measurements of the sound stimuli.",
       "type": "other"
     },
     {
-      "name": "Psychoacoustic loudness assessment",
-      "construct": "Perceived loudness",
-      "description": "Methods used to quantify the subjective perception of sound intensity, potentially involving direct scaling or determination of Just Noticeable Differences (JNDs) in loudness.",
-      "type": "self_report"
+      "name": "Headphones or Loudspeakers",
+      "construct": "sound presentation",
+      "description": "Used to present controlled acoustic stimuli to participants.",
+      "type": "other"
+    },
+    {
+      "name": "Psychoacoustic software/platform",
+      "construct": "loudness perception, JND",
+      "description": "Software for generating stimuli, controlling experimental paradigms (e.g., adaptive procedures, magnitude estimation), and recording participant responses.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:11:21.426779+00:00"
+  "surgical_update_at": "2026-03-02T19:01:11.133438+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Psychoacoustic Loudness Models (e.g., ISO 532B, Zwicker's model)",
+      "commitment_type": "applies",
+      "specific_claim": "The perception of loudness can be quantified and predicted based on physical sound properties and human auditory processing."
+    },
+    {
+      "theory_name": "Just Noticeable Difference (JND) concept",
+      "commitment_type": "applies",
+      "specific_claim": "There is a minimum detectable change in a stimulus that can be perceived by a human."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the Acoustic Metawindow (AMW) unit design and components",
+      "figure_ref": "Figure 1 (likely)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Schematic of the experimental setup for psychoacoustic testing, showing sound source, AMW unit, and listener position",
+      "figure_ref": "Figure 2 (likely)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 20,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

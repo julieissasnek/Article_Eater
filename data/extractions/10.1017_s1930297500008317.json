@@ -963,29 +963,57 @@
     "top_k_templates": 5
   },
   "stimulus_description": {
-    "environmental_features": [
-      "Internet speed upgrade scenarios",
-      "Driving speed upgrade scenarios",
-      "Printer speed upgrade scenarios",
-      "Fuel efficiency upgrade scenarios",
-      "Small upgrade size",
-      "Large upgrade size"
-    ],
+    "environmental_features": null,
     "duration_exposure": null,
     "control_conditions": [
-      "Separate evaluation mode",
-      "Joint evaluation mode"
+      "separate evaluation of upgrades",
+      "joint evaluation of upgrades",
+      "small upgrade size",
+      "large upgrade size"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "Willingness-to-Pay (WTP) elicitation",
-      "construct": "Willingness-to-Pay",
-      "description": "Elicited through hypothetical scenarios involving product upgrades and efficiency measures.",
+      "name": "Willingness-to-Pay (WTP) questions",
+      "construct": "Monetary valuation of product/service upgrades",
+      "description": "Direct elicitation of the maximum price participants would pay for a given upgrade.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:03:47.444843+00:00"
+  "surgical_update_at": "2026-03-02T23:31:04.017051+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Evaluability Hypothesis",
+      "commitment_type": "tests",
+      "specific_claim": "Attributes that are difficult to evaluate in isolation (e.g., efficiency) will be undervalued in separate evaluation compared to attributes that are easy to evaluate (e.g., consumption quantity). This preference can reverse in joint evaluation when the difficult-to-evaluate attribute becomes evaluable through comparison."
+    },
+    {
+      "theory_name": "Efficiency-Consumption Gap",
+      "commitment_type": "proposes",
+      "specific_claim": "Consumers often undervalue efficiency improvements relative to consumption quantity improvements, particularly in separate evaluation, due to the difficulty of evaluating efficiency without a clear reference point."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The mechanism explains how the mode of evaluation (separate vs. joint) influences the perceived value of efficiency upgrades through the evaluability of the efficiency attribute.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Evaluation mode (separate vs. joint)",
+        "to_construct": "Evaluability of efficiency attribute",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Evaluability of efficiency attribute",
+        "to_construct": "Perceived value/Willingness-to-Pay for efficiency upgrade",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "paper_sample_size": 500,
+  "paper_sample_size_source": "reported"
 }

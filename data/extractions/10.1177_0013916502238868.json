@@ -2804,46 +2804,88 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Space Syntax Theory",
-      "commitment_type": "tests",
-      "specific_claim": "The topological properties of spatial layouts, such as connectivity and integration of axial lines, are fundamental in shaping human spatial cognition, movement patterns, and the development of topological knowledge of environments."
+      "theory_name": "Space Syntax",
+      "commitment_type": "extends",
+      "specific_claim": "The topological and metric properties of spatial layouts (e.g., connectivity, integration of axial lines) directly influence human spatial cognition, movement patterns, and the development of spatial knowledge."
+    },
+    {
+      "theory_name": "Cognitive Mapping",
+      "commitment_type": "assumes",
+      "specific_claim": "Individuals form mental representations (cognitive maps) of their environment, and these maps are influenced by the underlying spatial structure."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:33:43.658864+00:00",
+  "surgical_update_at": "2026-03-02T22:44:55.037092+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "Simplified two-dimensional building floor plans",
-      "Spatial configurations with varying topological properties (e.g., connectivity, integration of axial lines)"
+      "diagrammatic representations of building layouts",
+      "spatial configurations of rooms and circulation paths"
     ],
-    "duration_exposure": "Variable, typically 10-20 minutes per layout exploration phase",
+    "duration_exposure": null,
     "control_conditions": [
-      "Comparison between different spatial configurations (e.g., highly integrated vs. segregated layouts)",
-      "Different exploration modes (e.g., free exploration vs. directed task)"
+      "comparison of different spatial configurations (e.g., varying integration or connectivity)"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "Behavioral observation of movement",
-      "construct": "Spatial exploration behavior, movement patterns, route choice",
-      "description": "Recording and analysis of participant paths and dwell times within the experimental layouts, often using computer tracking or manual coding.",
-      "type": "behavioral"
+      "name": "Space Syntax analysis software (e.g., Depthmap)",
+      "construct": "Spatial configuration properties (e.g., integration, connectivity, choice)",
+      "description": "Software used to calculate graph-theoretic measures of spatial layouts based on axial lines or convex spaces.",
+      "type": "other"
     },
     {
-      "name": "Spatial knowledge assessment tasks",
-      "construct": "Topological knowledge, spatial memory, cognitive map accuracy",
-      "description": "Tasks such as sketch mapping, route description, or landmark identification to assess participants' understanding of the layout.",
+      "name": "Behavioral observation",
+      "construct": "Movement patterns, space use, path choices",
+      "description": "Recording and analyzing how participants navigate and use the experimental layouts.",
       "type": "behavioral"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating the various experimental building layouts and their axial line representations used as stimuli.",
-      "figure_ref": "Figure 1, Figure 2",
-      "image_type": "floor_plan"
+      "description": "Diagrams illustrating different building layouts and their axial line representations",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Axial maps showing connectivity and integration values for various spatial configurations",
+      "figure_ref": "Figures throughout the paper",
+      "image_type": "diagram"
     }
   ],
   "paper_sample_size": 45,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size_source": "estimated",
+  "mechanism_chain": {
+    "description": "The spatial configuration of a building, particularly the connectivity and integration of its axial lines, influences how individuals perceive and navigate the space, thereby shaping their topological knowledge and patterns of use.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Public connectivity of axial lines",
+        "to_construct": "Perceived ease of movement and accessibility",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceived ease of movement and accessibility",
+        "to_construct": "Increased likelihood of traversing axial lines",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased likelihood of traversing axial lines",
+        "to_construct": "Total use of axial lines in open exploration",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Repeated traversal and interaction with spatial configuration",
+        "to_construct": "Development of topological knowledge of building layouts",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  }
 }

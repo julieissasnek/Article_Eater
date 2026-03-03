@@ -991,52 +991,67 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Crowding Theory",
-      "commitment_type": "extends",
-      "specific_claim": "Explores how perceived crowding, distinct from objective physical density, mediates psychological stress and influences walking behavior in urban public spaces."
-    },
-    {
-      "theory_name": "Environmental Stress Theory",
+      "theory_name": "Environmental Load Theory",
       "commitment_type": "assumes",
-      "specific_claim": "High physical density can act as an environmental stressor, contributing to negative psychological outcomes such as stress and discomfort."
+      "specific_claim": "High physical density increases the cognitive and sensory demands on individuals, leading to overload."
     },
     {
-      "theory_name": "Active Living Research / Urban Design Theories",
-      "commitment_type": "builds_upon",
-      "specific_claim": "Higher urban density can facilitate physical activity like walking and cycling by increasing proximity to destinations and improving walkability."
+      "theory_name": "Social Overload Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "High physical density leads to excessive and unwanted social interactions, contributing to stress."
     },
     {
       "theory_name": "Attention Restoration Theory (ART)",
-      "commitment_type": "contrasts",
-      "specific_claim": "Examines how overcrowded public spaces, despite offering opportunities for walking, may not provide the restorative benefits typically associated with natural environments, potentially exacerbating stress."
+      "commitment_type": "extends",
+      "specific_claim": "The restorative benefits of walking, often linked to natural environments, are diminished or reversed in highly dense, overcrowded urban spaces."
     }
   ],
   "mechanism_chain": {
-    "description": "High physical density in neighborhoods can lead to increased transport-related physical activity by reducing distances between destinations and increasing the perceived convenience and opportunities for walking and cycling.",
+    "description": "High physical density contributes to psychological stress through increased environmental and social load. The 'density paradox' suggests that while walking typically reduces stress, in highly dense and overcrowded public spaces, it can exacerbate stress by increasing exposure to stressors and diminishing restorative opportunities.",
     "steps": [
       {
         "step": 1,
         "from_construct": "High physical density in neighborhoods",
-        "to_construct": "Reduced distances between destinations and services",
-        "mechanism_type": "environmental",
+        "to_construct": "Increased environmental load (sensory, cognitive, social)",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Reduced distances between destinations and services",
-        "to_construct": "Increased perceived convenience and feasibility of walking/cycling",
+        "from_construct": "Increased environmental load",
+        "to_construct": "Perceived crowding and reduced sense of control",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Increased perceived convenience and feasibility of walking/cycling",
-        "to_construct": "Transport-related physical activity (walking and cycling)",
+        "from_construct": "Perceived crowding and reduced sense of control",
+        "to_construct": "Psychological stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Transport-related physical activity (walking and cycling) in high-density environments",
+        "to_construct": "Increased exposure to stressors (noise, unwanted interactions, lack of personal space)",
         "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Increased exposure to stressors",
+        "to_construct": "Exacerbated psychological stress (or diminished stress reduction)",
+        "mechanism_type": "affective",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:03.616302+00:00"
+  "surgical_update_at": "2026-03-02T23:32:52.347612+00:00",
+  "stimulus_description": {
+    "environmental_features": null,
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
+  }
 }

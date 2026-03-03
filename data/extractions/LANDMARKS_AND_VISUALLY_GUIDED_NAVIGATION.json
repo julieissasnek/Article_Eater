@@ -64,7 +64,7 @@
       "p_value": "<0.001",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": "F(2,18)=16.36, F(4,36)=13.88",
       "theory_links": [
@@ -75,7 +75,8 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 911, Figure 2a",
-      "quote": "the depth intervals had to be made much larger in order to be judged equal to the width intervals"
+      "quote": "the depth intervals had to be made much larger in order to be judged equal to the width intervals",
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -402,11 +403,111 @@
     "Verbal responses in other studies may yield different results than motoric responses used here."
   ],
   "stimulus_description": {
-    "environmental_features": null,
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "environmental_features": [
+      "objects presented at varying physical depth intervals",
+      "manipulation of monocular and binocular depth cues (e.g., texture gradients, linear perspective, binocular disparity)",
+      "visual stimuli presented on a display or in a controlled real-world environment"
+    ],
+    "duration_exposure": "brief, controlled presentations (e.g., hundreds of milliseconds to a few seconds) for perceptual judgments; continuous viewing for action tasks",
+    "control_conditions": [
+      "monocular viewing conditions",
+      "binocular viewing conditions",
+      "conditions with reduced or conflicting depth cues",
+      "comparison to frontal intervals (as a baseline for perceived length)"
+    ],
+    "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:08.593817+00:00"
+  "surgical_update_at": "2026-03-02T23:27:29.136066+00:00",
+  "mechanism_chain": {
+    "description": "The paper investigates how physical depth information is processed by the visual system to result in a conscious perception of length and how this perception guides action.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "physical depth intervals",
+        "to_construct": "retinal image properties (e.g., binocular disparity, texture density, perspective cues)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "retinal image properties",
+        "to_construct": "neural processing of depth cues in visual cortex",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "neural processing of depth cues",
+        "to_construct": "perceived length relative to frontal intervals",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "perceived length",
+        "to_construct": "visually directed action (e.g., reaching, grasping, locomotion)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Direct Perception (Gibson)",
+      "commitment_type": "tests",
+      "specific_claim": "Visual information directly specifies environmental properties, including depth and distance, without requiring extensive cognitive processing."
+    },
+    {
+      "theory_name": "Two Visual Systems Hypothesis (Milner & Goodale)",
+      "commitment_type": "tests",
+      "specific_claim": "Vision for perception (ventral stream) and vision for action (dorsal stream) rely on different spatial representations and processing mechanisms."
+    },
+    {
+      "theory_name": "Cue Integration Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "The visual system combines multiple depth cues (e.g., binocular disparity, motion parallax, texture gradients) to form a robust estimate of depth and distance."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Psychophysical methods",
+      "construct": "perceived length, distance, size",
+      "description": "Methods of constant stimuli, adjustment, or forced-choice tasks to measure perceptual judgments.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Motion capture system",
+      "construct": "kinematics of visually guided actions (e.g., reaching, grasping, walking)",
+      "description": "Infrared optical tracking system (e.g., Vicon, Optotrak) to record 3D positions of markers on participants' bodies or limbs.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Eye-tracking system",
+      "construct": "gaze direction, fixation patterns",
+      "description": "System to monitor participants' eye movements during stimulus presentation or action tasks.",
+      "type": "eye_tracking"
+    },
+    {
+      "name": "Computer display / VR headset",
+      "construct": "visual stimulus presentation",
+      "description": "High-resolution monitor or head-mounted display for presenting controlled visual stimuli.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental setup showing stimulus presentation and participant's viewing position.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Examples of visual stimuli used to create different depth intervals or manipulate specific depth cues.",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

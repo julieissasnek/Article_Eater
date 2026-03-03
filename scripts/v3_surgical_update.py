@@ -236,34 +236,68 @@ def call_gemini_surgical(prompt, model="gemini-2.5-flash"):
     return text, usage
 
 
-async def call_gemini_surgical_async(prompt, client, model="gemini-2.5-flash"):
-    """Call Gemini API for surgical update (async version)."""
+async def call_gemini_surgical_async(prompt, client, model="gemini-2.5-flash", max_retries=3):
+    """Call Gemini API for surgical update (async version with retry)."""
     full_prompt = ("You are a scientific data enrichment expert. "
                    "Return ONLY valid JSON with v3 fields.\n\n" + prompt)
 
-    response = await client.aio.models.generate_content(
-        model=model,
-        contents=full_prompt,
-        config={
-            "max_output_tokens": 4096,
-            "temperature": 0.1,
-        }
-    )
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            response = await client.aio.models.generate_content(
+                model=model,
+                contents=full_prompt,
+                config={
+                    "max_output_tokens": 4096,
+                    "temperature": 0.1,
+                }
+            )
 
-    # Extract text, handling thinking model parts and None candidates
-    text = ""
-    if response.text:
-        text = response.text
-    elif response.candidates and len(response.candidates) > 0:
-        candidate = response.candidates[0]
-        if candidate.content and candidate.content.parts:
-            for part in candidate.content.parts:
-                if part.text and not getattr(part, 'thought', False):
-                    text = part.text
-                    break
+            # Extract text with robust null handling
+            text = ""
+            try:
+                if response and response.text:
+                    text = response.text
+                elif response and response.candidates:
+                    candidates = response.candidates
+                    if candidates and len(candidates) > 0:
+                        candidate = candidates[0]
+                        if candidate and hasattr(candidate, 'content') and candidate.content:
+                            parts = getattr(candidate.content, 'parts', None)
+                            if parts:
+                                for part in parts:
+                                    if part and hasattr(part, 'text') and part.text:
+                                        if not getattr(part, 'thought', False):
+                                            text = part.text
+                                            break
+            except (TypeError, AttributeError) as extract_err:
+                # Text extraction failed - treat as empty response
+                logger.debug(f"  Text extraction error: {extract_err}")
+                text = ""
 
-    usage = response.usage_metadata if response.usage_metadata else None
-    return text, usage
+            # If we got empty response, retry
+            if not text and attempt < max_retries - 1:
+                wait_time = (2 ** attempt) * 0.5  # 0.5s, 1s, 2s
+                logger.warning(f"  Empty response, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                await asyncio.sleep(wait_time)
+                continue
+
+            usage = response.usage_metadata if response and response.usage_metadata else None
+            return text, usage
+
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries - 1:
+                wait_time = (2 ** attempt) * 0.5
+                logger.warning(f"  API error: {e}, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                await asyncio.sleep(wait_time)
+            else:
+                raise
+
+    # Should not reach here, but just in case
+    if last_error:
+        raise last_error
+    return "", None
 
 def merge_v3_fields(original_extraction, v3_enrichment):
     """Merge v3 fields into original extraction."""

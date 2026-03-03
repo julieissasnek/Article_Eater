@@ -53,7 +53,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -80,7 +80,8 @@
           "score": 0.259,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -92,7 +93,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -131,7 +132,8 @@
             "mechanism text overlap"
           ]
         }
-      ]
+      ],
+      "sample_size_source": "estimated"
     },
     {
       "id": 3,
@@ -143,7 +145,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -190,7 +192,8 @@
             "mechanism text overlap"
           ]
         }
-      ]
+      ],
+      "sample_size_source": "estimated"
     },
     {
       "id": 4,
@@ -202,7 +205,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -239,7 +242,8 @@
             "mechanism text overlap"
           ]
         }
-      ]
+      ],
+      "sample_size_source": "estimated"
     },
     {
       "id": 5,
@@ -251,7 +255,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -300,7 +304,8 @@
       "tier2_relevance": {
         "HC": 0.1717,
         "IC": 0.1717
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 6,
@@ -312,7 +317,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 10,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -367,7 +372,8 @@
         "IC": 0.1737,
         "INTEROCEPTION": 0.1545,
         "PREDICTIVE_PROCESSING": 0.1545
-      }
+      },
+      "sample_size_source": "estimated"
     }
   ],
   "mechanisms": [
@@ -641,34 +647,76 @@
     {
       "theory_name": "Statistical theory of visual space",
       "commitment_type": "proposes",
-      "specific_claim": "Perceived distance is an optimal statistical inference based on the probability distribution of radial distances from the observer to physical locations in natural scenes."
+      "specific_claim": "The visual system infers perceived distance by combining sensory evidence with an internal prior model of the statistical distribution of radial distances to surfaces in natural scenes."
+    },
+    {
+      "theory_name": "Bayesian inference in perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Perceptual processes can be understood as optimal statistical inference, where prior knowledge (e.g., scene statistics) is combined with likelihood from sensory input to form a posterior estimate of environmental properties like distance."
     }
   ],
   "mechanism_chain": {
-    "description": "The visual system implicitly learns and utilizes the statistical regularities of depth in natural environments to infer perceived distance, especially in ambiguous or impoverished settings.",
+    "description": "The visual system learns and internalizes the statistical regularities of radial distances to surfaces in natural environments. This internal model acts as a prior. When an observer views a scene, especially an impoverished one with ambiguous cues, this prior is combined with the available sensory information to generate a percept of distance. In the absence of strong cues, the prior exerts a dominant influence, leading to characteristic biases in perceived distance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Probability distribution of radial distances in natural scenes",
-        "to_construct": "Internal statistical model of depth",
+        "from_construct": "Statistical properties of radial distances in natural scenes",
+        "to_construct": "Internal statistical model/prior for distance perception",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Internal statistical model of depth",
-        "to_construct": "Perceived distance of objects",
+        "from_construct": "Internal statistical model/prior + Sensory input (visual cues)",
+        "to_construct": "Perceived distance",
         "mechanism_type": "perceptual",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:05.405275+00:00",
+  "surgical_update_at": "2026-03-02T19:04:22.582737+00:00",
   "stimulus_description": {
-    "environmental_features": null,
+    "environmental_features": [
+      "Simplified visual scenes",
+      "Impoverished visual settings (e.g., single objects, sparse cues)",
+      "Random dot patterns",
+      "Monocular viewing conditions"
+    ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
-  }
+    "control_conditions": [
+      "Varying levels of visual cues (e.g., texture, perspective, occlusion)",
+      "Comparison between naturalistic scene statistics and impoverished settings"
+    ],
+    "ecological_validity": "lab"
+  },
+  "instruments_used": [
+    {
+      "name": "Computer monitor",
+      "construct": "Visual stimuli presentation",
+      "description": "Used to display controlled visual stimuli for psychophysical experiments.",
+      "type": "other"
+    },
+    {
+      "name": "Response collection device",
+      "construct": "Perceived distance measurement",
+      "description": "Device (e.g., buttons, joystick, verbal report) used by participants to indicate their perceived distance or make adjustments.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of visual stimuli used in psychophysical experiments, often showing simplified objects or patterns in a controlled environment.",
+      "figure_ref": "Figures illustrating experimental setups or stimuli (specific figure numbers would require paper access)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Diagrams illustrating the statistical properties of radial distances in natural scenes, or theoretical distributions.",
+      "figure_ref": "Figures illustrating theoretical concepts (specific figure numbers would require paper access)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 10,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 6
 }

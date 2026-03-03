@@ -57,10 +57,13 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "0.58",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.55,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 60,
+      "confidence_interval": [
+        0.15,
+        0.95
+      ],
       "test_statistic": "F(2, 10) = 0.55",
       "theory_links": [
         "NM"
@@ -70,7 +73,8 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 34",
-      "quote": "A one-way ANOVA indicated that Total Mood Disturbance was not significantly different across light condition, F(2, 10) = 0.55, p = .58."
+      "quote": "A one-way ANOVA indicated that Total Mood Disturbance was not significantly different across light condition, F(2, 10) = 0.55, p = .58.",
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -324,24 +328,81 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "10,000 lux white light (SAD condition)",
-      "40 lux warm light (Control condition)",
-      "40 lux 450nm blue light (Blue condition)"
+      "10,000 lux white light",
+      "40 lux warm white light",
+      "40 lux 450nm blue light"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "30 minutes per session",
     "control_conditions": [
-      "40 lux warm light"
+      "40 lux warm white light"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "POMS-SF",
+      "name": "Profile of Mood States - Short Form (POMS-SF)",
       "construct": "Total Mood Disturbance",
-      "description": "Profile of Mood States - Short Form",
+      "description": "A self-report questionnaire assessing various mood states.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:40.065026+00:00"
+  "surgical_update_at": "2026-03-02T22:48:48.908319+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Specific light spectra and intensities influence human circadian rhythms and mood regulation, particularly in the context of Seasonal Affective Disorder."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Light exposure modulates circadian rhythms and neurotransmitter activity, leading to changes in mood and attention.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Light exposure (intensity, spectrum)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Modulation of suprachiasmatic nucleus (SCN) activity",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Modulation of SCN activity",
+        "to_construct": "Regulation of melatonin secretion and circadian rhythm",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Regulation of melatonin/circadian rhythm",
+        "to_construct": "Influence on neurotransmitter systems (e.g., serotonin, dopamine)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Influence on neurotransmitter systems",
+        "to_construct": "Changes in reported Total Mood Disturbance",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the experimental room setup with different light conditions and participant seating.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 90,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

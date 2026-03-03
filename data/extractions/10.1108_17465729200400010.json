@@ -1056,50 +1056,69 @@
     "date": "2026-03-01T06:56:29.147006+00:00"
   },
   "mechanism_chain": {
-    "description": "Causal mechanism connecting environmental stressors in the internal housing environment to mental well-being.",
+    "description": "Environmental stressors in the internal housing environment are perceived and appraised, leading to physiological and psychological stress responses that can deplete coping resources and negatively impact mental well-being.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Environmental stressors (e.g., noise, poor indoor air quality)",
-        "to_construct": "Physiological arousal/stress response",
-        "mechanism_type": "physiological",
+        "from_construct": "Environmental stressors (e.g., noise, light, temperature, humidity, damp)",
+        "to_construct": "Perceived annoyance/threat",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Physiological arousal/stress response",
-        "to_construct": "Increased cognitive load and distraction",
-        "mechanism_type": "cognitive",
+        "from_construct": "Perceived annoyance/threat",
+        "to_construct": "Physiological stress response (e.g., increased arousal, cortisol)",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Increased cognitive load and distraction",
-        "to_construct": "Reduced capacity for emotional regulation and coping",
+        "from_construct": "Physiological stress response",
+        "to_construct": "Negative emotional states (e.g., anxiety, irritability)",
         "mechanism_type": "affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Reduced capacity for emotional regulation and coping",
-        "to_construct": "Impaired mental well-being (e.g., increased anxiety, depression)",
+        "from_construct": "Negative emotional states",
+        "to_construct": "Depletion of coping resources",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Depletion of coping resources",
+        "to_construct": "Reduced mental well-being",
         "mechanism_type": "affective",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:45:07.741743+00:00",
+  "surgical_update_at": "2026-03-02T23:38:14.242546+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Environmental Stress Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "Environmental stressors (e.g., noise, pollution, crowding) in urban and physical environments contribute to adverse mental well-being outcomes."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can restore depleted directed attention, thereby improving cognitive function and mental well-being."
     },
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Stress Reduction Theory (SRT)",
       "commitment_type": "assumes",
-      "specific_claim": "Exposure to restorative environments, often found in nature, can alleviate mental fatigue and improve cognitive functioning, thereby enhancing mental well-being."
+      "specific_claim": "Natural environments elicit positive emotional responses and reduce physiological and psychological stress, contributing to mental well-being."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems, and this connection is vital for psychological health."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Conceptual model illustrating the proposed relationships between various urban and physical environmental features, mediating factors, and their impact on mental well-being.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
     }
   ]
 }

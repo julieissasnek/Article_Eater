@@ -4049,14 +4049,103 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "warm, dim light",
-      "cool, bright light",
-      "light transitions"
+      "warm, dim light (e.g., 2700K, 50 lux)",
+      "cool, bright light (e.g., 6500K, 500 lux)",
+      "transitions between warm dim and cool bright light"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Each light condition typically for 30-60 minutes, with transitions occurring between these periods.",
+    "control_conditions": [
+      "constant warm, dim light",
+      "constant cool, bright light"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:50:29.130745+00:00"
+  "surgical_update_at": "2026-03-02T23:30:09.185223+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light on human physiology and behavior",
+      "commitment_type": "tests",
+      "specific_claim": "Light characteristics (intensity, color temperature) and their transitions can acutely affect alertness, arousal, and comfort through non-visual pathways, independent of visual task performance."
+    },
+    {
+      "theory_name": "Circadian rhythm regulation by light",
+      "commitment_type": "assumes",
+      "specific_claim": "Light exposure, particularly to short-wavelength light, can modulate circadian timing and melatonin suppression, thereby influencing sleepiness and alertness."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Light transitions activate intrinsically photosensitive retinal ganglion cells (ipRGCs), sending signals to the suprachiasmatic nucleus (SCN) and other brain regions, which in turn modulate physiological responses (e.g., heart rate, skin conductance) and neurocognitive states (e.g., alertness, arousal, comfort perception).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Light transition (e.g., dim to bright, warm to cool)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Signal transmission to suprachiasmatic nucleus (SCN) and other non-image-forming visual pathways",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "SCN and non-image-forming pathway activation",
+        "to_construct": "Modulation of melatonin secretion and autonomic nervous system activity",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Melatonin modulation and autonomic nervous system activity",
+        "to_construct": "Changes in alertness, arousal, and subjective comfort",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "subjective sleepiness/alertness",
+      "description": "9-point self-report scale for current sleepiness level",
+      "type": "self_report"
+    },
+    {
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "sustained attention and objective alertness",
+      "description": "Reaction time task measuring vigilance decrements",
+      "type": "behavioral"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological arousal, autonomic nervous system activity",
+      "description": "Measures variations in the time interval between heartbeats",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Response (SCR)",
+      "construct": "physiological arousal, sympathetic nervous system activity",
+      "description": "Measures changes in electrical conductance of the skin",
+      "type": "physiological"
+    },
+    {
+      "name": "Visual Analog Scales (VAS)",
+      "construct": "subjective comfort, light intensity, glare, mood",
+      "description": "100mm lines for participants to mark their subjective ratings",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram or photo of the experimental room setup showing the lighting conditions and participant's position.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated"
 }

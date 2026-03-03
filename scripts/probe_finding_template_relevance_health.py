@@ -14,11 +14,11 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from src.services.finding_template_relevance import (  # noqa: E402
-from src.services.db_locator import get_web_db
     FindingRecord,
     _infer_finding_domains,
     load_template_profiles,
 )
+from src.services.db_locator import get_web_db
 
 
 def parse_args() -> argparse.Namespace:

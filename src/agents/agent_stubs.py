@@ -70,13 +70,13 @@ def _persist_seven_panel_and_findings(
     pid = paper_id or f"paper_{uuid.uuid4().hex}"
 
     try:
-        store.attach_seven_panel(pid, artifact.dict(), raw_abstract=abstract or None)
+        store.attach_seven_panel(pid, artifact.model_dump(), raw_abstract=abstract or None)
     except Exception as exc:
         LOGGER.warning("Failed to attach SevenPanel for %s: %s", pid, exc)
 
     for item in artifact.items:
         try:
-            finding_dict = item.dict()
+            finding_dict = item.model_dump()
             finding_id = store.create_finding(pid, finding_dict)
         except Exception as exc:
             LOGGER.warning("Failed to store finding for %s: %s", pid, exc)

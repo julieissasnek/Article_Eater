@@ -1393,45 +1393,75 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:47.351409+00:00",
+  "surgical_update_at": "2026-03-02T23:27:49.945507+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "real material samples (e.g., wood, metal, stone, fabric, plastic, glass)",
-      "visual presentations of material samples (e.g., high-resolution images)"
+      "visual presentation of various building materials (e.g., wood, metal, stone, fabric)",
+      "haptic presentation of various building materials (e.g., wood, metal, stone, fabric)"
     ],
-    "duration_exposure": "typically short, a few seconds per sample",
+    "duration_exposure": "brief, for assessment (e.g., a few seconds per material)",
     "control_conditions": [
-      "visual-only assessment condition",
-      "haptic-only assessment condition",
-      "visual-haptic combined assessment condition"
+      "visual-only assessment",
+      "haptic-only assessment",
+      "visual-haptic combined assessment"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Multisensory Integration / Sensory Dominance",
+      "theory_name": "Sensory Dominance / Cross-modal Integration",
       "commitment_type": "tests",
-      "specific_claim": "Vision often dominates other senses (e.g., touch) in the assessment of material properties, especially for certain attributes."
-    },
-    {
-      "theory_name": "Perceptual Learning / Expertise",
-      "commitment_type": "tests",
-      "specific_claim": "Experience (e.g., architectural education) influences the assessment of material attributes and potentially the degree of sensory dominance."
+      "specific_claim": "Vision dominates other senses (e.g., touch) in the perception and assessment of certain material attributes, especially when there is a conflict or ambiguity."
     }
   ],
   "instruments_used": [
     {
-      "name": "Likert-type rating scales",
-      "construct": "perceived material attributes (e.g., flatness, hardness, roughness, warmth, smoothness)",
-      "description": "Participants rated various material attributes on a numerical scale.",
+      "name": "Rating scales for material attributes",
+      "construct": "perceived flatness, hardness, roughness, warmth, etc.",
+      "description": "Likert-type scales (e.g., 7-point bipolar scales) used by participants to rate various attributes of the presented materials.",
       "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Photographs of the material samples used as stimuli",
-      "figure_ref": "Figure 1 (typical for such papers)",
+      "description": "Examples of the building materials used as stimuli, likely showing their visual appearance.",
+      "figure_ref": "Figure 1",
       "image_type": "stimulus_set"
     }
-  ]
+  ],
+  "paper_sample_size": 40,
+  "paper_sample_size_source": "reported",
+  "mechanism_chain": {
+    "description": "Visual information provides a rapid and comprehensive overview of material properties, which can override or bias haptic information, leading to a dominance of vision in material assessment.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "visual input of material properties",
+        "to_construct": "initial perception of material attributes (e.g., flatness, hardness)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "haptic input of material properties",
+        "to_construct": "tactile perception of material attributes",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "simultaneous visual and haptic input",
+        "to_construct": "integration of sensory information, with visual information often weighted more heavily",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "biased sensory integration",
+        "to_construct": "final assessment of material attributes (e.g., flatness, hardness) showing visual dominance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  }
 }

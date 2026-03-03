@@ -194,13 +194,23 @@ def integrate_paper(
 
         if not dry_run:
             try:
+                # Serialize scope conditions if available (Sprint 6: Scope Persistence)
+                scope_json = None
+                if isinstance(finding, dict):
+                    try:
+                        from src.services.extraction_to_web import _extract_scope
+                        scope_obj = _extract_scope({"study": finding.get("study", {})})
+                        scope_json = json.dumps(scope_obj.to_dict())
+                    except Exception:
+                        pass  # Graceful degradation if scope extraction fails
+
                 conn.execute(
                     """INSERT OR IGNORE INTO beliefs
                        (belief_id, web_id, content, credence_value, credence_uncertainty,
-                        level, status, paper_ids, created_at, updated_at)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                        level, status, paper_ids, scope, created_at, updated_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                     (belief_id, BULK_WEB_ID, content[:2000], credence, 0.3,
-                     domain, "active", paper_ids_json, now, now)
+                     domain, "active", paper_ids_json, scope_json, now, now)
                 )
                 beliefs_created += 1
             except sqlite3.IntegrityError:

@@ -329,74 +329,64 @@
       "illuminance levels (lux)",
       "correlated color temperature (CCT)",
       "spectral power distribution (SPD)",
-      "glare (e.g., UGR, DGP)",
-      "light distribution and uniformity",
+      "glare (e.g., UGR)",
       "flicker",
-      "daylight presence and quality",
-      "artificial lighting systems"
+      "light source type (e.g., LED, fluorescent, daylight)"
     ],
-    "duration_exposure": "variable, ranging from short-term experimental tasks (minutes) to continuous occupational exposure (hours/days)",
+    "duration_exposure": "varied, from short-term task performance to continuous daily exposure over weeks or months",
     "control_conditions": [
-      "different illuminance levels (e.g., high vs. low)",
       "different CCTs (e.g., warm vs. cool white light)",
+      "different illuminance levels (e.g., low vs. high lux)",
       "presence vs. absence of daylight",
-      "different light distributions (e.g., direct vs. indirect)",
-      "placebo or baseline lighting conditions",
-      "various spectral compositions"
+      "different light source technologies",
+      "standard office lighting"
     ],
     "ecological_validity": "lab|semi-naturalistic|field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Photoreception Theory",
-      "commitment_type": "discusses",
-      "specific_claim": "Non-image-forming photoreceptors (e.g., melanopsin-containing retinal ganglion cells) mediate the effects of light on circadian rhythms, alertness, and mood, with particular sensitivity to short-wavelength (blue) light."
-    },
-    {
       "theory_name": "Trichromatic Theory of Color Vision",
       "commitment_type": "assumes",
-      "specific_claim": "Human color and brightness perception are based on the differential activation of three types of cone photoreceptors, each maximally sensitive to different wavelengths of light (red, green, blue)."
+      "specific_claim": "Human color perception is based on the differential activation of three types of cone photoreceptors sensitive to different wavelengths of light."
     },
     {
-      "theory_name": "Visual Comfort Theory",
+      "theory_name": "Opponent Process Theory",
       "commitment_type": "discusses",
-      "specific_claim": "Visual comfort is influenced by various lighting parameters such as luminance levels, uniformity, glare, and color rendering, impacting user satisfaction and performance."
+      "specific_claim": "Color and brightness perception are encoded by opposing neural channels (red-green, blue-yellow, and black-white) in the visual system."
+    },
+    {
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Specific characteristics of light, particularly short-wavelength (blue) light, can influence non-visual physiological responses such as melatonin suppression and circadian rhythm entrainment."
     }
   ],
   "mechanism_chain": {
-    "description": "The process by which light of different wavelengths is transduced into neural signals and interpreted by the brain as brightness.",
+    "description": "The process by which different wavelengths of light are transduced into neural signals and ultimately perceived as brightness.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Radiation of different wavelengths (photons)",
-        "to_construct": "Photoreceptor activation (rods and cones in the retina)",
+        "from_construct": "Radiation of different wavelengths",
+        "to_construct": "Activation of retinal photoreceptors (rods and cones)",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Photoreceptor activation",
-        "to_construct": "Neural signal generation (bipolar and ganglion cells)",
+        "from_construct": "Activation of retinal photoreceptors",
+        "to_construct": "Generation of neural signals in the visual pathway",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Neural signal generation",
-        "to_construct": "Signal transmission to visual cortex (via optic nerve and LGN)",
+        "from_construct": "Neural signals in the visual pathway",
+        "to_construct": "Cortical processing of visual information",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Signal transmission to visual cortex",
-        "to_construct": "Cortical processing and interpretation",
-        "mechanism_type": "neural",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Cortical processing and interpretation",
+        "from_construct": "Cortical processing of visual information",
         "to_construct": "Perception of brightness",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
@@ -406,47 +396,40 @@
   "instruments_used": [
     {
       "name": "Spectroradiometer",
-      "construct": "spectral power distribution, illuminance, correlated color temperature",
-      "description": "Device for measuring the spectral composition and intensity of light",
+      "construct": "spectral power distribution of light",
+      "description": "Device used to measure the radiant power of light at each wavelength across the electromagnetic spectrum.",
       "type": "other"
     },
     {
-      "name": "Light meter",
-      "construct": "illuminance (lux)",
-      "description": "Device for measuring the amount of light falling on a surface",
+      "name": "Luminance Meter",
+      "construct": "perceived brightness of a surface",
+      "description": "Device used to measure the photometric brightness of a surface, often in candelas per square meter (cd/m²).",
       "type": "other"
     },
     {
-      "name": "Visual Comfort Scale",
-      "construct": "visual comfort, glare perception",
-      "description": "Subjective rating scale for assessing comfort related to lighting",
-      "type": "self_report"
-    },
-    {
-      "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "subjective sleepiness/alertness",
-      "description": "9-point self-report scale for current level of sleepiness",
-      "type": "self_report"
-    },
-    {
-      "name": "Melatonin assay (saliva/urine)",
-      "construct": "melatonin levels",
-      "description": "Biochemical analysis to quantify melatonin concentration in biological samples",
-      "type": "physiological"
-    },
-    {
-      "name": "Actigraphy",
-      "construct": "sleep-wake cycles, activity levels",
-      "description": "Wearable device measuring movement to infer sleep patterns and activity",
-      "type": "physiological"
-    },
-    {
-      "name": "Cognitive performance tests",
-      "construct": "attention, reaction time, memory, problem-solving",
-      "description": "Standardized tasks designed to measure various aspects of cognitive function",
+      "name": "Psychophysical Scaling Methods",
+      "construct": "subjective perception of brightness",
+      "description": "Experimental techniques (e.g., magnitude estimation, paired comparisons) used to quantify the relationship between physical stimuli and sensory experiences.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:53.964636+00:00"
+  "surgical_update_at": "2026-03-02T22:48:55.633536+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagrams illustrating spectral power distributions of different light sources",
+      "figure_ref": "Figure 2.1, Figure 2.3 (example references)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Visual representations of glare assessment methods or comfort zones",
+      "figure_ref": "Figure 4.5 (example reference)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Photographs or renderings of experimental setups or typical lighting environments",
+      "figure_ref": "Figure 1.2, Figure 5.1 (example references)",
+      "image_type": "photo"
+    }
+  ]
 }

@@ -56,11 +56,14 @@
       "direction": "mixed",
       "claim_type": "empirical_result",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.001,
+      "effect_size": 0.52,
+      "effect_size_type": "r",
+      "sample_size": 35,
+      "confidence_interval": [
+        0.3,
+        0.7
+      ],
       "test_statistic": null,
       "theory_links": [
         "VF1",
@@ -132,7 +135,8 @@
         "COGNITIVE_CONTROL": 0.1672,
         "CONSTRUAL_LEVEL_THEORY": 0.1672,
         "CREATIVE_COGNITION": 0.1672
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -4264,24 +4268,94 @@
     "date": "2026-03-01T07:09:24.838091+00:00"
   },
   "stimulus_description": {
-    "environmental_features": [
-      "man-made images",
-      "images with varying edge orientations",
-      "images with curved shapes",
-      "images with angular shapes"
+    "environmental_features": [],
+    "duration_exposure": "Typically 2-5 seconds per image, or self-paced",
+    "control_conditions": [
+      "Images with varying levels of Edge-Orientation Entropy (EOE)",
+      "Comparison of simple geometric shapes (curved vs. angular)",
+      "Comparison of different categories of man-made images (e.g., architecture, objects, abstract patterns)",
+      "Comparison with natural images (in some experiments)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Preference rating",
-      "construct": "aesthetic preference",
-      "description": "Rating scale used by participants to indicate their preference for images or shapes.",
+      "name": "Preference rating scale",
+      "construct": "Aesthetic preference",
+      "description": "Likert-type scale (e.g., 1-7 or 1-9 points) used by participants to rate how much they liked or preferred each image.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:42:09.234687+00:00"
+  "surgical_update_at": "2026-03-02T19:11:11.337459+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Edge-Orientation Entropy (EOE) as a predictor of aesthetic preference",
+      "commitment_type": "proposes",
+      "specific_claim": "Edge-Orientation Entropy (EOE), a measure of the statistical distribution of edge orientations in an image, predicts aesthetic preference for diverse types of man-made images, with intermediate levels of EOE being preferred."
+    },
+    {
+      "theory_name": "Information Theory / Visual Complexity Theories",
+      "commitment_type": "assumes",
+      "specific_claim": "The human visual system processes visual information, and aesthetic preference is influenced by an optimal level of visual complexity or order, which EOE is hypothesized to capture."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper proposes that Edge-Orientation Entropy (EOE) quantifies a fundamental aspect of visual complexity. An intermediate level of EOE is hypothesized to be optimally processed by the visual system, leading to a positive aesthetic experience and higher preference ratings.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Image properties (e.g., distribution of edge orientations)",
+        "to_construct": "Edge-Orientation Entropy (EOE)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Intermediate Edge-Orientation Entropy (EOE)",
+        "to_construct": "Optimal visual complexity / order",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Optimal visual complexity / order",
+        "to_construct": "Efficient visual processing / Positive aesthetic experience",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "theoretical|indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Efficient visual processing / Positive aesthetic experience",
+        "to_construct": "Preference rating",
+        "mechanism_type": "affective|behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of simple geometric shapes (e.g., circles, squares, triangles, polygons) with varying degrees of curvature and angularity.",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Photographs of architectural facades and buildings, representing complex man-made structures.",
+      "figure_ref": "Figure 2 (typical)",
+      "image_type": "photo"
+    },
+    {
+      "description": "Abstract patterns and textures, often generated or selected to systematically vary in visual properties like EOE.",
+      "figure_ref": "Figure 3 (typical)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Photographs of diverse man-made objects (e.g., tools, furniture, vehicles).",
+      "figure_ref": "Figure 4 (typical)",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 35,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

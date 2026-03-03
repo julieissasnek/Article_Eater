@@ -4392,49 +4392,51 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Non-visual Photoreception via Intrinsically Photosensitive Retinal Ganglion Cells (ipRGCs)",
-      "commitment_type": "assumes",
-      "specific_claim": "Light exposure, particularly to blue wavelengths, is detected by intrinsically photosensitive Retinal Ganglion Cells (ipRGCs), which project to the suprachiasmatic nucleus (SCN) to regulate circadian rhythms and other non-visual responses, distinct from image-forming vision."
-    },
-    {
-      "theory_name": "Circadian Entrainment Theory",
-      "commitment_type": "proposes",
-      "specific_claim": "The timing, intensity, and spectral composition of light in the built environment can significantly entrain or disrupt human circadian rhythms, thereby impacting sleep, alertness, mood, cognitive performance, and overall health."
+      "theory_name": "Non-visual Photoreception / Circadian Phototransduction",
+      "commitment_type": "assumes|proposes|extends",
+      "specific_claim": "Light, particularly short-wavelength (blue) light, detected by intrinsically photosensitive retinal ganglion cells (ipRGCs), regulates circadian rhythms, melatonin secretion, alertness, and other non-visual physiological and psychological responses, independent of image-forming vision."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes the physiological pathway through which light in the built environment exerts non-visual effects on human health and well-being, primarily via the circadian system.",
+    "description": "The paper describes the neurophysiological pathway through which light influences non-visual functions, primarily focusing on circadian rhythm regulation and its downstream effects.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light exposure (intensity, spectrum, timing)",
-        "to_construct": "Activation of intrinsically photosensitive Retinal Ganglion Cells (ipRGCs)",
+        "from_construct": "Light exposure (especially short-wavelength, blue-rich light)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
+        "from_construct": "Activated ipRGCs",
+        "to_construct": "Signal transmission via the retinohypothalamic tract (RHT)",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signal transmission to SCN",
-        "to_construct": "Regulation of circadian rhythms (e.g., melatonin suppression, phase shifting)",
-        "mechanism_type": "physiological",
+        "from_construct": "RHT signal",
+        "to_construct": "Activation of the suprachiasmatic nucleus (SCN), the body's master circadian clock",
+        "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Regulation of circadian rhythms",
-        "to_construct": "Impact on sleep, alertness, mood, cognitive performance, and long-term health",
+        "from_construct": "SCN activation",
+        "to_construct": "Regulation of melatonin secretion from the pineal gland",
         "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "Melatonin regulation and SCN activity",
+        "to_construct": "Entrainment of circadian rhythms, modulation of alertness, sleep quality, and mood",
+        "mechanism_type": "physiological|cognitive|affective",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:47.850332+00:00"
+  "surgical_update_at": "2026-03-02T23:33:22.716991+00:00"
 }

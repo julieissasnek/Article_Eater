@@ -934,14 +934,13 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "controlled thermal gradient",
-      "heat source",
-      "heat sink"
+      "Applied heat flux",
+      "Temperature gradient"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous",
     "control_conditions": [
-      "homogeneous material (e.g., bulk copper-PDMS composite)",
-      "no thermal cloak"
+      "Homogeneous material (e.g., solid copper or PDMS) under identical heat flux",
+      "Uncloaked region"
     ],
     "ecological_validity": "lab"
   },
@@ -949,51 +948,45 @@
     {
       "theory_name": "Transformation thermodynamics",
       "commitment_type": "tests",
-      "specific_claim": "Transformation thermodynamics can be used to design metamaterials that control heat flow, enabling thermal cloaking."
+      "specific_claim": "Transformation thermodynamics provides a framework for designing metamaterials that can precisely control and guide heat flow, enabling phenomena like thermal cloaking."
     }
   ],
   "instruments_used": [
     {
+      "name": "Infrared thermal camera",
+      "construct": "Temperature distribution",
+      "description": "Imaging device used to capture surface temperature profiles and visualize heat flow",
+      "type": "other"
+    },
+    {
       "name": "Thermocouples",
-      "construct": "Temperature",
-      "description": "Point temperature measurements at various locations on the sample and environment",
-      "type": "other"
-    },
-    {
-      "name": "Infrared camera",
-      "construct": "Surface temperature distribution",
-      "description": "Non-contact measurement of temperature fields across the experimental setup",
-      "type": "other"
-    },
-    {
-      "name": "Heat source",
-      "construct": "Heat flux/gradient",
-      "description": "Device (e.g., resistive heater, Peltier element) to establish a controlled thermal gradient",
+      "construct": "Point temperature",
+      "description": "Sensors used for precise temperature measurement at specific locations within the experimental setup",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:30.717441+00:00",
+  "surgical_update_at": "2026-03-02T23:33:56.883906+00:00",
   "mechanism_chain": {
-    "description": "The micro-structured copper-PDMS metamaterial, designed based on transformation thermodynamics principles, creates an anisotropic thermal conductivity profile that guides heat around the central cloaked region, thereby maintaining a uniform temperature within it.",
+    "description": "The specific micro-structure of the copper-PDMS composite is engineered using transformation thermodynamics principles to create an anisotropic effective thermal conductivity tensor. This anisotropy causes heat flux to be rerouted around a central region, thereby maintaining a uniform temperature within that region, effectively cloaking it from external thermal detection.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Micro-structured copper-PDMS metamaterial geometry",
-        "to_construct": "Anisotropic thermal conductivity profile",
+        "to_construct": "Anisotropic effective thermal conductivity tensor",
         "mechanism_type": "physical",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Anisotropic thermal conductivity profile",
-        "to_construct": "Redirection of heat flux around central region",
+        "from_construct": "Anisotropic effective thermal conductivity tensor",
+        "to_construct": "Rerouting of heat flux around central region",
         "mechanism_type": "physical",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Redirection of heat flux around central region",
+        "from_construct": "Rerouting of heat flux",
         "to_construct": "Uniform temperature in central cloaked region",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
@@ -1002,23 +995,18 @@
   },
   "stimulus_images": [
     {
-      "description": "Schematic diagram of the thermal cloak design and its micro-structure (copper-PDMS metamaterial)",
-      "figure_ref": "Figure X",
+      "description": "Diagram of the micro-structured thermal cloak design and its components",
+      "figure_ref": "Figure 1",
       "image_type": "diagram"
     },
     {
-      "description": "Photograph of the fabricated copper-PDMS metamaterial thermal cloak",
-      "figure_ref": "Figure Y",
+      "description": "Photo of the experimental setup for heat flow measurement",
+      "figure_ref": "Figure 2",
       "image_type": "photo"
     },
     {
-      "description": "Experimental setup for thermal measurements, showing placement of heat source, sink, and thermal cloak",
-      "figure_ref": "Figure Z",
-      "image_type": "diagram"
-    },
-    {
-      "description": "Thermal imaging or temperature contour plots showing heat flow and temperature distribution with and without the thermal cloak",
-      "figure_ref": "Figure A",
+      "description": "Temperature distribution maps showing the cloaking effect under applied heat flux",
+      "figure_ref": "Figure 3",
       "image_type": "graph"
     }
   ]

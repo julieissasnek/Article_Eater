@@ -1,34 +1,16 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from types import SimpleNamespace
 
 from src.epistemic.gap_types import GapType
 from src.queue import AutomatedQueueSearcher, AutomatedSearcherConfig, ResearchQueueService, TargetStatus
-
-
-@dataclass
-class _FakeGap:
-    gap_id: str
-    gap_type: GapType
-    description: str
-    voi_score: float
-    affected_beliefs: list[str]
-    implied_by: list[str]
-
-
-class _FakeGapPredictor:
-    def __init__(self, gaps: list[_FakeGap]):
-        self._gaps = gaps
-
-    def find_all_gaps(self, max_gaps: int = 50):
-        return SimpleNamespace(gaps=self._gaps[:max_gaps])
+from tests.conftest import FakeGap, FakeGapPredictor
 
 
 def _service(tmp_path, gaps):
     svc = ResearchQueueService(
         web=SimpleNamespace(beliefs={}),
-        gap_predictor=_FakeGapPredictor(gaps),
+        gap_predictor=FakeGapPredictor(gaps),
         queue_path=tmp_path / "auto_searcher_queue.json",
         frameworks=[],
     )
@@ -40,7 +22,7 @@ def test_automated_searcher_finds_candidates(tmp_path):
     service = _service(
         tmp_path,
         [
-            _FakeGap(
+            FakeGap(
                 "g1",
                 GapType.VALIDATION,
                 "unfamiliar hospital layouts increase anxiety",
@@ -84,7 +66,7 @@ def test_automated_searcher_finds_candidates(tmp_path):
 def test_automated_searcher_not_found_creates_opportunity(tmp_path):
     service = _service(
         tmp_path,
-        [_FakeGap("g1", GapType.MECHANISM, "missing mechanism for daylight and stress", 0.75, ["b1"], [])],
+        [FakeGap("g1", GapType.MECHANISM, "missing mechanism for daylight and stress", 0.75, ["b1"], [])],
     )
 
     def fake_search(query: str, limit: int = 10, **kwargs):

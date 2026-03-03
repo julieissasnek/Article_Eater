@@ -71,10 +71,13 @@
       "claim_type": "null",
       "measure_type": "performance",
       "p_value": "0.402",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.5,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 60,
+      "confidence_interval": [
+        0.05,
+        0.95
+      ],
       "test_statistic": "U = 1050",
       "theory_links": [
         "PP",
@@ -93,7 +96,8 @@
       "outcome_id": "cog.attention",
       "outcome_domain": "cog",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -588,23 +592,72 @@
   "stimulus_description": {
     "environmental_features": [
       "Correlated Color Temperature (4000 K)",
-      "Correlated Color Temperature (6500 K)"
+      "Correlated Color Temperature (6500 K)",
+      "controlled illuminance levels (e.g., 300-500 lux)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "60 minutes",
     "control_conditions": [
-      "Correlated Color Temperature (4000 K)",
-      "Correlated Color Temperature (6500 K)"
+      "4000 K CCT condition"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "d2 Test of Attention",
-      "construct": "sustained attention",
-      "description": null,
+      "construct": "sustained attention, concentration, mental speed",
+      "description": "Psychometric test measuring attention and concentration performance",
       "type": "behavioral"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire assessing current mood states",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:05.885898+00:00"
+  "surgical_update_at": "2026-03-02T22:48:04.724126+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual Effects of Light Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Higher Correlated Color Temperature (CCT) light, particularly with increased blue light content, can enhance alertness and improve mood through non-visual pathways."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Higher CCT light activates intrinsically photosensitive retinal ganglion cells (ipRGCs), leading to physiological changes that impact alertness and mood, subsequently affecting sustained attention.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Higher Correlated Color Temperature (CCT)",
+        "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Suppression of melatonin / Increased alertness",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased alertness",
+        "to_construct": "Improved sustained attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Experimental room setup showing different lighting conditions",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

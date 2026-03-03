@@ -1752,41 +1752,72 @@
     ],
     "duration_exposure": null,
     "control_conditions": null,
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": null
   },
   "theory_commitments": [
     {
-      "theory_name": "Proxemics Theory",
-      "commitment_type": "extends",
-      "specific_claim": "Violation of culturally defined personal space and territorial boundaries leads to psychological and physiological discomfort or arousal."
+      "theory_name": "Proxemics",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans maintain culturally defined personal space zones, and violations of these zones elicit specific behavioral and physiological responses."
+    },
+    {
+      "theory_name": "Arousal Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Environmental stressors, such as spatial invasions or crowding, can lead to an increase in physiological arousal."
     }
   ],
   "mechanism_chain": {
-    "description": "Abnormal spatial situations (e.g., close distances, territorial invasions, overcrowding) are perceived as threats or discomforts, leading to a cognitive appraisal of stress, which then triggers a physiological stress response.",
+    "description": "Abnormal spatial situations are perceived as threats to personal space, triggering a stress response that manifests as heightened physiological arousal.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Abnormal spatial situations",
-        "to_construct": "Perception of personal space invasion/crowding",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "Perception of personal space invasion/crowding",
-        "to_construct": "Cognitive appraisal of threat/discomfort",
+        "from_construct": "Abnormal spatial situations (e.g., overcrowding, close distances)",
+        "to_construct": "Perception of personal space invasion/threat",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
+        "step": 2,
+        "from_construct": "Perception of personal space invasion/threat",
+        "to_construct": "Activation of the sympathetic nervous system",
+        "mechanism_type": "neural|physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
         "step": 3,
-        "from_construct": "Cognitive appraisal of threat/discomfort",
-        "to_construct": "Activation of physiological stress response",
+        "from_construct": "Activation of the sympathetic nervous system",
+        "to_construct": "Heightened physiological arousal",
         "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:09:22.708961+00:00"
+  "surgical_update_at": "2026-03-02T23:31:29.434006+00:00",
+  "instruments_used": [
+    {
+      "name": "Galvanic Skin Response (GSR)",
+      "construct": "physiological arousal",
+      "description": "Measures changes in electrical conductance of the skin, reflecting sympathetic nervous system activity.",
+      "type": "physiological"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological arousal",
+      "description": "Measures variations in the time interval between heartbeats, indicating autonomic nervous system balance.",
+      "type": "physiological"
+    },
+    {
+      "name": "Observation of interpersonal distance",
+      "construct": "personal space violation",
+      "description": "Direct measurement or recording of physical distances between individuals in various settings.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Crowding scales",
+      "construct": "perceived crowding/discomfort",
+      "description": "Self-report questionnaires assessing subjective feelings of being crowded or uncomfortable in a given spatial situation.",
+      "type": "self_report"
+    }
+  ]
 }

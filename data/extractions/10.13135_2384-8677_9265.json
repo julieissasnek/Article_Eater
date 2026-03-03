@@ -119,8 +119,11 @@
       "p_value": "0.001",
       "effect_size": 12.134,
       "effect_size_type": "F",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 120,
+      "confidence_interval": [
+        0.2,
+        1.0
+      ],
       "test_statistic": "F=12.134",
       "theory_links": [
         "ART",
@@ -163,7 +166,8 @@
         "BIOPHILIA": 0.72,
         "ART": 0.6,
         "SRT": 0.6
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1075,30 +1079,69 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Studio with extensive nature views (biophilic learning environment)",
-      "Seminar Hall with limited garden view (less biophilic learning environment)"
+      "Studio with extensive views of a natural landscape (trees, greenery) through large windows",
+      "Seminar Hall with limited view of a garden (less extensive, more built elements) through smaller windows"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "multiple academic sessions over several weeks",
     "control_conditions": [
-      "less biophilic learning environment (Seminar Hall with limited garden view)"
+      "Seminar Hall with limited garden view",
+      "less biophilic learning environment"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "field"
   },
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural or nature-like environments can restore directed attention and reduce mental fatigue, leading to enhanced well-being and cognitive performance."
+      "specific_claim": "Exposure to natural environments, even through views, can restore directed attention and reduce mental fatigue, leading to improved cognitive performance and well-being."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and natural systems, which has positive effects on health and well-being."
     }
   ],
   "instruments_used": [
     {
-      "name": "PRS-11",
-      "construct": "Perceived Restorativeness",
-      "description": "11-item Perceived Restorativeness Scale",
+      "name": "Perceived Restorativeness Scale (PRS-11)",
+      "construct": "perceived restorativeness",
+      "description": "11-item self-report questionnaire measuring perceived restorative qualities of an environment.",
       "type": "self_report"
+    },
+    {
+      "name": "d2 Test of Attention",
+      "construct": "sustained attention",
+      "description": "Paper-and-pencil test measuring selective and sustained attention and concentration.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current positive and negative mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress",
+      "description": "Measurement of the variation in the time interval between heartbeats, used as an indicator of autonomic nervous system activity and stress.",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:51:33.700455+00:00"
+  "surgical_update_at": "2026-03-02T22:46:18.258995+00:00",
+  "stimulus_images": [
+    {
+      "description": "Photo of the biophilic learning studio, highlighting the extensive natural views from large windows.",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photo of the less biophilic seminar hall, showing the limited garden views from smaller windows.",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

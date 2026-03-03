@@ -1245,8 +1245,8 @@
   "stimulus_description": {
     "environmental_features": [
       "building layout",
-      "axial spaces",
-      "circulation system"
+      "axial spaces (circulation system only)",
+      "degree of integration of each space and each choice node of the circulation system"
     ],
     "duration_exposure": null,
     "control_conditions": null,
@@ -1256,9 +1256,47 @@
     {
       "theory_name": "Search Structure",
       "commitment_type": "proposes",
-      "specific_claim": "Search patterns are strongly shaped according to the degree of integration of each space and each choice node of the circulation system within the overall layout."
+      "specific_claim": "Search patterns are strongly shaped according to the degree of integration of each space and each choice node of the circulation system within the overall layout, leading to the formulation of a 'search structure'."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:09:09.353085+00:00"
+  "surgical_update_at": "2026-03-02T23:27:22.353539+00:00",
+  "instruments_used": [
+    {
+      "name": "Space Syntax analysis",
+      "construct": "spatial configuration metrics (e.g., integration, RRA)",
+      "description": "Computational analysis of architectural layouts to derive spatial properties of spaces and circulation systems.",
+      "type": "other"
+    },
+    {
+      "name": "Behavioral observation/tracking",
+      "construct": "wayfinding behavior, space usage frequency",
+      "description": "Recording subjects' movement paths and dwell times within the building layout to determine frequency of space use.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Floor plans of the studied building layout showing axial spaces and circulation system",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Diagrams illustrating spatial integration values and choice nodes within the circulation system",
+      "figure_ref": "Figure 3, Figure 4",
+      "image_type": "diagram"
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The degree of integration of axial spaces directly influences the frequency of use of those spaces by subjects during wayfinding.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "degree of integration (lower RRA value) of axial spaces",
+        "to_construct": "total frequency of use of each space by subjects during open search",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  }
 }

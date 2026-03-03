@@ -94,7 +94,7 @@
       "p_value": null,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -159,7 +159,8 @@
         "ALLOSTATIC_REGULATION": 0.1653,
         "METABOLIC_HEALTH": 0.1653,
         "PREDICTIVE_PROCESSING": 0.1653
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2786,13 +2787,15 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Optic flow stimuli",
-      "various 2D trajectories",
-      "a single landmark"
+      "optic flow patterns simulating self-motion",
+      "various 2D trajectories (e.g., straight, curved)",
+      "a single static visual landmark (e.g., a dot or object)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "conditions with and without a single landmark"
+      "conditions without a landmark",
+      "conditions with different landmark properties (e.g., position, salience)",
+      "conditions with different optic flow parameters (e.g., speed, density)"
     ],
     "ecological_validity": "lab"
   },
@@ -2823,5 +2826,30 @@
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:21:43.507401+00:00"
+  "surgical_update_at": "2026-03-02T22:49:40.783262+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Ecological Psychology",
+      "commitment_type": "extends",
+      "specific_claim": "Perception of self-motion and environmental structure is primarily derived from optic flow, but discrete environmental features like landmarks can influence or modify this perception."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Custom experimental software",
+      "construct": "Perceived trajectory accuracy",
+      "description": "Software used to generate and present optic flow stimuli and record participants' path reconstruction responses (e.g., via mouse or joystick input).",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Schematic representation of optic flow stimuli, simulated 2D trajectories, and the static landmark within the visual field.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

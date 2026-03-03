@@ -1142,34 +1142,66 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "simulated visual stimuli",
-      "highlight-shading relationships",
-      "varying sub-surface scattering depth"
+      "Computer-rendered 3D objects (e.g., spheres, complex shapes) with varying optical properties (sub-surface scattering, absorption, index of refraction)",
+      "Controlled virtual lighting conditions (e.g., point light source, diffuse illumination)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "Self-paced, until participant response",
+    "control_conditions": [
+      "Varying levels of simulated sub-surface scattering depth (0 to 2m)",
+      "Varying highlight properties (e.g., sharpness, position)",
+      "Varying shading gradients",
+      "Comparison with opaque objects"
+    ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Visual cues related to highlight and shading, specifically simulated sub-surface scattering depth, directly influence the perceptual judgment of material translucency.",
+    "description": "The relationship between highlights and shading on an object's surface provides visual cues that are processed by the visual system, leading to the perception of material properties such as translucency and transparency.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "simulated sub-surface scattering depth",
-        "to_construct": "apparent translucency rating",
+        "from_construct": "Highlight-shading relationship (visual cue)",
+        "to_construct": "Perceptual processing of surface light transport",
         "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Perceptual processing of surface light transport",
+        "to_construct": "Apparent translucency/transparency rating",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Translucency rating scale",
-      "construct": "apparent translucency",
-      "description": "A subjective rating scale used by participants to quantify the perceived translucency of simulated materials.",
+      "name": "High-resolution display monitor",
+      "construct": "Visual stimulus presentation",
+      "description": "Used for presenting computer-rendered images to participants.",
+      "type": "other"
+    },
+    {
+      "name": "Custom rendering software",
+      "construct": "Stimulus generation",
+      "description": "Software used to generate 3D objects with controlled optical properties and lighting.",
+      "type": "other"
+    },
+    {
+      "name": "Response collection interface",
+      "construct": "Perceptual judgment",
+      "description": "Software interface for participants to provide ratings (e.g., using a slider or numerical scale).",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:43:58.399811+00:00"
+  "surgical_update_at": "2026-03-02T19:08:17.689033+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of rendered objects (e.g., spheres) demonstrating different levels of translucency and transparency, often showing variations in highlight and shading properties.",
+      "figure_ref": "Figure 1, Figure 2, Figure 3",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 12,
+  "paper_sample_size_source": "estimated"
 }

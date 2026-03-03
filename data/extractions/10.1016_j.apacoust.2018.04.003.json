@@ -54,7 +54,7 @@
       "p_value": "<0.001",
       "effect_size": 1.1,
       "effect_size_type": "Cohen_d",
-      "sample_size": null,
+      "sample_size": 24,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -105,7 +105,8 @@
           "score": 0.269,
           "reasons": []
         }
-      ]
+      ],
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -4091,64 +4092,91 @@
   "stimulus_description": {
     "environmental_features": [
       "Silence",
-      "Unmasked speech from a single talker",
-      "Conventional sound masking",
-      "Local sound masking",
-      "Background office noise"
+      "Unmasked speech from a target talker",
+      "Conventional sound masking (broadband pink noise)",
+      "Local sound masking (broadband pink noise)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "20 minutes per sound condition block",
     "control_conditions": [
       "Silence",
-      "Unmasked speech from a single talker"
+      "Unmasked speech from a target talker"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Sound masking reduces the intelligibility and distracting effect of speech, thereby improving cognitive performance.",
+    "description": "Sound masking reduces the intelligibility of distracting speech, thereby reducing cognitive interference and improving cognitive performance.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Sound masking",
         "to_construct": "Speech intelligibility",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Reduced speech intelligibility",
-        "to_construct": "Cognitive interference/distraction",
+        "from_construct": "Speech intelligibility",
+        "to_construct": "Auditory distraction/Cognitive load",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
-        "from_construct": "Reduced cognitive interference/distraction",
+        "from_construct": "Auditory distraction/Cognitive load",
         "to_construct": "Cognitive performance",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Serial recall task",
-      "construct": "Verbal working memory; Cognitive performance",
+      "construct": "Verbal working memory",
       "description": "Task requiring participants to recall a sequence of items in order",
       "type": "behavioral"
     },
     {
-      "name": "Arithmetic task",
-      "construct": "Arithmetic performance; Cognitive performance",
-      "description": "Task requiring participants to solve arithmetic problems",
+      "name": "Proofreading task",
+      "construct": "Concentration, attention, error detection",
+      "description": "Task requiring participants to identify errors in a text",
       "type": "behavioral"
     },
     {
-      "name": "Subjective ratings of sound environment",
-      "construct": "Perceived distraction; Annoyance; Sound quality",
-      "description": "Likert-scale ratings on various aspects of the sound environment, including perceived distraction and annoyance.",
+      "name": "Arithmetic task",
+      "construct": "Numerical processing, working memory",
+      "description": "Task requiring participants to solve mathematical problems",
+      "type": "behavioral"
+    },
+    {
+      "name": "Subjective ratings",
+      "construct": "Perceived speech intelligibility",
+      "description": "Self-reported ratings of how intelligible speech was",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective ratings",
+      "construct": "Annoyance",
+      "description": "Self-reported ratings of annoyance caused by the sound environment",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective ratings",
+      "construct": "Concentration",
+      "description": "Self-reported ratings of ability to concentrate",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:42:05.452809+00:00"
+  "surgical_update_at": "2026-03-02T19:08:05.042002+00:00",
+  "stimulus_images": [
+    {
+      "description": "Floor plan of the simulated open-plan office showing participant, speech source, and loudspeaker positions.",
+      "figure_ref": "Figure 1",
+      "image_type": "floor_plan"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

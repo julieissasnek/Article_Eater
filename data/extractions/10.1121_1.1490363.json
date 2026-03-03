@@ -2504,72 +2504,103 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Reverberation time (RT)",
-      "background noise levels",
-      "signal-to-noise ratio (SNR)",
+      "reverberation time (RT)",
+      "background noise levels (LAeq)",
+      "Speech Transmission Index (STI)",
       "room volume",
-      "surface materials",
       "occupancy levels (e.g., 70% occupied)"
     ],
-    "duration_exposure": "Typical classroom lecture duration (e.g., 50-90 minutes) or specific measurement periods",
+    "duration_exposure": "during typical classroom lectures/use",
     "control_conditions": [
-      "Comparison across different university classrooms with varying acoustical properties",
-      "comparison of occupied vs. unoccupied conditions (implied by '70% occupied')"
+      "comparison across a range of existing university classrooms with varying acoustical properties"
     ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:40:18.375465+00:00",
+  "surgical_update_at": "2026-03-02T19:09:00.594656+00:00",
   "mechanism_chain": {
-    "description": "Physical acoustical properties of the classroom environment directly influence the clarity and audibility of speech, which in turn determines speech intelligibility and perceived acoustical quality.",
+    "description": "The paper investigates how specific acoustical conditions in classrooms causally influence perceived acoustical quality and speech intelligibility.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "High reverberation time / Low signal-to-noise ratio / High background noise",
-        "to_construct": "Masking and temporal smearing of speech sounds",
+        "from_construct": "high reverberation time",
+        "to_construct": "masking of speech sounds",
         "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Masking and temporal smearing of speech sounds",
-        "to_construct": "Reduced clarity of speech signal at the listener's ear",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "direct"
+        "from_construct": "high background noise levels",
+        "to_construct": "reduced signal-to-noise ratio",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Reduced clarity of speech signal",
-        "to_construct": "Decreased speech intelligibility and perceived acoustical quality",
+        "from_construct": "masking of speech sounds / reduced signal-to-noise ratio",
+        "to_construct": "decreased speech intelligibility",
         "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "decreased speech intelligibility",
+        "to_construct": "lower perceived acoustical quality",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Sound level meter",
-      "construct": "Background noise level, sound pressure level",
-      "description": "Equipment to measure sound pressure levels in classrooms.",
+      "name": "Sound Level Meter",
+      "construct": "background noise levels, sound pressure levels",
+      "description": "Used to measure A-weighted equivalent continuous sound pressure levels (LAeq) and other noise metrics.",
+      "type": "physiological"
+    },
+    {
+      "name": "Reverberation Time Measurement System",
+      "construct": "reverberation time (RT)",
+      "description": "Equipment and software used to measure T20 or T30 reverberation times in octave bands.",
       "type": "other"
     },
     {
-      "name": "Reverberation time measurement system",
-      "construct": "Reverberation time (RT)",
-      "description": "Equipment to measure the decay of sound in a room.",
+      "name": "Speech Transmission Index (STI) Calculation Software",
+      "construct": "speech intelligibility",
+      "description": "Software used to calculate STI based on measured acoustical parameters.",
       "type": "other"
     },
     {
-      "name": "Speech Transmission Index (STI) measurement",
-      "construct": "Speech intelligibility",
-      "description": "Objective measure of speech intelligibility based on modulation transfer function.",
-      "type": "other"
-    },
-    {
-      "name": "Subjective rating scales",
-      "construct": "Perceived acoustical quality, speech intelligibility, listener comfort",
-      "description": "Questionnaires or scales administered to participants to rate acoustical conditions.",
+      "name": "Subjective Rating Questionnaires",
+      "construct": "perceived acoustical quality, speech intelligibility, annoyance, comfort",
+      "description": "Likert-scale or similar questionnaires administered to students/participants to rate various aspects of classroom acoustics.",
       "type": "self_report"
     }
-  ]
+  ],
+  "theory_commitments": [
+    {
+      "theory_name": "Speech Intelligibility Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Objective acoustical metrics (e.g., STI, RT, SNR) are directly related to the subjective perception of speech intelligibility and overall acoustical quality in a space."
+    },
+    {
+      "theory_name": "Environmental Perception Theory",
+      "commitment_type": "applies",
+      "specific_claim": "Human perception and subjective ratings of an environment are influenced by its physical characteristics, including acoustical properties."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagrams of classroom layouts and measurement point locations",
+      "figure_ref": "Figure 1, Figure 2 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs illustrating distributions or correlations of acoustical parameters (e.g., RT, STI, noise levels)",
+      "figure_ref": "Figure 3, Figure 4 (example)",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 500,
+  "paper_sample_size_source": "estimated"
 }

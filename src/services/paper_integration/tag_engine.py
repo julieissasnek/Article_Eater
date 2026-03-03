@@ -15,7 +15,8 @@ Dimension 1 — Entity/Topic:
 Dimension 2 — Theoretical:
     Which T1 frameworks, T1.5 theories, and molecules does the belief
     connect to?
-    e.g., "PP", "IC", "NM", "ART", "SRT", "Biophilia", "GOLDILOCKS"
+    e.g., "predictive-processing", "interoceptive-constructionist-affect",
+          "neuromodulatory-systems", "ART", "SRT", "Biophilia", "GOLDILOCKS"
 
 Dimension 3 — Effect Size:
     What is the magnitude of the reported effect?
@@ -100,17 +101,16 @@ ENTITY_KEYWORDS: Dict[str, List[str]] = {
 # =============================================================================
 
 T1_KEYWORDS: Dict[str, List[str]] = {
-    "PP": ["predictive processing", "prediction error", "free energy", "Bayesian brain"],
-    "IC": ["interocepti", "allostatic", "body budget", "homeostatic"],
-    "NM": ["neuromodulat", "dopamin", "serotonin", "cortisol", "norepinephrine"],
-    "EC": ["affordance", "ecological", "Gibson", "enactive"],
-    "SN": ["spatial navigation", "cognitive map", "place cell", "hippocampal"],
-    "DT": ["directed attention", "attention restoration", "fascination"],
-    "MSI": ["multisensory", "cross-modal", "audiovisual", "congruency"],
-    "MS": ["mirror system", "embodied simulation", "imitation"],
-    "DP": ["dual process", "System 1", "System 2", "implicit", "explicit"],
-    "CB": ["circadian", "melatonin", "SCN", "zeitgeber", "light-dark cycle"],
-    "IE-DPT": ["individual difference", "personality", "expertise", "cultural"],
+    "predictive-processing": ["predictive processing", "prediction error", "free energy", "Bayesian brain"],
+    "interoceptive-constructionist-affect": ["interocepti", "allostatic", "body budget", "homeostatic"],
+    "neuromodulatory-systems": ["neuromodulat", "dopamin", "serotonin", "cortisol", "norepinephrine"],
+    "embodied-cognition": ["affordance", "ecological", "Gibson", "enactive"],
+    "spatial-navigation": ["spatial navigation", "cognitive map", "place cell", "hippocampal"],
+    "default-mode-dynamics": ["directed attention", "attention restoration", "fascination"],
+    "multisensory-integration": ["multisensory", "cross-modal", "audiovisual", "congruency"],
+    "memory-systems": ["mirror system", "embodied simulation", "imitation"],
+    "dual-process-evaluation": ["dual process", "System 1", "System 2", "implicit", "explicit"],
+    "chronobiological-regulation": ["circadian", "melatonin", "SCN", "zeitgeber", "light-dark cycle"],
 }
 
 # =============================================================================

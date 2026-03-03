@@ -3317,18 +3317,17 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "window-to-wall ratio",
-      "glazing properties",
-      "room dimensions (depth, height)",
-      "building orientation",
-      "external obstructions",
-      "sky conditions (e.g., Hong Kong specific sky models or standard CIE skies)"
+      "variations in window-to-wall ratio (WWR)",
+      "different window orientations (e.g., North, South, East, West)",
+      "various external shading devices (e.g., overhangs, side fins)",
+      "different glass types",
+      "typical office building geometries in Hong Kong"
     ],
-    "duration_exposure": "annual simulation",
+    "duration_exposure": "annual simulation using typical meteorological year data for Hong Kong",
     "control_conditions": [
-      "comparison of different office building designs",
-      "varying window configurations",
-      "different building orientations"
+      "a baseline office configuration with a standard WWR",
+      "no external shading",
+      "specific orientation (e.g., South-facing) for comparison"
     ],
     "ecological_validity": "semi-naturalistic"
   },
@@ -3353,18 +3352,29 @@
   },
   "instruments_used": [
     {
-      "name": "Daylight simulation software",
-      "construct": "daylight factor, illuminance levels, daylight autonomy",
-      "description": "Software used to model building geometry and simulate daylight performance under various sky conditions.",
-      "type": "other"
-    },
-    {
-      "name": "Sky models",
-      "construct": "external luminance distribution, solar radiation",
-      "description": "Mathematical models representing sky conditions (e.g., CIE standard skies, local climate-based sky models) used as input for simulations.",
+      "name": "Radiance",
+      "construct": "Daylight Factor (DF), Illuminance, Uniformity Ratio",
+      "description": "Advanced ray-tracing software used for simulating daylighting performance in buildings.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:41:21.013695+00:00"
+  "surgical_update_at": "2026-03-02T23:29:37.212491+00:00",
+  "stimulus_images": [
+    {
+      "description": "Floor plans illustrating office layouts and the grid of simulated measurement points",
+      "figure_ref": "Figure 1, Figure 2",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Diagrams of building sections showing different window configurations and external shading devices",
+      "figure_ref": "Figure 3, Figure 4",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graphs depicting the distribution of Daylight Factor (DF) across office spaces for various scenarios",
+      "figure_ref": "Figure 5, Figure 6, Figure 7",
+      "image_type": "graph"
+    }
+  ]
 }

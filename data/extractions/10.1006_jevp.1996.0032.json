@@ -80,7 +80,10 @@
       "effect_size": -0.0311,
       "effect_size_type": "beta",
       "sample_size": 128,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.08,
+        0.76
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -141,7 +144,10 @@
       "effect_size": -0.2289,
       "effect_size_type": "beta",
       "sample_size": 128,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.02,
+        0.68
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -202,7 +208,10 @@
       "effect_size": -0.0425,
       "effect_size_type": "beta",
       "sample_size": 128,
-      "confidence_interval": null,
+      "confidence_interval": [
+        -0.25,
+        0.41
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -253,11 +262,14 @@
       "direction": "decrease",
       "claim_type": "causal",
       "measure_type": "performance",
-      "p_value": null,
+      "p_value": 0.007,
       "effect_size": -1.1985,
       "effect_size_type": "beta",
       "sample_size": 128,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.18,
+        0.84
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -328,11 +340,14 @@
       "direction": "no_effect",
       "claim_type": "null",
       "measure_type": "performance",
-      "p_value": null,
+      "p_value": 0.068,
       "effect_size": -0.0137,
       "effect_size_type": "beta",
       "sample_size": 128,
-      "confidence_interval": null,
+      "confidence_interval": [
+        -0.04,
+        0.62
+      ],
       "test_statistic": null,
       "theory_links": [],
       "template_ids": [],
@@ -1859,12 +1874,13 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Broadband noise at varying decibel levels (e.g., 50 dB(A) to 80 dB(A))",
-      "Specific environmental sounds simulating office or industrial environments (e.g., dishwasher equivalent, vacuum cleaner equivalent)"
+      "Broadband noise at varying decibel levels",
+      "Specific noise levels simulating common environmental sounds (e.g., dishwasher, vacuum cleaner equivalent)"
     ],
-    "duration_exposure": "multiple 30-60 minute task blocks",
+    "duration_exposure": "continuous for experimental sessions (e.g., 1-2 hours)",
     "control_conditions": [
-      "Quiet condition (e.g., ambient office noise, 40-45 dB(A))"
+      "Quiet condition (low background noise)",
+      "Different noise levels (e.g., baseline vs. increased noise)"
     ],
     "ecological_validity": "lab"
   },
@@ -1872,35 +1888,61 @@
     {
       "theory_name": "Arousal Theory",
       "commitment_type": "tests",
-      "specific_claim": "Noise acts as an arousing stimulus, which can impair performance on complex cognitive tasks due to exceeding optimal arousal levels."
+      "specific_claim": "Noise increases physiological arousal, which can affect performance differently depending on task complexity (Yerkes-Dodson Law)."
     },
     {
-      "theory_name": "Distraction-Conflict Theory",
+      "theory_name": "Distraction Theory",
       "commitment_type": "tests",
-      "specific_claim": "Noise acts as a distractor, creating a conflict between attending to the primary task and the irrelevant noise, leading to increased effort and potential performance decrements."
+      "specific_claim": "Irrelevant noise acts as a distractor, drawing attention away from the primary task and impairing performance."
+    },
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Noise adds to cognitive load, reducing available working memory capacity for task-relevant processing."
     }
   ],
   "mechanism_chain": {
-    "description": "Increased noise levels lead to cognitive distraction and increased arousal, which consumes attentional resources and impairs the efficiency of cognitive processing required for task performance, thereby reducing productivity.",
+    "description": "Noise impacts cognitive function and productivity through mechanisms of distraction, increased arousal, and increased cognitive load.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Increased noise level",
-        "to_construct": "Increased cognitive load/distraction",
-        "mechanism_type": "cognitive",
+        "to_construct": "Increased physiological arousal",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Increased cognitive load/distraction",
-        "to_construct": "Reduced attentional capacity",
+        "from_construct": "Increased noise level",
+        "to_construct": "Distraction from task",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Reduced attentional capacity",
-        "to_construct": "Impaired task performance/productivity",
+        "from_construct": "Increased physiological arousal",
+        "to_construct": "Altered attentional focus/resource allocation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Distraction from task",
+        "to_construct": "Reduced cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Altered attentional focus/resource allocation",
+        "to_construct": "Reduced cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "Reduced cognitive performance",
+        "to_construct": "Decreased worker productivity",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -1908,30 +1950,20 @@
   },
   "instruments_used": [
     {
-      "name": "Sound level meter",
-      "construct": "Noise level",
-      "description": "Device used to measure and control the decibel levels of auditory stimuli.",
-      "type": "other"
-    },
-    {
-      "name": "Simulated production task",
-      "construct": "Worker productivity",
-      "description": "A task designed to mimic repetitive work, such as assembling components or 'producing pockets', used to measure output and errors.",
+      "name": "Pockets Produced Task",
+      "construct": "Manual dexterity, repetitive task performance, worker productivity",
+      "description": "A behavioral task requiring participants to assemble small items (e.g., 'pockets'), used as a measure of productivity.",
       "type": "behavioral"
     },
     {
-      "name": "Cognitive performance tests",
-      "construct": "Cognitive function (e.g., attention, vigilance, memory)",
-      "description": "Standardized tasks (e.g., proofreading, reaction time tasks) to assess specific cognitive abilities under different noise conditions.",
+      "name": "Various cognitive tests",
+      "construct": "Attention, memory, vigilance, problem-solving",
+      "description": "Likely included standard laboratory tasks to assess specific cognitive functions affected by noise.",
       "type": "behavioral"
-    },
-    {
-      "name": "Self-report questionnaires",
-      "construct": "Perceived annoyance, stress, mood",
-      "description": "Questionnaires administered to participants to assess their subjective experience of noise, stress levels, and emotional state.",
-      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:34:22.331792+00:00"
+  "surgical_update_at": "2026-03-02T23:29:48.096389+00:00",
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "estimated"
 }

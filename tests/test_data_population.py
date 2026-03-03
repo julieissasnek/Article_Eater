@@ -407,7 +407,11 @@ class TestCrossCuttingInvariants:
         theories_dir = PROJECT_ROOT / "data" / "theories"
         if not theories_dir.exists():
             pytest.skip("No theories dir")
+        # TEA scores file is metadata, not a single theory
+        EXCLUDED = {"tea_scores"}
         for tf in theories_dir.glob("*.json"):
+            if tf.stem in EXCLUDED:
+                continue
             t = json.load(open(tf))
             assert t.get("theory_id") or t.get("name"), f"{tf.name}: no id or name"
 

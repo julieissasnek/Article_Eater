@@ -2831,45 +2831,134 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Simulated nature views",
-      "Simulated urban views",
-      "Simulated blank wall views",
-      "Simulated room colors (e.g., warm, cool, neutral)"
+      "simulated natural view (e.g., park, trees)",
+      "simulated urban view (e.g., city street, buildings)",
+      "blank wall view",
+      "blue color scheme",
+      "red color scheme",
+      "green color scheme"
     ],
-    "duration_exposure": "Duration of the simulated telemarketing task (e.g., 1-2 hours)",
+    "duration_exposure": "duration of the simulated telemarketing task (e.g., 30-60 minutes)",
     "control_conditions": [
-      "Simulated blank wall view",
-      "Neutral room color"
+      "blank wall view",
+      "neutral color scheme (e.g., grey or white)"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention and reduce mental fatigue, thereby improving cognitive performance and mood in demanding tasks."
+      "specific_claim": "Exposure to natural environments restores directed attention and reduces mental fatigue better than urban or barren environments."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments elicits positive affective responses and reduces physiological stress."
+    },
+    {
+      "theory_name": "Environmental Color Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Specific colors (e.g., blue, green, red) evoke distinct psychological and physiological responses, influencing mood and performance."
     }
   ],
   "instruments_used": [
     {
-      "name": "PANAS",
+      "name": "Positive and Negative Affect Schedule (PANAS)",
       "construct": "positive and negative affect",
-      "description": "20-item self-report mood scale",
+      "description": "A self-report questionnaire consisting of two 10-item mood scales, one for positive affect and one for negative affect.",
       "type": "self_report"
     },
     {
-      "name": "Telemarketing task performance metrics",
+      "name": "NASA Task Load Index (NASA-TLX)",
+      "construct": "perceived workload",
+      "description": "A multidimensional rating scale that assesses perceived workload in six areas: Mental Demand, Physical Demand, Temporal Demand, Performance, Effort, and Frustration.",
+      "type": "self_report"
+    },
+    {
+      "name": "Simulated Telemarketing Task Performance Metrics",
       "construct": "task performance",
-      "description": "Measures such as call duration, number of calls, customer satisfaction ratings, or error rates during the simulated telemarketing task.",
+      "description": "Measures such as call duration, number of successful calls, errors made, or sales conversion rates during the simulated task.",
       "type": "behavioral"
     },
     {
-      "name": "NASA-TLX",
-      "construct": "cognitive workload",
-      "description": "Multi-dimensional self-report scale for perceived workload",
-      "type": "self_report"
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress/relaxation",
+      "description": "Measures the variation in the time interval between heartbeats, used as an indicator of autonomic nervous system activity.",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:59:30.374722+00:00"
+  "surgical_update_at": "2026-03-02T23:34:54.683580+00:00",
+  "mechanism_chain": {
+    "description": "Natural views provide 'soft fascination' and reduce cognitive load, leading to restoration of directed attention and improved mood, which in turn enhances performance on demanding tasks. Specific colors may directly influence arousal and affective states.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "exposure to natural view",
+        "to_construct": "soft fascination / reduced cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "soft fascination / reduced cognitive load",
+        "to_construct": "restoration of directed attention",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "restoration of directed attention",
+        "to_construct": "improved mood / reduced negative affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "improved mood / reduced negative affect",
+        "to_construct": "enhanced task performance (e.g., telemarketing task)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "exposure to specific color (e.g., blue)",
+        "to_construct": "physiological relaxation / reduced arousal",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 6,
+        "from_construct": "physiological relaxation / reduced arousal",
+        "to_construct": "improved mood / reduced negative affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Images depicting the simulated natural environment view",
+      "figure_ref": "Figure 1a",
+      "image_type": "photo"
+    },
+    {
+      "description": "Images depicting the simulated urban environment view",
+      "figure_ref": "Figure 1b",
+      "image_type": "photo"
+    },
+    {
+      "description": "Images depicting the blank wall control view",
+      "figure_ref": "Figure 1c",
+      "image_type": "photo"
+    },
+    {
+      "description": "Examples of the different color schemes applied to the simulated environment",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 90,
+  "paper_sample_size_source": "estimated"
 }

@@ -1296,47 +1296,36 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Varying opening/partition area ratios (dop)",
-      "Sequential room configurations",
-      "Room dimensions",
-      "Material absorption properties of surfaces"
+      "Opening/partition area ratio (dop)",
+      "Sequential spaces configurations"
     ],
     "duration_exposure": null,
-    "control_conditions": [
-      "Completely closed partition (0% opening/partition area ratio)"
-    ],
+    "control_conditions": null,
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Acoustic simulation software",
-      "construct": "Room acoustic parameters",
-      "description": "Software used to model sound propagation and calculate acoustic metrics in architectural spaces.",
+      "construct": "Sound pressure level, Level differences",
+      "description": "Software used to model and measure acoustic parameters in various room configurations.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:16.191797+00:00",
+  "surgical_update_at": "2026-03-02T23:31:26.566110+00:00",
   "mechanism_chain": {
-    "description": "The physical process of sound energy transmission and reflection through openings and partitions between sequential spaces, which dictates the sound pressure level differences observed.",
+    "description": "Physical acoustic mechanisms governing sound propagation, diffraction, and transmission through openings between sequential spaces.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Opening/partition area ratio",
-        "to_construct": "Sound energy transmission and reflection characteristics",
+        "to_construct": "Sound transmission/diffraction characteristics",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Sound energy transmission and reflection characteristics",
-        "to_construct": "Sound pressure level distribution within rooms",
-        "mechanism_type": "physical",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Sound pressure level distribution within rooms",
+        "from_construct": "Sound transmission/diffraction characteristics",
         "to_construct": "Level differences between rooms",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
@@ -1345,14 +1334,11 @@
   },
   "stimulus_images": [
     {
-      "description": "Floor plans and/or 3D renderings of the simulated sequential spaces with varying opening configurations.",
-      "figure_ref": null,
-      "image_type": "floor_plan"
-    },
-    {
-      "description": "Diagrams illustrating the parametric variations of opening/partition area ratios.",
-      "figure_ref": null,
+      "description": "Diagrams illustrating the configurations of sequential spaces and varying opening/partition area ratios.",
+      "figure_ref": "Figure 1, Figure 2",
       "image_type": "diagram"
     }
-  ]
+  ],
+  "paper_sample_size": 48,
+  "paper_sample_size_source": "inferred"
 }

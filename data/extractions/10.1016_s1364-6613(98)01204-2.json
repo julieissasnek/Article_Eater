@@ -3619,32 +3619,32 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "computer-generated images of 3D objects (e.g., spheres, bumps, indentations) on a planar surface",
-      "simulated light source casting shadows",
-      "manipulation of cast shadow presence, shape, and position relative to the object and light source"
+      "computer-generated images of 3D objects (e.g., spheres, bumps, indentations) on a surface",
+      "varying light source positions",
+      "presence and configuration of cast shadows"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, controlled presentations (e.g., hundreds of milliseconds per trial)",
     "control_conditions": [
-      "scenes without cast shadows",
-      "scenes with attached shadows only (no cast shadows)",
-      "scenes with inconsistent or ambiguous cast shadows (e.g., not matching object geometry or light source direction)"
+      "images without cast shadows",
+      "images with inconsistent or ambiguous shadows",
+      "images with only shading cues"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Cast shadows provide critical information about the relative position of objects to surfaces and the direction of the light source, which the visual system utilizes to disambiguate the 3D shape and spatial arrangement of objects in a scene, thereby enhancing depth perception.",
+    "description": "Cast shadows provide geometric constraints that the visual system uses to infer the relative positions of objects, surfaces, and light sources, thereby disambiguating 3D scene interpretation.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Cast shadow geometry (shape, position relative to object, penumbra characteristics)",
-        "to_construct": "Information about object's height/distance from surface and the direction of the light source",
+        "from_construct": "Cast shadow geometry (shape, position relative to object)",
+        "to_construct": "Informational constraints on relative positions of object, surface, and light source",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Information about object's height/distance and light source direction",
-        "to_construct": "Disambiguation of object shape (e.g., distinguishing a bump from a dent) and accurate perception of spatial arrangement (depth perception)",
+        "from_construct": "Informational constraints on relative positions",
+        "to_construct": "Disambiguated 3D scene interpretation (e.g., convex vs. concave, accurate depth perception)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
@@ -3652,31 +3652,33 @@
   },
   "instruments_used": [
     {
-      "name": "Psychophysical judgment task",
-      "construct": "Perceived depth, shape, and spatial arrangement",
-      "description": "Participants viewed visual stimuli and made forced-choice judgments or adjustments regarding the perceived 3D properties of objects or their spatial relationships (e.g., 'Is it a bump or a dent?', 'Which object is closer?').",
+      "name": "Psychophysical tasks",
+      "construct": "Depth perception, shape perception, spatial arrangement",
+      "description": "Participants made forced-choice judgments (e.g., convex/concave) or estimations of depth/shape based on presented stimuli.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:32:13.003029+00:00",
+  "surgical_update_at": "2026-03-02T23:28:11.883318+00:00",
   "theory_commitments": [
     {
-      "theory_name": "Cue Integration Theory",
+      "theory_name": "Bayesian Inference in Perception",
       "commitment_type": "tests",
-      "specific_claim": "The visual system integrates multiple depth cues, including cast shadows, to form a robust and unambiguous perception of 3D scene structure and spatial arrangement."
+      "specific_claim": "The visual system integrates multiple cues, including cast shadows, in a statistically optimal (Bayesian) manner to infer 3D scene properties like depth and shape. Cast shadows provide strong constraints on the interpretation of object and light source positions."
     },
     {
-      "theory_name": "Bayesian Perception",
-      "commitment_type": "assumes",
-      "specific_claim": "The visual system infers the most probable 3D scene interpretation by combining sensory evidence (e.g., information from cast shadows) with prior knowledge about the world."
+      "theory_name": "Cue Integration",
+      "commitment_type": "tests",
+      "specific_claim": "Cast shadows serve as a powerful visual cue that is integrated with other cues (e.g., shading) to resolve ambiguities and enhance the recovery of 3D spatial arrangement."
     }
   ],
   "stimulus_images": [
     {
-      "description": "Examples of computer-generated 3D objects (e.g., spheres or bumps) on a plane, shown with and without cast shadows, to illustrate how shadows influence the perception of depth and shape.",
-      "figure_ref": "Figure 1",
+      "description": "Rendered 3D objects (e.g., spheres, bumps) with and without cast shadows, demonstrating how shadows disambiguate depth and shape perception.",
+      "figure_ref": "Figures 1, 2, 3 (examples)",
       "image_type": "rendering"
     }
-  ]
+  ],
+  "paper_sample_size": 3,
+  "paper_sample_size_source": "estimated"
 }

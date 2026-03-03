@@ -58,9 +58,9 @@
       "claim_type": "causal",
       "measure_type": "behavioral",
       "p_value": "<0.01",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.7,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 50,
       "confidence_interval": null,
       "test_statistic": "t(18) = 2.72",
       "theory_links": [
@@ -79,7 +79,8 @@
       "outcome_id": "env.noise",
       "outcome_domain": "env",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -896,25 +897,28 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "auditory stimulation (noise)"
+      "Auditory white noise presented at varying decibel levels (e.g., 50-90 dB)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "continuous during task performance",
+    "control_conditions": [
+      "Quiet condition (no noise)",
+      "Different fixed noise intensity levels (for comparison or non-choice tasks)"
+    ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Eysenck's Arousal Theory of Extraversion-Introversion",
+      "theory_name": "Eysenck's Arousal Theory of Extraversion",
       "commitment_type": "tests",
-      "specific_claim": "Introverts have higher baseline cortical arousal and prefer lower levels of external stimulation, while extraverts have lower baseline arousal and prefer higher levels of external stimulation to achieve optimal performance and arousal."
+      "specific_claim": "Introverts have higher baseline cortical arousal and prefer lower external stimulation, while extraverts have lower baseline arousal and prefer higher external stimulation to achieve an optimal level of arousal for performance."
     }
   ],
   "mechanism_chain": {
-    "description": "Personality differences (introversion/extraversion) influence baseline cortical arousal, leading to different preferred levels of external stimulation to maintain optimal arousal, which in turn affects actual arousal levels and cognitive performance.",
+    "description": "The paper investigates how individual differences in personality (extraversion/introversion), linked to baseline cortical arousal, influence preferred stimulation levels, which in turn affect actual arousal and cognitive performance, consistent with Eysenck's optimal arousal theory.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Personality (Introversion/Extraversion)",
+        "from_construct": "Extraversion/Introversion (Personality)",
         "to_construct": "Baseline Cortical Arousal",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
@@ -922,26 +926,56 @@
       {
         "step": 2,
         "from_construct": "Baseline Cortical Arousal",
-        "to_construct": "Preferred External Stimulation Level",
-        "mechanism_type": "behavioral",
+        "to_construct": "Optimal Arousal Level",
+        "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Preferred External Stimulation Level",
+        "from_construct": "Optimal Arousal Level",
+        "to_construct": "Preferred External Stimulation Level",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "External Stimulation Level + Personality",
         "to_construct": "Actual Arousal Level",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
-        "step": 4,
+        "step": 5,
         "from_construct": "Actual Arousal Level",
-        "to_construct": "Performance",
+        "to_construct": "Cognitive Performance",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:36:21.621528+00:00"
+  "surgical_update_at": "2026-03-02T23:35:15.531565+00:00",
+  "instruments_used": [
+    {
+      "name": "Eysenck Personality Questionnaire (EPQ)",
+      "construct": "Extraversion/Introversion, Neuroticism, Psychoticism",
+      "description": "Self-report questionnaire measuring key personality dimensions.",
+      "type": "self_report"
+    },
+    {
+      "name": "Physiological Arousal Measures",
+      "construct": "Physiological Arousal",
+      "description": "Measures such as skin conductance response (SCR) or heart rate (HR) to assess arousal levels.",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive Performance Task",
+      "construct": "Cognitive Performance",
+      "description": "A task requiring sustained attention, vigilance, or memory (e.g., simple arithmetic, reaction time task) to assess performance.",
+      "type": "behavioral"
+    }
+  ],
+  "paper_sample_size": 90,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

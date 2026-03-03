@@ -2,7 +2,7 @@
   "doi": "10.1016/s0378-7788(02)00006-3",
   "article_type": "unknown",
   "article_family": "unknown",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.731,
   "n_findings": 36,
   "extracted_at": "2026-02-25T05:41:36.815616+00:00",
@@ -4001,5 +4001,113 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "air temperature",
+      "radiant temperature",
+      "humidity",
+      "air velocity",
+      "outdoor air temperature"
+    ],
+    "duration_exposure": "continuous over seasons (for field studies reviewed)",
+    "control_conditions": [
+      "climate chamber conditions (static thermal environments)",
+      "naturally ventilated buildings",
+      "air-conditioned buildings"
+    ],
+    "ecological_validity": "field"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Adaptive Thermal Comfort Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Thermal comfort is not a static state but is influenced by environmental, physiological, and psychological adaptation to prevailing outdoor conditions, particularly in naturally ventilated buildings."
+    },
+    {
+      "theory_name": "Predicted Mean Vote (PMV) model (Fanger)",
+      "commitment_type": "contradicts",
+      "specific_claim": "The universal applicability of the PMV model, derived from climate chamber studies, is limited in real-world, adaptive environments, especially naturally ventilated buildings."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Causal mechanism explaining how outdoor conditions influence indoor thermal comfort through adaptive processes.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Prevailing outdoor air temperature",
+        "to_construct": "Indoor operative temperature",
+        "mechanism_type": "environmental",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Indoor operative temperature",
+        "to_construct": "Behavioral adaptation (e.g., clothing adjustment, window operation)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Behavioral adaptation",
+        "to_construct": "Physiological adaptation (e.g., acclimatization)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Physiological adaptation / Behavioral adaptation",
+        "to_construct": "Shift in thermal comfort expectations and preferences",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "Shift in thermal comfort expectations",
+        "to_construct": "Wider range of perceived thermal comfort at varying indoor temperatures",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "ASHRAE 7-point thermal sensation scale",
+      "construct": "Thermal sensation",
+      "description": "Self-report scale ranging from -3 (cold) to +3 (hot), with 0 being neutral.",
+      "type": "self_report"
+    },
+    {
+      "name": "Thermal comfort acceptability scale",
+      "construct": "Thermal comfort acceptability",
+      "description": "Self-report scale indicating whether the thermal environment is acceptable.",
+      "type": "self_report"
+    },
+    {
+      "name": "Environmental sensors",
+      "construct": "Indoor and outdoor environmental conditions",
+      "description": "Instruments for measuring air temperature, radiant temperature, humidity, and air velocity.",
+      "type": "other"
+    },
+    {
+      "name": "Clothing insulation assessment",
+      "construct": "Clothing level (clo value)",
+      "description": "Estimation of thermal insulation provided by occupants' clothing.",
+      "type": "behavioral"
+    }
+  ],
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T23:37:37.822614+00:00",
+  "stimulus_images": [
+    {
+      "description": "Graph showing the relationship between indoor comfort temperature and prevailing outdoor air temperature, often comparing adaptive model predictions with static PMV model predictions and field data.",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Psychrometric chart illustrating adaptive comfort zones for different building types or seasons.",
+      "figure_ref": "Figure 2 (typical)",
+      "image_type": "diagram"
+    }
+  ]
 }

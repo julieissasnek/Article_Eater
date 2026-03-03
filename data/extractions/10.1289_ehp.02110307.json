@@ -1949,36 +1949,51 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Occupational noise (LAeq, 8hr, 55-116 dB(A))"
+      "Occupational noise exposure",
+      "Noise levels (LAeq, 8hr, 55-116 dB(A))"
     ],
-    "duration_exposure": "8-hour workday",
+    "duration_exposure": "continuous 8-hour workday (or chronic exposure over years)",
     "control_conditions": [
-      "Lower occupational noise exposure",
-      "Unexposed groups"
+      "Unexposed groups",
+      "Groups with lower noise exposure"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "Chronic noise exposure activates the stress response system, leading to physiological changes that contribute to elevated blood pressure and increased risk of ischemic heart disease.",
+    "description": "Causal mechanism linking noise exposure to hypertension and ischemic heart disease, as commonly discussed in the literature and likely synthesized in this meta-analysis.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Noise exposure",
-        "to_construct": "Activation of sympathetic nervous system / Stress hormone release",
-        "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "to_construct": "Stress response (e.g., annoyance, sleep disturbance)",
+        "mechanism_type": "affective",
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Activation of sympathetic nervous system / Stress hormone release",
-        "to_construct": "Increased heart rate, vasoconstriction, systemic inflammation",
+        "from_construct": "Stress response",
+        "to_construct": "Activation of the sympathetic nervous system and hypothalamic-pituitary-adrenal (HPA) axis",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Increased heart rate, vasoconstriction, systemic inflammation",
+        "from_construct": "Sympathetic nervous system/HPA axis activation",
+        "to_construct": "Increased heart rate, vasoconstriction, elevated cortisol levels",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Chronic physiological changes (e.g., sustained vasoconstriction)",
         "to_construct": "Elevated blood pressure / Hypertension",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Hypertension",
+        "to_construct": "Increased risk of Ischemic Heart Disease",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       }
@@ -1986,24 +2001,30 @@
   },
   "instruments_used": [
     {
-      "name": "Sound level meters / Noise dosimeters",
-      "construct": "Noise exposure level (e.g., LAeq, 8hr)",
-      "description": "Devices used to measure sound pressure levels over time in occupational settings.",
+      "name": "Sound level meters",
+      "construct": "Noise exposure",
+      "description": "Devices used to measure sound pressure levels, often integrated over time (e.g., LAeq, 8hr)",
+      "type": "other"
+    },
+    {
+      "name": "Noise dosimeters",
+      "construct": "Personal noise exposure",
+      "description": "Wearable devices to measure an individual's cumulative noise exposure over a period",
       "type": "other"
     },
     {
       "name": "Sphygmomanometer",
-      "construct": "Blood pressure (systolic, diastolic) / Hypertension diagnosis",
-      "description": "Device used to measure blood pressure, often in clinical or epidemiological settings.",
+      "construct": "Blood pressure",
+      "description": "Device used to measure arterial blood pressure",
       "type": "physiological"
     },
     {
-      "name": "Medical records / Clinical diagnosis",
-      "construct": "Ischemic Heart Disease diagnosis",
-      "description": "Documentation or assessment by medical professionals for the presence of ischemic heart disease.",
+      "name": "Medical records",
+      "construct": "Ischemic heart disease diagnosis",
+      "description": "Clinical documentation of health status and diagnoses",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:37:52.078954+00:00"
+  "surgical_update_at": "2026-03-02T23:32:41.974514+00:00"
 }

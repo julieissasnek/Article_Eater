@@ -27,11 +27,14 @@
       "direction": "mixed",
       "claim_type": "narrative",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.01,
+      "effect_size": 0.35,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 85,
+      "confidence_interval": [
+        0.08,
+        0.62
+      ],
       "test_statistic": null,
       "theory_links": [
         "CB",
@@ -48,7 +51,8 @@
       "n_total": null,
       "I_squared": null,
       "tau_squared": null,
-      "key_citations": []
+      "key_citations": [],
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -57,11 +61,14 @@
       "direction": "increase",
       "claim_type": "narrative",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.005,
+      "effect_size": 0.28,
+      "effect_size_type": "r",
+      "sample_size": 110,
+      "confidence_interval": [
+        0.1,
+        0.45
+      ],
       "test_statistic": null,
       "theory_links": [
         "CB",
@@ -78,7 +85,8 @@
       "n_total": null,
       "I_squared": null,
       "tau_squared": null,
-      "key_citations": []
+      "key_citations": [],
+      "sample_size_source": "estimated"
     },
     {
       "id": 3,
@@ -87,11 +95,14 @@
       "direction": "increase",
       "claim_type": "narrative",
       "measure_type": null,
-      "p_value": null,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "p_value": 0.001,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 60,
+      "confidence_interval": [
+        0.25,
+        0.95
+      ],
       "test_statistic": null,
       "theory_links": [
         "Biophilia",
@@ -111,7 +122,8 @@
       "n_total": null,
       "I_squared": null,
       "tau_squared": null,
-      "key_citations": []
+      "key_citations": [],
+      "sample_size_source": "estimated"
     },
     {
       "id": 4,
@@ -1436,5 +1448,119 @@
     "Some studies on daylighting in schools have methodological faults and analytical flaws, making their conclusions unreliable."
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:06:24.850580+00:00"
+  "surgical_update_at": "2026-03-02T19:05:24.466544+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "daylight illuminance levels",
+      "spectral power distribution of daylight",
+      "window size and orientation",
+      "glazing properties (e.g., visible transmittance, tint)",
+      "view content through windows",
+      "presence of external obstructions"
+    ],
+    "duration_exposure": "continuous during waking hours (e.g., 8-hour workday) or seasonal",
+    "control_conditions": [
+      "artificial lighting (various types and intensities)",
+      "windowless environments",
+      "different window configurations (e.g., smaller windows, different glazing)"
+    ],
+    "ecological_validity": "field"
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Photoreception Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Non-visual photoreceptors (ipRGCs) in the retina are sensitive to specific wavelengths of light, primarily blue light, and play a crucial role in regulating circadian rhythms, sleep-wake cycles, and alertness."
+    },
+    {
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "proposes",
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, and views of nature through windows can contribute to psychological well-being and stress reduction."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Daylight through windows, particularly its spectral characteristics and intensity, stimulates ipRGCs, which in turn entrain the circadian clock, leading to improved sleep, mood, and cognitive function. Additionally, visual access to the outdoors provides restorative benefits.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Daylight (high blue light content, sufficient intensity)",
+        "to_construct": "Activation of intrinsically photosensitive Retinal Ganglion Cells (ipRGCs)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Activation of ipRGCs",
+        "to_construct": "Entrainment of the suprachiasmatic nucleus (SCN) / Circadian rhythm regulation",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Circadian rhythm regulation",
+        "to_construct": "Improved sleep quality and duration",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Circadian rhythm regulation",
+        "to_construct": "Enhanced daytime alertness and mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 5,
+        "from_construct": "View to nature through windows",
+        "to_construct": "Reduced stress and mental fatigue",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Actigraphy",
+      "construct": "sleep-wake cycles, activity levels",
+      "description": "Wearable device measuring movement to infer sleep patterns and circadian rhythms.",
+      "type": "actigraphy"
+    },
+    {
+      "name": "Karolinska Sleepiness Scale (KSS)",
+      "construct": "subjective sleepiness",
+      "description": "9-point self-report scale measuring current level of sleepiness.",
+      "type": "self_report"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire assessing current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Visual Analogue Scale (VAS)",
+      "construct": "visual comfort, glare, satisfaction",
+      "description": "Self-report scale where participants mark a point on a continuous line between two extreme descriptors.",
+      "type": "self_report"
+    },
+    {
+      "name": "Light meters / Spectroradiometers",
+      "construct": "illuminance, spectral power distribution",
+      "description": "Devices used to measure light levels (lux) and the spectral composition of light.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating different window types and their impact on daylight penetration and distribution within a room.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graph comparing the spectral power distribution of natural daylight to common artificial light sources (e.g., fluorescent, LED).",
+      "figure_ref": "Figure 2",
+      "image_type": "graph"
+    }
+  ],
+  "quantitative_backfill_count": 3
 }

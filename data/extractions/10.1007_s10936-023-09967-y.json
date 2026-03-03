@@ -2393,46 +2393,46 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Auditory stimuli including Quran recitation",
-      "Adhan (call to prayer)",
-      "Ambient mosque sounds"
+      "Adhan recitation",
+      "Quran recitation",
+      "silence",
+      "non-religious sound clips"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "typically 30-60 seconds per sound clip",
     "control_conditions": [
-      "Silence",
-      "Neutral auditory stimuli",
-      "Non-religious auditory stimuli"
+      "silence",
+      "non-religious sound clips (e.g., nature sounds, urban sounds)"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Electroencephalography (EEG)",
-      "construct": "Brain electrical activity",
-      "description": "Measures electrical activity in the brain via electrodes placed on the scalp.",
+      "construct": "brain electrical activity",
+      "description": "Measures neural responses to auditory stimuli, including event-related potentials (ERPs) and oscillatory activity.",
       "type": "eeg"
     },
     {
-      "name": "Self-report Spirituality Scale",
-      "construct": "Spirituality",
-      "description": "Questionnaire assessing participants' subjective spiritual experiences or feelings.",
+      "name": "Self-report questionnaire for spirituality",
+      "construct": "spiritual experience, sense of sacredness",
+      "description": "Likely a validated scale measuring various dimensions of spirituality or religious experience.",
       "type": "self_report"
     },
     {
-      "name": "Self-report Emotion/Mood Scale",
-      "construct": "Emotional states",
-      "description": "Questionnaire assessing participants' current emotional states (e.g., positive/negative affect).",
+      "name": "Self-report questionnaire for emotional states",
+      "construct": "affective responses (e.g., positive/negative affect, arousal)",
+      "description": "Measures participants' emotional reactions to the auditory stimuli.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:29:54.769939+00:00",
+  "surgical_update_at": "2026-03-02T22:40:15.867275+00:00",
   "mechanism_chain": {
-    "description": "Sound characteristics in religious environments are processed by the auditory system, leading to specific neural responses that influence emotional states and ultimately contribute to the perception and experience of spirituality.",
+    "description": "Sound characteristics in religious environments activate specific neural pathways, leading to emotional and cognitive processing that culminates in subjective spiritual experiences.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Sound characteristics (e.g., spectral content, reverberation)",
+        "from_construct": "Specific sound characteristics (e.g., melodic patterns, frequencies of Adhan/Quran)",
         "to_construct": "Auditory cortical activation",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
@@ -2440,17 +2440,43 @@
       {
         "step": 2,
         "from_construct": "Auditory cortical activation",
-        "to_construct": "Emotional and affective responses",
-        "mechanism_type": "affective",
+        "to_construct": "Activation of brain regions associated with emotion and reward (e.g., limbic system, default mode network)",
+        "mechanism_type": "neural",
         "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "Emotional and affective responses",
-        "to_construct": "Perceived spiritual experience",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Activation of emotion/reward regions and cognitive appraisal",
+        "to_construct": "Subjective spiritual experience",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
       }
     ]
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Sacred Space Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Specific architectural and auditory elements contribute to the perception of sacredness and spiritual experiences."
+    },
+    {
+      "theory_name": "Environmental Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "The built environment, including its auditory characteristics, significantly influences human psychological and spiritual states."
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental setup showing participant wearing EEG cap in a sound-controlled environment",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Spectrograms or waveforms of the auditory stimuli (Adhan, Quran recitation, control sounds)",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "estimated"
 }

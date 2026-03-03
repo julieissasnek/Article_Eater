@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sqlite3
 import subprocess
 import sys
@@ -40,6 +41,8 @@ DEFAULT_THRESHOLDS = PROJECT_ROOT / "config" / "web_bn_health_thresholds.json"
 DEFAULT_BASELINE_JSON = PROJECT_ROOT / "data" / "production" / "web_health_stress_baseline.json"
 DEFAULT_JSON_OUT = PROJECT_ROOT / "data" / "production" / "system_health_report.json"
 DEFAULT_MD_OUT = PROJECT_ROOT / "docs" / "system_health_report.md"
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass

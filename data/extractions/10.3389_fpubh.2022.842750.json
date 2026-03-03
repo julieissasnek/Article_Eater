@@ -4598,45 +4598,45 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "9 different lighting conditions in a simulated tunnel environment",
-      "3 illuminance levels (50 lux, 100 lux, 150 lux)",
-      "3 correlated color temperatures (3000K, 4000K, 5000K)"
+      "Uniform Lighting (UL) condition in a simulated tunnel",
+      "Dynamic Lighting (DL) condition in a simulated tunnel, with varying light intensity and distribution",
+      "Dynamic Lighting with Enhanced Brightness (DLEB) condition in a simulated tunnel, similar to DL but with higher overall brightness"
     ],
-    "duration_exposure": "Each experimental drive lasted approximately 10 minutes",
+    "duration_exposure": "Approximately 30 minutes per driving scenario",
     "control_conditions": [
-      "The different combinations of illuminance and color temperature served as comparison conditions against each other"
+      "Uniform Lighting (UL) condition served as a baseline comparison"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:00.430330+00:00",
+  "surgical_update_at": "2026-03-02T22:41:36.286897+00:00",
   "mechanism_chain": {
-    "description": "Different lighting parameters in a tunnel environment affect visual perception, which in turn influences physiological responses and psychological states, ultimately impacting driver performance.",
+    "description": "Different light environments in a tunnel affect drivers' visual perception and comfort, which in turn influences their mental workload, fatigue levels, and physiological responses, ultimately impacting driving performance and safety.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Lighting parameters (illuminance, color temperature)",
-        "to_construct": "Visual perception (e.g., brightness, contrast, glare)",
+        "from_construct": "Light environment (e.g., uniform vs. dynamic lighting)",
+        "to_construct": "Visual comfort/discomfort",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Visual perception (e.g., glare, discomfort)",
-        "to_construct": "Physiological responses (e.g., blink rate, heart rate variability)",
-        "mechanism_type": "physiological",
+        "from_construct": "Visual comfort/discomfort",
+        "to_construct": "Mental workload and fatigue",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Visual perception (e.g., comfort) / Physiological responses (e.g., fatigue)",
-        "to_construct": "Psychological states (e.g., mental workload, fatigue, alertness)",
-        "mechanism_type": "cognitive",
+        "from_construct": "Mental workload and fatigue",
+        "to_construct": "Physiological responses (e.g., EEG, ECG, EOG changes)",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Psychological states (e.g., mental workload, fatigue)",
+        "from_construct": "Mental workload and fatigue",
         "to_construct": "Driving performance (e.g., lane keeping, speed control)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
@@ -4645,50 +4645,56 @@
   },
   "instruments_used": [
     {
-      "name": "Electrocardiogram (ECG)",
-      "construct": "Heart Rate Variability (HRV)",
-      "description": "Used to measure physiological stress and arousal.",
-      "type": "physiological"
-    },
-    {
-      "name": "Electrooculogram (EOG)",
-      "construct": "Blink rate",
-      "description": "Used to assess visual fatigue and mental workload.",
-      "type": "physiological"
-    },
-    {
-      "name": "Eye-tracking system",
-      "construct": "Pupil diameter",
-      "description": "Used to measure physiological arousal and cognitive effort.",
-      "type": "physiological"
+      "name": "Subjective Visual Comfort Scale",
+      "construct": "visual comfort",
+      "description": "Self-report questionnaire assessing drivers' perceived comfort with the lighting environment.",
+      "type": "self_report"
     },
     {
       "name": "NASA Task Load Index (NASA-TLX)",
-      "construct": "Mental workload",
-      "description": "A multidimensional self-report scale to assess perceived workload.",
+      "construct": "mental workload",
+      "description": "Multi-dimensional self-report scale to assess perceived workload during the driving task.",
       "type": "self_report"
     },
     {
-      "name": "Subjective rating scales",
-      "construct": "Visual comfort, fatigue, alertness, subjective evaluation of lighting",
-      "description": "Likert-type scales used to gather participants' subjective experiences.",
+      "name": "Subjective Fatigue Scale",
+      "construct": "fatigue",
+      "description": "Self-report questionnaire to measure drivers' perceived fatigue levels.",
       "type": "self_report"
     },
     {
-      "name": "Driving simulator data",
-      "construct": "Driving performance (e.g., Standard Deviation of Lateral Position, Standard Deviation of Speed)",
-      "description": "Recorded metrics of driving behavior within the simulated environment.",
+      "name": "Electroencephalography (EEG)",
+      "construct": "brain activity, alertness, fatigue",
+      "description": "Measures electrical activity of the brain, often analyzed for alpha and theta wave power to indicate mental states.",
+      "type": "physiological"
+    },
+    {
+      "name": "Electrocardiography (ECG)",
+      "construct": "heart rate variability, stress, arousal",
+      "description": "Measures electrical activity of the heart, used to derive heart rate variability (HRV) parameters.",
+      "type": "physiological"
+    },
+    {
+      "name": "Electrooculography (EOG)",
+      "construct": "eye movements, blink rate, fatigue",
+      "description": "Measures eye movements and blink rate, often used as an indicator of fatigue.",
+      "type": "physiological"
+    },
+    {
+      "name": "Driving Simulator Data",
+      "construct": "driving performance",
+      "description": "Recorded metrics from the driving simulator including speed deviation, lane deviation, and steering wheel angle.",
       "type": "behavioral"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Experimental setup showing the driving simulator and participant",
-      "figure_ref": "Figure 1",
+      "description": "Experimental setup showing the driving simulator environment and the simulated tunnel interior with different lighting conditions.",
+      "figure_ref": "Figure 1, Figure 2",
       "image_type": "photo"
     },
     {
-      "description": "Visual representation of the simulated tunnel environment under different lighting conditions",
+      "description": "Visualizations or renderings of the three distinct lighting environments (UL, DL, DLEB) as experienced by the driver.",
       "figure_ref": "Figure 2",
       "image_type": "rendering"
     }

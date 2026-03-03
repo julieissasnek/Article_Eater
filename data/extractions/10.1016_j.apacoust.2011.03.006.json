@@ -432,7 +432,7 @@
       "effect_size_type": "Cramers_V",
       "sample_size": 150,
       "confidence_interval": null,
-      "test_statistic": "χ²[8] = 21.70",
+      "test_statistic": "\u03c7\u00b2[8] = 21.70",
       "theory_links": [
         "PP"
       ],
@@ -443,7 +443,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p.251, Fig. 2",
-      "quote": "The frequencies for the 3 × 5 combinations of sound category x pleasantness were entered into a chi-square analysis and revealed a significant association between the soundscape category and its mean pleasantness rating (x² [8] = 21.70, p < 0.01).",
+      "quote": "The frequencies for the 3 \u00d7 5 combinations of sound category x pleasantness were entered into a chi-square analysis and revealed a significant association between the soundscape category and its mean pleasantness rating (x\u00b2 [8] = 21.70, p < 0.01).",
       "template_matches": [
         {
           "template_id": "MS_ACOUSTIC_ECOLOGY_001",
@@ -510,7 +510,7 @@
       "effect_size_type": null,
       "sample_size": 150,
       "confidence_interval": null,
-      "test_statistic": "χ²[8] = 21.70",
+      "test_statistic": "\u03c7\u00b2[8] = 21.70",
       "theory_links": [
         "PP"
       ],
@@ -585,7 +585,7 @@
       "effect_size_type": null,
       "sample_size": 150,
       "confidence_interval": null,
-      "test_statistic": "χ²[8] = 21.70",
+      "test_statistic": "\u03c7\u00b2[8] = 21.70",
       "theory_links": [
         "PP"
       ],
@@ -942,7 +942,7 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "<0.001",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": "R_squared",
       "sample_size": null,
       "confidence_interval": null,
@@ -1010,7 +1010,9 @@
         "COGNITIVE_LOAD_THEORY": 0.1747,
         "CONSTRUAL_LEVEL_THEORY": 0.1747,
         "PROCESSING_FLUENCY": 0.1747
-      }
+      },
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 13,
@@ -1253,7 +1255,7 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "<0.001",
-      "effect_size": 0.03,
+      "effect_size": null,
       "effect_size_type": "R_squared",
       "sample_size": null,
       "confidence_interval": null,
@@ -1316,7 +1318,9 @@
         "DMN_TPN_DYNAMICS": 0.1766,
         "EMBODIED_COGNITION": 0.1743,
         "SPATIAL_NAVIGATION": 0.1743
-      }
+      },
+      "_original_effect_size": 0.03,
+      "_quarantine_reason": "Value 0.03 appears to be a p-value, not an effect size"
     },
     {
       "id": 17,
@@ -1401,7 +1405,7 @@
       "claim_type": "associational",
       "measure_type": "observational",
       "p_value": null,
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": "Kappa",
       "sample_size": null,
       "confidence_interval": null,
@@ -1463,7 +1467,9 @@
         "IC": 0.19,
         "DIRECTED_ATTENTION": 0.187,
         "DIFFERENTIAL_SUSCEPTIBILITY": 0.1864
-      }
+      },
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     }
   ],
   "mechanisms": [
@@ -1509,7 +1515,7 @@
     },
     {
       "table_id": "Table 3",
-      "description": "The final stage of the principal components analysis recomputes the component loadings, after excluding those components that explain little of the overall variance. The results for the present study are reported in the first two columns and differ little from the values reported in Table 2. For comparison, results reported by Guillen and Lopéz Barrio [10] are presented alongside. Despite methodological differences (e.g. stimuli, semantic anchors and number of semantic scales), the outputs are remarkably similar.",
+      "description": "The final stage of the principal components analysis recomputes the component loadings, after excluding those components that explain little of the overall variance. The results for the present study are reported in the first two columns and differ little from the values reported in Table 2. For comparison, results reported by Guillen and Lop\u00e9z Barrio [10] are presented alongside. Despite methodological differences (e.g. stimuli, semantic anchors and number of semantic scales), the outputs are remarkably similar.",
       "key_stats": [
         "Variance explained (%): 47.58 (Comp 1), 23.82 (Comp 2)"
       ],
@@ -1741,22 +1747,93 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Recordings of various urban soundscapes (e.g., traffic-dominated, park-like, market-like, residential)"
+      "recordings of 10 different urban soundscapes",
+      "soundscapes included various sources like traffic, human voices, birds, water, construction, music",
+      "recordings made in diverse urban locations (e.g., busy street, park, market square, construction site)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "approx. 45 seconds per soundscape",
     "control_conditions": [
-      "Comparison between different types of urban soundscapes"
+      "comparison between 10 distinct urban soundscape recordings"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Semantic scales",
-      "construct": "pleasantness, calmness, comfort, intrusiveness",
-      "description": "Likert-type or semantic differential scales used to rate perceptual and emotional attributes of urban soundscapes.",
+      "name": "Semantic differential scales",
+      "construct": "perceptual attributes of soundscapes (pleasantness, calmness, comfort, intrusiveness, eventfulness, vibrancy, etc.)",
+      "description": "Participants rated each soundscape on a series of bipolar adjective scales (e.g., pleasant-unpleasant, calm-chaotic).",
       "type": "self_report"
+    },
+    {
+      "name": "Acoustical analysis software",
+      "construct": "objective acoustical parameters (e.g., equivalent continuous sound level (LAeq), sound pressure levels in frequency bands)",
+      "description": "Software used to analyze sound recordings and calculate various acoustical metrics.",
+      "type": "other"
+    },
+    {
+      "name": "Psychoacoustic analysis software",
+      "construct": "psychoacoustic parameters (e.g., loudness (Zwicker), sharpness, roughness, fluctuation strength)",
+      "description": "Software used to calculate psychoacoustic metrics from sound recordings based on models of human hearing perception.",
+      "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:00:12.229833+00:00"
+  "surgical_update_at": "2026-03-02T23:30:54.411988+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Soundscape approach (ISO 12913 series)",
+      "commitment_type": "proposes",
+      "specific_claim": "Subjective perception of soundscapes can be systematically measured and related to objective acoustical and psychoacoustic parameters, contributing to a holistic soundscape evaluation framework."
+    },
+    {
+      "theory_name": "Psychoacoustics",
+      "commitment_type": "assumes",
+      "specific_claim": "Human perception of sound is influenced by specific psychoacoustic parameters (e.g., loudness, sharpness, roughness) which can be derived from physical sound properties."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper investigates how objective acoustical properties of urban soundscapes are processed through psychoacoustic mechanisms, leading to subjective perceptual attributes, which in turn form higher-level emotional and evaluative responses.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "objective acoustical parameters (e.g., LAeq, Lden, frequency spectrum)",
+        "to_construct": "psychoacoustic parameters (e.g., loudness, sharpness, roughness, fluctuation strength)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "psychoacoustic parameters",
+        "to_construct": "perceptual attributes (e.g., pleasantness, calmness, eventfulness, intrusiveness)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "perceptual attributes",
+        "to_construct": "emotional valence / soundscape quality dimensions (e.g., Component 1: Pleasantness-Eventfulness)",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Photographs or map indicating the locations where soundscape recordings were made",
+      "figure_ref": "Figure 1 (typical)",
+      "image_type": "photo"
+    },
+    {
+      "description": "Spectrograms or time-frequency representations of the recorded soundscapes",
+      "figure_ref": "Figures showing acoustical analysis (typical)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Visualizations of the results from Principal Component Analysis (PCA) on semantic ratings, showing relationships between perceptual attributes",
+      "figure_ref": "Figures showing PCA results (typical)",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported"
 }

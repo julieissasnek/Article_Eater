@@ -1,26 +1,26 @@
 {
-  "generated_at_utc": "2026-03-02T07:23:53.213417+00:00",
+  "generated_at_utc": "2026-03-02T21:57:29.594153+00:00",
   "paths": {
-    "web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
-    "finding_web_db": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
-    "bn_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
-    "links_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/finding_template_theory_links.json",
-    "templates_dir": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/templates",
-    "thresholds": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json",
-    "stress_baseline_json": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/production/web_health_stress_baseline.json"
+    "web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+    "finding_web_db": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+    "bn_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/realtime_incremental_bn.json",
+    "links_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/finding_template_theory_links.json",
+    "templates_dir": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/templates",
+    "thresholds": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/config/web_bn_health_thresholds.json",
+    "stress_baseline_json": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/production/web_health_stress_baseline.json"
   },
   "finding_db_selection": {
     "mode": "auto",
     "selection_basis": "max(annotation_match, belief_match, belief_count)",
     "candidates": [
       {
-        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
+        "path": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence.db",
         "annotation_match": 4888,
         "belief_match": 4888,
         "belief_count": 4888
       },
       {
-        "path": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
+        "path": "/sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1/data/web_persistence_v2.db",
         "annotation_match": 0,
         "belief_match": 0,
         "belief_count": 3420
@@ -31,28 +31,28 @@
     "sanity_check": {
       "name": "sanity_check",
       "ok": true,
-      "duration_seconds": 2.0338043750380166,
+      "duration_seconds": 3.3701907169997867,
       "exit_code": 0,
-      "detail": "[sanity_check] repo root: /Users/davidusa/REPOS/Article_Eater_PostQuinean_v1\n[sanity_check] OK\n[sanity_check] WARNINGS (non-fatal):\n - Import warning: apps.user_rules_gui.app: No module named 'flask'\n - Allowlisted TODO markers detected:\n- src/services/query_engine.py contains TODO\n- src/services/image_pipeline_service.py contains # STUB:\n- src/services/voi_search.py contains TODO\n- src/services/credibility_feedback.py contains TODO\n- src/services/vocabulary_bridge.py contains TODO\n- src/services/overseer_management.py contains TODO\n- src/services/integrated_query_service.py contains TODO\n- src/services/interpretive_intelligence.py contains TODO\n- src/services/epistemic_causal_bridge.py contains TODO\n- src/services/credibility_testing.py contains TODO"
+      "detail": "[sanity_check] repo root: /sessions/keen-busy-turing/mnt/REPOS/Article_Eater_PostQuinean_v1\n[sanity_check] OK\n[sanity_check] WARNINGS (non-fatal):\n - Import warning: apps.user_rules_gui.app: No module named 'flask'\n - Allowlisted TODO markers detected:\n- src/services/query_engine.py contains TODO\n- src/services/image_pipeline_service.py contains # STUB:\n- src/services/voi_search.py contains TODO\n- src/services/credibility_feedback.py contains TODO\n- src/services/vocabulary_bridge.py contains TODO\n- src/services/overseer_management.py contains TODO\n- src/services/integrated_query_service.py contains TODO\n- src/services/interpretive_intelligence.py contains TODO\n- src/services/epistemic_causal_bridge.py contains TODO\n- src/services/credibility_testing.py contains TODO"
     },
     "offline_pipeline_smoke": {
       "name": "offline_pipeline_smoke",
       "ok": true,
-      "duration_seconds": 0.15882245800457895,
+      "duration_seconds": 0.16639233399837394,
       "exit_code": 0,
-      "detail": "/Users/davidusa/REPOS/Article_Eater_PostQuinean_v1/scripts/offline_pipeline_smoke.py:123: PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/\n  seven_items = [item.dict() for item in artifact.items]\n[offline_pipeline_smoke] OK\n - events in graph.jsonl: 4\n - calibration files: 1"
+      "detail": "[offline_pipeline_smoke] OK\n - events in graph.jsonl: 4\n - calibration files: 1"
     },
     "offline_pipeline_v2_smoke": {
       "name": "offline_pipeline_v2_smoke",
       "ok": true,
-      "duration_seconds": 0.17737283400492743,
+      "duration_seconds": 0.15740132399878348,
       "exit_code": 0,
       "detail": "[offline_pipeline_v2_smoke] OK\n - events in graph.jsonl: 3\n - v2 rules emitted: 1"
     },
     "web_of_belief_invariants": {
       "name": "web_of_belief_invariants",
       "ok": true,
-      "duration_seconds": 65.55271499999799,
+      "duration_seconds": 101.18561243499789,
       "exit_code": 0,
       "detail": "run_probe passed with counters={\"add_belief\": 125, \"add_constraint\": 144, \"add_evidence\": 124, \"beliefs\": 252, \"constraints\": 516, \"seek_equilibrium\": 107, \"theory_worlds\": 8}"
     },
@@ -72,7 +72,7 @@
     }
   },
   "score": {
-    "overall_score": 91.09,
+    "overall_score": 91.18,
     "band": "GREEN",
     "overall_ok": true,
     "hard_gates_ok": true,
@@ -82,14 +82,14 @@
       "web_bn": 90.78,
       "theory": 82.21,
       "stability": 80.0,
-      "qa_epistemic": 87.08
+      "qa_epistemic": 88.84
     },
     "inputs": {
       "minimum_ratio": 1.0,
       "target_ratio": 1.0,
       "cci_ratio": 0.8981,
       "hard_gate_pass_rate": 1.0,
-      "runtime_ratio_to_baseline": 37.8481
+      "runtime_ratio_to_baseline": 58.4214
     }
   },
   "web_bn_report": {

@@ -680,7 +680,7 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": "ns",
-      "effect_size": 0.01,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -749,7 +749,9 @@
         "CONSTRUAL_LEVEL_THEORY": 0.1696,
         "CREATIVE_COGNITION": 0.1696,
         "PREDICTIVE_PROCESSING": 0.1696
-      }
+      },
+      "_original_effect_size": 0.01,
+      "_quarantine_reason": "Value 0.01 appears to be a p-value, not an effect size"
     },
     {
       "id": 10,
@@ -1305,58 +1307,69 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:30.165652+00:00",
+  "surgical_update_at": "2026-03-02T23:26:42.102208+00:00",
   "stimulus_description": {
-    "environmental_features": [
-      "sequences of irrelevant auditory stimuli (e.g., digits, non-speech sounds)",
-      "changing-state auditory sequences",
-      "steady-state auditory sequences"
-    ],
-    "duration_exposure": "short, trial-based (seconds to minutes per trial)",
-    "control_conditions": [
-      "quiet condition",
-      "steady-state irrelevant sound condition"
-    ],
-    "ecological_validity": "lab"
+    "environmental_features": null,
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
   },
   "theory_commitments": [
     {
       "theory_name": "Irrelevant Sound Effect (ISE)",
       "commitment_type": "tests",
-      "specific_claim": "Changing-state irrelevant sounds disrupt serial recall and other working memory tasks more than steady-state sounds or quiet, due to their interference with serial order processing."
+      "specific_claim": "Irrelevant auditory stimuli, particularly those with changing-state properties, disrupt performance on tasks requiring serial recall by interfering with the phonological loop."
+    },
+    {
+      "theory_name": "Working Memory Theory (e.g., Baddeley & Hitch)",
+      "commitment_type": "extends",
+      "specific_claim": "Individual differences in central executive functions, such as deliberate sequence processing (recoding), can modulate susceptibility to auditory distraction by influencing how irrelevant sound is processed."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper investigates how the processing of serial order information in working memory is disrupted by changes in irrelevant auditory sequences, leading to increased susceptibility to auditory distraction.",
+    "description": "The paper investigates how individual differences in deliberate sequence processing (recoding) ability influence susceptibility to auditory distraction. It proposes that individuals with higher recoding ability might be more prone to processing irrelevant auditory sequences, leading to greater interference with a primary task.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Changing-state irrelevant auditory stimuli",
-        "to_construct": "Involuntary capture of attention/orienting response",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Irrelevant changing-state auditory stimuli (e.g., speech)",
+        "to_construct": "Automatic capture of attention and processing of auditory sequence",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Involuntary capture of attention/orienting response",
-        "to_construct": "Disruption of serial order processing in working memory",
+        "from_construct": "Automatic processing of auditory sequence",
+        "to_construct": "Interference with working memory resources (e.g., phonological loop) required for primary task",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Disruption of serial order processing in working memory",
-        "to_construct": "Reduced performance on primary cognitive tasks (auditory distraction)",
+        "from_construct": "High deliberate sequence processing (recoding) ability",
+        "to_construct": "Increased propensity to engage with and process irrelevant auditory sequences",
         "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Increased propensity to engage with irrelevant auditory sequences",
+        "to_construct": "Enhanced susceptibility to auditory distraction (disruptibility)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
-      "name": "Serial Recall Task",
-      "construct": "Serial order working memory",
-      "description": "Participants recall sequences of visually presented items (e.g., digits, letters) in order, while irrelevant auditory stimuli are presented.",
+      "name": "Visual Serial Recall Task",
+      "construct": "working memory, attention",
+      "description": "Participants recall a visually presented sequence of items (e.g., digits or letters) in order.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Recoding Task",
+      "construct": "deliberate sequence processing, cognitive control",
+      "description": "A task designed to measure an individual's ability to deliberately process and transform sequences, often involving a specific rule-based transformation.",
       "type": "behavioral"
     }
   ]

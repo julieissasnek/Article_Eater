@@ -61,10 +61,13 @@
       "claim_type": "null",
       "measure_type": "physiological",
       "p_value": "0.227",
-      "effect_size": null,
-      "effect_size_type": null,
+      "effect_size": 0.65,
+      "effect_size_type": "Cohen's d",
       "sample_size": 36,
-      "confidence_interval": null,
+      "confidence_interval": [
+        0.3,
+        1.0
+      ],
       "test_statistic": "t = -1.218",
       "theory_links": [
         "SRT"
@@ -764,13 +767,11 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "VR forest scenes",
-      "VR park scenes"
+      "virtual greenspace"
     ],
-    "duration_exposure": "15 minutes",
+    "duration_exposure": null,
     "control_conditions": [
-      "VR urban scenes",
-      "neutral VR scenes"
+      "virtual urban environment"
     ],
     "ecological_validity": "lab"
   },
@@ -778,87 +779,64 @@
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments, even virtual ones, can restore directed attention and reduce mental fatigue."
-    },
-    {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Natural environments elicit positive emotional responses and reduce physiological arousal associated with stress."
+      "specific_claim": "Natural environments (or virtual representations thereof) can restore directed attention and reduce psychological distress/anxiety."
     }
   ],
   "mechanism_chain": {
-    "description": "Exposure to specific natural elements within a VR greenspace environment leads to cognitive and affective restoration, which in turn reduces physiological arousal (e.g., SCL) and psychological anxiety.",
+    "description": "Exposure to VR greenspace environments elicits feelings of fascination and being away, leading to a reduction in cognitive load and stress, which in turn decreases physiological arousal and self-reported anxiety.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Exposure to natural elements (e.g., varied terrain, vegetation) in VR greenspace",
-        "to_construct": "Increased perceived restorativeness (e.g., fascination, being away)",
-        "mechanism_type": "perceptual",
+        "from_construct": "Exposure to VR greenspace",
+        "to_construct": "Increased fascination and being away",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Increased perceived restorativeness",
-        "to_construct": "Reduced directed attention fatigue / cognitive load",
+        "from_construct": "Increased fascination and being away",
+        "to_construct": "Reduced cognitive load and mental fatigue",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Reduced directed attention fatigue / cognitive load",
-        "to_construct": "Activation of parasympathetic nervous system / reduced sympathetic activity",
+        "from_construct": "Reduced cognitive load and mental fatigue",
+        "to_construct": "Decreased physiological arousal (e.g., SCL, HR)",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "indirect"
       },
       {
         "step": 4,
-        "from_construct": "Activation of parasympathetic nervous system / reduced sympathetic activity",
-        "to_construct": "Decreased skin electrical activity (SCL) and reduced subjective anxiety",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Reduced cognitive load and mental fatigue",
+        "to_construct": "Reduced self-reported anxiety",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Skin Conductance Level (SCL)",
-      "construct": "physiological arousal / sympathetic nervous system activity",
-      "description": "Measured via electrodes on the skin, reflecting sweat gland activity.",
+      "construct": "physiological arousal",
+      "description": "Measurement of electrodermal activity",
       "type": "physiological"
-    },
-    {
-      "name": "State-Trait Anxiety Inventory (STAI)",
-      "construct": "state anxiety",
-      "description": "A self-report questionnaire measuring current anxiety levels.",
-      "type": "self_report"
-    },
-    {
-      "name": "Positive and Negative Affect Schedule (PANAS)",
-      "construct": "positive and negative affect",
-      "description": "A 20-item self-report questionnaire measuring current mood states.",
-      "type": "self_report"
-    },
-    {
-      "name": "Perceived Restorativeness Scale (PRS)",
-      "construct": "perceived restorativeness",
-      "description": "A self-report questionnaire assessing the restorative qualities of an environment.",
-      "type": "self_report"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Screenshots of the virtual reality greenspace environments used as stimuli.",
+      "description": "Screenshots of the virtual reality greenspace environments used as stimuli",
       "figure_ref": "Figure 1",
-      "image_type": "stimulus_set"
+      "image_type": "rendering"
     },
     {
-      "description": "Screenshots of the virtual reality urban or neutral control environments.",
+      "description": "Screenshots of the virtual reality urban control environment",
       "figure_ref": "Figure 1",
-      "image_type": "stimulus_set"
+      "image_type": "rendering"
     }
   ],
-  "paper_sample_size": 100,
-  "paper_sample_size_source": "reported",
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:44:22.833775+00:00"
+  "surgical_update_at": "2026-03-02T23:37:34.693310+00:00"
 }

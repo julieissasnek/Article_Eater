@@ -1493,49 +1493,55 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Traffic noise",
-      "Speech noise",
-      "HVAC noise",
-      "Reverberation time",
-      "Background noise level"
+      "traffic noise",
+      "classroom noise",
+      "speech noise",
+      "reverberation",
+      "background music",
+      "ventilation noise"
     ],
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": null
   },
   "mechanism_chain": {
-    "description": "Acoustic noise in learning environments can disrupt attention, leading to increased cognitive load and reduced information processing capacity, ultimately lowering learning efficiency.",
+    "description": "Acoustic noise in learning environments can lead to distraction and increased cognitive load, which in turn impairs attention, working memory, and ultimately reduces learning efficiency.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Acoustic noise",
-        "to_construct": "Attention disruption",
+        "from_construct": "acoustic noise",
+        "to_construct": "distraction/increased cognitive load",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Attention disruption",
-        "to_construct": "Increased cognitive load",
+        "from_construct": "distraction/increased cognitive load",
+        "to_construct": "impaired attention/working memory",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Increased cognitive load",
-        "to_construct": "Reduced information processing",
+        "from_construct": "impaired attention/working memory",
+        "to_construct": "reduced learning efficiency",
         "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 4,
-        "from_construct": "Reduced information processing",
-        "to_construct": "Lower learning efficiency",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:58:08.282972+00:00"
+  "surgical_update_at": "2026-03-02T23:34:55.839607+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Environmental noise increases cognitive load, thereby reducing cognitive resources available for learning tasks."
+    },
+    {
+      "theory_name": "Distraction-Conflict Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Noise acts as a distractor, creating a conflict with the primary learning task and impairing performance."
+    }
+  ]
 }

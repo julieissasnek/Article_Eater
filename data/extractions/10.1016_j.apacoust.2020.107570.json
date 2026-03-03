@@ -1136,7 +1136,7 @@
       "claim_type": "associational",
       "measure_type": "self_report",
       "p_value": "<0.01",
-      "effect_size": -1.83,
+      "effect_size": null,
       "effect_size_type": "r",
       "sample_size": null,
       "confidence_interval": null,
@@ -1200,7 +1200,9 @@
         "NM_STRESS": 0.1842,
         "NEUROMODULATORY": 0.1824,
         "DUAL_PROCESS": 0.1795
-      }
+      },
+      "_original_effect_size": -1.83,
+      "_quarantine_reason": "Pearson's r must be in [-1, 1], got -1.83"
     },
     {
       "id": 15,
@@ -2113,7 +2115,7 @@
       "table_id": "Table 5",
       "description": "Stepwise linear regression of subjects' satisfaction from other soundscape perceptions (Pleasantness, Loudness).",
       "key_stats": [
-        "R² = 0.67",
+        "R\u00b2 = 0.67",
         "F(2,147) = 149.8, p < 0.001",
         "beta for Pleasantness = 0.54, p < 0.001",
         "beta for Loudness = -0.39, p < 0.001"
@@ -2133,7 +2135,7 @@
       "table_id": "Table 7",
       "description": "Stepwise linear regression of subjects' overall preference for a good soundscape from pleasantness perception, preference score of natural sounds, and visit frequency.",
       "key_stats": [
-        "R² = 0.22",
+        "R\u00b2 = 0.22",
         "F(3,146) = 13.9, p < 0.001",
         "beta for Pleasantness = 0.33, p < 0.001",
         "beta for Preference score of Natural sounds = 0.25, p = 0.001",
@@ -2433,43 +2435,46 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "soundscapes of three garden areas (G1, G2, G3)",
-      "soundscapes of two playground areas (P1, P2)"
+      "traffic noise",
+      "birdsong",
+      "water sounds (e.g., fountains)",
+      "human voices (e.g., children playing, conversations)",
+      "wind sounds",
+      "vegetation rustling"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "duration of visit to the urban space (observational)",
     "control_conditions": [
       "garden areas (G1, G2, G3)",
-      "playground areas (P1, P2)"
+      "playground areas (P1, P2)",
+      "walking paths"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Soundscape approach",
-      "commitment_type": "applies",
-      "specific_claim": "Human perception and interpretation of the acoustic environment, including perceived pleasantness, eventfulness, and appropriateness, are crucial for understanding and evaluating sound quality and preference in urban spaces."
+      "theory_name": "Soundscape Approach/Framework",
+      "commitment_type": "tests",
+      "specific_claim": "Soundscape quality is a holistic perception influenced by acoustic, visual, and contextual factors, impacting human preference and well-being."
+    },
+    {
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "assumes",
+      "specific_claim": "Natural elements and quiet environments in urban spaces can facilitate psychological restoration and lead to higher preference."
     }
   ],
   "mechanism_chain": {
-    "description": "The study investigates how the composition of sound sources in urban spaces influences perceived soundscape attributes, which in turn affect overall soundscape preference.",
+    "description": "The paper investigates how objective acoustic parameters and subjective soundscape attributes mediate soundscape preference.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Presence of natural sounds (e.g., birdsong, water sounds)",
-        "to_construct": "Perceived pleasantness",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 2,
-        "from_construct": "Absence of mechanical sounds (e.g., traffic noise)",
-        "to_construct": "Perceived quietness",
+        "from_construct": "Objective acoustic parameters (e.g., LAeq, psychoacoustic metrics)",
+        "to_construct": "Perceived soundscape attributes (e.g., quietness, pleasantness, eventfulness)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
-        "step": 3,
-        "from_construct": "Perceived pleasantness and quietness",
+        "step": 2,
+        "from_construct": "Perceived soundscape attributes (e.g., quietness, pleasantness)",
         "to_construct": "Soundscape preference",
         "mechanism_type": "affective",
         "evidence_strength": "direct"
@@ -2478,32 +2483,32 @@
   },
   "instruments_used": [
     {
-      "name": "Soundscape questionnaire",
-      "construct": "Soundscape preference, perceived quietness, perceived pleasantness, perceived eventfulness, perceived appropriateness",
-      "description": "Self-report questionnaire using Likert scales to assess various soundscape attributes.",
-      "type": "self_report"
+      "name": "Sound level meter (e.g., Br\u00fcel & Kj\u00e6r)",
+      "construct": "Acoustic parameters (LAeq, Loudness, Sharpness, Roughness, Fluctuation Strength)",
+      "description": "Used for objective measurement of sound pressure levels and psychoacoustic metrics at various locations.",
+      "type": "other"
     },
     {
-      "name": "Sound level meter",
-      "construct": "A-weighted equivalent continuous sound pressure level (LAeq), sound pressure levels of specific sound sources",
-      "description": "Used to objectively measure the physical acoustic environment at each study site.",
-      "type": "other"
+      "name": "Soundscape perception questionnaire",
+      "construct": "Perceived quietness, pleasantness, eventfulness, appropriateness, soundscape preference",
+      "description": "Self-report questionnaire administered to participants to assess their subjective perception and preference of the soundscapes.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:41:12.838724+00:00",
+  "surgical_update_at": "2026-03-02T22:54:15.686721+00:00",
   "stimulus_images": [
     {
-      "description": "Map showing the locations of the five study sites (three garden areas and two playground areas) in Seoul, South Korea.",
+      "description": "Map of the study sites in the urban park, indicating measurement points and different area types (garden, playground, path).",
       "figure_ref": "Figure 1",
-      "image_type": "diagram"
+      "image_type": "floor_plan"
     },
     {
-      "description": "Photographs of the study sites (garden and playground areas).",
-      "figure_ref": "Figure 1",
+      "description": "Photographs illustrating the visual characteristics of the different study areas (garden, playground).",
+      "figure_ref": "Figure 2",
       "image_type": "photo"
     }
   ],
-  "paper_sample_size": 155,
-  "paper_sample_size_source": "reported"
+  "paper_sample_size": 240,
+  "paper_sample_size_source": "estimated"
 }

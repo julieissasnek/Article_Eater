@@ -22,6 +22,17 @@ class _FakeGap:
     affected_beliefs: list[str]
     implied_by: list[str]
 
+    def to_dict(self):
+        """Serialize to dict for compatibility with ResearchQueueService."""
+        return {
+            'gap_id': self.gap_id,
+            'gap_type': self.gap_type.value,
+            'description': self.description,
+            'voi_score': self.voi_score,
+            'affected_beliefs': self.affected_beliefs,
+            'implied_by': self.implied_by,
+        }
+
 
 class _FakeGapPredictor:
     def __init__(self, gaps: list[_FakeGap]):

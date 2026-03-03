@@ -1,28 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from types import SimpleNamespace
 
 from src.epistemic.gap_types import GapType
 from src.queue import ResearchQueueService, TargetStatus
+from tests.conftest import FakeGap, FakeGapPredictor
 
 
-@dataclass
-class _FakeGap:
-    gap_id: str
-    gap_type: GapType
-    description: str
-    voi_score: float
-    affected_beliefs: list[str]
-    implied_by: list[str]
 
 
-class _FakeGapPredictor:
-    def __init__(self, gaps: list[_FakeGap]):
-        self._gaps = gaps
-
-    def find_all_gaps(self, max_gaps: int = 50):
-        return SimpleNamespace(gaps=self._gaps[:max_gaps])
 
 
 def test_sync_zotero_to_queue_matches_new_bibtex_entries(tmp_path):
@@ -44,7 +30,7 @@ def test_sync_zotero_to_queue_matches_new_bibtex_entries(tmp_path):
     )
 
     gaps = [
-        _FakeGap(
+        FakeGap(
             gap_id="g1",
             gap_type=GapType.VALIDATION,
             description="unfamiliar layouts increase anxiety in hospitals",
@@ -56,7 +42,7 @@ def test_sync_zotero_to_queue_matches_new_bibtex_entries(tmp_path):
 
     service = ResearchQueueService(
         web=SimpleNamespace(beliefs={}),
-        gap_predictor=_FakeGapPredictor(gaps),
+        gap_predictor=FakeGapPredictor(gaps),
         queue_path=tmp_path / "queue_state.json",
         frameworks=[],
     )

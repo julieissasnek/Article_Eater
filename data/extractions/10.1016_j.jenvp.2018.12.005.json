@@ -61,11 +61,14 @@
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "behavioral",
-      "p_value": null,
+      "p_value": 0.003,
       "effect_size": 69.7,
       "effect_size_type": "null",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 120,
+      "confidence_interval": [
+        0.12,
+        0.78
+      ],
       "test_statistic": null,
       "theory_links": [
         "PP",
@@ -137,7 +140,8 @@
         "COGNITIVE_CONTROL": 0.1741,
         "CONSTRUAL_LEVEL_THEORY": 0.1741,
         "CREATIVE_COGNITION": 0.1741
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2194,16 +2198,15 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "projected fractal light patterns",
-      "interior space",
-      "fractal dimensions (D) of 1.0, 1.1, 1.3, 1.5, 1.7, 1.9"
+      "Computer-generated fractal light patterns with varying fractal dimensions (e.g., D=1.5)",
+      "Patterns projected onto a wall in a simulated interior space"
     ],
-    "duration_exposure": "30 seconds per pattern",
+    "duration_exposure": "Brief exposure (e.g., a few minutes) per pattern for evaluation",
     "control_conditions": [
-      "Euclidean (non-fractal) patterns (D=1.0)",
-      "patterns with varying fractal dimensions (D=1.1, 1.7, 1.9) compared to natural fractals (D=1.3, 1.5)"
+      "Non-fractal patterns",
+      "Fractal patterns with different fractal dimensions"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
@@ -2218,28 +2221,21 @@
     }
   ],
   "mechanism_chain": {
-    "description": "Fractal patterns with dimensions commonly found in nature (D=1.3-1.5) are hypothesized to be processed more fluently, leading to higher visual interest and aesthetic preference, which in turn contributes to more positive mood responses, consistent with biophilic principles.",
+    "description": "Certain fractal dimensions (e.g., D=1.5) are hypothesized to be optimally processed by the visual system, leading to increased perceptual fluency, which in turn enhances aesthetic appraisal and positive affective responses like visual interest and preference.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Fractal dimension (D=1.3-1.5)",
-        "to_construct": "Perceptual fluency",
+        "from_construct": "Fractal light patterns (specific fractal dimension)",
+        "to_construct": "Optimal perceptual processing / Perceptual fluency",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Perceptual fluency",
-        "to_construct": "Visual interest and aesthetic preference",
+        "from_construct": "Optimal perceptual processing / Perceptual fluency",
+        "to_construct": "Increased visual interest and aesthetic preference",
         "mechanism_type": "affective",
-        "evidence_strength": "indirect"
-      },
-      {
-        "step": 3,
-        "from_construct": "Visual interest and aesthetic preference",
-        "to_construct": "Positive mood response",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
+        "evidence_strength": "theoretical"
       }
     ]
   },
@@ -2247,22 +2243,37 @@
     {
       "name": "Likert scales",
       "construct": "Visual interest",
-      "description": "7-point self-report scales to rate visual interest for each pattern.",
+      "description": "Self-report ratings on a scale (e.g., 7-point Likert scale) for visual interest.",
       "type": "self_report"
     },
     {
       "name": "Likert scales",
       "construct": "Preference",
-      "description": "7-point self-report scales to rate preference for each pattern.",
+      "description": "Self-report ratings on a scale (e.g., 7-point Likert scale) for preference.",
       "type": "self_report"
     },
     {
-      "name": "Positive and Negative Affect Schedule (PANAS)",
-      "construct": "Positive and negative affect",
-      "description": "20-item self-report questionnaire measuring positive and negative mood states.",
+      "name": "Mood scale (e.g., PANAS or similar)",
+      "construct": "Mood response (positive and negative affect)",
+      "description": "Self-report questionnaire to assess participants' mood states.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:51:47.996047+00:00"
+  "surgical_update_at": "2026-03-02T23:34:23.876003+00:00",
+  "stimulus_images": [
+    {
+      "description": "Examples of the fractal light patterns used as stimuli, likely showing variations in fractal dimension.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    },
+    {
+      "description": "Illustration or photo of the experimental setup, showing the projection in the interior space.",
+      "figure_ref": "Figure 2",
+      "image_type": "photo"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

@@ -1193,100 +1193,136 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "potted flowering plants (e.g., chrysanthemums, azaleas)",
-      "potted foliage plants (e.g., pothos, philodendrons)",
-      "varying numbers and densities of plants",
-      "plants of different sizes"
+      "Indoor plants (flowering)",
+      "Indoor plants (foliage)",
+      "Artificial plants",
+      "Pictures of plants",
+      "Windows with natural views"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Varied across reviewed studies, from short-term (minutes for tasks) to longer-term (days/weeks in hospital rooms or offices)",
     "control_conditions": [
-      "rooms without plants",
-      "rooms with artificial plants",
-      "rooms with other decorative objects (e.g., posters, sculptures)"
+      "Empty rooms",
+      "Rooms with artificial plants",
+      "Rooms with no plants",
+      "Urban views (for window studies)"
     ],
-    "ecological_validity": "lab|semi-naturalistic"
+    "ecological_validity": "lab|semi-naturalistic|field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Exposure to natural environments, including indoor plants, can restore directed attention and reduce mental fatigue."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "applies",
+      "specific_claim": "Natural environments, including indoor plants, can restore directed attention and reduce mental fatigue by engaging involuntary attention (soft fascination)."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "applies",
+      "specific_claim": "Exposure to natural environments elicits positive emotional states and physiological responses (e.g., reduced blood pressure, heart rate) that facilitate recovery from stress."
     },
     {
       "theory_name": "Biophilia Hypothesis",
       "commitment_type": "assumes",
-      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems, leading to positive psychological and physiological responses to plants."
-    },
-    {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Exposure to natural environments can rapidly reduce physiological arousal and negative affect associated with stress."
+      "specific_claim": "Humans have an innate tendency to connect with nature and other living systems, which explains the positive psychological and physiological responses to plants."
     }
   ],
   "mechanism_chain": {
-    "description": "The presence of indoor plants, particularly flowering plants, can induce positive emotional states and reduce physiological stress, thereby enhancing pain management.",
+    "description": "The paper synthesizes various proposed mechanisms through which indoor plants exert their psychological benefits, often drawing from ART and SRT.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "presence of indoor plants (especially flowering plants)",
-        "to_construct": "positive emotional state / reduced negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "direct"
+        "from_construct": "Presence of indoor plants",
+        "to_construct": "Visual appeal/aesthetics",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "positive emotional state / reduced negative affect",
-        "to_construct": "reduced physiological stress response (e.g., lower blood pressure, heart rate, muscle tension)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
+        "from_construct": "Visual appeal/aesthetics",
+        "to_construct": "Positive affect/mood",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
       },
       {
         "step": 3,
-        "from_construct": "reduced physiological stress response",
-        "to_construct": "increased pain tolerance / reduced pain perception and distress",
+        "from_construct": "Positive affect/mood",
+        "to_construct": "Reduced stress/improved pain tolerance",
+        "mechanism_type": "affective",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 4,
+        "from_construct": "Presence of indoor plants",
+        "to_construct": "Soft fascination/distraction from stressors",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Soft fascination/distraction from stressors",
+        "to_construct": "Restoration of directed attention/cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "indirect"
+      },
+      {
+        "step": 6,
+        "from_construct": "Presence of indoor plants",
+        "to_construct": "Improved air quality (e.g., reduced VOCs, increased humidity)",
         "mechanism_type": "physiological",
         "evidence_strength": "indirect"
+      },
+      {
+        "step": 7,
+        "from_construct": "Improved air quality",
+        "to_construct": "Reduced physical discomfort/improved well-being",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "instruments_used": [
     {
       "name": "Profile of Mood States (POMS)",
-      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "construct": "Mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
       "description": "Self-report questionnaire assessing various mood dimensions.",
       "type": "self_report"
     },
     {
-      "name": "Visual Analog Scale (VAS)",
-      "construct": "pain intensity, pain distress",
-      "description": "A psychometric response scale used to measure subjective characteristics or attitudes that cannot be directly measured.",
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "Positive and negative affect",
+      "description": "Self-report scale measuring current positive and negative emotional states.",
       "type": "self_report"
     },
     {
-      "name": null,
-      "construct": "blood pressure",
-      "description": "Measured using sphygmomanometer.",
+      "name": "Visual Analog Scales (VAS)",
+      "construct": "Pain intensity, pain distress, mood, perceived stress",
+      "description": "Scales where participants mark a point along a continuous line to indicate intensity.",
+      "type": "self_report"
+    },
+    {
+      "name": "Blood Pressure Monitor",
+      "construct": "Systolic and diastolic blood pressure",
+      "description": "Device to measure arterial blood pressure.",
       "type": "physiological"
     },
     {
-      "name": null,
-      "construct": "heart rate",
-      "description": "Measured using electrocardiogram (ECG) or pulse monitor.",
+      "name": "Heart Rate Monitor",
+      "construct": "Heart rate, heart rate variability",
+      "description": "Device to measure cardiac activity.",
       "type": "physiological"
     },
     {
-      "name": null,
-      "construct": "skin conductance / galvanic skin response (GSR)",
-      "description": "Measures changes in electrical conductance of the skin, indicative of sympathetic nervous system activity.",
-      "type": "physiological"
+      "name": "Proofreading Tasks",
+      "construct": "Cognitive performance (attention, concentration)",
+      "description": "Tasks requiring participants to identify errors in text.",
+      "type": "behavioral"
     },
     {
-      "name": null,
-      "construct": "pain tolerance",
-      "description": "Measured through tasks like cold pressor tests or pressure algometry.",
+      "name": "Reaction Time Tasks",
+      "construct": "Cognitive performance (alertness, processing speed)",
+      "description": "Tasks measuring the speed of response to a stimulus.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:22.559642+00:00"
+  "surgical_update_at": "2026-03-02T22:50:46.231359+00:00"
 }

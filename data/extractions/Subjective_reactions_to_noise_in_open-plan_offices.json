@@ -1943,13 +1943,83 @@
   "minimum_safe_summary": "This thesis investigates the impact of noise, particularly background speech, on cognitive performance and subjective reactions in open-plan offices, and explores design solutions. It finds that speech intelligibility (measured by STI) predicts subjective acoustic disturbance and impairs verbal short-term and working memory, but not more complex tasks. Increased office distractions mediate negative changes in environmental satisfaction, collaboration, and stress. Masking sounds, especially filtered pink noise and spring water, improve acoustic satisfaction, while music is not recommended. Holistic room acoustic design can reduce noise disturbance, though benefits are limited at short distances. Distraction distance (rD) predicts perceived noise disturbance. Providing easily accessible quiet workspaces is crucial for mitigating negative outcomes, especially for those with high concentration demands. Limitations include the generalisability of lab findings, the focus on basic memory tasks, and the retrospective design of field studies.",
   "stimulus_description": {
     "environmental_features": [
-      "noise in open-plan offices",
-      "background speech intelligibility (STI)"
+      "noise",
+      "open-plan office environment"
     ],
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:09:02.117018+00:00"
+  "surgical_update_at": "2026-03-02T23:31:22.421025+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Distraction-Conflict Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Irrelevant background speech acts as a distractor, creating a conflict between attending to the primary task and the distracting stimulus, leading to performance decrements."
+    },
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Environmental stressors like noise increase cognitive load, thereby reducing the cognitive resources available for task performance, particularly for tasks requiring working memory."
+    },
+    {
+      "theory_name": "Environmental Stress Theory",
+      "commitment_type": "proposes",
+      "specific_claim": "Chronic exposure to noise in open-plan offices can lead to physiological and psychological stress responses, impacting well-being and cognitive function."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Background speech noise, particularly when intelligible, diverts attentional resources, increases cognitive load, and interferes with working memory processes, leading to impaired performance in tasks requiring verbal short-term memory.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "background speech intelligibility (STI)",
+        "to_construct": "attentional capture by speech content",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "attentional capture by speech content",
+        "to_construct": "increased cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "increased cognitive load",
+        "to_construct": "reduced working memory capacity",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "reduced working memory capacity",
+        "to_construct": "performance in verbal short-term memory tasks (serial recall)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Serial Recall Task",
+      "construct": "verbal short-term memory",
+      "description": "Participants are presented with a sequence of items (e.g., digits, words) and asked to recall them in the correct order.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Speech Transmission Index (STI)",
+      "construct": "speech intelligibility",
+      "description": "An objective measure of how much speech information is transmitted from a talker to a listener in a given acoustic environment.",
+      "type": "other"
+    },
+    {
+      "name": "Noise Annoyance Scale",
+      "construct": "subjective noise reaction",
+      "description": "Self-report questionnaire assessing the degree of disturbance or irritation caused by noise.",
+      "type": "self_report"
+    }
+  ]
 }

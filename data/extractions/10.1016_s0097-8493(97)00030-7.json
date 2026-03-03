@@ -342,7 +342,7 @@
       "claim_type": "narrative",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.04,
+      "effect_size": null,
       "effect_size_type": "N",
       "sample_size": null,
       "confidence_interval": null,
@@ -413,7 +413,9 @@
         "CREATIVE_COGNITION": 0.1504,
         "EMBODIED_COGNITION": 0.1504,
         "PREDICTIVE_PROCESSING": 0.1504
-      }
+      },
+      "_original_effect_size": 0.04,
+      "_quarantine_reason": "Value 0.04 appears to be a p-value, not an effect size"
     },
     {
       "id": 6,
@@ -1830,75 +1832,77 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Haptic Taxonomy/Framework",
-      "commitment_type": "proposes",
-      "specific_claim": "A comprehensive taxonomy for haptic devices and their applications in virtual environments is proposed, categorizing systems based on their degrees of freedom, workspace, and feedback mechanisms."
+      "theory_name": "Human Haptic Perception Models",
+      "commitment_type": "assumes",
+      "specific_claim": "The human haptic system processes mechanical stimuli to form perceptions of object properties and spatial relationships in virtual environments."
     },
     {
-      "theory_name": "Human Haptic Perception",
+      "theory_name": "Psychophysics of Touch",
+      "commitment_type": "reviews",
+      "specific_claim": "Quantifies the relationship between physical haptic stimuli and perceived sensations, including thresholds and discrimination abilities."
+    },
+    {
+      "theory_name": "Motor Control Theories",
       "commitment_type": "assumes",
-      "specific_claim": "Human haptic perception relies on the integration of distinct tactile (cutaneous) and kinesthetic (proprioceptive) sensory systems to interpret physical interactions with the environment."
+      "specific_claim": "Haptic feedback plays a crucial role in guiding and refining motor actions and interactions within virtual environments."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper describes the general mechanism by which haptic feedback from a virtual environment is generated and subsequently perceived by a human user.",
+    "description": "The process by which physical haptic stimuli are transduced and interpreted by the human sensory system to form a perception.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Virtual environment state (e.g., object properties, collision events)",
-        "to_construct": "Haptic rendering algorithm output (e.g., desired force, vibration pattern)",
-        "mechanism_type": "computational",
-        "evidence_strength": "theoretical"
+        "from_construct": "Physical haptic stimulus (e.g., force, vibration, pressure)",
+        "to_construct": "Mechanical deformation of skin/tissue",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Haptic rendering algorithm output",
-        "to_construct": "Haptic device actuation (e.g., motor activation, tactile array stimulation)",
-        "mechanism_type": "physical",
+        "from_construct": "Mechanical deformation of skin/tissue",
+        "to_construct": "Activation of mechanoreceptors",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Haptic device actuation",
-        "to_construct": "Physical interaction with human body (e.g., skin deformation, joint resistance)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Physical interaction with human body",
-        "to_construct": "Activation of mechanoreceptors and proprioceptors",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 5,
-        "from_construct": "Activation of sensory receptors",
-        "to_construct": "Generation and transmission of neural signals to the brain",
+        "from_construct": "Activation of mechanoreceptors",
+        "to_construct": "Generation of neural signals",
         "mechanism_type": "neural",
         "evidence_strength": "direct"
       },
       {
-        "step": 6,
-        "from_construct": "Neural signals in the brain",
-        "to_construct": "Conscious perception of haptic properties (e.g., spatial location, texture, stiffness, force)",
+        "step": 4,
+        "from_construct": "Neural signals",
+        "to_construct": "Perceptual interpretation (e.g., spatial location, texture, stiffness, shape)",
         "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:44:49.194670+00:00",
+  "surgical_update_at": "2026-03-02T23:37:59.943891+00:00",
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating various types of haptic devices, including force-feedback systems (e.g., joysticks, exoskeletons) and tactile displays (e.g., pin arrays, vibrators).",
-      "figure_ref": "Figures throughout the paper (e.g., Figure 1, Figure 2)",
+      "description": "Diagrams illustrating various haptic devices (e.g., force-feedback manipulators, tactile displays)",
+      "figure_ref": "Figure 1, Figure 2, etc. (specific figures would need paper access)",
       "image_type": "diagram"
     },
     {
-      "description": "Conceptual diagrams depicting the haptic interaction loop between a human user, a haptic device, and a virtual environment.",
-      "figure_ref": "Figures throughout the paper",
+      "description": "Conceptual models or taxonomies of haptic interaction and perception",
+      "figure_ref": "Figure 3, Table 1, etc. (specific figures/tables would need paper access)",
       "image_type": "diagram"
     }
-  ]
+  ],
+  "stimulus_description": {
+    "environmental_features": [
+      "Force feedback (kinesthetic feedback)",
+      "Tactile feedback (e.g., vibration, pressure, texture)",
+      "Thermal feedback",
+      "Proprioceptive feedback"
+    ],
+    "duration_exposure": null,
+    "control_conditions": null,
+    "ecological_validity": null
+  }
 }

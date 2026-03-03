@@ -3300,36 +3300,29 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:00.737886+00:00",
+  "surgical_update_at": "2026-03-02T19:11:28.155941+00:00",
   "mechanism_chain": {
-    "description": "Daylighting reduces energy demand for electric lights by providing sufficient natural illumination, thereby decreasing the reliance on artificial lighting and the associated electricity consumption.",
+    "description": "Causal mechanism connecting daylighting to reduced energy demand for electric lights.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Daylight availability in buildings",
-        "to_construct": "Increased indoor illuminance levels",
-        "mechanism_type": "physical",
-        "evidence_strength": "assumed"
-      },
-      {
-        "step": 2,
-        "from_construct": "Increased indoor illuminance levels",
-        "to_construct": "Reduced need for electric lighting",
-        "mechanism_type": "behavioral",
-        "evidence_strength": "theoretical"
-      },
-      {
-        "step": 3,
-        "from_construct": "Reduced need for electric lighting",
-        "to_construct": "Decreased electricity consumption for lighting",
-        "mechanism_type": "physical",
+        "from_construct": "Availability of natural light indoors",
+        "to_construct": "Increased ambient illumination levels",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
-        "step": 4,
-        "from_construct": "Decreased electricity consumption for lighting",
-        "to_construct": "Reduced building energy demand",
-        "mechanism_type": "physical",
+        "step": 2,
+        "from_construct": "Increased ambient illumination levels",
+        "to_construct": "Reduced necessity for artificial lighting",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced necessity for artificial lighting",
+        "to_construct": "Lower electricity consumption for lighting",
+        "mechanism_type": "physiological",
         "evidence_strength": "direct"
       }
     ]
@@ -3344,6 +3337,18 @@
       "description": "Graphs showing the relationship between daylight availability, electric lighting use, and energy consumption in buildings.",
       "figure_ref": "Figure 2",
       "image_type": "graph"
+    }
+  ],
+  "theory_commitments": [
+    {
+      "theory_name": "Building Energy Performance Principles",
+      "commitment_type": "assumes",
+      "specific_claim": "Strategic integration of daylighting reduces electrical energy consumption for artificial lighting and can influence thermal loads in buildings."
+    },
+    {
+      "theory_name": "Impact of Light on Human Physiology and Psychology",
+      "commitment_type": "proposes",
+      "specific_claim": "Exposure to appropriate natural light patterns positively influences human circadian rhythms, visual comfort, mood, and cognitive performance."
     }
   ]
 }

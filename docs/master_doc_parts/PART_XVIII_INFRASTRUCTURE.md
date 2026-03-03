@@ -487,9 +487,153 @@ Longino, H. E. (2002). *The Fate of Knowledge*. Princeton University Press. [Goo
 
 ---
 
-*Part XVIII added: February 26, 2026*
-*Content source: Implemented codebase and February 2026 design sessions*
-*Total new sections: §132–§139 (8 sections)*
+---
+
+## §140: The Service Architecture — From Batch Processing to Real-Time Epistemic Reasoning {#140}
+
+### 140.1 The Architectural Problem: Capabilities Without Composition
+
+By late February 2026, the ATLAS system possessed over 30 independently developed epistemic capabilities: credence interval computation via the Delta method, warrant strength decomposition, confounder risk assessment, theory framework voices, knowledge gap prediction with Value of Information scoring, figure recommendation, mathematical formula explanation, and language adaptation for distinct user types. Each was implemented as a well-structured Python service with clean entry points, comprehensive tests, and formal theoretical grounding.
+
+None of them was called during answer generation.
+
+The system exhibited what might be called the *capability-composition gap*: individual epistemic operations were sound, but the answer path — the code that actually responded when a user asked a question — invoked only two of them (a knowledge catalog for structured browse queries, and a theory guide service for "explain theory X" questions). Everything else ran in nightly batch jobs. A user asking "What reduces stress in hospitals?" received a catalog lookup or an LLM-generated summary, while credence intervals, warrant traces, confounder assessments, framework perspectives, and gap analyses sat unused in the database.
+
+This gap arose naturally from depth-first development. Each capability was built to address a specific panel concern: Pearl wanted confounder detection, Cooke wanted calibrated intervals, Cartwright wanted scope conditions. They were wired into the *extraction pipeline* because that is where data enters the system. But the *answer pipeline* — where data becomes knowledge for human consumption — was architecturally separate, and nobody had built the composition layer that would bridge the two.
+
+The diagnosis is architectural, not merely implementational. The issue is that the system treated epistemic reasoning as a *pre-computation* step (run overnight, store results) rather than as a *real-time orchestration* step (compose services when answering a question). The distinction matters because some epistemic operations are question-dependent: which framework voices are relevant depends on the topic; which gaps matter depends on the user's research context; how uncertainty should be communicated depends on who is asking.
+
+### 140.2 The Answer Enrichment Orchestrator
+
+The resolution is a service composition layer — the `AnswerEnrichmentOrchestrator` (`src/services/answer_enrichment_orchestrator.py`, 794 lines) — that interposes between question classification and response delivery. When a user asks a question, the system now proceeds in four phases:
+
+**Phase 1: Classification and base answer.** The existing `ArbitraryQAHandler` classifies the question (one of ~25 types) and generates a base answer from catalog lookup, database search, or LLM routing. This is unchanged.
+
+**Phase 2: Epistemic enrichment.** The orchestrator calls up to eight enrichment services, each contributing a distinct epistemic dimension to the answer:
+
+| Step | Service | What It Adds | Source |
+|------|---------|-------------|--------|
+| 1 | `credence_intervals` | 95% confidence intervals on every cited belief | Delta method (§48.1A) |
+| 2 | `warrant_strength` | Decomposition of each belief's credence into contributing warrants (d, ω, δ per edge) | TEA + Woodward (§48.3B) |
+| 3 | `confounder_risk_checker` | Flags beliefs from uncontrolled observational studies; estimates confounding risk | Pearl (2009) |
+| 4 | `integrated_query_service` | T1 framework voices — how Predictive Processing, Situated Cognition, etc. view the topic | 10 canonical frameworks (§33) |
+| 5 | `gap_predictor` | Knowledge gaps: what the system doesn't know about this topic, ranked by VOI | Howard (1966), Good (1950) |
+| 6 | `recommendation_loop` | Follow-up suggestions: what to investigate next | VOI-prioritized |
+| 7 | `language_adaptation_service` | Restructures the answer for the user's type | Personalization spec (§140.4) |
+| 8 | `figure_suggestion_service` | Recommends relevant figures from the 42-figure corpus | Concept-indexed registry |
+
+Each step is optional, timeout-protected, and independently disableable via environment variable. If any step fails, the orchestrator continues with the remaining steps and marks the failure in the response metadata. This follows the OVERSEER's principle of gradual degradation (§132): a failure in confounder risk assessment should not prevent the user from receiving credence intervals.
+
+**Phase 3: Composition.** The orchestrator assembles the enrichment outputs into an `EnrichedAnswer` structure that wraps the base answer with additional fields: `credence_intervals`, `warrant_traces`, `confounder_flags`, `framework_voices`, `knowledge_gaps`, `follow_up_suggestions`, `adapted_answer`, and `suggested_figures`. Each field is populated if and only if the corresponding service succeeded.
+
+**Phase 4: Delivery.** The enriched answer is returned via the existing Streamlit UI or FastAPI endpoint. The UI can display enrichments progressively — headline first, then evidence with credence intervals, then framework perspectives in expandable panels, then gaps and suggestions.
+
+### 140.3 The Service Registry: What Is a Service?
+
+The architectural commitment is that *every epistemic capability must be a callable service*. A service in the ATLAS sense has four properties:
+
+1. **A Python class or module with named entry points.** Not a script that runs from the command line, but a class that can be imported and called: `service.compute(input) → output`.
+
+2. **Independence from execution context.** The service works identically whether called from a nightly batch job, a Streamlit page, a FastAPI endpoint, or a test. It does not assume it is running in a particular pipeline.
+
+3. **Composability.** The service's output can be used as input to another service or included in a composite response. This requires typed outputs (dataclasses or Pydantic models), not raw strings.
+
+4. **Graceful degradation.** If the service cannot complete (missing data, dependency unavailable, timeout), it returns a structured failure rather than raising an exception. The caller can proceed without this service's contribution.
+
+As of March 2026, the system's service registry comprises:
+
+| Service | Entry Point | Epistemic Role |
+|---------|-------------|---------------|
+| `AnswerEnrichmentOrchestrator` | `enrich(answer, question, user_type)` | Composition layer |
+| `LanguageAdaptationService` | `adapt(answer, user_type)` | Presupposition-frame adaptation |
+| `FigureSuggestionService` | `suggest_figures(topic)` | Visual evidence support |
+| `MathExplanationService` | `explain(formula, user_type, depth)` | 4-layer formula explanation |
+| `credence_intervals` | `compute_credence_with_ci(belief)` | Uncertainty quantification |
+| `warrant_strength` | `compute_omega_from_extraction(data)` | Warrant decomposition |
+| `confounder_risk_checker` | `assess(belief)` | Confounding risk |
+| `gap_predictor` | `predict_gaps(topic)` | Knowledge gap identification |
+| `recommendation_loop` | `suggest(gaps)` | Follow-up generation |
+| `integrated_query_service` | `get_panel_comments(topic)` | Framework perspectives |
+| `knowledge_catalog` | `get_theories()`, `search(query)` | Structured browse |
+| `theory_guide_service` | `get_guide(theory_name)` | Progressive-disclosure guides |
+| `network_service` | `build_network(scope)` | Graph visualization |
+| `paper_evidence_auditor` | `audit(paper_path)` | Evidence quality assessment |
+
+Each service is independently testable — the test suite includes 5,938 tests as of this writing, with dedicated test files for every service.
+
+### 140.4 Language Adaptation as Structural Personalization
+
+The `LanguageAdaptationService` (`src/services/language_adaptation_service.py`) implements the insight that different user types require not merely different formatting but different *answers*. This distinction deserves elaboration because it is commonly misunderstood.
+
+Consider a researcher and an architect asking the same question: "Does ceiling height affect creativity?" The researcher needs: effect sizes with confidence intervals, between-study heterogeneity (I²), study designs used, scope conditions, moderators, competing explanations, and identified gaps. The architect needs: a design threshold (e.g., "≥3.0m for creative work"), the evidence strength behind that threshold, contraindications, cost-effectiveness relative to other interventions, and measurement approaches to verify the design worked.
+
+These are not the same answer reformatted. They differ in structure (mechanism-first vs. recommendation-first), in content selection (heterogeneity statistics vs. cost data), in vocabulary register (technical terms vs. design language), in uncertainty communication (credence intervals vs. percentage with verbal qualifier), and in citation style (APA with DOIs vs. author-year in footnotes). The `LanguageAdaptationService` implements these differences via five user-type profiles, each specifying:
+
+- **Presupposition frame**: what background knowledge the user is assumed to have
+- **Answer structure**: the ordered list of sections (e.g., `[recommendation, evidence_summary, parameters, scope, contraindications]` for architects vs. `[mechanism, evidence_with_effect_sizes, scope, gaps, competing_explanations]` for researchers)
+- **Vocabulary register**: technical level and translation rules
+- **Uncertainty style**: how credence is communicated
+- **Citation style**: how sources are presented
+- **Completeness criteria**: what constitutes a *complete* answer for this user type
+
+The profiles are grounded in research on expert-novice differences (Chi, Glaser, & Farr, 1988; Ericsson & Smith, 1991), cognitive load theory (Sweller, Ayres, & Kalyuga, 2011), adaptive hypermedia (Brusilovsky, 2001), and the pragmatics of science communication (Schiefele, 1991; Hidi & Renninger, 2006). The architectural decision to perform adaptation at generation time rather than presentation time follows from Brusilovsky's finding that adaptive content selection is more effective than adaptive presentation of fixed content (Brusilovsky, 2001, p. 93).
+
+Seven epistemic guardrails prevent simplification from becoming distortion: (1) never present a finding as established when credence < 0.5; (2) always disclose contested evidence regardless of user type; (3) never manufacture false precision; (4) preserve scope conditions even in simplified answers; (5) attribute claims to specific studies; (6) flag when the system's knowledge is limited; (7) distinguish "we have evidence for X" from "X is true."
+
+### 140.5 The Figure Suggestion Service
+
+The `FigureSuggestionService` (`src/services/figure_suggestion_service.py`) maintains a registry of 42 publication-quality figures produced during the documentation process (Phases 1–6, §FIGURE_INDEX), each annotated with a concept index of 161 terms. When the orchestrator calls `suggest_figures(topic)`, the service performs keyword matching against the concept index and returns figures ranked by relevance, with metadata including title, caption, related concepts, file path, and the master document section where the figure is discussed.
+
+This service addresses a specific norm from the Math Explanation Norms contract (§MATH_EXPLANATION_NORMS, Norm 6): "Every formula that appears in the system documentation should have an accompanying figure." The figure service extends this norm from documentation to real-time answers: when a user asks about credence computation, the answer can now include a reference to the sensitivity analysis figure (M-25) or the credence pipeline flowchart (M-27).
+
+### 140.6 The Math Explanation Service
+
+The `MathExplanationService` (`src/services/math_explanation_service.py`) implements the seven mathematical explanation norms synthesised from Strogatz, Devlin, Ellenberg, Stewart, Mazur, du Sautoy, Tsitsiklis, and Bertsekas (§MATH_EXPLANATION_NORMS). For each of the six core ATLAS formulas — credence projection, coherence C*, Value of Information, warrant strength, TEA score, and AESHI — the service generates a four-layer explanation:
+
+- **Layer 1 (Intuition)**: plain-language description with no notation
+- **Layer 2 (Notation)**: formal expression with every symbol defined
+- **Layer 3 (Computation)**: step-by-step worked example
+- **Layer 4 (Interpretation)**: what the result means for epistemic practice
+
+Each explanation also includes provenance tags for every constant (STIPULATED, THEORETICAL, CALIBRATED, or EMPIRICAL), explicit assumptions and scope limitations, common-sense labels for all quantities, and references to relevant figures. The service is user-type aware: a researcher receives the full four layers with formal notation; an architect receives layers 1 and 4 with a worked example relevant to building design; a student receives all four layers with additional conceptual scaffolding.
+
+### 140.7 API Exposure
+
+All services are exposed via REST endpoints at `/api/v1/services/` (11 endpoints total), enabling external tools, dashboards, or future front-ends to access any epistemic capability individually. The primary endpoint is `POST /api/v1/services/query/enriched`, which accepts a question and user type and returns the fully enriched answer. Individual service endpoints allow targeted access — for example, `GET /api/v1/services/credence/{belief_id}/interval` returns just the confidence interval for a specific belief, and `GET /api/v1/services/math/credence_projection?user_type=student` returns a student-appropriate explanation of the projection formula.
+
+The service health endpoint (`GET /api/v1/services/health`) reports the availability status of each service, enabling monitoring and diagnostic tools to identify which capabilities are operational.
+
+### 140.8 Architectural Lessons
+
+The service architecture overhaul of March 2026 yielded three lessons worth recording for future system development:
+
+**First, a capability that is not a service will not be used.** The system had over 30 epistemic capabilities, each individually excellent, but most were invoked only during batch processing. The difference between "the system can compute credence intervals" and "the system shows credence intervals when you ask a question" is an architectural choice, not a feature request. Making something a callable service — with a typed interface, graceful degradation, and composition semantics — is the precondition for its participation in the answer path.
+
+**Second, personalization is structural, not cosmetic.** The initial implementation of user-type differentiation changed button labels and section headers while delivering identical content. This is not personalization; it is decoration. Real personalization requires different content selection, different answer structure, and different uncertainty communication — which means the adaptation must happen during answer generation, not during answer formatting.
+
+**Third, the orchestrator pattern resolves the composition problem.** Each service operates independently and need not know about the others. The orchestrator is the only component that understands the composition order, timeout policy, and degradation strategy. This means new services can be added by registering them with the orchestrator rather than modifying the answer handler — preserving the handler's single responsibility of question classification and base answer generation.
+
+### 140.9 References for §140
+
+Brusilovsky, P. (2001). Adaptive hypermedia. *User Modeling and User-Adapted Interaction*, 11(1-2), 87–110. https://doi.org/10.1023/A:1011143116306 [Google Scholar citations: ~4,200]
+
+Chi, M. T. H., Glaser, R., & Farr, M. J. (Eds.). (1988). *The Nature of Expertise*. Lawrence Erlbaum Associates. [Google Scholar citations: ~3,100]
+
+Ericsson, K. A., & Smith, J. (Eds.). (1991). *Toward a General Theory of Expertise: Prospects and Limits*. Cambridge University Press. [Google Scholar citations: ~2,800]
+
+Hidi, S., & Renninger, K. A. (2006). The four-phase model of interest development. *Educational Psychologist*, 41(2), 111–127. https://doi.org/10.1207/s15326985ep4102_4 [Google Scholar citations: ~3,500]
+
+Howard, R. A. (1966). Information value theory. *IEEE Transactions on Systems Science and Cybernetics*, 2(1), 22–26. https://doi.org/10.1109/TSSC.1966.300074 [Google Scholar citations: ~1,800]
+
+Schiefele, U. (1991). Interest, learning, and motivation. *Educational Psychologist*, 26(3-4), 299–323. https://doi.org/10.1080/00461520.1991.9653136 [Google Scholar citations: ~2,900]
+
+Sweller, J., Ayres, P., & Kalyuga, S. (2011). *Cognitive Load Theory*. Springer. https://doi.org/10.1007/978-1-4419-8126-4 [Google Scholar citations: ~3,400]
+
+---
+
+*Part XVIII updated: March 3, 2026*
+*Content source: Implemented codebase and March 2026 service architecture overhaul*
+*Total new sections: §132–§140 (9 sections)*
 
 ---
 

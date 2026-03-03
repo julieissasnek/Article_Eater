@@ -3729,14 +3729,50 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "man-made images",
-      "visual images with varying edge orientation",
-      "visual images with varying shape (curved vs. angular)"
+      "diverse man-made images (e.g., architecture, objects, patterns)"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "images with varying levels of edge-orientation entropy"
+    ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:34:28.837402+00:00"
+  "surgical_update_at": "2026-03-02T23:33:19.431812+00:00",
+  "mechanism_chain": {
+    "description": "Images with lower edge-orientation entropy are hypothesized to be processed more efficiently by the visual system, leading to higher aesthetic preference.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Edge-orientation entropy of an image",
+        "to_construct": "Visual processing load/efficiency",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Visual processing load/efficiency",
+        "to_construct": "Aesthetic preference",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Preference rating scale",
+      "construct": "Aesthetic preference",
+      "description": "Participants rated images on a numerical scale indicating their level of preference.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of man-made images used as stimuli, illustrating varying levels of edge-orientation entropy.",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 25,
+  "paper_sample_size_source": "estimated"
 }

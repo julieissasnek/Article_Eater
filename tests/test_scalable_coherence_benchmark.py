@@ -121,8 +121,14 @@ def create_large_web(
     return web
 
 
+@pytest.mark.slow
 class TestScalabilityBenchmarks:
-    """Benchmark tests for coherence computation scalability."""
+    """Benchmark tests for coherence computation scalability.
+    
+    Marked as 'slow' because these create 1000-5000 beliefs with 5000-25000
+    constraints — genuine O(n²) compute that takes 15+ seconds.
+    Run with: pytest -m slow tests/test_scalable_coherence_benchmark.py
+    """
 
     def test_5000_beliefs_under_500ms(self):
         """

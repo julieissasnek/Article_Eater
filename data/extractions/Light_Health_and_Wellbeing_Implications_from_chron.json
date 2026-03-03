@@ -652,68 +652,142 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Light intensity",
-      "Light spectrum",
-      "Light timing",
-      "Light duration",
-      "Architectural lighting design elements"
+      "light intensity (lux)",
+      "spectral composition (e.g., blue light content, correlated color temperature)",
+      "timing of light exposure",
+      "duration of light exposure",
+      "window design and orientation",
+      "artificial lighting systems",
+      "material reflectance"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "varied, discussed in terms of daily cycles (e.g., daytime, evening) and specific experimental durations from reviewed studies",
+    "control_conditions": [
+      "dim light conditions",
+      "different light spectra (e.g., red light vs. blue-rich light)",
+      "absence of windows",
+      "different architectural lighting strategies"
+    ],
     "ecological_validity": null
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
+      "theory_name": "Chronobiology",
       "commitment_type": "assumes",
-      "specific_claim": "The human body operates on an approximately 24-hour cycle, regulated by an internal clock (SCN) primarily entrained by light-dark cycles."
+      "specific_claim": "The human circadian system is a fundamental biological rhythm primarily entrained by light, influencing various physiological and psychological processes."
     },
     {
       "theory_name": "Chronobiology",
       "commitment_type": "extends",
       "specific_claim": "Principles of chronobiology can be applied to architectural design to optimize light environments for human health and wellbeing."
+    },
+    {
+      "theory_name": "Circadian Photoreception",
+      "commitment_type": "assumes",
+      "specific_claim": "Intrinsically photosensitive retinal ganglion cells (ipRGCs) are the primary photoreceptors mediating non-visual light effects on the circadian system."
     }
   ],
   "mechanism_chain": {
-    "description": "Light exposure, particularly its intensity, spectrum, and timing, impacts the human circadian system, which in turn influences various physiological and psychological health outcomes relevant to architectural design.",
+    "description": "Light exposure, particularly blue-rich light, entrains the circadian system through specific retinal photoreceptors, influencing various health and wellbeing outcomes.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Light exposure (intensity, spectrum, timing)",
         "to_construct": "Activation of intrinsically photosensitive retinal ganglion cells (ipRGCs)",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
         "from_construct": "Activation of ipRGCs",
-        "to_construct": "Signaling to the Suprachiasmatic Nucleus (SCN)",
+        "to_construct": "Signal transmission to the Suprachiasmatic Nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Signaling to the SCN",
-        "to_construct": "Entrainment and regulation of the human circadian clock",
+        "from_construct": "Signal to SCN",
+        "to_construct": "Entrainment and regulation of the central circadian clock",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Circadian clock regulation",
-        "to_construct": "Modulation of melatonin secretion, core body temperature, sleep-wake cycles, and alertness",
+        "from_construct": "Regulated circadian clock",
+        "to_construct": "Modulation of melatonin secretion",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
       },
       {
         "step": 5,
-        "from_construct": "Modulation of physiological processes",
-        "to_construct": "Impact on health (e.g., sleep quality, metabolic health, mood) and wellbeing",
+        "from_construct": "Regulated circadian clock / Melatonin modulation",
+        "to_construct": "Synchronization of peripheral clocks and physiological processes (e.g., sleep-wake cycle, hormone release, body temperature)",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "Synchronized physiological processes",
+        "to_construct": "Improved sleep quality, mood, cognitive performance, metabolic health, and overall wellbeing",
+        "mechanism_type": "physiological",
+        "evidence_strength": "indirect"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:36:37.118996+00:00"
+  "surgical_update_at": "2026-03-02T23:31:38.710932+00:00",
+  "instruments_used": [
+    {
+      "name": "Melatonin assays",
+      "construct": "Melatonin levels",
+      "description": "Measurement of melatonin concentration in saliva or blood samples.",
+      "type": "physiological"
+    },
+    {
+      "name": "Actigraphy",
+      "construct": "Sleep-wake cycles, activity patterns",
+      "description": "Wearable devices to monitor activity and infer sleep patterns.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Self-report questionnaires",
+      "construct": "Sleep quality, mood, alertness, wellbeing",
+      "description": "Standardized surveys to assess subjective experiences.",
+      "type": "self_report"
+    },
+    {
+      "name": "Light meters / Spectroradiometers",
+      "construct": "Light exposure (intensity, spectrum)",
+      "description": "Devices to measure ambient light characteristics.",
+      "type": "other"
+    },
+    {
+      "name": "Core body temperature monitoring",
+      "construct": "Circadian phase marker",
+      "description": "Measurement of core body temperature, which follows a circadian rhythm.",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive performance tests",
+      "construct": "Cognitive function (e.g., attention, memory)",
+      "description": "Tasks designed to assess various aspects of cognitive ability.",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the human circadian system and its light input pathways",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Examples of architectural designs or lighting solutions optimized for circadian health",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Graphs showing spectral power distributions of different light sources",
+      "figure_ref": "Figure 3 (example)",
+      "image_type": "graph"
+    }
+  ]
 }

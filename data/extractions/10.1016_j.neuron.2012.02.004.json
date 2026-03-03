@@ -702,35 +702,99 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Projected images with varying texture gradients",
-      "Visual stimuli depicting surfaces with different slants"
+      "computer-generated images of textured surfaces",
+      "shading patterns",
+      "specular reflections",
+      "motion parallax cues"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "brief, controlled presentations (e.g., hundreds of milliseconds to seconds per trial)",
     "control_conditions": [
-      "Varying specific visual cues (e.g., texture density, perspective) while holding others constant",
-      "Baseline conditions (e.g., flat surfaces, no texture gradient)"
+      "isolated cues (e.g., texture only, shading only)",
+      "flat surfaces",
+      "random textures",
+      "varying lighting conditions"
     ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "The visual system processes the geometric properties of texture gradients in projected images to infer the optical slant of a surface.",
+    "description": "The visual processing pathway from sensory input (e.g., texture gradients, shading) to the perception of surface properties (e.g., slant, shape, material).",
     "steps": [
       {
         "step": 1,
         "from_construct": "Gradient of density of texture in a projected image",
-        "to_construct": "Visual system detects and analyzes texture gradient",
+        "to_construct": "Local surface orientation/slant",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Visual system detects and analyzes texture gradient",
-        "to_construct": "Internal representation of surface slant is formed",
+        "from_construct": "Shading patterns on a surface",
+        "to_construct": "Local surface curvature/shape",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Integration of multiple visual cues (texture, shading, motion, specularities)",
+        "to_construct": "Coherent perception of 3D surface shape and material properties",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:28:39.329972+00:00"
+  "surgical_update_at": "2026-03-02T23:31:07.834220+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cue integration theory",
+      "commitment_type": "tests",
+      "specific_claim": "The visual system integrates multiple, often ambiguous, cues (e.g., texture, shading, motion) to form a coherent perception of surface properties like shape, slant, and material."
+    },
+    {
+      "theory_name": "Bayesian inference in perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Perception can be modeled as a process of Bayesian inference, where prior knowledge is combined with sensory evidence to estimate environmental properties."
+    },
+    {
+      "theory_name": "Ecological optics (Gibson)",
+      "commitment_type": "extends",
+      "specific_claim": "Information for perception is directly available in the optic array, such as texture gradients providing information about surface slant."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Custom psychophysical stimulus presentation software (e.g., MATLAB with Psychtoolbox)",
+      "construct": "Visual perception of surface properties",
+      "description": "Software used to generate and present controlled visual stimuli and record participant responses.",
+      "type": "other"
+    },
+    {
+      "name": "Response button box",
+      "construct": "Perceptual judgments",
+      "description": "Device for participants to indicate their perceptual judgments (e.g., matching perceived slant, selecting a shape).",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Renderings of 3D surfaces with varying texture gradients",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Images demonstrating shading cues for surface shape",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Examples of specular highlights on curved surfaces",
+      "figure_ref": "Figure 3",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Stimuli showing motion parallax effects for depth perception",
+      "figure_ref": "Figure 4",
+      "image_type": "stimulus_set"
+    }
+  ]
 }

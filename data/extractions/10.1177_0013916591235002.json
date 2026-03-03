@@ -64,7 +64,7 @@
       "p_value": "<0.0001",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 60,
       "confidence_interval": null,
       "test_statistic": "F(4, 54) = 12.14",
       "theory_links": [
@@ -131,7 +131,8 @@
         "METABOLIC_HEALTH": 0.1593,
         "DIRECTED_ATTENTION": 0.1502,
         "NM_AROUSAL": 0.1502
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2425,42 +2426,91 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Different floor plan configurations (varying in complexity)",
-      "Different signage conditions (e.g., presence/absence, type of signage)"
+      "various floor plan configurations (e.g., grid, radial, complex, varying in integration and connectivity)",
+      "different signage conditions (e.g., no signs, directional signs, map signs)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "continuous during wayfinding task",
     "control_conditions": [
-      "A simple or baseline floor plan configuration",
-      "A no-signage condition"
+      "simple grid-like floor plan",
+      "no signage condition"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:41.501450+00:00",
+  "surgical_update_at": "2026-03-02T22:47:28.490541+00:00",
   "instruments_used": [
     {
-      "name": null,
-      "construct": "Wayfinding accuracy",
-      "description": "Behavioral measures of navigation performance (e.g., errors, time taken, path efficiency)",
-      "type": "behavioral"
-    },
-    {
-      "name": null,
-      "construct": "Rate of travel",
-      "description": "Behavioral measure of speed during navigation",
+      "name": "Wayfinding Task Performance",
+      "construct": "wayfinding accuracy and efficiency",
+      "description": "Measured by time taken to reach a destination, number of errors (e.g., wrong turns, backtracking), and possibly path length or efficiency.",
       "type": "behavioral"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Diagrams of the various floor plan configurations used in the experiment",
-      "figure_ref": null,
+      "description": "Diagrams of the different floor plan configurations used in the experiment",
+      "figure_ref": "Figure 1",
       "image_type": "floor_plan"
     },
     {
-      "description": "Examples or schematics of signage used in the experiment",
-      "figure_ref": null,
+      "description": "Examples of the signage types (directional, map) used within the floor plans",
+      "figure_ref": "Figure 2",
       "image_type": "diagram"
     }
-  ]
+  ],
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Mapping Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Individuals form internal mental representations of spatial environments to navigate."
+    },
+    {
+      "theory_name": "Information Processing Theory",
+      "commitment_type": "tests",
+      "specific_claim": "The availability and clarity of external spatial information (signage) influences the efficiency of spatial information processing and wayfinding performance."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Signage provides external spatial cues, reducing the cognitive load required to form and utilize an internal cognitive map, thereby improving wayfinding efficiency and accuracy. Conversely, complex floor plans increase cognitive load, hindering wayfinding.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "signage presence/clarity",
+        "to_construct": "availability of external spatial information",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "availability of external spatial information",
+        "to_construct": "reduced cognitive load for spatial processing",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced cognitive load for spatial processing",
+        "to_construct": "improved wayfinding accuracy and efficiency",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "floor plan complexity",
+        "to_construct": "increased cognitive load for spatial processing",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "increased cognitive load for spatial processing",
+        "to_construct": "decreased wayfinding accuracy and efficiency",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "paper_sample_size": 60,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

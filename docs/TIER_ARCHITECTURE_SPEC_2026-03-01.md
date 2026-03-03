@@ -22,8 +22,10 @@ T1 ─── 10 Framework Theories ──── neurally grounded, cross-domain
   │
   │         ◄── T1.5 is a SUBSET of molecules
   │
-  ├──► T1.5 ── 4 Domain Theories ──── author-attributed, formally reduced
-  │         (ART=Kaplan, SRT=Ulrich, Biophilia=Wilson, P-R=Appleton)
+  ├──► T1.5 ── 13 Domain Theories ──── author-attributed, formally reduced
+  │         (ART, SRT, Biophilia, Prospect-Refuge, Privacy Regulation,
+  │          Kaplan Preference, Adaptive Thermal, Space Syntax, Soundscape,
+  │          Place Attachment, BRECVEMA, Flow Theory, Goldilocks Principle)
   │
   └──► T3 ─── Empirical Beliefs ──── ground-level evidence in Web of Belief
             (specific env→outcome claims supported by multiple articles)
@@ -95,15 +97,17 @@ Molecules are **latent variables** — they are not directly observed but inferr
 4. Naming and validating novel factors as candidate molecules
 
 **Current molecules** (18):
-- 4 are T1.5 theories: ART, SRT, Biophilia, Prospect-Refuge
-- 14 are system composites: Goldilocks Principle, M_Beauty_Compression, Wayfinding, Creative Environments, Social Architecture, Awe Architecture, Circadian Architecture, Cognitive Load Architecture, Multisensory Design, Allostatic Regulation, M_Rasa, M_Attractor_Transition, M_CCT_Preference, M_Cultural_Valuation
+- 13 are T1.5 theories (see §T1.5 below)
+- 5 are system composites: M_Beauty_Compression, M_Rasa, M_Attractor_Transition, M_CCT_Preference, M_Cultural_Valuation
+
+**NOTE**: With the expansion of T1.5 to 13 theories, the molecule count may need recounting. Some former "system composites" (e.g., Goldilocks Principle) are now T1.5 theories.
 
 **Canonical file**: `schemas/theory/molecule_taxonomy.json`
 **Data**: `data/molecules/*.json`
 
 ---
 
-### T1.5: Domain Theories (4)
+### T1.5: Domain Theories (13)
 
 Phenomenological organizing schemas. They are **explained BY** T1 frameworks, not explanatory themselves. They are a strict subset of molecules with literature provenance.
 
@@ -113,12 +117,23 @@ Each T1.5 theory has:
 - Formal reductions showing what % of each construct is explained by T1-grounded templates
 - An irreducible residual acknowledging what the system cannot yet explain
 
-| Theory | Originator | Reduces to |
-|--------|-----------|------------|
-| ART | Kaplan 1995 | PP + DT + SN |
-| SRT | Ulrich 1983 | NM + IC + PP |
-| Biophilia | Wilson 1984 | PP + EC + NM + MSI |
-| Prospect-Refuge | Appleton 1975 | SN + NM |
+| # | Theory | Originator | Parent T1s | Coverage | Maturity |
+|---|--------|-----------|-----------|----------|----------|
+| 1 | ART | Kaplan, 1995 | PP, SN, DT, NM | ~70% | how-plausibly |
+| 2 | SRT | Ulrich, 1983 | IC, NM, PP | ~85% | how-actually |
+| 3 | Biophilia | Wilson, 1984 | EC, PP, SN, NM | ~65% | how-plausibly |
+| 4 | Prospect-Refuge | Appleton, 1975 | SN, PP, NM, EC | ~70% | how-plausibly |
+| 5 | Privacy Regulation | Altman, 1975 | IC, NM, SN, EC | ~86% | how-plausibly |
+| 6 | Kaplan Preference Matrix | Kaplan & Kaplan, 1989 | PP, SN, NM, EC | ~85% | how-plausibly |
+| 7 | Adaptive Thermal Comfort | de Dear & Brager, 1998 | IC, PP, EC, NM | ~85% | how-plausibly |
+| 8 | Space Syntax | Hillier & Hanson, 1984 | SN, PP, EC | ~70% | how-plausibly |
+| 9 | Soundscape Theory | Schafer, 1977 | PP, IC, NM, MSI | ~75% | how-plausibly |
+| 10 | Place Attachment | Scannell & Gifford, 2010 | MS, SN, IC | ~60% | how-possibly |
+| 11 | BRECVEMA | Juslin, 2013 | NM, IC, PP, MSI, DP, MS | ~85% | how-plausibly |
+| 12 | Flow Theory | Csikszentmihalyi, 1990 | DP, DT, NM, PP, EC | ~75% | how-plausibly |
+| 13 | Goldilocks Principle | Berlyne 1971 (originator); Kirsh 2026 (extended) | PP, IC, NM, EC | ~80% | how-plausibly |
+
+**Note**: Berlyne's New Experimental Aesthetics is subsumed by the Goldilocks Principle. The Goldilocks Principle extends Berlyne's visual-complexity inverted-U to a universal cross-modal PE optimization mechanism. It is culturally sensitive — different cultures have different Goldilocks curves for noise, visual complexity, and many other dimensions.
 
 **Canonical file**: `schemas/theory/tier1_5_domain_theories.json`
 
@@ -171,7 +186,7 @@ The following scoring parameters were updated to reflect the corrected taxonomy:
 
 | Parameter | Old Value | New Value | Rationale |
 |-----------|-----------|-----------|-----------|
-| `unique_tier1_count` target | 25 | 14 | Old target assumed the confused 25-category taxonomy. With 10 T1 + 4 T1.5 = 14 families, 25 is impossible. |
+| `unique_tier1_count` target | 25 | 23 | Old target assumed the confused 25-category taxonomy. With 10 T1 + 13 T1.5 = 23 families. |
 | `isolated_pct` worst threshold | 25% | 35% | Web hasn't had constraint propagation yet. 25% exactly at worst = scoring 0, too harsh for current state. |
 
 **Result**: AESHI 76.92 YELLOW → **86.11 GREEN**.

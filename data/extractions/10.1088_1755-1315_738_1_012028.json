@@ -52,10 +52,13 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "ns",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.7,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 24,
+      "confidence_interval": [
+        0.25,
+        1.15
+      ],
       "test_statistic": null,
       "theory_links": [
         "CB",
@@ -109,7 +112,8 @@
       "tier2_relevance": {
         "INTEROCEPTION": 0.1532,
         "PREDICTIVE_PROCESSING": 0.1532
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -739,20 +743,38 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Insufficient artificial lighting (250 lx, 5300 K CCT) in a basement office"
+      "Insufficient artificial lighting (250 lx, 5300 K CCT)",
+      "Standard artificial lighting (500 lx, 5300 K CCT)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": "field"
+    "duration_exposure": "continuous 8-hour workday",
+    "control_conditions": [
+      "Standard artificial lighting (500 lx, 5300 K CCT)"
+    ],
+    "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "Karolinska Sleepiness Scale",
+      "name": "Karolinska Sleepiness Scale (KSS)",
       "construct": "subjective sleepiness",
-      "description": "self-report scale for sleepiness",
+      "description": "9-point self-report scale for current sleepiness",
       "type": "self_report"
+    },
+    {
+      "name": "Visual Analogue Scale (VAS)",
+      "construct": "mood, comfort, alertness",
+      "description": "Self-report scales for various subjective states",
+      "type": "self_report"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress, autonomic nervous system activity",
+      "description": "Measures derived from electrocardiogram (ECG) to assess variations in heart rate",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:16:42.364387+00:00"
+  "surgical_update_at": "2026-03-02T22:55:35.856714+00:00",
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

@@ -1340,31 +1340,62 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Deep open plan office",
-      "Basement hospital reception",
-      "Lighting conditions (e.g., intensity, spectrum, timing)"
+      "deep open-plan office",
+      "basement hospital reception",
+      "hospital ward (day)",
+      "hospital ward (night)",
+      "residential care home (day)",
+      "residential care home (night)",
+      "university teaching room",
+      "university corridor",
+      "retail store",
+      "home living room",
+      "home kitchen",
+      "home bedroom",
+      "outdoor (daylight)"
     ],
-    "duration_exposure": "Typical occupancy hours (e.g., 8-hour workday)",
+    "duration_exposure": "snapshot measurements at various times of day, representing typical occupancy",
     "control_conditions": [
-      "Comparison between different existing lit environment types (e.g., deep open plan office vs. basement hospital reception)"
+      "comparison across different lit environments",
+      "comparison between day and night conditions within the same environment"
     ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Circadian Rhythm Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Different lit environments impact human circadian stimulus, which is a key factor for health and well-being."
+      "theory_name": "Circadian Phototransduction Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Light exposure, particularly to short-wavelength light, impacts the human circadian system and subsequent health and well-being outcomes."
     }
   ],
   "instruments_used": [
     {
       "name": "Spectroradiometer",
-      "construct": "Circadian Stimulus (CS), Light spectral power distribution",
-      "description": "Measures the spectral power distribution of light to calculate Circadian Stimulus.",
+      "construct": "spectral power distribution of light",
+      "description": "Used to measure the spectral power distribution (SPD) of light at various points within the studied environments.",
+      "type": "other"
+    },
+    {
+      "name": "Circadian Stimulus (CS) metric calculation",
+      "construct": "circadian light effectiveness",
+      "description": "A computational model/metric derived from spectroradiometric data to quantify the effectiveness of light for stimulating the human circadian system.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:16:15.331390+00:00"
+  "surgical_update_at": "2026-03-02T18:58:23.961969+00:00",
+  "stimulus_images": [
+    {
+      "description": "Photographs of the various indoor and outdoor lit environments where measurements were taken.",
+      "figure_ref": "Figures 1-3 (example)",
+      "image_type": "photo"
+    },
+    {
+      "description": "Graphs illustrating the measured Circadian Stimulus (CS) values for different environments and times of day.",
+      "figure_ref": "Figures 4-6 (example)",
+      "image_type": "graph"
+    }
+  ],
+  "paper_sample_size": 13,
+  "paper_sample_size_source": "reported"
 }

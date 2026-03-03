@@ -1,37 +1,23 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from types import SimpleNamespace
 
 from src.epistemic.gap_types import GapType
 from src.queue import CollectorProfile, CollectorType, ResearchQueueService, TargetStatus
+from tests.conftest import FakeGap, FakeGapPredictor
 
 
-@dataclass
-class _FakeGap:
-    gap_id: str
-    gap_type: GapType
-    description: str
-    voi_score: float
-    affected_beliefs: list[str]
-    implied_by: list[str]
 
 
-class _FakeGapPredictor:
-    def __init__(self, gaps: list[_FakeGap]):
-        self._gaps = gaps
-
-    def find_all_gaps(self, max_gaps: int = 50):
-        return SimpleNamespace(gaps=self._gaps[:max_gaps])
 
 
 def _service(tmp_path):
     svc = ResearchQueueService(
         web=SimpleNamespace(beliefs={}),
-        gap_predictor=_FakeGapPredictor(
+        gap_predictor=FakeGapPredictor(
             [
-                _FakeGap("g1", GapType.DIRECTION, "direction conflict", 0.9, ["b1"], []),
-                _FakeGap("g2", GapType.MECHANISM, "missing mechanism", 0.5, ["b2"], []),
+                FakeGap("g1", GapType.DIRECTION, "direction conflict", 0.9, ["b1"], []),
+                FakeGap("g2", GapType.MECHANISM, "missing mechanism", 0.5, ["b2"], []),
             ]
         ),
         queue_path=tmp_path / "dashboard_queue.json",

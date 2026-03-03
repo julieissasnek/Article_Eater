@@ -1334,52 +1334,66 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Exposure to certain environments, particularly natural settings, can restore directed attention and alleviate mental fatigue."
-    },
-    {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "assumes",
-      "specific_claim": "Non-threatening natural environments can elicit physiological and psychological relaxation, thereby reducing stress."
-    },
-    {
-      "theory_name": "Environmental Load Theory",
+      "theory_name": "Stress Reduction Theory (SRT)",
       "commitment_type": "proposes",
-      "specific_claim": "Excessive or insufficient environmental stimulation (load) can lead to negative psychological and physiological outcomes, including stress and boredom."
+      "specific_claim": "Exposure to certain environments, particularly natural ones, can rapidly reduce physiological and psychological stress, leading to restoration."
     },
     {
-      "theory_name": "Biophilia Hypothesis",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "assumes",
-      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems, which has positive implications for health and well-being."
+      "specific_claim": "Restorative environments, often natural, can help individuals recover from mental fatigue and restore directed attention capacity."
+    },
+    {
+      "theory_name": "Psycho-evolutionary Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Human responses to environments are shaped by evolutionary predispositions, leading to innate preferences for certain features (e.g., savanna-like landscapes, water) and aversion to others (e.g., threats, lack of refuge)."
+    },
+    {
+      "theory_name": "Environmental Load Theory / Stimulus Overload",
+      "commitment_type": "proposes",
+      "specific_claim": "Excessive, incoherent, or unpredictable environmental stimulation can lead to cognitive overload, increased physiological arousal, and psychological stress."
     }
   ],
   "mechanism_chain": {
-    "description": "Environmental stressors, such as extremes of stimulus intensity or incoherent patterns, lead to increased environmental load and overstimulation, which in turn triggers heightened physiological arousal and culminates in psychological stress.",
+    "description": "The paper outlines several causal mechanisms by which architectural and environmental features influence human health, primarily through perceptual, cognitive, and affective pathways leading to stress or restoration.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Extremes of stimulus intensity, very complex, or incoherent patterns of stimulation (e.g., loud noise, crowding)",
-        "to_construct": "Increased environmental load/overstimulation",
-        "mechanism_type": "perceptual",
+        "from_construct": "Extremes of stimulus intensity (e.g., loud noise, bright light, strong smells, crowding, close interpersonal distances)",
+        "to_construct": "Sensory overload / Cognitive load",
+        "mechanism_type": "perceptual|cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Increased environmental load/overstimulation",
-        "to_construct": "Heightened physiological arousal (e.g., sympathetic nervous system activation, increased cortisol)",
-        "mechanism_type": "physiological",
+        "from_construct": "Sensory overload / Cognitive load",
+        "to_construct": "Increased physiological arousal / Negative affect",
+        "mechanism_type": "physiological|affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Heightened physiological arousal",
-        "to_construct": "Experience of psychological stress (e.g., anxiety, irritability, frustration)",
+        "from_construct": "Increased physiological arousal / Negative affect",
+        "to_construct": "Psychological stress / Reduced well-being",
         "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Exposure to natural views / elements (e.g., vegetation, water)",
+        "to_construct": "Positive affect / Reduced physiological arousal",
+        "mechanism_type": "affective|physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 5,
+        "from_construct": "Positive affect / Reduced physiological arousal",
+        "to_construct": "Stress reduction / Restoration of directed attention",
+        "mechanism_type": "affective|cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:33:12.725498+00:00"
+  "surgical_update_at": "2026-03-02T23:28:59.964789+00:00"
 }

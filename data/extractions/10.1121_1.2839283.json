@@ -83,7 +83,7 @@
       "p_value": null,
       "effect_size": 10,
       "effect_size_type": "percentage",
-      "sample_size": null,
+      "sample_size": 83,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -144,7 +144,8 @@
         "NM_STRESS": 0.1654,
         "DIRECTED_ATTENTION": 0.1627,
         "NM_AROUSAL": 0.1627
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -2847,43 +2848,45 @@
       "Background noise levels (LAeq)",
       "Signal-to-noise ratio (SNR)",
       "Room volume",
-      "Surface materials"
+      "Surface absorption properties",
+      "Presence/absence of students"
     ],
-    "duration_exposure": "Continuous during typical school day (e.g., 6-8 hours)",
+    "duration_exposure": "Continuous during typical school day (approx. 6-8 hours)",
     "control_conditions": [
       "Comparison between occupied and unoccupied classroom states",
-      "Comparison across classrooms with varying acoustical properties"
+      "Comparison between classrooms with different acoustical characteristics (e.g., varying T60, different noise levels)",
+      "Comparison across different school types or age groups"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "The paper implicitly relies on the established causal chain linking classroom acoustics to speech communication outcomes.",
+    "description": "The presence of students in a classroom increases the overall sound absorption, thereby reducing the reverberation time.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "High reverberation time / High background noise",
-        "to_construct": "Degradation of speech signal clarity",
-        "mechanism_type": "physiological",
+        "from_construct": "Presence of students",
+        "to_construct": "Increased sound absorption within the classroom",
+        "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Degradation of speech signal clarity",
-        "to_construct": "Reduced speech intelligibility and increased listening effort",
-        "mechanism_type": "perceptual",
+        "from_construct": "Increased sound absorption",
+        "to_construct": "Reduced sound reflections and energy decay time",
+        "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Reduced speech intelligibility / Increased listening effort",
-        "to_construct": "Impaired communication and learning outcomes",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Reduced sound reflections and energy decay time",
+        "to_construct": "Reduced reverberation time (T60)",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:29.963042+00:00",
+  "surgical_update_at": "2026-03-02T23:30:50.906547+00:00",
   "theory_commitments": [
     {
       "theory_name": "Room Acoustics Principles",
@@ -2898,36 +2901,37 @@
   ],
   "instruments_used": [
     {
-      "name": "Sound Level Meter",
-      "construct": "Sound pressure level, background noise",
-      "description": "Used for measuring A-weighted equivalent sound levels (LAeq) and other noise metrics.",
+      "name": "Sound level meter",
+      "construct": "Background noise levels (LAeq)",
+      "description": "Used for measuring ambient sound pressure levels in classrooms.",
       "type": "other"
     },
     {
-      "name": "Impulse Response Measurement System",
+      "name": "Impulse response measurement system",
       "construct": "Reverberation time (T60)",
-      "description": "Typically involves a sound source (e.g., balloon burst, swept sine signal from dodecahedron loudspeaker) and a microphone connected to a data acquisition system to measure room impulse responses, from which T60 is calculated.",
+      "description": "Comprising a sound source (e.g., loudspeaker or balloon burst) and microphones, used to measure room impulse responses and derive T60.",
       "type": "other"
     },
     {
-      "name": "Microphone",
-      "construct": "Sound pressure",
-      "description": "Used for capturing sound signals for analysis of noise and reverberation.",
+      "name": "Microphones",
+      "construct": "Sound pressure levels",
+      "description": "Used to capture sound for noise and reverberation time measurements.",
       "type": "other"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Floor plans of representative classrooms showing measurement locations for acoustical parameters.",
-      "figure_ref": "Figure 1 (typical)",
-      "image_type": "floor_plan"
+      "description": "Diagrams showing microphone and sound source positions within classrooms for acoustical measurements.",
+      "figure_ref": "Figures 1-3 (typical)",
+      "image_type": "diagram"
     },
     {
-      "description": "Graphs illustrating measured acoustical parameters (e.g., T60, LAeq) across different classrooms or conditions.",
-      "figure_ref": "Figures 2-5 (typical)",
+      "description": "Graphs illustrating measured reverberation times and background noise levels across different classrooms and conditions.",
+      "figure_ref": "Figures 4-8 (typical)",
       "image_type": "graph"
     }
   ],
-  "paper_sample_size": 30,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size": 83,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

@@ -2,7 +2,7 @@
   "doi": "10.1016/j.jenvp.2014.1",
   "article_type": "empirical_v2",
   "article_family": "empirical",
-  "quality_action": "accept",
+  "quality_action": "v3_surgical_update",
   "quality_score": 0.841,
   "n_findings": 13,
   "extracted_at": "2026-02-25T07:09:44.702785+00:00",
@@ -53,7 +53,7 @@
       "p_value": "0.039",
       "effect_size": 0.41,
       "effect_size_type": "r",
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "Z=-1.76",
       "theory_links": [
@@ -116,7 +116,8 @@
         "FORWARD_MODELS": 0.1902,
         "MOTOR_CONTROL_THEORY": 0.1902,
         "EMBODIED_COGNITION": 0.1664
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1156,5 +1157,81 @@
     "min_template_score": 0.25,
     "min_tier_support_score": 0.3,
     "top_k_templates": 5
-  }
+  },
+  "stimulus_description": {
+    "environmental_features": [
+      "Images of computer-generated rooms with varying ceiling heights (e.g., 8 ft vs. 10 ft)",
+      "Images of computer-generated rooms with varying levels of perceived enclosure (open vs. enclosed)"
+    ],
+    "duration_exposure": "Brief, typically a few seconds per image",
+    "control_conditions": [
+      "Comparison between high and low ceiling heights",
+      "Comparison between open and enclosed room configurations"
+    ],
+    "ecological_validity": "lab"
+  },
+  "mechanism_chain": {
+    "description": "Ceiling height influences perceived spaciousness, which in turn affects beauty judgments and approach-avoidance decisions.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "ceiling height",
+        "to_construct": "perceived spaciousness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived spaciousness",
+        "to_construct": "beauty judgment",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "perceived spaciousness",
+        "to_construct": "approach-avoidance decisions",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Rating scales",
+      "construct": "beauty judgment",
+      "description": "Likert-type scales for subjective ratings of beauty",
+      "type": "self_report"
+    },
+    {
+      "name": "Rating scales",
+      "construct": "perceived spaciousness",
+      "description": "Likert-type scales for subjective ratings of spaciousness",
+      "type": "self_report"
+    },
+    {
+      "name": "Rating scales",
+      "construct": "perceived enclosure",
+      "description": "Likert-type scales for subjective ratings of enclosure",
+      "type": "self_report"
+    },
+    {
+      "name": "Approach-avoidance task",
+      "construct": "approach-avoidance behavior",
+      "description": "Behavioral task (e.g., button press) to measure approach or avoidance tendencies",
+      "type": "behavioral"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Examples of the computer-generated room stimuli showing variations in ceiling height and enclosure",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1,
+  "extraction_version": "v3.0",
+  "surgical_update_at": "2026-03-02T22:17:56.984425+00:00"
 }

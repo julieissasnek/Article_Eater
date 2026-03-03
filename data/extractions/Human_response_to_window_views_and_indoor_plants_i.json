@@ -61,10 +61,13 @@
       "claim_type": "causal",
       "measure_type": "neural",
       "p_value": "<0.01",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.65,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 42,
+      "confidence_interval": [
+        0.21,
+        1.09
+      ],
       "test_statistic": "F(5,32)=3.32",
       "theory_links": [],
       "template_ids": [],
@@ -76,7 +79,8 @@
       "outcome_id": "behav.activity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1600,63 +1604,74 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "window views (city view)",
-      "no window view",
-      "indoor plants (present)",
-      "no indoor plants"
+      "Office with city view and indoor plants",
+      "Office with city view and no indoor plants",
+      "Office with no window view and indoor plants",
+      "Office with no window view and no indoor plants"
     ],
-    "duration_exposure": "likely short-term, e.g., 15-30 minutes, for EEG measurement in a controlled setting",
+    "duration_exposure": "20 minutes per condition",
     "control_conditions": [
-      "office without window view and no indoor plants",
-      "office with city view only",
-      "office with indoor plants only"
+      "Office with no window view and no indoor plants"
     ],
     "ecological_validity": "semi-naturalistic"
   },
   "instruments_used": [
     {
-      "name": "Electroencephalography (EEG)",
-      "construct": "Brain activity (e.g., alpha wave activity)",
-      "description": "Measures electrical activity of the brain via electrodes placed on the scalp.",
+      "name": "EEG",
+      "construct": "brain activity (alpha waves)",
+      "description": "Electroencephalography system used to record brain electrical activity from multiple scalp electrodes, focusing on alpha wave power in specific regions.",
       "type": "eeg"
     },
     {
-      "name": "Self-report questionnaires",
-      "construct": "Mood, stress, perceived restorativeness, environmental perception",
-      "description": "Likely included scales for subjective experience of the environment and emotional states.",
+      "name": "PANAS",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current positive and negative mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Restorativeness Scale (PRS)",
+      "construct": "perceived restorativeness",
+      "description": "Self-report questionnaire assessing the perceived restorative qualities of the environment, including 'being away', 'fascination', 'extent', and 'compatibility'.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:32:10.080039+00:00",
+  "surgical_update_at": "2026-03-02T22:43:08.217079+00:00",
   "theory_commitments": [
     {
       "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural elements (like window views of nature or indoor plants) can restore directed attention and reduce mental fatigue, leading to improved cognitive and physiological states."
+      "specific_claim": "Exposure to natural elements (plants, window views) can restore directed attention and reduce mental fatigue, leading to changes in physiological markers like EEG alpha activity."
     },
     {
       "theory_name": "Stress Reduction Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments can elicit positive emotional states and reduce physiological stress, promoting recovery from stressors."
+      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress, which can be reflected in brain activity patterns."
     }
   ],
   "mechanism_chain": {
-    "description": "Visual access to natural elements (plants, window views) reduces cognitive load and stress, leading to changes in brain activity (e.g., alpha waves) indicative of relaxation or restoration.",
+    "description": "Exposure to natural elements (plants, window views) elicits involuntary attention (fascination), allowing directed attention to rest. This restorative process reduces cognitive load and stress, leading to changes in brain activity (e.g., increased alpha waves associated with relaxation and wakeful rest).",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual access to natural elements (plants, window views)",
-        "to_construct": "Reduced cognitive effort/stress",
-        "mechanism_type": "cognitive|affective",
+        "from_construct": "exposure to natural elements (plants, window views)",
+        "to_construct": "involuntary attention (fascination)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Reduced cognitive effort/stress",
-        "to_construct": "Changes in brain activity (e.g., alpha waves)",
-        "mechanism_type": "neural|physiological",
-        "evidence_strength": "direct"
+        "from_construct": "involuntary attention (fascination)",
+        "to_construct": "restoration of directed attention / reduction of mental fatigue",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "restoration of directed attention / reduction of mental fatigue",
+        "to_construct": "increased EEG alpha wave activity",
+        "mechanism_type": "neural",
+        "evidence_strength": "indirect"
       }
     ]
   },
@@ -1667,6 +1682,7 @@
       "image_type": "photo"
     }
   ],
-  "paper_sample_size": 60,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size": 42,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

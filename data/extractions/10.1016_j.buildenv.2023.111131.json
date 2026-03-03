@@ -4791,16 +4791,90 @@
   "stimulus_description": {
     "environmental_features": [
       "naturally ventilated university classrooms",
-      "background noise levels"
+      "varying levels of background noise (e.g., speech, HVAC noise)",
+      "natural ventilation conditions"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "during regular class sessions (e.g., 1-2 hours per session)",
     "control_conditions": [
-      "varying background noise conditions"
+      "different noise conditions (e.g., lower vs. higher background noise)",
+      "comparison across different classroom acoustic environments"
     ],
     "ecological_validity": "field"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:11.595192+00:00",
-  "paper_sample_size": 250,
-  "paper_sample_size_source": "estimated"
+  "surgical_update_at": "2026-03-02T23:30:36.667210+00:00",
+  "paper_sample_size": 180,
+  "paper_sample_size_source": "estimated",
+  "mechanism_chain": {
+    "description": "Background noise in naturally ventilated classrooms impacts students' perceived acoustic comfort, which subsequently influences their productivity and engagement levels. This relationship is moderated by individual differences in students' noise sensitivity.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "background noise level",
+        "to_construct": "perceived acoustic comfort",
+        "mechanism_type": "perceptual|affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived acoustic comfort",
+        "to_construct": "cognitive load/distraction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "cognitive load/distraction",
+        "to_construct": "productivity",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "cognitive load/distraction",
+        "to_construct": "engagement level",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "student noise sensitivity",
+        "to_construct": "moderation of background noise impact on acoustic comfort/cognitive load",
+        "mechanism_type": "cognitive|affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Sound level meter",
+      "construct": "background noise level",
+      "description": "Measures sound pressure levels (e.g., dB(A)) within the classrooms.",
+      "type": "physiological"
+    },
+    {
+      "name": "Acoustic comfort questionnaire",
+      "construct": "acoustic comfort",
+      "description": "Self-report scale assessing students' satisfaction and comfort with the acoustic environment.",
+      "type": "self_report"
+    },
+    {
+      "name": "Productivity questionnaire",
+      "construct": "perceived productivity",
+      "description": "Self-report scale assessing students' perception of their own productivity during class.",
+      "type": "self_report"
+    },
+    {
+      "name": "Engagement questionnaire",
+      "construct": "engagement level",
+      "description": "Self-report scale assessing students' level of engagement with learning activities.",
+      "type": "self_report"
+    },
+    {
+      "name": "Noise Sensitivity Scale",
+      "construct": "noise sensitivity",
+      "description": "Standardized self-report questionnaire to assess individual differences in sensitivity to noise.",
+      "type": "self_report"
+    }
+  ]
 }

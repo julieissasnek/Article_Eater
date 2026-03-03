@@ -463,24 +463,50 @@
     "The extent to which cognitive fatigue from auditory information affects nonauditory tasks has mixed empirical support."
   ],
   "mechanism_chain": {
-    "description": "The paper theoretically considers how unfavorable reverberation time increases cognitive load during speech communication, thereby reducing speech intelligibility.",
+    "description": "Unfavorable reverberation time acoustically degrades the speech signal, necessitating increased listening effort, which elevates cognitive load and consequently reduces speech intelligibility.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Unfavorable reverberation time (RT)",
-        "to_construct": "Cognitive Load",
-        "mechanism_type": "perceptual|cognitive",
+        "to_construct": "Acoustic degradation of speech signal",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Cognitive Load",
-        "to_construct": "Speech intelligibility",
+        "from_construct": "Acoustic degradation of speech signal",
+        "to_construct": "Increased listening effort",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased listening effort",
+        "to_construct": "Elevated cognitive load",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Elevated cognitive load",
+        "to_construct": "Reduced speech intelligibility",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:28:48.273259+00:00"
+  "surgical_update_at": "2026-03-02T23:25:28.031967+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "extends",
+      "specific_claim": "Excessive reverberation increases extraneous cognitive load during speech processing by demanding more cognitive resources for signal decoding."
+    },
+    {
+      "theory_name": "Effortful Listening Hypothesis",
+      "commitment_type": "proposes",
+      "specific_claim": "Increased listening effort due to unfavorable reverberation consumes cognitive resources, leading to higher cognitive load and reduced comprehension."
+    }
+  ]
 }

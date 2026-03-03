@@ -3418,55 +3418,60 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:31:29.102868+00:00",
+  "surgical_update_at": "2026-03-02T23:27:46.214328+00:00",
   "mechanism_chain": {
-    "description": "Describes the causal mechanism by which active materials generate haptic feedback for user perception.",
+    "description": "The paper describes how active materials convert various forms of energy (e.g., electrical, mechanical, thermal) into mechanical stimuli or electrical signals for haptic feedback or sensing. For piezoresistive sensors, the mechanism involves mechanical deformation altering electrical resistance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Electrical/Magnetic/Thermal input signal",
-        "to_construct": "Active material property change (e.g., voltage applied to piezoelectric material)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "assumed"
+        "from_construct": "Mechanical deformation (e.g., pressure, strain) applied to piezoresistive material",
+        "to_construct": "Change in the electrical resistance of the material",
+        "mechanism_type": "physical",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Active material property change",
-        "to_construct": "Mechanical deformation or force generation by active material",
-        "mechanism_type": "physiological",
+        "from_construct": "Change in electrical resistance",
+        "to_construct": "Generation of a measurable electrical signal (e.g., voltage or current change)",
+        "mechanism_type": "electrical",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Mechanical deformation or force generation",
-        "to_construct": "Stimulation of mechanoreceptors in human skin",
-        "mechanism_type": "physiological",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Stimulation of mechanoreceptors",
-        "to_construct": "Perception of haptic sensation (e.g., pressure, vibration, texture) by the user",
-        "mechanism_type": "neural",
+        "from_construct": "Electrical signal",
+        "to_construct": "Detection and interpretation by a readout circuit, translating into quantifiable tactile input (e.g., pressure level)",
+        "mechanism_type": "engineering",
         "evidence_strength": "direct"
       }
     ]
   },
   "stimulus_images": [
     {
-      "description": "Schematic diagrams illustrating the working principles and structural designs of various active materials (e.g., piezoelectric, electroactive, magnetostrictive polymers) used for haptic feedback.",
-      "figure_ref": "Figure 1, Figure 2, etc.",
+      "description": "Schematic diagrams illustrating the working principles of various active materials (e.g., piezoelectric, electroactive polymers, shape memory alloys) for haptic actuation and sensing.",
+      "figure_ref": "Figure 1",
       "image_type": "diagram"
     },
     {
-      "description": "Renderings or photographs of prototype haptic devices incorporating active materials, demonstrating their form factors and integration into wearable or surface-based systems.",
-      "figure_ref": "Figure 3, Figure 4, etc.",
+      "description": "Illustrations of different designs and configurations of haptic sensors and actuators, showcasing how active materials are integrated into flexible and stretchable devices.",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Conceptual renderings or prototype photographs of haptic feedback devices for virtual and augmented reality, such as haptic gloves, skins, or handheld controllers.",
+      "figure_ref": "Figure 3",
       "image_type": "rendering"
     },
     {
-      "description": "Graphs showing the performance characteristics of active materials and haptic devices, such as force output vs. input voltage, response time, sensitivity, or frequency response.",
-      "figure_ref": "Figure 5, Figure 6, etc.",
-      "image_type": "graph"
+      "description": "Microscopic images (e.g., SEM, TEM) depicting the microstructure and morphology of advanced active materials discussed in the review.",
+      "figure_ref": "Figure 4",
+      "image_type": "photo"
+    }
+  ],
+  "theory_commitments": [
+    {
+      "theory_name": "Framework for Haptic Material Design and Application",
+      "commitment_type": "proposes",
+      "specific_claim": "Identifies key challenges, design considerations, and future opportunities for developing and integrating active materials into advanced haptic technologies for virtual and augmented reality."
     }
   ]
 }

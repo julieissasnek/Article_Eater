@@ -78,7 +78,7 @@
       "p_value": "ns",
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 96,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -145,7 +145,8 @@
         "EC": 0.1564,
         "IC": 0.151,
         "MS": 0.151
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1680,42 +1681,50 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Room size (small, medium, large)",
-      "Number of people in the room (e.g., 5, 9, 20)",
-      "Population density"
+      "room size (small, medium, large)",
+      "number of participants in a room"
     ],
-    "duration_exposure": "Approximately 30-45 minutes per experimental session",
+    "duration_exposure": "approximately 1 hour per experimental session",
     "control_conditions": [
-      "Varying levels of population density (e.g., low, medium, high density rooms)"
+      "lower population density conditions",
+      "less crowded room sizes"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Crossing-out task",
-      "construct": "Sustained attention, concentration, task performance",
-      "description": "Participants crossed out specific letters or symbols in a text",
+      "construct": "task performance",
+      "description": "A task requiring participants to cross out specific letters or symbols in a text.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Anagrams task",
+      "construct": "cognitive performance",
+      "description": "A task requiring participants to solve anagrams.",
       "type": "behavioral"
     },
     {
       "name": "Proofreading task",
-      "construct": "Attention to detail, error detection, task performance",
-      "description": "Participants identified errors in a text",
-      "type": "behavioral"
-    },
-    {
-      "name": "Anagrams",
-      "construct": "Problem-solving ability, cognitive performance",
-      "description": "Participants solved word puzzles",
+      "construct": "task performance",
+      "description": "A task requiring participants to identify errors in a text.",
       "type": "behavioral"
     },
     {
       "name": "Mood questionnaire",
-      "construct": "Mood, affect, emotional state",
-      "description": "Self-report questionnaire assessing feelings like pleasantness, anxiety, hostility",
+      "construct": "affect/mood",
+      "description": "Self-report measures of feelings such as discomfort, pleasantness, or anxiety.",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:39:53.009620+00:00"
+  "surgical_update_at": "2026-03-02T22:51:37.475077+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "General assumptions about the negative effects of crowding",
+      "commitment_type": "tests",
+      "specific_claim": "Increased population density universally leads to negative effects on human task performance and mood."
+    }
+  ],
+  "quantitative_backfill_count": 1
 }

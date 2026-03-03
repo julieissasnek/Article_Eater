@@ -2523,77 +2523,76 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Rooms with light-colour spruce wood material",
-      "Rooms with birch wood material",
-      "Control rooms with painted white walls"
+      "light-colour spruce wood room",
+      "dark-colour pine wood room",
+      "white-painted room"
     ],
     "duration_exposure": "15 minutes",
     "control_conditions": [
-      "Rooms with painted white walls"
+      "white-painted room"
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural elements, such as wood in indoor environments, can facilitate recovery from mental fatigue and improve directed attention."
+      "theory_name": "Biophilia Hypothesis",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans possess an innate tendency to connect with nature and natural elements, which can lead to positive psychological and physiological benefits."
     },
     {
-      "theory_name": "Stress Reduction Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "assumes",
-      "specific_claim": "Exposure to natural elements can reduce physiological and psychological stress, contributing to restorative experiences."
+      "specific_claim": "Environments containing natural elements can facilitate recovery from mental fatigue by engaging involuntary attention."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress."
     }
   ],
   "instruments_used": [
     {
       "name": "Perceived Restorativeness Scale (PRS)",
       "construct": "perceived restorativeness",
-      "description": "Self-report questionnaire measuring feelings of being away, fascination, extent, and compatibility.",
+      "description": "A self-report questionnaire measuring four components of restorativeness: Being Away, Fascination, Extent, and Compatibility.",
+      "type": "self_report"
+    },
+    {
+      "name": "Perceived Stress Scale (PSS)",
+      "construct": "perceived stress",
+      "description": "A self-report questionnaire measuring the degree to which situations in one's life are appraised as stressful.",
       "type": "self_report"
     },
     {
       "name": "Positive and Negative Affect Schedule (PANAS)",
       "construct": "positive and negative affect",
-      "description": "20-item self-report mood scale.",
+      "description": "A self-report questionnaire consisting of 20 items to measure current positive and negative mood states.",
       "type": "self_report"
-    },
-    {
-      "name": "Proofreading task",
-      "construct": "cognitive performance (sustained attention)",
-      "description": "A task designed to measure sustained attention and concentration by identifying errors in a text.",
-      "type": "behavioral"
-    },
-    {
-      "name": "Heart Rate Variability (HRV)",
-      "construct": "physiological stress/relaxation",
-      "description": "A measure of the variation in the time interval between heartbeats, reflecting autonomic nervous system activity.",
-      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:37:16.708752+00:00",
+  "surgical_update_at": "2026-03-02T22:49:24.884341+00:00",
   "mechanism_chain": {
-    "description": "Visual perception of wood's naturalness and biophilic qualities leads to positive affective responses and reduced stress, which in turn contribute to perceived restorativeness.",
+    "description": "Exposure to natural wood materials in indoor environments is proposed to enhance perceived naturalness and warmth, which in turn leads to reduced stress, improved mood, and increased restorative perceptions.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Wooden indoor environment",
-        "to_construct": "Perceived naturalness/biophilic qualities",
+        "from_construct": "wood material exposure",
+        "to_construct": "perceived naturalness",
         "mechanism_type": "perceptual",
         "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Perceived naturalness/biophilic qualities",
-        "to_construct": "Positive affect/reduced stress",
+        "from_construct": "perceived naturalness",
+        "to_construct": "reduced stress",
         "mechanism_type": "affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Positive affect/reduced stress",
-        "to_construct": "Perceived restorativeness",
+        "from_construct": "reduced stress",
+        "to_construct": "perceived restorativeness",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       }
@@ -2601,11 +2600,11 @@
   },
   "stimulus_images": [
     {
-      "description": "Experimental rooms featuring different wood materials (spruce, birch) and a control room with painted walls.",
+      "description": "Photos of the three experimental rooms used as stimuli: a room paneled with light-colour spruce wood, a room paneled with dark-colour pine wood, and a white-painted control room.",
       "figure_ref": "Figure 1",
       "image_type": "photo"
     }
   ],
-  "paper_sample_size": 100,
+  "paper_sample_size": 120,
   "paper_sample_size_source": "reported"
 }

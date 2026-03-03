@@ -8,7 +8,7 @@
 
 ### 128.1 The Problem: Informal Reasoning Doesn't Scale
 
-The ATLAS system web has approximately 130 nodes (93 calibrated T2 templates, 10 T1 frameworks, 10 T1.5 domain theories, 8 cross-cutting axioms, 2 working models, and a small number of stub and candidate nodes) connected by approximately 300–400 typed edges (reduction, bridge warrant (7 subtypes), competition, cross-template interaction, inheritance, working model, axiom, and partial-out). It can answer lookup queries ("what is the mechanism chain for ceiling height → creativity?") and compositional queries ("what is the expected compound effect?") through direct traversal of its graph structure.
+The ATLAS system web has approximately 130 nodes (93 calibrated T2 templates, 10 T1 frameworks, 13 T1.5 domain theories, 8 cross-cutting axioms, 2 working models, and a small number of stub and candidate nodes) connected by approximately 300–400 typed edges (reduction, bridge warrant (7 subtypes), competition, cross-template interaction, inheritance, working model, axiom, and partial-out). It can answer lookup queries ("what is the mechanism chain for ceiling height → creativity?") and compositional queries ("what is the expected compound effect?") through direct traversal of its graph structure.
 
 What it cannot do is reason formally over its own structure. When the system adopts the Barrett-Craig two-stage model, elevates AX4 (Perceived Control) to a formally recognised cross-cutting moderator, or defers Aesthetic Anchoring pending further evaluation, these decisions are informal expert judgments — the product of Crucible debate, calibration adjustment, and David's supervisory approval. They are *good* judgments, supported by extensive evidence and deliberation. But they are not *formally derivable* from explicit rules applied to the web's current state. A formal inference calculus would make them derivable — or, where the calculus disagrees with the informal judgment, would identify the disagreement as a diagnostic signal worth investigating.
 
@@ -1007,7 +1007,7 @@ The web's content is summarised in Table 1.
 | Component | Count | Description |
 |-----------|-------|-------------|
 | T1 Framework Theories | 10 | PP, Salience, DMN/Place Cells, Dual-Task, Neuromodulation, Interoception, Multisensory, Embodied, Circadian, Motor-Sensory |
-| T1.5 Domain Theories | 10 | Biophilia, Prospect-Refuge, ART, SRT, Fractal Fluency, Awe/Kama Muta, Space Syntax, Soundscape, Place Attachment, Aesthetic Anchoring (candidate) |
+| T1.5 Domain Theories | 13 | ART, SRT, Biophilia, Prospect-Refuge, Privacy Regulation, Kaplan Preference Matrix, Adaptive Thermal Comfort, Space Syntax, Soundscape, Place Attachment, BRECVEMA, Flow Theory, Goldilocks Principle |
 | T2 Calibrated Templates | ~93 | Specific mechanism chains with numerical parameters |
 | Cross-cutting Axioms | 8 | Dose-response, habituation, individual differences, cultural modulation, perceived control, temporal, neurodiversity, VR limitation |
 | Working Models | 2 | Barrett-Craig two-stage, Differential-mode |
@@ -1376,7 +1376,7 @@ Environmental psychology has accumulated decades of robust empirical findings—
 
 This paper introduces a computational system that generates mechanistic neural explanations for environmental psychology findings. The system operates at two complementary levels: (1) **Bayesian networks** that represent causal relationships between architectural features, neural states, and behavioral outcomes, supporting prediction and intervention; and (2) a **Web of Belief** that represents theoretical knowledge—what we believe about mechanisms, why we believe it, and how beliefs constrain each other.
 
-The theoretical foundation comprises 10 deep **T1 frameworks**—domain-general cognitive and neural theories: Predictive Processing (PP), Spatial Navigation (SN), Dual-Process Evaluation (DP), DMN/TPN Dynamics (DT), Neuromodulatory Systems (NM), Interoceptive/Constructionist Affect (IC), Memory Systems (MS), Embodied Cognition (EC), Chronobiological Regulation (CB), and Multisensory Integration (MSI). These are bridged to architecture by 12 **T1.5 theories**—domain-specific theories that decompose into T1 pathways: Attention Restoration Theory (ART), Stress Recovery Theory (SRT), Biophilia, Prospect-Refuge, Berlyne's Arousal Theory, Fractal Fluency, Privacy Regulation, Space Syntax, Soundscape, Place Attachment, Kaplan's Preference Matrix, and Adaptive Thermal Comfort (Kirsh et al., 2026a,b,c).
+The theoretical foundation comprises 10 deep **T1 frameworks**—domain-general cognitive and neural theories: Predictive Processing (PP), Spatial Navigation (SN), Dual-Process Evaluation (DP), DMN/TPN Dynamics (DT), Neuromodulatory Systems (NM), Interoceptive/Constructionist Affect (IC), Memory Systems (MS), Embodied Cognition (EC), Chronobiological Regulation (CB), and Multisensory Integration (MSI). These are bridged to architecture by 13 **T1.5 theories**—domain-specific theories that decompose into T1 pathways: Attention Restoration Theory (ART), Stress Recovery Theory (SRT), Biophilia, Prospect-Refuge, Privacy Regulation, Kaplan's Preference Matrix, Adaptive Thermal Comfort, Space Syntax, Soundscape, Place Attachment, BRECVEMA, Flow Theory, and Goldilocks Principle (Kirsh et al., 2026a,b,c).
 
 We demonstrate the system's power through 30 diverse examples—from ceiling height and creativity to threshold depth and psychological preparation—showing how it: (1) traces specific neural chains from perception to behavior, (2) reveals boundary conditions that emerge naturally from mechanisms, (3) predicts novel interactions between architectural features, (4) identifies high-value experiments, and (5) supports argumentation and critique through explicit representation of evidence and justification.
 
@@ -3558,7 +3558,7 @@ The result is a "super-expert" that represents the collective understanding of t
 
 ## 41. The Power of Mechanistic Understanding
 
-The 30 examples above, grounded in 10 T1 frameworks and 12 T1.5 domain theories, illustrate several key points:
+The 30 examples above, grounded in 10 T1 frameworks and 13 T1.5 domain theories, illustrate several key points:
 
 ### 18.1 Mechanisms Reveal Boundary Conditions
 

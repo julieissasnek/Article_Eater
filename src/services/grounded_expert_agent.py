@@ -62,7 +62,7 @@ except Exception:  # pragma: no cover - optional dependency path
 
 
 from enum import Enum
-from src.services.db_locator import resolve_web_db
+from src.services.db_locator import resolve_web_db, get_web_db
 
 
 class ExplanationLevel(Enum):

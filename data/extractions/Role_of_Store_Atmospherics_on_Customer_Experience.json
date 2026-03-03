@@ -679,20 +679,128 @@
   "minimum_safe_summary": "This paper presents two empirical studies investigating the restorative effects of natural environment experiences. Study 1, a quasi-experimental field study, compared wilderness backpacking to non-wilderness vacations and a control group, finding that backpacking led to increased overall happiness and improved proofreading performance (a measure of mental fatigue restoration) in the long term. Study 2, a true experiment, randomly assigned college students to a nature walk, an urban walk, or passive relaxation, demonstrating that the nature walk resulted in higher perceived restorativeness, increased positive affect, decreased anger/aggression, and better proofreading performance. While physiological measures did not show significant differences in Study 2, both studies provided convergent evidence from self-reports and cognitive performance for nature's restorative benefits. Limitations include the quasi-experimental nature and restricted sample of Study 1, and the delayed physiological measurements and early stage of the restorativeness scale in Study 2.",
   "stimulus_description": {
     "environmental_features": [
-      "wilderness backpacking",
-      "park walk"
+      "forest trails",
+      "urban streets",
+      "park settings",
+      "wilderness areas"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "e.g., '20 minutes' or 'multi-day'",
+    "control_conditions": [
+      "urban walk",
+      "indoor setting",
+      "reading a book indoors"
+    ],
     "ecological_validity": "field"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention, leading to improved cognitive performance."
+      "specific_claim": "Natural environments facilitate recovery from directed attention fatigue by engaging involuntary attention (soft fascination) and providing a sense of being away, extent, and compatibility, leading to improved cognitive function."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments reduces physiological and psychological stress through non-threatening, aesthetically pleasing stimuli, leading to positive affective states."
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:04:01.817221+00:00"
+  "surgical_update_at": "2026-03-02T23:35:15.160179+00:00",
+  "mechanism_chain": {
+    "description": "Exposure to natural environments elicits soft fascination and a sense of being away, which reduces directed attention fatigue and physiological stress, leading to improved cognitive performance and positive affect.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "natural environment exposure",
+        "to_construct": "soft fascination",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "soft fascination",
+        "to_construct": "reduced directed attention fatigue",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "reduced directed attention fatigue",
+        "to_construct": "improved cognitive performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "natural environment exposure",
+        "to_construct": "reduced physiological arousal",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 5,
+        "from_construct": "reduced physiological arousal",
+        "to_construct": "reduced psychological stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 6,
+        "from_construct": "reduced psychological stress",
+        "to_construct": "positive affect",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "20-item self-report questionnaire measuring current mood states.",
+      "type": "self_report"
+    },
+    {
+      "name": "Profile of Mood States (POMS)",
+      "construct": "mood states (tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "65-item self-report questionnaire assessing various mood dimensions.",
+      "type": "self_report"
+    },
+    {
+      "name": "Backwards Digit Span Task",
+      "construct": "directed attention, working memory",
+      "description": "Cognitive task requiring participants to recall sequences of numbers in reverse order.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Proofreading Task",
+      "construct": "directed attention, sustained attention",
+      "description": "Cognitive task requiring participants to identify and correct errors in a text.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Heart Rate Variability (HRV)",
+      "construct": "physiological stress, autonomic nervous system activity",
+      "description": "Measurement of the variation in time between heartbeats, often used as an indicator of stress and relaxation.",
+      "type": "physiological"
+    },
+    {
+      "name": "Salivary Cortisol",
+      "construct": "physiological stress",
+      "description": "Measurement of cortisol levels in saliva, a biomarker for stress.",
+      "type": "physiological"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Photographs of the natural environments used as stimuli (e.g., forest paths, park scenes)",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    },
+    {
+      "description": "Photographs of the urban environments used as control stimuli (e.g., city streets, commercial areas)",
+      "figure_ref": "Figure 1",
+      "image_type": "photo"
+    }
+  ]
 }

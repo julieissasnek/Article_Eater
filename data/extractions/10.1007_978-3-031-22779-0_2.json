@@ -11561,38 +11561,76 @@
     "top_k_templates": 5
   },
   "mechanism_chain": {
-    "description": "The paper describes how the physical properties of an acoustic environment are processed through human sensory, cognitive, and affective systems to form the subjective perceptual construct of a soundscape.",
+    "description": "The mechanism describes how the physical acoustic environment is transformed into the subjective perceptual construct of a soundscape, integrating sensory input with cognitive and affective processes.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Acoustic environment (physical properties)",
-        "to_construct": "Auditory system processing (detection and initial encoding)",
-        "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
+        "from_construct": "Physical Acoustic Environment (e.g., sound pressure levels, spectral content)",
+        "to_construct": "Auditory Sensation",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Auditory system processing",
-        "to_construct": "Cognitive interpretation (e.g., sound source identification, contextual understanding, memory association)",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Auditory Sensation",
+        "to_construct": "Perceptual Attributes (e.g., loudness, pitch, timbre, spatiality)",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Cognitive interpretation",
-        "to_construct": "Affective response (e.g., pleasantness, annoyance, arousal)",
-        "mechanism_type": "affective",
+        "from_construct": "Perceptual Attributes",
+        "to_construct": "Cognitive Interpretation and Affective Response (e.g., meaning-making, pleasantness, event identification, appropriateness)",
+        "mechanism_type": "cognitive|affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Integration of perceptual, cognitive, and affective processes",
-        "to_construct": "Soundscape (as holistic perceptual construct)",
-        "mechanism_type": "cognitive|affective|perceptual",
+        "from_construct": "Cognitive Interpretation and Affective Response",
+        "to_construct": "Soundscape (as perceptual construct)",
+        "mechanism_type": "cognitive|affective",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:37:21.718570+00:00"
+  "surgical_update_at": "2026-03-02T23:32:15.284484+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Acoustic Ecology",
+      "commitment_type": "assumes",
+      "specific_claim": "The environment is a musical composition, and humans are active listeners within it, shaping their perception of the soundscape."
+    },
+    {
+      "theory_name": "Ecological Psychology (Gibson)",
+      "commitment_type": "assumes",
+      "specific_claim": "Perception is direct and involves the detection of affordances in the environment, including the acoustic environment."
+    },
+    {
+      "theory_name": "Soundscape Approach (ISO 12913 series)",
+      "commitment_type": "proposes",
+      "specific_claim": "Soundscape is an environment as perceived or experienced by a person or people, in context, and is a perceptual construct distinct from the physical acoustic environment."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "Soundscape Quality Assessment Questionnaires",
+      "construct": "Perceived soundscape quality, pleasantness, eventfulness, appropriateness",
+      "description": "Standardized or custom self-report questionnaires used to assess subjective perception of sound environments, often based on ISO 12913-2/3 attributes.",
+      "type": "self_report"
+    },
+    {
+      "name": "Sound Level Meters / Acoustic Recorders",
+      "construct": "Objective acoustic parameters (e.g., LAeq, Lden, spectral analysis)",
+      "description": "Devices used to measure and record physical properties of the acoustic environment.",
+      "type": "other"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Conceptual model illustrating the components and processes involved in soundscape perception.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

@@ -58,7 +58,7 @@
       "p_value": "<0.0001",
       "effect_size": 0.21,
       "effect_size_type": "partial_eta_squared",
-      "sample_size": null,
+      "sample_size": 120,
       "confidence_interval": null,
       "test_statistic": "F(1,59)=15.81",
       "theory_links": [
@@ -118,7 +118,8 @@
         "PREDICTIVE_PROCESSING": 0.2854,
         "INTEROCEPTION": 0.1592,
         "ECOLOGICAL_RATIONALITY": 0.1502
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -204,7 +205,7 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "0.18",
-      "effect_size": 0.02,
+      "effect_size": null,
       "effect_size_type": "partial_eta_squared",
       "sample_size": null,
       "confidence_interval": null,
@@ -270,7 +271,9 @@
         "INTEROCEPTION": 0.1669,
         "HC": 0.1613,
         "ECOLOGICAL_RATIONALITY": 0.1512
-      }
+      },
+      "_original_effect_size": 0.02,
+      "_quarantine_reason": "Value 0.02 appears to be a p-value, not an effect size"
     },
     {
       "id": 4,
@@ -593,7 +596,7 @@
       "claim_type": "null",
       "measure_type": "self_report",
       "p_value": "0.19",
-      "effect_size": 0.02,
+      "effect_size": null,
       "effect_size_type": "partial_eta_squared",
       "sample_size": null,
       "confidence_interval": null,
@@ -655,7 +658,9 @@
         "IC": 0.1552,
         "CHRONOBIOLOGICAL": 0.1546,
         "NEUROMODULATORY": 0.1546
-      }
+      },
+      "_original_effect_size": 0.02,
+      "_quarantine_reason": "Value 0.02 appears to be a p-value, not an effect size"
     },
     {
       "id": 9,
@@ -975,7 +980,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, p.18",
-      "quote": "The excitement dimension (β=0.53, t=4.37, df=57, p<0.001) is the only predictor that explains 24.34% of the variance of the architectural variables in the presence score of model 1 in IVE.",
+      "quote": "The excitement dimension (\u03b2=0.53, t=4.37, df=57, p<0.001) is the only predictor that explains 24.34% of the variance of the architectural variables in the presence score of model 1 in IVE.",
       "outcome_id": "behav.engagement",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
@@ -1057,7 +1062,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, p.18",
-      "quote": "The fascination dimension (β=0.45, t= 2.69, df=56, p=0.009) is the only predictor that explains 8.35% of the variance of the architectural variables in the presence score of model 2 in IVE.",
+      "quote": "The fascination dimension (\u03b2=0.45, t= 2.69, df=56, p=0.009) is the only predictor that explains 8.35% of the variance of the architectural variables in the presence score of model 2 in IVE.",
       "outcome_id": "behav.engagement",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
@@ -1144,7 +1149,7 @@
       "moderators_reported": [],
       "provenance_depth": "table",
       "source": "Table 1, p.18",
-      "quote": "The excitement dimension (β=0.33, t=2.6, df=57, p=0.012) is the only predictor that explains 10.18% of the architectural variables' variance in the model's presence score, as seen in Table 1.",
+      "quote": "The excitement dimension (\u03b2=0.33, t=2.6, df=57, p=0.012) is the only predictor that explains 10.18% of the architectural variables' variance in the model's presence score, as seen in Table 1.",
       "outcome_id": "behav.engagement",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
@@ -4523,11 +4528,11 @@
   "tables": [
     {
       "table_id": "Table 1",
-      "description": "Hierarchical multiple regression on VE's and the presence score, showing beta weights, R, R², ΔR², ΔF, and df for different models in IVE and DTVE.",
+      "description": "Hierarchical multiple regression on VE's and the presence score, showing beta weights, R, R\u00b2, \u0394R\u00b2, \u0394F, and df for different models in IVE and DTVE.",
       "key_stats": [
-        "IVE Model 1: Excitement β=0.53, t=4.37, df=57, p<0.001, R²=0.27",
-        "IVE Model 2: Fascination β=0.45, t=2.69, df=56, p=0.009, R²=0.35",
-        "DTVE Model 1: Excitement β=0.33, t=2.6, df=57, p=0.012, R²=0.15"
+        "IVE Model 1: Excitement \u03b2=0.53, t=4.37, df=57, p<0.001, R\u00b2=0.27",
+        "IVE Model 2: Fascination \u03b2=0.45, t=2.69, df=56, p=0.009, R\u00b2=0.35",
+        "DTVE Model 1: Excitement \u03b2=0.33, t=2.6, df=57, p=0.012, R\u00b2=0.15"
       ],
       "n_findings_extracted_from": 3
     },
@@ -4641,18 +4646,64 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Interior spaces with curvilinear boundaries",
-      "Interior spaces with various space properties",
-      "Immersive Virtual Environments (IVE)",
-      "Desktop-based Virtual Environments (DTVE)"
+      "interior spaces with curvilinear boundaries",
+      "interior spaces with rectilinear boundaries",
+      "various space properties (e.g., ceiling height, spaciousness, lighting, color, materials)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "Desktop-based Virtual Environment (DTVE) as a comparison to Immersive Virtual Environment (IVE)",
-      "Spaces with curvilinear boundaries compared to spaces with other boundary types (e.g., rectilinear)"
+      "rectilinear boundary spaces",
+      "desktop-based virtual environment (DTVE)"
     ],
     "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:52:53.265564+00:00"
+  "surgical_update_at": "2026-03-02T23:30:24.806195+00:00",
+  "mechanism_chain": {
+    "description": "Proposed mechanism for how curvilinear boundaries influence aesthetic experience.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "curvilinear boundaries",
+        "to_construct": "perceived safety and comfort",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived safety and comfort",
+        "to_construct": "positive aesthetic experience",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Aesthetic Experience Questionnaire",
+      "construct": "aesthetic experience dimensions (e.g., familiarity, pleasantness, spaciousness, complexity)",
+      "description": "Self-report questionnaire measuring various dimensions of aesthetic experience in virtual environments.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Renderings of virtual interior spaces with curvilinear boundaries",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Renderings of virtual interior spaces with rectilinear boundaries",
+      "figure_ref": "Figure 1",
+      "image_type": "rendering"
+    },
+    {
+      "description": "Virtual environment setup for Immersive Virtual Environment (IVE) and Desktop-based Virtual Environment (DTVE)",
+      "figure_ref": "Figure 2",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 120,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

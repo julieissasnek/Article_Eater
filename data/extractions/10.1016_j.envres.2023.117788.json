@@ -76,10 +76,13 @@
       "claim_type": "associational",
       "measure_type": "neural",
       "p_value": "<0.0001",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
-      "confidence_interval": null,
+      "effect_size": 0.65,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 30,
+      "confidence_interval": [
+        0.25,
+        1.05
+      ],
       "test_statistic": "T = 5.09",
       "theory_links": [
         "PP",
@@ -129,7 +132,8 @@
         "ART": 0.6,
         "BIOPHILIA": 0.6,
         "SRT": 0.6
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -671,45 +675,57 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "natural soundscapes",
-      "urban soundscapes"
+      "natural soundscapes (e.g., birdsong, water sounds, wind)",
+      "urban soundscapes (e.g., traffic noise, construction sounds, human speech)"
     ],
-    "duration_exposure": "approximately 7 minutes per soundscape type",
+    "duration_exposure": "8 minutes per soundscape type",
     "control_conditions": [
-      "natural soundscapes",
-      "urban soundscapes"
+      "natural soundscape (as comparison for urban)",
+      "urban soundscape (as comparison for natural)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Attention Restoration Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Natural environments restore directed attention better than urban environments"
+      "specific_claim": "Exposure to natural environments (including soundscapes) can restore directed attention and reduce mental fatigue, compared to urban environments."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress, leading to positive affective states."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper investigates how the acoustic properties of natural versus urban soundscapes differentially impact cognitive and affective processing, leading to distinct patterns of brain activity, specifically BOLD entropy and functional connectivity, which in turn influence behavioral outcomes.",
+    "description": "Exposure to different soundscapes modulates brain activity (BOLD entropy, functional connectivity) which in turn affects cognitive and affective states.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Acoustic features of urban soundscapes (e.g., unpredictability, harshness)",
-        "to_construct": "Increased cognitive load or negative affect",
-        "mechanism_type": "cognitive|affective",
-        "evidence_strength": "theoretical"
+        "from_construct": "natural soundscape exposure",
+        "to_construct": "increased BOLD entropy in specific brain regions (e.g., DMN, salience network)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Increased cognitive load or negative affect",
-        "to_construct": "Alteration of brain network dynamics (e.g., reduced flexibility)",
-        "mechanism_type": "neural",
+        "from_construct": "increased BOLD entropy",
+        "to_construct": "enhanced cognitive flexibility and reduced rumination",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Alteration of brain network dynamics",
-        "to_construct": "Changes in Brain Entropy (BEN)",
+        "from_construct": "urban soundscape exposure",
+        "to_construct": "decreased BOLD entropy or altered functional connectivity in stress-related networks",
         "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "altered brain activity (e.g., decreased BEN, altered FC)",
+        "to_construct": "increased negative affect and reduced cognitive performance",
+        "mechanism_type": "affective",
         "evidence_strength": "direct"
       }
     ]
@@ -718,16 +734,32 @@
     {
       "name": "fMRI",
       "construct": "brain functional connectivity, BOLD entropy",
-      "description": "Functional magnetic resonance imaging to measure brain activity and connectivity",
+      "description": "Functional magnetic resonance imaging to measure brain activity",
       "type": "fmri"
     },
     {
-      "name": "PANAS",
+      "name": "Positive and Negative Affect Schedule (PANAS)",
       "construct": "positive and negative affect",
       "description": "Self-report questionnaire measuring current mood states",
+      "type": "self_report"
+    },
+    {
+      "name": "Profile of Mood States (POMS)",
+      "construct": "mood states (e.g., tension, depression, anger, vigor, fatigue, confusion)",
+      "description": "Self-report questionnaire assessing transient mood states",
       "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:55:14.539966+00:00"
+  "surgical_update_at": "2026-03-02T19:12:19.311007+00:00",
+  "stimulus_images": [
+    {
+      "description": "Spectrograms or waveform representations of the natural and urban soundscapes used as stimuli",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 30,
+  "paper_sample_size_source": "reported",
+  "quantitative_backfill_count": 1
 }

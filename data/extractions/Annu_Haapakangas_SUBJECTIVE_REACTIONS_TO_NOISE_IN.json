@@ -3298,13 +3298,73 @@
   "minimum_safe_summary": "This doctoral thesis investigates the impact of noise, particularly background speech intelligibility (measured by STI and distraction distance), on cognitive performance and subjective reactions in open-plan offices, and explores design solutions. Comprising three laboratory experiments and two field studies, the research found that intelligible background speech impairs verbal short-term and working memory and increases subjective disturbance. More complex tasks were generally unaffected. Office distractions, including noise, mediated negative changes in environmental satisfaction, collaboration, and stress symptoms following office relocations. Masking sounds (filtered pink noise, spring water) improved acoustic satisfaction and performance, while music was less effective. Holistic room acoustic design and the provision of easily accessible quiet workspaces were identified as effective solutions, though benefits of acoustic design were limited at short distances. Limitations include the generalizability of lab tasks, student participants, and the retrospective design of field studies.",
   "stimulus_description": {
     "environmental_features": [
-      "disturbing background speech",
-      "noise in open-plan offices"
+      "background speech noise",
+      "different noise levels"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
+    "control_conditions": [
+      "quiet condition"
+    ],
     "ecological_validity": "semi-naturalistic"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:35:02.981519+00:00"
+  "surgical_update_at": "2026-03-02T23:30:33.525747+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Irrelevant Speech Effect",
+      "commitment_type": "tests",
+      "specific_claim": "Background speech impairs performance on tasks requiring verbal working memory and attention."
+    },
+    {
+      "theory_name": "Noise Annoyance Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to noise, particularly speech, leads to subjective feelings of disturbance and annoyance, mediated by factors like perceived control and predictability."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Background speech noise captures attention, leading to a subjective experience of disturbance and the perception of disturbing noise.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "disturbing background speech",
+        "to_construct": "involuntary auditory attention capture",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "involuntary auditory attention capture",
+        "to_construct": "subjective experience of disturbance",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "subjective experience of disturbance",
+        "to_construct": "general perception of disturbing noise",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "Noise Annoyance Scale",
+      "construct": "subjective annoyance and disturbance",
+      "description": "Likely a multi-item self-report scale measuring perceived disturbance or annoyance due to noise.",
+      "type": "self_report"
+    },
+    {
+      "name": "Verbal Working Memory Task",
+      "construct": "verbal working memory",
+      "description": "Tasks such as serial recall, digit span, or n-back tasks to assess cognitive performance.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Proofreading Task",
+      "construct": "sustained attention, error detection",
+      "description": "A task requiring participants to identify errors in text, often used to measure concentration and attention under distracting conditions.",
+      "type": "behavioral"
+    }
+  ]
 }

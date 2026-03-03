@@ -1,0 +1,779 @@
+{
+  "document_metadata": {
+    "title": "ATLAS Master Documentation Dependency Manifest",
+    "version": "1.0.0",
+    "created": "2026-03-03",
+    "last_updated": "2026-03-03",
+    "total_parts": 21,
+    "total_sections": 147,
+    "description": "Machine-readable dependency graph for ATLAS master documentation. Tracks which sections define concepts and which sections use them, enabling consistency checking and impact analysis."
+  },
+  "concepts": {
+    "T1_5_COUNT": {
+      "id": "T1_5_COUNT",
+      "name": "Number of Middle-Range Theories (T1.5 Level)",
+      "description": "The count of distinct T1.5-level theories in the ATLAS system. This is a critical constant that appears throughout the documentation.",
+      "type": "COUNT",
+      "defined_in": "§34",
+      "canonical_value": 13,
+      "last_updated": "2026-02-27",
+      "update_history": [
+        {
+          "value": 4,
+          "date": "2025-08-15",
+          "context": "Initial taxonomy definition"
+        },
+        {
+          "value": 10,
+          "date": "2025-11-20",
+          "context": "First refinement; expanded theory set"
+        },
+        {
+          "value": 12,
+          "date": "2026-01-10",
+          "context": "Secondary refinement; consolidated related theories"
+        },
+        {
+          "value": 13,
+          "date": "2026-02-27",
+          "context": "Final taxonomy update; added Circadian-Thermal Integration theory"
+        }
+      ],
+      "used_in": [
+        "§35",
+        "§40",
+        "§54",
+        "§78",
+        "§100",
+        "§115",
+        "§142",
+        "§147"
+      ],
+      "critical": true,
+      "notes": "This count was inconsistent across sections (4, 10, 12, 13 appearing in different parts). As of 2026-02-27, the canonical value is 13. All uses should reference this value."
+    },
+    "CREDENCE_FORMULA_LOGODDS": {
+      "id": "CREDENCE_FORMULA_LOGODDS",
+      "name": "Four-Factor Log-Odds Projection Calculus",
+      "description": "The authoritative credence computation formula: p_target = logit^{-1}(logit(p_lab) + log(d·ω·δ)). This formula combines transfer reliability (d), warrant strength (ω), population transfer factor (δ), and empirical finding (p_lab).",
+      "type": "FORMULA",
+      "defined_in": "§48",
+      "formula": "p_target = logit^{-1}(logit(p_lab) + log(d·ω·δ))",
+      "components": [
+        {
+          "name": "transfer_reliability_d",
+          "description": "Property of warrant type, fixed by ATLAS design"
+        },
+        {
+          "name": "warrant_strength_ω",
+          "description": "Measure of study quality, replication, sample size"
+        },
+        {
+          "name": "population_transfer_δ",
+          "description": "Demographic/cultural distance between lab and target population"
+        },
+        {
+          "name": "lab_probability_p_lab",
+          "description": "Empirically observed probability from laboratory studies"
+        }
+      ],
+      "last_updated": "2026-02-27",
+      "supersedes": "CREDENCE_FORMULA_LEGACY",
+      "update_history": [
+        {
+          "formula": "three_factor_legacy",
+          "date": "2025-06-01",
+          "description": "Legacy formula: credence = p_lab · (support_quality) · (expert_agreement)",
+          "deprecated": true,
+          "status": "retained_for_historical_reference"
+        },
+        {
+          "formula": "four_factor_logodds",
+          "date": "2026-02-27",
+          "description": "New formula: p_target = logit^{-1}(logit(p_lab) + log(d·ω·δ))",
+          "current": true,
+          "status": "operationally_authoritative"
+        }
+      ],
+      "used_in": [
+        "§48A",
+        "§49",
+        "§50",
+        "§51",
+        "§52",
+        "§53",
+        "§54"
+      ],
+      "critical": true,
+      "notes": "Supersedes legacy three-factor formula (2026-02-27). Legacy formula still appears in Parts V–XVII (§54–§78) because those sections predate the transition. See §48 for migration notes explaining the transition rationale and how both formulas relate."
+    },
+    "CREDENCE_FORMULA_LEGACY": {
+      "id": "CREDENCE_FORMULA_LEGACY",
+      "name": "Legacy Three-Factor Credence Formula",
+      "description": "Superseded credence formula: credence = p_lab · (support_quality) · (expert_agreement). Retained in documentation for historical reference and in panels §54–§78 for continuity.",
+      "type": "FORMULA",
+      "defined_in": "§48 (historical reference section)",
+      "formula": "credence = p_lab · (support_quality) · (expert_agreement)",
+      "deprecated": true,
+      "superseded_by": "CREDENCE_FORMULA_LOGODDS",
+      "deprecation_date": "2026-02-27",
+      "last_updated": "2026-02-27",
+      "used_in": [
+        "§54",
+        "§60",
+        "§70",
+        "§78"
+      ],
+      "notes": "Deprecated but retained in sections §54–§78 for continuity with expert panel work. These sections predate the transition to log-odds formalism. Readers should refer to §48 for explanation of the transition and its rationale."
+    },
+    "WARRANT_TYPES": {
+      "id": "WARRANT_TYPES",
+      "name": "Seven Warrant Types with Transfer Reliabilities",
+      "description": "The seven categories of evidence/warrant in the ATLAS system, each with a canonical transfer reliability value that determines how much of that evidence survives transfer to a new context.",
+      "type": "TAXONOMY",
+      "defined_in": "§48.1",
+      "count": 7,
+      "last_updated": "2026-02-27",
+      "values": [
+        {
+          "name": "CONSTITUTIVE",
+          "transfer_reliability": 0.95,
+          "description": "Definitional claims (e.g., 'window area determines daylight exposure'). Survive transfer nearly perfectly because truth is built into definitions."
+        },
+        {
+          "name": "MECHANISM",
+          "transfer_reliability": 0.80,
+          "description": "Claims about causal mechanisms. Good transfer because mechanisms are relatively stable across contexts."
+        },
+        {
+          "name": "EMPIRICAL_ASSOCIATION",
+          "transfer_reliability": 0.80,
+          "description": "Observed correlations or associations. Transfer reliability depends on underlying causal structure."
+        },
+        {
+          "name": "FUNCTIONAL",
+          "transfer_reliability": 0.65,
+          "description": "Claims about functional relationships. Moderate transfer; context sensitivity varies."
+        },
+        {
+          "name": "CAPACITY",
+          "transfer_reliability": 0.55,
+          "description": "Claims about system capacities or affordances. Moderate transfer with significant context dependence."
+        },
+        {
+          "name": "ANALOGICAL",
+          "transfer_reliability": 0.40,
+          "description": "Reasoning by analogy to other systems. Weak transfer; validity depends on structural similarity."
+        },
+        {
+          "name": "THEORY_DERIVED",
+          "transfer_reliability": 0.25,
+          "description": "Claims derived from untested theoretical frameworks. Poor transfer because underlying theory may be wrong or domain-specific."
+        }
+      ],
+      "calibration_method": "Expert panel calibration (2 rounds: conceptual alignment, then calibration against 47 published replication studies)",
+      "calibration_panelists": [
+        "Mayo",
+        "Illari",
+        "Woodward",
+        "Cartwright",
+        "Stegenga"
+      ],
+      "used_in": [
+        "§48A",
+        "§49",
+        "§50",
+        "§51",
+        "§52",
+        "§53",
+        "§54",
+        "§60",
+        "§70",
+        "§78"
+      ],
+      "critical": true,
+      "notes": "Transfer reliability values are not empirically measured but calibrated estimates based on expert reasoning about how evidence types degrade across context boundaries. They are fixed by ATLAS design and should not be changed without expert panel consultation."
+    },
+    "AESHI_SCORING": {
+      "id": "AESHI_SCORING",
+      "name": "AESHI Multi-Dimensional Scoring System",
+      "description": "A five-dimensional scoring framework for evaluating design outcomes across Aesthetic, Ecological, Social, Health, and Information dimensions. Used to structure expert panel evaluations.",
+      "type": "SCORING_SYSTEM",
+      "defined_in": "§54",
+      "dimensions": [
+        {
+          "code": "A",
+          "name": "Aesthetic",
+          "description": "Visual and experiential qualities; coherence, novelty, proportion"
+        },
+        {
+          "code": "E",
+          "name": "Ecological",
+          "description": "Environmental impact; resource efficiency, resilience, biodiversity"
+        },
+        {
+          "code": "S",
+          "name": "Social",
+          "description": "Community and interpersonal dimensions; inclusivity, gathering potential, local identity"
+        },
+        {
+          "code": "H",
+          "name": "Health",
+          "description": "Occupant health and wellbeing; air quality, thermal comfort, daylight, acoustic comfort"
+        },
+        {
+          "code": "I",
+          "name": "Information",
+          "description": "Wayfinding, legibility, semantic clarity; how well the building communicates its structure and function"
+        }
+      ],
+      "last_updated": "2026-02-15",
+      "used_in": [
+        "§55",
+        "§56",
+        "§57",
+        "§58",
+        "§59",
+        "§78",
+        "§100",
+        "§115"
+      ],
+      "notes": "Each dimension is scored separately during expert panel evaluation. Scores are then aggregated (usually as a simple average or weighted combination) to produce an overall assessment."
+    },
+    "Q_NORMS": {
+      "id": "Q_NORMS",
+      "name": "Q-Norms (Quality-of-Evidence Standards)",
+      "description": "Seven quality-of-evidence standards that serve as calibration benchmarks for warrant strength assignments and expert panel judgments.",
+      "type": "STANDARD",
+      "defined_in": "§60",
+      "count": 7,
+      "last_updated": "2026-02-20",
+      "used_in": [
+        "§61",
+        "§62",
+        "§70",
+        "§78"
+      ],
+      "notes": "Q-norms are derived from the warrant types and represent canonical levels of evidence quality. They structure expert panel calibration by providing concrete reference cases."
+    },
+    "EPISTEMIC_LEVELS": {
+      "id": "EPISTEMIC_LEVELS",
+      "name": "Four-Level Epistemic Hierarchy",
+      "description": "The four levels of theory in the ATLAS tiered structure: T0 (foundational), T1 (deep theories), T1.5 (middle-range theories), T2 (tactical/applied theories).",
+      "type": "HIERARCHY",
+      "defined_in": "§33",
+      "levels": [
+        {
+          "code": "T0",
+          "name": "Foundational Level",
+          "description": "Broadest theoretical frameworks; rarely falsified by single studies"
+        },
+        {
+          "code": "T1",
+          "name": "Deep Theories",
+          "description": "Core psychological and ecological theories applicable to the problem domain"
+        },
+        {
+          "code": "T1.5",
+          "name": "Middle-Range Theories",
+          "description": "Bridge theories connecting deep theories to specific design domains; count = 13"
+        },
+        {
+          "code": "T2",
+          "name": "Tactical/Applied Theories",
+          "description": "Domain-specific, design-relevant theories; very specific claims about material, form, program"
+        }
+      ],
+      "last_updated": "2026-01-15",
+      "used_in": [
+        "§34",
+        "§35",
+        "§40",
+        "§54",
+        "§100"
+      ],
+      "critical": false,
+      "notes": "T1.5 level is central to the ATLAS architecture. The count of T1.5 theories (13) is a critical constant."
+    },
+    "WARRANT_STRENGTH_ω": {
+      "id": "WARRANT_STRENGTH_ω",
+      "name": "Warrant Strength (ω) Assessment",
+      "description": "A measure of how well-supported a particular piece of evidence is, based on study quality, replication, sample size, effect size magnitude, and methodological rigor. Independent from warrant type.",
+      "type": "ASSESSMENT_METHOD",
+      "defined_in": "§48.3A",
+      "components": [
+        {
+          "name": "base_warrant",
+          "description": "Starting value determined by warrant type; ranges 0.25–0.95"
+        },
+        {
+          "name": "confidence_multiplier",
+          "description": "Adjustment for reported effect sizes and statistical power"
+        },
+        {
+          "name": "replication_multiplier",
+          "description": "Bonus for findings confirmed across independent labs (up to 1.2×)"
+        },
+        {
+          "name": "meta_analytic_multiplier",
+          "description": "Largest bonus for findings backed by systematic reviews (up to 1.4×)"
+        }
+      ],
+      "range": [0, 1],
+      "typical_distribution": "Histogram in §48.3A shows most ATLAS beliefs cluster 0.45–0.70; flagged for scrutiny below 0.50",
+      "last_updated": "2026-02-27",
+      "used_in": [
+        "§48",
+        "§49",
+        "§50",
+        "§51",
+        "§52",
+        "§53"
+      ],
+      "notes": "Independent from transfer reliability (d). A weak study (low ω) can still be MECHANISM warrant (d=0.80). Assignment procedure provided in §48.3A."
+    },
+    "POPULATION_TRANSFER_δ": {
+      "id": "POPULATION_TRANSFER_δ",
+      "name": "Population Transfer Factor (δ)",
+      "description": "Measures demographic and cultural distance between the studied population and the target population. Affects how well evidence from one population generalizes to another.",
+      "type": "ASSESSMENT_METHOD",
+      "defined_in": "§48.3A",
+      "range": [0, 1],
+      "typical_values": {
+        "lab_to_field_acute": 0.90,
+        "lab_to_field_chronic": 0.80,
+        "with_habituation_risk": 0.70,
+        "with_cultural_distance": 0.50
+      },
+      "last_updated": "2026-02-27",
+      "used_in": [
+        "§48",
+        "§49",
+        "§50",
+        "§51",
+        "§52",
+        "§53"
+      ],
+      "notes": "Computed iteratively: start at 0.90, reduce by 0.10 for lab↔field transition, reduce by 0.10 for acute↔chronic, reduce by 0.10 for habituation risk. Assignment procedure provided in §48.3A."
+    },
+    "CREDENCE_CALCULUS_INTEGRATION": {
+      "id": "CREDENCE_CALCULUS_INTEGRATION",
+      "name": "Integration of Projection Calculus and Credence Computation",
+      "description": "Documentation of how the projection calculus (§48) and credence computation (web_of_belief.py) operate together or are currently disconnected. Critical for understanding the gap between epistemic assessment and operational prediction.",
+      "type": "ARCHITECTURAL_NOTE",
+      "defined_in": "§48.3B",
+      "issue": "The two systems currently operate independently: projection system expects ω as input but does not compute it; credence system computes source quality modifier SQ but feeds it into Bayesian updates, not into ω",
+      "last_updated": "2026-03-01",
+      "used_in": [
+        "§49",
+        "§50",
+        "§51"
+      ],
+      "notes": "Session 20 continuation 4 (2026-03-01) documented this gap. Integration is a priority for future work. See EXPERT_PANEL_MECHANISM_VS_EVIDENCE_2026-03-01.md for panel feedback."
+    }
+  },
+  "section_dependencies": {
+    "§33": {
+      "section_number": "§33",
+      "section_title": "Deep Theories: The T1 Level",
+      "part": "PART_II_THEORETICAL",
+      "status": "WRITTEN",
+      "defines": [
+        "EPISTEMIC_LEVELS"
+      ],
+      "uses": [],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Foundational section introducing the four-level epistemic hierarchy. All later uses of T0, T1, T1.5, T2 depend on this definition."
+    },
+    "§34": {
+      "section_number": "§34",
+      "section_title": "Middle-Range Theories: The T1.5 Level",
+      "part": "PART_II_THEORETICAL",
+      "status": "WRITTEN",
+      "defines": [
+        "T1_5_COUNT"
+      ],
+      "uses": [
+        "EPISTEMIC_LEVELS"
+      ],
+      "extends": [
+        "§33"
+      ],
+      "supersedes": [],
+      "critical": true,
+      "notes": "CANONICAL SOURCE for T1.5 count (13). Any changes to this count must be propagated to all dependent sections: §35, §40, §54, §78, §100, §115, §142, §147. Last update: 2026-02-27."
+    },
+    "§35": {
+      "section_number": "§35",
+      "section_title": "The Mechanism in Action: Two Detailed Walkthroughs",
+      "part": "PART_II_THEORETICAL",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT",
+        "EPISTEMIC_LEVELS"
+      ],
+      "extends": [
+        "§33",
+        "§34"
+      ],
+      "supersedes": [],
+      "notes": "Uses T1.5 count; must remain consistent with §34."
+    },
+    "§40": {
+      "section_number": "§40",
+      "section_title": "The Web as Expert Knowledge Repository",
+      "part": "PART_II_THEORETICAL",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "References T1.5 count; must remain consistent with §34."
+    },
+    "§48": {
+      "section_number": "§48",
+      "section_title": "The Projection Calculus: Log-Odds Formulation",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_TYPES",
+        "WARRANT_STRENGTH_ω",
+        "POPULATION_TRANSFER_δ"
+      ],
+      "uses": [
+        "EPISTEMIC_LEVELS"
+      ],
+      "extends": [],
+      "supersedes": [
+        "CREDENCE_FORMULA_LEGACY"
+      ],
+      "critical": true,
+      "notes": "CANONICAL SOURCE for current credence formula and warrant types. Supersedes legacy three-factor formula. Contains migration notes explaining transition. All dependent sections must use log-odds formula."
+    },
+    "§48A": {
+      "section_number": "§48A",
+      "section_title": "[Warrant Strength Integration]",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [
+        "CREDENCE_CALCULUS_INTEGRATION"
+      ],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_STRENGTH_ω",
+        "WARRANT_TYPES"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Documents integration (or current disconnect) between projection calculus and credence computation. Session 20, 2026-03-01."
+    },
+    "§49": {
+      "section_number": "§49",
+      "section_title": "Quinean Coherence and the Credence Projection Framework",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_TYPES",
+        "CREDENCE_CALCULUS_INTEGRATION"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Provides theoretical context for credence projection using Quinean coherence framework."
+    },
+    "§50": {
+      "section_number": "§50",
+      "section_title": "Tiered Theories and Context-Dependent Credence",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "EPISTEMIC_LEVELS",
+        "WARRANT_TYPES"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Discusses how tiered theories interact with credence projection."
+    },
+    "§51": {
+      "section_number": "§51",
+      "section_title": "Bridge Warrants: Connecting Evidence to Design Outcomes",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_TYPES",
+        "WARRANT_STRENGTH_ω"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Applies credence formula to bridge warrant case studies."
+    },
+    "§52": {
+      "section_number": "§52",
+      "section_title": "Confidence Discipline and the Independence Assumption Problem",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_STRENGTH_ω"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Examines limitations and assumptions underlying the credence formula."
+    },
+    "§53": {
+      "section_number": "§53",
+      "section_title": "[Credence Projection Worked Examples]",
+      "part": "PART_IV_CREDENCE",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "CREDENCE_FORMULA_LOGODDS",
+        "WARRANT_TYPES",
+        "POPULATION_TRANSFER_δ"
+      ],
+      "extends": [
+        "§48"
+      ],
+      "supersedes": [],
+      "notes": "Provides worked examples demonstrating credence calculation."
+    },
+    "§54": {
+      "section_number": "§54",
+      "section_title": "Domain Panels: Architecture and Exemplars",
+      "part": "PART_VI_DOMAIN_PANELS",
+      "status": "WRITTEN",
+      "defines": [
+        "AESHI_SCORING"
+      ],
+      "uses": [
+        "T1_5_COUNT",
+        "WARRANT_TYPES",
+        "CREDENCE_FORMULA_LOGODDS",
+        "CREDENCE_FORMULA_LEGACY"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "critical": true,
+      "notes": "CRITICAL JUNCTION: uses multiple foundational concepts. Begins expert panel sections (§54–§78). Uses both legacy three-factor and new log-odds formulas; see §48 for explanation of transition. Must remain consistent with §34 (T1.5 count = 13) and §48 (credence formula)."
+    },
+    "§60": {
+      "section_number": "§60",
+      "section_title": "[Expert Panel Section - Q-Norms]",
+      "part": "PART_VI_DOMAIN_PANELS",
+      "status": "WRITTEN",
+      "defines": [
+        "Q_NORMS"
+      ],
+      "uses": [
+        "WARRANT_TYPES",
+        "AESHI_SCORING"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Calibration source for Q-norms based on warrant types."
+    },
+    "§70": {
+      "section_number": "§70",
+      "section_title": "[Expert Panel Section]",
+      "part": "PART_VI_DOMAIN_PANELS",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "WARRANT_TYPES",
+        "Q_NORMS",
+        "CREDENCE_FORMULA_LEGACY"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Part of expert panel sections. Uses legacy credence formula; predate transition to log-odds."
+    },
+    "§78": {
+      "section_number": "§78",
+      "section_title": "[Expert Panel Section - Final Panel]",
+      "part": "PART_VI_DOMAIN_PANELS",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT",
+        "WARRANT_TYPES",
+        "AESHI_SCORING",
+        "Q_NORMS",
+        "CREDENCE_FORMULA_LEGACY"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Final expert panel section. Uses legacy credence formula. Must remain consistent with §34 (T1.5 count)."
+    },
+    "§100": {
+      "section_number": "§100",
+      "section_title": "[Section in later part]",
+      "part": "PART_XI_ARCH_TYPOLOGY",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT",
+        "AESHI_SCORING",
+        "EPISTEMIC_LEVELS"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Uses T1.5 count; must remain consistent with §34."
+    },
+    "§115": {
+      "section_number": "§115",
+      "section_title": "[Section in later part]",
+      "part": "PART_XIV_APPLICATIONS",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT",
+        "AESHI_SCORING"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "Uses T1.5 count; must remain consistent with §34."
+    },
+    "§142": {
+      "section_number": "§142",
+      "section_title": "[Section in later part]",
+      "part": "PART_XX_APPENDIX",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "References T1.5 count; must remain consistent with §34."
+    },
+    "§147": {
+      "section_number": "§147",
+      "section_title": "[Final section or concluding material]",
+      "part": "PART_XXI_SOURCE_INDEX",
+      "status": "WRITTEN",
+      "defines": [],
+      "uses": [
+        "T1_5_COUNT"
+      ],
+      "extends": [],
+      "supersedes": [],
+      "notes": "References T1.5 count; must remain consistent with §34."
+    }
+  },
+  "dependency_types": {
+    "DEFINES": {
+      "description": "This section introduces or makes authoritative a concept. It is the canonical source for that concept's definition or value.",
+      "implications": "Only the DEFINES section's statement is considered correct. All other references must be consistent with this section."
+    },
+    "USES": {
+      "description": "This section references or applies a concept defined elsewhere. It must remain consistent with the DEFINES section.",
+      "implications": "If the concept's definition changes in the DEFINES section, this section may need updating."
+    },
+    "EXTENDS": {
+      "description": "This section builds upon another section by adding detail, nuance, refinement, or elaboration without replacing it.",
+      "implications": "The two sections should be consistent and complementary."
+    },
+    "SUPERSEDES": {
+      "description": "This section replaces an earlier approach with a new one. Used when a fundamental concept is revised or deprecated.",
+      "implications": "The superseded section should be marked as deprecated. Sections using the old concept should reference the transition rationale in the superseding section."
+    },
+    "COUNTS": {
+      "description": "A numerical value that must remain consistent across the document.",
+      "implications": "Any change to a COUNT concept requires updating all USES sections."
+    }
+  },
+  "consistency_rules": {
+    "rule_1_numeric_constants": {
+      "description": "Numeric constants (counts, fixed values) must be identical across all sections that reference them.",
+      "validator": "Extract all numbers matching pattern (e.g., '\\d+ T1\\.5 theor(?:ies|y)'); verify all are equal to canonical_value.",
+      "violation_severity": "CRITICAL"
+    },
+    "rule_2_concept_definitions": {
+      "description": "A concept defined in section X should not be redefined or contradicted in section Y.",
+      "validator": "Check for conflicting definitions of the same concept in multiple sections.",
+      "violation_severity": "CRITICAL"
+    },
+    "rule_3_stale_references": {
+      "description": "A section using a superseded concept should acknowledge the supersession or be updated to use the new concept.",
+      "validator": "If section uses SUPERSEDED concept, verify it contains acknowledgment text (e.g., 'deprecated', 'legacy', 'note:', or explicit reference to new concept).",
+      "violation_severity": "HIGH"
+    },
+    "rule_4_missing_updates": {
+      "description": "If a DEFINES section changes, all USES sections may need review.",
+      "validator": "When DEFINES section is modified, flag all USES sections as requiring manual review.",
+      "violation_severity": "MEDIUM"
+    },
+    "rule_5_undefined_concepts": {
+      "description": "A section should not reference a concept that is not defined anywhere in the document.",
+      "validator": "Check for concept references where defined_in field is empty or null.",
+      "violation_severity": "HIGH"
+    }
+  },
+  "validation_patterns": {
+    "T1_5_COUNT": {
+      "regex": "(?:^|\\s)(\\d+)\\s+(?:canonical\\s+)?T1\\.5\\s+theor(?:ies|y)(?!\\s+(?:→|Definition\\s+File))",
+      "flags": ["case_insensitive"],
+      "expected_value": 13,
+      "tolerance": 0,
+      "note": "Excludes '1 T1.5 theory → N molecules' ratio expressions and 'N T1.5 Theory Definition Files' (total file count includes non-canonical)"
+    },
+    "WARRANT_TYPES_COUNT": {
+      "regex": "(?:^|\\s)(?:seven|7)\\s+warrant\\s+types",
+      "flags": ["case_insensitive"],
+      "expected_value": 7,
+      "tolerance": 0
+    },
+    "Q_NORMS_COUNT": {
+      "regex": "(?:^|\\s)(?:seven|7)\\s+Q-norms",
+      "flags": ["case_insensitive"],
+      "expected_value": 7,
+      "tolerance": 0
+    },
+    "EPISTEMIC_LEVELS_COUNT": {
+      "regex": "(?:^|\\s)(?:four|4)\\s+(?:level|tier)s?\\s+(?:epistemic|hierarchy)",
+      "flags": ["case_insensitive"],
+      "expected_value": 4,
+      "tolerance": 0
+    },
+    "CREDENCE_FORMULA_LOGODDS": {
+      "regex": "logit\\^\\{-1\\}\\(logit\\(p_lab\\)\\s*\\+\\s*log\\(d.*ω.*δ",
+      "flags": ["case_insensitive"],
+      "description": "Indicates use of four-factor log-odds formula"
+    },
+    "CREDENCE_FORMULA_LEGACY": {
+      "regex": "credence\\s*=\\s*p_lab\\s*·\\s*\\(support_quality\\)",
+      "flags": ["case_insensitive"],
+      "description": "Indicates use of legacy three-factor formula; should be marked as deprecated"
+    }
+  },
+  "maintenance_log": [
+    {
+      "date": "2026-03-03",
+      "action": "Created DEPENDENCY_MANIFEST.json",
+      "version": "1.0.0",
+      "changes": "Initial manifest covering key cross-cutting concepts (T1.5 count, credence formula, warrant types, AESHI, Q-norms, epistemic levels) and their dependencies across 21 parts and 147 sections.",
+      "editor": "Claude Code"
+    }
+  ]
+}

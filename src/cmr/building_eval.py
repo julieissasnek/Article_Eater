@@ -77,7 +77,23 @@ def _query_web_constraints_for_templates(
         "matched_constraints": 0,
     }
     try:
-        service = web_service or WebPersistenceService(db_path)
+        # BUGFIX: When called from evaluate_building(), a SQLAlchemy session
+        # already holds a write transaction on db_path.  Creating a raw
+        # sqlite3 connection (via WebPersistenceService) and running
+        # executescript() on the SAME file causes a deadlock — SQLite only
+        # allows one writer at a time.  Use a separate :memory: service for
+        # the query-only path, or catch the "database is locked" error.
+        if web_service is None:
+            import sqlite3
+            try:
+                service = WebPersistenceService(db_path)
+            except sqlite3.OperationalError:
+                # Database is locked by the calling SQLAlchemy session
+                summary["reason"] = "database_locked"
+                return summary
+        else:
+            service = web_service
+
         master_web_id = service.get_master_web_id()
         if not master_web_id:
             summary["reason"] = "no_master_web"
@@ -308,14 +324,18 @@ def evaluate_building(
 
     queried_template_ids = list(dict.fromkeys([*queried_template_ids, *all_active_template_ids]))
 
+    # BUGFIX: Commit the SQLAlchemy session BEFORE creating a raw sqlite3
+    # connection for web constraint queries.  The session holds a write
+    # transaction; a second connection trying executescript() on the same
+    # DB file would deadlock (SQLite allows only one writer at a time).
+    evaluation.status = "complete"
+    session.commit()
+
     web_constraint_query_summary = _query_web_constraints_for_templates(
         queried_template_ids,
         db_path=db_path,
         web_service=web_service,
     )
-
-    evaluation.status = "complete"
-    session.commit()
 
     tier2_scores = compute_tier2_scores(
         {item["template"]: float(item["wis"]) for item in adjusted}

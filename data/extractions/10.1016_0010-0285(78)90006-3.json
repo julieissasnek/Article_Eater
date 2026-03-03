@@ -68,10 +68,10 @@
       "direction": "mixed",
       "claim_type": "associational",
       "measure_type": "behavioral",
-      "p_value": null,
+      "p_value": 0.001,
       "effect_size": null,
       "effect_size_type": null,
-      "sample_size": null,
+      "sample_size": 30,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -133,7 +133,8 @@
         "ENVIRONMENTAL_PSYCHOLOGY": 0.1505,
         "GROUP_CREATIVITY": 0.1505,
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1505
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -2777,42 +2778,42 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Pairs of geographical locations (e.g., cities, states) presented as text"
+      "Names of geographical locations (cities, states, countries)"
     ],
-    "duration_exposure": "self-paced per item",
+    "duration_exposure": null,
     "control_conditions": [
-      "Comparison of judgments for location pairs where actual direction is congruent with superordinate unit orientation versus incongruent with superordinate unit orientation"
+      "Comparison of judgments for geographically 'congruent' location pairs (where within-unit and between-unit directions align) versus 'incongruent' pairs (where they conflict)."
     ],
-    "ecological_validity": "semi-naturalistic"
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Hierarchical Organization of Cognitive Maps / Superordinate Unit Effect",
-      "commitment_type": "proposes|tests",
-      "specific_claim": "People organize spatial information hierarchically, and judgments of spatial relations between two points are biased by the canonical orientation of their superordinate geographical unit, leading to systematic distortions when actual and superordinate orientations conflict."
+      "theory_name": "Hierarchical Organization of Cognitive Maps",
+      "commitment_type": "proposes",
+      "specific_claim": "People organize spatial information hierarchically, and judgments about the relative positions of subordinate units (e.g., cities) are biased by the relative positions of their superordinate units (e.g., states), especially when these relations conflict."
     }
   ],
   "mechanism_chain": {
-    "description": "The mechanism describes how the cognitive representation of geographical space is hierarchically structured, and how accessing a superordinate unit's orientation influences the judgment of direction between two subordinate locations.",
+    "description": "The proposed cognitive mechanism suggests that when individuals judge the spatial relation between two subordinate geographical locations, they first access the superordinate units (e.g., states) containing these locations. The retrieved spatial relation between these superordinate units then biases or distorts the judgment of the subordinate locations, particularly when the direct subordinate relation conflicts with the superordinate one.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Presentation of two geographical locations",
-        "to_construct": "Activation of a common superordinate geographical unit (e.g., state, country) containing both locations",
+        "from_construct": "Request for spatial relation between subordinate locations",
+        "to_construct": "Activation/retrieval of superordinate units",
         "mechanism_type": "cognitive",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Activated superordinate unit",
-        "to_construct": "Retrieval of the superordinate unit's canonical or prototypic orientation (e.g., California is 'north-south')",
+        "from_construct": "Activated superordinate units",
+        "to_construct": "Retrieval of spatial relation between superordinate units",
         "mechanism_type": "cognitive",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Superordinate unit's canonical orientation",
-        "to_construct": "Bias in the judged direction between the two subordinate locations, aligning the judgment with the superordinate unit's orientation",
+        "from_construct": "Superordinate spatial relation",
+        "to_construct": "Bias/distortion in judged spatial relation between subordinate locations",
         "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       }
@@ -2821,20 +2822,21 @@
   "instruments_used": [
     {
       "name": "Direction Judgment Task",
-      "construct": "Judged spatial relations",
-      "description": "Participants were presented with pairs of geographical locations and asked to judge their relative direction (e.g., 'Is San Diego north or south of Reno?'). Responses were typically verbal or by selecting a compass direction.",
+      "construct": "Judged spatial relations; cognitive map distortions",
+      "description": "Participants were presented with pairs of geographical locations and asked to judge their relative direction (e.g., 'Is X north or south of Y?').",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:38:41.824001+00:00",
+  "surgical_update_at": "2026-03-02T22:51:08.808008+00:00",
   "stimulus_images": [
     {
-      "description": "Diagrams illustrating the concept of superordinate geographical units (e.g., states) and how the relative positions of cities within them can be distorted by the unit's canonical orientation.",
+      "description": "Diagrams illustrating geographical locations (e.g., San Diego, Reno, California, Nevada) and their superordinate units, used to explain the hierarchical organization and potential distortions.",
       "figure_ref": "Figure 1",
       "image_type": "diagram"
     }
   ],
   "paper_sample_size": 80,
-  "paper_sample_size_source": "estimated"
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

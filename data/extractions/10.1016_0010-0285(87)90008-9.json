@@ -3407,64 +3407,75 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "various common objects (e.g., keys, coins, geometric shapes, textures, fabrics)",
-      "objects varying in specific properties (e.g., texture, hardness, shape, weight, thermal properties)"
+      "various common objects (e.g., tools, household items)",
+      "specially designed stimuli varying in specific properties (e.g., texture, hardness, shape, temperature, weight)"
     ],
-    "duration_exposure": "self-paced exploration, typically a few seconds per object",
+    "duration_exposure": "typically short, fixed durations (e.g., 10-30 seconds) or self-paced exploration",
     "control_conditions": [
-      "different object properties to be identified (e.g., identify texture vs. identify shape)",
-      "different sets of objects"
+      "different object properties (e.g., texture vs. hardness vs. shape)",
+      "different task instructions (e.g., identify material vs. identify shape)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Exploratory Procedures (EPs) framework for haptic object recognition",
+      "theory_name": "Exploratory Procedures (EPs) Framework",
       "commitment_type": "proposes",
-      "specific_claim": "Specific hand movements, termed Exploratory Procedures (EPs), are reliably and selectively used to extract particular object properties during haptic object recognition."
+      "specific_claim": "Haptic object recognition is mediated by a set of distinct, stereotyped hand movements (Exploratory Procedures) that are optimally suited for extracting specific object properties."
+    },
+    {
+      "theory_name": "Active Haptic Perception",
+      "commitment_type": "assumes",
+      "specific_claim": "Haptic perception is an active, information-seeking process where motor actions are integral to sensory information acquisition."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper proposes a causal link where specific object properties (e.g., texture, shape) selectively elicit particular exploratory procedures (EPs). These EPs, in turn, are specialized to extract the corresponding haptic information, which is then used by the cognitive system for object recognition.",
+    "description": "The paper describes a functional mechanism where specific exploratory procedures (EPs) are employed to extract particular object properties.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Object properties (e.g., texture, shape, hardness)",
-        "to_construct": "Elicitation of specific Exploratory Procedures (EPs)",
-        "mechanism_type": "behavioral",
+        "from_construct": "Need to extract specific object property (e.g., texture, hardness, shape)",
+        "to_construct": "Selection and execution of a specific exploratory procedure (EP)",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Exploratory Procedures (EPs)",
-        "to_construct": "Extraction of specific haptic information (e.g., texture, contour, hardness)",
-        "mechanism_type": "perceptual",
+        "from_construct": "Execution of specific exploratory procedure (e.g., lateral motion for texture)",
+        "to_construct": "Extraction of relevant haptic information about the object property",
+        "mechanism_type": "behavioral",
         "evidence_strength": "direct"
-      },
-      {
-        "step": 3,
-        "from_construct": "Extracted haptic information",
-        "to_construct": "Haptic object recognition",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:43:55.591358+00:00",
+  "surgical_update_at": "2026-03-02T19:12:23.649568+00:00",
   "instruments_used": [
     {
-      "name": "Behavioral observation and coding system for hand movements",
-      "construct": "Exploratory Procedures (EPs), haptic exploration behaviors",
-      "description": "A system for video recording and subsequent classification/quantification of specific hand movements (e.g., lateral motion, pressure, enclosure, contour following, static contact) performed by participants during haptic object exploration tasks.",
+      "name": "Video recording equipment",
+      "construct": "hand movements",
+      "description": "Used to capture and record participants' hand movements during object exploration.",
+      "type": "other"
+    },
+    {
+      "name": "Human observers/coders",
+      "construct": "exploratory procedures (EPs)",
+      "description": "Trained individuals who classified and timed the specific hand movements (EPs) from video recordings.",
       "type": "behavioral"
     }
   ],
   "stimulus_images": [
     {
-      "description": "Diagrams or photographs illustrating the different exploratory procedures (EPs) such as lateral motion, pressure, enclosure, contour following, and static contact.",
-      "figure_ref": "Figures illustrating EPs",
+      "description": "Diagrams or photographs illustrating the different exploratory procedures (EPs) such as lateral motion, pressure, enclosure, contour following, static contact, and unsupported holding.",
+      "figure_ref": "Likely multiple figures throughout the paper",
       "image_type": "diagram"
+    },
+    {
+      "description": "Images of the various objects or stimuli used in the experiments.",
+      "figure_ref": "Likely in a methods or results section",
+      "image_type": "stimulus_set"
     }
-  ]
+  ],
+  "paper_sample_size": 16,
+  "paper_sample_size_source": "estimated"
 }

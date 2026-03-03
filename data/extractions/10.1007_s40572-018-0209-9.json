@@ -2137,25 +2137,101 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Light intensity (lux)",
-      "Correlated Color Temperature (K)"
+      "Abrupt transition from warm, dim light (97 lux, 2708 K) to cool, bright light (1021 lux, 5854 K)",
+      "Gradual transition from warm, dim light (97 lux, 2708 K) to cool, bright light (1021 lux, 5854 K)",
+      "Abrupt transition from cool, bright light (1021 lux, 5854 K) to warm, dim light (97 lux, 2708 K)",
+      "Gradual transition from cool, bright light (1021 lux, 5854 K) to warm, dim light (97 lux, 2708 K)",
+      "Constant warm, dim light (97 lux, 2708 K)",
+      "Constant cool, bright light (1021 lux, 5854 K)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "15-minute exposure blocks per light condition, with transitions occurring over 0 or 15 minutes",
     "control_conditions": [
-      "Different types of light transitions (e.g., abrupt vs. gradual)",
-      "Different directions of light transitions (e.g., dim-to-bright vs. bright-to-dim)",
-      "Stable light conditions"
+      "Constant warm, dim light (97 lux, 2708 K)",
+      "Constant cool, bright light (1021 lux, 5854 K)"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Karolinska Sleepiness Scale (KSS)",
-      "construct": "sleepiness/alertness",
-      "description": "9-point self-report scale for subjective sleepiness",
+      "construct": "subjective sleepiness/alertness",
+      "description": "9-point self-report scale for sleepiness",
       "type": "self_report"
+    },
+    {
+      "name": "Visual Analogue Scales (VAS)",
+      "construct": "subjective alertness, arousal, comfort, light intensity sensation",
+      "description": "100mm scales for various subjective ratings",
+      "type": "self_report"
+    },
+    {
+      "name": "Psychomotor Vigilance Task (PVT)",
+      "construct": "objective alertness/sustained attention",
+      "description": "Reaction time task to measure vigilance",
+      "type": "behavioral"
+    },
+    {
+      "name": "Heart Rate (HR)",
+      "construct": "physiological arousal",
+      "description": "Measured via electrocardiography (ECG) or photoplethysmography (PPG)",
+      "type": "physiological"
+    },
+    {
+      "name": "Skin Conductance Response (SCR)",
+      "construct": "physiological arousal",
+      "description": "Measured via electrodes on the skin",
+      "type": "physiological"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:57:26.326511+00:00"
+  "surgical_update_at": "2026-03-02T19:12:25.544723+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Non-visual effects of light / Circadian phototransduction",
+      "commitment_type": "tests",
+      "specific_claim": "Light transitions, especially abrupt ones, can acutely affect alertness, arousal, and comfort through non-visual pathways involving intrinsically photosensitive retinal ganglion cells (ipRGCs) and the circadian system."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Light transitions activate retinal photoreceptors, signaling to the suprachiasmatic nucleus (SCN) and other brain regions, which in turn modulates physiological responses (e.g., melatonin, heart rate) and subjective states (alertness, arousal, comfort).",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "light transition (change in illuminance/CCT)",
+        "to_construct": "retinal photoreceptor (ipRGC) activation",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "ipRGC activation",
+        "to_construct": "suprachiasmatic nucleus (SCN) signaling",
+        "mechanism_type": "neural",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "SCN signaling",
+        "to_construct": "modulation of melatonin secretion / arousal centers",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "melatonin secretion / arousal modulation",
+        "to_construct": "alertness, arousal, comfort",
+        "mechanism_type": "physiological|affective|cognitive",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental room setup, showing lighting fixtures and participant's position.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "reported"
 }

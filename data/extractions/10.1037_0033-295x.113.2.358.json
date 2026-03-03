@@ -2359,31 +2359,48 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:40:08.262539+00:00",
+  "surgical_update_at": "2026-03-02T23:34:24.206871+00:00",
   "mechanism_chain": {
-    "description": "Psychosocial factors in the maritime environment influence seafarer well-being, health, and performance, and maritime safety through a chain involving psychological strain, cognitive impairment, and physiological responses.",
+    "description": "Causal pathway from psychosocial factors in the maritime environment to seafarer well-being, health, performance, and overall maritime safety.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "psychosocial factors in the maritime field",
-        "to_construct": "psychological strain and stress",
-        "mechanism_type": "affective",
+        "from_construct": "Psychosocial factors in maritime environment (e.g., isolation, stress, fatigue, work-life balance, cultural diversity)",
+        "to_construct": "Seafarer psychological state (e.g., mental health, mood, cognitive function, stress levels)",
+        "mechanism_type": "affective|cognitive|physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "psychological strain and stress",
-        "to_construct": "impaired cognitive function and physiological dysregulation",
-        "mechanism_type": "cognitive|physiological",
+        "from_construct": "Seafarer psychological state",
+        "to_construct": "Individual outcomes (well-being, health, performance)",
+        "mechanism_type": "cognitive|behavioral|physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "impaired cognitive function and physiological dysregulation",
-        "to_construct": "reduced well-being, poorer health, decreased performance, and compromised maritime safety",
-        "mechanism_type": "behavioral|physiological",
+        "from_construct": "Individual outcomes (performance, health)",
+        "to_construct": "Maritime safety",
+        "mechanism_type": "behavioral",
         "evidence_strength": "theoretical"
       }
     ]
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Maritime Psychology Conceptual Framework",
+      "commitment_type": "proposes",
+      "specific_claim": "Defines the scope, key concepts, and interrelationships within the emerging field of maritime psychology."
+    },
+    {
+      "theory_name": "Human Factors Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Principles of human interaction with systems and environments are critical for understanding maritime safety and performance."
+    },
+    {
+      "theory_name": "Occupational Health Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Work-related psychosocial factors impact seafarer well-being, health, and performance."
+    }
+  ]
 }

@@ -29,9 +29,9 @@
       "claim_type": "associational",
       "measure_type": null,
       "p_value": 0.001,
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.46,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 49,
       "confidence_interval": null,
       "test_statistic": null,
       "theory_links": [
@@ -92,7 +92,8 @@
         "NEUROMODULATORY": 0.1948,
         "CROSS_FRAMEWORK": 0.1943,
         "INTEROCEPTION_ALLOSTASIS": 0.1943
-      }
+      },
+      "sample_size_source": "reported"
     },
     {
       "id": 2,
@@ -1913,64 +1914,63 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "presence of windows",
-      "daylight exposure",
-      "window view"
+      "presence of windows providing daylight access",
+      "absence of windows (windowless office)"
     ],
-    "duration_exposure": "continuous 8-hour workday",
+    "duration_exposure": "continuous 8-hour workday (typical office hours)",
     "control_conditions": [
-      "windowless office environment"
+      "office workers in windowless offices"
     ],
     "ecological_validity": "field"
   },
   "instruments_used": [
     {
-      "name": "SF-36",
+      "name": "SF-36 (Short Form Health Survey)",
       "construct": "health-related quality of life",
-      "description": "Short Form Health Survey, measuring various dimensions of health",
+      "description": "A 36-item patient-reported survey of patient health.",
       "type": "self_report"
     },
     {
-      "name": "PSQI",
+      "name": "PSQI (Pittsburgh Sleep Quality Index)",
       "construct": "sleep quality",
-      "description": "Pittsburgh Sleep Quality Index",
-      "type": "self_report"
-    },
-    {
-      "name": "ESS",
-      "construct": "daytime sleepiness",
-      "description": "Epworth Sleepiness Scale",
+      "description": "A self-rated questionnaire which assesses sleep quality and disturbances over a 1-month interval.",
       "type": "self_report"
     },
     {
       "name": "Actigraphy",
-      "construct": "sleep-wake cycles, physical activity, light exposure",
-      "description": "Wearable device to objectively measure activity and light exposure",
-      "type": "actigraphy"
+      "construct": "physical activity, light exposure",
+      "description": "Wrist-worn devices used to objectively measure sleep-wake patterns and light exposure.",
+      "type": "physiological"
+    },
+    {
+      "name": "ESS (Epworth Sleepiness Scale)",
+      "construct": "daytime sleepiness",
+      "description": "A self-report questionnaire to assess an individual's general level of daytime sleepiness.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:41:05.634874+00:00",
+  "surgical_update_at": "2026-03-02T23:35:10.016574+00:00",
   "mechanism_chain": {
-    "description": "Exposure to natural daylight through windows helps entrain circadian rhythms, leading to improved sleep quality and overall health.",
+    "description": "The presence of windows allows for greater exposure to natural light, which helps entrain circadian rhythms, leading to improved sleep quality and subsequently better overall health and well-being.",
     "steps": [
       {
         "step": 1,
         "from_construct": "presence of windows/daylight exposure",
-        "to_construct": "increased natural light exposure",
-        "mechanism_type": "environmental",
+        "to_construct": "increased daily light exposure",
+        "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "increased natural light exposure",
-        "to_construct": "circadian rhythm entrainment",
+        "from_construct": "increased daily light exposure",
+        "to_construct": "better circadian rhythm entrainment",
         "mechanism_type": "physiological",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "circadian rhythm entrainment",
+        "from_construct": "better circadian rhythm entrainment",
         "to_construct": "improved sleep quality",
         "mechanism_type": "physiological",
         "evidence_strength": "direct"
@@ -1984,6 +1984,14 @@
       }
     ]
   },
-  "paper_sample_size": 109,
-  "paper_sample_size_source": "reported"
+  "paper_sample_size": 49,
+  "paper_sample_size_source": "reported",
+  "theory_commitments": [
+    {
+      "theory_name": "Circadian Rhythm Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Exposure to natural light during the day entrains circadian rhythms, leading to improved sleep quality and overall health."
+    }
+  ],
+  "quantitative_backfill_count": 1
 }

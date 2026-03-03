@@ -13,7 +13,7 @@
   "classification_confidence": 1.0,
   "classification_signals": [
     "The article describes 'results from a study funded by the U.S. Department of Energy' (p. 2).",
-    "It details a 'Study Site' (Miller SQA in Holland, Michigan) and explicitly states 'The study used a \"before\" and “after” approach' (p. 13).",
+    "It details a 'Study Site' (Miller SQA in Holland, Michigan) and explicitly states 'The study used a \"before\" and \u201cafter\u201d approach' (p. 13).",
     "It outlines 'Individual Level Measures' and 'Organizational-level outcomes' collected via questionnaires and Total Quality Metrics Program (TQM) data (p. 14-15).",
     "The paper presents 'Summary of \"Before\" and \"After\" Results' comparing worker experiences and organizational performance in an old building versus a new green building (p. 15-17)."
   ],
@@ -96,7 +96,7 @@
       "claim_type": "cited",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 17000000000,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -117,7 +117,9 @@
       "outcome_id": "behav.productivity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "_original_effect_size": 17000000000,
+      "_quarantine_reason": "Extreme outlier: 17000000000.0"
     },
     {
       "id": 4,
@@ -917,7 +919,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 11",
-      "quote": "Building discomforts and problems, especially those viewed as “hassles”, are likely to generate negative moods that are detrimental to work performance",
+      "quote": "Building discomforts and problems, especially those viewed as \u201chassles\u201d, are likely to generate negative moods that are detrimental to work performance",
       "evidence_type": "theoretical",
       "outcome_id": "affect.mood.negative",
       "outcome_domain": "affect",
@@ -1078,7 +1080,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 15",
-      "quote": "The new building was also perceived as “healthier” than the old building: however, there were few differences in self-reported illness symptoms (such as headaches and fatigue).",
+      "quote": "The new building was also perceived as \u201chealthier\u201d than the old building: however, there were few differences in self-reported illness symptoms (such as headaches and fatigue).",
       "evidence_type": "statistical",
       "outcome_id": "health",
       "outcome_domain": "health",
@@ -1268,7 +1270,7 @@
       "moderators_reported": [],
       "provenance_depth": "section",
       "source": "p. 17",
-      "quote": "both manufacturing and office workers reported increased fatigue in the new building and increased feelings of being “overworked.” This is very likely due to the large increase in sales associated with increased manufacturing capability.",
+      "quote": "both manufacturing and office workers reported increased fatigue in the new building and increased feelings of being \u201coverworked.\u201d This is very likely due to the large increase in sales associated with increased manufacturing capability.",
       "evidence_type": "claimed",
       "outcome_id": "physio.fatigue",
       "outcome_domain": "physio",
@@ -1283,7 +1285,7 @@
       "claim_type": "statistical",
       "measure_type": null,
       "p_value": null,
-      "effect_size": 0.005,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": null,
       "confidence_interval": null,
@@ -1303,7 +1305,9 @@
       "outcome_id": "behav.productivity",
       "outcome_domain": "behav",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "_original_effect_size": 0.005,
+      "_quarantine_reason": "Value 0.005 appears to be a p-value, not an effect size"
     },
     {
       "id": 43,
@@ -1374,7 +1378,7 @@
   ],
   "minimum_safe_summary": "This paper presents a conceptual framework and empirical results from a 'before-and-after' case study of a green building (Miller SQA) to explore the links between design, productivity, and well-being. It posits that effective facilities succeed across environmental sustainability, organizational effectiveness, and human well-being, with green buildings serving as a vehicle for these benefits. Key findings from the Miller SQA study indicate that the new green building was associated with higher quality of work life, perceived work performance, job satisfaction, and more favorable ratings of views, daylight, and air quality, with modest increases (0.5-2%) in organizational performance metrics. Office workers and daytime shifts generally reported more positive outcomes than manufacturing workers and night shifts, suggesting that access to naturalistic features like daylight and views is crucial. The study acknowledges limitations including potential halo effects, confounding non-green design features, and changes in organizational policies that might have influenced employee perceptions and outcomes.",
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:30:12.012942+00:00",
+  "surgical_update_at": "2026-03-02T22:40:38.624818+00:00",
   "stimulus_description": {
     "environmental_features": [
       "nature stimuli (through windows, videos, photographs)"
@@ -1382,5 +1386,17 @@
     "duration_exposure": null,
     "control_conditions": null,
     "ecological_validity": null
-  }
+  },
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments restore directed attention and reduce mental fatigue, thereby improving cognitive function and well-being."
+    },
+    {
+      "theory_name": "Stress Reduction Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Natural environments elicit positive affective responses and physiological relaxation, leading to stress reduction and improved health."
+    }
+  ]
 }

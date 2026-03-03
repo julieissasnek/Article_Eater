@@ -310,50 +310,61 @@
   "converted_at": "2026-03-01T13:11:41.911007+00:00",
   "stimulus_description": {
     "environmental_features": [
-      "VR-simulated interior environments with varying color schemes (e.g., different hues, saturation, or brightness)"
+      "VR-simulated interior environments with varying color schemes (e.g., different hues, saturation, or brightness levels)",
+      "Specific colors likely include restorative colors (e.g., blue, green) and potentially stimulating or neutral colors (e.g., red, grey)"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "different color conditions (e.g., a neutral color scheme, specific color palettes for comparison)"
+      "VR-simulated interior environment with a neutral color scheme (e.g., grey or white)"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Stress Reduction Theory",
+      "theory_name": "Attention Restoration Theory (ART)",
       "commitment_type": "tests",
-      "specific_claim": "Certain environmental features, such as specific colors or color combinations in interior spaces, can facilitate stress recovery by influencing physiological and psychological states."
+      "specific_claim": "Restorative environments, characterized by features like color, can facilitate recovery from directed attention fatigue and promote psychological well-being."
+    },
+    {
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to certain environmental features, including color, can elicit physiological and psychological stress reduction responses."
+    },
+    {
+      "theory_name": "Color Psychology",
+      "commitment_type": "assumes",
+      "specific_claim": "Different colors evoke distinct psychological and physiological responses, influencing mood, emotion, and stress levels."
     }
   ],
   "mechanism_chain": {
-    "description": "Specific colors within VR-simulated interior environments are perceived, triggering affective responses that modulate neural activity (measured by fNIRS) and self-reported anxiety, ultimately contributing to stress recovery.",
+    "description": "The color of VR-simulated interior environments influences stress recovery by modulating perceptual and affective responses, which are reflected in neural and physiological markers.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Specific color properties (hue, saturation) in VR environment",
-        "to_construct": "Perceptual processing of color",
+        "from_construct": "Color of VR-simulated interior environment",
+        "to_construct": "Perception of environmental qualities (e.g., calmness, warmth, stimulation)",
         "mechanism_type": "perceptual",
-        "evidence_strength": "assumed"
+        "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Perceptual processing of color",
-        "to_construct": "Affective response (e.g., calming, stimulating)",
+        "from_construct": "Perception of environmental qualities",
+        "to_construct": "Affective response (e.g., anxiety, mood, emotional state)",
         "mechanism_type": "affective",
         "evidence_strength": "theoretical"
       },
       {
         "step": 3,
         "from_construct": "Affective response",
-        "to_construct": "Modulation of neural activity (e.g., prefrontal cortex oxygenation)",
-        "mechanism_type": "neural",
+        "to_construct": "Neural activity (measured by fNIRS) and subjective anxiety levels",
+        "mechanism_type": "neural|affective",
         "evidence_strength": "direct"
       },
       {
         "step": 4,
-        "from_construct": "Modulation of neural activity and affective response",
-        "to_construct": "Reduction in anxiety levels and physiological stress markers (stress recovery)",
-        "mechanism_type": "physiological|cognitive|affective",
+        "from_construct": "Neural activity and subjective anxiety levels",
+        "to_construct": "Stress recovery",
+        "mechanism_type": "physiological|affective",
         "evidence_strength": "direct"
       }
     ]
@@ -361,22 +372,22 @@
   "instruments_used": [
     {
       "name": "fNIRS",
-      "construct": "brain activity (hemodynamic response)",
-      "description": "Functional Near-Infrared Spectroscopy, used to measure changes in cerebral blood flow and oxygenation, typically in the prefrontal cortex, as an indicator of neural activity related to stress and recovery.",
+      "construct": "cortical brain activity related to stress, emotion regulation, or cognitive load",
+      "description": "Functional Near-Infrared Spectroscopy to measure changes in oxygenated and deoxygenated hemoglobin, typically in prefrontal cortex or other relevant brain regions, as an indicator of neural response to stimuli.",
       "type": "physiological"
     },
     {
-      "name": "Self-report anxiety scale",
-      "construct": "anxiety levels",
-      "description": "One or more self-report questionnaires administered to assess participants' subjective anxiety levels before, during, or after exposure to the VR environments.",
+      "name": "Anxiety measures",
+      "construct": "state anxiety, perceived stress, mood",
+      "description": "Self-report questionnaires or scales designed to assess participants' subjective levels of anxiety, stress, or mood states before and after exposure to VR environments (e.g., STAI-S, PANAS, PSS).",
       "type": "self_report"
     }
   ],
-  "surgical_update_at": "2026-03-02T18:34:44.479280+00:00",
+  "surgical_update_at": "2026-03-02T23:30:14.392124+00:00",
   "stimulus_images": [
     {
-      "description": "Renderings or screenshots of the VR-simulated interior environments, showcasing the different color schemes used as stimuli.",
-      "figure_ref": "Figure 1, Figure 2 (example, actual figure numbers unknown)",
+      "description": "Renderings or screenshots of the VR-simulated interior environments, showcasing the different color schemes used as experimental stimuli.",
+      "figure_ref": "Figure 1",
       "image_type": "rendering"
     }
   ]

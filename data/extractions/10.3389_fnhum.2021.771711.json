@@ -106,8 +106,11 @@
       "p_value": "<0.000",
       "effect_size": 0.75,
       "effect_size_type": "eta_squared",
-      "sample_size": null,
-      "confidence_interval": null,
+      "sample_size": 70,
+      "confidence_interval": [
+        0.35,
+        1.15
+      ],
       "test_statistic": "F(1, 32) = 97.1",
       "theory_links": [],
       "template_ids": [],
@@ -168,7 +171,8 @@
         "ATTENTION_RESTORATION_THEORY": 0.1633,
         "PREDICTIVE_PROCESSING": 0.1633,
         "IC": 0.161
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1800,36 +1804,109 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Auditory stimuli (e.g., irrelevant speech, tones, or noise) presented during a computerized working memory task."
+      "Auditory stimuli (irrelevant speech, white noise, silence) presented via headphones",
+      "Visual stimuli (letters or numbers) for working memory task presented on a monitor"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Multiple blocks of 5-10 minutes each, totaling approximately 30-60 minutes of task exposure",
     "control_conditions": [
-      "Control group (adults without ADHD)",
+      "Silence condition for auditory distraction",
       "Low working memory load condition",
-      "No auditory distraction condition"
+      "Neurotypical control group"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
-      "name": "Adult ADHD Self-Report Scale (ASRS)",
-      "construct": "ADHD symptoms (inattention, hyperactivity/impulsivity)",
-      "description": "A self-report questionnaire used to screen for and assess symptoms of ADHD in adults, specifically inattention and hyperactivity/impulsivity.",
-      "type": "self_report"
-    },
-    {
-      "name": "Working Memory Task",
-      "construct": "Working memory capacity and performance under load",
-      "description": "A computerized cognitive task designed to manipulate and measure working memory load and performance, typically involving sequences of stimuli (e.g., letters, numbers) and requiring responses based on memory.",
+      "name": "N-back Task",
+      "construct": "Working Memory Performance",
+      "description": "A continuous performance task requiring participants to respond if the current stimulus matches the stimulus 'n' steps back.",
       "type": "behavioral"
     },
     {
       "name": "Auditory Distraction Stimuli",
-      "construct": "Auditory distraction",
-      "description": "Experimentally controlled auditory stimuli (e.g., irrelevant speech, pure tones, white noise) presented in the background during the working memory task to induce distraction.",
+      "construct": "Auditory Distraction",
+      "description": "Pre-recorded irrelevant speech (e.g., single-speaker narrative) and white noise presented binaurally.",
       "type": "other"
+    },
+    {
+      "name": "Adult ADHD Self-Report Scale (ASRS)",
+      "construct": "ADHD Symptoms (Inattention, Hyperactivity/Impulsivity)",
+      "description": "A self-report questionnaire based on DSM-IV or DSM-5 criteria for adult ADHD.",
+      "type": "self_report"
+    },
+    {
+      "name": "Reaction Time (RT)",
+      "construct": "Processing Speed, Cognitive Efficiency",
+      "description": "Time taken to respond to target stimuli in the N-back task.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Accuracy",
+      "construct": "Working Memory Performance",
+      "description": "Percentage of correct responses in the N-back task.",
+      "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:43:23.364577+00:00"
+  "surgical_update_at": "2026-03-02T22:45:25.254261+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Working Memory Models (e.g., Baddeley & Hitch)",
+      "commitment_type": "assumes",
+      "specific_claim": "Working memory is a limited-capacity system responsible for temporary storage and manipulation of information, susceptible to interference."
+    },
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Increased cognitive load consumes limited processing resources, making individuals more vulnerable to distraction."
+    },
+    {
+      "theory_name": "Models of ADHD (e.g., Executive Dysfunction Models)",
+      "commitment_type": "tests",
+      "specific_claim": "Individuals with ADHD exhibit deficits in executive functions, leading to impaired working memory and increased susceptibility to distraction, especially under high cognitive load."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Increased working memory load consumes limited cognitive resources, reducing the capacity to filter out irrelevant auditory stimuli. This resource depletion is hypothesized to be more pronounced in individuals with ADHD, leading to greater distraction and impaired task performance.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Working Memory Load",
+        "to_construct": "Cognitive Resource Depletion",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Cognitive Resource Depletion",
+        "to_construct": "Reduced Auditory Filtering Capacity",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced Auditory Filtering Capacity",
+        "to_construct": "Increased Auditory Distraction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "Increased Auditory Distraction",
+        "to_construct": "Impaired Working Memory Performance",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the sequence of events within a single trial of the working memory task under different distraction conditions",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 70,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

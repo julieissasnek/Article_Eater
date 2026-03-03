@@ -9,12 +9,16 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 
 ## Current Status
 
-**Test Suite**: 4,082 tests collect (0 collection errors)
+**Test Suite**: 5,789 tests passing (0 collection errors, 46 skipped, 0 failures)
 **Templates**: 208 total — **208/208 scaffold pass, 103/103 calibrated pass, 0 failures**
 **Ceiling Status**: Ceiling Adjudication Algorithm deployed (`scripts/ceiling_adjudicator.py`). 100% agreement with 69 prior panel decisions. 46 decisions applied to templates. 36 unresolvable (step-number mismatches in fuzzy-matched templates — data quality issue, not algorithmic).
 **Field Coverage** (calibrated): t1_frameworks 100%, confidence 100%, bridge_warrant 100%, tier 100%, justification 100%, cross_template_interactions 100%
 **Scaffold Status**: ALL 79 scaffold templates now have t1_frameworks assigned (panel-informed). 208/208 pass scaffold validation.
-**T1.5 Status**: 14 formally reduced theories. 30/103 formal. 3 rejected (Episodic Memory, Berlyne, PCM). 1 deferred (ASA).
+**T1 Frameworks**: 10 (loaded from `schemas/theory/tier1_frameworks.json`)
+**T1.5 Domain Theories**: 13 (loaded from `schemas/theory/tier1_5_domain_theories.json`). Includes Goldilocks Principle (Berlyne/Kirsh).
+**Enrichment Orchestrator**: 9-step pipeline (credence CI, warrant trace, confounder risk, framework voices, gap analysis, follow-ups, language adaptation, figure suggestions, **interpretation context**). 13 lazy-load services.
+**Coordination System**: `.agent_coord/` (COORDINATION_STATE, MESSAGE_BOARD, CHANGELOG) + `.agents/workflows/` (check-in, check-out)
+**Tier Taxonomy**: Propagation procedure at `docs/TIER_TAXONOMY_PROPAGATION_PROCEDURE.md`. Verified by `tests/test_tier_taxonomy_consistency.py` (13 tests).
 **Ruthless Version**: v4 — `docs/RUTHLESS_SYSTEM_AUDIT_v4_STANDING.md`
 **Panel Review**: 2026-02-26 (HEALTH ASSESSMENT) — Expert panel deliberation on ATLAS system health. AESHI = 49/100 (RED). Seven-panelist review (Cartwright, Pearl, Thagard, Haack, Cooke, Murphy, Woodward) conducted 5 rounds of deliberation on four critical questions: (A) ceiling miscalibration vs. lenient overrides (UNANIMOUS: elicitation failure), (B) automatic edge creation risk (UNANIMOUS: do not add 1,731 keyword-edges), (C) zero-reference template downgrade (UNANIMOUS: downgrade but preserve), (D) single most impactful action (UNANIMOUS: Cooke calibration audit). Consensus recommendations across Tier-1 (calibration, triage, downgrade), Tier-2 (mechanistic specification, structure learning), and Tier-3 (expert retraining, intervention testing). Target: AESHI 49 → 53-55 (Tier-1) → 58-62 (Tier-2) → 68-72 (Tier-3). See `docs/Panel_Review_Health_Feb26.md` (895 lines, comprehensive deliberation).
 **Last Session**: 2026-02-25 (Session 8 continued) — Full verification audit + setup() execution with real data. (1) Audited all 15 Session 8 files (9,054 lines): found and fixed 12 bugs across 4 files (system_setup.py, overseer_nightly.py, generate_calibration_report.py, 8_system_health.py). (2) Added CrossRef support to semantic_scholar_enrichment.py: crossref_to_paper_metadata(), merge_metadata(), ingest_crossref_file(), CLI --crossref-file/--no-merge. (3) Validated S2 enrichment data: 813 papers, 731 enriched (89.8%), citation graph 1,418 intra-corpus edges, 1908-2025. (4) Executed setup() against real data: Phase 0-12 all execute, 747/813 papers integrated, 23,800 claims, 42,983 rules, convergence in 2 iterations (coherence 0.5), OPERATIONAL in 19.6s. (5) Benchmarked Phase 4: 10-paper sample → 334 beliefs, 0 failures, 3.1s. Full corpus estimated ~255s (4.25 min). (6) Confirmed two-method architecture (setup + integrate_paper) verified working.

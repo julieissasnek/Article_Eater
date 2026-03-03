@@ -1375,51 +1375,92 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Human Circadian Phototransduction Model",
+      "theory_name": "Model of Human Circadian Phototransduction",
       "commitment_type": "proposes",
-      "specific_claim": "A mathematical model integrating rod, cone, and melanopsin photoreceptor inputs can accurately predict the spectral and irradiance sensitivity of the human circadian system."
+      "specific_claim": "A mathematical model integrating rod, cone, and intrinsically photosensitive retinal ganglion cell (ipRGC) inputs to quantitatively predict human circadian responses to light."
+    },
+    {
+      "theory_name": "Multi-photoreceptor input to circadian system",
+      "commitment_type": "extends",
+      "specific_claim": "The model extends existing understanding by providing a quantitative framework for how different photoreceptors (rods, cones, ipRGCs) contribute to and are integrated in the human circadian system's response to light."
+    },
+    {
+      "theory_name": "Retinal Phototransduction and Circadian Biology",
+      "commitment_type": "assumes",
+      "specific_claim": "The model is built upon established principles of retinal phototransduction, neural signaling, and the known role of the suprachiasmatic nucleus (SCN) in circadian rhythm regulation."
     }
   ],
   "mechanism_chain": {
-    "description": "The paper models the neural pathway and signal integration from retinal photoreceptors to the suprachiasmatic nucleus (SCN) to explain circadian responses to light.",
+    "description": "The model describes the causal mechanism by which light stimulation leads to a circadian response in humans, detailing the retinal phototransduction pathway and subsequent neural signaling to the central circadian clock.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Light stimulus (specific wavelength and irradiance)",
-        "to_construct": "Activation of retinal photoreceptors (rods, cones, melanopsin-expressing intrinsically photosensitive retinal ganglion cells)",
+        "from_construct": "Light stimulus (e.g., scotopic, photopic, specific wavelength)",
+        "to_construct": "Photopigment activation in rods, cones, and ipRGCs",
         "mechanism_type": "physiological",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "assumed"
       },
       {
         "step": 2,
-        "from_construct": "Photoreceptor activation",
-        "to_construct": "Generation of electrical signals in retinal neurons",
-        "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "from_construct": "Photopigment activation",
+        "to_construct": "Phototransduction cascade and change in photoreceptor membrane potential",
+        "mechanism_type": "physiological",
+        "evidence_strength": "assumed"
       },
       {
         "step": 3,
-        "from_construct": "Integrated retinal signals (especially from ipRGCs)",
-        "to_construct": "Transmission of signals via the retinohypothalamic tract (RHT)",
+        "from_construct": "Electrical signals from photoreceptors",
+        "to_construct": "Integration and transmission to retinal ganglion cells",
         "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "assumed"
       },
       {
         "step": 4,
-        "from_construct": "RHT signals",
-        "to_construct": "Activation of the suprachiasmatic nucleus (SCN)",
+        "from_construct": "Retinal ganglion cell output",
+        "to_construct": "Transmission via retinohypothalamic tract (RHT) to the suprachiasmatic nucleus (SCN)",
         "mechanism_type": "neural",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "assumed"
       },
       {
         "step": 5,
-        "from_construct": "SCN activation",
-        "to_construct": "Regulation of circadian rhythm (e.g., melatonin suppression, phase shifting)",
-        "mechanism_type": "physiological",
+        "from_construct": "Light signals in SCN",
+        "to_construct": "Modulation of circadian rhythmicity (e.g., melatonin suppression, phase shifting)",
+        "mechanism_type": "neural|physiological",
         "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:39:53.288235+00:00"
+  "surgical_update_at": "2026-03-02T23:34:13.195806+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "spectral composition of light (e.g., monochromatic, broadband)",
+      "irradiance levels (e.g., scotopic, mesopic, photopic)",
+      "duration of light exposure"
+    ],
+    "duration_exposure": "variable, modeled durations from seconds to hours",
+    "control_conditions": [
+      "different light spectra",
+      "different light intensities",
+      "absence of light (darkness)"
+    ],
+    "ecological_validity": null
+  },
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the proposed model of human circadian phototransduction, showing inputs from rods, cones, and intrinsically photosensitive retinal ganglion cells (ipRGCs) and their integration.",
+      "figure_ref": "Figure 1 (example)",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Graph showing the model's predicted spectral sensitivity curve for human circadian responses, comparing it to empirical data.",
+      "figure_ref": "Figure 2 (example)",
+      "image_type": "graph"
+    },
+    {
+      "description": "Graph showing the model's predicted dose-response relationship between light irradiance and circadian response (e.g., melatonin suppression or phase shift).",
+      "figure_ref": "Figure 3 (example)",
+      "image_type": "graph"
+    }
+  ]
 }

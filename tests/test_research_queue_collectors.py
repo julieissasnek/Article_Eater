@@ -1,35 +1,21 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from types import SimpleNamespace
 
 from src.epistemic.gap_types import GapType
 from src.queue import CollectorProfile, CollectorType, ResearchQueueService, TargetStatus
+from tests.conftest import FakeGap, FakeGapPredictor
 
 
-@dataclass
-class _FakeGap:
-    gap_id: str
-    gap_type: GapType
-    description: str
-    voi_score: float
-    affected_beliefs: list[str]
-    implied_by: list[str]
 
 
-class _FakeGapPredictor:
-    def __init__(self, gaps: list[_FakeGap]):
-        self._gaps = gaps
-
-    def find_all_gaps(self, max_gaps: int = 50):
-        return SimpleNamespace(gaps=self._gaps[:max_gaps])
 
 
-def _make_service(tmp_path, gaps: list[_FakeGap]):
+def _make_service(tmp_path, gaps: list[FakeGap]):
     return ResearchQueueService(
         web=SimpleNamespace(beliefs={}),
-        gap_predictor=_FakeGapPredictor(gaps),
+        gap_predictor=FakeGapPredictor(gaps),
         queue_path=tmp_path / "collector_queue_state.json",
         frameworks=[],
     )
@@ -38,7 +24,7 @@ def _make_service(tmp_path, gaps: list[_FakeGap]):
 def test_claim_target_requires_registered_collector(tmp_path):
     service = _make_service(
         tmp_path,
-        [_FakeGap("g1", GapType.MECHANISM, "missing mechanism", 0.7, ["b1"], [])],
+        [FakeGap("g1", GapType.MECHANISM, "missing mechanism", 0.7, ["b1"], [])],
     )
     service.refresh_queue(include_theory=False)
 
@@ -50,7 +36,7 @@ def test_claim_target_requires_registered_collector(tmp_path):
 def test_register_and_claim_target_returns_guidance(tmp_path):
     service = _make_service(
         tmp_path,
-        [_FakeGap("g1", GapType.VALIDATION, "unfamiliar layouts increase anxiety", 0.82, ["b1"], [])],
+        [FakeGap("g1", GapType.VALIDATION, "unfamiliar layouts increase anxiety", 0.82, ["b1"], [])],
     )
     service.refresh_queue(include_theory=False)
 
@@ -79,8 +65,8 @@ def test_claim_respects_collector_capacity(tmp_path):
     service = _make_service(
         tmp_path,
         [
-            _FakeGap("g1", GapType.VALIDATION, "missing validation one", 0.9, ["b1"], []),
-            _FakeGap("g2", GapType.MECHANISM, "missing mechanism two", 0.8, ["b2"], []),
+            FakeGap("g1", GapType.VALIDATION, "missing validation one", 0.9, ["b1"], []),
+            FakeGap("g2", GapType.MECHANISM, "missing mechanism two", 0.8, ["b2"], []),
         ],
     )
     service.refresh_queue(include_theory=False)
@@ -107,8 +93,8 @@ def test_claim_specific_target_id(tmp_path):
     service = _make_service(
         tmp_path,
         [
-            _FakeGap("g1", GapType.BOUNDARY, "boundary issue one", 0.5, ["b1"], []),
-            _FakeGap("g2", GapType.MECHANISM, "mechanism issue two", 0.6, ["b2"], []),
+            FakeGap("g1", GapType.BOUNDARY, "boundary issue one", 0.5, ["b1"], []),
+            FakeGap("g2", GapType.MECHANISM, "mechanism issue two", 0.6, ["b2"], []),
         ],
     )
     service.refresh_queue(include_theory=False)

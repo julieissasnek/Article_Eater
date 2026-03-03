@@ -2101,38 +2101,76 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "tool use (e.g., rake, grabber)"
+      "tools (e.g., rakes, grabbers, virtual tools)",
+      "objects interacted with via tools",
+      "visual stimuli presented near the body or tool"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "control_conditions": [
+      "no tool use",
+      "passive tool holding",
+      "tool use without specific task",
+      "tool use with non-body-related tasks"
+    ],
+    "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
       "theory_name": "The Extended Body Hypothesis",
+      "commitment_type": "proposes",
+      "specific_claim": "Tools are dynamically incorporated into the body schema, leading to an extension of peripersonal space to include the tool's functional reach."
+    },
+    {
+      "theory_name": "Peripersonal Space Theory",
       "commitment_type": "extends",
-      "specific_claim": "Tools become incorporated into the body schema, dynamically extending peripersonal space and influencing sensory processing, leading to referred sensations."
+      "specific_claim": "Peripersonal space is a flexible, multisensory representation of the space immediately surrounding the body, which can be recalibrated and expanded through sensorimotor experience like tool use."
+    },
+    {
+      "theory_name": "Sensorimotor Integration",
+      "commitment_type": "assumes",
+      "specific_claim": "The brain integrates visual, tactile, and proprioceptive information with motor commands to construct and update a coherent representation of the body and its interaction with the environment."
     }
   ],
   "mechanism_chain": {
-    "description": "The brain integrates sensory and motor information from tool use, leading to a dynamic remapping of peripersonal space and changes in sensory processing.",
+    "description": "Active tool use provides multisensory feedback that leads to the recalibration of spatial maps and the neural incorporation of the tool into the body schema, thereby extending peripersonal space.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "tool manipulation",
-        "to_construct": "sensory-motor integration of tool with body schema",
-        "mechanism_type": "neural|cognitive|perceptual",
-        "evidence_strength": "theoretical|direct"
+        "from_construct": "active tool use",
+        "to_construct": "multisensory feedback (visual, tactile, proprioceptive) from the tool and its interaction with objects",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "sensory-motor integration of tool with body schema",
-        "to_construct": "remapping/extension of peripersonal space (e.g., visual receptive fields)",
-        "mechanism_type": "neural|cognitive|perceptual",
+        "from_construct": "multisensory feedback from the tool",
+        "to_construct": "recalibration of neural spatial maps (e.g., visual receptive fields, somatosensory cortex)",
+        "mechanism_type": "neural",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "recalibration of neural spatial maps",
+        "to_construct": "functional incorporation of the tool into the body schema",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 4,
+        "from_construct": "functional incorporation of the tool into the body schema",
+        "to_construct": "extension of peripersonal space (e.g., altered defensive responses, changes in visual processing)",
+        "mechanism_type": "neural",
         "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:02:47.945438+00:00"
+  "surgical_update_at": "2026-03-02T19:09:46.346487+00:00",
+  "stimulus_images": [
+    {
+      "description": "Conceptual diagram illustrating the dynamic nature of peripersonal space and how it expands to incorporate tools, often showing visual receptive fields around the hand and the tool's tip.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ]
 }

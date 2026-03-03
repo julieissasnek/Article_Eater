@@ -86,9 +86,9 @@
       "claim_type": "causal",
       "measure_type": "physiological",
       "p_value": "<0.05",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.42,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 75,
       "confidence_interval": null,
       "test_statistic": "t(95)=-2.242",
       "theory_links": [],
@@ -101,7 +101,8 @@
       "outcome_id": "physio.blood_pressure",
       "outcome_domain": "physio",
       "outcome_match_type": "substring",
-      "outcome_confidence": 0.8
+      "outcome_confidence": 0.8,
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1405,28 +1406,62 @@
   ],
   "stimulus_description": {
     "environmental_features": [
-      "Forest Resting Environments",
-      "Virtual Reality"
+      "virtual forest environment (visuals and sounds of nature)",
+      "virtual urban environment (visuals and sounds of city traffic)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "10 minutes",
+    "control_conditions": [
+      "virtual urban environment"
+    ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Stress Reduction Theory",
+      "theory_name": "Attention Restoration Theory",
       "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments can reduce physiological and psychological stress."
+      "specific_claim": "Natural environments facilitate recovery from directed attention fatigue and stress by providing 'being away', 'fascination', 'extent', and 'compatibility'."
+    },
+    {
+      "theory_name": "Stress Recovery Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Exposure to natural environments promotes physiological and psychological stress reduction more effectively than urban environments."
     }
   ],
   "instruments_used": [
     {
-      "name": "Systolic Blood Pressure",
+      "name": "Systolic Blood Pressure (SBP)",
       "construct": "physiological stress response",
-      "description": "Measure of the pressure in arteries when the heart beats",
+      "description": "Measured using an automated blood pressure monitor.",
       "type": "physiological"
+    },
+    {
+      "name": "Diastolic Blood Pressure (DBP)",
+      "construct": "physiological stress response",
+      "description": "Measured using an automated blood pressure monitor.",
+      "type": "physiological"
+    },
+    {
+      "name": "Heart Rate (HR)",
+      "construct": "physiological stress response",
+      "description": "Measured using an automated blood pressure monitor or ECG.",
+      "type": "physiological"
+    },
+    {
+      "name": "State-Trait Anxiety Inventory (STAI-State)",
+      "construct": "state anxiety",
+      "description": "A 20-item self-report questionnaire measuring current anxiety levels.",
+      "type": "self_report"
+    },
+    {
+      "name": "Positive and Negative Affect Schedule (PANAS)",
+      "construct": "positive and negative affect",
+      "description": "A 20-item self-report questionnaire measuring positive and negative mood states.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:40:36.325422+00:00"
+  "surgical_update_at": "2026-03-02T19:11:02.925867+00:00",
+  "paper_sample_size": 75,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

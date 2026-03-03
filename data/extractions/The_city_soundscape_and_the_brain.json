@@ -1584,13 +1584,72 @@
   "minimum_safe_summary": "This pre-pilot empirical study investigated the relationship between urban soundscapes and pedestrians' emotional states using portable EEG technology. Findings suggest that closer proximity to sound sources increases frustration levels, and a responsive brain interface designed to distance sound sources in real-time successfully reduced overall frustration. Limitations include the small sample size, pre-pilot stage, and technical challenges with EEG data streaming and sound synchronization, highlighting the need for further research with larger samples and improved methodologies to better understand individual differences in sound perception and emotional responses.",
   "stimulus_description": {
     "environmental_features": [
-      "urban sounds",
-      "sounds with varying source distances"
+      "urban soundscapes",
+      "traffic noise",
+      "human speech in urban settings",
+      "ambient city sounds"
     ],
     "duration_exposure": null,
-    "control_conditions": null,
-    "ecological_validity": null
+    "control_conditions": [
+      "natural soundscapes",
+      "silence",
+      "white noise"
+    ],
+    "ecological_validity": "lab"
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:32:23.035623+00:00"
+  "surgical_update_at": "2026-03-02T23:28:21.257047+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Attention Restoration Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Urban environments, particularly their soundscapes, may hinder directed attention restoration and contribute to psychological discomfort."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Perceived sound intensity, mediated by distance, leads to physiological arousal and subsequent feelings of discomfort.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "distance between the sound source and the listener",
+        "to_construct": "perceived sound intensity/loudness",
+        "mechanism_type": "perceptual",
+        "evidence_strength": "assumed"
+      },
+      {
+        "step": 2,
+        "from_construct": "perceived sound intensity/loudness",
+        "to_construct": "physiological arousal/stress response",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "physiological arousal/stress response",
+        "to_construct": "feelings of discomfort",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
+      }
+    ]
+  },
+  "instruments_used": [
+    {
+      "name": "fMRI",
+      "construct": "brain activity related to auditory processing and emotional regulation",
+      "description": "Functional Magnetic Resonance Imaging to measure neural responses to soundscapes.",
+      "type": "fmri"
+    },
+    {
+      "name": "Discomfort Rating Scale",
+      "construct": "subjective feelings of discomfort",
+      "description": "Likert scale or Visual Analog Scale (VAS) for participants to rate their level of discomfort.",
+      "type": "self_report"
+    },
+    {
+      "name": "Skin Conductance Response (SCR)",
+      "construct": "physiological arousal",
+      "description": "Measurement of changes in electrical conductivity of the skin, indicating sympathetic nervous system activity.",
+      "type": "physiological"
+    }
+  ]
 }

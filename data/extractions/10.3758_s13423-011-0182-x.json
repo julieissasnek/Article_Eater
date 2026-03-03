@@ -3982,35 +3982,66 @@
   },
   "theory_commitments": [
     {
-      "theory_name": "Path Integration Theory",
-      "commitment_type": "extends",
-      "specific_claim": "The paper extends understanding of how idiothetic information, processed through path integration, contributes to different forms of spatial knowledge, particularly metric survey knowledge, in active versus passive learning contexts."
+      "theory_name": "Cognitive Map Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Spatial information is organized into an allocentric, map-like representation that allows for flexible navigation and understanding of spatial relationships."
     },
     {
-      "theory_name": "Theories of Spatial Cognition",
+      "theory_name": "Path Integration",
       "commitment_type": "proposes",
-      "specific_claim": "The paper proposes a framework for understanding the distinct and interactive contributions of active (self-motion) and passive (sensory input without self-motion) information to the acquisition of various types of spatial knowledge."
+      "specific_claim": "Self-motion cues (idiothetic information) are integrated to continuously update one's position and orientation relative to a starting point, forming a crucial basis for metric spatial knowledge."
+    },
+    {
+      "theory_name": "Dual-system theories of spatial memory (Route vs. Survey Knowledge)",
+      "commitment_type": "extends",
+      "specific_claim": "Different types of spatial experience (e.g., active navigation vs. passive observation) lead to distinct forms of spatial knowledge (e.g., egocentric route knowledge vs. allocentric survey knowledge), with active experience being critical for robust survey knowledge."
     }
   ],
   "mechanism_chain": {
-    "description": "The causal mechanism describes how idiothetic information, generated during active movement, is processed to form metric survey knowledge.",
+    "description": "The paper describes how active self-motion, through the generation and integration of idiothetic cues, leads to the formation of allocentric spatial representations and ultimately metric survey knowledge.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Idiothetic information (motor, proprioceptive, vestibular) during walking",
-        "to_construct": "Internal representation of self-motion (path integration)",
-        "mechanism_type": "perceptual|neural|cognitive",
-        "evidence_strength": "theoretical"
+        "from_construct": "Active self-motion (e.g., walking, driving)",
+        "to_construct": "Generation of idiothetic cues (motor commands, proprioceptive, vestibular signals)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Internal representation of self-motion (path integration)",
-        "to_construct": "Formation of metric survey knowledge",
+        "from_construct": "Idiothetic cues",
+        "to_construct": "Path integration process",
         "mechanism_type": "cognitive",
-        "evidence_strength": "theoretical"
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Path integration",
+        "to_construct": "Formation/refinement of allocentric spatial representations (cognitive map)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 4,
+        "from_construct": "Allocentric spatial representations",
+        "to_construct": "Metric survey knowledge (e.g., ability to point to unseen locations, estimate distances)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:22:58.592090+00:00"
+  "surgical_update_at": "2026-03-02T23:28:23.043162+00:00",
+  "stimulus_images": [
+    {
+      "description": "Diagram illustrating the distinction between route knowledge and survey knowledge, often showing examples of how each is represented or tested.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    },
+    {
+      "description": "Diagrams depicting different experimental paradigms used in spatial learning research, such as virtual environments or real-world navigation tasks.",
+      "figure_ref": "Various figures (e.g., Figure 2, Figure 3)",
+      "image_type": "diagram"
+    }
+  ]
 }

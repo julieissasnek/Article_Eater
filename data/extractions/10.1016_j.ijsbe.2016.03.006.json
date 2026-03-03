@@ -7102,5 +7102,43 @@
     "top_k_templates": 5
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:24:03.805196+00:00"
+  "surgical_update_at": "2026-03-02T23:27:59.944259+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Adaptive Comfort Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Occupants adapt to their indoor thermal environment, and their comfort expectations are influenced by outdoor climate and personal factors."
+    },
+    {
+      "theory_name": "Environmental Load Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Excessive or inappropriate environmental stimuli (e.g., noise, poor air quality) can lead to cognitive overload and stress, negatively impacting well-being."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "The paper reviews various causal pathways through which specific indoor environmental quality (IEQ) factors influence occupant well-being and comfort. A common pathway involves physiological and psychological responses to environmental stimuli.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Poor indoor air quality (e.g., high CO2, VOCs)",
+        "to_construct": "Physiological irritation (e.g., headaches, respiratory symptoms)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 2,
+        "from_construct": "Physiological irritation",
+        "to_construct": "Perceived discomfort and annoyance",
+        "mechanism_type": "affective",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Perceived discomfort and annoyance",
+        "to_construct": "Reduced occupant well-being and satisfaction",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  }
 }

@@ -51,9 +51,9 @@
       "claim_type": "causal",
       "measure_type": "performance",
       "p_value": "0.035",
-      "effect_size": null,
-      "effect_size_type": null,
-      "sample_size": null,
+      "effect_size": 0.6,
+      "effect_size_type": "Cohen's d",
+      "sample_size": 64,
       "confidence_interval": null,
       "test_statistic": "F(1,51)=4.68",
       "theory_links": [
@@ -122,7 +122,8 @@
         "EMBODIED_COGNITION": 0.1613,
         "PREDICTIVE_PROCESSING": 0.1613,
         "NM": 0.1606
-      }
+      },
+      "sample_size_source": "estimated"
     },
     {
       "id": 2,
@@ -1652,35 +1653,48 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "architectural layouts with varying alignment of internal structure to external context or primary axis"
+      "Computer-simulated building environment",
+      "Manipulation of central building part alignment (aligned vs. misaligned) relative to the main building axes"
     ],
     "duration_exposure": null,
     "control_conditions": [
-      "aligned architectural layout"
+      "Aligned building configuration"
     ],
-    "ecological_validity": "lab"
+    "ecological_validity": "semi-naturalistic"
   },
   "theory_commitments": [
     {
       "theory_name": "Spatial Reference Frame Theory",
       "commitment_type": "tests",
-      "specific_claim": "The congruence between different spatial reference frames (e.g., internal building layout and external context) influences the ease and efficiency of spatial navigation and way-finding."
+      "specific_claim": "The alignment of environmental features influences the formation and use of spatial reference frames, which in turn affects way-finding performance."
+    },
+    {
+      "theory_name": "Cognitive Mapping Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Humans form and utilize internal cognitive maps of environments for navigation."
     }
   ],
   "mechanism_chain": {
-    "description": "Misalignment between spatial reference frames increases cognitive load and difficulty in forming a coherent mental representation of the environment, thereby impairing way-finding performance.",
+    "description": "Misalignment of a central building part disrupts the integration of spatial information, leading to increased cognitive load and difficulty in maintaining a coherent mental representation of the environment, which consequently impairs way-finding performance.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "misalignment of spatial reference frames",
-        "to_construct": "increased cognitive load / difficulty in integrating spatial information",
+        "from_construct": "Misalignment of central building part",
+        "to_construct": "Disruption of spatial reference frame integration",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "increased cognitive load / difficulty in integrating spatial information",
-        "to_construct": "impaired way-finding performance",
+        "from_construct": "Disruption of spatial reference frame integration",
+        "to_construct": "Increased cognitive load/disorientation",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Increased cognitive load/disorientation",
+        "to_construct": "Impaired way-finding performance (e.g., longer time, more errors)",
         "mechanism_type": "behavioral",
         "evidence_strength": "direct"
       }
@@ -1688,12 +1702,32 @@
   },
   "instruments_used": [
     {
-      "name": "Way-finding time",
+      "name": "Computer-simulated way-finding task",
       "construct": "Way-finding performance",
-      "description": "Time taken to navigate a specific route or reach a destination within the simulated architectural environment.",
+      "description": "Participants navigated a virtual building to find target locations, with measures including time taken and errors made.",
       "type": "behavioral"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T23:00:55.616967+00:00"
+  "surgical_update_at": "2026-03-02T22:47:17.117860+00:00",
+  "stimulus_images": [
+    {
+      "description": "Floor plan of the experimental building showing aligned central part",
+      "figure_ref": "Figure 1a",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Floor plan of the experimental building showing misaligned central part",
+      "figure_ref": "Figure 1b",
+      "image_type": "floor_plan"
+    },
+    {
+      "description": "Example rendering of the virtual environment from a participant's perspective",
+      "figure_ref": "Figure 2",
+      "image_type": "rendering"
+    }
+  ],
+  "paper_sample_size": 64,
+  "paper_sample_size_source": "estimated",
+  "quantitative_backfill_count": 1
 }

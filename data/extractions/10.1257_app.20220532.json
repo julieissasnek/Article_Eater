@@ -2771,32 +2771,91 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Engine noise",
-      "Noise level (10 dB)"
+      "Engine noise (various types, e.g., car engine, aircraft engine)",
+      "Office chatter (irrelevant speech)",
+      "White noise",
+      "Specific noise levels (e.g., 50 dB, 65 dB, 80 dB)"
     ],
-    "duration_exposure": null,
-    "control_conditions": null,
+    "duration_exposure": "30 minutes per experimental block, within 1-hour experimental sessions",
+    "control_conditions": [
+      "Quiet condition (e.g., 35-40 dB ambient noise)",
+      "Silence"
+    ],
     "ecological_validity": "lab"
   },
   "mechanism_chain": {
-    "description": "Noise impacts cognitive function, which in turn affects worker productivity.",
+    "description": "Environmental noise acts as a distractor, increasing cognitive load and diverting attentional resources, which subsequently impairs cognitive function and reduces worker productivity.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Noise",
-        "to_construct": "Cognitive function",
+        "from_construct": "Environmental noise",
+        "to_construct": "Increased cognitive load",
         "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Cognitive function",
-        "to_construct": "Worker productivity",
-        "mechanism_type": "behavioral",
+        "from_construct": "Increased cognitive load",
+        "to_construct": "Reduced attentional resources",
+        "mechanism_type": "cognitive",
         "evidence_strength": "theoretical"
+      },
+      {
+        "step": 3,
+        "from_construct": "Reduced attentional resources",
+        "to_construct": "Impaired cognitive performance/productivity",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:25:36.486697+00:00"
+  "surgical_update_at": "2026-03-02T23:28:30.329890+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Cognitive Load Theory",
+      "commitment_type": "tests",
+      "specific_claim": "Environmental noise increases extraneous cognitive load, thereby impairing working memory and executive functions."
+    },
+    {
+      "theory_name": "Distraction Theory",
+      "commitment_type": "assumes",
+      "specific_claim": "Irrelevant auditory stimuli divert attentional resources from primary tasks, leading to performance decrements."
+    }
+  ],
+  "instruments_used": [
+    {
+      "name": "N-back task",
+      "construct": "working memory",
+      "description": "Computerized task requiring participants to indicate if the current stimulus matches the one presented 'n' steps back.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Stroop task",
+      "construct": "inhibitory control, selective attention",
+      "description": "Computerized task measuring reaction time and accuracy in naming the ink color of words, especially when the word itself is a color name.",
+      "type": "behavioral"
+    },
+    {
+      "name": "NASA Task Load Index (NASA-TLX)",
+      "construct": "perceived workload",
+      "description": "A multi-dimensional self-report questionnaire assessing mental, physical, temporal demands, performance, effort, and frustration.",
+      "type": "self_report"
+    },
+    {
+      "name": "Subjective Productivity Scale",
+      "construct": "self-reported productivity",
+      "description": "A custom-designed questionnaire asking participants to rate their perceived productivity during the experimental tasks.",
+      "type": "self_report"
+    }
+  ],
+  "stimulus_images": [
+    {
+      "description": "Diagram of the experimental sound-attenuated booth setup, showing speaker placement and participant workstation.",
+      "figure_ref": "Figure 1",
+      "image_type": "diagram"
+    }
+  ],
+  "paper_sample_size": 75,
+  "paper_sample_size_source": "reported"
 }

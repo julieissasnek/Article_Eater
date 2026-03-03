@@ -3145,53 +3145,52 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Visual stimuli (e.g., flashing lights, moving dots, speech-related visual cues)",
-      "Auditory stimuli (e.g., pure tones, white noise bursts, speech sounds)"
+      "Auditory stimuli (e.g., pure tones, white noise, speech, clicks)",
+      "Visual stimuli (e.g., flashing lights, moving dots, videos of talking faces, static images, visual speech)"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Typically short, ranging from tens of milliseconds to a few seconds per trial, with experiments often involving multiple trials.",
     "control_conditions": [
-      "Unimodal visual presentation",
       "Unimodal auditory presentation",
-      "Spatially congruent audiovisual stimuli",
-      "Varying spatial disparities between visual and auditory stimuli"
+      "Unimodal visual presentation",
+      "Spatially congruent audiovisual presentation",
+      "Spatially incongruent audiovisual presentation",
+      "Temporally asynchronous audiovisual presentation"
     ],
     "ecological_validity": "lab"
   },
   "theory_commitments": [
     {
-      "theory_name": "Bayesian Optimal Multisensory Integration",
-      "commitment_type": "assumes",
-      "specific_claim": "Multisensory perception arises from the optimal integration of sensory inputs, weighted by their respective reliabilities, often described by Bayesian principles."
+      "theory_name": "Bayesian Causal Inference (BCI)",
+      "commitment_type": "reviews",
+      "specific_claim": "The brain optimally integrates multisensory cues, weighting them by their reliability, to form a unified percept, explaining the visual capture of auditory localization in the ventriloquist illusion when cues are inferred to share a common cause."
+    },
+    {
+      "theory_name": "Multisensory Recalibration / Adaptation",
+      "commitment_type": "reviews",
+      "specific_claim": "Prolonged exposure to spatially disparate visual and auditory stimuli in the ventriloquist illusion can lead to a lasting shift in perceived auditory localization, reflecting an adaptive recalibration of sensory maps."
     }
   ],
   "mechanism_chain": {
-    "description": "The causal mechanism underlying the ventriloquist illusion, where a visual stimulus biases the perceived location of a simultaneously presented auditory stimulus.",
+    "description": "The ventriloquist illusion arises from the brain's integration of spatially disparate visual and auditory cues. When these cues are perceived as originating from a common source, the more reliable visual cue biases the localization of the less reliable auditory cue, leading to a shift in perceived auditory location.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual stimulus presentation",
-        "to_construct": "Spatial localization of visual stimulus",
-        "mechanism_type": "perceptual",
+        "from_construct": "Visual stimulus reliability",
+        "to_construct": "Weighting of visual spatial information during multisensory integration",
+        "mechanism_type": "cognitive",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Auditory stimulus presentation",
-        "to_construct": "Spatial localization of auditory stimulus",
+        "from_construct": "Weighting of visual spatial information during multisensory integration",
+        "to_construct": "Multisensory spatial integration (combining visual and auditory spatial estimates)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Spatially disparate visual and auditory localizations",
-        "to_construct": "Multisensory integration process (e.g., Bayesian weighting)",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "direct"
-      },
-      {
-        "step": 4,
-        "from_construct": "Integrated audiovisual spatial information",
-        "to_construct": "Shift in perceived auditory location towards the visual stimulus",
+        "from_construct": "Multisensory spatial integration",
+        "to_construct": "Perceived auditory location (visual bias)",
         "mechanism_type": "perceptual",
         "evidence_strength": "direct"
       }
@@ -3218,7 +3217,7 @@
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:33:10.305337+00:00",
+  "surgical_update_at": "2026-03-02T22:44:11.992459+00:00",
   "stimulus_images": [
     {
       "description": "Diagram illustrating a typical experimental setup for inducing the ventriloquist illusion, showing spatially disparate visual and auditory stimuli.",

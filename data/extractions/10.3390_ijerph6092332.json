@@ -2101,60 +2101,97 @@
   "theory_commitments": [
     {
       "theory_name": "Biophilia Hypothesis",
-      "commitment_type": "proposes",
-      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems, which is beneficial for their health and well-being."
+      "commitment_type": "assumes",
+      "specific_claim": "Humans possess an innate tendency to connect with nature and other living systems."
     },
     {
-      "theory_name": "Attention Restoration Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Natural environments facilitate the restoration of directed attention, leading to improved cognitive function and reduced mental fatigue."
+      "theory_name": "Attention Restoration Theory (ART)",
+      "commitment_type": "discusses",
+      "specific_claim": "Natural environments facilitate recovery from directed attention fatigue through qualities like fascination, being away, extent, and compatibility."
     },
     {
-      "theory_name": "Stress Reduction Theory",
-      "commitment_type": "tests",
-      "specific_claim": "Exposure to natural environments reduces physiological and psychological stress more effectively than exposure to urban environments."
+      "theory_name": "Stress Reduction Theory (SRT)",
+      "commitment_type": "discusses",
+      "specific_claim": "Non-threatening natural environments elicit positive affective responses and physiological relaxation, reducing stress."
     }
   ],
   "mechanism_chain": {
-    "description": "Visual contact with natural elements triggers innate biophilic responses, leading to reduced stress, restored attention, and positive emotional states, which collectively contribute to improved health and well-being.",
+    "description": "Visual contact with nature triggers positive affective and cognitive responses, leading to physiological relaxation and improved well-being.",
     "steps": [
       {
         "step": 1,
-        "from_construct": "Visual contact with natural elements",
-        "to_construct": "Activation of innate biophilic responses",
-        "mechanism_type": "neural|affective",
+        "from_construct": "visual contact with nature",
+        "to_construct": "perceived fascination and coherence",
+        "mechanism_type": "perceptual",
         "evidence_strength": "theoretical"
       },
       {
         "step": 2,
-        "from_construct": "Activation of innate biophilic responses",
-        "to_construct": "Reduced physiological stress (e.g., lower heart rate, blood pressure)",
-        "mechanism_type": "physiological",
-        "evidence_strength": "indirect"
+        "from_construct": "perceived fascination and coherence",
+        "to_construct": "reduced cognitive load and rumination",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 3,
-        "from_construct": "Activation of innate biophilic responses",
-        "to_construct": "Restoration of directed attention / Reduced mental fatigue",
-        "mechanism_type": "cognitive",
-        "evidence_strength": "indirect"
+        "from_construct": "reduced cognitive load and rumination",
+        "to_construct": "positive affect and reduced psychological stress",
+        "mechanism_type": "affective",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 4,
-        "from_construct": "Activation of innate biophilic responses",
-        "to_construct": "Increased positive affect / Reduced negative affect",
-        "mechanism_type": "affective",
-        "evidence_strength": "indirect"
+        "from_construct": "positive affect and reduced psychological stress",
+        "to_construct": "physiological relaxation (e.g., lower heart rate, cortisol)",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       },
       {
         "step": 5,
-        "from_construct": "Reduced physiological stress, Restored attention, Increased positive affect",
-        "to_construct": "Improved health and well-being",
-        "mechanism_type": "physiological|cognitive|affective",
-        "evidence_strength": "indirect"
+        "from_construct": "physiological relaxation",
+        "to_construct": "improved health and well-being",
+        "mechanism_type": "physiological",
+        "evidence_strength": "theoretical"
       }
     ]
   },
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T00:07:02.311457+00:00"
+  "surgical_update_at": "2026-03-02T19:10:03.475669+00:00",
+  "stimulus_description": {
+    "environmental_features": [
+      "real nature views (e.g., through windows)",
+      "virtual nature (e.g., images, videos of natural scenes)",
+      "indoor plants",
+      "urban green spaces",
+      "simulated natural environments"
+    ],
+    "duration_exposure": "varied across reviewed studies, ranging from brief (minutes) to prolonged (daily or continuous)",
+    "control_conditions": [
+      "urban views",
+      "blank walls",
+      "abstract art",
+      "no view/control condition"
+    ],
+    "ecological_validity": "lab|semi-naturalistic|field"
+  },
+  "instruments_used": [
+    {
+      "name": "Self-report questionnaires",
+      "construct": "mood, perceived stress, well-being, attention restoration",
+      "description": "Various scales used to assess subjective experiences.",
+      "type": "self_report"
+    },
+    {
+      "name": "Physiological measures",
+      "construct": "stress response, arousal",
+      "description": "Measures such as heart rate, skin conductance, blood pressure, and cortisol levels.",
+      "type": "physiological"
+    },
+    {
+      "name": "Cognitive performance tasks",
+      "construct": "attention, memory, executive function",
+      "description": "Tasks designed to measure cognitive abilities.",
+      "type": "behavioral"
+    }
+  ]
 }

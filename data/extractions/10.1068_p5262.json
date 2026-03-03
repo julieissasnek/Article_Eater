@@ -2473,26 +2473,80 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "mundane pictures",
-      "good pictures",
-      "edited pictures",
-      "abstract pictures"
+      "Mundane photographs",
+      "Artistic photographs (good compositions)",
+      "Edited artistic photographs",
+      "Abstract art images"
     ],
-    "duration_exposure": null,
+    "duration_exposure": "Fixed duration per image (e.g., 10 seconds for initial viewing)",
     "control_conditions": [
-      "laymen group",
-      "mundane picture type"
+      "Laymen group (non-artists)",
+      "Different picture types (mundane, good, edited, abstract)"
     ],
     "ecological_validity": "lab"
   },
   "instruments_used": [
     {
       "name": "Eye-tracker",
-      "construct": "eye-movement patterns, fixation frequency, fixation duration, viewing time within ROIs",
-      "description": "Device used to record gaze position and movements",
+      "construct": "Eye movement patterns (fixation frequency, fixation duration, viewing time within ROIs)",
+      "description": "Device used to record participants' gaze behavior while viewing images.",
       "type": "eye_tracking"
+    },
+    {
+      "name": "Visual Recognition Memory Task",
+      "construct": "Visual memory",
+      "description": "Behavioral task requiring participants to identify previously viewed images among distractors.",
+      "type": "behavioral"
+    },
+    {
+      "name": "Participant Classification Questionnaire/Interview",
+      "construct": "Artistic expertise",
+      "description": "Method to categorize participants as artists or laymen based on their training, experience, or profession.",
+      "type": "self_report"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-01T22:44:05.024747+00:00"
+  "surgical_update_at": "2026-03-02T23:29:47.206451+00:00",
+  "theory_commitments": [
+    {
+      "theory_name": "Visual Expertise Framework",
+      "commitment_type": "tests",
+      "specific_claim": "Visual expertise (e.g., in artists) leads to different perceptual strategies, influencing eye movement patterns and visual memory performance for pictorial stimuli."
+    }
+  ],
+  "mechanism_chain": {
+    "description": "Artists' visual expertise leads to different cognitive processing strategies, which manifest as distinct eye movement patterns and result in altered visual memory performance compared to laymen.",
+    "steps": [
+      {
+        "step": 1,
+        "from_construct": "Visual expertise (e.g., in artists)",
+        "to_construct": "Specialized cognitive processing strategies (e.g., top-down knowledge application, efficient feature extraction)",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "theoretical"
+      },
+      {
+        "step": 2,
+        "from_construct": "Specialized cognitive processing strategies",
+        "to_construct": "Distinct eye movement patterns (e.g., fixation frequency, duration, scan paths)",
+        "mechanism_type": "behavioral",
+        "evidence_strength": "direct"
+      },
+      {
+        "step": 3,
+        "from_construct": "Specialized cognitive processing strategies",
+        "to_construct": "Altered visual memory performance",
+        "mechanism_type": "cognitive",
+        "evidence_strength": "direct"
+      }
+    ]
+  },
+  "stimulus_images": [
+    {
+      "description": "Examples of mundane, good, edited, and abstract picture stimuli used in the experiment",
+      "figure_ref": "Figure 1",
+      "image_type": "stimulus_set"
+    }
+  ],
+  "paper_sample_size": 24,
+  "paper_sample_size_source": "estimated"
 }

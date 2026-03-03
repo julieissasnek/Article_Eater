@@ -54,7 +54,7 @@
     },
     {
       "construct": "Speech Intelligibility (SI)",
-      "instrument": "Derived from STI using the equation SI = 54.989STI³ – 238.1STI² + 287.35STI – 8.056",
+      "instrument": "Derived from STI using the equation SI = 54.989STI\u00b3 \u2013 238.1STI\u00b2 + 287.35STI \u2013 8.056",
       "type": "cognitive"
     },
     {
@@ -155,7 +155,7 @@
     {
       "id": 2,
       "antecedent": "Acoustic renovation",
-      "consequent": "Reverberation Time (RT0.5-1kHz) compliance with standard (≤0.8 s for V > 300 m³)",
+      "consequent": "Reverberation Time (RT0.5-1kHz) compliance with standard (\u22640.8 s for V > 300 m\u00b3)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -301,7 +301,7 @@
     {
       "id": 4,
       "antecedent": "Acoustic renovation",
-      "consequent": "Definition (C50,0.5-1kHz) compliance with standard (≥0 dB)",
+      "consequent": "Definition (C50,0.5-1kHz) compliance with standard (\u22650 dB)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -446,7 +446,7 @@
     {
       "id": 6,
       "antecedent": "Acoustic renovation",
-      "consequent": "Speech Transmission Index (STI) compliance with standard (≥0.62)",
+      "consequent": "Speech Transmission Index (STI) compliance with standard (\u22650.62)",
       "direction": "increase",
       "claim_type": "causal",
       "measure_type": "physiological",
@@ -603,7 +603,7 @@
       "claim_type": "causal",
       "measure_type": "physiological",
       "p_value": "null",
-      "effect_size": 0.04,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": 40,
       "confidence_interval": null,
@@ -662,7 +662,9 @@
         "NEUROMODULATORY": 0.155,
         "DMN_TPN_DYNAMICS": 0.152
       },
-      "sample_n": 40
+      "sample_n": 40,
+      "_original_effect_size": 0.04,
+      "_quarantine_reason": "Value 0.04 appears to be a p-value, not an effect size"
     },
     {
       "id": 9,
@@ -737,7 +739,7 @@
       "claim_type": "null",
       "measure_type": "physiological",
       "p_value": "null",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": 40,
       "confidence_interval": null,
@@ -777,7 +779,9 @@
           "reasons": []
         }
       ],
-      "sample_n": 40
+      "sample_n": 40,
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 11,
@@ -839,7 +843,7 @@
       "claim_type": "null",
       "measure_type": "physiological",
       "p_value": "null",
-      "effect_size": 0.05,
+      "effect_size": null,
       "effect_size_type": null,
       "sample_size": 40,
       "confidence_interval": null,
@@ -899,7 +903,9 @@
         "ORGANIZATIONAL_PSYCHOLOGY": 0.1541,
         "PREDICTIVE_PROCESSING": 0.1541
       },
-      "sample_n": 40
+      "sample_n": 40,
+      "_original_effect_size": 0.05,
+      "_quarantine_reason": "Value 0.05 appears to be a p-value, not an effect size"
     },
     {
       "id": 13,
@@ -962,7 +968,7 @@
     },
     {
       "id": 14,
-      "antecedent": "Speech Transmission Index (STI) = 0.62 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.62 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -1007,7 +1013,7 @@
     },
     {
       "id": 15,
-      "antecedent": "Speech Transmission Index (STI) = 0.70 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.70 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -1052,7 +1058,7 @@
     },
     {
       "id": 16,
-      "antecedent": "Speech Transmission Index (STI) = 0.75 (under natural sound and ideal background noise conditions, SNR ≥ 15 dBA)",
+      "antecedent": "Speech Transmission Index (STI) = 0.75 (under natural sound and ideal background noise conditions, SNR \u2265 15 dBA)",
       "consequent": "Reverberation Time (RT0.5-1kHz) and Speech Intelligibility (SI)",
       "direction": "mixed",
       "claim_type": "associational",
@@ -1560,37 +1566,37 @@
   },
   "stimulus_description": {
     "environmental_features": [
-      "Acoustic properties of multimedia classrooms (e.g., reverberation time, sound absorption characteristics)",
-      "Classroom environments before and after the addition of sound-absorbing materials"
+      "Acoustic properties of multimedia classrooms (e.g., reverberation time, background noise levels)",
+      "Presence/absence of sound-absorbing materials"
     ],
-    "duration_exposure": "Continuous during normal classroom operation for students; specific measurement durations for acoustic parameters",
+    "duration_exposure": null,
     "control_conditions": [
-      "Comparison of acoustic parameters in classrooms before and after acoustic renovation",
-      "Comparison against established acoustic standards for classrooms"
+      "Classrooms before acoustic renovation",
+      "Classrooms after acoustic renovation (with added sound-absorbing materials)"
     ],
     "ecological_validity": "field"
   },
   "mechanism_chain": {
-    "description": "The addition of sound-absorbing materials in classrooms leads to the absorption of sound energy, which reduces sound reflections and consequently decreases the reverberation time.",
+    "description": "The addition of sound-absorbing materials increases sound absorption within the classroom, leading to reduced sound reflections and consequently a decrease in reverberation time.",
     "steps": [
       {
         "step": 1,
         "from_construct": "Addition of sound-absorbing materials",
-        "to_construct": "Absorption of sound energy",
+        "to_construct": "Increased sound absorption within the room",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 2,
-        "from_construct": "Absorption of sound energy",
-        "to_construct": "Reduction in sound reflections",
+        "from_construct": "Increased sound absorption within the room",
+        "to_construct": "Reduced sound reflections",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       },
       {
         "step": 3,
-        "from_construct": "Reduction in sound reflections",
-        "to_construct": "Decrease in reverberation time",
+        "from_construct": "Reduced sound reflections",
+        "to_construct": "Decreased time for sound energy to decay (Reverberation Time)",
         "mechanism_type": "physical",
         "evidence_strength": "direct"
       }
@@ -1599,11 +1605,17 @@
   "instruments_used": [
     {
       "name": "Acoustic measurement system",
-      "construct": "Reverberation Time (RT), Sound Pressure Level (SPL), Speech Transmission Index (STI)",
-      "description": "Equipment used to measure objective acoustic parameters within classrooms, typically involving a sound source (e.g., dodecahedron loudspeaker) and measurement microphones connected to a data acquisition system and analysis software.",
+      "construct": "Reverberation Time (RT)",
+      "description": "Equipment used to measure room acoustic parameters, specifically reverberation time across different frequency bands (e.g., 0.5-1kHz).",
+      "type": "other"
+    },
+    {
+      "name": "Sound level meter",
+      "construct": "Sound Pressure Level (SPL)",
+      "description": "Used for measuring sound pressure levels within the classrooms.",
       "type": "other"
     }
   ],
   "extraction_version": "v3.0",
-  "surgical_update_at": "2026-03-02T18:40:30.768521+00:00"
+  "surgical_update_at": "2026-03-02T23:34:37.480298+00:00"
 }
