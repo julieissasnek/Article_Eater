@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "created": "2026-03-01",
   "description": "Success Conditions Registry for Article_Eater_PostQuinean_v1 \u2014 All critical scripts and modules. Each condition is measurable and testable. This registry directly addresses the mandate: prevent silent failures and zero-output problems through explicit success criteria.",
   "conditions": {
@@ -1126,7 +1126,7 @@
       ]
     },
     "src/qa/cards/ (End-to-End Integration)": {
-      "description": "Last-mile integration tests verifying data flows across card system component boundaries — not just that individual components work, but that A's output reaches B's input at its ultimate destination",
+      "description": "Last-mile integration tests verifying data flows across card system component boundaries \u2014 not just that individual components work, but that A's output reaches B's input at its ultimate destination",
       "script_entry_point": "pytest tests/test_card_integration_e2e.py -v",
       "conditions": [
         {
@@ -1136,7 +1136,7 @@
           "metric": "card_loaded == card_saved AND file_exists(data_path)",
           "threshold": "100%",
           "test_name": "test_SC_E2E_1_card_roundtrip_with_real_path",
-          "rationale": "Cards that serialize but can't be found by the retriever are invisible to QA — the most common last-mile failure"
+          "rationale": "Cards that serialize but can't be found by the retriever are invisible to QA \u2014 the most common last-mile failure"
         },
         {
           "id": "SC-E2E-2",
@@ -1145,7 +1145,7 @@
           "metric": "all imports succeed AND types are correct",
           "threshold": "100%",
           "test_name": "test_SC_E2E_2_card_schema_imports",
-          "rationale": "If the import path is wrong, no downstream consumer can use the schema — total system failure"
+          "rationale": "If the import path is wrong, no downstream consumer can use the schema \u2014 total system failure"
         },
         {
           "id": "SC-E2E-3",
@@ -1160,10 +1160,10 @@
           "id": "SC-E2E-4",
           "name": "All referenced tabs have definitions",
           "description": "Every tab name in required_tabs/optional_tabs across all card types has an entry in TAB_DEFINITIONS",
-          "metric": "all_tabs_in_registry ⊆ TAB_DEFINITIONS.keys()",
+          "metric": "all_tabs_in_registry \u2286 TAB_DEFINITIONS.keys()",
           "threshold": "100%",
           "test_name": "test_SC_E2E_4_all_tabs_defined",
-          "rationale": "Undefined tabs render as empty sections in the UI — silent data loss"
+          "rationale": "Undefined tabs render as empty sections in the UI \u2014 silent data loss"
         },
         {
           "id": "SC-E2E-5",
@@ -1181,12 +1181,12 @@
           "metric": "len(validate_tabs()) > 0 for cards with missing required tabs",
           "threshold": "100%",
           "test_name": "test_SC_E2E_6_validate_tabs_detects_missing",
-          "rationale": "If validation passes on incomplete cards, quality gate is a no-op — the most dangerous last-mile failure"
+          "rationale": "If validation passes on incomplete cards, quality gate is a no-op \u2014 the most dangerous last-mile failure"
         },
         {
           "id": "SC-E2E-7",
           "name": "Card JSON is standard-compliant",
-          "description": "Card.to_json() output can be parsed by json.loads without errors — no non-serializable types",
+          "description": "Card.to_json() output can be parsed by json.loads without errors \u2014 no non-serializable types",
           "metric": "json.loads(card.to_json()) succeeds",
           "threshold": "100%",
           "test_name": "test_SC_E2E_7_card_json_is_standard_json",
@@ -1208,7 +1208,7 @@
           "metric": "len(set(orderings)) >= 2 for any card type with >=3 tabs",
           "threshold": "100%",
           "test_name": "test_SC_E2E_9_user_type_tab_ordering_varies",
-          "rationale": "Personalization that produces identical output for all users is a no-op — feature exists but doesn't work"
+          "rationale": "Personalization that produces identical output for all users is a no-op \u2014 feature exists but doesn't work"
         },
         {
           "id": "SC-E2E-10",
@@ -1217,7 +1217,7 @@
           "metric": "re.match(r'^#[0-9A-Fa-f]{6}$', color) for all colors",
           "threshold": "100%",
           "test_name": "test_SC_E2E_10_badge_colors_are_valid_hex",
-          "rationale": "Invalid hex colors cause silent rendering failures — badges appear but with wrong/missing color"
+          "rationale": "Invalid hex colors cause silent rendering failures \u2014 badges appear but with wrong/missing color"
         },
         {
           "id": "SC-E2E-11",
@@ -1238,6 +1238,170 @@
           "rationale": "THE canonical last-mile test: if extraction produces direction values the card schema rejects, 12,000+ T3 cards lose their direction data"
         }
       ]
+    },
+    "src/qa/session_card_writer.py": {
+      "description": "Zero-cost session card generation with parallel terminal coordination",
+      "conditions": [
+        {
+          "id": "SC-SCW-1",
+          "name": "Session agent reads prompt output",
+          "description": "get_next_card_prompt() returns PromptForAgent with tab prompts",
+          "metric": "prompt.tab_names is not empty AND prompt.system_prompt is not empty",
+          "threshold": "100%",
+          "test_name": "test_get_next_card_prompt",
+          "rationale": "If prompt is malformed, agent generates garbage"
+        },
+        {
+          "id": "SC-SCW-2",
+          "name": "Card response accepted and parsed",
+          "description": "accept_card_response() parses prose and JSON from agent output",
+          "metric": "success == True AND card.body.tabs has expected content",
+          "threshold": "100%",
+          "test_name": "test_accept_card_response_parses_prose_and_json",
+          "rationale": "Parsing failures silently lose generated content"
+        },
+        {
+          "id": "SC-SCW-3",
+          "name": "Cards saved to disk and retrievable",
+          "description": "Generated cards are persisted as JSON in card_storage_dir",
+          "metric": "file_exists(card_storage_dir / card_type / entity_id.json)",
+          "threshold": "100%",
+          "test_name": "test_card_saved_to_disk",
+          "rationale": "Cards not saved to disk are lost on session end"
+        },
+        {
+          "id": "SC-SCW-4",
+          "name": "No duplicate claims across terminals",
+          "description": "Multiple terminals claim different cards; no card claimed by >1 terminal",
+          "metric": "set(terminal_1_cards) & set(terminal_2_cards) == empty",
+          "threshold": "100%",
+          "test_name": "test_claim_cards_multiple_terminals",
+          "rationale": "Duplicate work wastes session compute and may produce conflicts"
+        },
+        {
+          "id": "SC-SCW-5",
+          "name": "Queue status reflects claimed and completed",
+          "description": "get_queue_status() correctly counts unclaimed, claimed, completed",
+          "metric": "unclaimed + claimed + completed == total_queued",
+          "threshold": "100%",
+          "test_name": "test_queue_status",
+          "rationale": "Incorrect status leads to terminals re-doing completed work"
+        },
+        {
+          "id": "SC-SCW-6",
+          "name": "Zero API calls in session mode",
+          "description": "SessionCardWriter does not make any paid LLM API calls",
+          "metric": "no AnthropicProvider.complete() or GoogleProvider.complete() calls",
+          "threshold": "100%",
+          "test_name": "N/A (architectural)",
+          "rationale": "David's explicit mandate: free sessions should not generate API costs"
+        }
+      ]
+    },
+    "src/qa/card_tab_generators.py (sources tab)": {
+      "description": "Sources tab with per-paper method details and stimulus descriptions",
+      "conditions": [
+        {
+          "id": "SC-TG-8",
+          "name": "Sources tab produces per-paper details",
+          "description": "Sources tab contains paper-level method summaries for eligible cards",
+          "metric": "sources tab prose includes per-paper details for \u226580% of referenced papers",
+          "threshold": "80%",
+          "test_name": "test_sources_produces_tab",
+          "rationale": "Scientists need to see what each paper actually did"
+        },
+        {
+          "id": "SC-TG-9",
+          "name": "Sources tab includes stimulus descriptions",
+          "description": "When extraction data has stimulus_description, sources tab includes it",
+          "metric": "stimulus details appear in sources tab when available in extraction",
+          "threshold": "100%",
+          "test_name": "test_sources_context_includes_stimulus_descriptions",
+          "rationale": "Environmental studies are multimodal; stimuli are critical for replication"
+        },
+        {
+          "id": "SC-TG-10",
+          "name": "Sources tab covers referenced papers",
+          "description": "Sources tab covers at least 80% of papers referenced in the card",
+          "metric": "covered_papers / total_referenced_papers >= 0.80",
+          "threshold": "80%",
+          "test_name": "test_sources_context_extracts_per_paper_details",
+          "rationale": "Incomplete source coverage hides important methodological details"
+        }
+      ]
+    },
+    "scripts/run_stimulus_extraction.py": {
+      "description": "Surgical stimulus description backfill for existing extractions",
+      "conditions": [
+        {
+          "id": "SC-STIM-1",
+          "name": "Surgical update preserves existing data",
+          "description": "Only stimulus_description and stimulus_images fields are modified",
+          "metric": "all non-stimulus fields unchanged after backfill",
+          "threshold": "100%",
+          "test_name": "test_surgical_extraction_preserves_data",
+          "rationale": "Overwriting existing extraction data would corrupt the corpus"
+        },
+        {
+          "id": "SC-STIM-2",
+          "name": "Updated findings pass stimulus validator",
+          "description": "Backfilled stimulus descriptions pass ExtractionFieldValidator ST1-ST6",
+          "metric": "validator.validate_stimulus_description() returns 0 violations",
+          "threshold": "\u226590%",
+          "test_name": "test_backfilled_stim_passes_validator",
+          "rationale": "Invalid stimulus data is worse than missing data"
+        },
+        {
+          "id": "SC-STIM-3",
+          "name": "Coverage increases monotonically",
+          "description": "After any backfill run, stimulus coverage never decreases",
+          "metric": "coverage_pct_after >= coverage_pct_before",
+          "threshold": "100%",
+          "test_name": "test_coverage_increases",
+          "rationale": "Regression in coverage indicates data corruption"
+        },
+        {
+          "id": "SC-STIM-6",
+          "name": "Analyze mode is read-only",
+          "description": "Running with --analyze flag never modifies any files",
+          "metric": "no file modification timestamps changed",
+          "threshold": "100%",
+          "test_name": "test_analyze_mode_readonly",
+          "rationale": "Analysis should be safe to run at any time without side effects"
+        }
+      ]
+    },
+    "src/services/overseer.py (INV-17..19)": {
+      "description": "Overseer invariants for sources tab, stimulus coverage, and claim integrity",
+      "conditions": [
+        {
+          "id": "SC-INV-17",
+          "name": "Sources tab coverage violation detected",
+          "description": "Overseer fires INV-17 when sources tab coverage < 80%",
+          "metric": "check_sources_tab_coverage() reports status != 'healthy'",
+          "threshold": "100% detection rate",
+          "test_name": "test_sources_tab_violation_when_missing",
+          "rationale": "Silent degradation of card quality without monitoring"
+        },
+        {
+          "id": "SC-INV-18",
+          "name": "Stimulus coverage violation detected",
+          "description": "Overseer fires INV-18 when stimulus coverage < 50%",
+          "metric": "check_stimulus_description_coverage() reports status != 'healthy'",
+          "threshold": "100% detection rate",
+          "test_name": "test_stimulus_violation_when_no_coverage",
+          "rationale": "Stimulus data is critical for methodological transparency"
+        },
+        {
+          "id": "SC-INV-19",
+          "name": "Claim integrity issues detected",
+          "description": "Overseer fires INV-19 when orphaned or duplicate claims exist",
+          "metric": "check_session_card_claim_integrity() detects orphans/duplicates",
+          "threshold": "100% detection rate",
+          "test_name": "test_claim_integrity_detects_orphans",
+          "rationale": "Coordination failures waste parallel terminal compute"
+        }
+      ]
     }
   },
   "meta": {
@@ -1245,5 +1409,5 @@
     "enforcement": "The test suite (tests/test_success_conditions.py) verifies every condition. CI/CD should run this suite before any pipeline execution.",
     "addition_procedure": "When adding new scripts/modules: (1) identify 4-8 success conditions, (2) add to this JSON, (3) write corresponding tests in test_success_conditions.py, (4) update docs/SUCCESS_CONDITIONS_REGISTRY_2026-03-01.md with human-readable summary"
   },
-  "last_updated": "2026-03-04T19:17:17.988194"
+  "last_updated": "2026-03-04"
 }

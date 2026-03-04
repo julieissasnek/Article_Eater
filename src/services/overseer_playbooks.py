@@ -36,6 +36,9 @@ class RemediationAction(Enum):
     RECOMPUTE_COHERENCE = "recompute_coherence"
     REBUILD_CONSTRAINTS = "rebuild_constraints"
     ROLLBACK_LAST_INTEGRATION = "rollback_last_integration"
+    REGENERATE_CARDS = "regenerate_cards"
+    RUN_STIMULUS_BACKFILL = "run_stimulus_backfill"
+    CLEAN_STALE_CLAIMS = "clean_stale_claims"
     SKIP = "skip"
 
 
@@ -246,8 +249,58 @@ CVA_PLAYBOOKS: Dict[str, RemediationPlaybook] = {
     ),
 }
 
+# Session card generation and stimulus playbooks (INV-17..INV-19)
+SESSION_PLAYBOOKS: Dict[str, RemediationPlaybook] = {
+    "INV-17": RemediationPlaybook(
+        name="sources_tab_coverage_recovery",
+        violation_code="INV-17",
+        severity=PlaybookSeverity.WARNING,
+        description="Sources tab coverage below 80% for eligible cards",
+        steps=[
+            PlaybookStep(RemediationAction.REGENERATE_CARDS,
+                         "Queue card regeneration for cards missing sources tab",
+                         params={"tab_filter": "sources", "card_types": [
+                             "t1-framework", "t1_5-domain-theory",
+                             "t2-mechanism", "molecule"
+                         ]}),
+            PlaybookStep(RemediationAction.NOTIFY_HUMAN,
+                         "Alert: sources tab coverage below threshold. "
+                         "Run session card generation in CC/AG terminals."),
+        ],
+    ),
+    "INV-18": RemediationPlaybook(
+        name="stimulus_description_backfill",
+        violation_code="INV-18",
+        severity=PlaybookSeverity.WARNING,
+        description="Stimulus description coverage below 50% for empirical findings",
+        steps=[
+            PlaybookStep(RemediationAction.RUN_STIMULUS_BACKFILL,
+                         "Run stimulus backfill extraction for top-gap articles",
+                         params={"script": "scripts/run_stimulus_extraction.py",
+                                 "max_articles": 50}),
+            PlaybookStep(RemediationAction.NOTIFY_HUMAN,
+                         "Alert: stimulus coverage still low after backfill. "
+                         "Consider running full re-extraction for remaining articles."),
+        ],
+    ),
+    "INV-19": RemediationPlaybook(
+        name="claim_integrity_recovery",
+        violation_code="INV-19",
+        severity=PlaybookSeverity.WARNING,
+        description="Session card claim integrity issues (duplicates or orphans)",
+        steps=[
+            PlaybookStep(RemediationAction.CLEAN_STALE_CLAIMS,
+                         "Release orphaned claims older than 2 hours",
+                         params={"max_age_hours": 2.0}),
+            PlaybookStep(RemediationAction.NOTIFY_HUMAN,
+                         "Alert: duplicate claims found — terminals may have "
+                         "conflicting work. Check data/session_card_claims.json."),
+        ],
+    ),
+}
+
 # Merge all playbooks
-ALL_PLAYBOOKS = {**PLAYBOOKS, **CVA_PLAYBOOKS}
+ALL_PLAYBOOKS = {**PLAYBOOKS, **CVA_PLAYBOOKS, **SESSION_PLAYBOOKS}
 
 
 class RemediationEngine:

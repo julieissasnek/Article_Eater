@@ -38,6 +38,9 @@ Success Conditions:
   SC-TG-5: Direction language uses only canonical values
   SC-TG-6: Scope conditions stated when evidence is empirical
   SC-TG-7: Defeater search status reported for high-credence claims
+  SC-TG-8: Sources tab produces per-paper method details for T1/T1.5/T2/Molecule cards
+  SC-TG-9: Sources tab includes stimulus descriptions when extraction data available
+  SC-TG-10: Sources tab covers ≥ 80% of papers referenced in the card
 
 Author: CW (Claude/Cowork)
 Date: 2026-03-04

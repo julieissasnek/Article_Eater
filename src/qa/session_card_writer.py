@@ -181,6 +181,10 @@ class ClaimsRegistry:
         """Get all card IDs that have been claimed (not yet completed/failed)."""
         return {c.card_id for c in self._claims.values() if c.status == "claimed"}
 
+    def get_all_card_ids(self) -> Set[str]:
+        """Get all card IDs that have been touched (claimed, completed, or failed)."""
+        return set(self._claims.keys())
+
 
 # ---------------------------------------------------------------------------
 # Session Card Writer
@@ -592,10 +596,16 @@ class SessionCardWriter:
     def get_queue_status(self) -> Dict[str, Any]:
         """Get current status of cards waiting for session generation."""
         session_queue = self.queue.get_session_queue()
-        already_claimed = self.claims.get_claimed_card_ids()
+        all_touched = self.claims.get_all_card_ids()
+        active_claimed = self.claims.get_claimed_card_ids()
+        completed_ids = {
+            c.card_id for c in self.claims._claims.values()
+            if c.status == "completed"
+        }
 
         unclaimed = []
         claimed = []
+        completed = []
 
         for request in session_queue:
             item = {
@@ -605,7 +615,9 @@ class SessionCardWriter:
                 "priority": request.priority,
                 "created_at": request.created_at,
             }
-            if request.card_id in already_claimed:
+            if request.card_id in completed_ids:
+                completed.append(item)
+            elif request.card_id in active_claimed:
                 claimed.append(item)
             else:
                 unclaimed.append(item)
@@ -613,9 +625,11 @@ class SessionCardWriter:
         return {
             "unclaimed": unclaimed,
             "claimed": claimed,
+            "completed": completed,
             "total_queued": len(session_queue),
             "unclaimed_count": len(unclaimed),
             "claimed_count": len(claimed),
+            "completed_count": len(completed),
             "by_type": self._count_by_type(session_queue),
         }
 

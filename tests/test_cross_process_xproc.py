@@ -906,5 +906,171 @@ class TestSC_XPROC_IntegrationChain:
             )
 
 
+# ============================================================================
+# SC-XPROC-17: Overseer Sources Tab Coverage Check (INV-17)
+# ============================================================================
+
+class TestSC_XPROC_17_SourcesTabCoverage:
+    """
+    SUCCESS CONDITION: Overseer can check sources tab coverage and
+    report violations when coverage falls below 80%.
+    """
+
+    def test_sources_tab_checker_returns_valid_structure(self, tmp_path):
+        """INV-17 checker returns a well-formed result dict."""
+        from src.services.overseer import OverseerService
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_sources_tab_coverage()
+        assert "eligible_cards" in result
+        assert "with_sources_tab" in result
+        assert "coverage_pct" in result
+        assert "status" in result
+
+    def test_sources_tab_violation_when_missing(self, tmp_path):
+        """INV-17 produces WARNING when eligible cards lack sources tab."""
+        import json
+        from src.services.overseer import OverseerService
+
+        # Create card dir with cards missing sources tab
+        cards_dir = tmp_path / "data" / "cards" / "t1-framework"
+        cards_dir.mkdir(parents=True)
+
+        for i in range(5):
+            card_data = {
+                "card_id": f"t1-framework:test_{i}",
+                "card_type": "t1-framework",
+                "body": {"tabs": {"overview": {"prose": "Test content"}}},
+            }
+            with open(cards_dir / f"test_{i}.json", "w") as f:
+                json.dump(card_data, f)
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_sources_tab_coverage()
+        assert result["eligible_cards"] == 5
+        assert result["with_sources_tab"] == 0
+        assert result["coverage_pct"] == 0.0
+        assert result["status"] == "critical"
+
+
+# ============================================================================
+# SC-XPROC-18: Overseer Stimulus Coverage Check (INV-18)
+# ============================================================================
+
+class TestSC_XPROC_18_StimulusCoverage:
+    """
+    SUCCESS CONDITION: Overseer can check stimulus description coverage
+    across empirical extractions.
+    """
+
+    def test_stimulus_checker_returns_valid_structure(self, tmp_path):
+        """INV-18 checker returns well-formed result dict."""
+        from src.services.overseer import OverseerService
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_stimulus_description_coverage()
+        assert "total_empirical_findings" in result
+        assert "with_stimulus" in result
+        assert "coverage_pct" in result
+        assert "status" in result
+        assert "top_gaps" in result
+
+    def test_stimulus_violation_when_no_coverage(self, tmp_path):
+        """INV-18 reports critical when 0% of empirical findings have stimulus."""
+        import json
+        from src.services.overseer import OverseerService
+
+        extractions_dir = tmp_path / "data" / "extractions"
+        extractions_dir.mkdir(parents=True)
+
+        # Create empirical extraction with no stimulus data
+        extraction = {
+            "doi": "10.1234/test",
+            "article_type": "empirical",
+            "findings": [
+                {"antecedent": "bright light at 500 lux", "consequent": "alertness",
+                 "direction": "increase"},
+                {"antecedent": "dim light at 50 lux", "consequent": "drowsiness",
+                 "direction": "increase"},
+            ],
+        }
+        with open(extractions_dir / "test_paper.json", "w") as f:
+            json.dump(extraction, f)
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_stimulus_description_coverage()
+        assert result["total_empirical_findings"] == 2
+        assert result["with_stimulus"] == 0
+        assert result["coverage_pct"] == 0.0
+        assert result["status"] == "critical"
+        assert len(result["top_gaps"]) >= 1
+
+
+# ============================================================================
+# SC-XPROC-19: Overseer Claim Integrity Check (INV-19)
+# ============================================================================
+
+class TestSC_XPROC_19_ClaimIntegrity:
+    """
+    SUCCESS CONDITION: Overseer can check session card claim integrity
+    and detect duplicates/orphans.
+    """
+
+    def test_claim_integrity_healthy_when_no_claims(self, tmp_path):
+        """INV-19 reports healthy when no claims file exists."""
+        from src.services.overseer import OverseerService
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_session_card_claim_integrity()
+        assert result["status"] == "no_data"
+        assert result["total_claims"] == 0
+
+    def test_claim_integrity_detects_orphans(self, tmp_path):
+        """INV-19 detects claims older than 2 hours as orphans."""
+        import json
+        from datetime import datetime, timezone, timedelta
+        from src.services.overseer import OverseerService
+
+        claims_file = tmp_path / "data" / "session_card_claims.json"
+        claims_file.parent.mkdir(parents=True)
+
+        old_time = (datetime.now(timezone.utc) - timedelta(hours=5)).isoformat()
+        claims_data = {
+            "claims": [
+                {"card_id": "t1-framework:test_1", "terminal_id": "CC-1",
+                 "status": "claimed", "claimed_at": old_time},
+                {"card_id": "t1-framework:test_2", "terminal_id": "CC-2",
+                 "status": "completed", "claimed_at": old_time},
+            ],
+        }
+        with open(claims_file, "w") as f:
+            json.dump(claims_data, f)
+
+        overseer = OverseerService.__new__(OverseerService)
+        overseer.base_dir = tmp_path
+        overseer.web_db_path = tmp_path / "web.db"
+
+        result = overseer.check_session_card_claim_integrity()
+        assert result["total_claims"] == 2
+        assert result["orphaned_claims"] == 1  # Only the "claimed" one is orphaned
+        assert result["completed_claims"] == 1
+        assert len(result["issues"]) >= 1
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])

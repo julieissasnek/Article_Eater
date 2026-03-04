@@ -31,6 +31,14 @@ Usage:
 This script is designed to run in a SEPARATE terminal from card generation.
 It can run alongside AG and CC card generation without conflicts.
 
+Success Conditions:
+    SC-STIM-1: Surgical extraction updates ONLY stimulus fields, preserving all other data
+    SC-STIM-2: Updated findings pass ExtractionFieldValidator stimulus rules (ST1-ST6)
+    SC-STIM-3: Coverage increases monotonically (never decreases) after backfill run
+    SC-STIM-4: _stimulus_backfill metadata added to each updated article
+    SC-STIM-5: Script is idempotent — running twice on same article produces same result
+    SC-STIM-6: Analysis mode (--analyze) never modifies any files
+
 Author: CW (Claude/Cowork)
 Date: 2026-03-04
 """

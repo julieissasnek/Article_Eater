@@ -41,6 +41,9 @@ Invariants (Dijkstra, Haack, Pearl):
   INV-14: Card generation queue depth ≤ 50 (real-time pipeline)
   INV-15: Stale card ratio ≤ 20% (card freshness)
   INV-16: Card two-pass pipeline health (Pass 1→2 flow)
+  INV-17: Sources tab coverage ≥ 80% of T1/T1.5/T2/Molecule cards (per-paper methods)
+  INV-18: Stimulus description coverage ≥ 50% of empirical findings
+  INV-19: Session card writer claim integrity (no duplicate claims, no orphaned claims)
 
 6 Sub-Components:
   1. HealthMonitor: Time-series coherence, conflict, completeness metrics
@@ -961,6 +964,58 @@ class OverseerService:
         except Exception as e:
             logger.debug(f"INV-15 check failed: {e}")
 
+        # INV-17: Sources tab coverage ≥ 80% of eligible cards
+        try:
+            sources_health = self.check_sources_tab_coverage()
+            if (sources_health.get("eligible_cards", 0) > 0
+                    and sources_health.get("coverage_pct", 100) < 80):
+                violations.append(InvariantViolation(
+                    code="INV-17",
+                    severity="WARNING",
+                    description=(
+                        f"Sources tab coverage {sources_health['coverage_pct']}% "
+                        f"(threshold: 80%). "
+                        f"{len(sources_health.get('cards_missing_sources', []))} "
+                        f"cards need sources tab generation."
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"INV-17 check failed: {e}")
+
+        # INV-18: Stimulus description coverage ≥ 50% of empirical findings
+        try:
+            stim_health = self.check_stimulus_description_coverage()
+            if (stim_health.get("total_empirical_findings", 0) > 0
+                    and stim_health.get("coverage_pct", 100) < 50):
+                violations.append(InvariantViolation(
+                    code="INV-18",
+                    severity="WARNING",
+                    description=(
+                        f"Stimulus description coverage {stim_health['coverage_pct']}% "
+                        f"(threshold: 50%). Run stimulus backfill: "
+                        f"python scripts/run_stimulus_extraction.py --max-articles 50"
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"INV-18 check failed: {e}")
+
+        # INV-19: Session card claim integrity
+        try:
+            claim_health = self.check_session_card_claim_integrity()
+            if claim_health.get("status") in ("degraded", "critical"):
+                violations.append(InvariantViolation(
+                    code="INV-19",
+                    severity="MINOR" if claim_health["status"] == "degraded" else "MAJOR",
+                    description=(
+                        f"Card claim integrity {claim_health['status']}: "
+                        f"{claim_health.get('duplicate_claims', 0)} duplicates, "
+                        f"{claim_health.get('orphaned_claims', 0)} orphans. "
+                        f"Issues: {'; '.join(claim_health.get('issues', [])[:3])}"
+                    )
+                ))
+        except Exception as e:
+            logger.debug(f"INV-19 check failed: {e}")
+
         return violations
 
     def _update_card_staleness(self, paper_id: str) -> List[str]:
@@ -1132,6 +1187,271 @@ class OverseerService:
         except Exception as e:
             logger.warning(f"Two-pass pipeline health check failed: {e}")
             result["message"] = f"Health check error: {e}"
+            return result
+
+    def check_sources_tab_coverage(self) -> Dict[str, Any]:
+        """
+        INV-17: Sources tab coverage monitoring.
+
+        Cards of types T1, T1.5, T2, and Molecule REQUIRE a 'sources' tab
+        with per-paper method details and stimulus descriptions. This check
+        measures what fraction of eligible cards have a populated sources tab.
+
+        Threshold: ≥ 80% of eligible cards must have sources tab.
+
+        Returns:
+            {
+                "eligible_cards": int,
+                "with_sources_tab": int,
+                "coverage_pct": float,
+                "status": str,  # "healthy" | "degraded" | "critical"
+                "cards_missing_sources": list[str],
+            }
+        """
+        result = {
+            "eligible_cards": 0,
+            "with_sources_tab": 0,
+            "coverage_pct": 0.0,
+            "status": "unknown",
+            "cards_missing_sources": [],
+        }
+        try:
+            cards_dir = self.base_dir / "data" / "materialized_views" / "cards"
+            if not cards_dir.exists():
+                cards_dir = self.base_dir / "data" / "cards"
+            if not cards_dir.exists():
+                result["status"] = "no_data"
+                return result
+
+            eligible_types = {"t1-framework", "t1_5-domain-theory", "t2-mechanism", "molecule"}
+            for card_file in cards_dir.rglob("*.json"):
+                try:
+                    with open(card_file) as f:
+                        card_data = json.load(f)
+                    card_type = card_data.get("card_type", "")
+                    if card_type in eligible_types:
+                        result["eligible_cards"] += 1
+                        body = card_data.get("body", {})
+                        tabs = body.get("tabs", {})
+                        sources_tab = tabs.get("sources", {})
+                        if sources_tab and sources_tab.get("prose", "").strip():
+                            result["with_sources_tab"] += 1
+                        else:
+                            result["cards_missing_sources"].append(
+                                card_data.get("card_id", card_file.stem)
+                            )
+                except Exception:
+                    continue
+
+            if result["eligible_cards"] > 0:
+                result["coverage_pct"] = round(
+                    result["with_sources_tab"] / result["eligible_cards"] * 100, 1
+                )
+
+            if result["coverage_pct"] >= 80:
+                result["status"] = "healthy"
+            elif result["coverage_pct"] >= 50:
+                result["status"] = "degraded"
+            else:
+                result["status"] = "critical"
+
+            logger.info(
+                f"INV-17 sources tab coverage: {result['coverage_pct']}% "
+                f"({result['with_sources_tab']}/{result['eligible_cards']})"
+            )
+            return result
+
+        except Exception as e:
+            logger.warning(f"INV-17 sources tab check failed: {e}")
+            result["status"] = "error"
+            return result
+
+    def check_stimulus_description_coverage(self) -> Dict[str, Any]:
+        """
+        INV-18: Stimulus description coverage for empirical findings.
+
+        Empirical findings (from papers with sensory/environmental manipulations)
+        should have stimulus_description populated. This monitors the backfill
+        progress and alerts when coverage is insufficient.
+
+        Threshold: ≥ 50% of empirical findings with sensory antecedents
+        must have stimulus_description populated.
+
+        Returns:
+            {
+                "total_empirical_findings": int,
+                "with_stimulus": int,
+                "coverage_pct": float,
+                "status": str,
+                "top_gaps": list[str],  # DOIs with most missing stimulus data
+            }
+        """
+        result = {
+            "total_empirical_findings": 0,
+            "with_stimulus": 0,
+            "coverage_pct": 0.0,
+            "status": "unknown",
+            "top_gaps": [],
+        }
+        try:
+            extractions_dir = self.base_dir / "data" / "extractions"
+            if not extractions_dir.exists():
+                result["status"] = "no_data"
+                return result
+
+            article_gaps = {}  # doi → count of missing stimulus
+            for extraction_file in extractions_dir.glob("*.json"):
+                try:
+                    with open(extraction_file) as f:
+                        data = json.load(f)
+                    article_type = data.get("article_type", "").lower()
+                    if article_type != "empirical":
+                        continue
+                    doi = data.get("doi", extraction_file.stem)
+                    missing_count = 0
+                    for finding in data.get("findings", []):
+                        result["total_empirical_findings"] += 1
+                        stim = finding.get("stimulus_description")
+                        if stim and isinstance(stim, dict) and stim.get("primary_type"):
+                            result["with_stimulus"] += 1
+                        else:
+                            missing_count += 1
+                    if missing_count > 0:
+                        article_gaps[doi] = missing_count
+                except Exception:
+                    continue
+
+            if result["total_empirical_findings"] > 0:
+                result["coverage_pct"] = round(
+                    result["with_stimulus"] / result["total_empirical_findings"] * 100, 1
+                )
+
+            # Top 10 articles with most missing stimulus data
+            sorted_gaps = sorted(article_gaps.items(), key=lambda x: x[1], reverse=True)
+            result["top_gaps"] = [
+                f"{doi} ({count} findings)"
+                for doi, count in sorted_gaps[:10]
+            ]
+
+            if result["coverage_pct"] >= 50:
+                result["status"] = "healthy"
+            elif result["coverage_pct"] >= 20:
+                result["status"] = "degraded"
+            else:
+                result["status"] = "critical"
+
+            logger.info(
+                f"INV-18 stimulus coverage: {result['coverage_pct']}% "
+                f"({result['with_stimulus']}/{result['total_empirical_findings']})"
+            )
+            return result
+
+        except Exception as e:
+            logger.warning(f"INV-18 stimulus check failed: {e}")
+            result["status"] = "error"
+            return result
+
+    def check_session_card_claim_integrity(self) -> Dict[str, Any]:
+        """
+        INV-19: Session card writer claim integrity.
+
+        Monitors the parallel terminal card generation system for:
+        - Duplicate claims (same card claimed by multiple terminals)
+        - Orphaned claims (claimed >2 hours ago, not completed)
+        - Claim-completion consistency (completed cards have files on disk)
+
+        Returns:
+            {
+                "total_claims": int,
+                "active_claims": int,
+                "completed_claims": int,
+                "duplicate_claims": int,
+                "orphaned_claims": int,
+                "status": str,
+                "issues": list[str],
+            }
+        """
+        result = {
+            "total_claims": 0,
+            "active_claims": 0,
+            "completed_claims": 0,
+            "duplicate_claims": 0,
+            "orphaned_claims": 0,
+            "status": "healthy",
+            "issues": [],
+        }
+        try:
+            claims_file = self.base_dir / "data" / "session_card_claims.json"
+            if not claims_file.exists():
+                result["status"] = "no_data"
+                return result
+
+            with open(claims_file) as f:
+                claims_data = json.load(f)
+
+            claims = claims_data.get("claims", [])
+            result["total_claims"] = len(claims)
+
+            card_ids_seen = {}  # card_id → list of terminal_ids
+            now = datetime.now(timezone.utc)
+
+            for claim in claims:
+                card_id = claim.get("card_id", "")
+                terminal_id = claim.get("terminal_id", "")
+                status = claim.get("status", "")
+                claimed_at_str = claim.get("claimed_at", "")
+
+                # Count by status
+                if status == "claimed":
+                    result["active_claims"] += 1
+
+                    # Check for orphans (>2 hours old)
+                    if claimed_at_str:
+                        try:
+                            claimed_at = datetime.fromisoformat(claimed_at_str)
+                            if hasattr(claimed_at, 'tzinfo') and claimed_at.tzinfo is None:
+                                claimed_at = claimed_at.replace(tzinfo=timezone.utc)
+                            age_hours = (now - claimed_at).total_seconds() / 3600
+                            if age_hours > 2.0:
+                                result["orphaned_claims"] += 1
+                                result["issues"].append(
+                                    f"Orphaned: {card_id} claimed by {terminal_id} "
+                                    f"{age_hours:.1f}h ago"
+                                )
+                        except (ValueError, TypeError):
+                            pass
+
+                elif status == "completed":
+                    result["completed_claims"] += 1
+
+                # Check for duplicates
+                if card_id not in card_ids_seen:
+                    card_ids_seen[card_id] = []
+                card_ids_seen[card_id].append(terminal_id)
+
+            # Count duplicates
+            for card_id, terminals in card_ids_seen.items():
+                if len(terminals) > 1:
+                    result["duplicate_claims"] += 1
+                    result["issues"].append(
+                        f"Duplicate: {card_id} claimed by {terminals}"
+                    )
+
+            if result["duplicate_claims"] > 0 or result["orphaned_claims"] > 3:
+                result["status"] = "degraded"
+            if result["duplicate_claims"] > 5:
+                result["status"] = "critical"
+
+            logger.info(
+                f"INV-19 claim integrity: {result['status']} | "
+                f"{result['active_claims']} active, {result['completed_claims']} done, "
+                f"{result['duplicate_claims']} dupes, {result['orphaned_claims']} orphans"
+            )
+            return result
+
+        except Exception as e:
+            logger.warning(f"INV-19 claim integrity check failed: {e}")
+            result["status"] = "error"
             return result
 
     def _check_operational(self) -> bool:

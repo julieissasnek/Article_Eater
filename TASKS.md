@@ -58,16 +58,33 @@ For completed sprints (Feb 2026), see `docs/TASKS_ARCHIVE_2026_Feb.md`.
 **Phase 4 (Visual generation)**: Pending — blocked on image extraction pipeline
 **Phase 5 (Agent integration for drill-down)**: Pending — needs "Sources" tab for per-paper method details
 
-### Stimulus Display + Method Drill-Down — PENDING (David requested 2026-03-04)
+### Stimulus Display + Method Drill-Down — SOURCES TAB DONE, BACKFILL IN PROGRESS (2026-03-04)
 **David's request**: "I almost always want to see the stims if there was a picture... also add as many useful visualizations of data or method. Currently can someone drill down like that?"
-**Status**: NOT YET IMPLEMENTED. Schema has `stimulus_description` and `stimulus_images` fields defined but 0% populated. No per-paper method drill-down tab exists. Evidence tab shows aggregates only.
-**Required work**:
-- Add "Sources" tab (8th tab) showing per-paper method details + stimulus images
-- Populate stimulus_description via v3 extraction prompts (Phase 2 of extraction pipeline overhaul)
-- Wire FigureSuggestionService into card generation (service exists, just not connected)
-- Add query routing for "show me methods from paper X"
-**Blocked on**: Extraction pipeline overhaul Phase 2 (stimulus fields in prompts)
-**Deliverable**: `docs/SCIENCE_WRITER_AGENT_SPEC_2026-03-04.md` (~15,000 words, comprehensive spec covering: agent architecture, 7-stage writing pipeline, question-generation loop, quality gates, card-type-specific strategies, ReductionClaim DAG premium treatment, iceberg/context appendix design, model allocation strategy, success criteria)
+**Status (updated 2026-03-04)**:
+- ✅ "Sources" tab added as 8th tab: per-paper method details, stimulus descriptions, sample sizes, instruments
+- ✅ Required for T1/T1.5/T2/Molecule cards; optional for T3/Competition/Layer/Method/Math
+- ✅ V3 extraction prompts enhanced with detailed stimulus extraction instructions (Rule 6 expanded, Checks 11-12)
+- ✅ ExtractionFieldValidator has 6 stimulus rules (ST1-ST6)
+- ✅ Surgical backfill script: `scripts/run_stimulus_extraction.py` (ready for separate terminal)
+- ✅ Overseer INV-17 (sources coverage), INV-18 (stimulus coverage), INV-19 (claim integrity)
+- ✅ Remediation playbooks for INV-17/18/19 in `overseer_playbooks.py`
+- ✅ Success conditions: SC-TG-8..10 (sources tab), SC-STIM-1..6 (stimulus), SC-INV-17..19 (overseer)
+- ✅ 20 cross-process tests (14 original + 6 new for INV-17/18/19)
+- ⬜ Stimulus data currently 0% populated — needs backfill (run `scripts/run_stimulus_extraction.py`)
+- ⬜ Wire FigureSuggestionService into card generation (service exists, not connected)
+- ⬜ Add query routing for "show me methods from paper X"
+
+### Session-Mode Card Generation — COMPLETE (2026-03-04)
+**David's mandate**: Free sessions (CW/CC/AG) should generate cards at zero API cost
+**Deliverables**:
+- `src/qa/session_card_writer.py` (~660 lines): SessionCardWriter + ClaimsRegistry for parallel terminals
+- `scripts/terminal_card_gen.py` (~165 lines): Quick-start CLI (status, claim, next, show-claims)
+- `scripts/session_generate_cards.py` (~380 lines): Full CLI for session card generation
+- `docs/AG_PROMPT_card_generation_session.md`: AG's card generation prompt (ready to paste)
+- `docs/SESSION_CARD_GENERATION.md`: User guide for terminal operators
+- Supports up to 15 simultaneous terminals via file-based JSON claims
+- 16 tests (test_session_card_writer.py), all passing
+- SC-SCW-1..6 success conditions registered in contracts/success_conditions.json
 
 ---
 

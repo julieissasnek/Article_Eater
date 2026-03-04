@@ -485,10 +485,10 @@ class TestSessionCardWriterIntegration:
                 terminal_id="agent-3",
             )
 
-        # Check status
+        # Check status — all cards should be completed (0 unclaimed, 0 still-claimed)
         status = writer.get_queue_status()
         assert status["unclaimed_count"] == 0
-        assert status["claimed_count"] == 3
+        assert status["completed_count"] == 5  # All 5 cards completed
 
         # All cards should be on disk
-        assert len(list(writer.card_storage_dir.rglob("*.json"))) == 3
+        assert len(list(writer.card_storage_dir.rglob("*.json"))) == 5
