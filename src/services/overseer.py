@@ -568,6 +568,13 @@ class OverseerService:
             logger.debug(f"Evidence diversity metric failed: {e}")
             metrics['paper_evidence_ratio'] = None
 
+        # EN-0E: Test pass rate (MT-14)
+        try:
+            metrics['test_pass_rate'] = self._check_test_pass_rate()
+        except Exception as e:
+            logger.debug(f"Test pass rate metric failed: {e}")
+            metrics['test_pass_rate'] = None
+
         # EN-0E: AESHI composite score
         try:
             metrics['aeshi_score'] = self.compute_aeshi(metrics)
@@ -942,26 +949,29 @@ class OverseerService:
             if n_templates == 0:
                 return None
 
-            # Count templates with beliefs in the web
-            n_with_beliefs = 0
+            # Count beliefs that have template linkage (via template_ids column)
+            n_with_templates = 0
             try:
                 with sqlite3.connect(str(self.web_db_path)) as conn:
                     cursor = conn.cursor()
+                    # Count beliefs that have template_ids populated
                     cursor.execute(
-                        "SELECT COUNT(DISTINCT belief_id) FROM beliefs "
-                        "WHERE belief_id LIKE 'template:%'"
+                        """SELECT COUNT(DISTINCT belief_id) FROM beliefs
+                        WHERE template_ids IS NOT NULL AND template_ids != ''"""
                     )
                     row = cursor.fetchone()
-                    n_with_beliefs = row[0] if row else 0
+                    n_with_templates = row[0] if row else 0
             except Exception:
                 # Fallback: count from WebOfBelief
                 if self.web and hasattr(self.web, 'beliefs'):
-                    n_with_beliefs = sum(
-                        1 for bid in self.web.beliefs
-                        if bid.startswith('template:')
+                    n_with_templates = sum(
+                        1 for b in self.web.beliefs.values()
+                        if hasattr(b, 'template_ids') and b.template_ids
                     )
 
-            return n_with_beliefs / n_templates if n_templates > 0 else 0.0
+            # Return ratio of beliefs with template linkage to total templates
+            # This measures how many templates have supporting beliefs
+            return n_with_templates / n_templates if n_templates > 0 else 0.0
 
         except Exception as e:
             logger.debug(f"Template coverage check failed: {e}")
@@ -1198,6 +1208,84 @@ class OverseerService:
             logger.debug(f"Field reviewer terminal rate check failed: {e}")
             return None
 
+    def _check_test_pass_rate(self) -> Optional[float]:
+        """
+        Test pass rate — fraction of tests passing.
+
+        Reads from latest pytest results if available.
+        Returns ratio in [0, 1] or None if unavailable.
+        """
+        try:
+            import json
+
+            # Search multiple locations for test results cache
+            candidates = [
+                Path(self.extractions_dir).parent / 'test_results_cache.json',
+                Path(self.extractions_dir).parent.parent / 'data' / 'test_results_cache.json',
+            ]
+            # Also check repo root
+            for parent in Path(self.extractions_dir).parents:
+                candidate = parent / 'data' / 'test_results_cache.json'
+                if candidate not in candidates:
+                    candidates.append(candidate)
+                if (parent / '.git').exists():
+                    break  # Stop at repo root
+
+            for results_file in candidates:
+                if results_file.exists():
+                    data = json.loads(results_file.read_text())
+                    passed = data.get('passed', 0)
+                    failed = data.get('failed', 0)
+                    total = passed + failed
+                    if total > 0:
+                        return passed / total
+
+            return None
+
+        except Exception as e:
+            logger.debug(f"Test pass rate check failed: {e}")
+            return None
+
+    def audit_aeshi_comprehensiveness(self) -> Dict[str, Any]:
+        """
+        Meta-check: Audit what AESHI measures vs what it should measure.
+
+        Returns gaps between current AESHI metrics and recommended coverage
+        based on success conditions, subsystem health contracts, and panel
+        recommendations.
+        """
+        measured = {
+            'provenance_coverage': 'Quality: source tracking',
+            'global_coherence': 'Quality: belief consistency',
+            'conflict_rate': 'Quality: contradiction detection',
+            'schema_compliance': 'Quality: data validation',
+            'credence_bounds': 'Quality: probability bounds',
+            'pipeline_utilization': 'Coverage: extraction→integration',
+            'template_coverage': 'Coverage: template→belief linkage',
+            'theory_linkage': 'Coverage: theory→belief linkage',
+            'evidence_diversity': 'Coverage: paper vs template sources',
+            'test_pass_rate': 'Quality: automated test health (6,500+ tests)',
+        }
+
+        recommended_additions = {
+            'subsystem_health': 'Quality: per-subsystem operational status',
+            'success_condition_coverage': 'Quality: SC test coverage (389 SC tests)',
+            'extraction_quality': 'Quality: field-level extraction accuracy',
+            'bn_calibration': 'Quality: Bayesian network correctness',
+            'reflex_health': 'Quality: reflexive monitoring operational',
+            'annotation_integration': 'Coverage: user annotations→beliefs',
+            'interpretation_space': 'Coverage: R₁-R₄ closure operators',
+        }
+
+        return {
+            'currently_measured': list(measured.keys()),
+            'measured_count': len(measured),
+            'recommended_additions': recommended_additions,
+            'recommended_count': len(recommended_additions),
+            'comprehensiveness_ratio': len(measured) / (len(measured) + len(recommended_additions)),
+            'gap_summary': f"{len(recommended_additions)} metrics should be added to AESHI",
+        }
+
     def compute_aeshi(self, health_metrics: Optional[Dict] = None) -> int:
         """
         Compute ATLAS Epistemic System Health Index (AESHI).
@@ -1207,11 +1295,12 @@ class OverseerService:
 
         Components:
           Quality (60 pts max):
-            - Provenance coverage (15 pts)
+            - Provenance coverage (10 pts)
             - Coherence (15 pts)
             - Conflict rate (10 pts, inverse)
             - Schema compliance (10 pts)
             - Credence bounds compliance (10 pts)
+            - Test pass rate (5 pts, MT-14)
 
           Coverage/Utilization (40 pts max):
             - Pipeline utilization (15 pts)
@@ -1230,10 +1319,10 @@ class OverseerService:
         score = 0.0
 
         # === Quality component (60 pts max) ===
-        # Provenance coverage (15 pts)
+        # Provenance coverage (10 pts — reduced from 15 to make room for test_pass_rate)
         prov = health_metrics.get('provenance_coverage')
         if prov is not None:
-            score += prov * 15
+            score += prov * 10
 
         # Coherence (15 pts) — normalize to [0, 1] assuming max ~0.8
         coherence = health_metrics.get('global_coherence')
@@ -1253,6 +1342,12 @@ class OverseerService:
         # Credence bounds (10 pts)
         credence_violations = sum(1 for v in violations if getattr(v, 'code', '') == 'INV-5')
         score += 10 if credence_violations == 0 else 0
+
+        # Test pass rate (5 pts, MT-14)
+        test_pass_rate = health_metrics.get('test_pass_rate')
+        if test_pass_rate is not None and test_pass_rate > 0:
+            score += test_pass_rate * 5  # 100% pass = 5 pts
+        # If unavailable (None), no penalty — graceful degradation
 
         # === Coverage/Utilization component (40 pts max) ===
         # Pipeline utilization (15 pts)
@@ -1654,7 +1749,8 @@ class OverseerService:
         try:
             with sqlite3.connect(str(self.web_db_path)) as conn:
                 cursor = conn.cursor()
-                cursor.execute("SELECT COUNT(DISTINCT belief_id) FROM belief_versions")
+                # Query beliefs table (not belief_versions which may be empty)
+                cursor.execute("SELECT COUNT(DISTINCT belief_id) FROM beliefs")
                 result = cursor.fetchone()
                 return result[0] if result else 0
         except Exception as e:
@@ -1665,8 +1761,9 @@ class OverseerService:
         try:
             with sqlite3.connect(str(self.web_db_path)) as conn:
                 cursor = conn.cursor()
+                # Query beliefs table (not belief_versions which may be empty)
                 cursor.execute(
-                    """SELECT COUNT(DISTINCT belief_id) FROM belief_versions
+                    """SELECT COUNT(DISTINCT belief_id) FROM beliefs
                     WHERE theory_id IS NULL OR theory_id = ''"""
                 )
                 result = cursor.fetchone()
@@ -2239,7 +2336,7 @@ class OverseerService:
 
     def check_all_subsystems(self) -> Dict[str, Any]:
         """
-        Run health probes for all 17 subsystems and return structured report.
+        Run health probes for all 20 subsystems and return structured report.
 
         Uses SubsystemHealthChecker from overseer_self_healing module.
         Gracefully degrades if health checker unavailable.

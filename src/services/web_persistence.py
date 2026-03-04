@@ -2371,6 +2371,34 @@ class WebPersistenceService:
         paper_quality_data = self.get_paper_quality(source_paper_id)
         paper_quality = paper_quality_data['overall_quality'] if paper_quality_data else None
 
+        # AG Task B (Longino P6): Use source_quality composite if component
+        # fields are available. SQ = 0.35×rigor + 0.30×independence +
+        # 0.20×replication + 0.15×(1-commitment). Low-quality studies
+        # contribute less to belief strength.
+        if paper_quality_data:
+            try:
+                from src.epistemic.source_quality import compute_source_quality
+                rigor = paper_quality_data.get('methodological_rigor')
+                commitment = paper_quality_data.get('theoretical_commitment')
+                independence = paper_quality_data.get('independence_of_evidence')
+                replication = paper_quality_data.get('replication_status')
+                if all(v is not None for v in [rigor, commitment, independence, replication]):
+                    paper_quality = compute_source_quality(
+                        methodological_rigor=rigor,
+                        theoretical_commitment=commitment,
+                        independence_of_evidence=independence,
+                        replication_status=replication,
+                    )
+                    logger.debug(
+                        f"SQ composite for {source_paper_id}: {paper_quality:.3f} "
+                        f"(rigor={rigor:.2f}, commit={commitment:.2f}, "
+                        f"indep={independence:.2f}, repl={replication:.2f})"
+                    )
+            except ImportError:
+                pass  # source_quality module not available, use paper_quality
+            except Exception as e:
+                logger.debug(f"SQ computation failed for {source_paper_id}: {e}")
+
         if existing is None:
             # New belief - add it
             belief.paper_ids = list(set(getattr(belief, 'paper_ids', []) + [source_paper_id]))

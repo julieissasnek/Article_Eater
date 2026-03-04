@@ -280,6 +280,18 @@ What's stuck and why. Both systems should check this to see if they can unblock 
 - **Tests**: 19/19 pass (0.18s) — `tests/test_belief_env_outcome_extractor.py`
 - **⚠️ CW's `scripts/backfill_template_ids.py` must run AFTER this extractor** (see MT-19)
 
+#### MT-14: test_pass_rate → AESHI ✅ (NEW)
+- Wired `_check_test_pass_rate()` into `check_health()` metrics collection and `compute_aeshi()` formula
+- Added as 5-pt Quality component (provenance reduced 15→10 to maintain 100-pt total)
+- Fixed `_check_test_pass_rate()` path resolution with multi-location fallback to repo root
+- Moved `test_pass_rate` from recommended_additions to measured in `audit_aeshi_comprehensiveness()` (10/17 → 58.8%)
+
+#### AG Task B: Source Quality → Credence ✅ (NEW)
+- Wired `source_quality.compute_source_quality()` into `merge_belief_into_master()` in `web_persistence.py`
+- When paper_quality_data has component fields (rigor, commitment, independence, replication), the proper Longino P6 formula is used instead of raw `overall_quality`
+- SQ = 0.35×rigor + 0.30×independence + 0.20×replication + 0.15×(1-commitment)
+- Falls back gracefully to existing paper_quality if SQ components unavailable
+
 #### Test Suite — 6,509 Passed, 1 Failed ✅
 - Fixed 5 test failures from cascade extension (STEPS 14→16, services ≥9, circuit_context)
 - Added `test_reachability_audit.py` (47 tests) + `test_functional_integration.py` (22 tests)
